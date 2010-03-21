@@ -209,6 +209,8 @@ namespace eval pgn {
 	    -markCodes $::pgn::stripMarks]
 	close $tempfile
         ::recentFiles::add $fname
+        set ::initialDir(file) [file tail $fname]
+        set ::initialDir(base) [file dirname $fname]
         updateMenuStates
       }
       set initialDir(base) [file dirname $fname]

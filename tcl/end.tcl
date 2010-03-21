@@ -1277,22 +1277,18 @@ proc drawArrow {sq color} {
 for {set i 0} { $i < 64 } { incr i } {
   ::board::bind .board $i <Enter> "enterSquare $i"
   ::board::bind .board $i <Leave> "leaveSquare $i"
-  ::board::bind .board $i <ButtonPress-1> "set ::addVariationWithoutAsking 0 ; pressSquare $i"
-  ::board::bind .board $i <ButtonPress-2> "set ::addVariationWithoutAsking 1 ; pressSquare $i"
-  #::board::bind .board $i <ButtonPress-3> "set ::addVariationWithoutAsking 1 ; pressSquare $i"
-  ::board::bind .board $i <Control-ButtonPress-1> "drawArrow $i green"
-  ::board::bind .board $i <Control-ButtonPress-2> "drawArrow $i yellow"
-  ::board::bind .board $i <Control-ButtonPress-3> "drawArrow $i red"
-  ::board::bind .board $i <Shift-ButtonPress-1> "addMarker $i green"
-  ::board::bind .board $i <Shift-ButtonPress-2> "addMarker $i yellow"
-  ::board::bind .board $i <Shift-ButtonPress-3> "addMarker $i red"
-  ::board::bind .board $i <B1-Motion> "::board::dragPiece .board %X %Y"
-  ::board::bind .board $i <ButtonRelease-1> "releaseSquare .board %X %Y ; set ::addVariationWithoutAsking 0"
-  ::board::bind .board $i <ButtonRelease-2> "releaseSquare .board %X %Y ; set ::addVariationWithoutAsking 0"
-  #::board::bind .board $i <ButtonRelease-3> "releaseSquare .board %X %Y ; set ::addVariationWithoutAsking 0"
+  ::board::bind .board $i <ButtonPress-1> "pressSquare $i 0"
+  ::board::bind .board $i <ButtonPress-2> "pressSquare $i 1"
+  # ::board::bind .board $i <Control-ButtonPress-1> "drawArrow $i green"
+  # ::board::bind .board $i <Control-ButtonPress-2> "drawArrow $i yellow"
+  # ::board::bind .board $i <Control-ButtonPress-3> "drawArrow $i red"
+  # ::board::bind .board $i <Shift-ButtonPress-1> "addMarker $i green"
+  # ::board::bind .board $i <Shift-ButtonPress-2> "addMarker $i yellow"
+  # ::board::bind .board $i <Shift-ButtonPress-3> "addMarker $i red"
+  ::board::bind .board $i <B1-Motion> "::board::dragPiece %X %Y"
+  ::board::bind .board $i <ButtonRelease-1> "releaseSquare %X %Y"
+  ::board::bind .board $i <ButtonRelease-2> "releaseSquare %X %Y"
   
-  #::board::bind .board $i <ButtonPress-2> "pressSquare $i"
- 
   ### Too dangerous. (backSquare deprecated for ::move::back) S.A.
   # ::board::bind .board $i <ButtonPress-3> backSquare
 }
@@ -1352,15 +1348,20 @@ bind . <End> ::move::End
 bind . <Control-f> {if {!$tree(refresh)} {toggleRotateBoard}}
 
 # MouseWheel in main window:
-bind . <MouseWheel> {
-  if {[expr -%D] < 0} { ::move::Back }
-  if {[expr -%D] > 0} { ::move::Forward }
-}
-bind . <Shift-MouseWheel> {
-  if {[expr -%D] < 0} { ::move::Back 10 }
-  if {[expr -%D] > 0} { ::move::Forward 10}
-}
-if {! $windowsOS} {
+if {$windowsOS} {
+  bind . <MouseWheel> {
+    if {[expr -%D] < 0} { ::move::Back }
+    if {[expr -%D] > 0} { ::move::Forward }
+  }
+  bind . <Shift-MouseWheel> {
+    if {[expr -%D] < 0} { ::move::Back 10 }
+    if {[expr -%D] > 0} { ::move::Forward 10}
+  }
+  bind . <Control-MouseWheel> {
+    if {[expr -%D] < 0} {::board::resize .board +1}
+    if {[expr -%D] > 0} {::board::resize .board -1}
+  }
+} else {
   bind . <Button-4> ::move::Back
   bind . <Button-5> ::move::Forward
   bind . <Shift-Button-4> {::move::Back 10}

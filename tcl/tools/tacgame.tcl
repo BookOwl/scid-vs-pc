@@ -194,6 +194,9 @@ namespace eval tacgame {
 
     # fischer chess
     radiobutton $w.fopening.cbFischer -text {Fischer Chess} -variable ::tacgame::openingType -value fischer
+
+    # random pawn chess
+    radiobutton $w.fopening.cbPawn -text {Random Pawns} -variable ::tacgame::openingType -value pawn
     
     # or choose a specific opening
     radiobutton $w.fopening.cbSpecific -text $::tr(SpecificOpening) -variable ::tacgame::openingType -value specific
@@ -201,6 +204,7 @@ namespace eval tacgame {
     pack $w.fopening.cbNew -anchor w -padx 100
     pack $w.fopening.cbPosition -anchor w -padx 100
     pack $w.fopening.cbFischer   -anchor w -padx 100
+    pack $w.fopening.cbPawn   -anchor w -padx 100
     pack $w.fopening.cbSpecific -anchor w -padx 100
     
     frame $w.fopening.fOpeningList
@@ -304,6 +308,20 @@ namespace eval tacgame {
 
       set fen [join $fen {}]
       sc_game startBoard "$fen/pppppppp/8/8/8/8/PPPPPPPP/[string toupper $fen] w - - 0 1"
+    } elseif {$::tacgame::openingType == "pawn" } {
+      sc_game tags set -event "Tactical game, Random Pawns"
+      set row2 {}
+      set row3 {}
+      for {set i 0} {$i < 8} {incr i} {
+        if {[expr rand() < .5]} {
+          set row2 "p$row2"
+          set row3 "1$row3"
+        } else {
+          set row2 "1$row2"
+          set row3 "p$row3"
+        }
+      }
+      sc_game startBoard "rnbqkbnr/$row2/$row3/8/8/[string toupper $row3]/[string toupper $row2]/RNBQKBNR w KQkq - 0 1"
     }
   }
 
@@ -401,6 +419,8 @@ namespace eval tacgame {
     toplevel $w
     if {$::tacgame::openingType == "fischer"} {
       wm title $w "Fischer Elo $level"
+    } elseif {$::tacgame::openingType == "pawn"} {
+      wm title $w "Random Pawns Elo $level"
     } else {
       wm title $w "Elo $level"
     }

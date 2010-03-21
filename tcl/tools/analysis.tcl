@@ -1687,7 +1687,7 @@ proc makeAnalysisWin { {n 1} } {
   button $w.b1.alllines -image tb_addallvars -height 24 -width 24 -command "addAllVariations $n"
   ::utils::tooltip::Set $w.b1.alllines $::tr(AddAllVariations)
   
-  button $w.b1.move -image tb_addmove -command "makeAnalysisMove $n"
+  button $w.b1.move -image tb_addmove -height 24 -width 24 -command "makeAnalysisMove $n"
   ::utils::tooltip::Set $w.b1.move $::tr(AddMove)
   
   if {$analysis(uci$n)} {
@@ -2357,6 +2357,7 @@ proc updateAnalysisText {{n 1}} {
   if {! $::analysis(movesDisplay$n)}  {
     $h configure -state normal
     $h delete 0.0 end
+    ### Does this work ? S.A
     $h insert end "     $::tr(ClickHereToSeeMoves)\n" blue
     updateAnalysisBoard $n {}
     $h configure -state disabled
@@ -2895,29 +2896,13 @@ image create photo tb_training -data {
   DC6wsIIKJIwQAggZXFABBI9BJaNHAQEAOw==
 }
 image create photo tb_addmove -data {
-  R0lGODlhGAAYAOfwABSDDhOFDhWEDxGIDBOHDRiEEheFERKJDROKDRCMDBOLDRaNEhOQDROQ
-  DhKRDRCTCxGTDCOIHhGVDBCWCw+XChCYCw+ZCg6bChCaCw+bCxSYDg6cChWYDxaYEBSaDhaa
-  EBOeDhafEBybFhKiDSiTIx2cFxGmDBKmDRGnDDSRLxGqDCOeHhGrDCSfHiSfHyWeIxCuCxCv
-  CyegIg+yCw+zCyqiJQ63CjyaNwy7CQ27Cg28Ci+lKgu+CBC8DAy/CUOZPwrBCAzACTSmLjWm
-  MArECAzDCQvECAzECAzECTenMj6iOwvHCDmoNAnJBwvICDqoNjupNgjMBgrLBwrMBwjOBkSm
-  QQnQB06hSQjUBkOsPlShTzyyNwfYBkqrRkauQTW6Mk2uS0yxSE6ySk+ySl6oWlGyTEO8QlKz
-  TVKzTmWqYVe1U0q+SUy+Sk2+TE+9TVC9Tl64Wlu7WW2vamC5XGW7YXSxcUzOSmPBYWq9ZlTM
-  Unu1d22/ambEZWzCan+2fGrHaHDEbXDEbnXCcWvLam3KbHPHcXjEdXrEdnDMcHfIdXrKeHvK
-  enfOdH3Le4bKg4nLhpDOjZLPkJLQkJDVjZfRlIzaipTVkpHZj5zTmZnVl5bZlJ7Um47fjJ7V
-  m6DVnZPekZvZmZfdlaLWn6LWoKPWoZ/ZnpTikqTXopzdmqTZoqbYpJnhmKfYpaHdn6nZp57h
-  nKnap6bdpKvaqKvaqZrmmandp6Phoq3bq6zcqqDlnq/crajhprDcrqTlo7Hdr7LdsKzhq7Pd
-  saLpoKnlqLTesrbetKbppbbftK7lrKvoqrjgt6jsp7PlsbrgubrhuLrhubDor63srLziu7Xo
-  tLHrsL7ivb/iva7vrrrouLbrtbTus8PkwsTkwrvrurnuuLXytL3uvMDsv7rxusLuwb/xvszo
-  y7z0vMfuxsTxw8H0wMnxyMb0xc3xzMv0ytD0z9T01P//////////////////////////////
-  /////////////////////////////////yH5BAEKAP8ALAAAAAAYABgAAAj+AP8JHDjQzBo2
-  bdy8IciwocBB79y1W5fO3CKHGP8hYqcOHTlx3xpldEjo3Dhw3rRdUzSy4Z9w3bJRi7YsUUuG
-  fLBNg5bMmLBCNwneYYZsWK9ctAIFHRgH2C5br1aZ6oPxRbBt1ZwV84WrVqxWqEJ94mQHBw8g
-  RJpEoZIADDdrz479ugUrVSlQmi5VytPDR5ElUqxg4bKhizRlxHTNYjWqUyZLkxh9mWEjh98l
-  UwRfqCL3lqtTnjBRkgRoywkVMGhU9oHESWYLSnTJUjVqEyVDZ1p4ADHChIoYqi0fcU1hwZw9
-  eNBAEaGhuYbdvVkArxzEiJMJA5xr1w4dhXTVOqpvP/h3QIF58wgYcA/xoYEDCBIqYMiQkYBz
-  ETJ2kFgqMICGDisMkUUYN/D3DwAcuPCEGHDgcYWBAJSQxBh0GOIIGQYKUIMXcxwCiShyGGiA
-  EGXs8QgpzehhYAFMqCFIJLyU44eB/0SQwg9apFFHRgEBADs=
+R0lGODlhGwAbAOMPAM0AI80AJ80CKc4HLs4NMs8WOc8WOtFCXdRxhNR0htN9
+jdV8jdjCxtjCx9r38v///yH+FUNyZWF0ZWQgd2l0aCBUaGUgR0lNUAAh+QQB
+CgAPACwAAAAAGwAbAAAEX/DJSau9OOvNu/9gKFJNM1aKYSjnhAAA0kpJECSz
+swjC4ogKRGJxGAwOiwSC1WkYAAHBgEAYCAIAg8cJlVKtWK0nOCwek0uRjueb
+1W6zxysWVxQKzBmDEe/7/4CBgiMRADs=
 }
+
 image create photo tb_update -data {
   R0lGODlhGAAYAOfCAEm5Sly3Sme+Qmi/Q2a9XnG/RHTAPXLARXPBRnHBTXLCTnzAP2vCY3fD
   QXbDSH3BQHTDT3zBR3DBaXnEQnfESX7CQXLEV3jFSnbFUYDDQnTFWILEO2/GZnjDXoHEQ4PF
@@ -2994,18 +2979,18 @@ R0lGODlhHgAeAMZFAAAAAAQEBAcHBwkJCQsLCwwMDA0NDQ8PDxERERQUFBYW
 FhcXFxgYGBkZGRsbGxwcHCIiIi4uLjo6Os0AI80AJ80CKUREREZGRs4HLs4N
 Mk5OTk9PT88WOc8WOlJSUlVVVVdXV1lZWVxcXGBgYGFhYWJiYmNjY2dnZ9FC
 XXNzc39/f4ODg4mJiYuLi9RxhNR0hpOTk5aWlpeXl9N9jdV8jZqamp2dnaCg
-oKOjo6SkpKampqenp6mpqaqqqqurq6ysrLi4uMLCwtjCxtjCx9r38nJycnJy
-cnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJy
-cnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJy
-cnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJy
-cnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJyciH5BAEKAH8A
-LAAAAAAeAB4AAAf+gH+Cg4SFhoeIiYqLjI2Oj5CRkpODIwCXO4cslziOO5cA
-I4cWAAiQCpcMhwIAHodDQ4ZDIqA8hTCXMoYzHR0zhLw5oCSFGgADhy4TEy6E
-yhMJlw2FBgAXhkQ0FRU0RILZ2yGgPYM2ly3ALjQoGBgoNC8uM+wYN6AlgyAA
-AYRDHRMVMGTIgKEChQkdBBJEcMnBoGgS+v0LOLDgwYQVP4Dy8UfHJRWFZqij
-9y7evHYozF0y8YfEpSCHwHHz9kdmtwOXHvx5ACBComfNBgH94wHUikspEs3g
-wOHXoKVN/9QAVeASEEVChBjKOqgaKAiUCG0ABeBE2EExyP44O4jApQULbOPK
-nUu3rt1CgQAAOw==
+oKOjo6SkpKampqenp6mpqaqqqqurq6ysrLi4uMLCwtjCxtjCx9r38v//////
+////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////yH+FUNyZWF0
+ZWQgd2l0aCBUaGUgR0lNUAAh+QQBCgB/ACwAAAAAHgAeAAAH/oB/goOEhYaH
+iImKi4yNjo+QkZKTgyMAlzuHLJc4jjuXACOHFgAIkAqXDIcCAB6HQ0OFsB6g
+PIUwlzKGMx0dM4O8EzOgJIUaAAOHLhMTLoPLwrQADYUGABeGRDQVFTREf9rc
+MymgPYM2ly2EMy40KBgYKDQuM+/xNKAlgyAAAYRDHSZUwJAhA4YKEzoQNIhB
+moNBCQBI+BdwYMGDCRfCwwDKxx8dl1QUYucOnjx69uThu2TiD4lLQQ6F6/Zt
+prcUBy49+PMAQIRE0JwJCipIGoAVl1IkmsGBwy9BTJ0KqgGqwCUgioQIKaSV
+kDVQECgR2gAKwAmxg2KU/YF2EIFLDAvayp1Lt67du4UCAQA7
 }
 
 image create photo tb_engineinfo -data {

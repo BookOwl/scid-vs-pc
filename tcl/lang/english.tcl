@@ -1046,7 +1046,7 @@ translate E Today {Today}
 translate E ClassifyGame {Classify game}
 
 # Setup position:
-translate E EmptyBoard {Empty board}
+translate E EmptyBoard {Clear board}
 translate E InitialBoard {Initial board}
 translate E SideToMove {Side to move}
 translate E MoveNumber {Move number}

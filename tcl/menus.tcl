@@ -1053,9 +1053,9 @@ menu $m.ginfo -tearoff 1
 $m.ginfo add checkbutton -label GInfoHideNext \
     -variable gameInfo(hideNextMove) -offvalue 0 -onvalue 1 -command updateBoard
 $m.ginfo add checkbutton -label GInfoMaterial \
-    -variable gameInfo(showMaterial) -offvalue 0 -onvalue 1 -command updateBoard
+    -variable gameInfo(showMaterial) -offvalue 0 -onvalue 1 -command {::board::togglematerial }
 $m.ginfo add checkbutton -label {Show Side to Move} \
-    -variable boardSTM -offvalue 0 -onvalue 1 -command {::board::stm .board}
+    -variable boardSTM -offvalue 0 -onvalue 1 -command {::board::togglestm .board}
 $m.ginfo add checkbutton -label GInfoFEN \
     -variable gameInfo(showFEN) -offvalue 0 -onvalue 1 -command {
 	 .gameInfo configure -height [expr 4 + $gameInfo(showFEN)]

@@ -102,7 +102,7 @@ console. Enter play [game number] to accept a game challenge.</p>
 </ul>
 
 <p>For a detailed description of the services offered, or to create a FICS
-account, visit <url http://www.freechess.org> www.freechess.org</url> </p>
+account, visit <url http://www.freechess.org>www.freechess.org</url> </p>
 
 <p><footer>(Updated: Scid Vs PC 3.6.26.8, December 2009)</footer></p>
 }
@@ -4396,6 +4396,7 @@ set helpText(Related) {<h1>Related Links</h1>
   <li><url http://scid.sourceforge.net/>http://scid.sourceforge.net/</url> --
   Scid Web Page</li>
   <li><url http://sourceforge.net/mailarchive/forum.php?forum_name=scid-users>http://sourceforge.net/mailarchive/forum.php...</url>-- Scid Mailing List</url> 
+  <li><url http://www.freechess.org>www.freechess.org</url> -- Fics homepage</li>
   <br>
   <li><url http://www.saremba.de/chessgml/standards/pgn/pgn-complete.htm>http://www.saremba.de/chessgml/standards/pgn...</url> -- The PGN Standard,
   created by Steven J. Edwards in 1994, explains the PGN and EPD formats in detail.</li>

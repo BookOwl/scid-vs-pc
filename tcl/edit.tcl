@@ -454,7 +454,7 @@ proc setupBoard {} {
   label $sr.mid.castle.label -textvar ::tr(Castling:)
   ::combobox::combobox $sr.mid.castle.e -width 5 \
     -textvariable castling -command makeSetupFen
-  foreach c {KQkq KQ kq -} {
+  foreach c {KQkq KQ kq K Q k q -} {
     $sr.mid.castle.e list insert end $c
   }
 
@@ -553,21 +553,10 @@ proc setupBoard {} {
 #   Resets the squares of the board according to the board string
 #   "boardStr" and the piece bitmap size "psize".
 
-proc setBoard {w boardStr psize {rotated 0}} {
+proc setBoard {w boardStr psize} {
   for {set i 0} { $i < 64 } { incr i } {
 
-    if {$rotated > 0} {
-      set piece [string index $boardStr [expr {63 - $i}]]
-    } else {
-      set piece [ string index $boardStr $i ]
-    }
-
     set c [$w.bd coords sq$i]
-
-    # Klimmek: calculation change, because some sizes are odd
-    #          and then some squares are shifted by 1 pixel
-    # set x [expr {([lindex $c 0] + [lindex $c 2]) / 2} ]
-    # set y [expr {([lindex $c 1] + [lindex $c 3]) / 2} ]
 
     set x [expr {[lindex $c 0] + $psize/2} ]
     set y [expr {[lindex $c 1] + $psize/2} ]

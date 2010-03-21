@@ -165,6 +165,7 @@ namespace eval fics {
       return
     }
     set peer [ fconfigure $sockChan -peername ]
+    # S.A. broken ? &&&
     set ::fics::server_ip [lindex $peer 0]
     ::close $sockChan
   }

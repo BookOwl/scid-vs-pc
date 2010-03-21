@@ -1061,9 +1061,7 @@ proc ::board::new {w {psize 40} {showmat "nomat"} } {
   set ::board::_showMarks($w) 0
   set ::board::_mark($w) {}
   set ::board::_drag($w) -1
-  set ::board::_showmat($w) 0
-  
-  if { $showmat != "nomat"} { set ::board::_showmat($w) 1 }
+  set ::board::_showmat($w) [expr {"$showmat" != "nomat"}]
   
   set border $::board::_border($w)
   set bsize [expr {$psize * 8 + $border * 9} ]
@@ -1120,19 +1118,20 @@ proc ::board::new {w {psize 40} {showmat "nomat"} } {
   if {$::board::_showmat($w)} {
     canvas $w.mat -width $::materialwidth -height [expr $::board::_size($w) * 8] -insertborderwidth 0 -borderwidth 0 -highlightthickness 0
   }
+  
+  if {"$w" == ".board"} {
+    set ::board::_showmat($w) $::gameInfo(showMaterial)
+  }
+
   grid $w.wtm -row 8 -column 11
   grid $w.btm -row 1 -column 11
   if {$::board::_showmat($w)} {
     grid $w.mat -row 1 -column 12 -rowspan 8
   }
   
-  ::board::stm $w
+  ::board::togglestm $w
   ::board::coords $w
   ::board::resize $w redraw
-  if {$::board::_showmat($w)} {
-    ::board::material $w
-  }
-  ::board::update $w
   return $w
 }
 
@@ -1855,7 +1854,8 @@ proc ::board::setDragSquare {w sq} {
 #   Drags the piece of the drag-square (as set above) to
 #   the specified global (root-window) screen cooordinates.
 #
-proc ::board::dragPiece {w x y} {
+proc ::board::dragPiece {x y} {
+  set w .board
   set sq $::board::_drag($w)
   if {$sq < 0} { return }
   set x [expr {$x - [winfo rootx $w.bd]} ]
@@ -1939,9 +1939,12 @@ proc ::board::update {w {board ""} {animate 0} {resize 0}} {
   # Remove all marks (incl. arrows) from the board:
   $w.bd delete mark
   
-
   # Draw each square
-  for {set sq 0} { $sq < 64 } { incr sq } {
+  set light 0
+  set sq -1
+  # for {set sq 0} { $sq < 64 } { incr sq } 
+  foreach piece [lrange [split $board {}] 0 63] {
+    incr sq
 
     # Compute the XY coordinates for the centre of the square:
     foreach {xc yc} [::board::midSquare $w $sq] {}
@@ -1949,20 +1952,26 @@ proc ::board::update {w {board ""} {animate 0} {resize 0}} {
     if {$resize} {
       #update every square with color and texture
       set color [::board::defaultColor $sq]
-      $w.bd itemconfigure sq$sq -fill $color -outline "" ; #-outline $color
+      $w.bd itemconfigure sq$sq -fill $color -outline {} ; # -outline $color
 
-      set boc bgd$psize
-      if { ($sq + ($sq / 8)) % 2 } { set boc bgl$psize }
+      if { $light } {
+        set boc bgl$psize
+      } else {
+        set boc bgd$psize
+      }
+      if {($sq % 8) != 7} {
+        set light [expr {! $light}]
+      }
+
       $w.bd delete br$sq
       $w.bd create image $xc $yc -image $boc -tag br$sq
     }
 
     # Delete any old image for this square, and add the new one:
-    set piece [string index $board $sq]
     $w.bd delete p$sq
     $w.bd create image $xc $yc -image $::board::letterToPiece($piece)$psize -tag p$sq
   }
-  
+
   # Update side-to-move icon:
   grid remove $w.wtm $w.btm
   if {$::board::_stm($w)} {
@@ -1970,21 +1979,19 @@ proc ::board::update {w {board ""} {animate 0} {resize 0}} {
     if {$side == "w"} { grid configure $w.wtm }
     if {$side == "b"} { grid configure $w.btm }
   }
-  
-  # Redraw marks and arrows if required:
+
+  # Redraw marks and arrows
   if {$::board::_showMarks($w)} {
     ::board::mark::drawAll $w
   }
-  
-  # Redraw material values
-  if {$::board::_showmat($w)} {
-    grid remove $w.mat
-    if {$::gameInfo(showMaterial)} {
-      grid configure $w.mat
-      ::board::material $w
-    }
+
+  # ::board::update is called twice mostly :<
+  # On second call, "animate" is 0, so don't update this widget superfluously
+  # ... and it probably isn't necessary. More important is proc togglematerial
+  if {$animate && $::gameInfo(showMaterial)} {
+    ::board::material $w
   }
-  
+
   # Animate board changes if requested:
   if {$animate  &&  $board != $oldboard} {
     ::board::animate $w $oldboard $board
@@ -2035,8 +2042,24 @@ proc ::board::flip {w {newstate -1}} {
     }
   }
   ::board::update $w
+  if {$w == ".board"} {::board::togglematerial}
   return $w
 }
+
+proc ::board::togglematerial {} {
+  # gameInfo(showMaterial) is specifically for the .board, 
+  # while ::board::_showmat($w) is window specific.
+
+  if {$::gameInfo(showMaterial)} {
+    grid configure .board.mat -row 1 -column 12 -rowspan 8
+    ::board::material .board
+    # ::board::update .board {} 1
+  } else {
+    grid remove .board.mat
+  }
+}
+
+
 ################################################################################
 # ::board::material
 # displays material balance
@@ -2044,6 +2067,10 @@ proc ::board::flip {w {newstate -1}} {
 proc ::board::material {w} {
 
   set f $w.mat
+
+  if {![winfo exists $f]} {
+    return
+  }
 
   $f delete material
   
@@ -2130,25 +2157,34 @@ proc ::board::material {w} {
 #
 ################################################################################
 
-# ::board::stm
+# These procs are not quite sorted out properly.
+# They work, but were f-ed up before. S.A.
+
 #   Add or remove the side-to-move icon.
-#
+
+proc ::board::togglestm {w} {
+  set ::board::_stm($w) [expr {! $::board::_stm($w)} ]
+  ::board::stm $w
+}
+
 proc ::board::stm {w} {
-  set stm [expr {1 - $::board::_stm($w)} ]
-  set ::board::_stm($w) $stm
+  set stm $::board::_stm($w)
   if {$stm} {
     grid configure $w.stmgap
     grid configure $w.stm
+    set side [string index $::board::_data($w) 65]
+    if {$side == "w"} { grid configure $w.wtm }
+    if {$side == "b"} { grid configure $w.btm }
   } else {
     grid remove $w.stmgap $w.stm $w.wtm $w.btm
   }
-  ::board::update $w
+
 }
 
 # ::board::coords
 #   Add or remove coordinates around the edge of the board.
-#
-#Klimmek: Toggle between 0,1,2.
+#   Klimmek: Toggle between 0,1,2.
+
 proc ::board::coords {w} {
   set coords [expr {1 + $::board::_coords($w)} ]
   if { $coords > 2 } { set coords 0 }
@@ -2193,6 +2229,7 @@ proc ::board::animate {w oldboard newboard} {
   if {$animateDelay <= 0} { return }
   
   # Find which squares differ between the old and new boards:
+  # Mate this looks slow S.A. ... 90 microseconds
   set diffcount 0
   set difflist [list]
   for {set i 0} {$i < 64} {incr i} {

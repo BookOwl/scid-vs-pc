@@ -121,7 +121,7 @@ proc updateHelpWindow {name {heading {}}} {
       set ::helpWin(len) 0
       destroy .helpWin
     }
-    
+
     pack $w.b.back $w.b.contents $w.b.index $w.b.forward -side left -padx 5 -pady 2
     pack $w.b.close -side right -padx 5 -pady 2
     pack $w.scroll -side right -fill y -padx 2 -pady 2
@@ -130,6 +130,8 @@ proc updateHelpWindow {name {heading {}}} {
     $w.text configure -font font_Regular -fore black -back white
     ::htext::init $w.text
     bind $w <Configure> "recordWinSize $w"
+  } else {
+    raise $w .
   }
   
   $w.text configure -cursor top_left_arrow

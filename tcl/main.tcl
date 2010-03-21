@@ -388,7 +388,7 @@ if {$boardCoords} {
   ::board::coords .board
 }
 if {$boardSTM} {
-  ::board::stm .board
+  ::board::togglestm .board
 }
 
 # .gameInfo is the game information widget:
@@ -402,10 +402,10 @@ autoscrollframe .gameInfoFrame text .gameInfo
 menu .gameInfo.menu -tearoff 0
 
 .gameInfo.menu add checkbutton -label {Show Side to Move} \
-    -variable boardSTM -offvalue 0 -onvalue 1 -command {::board::stm .board}
+    -variable boardSTM -offvalue 0 -onvalue 1 -command {::board::togglestm .board}
 
 .gameInfo.menu add checkbutton -label GInfoMaterial \
-    -variable gameInfo(showMaterial) -offvalue 0 -onvalue 1 -command updateBoard
+    -variable gameInfo(showMaterial) -offvalue 0 -onvalue 1 -command {::board::togglematerial }
 
 .gameInfo.menu add checkbutton -label GInfoFEN \
     -variable gameInfo(showFEN) -offvalue 0 -onvalue 1 -command {
@@ -531,8 +531,7 @@ proc showVars {} {
   } else  {
     $w.lbVar insert end "0:[getNextMoves 5]"
     bind $w <KeyPress-0> "enterVar 0"
-    # &&&
-    # bind $w <Button-5>   "bind $w <Button-5> {} ; enterVar 0"
+    bind $w <Button-5>   "bind $w <Button-5> {} ; enterVar 0"
   }
   
   # insert variations
@@ -555,33 +554,31 @@ proc showVars {} {
   bind $w <Return> { enterVar }
   bind $w <ButtonRelease-1> { enterVar }
   bind $w <Right> { enterVar }
-  bind $w <Up> { set cur [.variations.lbVar curselection] ; .variations.lbVar selection clear $cur
+  bind $w <Up> {
+    set cur [.variations.lbVar curselection]
+    .variations.lbVar selection clear $cur
     set sel [expr $cur - 1]
     if {$sel < 0} { set sel 0 }
-    .variations.lbVar selection set $sel ; .variations.lbVar see $sel}
-  bind .variations <Down> { set cur [.variations.lbVar curselection] ; .variations.lbVar selection clear $cur
+    .variations.lbVar selection set $sel
+    .variations.lbVar see $sel
+  }
+  bind .variations <Down> {
+    set cur [.variations.lbVar curselection]
+    .variations.lbVar selection clear $cur
     set sel [expr $cur + 1]
     if {$sel >= [.variations.lbVar index end]} { set sel end }
-    .variations.lbVar selection set $sel ; .variations.lbVar see $sel}
+    .variations.lbVar selection set $sel
+    .variations.lbVar see $sel
+  }
   bind $w <Left> { destroy .variations }
-  bind $w <Escape> { catch { event generate .variations <Destroy> } }
-  #in order to have the window always on top : this does not really work ...
-  bind $w <Visibility> {
-    if { "%s" != "VisibilityUnobscured" } {
-      focus .variations
-      raise .variations
-    }
-  }
-  bind $w <FocusOut> {
-    focus .variations
-    raise .variations
-  }
-  
+  bind $w <Escape>   { destroy .variations }
+  # need to use "-force" to keep keyboared bindings after wheelmouse
+  bind $w <Button-4> { destroy .variations ; focus -force .board }
+
   sc_info preMoveCmd preMoveCommand
   
   focus $w
   placeWinOverParent $w .
-  # Place over pointer if wheel mouse used - how ?? S.A
   update
   grab $w
 }
@@ -592,8 +589,8 @@ proc enterVar {{n {}}} {
     set n [.variations.lbVar curselection]
   }
   destroy .variations
-  focus .
-  raise .
+  # need to use "-force" to keep keyboared bindings after wheelmouse
+  focus -force .board 
   if {$n == 0} {
     sc_move forward; updateBoard -animate
   } else  {
@@ -1255,9 +1252,11 @@ proc leaveSquare { square } {
 #    Called when the left mouse button is pressed on a square. Sets
 #    that square to be the selected square.
 #
-proc pressSquare { square } {
+proc pressSquare {square confirm} {
   global selectedSq highcolor
   
+  set ::addVariationWithoutAsking $confirm
+
   if { [winfo exists .fics] && $::fics::playing == -1} { return } ;# not player's turn
   
   # if training with calculations of var is on, just log the event
@@ -1288,32 +1287,19 @@ proc pressSquare { square } {
   }
 }
 
-# pressSquare2:
-#   Called when the middle mouse button is pressed on a square. This
-#   makes the suggested best move.
-#
-proc pressSquare2 { square } {
-  if { [winfo exists .fics] } { return } ;# don't use this function with FICS
-
-  global selectedSq bestSq
-  ::board::colorSquare .board $bestSq
-  ::board::colorSquare .board $square
-  addMove $square $bestSq -animate
-  enterSquare $square
-}
-
 # releaseSquare:
 #   Called when the left mouse button is released over a square.
 #   If the square is different to that the button was pressed on, it
 #   is a dragged move; otherwise it is just selecting this square as
 #   part of a move.
 #
-proc releaseSquare { w x y } {
+proc releaseSquare { x y } {
   
   if { [winfo exists .calvarWin] } { return }
   
   global selectedSq bestSq currentSq
   
+  set w .board
   ::board::setDragSquare $w -1
   set square [::board::getSquare $w $x $y]
   if {$square < 0} {
@@ -1342,6 +1328,7 @@ proc releaseSquare { w x y } {
     set selectedSq -1
     ::board::colorSquare $w $square
   }
+  set ::addVariationWithoutAsking 0
 }
 
 

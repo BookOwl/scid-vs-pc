@@ -50,6 +50,7 @@ trace variable ::windows::gamelist::goto w {::utils::validate::Regexp {^[0-9]*$}
 #   { S  1 left  darkRed    0 }
 # }
 
+# I think these fields can be reordered on whim S.A.
 set glistFields {
   g Number	e
   w White	w
@@ -57,11 +58,11 @@ set glistFields {
   b Black	w
   B BElo	e
   r Result	e
+  m Length	e
   e Event	w
   s Site	w
   n Round	e
   d Date	w
-  m Length	e
   o ECO		e
   O Opening	w
   D Deleted	e
@@ -448,10 +449,7 @@ proc SortBy {tree col} {
 
 
 proc setTitle {message} {
-  # wm title .glistWin "Scid [tr WindowsGList]: $message"
-  set fname [sc_base filename]
-  set fname [file tail $fname]
-  wm title .glistWin "$fname: $message"
+  wm title .glistWin "Scid: [tr WindowsGList] $message"
 }
 
 proc ::windows::gamelist::Refresh {} {
@@ -473,7 +471,7 @@ proc ::windows::gamelist::Refresh {} {
 
   for {set line $totalSize} {$line > 0} {incr line -1} {
     set values [sc_game list $line 1 $glistCodes]
-    $w.tree insert {} 0 -values $values -tag {click1 click2 treefont}
+    $w.tree insert {} 0 -values $values -tag [list click1 click2 treefont]
   }
 
   setTitle "$totalSize $::tr(games)" 
