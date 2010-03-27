@@ -140,8 +140,8 @@ menuText S WindowsComment "Editor de comentarios" 0 \
   {Abre/cierra el editor de comentarios}
 menuText S WindowsGList "Listado de partidas" 0 \
   {Abre/cierra la  ventana de listado de partidas}
-menuText S WindowsPGN "Ventana PGN" 8 \
-  {Abre/cierra la ventana de PGN (notación de partida)}
+menuText S WindowsPGN "Ventana PGN" 8 {Abre/cierra la ventana de PGN (notación de partida)}
+menuText S WindowsCross "Tabla cruzada" 0 {Muestra la tabla cruzada para esta partida}
 menuText S WindowsPList "Buscador de jugadores" 2 {Abre/cierra el buscador de jugadores}
 menuText S WindowsTmt "Visor de Torneos" 9 {Abre/cierra el visor de torneos}
 menuText S WindowsSwitcher "Intercambiador de bases de datos" 0 \
@@ -165,7 +165,6 @@ menuText S ToolsAnalysis "Motor de análisis..." 0 \
   {Inicia/para el análisis de un motor de ajedrez}
 menuText S ToolsAnalysis2 "Motor de análisis #2..." 18 \
   {Inicia/para el análisis de un motor de ajedrez}
-menuText S ToolsCross "Tabla cruzada" 0 {Muestra la tabla cruzada para esta partida}
 menuText S ToolsEmail "Administrador de Email" 0 \
   {Abre/cierra la ventana del administrador de Email}
 menuText S ToolsFilterGraph "Filtro gráfico" 7 \

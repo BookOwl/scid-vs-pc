@@ -135,6 +135,7 @@ menuText F WindowsComment "Éditeur de commentaires" 0 \
 menuText F WindowsGList "Liste des parties" 0 \
   {Ouvrir/fermer la liste des parties}
 menuText F WindowsPGN "Fenêtre PGN" 8 {Ouvrir/fermer la fenêtre PGN}
+menuText F WindowsCross "Classement du tournoi" 0 {Montrer le classement du tournoi}
 menuText F WindowsPList "Chercher un joueur" 2 {Ouvrir/fermer la recherche de joueur}
 menuText F WindowsTmt "Recherche de tournois" 0 {Ouvrir/fermer la recherche de tournois}
 menuText F WindowsSwitcher "Changer de base" 0 \
@@ -158,8 +159,6 @@ menuText F ToolsAnalysis "Moteur d'analyse..." 9 \
   {Démarrer/Arrêter un moteur d'analyses}
 menuText F ToolsAnalysis2 "Moteur d'analyse #2..." 18 \
   {Démarrer/Arrêter un moteur d'analyses}
-menuText F ToolsCross "Classement du tournoi" 0 \
-  {Montrer le classement du tournoi}
 menuText F ToolsEmail "Gestion des messages" 0 \
   {Ouvrir/Fermer la fenêtre de gestion des messages électroniques}
 menuText F ToolsFilterGraph "Graphique de filtre" 7 {Ouvrir/Fermer la fenêtre du graphique de filtre}

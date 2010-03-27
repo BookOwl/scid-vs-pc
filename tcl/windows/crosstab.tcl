@@ -44,30 +44,26 @@ proc ::crosstab::ConfigMenus {{lang ""}} {
   }
 }
 
-proc toggleCrosstabWin {} {
-  set w .crosstabWin
-  if {[winfo exists $w]} {
-    destroy $w
-  } else {
-    crosstabWin
-  }
-}
 
-proc ::crosstab::RefreshIfOpen {} {
-  set w .crosstabWin
-  if {[winfo exists $w]} { crosstabWin }
+proc ::crosstab::OpenClose {} {
+  global crosstabWin
+
+  if {[winfo exists .crosstabWin]} {
+    destroy .crosstabWin
+    set crosstabWin 0
+  } else {
+    ::crosstab::Open
+  }
 }
 
 proc ::crosstab::Open {} {
-  global crosstab
-  set w .crosstabWin
-  if {[winfo exists $w]} {
-    ::crosstab::Refresh
-    return
-  }
+  global crosstab crosstabWin
 
+  set w .crosstabWin
+
+  set crosstabWin 1
   toplevel $w
-  wm title $w "Scid: [tr ToolsCross]"
+  wm title $w "Scid: [tr WindowsCross]"
   wm minsize $w 50 5
   setWinLocation $w
 
@@ -88,11 +84,11 @@ proc ::crosstab::Open {} {
       { "Text files" {".txt"} }
       { "All files"  {"*"}    }
     }
-    set fname [tk_getSaveFile -initialdir [pwd] -filetypes $ftype  -title "Save Crosstable"]
+    set fname [tk_getSaveFile -initialdir [pwd] -filetypes $ftype  -title "Save Crosstable" -parent .crosstabWin]
     if {$fname != ""} {
       if {[catch {set tempfile [open $fname w]}]} {
         tk_messageBox -title "Scid: Error saving file" \
-          -type ok -icon warning \
+          -type ok -icon warning -parent .crosstabWin \
           -message "Unable to save the file: $fname\n\n"
       } else {
         puts -nonewline $tempfile [.crosstabWin.f.text get 1.0 end]
@@ -105,11 +101,11 @@ proc ::crosstab::Open {} {
       { "HTML files" {".html" ".htm"} }
       { "All files"  {"*"}    }
     }
-    set fname [tk_getSaveFile -initialdir $::initialDir(html) -filetypes $ftype  -title "Save Crosstable as HTML"]
+    set fname [tk_getSaveFile -initialdir $::initialDir(html) -filetypes $ftype  -title "Save Crosstable as HTML" -parent .crosstabWin]
     if {$fname != ""} {
       if {[catch {set tempfile [open $fname w]}]} {
         tk_messageBox -title "Scid: Error saving file" \
-          -type ok -icon warning \
+          -type ok -icon warning -parent .crosstabWin \
           -message "Unable to save the file: $fname\n\n"
       } else {
         catch {sc_game crosstable html $crosstab(sort) $crosstab(type) \
@@ -127,11 +123,11 @@ proc ::crosstab::Open {} {
       { "LaTeX files" {".tex" ".ltx"} }
       { "All files"  {"*"}    }
     }
-    set fname [tk_getSaveFile -initialdir $::initialDir(tex) -filetypes $ftype  -title "Save Crosstable as LaTeX"]
+    set fname [tk_getSaveFile -initialdir $::initialDir(tex) -filetypes $ftype  -title "Save Crosstable as LaTeX" -parent .crosstabWin]
     if {$fname != ""} {
       if {[catch {set tempfile [open $fname w]}]} {
         tk_messageBox -title "Scid: Error saving file" \
-          -type ok -icon warning \
+          -type ok -icon warning -parent .crosstabWin \
           -message "Unable to save the file: $fname\n\n"
       } else {
         catch {sc_game crosstable latex $crosstab(sort) $crosstab(type) \
@@ -303,11 +299,8 @@ proc ::crosstab::Open {} {
     bind $w <Button-5> { .crosstabWin.f.text yview scroll  1 units }
   }
 
+  bind $w <Destroy> { set crosstabWin 0 }
   ::crosstab::Refresh
-}
-
-proc crosstabWin {} {
-  ::crosstab::Open
 }
 
 proc ::crosstab::Refresh {} {

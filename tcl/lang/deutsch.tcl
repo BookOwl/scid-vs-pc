@@ -155,6 +155,7 @@ menuText D WindowsGameinfo "Partieinformation anzeigen" 0 {Partieinformation anz
 menuText D WindowsComment "Kommentareditor" 0 {Kommentareditor öffnen/schließen}
 menuText D WindowsGList "Partieliste" 6 {Partieliste öffnen/schließen}
 menuText D WindowsPGN "PGN-Fenster" 0 {PGN-Fenster (Partienotation) öffnen/schließen}
+menuText D WindowsCross "Kreuztabelle" 0 {Kreuztabelle für diese Partie anzeigen}
 menuText D WindowsPList "Spielersuche" 0 {Spielerfinder öffnen/schließen}
 menuText D WindowsTmt "Turniersuche" 0 {Turnierfinder öffnen/schließen}
 menuText D WindowsSwitcher "Datenbank-Umschalter" 0 \
@@ -174,7 +175,6 @@ menuText D ToolsAnalysis "Analyse-Engine..." 0 \
   {Schachanalyse-Programm starten/beenden}
 menuText D ToolsAnalysis2 "Analyse-Engine #2..." 16 \
   {Schachanalyse-Programm Nr.2 starten/beenden}
-menuText D ToolsCross "Kreuztabelle" 0 {Kreuztabelle für diese Partie anzeigen}
 menuText D ToolsEmail "E-Mail-Manager" 7 \
   {E-Mail-Manager öffnen/schließen}
 menuText D ToolsFilterGraph "Rel. Filtergrafik" 0 \

@@ -14,7 +14,7 @@ namespace eval ::recentFiles {}
 # ::recentFiles::save
 #   Saves the recent-file-list file, reporting any error in a message box
 #   if reportError is true.
-#
+
 proc ::recentFiles::save {{reportError 0}} {
   global recentFiles
   set f {}
@@ -80,15 +80,8 @@ proc ::recentFiles::load {fname} {
   }
   for {set i 1} {$i <= [sc_base count total]} {incr i} {
     if {$rname == [sc_base filename $i]} {
-      sc_base switch $i
+      ::file::SwitchToBase $i
       ::recentFiles::add $fname
-      ::windows::gamelist::Refresh
-      ::tree::refresh
-      ::windows::stats::Refresh
-      updateMenuStates
-      updateBoard -pgn
-      updateTitle
-      updateStatusBar
       return
     }
   }

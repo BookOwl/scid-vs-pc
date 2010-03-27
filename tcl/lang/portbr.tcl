@@ -128,8 +128,8 @@ menuText B Windows "Janelas" 0
 menuText B WindowsGameinfo "Game Info" 0 {Show/hide the game info panel}
 menuText B WindowsComment "Editor de Comentarios" 0 {Abre/fecha o editor de comentarios}
 menuText B WindowsGList "Lista de Jogos" 0 {Abre/fecha a janela com a lista de jogos}
-menuText B WindowsPGN "Notacao PGN" 0 \
-  {Abre/fecha a janela com a notacao PGN do jogo}
+menuText B WindowsPGN "Notacao PGN" 0 {Abre/fecha a janela com a notacao PGN do jogo}
+menuText B WindowsCross "Tabela de Cruzamento" 0 {Mostra a tabela de cruzamentos do torneio para o jogo corrente}
 menuText B WindowsPList "Player Finder" 2 {Open/close the player finder} ;# ***
 menuText B WindowsTmt "Buscador de Torneio" 2 {Abre/Fecha o buscador de torneio}
 menuText B WindowsSwitcher "Intercambio de bases de dados" 0 \
@@ -155,7 +155,6 @@ menuText B ToolsAnalysis "Analisador #1..." 0 \
   {Inicia ou para o 1o. Analisador}
 menuText B ToolsAnalysis2 "Analisador #2..." 17 \
   {Inicia ou para o 2o. Analisador}
-menuText B ToolsCross "Tabela de Cruzamento" 0 {Mostra a tabela de cruzamentos do torneio para o jogo corrente}
 menuText B ToolsEmail "Gerenciador de e-mails" 0 \
   {Abre/fecha a janela do gerenciador de e-mails}
 menuText B ToolsFilterGraph "Filter graph" 7 \

@@ -134,6 +134,7 @@ menuText P WindowsComment "Edytor komentarzy" 0 \
   {Otwórz/zamknij edytor komentarzy}
 menuText P WindowsGList "Lista partii" 0 {Otwórz/zamknij listê partii}
 menuText P WindowsPGN "Okno PGN" 0 {Otwórz/zamknij (zapis partii) PGN }
+menuText P WindowsCross "Tabela turniejowa" 0 {Poka¿ tabelê turniejow± dla aktualnej partii}
 menuText P WindowsPList "Zawodnicy" 2 {Otwórz/zamknij przegl±darkê zawodników}
 menuText P WindowsTmt "Turnieje" 0 {Otwórz/zamknij przegl±darkê turniejów}
 menuText P WindowsSwitcher "Prze³±cznik baz" 12 \
@@ -159,8 +160,6 @@ menuText P ToolsAnalysis "Program analizuj±cy..." 8 \
   {Uruchom/zatrzymaj program analizuj±cy}
 menuText P ToolsAnalysis2 "Program analizuj±cy 2..." 21 \
   {Uruchom/zatrzymaj program analizuj±cy}
-menuText P ToolsCross "Tabela turniejowa" 0 \
-  {Poka¿ tabelê turniejow± dla aktualnej partii}
 menuText P ToolsEmail "Zarz±dzanie poczt± e-mail" 0 \
   {Otwórz/zamknij zarz±dzanie adresami e-mail}
 menuText P ToolsFilterGraph "Wykres filtra" 7 \

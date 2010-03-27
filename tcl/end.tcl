@@ -1385,6 +1385,7 @@ grid .statusbar -row 4 -column 0 -columnspan 3 -sticky we
 # The status bar is normally a good place to click to raise a window
 # bind .statusbar <1> gotoNextBase
 
+# Unused
 proc gotoNextBase {} {
   set n [sc_base current]
   set cb [sc_info clipbase]
@@ -1768,7 +1769,7 @@ if {$startup(pgn)} { ::pgn::OpenClose }
 if {$startup(gamelist)} { ::windows::gamelist::Open }
 if {$startup(tree)} { ::tree::make }
 if {$startup(stats)} { ::windows::stats::Open }
-if {$startup(crosstable)} { crosstabWin }
+if {$startup(crosstable)} { ::crosstab::Open }
 if {$startup(finder)} { ::file::finder::Open }
 if {$startup(book)} { ::book::open }
 

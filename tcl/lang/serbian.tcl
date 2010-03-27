@@ -127,8 +127,8 @@ menuText Y Windows "Prozori" 1
 menuText Y WindowsGameinfo "Game Info" 0 {Show/hide the game info panel}
 menuText Y WindowsComment "Editor komentara" 0 {Otvori/zatvori editor komentara}
 menuText Y WindowsGList "Lista partija" 0 {Otvori/zatvori listu partija}
-menuText Y WindowsPGN "PGN prozor" 0 \
-  {Otvori/zatvori PGN prozor (sa podacima o partiji)}
+menuText Y WindowsPGN "PGN prozor" 0 {Otvori/zatvori PGN prozor (sa podacima o partiji)}
+menuText Y WindowsCross "Tabela turnira" 0 {Poka¾i tabelu turnira za ovu partiju}
 menuText Y WindowsPList "Player Finder" 2 {Open/close the player finder} ;# ***
 menuText Y WindowsTmt "Turnir tragaè" 2 {Otvori/zatvori turnir tragaè}
 menuText Y WindowsSwitcher "Biraè baza" 0 \
@@ -154,7 +154,6 @@ menuText Y ToolsAnalysis "Program za analizu..." 0 \
   {Pokreni/zaustavi ¹ahovski program za analizu}
 menuText Y ToolsAnalysis2 "Program za analizu #2..." 17 \
   {Pokreni/zaustavi drugi ¹ahovski program za analizu}
-menuText Y ToolsCross "Tabela turnira" 0 {Poka¾i tabelu turnira za ovu partiju}
 menuText Y ToolsEmail "Email menad¾er" 0 \
   {Otvori/zatvori menad¾er za korespodentske partije preko email-a}
 menuText Y ToolsFilterGraph "Filter graph" 7 \

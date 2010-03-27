@@ -130,8 +130,8 @@ menuText W Windows "Fönster" 0
 menuText W WindowsGameinfo "Visa partiinformation" 0 {Show/hide the game info panel}
 menuText W WindowsComment "Kommentarseditor" 0 {Öppna/ stäng kommentarseditorn}
 menuText W WindowsGList "Partilista" 5 {Öppna/ stäng partilistan}
-menuText W WindowsPGN "PGN fönster" 0 \
-  {Öppna/ stäng PGN fönstret}
+menuText W WindowsPGN "PGN fönster" 0 {Öppna/ stäng PGN fönstret}
+menuText W WindowsCross "Resultattabell" 0 {Visa en resultattabell för den aktuella turneringen}
 menuText W WindowsPList "Spelarförteckning" 7 {Öppna/ stäng en förteckning över spelarna i den aktiva databasen} 
 menuText W WindowsTmt "Turneringar" 0 {Lista turneringar}
 menuText W WindowsSwitcher "Databasväxlaren" 0 \
@@ -157,7 +157,6 @@ menuText W ToolsAnalysis "Analysmotor..." 6 \
   {Starta/ stoppa en analysmotor}
 menuText W ToolsAnalysis2 "Analysmotor 2..." 12 \
   {Starta/ stoppa en andra analysmotor}
-menuText W ToolsCross "Resultattabell" 0 {Visa en resultattabell för den aktuella turneringen}
 menuText W ToolsEmail "Eposthanterare" 0 \
   {Öppna/ stäng eposthanteraren}
 menuText W ToolsFilterGraph "Filterdiagram" 7 \

@@ -858,6 +858,8 @@ set helpText(Menus) {<h1>Scid menus</h1>
   <a GameList>Game List window</a>.</li>
   <li><menu>PGN window</menu>: Opens/closes the
   <a PGN>PGN window</a>.</li>
+  <li><menu>Crosstable</menu>: Constructs a tournament
+  <a Crosstable>crosstable</a> for the current game. </li>
   <li><menu>Tournament Finder</menu>: Opens/closes the
   <a Tmt>Tournament Finder</a> window.</li>
   <br>
@@ -886,8 +888,6 @@ set helpText(Menus) {<h1>Scid menus</h1>
   in the <a Analysis>analysis window</a>.</li>
   <li><menu>Analysis engine #2</menu>: Starts/stops a second analysis
   engine.</li>
-  <li><menu>Crosstable</menu>: Constructs a tournament
-  <a Crosstable>crosstable</a> for the current game. </li>
   <li><menu>Email manager</menu>: Opens/closes the <a Email>email manager</a>
   window, for managing email correspondence games.</li>
   <br>

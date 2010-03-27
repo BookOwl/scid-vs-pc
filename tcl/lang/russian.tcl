@@ -130,8 +130,8 @@ menuText R Windows "Окна" 0
 menuText R WindowsGameinfo "Game Info" 0 {Show/hide the game info panel}
 menuText R WindowsComment "Редактор комментариев" 0 {Открыть/закрыть редактор комментариев}
 menuText R WindowsGList "Список партий" 0 {Открыть/закрыть окно списка партий}
-menuText R WindowsPGN "Окно PGN" 0 \
-  {Открыть/закрыть окно PGN (нотация партии)}
+menuText R WindowsPGN "Окно PGN" 0 {Открыть/закрыть окно PGN (нотация партии)}
+menuText R WindowsCross "Турнирная таблица" 0 {Показать турнирную таблицу для этой партии}
 menuText R WindowsPList "Поиск игрока" 2 {Открыть/закрыть окно поиска игрока}
 menuText R WindowsTmt "Поиск турниров" 0 {Открыть/закрыть окно поиска турниров}
 menuText R WindowsSwitcher "Переключатель баз данных" 1 \
@@ -157,7 +157,6 @@ menuText R ToolsAnalysis "Анализирующий движок..." 0 \
   {Запустить/остановить шахматный анализирующий движок}
 menuText R ToolsAnalysis2 "Анализирующий движок №2..." 22 \
   {Запустить/остановить второй шахматный анализирующий движок}
-menuText R ToolsCross "Турнирная таблица" 0 {Показать турнирную таблицу для этой партии}
 menuText R ToolsEmail "Менеджер писем" 0 \
   {Открыть/закрыть окно шахматного менеджера писем}
 menuText R ToolsFilterGraph "Фильтрованная диаграмма" 0 \

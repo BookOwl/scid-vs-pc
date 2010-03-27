@@ -92,6 +92,8 @@ proc ::file::New {} {
   }
   ::windows::gamelist::Refresh
   ::tree::refresh
+  ::windows::stats::Refresh
+  ::crosstab::Refresh
   updateMenuStates
   updateTitle
   updateStatusBar
@@ -202,6 +204,7 @@ proc ::file::Open {{fName ""}} {
   ::windows::gamelist::Refresh
   ::tree::refresh
   ::windows::stats::Refresh
+  ::crosstab::Refresh
   updateMenuStates
   updateBoard -pgn
   updateTitle
@@ -281,31 +284,31 @@ proc ::file::Close {{base -1}} {
       sc_game new
     }
     
-    # Now switch back to the original base
-    sc_base switch $current
-    
-    ::windows::gamelist::Refresh
-    # Close Tree and Email windows whenever a base is closed/switched:
-    if {[winfo exists .treeWin$base]} { destroy .treeWin$base }
-    if {[winfo exists .emailWin]} { destroy .emailWin }
-    ::pgn::Refresh
-    updateBoard -pgn
+    ::file::SwitchToBase $current
+  } else {
+    updateMenuStates
+    updateStatusBar
+    updateTitle
   }
-  updateMenuStates
-  updateStatusBar
-  updateTitle
 }
 
 
 proc ::file::SwitchToBase {b} {
   sc_base switch $b
-  # Close email window when a base is switched:
+
+  # Close Tree and Email windows whenever a base is closed/switched:
+  if {[winfo exists .treeWin$b]} { destroy .treeWin$b }
+
+  if {[winfo exists .emailWin]} { destroy .emailWin }
+
   if {[winfo exists .emailWin]} { destroy .emailWin }
   updateBoard -pgn
   updateTitle
   updateMenuStates
   updateStatusBar
   ::windows::gamelist::Refresh
+  ::windows::stats::Refresh
+  ::crosstab::Refresh
 }
 
 ################################################################################

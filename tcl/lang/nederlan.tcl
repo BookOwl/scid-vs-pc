@@ -144,8 +144,8 @@ menuText N WindowsComment "Bewerk commentaar" 0 \
  {Open/sluit commentaar bewerkings venster}
 menuText N WindowsGList "Toon alle partijen" 0 \
   {Open/sluit lijst met partijen}
-menuText N WindowsPGN "PGN-venster" 0 \
- {Open/sluit het PGN-notatie venster}
+menuText N WindowsPGN "PGN-venster" 0 {Open/sluit het PGN-notatie venster}
+menuText N WindowsCross "Kruistabel" 0 {Toon toernooi-kruistabel voor huidige partij}
 menuText N WindowsPList "Spelervinder" 2 {Open/sluit de spelervinder} ;
 menuText N WindowsTmt "Toernooi Zoeker" 2 {Open/sluit het toernooi zoekvenster}
 menuText N WindowsSwitcher  "Database wisselen" 0 \
@@ -169,8 +169,6 @@ menuText N ToolsAnalysis "Schaakmachiene ..." 3 \
   {Start/stop schaak-analyse programma 1}
 menuText N ToolsAnalysis2 "Schaakmachiene #2..." 17 \
   {Start/stop  schaak-analyse programma 2}
-menuText N ToolsCross "Kruistabel" 0 \
-  {Toon toernooi-kruistabel voor huidige partij}
 menuText N ToolsEmail "EmailBeheerder" 0 {Open/sluit het email venster}
 menuText N ToolsFilterGraph "Filter grafiek" 7 \
   {Openen/sluiten grafisch filter venster}

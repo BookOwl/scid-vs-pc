@@ -397,9 +397,9 @@ proc ::tourney::select {gnum {openCrosstable 0}} {
   updateBoard -pgn
   updateTitle
   if {$openCrosstable} {
-    crosstabWin
+    ::crosstab::Open
   } else {
-    ::crosstab::RefreshIfOpen
+    ::crosstab::Refresh
   }
 }
 

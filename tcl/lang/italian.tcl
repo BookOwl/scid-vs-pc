@@ -131,6 +131,7 @@ menuText I WindowsGameinfo "Game Info" 0 {Show/hide the game info panel}
 menuText I WindowsComment "Editor di commenti" 10 {Apre/chiude l'editor di commenti}
 menuText I WindowsGList "Lista di Partite" 0 {Apre/chiude la finestra di lista di partite}
 menuText I WindowsPGN "Finestra PGN" 9 {Apre/chiude la finestra PGN (notazione di partita)}
+menuText I WindowsCross "Tabella" 0 {Mostra la tabella di torneo per questa partita}
 menuText I WindowsPList "Trova giocatore" 2 {Apre/chiude la finestra per la ricerca di un giocatore}
 menuText I WindowsTmt "Trova torneo" 2 {Apre/chiude la finestra per la ricerca di un torneo}
 menuText I WindowsSwitcher "Selezione di Database" 11 {Apre/chiude la finestra per la selezione di un Database}
@@ -151,7 +152,6 @@ menuText I ToolsAnalysis "Motore di analisi..." 10 \
   {Inizia/termina il motore di analisi scacchistica}
 menuText I ToolsAnalysis2 "Motore di analisi #2..." 19 \
   {Inizia/termina il motore di analisi scacchistica}
-menuText I ToolsCross "Tabella" 0 {Mostra la tabella di torneo per questa partita}
 menuText I ToolsEmail "Gestione Email" 10 \
   {Apre/chiude la finestra di gestione di partite per posta elettronica}
 menuText I ToolsFilterGraph "Grafici relativi" 7 \

@@ -560,7 +560,7 @@ button .tb.tmt -image tb_tmt -command ::tourney::toggle
 button .tb.maint -image tb_maint -command ::maint::OpenClose
 button .tb.eco -image tb_eco -command ::windows::eco::OpenClose
 button .tb.tree -image tb_tree -command ::tree::make
-button .tb.crosst -image tb_crosst -command toggleCrosstabWin
+button .tb.crosst -image tb_crosst -command ::crosstab::OpenClose
 button .tb.engine -image tb_engine -command makeAnalysisWin
 button .tb.help -image tb_help -command {helpWindow Index}
 

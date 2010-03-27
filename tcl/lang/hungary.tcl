@@ -127,8 +127,8 @@ menuText H Windows "Ablakok" 0
 menuText H WindowsGameinfo "A jtszma adatai" 0 {Show/hide the game info panel}
 menuText H WindowsComment "Megjegyzésszerkesztõ" 0 {Megnyitja/bezárja a megjegyzésszerkesztõt.}
 menuText H WindowsGList "Játszmák listája" 9 {Kinyitja/becsukja a játszmák listáját mutató ablakot.}
-menuText H WindowsPGN "PGN" 0 \
-  {Kinyitja/becsukja a PGN-(játszmajegyzés)-ablakot.}
+menuText H WindowsPGN "PGN" 0 {Kinyitja/becsukja a PGN-(játszmajegyzés)-ablakot.}
+menuText H WindowsCross "Versenytáblázat" 0 {Megmutatja az ehhez a játszmához tartozó verseny táblázatát.}
 menuText H WindowsPList "Játékoskeresõ" 0 {Kinyitja/becsukja a játékoskeresõt.}
 menuText H WindowsTmt "Versenykeresõ" 0 {Kinyitja/becsukja a versenykeresõt.}
 menuText H WindowsSwitcher "Adatbázisváltó" 0 \
@@ -154,7 +154,6 @@ menuText H ToolsAnalysis "Elemzõ motor..." 0 \
   {Elindít/leállít egy sakkelemzõ programot.}
 menuText H ToolsAnalysis2 "2. elemzõ motor..." 0 \
   {Elindítja/leállítja a 2. sakkelemzõ programot.}
-menuText H ToolsCross "Versenytáblázat" 0 {Megmutatja az ehhez a játszmához tartozó verseny táblázatát.}
 menuText H ToolsEmail "Levelezési sakk" 0 \
   {Kinyitja/becsukja az elektronikus sakklevelezés lebonyolítására szolgáló ablakot.}
 menuText H ToolsFilterGraph "Szûrõgrafikon" 0 \

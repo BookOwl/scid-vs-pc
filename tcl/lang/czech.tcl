@@ -127,6 +127,7 @@ menuText C Windows "Okna" 0
 menuText C WindowsComment "Editor komentáøù" 0 {Otevøít/zavøít editor komentáøù}
 menuText C WindowsGList "Seznam partií" 2 {Otevøít/zavøít okno se seznamem partií}
 menuText C WindowsPGN "Okno PGN" 5 {Otevøít/zavøít okno PGN}
+menuText C WindowsCross "Turnajová tabulka" 0 {Ukázat turnajovou tabulku pro tuto partii}
 menuText C WindowsPList "Vyhledávaè hráèù" 11 {Otevøít/zavøít okno vyhledávaèe hráèù}
 menuText C WindowsTmt "Vyhledávaè turnajù" 11 {Otevøít/zavøít okno vyhledávaèe turnajù}
 menuText C WindowsSwitcher "Vıbìr databáze" 0 {Otevøít/zavøít okno pro vıbìr databází}
@@ -147,7 +148,6 @@ menuText C ToolsAnalysis "Program pro analızu..." 0 \
   {Spustit/zastavit ¹achovı program pro analızu pozice}
 menuText C ToolsAnalysis2 "Program pro analızu #2..." 20 \
   {Spustit/zastavit druhı ¹achovı program pro analızu pozice}
-menuText C ToolsCross "Turnajová tabulka" 0 {Ukázat turnajovou tabulku pro tuto partii}
 menuText C ToolsEmail "Email mana¾er" 1 \
   {Otevøít/zavøít okno emailového mana¾era}
 menuText C ToolsFilterGraph "Graf filtru" 0 \

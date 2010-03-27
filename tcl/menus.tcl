@@ -554,13 +554,16 @@ set helpMessage($m,[incr menuindex]) WindowsComment
 
 $m  add checkbutton -label WindowsGList \
     -variable ::windows::gamelist::isOpen -command ::windows::gamelist::Open  -accelerator "Ctrl+L"
-bind . <Control-l> ::windows::gamelist::Open
 set helpMessage($m,[incr menuindex]) WindowsGList
 
 $m  add checkbutton -label WindowsPGN \
     -variable pgnWin -command ::pgn::OpenClose  -accelerator "Ctrl+P"
-bind . <Control-p> ::pgn::OpenClose
 set helpMessage($m,[incr menuindex]) WindowsPGN
+
+$m  add checkbutton -label WindowsCross \
+     -variable crosstabWin -command ::crosstab::OpenClose  -accelerator "Ctrl+Shift+X"
+
+set helpMessage($m,[incr menuindex]) WindowsCross
 
 $m add checkbutton -label WindowsPList \
     -variable plistWin -command ::plist::toggle -accelerator "Ctrl+Shift+P"
@@ -643,11 +646,6 @@ set helpMessage($m,[incr menuindex]) ToolsStartEngine2
 
 $m add separator
 incr menuindex
-
-$m add command -label ToolsCross \
-    -accelerator "Ctrl+Shift+X" -command crosstabWin
-bind . <Control-X> crosstabWin
-set helpMessage($m,[incr menuindex]) ToolsCross
 
 $m add checkbutton -label ToolsEmail \
     -accelerator "Ctrl+Shift+E" -variable emailWin -command ::tools::email
@@ -1202,7 +1200,7 @@ set m .menu.options.startup
 menu $m -tearoff -1
 $m add checkbutton -label HelpTip -variable startup(tip)
 $m add checkbutton -label HelpStartup -variable ::splash::keepopen
-$m add checkbutton -label ToolsCross -variable startup(crosstable)
+$m add checkbutton -label WindowsCross -variable startup(crosstable)
 $m add checkbutton -label WindowsSwitcher -variable startup(switcher)
 $m add checkbutton -label FileFinder -variable startup(finder)
 $m add checkbutton -label WindowsGList -variable startup(gamelist)
@@ -1472,11 +1470,11 @@ proc setLanguageMenus {{lang ""}} {
     configMenuText .menu.search [tr Search$tag $oldLang] Search$tag $lang
   }
   
-  foreach tag {Gameinfo Comment GList PGN PList Tmt Switcher Maint ECO Repertoire Stats Tree TB Book CorrChess } {
+  foreach tag {Gameinfo Comment GList PGN Cross PList Tmt Switcher Maint ECO Repertoire Stats Tree TB Book CorrChess } {
     configMenuText .menu.windows [tr Windows$tag $oldLang] Windows$tag $lang
   }
   
-  foreach tag {Analysis Cross Email FilterGraph AbsFilterGraph OpReport Tracker
+  foreach tag {Analysis Email FilterGraph AbsFilterGraph OpReport Tracker
     Rating Score ExpCurrent ExpFilter ImportOne ImportFile StartEngine1 StartEngine2 BookTuning
     PInfo PlayerReport ConnectHardware} {
     configMenuText .menu.tools [tr Tools$tag $oldLang] Tools$tag $lang
@@ -1514,7 +1512,7 @@ proc setLanguageMenus {{lang ""}} {
         OptionsMoves$tag $lang
   }
   foreach tag {HelpTip HelpStartup WindowsSwitcher WindowsPGN WindowsTree FileFinder \
-        ToolsCross WindowsGList WindowsStats WindowsBook} {
+        WindowsCross WindowsGList WindowsStats WindowsBook} {
     configMenuText .menu.options.startup [tr $tag $oldLang] $tag $lang
   }
   foreach tag {Iconify Raise} {
@@ -1612,7 +1610,7 @@ proc standardShortcuts {w} {
   bind $w <Control-i> ::toggleGameInfo
   bind $w <Control-t> ::tree::make
   bind $w <Control-A> ::enginelist::choose
-  bind $w <Control-X> crosstabWin
+  bind $w <Control-X> ::crosstab::OpenClose
   bind $w <Control-E> ::tools::email
   bind $w <Control-O> ::optable::makeReportWin
   # bind $w <Control-R> {::tools::graphs::rating::Refresh both}
