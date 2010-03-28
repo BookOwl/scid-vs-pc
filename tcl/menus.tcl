@@ -961,6 +961,7 @@ $m add command -label OptionsSave -command {
           gameInfo(fullComment) gameInfo(showMarks) \
           gameInfo(showMaterial) gameInfo(showFEN) gameInfo(showTB) \
           engines(F2) engines(F3) engineCoach1 engineCoach2 scidBooksDir scidBasesDir \
+          crosstab(type) crosstab(ages) crosstab(countries) crosstab(ratings) crosstab(titles) crosstab(breaks) crosstab(deleted) crosstab(colors) crosstab(cnumbers) crosstab(groups) crosstab(sort) \
           ::utils::sound::soundFolder ::utils::sound::announceNew \
           ::utils::sound::announceForward ::utils::sound::announceBack \
           ::tacgame::threshold ::tacgame::blunderwarning ::tacgame::blunderwarningvalue \
@@ -1159,7 +1160,7 @@ set m .menu.options.fonts
 menu $m -tearoff -1
 
 $m add command -label OptionsFontsRegular -underline 0 -command {
-  set fontOptions(temp) [FontDialog font_Regular $fontOptions(Regular)]
+  set fontOptions(temp) [FontDialog Regular]
   if {$fontOptions(temp) != ""} { set fontOptions(Regular) $fontOptions(temp) }
   set font [font configure font_Regular -family]
   set fontsize [font configure font_Regular -size]
@@ -1175,13 +1176,13 @@ $m add command -label OptionsFontsRegular -underline 0 -command {
 set helpMessage($m,0) OptionsFontsRegular
 
 $m add command -label OptionsFontsMenu -underline 0 -command {
-  set fontOptions(temp) [FontDialog font_Menu $fontOptions(Menu)]
+  set fontOptions(temp) [FontDialog Menu]
   if {$fontOptions(temp) != ""} { set fontOptions(Menu) $fontOptions(temp) }
 }
 set helpMessage($m,1) OptionsFontsMenu
 
 $m add command -label OptionsFontsSmall -underline 0 -command {
-  set fontOptions(temp) [FontDialog font_Small $fontOptions(Small)]
+  set fontOptions(temp) [FontDialog Small]
   if {$fontOptions(temp) != ""} { set fontOptions(Small) $fontOptions(temp) }
   set font [font configure font_Small -family]
   set fontsize [font configure font_Small -size]
@@ -1191,7 +1192,7 @@ $m add command -label OptionsFontsSmall -underline 0 -command {
 set helpMessage($m,2) OptionsFontsSmall
 
 $m add command -label OptionsFontsFixed -underline 0 -command {
-  set fontOptions(temp) [FontDialog font_Fixed $fontOptions(Fixed) 1]
+  set fontOptions(temp) [FontDialog Fixed]
   if {$fontOptions(temp) != ""} { set fontOptions(Fixed) $fontOptions(temp) }
 }
 set helpMessage($m,3) OptionsFontsFixed

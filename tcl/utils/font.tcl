@@ -9,9 +9,14 @@
 #   Creates a font dialog to select a font.
 #   Returns 1 if user chose a font, 0 otherwise.
 #
-proc FontDialog {font_name {options ""} {fixedOnly 0}} {
+proc FontDialog {font_name {parent .}} {
   global fd_family fd_style fd_size fd_close
-  global fd_strikeout fd_underline
+  global fd_strikeout fd_underline fontOptions
+
+  set options $fontOptions($font_name)
+  set fixedOnly [expr {$font_name == "Fixed"}]
+  set title $font_name
+  set font_name font_$font_name
 
   set fd_family {}; set fd_style {}; set fd_size {}
   set fd_close  -1
@@ -61,8 +66,9 @@ proc FontDialog {font_name {options ""} {fixedOnly 0}} {
   # Create font dialog.
   set dlg .fontdialog
   toplevel $dlg
+  wm state $dlg withdrawn
   wm protocol $dlg WM_DELETE_WINDOW "set fd_close 0"
-  wm title $dlg Font
+  wm title $dlg "Scid: $title font"
 
   label $dlg.family_lbl -text "Font:" -anchor w
   entry $dlg.family_ent -textvariable fd_family -background white
@@ -141,7 +147,7 @@ proc FontDialog {font_name {options ""} {fixedOnly 0}} {
   set fr $dlg.ok_cancel
   frame $fr -bd 0
 
-  button $fr.ok -text "OK" -command "set fd_close 1"
+  button $fr.ok -text "OK" -command "FontDialogRegen $font_name ; set fd_close 1"
   button $fr.cancel  -text "Cancel" -command "set fd_close 0"
   pack $fr.ok -side top -fill x
   pack $fr.cancel -side top -fill x -pady 2
@@ -162,6 +168,10 @@ proc FontDialog {font_name {options ""} {fixedOnly 0}} {
 
   grid config $fr -column 0 -columnspan 3 -row 20 \
     -rowspan 2 -sticky snew -pady 10 -padx 2
+
+  update
+  placeWinOverParent $dlg $parent
+  wm state $dlg normal
 
   # Make this a modal dialog.
   tkwait variable fd_close

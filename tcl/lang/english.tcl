@@ -164,8 +164,8 @@ menuText E Windows "Windows" 0
 menuText E WindowsGameinfo "Game Info" 0 {Show/hide the game info panel}
 menuText E WindowsComment "Comment Editor" 0 {Open/close the comment editor}
 menuText E WindowsGList "Game List" 0 {Open/close the game list window}
-menuText E WindowsPGN "PGN Window" 0 \
-  {Open/close the PGN (game notation) window}
+menuText E WindowsPGN "PGN Window" 0 {Open/close the PGN (game notation) window}
+menuText E WindowsCross "Crosstable" 0 {Open/close the Tournament Crosstable}
 menuText E WindowsPList "Player Finder" 2 {Open/close the player finder}
 menuText E WindowsTmt "Tournament Finder" 2 {Open/close the tournament finder}
 menuText E WindowsSwitcher "Database switcher" 0 \
@@ -185,7 +185,6 @@ menuText E WindowsCorrChess "Correspondence Window" 0 {Open/close the Correspond
 # Tools menu:
 menuText E Tools "Tools" 0
 menuText E ToolsAnalysis "Analysis Engines" 0 {Configure analysis engines}
-menuText E ToolsCross "Crosstable" 0 {Show tournament crosstable for this game}
 menuText E ToolsEmail "Email Manager" 0 {Open/close the email chess manager window}
 menuText E ToolsFilterGraph "Rel. Filter Graph" 12 {Open/close the filter graph window for relative values}
 menuText E ToolsAbsFilterGraph "Abs. Filter Graph" 7 {Open/close the filter graph window for absolute values}
@@ -730,10 +729,10 @@ translate E PgnWindowTitle {Game Notation - game %u}
 
 # Crosstable window menus:
 menuText E CrosstabFile "File" 0
-menuText E CrosstabFileText "Print to Text File..." 9
-menuText E CrosstabFileHtml "Print to HTML File..." 9
-menuText E CrosstabFileLaTeX "Print to LaTeX File..." 9
-menuText E CrosstabFileClose "Close Crosstable Window" 0
+menuText E CrosstabFileText "Save as Text ..." 8
+menuText E CrosstabFileHtml "Save as Html ..." 8
+menuText E CrosstabFileLaTeX "Save as Latex ..." 8
+menuText E CrosstabFileClose "Close" 0
 menuText E CrosstabEdit "Edit" 0
 menuText E CrosstabEditEvent "Event" 0
 menuText E CrosstabEditSite "Site" 0
