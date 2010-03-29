@@ -30,6 +30,14 @@ proc ::crosstab::ConfigMenus {{lang ""}} {
   foreach idx   {1 2 3 4 6 7 8 9 10 11 13 14 16} tag {All Swiss Knockout Auto Ages Nats Ratings Titles Breaks Deleted Colors ColumnNumbers Group} {
     configMenuText $m.opt $idx CrosstabOpt$tag $lang
   }
+
+  # Disable the Ages, Nats, Titles items if spellcheck not enabled. S.A
+  if {[catch {sc_name read $::spellCheckFile} result]} {
+    $m.opt entryconfig 6 -state disabled -variable {}
+    $m.opt entryconfig 7 -state disabled -variable {}
+    $m.opt entryconfig 9 -state disabled -variable {}
+  }
+
   foreach idx {0 1 2} tag {Name Rating Score} {
     configMenuText $m.sort $idx CrosstabSort$tag $lang
   }

@@ -617,7 +617,7 @@ proc editMyPlayerNames {} {
   if {[winfo exists $w]} { return }
   toplevel $w
   wm state $w withdrawn
-  wm title $w "Scid: [tr OptionsBoardNames]"
+  wm title $w "Scid: [tr OptionsNames]"
   pack [frame $w.b] -side bottom -fill x
   
   frame $w.desc -borderwidth 0
