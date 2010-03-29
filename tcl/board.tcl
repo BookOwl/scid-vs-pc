@@ -1067,6 +1067,7 @@ proc ::board::new {w {psize 40} {showmat "nomat"} } {
   set bsize [expr {$psize * 8 + $border * 9} ]
   
   ### Main board initialised S.A
+  # moved the side to move column from the right to the left
 
   frame $w -class Board
   canvas $w.bd -width $bsize -height $bsize -background black -borderwidth 0 -highlightthickness 0
@@ -1074,7 +1075,7 @@ proc ::board::new {w {psize 40} {showmat "nomat"} } {
     grid anchor $w center
   }
   
-  grid $w.bd -row 1 -column 1 -rowspan 8 -columnspan 8
+  grid $w.bd -row 1 -column 3 -rowspan 8 -columnspan 8
   set bd $w.bd
   
   # Create empty board:
@@ -1092,16 +1093,16 @@ proc ::board::new {w {psize 40} {showmat "nomat"} } {
   
   # Set up coordinate labels:
   for {set i 1} {$i <= 8} {incr i} {
-    label $w.lrank$i -text [expr {9 - $i}]
-    grid $w.lrank$i -row $i -column 0 -sticky e
-    label $w.rrank$i -text [expr {9 - $i}]
-    grid $w.rrank$i -row $i -column 9 -sticky w
+    label $w.lrank$i -text [expr {11 - $i}]
+    grid $w.lrank$i -row $i -column 2 -sticky e
+    label $w.rrank$i -text [expr {11 - $i}]
+    grid $w.rrank$i -row $i -column 11 -sticky w
   }
   foreach i {1 2 3 4 5 6 7 8} file {a b c d e f g h} {
     label $w.tfile$file -text $file
-    grid $w.tfile$file -row 0 -column $i -sticky s
+    grid $w.tfile$file -row 0 -column [expr $i + 2] -sticky s
     label $w.bfile$file -text $file
-    grid $w.bfile$file -row 9 -column $i -sticky n
+    grid $w.bfile$file -row 9 -column [expr $i + 2] -sticky n
   }
   
   # Set up side-to-move icons:
@@ -1110,8 +1111,8 @@ proc ::board::new {w {psize 40} {showmat "nomat"} } {
   # frame $w.mat
   frame $w.wtm -background white -relief solid -borderwidth 1
   frame $w.btm -background black -relief solid -borderwidth 1
-  grid $w.stmgap -row 1 -column 10
-  grid $w.stm -row 2 -column 11 -rowspan 5 -padx 2
+  grid $w.stmgap -row 1 -column 1
+  grid $w.stm -row 2 -column 0 -rowspan 5 -padx 2
 
   # Material canvas init
   set ::materialwidth [boardSize_plus_n -7]
@@ -1123,8 +1124,8 @@ proc ::board::new {w {psize 40} {showmat "nomat"} } {
     set ::board::_showmat($w) $::gameInfo(showMaterial)
   }
 
-  grid $w.wtm -row 8 -column 11
-  grid $w.btm -row 1 -column 11
+  grid $w.wtm -row 8 -column 0
+  grid $w.btm -row 1 -column 0
   if {$::board::_showmat($w)} {
     grid $w.mat -row 1 -column 12 -rowspan 8
   }
