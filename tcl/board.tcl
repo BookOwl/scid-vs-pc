@@ -1093,9 +1093,9 @@ proc ::board::new {w {psize 40} {showmat "nomat"} } {
   
   # Set up coordinate labels:
   for {set i 1} {$i <= 8} {incr i} {
-    label $w.lrank$i -text [expr {11 - $i}]
+    label $w.lrank$i -text [expr {9 - $i}]
     grid $w.lrank$i -row $i -column 2 -sticky e
-    label $w.rrank$i -text [expr {11 - $i}]
+    label $w.rrank$i -text [expr {9 - $i}]
     grid $w.rrank$i -row $i -column 11 -sticky w
   }
   foreach i {1 2 3 4 5 6 7 8} file {a b c d e f g h} {
