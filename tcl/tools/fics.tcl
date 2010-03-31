@@ -159,13 +159,29 @@ namespace eval fics {
     placeWinOverParent $w .
     wm state $w normal
 
-    # Get IP adress of server (as Timeseal needs IP adress)
-    if {[catch {set sockChan [socket -async $::fics::server $::fics::port_fics]} err] } {
-      tk_messageBox -icon error -type ok -title "Unable to contact $::fics::server" -message $err -parent $w
+    # First handle the case of a network down
+    if { [catch {set sockChan [socket -async $::fics::server $::fics::port_fics]} err]} {
+      tk_messageBox -icon error -type ok -title "Unable to contact $::fics::server" -message $err -parent .ficsConfig.f
       return
     }
-    set peer [ fconfigure $sockChan -peername ]
-    # S.A. broken ? &&&
+
+    # Then the case of a proxy
+    set timeOut 5
+    set i 0
+    while { $i <= $timeOut } {
+      after 1000
+
+      if { [catch {set peer [ fconfigure $sockChan -peername ]} err]} {
+        if {$i == $timeOut} {
+          tk_messageBox -icon error -type ok -title "Unable to contact $::fics::server" -message $err -parent .ficsConfig.f
+          return
+        }
+      } else  {
+        break
+      }
+      incr i
+    }
+
     set ::fics::server_ip [lindex $peer 0]
     ::close $sockChan
   }
@@ -369,6 +385,7 @@ namespace eval fics {
     }
 
     updateConsole "Socket opening"
+
     if { [catch { set sockchan [socket $server $port] } ] } {
       tk_messageBox -title "Error" -icon error -type ok -message "Network error\nCan't connect to $::fics::server $port" -parent .fics
       return
@@ -699,8 +716,6 @@ namespace eval fics {
       if { $whiteElo == "++++"} { set whiteElo 0 }
       if { $blackElo == "++++"} { set blackElo 0 }
 
-
-
       # set white [lindex $line 1]
       # set whiteElo [string map { "(" "" ")" "" } [lindex $line 2] ]
       # set black [lindex $line 3]
@@ -718,6 +733,7 @@ namespace eval fics {
         if { [ string match -nocase $black $::fics::reallogin ] } { ::board::flip .board }
       }
       updateBoard -pgn -animate
+      updateTitle
       # display the win / draw / loss score
       ::fics::writechan "assess" "noecho"
       return
