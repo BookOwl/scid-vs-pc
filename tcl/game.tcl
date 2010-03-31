@@ -343,7 +343,7 @@ set ::game::infoArray {
 ### interactively initialise various game variables
 ###
 
-proc ::game::SetInfo {{default {}}} {
+proc ::game::SetInfo {{default White}} {
 
   set w .setgameInfo
   set ::game::infoVar {}
@@ -384,6 +384,7 @@ proc ::game::SetInfo {{default {}}} {
     grid $entry -row $row -column 1 -padx 10 -pady 5 -sticky we
     incr row
   }
+
   # don't know what it does, but it expands the entries S.A
   grid columnconfigure $w.dialogs 1 -weight 1
 
@@ -393,12 +394,19 @@ proc ::game::SetInfo {{default {}}} {
   frame $w.buttons
   dialogbutton $w.buttons.ok -text Ok -command "
     gameUpdateInfo
+    updateTitle
     destroy $w"
+  bind $w <Return> "$w.buttons.ok invoke"
+
   dialogbutton $w.buttons.cancel -text Cancel -command "destroy $w"
 
   pack $w.buttons -side bottom -pady 5
   pack $w.buttons.ok -side left -padx 10
   pack $w.buttons.cancel -side right -padx 10
+
+  focus $w.dialogs.entry$default
+  $w.dialogs.entry$default selection range 0 end
+  $w.dialogs.entry$default icursor end
 }
 
 proc gameUpdateInfo {} {
