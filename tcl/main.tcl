@@ -147,13 +147,22 @@ sc_info preMoveCmd preMoveCommand
 #   Updates the main Scid window title.
 #
 proc updateTitle {} {
-  set title "Scid - "
+
+  regexp {^[^, ]*} [sc_game tag get White] white
+  regexp {^[^, ]*} [sc_game tag get Black] black
+  # set white [sc_game tag get White]
+  # set black [sc_game tag get Black]
+
   set fname [sc_base filename]
   set fname [file tail $fname]
-  append title "$fname ($::tr(game) "
-  append title "[::utils::thousands [sc_game number]] / "
-  append title "[::utils::thousands [sc_base numGames]])"
-  wm title . $title
+  if {![string match {\[*\]} $fname]} {
+    set fname "\[$fname\]"
+  }
+  if { $white == {?} && $black == {?} } {
+    wm title . "Scid: no game $fname"
+  } else {
+    wm title . "Scid: $white - $black $fname"
+  }
 }
 
 # updateStatusBar:
