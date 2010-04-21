@@ -96,9 +96,9 @@ console. Enter play [game number] to accept a game challenge.</p>
 <br>
 <li><a FICSfindOpp>Finding an Opponent</a></li>
 <br>
-<li><a FICS>Playing a Game</a></li>
+<li><a FICS>Using Fics</a></li>
 <br>
-<li><a FICS Training>Fics Lectures</a></li>
+<li><a FICSLectures>Fics Lectures</a></li>
 </ul>
 
 <p>For a detailed description of the services offered, or to create a FICS
@@ -294,7 +294,7 @@ set helpText(Index) {<h1>Scid Help Index</h1>
   <li><a FICSOver>FICS Overview</a></li>
   <li><a FICSLogin>FICS Login</a></li>
   <li><a FICSfindOpp>FICS Find opponent</a></li>
-  <li><a FICS>Main FICS window (FICS)</a></li>
+  <li><a FICS>Using Fics</a></li>
   <li><a FICS Training>FICS lectures</a></li>
   <li><a Finder>File Finder</a></li>
   <li><a FindBestMove>Training: Find best move</a></li>
@@ -5645,28 +5645,30 @@ set helpText(FindBestMove) {<h1>Training: Find best move</h1>
 }
 
 # FICS Login
-set helpTitle(FICSLogin) "FICS Login"
-set helpText(FICSLogin) {<h1>FICS Login</h1>
+set helpTitle(FICSLogin) "Fics Login"
+set helpText(FICSLogin) {<h1>Fics Login</h1>
 
+<p><i>Fics supports anonymous login, but you'll find more people to play if you visit
+<url http://www.freechess.org>www.freechess.org</url> first and create an account.
+If you're having problems logging in, try de-selecting "timeseal".</i></p>
   <ul>
-      <li><term>Username</term> This is your login name on the FICS
-      server. Anonymous login ~is~ supported by the "Login as guest" button </li>
-      <li><term>Password:</term> specifies your password for login.
-      <b>Note</b> This password is not displayed when you type,
-      but it <b>is</b> stored in plain text within Scids configuration. If you are
+      <li><term>Username</term> This is your login name on the Fics
+      server. To login anonymously, use the "Login as guest" button </li>
+      <li><term>Password:</term> Note: this password is not displayed when you type,
+      but it is <b>stored in plain text</b> within Scids configuration. If you are
       using a publicly accessible system please make sure to assign
       proper rights to Scids config directory.
       </li>
-      <li><term>Time seal</term> if checked, all connections to the
-      FICS server are routed through the <term>timeseal</term>
-      program. Its purpose is to cope with
-      network lags and keeping the clocks in correct order, which can otherwise create 
-      problems with slow network connections. The suitable
-      timeseal program for your operating system has to
-      be selected in the next input line. It is available for free,
-      but required to be downloaded separately from 
-      <b>http://www.freechess.org</b>/
-      </li>
+      <li><term>Time seal</term> If checked, all connections to the
+      Fics server are routed through the (optional) timeseal
+program. Its purpose is to cope with network lags and keep the clocks in
+correct order, which can otherwise create problems on slow network
+connections.
+
+Timeseal is available for free, but unfortunately, finding a working program can be a hassle.
+Start at <url http://www.freechess.org>www.freechess.org</url>.
+  </li>
+
       <li><term>Server port</term> specifies the port on the server.
       The default is 5000 and should be ok for almost all needs.</li>
       <li><term>Timeseal port</term> specifies the port where the
@@ -5675,134 +5677,98 @@ set helpText(FICSLogin) {<h1>FICS Login</h1>
    </ul>
 
   <p>
-  <b>Note</b> FICS also offers a bunch of chess
+  <b>Note</b> Fics also offers a bunch of chess
   variants like bughouse or crazyhouse but Scid does not support any
   of these variations. </p>
-  <p><footer>(Updated: Scid Vs PC 3.6.26.8, November 2009)</footer></p>
+  <p><footer>(Updated: Scid vs PC 3.6.26.9, March 2010)</footer></p>
 }
 
 # FICS Find Opponent
-set helpTitle(FICSfindOpp) "FICS Find Opponent"
-set helpText(FICSfindOpp) {<h1>FICS Find Opponent</h1>
+set helpTitle(FICSfindOpp) "Fics Find Opponent"
+set helpText(FICSfindOpp) {<h1>Fics Find Opponent</h1>
   <p>
-  This dialogue offers a convenient way to challenge other players for
-  a game, in FICS speak to <term>place a seek</term>. For this several
-  parameters have to be set:
+  This dialogue allows you to challenge other players for
+  a game. The game options include:
+  <br>
   <ul>
-      <li><term>Initial time (min)</term> sets the initial time for
-      the game in minutes.</li>
-      <li><term>Increment (sec)</term> sets the increment per move,
-      this is equivalent to a <term>Fisher Clock</term>. Setting it to
-      0 will cause the game to last <term>Initial time</term> minutes.
-      </li>
-      <li><term>Rated game</term> If checked, the game will be rated,
-      uncheck it to play a leisure game.</li>
-      <li><term>Colour</term> If set to automatic, its up to the
-      opponent to choose the colour he wants to play, you will accept
-      either he choses. If you want to play black or white explicitly,
-      mark either of those choices.
-      </li>
-      <li><term>Limit rating between</term> allows you to offer a game
-      to players in the given rating interval. Using this option can
-      assure you to play opponents in your rating range and thus
-      having a good game.
-      </li>
-      <li><term>Confirm manually</term> allows you to confirm or deny
-      the game, once another player accepted your challenge.</li>
-      <li><term>Filter with formula</term> On FICS every player can
+
+      <li><term>Initial time</term> Time for game in minutes.</li>
+      <li><term>Increment</term> Seconds added to your time with each move.</li>
+      <li><term>Rated game</term> The result of rated games will affect your rating.
+      Unrated games make no adjustment.</li>
+      <li><term>Colour</term> Select whether to play White or Black or Auto.</li>
+      <li><term>Limit rating between</term> Only play those
+      with a given rating interval.</li>
+      <li><term>Confirm manually</term> Allows you to confirm or deny a challenge.</li>
+      <li><term>Filter with formula</term> On Fics every player can
       set a formula that describes what challenges will be denied
       automatically. This formula can be enabled by checking this box.
       </li>
    </ul>
-   Clicking the <term>Issue seek</term> button will place your
-   offer on the server.
+  <br>
+   Click the <term>Make Offer</term> button to place your offer.
   </p>
-  <p><footer>(Updated: Scid 3.6.26, October 2008)</footer></p>
+  <p><footer>(Updated: Scid vs PC 3.6.26.9, March 2010)</footer></p>
 }
 
-# FICS
-set helpTitle(FICS) "FICS: Play on the Internet"
-set helpText(FICS) {<h1>FICS: Play on the Internet</h1>
+set helpTitle(FICS) "Fics: Play on the Internet"
+set helpText(FICS) {<h1>Using Fics</h1>
   <p>
-  The FICS window is split horizontally into two parts. Above, the
-  console window is shown. Here all messages sent or
-  retrieved from the server appear. Normal messages are written in
-  green, game offers form other players show up in red, commands sent
-  to the server are prepended by a prompt.
-  </p>
+Once you have <a FICSLogin>logged in</a>, the main Fics widget shows a
+console window, some command buttons and clocks.</p>
+
+  <h3>Fics Console</h3>
+
   <p>
-  Interaction with FICS is via commands entered
-  in the command line widget. Here commands are
-  sent to the server by either hitting enter or the <term>send</term>
-  button. Describing all commands of FICS is beyond the scope of this
-  document, however FICS offers an extensive online help system. To
-  see a list of possible commands one can issue <term>help
-  commands</term>. To see the detailed documentation of a specific
-  command just prepend its name by <term>help</term>. Note, that a
-  command may have several help pages. To scroll down issue the
-  <term>next</term> command.
-  </p>
+  This is the main interface with the Fics server.  Normal messages are written
+in green; game offers from other players appear in red.  It can be a little
+confusing, but toggling the "Silence" and "Game requests" boxes can make it
+quieter.
+</p>
+
+<p> Interaction with Fics is via commands entered in the entry box (and also
+the Command Buttons, below). Describing all of them is beyond the scope of this
+document but FICS offers an extensive online help system. To see a list of
+possible commands enter <term>help commands</term>. To see the detailed
+documentation of a specific command just prepend its name by <term>help</term>.
+Note, that a command may have several help pages. To scroll down issue the
+<term>next</term> command.  </p>
+
+  <h3>Command Buttons</h3>
+
   <p>
-  Below the command line, the dialogue is split in two parts. On the
-  left hand side the clocks show up, one for white and one for black.
-  Clicking into a clock will halt it, inside the analogue clocks a
-  digital representation is shown.
-  </p>
-  <p>
-  On the right hand side of the clocks appear the command buttons:
+  On the right hand side of the clocks appear the command buttons. They are
+fairly self explanatory, the most notable being the <a FICSfindOpp><term>Find
+Opponent</term> button</a>, which is a convenient way to start a game
+whose length you can choose. Other buttons include:
+  <br>
   <ul>
     <li><term>Silence</term> will filter out most of the messages on
     FICS that are not explicitly directed to the user.
     </li>
-    <li><term>All results</term> shows game reports of all
-completed games
-    <li><term>Find Opponent</term> opens a  <a FICSfindOpp>dialogue</a>
-    that allows to place an offer.</li>
-    <li><term>Games lists all games in progress.</li>
-    <li>The <term>Offers graph</term> will show a graphical display of the
-    current game offers. The y-axis shows the ELO rating of the
-    opponent (the higher his level, the further up the offer appears),
-    while x-axis of the graph shows the timing of of the games (the
-    further to the right, the slower the game). The first red line
-    marks standard <term>Blitz</term> timing (5 min., no increment)
-    while the second red line marks the standard <term>Rapid</term>
-    timing (15 min., no increment). Additionally, the offers use the
-    following coding:
-    <ul>
-       <li><green>Green</green>: offers from human opponents</li>
-       <li><blue>Blue</blue>: offers from computer opponents</li>
-       <li><red>Red</red>: games with a total time of more than 1 hour</li>
-       <li><gray>Gray</gray>: anonymous offers, i.e. offers from guest logins</li>
-       <li>Boxes: unrated games</li>
-       <li>Circles: rated games</li>
-    </ul>
-    Hovering the mouse over a specific offer shows the full details in
-    a textual form:
-    <ul>
-       <li>the game number</li>
-       <li>the players login handle</li>
-       <li>the rating of the player in brackets</li>
-       <li>the initial time / the time increment</li>
-       <li>the word "rated" or "unrated" depending on the offer</li>
-       <li>the word "[white]" or "[black]" if the opponent wants to
-       play the specified colour only</li>
-    </ul>
-    To accept an offer just click on the symbol.
-  <li><term>Offer Draw</term> offers a draw in the ongoing game</li>
-  <li><term>Resign</term> resigns the ongoing game</li>
-  <li><term>Abort</term> aborts the ongoing game</li>
-  <li><term>Take Back</term> takes back a half move, useful in
-  analysis</li>
-  <li><term>Tak Back 2</term> takes back a full move, useful in
-  analysis</li>
-  <li><term>Games</li> gives a list of ongoing games on the server.
-  Note that FICS console is considered to be 80 chars wide, therefore,
-  to get a nice table it would be necessary to resize the FICS window.
-  </li>
-  <li>
-  </ul>
+    <li><term>Game requests</term> shows all requests. You may respond to
+any by typing "Play NUMBER" in the entry widget.</li>
+<br>
+
+  <h3>Offers Graph</h3>
+
+    <p>The <term>Offers graph</term> shows all current game offers. Hovering
+your mouse over a node will show it's details, and clicking a node will
+(attempt to) start a new game. Sometimes you'll have to be quick though, as
+Fics can be quite busy.</p>
+
+<p> On the graph itself, The y-axis shows the ELO rating of the opponent -
+higher number means stronger player , while x-axis of the graph plots the time
+allowed for the game. The first red line marks standard <term>Blitz</term>
+timing (5 min., no increment) while the second red line marks the standard
+<term>Rapid</term> timing (15 min., no increment).
   </p>
-  <h3><name Training>FICS Lectures</h3>
+<br>
+  <p><footer>(Updated: Scid Vs PC 3.6.26.9, April 2010)</footer></p>
+}
+
+set helpTitle(FICSLectures) "Fics: Play on the Internet"
+set helpText(FICSLectures) {<h1>FICS Lectures</h1>
   <p>
   FICS offers several options for chess training. One of the more
   prominent once are the lecture bots <term>LectureBot</term> and
@@ -5843,7 +5809,7 @@ completed games
   Note that only one game can be observed within Scid.
   </p>
 
-  <p><footer>(Updated: Scid Vs PC 3.6.26.8, November 2009)</footer></p>
+  <p><footer>(Updated: Scid Vs PC 3.6.26.9, April 2010)</footer></p>
 }
 
 # Book tuning

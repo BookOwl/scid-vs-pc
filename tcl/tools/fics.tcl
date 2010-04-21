@@ -2,7 +2,7 @@
 ### fics.tcl: part of Scid.
 ### Copyright (C) 2007  Pascal Georges
 ###
-### Widgets reorganised by S.A. 21/11/09
+### Reorganised by stevenaaus, with a new Offers widget 2010
 
 namespace eval fics {
   set server "freechess.org"
@@ -158,10 +158,11 @@ namespace eval fics {
     update
     placeWinOverParent $w .
     wm state $w normal
+    update
 
     # First handle the case of a network down
     if { [catch {set sockChan [socket -async $::fics::server $::fics::port_fics]} err]} {
-      tk_messageBox -icon error -type ok -title "Unable to contact $::fics::server" -message $err -parent .ficsConfig.f
+      tk_messageBox -icon error -type ok -title "Unable to contact $::fics::server" -message $err -parent .ficsConfig
       return
     }
 
@@ -173,7 +174,7 @@ namespace eval fics {
 
       if { [catch {set peer [ fconfigure $sockChan -peername ]} err]} {
         if {$i == $timeOut} {
-          tk_messageBox -icon error -type ok -title "Unable to contact $::fics::server" -message $err -parent .ficsConfig.f
+          tk_messageBox -icon error -type ok -title "Unable to contact $::fics::server" -message $err -parent .ficsConfig
           return
         }
       } else  {
@@ -204,7 +205,7 @@ namespace eval fics {
   #
   ################################################################################
   proc connect {{guest no}} {
-    global ::fics::sockchan ::fics::seeklist ::fics::graphwidth ::fics::graphheight
+    global ::fics::sockchan ::fics::seeklist ::fics::graphwidth ::fics::graphheight fontOptions
     
     if { $guest=="no" && $::fics::reallogin == ""} {
       tk_messageBox -title "Error" -icon error -type ok -parent .ficsConfig \
@@ -223,7 +224,7 @@ namespace eval fics {
     
     set w .fics
     toplevel $w
-    wm title $w "FICs : $::fics::reallogin"
+    wm title $w "Free Internet Chess Server ($::fics::reallogin)"
     wm state $w withdrawn
     
     frame $w.console
@@ -251,7 +252,7 @@ namespace eval fics {
     # just didn't work, and also conflicted with the universal setWinSize procedure
 
     ### need a config option here... Somewhere! &&&
-    text $w.console.text -bg $::fics::consolebg -fg $::fics::consolefg -wrap word -yscrollcommand "$w.console.scroll set" -width 40 -height 10 -font font_Large
+    text $w.console.text -bg $::fics::consolebg -fg $::fics::consolefg -wrap word -yscrollcommand "$w.console.scroll set" -width 40 -height 10 -font font_Fixed
     ### is font_Regular working here ? &&&
     bindMouseWheel $w $w.console.text 
 
@@ -303,33 +304,36 @@ namespace eval fics {
     grid $w.bottom.buttons.offers       -column 2 -row $row -sticky w -padx 2 -pady 2
 
     incr row
-    button $w.bottom.buttons.findopp -text "Find Opponent" -command { ::fics::findOpponent }
-    button $w.bottom.buttons.clear   -text "Clear" -command "
+    button $w.bottom.buttons.clear -text Clear -command "
       $w.console.text delete 0.0 end
       $w.console.text insert 0.0 \"FICs (Scid Vs PC $::scidvspcVersion)\n\"
     "
-    button $w.bottom.buttons.info    -text "Info" -command {
-      ::fics::writechan "finger"
-      ::fics::writechan "history"
+    button $w.bottom.buttons.info  -text Info -command {
+      ::fics::writechan finger
+      ::fics::writechan history
+    }
+    button $w.bottom.buttons.font -text Font -command {
+      set fontOptions(temp) [FontDialog Fixed .fics]
+      if {$fontOptions(temp) != ""} { set fontOptions(Fixed) $fontOptions(temp) }
     }
     set ::fics::graphon 0
 
-    grid $w.bottom.buttons.findopp -column 0 -row $row -sticky ew -padx 3 -pady 2
-    grid $w.bottom.buttons.info    -column 1 -row $row -sticky ew -padx 3 -pady 2
-    grid $w.bottom.buttons.clear   -column 2 -row $row -sticky ew -padx 3 -pady 2
+    grid $w.bottom.buttons.info  -column 0 -row $row -sticky ew -padx 3 -pady 2
+    grid $w.bottom.buttons.clear -column 1 -row $row -sticky ew -padx 3 -pady 2
+    grid $w.bottom.buttons.font  -column 2 -row $row -sticky ew -padx 3 -pady 2
 
     incr row
-    button $w.bottom.buttons.draw   -text "Offer Draw" -command { ::fics::writechan "draw"}
-    button $w.bottom.buttons.resign -text "Resign" -command { ::fics::writechan "resign"}
-    button $w.bottom.buttons.abort  -text "Rematch" -command { ::fics::writechan "rematch" }
+    button $w.bottom.buttons.draw   -text {Offer Draw} -command { ::fics::writechan draw }
+    button $w.bottom.buttons.resign -text Resign       -command { ::fics::writechan resign }
+    button $w.bottom.buttons.abort  -text Rematch      -command { ::fics::writechan rematch }
     grid $w.bottom.buttons.draw   -column 0 -row $row -sticky ew -padx 3 -pady 2
     grid $w.bottom.buttons.resign -column 1 -row $row -sticky ew -padx 3 -pady 2
     grid $w.bottom.buttons.abort  -column 2 -row $row -sticky ew -padx 3 -pady 2
 
     incr row
-    button $w.bottom.buttons.takeback -text "Take Back" -command { ::fics::writechan "takeback"}
-    button $w.bottom.buttons.takeback2 -text "Take Back 2" -command { ::fics::writechan "takeback 2"}
-    button $w.bottom.buttons.help  -text "Help" -command { helpWindow FICS }
+    button $w.bottom.buttons.takeback  -text {Take Back}   -command { ::fics::writechan takeback}
+    button $w.bottom.buttons.takeback2 -text {Take Back 2} -command { ::fics::writechan {takeback 2}}
+    button $w.bottom.buttons.help      -text Help          -command { helpWindow FICS }
     grid $w.bottom.buttons.takeback  -column 0 -row $row -sticky ew -padx 3 -pady 2
     grid $w.bottom.buttons.takeback2 -column 1 -row $row -sticky ew -padx 3 -pady 2
     grid $w.bottom.buttons.help      -column 2 -row $row -sticky ew -padx 3 -pady 2
@@ -339,8 +343,10 @@ namespace eval fics {
     grid  $w.bottom.buttons.space -column 0 -row $row -columnspan 3 -sticky ew -pady 3
 
     incr row
-    button $w.bottom.buttons.cancel -text "Quit FICs" -command { ::fics::close }
-    grid $w.bottom.buttons.cancel -column 1 -row $row -sticky ew -padx 3 -pady 2
+    button $w.bottom.buttons.findopp -text {Find Opponent} -command { ::fics::findOpponent }
+    button $w.bottom.buttons.cancel -text {Quit FICs} -command { ::fics::close }
+    grid $w.bottom.buttons.findopp -column 0 -row $row -sticky ew -padx 3 -pady 2
+    grid $w.bottom.buttons.cancel -column 2 -row $row -sticky ew -padx 3 -pady 2
     
     bind $w <Control-q> "catch ::fics::close"
     bind $w <Destroy>   "catch ::fics::close"
@@ -478,23 +484,27 @@ namespace eval fics {
 
     set row 0
 
-    checkbutton $w.cbrated -text "Rated game" -onvalue "rated" -offvalue "unrated" -variable ::fics::findopponent(rated)
+    checkbutton $w.cbrated -text {Rated game} -onvalue rated -offvalue unrated -variable ::fics::findopponent(rated)
     grid $w.cbrated -column 1 -row $row -sticky w
+    
+    incr row
+    checkbutton $w.cbmanual -text {Confirm manually} -onvalue manual -offvalue auto -variable ::fics::findopponent(manual)
+    grid $w.cbmanual -column 1 -row $row -sticky w
 
     incr row
     frame $w.space$row -height 2 -borderwidth 0
     grid  $w.space$row -column 0 -row $row -columnspan 3 -sticky ew -pady 3
 
     incr row
-    label $w.linit -text "Initial time (min)"
-    spinbox $w.sbTime1 -width 3 -textvariable ::fics::findopponent(initTime) -from 0 -to 120 -increment 1 -validate all -vcmd { regexp {^[0-9]+$} %P }
-    label $w.linc -text "Increment (sec)"
-    spinbox $w.sbTime2 -width 3 -textvariable ::fics::findopponent(incTime) -from 0 -to 120 -increment 1 -validate all -vcmd { regexp {^[0-9]+$} %P }
+    label $w.linit -text {Time (minutes)}
+    spinbox $w.sbTime1 -width 7 -textvariable ::fics::findopponent(initTime) -from 0 -to 120 -increment 1
+    label $w.linc -text {Increment (seconds)}
+    spinbox $w.sbTime2 -width 7 -textvariable ::fics::findopponent(incTime) -from 0 -to 120 -increment 1
     grid $w.linit   -column 0 -row $row -sticky ew -padx 5
-    grid $w.sbTime1 -column 1 -row $row -sticky ew -padx 5
+    grid $w.sbTime1 -column 1 -row $row -padx 5
     incr row
     grid $w.linc    -column 0 -row $row -sticky ew -padx 5
-    grid $w.sbTime2 -column 1 -row $row -sticky ew -padx 5
+    grid $w.sbTime2 -column 1 -row $row -padx 5
     
     incr row
     frame $w.space$row -height 2 -borderwidth 0
@@ -505,9 +515,9 @@ namespace eval fics {
     grid $w.color -column 1 -row $row
     
     incr row
-    radiobutton $w.rb2 -text "White" -value "white" -variable ::fics::findopponent(color)
-    radiobutton $w.rb3 -text "Black" -value "black" -variable ::fics::findopponent(color)
-    radiobutton $w.rb1 -text "Auto" -value "" -variable ::fics::findopponent(color)
+    radiobutton $w.rb2 -text White -value white -variable ::fics::findopponent(color)
+    radiobutton $w.rb3 -text Black -value black -variable ::fics::findopponent(color)
+    radiobutton $w.rb1 -text Auto  -value auto  -variable ::fics::findopponent(color)
     grid $w.rb1 -column 0 -row $row -ipadx 5
     grid $w.rb2 -column 1 -row $row -ipadx 5
     grid $w.rb3 -column 2 -row $row -ipadx 5
@@ -517,48 +527,53 @@ namespace eval fics {
     grid  $w.space$row -column 0 -row $row -columnspan 3 -sticky ew -pady 3
 
     incr row
-    checkbutton $w.cblimitrating -text "Rating between" -variable ::fics::findopponent(limitrating)
-    spinbox $w.sbrating1 -width 4 -textvariable ::fics::findopponent(rating1) -from 1000 -to 2800 -increment 50 -validate all -vcmd { regexp {^[0-9]+$} %P }
-    spinbox $w.sbrating2 -width 4 -textvariable ::fics::findopponent(rating2) -from 1000 -to 2800 -increment 50 -validate all -vcmd { regexp {^[0-9]+$} %P }
+    checkbutton $w.cblimitrating -text {Rating between} -variable ::fics::findopponent(limitrating)
+    spinbox $w.sbrating1 -width 7 -textvariable ::fics::findopponent(rating1) \
+	-from 800 -to 2800 -increment 50
+    spinbox $w.sbrating2 -width 7 -textvariable ::fics::findopponent(rating2) \
+	-from 800 -to 2800 -increment 50 
 
     grid $w.cblimitrating -column 0 -row $row -sticky w
     grid $w.sbrating1     -column 1 -row $row
     grid $w.sbrating2     -column 2 -row $row
-    
-    incr row
-    checkbutton $w.cbmanual -text "Confirm manually" -onvalue "manual" \
-      -offvalue "auto" -variable ::fics::findopponent(manual)
-    grid $w.cbmanual -column 0 -row $row -sticky w
 
     incr row
-    checkbutton $w.cbformula -text "Filter with formula" -onvalue "formula" \
-      -offvalue "" -variable ::fics::findopponent(formula)
+    checkbutton $w.cbformula -text {Filter with formula} -onvalue formula \
+      -offvalue none -variable ::fics::findopponent(formula)
     grid $w.cbformula -column 0 -row $row -sticky w
 
     incr row
     frame $w.space$row -height 2 -borderwidth 2 -relief sunken
     grid  $w.space$row -column 0 -row $row -columnspan 3 -sticky ew -pady 3
     
-    button $w.seek -text "Issue seek" -command {
+    button $w.seek -text {Make Offer} -command {
       set range ""
       if {$::fics::findopponent(limitrating) } {
         set range "$::fics::findopponent(rating1)-$::fics::findopponent(rating2)"
       }
+
+      # can't use a blank value in radiobuttons/checkbuttons... they look stupid
+	set color $::fics::findopponent(color)
+	if {$::fics::findopponent(color) == "auto"} { set color {} }
+	set formula $::fics::findopponent(formula)
+	if {$::fics::findopponent(formula) == "none"} { set formula {} }
+
       set cmd "seek $::fics::findopponent(initTime) $::fics::findopponent(incTime) \
-               $::fics::findopponent(rated) $::fics::findopponent(color) \
-               $::fics::findopponent(manual) $::fics::findopponent(formula) $range"
+               $::fics::findopponent(rated) $color \
+               $::fics::findopponent(manual) $formula $range"
       ::fics::writechan $cmd
       destroy .ficsfindopp
-    } -width 12
-    button $w.help   -text "Help" -command "helpWindow FICSfindOpp" -width 12
-    button $w.cancel -text "Cancel" -command "destroy $w" -width 12
+      ::fics::initOffers
+    } -width 10
+    button $w.help   -text "Help" -command "helpWindow FICSfindOpp" -width 10
+    button $w.cancel -text "Cancel" -command "destroy $w" -width 10
 
     bind $w <F1> { helpWindow FICSfindOpp}
 
     incr row
     grid $w.seek   -column 0 -row $row -padx 3 -pady 8
-    grid $w.help   -column 1 -row $row -padx 3 -pady 8
-    grid $w.cancel -column 2 -row $row -padx 3 -pady 8
+    grid $w.help   -column 1 -row $row -padx 3 -pady 8 -sticky e
+    grid $w.cancel -column 2 -row $row -padx 3 -pady 8 -sticky e
 
     update
     placeWinOverParent $w .fics
@@ -693,6 +708,8 @@ namespace eval fics {
     updateConsole $line
     
     if {[string match "Creating: *" $line]} {
+      catch {destroy .ficsOffers}
+
       # hide offers graph
       if { $::fics::graphon } {
         .fics.bottom.buttons.offers invoke
@@ -821,54 +838,58 @@ namespace eval fics {
     }
     
     if {[string match "Challenge:*" $line]} {
-      set ans [tk_messageBox -icon question -title "Challenge" -message \
-                  "$line
-
-Do you wish to Accept ?" -type yesno -parent .fics ]
-      if {$ans == "yes"} {
-        writechan "accept"
-      } else {
-        writechan "decline"
-      }
+	if {$::fics::findopponent(manual) == {auto}} {
+            writechan accept
+	} else {
+	    ::fics::addOffer $line
+	}
     }
-    
+
+    if {[string match "Challenge * removed*" $line]} {
+	::fics::delOffer [string tolower [lindex [split $line] 2]]
+    }
+
+    if {[string match "* withdraws * offer" $line]} {
+	::fics::delOffer [string tolower [lindex [split $line] 0]]
+    }
+
     # abort request
     if {[string match "* would like to abort the game;*" $line]} {
-      set ans [tk_messageBox -title "Abort" -icon question -type yesno -message "$line\nDo you accept ?" ]
+      set ans [tk_messageBox -title Abort -icon question -type yesno -message "$line\nDo you accept ?" ]
       if {$ans == yes} {
-        writechan "accept"
+        writechan accept
       } else {
-        writechan "decline"
+        writechan decline
       }
     }
     
     # takeback
     if {[string match "* would like to take back *" $line]} {
-      set ans [tk_messageBox -title "Abort" -icon question -type yesno -message "$line\nDo you accept ?" ]
+      set ans [tk_messageBox -title {Take Back} -icon question -type yesno -message "$line\nDo you accept ?" ]
       if {$ans == yes} {
-        writechan "accept"
+        writechan accept
       } else {
-        writechan "decline"
+        writechan decline
       }
     }
     
     # draw
     if {[string match "*offers you a draw*" $line]} {
-      set ans [tk_messageBox -title "Abort" -icon question -type yesno -message "$line\nDo you accept ?" ]
+      set ans [tk_messageBox -title {Draw Offered} -icon question -type yesno -message "$line\nDo you accept ?" ]
       if {$ans == yes} {
-        writechan "accept"
+        writechan accept
       } else {
-        writechan "decline"
+        writechan decline
       }
     }
     
     # adjourn
     if {[string match "*would like to adjourn the game*" $line]} {
-      set ans [tk_messageBox -title "Abort" -icon question -type yesno -message "$line\nDo you accept ?" ]
+      set ans [tk_messageBox -title {Adjourn Offered} -icon question -type yesno -message "$line\nDo you accept ?" ]
       if {$ans == yes} {
-        writechan "accept"
+        writechan accept
       } else {
-        writechan "decline"
+        writechan decline
       }
     }
     
@@ -876,7 +897,7 @@ Do you wish to Accept ?" -type yesno -parent .fics ]
     if {[string match "Logging you in as*" $line]} {
       set line [string map {"\"" "" ";" ""} $line ]
       set ::fics::reallogin [lindex $line 4]
-      wm title .fics "FICs : $::fics::reallogin"
+      wm title .fics "Free Internet Chess Server ($::fics::reallogin)"
     }
     if {[string match "Press return to enter the server as*" $line]} {
       writechan "\n"
@@ -907,6 +928,122 @@ Do you wish to Accept ?" -type yesno -parent .fics ]
     if {$pos == 1.0} {
       $t yview moveto 1
     }
+  }
+
+  ################################################################################
+  # New Fics Offer widgets S.A.
+  ################################################################################
+
+  ### Init 
+
+  proc initOffers {} {
+    set w .ficsOffers
+
+    if {[winfo exists $w]} {return}
+
+    toplevel $w
+    wm state $w withdrawn
+    wm title $w "Fics Offers"
+    pack [label $w.title -text "Offers for $::fics::reallogin" -font font_Regular] -side top -padx 20 -pady 5
+
+    pack [button $w.cancel -text "Cancel" \
+	-command "::fics::writechan unseek ; destroy $w"] -side bottom -pady 5
+    pack [frame $w.line -height 2 -borderwidth 2 -relief sunken -background white] \
+        -fill x -expand 1 -side bottom -pady 2
+
+    set ::fics::Offers 0
+    ::fics::checkZeroOffers 0
+
+    update
+    placeWinOverParent $w .fics
+    wm state $w normal
+  }
+
+  ### Add Offer
+
+  proc addOffer {line} {
+
+    if {![winfo exists .ficsOffers]} {
+	::fics::initOffers
+    }
+
+   
+    set PLAYER [lindex [split $line] 1]
+    set player [string tolower $PLAYER]
+    # set elo [string trimright [lindex [split $line] 3] )]
+    if { [regexp {\(----\).*([0-9][0-9][0-9])} $line ] || \
+         [regexp {\(----\).*\(----\)} $line ] } {
+	set elo {unrated}
+    } else {
+        regexp {([0-9]+)} $line elo 
+    }
+    if {"$player" == ""} {
+       puts "Fics:Empty player offer!"
+       return
+    }
+
+    set f .ficsOffers.$player
+
+    if {[winfo exists $f]} { 
+	return
+    }
+
+    ::fics::checkZeroOffers +1
+
+    pack [frame $f] -side top -padx 5 -pady 5
+    pack [label $f.name -text "$PLAYER ($elo)" -width 20] -side left
+    pack [button $f.decline -text "decline" \
+	-command "::fics::writechan \"decline $PLAYER\" ; destroy $f ; ::fics::checkZeroOffers -1" ] -side right -padx 5
+    pack [button $f.accept -text "accept" \
+	-command "::fics::writechan \"accept $PLAYER\"  ; destroy $f ; ::fics::checkZeroOffers -1" ] -side right -padx 5
+    update
+
+  }
+
+  ### Delete Offer 
+
+  proc delOffer {player} {
+  # Challenge from PLAYER removed.
+
+    if {![winfo exists .ficsOffers]} {
+	return
+    }
+
+    if {"$player" == ""} {
+       puts "Fics:Empty player offer!"
+       return
+    }
+
+    if {[winfo exists .ficsOffers.$player]} { 
+	destroy .ficsOffers.$player
+	::fics::checkZeroOffers -1
+    }
+  }
+
+  ### update the number of offers, and draw a blank frame if there's none
+
+  proc checkZeroOffers {n} {
+
+    set f .ficsOffers.blank
+
+    incr ::fics::Offers $n
+
+    if {$::fics::Offers <= 0} {
+      if {$::fics::findopponent(manual) == {auto}} {
+	  pack [frame $f] -side top -padx 5 -pady 5
+	  pack [label $f.name -text "Awaiting offer" -width 20] -padx 10
+      } else {
+	if {![winfo exists $f]} {
+	  pack [frame $f] -side top -padx 5 -pady 5
+	  pack [label $f.name -text "No offers" -state disabled -width 20] -side left 
+	  pack [button $f.decline -text "decline" -state disabled ] -side right -padx 5
+	  pack [button $f.accept -text "accept" -state disabled ] -side right -padx 5
+	}
+      }
+    } else {
+      destroy $f
+    }
+    update
   }
 
   ################################################################################
@@ -1315,6 +1452,7 @@ Do you wish to Accept ?" -type yesno -parent .fics ]
     }
     if { ! $::windowsOS } { catch { exec -- kill -s INT [ $::fics::timeseal_pid ] }  }
 
+    catch {destroy .ficsOffers}
     destroy .fics
   }
 }
