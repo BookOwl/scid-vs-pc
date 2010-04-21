@@ -113,17 +113,17 @@ menuText E EditStripEnd "Moves to the end" 0 \
   {Strip moves to the end of the game}
 menuText E EditReset "Empty Clipbase" 0 \
   {Reset the clipbase to be completely empty}
-menuText E EditCopy "Copy This Game to Clipbase" 0 \
+menuText E EditCopy "Copy This Game to Clipbase" 1 \
   {Copy this game to the Clipbase database}
-menuText E EditPaste "Paste Last Clipbase Game" 0 \
+menuText E EditPaste "Paste Last Clipbase Game" 1 \
   {Paste the active Clipbase game here}
-menuText E EditPastePGN "Paste Clipboard text as PGN game..." 18 \
-  {Interpret the clipboard text as a game in PGN notation and paste it here}
-menuText E EditSetup "Setup Start Board..." 0 \
+menuText E EditPastePGN "Paste PGN" 18 \
+  {Interpret the clipboard text as PGN and paste it here}
+menuText E EditSetup "Setup Board" 0 \
   {Set the start position for this game}
-menuText E EditCopyBoard "Copy Position" 6 \
+menuText E EditCopyBoard "Copy FEN" 0 \
   {Copy the current board in FEN notation to the text selection (clipboard)}
-menuText E EditPasteBoard "Paste Start Board" 12 \
+menuText E EditPasteBoard "Paste FEN" 0 \
   {Set the start board from the current text selection (clipboard)}
 
 # Game menu:

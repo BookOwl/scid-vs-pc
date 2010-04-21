@@ -16,14 +16,14 @@ proc importPgnGame {} {
 
   set pane [::utils::pane::Create $w.pane edit err 650 350 0.7]
   pack $pane -side top -expand true -fill both
+
   set edit $w.pane.edit
   text $edit.text -height 12 -width 80 -wrap word -background white \
       -yscroll "$edit.ybar set" -xscroll "$edit.xbar set"  -setgrid 1
   # Override tab-binding for this widget:
   bind $edit.text <Key-Tab> "[bind all <Key-Tab>]; break"
   scrollbar $edit.ybar -command "$edit.text yview" -takefocus 0
-  scrollbar $edit.xbar -orient horizontal -command "$edit.text xview" \
-      -takefocus 0
+  scrollbar $edit.xbar -orient horizontal -command "$edit.text xview" -takefocus 0
   grid $edit.text -row 0 -column 0 -sticky nesw
   grid $edit.ybar -row 0 -column 1 -sticky nesw
   grid $edit.xbar -row 1 -column 0 -sticky nesw
@@ -183,18 +183,19 @@ proc doPgnFileImport {fname text {multiple 0} } {
     } 
     toplevel $w
     wm title $w "Scid: Importing PGN file"
-    canvas $w.progress -width 400 -height 20 -bg white -relief solid -border 1
-    $w.progress create rectangle 0 0 0 0 -fill blue -outline blue -tags bar
-    $w.progress create text 395 10 -anchor e -font font_Regular -tags time \
+
+    canvas $w.progress -width 500 -height 20 -bg white -relief solid 
+    $w.progress create rectangle 0 0 0 0 -fill rosybrown3 -outline rosybrown3 -tags bar
+    $w.progress create text 495 10 -anchor e -font font_Regular -tags time \
         -fill black -text "0:00 / 0:00"
-    
-    pack $w.progress -side bottom
     
     frame $w.buttons
     pack $w.buttons -side bottom -fill x
-    button $w.buttons.stop -textvar ::tr(Stop) -command {sc_progressBar}
-    button $w.buttons.close -textvar ::tr(Close) -command "focus .; destroy $w"
-    pack $w.buttons.close $w.buttons.stop -side right -ipadx 5 -padx 5 -pady 2
+    pack $w.progress -side bottom -pady 7
+
+    dialogbutton $w.buttons.stop -textvar ::tr(Stop) -command {sc_progressBar}
+    dialogbutton $w.buttons.close -textvar ::tr(Close) -command "focus .; destroy $w"
+    pack $w.buttons.close $w.buttons.stop -side right -padx 5 -pady 5
     
     pack [frame $w.tf] -side top -expand yes -fill both
     text $w.text -height 8 -width 60 -background gray90 \
@@ -204,7 +205,7 @@ proc doPgnFileImport {fname text {multiple 0} } {
     pack $w.text -in $w.tf -side left -fill both -expand yes
   }
   
-  sc_progressBar $w.progress bar 401 21 time
+  sc_progressBar $w.progress bar 501 21 time
   update
   busyCursor .
   catch {grab $w.buttons.stop}

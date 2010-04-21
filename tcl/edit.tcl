@@ -39,20 +39,24 @@ proc pasteFEN {} {
   }
   set fenStr [string trim $fenStr]
 
-  set fenExplanation {FEN is the standard text representation of a chess position. As an example, the FEN representation of the standard starting position is:
+  set fenExplanation {FEN is the standard representation of a chess position, for example:
+
 "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"}
 
   if {$fenStr == ""} {
-    set msg "The current text selection is empty. To paste the start board, select some text that contains a position in FEN notation.\n\n$fenExplanation"
+    set msg "The current clipboard is empty. To paste the start board, select some text that contains a position in FEN notation.\n\n$fenExplanation"
     fenErrorDialog $msg
     return
   }
   if {[catch {sc_game startBoard $fenStr}]} {
+    # Trim length, and remove newlines for error dialog
     if {[string length $fenStr] > 80} {
       set fenStr [string range $fenStr 0 80]
       append fenStr "..."
     }
-    set msg "\"$fenStr\" is not a valid chess position in FEN notation.\n\n $fenExplanation"
+    set fenStr [string map {\n { }} $fenStr]
+
+    set msg "The current clipboard, \"$fenStr\" is not a valid FEN.\n\n $fenExplanation"
 
     fenErrorDialog $msg
     return
@@ -68,7 +72,6 @@ proc setSetupBoardToFen {w setupFen} {
   # game poisiotn can still be had, but game history is lost
 
   global setupboardSize setupBd
-
 
   if {[catch {sc_game startBoard $setupFen} err]} {
     fenErrorDialog $err
