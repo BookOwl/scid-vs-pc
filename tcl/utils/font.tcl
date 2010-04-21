@@ -5,18 +5,63 @@
 # at codearchive.com (I dont think there was an author listed for it) and
 # simplified it for use with Scid.
 
+proc FontDialogFixed {parent} {
+  global fontOptions
+
+  set fontOptions(temp) [FontDialog Fixed $parent]
+  if {$fontOptions(temp) != {}} { set fontOptions(Fixed) $fontOptions(temp) }
+}
+
+proc FontDialogRegular {parent} {
+  global fontOptions
+
+  set fontOptions(temp) [FontDialog Regular $parent]
+  if {$fontOptions(temp) != {}} { set fontOptions(Regular) $fontOptions(temp) }
+
+  set font [font configure font_Regular -family]
+  set fontsize [font configure font_Regular -size]
+  font configure font_Bold -family $font -size $fontsize
+  font configure font_Italic -family $font -size $fontsize
+  font configure font_BoldItalic -family $font -size $fontsize
+  font configure font_H1 -family $font -size [expr {$fontsize + 8} ]
+  font configure font_H2 -family $font -size [expr {$fontsize + 6} ]
+  font configure font_H3 -family $font -size [expr {$fontsize + 4} ]
+  font configure font_H4 -family $font -size [expr {$fontsize + 2} ]
+  font configure font_H5 -family $font -size [expr {$fontsize + 0} ]
+}
+
+proc FontDialogMenu {parent} {
+  global fontOptions
+
+  set fontOptions(temp) [FontDialog Menu $parent]
+  if {$fontOptions(temp) != ""} { set fontOptions(Menu) $fontOptions(temp) }
+}
+
+proc FontDialogSmall {parent} {
+  global fontOptions
+
+  set fontOptions(temp) [FontDialog Small $parent]
+  if {$fontOptions(temp) != ""} { set fontOptions(Small) $fontOptions(temp) }
+
+  set font [font configure font_Small -family]
+  set fontsize [font configure font_Small -size]
+  font configure font_SmallBold -family $font -size $fontsize
+  font configure font_SmallItalic -family $font -size $fontsize
+}
+
 # FontDialog:
 #   Creates a font dialog to select a font.
 #   Returns 1 if user chose a font, 0 otherwise.
-#
-proc FontDialog {font_name {parent .}} {
+#   Returns ... something S.A
+
+proc FontDialog {name {parent .}} {
   global fd_family fd_style fd_size fd_close
   global fd_strikeout fd_underline fontOptions
 
-  set options $fontOptions($font_name)
-  set fixedOnly [expr {$font_name == "Fixed"}]
-  set title $font_name
-  set font_name font_$font_name
+  set options $fontOptions($name)
+  set fixedOnly [expr {$name == "Fixed"}]
+  set title $name
+  set font_name font_$name
 
   set fd_family {}; set fd_style {}; set fd_size {}
   set fd_close  -1
@@ -64,32 +109,32 @@ proc FontDialog {font_name {parent .}} {
   set fd_size   $size
 
   # Create font dialog.
-  set dlg .fontdialog
-  toplevel $dlg
-  wm state $dlg withdrawn
-  wm protocol $dlg WM_DELETE_WINDOW "set fd_close 0"
-  wm title $dlg "Scid: $title font"
+  set w .fontdialog
+  toplevel $w
+  wm state $w withdrawn
+  wm protocol $w WM_DELETE_WINDOW "set fd_close 0"
+  wm title $w "Scid: $title font"
 
-  label $dlg.family_lbl -text "Font:" -anchor w
-  entry $dlg.family_ent -textvariable fd_family -background white
-  bind  $dlg.family_ent <Key-Return> "FontDialogRegen $font_name"
-  grid config $dlg.family_lbl -column 0 -row 0 -sticky w
-  grid config $dlg.family_ent -column 0 -row 1 -sticky snew
+  label $w.family_lbl -text "Font:" -anchor w
+  entry $w.family_ent -textvariable fd_family -background white
+  bind  $w.family_ent <Key-Return> "FontDialogRegen $font_name"
+  grid config $w.family_lbl -column 0 -row 0 -sticky w
+  grid config $w.family_ent -column 0 -row 1 -sticky snew
 
-  label $dlg.style_lbl  -text "Font Style:" -anchor w
-  entry $dlg.style_ent  -textvariable fd_style -width 11 -background white
-  bind  $dlg.style_ent  <Key-Return>  "FontDialogRegen $font_name"
-  grid config $dlg.style_lbl  -column 1 -row 0 -sticky w
-  grid config $dlg.style_ent  -column 1 -row 1 -sticky snew
+  label $w.style_lbl  -text "Font Style:" -anchor w
+  entry $w.style_ent  -textvariable fd_style -width 11 -background white
+  bind  $w.style_ent  <Key-Return>  "FontDialogRegen $font_name"
+  grid config $w.style_lbl  -column 1 -row 0 -sticky w
+  grid config $w.style_ent  -column 1 -row 1 -sticky snew
 
-  label $dlg.size_lbl   -text "Size:" -anchor w
-  entry $dlg.size_ent   -textvariable fd_size -width 4 -background white
-  bind  $dlg.size_ent   <Key-Return> "FontDialogRegen $font_name"
-  grid config $dlg.size_lbl   -column 2 -row 0 -sticky w
-  grid config $dlg.size_ent   -column 2 -row 1 -sticky snew
+  label $w.size_lbl   -text "Size:" -anchor w
+  entry $w.size_ent   -textvariable fd_size -width 4 -background white
+  bind  $w.size_ent   <Key-Return> "FontDialogRegen $font_name"
+  grid config $w.size_lbl   -column 2 -row 0 -sticky w
+  grid config $w.size_ent   -column 2 -row 1 -sticky snew
 
   # Font family listbox.
-  set fr $dlg.family_list
+  set fr $w.family_list
   frame $fr -bd 0
   listbox $fr.list -height 6 -selectmode single -width 30 \
     -background white -yscrollcommand "$fr.scroll set"
@@ -100,14 +145,14 @@ proc FontDialog {font_name {parent .}} {
   }
 
   bind $fr.list <Double-Button-1> \
-    "FontDialogFamily $fr.list $font_name $dlg.family_ent"
+    "FontDialogFamily $fr.list $font_name $w.family_ent"
 
   pack $fr.scroll -side right -fill y
   pack $fr.list -side left
   grid config $fr -column 0 -row 2 -rowspan 16
 
   # Font style listbox.
-  set fr $dlg.style_list
+  set fr $w.style_list
   frame $fr -bd 0
   listbox $fr.list -height 6 -selectmode single -width 11 \
     -background white -yscrollcommand "$fr.scroll set"
@@ -119,14 +164,14 @@ proc FontDialog {font_name {parent .}} {
   $fr.list insert end "Bold Italic"
 
   bind $fr.list <Double-Button-1> \
-    "FontDialogStyle $fr.list $font_name $dlg.style_ent"
+    "FontDialogStyle $fr.list $font_name $w.style_ent"
 
   pack $fr.scroll -side right -fill y
   pack $fr.list -side left
   grid config $fr -column 1 -row 2 -rowspan 16
 
   # Font size listbox.
-  set fr $dlg.size_list
+  set fr $w.size_list
   frame $fr -bd 0
   listbox $fr.list -height 6 -selectmode single -width 4 \
     -background white -yscrollcommand "$fr.scroll set"
@@ -136,27 +181,41 @@ proc FontDialog {font_name {parent .}} {
     $fr.list insert end $i
   }
 
-  bind $fr.list <Double-Button-1> \
-    "FontDialogSize $fr.list $font_name $dlg.size_ent"
+  bind $fr.list <Double-Button-1> "FontDialogSize $fr.list $font_name $w.size_ent"
 
   pack $fr.scroll -side right -fill y
   pack $fr.list -side left
   grid config $fr -column 2 -row 2 -rowspan 16
 
-  # OK/Cancel
-  set fr $dlg.ok_cancel
+  # Buttons
+  set fr $w.buttons
   frame $fr -bd 0
 
-  button $fr.ok -text "OK" -command "FontDialogRegen $font_name ; set fd_close 1"
-  button $fr.cancel  -text "Cancel" -command "set fd_close 0"
+  # God f-ing knows what's happening here
+  # Tcl sucks so bad when design is bad
+  # Fonts are powerful... but a mess S.A.
+
+  button $fr.ok -text OK -command "
+    FontDialogRegen $font_name
+    set fd_close 1
+  "
+  button $fr.cancel  -text Cancel -command {
+    set fd_close 0
+  }
+  button $fr.default -text Default -command "
+    reinitFont $name
+    FontDialogFamily $fr.list $font_name $w.family_ent
+    FontDialogStyle $fr.list $font_name $w.style_ent
+    FontDialogSize $fr.list $font_name $w.size_ent
+    set fd_close 2
+  "
   pack $fr.ok -side top -fill x
+  pack $fr.default -side top -fill x -pady 10
   pack $fr.cancel -side top -fill x -pady 2
-  button $fr.help -text "Help" -command "helpWindow Options"
-  pack $fr.help -side top -fill x -pady 10
   grid config $fr -column 4 -row 1 -rowspan 2 -sticky snew -padx 12
 
   # Sample text
-  set fr $dlg.sample
+  set fr $w.sample
   frame $fr -bd 3 -relief groove
   label $fr.l_sample -text "Sample" -anchor w
 
@@ -169,26 +228,34 @@ proc FontDialog {font_name {parent .}} {
   grid config $fr -column 0 -columnspan 3 -row 20 \
     -rowspan 2 -sticky snew -pady 10 -padx 2
 
-  bind $dlg <Escape> "$dlg.ok_cancel.cancel invoke"
+  bind $w <Escape> "$w.buttons.cancel invoke"
   update
-  placeWinOverParent $dlg $parent
-  wm state $dlg normal
+  placeWinOverParent $w $parent
+  wm state $w normal
 
-  # Make this a modal dialog.
+  ### Tried to change this thing... but gave up ! S.A
+
+  # Make this a modal dialog. 
+
   tkwait variable fd_close
 
-  # Get rid of dialog and return value.
-  destroy $dlg
+  destroy $w
 
-  # Restore old font characteristics on a cancel:
+  # Cancel button
+  # Restore old font characteristics
   if { $fd_close == 0 } {
     font configure $font_name -family $family \
       -size $size -slant $slant -weight $weight
-    return ""
+    return {}
   }
 
-  return [list $fd_family $fd_size \
-            [FontWeight $fd_style] [FontSlant $fd_style]]
+  # Ok button
+  if { $fd_close == 1 } {
+    return [list $fd_family $fd_size [FontWeight $fd_style] [FontSlant $fd_style]]
+  } else {
+  # Default button
+    return {}
+  }
 }
 
 

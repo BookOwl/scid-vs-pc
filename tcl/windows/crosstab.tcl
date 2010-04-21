@@ -62,7 +62,7 @@ proc ::crosstab::OpenClose {} {
 }
 
 proc ::crosstab::Open {} {
-  global crosstab crosstabWin fontOptions
+  global crosstab crosstabWin
 
   set w .crosstabWin
 
@@ -283,10 +283,7 @@ proc ::crosstab::Open {} {
   frame $w.b.space -width 20
   label $w.b.label -text Format
 
-  button $w.b.font -text Font -command {
-    set fontOptions(temp) [FontDialog Fixed .crosstabWin]
-    if {$fontOptions(temp) != ""} { set fontOptions(Fixed) $fontOptions(temp) }
-  }
+  button $w.b.font -text Font -command {FontDialogFixed .crosstabWin}
   pack $w.b.cancel $w.b.update -side right -pady 3 -padx 5
   pack $w.b.setfilter $w.b.addfilter $w.b.space $w.b.label $w.b.type $w.b.font -side left -pady 3 -padx 5
 

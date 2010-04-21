@@ -1160,41 +1160,24 @@ set m .menu.options.fonts
 menu $m -tearoff -1
 
 $m add command -label OptionsFontsRegular -underline 0 -command {
-  set fontOptions(temp) [FontDialog Regular]
-  if {$fontOptions(temp) != ""} { set fontOptions(Regular) $fontOptions(temp) }
-  set font [font configure font_Regular -family]
-  set fontsize [font configure font_Regular -size]
-  font configure font_Bold -family $font -size $fontsize
-  font configure font_Italic -family $font -size $fontsize
-  font configure font_BoldItalic -family $font -size $fontsize
-  font configure font_H1 -family $font -size [expr {$fontsize + 8} ]
-  font configure font_H2 -family $font -size [expr {$fontsize + 6} ]
-  font configure font_H3 -family $font -size [expr {$fontsize + 4} ]
-  font configure font_H4 -family $font -size [expr {$fontsize + 2} ]
-  font configure font_H5 -family $font -size [expr {$fontsize + 0} ]
+    FontDialogRegular .
 }
-set helpMessage($m,0) OptionsFontsRegular
 
 $m add command -label OptionsFontsMenu -underline 0 -command {
-  set fontOptions(temp) [FontDialog Menu]
-  if {$fontOptions(temp) != ""} { set fontOptions(Menu) $fontOptions(temp) }
+    FontDialogMenu .
 }
-set helpMessage($m,1) OptionsFontsMenu
 
 $m add command -label OptionsFontsSmall -underline 0 -command {
-  set fontOptions(temp) [FontDialog Small]
-  if {$fontOptions(temp) != ""} { set fontOptions(Small) $fontOptions(temp) }
-  set font [font configure font_Small -family]
-  set fontsize [font configure font_Small -size]
-  font configure font_SmallBold -family $font -size $fontsize
-  font configure font_SmallItalic -family $font -size $fontsize
+    FontDialogSmall .
 }
-set helpMessage($m,2) OptionsFontsSmall
 
 $m add command -label OptionsFontsFixed -underline 0 -command {
-  set fontOptions(temp) [FontDialog Fixed]
-  if {$fontOptions(temp) != ""} { set fontOptions(Fixed) $fontOptions(temp) }
+    FontDialogFixed .
 }
+
+set helpMessage($m,0) OptionsFontsRegular
+set helpMessage($m,1) OptionsFontsMenu
+set helpMessage($m,2) OptionsFontsSmall
 set helpMessage($m,3) OptionsFontsFixed
 
 set m .menu.options.startup

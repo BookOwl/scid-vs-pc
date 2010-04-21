@@ -110,11 +110,12 @@ proc updateHelpWindow {name {heading {}}} {
     
     frame $w.b -relief raised -border 2
     pack $w.b -side bottom -fill x
-    button $w.b.contents -textvar ::tr(Contents) -command { helpWindow Contents }
-    button $w.b.index -textvar ::tr(Index) -command { helpWindow Index }
+    button $w.b.contents -textvar ::tr(Contents) -width 6 -command { helpWindow Contents }
+    button $w.b.index -textvar ::tr(Index) -width 6 -command { helpWindow Index }
     button $w.b.back -text "  << " -command { help_PopStack }
     button $w.b.forward -text "  >> " -command { help_MoveForward }
-    button $w.b.close -textvar ::tr(Close) -command {
+    button $w.b.font -text Font -width 6 -command "FontDialogRegular $w"
+    button $w.b.close -textvar ::tr(Close) -width 6 -command {
       set ::helpWin(Stack) {}
       set ::helpWin(yStack) {}
       set ::helpWin(index) -1
@@ -122,8 +123,9 @@ proc updateHelpWindow {name {heading {}}} {
       destroy .helpWin
     }
 
-    pack $w.b.back $w.b.contents $w.b.index $w.b.forward -side left -padx 5 -pady 2
-    pack $w.b.close -side right -padx 5 -pady 2
+    pack $w.b.back $w.b.contents $w.b.index $w.b.forward -side left -padx 3 -pady 2
+    pack $w.b.close -side right -padx 3 -pady 2
+    pack $w.b.font -side right -padx 3 -pady 2
     pack $w.scroll -side right -fill y -padx 2 -pady 2
     pack $w.text -fill both -expand 1 -padx 5
     

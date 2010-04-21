@@ -201,6 +201,11 @@ proc configureFont {name} {
       -weight [lindex $opts 2] -slant [lindex $opts 3]
 }
 
+proc reinitFont {name} {
+  set ::fontOptions($name) $::fontOptions(old$name)
+  configureFont $name
+}
+
 if {$windowsOS} {
   set fontOptions(Regular) [list Arial           10 normal roman]
   set fontOptions(Menu)    [list {MS Sans Serif}  9 normal roman]
