@@ -383,8 +383,8 @@ $m add command -label GameRandom -command ::game::LoadRandom -accelerator "Ctrl+
 bind . <Control-question> ::game::LoadRandom
 set helpMessage($m,[incr menuindex]) GameRandom
 
-$m add command -label GameNumber -command ::game::LoadNumber -accelerator "Ctrl+G"
-bind . <Control-g> ::game::LoadNumber
+$m add command -label GameNumber -command ::game::LoadNumber -accelerator "Ctrl+U"
+bind . <Control-u> ::game::LoadNumber
 set helpMessage($m,[incr menuindex]) GameNumber
 
 $m add separator
@@ -416,10 +416,10 @@ $m add command -label GameDeepest -accelerator "Ctrl+Shift+D" -command {
 bind . <Control-D> {sc_move ply [sc_eco game ply]; updateBoard}
 set helpMessage($m,[incr menuindex]) GameDeepest
 
-$m add command -label GameGotoMove -accelerator "Ctrl+U" \
+$m add command -label GameGotoMove -accelerator "Ctrl+G" \
     -command ::game::GotoMoveNumber
 set helpMessage($m,[incr menuindex]) GameGotoMove
-bind . <Control-u> ::game::GotoMoveNumber
+bind . <Control-g> ::game::GotoMoveNumber
 
 $m add command -label GameNovelty -accelerator "Ctrl+Shift+Y" \
     -command findNovelty
@@ -1587,7 +1587,8 @@ proc standardShortcuts {w} {
   bind $w <Control-Up> {::game::LoadNextPrev previous}
   bind $w <Control-Down> {::game::LoadNextPrev next}
   bind $w <Control-question> ::game::LoadRandom
-  bind $w <Control-g> ::game::LoadNumber
+  bind $w <Control-u> ::game::LoadNumber
+  bind $w <Control-g> ::game::GotoMoveNumber
   bind $w <Control-f> {if {!$tree(refresh)} {toggleRotateBoard}}
   bind $w <Control-B> ::search::board
   bind $w <Control-H> ::search::header

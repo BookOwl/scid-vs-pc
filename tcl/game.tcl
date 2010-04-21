@@ -297,7 +297,7 @@ proc ::game::GotoMoveNumber {} {
   label $w.label -text $::tr(GotoMoveNumber)
   pack $w.label -side top -pady 5 -padx 5
   
-  entry $w.entry -background white -width 10 -textvariable ::game::moveEntryNumber
+  entry $w.entry -width 8 -textvariable ::game::moveEntryNumber -borderwidth 0 ; # -justify right
   bind $w.entry <Escape> { .mnumDialog.buttons.cancel invoke }
   bind $w.entry <Return> { .mnumDialog.buttons.load invoke }
   pack $w.entry -side top -pady 5
@@ -321,9 +321,7 @@ proc ::game::GotoMoveNumber {} {
   }
   packbuttons right $b.cancel $b.load
   
-  set x [ expr {[winfo width .] / 4 + [winfo rootx .] } ]
-  set y [ expr {[winfo height .] / 4 + [winfo rooty .] } ]
-  wm geometry $w "+$x+$y"
+  placeWinOverParent $w .
   
   focus $w.entry
 }
