@@ -169,6 +169,7 @@ proc FontDialog {font_name {parent .}} {
   grid config $fr -column 0 -columnspan 3 -row 20 \
     -rowspan 2 -sticky snew -pady 10 -padx 2
 
+  bind $dlg <Escape> "$dlg.ok_cancel.cancel invoke"
   update
   placeWinOverParent $dlg $parent
   wm state $dlg normal

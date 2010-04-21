@@ -720,8 +720,11 @@ namespace eval uci {
     fileevent $pipe readable {}
     
     if {! $uciok } {
-      tk_messageBox -title "Scid: error closing UCI engine" \
-          -icon warning -type ok -message "Not an UCI engine"
+      if {[winfo exists .configSerGameWin]} {
+        tk_messageBox -title "Scid: error closing UCI engine" -icon warning -type ok -message "Not an UCI engine" -parent .configSerGameWin
+      } else {
+        tk_messageBox -title "Scid: error closing UCI engine" -icon warning -type ok -message "Not an UCI engine" 
+      }
     }
     
     # Some engines in analyze mode may not react as expected to "quit"
