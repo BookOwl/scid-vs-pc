@@ -29,9 +29,11 @@ if {$ecoFile == ""} {
 }
 
 # Spell-checking file: default is "spelling.ssp".
-if {$windowsOS} {
-  set spellCheckFile [file join $scidDataDir "spelling.ssp"]
-} else {
-  set spellCheckFile [file join $scidShareDir "spelling.ssp"]
+if {![info exists spellCheckFile]} {
+  if {$windowsOS} {
+    set spellCheckFile [file join $scidDataDir "spelling.ssp"]
+  } else {
+    set spellCheckFile [file join $scidShareDir "spelling.ssp"]
+  }
 }
 

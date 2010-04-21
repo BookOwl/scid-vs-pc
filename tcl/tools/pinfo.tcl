@@ -13,9 +13,13 @@ proc playerInfo {{player ""}} {
   set w .playerInfoWin
   if {! [winfo exists $w]} {
     toplevel $w
-    setWinLocation $w
     wm title $w "Scid: [tr ToolsPInfo]"
-    wm minsize $w 40 5
+    wm state $w withdrawn
+    setWinLocation $w
+
+    # this is a little broke S.A... might be due to autoscroll ?
+    wm minsize $w 400 550
+
     pack [frame $w.b2] -side bottom -fill x
     pack [frame $w.b] -side bottom
     button $w.b.graph -text [tr ToolsRating] \
@@ -54,9 +58,13 @@ proc playerInfo {{player ""}} {
     ::htext::updateRate $w.text 0
     bind $w <Escape> "focus .; destroy $w"
     bind $w <F1> {helpWindow PInfo}
-    bind $w <Configure> "recordWinSize $w"
     standardShortcuts $w
+
     setWinSize $w
+    update
+    wm state $w normal
+    bind $w <Configure> "recordWinSize $w"
+    
   }
   set player [trimEngineName $player]
   if {[info exists ::photo($player)]} {

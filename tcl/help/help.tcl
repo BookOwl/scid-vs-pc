@@ -3457,20 +3457,20 @@ set helpTitle(PInfo) "Player Info window"
 set helpText(PInfo) {<h1>The Player Info window</h1>
   <p>
   
-  The <term>Player Information</term> window is produced or updated whenever
-  you click the left mouse button on a player name in the game information
-  area (below the chessboard) or in the <a Crosstable>crosstable</a> window.
-  </p>
-  <p>
-  It displays (hopefully) useful information about the player, including their
+  The <term>Player Information</term> window shows information from the Spellcheck
+  file. It includes ratings, country of origin and official titles.</p>
+
+  <p><b>Please use with caution. The names it contains may not be unique, and player initials may be
+  incorrectly identified.</b></p>
+
+  <p>Also displayed are statistics about
   success with White and Black, favorite openings (by <a ECO>ECO code</a>),
   and rating history.
-  </p>
-  <p>
   All percentages displayed are an expected score (success rate), from the
   player's perspective -- so higher is always better for the player, whether they
   are White or Black.
   </p>
+
   <p>
   You can see the player's rating history in a graph by pressing the
   <a Graphs Rating>Rating graph</a> button.
@@ -3480,7 +3480,7 @@ set helpText(PInfo) {<h1>The Player Info window</h1>
   the <a Searches Filter>filter</a> to the games it represents.
   </p>
   
-  <p><footer>(Updated: Scid 3.6.2, December 2006)</footer></p>
+  <p><footer>(Updated: Scid 3.6.26.9, April 2010)</footer></p>
 }
 
 ####################
