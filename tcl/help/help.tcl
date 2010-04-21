@@ -5878,6 +5878,25 @@ set helpText(Novag) {<h1>Connecting the Novag Citrine Chess board</h1>
 
 set helpTitle(Changelog) "Scid vs PC Changelog"
 set helpText(Changelog) {<h1>Scid Vs PC</h1>
+
+<h4>3.6.26.9 (April 19, 2010)</h4>
+<ul>
+<li> Added a random pawns feature to tacgame </li>
+<li> Added magnetic chess pieces </li>
+<li> _Some_ tcl speed optimisations to the main board and material board (and htext.tcl) </li>
+<li> Move the crosstable menu item from "tools" to "windows" </li>
+<li> Centralise procedures called when switching between DBs </li>
+<li> Crosstable: make options persistant, tweak menus, fix html export blank fields </li>
+<li> Crosstable: allow spelling.ssp to match initalized christian names, include a Font button, fix parenting </li>
+<li> Change the toplevel "wm title" to show "White v. Black [database]" </li>
+<li> Refine the SetInfo widget in game.tcl </li>
+<li> Fics: Make a new Received Offers dialog which allows for proper handling of multiple challenges </li> </li>
+<li> Fics: Tweak the Make Offer dialog </li>
+<li> Fics: update help files, and add a Font button </li>
+<li> Fics: some fixes from SCID </li>
+<li> Move the side-to-move  indicator to left of main board </li>
+</ul>
+
 <h4>3.6.26.8 (December 19, 2009)</h4>
 <ul>
 <li> The Fics widgets have been redone, including buttons, the graph and labels, config windows, and console tweaks</li>
@@ -5901,6 +5920,7 @@ set helpText(Changelog) {<h1>Scid Vs PC</h1>
 <li> Minor PGN window/comment strip fix </li>
 <li> Some widget reparenting </li>
 </ul>
+
 <h4>3.6.26.7 (October 25, 2009)</h4>
 <ul>
 <li> Include a mac configuration patch </li>
