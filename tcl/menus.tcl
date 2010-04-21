@@ -1163,8 +1163,14 @@ $m add command -label OptionsFontsRegular -underline 0 -command {
     FontDialogRegular .
 }
 
-$m add command -label OptionsFontsMenu -underline 0 -command {
-    FontDialogMenu .
+if {$windowsOS} {
+	$m add command -state disabled -label OptionsFontsMenu -underline 0 -command {
+	    FontDialogMenu .
+	}
+} else {
+	$m add command -label OptionsFontsMenu -underline 0 -command {
+	    FontDialogMenu .
+	}
 }
 
 $m add command -label OptionsFontsSmall -underline 0 -command {
@@ -1485,6 +1491,7 @@ proc setLanguageMenus {{lang ""}} {
     configMenuText .menu.options.fonts [tr OptionsFonts$tag $oldLang] \
         OptionsFonts$tag $lang
   }
+
   foreach tag {HideNext Material FEN Marks Wrap FullComment Photos \
         TBNothing TBResult TBAll Informant} {
     configMenuText .menu.options.ginfo [tr GInfo$tag $oldLang] \
