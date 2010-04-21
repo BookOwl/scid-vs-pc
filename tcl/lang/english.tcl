@@ -213,7 +213,7 @@ menuText E ToolsConnectHardwareInputEngineConnect "Connect Input Engine" 9 {Conn
 
 menuText E ToolsPInfo "Player Information"  0 \
   {Open/update the Player Information window}
-menuText E ToolsPlayerReport "Player Report..." 3 \
+menuText E ToolsPlayerReport "Player Report" 3 \
   {Generate a player report}
 menuText E ToolsRating "Rating Graph" 0 \
   {Graph the rating history of the current game players}
@@ -755,11 +755,11 @@ menuText E CrosstabOptDeleted "Include Deleted Games" 8
 menuText E CrosstabOptColors "Colors (Swiss table only)" 0
 menuText E CrosstabOptColumnNumbers "Numbered Columns (All-play-all table only)" 2
 menuText E CrosstabOptGroup "Group Scores" 0
-menuText E CrosstabSort "Sort" 0
+menuText E CrosstabSort "Order by" 0
 menuText E CrosstabSortName "Name" 0
 menuText E CrosstabSortRating "Rating" 0
 menuText E CrosstabSortScore "Score" 0
-menuText E CrosstabColor "Color" 0
+menuText E CrosstabColor "Text/Html" 0
 menuText E CrosstabColorPlain "Plain Text" 0
 menuText E CrosstabColorHyper "Hypertext" 0
 menuText E CrosstabHelp "Help" 0

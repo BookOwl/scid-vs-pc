@@ -197,7 +197,7 @@ menuText S ToolsNovagCitrineConfig "Configuración" 0 {Configuración Novag Citrin
 menuText S ToolsNovagCitrineConnect "Conectar" 0 {Conectar Novag}
 menuText S ToolsPInfo "Información del Jugador" 16 \
   {Abrir/actualizar la ventana de Información del Jugador}
-menuText S ToolsPlayerReport "Informe del jugador..." 3 \
+menuText S ToolsPlayerReport "Informe del jugador" 3 \
   {Crea un informe sobre un jugador}
 menuText S ToolsRating "Gráfico del Elo" 0 \
   {Gráfico de la historia del Elo de los jugadores de la actual partida}

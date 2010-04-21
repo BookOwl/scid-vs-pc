@@ -195,7 +195,7 @@ menuText C ToolsNovagCitrineConfig "Configuration" 0 {Novag Citrine configuratio
 menuText C ToolsNovagCitrineConnect "Connect" 0 {Novag Citrine connect}
 menuText C ToolsPInfo "Informace o hráèích"  0 \
   {Otevøít/aktualizovat okno s informacemi o hráèích}
-menuText C ToolsPlayerReport "Profil hráèe..." 7 \
+menuText C ToolsPlayerReport "Profil hráèe" 7 \
   {Generovat profil hráèe}
 menuText C ToolsRating "Graf ratingu" 5 \
   {Zobrazit graf vıvoje ratingu hráèù aktuální partie}

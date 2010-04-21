@@ -210,7 +210,7 @@ menuText N ToolsNovagCitrineConfig "Configuration" 0 {Novag Citrine configuratio
 menuText N ToolsNovagCitrineConnect "Connect" 0 {Novag Citrine connect}
 menuText N ToolsPInfo "Speler Informatie"  7 \
   {Open/wijzig het spelerinformatievenster}
-menuText N ToolsPlayerReport "Speler Rapport ..." 3 \
+menuText N ToolsPlayerReport "Speler Rapport " 3 \
   {Genereer een Speler Rapport} ;
 menuText N ToolsRating "Elo Klassering geschiedenis" 0 \
   {Grafiek van de Elo Klassering van de twee spelers}

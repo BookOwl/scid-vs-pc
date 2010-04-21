@@ -204,7 +204,7 @@ menuText R ToolsNovagCitrineConfig "Configuration" 0 {Novag Citrine configuratio
 menuText R ToolsNovagCitrineConnect "Connect" 0 {Novag Citrine connect}
 menuText R ToolsPInfo "Информация об игроке"  1 \
   {Открыть/обновить окно информации об игроке}
-menuText R ToolsPlayerReport "Player Report..." 3 \
+menuText R ToolsPlayerReport "Player Report" 3 \
   {Generate a player report}
 menuText R ToolsRating "Диаграмма рейтинга" 1 \
   {Диаграмма истории рейтинга для игроков текущей партии}

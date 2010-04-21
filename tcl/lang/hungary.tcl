@@ -201,7 +201,7 @@ menuText H ToolsNovagCitrineConfig "Configuration" 0 {Novag Citrine configuratio
 menuText H ToolsNovagCitrineConnect "Connect" 0 {Novag Citrine connect}
 menuText H ToolsPInfo "Játékosinformáció"  0 \
   {Kinyitja/frissíti a játékos adatait tartalmazó ablakot.}
-menuText H ToolsPlayerReport "Összefoglaló játékosról..." 0 \
+menuText H ToolsPlayerReport "Összefoglaló játékosról" 0 \
     {Összefoglalót készít a játékosról}
 menuText H ToolsRating "Értékszám alakulása" 0\
   {Grafikusan ábrázolja, hogyan alakult az aktuális játszma résztvevõinek értékszáma.}

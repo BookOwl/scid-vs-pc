@@ -217,7 +217,7 @@ if {$windowsOS} {
   set fontOptions(Menu)    [list helvetica 10 normal roman]
   set fontOptions(Small)   [list helvetica 10 normal roman]
   set fontOptions(Tiny)    [list helvetica  9 normal roman]
-  set fontOptions(Fixed)   [list fixed     10 normal roman]
+  set fontOptions(Fixed)   [list {courier 10 pitch} 12 normal roman]
 }
 
 createFont Regular

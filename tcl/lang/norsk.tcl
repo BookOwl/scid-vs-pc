@@ -203,7 +203,7 @@ menuText O ToolsNovagCitrineConfig "Configuration" 0 {Novag Citrine configuratio
 menuText O ToolsNovagCitrineConnect "Connect" 0 {Novag Citrine connect}
 menuText O ToolsPInfo "Spillerinformasjon"  0 \
   {Åpne/oppdater informasjonsvinduet for denne spilleren}
-menuText O ToolsPlayerReport "Player Report..." 3 \
+menuText O ToolsPlayerReport "Player Report" 3 \
   {Generate a player report} ;# ***
 menuText O ToolsRating "Ratinggraf" 0 \
   {Tegner ratingen til disse spillerene over tid}

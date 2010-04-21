@@ -207,7 +207,7 @@ menuText P ToolsNovagCitrineConfig "Configuration" 0 {Novag Citrine configuratio
 menuText P ToolsNovagCitrineConnect "Connect" 0 {Novag Citrine connect}
 menuText P ToolsPInfo "Informacje o zawodniku"  0 \
   {Otwórz/od¶wie¿ okno informacji o zawodniku}
-menuText P ToolsPlayerReport "Raport o graczu..." 9 \
+menuText P ToolsPlayerReport "Raport o graczu" 9 \
   {Utwórz raport o graczu} 
 menuText P ToolsRating "Wykres rankingu" 0 \
   {Wykres historii rankingu graj±cych partiê}

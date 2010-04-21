@@ -184,7 +184,7 @@ menuText I ToolsNovagCitrineConfig "Configurazione" 0 {Configura la periferica N
 menuText I ToolsNovagCitrineConnect "Connetti" 0 {Connetti la periferica Novag Citrine}
 menuText I ToolsPInfo "Informazioni sul giocatore"  17 \
   {Apre/aggiorna la finestra di Informazione del giocatore}
-menuText I ToolsPlayerReport "Report del giocatore ..." 3 \
+menuText I ToolsPlayerReport "Report del giocatore " 3 \
   {Genera un Report del giocatore}
 menuText I ToolsRating "Grafico del punteggio Elo" 24 \
   {Grafico storico del punteggio Elo dei giocatori della corrente partita}

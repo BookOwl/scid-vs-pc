@@ -194,7 +194,7 @@ menuText B ToolsNovagCitrineConfig "Configuration" 0 {Novag Citrine configuratio
 menuText B ToolsNovagCitrineConnect "Connect" 0 {Novag Citrine connect}
 menuText B ToolsPInfo "Informacao do Jogador"  0 \
   {Abre/atualiza a janela de informacao do jogador}
-menuText B ToolsPlayerReport "Player Report..." 3 \
+menuText B ToolsPlayerReport "Player Report" 3 \
   {Generate a player report} ;# ***
 menuText B ToolsRating "Grafico de Rating" 0 \
   {Mostra, em um grafico, a evolucao do rating de um jogador}

@@ -201,7 +201,7 @@ menuText Y ToolsNovagCitrineConfig "Configuration" 0 {Novag Citrine configuratio
 menuText Y ToolsNovagCitrineConnect "Connect" 0 {Novag Citrine connect}
 menuText Y ToolsPInfo "Informacije o igraèu"  0 \
   {Otvori/osve¾i informacije o igraèu}
-menuText Y ToolsPlayerReport "Player Report..." 3 \
+menuText Y ToolsPlayerReport "Player Report" 3 \
   {Generate a player report} ;# ***
 menuText Y ToolsRating "Grafikon rejtinga" 0 \
   {Iscrtava grafik istorije rejtinga igraèa u tekuæoj partiji}

@@ -14,8 +14,6 @@ DESTDIR =
 #
 BINDIR = /usr/local/bin
 
-# SHAREDIR: where scid.eco is copied for "make install".
-#
 SHAREDIR = /usr/local/share/scid
 
 ### TCL_VERSION: Set this according to the version of Tcl/Tk you have
@@ -217,7 +215,7 @@ phalanx:
 	cd engines/Phalanx-XXII/ && $(MAKE) && cd ../../
 
 toga:
-	cd engines/togaII1.2.1a/src/ && $(MAKE) && cd ../../
+	cd engines/toga/src/ && $(MAKE) && cd ../../
 
 ### To copy all executables to $BINDIR, with read and execute permission 
 #   for all users, and put extra files in $SHAREDIR, type "make install".
@@ -231,6 +229,7 @@ install_scid: all_scid
 	install -m 755 -d $(DESTDIR)$(SHAREDIR)/data/
 	install -m 755 scid $(SCRIPTS) $(EXECS) $(DESTDIR)$(BINDIR)
 	install -m 644 -p scid.eco $(DESTDIR)$(SHAREDIR)/data/
+	install -m 644 -p spelling.ssp $(DESTDIR)$(SHAREDIR)
 	install -m 755 -d $(DESTDIR)$(SHAREDIR)/books
 	install -m 666 ./books/* $(DESTDIR)$(SHAREDIR)/books/
 	install -m 755 -d $(DESTDIR)$(SHAREDIR)/bases
@@ -247,10 +246,10 @@ install_engines: all_engines
 	install -m 644 ./engines/Phalanx-XXII/pbook.phalanx $(SHAREDIR)/engines/Phalanx-XXII
 	install -m 644 ./engines/Phalanx-XXII/README $(SHAREDIR)/engines/Phalanx-XXII
 	install ./engines/Phalanx-XXII/phalanx $(DESTDIR)$(BINDIR)
-	install -m 755 -d $(SHAREDIR)/engines/togaII1.2.1a
-	install -m 644 ./engines/togaII1.2.1a/copying.txt $(SHAREDIR)/engines/togaII1.2.1a
-	install -m 644 ./engines/togaII1.2.1a/readme.txt $(SHAREDIR)/engines/togaII1.2.1a
-	install ./engines/togaII1.2.1a/src/fruit $(DESTDIR)$(BINDIR)
+	install -m 755 -d $(SHAREDIR)/engines/toga
+	install -m 644 ./engines/toga/copying.txt $(SHAREDIR)/engines/toga
+	install -m 644 ./engines/toga/readme.txt $(SHAREDIR)/engines/toga
+	install ./engines/toga/src/fruit $(DESTDIR)$(BINDIR)
 
 uninstall:
 	rm -rf $(SHAREDIR)/engines
@@ -258,6 +257,7 @@ uninstall:
 	rm -rf $(SHAREDIR)/bases
 	rm -rf $(SHAREDIR)/data/
 	rm -f $(SHAREDIR)/data/scid.eco
+	rm -f $(SHAREDIR)/spelling.ssp
 	rm -f $(BINDIR)/scid $(BINDIR)/sc_addmove $(BINDIR)/sc_epgn
 	rm -f $(BINDIR)/sc_spell $(BINDIR)/sc_eco $(BINDIR)/sc_import
 	rm -f $(BINDIR)/sc_remote $(BINDIR)/sc_tree $(BINDIR)/scidpgn
@@ -279,19 +279,7 @@ distclean:
 clean:
 	rm -f game.* tkscid.so tkscid.dll position.* src/*.o src/zlib/*.o src/zlib/*.a src/polyglot/*.o $(EXECS) scid $(SCRIPTS)
 	cd engines/Phalanx-XXII/ && make clean && cd ../../
-	cd engines/togaII1.2.1a/src/ && make clean && cd ../../../
-	cd pocket/toga/src/ && make clean && cd ../../../
-	cd pocket/toga134/src/ && make clean && cd ../../../
-	cd pocket/fruit_21/src/ && make clean && cd ../../../
-	cd pocket/gambitfruit/src/ && make clean && cd ../../../
-	cd pocket/glaurung/src/ && make clean && cd ../../../
-	cd pocket/phalanx/src/ && make clean && cd ../../../
-	cd pocket/scorpio/src/ && make clean && cd ../../../
-	cd pocket/viper01/src/ && make clean && cd ../../../
-	cd pocket/greko/src/ && make clean && cd ../../../
-	cd pocket/scidlet/src/ && make clean && cd ../../../
-	rm -f pocket/toga.exe pocket/glaurung.exe
-	rm -rf pocket/scid_pocket
+	cd engines/toga/src/ && make clean && cd ../../../
 
 ### To make the executable files smaller: type "make strip".
 #

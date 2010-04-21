@@ -189,7 +189,7 @@ menuText F ToolsNovagCitrineConfig "Configurer" 0 {Configurer Novag Citrine}
 menuText F ToolsNovagCitrineConnect "Connecter" 0 {Connecter Novag Citrine}
 menuText F ToolsPInfo "Information sur les joueurs"  0 \
   {Ouvrir/Mettre à jour la fenêtre d'information sur les joueurs}
-menuText F ToolsPlayerReport "Rapport pour le joueur..." 3 \
+menuText F ToolsPlayerReport "Rapport pour le joueur" 3 \
   {Générer un rapport pour le joueur}
 menuText F ToolsRating "Elo graphique" 0 \
   {Tracer un graphique du classement Elo des joueurs de cette partie}

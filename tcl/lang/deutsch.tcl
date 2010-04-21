@@ -205,7 +205,7 @@ menuText D ToolsNovagCitrineConfig "Einstellungen" 0 {Novag Citrine Einstellunge
 menuText D ToolsNovagCitrineConnect "Verbinden" 0 {Novag Citrine verbinden}
 menuText D ToolsPInfo "Spielerinformation"  0 \
   {Spielerinformation öffnen/schließen}
-menuText D ToolsPlayerReport "Spielerbericht..." 7 \
+menuText D ToolsPlayerReport "Spielerbericht" 7 \
   {Erzeuge einen Spielerbericht}
 menuText D ToolsRating "ELO-Zahl-Verlauf" 4 \
   {Wertungsverlauf beider Spieler grafisch darstellen}

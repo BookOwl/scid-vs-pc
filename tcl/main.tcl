@@ -158,7 +158,11 @@ proc updateTitle {} {
   if {![string match {\[*\]} $fname]} {
     set fname "\[$fname\]"
   }
-  wm title . "Scid: $white - $black $fname"
+  if {$white == {?} && $black == {?}} {
+    wm title . "Scid: $fname"
+  } else {
+    wm title . "Scid: $white - $black $fname"
+  }
 }
 
 # updateStatusBar:

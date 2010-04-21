@@ -204,7 +204,7 @@ menuText W ToolsNovagCitrineConfig "Konfiguration" 0 {Novag Citrine Konfiguratio
 menuText W ToolsNovagCitrineConnect "Anslut" 0 {Anslut Novag Citrine}
 menuText W ToolsPInfo "Spelarinformation"  0 \
   {Öppna/ uppdatera spelarinformation}
-menuText W ToolsPlayerReport "Spelarrapport..." 3 \
+menuText W ToolsPlayerReport "Spelarrapport" 3 \
   {Skapa en spelarrapport}
 menuText W ToolsRating "Ratingdiagram" 0 \
   {Skapa ett ratingdiagram för spelarna i partiet}

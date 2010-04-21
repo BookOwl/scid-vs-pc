@@ -94,6 +94,7 @@ proc ::file::New {} {
   ::tree::refresh
   ::windows::stats::Refresh
   ::crosstab::Refresh
+  ::plist::refresh
   updateMenuStates
   updateTitle
   updateStatusBar
@@ -205,6 +206,7 @@ proc ::file::Open {{fName ""}} {
   ::tree::refresh
   ::windows::stats::Refresh
   ::crosstab::Refresh
+  ::plist::refresh
   updateMenuStates
   updateBoard -pgn
   updateTitle
@@ -307,8 +309,10 @@ proc ::file::SwitchToBase {b} {
   updateMenuStates
   updateStatusBar
   ::windows::gamelist::Refresh
+  ::tree::refresh
   ::windows::stats::Refresh
   ::crosstab::Refresh
+  ::plist::refresh
 }
 
 ################################################################################
