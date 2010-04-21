@@ -390,48 +390,45 @@ proc ::enginelist::choose {} {
   $w.title configure -state disabled
   pack $w.title -side top -fill x
   
-  # The list of choices:
-  set f $w.list
-  pack [frame $f -relief flat -borderwidth 0] \
+  ### list of engines
+
+  pack [frame $w.list -relief flat -borderwidth 0] \
     -side top -expand yes -fill both -padx 4 -pady 3
 
-  listbox $f.list -height 10 -selectmode browse -background white -setgrid 1 \
-      -yscrollcommand "$f.ybar set" -font font_Fixed -exportselection 0
+  listbox $w.list.list -height 10 -selectmode browse -setgrid 1 \
+      -yscrollcommand "$w.list.ybar set" -font font_Fixed -exportselection 0
 
-  bind $f.list <Double-ButtonRelease-1> "$w.buttons.start invoke; break"
-  scrollbar $f.ybar -command "$f.list yview"
+  bind $w.list.list <Double-ButtonRelease-1> "$w.buttons.start invoke; break"
+  scrollbar $w.list.ybar -command "$w.list.list yview"
 
-  pack $f.ybar -side right -fill y
-  pack $f.list -side top -fill both -expand yes
-  $f.list selection set 0
+  pack $w.list.ybar -side right -fill y
+  pack $w.list.list -side top -fill both -expand yes
+  $w.list.list selection set 0
   
-  set f $w.buttons
+  dialogbutton $w.buttons.add -text $::tr(EngineNew) -command {::enginelist::edit -1}
 
-  dialogbutton $f.add -text $::tr(EngineNew) -command {::enginelist::edit -1}
-
-  dialogbutton $f.edit -text $::tr(EngineEdit) -command {
+  dialogbutton $w.buttons.edit -text $::tr(EngineEdit) -command {
     ::enginelist::edit [lindex [.enginelist.list.list curselection] 0]
   }
 
-  dialogbutton $f.delete -text $::tr(Delete) -command {
+  dialogbutton $w.buttons.delete -text $::tr(Delete) -command {
     ::enginelist::delete [lindex [.enginelist.list.list curselection] 0]
   }
 
-  label $f.sep -text "   "
+  label $w.buttons.sep -text "   "
 
-  dialogbutton $f.start -text $::tr(Start) -command {
-    makeAnalysisWin \
-      [expr [lindex [.enginelist.list.list curselection] 0] + 1]
+  dialogbutton $w.buttons.start -text $::tr(Start) -command {
+    makeAnalysisWin [expr [lindex [.enginelist.list.list curselection] 0] + 1]
   }
 
   dialogbutton $w.close -textvar ::tr(Close) -command {
     destroy .enginelist
   }
 
-  pack $f.add $f.edit $f.delete $f.start -side left -expand yes
+  pack $w.buttons.add $w.buttons.edit $w.buttons.delete $w.buttons.start -side left -expand yes
   pack $w.buttons -side top -pady 12 -padx 2 -fill x
   pack $w.close -side bottom -pady 8
-  focus $f.start
+  focus $w.buttons.start
   
   ::enginelist::listEngines
   update
@@ -706,7 +703,7 @@ proc configAnnotation {} {
   wm resizable $w 0 0
   label $w.label -text $::tr(AnnotateTime:)
   pack $w.label -side top -pady 5 -padx 5
-  spinbox $w.spDelay -background white -width 4 -textvariable tempdelay -from 1 -to 300 -increment 1
+  spinbox $w.spDelay -width 4 -textvariable tempdelay -from 1 -to 300 -increment 1
   pack $w.spDelay -side top -pady 5
   bind $w <Escape> { .configAnnotation.buttons.cancel invoke }
   bind $w <Return> { .configAnnotation.buttons.ok invoke }
@@ -727,7 +724,7 @@ proc configAnnotation {} {
   pack $w.blunderbox -side top -padx 5 -pady 5
   
   label $w.blunderbox.label -text $::tr(BlundersThreshold:)
-  spinbox $w.blunderbox.spBlunder -background white -width 4 -textvariable blunderThreshold \
+  spinbox $w.blunderbox.spBlunder -width 4 -textvariable blunderThreshold \
       -from 0.1 -to 3.0 -increment 0.1
   pack $w.blunderbox.label $w.blunderbox.spBlunder -side left -padx 5 -pady 5
   
@@ -759,10 +756,10 @@ proc configAnnotation {} {
   set to [sc_base numGames]
   if {$to <1} { set to 1}
   checkbutton $w.batch.cbBatch -text $::tr(AnnotateSeveralGames) -variable ::isBatch
-  spinbox $w.batch.spBatchEnd -background white -width 8 -textvariable ::batchEnd \
+  spinbox $w.batch.spBatchEnd -width 8 -textvariable ::batchEnd \
       -from 1 -to $to -increment 1 -validate all -vcmd { regexp {^[0-9]+$} %P }
   checkbutton $w.batch.cbBatchOpening -text $::tr(FindOpeningErrors) -variable ::isBatchOpening
-  spinbox $w.batch.spBatchOpening -background white -width 2 -textvariable ::isBatchOpeningMoves \
+  spinbox $w.batch.spBatchOpening -width 2 -textvariable ::isBatchOpeningMoves \
       -from 10 -to 20 -increment 1 -validate all -vcmd { regexp {^[0-9]+$} %P }
   label $w.batch.lBatchOpening -text $::tr(moves)
   # pack $w.batch.cbBatch $w.batch.spBatchEnd -side top -fill x
@@ -1746,12 +1743,12 @@ proc makeAnalysisWin { {n 1} } {
   }
   pack $w.b1.help $w.b1.priority $w.b1.update $w.b1.showboard $w.b1.showinfo -side right
   if {$analysis(uci$n)} {
-    text $w.text -width 60 -height 1 -fg black -bg white -font font_Bold -wrap word -setgrid 1 ;# -spacing3 2
+    text $w.text -width 60 -height 1 -font font_Regular -wrap word -setgrid 1 ;# -spacing3 2
   } else {
-    text $w.text -width 60 -height 4 -fg black -bg white -font font_Fixed -wrap word -setgrid 1
+    text $w.text -width 60 -height 4 -font font_Regular -wrap word -setgrid 1
   }
   frame $w.hist
-  text $w.hist.text -width 60 -height 8 -fg black -bg white -font font_Fixed \
+  text $w.hist.text -width 60 -height 8 -font font_Fixed \
       -wrap word -setgrid 1 -yscrollcommand "$w.hist.ybar set"
   $w.hist.text tag configure indent -lmargin2 [font measure font_Fixed "xxxxxxxxxxxx"]
   scrollbar $w.hist.ybar -command "$w.hist.text yview" -takefocus 0
@@ -1762,13 +1759,11 @@ proc makeAnalysisWin { {n 1} } {
   
   bind $w.hist.text <ButtonPress-3> "toggleMovesDisplay $n"
   $w.text tag configure blue -foreground blue
-  $w.text tag configure bold -font font_Bold
-  $w.text tag configure small -font font_Small
   $w.hist.text tag configure blue -foreground blue -lmargin2 [font measure font_Fixed "xxxxxxxxxxxx"]
   $w.hist.text tag configure gray -foreground gray
   $w.text insert end "Please wait a few seconds for engine initialisation (with some engines, you will not see any analysis \
       until the board changes. So if you see this message, try changing the board \
-      by moving backward or forward or making a new move.)" small
+      by moving backward or forward or making a new move.)"
   $w.text configure -state disabled
   bind $w <Destroy> "destroyAnalysisWin $n"
   bind $w <Configure> "recordWinSize $w"
@@ -2307,35 +2302,35 @@ proc updateAnalysisText {{n 1}} {
     
     $t insert end "[tr Depth]: "
     if {$analysis(showEngineInfo$n) && $analysis(seldepth$n) != 0} {
-      $t insert end [ format "%2u/%u " $analysis(depth$n) $analysis(seldepth$n)] small
+      $t insert end [ format "%2u/%u " $analysis(depth$n) $analysis(seldepth$n)]
     } else {
-      $t insert end [ format "%2u " $analysis(depth$n) ] small
+      $t insert end [ format "%2u " $analysis(depth$n) ]
     }
     $t insert end "[tr Nodes]: "
-    $t insert end [ format "%6uK (%u kn/s) " $analysis(nodes$n) $nps ] small
+    $t insert end [ format "%6uK (%u kn/s) " $analysis(nodes$n) $nps ]
     $t insert end "[tr Time]: "
-    $t insert end [ format "%6.2f s" $analysis(time$n) ] small
+    $t insert end [ format "%6.2f s" $analysis(time$n) ]
     if {$analysis(showEngineInfo$n)} {
-      $t insert end \n small
+      $t insert end \n
       $t insert end "[tr Current]: "
-      $t insert end [ format "%s (%s/%s) " [::trans $analysis(currmove$n)] $analysis(currmovenumber$n) $analysis(maxmovenumber$n)] small
+      $t insert end [ format "%s (%s/%s) " [::trans $analysis(currmove$n)] $analysis(currmovenumber$n) $analysis(maxmovenumber$n)]
       $t insert end {TB Hits: }
-      $t insert end [ format "%u " $analysis(tbhits$n)] small
+      $t insert end [ format "%u " $analysis(tbhits$n)]
       $t insert end {Nps: }
-      $t insert end [ format "%u n/s " $analysis(nps$n)] small
+      $t insert end [ format "%u n/s " $analysis(nps$n)]
       $t insert end {Hash Full: }
       set hashfull [expr {round($analysis(hashfull$n) / 10)}]
-      $t insert end [ format "%u%% " $hashfull ] small
+      $t insert end [ format "%u%% " $hashfull ]
       $t insert end {CPU Load: }
       set cpuload [expr {round($analysis(cpuload$n) / 10)}]
-      $t insert end [ format "%u%% " $cpuload ] small
+      $t insert end [ format "%u%% " $cpuload ]
       
       #$t insert end [ format "\nCurrent: %s (%s) - Hashfull: %u - nps: %u - TBhits: %u - CPUload: %u" $analysis(currmove$n) $analysis(currmovenumber$n) $analysis(hashfull$n) $analysis(nps$n) $analysis(tbhits$n) $analysis(cpuload$n) ]
     }
   } else {
     set newStr [format "Depth:   %6u      Nodes: %6uK (%u kn/s)\n" $analysis(depth$n) $analysis(nodes$n) $nps]
     append newStr [format "Score: %+8.2f      Time: %9.2f seconds\n" $score $analysis(time$n)]
-    $t insert 1.0 $newStr small
+    $t insert 1.0 $newStr
   }
   
   
@@ -2742,7 +2737,7 @@ proc setAutomoveTime {{n 1}} {
   wm resizable $w 0 0
   label $w.label -text "Set the engine thinking time per move in seconds:"
   pack $w.label -side top -pady 5 -padx 5
-  entry $w.entry -background white -width 10 -textvariable temptime
+  entry $w.entry -width 10 -textvariable temptime
   pack $w.entry -side top -pady 5
   bind $w.entry <Escape> { .apdialog.buttons.cancel invoke }
   bind $w.entry <Return> { .apdialog.buttons.ok invoke }
