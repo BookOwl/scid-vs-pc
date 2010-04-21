@@ -28,6 +28,11 @@ struct bioNoteT {
     bioNoteT * next;
 };
 
+struct spellingT {
+    const char *id;
+    const char *data;
+};
+
 struct spellCheckNodeT
 {
     char * name;        // The possibly incorrect spelling of this name.

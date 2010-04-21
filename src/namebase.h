@@ -25,7 +25,8 @@
 //  NameBase:  Constants
 
 // There are three NameBases, one each for player, event and site tags.
-//
+// (There seems to be now four NameBases S.A.)
+
 const nameT
     NAME_PLAYER = 0,  NAME_EVENT = 1,  NAME_SITE = 2, NAME_ROUND = 3,
     NAME_FIRST = 0, NAME_LAST = 3, NAME_INVALID = 99;

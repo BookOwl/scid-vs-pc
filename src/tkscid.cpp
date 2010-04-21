@@ -11083,6 +11083,8 @@ sc_name_info (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
     static char * lastPlayerName = NULL;
     const char * usageStr = "Usage: sc_name info [-ratings|-htext] <player>";
     uint startYear = 1900;
+    extern spellingT countryTable[];
+    extern spellingT titleTable[];
 
     if (argc != 3  &&  argc != 4) { return errorResult (ti, usageStr); }
     if (!db->inUse) {
@@ -11339,7 +11341,7 @@ sc_name_info (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
         }
     }
 
-    char temp [500];
+    char temp  [500];
     uint score, percent;
     colorT color;
     const char * newline = (htextOutput ? "<br>" : "\n");
@@ -11360,51 +11362,175 @@ sc_name_info (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
      "%s  %-*s %3u%c%02u%%   +%s%3u%s  =%s%3u%s  -%s%3u%s  %4u%c%c /%s%4u%s";
 
     if (ratingsOnly) { goto doRatings; }
-    Tcl_AppendResult (ti, startBold, playerName, endBold, newline, NULL);
+    Tcl_AppendResult (ti, startBold, playerName, endBold, newline, newline, NULL);
 
     // Show title, country, etc if listed in player spellcheck file:
 #ifndef WINCE
     if (spChecker != NULL) {
-        const char * text = spChecker->GetComment (playerName);
-        if (text) { Tcl_AppendResult (ti, "  ", text, newline, NULL); }
+        const char *text;
+	int i;
+
+        if ((text = spChecker->GetComment (playerName))) {
+
+	  char t_title   [500] = "";
+	  char t_country [500] = "";
+	  char t_year    [500] = "";
+	  char t_elo     [500] = "";
+	  char *mark,*mark2;
+	  int count;
+
+	  // Comment format is " TITLE, COUNTRY{/COUNTRY}, [ELO], YEAR-BORN"
+
+	  // For debugging
+	  // Tcl_AppendResult (ti, "  ", text, newline, NULL);
+
+	  i = sscanf (text, " %s %s %s %s", t_title , t_country, t_elo, t_year);
+
+	  // title
+
+
+          mark = t_title ;
+          count = 0;
+
+          while (mark) {
+	    // extra titles are '+' together, so keep processing till there's no more '+'
+	    if ((mark = (char*) strFirstChar (t_title, '+'))) {
+	      mark[0] = 0;
+	    }
+
+	    // lookup in titleTable
+	    i = 0;
+	    while (titleTable[i].id[0] != 0) {
+	      if (strCaseCompare( titleTable[i].id , t_title) == 0)
+		    break;
+	      i++;
+	    };
+	    if (titleTable[i].id[0] != 0) {
+	      // this is a little confusing, just to get the multiple "titles" on one line
+	      if (count==0 && mark) 
+		Tcl_AppendResult (ti, startHeading, translate (ti,"Title"), ":	", endHeading, titleTable[i].data, NULL);
+	      else {
+                if (count==0)
+		  Tcl_AppendResult (ti, startHeading, translate (ti,"Title"), ":	", endHeading, titleTable[i].data, "  ", t_elo, newline,  NULL);
+		else {
+		  if (mark)
+		    Tcl_AppendResult (ti, ",  ", titleTable[i].data, NULL);
+		  else
+		    Tcl_AppendResult (ti, ",  ", titleTable[i].data, "  ", t_elo, newline,  NULL);
+                }
+              }
+              count++;
+	    } else {
+	      if (t_title[0] == '-') {
+		if ((mark2 = (char*)strFirstChar (t_elo, ']'))) {
+		  mark2[0] = 0;
+		}
+		mark2 = t_elo;
+		if (mark2[0] == '[')
+		  mark2++;
+		Tcl_AppendResult (ti, startHeading, translate (ti,"Elo"), ":	", endHeading, mark2, newline, NULL);
+	      } else {
+		Tcl_AppendResult (ti, startHeading, translate (ti,"Title"), ":	", endHeading, t_title, "  ", t_elo, newline, NULL);
+	      }
+	    }
+
+            if (mark) {
+	      // Copy from after the '+' back into t_title, and repeat
+	      // - mark is an index into t_title, so 'strcpy (t_title, mark+1)' isnt very safe
+	      strcpy (temp, mark+1);
+	      strcpy (t_title,temp);
+            }
+	  }
+
+	  // lookup in countryTable
+          mark = t_country ;
+          count = 0;
+
+          while (mark) {
+	    // extra countries are '/' together, so keep processing till there's no more '/'
+	    if ((mark = (char*) strFirstChar (t_country, '/'))) {
+	      mark[0] = 0;
+	    }
+
+	    // lookup in countryTable
+	    i = 0;
+	    while (countryTable[i].id[0] != 0) {
+	      if (strCaseCompare( countryTable[i].id , t_country) == 0)
+		    break;
+	      i++;
+	    };
+
+	    if (countryTable[i].id[0] != 0) {
+	      // use proper country name
+	      strcpy (temp, countryTable[i].data);
+	    } else {
+	      // use three letter code
+	      strcpy (temp, t_country);
+	    }
+
+	    if (t_country[0] != '-') {
+	      if (count==0 && !mark) 
+		Tcl_AppendResult (ti, startHeading, translate (ti,"Country"), ":	", endHeading, temp , newline, NULL);
+	      else {
+		if (count==0)
+		  Tcl_AppendResult (ti, startHeading, translate (ti,"Country"), ":	", endHeading, temp , NULL);
+		else {
+		  if (mark)
+		    Tcl_AppendResult (ti, ",  ", temp , NULL);
+		  else
+		    Tcl_AppendResult (ti, ",  ", temp , newline , NULL);
+		}
+	      }
+            }
+            count++;
+
+            if (mark) {
+	      strcpy (temp, mark+1);
+	      strcpy (t_country,temp);
+            }
+	  }
+
+	  // Birthyear
+          if (*t_year) {
+	    Tcl_AppendResult (ti, startHeading, "Born:	", endHeading, t_year, newline, NULL);
+	  }
+
+      }
+
+      // biography
+      const bioNoteT * note = spChecker->GetBioData (playerName);
+      if (note != NULL) {
+	  Tcl_AppendResult (ti, startHeading, translate (ti, "Biography"), ":", endHeading, newline, NULL);
+	  while (note != NULL) {
+	      Tcl_AppendResult (ti, "	", note->text, newline, NULL);
+	      note = note->next;
+	  }
+      } 
+
+      if (text && *text) Tcl_AppendResult (ti, newline, NULL);
     }
 #endif
-    sprintf (temp, "  %s%u%s %s (%s: %u)",
+
+    sprintf (temp, "%s%u %s%s",
              htextOutput ? "<red><run sc_name info -faA {}; ::windows::stats::Refresh>" : "",
              totalcount[STATS_ALL],
-             htextOutput ? "</run></red>" : "",
              (totalcount[STATS_ALL] == 1 ?
               translate (ti, "game") : translate (ti, "games")),
-             translate (ti, "Filter"),
-             totalcount[STATS_FILTER]);
+             htextOutput ? "</run></red>" : "");
     Tcl_AppendResult (ti, temp, NULL);
+
     if (firstGameDate != ZERO_DATE) {
         date_DecodeToString (firstGameDate, temp);
         strTrimDate (temp);
-        Tcl_AppendResult (ti, ", ", temp, NULL);
+        Tcl_AppendResult (ti, "	", temp, NULL);
     }
     if (lastGameDate > firstGameDate) {
         date_DecodeToString (lastGameDate, temp);
         strTrimDate (temp);
-        Tcl_AppendResult (ti, "--", temp, NULL);
+        Tcl_AppendResult (ti, "  to  ", temp, NULL);
     }
     Tcl_AppendResult (ti, newline, NULL);
 
-    // Print biography if applicable:
-#ifndef WINCE
-    if (spChecker != NULL) {
-        const bioNoteT * note = spChecker->GetBioData (playerName);
-        if (note != NULL) {
-            Tcl_AppendResult (ti, newline, startHeading,
-                              translate (ti, "Biography"), ":",
-                              endHeading, newline, NULL);
-            while (note != NULL) {
-                Tcl_AppendResult (ti, "  ", note->text, newline, NULL);
-                note = note->next;
-            }
-        }
-    }
-#endif
     // Print stats for all games:
 
     strCopy (temp, translate (ti, "PInfoAll"));
@@ -11497,7 +11623,7 @@ sc_name_info (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
 
     strCopy (temp, translate (ti, "PInfoFilter"));
     if (! htextOutput) { strTrimMarkup (temp); }
-    Tcl_AppendResult (ti, newline, startHeading, temp, ":",
+    Tcl_AppendResult (ti, startHeading, temp, ":",
                       endHeading, newline, NULL);
     score = percent = 0;
     if (whitecount[STATS_FILTER] > 0) {
@@ -11562,7 +11688,7 @@ sc_name_info (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
     // Now print stats for games against the current opponent:
 
     if (opponent != NULL) {
-        Tcl_AppendResult (ti, newline, startHeading,
+        Tcl_AppendResult (ti, startHeading,
                           translate (ti, "PInfoAgainst"), " ",
                           startBold, opponent, endBold, ":",
                           endHeading, newline, NULL);
@@ -12185,6 +12311,9 @@ sc_name_read (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
     for (nameT nt = NAME_FIRST; nt <= NAME_LAST; nt++) {
         SpellChecker * temp_spellChecker = new SpellChecker;
         temp_spellChecker->SetNameType (nt);
+
+        // ReadSpellCheckFile gets called four times for some reason S.A &&&
+
         if (temp_spellChecker->ReadSpellCheckFile (filename, checkPlayerOrder) != OK) {
             delete temp_spellChecker;
             Tcl_ResetResult (ti);
