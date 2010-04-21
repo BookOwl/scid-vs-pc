@@ -492,7 +492,7 @@ translate E Tip {Tip}
 translate E TipAtStartup {Show tip on startup}
 
 # Tree window menus:
-menuText E TreeFile "File" 0
+menuText E TreeFile "Tree" 0
 menuText E TreeFileFillWithBase "Fill Cache with base" 0 {Fill the cache file with all games in current base}
 menuText E TreeFileFillWithGame "Fill Cache with game" 0 {Fill the cache file with current game in current base}
 menuText E TreeFileSetCacheSize "Cache size" 0 {Set the cache size}
@@ -569,7 +569,7 @@ translate E Positions {Positions}
 translate E Moves {Moves}
 
 # Finder window:
-menuText E FinderFile "File" 0
+menuText E FinderFile "Finder" 0
 menuText E FinderFileSubdirs "Look in Subdirectories" 0
 menuText E FinderFileClose "Close File Finder" 0
 menuText E FinderSort "Sort" 0
@@ -600,7 +600,7 @@ translate E FinderCtxMove {Move}
 translate E FinderCtxDelete {Delete}
  
 # Player finder:
-menuText E PListFile "File" 0
+menuText E PListFile "Player Finder" 0
 menuText E PListFileUpdate "Update" 0
 menuText E PListFileClose "Close Player Finder" 0
 menuText E PListSort "Sort" 0
@@ -611,7 +611,7 @@ menuText E PListSortOldest "Oldest" 0
 menuText E PListSortNewest "Newest" 2
 
 # Tournament finder:
-menuText E TmtFile "File" 0
+menuText E TmtFile "Tournament Finder" 0
 menuText E TmtFileUpdate "Update" 0
 menuText E TmtFileClose "Close Tournament Finder" 0
 menuText E TmtSort "Sort" 0
@@ -693,13 +693,13 @@ translate E EngineEdit {Edit}
 translate E EngineRequired {Fields in bold are required; others are optional}
 
 # Stats window menus:
-menuText E StatsFile "File" 0
+menuText E StatsFile "Statistics" 0
 menuText E StatsFilePrint "Print to File..." 0
 menuText E StatsFileClose "Close Window" 0
 menuText E StatsOpt "Options" 0
 
 # PGN window menus:
-menuText E PgnFile "File" 0
+menuText E PgnFile "Pgn" 0
 menuText E PgnFilePrint "Save Game as..." 0
 menuText E PgnFileCopy "Copy to Clipboard" 0
 menuText E PgnFileClose "Close PGN Window" 10
@@ -728,7 +728,7 @@ menuText E PgnHelpIndex "Index" 0
 translate E PgnWindowTitle {Game Notation - game %u}
 
 # Crosstable window menus:
-menuText E CrosstabFile "File" 0
+menuText E CrosstabFile "Crosstable" 0
 menuText E CrosstabFileText "Save as Text ..." 8
 menuText E CrosstabFileHtml "Save as Html ..." 8
 menuText E CrosstabFileLaTeX "Save as Latex ..." 8
@@ -767,7 +767,7 @@ translate E Swiss {Swiss}
 translate E Category {Category}
 
 # Opening report window menus:
-menuText E OprepFile "File" 0
+menuText E OprepFile "Report" 0
 menuText E OprepFileText "Print to Text File..." 9
 menuText E OprepFileHtml "Print to HTML File..." 9
 menuText E OprepFileLaTeX "Print to LaTeX File..." 9

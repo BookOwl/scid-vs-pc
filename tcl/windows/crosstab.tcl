@@ -13,6 +13,8 @@ foreach var   {sort type ages colors ratings countries titles groups breaks dele
 }
 
 proc ::crosstab::ConfigMenus {{lang ""}} {
+  global spellCheckFileExists
+
   if {! [winfo exists .crosstabWin]} { return }
   if {$lang == ""} { set lang $::language }
   set m .crosstabWin.menu
@@ -32,7 +34,7 @@ proc ::crosstab::ConfigMenus {{lang ""}} {
   }
 
   # Disable the Ages, Nats, Titles items if spellcheck not enabled. S.A
-  if {[catch {sc_name read $::spellCheckFile} result]} {
+  if {!$::spellCheckFileExists} {
     $m.opt entryconfig 6 -state disabled -variable {}
     $m.opt entryconfig 7 -state disabled -variable {}
     $m.opt entryconfig 9 -state disabled -variable {}

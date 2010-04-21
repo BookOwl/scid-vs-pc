@@ -14,7 +14,9 @@ set spellcheckAmbiguous 1
 #    is displayed.
 #
 proc readSpellCheckFile {{message 1}} {
-  global spellCheckFile
+  global spellCheckFile spellCheckFileExists
+
+  set spellCheckFileExists 0
   set ftype { { "Scid Spellcheck files" {".ssp" ".ssp.gz"} } }
   set fullname [tk_getOpenFile -initialdir [pwd] -filetypes $ftype -title "Open Spellcheck file"]
   if {![string compare $fullname ""]} { return 0 }
@@ -27,9 +29,10 @@ proc readSpellCheckFile {{message 1}} {
     return 0
   }
   set spellCheckFile $fullname
+  set spellCheckFileExists 1
   if {$message} {
     tk_messageBox -title "Spellcheck file loaded." -type ok -icon info \
-      -message "Spellcheck file [file tail $fullname] loaded:\n[lindex $result 0] players, [lindex $result 1] events, [lindex $result 2] sites, [lindex $result 3] rounds.\n\nTo have this file automatically loaded every time you start Scid, select the \"Save Options\" from the Options menu before exiting."
+      -message "Spellcheck file [file tail $fullname] loaded:\n\n[lindex $result 0] players, [lindex $result 1] events, [lindex $result 2] sites, [lindex $result 3] rounds.\n\nTo automatically load this file at start-up, select \"Save Options\" from the Options menu before exiting."
   }
   return 1
 }
