@@ -29,15 +29,15 @@ exec `dirname $0`/tkscid "$0" "$@"
 
 # Alter the version if any patches have been made to the Tcl code only:
 set scidVersion "3.6.26"
-set scidvspcVersion "3.6.26.8"
-set scidVersionDate "December 19, 2009"
+set scidvspcVersion "3.6.26.9"
+set scidVersionDate "April 2010"
 
 # Set to 0 before releasing, so some alpha-state code is not included
 # Set to 1 to have access to all code
 set NOT_FOR_RELEASE 0
 
-package require Tcl 8.4
-package require Tk  8.4
+package require Tcl 8.5
+package require Tk  8.5
 
 # Determine operating system platform: unix or windows
 #
@@ -437,7 +437,7 @@ array set geometry {}
 #   Stores which windows should be opened on startup.
 set startup(pgn) 0
 set startup(switcher) 0
-set startup(tip) 1
+set startup(tip) 0
 set startup(tree) 0
 set startup(finder) 0
 set startup(crosstable) 0
@@ -668,7 +668,6 @@ proc showGameInfo {} {
 
 # Email configuration:
 set email(logfile) [file join $scidLogDir "scidmail.log"]
-set email(oldlogfile) [file join $scidUserDir "scidmail.log"]
 set email(smtp) 1
 set email(smproc) "/usr/lib/sendmail"
 set email(server) localhost
@@ -820,9 +819,100 @@ if { $macOS } {
 #
 proc updateStatusBar {} {}
 
-# Start up splash screen:
-
 set ::splash::keepopen 1
+set ::splash::cache {}
+
+# the function gets redfined once the fonts ahev been read from options.dat
+
+proc ::splash::add {text} {
+  lappend ::splash::cache $text
+}
+
+# Remember old font settings before loading options file:
+set fontOptions(oldRegular) $fontOptions(Regular)
+set fontOptions(oldMenu) $fontOptions(Menu)
+set fontOptions(oldSmall) $fontOptions(Small)
+set fontOptions(oldTiny) $fontOptions(Tiny)
+set fontOptions(oldFixed) $fontOptions(Fixed)
+
+# New configuration file names:
+set scidConfigFiles(options)     options.dat
+set scidConfigFiles(engines)     engines.dat
+set scidConfigFiles(engines.bak) engines.dat
+set scidConfigFiles(recentfiles) recent.dat
+set scidConfigFiles(history)     history.dat
+set scidConfigFiles(bookmarks)   bookmarks.dat
+set scidConfigFiles(reports)     reports.dat
+set scidConfigFiles(optrainer)   optrainer.dat
+
+set ecoFile {}
+
+# scidConfigFile:
+#   Returns the full path and name of a Scid configuration file,
+#   given its configuration type.
+#
+proc scidConfigFile {type} {
+  global scidConfigDir scidConfigFiles
+  if {! [info exists scidConfigFiles($type)]} {
+    return -code error "No such config file type: $type"
+  }
+  return [file nativename [file join $scidConfigDir $scidConfigFiles($type)]]
+}
+
+# Create user ".scid" directory in Unix if necessary:
+# Since the options file used to be ".scid", rename it:
+if {! [file isdirectory $scidUserDir]} {
+  if {[catch {file mkdir $scidUserDir} err]} {
+    ::splash::add "Error creating $scidUserDir directory: $err"
+  } else {
+    catch {file rename "$scidUserDir.old" $optionsFile}
+  }
+}
+
+# Create the config, data and log directories if they do not exist:
+proc makeScidDir {dir} {
+  if {! [file isdirectory $dir]} {
+    if {[catch {file mkdir $dir} err]} {
+      ::splash::add "Error creating directory $dir: $err"
+    } else {
+      ::splash::add "Created directory: $dir"
+    }
+  }
+}
+
+makeScidDir $scidConfigDir
+makeScidDir $scidDataDir
+makeScidDir $scidLogDir
+
+# moveOldConfigFiles removed S.A
+
+set optionsFile [scidConfigFile options]
+
+if {[catch {source $optionsFile} ]} {
+  ::splash::add "Unable to find the options file: [file tail $optionsFile]"
+} else {
+  ::splash::add "Using options file \"[file tail $optionsFile]\"."
+}
+
+# Reconfigure fonts if necessary
+
+foreach i {Regular Menu Small Tiny Fixed} {
+  if {$fontOptions($i) == $fontOptions(old$i)} {
+    # Old font format in options file, or no file. Extract new options:
+    set fontOptions($i) {}
+    lappend fontOptions($i) [font actual font_$i -family]
+    lappend fontOptions($i) [font actual font_$i -size]
+    lappend fontOptions($i) [font actual font_$i -weight]
+    lappend fontOptions($i) [font actual font_$i -slant]
+  } else {
+    # New font format in options file:
+    configureFont $i
+  }
+}
+
+### Fonts now fully configure :> S.A
+
+# Start up splash screen:
 
 proc ::splash::make {} {
   wm withdraw .
@@ -866,22 +956,7 @@ proc ::splash::make {} {
   $w.t image create end -image splash -padx 20 -pady 10
 }
 
-
-# Old Scid logo:
-image create photo splash -format gif -data \
-    "R0lGODdhZgAmAMIAAP///6CBUNHBoQAAcAAAAFK4bgAAAAAAACwAAAAAZgAmAAAD/gi63P4w
-ykkrDThjwTvXmueBmdiRmymggbqirqawMazSt23iuy7KAN7PNyKejB/ki1TDzJTCIjM37VWH
-moFWiw08r1JQU0wlW83YrXrQ/ZrX8NQ5VKbPSzn4th2E6f9sd3JddoR4PYB8LIB/dYeGg2GF
-knB8KokccWBHm0mdS2gCmo8KJn+Da1Cqn1Gjg6Uieo+prKoEt4+Sua4tHbAdp6hqq6Ent8eR
-nKG8Hr+ZssJbRMG9JsfX1YZrosy+ALHQ2dxaNozSLtfITea0pN8ejOLKWex7Kum4NfXDhc7P
-mJAaBdCDDp+8f2oKgOPnjkS9YsHGtcuADxmKSqAGbgvj/gbDvgG5JPITKU1DRWwgCGbEqKyj
-x4/iqJEkZ/IkrpQbV+b05KWPw48L280kYfNmBpU61Sgqtw9eOIRsiBbFmZOqvZY+0dRzOmoM
-xZM/q9JTyjHrpJk5ZToKYDMs2aRXebpMBjXtU0dFCVi9ujcQ1qBMRzXiOSnvLa4Mg9J0B3gK
-tcEZHxk+BgyaYpD93lUuSSecRpVCJh+uS/MyGn8TU3hmFFljB9EENscxnVkxE2ovcX8OBHs0
-Wi6kT2uuO5ZXbqACescm/bA24qYXPwJX/hwm4+rmCJdAnrz3CNa/X5k9DuisJ/BLlNtJjQlI
-lHkhtdNtfZC+1/ig5tZ/L38/GjHz9pWh333z8RegIP7V4oQFDDbo4IMQLpAAADs="
-
-# New Scid logo:
+# Scid logo
 image create photo splash -format gif -data {
   R0lGODlhZAAtAOcAAAICAj0+QJGGb04/KaSYf2dRNRElfraid3ddOBoYFcCyk4ZuRjs/XgsX
   RIpuRY12Usm6kyk+nWZunlJWli4yPj0zIgcPNI2Ba2tkc9bKsU9MaRo4vZaKdHeCvgIJK82+
@@ -968,19 +1043,22 @@ image create photo splash -format gif -data {
 ::splash::make
 
 proc ::splash::add {text} {
-  if {! [winfo exists .splash]} {return}
-  .splash.t configure -state normal
-  .splash.t insert end "\n$text" indent
-  # .splash.t see end
-  .splash.t configure -state disabled
-  update
+  if {[winfo exists .splash]} {
+    .splash.t insert end "\n$text" indent
+    update
+  }
 }
 
 ::splash::add "(C) 1999-2004 Shane Hudson  (sgh@users.sourceforge.net)"
 ::splash::add "(C) 2006-2008 Pascal Georges  (pascal.georges1@free.fr)"
-::splash::add "(C) 2008-2009 Steven Atkinson (stevenaaus@yahoo.com)"
+::splash::add "(C) 2008-2010 Steven Atkinson (stevenaaus@yahoo.com)"
 ::splash::add "Scid Vs PC $::scidvspcVersion, released $::scidVersionDate."
 ::splash::add "Website: http://scidvspc.sourceforge.net\n"
+
+# add cached splash comments
+foreach line $::splash::cache {
+  ::splash::add $line
+}
 
 # A lot of code assumes tcl_platform is either windows or unix, so
 # lotsa stuff may break if this is not the case.
@@ -990,156 +1068,7 @@ if {(! $windowsOS)  &&  (! $unixOS)} {
   ::splash::add "Operating System may not be supported"
 }
 
-# Remember old font settings before loading options file:
-set fontOptions(oldRegular) $fontOptions(Regular)
-set fontOptions(oldMenu) $fontOptions(Menu)
-set fontOptions(oldSmall) $fontOptions(Small)
-set fontOptions(oldTiny) $fontOptions(Tiny)
-set fontOptions(oldFixed) $fontOptions(Fixed)
-
-# New configuration file names:
-set scidConfigFiles(options) "options.dat"
-set scidConfigFiles(engines) "engines.dat"
-set scidConfigFiles(engines.bak) "engines.dat"
-set scidConfigFiles(recentfiles) "recent.dat"
-set scidConfigFiles(history) "history.dat"
-set scidConfigFiles(bookmarks) "bookmarks.dat"
-set scidConfigFiles(reports) "reports.dat"
-set scidConfigFiles(optrainer) "optrainer.dat"
-
-# scidConfigFile:
-#   Returns the full path and name of a Scid configuration file,
-#   given its configuration type.
-#
-proc scidConfigFile {type} {
-  global scidConfigDir scidConfigFiles
-  if {! [info exists scidConfigFiles($type)]} {
-    return -code error "No such config file type: $type"
-  }
-  return [file nativename [file join $scidConfigDir $scidConfigFiles($type)]]
-}
-
 ::splash::add "User directory is \"$scidUserDir\""
-
-# Create user ".scid" directory in Unix if necessary:
-# Since the options file used to be ".scid", rename it:
-if {! [file isdirectory $scidUserDir]} {
-  if {[file isfile $scidUserDir]} {
-    catch {file rename -force $scidUserDir "$scidUserDir.old"}
-  }
-  if {[catch {file mkdir $scidUserDir} err]} {
-    ::splash::add "Error creating $scidUserDir directory: $err"
-  } else {
-    catch {file rename "$scidUserDir.old" $optionsFile}
-  }
-  # Rename old "~/.scid_sent_emails" if necessary:
-  if {[file isfile [file nativename "~/.scid_sent_emails"]]} {
-    catch {file rename [file nativename "~/.scid_sent_emails"] $email(logfile)}
-  }
-}
-
-# Create the config, data and log directories if they do not exist:
-proc makeScidDir {dir} {
-  if {! [file isdirectory $dir]} {
-    if {[catch {file mkdir $dir} err]} {
-      ::splash::add "Error creating directory $dir: $err"
-    } else {
-      ::splash::add "Created directory: $dir"
-    }
-  }
-}
-
-makeScidDir $scidConfigDir
-makeScidDir $scidDataDir
-makeScidDir $scidLogDir
-
-# Rename old email log file if necessary:
-if {[file readable $email(oldlogfile)]  &&  ![file readable $email(logfile)]} {
-  ::splash::add "Renaming email directory $email(oldlogfile) to $email(logfile)"
-  catch {file rename $email(oldlogfile) $email(logfile)}
-}
-
-# moveOldConfigFiles
-#   Moves configuration files from the old (3.4 and earlier) names
-#   to the new file names used since Scid 3.5.
-#
-proc moveOldConfigFiles {} {
-  global scidUserDir scidConfigDir
-  foreach {oldname newname} {
-    scidrc options.dat
-    scid.opt options.dat
-    scid.bkm bookmarks.dat
-    scid.rfl recentfiles.dat
-    engines.lis engines.dat
-  } {
-    set oldpath [file nativename [file join $scidUserDir $oldname]]
-    set newpath [file nativename [file join $scidConfigDir $newname]]
-    if {[file readable $oldpath]  &&  ![file readable $newpath]} {
-      if {[catch {file rename $oldpath $newpath} err]} {
-        ::splash::add "Error moving $oldpath to $newpath: $err"
-      } else {
-        ::splash::add "Moved old config file $oldname to $newpath"
-      }
-    }
-  }
-}
-
-moveOldConfigFiles
-
-set optionsFile [scidConfigFile options]
-
-set ecoFile ""
-
-if {[catch {source $optionsFile} ]} {
-  #::splash::add "Unable to find the options file: [file tail $optionsFile]"
-} else {
-  ::splash::add "Your options file \"[file tail $optionsFile]\" was found and loaded."
-}
-
-# Now, if the options file was written by Scid 3.5 or older, it has a lot of
-# yucky variable names in the global namespace. So convert them to the new
-# namespace variables:
-#
-proc ConvertOldOptionVariables {} {
-  
-  set oldNewNames {
-    autoCloseSplash ::splash::keepopen
-    switcherVertical ::windows::switcher::vertical
-    doColorPgn ::pgn::showColor
-    pgnIndentVars ::pgn::indentVars
-    pgnIndentComments ::pgn::indentComments
-    pgnShortHeader ::pgn::shortHeader
-    pgnMoveFont ::pgn::boldMainLine
-    pgnMoveNumSpace ::pgn::moveNumberSpaces
-    pgnStripMarks ::pgn::stripMarks
-    pgnSymbolicNags ::pgn::symbolicNags
-    pgnColumn ::pgn::columnFormat
-  }
-  
-  foreach {old new} $oldNewNames {
-    if {[info exists ::$old]} {
-      set $new [set ::$old]
-    }
-  }
-}
-
-ConvertOldOptionVariables
-
-
-# Reconfigure fonts if necessary:
-foreach i {Regular Menu Small Tiny Fixed} {
-  if {$fontOptions($i) == $fontOptions(old$i)} {
-    # Old font format in options file, or no file. Extract new options:
-    set fontOptions($i) {}
-    lappend fontOptions($i) [font actual font_$i -family]
-    lappend fontOptions($i) [font actual font_$i -size]
-    lappend fontOptions($i) [font actual font_$i -weight]
-    lappend fontOptions($i) [font actual font_$i -slant]
-  } else {
-    # New font format in options file:
-    configureFont $i
-  }
-}
 
 # Check board size is valid:
 set newSize [lindex $boardSizes 0]
