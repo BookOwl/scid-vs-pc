@@ -34,36 +34,36 @@ proc ::preport::preportDlg {args} {
   if {[winfo exists $w]} { return }
   toplevel $w
   wm title $w "Scid: [tr ToolsPlayerReport]"
-  wm resizable $w 0 0
+
   pack [label $w.plabel -text "Generate Player Report"]
+  pack [frame $w.space -height 10]
   pack [frame $w.g] -side top -fill x -expand yes -padx 2
+
   label $w.g.where -text "Player:"
   grid $w.g.where -row 0 -column 0 -sticky w
-  ::combobox::combobox $w.g.player -width 40 -textvariable ::preport::_player
+  ::combobox::combobox $w.g.player -textvariable ::preport::_player
   ::utils::history::SetCombobox ::preport::_player $w.g.player
-  grid $w.g.player -row 0 -column 1 -sticky we
+  grid $w.g.player -row 0 -column 1 -columnspan 2 
+
   label $w.g.has -text "Color:"
   grid $w.g.has -row 1 -column 0 -sticky w
-  frame $w.g.color
-  radiobutton $w.g.color.white -text $::tr(White) \
+  radiobutton $w.g.white -text $::tr(White) \
     -variable ::preport::_color -value white
-  frame $w.g.color.gap -width 5
-  radiobutton $w.g.color.black -text $::tr(Black) \
+  radiobutton $w.g.black -text $::tr(Black) \
     -variable ::preport::_color -value black
-  pack $w.g.color.white $w.g.color.gap $w.g.color.black -side left
-  grid $w.g.color -row 1 -column 1 -sticky w
+  grid $w.g.white -row 1 -column 1 -sticky w
+  grid $w.g.black -row 1 -column 2 -sticky w
+
   label $w.g.pos -text "Start position:"
   grid $w.g.pos -row 2 -column 0
-  frame $w.g.pselect
-  radiobutton $w.g.pselect.start -text "Standard start position" \
-    -variable ::preport::_pos -value start
-  radiobutton $w.g.pselect.current -text "Current board position" \
-    -variable ::preport::_pos -value current
-  pack $w.g.pselect.start $w.g.pselect.current -side left
-  grid $w.g.pselect -row 2 -column 1 -sticky w
+  radiobutton $w.g.start -text "Game start" -variable ::preport::_pos -value start
+  radiobutton $w.g.current -text "Current position" -variable ::preport::_pos -value current
+  grid $w.g.start   -row 2 -column 1 -sticky w
+  grid $w.g.current -row 2 -column 2 -sticky w
+
   checkbutton $w.g.clipbase -text $::tr(PReportClipbase) \
     -variable ::preport::_clipbase
-  grid $w.g.clipbase -row 3 -column 1 -sticky w
+  grid $w.g.clipbase -row 3 -column 0 -columnspan 3 -sticky w
   addHorizontalRule $w
   pack [frame $w.b] -side bottom -fill x
   pack [frame $w.b2] -side bottom -fill x
@@ -99,16 +99,17 @@ proc ::preport::preportDlg {args} {
   if {$blackName != ""  &&  $blackName != "?"} {
     packbuttons right $w.b2.black
   }
-  packbuttons right $w.b.cancel $w.b.ok
-  packbuttons left $w.b.help
+  packbuttons right $w.b.cancel $w.b.help $w.b.ok
   if {[sc_base current] == [sc_info clipbase]} {
     $w.g.clipbase configure -state disabled
   }
   bind $w <Return> [list $w.b.ok invoke]
   bind $w <Escape> [list $w.b.cancel invoke]
   ::utils::win::Centre $w
-  grab $w
+
   focus $w.g.player
+
+  update
 }
 
 proc ::preport::ConfigMenus {{lang ""}} {
@@ -122,7 +123,7 @@ proc ::preport::ConfigMenus {{lang ""}} {
     configMenuText $m.file $idx OprepFile$tag $lang
   }
   foreach idx {0 1} tag {Report Index} {
-    configMenuText $m.helpmenu $idx OprepHelp$tag $lang
+    configMenuText $m.help $idx OprepHelp$tag $lang
   }
 
 }
@@ -211,8 +212,8 @@ proc ::preport::makeReportWin {args} {
     menu $w.menu
     $w configure -menu $w.menu
     $w.menu add cascade -label OprepFile -menu $w.menu.file
-    $w.menu add cascade -label OprepHelp -menu $w.menu.helpmenu
-    foreach i {file helpmenu} {
+    $w.menu add cascade -label OprepHelp -menu $w.menu.help
+    foreach i {file help} {
       menu $w.menu.$i -tearoff 0
     }
     $w.menu.file add command -label OprepFileText \
@@ -227,9 +228,9 @@ proc ::preport::makeReportWin {args} {
     $w.menu.file add separator
     $w.menu.file add command -label Close \
       -command "$w.b.close invoke"
-    $w.menu.helpmenu add command -label "Player Report Help" \
+    $w.menu.help add command -label "Player Report Help" \
       -accelerator F1 -command {helpWindow Reports Player}
-    $w.menu.helpmenu add command -label "Index" \
+    $w.menu.help add command -label "Index" \
       -command {helpWindow Index}
 
     bind $w <F1> {helpWindow Reports Player}
@@ -249,11 +250,8 @@ proc ::preport::makeReportWin {args} {
     frame $w.b
     button $w.b.opts -text [tr OprepFileOptions] -command ::preport::setOptions
     button $w.b.help -textvar ::tr(Help) -command {helpWindow Reports Player}
-    button $w.b.viewHTML -text $::tr(OprepViewHTML) \
-      -command ::preport::previewHTML
-    button $w.b.update -textvar ::tr(Update...) -command {
-      ::preport::preportDlg
-    }
+    button $w.b.viewHTML -text $::tr(OprepViewHTML) -command ::preport::previewHTML
+    button $w.b.update -textvar ::tr(Update) -command ::preport::preportDlg
     button $w.b.close -textvar ::tr(Close) -command "focus .; destroy $w"
     pack $w.b -side bottom -fill x
     pack $w.scroll -side top -fill both -expand yes
@@ -322,8 +320,11 @@ proc ::preport::setOptions {} {
     grid rowconfigure $w.f $row -pad 2
     incr row
   }
+
   addHorizontalRule $w
+
   pack [frame $w.b] -side bottom -fill x
+
   button $w.b.defaults -textvar ::tr(Defaults) -command {
     array set ::preport [array get ::preportDefaults]
   }
@@ -337,8 +338,10 @@ proc ::preport::setOptions {} {
     array set ::preport [array get ::preport::backup]
     destroy .preportOptions
   }
+
   pack $w.b.defaults -side left -padx 5 -pady 5
   pack $w.b.cancel $w.b.ok -side right -padx 5 -pady 5
+
   array set ::preport::backup [array get ::preport]
   wm resizable $w 0 0
   wm title $w  "Scid: [tr ToolsPlayerReport]: [tr OprepFileOptions]"
