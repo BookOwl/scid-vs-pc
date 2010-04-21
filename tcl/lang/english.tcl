@@ -323,10 +323,10 @@ menuText E OptionsAutoSave "Auto-Save Options on Exit" 0 \
 
 # Help menu:
 menuText E Help "Help" 0
-menuText E HelpContents "Contents" 0 {Show the help contents page}
+menuText E HelpContents "Help" 0 {Show the help contents page}
 menuText E HelpIndex "Index" 0 {Show the help index page}
 menuText E HelpGuide "Quick Guide" 0 {Show the quick guide help page}
-menuText E HelpHints "Hints" 0 {Show the hints help page}
+menuText E HelpHints "Hints" 1 {Show the hints help page}
 menuText E HelpContact "Contact Info" 1 {Show the contact information help page}
 menuText E HelpTip "Tip of the Day" 0 {Show a useful Scid tip}
 menuText E HelpStartup "Startup Window" 0 {Show the startup window}

@@ -5889,12 +5889,26 @@ set helpText(Changelog) {<h1>Scid Vs PC</h1>
 <li> Crosstable: make options persistant, tweak menus, fix html export blank fields </li>
 <li> Crosstable: allow spelling.ssp to match initalized christian names, include a Font button, fix parenting </li>
 <li> Change the toplevel "wm title" to show "White v. Black [database]" </li>
-<li> Refine the SetInfo widget in game.tcl </li>
 <li> Fics: Make a new Received Offers dialog which allows for proper handling of multiple challenges </li> </li>
 <li> Fics: Tweak the Make Offer dialog </li>
 <li> Fics: update help files, and add a Font button </li>
 <li> Fics: some fixes from SCID </li>
 <li> Move the side-to-move  indicator to left of main board </li>
+<li> Make font dialogs resizable, add a "default" feature, a new "fixed" default, and small overhaul (hard work!) </li>
+<li> (Add a "Font" button to the help and crosstable widgets) </li>
+<li> Fix focus issues with the Set Game Info widget </li>
+<li> Reorganise Scid start-up (includes reading font info _before_ drawing splash widget, removing unused old logo and start-up checks) </li>
+<li> Remove quite a few "-background white" statements from all over (to allow for custom coloured backgrounds in future) </li>
+<li> Fix up padding issues with the analysis widget's small text widget </li>
+<li> Player Info got a fair bit of tweaking - nicer info display (spellchk.cpp, tkscid.cpp) with full country names, and tcl widget tweaked too </li>
+<li> Upgrade to toga 131 </li>
+<li> Remove pocket and help directories </li>
+<li> Changed a heap of menus (for example) PGN::File is now PGN::PGN, to avoid confusion with the Scid::File menu </li>
+<li> Player Report configuration widget reniced. </li>
+<li> Menu name and key-bindings changes for PGN and FEN import </li>
+<li> Swapped key bindings for "Goto Move Number" (now ctrl+g) and "Goto Game Number" (now ctrl+u) </li>
+<li> Include the highlight previous move feature from SCID (and add a context menu) </li>
+<li> (Promise to) fix the Gamelist widget, and implement a Comp vs Comp tournament feature for next release</li>
 </ul>
 
 <h4>3.6.26.8 (December 19, 2009)</h4>
@@ -5956,7 +5970,7 @@ tiles) and has improved functionality.  It also properly inits the
      (thanks Alex) </li>
 <li> De-stupidify Save Game dialog (::game::ConfirmDiscard2) </li>
 <li> Fix up Paste Clipboard widget a little </li>
-<li> Reorder the Options->Chessboard menus a little, giving
+<li> Reorder the Options::Chessboard menus a little, giving
      MyPlayerNames its own entry </li>
 <li> Several configuration windows appear centered over main window </li>
 <li> Add Control-m binding for toggling the menubar
@@ -5986,13 +6000,13 @@ tiles) and has improved functionality.  It also properly inits the
 <li> Stop game from crashing with languages other than English.  </li>
 <li> Window placement is now relative the main window, rather than
      absolute +x+y </li>
-<li> The Options->Chessboard menu now also includes the pieces menus </li>
+<li> The Options::Chessboard menu now also includes the pieces menus </li>
 <li> The 3 line PGN header is now colour </li>
 <li> Home directory is now $HOME/.scidvspc (instead of $HOME/.scid).  </li>
 <li> Pawn promotion dialog size now corresponds to board size, and
      overlays promoted pawn.  </li>
 <li> Control-I toggles gameinfo panel. Control-b toggles
-     Options->Chessboard widget, Control-L toggles gamelist widget.  </li>
+     Options::Chessboard widget, Control-L toggles gamelist widget.  </li>
 <li> Other minor changes to fics, -O2, "exec tkscid" correctness, font
      and menu tweaks </li>
 </ul>
@@ -6001,7 +6015,7 @@ tiles) and has improved functionality.  It also properly inits the
 <ul>
 <li> Replaced most all of the old colour schemes and tiles.  </li>
 <li> New Usual and Maya pieces.  </li>
-<li> Rewrote (again) the option->chessboard->board_style widget.
+<li> Rewrote (again) the option::chessboard::board_style widget.
      Changes are now made dynamically to the main board.  </li>
 <li> Tweaked the pgn save menu, included a "Save Pgn" menu item in the
      "File" menu, and other pgn window bindings.  </li>
@@ -6017,7 +6031,7 @@ tiles) and has improved functionality.  It also properly inits the
 <li> Fics and Fischer chess changes </li>
 <li> Overhauled comment editor widget, including key bindings </li>
 <li> More tacgame bug-fixes.  </li>
-<li> Removed the right_click->take_back_move... This is just too
+<li> Removed the right_click::take_back_move... This is just too
      dangerous for Fics (which really gets stuffed up). Mouse wheel
      bindings remain.  </li>
 <li> Fixed more bugs in the tactical game feature.  </li>
@@ -6029,7 +6043,7 @@ tiles) and has improved functionality.  It also properly inits the
 <h4>3.6.26.1 (May 2009)</h4>
 <ul>
 <li> Overhauling the tactical game feature, including a Fischer chess option.  </li>
-<li> Overhauling the tools->analysis widget.  </li>
+<li> Overhauling the tools::analysis widget.  </li>
 <li> Some re-organization of menu widgets, including tear-off menus.  </li>
 <li> Rewritten board style widget.  </li>
 <li> Fix parenting of some pop-ups, including the splash widget </li>

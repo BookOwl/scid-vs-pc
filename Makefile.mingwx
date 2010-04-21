@@ -4,9 +4,9 @@
 ### Copyright (C) 2009, O. Sezer (sezero@users.sourceforge.net)
 
 
-MINGW_DIR:=/usr/local/cross-tools
-#MINGW_TARGET=i686-pc-mingw32
-MINGW_TARGET=i386-mingw32msvc
+MINGW_DIR:=/usr/local/cross-win32
+#MINGW_TARGET=i386-mingw32msvc
+MINGW_TARGET=i686-pc-mingw32
 MINGW_BIN:=$(MINGW_DIR)/bin
 TCL_DIR:=/usr/local/cross-tcl
 # Tcl/Tk version: it should be "85" for Tcl/Tk 8.5, etc.
