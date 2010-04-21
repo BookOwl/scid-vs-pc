@@ -167,7 +167,8 @@ proc updateHelpWindow {name {heading {}}} {
   bind $w <Key-End> "$w.text yview moveto 0.99"
   bind $w <Escape> "$w.b.close invoke"
   bind $w <Key-b> "$w.b.back invoke"
-  bind $w <Left> "$w.b.back invoke"
+  bind $w <Alt-Left> "$w.b.back invoke"
+  bind $w <Alt-Right> "$w.b.forward invoke"
   bind $w <Key-i> "$w.b.index invoke"
   
   ::htext::display $w.text $helptext $heading 0
