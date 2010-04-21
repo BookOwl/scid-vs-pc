@@ -256,6 +256,10 @@ menuText S OptionsFontsFixed "Fijada" 0 {Cambia la anchura fijada de la fuente}
 menuText S OptionsGInfo "Información de la partida" 0 {Información de la partida}
 menuText S OptionsLanguage "Lenguaje" 0 {Selecciona el lenguaje del menú}
 menuText S OptionsMovesTranslatePieces "Traducir piezas" 0 {Traducir la primera letra de las piezas}
+menuText S OptionsMovesHighlightLastMove "Iluminar última jugada" 0 {Ilumina la última jugada}
+menuText S OptionsMovesHighlightLastMoveDisplay "Mostrar" 0 {Muestra la última jugada iluminada}
+menuText S OptionsMovesHighlightLastMoveWidth "Ancho" 0 {Espesor de la línea}
+menuText S OptionsMovesHighlightLastMoveColor "Color" 0 {Color de línea}
 menuText S OptionsMoves "Movimientos" 0 {Opciones de la entrada de movimientos}
 menuText S OptionsMovesAsk "Preguntar antes de reemplazar movimientos" 0 \
   {Pregunta antes de sobreescribir cualquier movimiento existente}

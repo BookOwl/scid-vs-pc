@@ -949,7 +949,8 @@ $m add command -label OptionsSave -command {
           ecoFile suggestMoves showVarPopup glistSize glexport \
           blunderThreshold autoplayDelay animateDelay boardCoords boardSTM \
           moveEntry(AutoExpand) moveEntry(Coord) \
-          translatePieces askToReplaceMoves ::windows::switcher::vertical locale(numeric) \
+          translatePieces highlightLastMove highlightLastMoveWidth highlightLastMoveColor \
+          askToReplaceMoves ::windows::switcher::vertical locale(numeric) \
           spellCheckFile ::splash::keepopen autoRaise autoIconify \
           exportFlags(comments) exportFlags(vars) \
           exportFlags(indentc) exportFlags(indentv) \
@@ -1119,6 +1120,28 @@ set helpMessage($m.entry,7) OptionsMovesSpace
 $m.entry add checkbutton -label OptionsMovesTranslatePieces \
     -variable ::translatePieces -offvalue 0 -onvalue 1 -command setLanguage
 set helpMessage($m.entry,8) OptionsMovesTranslatePieces
+
+menu $m.entry.highlightlastmove -tearoff 1
+$m.entry add cascade -label OptionsMovesHighlightLastMove -menu  $m.entry.highlightlastmove
+$m.entry.highlightlastmove add checkbutton -label OptionsMovesHighlightLastMoveDisplay -variable ::highlightLastMove -command updateBoard
+menu $m.entry.highlightlastmove.width
+$m.entry.highlightlastmove add cascade -label OptionsMovesHighlightLastMoveWidth -menu $m.entry.highlightlastmove.width
+foreach i {1 2 3 4 5} {
+  $m.entry.highlightlastmove.width add radiobutton -label $i -value $i -variable ::highlightLastMoveWidth -command updateBoard
+}
+# menu $m.entry.highlightlastmove.pattern
+# $m.entry.highlightlastmove add cascade -label OptionsMovesHighlightLastMovePattern -menu $m.entry.highlightlastmove.pattern
+# foreach i {"plain" "." "-" "-." "-.." ". " "," ".  "} j { "" "." "-" "-." "-.." ". " "," ".  "} {
+  # $m.entry.highlightlastmove.pattern add radiobutton -label $i -value $j -variable ::highlightLastMovePattern -command updateBoard
+# }
+$m.entry.highlightlastmove add command -label OptionsMovesHighlightLastMoveColor -command {
+  set col [ tk_chooseColor -initialcolor $::highlightLastMoveColor -title "Scid"]
+  if { $col != "" } {
+    set ::highlightLastMoveColor $col
+    updateBoard
+  }
+}
+set helpMessage($m.entry,9) OptionsMovesHighlightLast
 
 proc updateLocale {} {
   global locale
@@ -1498,9 +1521,13 @@ proc setLanguageMenus {{lang ""}} {
         GInfo$tag $lang
   }
   configMenuText .menu.options.entry [tr OptionsShowVarPopup $oldLang] OptionsShowVarPopup $lang
-  foreach tag {Ask Animate Delay Suggest Key Coord Space TranslatePieces } {
+  # S.A. here's how to fix these f-ing menus.
+  foreach tag {Ask Animate Delay Suggest Key Coord Space TranslatePieces HighlightLastMove } {
     configMenuText .menu.options.entry [tr OptionsMoves$tag $oldLang] \
         OptionsMoves$tag $lang
+  }
+  foreach tag { Color Width Display } {
+    configMenuText .menu.options.entry.highlightlastmove [tr OptionsMovesHighlightLastMove$tag $oldLang] OptionsMovesHighlightLastMove$tag $lang
   }
   foreach tag {HelpTip HelpStartup WindowsSwitcher WindowsPGN WindowsTree FileFinder \
         WindowsCross WindowsGList WindowsStats WindowsBook} {

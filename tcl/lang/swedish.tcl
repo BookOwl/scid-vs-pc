@@ -282,6 +282,14 @@ menuText W OptionsGInfo "Partiinformation" 0 {Alternativ för partiinformation}
 menuText W OptionsLanguage "Språk" 0 {Välj språk}
 # ====== TODO To be translated ======
 menuText W OptionsMovesTranslatePieces "Översätt pjäser" 0 {Översätt första bokstaven för pjäser}
+# ====== TODO To be translated ======
+menuText W OptionsMovesHighlightLastMove "Markera senaste draget" 0 {Markera senaste draget}
+# ====== TODO To be translated ======
+menuText W OptionsMovesHighlightLastMoveDisplay "Visa" 0 {Visa senaste markerade draget}
+# ====== TODO To be translated ======
+menuText W OptionsMovesHighlightLastMoveWidth "Bredd" 0 {Tjockhet på rad}
+# ====== TODO To be translated ======
+menuText W OptionsMovesHighlightLastMoveColor "Färg" 0 {Färg på rad}
 menuText W OptionsMoves "Drag" 0 {Alternativ för dragangivelse}
 menuText W OptionsMovesAsk "Fråga före ersätt drag" 0 \
   {Fråga innan du ersätter befintliga drag}

@@ -279,6 +279,14 @@ menuText H OptionsGInfo "Játszmainformáció" 0 {Játszmainformáció változtatása}
 menuText H OptionsLanguage "Nyelv" 0 {A menü nyelvének kiválasztása}
 # ====== TODO To be translated ======
 menuText H OptionsMovesTranslatePieces "Translate pieces" 0 {Translate first letter of pieces}
+# ====== TODO To be translated ======
+menuText H OptionsMovesHighlightLastMove "Highlight last move" 0 {Highlight last move}
+# ====== TODO To be translated ======
+menuText H OptionsMovesHighlightLastMoveDisplay "Show" 0 {Display last move Highlight}
+# ====== TODO To be translated ======
+menuText H OptionsMovesHighlightLastMoveWidth "Width" 0 {Thickness of line}
+# ====== TODO To be translated ======
+menuText H OptionsMovesHighlightLastMoveColor "Color" 0 {Color of line}
 menuText H OptionsMoves "Lépések" 0 {Lépések bevitelének beállításai}
 menuText H OptionsMovesAsk "Lépés cseréje elõtt rákérdez." 6 \
   {Mielõtt átírna egy meglevõ lépést, rákérdez.}

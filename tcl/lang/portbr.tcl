@@ -272,6 +272,10 @@ menuText B OptionsGInfo "Informacoes do Jogo" 0 {Opcoes de informacao do jogo}
 menuText B OptionsLanguage "Linguagem" 0 {Menu de selecao de linguagem}
 # ====== TODO To be translated ======
 menuText B OptionsMovesTranslatePieces "Translate pieces" 0 {Translate first letter of pieces}
+menuText B OptionsMovesHighlightLastMove "Destacar último movimento" 0 {Destaca o último movimento}
+menuText B OptionsMovesHighlightLastMoveDisplay "Mostrar" 0 {Mostra o destaque do último movimento}
+menuText B OptionsMovesHighlightLastMoveWidth "Espessura" 0 {Espessura da linha}
+menuText B OptionsMovesHighlightLastMoveColor "Cor" 0 {Cor da linha}
 menuText B OptionsMoves "Movimentos" 0 {Opcoes para entrada dos movimentos}
 menuText B OptionsMovesAsk "Perguntar antes de substituir movimentos" 0 \
   {Pergunta antes de substituir movimentos existentes}

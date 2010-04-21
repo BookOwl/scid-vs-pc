@@ -412,6 +412,9 @@ menu .gameInfo.menu -tearoff 0
 .gameInfo.menu add checkbutton -label GInfoMaterial \
     -variable gameInfo(showMaterial) -offvalue 0 -onvalue 1 -command {::board::togglematerial }
 
+.gameInfo.menu add checkbutton -label {Highlight last move} \
+    -variable ::highlightLastMove -offvalue 0 -onvalue 1 -command updateBoard
+
 .gameInfo.menu add checkbutton -label GInfoFEN \
     -variable gameInfo(showFEN) -offvalue 0 -onvalue 1 -command {
        .gameInfo configure -height [expr 4 + $gameInfo(showFEN)]
@@ -422,6 +425,8 @@ menu .gameInfo.menu -tearoff 0
     -variable gameInfo(hideNextMove) -offvalue 0 -onvalue 1 -command updateBoard
 
 .gameInfo.menu add command -label {Toggle Coords} -command toggleCoords
+
+.gameInfo.menu add separator
 
 .gameInfo.menu add checkbutton -label {Show Game Info} \
    -variable gameInfo(show) -command showGameInfo

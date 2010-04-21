@@ -1676,6 +1676,14 @@ proc ::board::mark::DrawArrow {pathName from to color} {
       {-tag [list mark arrows "mark${from}:${to}"]}
 }
 
+# ::board::mark::DrawRectangle --
+# Draws a rectangle surrounding the square
+proc ::board::mark::DrawRectangle { pathName square color pattern } {
+  if {$square < 0  ||  $square > 63} { puts "error square = $square" ; return }
+  set box [::board::mark::GetBox $pathName $square]
+  $pathName create rectangle [lindex $box 0] [lindex $box 1] [lindex $box 2] [lindex $box 3] \
+      -outline $color -width $::highlightLastMoveWidth -dash $pattern -tag highlightLastMove
+}
 # ::board::mark::DrawTux --
 #
 image create photo tux16x16 -data \
@@ -1914,6 +1922,20 @@ proc ::board::drawText {w sq text color args {shadow ""} } {
   #}
 }
 
+# Highlight last move played by drawing a red rectangle around the two squares
+proc  ::board::lastMoveHighlight {w} {
+  $w.bd delete highlightLastMove
+  if { ! $::highlightLastMove } {return}
+  set moveuci [ sc_game info previousMoveUCI ]
+  if {[string length $moveuci] >= 4} {
+    set moveuci [ string range $moveuci 0 3 ]
+    set square1 [ ::board::sq [string range $moveuci 0 1 ] ]
+    set square2 [ ::board::sq [string range $moveuci 2 3 ] ]
+    ::board::mark::DrawRectangle $w.bd $square1 $::highlightLastMoveColor $::highlightLastMovePattern
+    ::board::mark::DrawRectangle $w.bd $square2 $::highlightLastMoveColor $::highlightLastMovePattern
+  }
+}
+
 # ::board::update
 #   Update the board given a 64-character board string as returned
 #   by the "sc_pos board" command. If the board string is empty, it
@@ -1984,6 +2006,11 @@ proc ::board::update {w {board ""} {animate 0} {resize 0}} {
   # Redraw marks and arrows
   if {$::board::_showMarks($w)} {
     ::board::mark::drawAll $w
+  }
+
+  # Redraw last move highlight if mainboard
+  if { $w == ".board"} {
+    ::board::lastMoveHighlight $w
   }
 
   # ::board::update is called twice mostly :<
