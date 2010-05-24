@@ -196,6 +196,9 @@ namespace eval pgn {
                  -initialdir $::initialDir(base) -initialfile $tail \
                  -filetypes $ftype -defaultextension .pgn -title {Save PGN}]
     if {$fname != ""} {
+      if {[file extension $fname] != ".txt" && [file extension $fname] != ".pgn" } {
+	append fname ".pgn"
+      }
       if {[catch {set tempfile [open $fname w]}]} {
 	tk_messageBox -title "Scid: Error saving file" -parent $parent -type ok \
                       -icon warning -message "Unable to save file $fname\n\n"
