@@ -326,6 +326,8 @@ proc ::enginelist::listEngines {{focus 0}} {
       append text "  F2 "
     } elseif {$engines(F3) == $count} {
       append text "  F3 "
+    } elseif {$engines(F4) == $count} {
+      append text "  F4 "
     } else {
       append text "     "
     }
@@ -364,6 +366,7 @@ proc ::enginelist::choose {} {
   bind $w <Escape> "destroy $w"
   bind $w <F2> "startAnalysisWin F2"
   bind $w <F3> "startAnalysisWin F3"
+  bind $w <F4> "startAnalysisWin F4"
 
   label $w.flabel -text $::tr(EngineList) -font font_Large
   pack $w.flabel -side top -pady 5
@@ -619,16 +622,18 @@ proc ::enginelist::edit {index} {
   label $w.radio.label -text {Hot Key}
   radiobutton $w.radio.f2	-text F2 -variable hotkey -value F2
   radiobutton $w.radio.f3	-text F3 -variable hotkey -value F3
+  radiobutton $w.radio.f4	-text F4 -variable hotkey -value F4
   radiobutton $w.radio.none	-text none -variable hotkey -value none
   # have to use "none" instead of "" to stop radio button ghosting bug
 
   $w.radio.none select
   if {$engines(F2) == [expr $engines(newIndex) + 1]} {$w.radio.f2 select} 
   if {$engines(F3) == [expr $engines(newIndex) + 1]} {$w.radio.f3 select}
+  if {$engines(F4) == [expr $engines(newIndex) + 1]} {$w.radio.f4 select}
 
   pack $w.radio -side top -anchor w
   pack $w.radio.label -side left
-  pack $w.radio.f2 $w.radio.f3 $w.radio.none -side left -padx 5
+  pack $w.radio.f2 $w.radio.f3 $w.radio.f4 $w.radio.none -side left -padx 5
 
   pack [label $w.required -font font_Small -text $::tr(EngineRequired)] -side top
 
@@ -654,8 +659,9 @@ proc ::enginelist::edit {index} {
       # just disable first in case of multiple selection
       if {$engines(F2) == $index} {set engines(F2) {}}
       if {$engines(F3) == $index} {set engines(F3) {}}
-      if { $hotkey == "F2" || $hotkey == "F3" } {
-        # hotkey either F2 or F3
+      if {$engines(F4) == $index} {set engines(F4) {}}
+      if { $hotkey == "F2" || $hotkey == "F3" || $hotkey == "F4" } {
+        # hotkey either F2 or F3 or F4
         set engines($hotkey) $index
       }
 

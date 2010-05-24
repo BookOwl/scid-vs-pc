@@ -961,7 +961,7 @@ $m add command -label OptionsSave -command {
           gameInfo(show) gameInfo(photos) gameInfo(hideNextMove) gameInfo(wrap) \
           gameInfo(fullComment) gameInfo(showMarks) \
           gameInfo(showMaterial) gameInfo(showFEN) gameInfo(showTB) \
-          engines(F2) engines(F3) engineCoach1 engineCoach2 scidBooksDir scidBasesDir \
+          engines(F2) engines(F3) engines(F4) engineCoach1 engineCoach2 scidBooksDir scidBasesDir \
           crosstab(type) crosstab(ages) crosstab(countries) crosstab(ratings) crosstab(titles) crosstab(breaks) crosstab(deleted) crosstab(colors) crosstab(cnumbers) crosstab(groups) crosstab(sort) \
           ::utils::sound::soundFolder ::utils::sound::announceNew \
           ::utils::sound::announceForward ::utils::sound::announceBack \
@@ -1654,10 +1654,11 @@ proc standardShortcuts {w} {
   bind $w <End>   ::move::End
   bind $w <KeyPress-v> { ::showVars }
   bind $w <KeyPress-z> {.button.exitVar invoke}
-  bind $w <F2> "::startAnalysisWin F2"
-  bind $w <F3> "::startAnalysisWin F3"
-  bind $w <F4> { catch { .analysisWin1.b1.bStartStop invoke } }
-  bind $w <F5> { catch { .analysisWin2.b1.bStartStop invoke } }
+  bind $w <F2> {::startAnalysisWin F2}
+  bind $w <F3> {::startAnalysisWin F3}
+  bind $w <F4> {::startAnalysisWin F4}
+  # broke bind $w <F4> { catch { .analysisWin1.b1.bStartStop invoke } }
+  # broke bind $w <F5> { catch { .analysisWin2.b1.bStartStop invoke } }
   bind $w <F11>  ::book::open
   bind $w <Control-c> {catch {sc_clipbase copy}; ::updateBoard}
   bind $w <Control-v> {catch {sc_clipbase paste}; ::updateBoard -pgn}
