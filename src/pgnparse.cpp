@@ -250,8 +250,8 @@ standardPlayerName (char * source)
     }
     *to = 0;
 
-    // Now trim any trailling spaces, tabs and dots:
-    strTrimRight (source, ". \t");
+    // Now trim any trailling spaces, tabs :
+    strTrimRight (source, " \t");
 
     // Now standardise the capital letters of Dutch/etc prefix names:
     standardDutchName(source);
@@ -1082,8 +1082,11 @@ PgnParser::ParseMoves (Game * game, char * buffer, uint bufSize)
 
         case TOKEN_CommentEnd:
             if (commentErrorCount < maxCommentErrorsPerGame) {
-                LogError ("Warning: close-brace character \"}\" seen ",
-                          "outside a comment.");
+                char tempStr [500];
+                snprintf (tempStr, sizeof(tempStr), " in game %s - %s, %u: ",
+                    game->GetWhiteStr(), game->GetBlackStr(),
+                    date_GetYear (game->GetDate()));
+                LogError ("Warning: \"}\" seen outside a comment", tempStr);
                 commentErrorCount++;
             }
             break;

@@ -45,6 +45,15 @@
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // CONSTANTS:
 
+// Buffer sizes
+#ifdef WINCE
+#define BBUF_SIZE 30000
+#define TBUF_SIZE 100000
+#else
+#define BBUF_SIZE 256000 //120000
+#define TBUF_SIZE 1280000 //160000
+#endif
+
 typedef unsigned short versionT;
 
 // Version: div by 100 for major number, modulo 100 for minor number
