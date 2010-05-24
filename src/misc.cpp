@@ -893,6 +893,20 @@ strContains (const char * longStr, const char * keyStr)
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// strCaseContains():
+//      Returns true if longStr contains an occurence of keyStr,
+//      case-insensitive and NOT ignoring any characters such as spaces.
+bool
+strCaseContains (const char * longStr, const char * keyStr)
+{
+    while (*longStr) {
+        if (strIsCasePrefix (keyStr, longStr)) { return true; }
+        longStr++;
+    }
+    return false;
+}
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // strContainsIndex():
 //      Returns the first index if longStr contains an occurence of keyStr,
 //      case-sensitive and NOT ignoring any characters such as spaces.

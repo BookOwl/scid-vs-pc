@@ -445,6 +445,7 @@ int sc_filter_remove  (TCL_ARGS);
 int sc_filter_reset   (TCL_ARGS);
 int sc_filter_stats   (TCL_ARGS);
 int sc_filter_textfind (TCL_ARGS);
+int sc_filter_textcasefind (TCL_ARGS);
 int sc_filter_value   (TCL_ARGS);
 
 int sc_game           (TCL_ARGS);

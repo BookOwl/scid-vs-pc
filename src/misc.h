@@ -141,6 +141,7 @@ bool   strIsSurnameOnly (const char * name);
 bool   strAlphaContains (const char * longStr, const char * keyStr);
 
 bool   strContains (const char * longStr, const char * keyStr);
+bool   strCaseContains (const char * longStr, const char * keyStr);
 int    strContainsIndex (const char * longStr, const char * keyStr);
 
 bool   strGetBoolean (const char * str);

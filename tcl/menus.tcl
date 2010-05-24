@@ -1605,7 +1605,6 @@ proc standardShortcuts {w} {
   bind $w <Control-w> ::file::Close
   bind $w <Control-slash> ::file::finder::Open
   bind $w <Control-m> ::maint::OpenClose
-  bind $w <Control-m> toggleMenubar
   bind $w <Control-d> ::windows::switcher::Open
   bind $w <Control-q> ::file::Exit
   bind $w <Control-L> ::game::Reload

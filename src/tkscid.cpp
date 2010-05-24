@@ -4968,13 +4968,13 @@ sc_filter (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
         "copy", "count", "first", "frequency",
         "index", "last", "locate", "negate", "next",
         "previous", "remove", "reset", "size",
-        "stats", "textfind", "value", NULL
+        "stats", "textfind", "textcasefind", "value", NULL
     };
     enum {
         FILTER_COPY, FILTER_COUNT, FILTER_FIRST, FILTER_FREQ,
         FILTER_INDEX, FILTER_LAST, FILTER_LOCATE, FILTER_NEGATE,
         FILTER_NEXT, FILTER_PREV, FILTER_REMOVE, FILTER_RESET,
-        FILTER_SIZE, FILTER_STATS, FILTER_TEXTFIND, FILTER_VALUE
+        FILTER_SIZE, FILTER_STATS, FILTER_TEXTFIND, FILTER_TEXTCASEFIND, FILTER_VALUE
     };
 
     if (argc > 1) { index = strUniqueMatch (argv[1], options); }
@@ -5024,6 +5024,9 @@ sc_filter (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
 
     case FILTER_TEXTFIND:
         return sc_filter_textfind (cd, ti, argc, argv);
+
+    case FILTER_TEXTCASEFIND:
+        return sc_filter_textcasefind (cd, ti, argc, argv);
 
     case FILTER_VALUE:
         return sc_filter_value (cd, ti, argc, argv);
@@ -5516,7 +5519,7 @@ sc_filter_stats (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // sc_filter_textfind:
-//    Finds the next game that contains the specified text, case-insensitive
+//    Finds the next game that contains the specified text, case-sensitive
 //    and ignoring spaces, in its White, Black, Event or Site fields.
 int
 sc_filter_textfind (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
@@ -5538,6 +5541,40 @@ sc_filter_textfind (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv
                     (strContains (ie->GetBlackName (nb), text))  ||
                     (strContains (ie->GetEventName (nb), text))  ||
                     (strContains (ie->GetSiteName (nb), text)))
+                {
+                    return setUintResult (ti, filteredCount);
+                }
+            }
+            start++;
+        }
+    }
+    return setUintResult (ti, 0);
+}
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// sc_filter_textcasefind:
+//    Finds the next game that contains the specified text, case-insensitive
+//    and ignoring spaces, in its White, Black, Event or Site fields.
+int
+sc_filter_textcasefind (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
+{
+    if (argc != 4) {
+        return errorResult (ti, "Usage: sc_filter textfind <startGame> <searchText>");
+    }
+    const char * text = argv[3];
+    if (db->inUse) {
+        NameBase * nb = db->nb;
+        uint filteredCount = strGetUnsigned (argv[2]);
+        uint start = db->filter->FilteredCountToIndex (filteredCount) + 1;
+
+        while (start < db->numGames) {
+            if (db->filter->Get(start) > 0) {
+                filteredCount++;
+                IndexEntry * ie = db->idx->FetchEntry (start);
+                if ((strCaseContains (ie->GetWhiteName (nb), text))  ||
+                    (strCaseContains (ie->GetBlackName (nb), text))  ||
+                    (strCaseContains (ie->GetEventName (nb), text))  ||
+                    (strCaseContains (ie->GetSiteName (nb), text)))
                 {
                     return setUintResult (ti, filteredCount);
                 }
