@@ -133,8 +133,8 @@ database capabilities.</p></ul>
 
 <h3>Browsing Games</h3>
 
-<ul><p>If you have opened a multiple game PGN file, the <run
-::windows::gamelist::Open><green>Windows--<gt>Game List</green></run> widget
+<ul><p>If you have opened a multiple game PGN file, the
+<a GameList>Game List window</a> widget
 will allow you to browse the games, and select those of interest.</p>
 
 <p>This window also serves to select and delete games from scid
@@ -1725,76 +1725,29 @@ set helpText(Tmt) {<h1>The Tournament Finder window</h1>
 
 set helpTitle(GameList) "Game List window"
 set helpText(GameList) {<h1>The Game List window</h1>
+
+  <p> The Game List widget allows easy perusal off all games in the the
+currently open database / PGN archive.  You can <b>search for a game</b> by entering
+text in the "Find" entry box, or <b>sort them</b> by clicking on the column titles.
+Double-clicking will load a game.  </p>
+
+  <h3>Deleted and Filtered Games</h3>
   <p>
-  The Game List window displays a one-line summary for each game included
-  in the current <term>filter</term>.
-  </p>
+  Scid has two notions of removed games - which can be confusing.</p>
   
-  <h3>Navigating the game list</h3>
+  <p>The first is <b>Filtered Games</b>.  In the Gamelist widget, selecting some game(s) and pressing "Remove"
+  will <b>filter</b> those games. They will dissappear from the Game List
+  widget, but can easily be found again with the "Reset" button. Filtering games
+  has <b>no effect</b> on the database.</p>
+
+  <p><b>Deleted</b> games on the other hand, are not removed from the Game List widget.
+  They are simply marked as deleted, and no further action is taken until
+  database <a Compact>compact</a>ing is performed from the <a Maintenance>maintenance</a> window
+  - whence they will be <b>permanently deleted</b> from the database.</p>
+
+  <h3><name Browsing>Merging Games</name></h3>
   <p>
-  You can scroll the game list using the slider bar or the four
-  buttons under the list.
-  You can also use the [Home], [End],
-  [Page Up], [Page Down] and arrow keys to scroll
-  using the keyboard.
-  </p>
-  <p>
-  You can find the next game in the list which has certain text in its
-  White, Black, Event or Site field, using the <b>Find text</b> box.
-  </p>
-  
-  <h3>Actions on games in the list</h3>
-  <p>
-  To load a game from the game list, double-click the left mouse button
-  on the game.
-  Clicking the middle mouse button shows the initial moves of a game;
-  this can be useful for checking a games opening before loading it.
-  </p>
-  <p>
-  The right mouse button produces a menu for the selected game, in which
-  you can browse or merge the game (see below), delete (or undelete) the
-  game, or exclude it from the filter.
-  Note that deleting a game only turns on its delete flag; it will remain in
-  the database until you <a Compact>compact</a> it.
-  </p>
-  
-  <h3>Configuring the game list</h3>
-  <p>
-  Click the left or right mouse button on a column title to configure the
-  game list. You can alter widths, add or remove columns, and change
-  the color for each column.
-  </p>
-  <p>
-  If you only want to change the width of a column, there is a shortcut:
-  while pressing the <b>Control</b> (or <b>Shift</b>) key, pressing
-  the left mouse button on the column title will make it narrower
-  and pressing the right mouse button will make it wider.
-  </p>
-  
-  <h3>Altering the size of the game list</h3>
-  <p>
-  The size of the game list window is stored in the options file
-  whenever you save options.
-  So if you want the game list to show 10 games by default, just resize
-  the game list window and then select <menu>Save options</menu>
-  from the <menu>Options</menu> menu.
-  </p>
-  
-  <h3><name Browsing>Browsing and merging games</name></h3>
-  <p>
-  The game list right-mouse menu (and some other windows, such as the
-  <a Reports Opening>opening report</a> window and the
-  <a Tree Best>best games list</a> of the <a Tree>tree</a> window)
-  provide the choice of loading, browsing or merging a game.
-  </p>
-  <p>
-  When <term>Browse game</term> is selected, the moves of the selected
-  game (without comments or variations) will be displayed in a separate
-  window. This is a useful way of previewing another game without
-  affecting the currently loaded game.
-  </p>
-  <p>
-  The <term>Merge game</term> feature provides a way to include the
+  The Merge Game feature provides a way to include the
   selected game as a variation of the current game. Scid finds the
   deepest point where the selected game differs from the current
   game (taking transpositions into account) and adds a variation
@@ -1802,8 +1755,20 @@ set helpText(GameList) {<h1>The Game List window</h1>
   of moves of the selected game to be shown, depending on whether you
   are interested in adding the whole game or just its opening phase.
   </p>
-  
-  <p><footer>(Updated: Scid 3.6.2, December 2006)</footer></p>
+
+  <h3>Note about Large Databases</h3>
+  <p>Scid vs. PC has a much better Game List widget than mainline Scid.
+  However, it does run <b>very slowly</b> with large databases (over 100,000 games).
+  Making it work fast with huge databases can only be done with reduced functionality.
+  </p>
+
+  <p>
+  If anyone uses Scid vs. PC with big databases, or would like
+  to help porting Scid DB Version 4 to Scid vs. PC,
+  please drop me a line.
+  </p>
+
+  <p><footer>(Updated: Scid Vs PC 3.6.26.8, May 2010)</footer></p>
 }
 
 
@@ -5759,7 +5724,7 @@ Fics can be quite busy.</p>
 
 <p> On the graph itself, The y-axis shows the ELO rating of the opponent -
 higher number means stronger player , while x-axis of the graph plots the time
-allowed for the game. The first red line marks standard <term>Blitz</term>
+allowed for the game. The first grey line marks standard <term>Blitz</term>
 timing (5 min., no increment) while the second red line marks the standard
 <term>Rapid</term> timing (15 min., no increment).
   </p>
