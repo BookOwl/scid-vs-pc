@@ -6,16 +6,9 @@
 # Rewritten to use the ttk::treeview widget (man ttk_treeview) by Steven Atkinson
 
 # 24/05/2010
-# I ~had~ planned to make this widget work _fast_ with huge databases.
-# But because it can only be done with reduced functionality, i've changed
-# my mind for the time being.
-
-# If anyone uses Scid vs. PC on big databases, or would like
-# to help porting Scid DB Version 4 to Scid vs. PC,
-# please drop me a line.
-
-# Instead, i'm making the most out of Wish-8.5's great treeview widget,
-# with it's powerful item selection capabilites :>
+# To make this widget work _fast_ with huge databases isnt impossible
+# We have to make use of Scid's in built DB sorting instead of using text
+# sorting.
 
 set ::windows::gamelist::isOpen 0
 set glstart 1
@@ -49,6 +42,22 @@ set ::windows::gamelist::goto {}
 #   { S  1 left  darkRed    0 }
 # }
 
+# b:  Black player name.
+# B:  Black Elo. Prints in width of 4, ignoring specified width.
+# e:  Event name.
+# f:  Game number, filtered (e.g. 1 = first game in filter).
+# g:  Game number, actual (ignoring filter).
+# m:  Number of moves. Prints "##" if width < 3 and numMoves > 99.
+# M:  Final position material, e.g. "r1:r" for Rook+Pawn vs Rook.
+# n:  Round name.
+# o:  ECO code.
+# r:  Result. Prints as 1 byte (1/0/=*) or as 3 bytes (1-0, etc).
+# s:  Site name.
+# S:  Start position flag. Prints "S" or " " (1 byte) ignoring width.
+# w:  White player name.
+# W:  White Elo. Prints in width of 4, ignoring specified width.
+# y:  Year. Prints in width of 4, ignoring specified width.
+
 # I think these fields can be reordered on whim S.A.
 
 set glistFields {
@@ -77,8 +86,10 @@ set glistCodes {}
 set glistNames {}
 
 foreach {code title anchor} $glistFields {
-  # unusual glistCodes format is needed for [sc_game list ...]
-  lappend glistCodes "$code*\n"
+  # Unusual glistCodes format is needed for [sc_game list ...]
+  # SCID uses - append cformat "*\n" - but appending a space works too
+
+  lappend glistCodes "$code* "
   lappend glistNames $title
 }
 
@@ -88,85 +99,63 @@ foreach {code title anchor} $glistFields {
 # Number Filtered White WElo Black BElo Event Site Round Date Year EDate Result Length Country ECO Opening EndMaterial Deleted Flags Vars Comments Annos Start
 #  Number White WElo Black BElo Event Site Round Date Result Length ECO Opening Deleted Flags Vars Comments Annos Start
 
-proc ::windows::gamelist::FindText {findcase {findall 0} {crop 0}} {
-  global glstart
+proc ::windows::gamelist::FilterText {} {
+
+  global glstart glistCodes
   variable findtext
 
-  busyCursor .glistWin 1
   ::utils::history::AddEntry ::windows::gamelist::findtext $findtext
   .glistWin.b.find selection range end end
 
-  set found 0
-  set index 0
+  busyCursor .glistWin 1
+  update
 
-  ### A little voodoo to search the whole list
-
-  if { $findall } {
-      set items [.glistWin.tree children {}]
-      set ::windows::gamelist::finditems {}
-  } else {
-    if {$::windows::gamelist::findtextprev == $findtext && \
-	$::windows::gamelist::finditems != {}} {
-      set items $::windows::gamelist::finditems
-    } else {
-      set items [.glistWin.tree children {}]
+ for {set line [sc_filter count]} {$line >= 1} {incr line -1} {
+    if {![regexp $::windows::gamelist::findcase $findtext [string map {\{ \  \} \ } [sc_game list $line 1 $glistCodes]]]} {
+      sc_filter remove $line
     }
   }
+  ::windows::gamelist::SetSize
+  set glstart 1
+  ::windows::gamelist::Refresh
+  unbusyCursor .glistWin
+  update
+}
 
-  set itemsfound {}
-  foreach item $items {
-    incr index
-    if { [regexp "[expr { $findcase ? {-nocase} : {--} } ]" $findtext [.glistWin.tree item $item -values]] } {
-      set found 1
-      lappend itemsfound $item
-      if { !$findall } { break }
+proc ::windows::gamelist::FindText {} {
+  global glstart glistCodes
+  variable findtext
+
+  busyCursor .glistWin 1
+  update
+  ::utils::history::AddEntry ::windows::gamelist::findtext $findtext
+  .glistWin.b.find selection range end end
+
+  # set temp [sc_filter $::windows::gamelist::findcase $glstart $findtext]
+
+  set line $glstart 
+  incr line
+  set totalSize [sc_filter count]
+  while {$line <= $totalSize} {
+    if {[regexp $::windows::gamelist::findcase $findtext \
+           [string map {\{ \  \} \ } [sc_game list $line 1 $glistCodes]]]} {
+      break
     }
+    incr line 1
   }
 
-  if {$found} {
-    if {$crop} {
-	.glistWin.tree selection set $itemsfound
-        .glistWin.tree selection toggle [.glistWin.tree children {}]
-	set items [.glistWin.tree selection]
-	foreach i $items {
-	  sc_filter remove [.glistWin.tree set $i Number]
-	}
-	.glistWin.tree delete $items
-
-	set ::windows::gamelist::finditems {}
-	setTitle "[sc_filter count] $::tr(games)"
-    } else {
-      .glistWin.tree selection set $itemsfound
-      .glistWin.tree see [lindex $itemsfound end]
-      .glistWin.tree see [lindex $itemsfound 0]
-      # discard previously searched items from list
-      set ::windows::gamelist::finditems [lrange $items $index end]
-    }
-  } else {
-    set ::windows::gamelist::finditems {}
-
-    # flash combo box
-    # .glistWin.b.find configure -background mistyrose1
-    # update
-    # after 500
-    # .glistWin.b.find configure -background white
-    .glistWin.tree selection set {}
+  if {$line > $totalSize} {
+    set glstart 1
+    ::windows::gamelist::Refresh
     bell
+  } else {
+    set glstart $line
+    ::windows::gamelist::SetSize
+    ::windows::gamelist::Refresh
+    .glistWin.tree selection set [lindex [.glistWin.tree children {}] 0]
   }
   unbusyCursor .glistWin
-
-  set ::windows::gamelist::findtextprev $findtext
-
-  return
-
-  ### The old way is done in C, and will be faster on big tables, but
-  ### it forces a redraw of the widget
-  
-  # set temp [sc_filter textfind $glstart $findtext]
-  # busyCursor .glistWin 0
-  # if {$temp < 1} { set temp 1 }
-  # set glstart $temp
-  # ::windows::gamelist::Refresh
+  update
 }
 
 proc ::windows::gamelist::Load {number} {
@@ -177,34 +166,32 @@ proc ::windows::gamelist::Load {number} {
   ::game::Load $number
 }
 
+# bug: this will still succeed even if current game has been filtered
 proc ::windows::gamelist::showCurrent {} {
+
   global glistCodes
 
   set index [sc_game number]
+puts "!!$index"
+  set ::windows::gamelist::goto $index
   ::windows::gamelist::showNum $index
 }
 
+# bug: this will still succeed even if numbered game has been filtered
 proc ::windows::gamelist::showNum {index} {
 
-  set found 0
-  foreach item [.glistWin.tree children {}] {
-    if { [.glistWin.tree set $item Number] == $index } {
-      set found 1
-      break
-    }
-  }
-  if { $found } {
-    .glistWin.tree selection set $item
-    .glistWin.tree see $item
-    .glistWin.tree focus $item
+  global glstart
+ 
+  set result [sc_filter locate $::windows::gamelist::goto]
+  if {$result < 1 || $result > [sc_filter count]} {
+    bell
   } else {
-    tk_messageBox -type ok -icon warning -title "Scid" \
-      -message "Item $index not found" -parent .glistWin
+    set glstart $result
+    ::windows::gamelist::Refresh
+    .glistWin.tree selection set [lindex [.glistWin.tree children {}] 0]
   }
-  set ::windows::gamelist::goto $index
 
-  # hmmm
-  # ::windows::gamelist::Refresh
+  return
 }
 
 proc recordWidths {} {
@@ -243,13 +230,13 @@ proc ::windows::gamelist::Open {} {
   wm iconname $w "Scid: [tr WindowsGList]"
   setWinLocation $w
   setWinSize $w
+  ::windows::gamelist::SetSize
 
   standardShortcuts $w
   bind $w <F1> { helpWindow GameList }
   bind $w <Destroy> { ::windows::gamelist::Close }
   bind $w <Escape> "destroy $w"
-  bind $w <Left> {}
-  bind $w <Right> {}
+
   set ::windows::gamelist::isOpen 1
 
   ### Frames
@@ -259,7 +246,9 @@ proc ::windows::gamelist::Open {} {
 
   ttk::frame $w.f
   ttk::treeview $w.tree -columns $glistNames -show headings \
-    -yscroll "$w.vsb set" -xscroll "$w.hsb set"
+                            -xscroll "$w.hsb set"
+    # -yscroll "$w.vsb set" -xscroll "$w.hsb set"
+
 
   if { $::windows::gamelist::widths == "" } {
     set ::windows::gamelist::widths {}
@@ -281,7 +270,8 @@ proc ::windows::gamelist::Open {} {
   $w.tree tag bind click1 <Button-1> {}
 
   if {[tk windowingsystem] ne "aqua"} {
-      ttk::scrollbar $w.vsb -orient vertical -command "$w.tree yview"
+      # ttk::scrollbar $w.vsb -orient vertical -command "$w.tree yview"
+      ttk::scale     $w.vsb -orient vertical -command ::windows::gamelist::SetStart -from 1 -variable glstart
       ttk::scrollbar $w.hsb -orient horizontal -command "$w.tree xview"
   } else {
       scrollbar $w.vsb -orient vertical -command "$w.tree yview"
@@ -304,21 +294,44 @@ proc ::windows::gamelist::Open {} {
 
   set glistSortedBy Number
 
-  bind $w <Up> {}
-  bind $w <Down> {}
-  bind $w <Prior> {}
-  bind $w <Next> {}
+  bind $w <Left>  {}
+  bind $w <Right> {}
+  bind $w <Up>    {::windows::gamelist::Scroll -1}
+  bind $w <Down>  {::windows::gamelist::Scroll  1}
+  bind $w <Prior> {::windows::gamelist::Scroll -$glistSize}
   bind $w <Home> {
-    set item [lindex [.glistWin.tree children {}] 0]
-   .glistWin.tree selection set $item
-   .glistWin.tree see $item
-   .glistWin.tree focus $item
+    set glstart 1
+    ::windows::gamelist::Refresh
   }
   bind $w <End> {
-    set item [lindex [.glistWin.tree children {}] end]
-   .glistWin.tree selection set $item
-   .glistWin.tree see $item
-   .glistWin.tree focus $item
+    set totalSize [sc_filter count]
+    set glstart $totalSize
+    set lastEntry [expr $totalSize - $glistSize]
+    if {$lastEntry < 1} {
+      set lastEntry 1
+    }
+    if {$glstart > $lastEntry} {
+      set glstart $lastEntry
+    }
+    ::windows::gamelist::Refresh
+  }
+  bind $w <Next>  {
+    incr glstart $glistSize
+    set totalSize [sc_filter count]
+    set lastEntry [expr $totalSize - $glistSize]
+    if {$lastEntry < 1} {
+      set lastEntry 1
+    }
+    if {$glstart > $lastEntry} {
+      set glstart $lastEntry
+    }
+    ::windows::gamelist::Refresh
+  }
+  # MouseWheel bindings:
+  # bind $w <MouseWheel> {::windows::gamelist::Scroll [expr {- (%D / 120)}]}
+  if {! $::windowsOS} {
+    bind $w <Button-4> {::windows::gamelist::Scroll -1}
+    bind $w <Button-5> {::windows::gamelist::Scroll 1}
   }
 
   set ::windows::gamelist::findtextprev {}
@@ -340,9 +353,8 @@ proc ::windows::gamelist::Open {} {
     }
     .glistWin.tree delete $items
 
-    ### do we have to ?
-    # ::windows::stats::Refresh
-    # ::windows::gamelist::Refresh
+    ::windows::stats::Refresh
+    ::windows::gamelist::Refresh
 
     set ::windows::gamelist::finditems {}
     setTitle "[sc_filter count] $::tr(games)"
@@ -351,12 +363,14 @@ proc ::windows::gamelist::Open {} {
   frame $w.b.space -width 20
 
   ### Filter items against the find entry widget
-  button $w.b.filter -relief flat -text "Filter" \
-    -command {::windows::gamelist::FindText $::windows::gamelist::findcase 1 1}
-  button $w.b.findall -relief flat -text "Find All" \
-    -command {::windows::gamelist::FindText $::windows::gamelist::findcase 1}
+   button $w.b.filter -relief flat -text "Filter" \
+    -command {::windows::gamelist::FilterText}
+
   button $w.b.findlabel -relief flat -textvar ::tr(GlistFindText) \
-    -command {::windows::gamelist::FindText $::windows::gamelist::findcase}
+    -command {::windows::gamelist::FindText}
+
+  # button $w.b.findall -relief flat -text "Find All" \
+  #   -command {::windows::gamelist::FindText}
 
   ### could use ttk::combo box everywhere 
   ::combobox::combobox $w.b.find -width 12 -textvariable ::windows::gamelist::findtext
@@ -366,14 +380,15 @@ proc ::windows::gamelist::Open {} {
   # ::utils::history::SetLimit ::windows::gamelist::findtext 5
   # ::utils::history::PruneList ::windows::gamelist::findtext
 
-  bind $w.b.find <Return> {::windows::gamelist::FindText $::windows::gamelist::findcase}
+  bind $w.b.find <Return> {::windows::gamelist::FindText}
   bind $w.b.find <Home> "$w.b.find icursor 0; break"
   bind $w.b.find <End> "$w.b.find icursor end; break"
 
-  checkbutton $w.b.findcase -text "Ignore Case" -variable ::windows::gamelist::findcase
-  set ::windows::gamelist::findcase 1
+  checkbutton $w.b.findcase -text "Ignore Case" \
+    -variable ::windows::gamelist::findcase -onvalue {-nocase} -offvalue {--}
+  set ::windows::gamelist::findcase {--}
 
-  pack $w.b.findcase $w.b.find $w.b.findlabel $w.b.findall $w.b.filter -side right
+  pack $w.b.findcase $w.b.find $w.b.findlabel $w.b.filter -side right
   pack $w.b.negate $w.b.reset $w.b.remove -side left 
 
   ### Bottom row of buttons , etc
@@ -414,24 +429,63 @@ proc ::windows::gamelist::Open {} {
   pack $w.c.space $w.c.browse $w.c.load $w.c.delete -side left -padx 3
   pack $w.c.close $w.c.help $w.c.export -side right -padx 3
 
-  # MouseWheel bindings:
-  # bind $w <MouseWheel> {::windows::gamelist::Scroll [expr {- (%D / 120)}]}
-  # if {! $::windowsOS} {
-  #   bind $w <Button-4> {::windows::gamelist::Scroll -1}
-  #   bind $w <Button-5> {::windows::gamelist::Scroll 1}
-  # }
-
   ::windows::gamelist::Refresh
   set ::windows::gamelist::goto 1
   focus $w.tree
-  bind $w <Configure> { recordWidths ; recordWinSize .glistWin }
+  bind $w <Configure> {
+    recordWidths
+    recordWinSize .glistWin
+    ::windows::gamelist::SetSize
+    ::windows::gamelist::Refresh
+  }
+}
+
+proc ::windows::gamelist::Scroll {nlines} {
+  global glstart
+
+  incr glstart $nlines
+  ::windows::gamelist::Refresh
+}
+
+proc ::windows::gamelist::SetSize {} {
+  global glistSize glFontHeight
+
+  ### Figure out how many lines of text in the treeview widget
+  ### This is probably broke on some platforms
+
+  set w .glistWin.tree
+  if {![winfo exists $w]} {return}
+
+  if {![info exists glFontHeight]} {
+
+    # treeview configure -rowheight is in cvs
+    # set fontup [font metrics [ttk::style lookup [$w cget -style] -font] -ascent]
+    # set fontdown [font metrics [ttk::style lookup [$w cget -style] -font] -descent]
+
+    set fontspace [font metrics [ttk::style lookup [$w cget -style] -font] -linespace]
+    # set glFontHeight [expr $fontspace*13/9]
+    set glFontHeight [expr $fontspace*106/72]
+  }
+
+  set glistSize [expr {int( [winfo height $w] / $glFontHeight)}]
+}
+
+proc ::windows::gamelist::SetSelection {code xcoord ycoord} {
+  global glSelection glNumber
+  set glSelection [expr {int([.glistWin.c$code.text index @$xcoord,$ycoord])}]
+  set glNumber [.glistWin.cg.text get $glSelection.0 $glSelection.end]
 }
 
 proc SortBy {tree col} {
+    global glistCodes glistSortedBy glstart
 
-    global glistCodes glistSortedBy
     set w .glistWin
+
+    # hmmm. WElo, BElo and a few others are not valid sorting... apparently
+    # and no reverse order !?
+
     set ::windows::gamelist::finditems {}
+    catch {sc_base sort $col {}}
 
     ### directions are actually reversed so we can insert
     ### into tree instead of appending (for speedup)
@@ -443,36 +497,8 @@ proc SortBy {tree col} {
       set glistSortedBy {}
     }
 
-    busyCursor .glistWin 1
-    setTitle " ... sorting games"
-    update
-
-    # Hmmm... remove and delete are different
-
-    # This is tricky as when we delete items the "Number" and "sc_game list" are different
-
-    # Build something we can sort
-    set data {}
-    foreach item [$tree children {}] {
-      lappend data [list [$tree set $item $col] [$tree item $item -values]]
-    }
-
-    ### Rebuilding tree is quicker than using "tree move"
-
-    $w.tree delete [$w.tree children {}]
-
-    foreach line [lsort -dictionary -index 0 $dir $data] {
-      $w.tree insert {} 0 -values [lindex $line 1] -tag {click1 click2 treefont}
-    }
-
-    if {$col == "Number"} {
-      setTitle "[sc_filter count] $::tr(games)"
-    } else {
-      setTitle " ... sorted by $col"
-    }
-    unbusyCursor .glistWin
-
-    $w.tree yview 0
+    set glstart 1
+    ::windows::gamelist::Refresh
 }
 
 
@@ -482,43 +508,57 @@ proc setTitle {message} {
 
 proc ::windows::gamelist::Refresh {} {
   global glistCodes
+  global glstart
+  global glistSize 
 
   set w .glistWin
-
   if {![winfo exists $w]} {return}
-
-  busyCursor .glistWin 1
-  setTitle " ... loading games"
-
-  ### We should really disable these buttons if we're going to wait a while
-  #
-  # $w.b.negate $w.b.reset $w.b.remove $w.b.filter
-  # $w.b.findall $w.b.findlabel $w.b.findcase $w.c.current
-  # $w.c.browse $w.c.load $w.c.delete $w.c.export $w.c.close
-  # $w.b.default $w.b.ok $w.b.close
-
-  update
 
   set ::windows::gamelist::finditems {}
   updateStatusBar
+  $w.tree delete [$w.tree children {}]
+
+  # check boundries !
 
   set totalSize [sc_filter count]
 
-  $w.tree delete [$w.tree children {}]
+  if {$glstart < 1} {
+    set glstart 1
+  }
 
-  for {set line $totalSize} {$line > 0} {incr line -1} {
+  if {$glstart > $totalSize} {
+    set glstart $totalSize
+  }
+
+  set glistEnd [expr $glstart + $glistSize]
+  if { $glistEnd > $totalSize} {
+    set glistEnd $totalSize
+  }
+
+  for {set line $glistEnd} {$line >= $glstart} {incr line -1} {
     set values [sc_game list $line 1 $glistCodes]
     $w.tree insert {} 0 -values $values -tag [list click1 click2 treefont]
   }
 
   setTitle "$totalSize $::tr(games)" 
-  unbusyCursor .glistWin
+
+  # unbusyCursor .glistWin
+
+  $w.vsb configure -to [expr $totalSize - $glistSize]
 
   if {[sc_base isReadOnly]} {
     $w.c.delete configure -state disabled
   } else {
     $w.c.delete configure -state normal
   }
+}
+
+proc ::windows::gamelist::SetStart {unit} {
+  global glstart
+
+  set glstart [expr {int($unit)}]
+
+  ::windows::gamelist::Refresh
 }
 
 proc ::windows::gamelist::ToggleFlag {flag} {
@@ -538,6 +578,23 @@ proc ::windows::gamelist::ToggleFlag {flag} {
     ::windows::gamelist::Refresh
     unbusyCursor .glistWin
   }
+}
+
+# unused
+proc removeFromFilter {{dir none}} {
+  global glNumber glstart
+  if {$glNumber < 1} { return }
+  if {$glNumber > [sc_base numGames]} { return }
+  if {$dir == "none"} {
+    sc_filter remove $glNumber
+  } elseif {$dir == "up"} {
+    sc_filter remove 1 $glNumber
+    set glstart 1
+  } else {
+    sc_filter remove $glNumber 9999999
+  }
+  ::windows::stats::Refresh
+  ::windows::gamelist::Refresh
 }
 
 trace variable glexport w updateExportGList

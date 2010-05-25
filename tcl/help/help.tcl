@@ -1735,8 +1735,9 @@ Double-clicking will load a game.  </p>
   <p>
   Scid has two notions of removed games - which can be confusing.</p>
   
-  <p>The first is <b>Filtered Games</b>.  In the Gamelist widget, selecting some game(s) and pressing "Remove"
-  will <b>filter</b> those games. They will dissappear from the Game List
+  <p>The first is <b>Filtered Games</b>.  In the Gamelist widget,
+  selecting some game(s) and pressing "Remove" or "Filter"
+  will <b>filter</b> those games. They will disappear from the Game List
   widget, but can easily be found again with the "Reset" button. Filtering games
   has <b>no effect</b> on the database.</p>
 
@@ -1747,25 +1748,13 @@ Double-clicking will load a game.  </p>
 
   <h3><name Browsing>Merging Games</name></h3>
   <p>
-  The Merge Game feature provides a way to include the
+  The Merge Game feature (accessed from <b>Browse</b> game) provides a way to include the
   selected game as a variation of the current game. Scid finds the
   deepest point where the selected game differs from the current
   game (taking transpositions into account) and adds a variation
   for the selected game at that position. You can change the number
   of moves of the selected game to be shown, depending on whether you
   are interested in adding the whole game or just its opening phase.
-  </p>
-
-  <h3>Note about Large Databases</h3>
-  <p>Scid vs. PC has a much better Game List widget than mainline Scid.
-  However, it does run <b>very slowly</b> with large databases (over 100,000 games).
-  Making it work fast with huge databases can only be done with reduced functionality.
-  </p>
-
-  <p>
-  If anyone uses Scid vs. PC with big databases, or would like
-  to help porting Scid DB Version 4 to Scid vs. PC,
-  please drop me a line.
   </p>
 
   <p><footer>(Updated: Scid Vs PC 3.6.26.8, May 2010)</footer></p>
