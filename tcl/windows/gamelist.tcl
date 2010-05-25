@@ -111,7 +111,7 @@ proc ::windows::gamelist::FilterText {} {
   update
 
  for {set line [sc_filter count]} {$line >= 1} {incr line -1} {
-    if {![regexp $::windows::gamelist::findcase $findtext [string map {\{ \  \} \ } [sc_game list $line 1 $glistCodes]]]} {
+    if {![regexp $::windows::gamelist::findcase $findtext [sc_game list $line 1 $glistCodes]]} {
       sc_filter remove $line
     }
   }
@@ -138,7 +138,7 @@ proc ::windows::gamelist::FindText {} {
   set totalSize [sc_filter count]
   while {$line <= $totalSize} {
     if {[regexp $::windows::gamelist::findcase $findtext \
-           [string map {\{ \  \} \ } [sc_game list $line 1 $glistCodes]]]} {
+           [sc_game list $line 1 $glistCodes]]} {
       break
     }
     incr line 1
