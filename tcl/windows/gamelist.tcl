@@ -110,12 +110,16 @@ proc ::windows::gamelist::FilterText {} {
   busyCursor .glistWin 1
   update
 
- for {set line [sc_filter count]} {$line >= 1} {incr line -1} {
-    if {![regexp $::windows::gamelist::findcase $findtext [sc_game list $line 1 $glistCodes]]} {
+ # Run through unfiltered games... It's a little clumsy S.A.
+ for {set line [sc_base numGames]} {$line >= 1} {incr line -1} {
+
+    set game [sc_filter locate $line]
+    if {[sc_filter index $game] != $line} continue
+
+    if {![regexp $::windows::gamelist::findcase $findtext [sc_game list $game 1 $glistCodes]]} {
       sc_filter remove $line
     }
   }
-  ::windows::gamelist::SetSize
   set glstart 1
   ::windows::gamelist::Refresh
   unbusyCursor .glistWin
@@ -130,8 +134,6 @@ proc ::windows::gamelist::FindText {} {
   update
   ::utils::history::AddEntry ::windows::gamelist::findtext $findtext
   .glistWin.b.find selection range end end
-
-  # set temp [sc_filter $::windows::gamelist::findcase $glstart $findtext]
 
   set line $glstart 
   incr line
@@ -150,7 +152,6 @@ proc ::windows::gamelist::FindText {} {
     bell
   } else {
     set glstart $line
-    ::windows::gamelist::SetSize
     ::windows::gamelist::Refresh
     .glistWin.tree selection set [lindex [.glistWin.tree children {}] 0]
   }
@@ -166,32 +167,41 @@ proc ::windows::gamelist::Load {number} {
   ::game::Load $number
 }
 
-# bug: this will still succeed even if current game has been filtered
 proc ::windows::gamelist::showCurrent {} {
-
   global glistCodes
 
   set index [sc_game number]
-puts "!!$index"
   set ::windows::gamelist::goto $index
   ::windows::gamelist::showNum $index
 }
 
-# bug: this will still succeed even if numbered game has been filtered
 proc ::windows::gamelist::showNum {index} {
-
   global glstart
- 
-  set result [sc_filter locate $::windows::gamelist::goto]
-  if {$result < 1 || $result > [sc_filter count]} {
+
+  set result [sc_filter locate $index]
+
+  # First, check that requested game is not filtered
+  if  { [sc_filter index $result] != $index \
+     || $result < 1 \
+     || $result > [sc_filter count]} {
     bell
   } else {
-    set glstart $result
-    ::windows::gamelist::Refresh
-    .glistWin.tree selection set [lindex [.glistWin.tree children {}] 0]
+    # See if it's already on the screen
+    set found 0
+    foreach item [.glistWin.tree children {}] {
+      if {[.glistWin.tree set $item Number] == $index} {
+	set found 1
+	break
+      }
+    }
+    if {$found} {
+      .glistWin.tree selection set $item
+    } else {
+      set glstart $result
+      ::windows::gamelist::Refresh
+      .glistWin.tree selection set [lindex [.glistWin.tree children {}] 0]
+    }
   }
-
-  return
 }
 
 proc recordWidths {} {
@@ -267,7 +277,7 @@ proc ::windows::gamelist::Open {} {
   $w.tree tag configure treefont -font font_Regular
 
   $w.tree tag bind click2 <Double-Button-1> {::windows::gamelist::Load [%W set [%W focus] Number]}
-  $w.tree tag bind click1 <Button-1> {}
+  # $w.tree tag bind click1 <Button-1> {}
 
   if {[tk windowingsystem] ne "aqua"} {
       # ttk::scrollbar $w.vsb -orient vertical -command "$w.tree yview"
@@ -351,14 +361,17 @@ proc ::windows::gamelist::Open {} {
     foreach i $items {
       sc_filter remove [.glistWin.tree set $i Number]
     }
+    set new_focus [.glistWin.tree set [.glistWin.tree next [lindex $items end]] Number]
     .glistWin.tree delete $items
 
     ::windows::stats::Refresh
     ::windows::gamelist::Refresh
+    ::windows::gamelist::showNum $new_focus
 
     set ::windows::gamelist::finditems {}
     setTitle "[sc_filter count] $::tr(games)"
   }
+  bind $w <Delete> "$w.b.remove invoke"
 
   frame $w.b.space -width 20
 
@@ -435,7 +448,6 @@ proc ::windows::gamelist::Open {} {
   bind $w <Configure> {
     recordWidths
     recordWinSize .glistWin
-    ::windows::gamelist::SetSize
     ::windows::gamelist::Refresh
   }
 }
@@ -448,26 +460,31 @@ proc ::windows::gamelist::Scroll {nlines} {
 }
 
 proc ::windows::gamelist::SetSize {} {
-  global glistSize glFontHeight
+  global glistSize glFontHeight windowsOS
 
   ### Figure out how many lines of text in the treeview widget
   ### This is probably broke on some platforms
+
+  ### "treeview configure -rowheight" might work better, but is only in cvs
+  ### also consider "[$w bbox [lindex [$w children {}] 0]]" 
 
   set w .glistWin.tree
   if {![winfo exists $w]} {return}
 
   if {![info exists glFontHeight]} {
 
-    # treeview configure -rowheight is in cvs
-    # set fontup [font metrics [ttk::style lookup [$w cget -style] -font] -ascent]
-    # set fontdown [font metrics [ttk::style lookup [$w cget -style] -font] -descent]
-
     set fontspace [font metrics [ttk::style lookup [$w cget -style] -font] -linespace]
-    # set glFontHeight [expr $fontspace*13/9]
-    set glFontHeight [expr $fontspace*106/72]
+
+    # Nasty hack to make things work
+
+    if {$windowsOS} {
+      set glFontHeight [expr $fontspace*120/72]
+    } else {
+      set glFontHeight [expr $fontspace*106/72]
+    }
   }
 
-  set glistSize [expr {int( [winfo height $w] / $glFontHeight)}]
+  set glistSize [expr {[winfo height $w] / $glFontHeight}]
 }
 
 proc ::windows::gamelist::SetSelection {code xcoord ycoord} {
@@ -514,6 +531,8 @@ proc ::windows::gamelist::Refresh {} {
   set w .glistWin
   if {![winfo exists $w]} {return}
 
+  ::windows::gamelist::SetSize
+
   set ::windows::gamelist::finditems {}
   updateStatusBar
   $w.tree delete [$w.tree children {}]
@@ -535,9 +554,14 @@ proc ::windows::gamelist::Refresh {} {
     set glistEnd $totalSize
   }
 
-  for {set line $glistEnd} {$line >= $glstart} {incr line -1} {
+  # for {set line $glistEnd} {$line >= $glstart} {incr line -1} {
+  #   set values [sc_game list $line 1 $glistCodes]
+  #   $w.tree insert {} 0 -values $values -tag [list click2 treefont]
+  # }
+
+  for {set line $glstart} {$line <= $glistEnd} {incr line} {
     set values [sc_game list $line 1 $glistCodes]
-    $w.tree insert {} 0 -values $values -tag [list click1 click2 treefont]
+    $w.tree insert {} end -values $values -tag [list click2 treefont]
   }
 
   setTitle "$totalSize $::tr(games)" 
