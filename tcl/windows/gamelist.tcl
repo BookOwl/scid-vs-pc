@@ -369,7 +369,7 @@ proc ::windows::gamelist::Open {} {
     ::windows::gamelist::showNum $new_focus
 
     set ::windows::gamelist::finditems {}
-    setTitle "[sc_filter count] $::tr(games)"
+    setGamelistTitle
   }
   bind $w <Delete> "$w.b.remove invoke"
 
@@ -519,8 +519,12 @@ proc SortBy {tree col} {
 }
 
 
+proc setGamelistTitle {} {
+  setTitle "[sc_filter count]/[sc_base numGames] $::tr(games)" 
+}
+
 proc setTitle {message} {
-  wm title .glistWin "Scid: [tr WindowsGList] $message"
+  wm title .glistWin "Scid: $message"
 }
 
 proc ::windows::gamelist::Refresh {} {
@@ -538,13 +542,11 @@ proc ::windows::gamelist::Refresh {} {
   $w.tree delete [$w.tree children {}]
 
   # check boundries !
-
   set totalSize [sc_filter count]
 
   if {$glstart < 1} {
     set glstart 1
   }
-
   if {$glstart > $totalSize} {
     set glstart $totalSize
   }
@@ -564,8 +566,7 @@ proc ::windows::gamelist::Refresh {} {
     $w.tree insert {} end -values $values -tag [list click2 treefont]
   }
 
-  setTitle "$totalSize $::tr(games)" 
-
+  setGamelistTitle
   # unbusyCursor .glistWin
 
   $w.vsb configure -to [expr $totalSize - $glistSize]
@@ -593,14 +594,12 @@ proc ::windows::gamelist::ToggleFlag {flag} {
   if { "$items" == "" } {
     bell
   } else {
-    busyCursor .glistWin 1
     foreach item [.glistWin.tree selection] {
       # mark item as "flag"
       set number [.glistWin.tree set $item Number]
       catch {sc_game flag $flag $number invert}
     }
     ::windows::gamelist::Refresh
-    unbusyCursor .glistWin
   }
 }
 
