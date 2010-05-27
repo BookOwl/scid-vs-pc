@@ -1749,12 +1749,12 @@ proc makeAnalysisWin { {n 1} } {
   }
   pack $w.b1.help $w.b1.priority $w.b1.update $w.b1.showboard $w.b1.showinfo -side right
   if {$analysis(uci$n)} {
-    text $w.text -width 60 -height 1 -font font_Regular -wrap word -setgrid 1 ;# -spacing3 2
+    text $w.text -height 1 -font font_Regular -wrap word
   } else {
-    text $w.text -width 60 -height 4 -font font_Regular -wrap word -setgrid 1
+    text $w.text -height 4 -font font_Regular -wrap word
   }
   frame $w.hist
-  text $w.hist.text -width 60 -height 8 -font font_Fixed \
+  text $w.hist.text -font font_Fixed \
       -wrap word -setgrid 1 -yscrollcommand "$w.hist.ybar set"
   $w.hist.text tag configure indent -lmargin2 [font measure font_Fixed "xxxxxxxxxxxx"]
   scrollbar $w.hist.ybar -command "$w.hist.text yview" -takefocus 0
@@ -1767,8 +1767,9 @@ proc makeAnalysisWin { {n 1} } {
   $w.text tag configure blue -foreground blue
   $w.hist.text tag configure blue -foreground blue -lmargin2 [font measure font_Fixed "xxxxxxxxxxxx"]
   $w.hist.text tag configure gray -foreground gray
-  $w.text insert end "Please wait a few seconds for engine initialisation (with some engines, you will not see any analysis \
-      until the board changes. So if you see this message, try changing the board \
+  $w.text insert end "Please wait a few seconds for engine initialisation \
+      (with some engines, you will not see any analysis until the board \
+      changes. So if you see this message, try changing the board \
       by moving backward or forward or making a new move.)"
   $w.text configure -state disabled
   bind $w <Destroy> "destroyAnalysisWin $n"
@@ -2251,6 +2252,8 @@ proc toggleLockEngine {n} {
   global analysis
   if { $analysis(lockEngine$n) } {
     set state disabled
+    set analysis(lockN$n) [sc_pos moveNumber]
+    set analysis(lockSide$n) [sc_pos side]
   } else {
     # when i unlock the engine, i must restart the analysis if the engine is running
     # (it's possible to be here with the engine stopped, if i press the stop button
@@ -2359,7 +2362,7 @@ proc updateAnalysisText {{n 1}} {
     $h configure -state normal
     $h delete 0.0 end
     ### Does this work ? S.A
-    $h insert end "     $::tr(ClickHereToSeeMoves)\n" blue
+    $h insert end "\n\n\n     Right click to see moves\n" blue
     updateAnalysisBoard $n {}
     $h configure -state disabled
     return
@@ -2382,7 +2385,10 @@ proc updateAnalysisText {{n 1}} {
   if { $analysis(uci$n) } {
     if {$cleared} { set analysis(multiPV$n) {} ; set analysis(multiPVraw$n) {} }
     if {$analysis(multiPVCount$n) == 1} {
-      set newhst [format "%2d %s %s" $analysis(depth$n) [scoreToMate $score $moves $n] [addMoveNumbers [::trans $moves]]]
+      set newhst [format "%2d %s %s" \
+		$analysis(depth$n)   \
+		[scoreToMate $score $moves $n]  \
+		[addMoveNumbers $n [::trans $moves]]]
       if {$newhst != $analysis(lastHistory$n) && $moves != ""} {
         $h insert end [format "%s (%.2f)\n" $newhst $analysis(time$n)] indent
         $h see end-1c
@@ -2395,7 +2401,7 @@ proc updateAnalysisText {{n 1}} {
       catch { set newStr [format "%2d %s " [lindex $pv 0] [scoreToMate $score [lindex $pv 2] $n] ] }
       
       $h insert end {1 } gray
-      append newStr "[addMoveNumbers [::trans [lindex $pv 2]]]\n"
+      append newStr "[addMoveNumbers $n [::trans [lindex $pv 2]]]\n"
       $h insert end $newStr blue
       
       set lineNumber 1
@@ -2403,7 +2409,7 @@ proc updateAnalysisText {{n 1}} {
         if {$lineNumber == 1} { incr lineNumber ; continue }
         $h insert end "$lineNumber " gray
         set score [scoreToMate [lindex $pv 1] [lindex $pv 2] $n]
-        $h insert end [format "%2d %s %s\n" [lindex $pv 0] $score [addMoveNumbers [::trans [lindex $pv 2]]] ] indent
+        $h insert end [format "%2d %s %s\n" [lindex $pv 0] $score [addMoveNumbers $n [::trans [lindex $pv 2]]] ] indent
         incr lineNumber
       }
     }
@@ -2468,17 +2474,30 @@ proc scoreToMate { score pv n } {
 # returns the pv with move numbers added
 # ::pgn::moveNumberSpaces controls space between number and move
 ################################################################################
-proc addMoveNumbers { pv } {
-  set spc ""
-  if {$::pgn::moveNumberSpaces} { set spc { } }
-  set n [sc_pos moveNumber]
+proc addMoveNumbers { e pv } {
+  global analysis
+
+  if { $analysis(lockEngine$e) } {
+    set n $analysis(lockN$e)
+    set turn $analysis(lockSide$e)
+  } else {
+    set n [sc_pos moveNumber]
+    set turn [sc_pos side]
+  }
+
+  if {$::pgn::moveNumberSpaces} {
+    set spc { }
+  } else {
+    set spc {}
+  }
   set ret {}
   set start 0
-  if {[sc_pos side] == {black}} {
+  if {$turn == {black}} {
     set ret "$n.$spc... [lindex $pv 0] "
-    set start 1
+    incr start 
     incr n
   }
+
   for {set i $start} {$i < [llength $pv]} {incr i} {
     set m [lindex $pv $i]
     if { [expr $i % 2] == 0 && $start == 0 || [expr $i % 2] == 1 && $start == 1 } {
@@ -2499,18 +2518,20 @@ proc toggleAnalysisBoard {n} {
   if { $analysis(showBoard$n) } {
     set analysis(showBoard$n) 0
     pack forget .analysisWin$n.bd
-    setWinSize .analysisWin$n
+    # setWinSize .analysisWin$n
     bind .analysisWin$n <Configure> "recordWinSize .analysisWin$n"
   } else {
     bind .analysisWin$n <Configure> {}
     set analysis(showBoard$n) 1
-    pack .analysisWin$n.bd -side right -before .analysisWin$n.b1 -padx 4 -pady 4 -anchor n
+    pack .analysisWin$n.bd -side bottom -before .analysisWin$n.hist 
+
     update
-    .analysisWin$n.hist.text configure -setgrid 0
-    .analysisWin$n.text configure -setgrid 0
-    set x [winfo reqwidth .analysisWin$n]
-    set y [winfo reqheight .analysisWin$n]
-    wm geometry .analysisWin$n ${x}x${y}
+    ### these are too wayward S.A
+    # .analysisWin$n.hist.text configure -setgrid 0
+    # .analysisWin$n.text configure -setgrid 0
+    # set x [winfo reqwidth .analysisWin$n]
+    # set y [winfo reqheight .analysisWin$n]
+    # wm geometry .analysisWin$n ${x}x${y}
     .analysisWin$n.hist.text configure -setgrid 1
     .analysisWin$n.text configure -setgrid 1
   }
