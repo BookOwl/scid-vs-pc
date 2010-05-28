@@ -392,7 +392,7 @@ proc setupBoard {} {
   frame $sbd
   canvas $sbd.bd -width $bsize -height $bsize -background black \
                  -borderwidth 0 -highlightthickness 0
-  if {[info tclversion] == 8.5} {
+  if {[info tclversion] >= 8.5} {
     grid anchor $sbd center
   }
 
