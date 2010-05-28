@@ -241,8 +241,23 @@ proc exitSetupBoard {} {
 
   global setupFen
 
-  # unbind cancel binding
   bind .setup <Destroy> {}
+
+  #### Do a sanity check on castling
+  #    .. helpful because illegal FENs crash engines
+
+  set c [lindex $setupFen 2]
+
+  if {![validatePiece r 1 1]} {set c [string map {q {}} $c]}
+  if {![validatePiece k 5 1]} {set c [string map {k {} q {}} $c]}
+  if {![validatePiece r 8 1]} {set c [string map {k {}} $c]}
+
+  if {![validatePiece R 1 8]} {set c [string map {Q {}} $c]}
+  if {![validatePiece K 5 8]} {set c [string map {K {} Q {}} $c]}
+  if {![validatePiece R 8 8]} {set c [string map {K {}} $c]}
+
+  if {$c == {}} {set c {-}}
+  set setupFen [lreplace $setupFen 2 2 $c]
 
   if {[catch {sc_game startBoard $setupFen} err]} {
     fenErrorDialog $err
@@ -257,6 +272,30 @@ proc exitSetupBoard {} {
   }
 }
 
+proc validatePiece {piece x y} {
+  global setupFen
+
+  # Look at setupFen and return true if "$piece" resides at square x,y. S.A
+
+  set pos [expr $x - 1 + ($y - 1) * 8]
+  set square 0
+  set i      0
+  while {1} {
+    # process each char in the Fen until we get past where the piece should be
+
+    set ch [string index $setupFen $i]
+    incr i
+
+    if {$ch == {/}}		{continue}
+    if {$square == $pos}	{return [expr {$ch == $piece}]}
+    if {$square  > $pos}	{return 0}
+    if {[string is digit -strict $ch]} {
+      incr square $ch
+    } else {
+      incr square
+    }
+  }
+}
 proc cancelSetupBoard {} {
 
   # When FEN strings are previewed, the gameboard state is changed, but *not*
@@ -276,6 +315,7 @@ proc cancelSetupBoard {} {
   }
   destroy .setup
 }
+
 
 # Global variables for entry of the start position:
 set epFile {}          ;# legal values are empty, or "a"-"h".
