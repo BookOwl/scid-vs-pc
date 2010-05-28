@@ -360,9 +360,8 @@ image create photo finish_on -data {
 # Double size the toolbar buttons
 image create photo tempimage
 if {0} {
-  foreach i {tb_flip tb_showmenu tb_gameinfo autoplay_off autoplay_on tb_trial tb_trial_on \
-	     tb_start tb_prev tb_next tb_end tb_invar tb_outvar tb_addvar} {
-    # puts "$i: width [image width $i] height [image height $i ]"
+  foreach i {tb_flip tb_showmenu tb_gameinfo autoplay_off autoplay_on tb_trial \
+         tb_trial_on tb_start tb_prev tb_next tb_end tb_invar tb_outvar tb_addvar} {
     tempimage blank
     tempimage copy $i -zoom 2
     $i blank
@@ -438,7 +437,7 @@ menu .gameInfo.menu -tearoff 0
 .gameInfo.menu add checkbutton -label {Show PGN Window} \
    -variable pgnWin -command ::pgn::OpenClose
 
-.gameInfo.menu add checkbutton -label {Show Gamelist} \
+.gameInfo.menu add checkbutton -label {Show Game List} \
    -variable ::windows::gamelist::isOpen -command ::windows::gamelist::Open
 
 # Pop-up this menu with a right click on a few empty real estates

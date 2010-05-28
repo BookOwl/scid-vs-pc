@@ -560,7 +560,7 @@ proc ::enginelist::edit {index} {
       button $f.current -text " . " -command {
         set engines(newDir) .
       }
-      button $f.user -text "~/.scid" -command {
+      button $f.user -text "~/.scidvspc" -command {
         set engines(newDir) $scidUserDir
       }
       if {$::windowsOS} {
@@ -2254,10 +2254,18 @@ proc toggleLockEngine {n} {
     set state disabled
     set analysis(lockN$n) [sc_pos moveNumber]
     set analysis(lockSide$n) [sc_pos side]
+
+    ### You can now lock the engine position, press "pause", and then
+    # "add variation" to add the analysis of the locked position
+    # NB. If trial mode is already set, locking the engine will lose previous position
+
+    if  {$::trialMode} {
+      setTrialMode update
+    } else {
+      setTrialMode 1
+    }
   } else {
-    # when i unlock the engine, i must restart the analysis if the engine is running
-    # (it's possible to be here with the engine stopped, if i press the stop button
-    #  with the engine locked)
+    setTrialMode 0
     if {$analysis(analyzeMode$n)} {
       stopAnalyzeMode $n
       startAnalyzeMode $n
@@ -2361,7 +2369,7 @@ proc updateAnalysisText {{n 1}} {
   if {! $::analysis(movesDisplay$n)}  {
     $h configure -state normal
     $h delete 0.0 end
-    ### Does this work ? S.A
+
     $h insert end "\n\n\n     Right click to see moves\n" blue
     updateAnalysisBoard $n {}
     $h configure -state disabled

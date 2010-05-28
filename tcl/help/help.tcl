@@ -2777,29 +2777,90 @@ set helpText(Flags) {<h1>Game Flags</h1>
 ### Analysis window help:
 
 set helpTitle(Analysis) "Analysis window"
-set helpText(Analysis) {<h1>The Analysis window</h1>
-  <p>
-  The Scid analysis window shows the analysis by a chess program
-  (known as an <term>engine</term>) of the current board position.
-  Whenever the board changes, Scid sends the new position to the
-  engine and it shows its assessment of that position.
-  Currently, up to two engines can be run simultaneously. To start the
-  first analysis engine, the short cut <term>F2</term> can be used,
-  for the second engine <term>F3</term>. To quickly close the engine
-  window just hit <term>ESC</term>.
+set helpText(Analysis) {<h1>Analysis Windows</h1>
+  <p> 
+  The Analysis window shows study of the current position by a
+chess engine.  It is accessed and configured from the <a Analysis List>Analysis
+Engines</a> widget, or by using the F2 , F3 or F4 hotkeys.
   </p>
+
   <p>
-  The principle informations of the current analysis are shown on
-  top of the window. The first number signifies the evaluation value
-  in pawn units.  The score shown in the analysis window is always
-  from the perspective of White, so a negative score indicates Black
-  is better. <b>Depth:</b> shows the search depth already reached by
-  the engines calculations in half moves. The number after
-  <b>Nodes:</b> gives the number of positions analysed for the current
+  At the top of the window is found some general info,
+  and move predictions occupy the main text window.
+  Pressing the <button tb_coords> button will display a small board.
+  </p>
+
+  <p>
+  It is possible to have multiple analysis windows open simultaneously, each
+  running different engines!
+  </p>
+
+  <h3>Features</h3>
+  <p>
+  At the bottom you'll find many cryptic buttons...
+
+  The <b>Add move</b> button <button tb_addmove>
+  adds the engines best move to the current game.
+The <b>Add Variation</b> button <button tb_addvar> adds the
+  whole main line., and
+  in case an engine offers the <b>Multi-PV</b> mode, pressing
+  <button tb_addallvars> will add all principal variations.
+  Inserting variations
+  also adds the engine's name as a PGN comment.
+  </p>
+
+  <p>
+  To temporarily interrupt engine analysis, one can use the
+  <b>Pause</b> button <button tb_pause>. Pressing <button tb_play>
+  will restart the engine. Note: Most engines will
+  restart the whole analysis again forgetting all results that where
+  achieved in an earlier run. Only few engines are able to reuse the
+  results they have calculated till the analysis was stopped. 
+  </p>
+
+  <p>
+  To <b>lock analysis</b> to a certain position use <button tb_lockengine>.
+  This will also set Scid's <a Moves Trial>Trial mode</a>.
+  Then, to add the this analysis as a variation, first press the <b>Pause</b>
+  button, then <b>Add Varation</b>.
+  </p>
+
+  <p>
+  <b>Shoot out</b>, or "demo", mode allows the engine to play out the game.
+  It is only available for the first engine (listed in
+  <a Analysis List>Analysis Engines</a>), and is started by
+  this button <button finish_off>
+  </p>
+
+  <p>
+  If an engine is using too much CPU time and affecting the use of Scid
+  or other applications, turning on the <b>Low CPU priority</b> button
+  <button tb_cpu> may help; it gives the engine a low priority for CPU
+  scheduling. On Windows, engines are run on low priority by default.
+  On Unix systems the engines priority can not be set back to normal.
+  </p>
+
+  <p>
+  <i>The output of the current analysis can be hidden/shown
+  by clicking with the right mouse button into the analysis window. In
+  this mode only the current evaluation is shown in the status line.</i>
+  </p>
+
+  <h3>Move details</h3>
+  <p>
+   In the main text widget is all sorts of move information.
+   The first number prefixed with a <b>+/-</b> is a move score.
+  It is measured in pawn units
+  from the perspective of White - a positive score means White is ahead, a negative score means Black.
+  <br><b>Depth:</b> shows the search depth already reached by
+  the engines calculations in half moves.
+  <br><b>Nodes:</b> gives the number of positions analysed for the current
   result while the number of positions per second (kn/s) is shown in
-  brackets.  <b>Time:</b> finally shows the amount of time spent for
+  brackets.
+  <br><b>Time:</b> finally shows the amount of time spent for
   the current analysis.
   </p>
+
   <p>
   Additional information can be accessed using the <button
   tb_engineinfo> button. A new line will be added to the status area
@@ -2829,93 +2890,51 @@ set helpText(Analysis) {<h1>The Analysis window</h1>
   feature.
   </p>
   <p>
-  <b>Note</b> the output of the current analysis can be hidden/shown
-  by clicking with the right mouse button into the analysis window. In
-  this mode only the current evaluation is shown in the status line.
+
+  <h3><name List>Configuring Engines</name></h3>
   <p>
-  To add the best move chosen by the engine as a new move in the current
-  game, press the <b>Add move</b> button <button tb_addmove>. If the
-  whole main line of the engine should be added just use the <b>Add
-  Variation</b> button <button tb_addvar>. In case an engine offers
-  the <term>Multi-PV</term> mode, using the <b>Add all Variations</b>
-  button (<button tb_addallvars>) can be used to add all principal
-  variations to the game. The insertion of variations from the
-  analysis window will also add the name of the engine as a comment to
-  the game.
-  </p>
-  <p>
-  To temporarily interrupt the calculation process one can use the
-  stop engine button (<button tb_pause>). Once pressed, this button
-  changes to the start engine button (<button tb_play>) which will
-  restart the engines analysis. Note, however, that most engines will
-  restart the whole analysis again, forgetting all results that where
-  achieved in an earlier run. Only few engines are able to reuse the
-  results they have calculated till the analysis was stopped. For the
-  first analysis engine toggeling start/stop engine is mapped to the
-  hotkey <term>F4</term> while for the second engine <term>F5</term>
-  can be used.
-  </p>
-  <p>
-  To set an engine to analyse a position in the background while
-  other functions of Scid are used one can <term>lock the
-  position</term> using the <button tb_lockengine> button. Scid now
-  stops to send any changes of the main board to the engine, and the
-  engine stays calculating the position.
-  </p>
-  <p>
-  To finish the current game by the engine ("shoot out" or "demo" mode)
-  one can use the finish game button <button finish_off>. To indicate
-  the shootout mode this button turns to <button finish_on>. This
-  function is only available for the first analysis engine.
+  The <run ::enginelist::choose><green>Tools--<gt>Analysis Engines</green></run>
+  widget is where you can configure and add new chess engines.</p>
+
+<p>
+  A few engines should already be configured, but installing new engines is not
+  impossible. You'll need to now the program's Command, any Parameter's it
+  takes, whether it is an UCI engine or not, and also specify the
+  directory Scid should run it in.
   </p>
 
-  <h3><name List>The Analysis Engines List</name></h3>
-  <p>
-  Scid maintains a list of the engines you have used, along with an
-  estimated Elo rating (if you guess one; additionally some pages on
-  the Internet offer these values as results from large engine-engine
-  tournaments) and the date when each engine was last used. You can
-  sort the engine list by name, Elo rating, or date.
-  Select the <b>New</b> or <b>Edit</b> buttons to add a new engine to
-  the list or edit the details for an existing entry.
-  </p>
-  <h3><name Start>Engine commands and directories</name></h3>
-  <p>
-  For each engine, you must specify the executable file to run and
-  which directory Scid should run it in.
-  </p>
   <p>
   The most likely cause of engine starting problems is the choice of
-  which directory the engine should run in. Some engines require an
+  which directory to use. Many engines require an
   initialization or opening book file in their start directory to run
   properly.  Other engines (like Crafty) write log files to the
-  directory they start in, so you will need to run them in a directory
-  where you have write access.  If the directory setting for an engine
+  directory they start in, so write access here will be required.
+  If the directory setting for an engine
   is ".", Scid will just start the engine in the current directory.
   </p>
+
   <p>
-  So if an engine that should work fine in Scid does not start, try
+  If an engine fails to start, try
   changing its directory setting. To avoid engines creating log files
   in many different directories, I recommend starting engines in
   the directory of the Scid User files (this is where the <b>scid.exe</b>
-  file is located on Windows, or <b>~/.scid/</b> on Unix); there is a
-  button in the dialog box for editing engine details marked
-  <b>scid.exe dir</b> on Windows or <b>~/.scid</b> on Unix that lets
-  you set the engine to start in this directory.
+  file is located on Windows, or <b>~/.scidvspc</b> on Unix); there is a
+  button in the dialog box for editing engine details 
+  that lets you set the engine to use these directories.
   </p>
   <p>
   If an engine needs additional parameters for startup (e.g. a
   specific opening book) they can be specified in the
-  <term>Parameters</term> field. Please refer to the engines
-  documentation about the parameters required, if any.
+  <b>Parameters</b> field. Please refer to the engines documentation.
   </p>
-  <p><term>URL</term> allows you to set the engines homepage. This
+  <p><b>URL</b> allows you to set the engines homepage. This
   comes in handy to check for updates e.g. or to have a look at recent
   developments. Pressing the <term>Open...</term> button will open
   this page in the web browser.
   </p>
+
   <p>
-  If the engine uses the <term>UCI</term> protocol please mark the
+  Finally, If the engine uses the <term>UCI</term> protocol please mark the
   associated checkbox. Generally, there are two major engine protocols
   available today: xboard sometimes referred to as winboard (UCI must
   not be checked) which many, especially older engines use, and the
@@ -2929,8 +2948,7 @@ set helpText(Analysis) {<h1>The Analysis window</h1>
   where all engine parameters can be tuned to the users liking. This
   dialogue will look different for each engine as each engine has
   other parameters that can be set. Most of them will influence the
-  playing style of the engine. Please refer to the engines
-  documentation.
+  playing style of the engine.
   </p>
 
   
@@ -2943,13 +2961,11 @@ set helpText(Analysis) {<h1>The Analysis window</h1>
   
   <h3><a Annotate>Annotating a game</h3>
   <p>
-  The <b>Add variation</b> button (<button tb_addvar> or <button
-  tb_addallvars>)in the analysis window adds the current score and
+  The <b>Add variation</b> buttons <button tb_addvar> or <button
+  tb_addallvars> add the current score and
   best line of play as a new variation in the game.
-  </p>
-  <p>
   You can do this automatically for a number of moves (annotating the
-  game) by pressing the <b>Annotate</b> button, <button tb_annotate>.
+  game) by pressing the <b>Annotate</b> button <button tb_annotate>.
   Besides, the engines best lines also <a Moves Informant>Informant</a>
   style evaluation symbols are added in this process.  First, the
   parameters for automatic annotations have to be set:
@@ -3022,29 +3038,8 @@ set helpText(Analysis) {<h1>The Analysis window</h1>
   in the window opened as analysis engine 1. If you open an engine as
   analysis engine 2, you cannot use it to annotate the game.
   </p>
-  
-  <h3>Analysis board</h3>
-  <p>
-  Pressing the button <button tb_coords> in an analysis window will
-  show or hide the analysis board, which shows the position at the end
-  of the current best line of play found by the engine. This works for
-  most Scid-compatible engines but may not work for all; it depends on
-  the move notation an engine uses.
-  </p>
-  
-  <h3>Engine priority</h3>
-  <p>
-  If an engine is using too much CPU time and affecting the use of Scid
-  or other applications, turning on the <b>Low CPU priority</b> button
-  <button tb_cpu> may help; it gives the engine a low priority for CPU
-  scheduling. On Windows, engines are run on low priority by default.
-  </p>
-  <p>
-  <b>Note</b> that on Unix systems the engines priority can not be set
-  back to normal.
-  </p>
 
-  <p><footer>(Updated: Scid 3.6.26, October 2008)</footer></p>
+  <p><footer>(Updated: Scid Vs PC 1.0, May 2010)</footer></p>
 }
 
 ####################
@@ -4416,9 +4411,9 @@ Your opponent is played by the <b>Phalanx</b> engine, and there is also a
 computer coach (<b>Toga II</b>) watching the game who will indicate any
 blunders the player makes.  </p>
 
-<h5>Other Computer Opponents</h5>
-<p> Other computer opponents can be found in the <a SeriousGame>Serious Game</a>
-and <a Analysis>Analysis</a> features.
+<p>
+<i>Other computer opponents can be found in the
+<a SeriousGame>Serious Game</a> and <a Analysis>Analysis</a> features</i>.
 </p>
 
 <h3>Starting the Game</h3>
@@ -4441,6 +4436,7 @@ for Bobby Fischer) where the first and last rows of pieces are
 pseudo-randomnly arranged. Scid Vs PC does not properly implement a few
 rules.. notably, castling <b>is</b> allowed in Fischer Chess, but not in
 our game.</li>
+     <li><term>Random Pawns</term>: will randomly place pawns on the second and third ranks.</li>
      <li><term>Specific opening</term>: the opponent will play a
      specific opening, that can be chosen from the list below. This is
      useful for opening training.</li>
@@ -4450,7 +4446,7 @@ our game.</li>
   limited the coach is allowed to think in the background.</li>
   </ul>
 
-<p><footer>(Updated: Scid Vs PC 3.6.26.8, December 2009)</footer></p>
+<p><footer>(Updated: Scid Vs PC 1.0, May 2010)</footer></p>
 }
 
 # Opening Trainer window help
