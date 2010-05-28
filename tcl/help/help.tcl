@@ -2862,12 +2862,12 @@ The <b>Add Variation</b> button <button tb_addvar> adds the
   </p>
 
   <p>
-  Additional information can be accessed using the <button
-  tb_engineinfo> button. A new line will be added to the status area
-  showing the current move analysed, the number of tablebase hits, a
+  <i>Additional information used be accessed using the 
+  engineinfo button, but has been removed for space reasons.
+  Info shown includes the number of tablebase hits, a
   more exact number of nodes analysed per second, the watermark of the
-  engines hash and the current cpu load. Usually, this information is
-  hidden to save space for the analysis.
+  engines hash and the current cpu load. This option can be enabled by
+  editting the scid gui and setting showEngineInfo 1</i>
   </p>
   <p>
   If the engine only analyses the line it considers the main
