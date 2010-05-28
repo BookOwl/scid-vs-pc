@@ -4,18 +4,19 @@
 ### Copyright (C) 1999-2003  Shane Hudson.
 ### Copyright (C) 2007  Pascal Georges
 
-### Rewritten stevenaaus July 2009 (String optimisations 5/12/2009)
+# Rewritten stevenaaus July 2009
+# String optimisations Dec  2009
+# Overhauled again     May  2010
 #
-# Sorry for the language here.. Parts of this widget had a
+# Parts of this widget had a
 # very bad procedural flow, which hopefully makes some sense
 # now. Anyway, i have removed all sorting functionality, and
 # added a configurable "Hot Key" feature Also swapped around
 # the finish_{on,off} graphics, which were erroneous.
 #
-# Currently, you can still only use "annotateModeButton" and
-# "auto finish" with the first engine. And since sorting has
-# been disabled, you'll have to edit engines.dat file to
-# change this.
+# I'm not sure about the status of annotateModeButton..
+# but the auto finish mode now exists on all engines, instead of just #1
+# Number of engines running at one time is now not limited
 
 # analysis(logMax):
 #   The maximum number of log message lines to be saved in a log file.
@@ -1575,7 +1576,7 @@ proc makeAnalysisWin { {n 1} } {
     return
   }
   
-  if {$n == 1} { set annotateModeButtonValue 0 }
+  set annotateModeButtonValue 0
   
   # What an f-ing mess.
   # Previously the engines were sorted , and only engine 1 or 2 (in the sort order)
@@ -1673,86 +1674,86 @@ proc makeAnalysisWin { {n 1} } {
   ::board::new $w.bd 25
   $w.bd configure -relief solid -borderwidth 1
   set analysis(showBoard$n) 0
-  set analysis(showEngineInfo$n) 0
+
+  # This is no longer configurable, except here. (Used to be associated with b1.showinfo)
+  # If set, it show heaps of hash info in the second line of text widget
+  set analysis(showEngineInfo$n) 0 
   
   frame $w.b1
-  pack $w.b1 -side bottom -fill x
-  
-  checkbutton $w.b1.automove -image tb_training  -indicatoron false -height 24 -relief raised -command "toggleAutomove $n" -variable analysis(automove$n)
+  pack  $w.b1 -side bottom -fill x
+  set relief flat	; # -width 24 -height 24
+
+  checkbutton $w.b1.automove -image tb_training  -indicatoron false  \
+    -command "toggleAutomove $n" -variable analysis(automove$n) -relief $relief
   ::utils::tooltip::Set $w.b1.automove $::tr(Training)
-  
-  checkbutton $w.b1.lockengine -image tb_lockengine -indicatoron false -height 24 -width 24 -variable analysis(lockEngine$n) -command "toggleLockEngine $n"
+
+  checkbutton $w.b1.lockengine -image tb_lockengine -indicatoron false \
+    -variable analysis(lockEngine$n) -command "toggleLockEngine $n" -relief $relief
   ::utils::tooltip::Set $w.b1.lockengine $::tr(LockEngine)
-  
-  button $w.b1.line -image tb_addvar -height 24 -width 24 -command "addAnalysisVariation $n"
+
+  button $w.b1.line -image tb_addvar -command "addAnalysisVariation $n" -relief $relief
   ::utils::tooltip::Set $w.b1.line $::tr(AddVariation)
-  
-  button $w.b1.alllines -image tb_addallvars -height 24 -width 24 -command "addAllVariations $n"
+
+  button $w.b1.alllines -image tb_addallvars -command "addAllVariations $n" -relief $relief
   ::utils::tooltip::Set $w.b1.alllines $::tr(AddAllVariations)
-  
-  button $w.b1.move -image tb_addmove -height 24 -width 24 -command "makeAnalysisMove $n"
+
+  button $w.b1.move -image tb_addmove -command "makeAnalysisMove $n" -relief $relief
   ::utils::tooltip::Set $w.b1.move $::tr(AddMove)
-  
-  if {$analysis(uci$n)} {
-    set state readonly
-  } else  {
-    set state disabled
-  }
-  
-  spinbox $w.b1.multipv -from 1 -to 8 -increment 1 -textvariable analysis(multiPVCount$n) -state $state -width 2 \
-      -command "changePVSize $n"
+
+  spinbox $w.b1.multipv -from 1 -to 8 -increment 1 -textvariable analysis(multiPVCount$n) -width 2 \
+      -command "changePVSize $n" 
   ::utils::tooltip::Set $w.b1.multipv $::tr(Lines)
-  
-  # add a button to start/stop engine analysis
-  button $w.b1.bStartStop -image tb_pause -command "toggleEngineAnalysis $n"
+
+  # start/stop engine analysis
+  button $w.b1.bStartStop -image tb_pause -command "toggleEngineAnalysis $n" -relief $relief
   ::utils::tooltip::Set $w.b1.bStartStop "$::tr(StopEngine)(a)"
   
-  if {$n == 1} {
-    set ::finishGameMode 0
-    button $w.b1.bFinishGame -image finish_off -command "toggleFinishGame $n" -relief flat
-    ::utils::tooltip::Set $w.b1.bFinishGame $::tr(FinishGame)
-  }
-  button $w.b1.showboard -image tb_coords -height 24 -width 24 -command "toggleAnalysisBoard $n"
+  set ::finishGameMode 0
+  button $w.b1.bFinishGame -image finish_off -command "toggleFinishGame $n"  -relief $relief
+  ::utils::tooltip::Set $w.b1.bFinishGame $::tr(FinishGame)
+
+  button $w.b1.showboard -image tb_coords -command "toggleAnalysisBoard $n" -relief $relief
   ::utils::tooltip::Set $w.b1.showboard $::tr(ShowAnalysisBoard)
   
-  checkbutton $w.b1.showinfo -image tb_engineinfo -indicatoron false -height 24 -width 24 -variable analysis(showEngineInfo$n) -command "toggleEngineInfo $n"
-  ::utils::tooltip::Set $w.b1.showinfo $::tr(ShowInfo)
-  if {!$analysis(uci$n)} {
-    $w.b1.showinfo configure -state disabled
-    $w.b1.alllines configure -state disabled
-  }
-  
-  if {$n == 1} {
-    checkbutton $w.b1.annotate -image tb_annotate -indicatoron false -height 24 -variable annotateModeButtonValue -relief raised -command { configAnnotation }
-    ::utils::tooltip::Set $w.b1.annotate $::tr(Annotate...)
-  }
-  checkbutton $w.b1.priority -image tb_cpu -indicatoron false -relief raised -variable analysis(priority$n) -onvalue idle -offvalue normal \
-      -command "setAnalysisPriority $n"
+  # checkbutton $w.b1.showinfo -image tb_engineinfo -indicatoron false \
+  #  -variable analysis(showEngineInfo$n) -command "toggleEngineInfo $n" -relief $relief
+  # ::utils::tooltip::Set $w.b1.showinfo $::tr(ShowInfo)
+
+  checkbutton $w.b1.annotate -image tb_annotate -indicatoron false \
+    -variable annotateModeButtonValue -command configAnnotation -relief $relief
+  ::utils::tooltip::Set $w.b1.annotate $::tr(Annotate...)
+
+  checkbutton $w.b1.priority -image tb_cpu -indicatoron false -variable analysis(priority$n) \
+    -onvalue idle -offvalue normal -command "setAnalysisPriority $n" -relief $relief
   ::utils::tooltip::Set $w.b1.priority $::tr(LowPriority)
-  
-  if {$analysis(uci$n)} {
-    set state disabled
-  } else  {
-    set state normal
-  }
-  
-  button $w.b1.update -image tb_update -state $state -command "if {$analysis(uci$n)} {sendToEngine $n .}" ;# UCI does not support . command
+
+  # UCI does not support . command (Is this correct ? S.A)
+  button $w.b1.update -image tb_update \
+    -command "if {$analysis(uci$n)} {sendToEngine $n .}"  -relief $relief
   ::utils::tooltip::Set $w.b1.update $::tr(Update)
   
-  button $w.b1.help -image tb_help -height 24 -width 24 -command { helpWindow Analysis }
-  ::utils::tooltip::Set $w.b1.help $::tr(Help)
-  
-  if {$n ==1} {
-    pack $w.b1.bStartStop $w.b1.lockengine $w.b1.move $w.b1.line $w.b1.alllines $w.b1.multipv $w.b1.annotate $w.b1.automove $w.b1.bFinishGame -side left
-  } else  {
-    pack $w.b1.bStartStop $w.b1.lockengine $w.b1.move $w.b1.line $w.b1.alllines $w.b1.multipv $w.b1.automove -side left
-  }
-  pack $w.b1.help $w.b1.priority $w.b1.update $w.b1.showboard $w.b1.showinfo -side right
+  pack $w.b1.bStartStop $w.b1.lockengine $w.b1.move $w.b1.line $w.b1.multipv \
+       $w.b1.alllines $w.b1.annotate $w.b1.automove $w.b1.bFinishGame $w.b1.showboard \
+       $w.b1.update $w.b1.priority -side left -pady 2 -padx 1
+
+  # pack  $w.b1.showinfo 
+
   if {$analysis(uci$n)} {
+    $w.b1.multipv configure -state readonly
+    pack forget $w.b1.update
+    $w.b1.update  configure -state disabled
     text $w.text -height 1 -font font_Regular -wrap word
-  } else {
+  } else  {
+    # pack forget $w.b1.showinfo
+    # $w.b1.showinfo configure -state disabled
+
+    pack forget $w.b1.multipv 
+    pack forget $w.b1.alllines
+    $w.b1.multipv configure -state disabled
+    $w.b1.alllines configure -state disabled
     text $w.text -height 4 -font font_Regular -wrap word
   }
+
   frame $w.hist
   text $w.hist.text -font font_Fixed \
       -wrap word -setgrid 1 -yscrollcommand "$w.hist.ybar set"
@@ -2141,7 +2142,7 @@ proc formatAnalysisMoves {text} {
 ################################################################################
 # will ask engine to play the game till the end
 ################################################################################
-proc toggleFinishGame { { n 1 } } {
+proc toggleFinishGame {n} {
   global analysis
   set b ".analysisWin$n.b1.bFinishGame"
   
@@ -2151,37 +2152,35 @@ proc toggleFinishGame { { n 1 } } {
   
   set ::finishGameMode [expr ! $::finishGameMode]
   if {$::finishGameMode} {
-    $b configure -image finish_on -relief flat
-    after $::autoplayDelay autoplayFinishGame
+    $b configure -image finish_on
+    after $::autoplayDelay autoplayFinishGame $n
   } else  {
     set ::finishGameMode 0
-    $b configure -image finish_off -relief flat
+    $b configure -image finish_off
     after cancel autoplayFinishGame
   }
 }
 ################################################################################
 #
 ################################################################################
-proc autoplayFinishGame { {n 1} } {
+proc autoplayFinishGame {n} {
   if {!$::finishGameMode || ![winfo exists .analysisWin$n]} {return}
   .analysisWin$n.b1.move invoke
   if { [string index [sc_game info previousMove] end] == {#}} {
     toggleFinishGame $n
     return
   }
-  after $::autoplayDelay autoplayFinishGame
+  after $::autoplayDelay autoplayFinishGame $n
 }
 ################################################################################
 #
 ################################################################################
-proc toggleEngineAnalysis { { n 1 } { force 0 } } {
+proc toggleEngineAnalysis {n {force 0}} {
   global analysis
   set b .analysisWin$n.b1.bStartStop
   
-  if { $n == 1} {
-    if { ($::annotateModeButtonValue || $::finishGameMode) && ! $force } {
-      return
-    }
+  if { ($::annotateModeButtonValue || $::finishGameMode) && ! $force } {
+    return
   }
   
   if {$analysis(analyzeMode$n)} {
@@ -2191,7 +2190,6 @@ proc toggleEngineAnalysis { { n 1 } { force 0 } } {
     # reset lock mode and disable lock button
     set analysis(lockEngine$n) 0
     toggleLockEngine $n
-    .analysisWin$n.b1.lockengine configure -relief raised
     .analysisWin$n.b1.lockengine configure -state disabled
   } else  {
     startAnalyzeMode $n
@@ -2280,10 +2278,8 @@ proc toggleLockEngine {n} {
   }
   $w.b1.alllines configure -state $state
   $w.b1.automove configure -state $state
-  if { $n == 1 } {
-    $w.b1.annotate configure -state $state
-    $w.b1.bFinishGame configure -state $state
-  }
+  $w.b1.annotate configure -state $state
+  $w.b1.bFinishGame configure -state $state
 }
 ################################################################################
 # updateAnalysisText
@@ -2902,29 +2898,32 @@ image create photo tb_cpu -data {
   GySCYQUMBlIkkUP/DGAFEj7A0IIKI6S40IoNLaTjjjsGBAA7
 }
 image create photo tb_training -data {
-  R0lGODlhGAAYAOeRAGVlZWpnZWhoaG1pZnZrYm5ubnduZYRtWXxwZ3V1dcRkFnl5eYt3aM5r
-  G4GBgZF9bYKCgshwKJd+adBvIdRuHIWFhaF+YoaGhpuBbIiIiNtyHqt/XImJicN6P9J2LNd1
-  JoqKiouLi8R+Ro2NjY6OjuR4IeR4IuR5IuV5IsuARJCQkJGRkZKSkq2Lb5SUlKeQfZWVlZaW
-  luaCMJeXl8yKVJiYmPGBJpmZmfKCJvOCJ5qampycnNGOWb6Ucp2dnduNTp6enp+fn6CgoKGh
-  oaKioqSkpOuSSqWlpaampqenp9+ZYaioqKmpqdidbqqqquyZVqurq7iom6ysrK6urtakfK+v
-  r7mtpLCwsLKysrOzs7S0tLa2tre3t7i4uLm5ubq6uru7u9a0mcC8ur6+vsDAwMPDw8TExMfH
-  x8jIyMnJycrKyt7GssvLy8zMzM/MyM3Nzc7Ozs/Pz9DQ0NHR0dLS0tTU1NXV1dbW1tfX19jY
-  2NzX1NnZ2dra2tvb29zc3N3d3d7e3t/f3+Dg4OHh4eLi4uPj4+Tk5OXl5ebm5ufn5+jo6Onp
-  6erq6uvr6+zs7O3t7e7u7v//////////////////////////////////////////////////
-  ////////////////////////////////////////////////////////////////////////
-  ////////////////////////////////////////////////////////////////////////
-  ////////////////////////////////////////////////////////////////////////
-  ////////////////////////////////////////////////////////////////////////
-  ////////////////////////////////////////////////////////////////////////
-  /////////////////////////////////yH5BAEKAP8ALAAAAAAYABgAAAj+AP8JHEjwnwEG
-  AQoqXPhvQI8nRpQ8YEjxXwsZOXKg+IGg4kIeJWzYMPEBg0eFNDSUKKFhgoSTBS14oEChQQoC
-  MAtuiKBAxIGcBSu4sVIEaNA4X4gYJegAqZClAgWQafPFi46TBRA5esRVESI+bfrkYXTIUCE/
-  CxQyIRRI0CFIf97YsWNmiqFEYvFMURjoD6BBkCDRQUOmyxUodRohynOHDwCCMAz5+UOIK6E0
-  Y7hcGZOokSI8d/DcIFhGD5UmaxI5Wo2I0KJGjRb9uXOnjpqBCQyFOYGjAx9BiBitZqSIEB/Q
-  durgqSCwCKA8UV6I4UO9+p48eZDX2f70HxDQd5Jl16EzZ44cOHDetGGjJg2aM2ZGCNxBBsyX
-  Llu0ZMFyZYoUJ0wsgUQRRAwRRBAcCBSDGVVxkR9/VfjnxBJJHEGgEEEIwZxAOviwgw431DBD
-  DC6wsIIKJIwQAggZXFABBI9BJaNHAQEAOw==
+R0lGODlhGAAYAOedAAICAggICAkJCQoJCAoKCgsLCw0NDQ4ODhISEhQUFB0d
+HR4eHh8eHSAeHiIfHCQgHigjHiUlJSokICYmJiwlHi0lHycnJicnJygoKCkp
+KSoqKjIoICsrKywsLC0tLUApFi4uLi8vLzAwMDExMTMzMz8/P0BAQEJCQkND
+Q0REREVFRcRkFs5rG8hwKNBvIdRuHKF+YttyHqt/XMN6P9J2LNd1JoyMjMR+
+RuR4IeR4Io+Pj+R5IuV5IsuARJKSkpOTk6eQfZWVlZaWluaCMJeXl8yKVJiY
+mPGBJpmZmfKCJvOCJ5qampubm5ycnNGOWb6Ucp2dnZ+fn6CgoKGhoaKioqSk
+pOuSSqWlpaampqenp9+ZYaioqKmpqdidbqqqquyZVriom6ysrK6urtakfK+v
+r7mtpLCwsLKysrOzs7S0tLa2tre3t7i4uLm5ubq6uru7u9a0mcC8usDAwMTE
+xMfHx8jIyMnJycrKyt7GssvLy8zMzM/MyM3Nzc7Ozs/Pz9DQ0NHR0dLS0tTU
+1NXV1dbW1tfX19jY2NzX1NnZ2dra2tvb29zc3N3d3d7e3t/f3+Dg4OHh4eLi
+4uTk5OXl5ebm5ufn5+jo6Onp6erq6uvr6+zs7O3t7e7u7v//////////////
+////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////
+/////////////////////yH5BAEKAP8ALAAAAAAYABgAAAj+AP8JHEiwoMGD
+BoUsWACBgRCEEP81MPLFihYJEQ+C2DBEiRIeOR5kLAjCCY4jR3LUqDCSIIgi
+MXDgiOGCQsuBIGDQePGCRQ8HNwWCACGjxYobFkAEFarCTxkVSpcKvODHTwip
+AyNUVYH13wIjVYV4GKkChYqzKqpU3ZoCBYoTJrgWHLG2qo4ma3/UjUKCZNO6
+UJYYEfLDR10/KhQQ5HC4KhMbQX4QaTyWqZ8xXfA03oy4hFA/cHYkmcF584XP
+fsAAiVO68dV/IFqXnpNBoAc5b9ywUZMGzRkzYsJ44bIFSxUqU6JEwSCwAxI3
+bdbw/k0muJctWa4clxJFymmhIDwUiO9AnoOG8xkyYFh/4cIEuV0HBgQAOw==
 }
+
 image create photo tb_addmove -data {
 R0lGODlhGwAbAOMPAM0AI80AJ80CKc4HLs4NMs8WOc8WOtFCXdRxhNR0htN9
 jdV8jdjCxtjCx9r38v///yH+FUNyZWF0ZWQgd2l0aCBUaGUgR0lNUAAh+QQB
@@ -3023,38 +3022,38 @@ prcUBy49+PMAQIRE0JwJCipIGoAVl1IkmsGBwy9BTJ0KqgGqwCUgioQIKaSV
 kDVQECgR2gAKwAmxg2KU/YF2EIFLDAvayp1Lt67du4UCAQA7
 }
 
-image create photo tb_engineinfo -data {
-  R0lGODdhFAAUAMIFAAAAAAAA/7i4uMDAwO7v8v///////////ywAAAAAFAAU
-  AAADUEgarP6QsNkipIXaR/t2mPeF2jhl5UY2AtG+rXRqQl27sSx+XMVHgKBw
-  SAQ8ikihQ2irDZtGRXK6nCKXUEDWNngIgltbsFsFf5nnIERdPRoTADs=
-}
+# image create photo tb_engineinfo -data {
+# R0lGODdhFAAUAMIFAAAAAAAA/7i4uMDAwO7v8v///////////ywAAAAAFAAU
+# AAADUEgarP6QsNkipIXaR/t2mPeF2jhl5UY2AtG+rXRqQl27sSx+XMVHgKBw
+# SAQ8ikihQ2irDZtGRXK6nCKXUEDWNngIgltbsFsFf5nnIERdPRoTADs=}
 
 image create photo tb_lockengine -data {
-  R0lGODlhGAAYAOfHAAAAAAwFABUJAg8PDxUQDBMTExQUFB0XEBwcHCUdFSEhISkhGjIhEC4kGS8l
-  GycnJykpKTkrHTU1NTw8PEo5K0VFRW1CFUxMTFZTUl5aVl9fX2FhYGVjYZdcGpddGpheGppeG2pq
-  aptgHqNrL6ZxN7B1MKl3PKt4P7J3M7N4NLR4NLN5NLJ6PLJ7O7Z8NrZ9OLZ9Ord9ObR/Q7SBRbmA
-  PbSCQLSBRraCQbmBP7qBPrSDSbeDQrqDP7WETLqEQriFRLmFSLaGTLWITbyGRbeHTrqHSryHRryH
-  SLqISbmITruJSayMZbyKS76KTLqLUrqMVLqMVZSUlLuNVbuOVryOVsCNUb2OVryPWL2QWMCRVcCS
-  Vr+SWsCTWMSSVsGVXMKVXMKWXMOWX56ensaYVsOYYMaYWMeYWMSZYMSZYcaYYaCgoKGhocabZMac
-  ZMibZ8ecZcmdYcidZcidZsqdYcieZsifaMqfY8mfaMqebcqfaMuja8yka8ykbMykbc2kbc6ka8yl
-  bc6kbsymbc6mb9ClcM+mcM+ncM+ncs+nfNKndtCpcdGodNOqetOqe7KystKtdtOse9Sud9auf9Kv
-  hdSwfNavgLa2tre2ttewgNizf9m0hNW2jtq2hde7ldm+mdq+mcPDw+G9lNzAnd/AluDAmeDBmeLC
-  m+PCnMjIyOPDnOTEneTGoM/Pz9DQ0OXQs9XV1efSudbW1tjY2OnVvu7Vt+3WuO7Yuu7Yu+7YvO/Y
-  u+3ZwN3d3e/avvDav+/bv97e3uHh4eLi4ubm5ufn5+np6e3t7e/v7///////////////////////
-  ////////////////////////////////////////////////////////////////////////////
-  ////////////////////////////////////////////////////////////////////////////
-  /////////////////////////////////////////////////////yH+uihjKSAyMDAwIEpha3Vi
-  ICdKaW1tYWMnIFN0ZWluZXIKClRoaXMgaW1hZ2Ugd2FzIGNyZWF0ZWQgdXNpbmcgR2ltcC4gR2lt
-  cCBpcyBmcmVlIHNvZnR3YXJlIAphcyBkZWZpbmVkIGJ5IHRoZSBGcmVlIFNvZnR3YXJlIEZvdW5k
-  YXRpb24gYW5kIGlzIGF2YWlsYWJsZQpmb3IgZG93bmxvYWQgYXQgaHR0cDovL3d3dy5naW1wLm9y
-  ZwAh+QQBCgD/ACwAAAAAGAAYAAAI/gD/CRxIsKDBgwgTKhwIoGHDhQYBKBAjbBgqNQUgMtRQTFis
-  V7tkrZkAQKMEY6wuNDQQopWjChABBJMFoaTAASFQRbGZsAAxUDwFIgAmJujBB78sGQUw7JJRggIa
-  JNiQYQEBBwkOJKDAAUMEBgEOAvClaxYsV6I8efrkqdOmSYhAPP0HoNeqSpAI3WHTRs4bMlqGuPgw
-  FwCuVJUaFcrThk4dOmi4GIkhV+wtU5LwpNkyxQqWK0lm+FDRoTAvVZg4UVL0x4+gPXbM4EjhoXCu
-  UozchKHi5IkUKEFk8FghojCuU5I0RTK0Rw8fPXPG5EAxonCtUIvSYCGio4eQIDZYSsAoQaKwLVKN
-  Mj0atKcPID5wytB4caIwrVGJAsU54+ULGDBZMOFDEyYUtsQhXVSBxA413PCDEkcUAUQLFsxFl0MY
-  ZviQRhx2mFBAADs=
-}
+R0lGODlhGAAYAOd6AAAAAAwFABUJAg8PDxUQDBMTExQUFB0XEBwcHCUdFSEh
+ISkhGjIhEC4kGS8lGycnJykpKTkrHTU1NTw8PEo5K0VFRW1CFUxMTFZTUl5a
+Vl9fX2FhYGVjYZdcGpddGpheGppeG2pqaptgHqNrL6ZxN7B1MKl3PKt4P7J3
+M7N4NLR4NLN5NLJ6PLJ7O7Z8NrZ9OLZ9Ord9ObR/Q7SBRbmAPbSCQLSBRraC
+QbmBP7qBPrSDSbeDQrqDP7WETLqEQriFRLmFSLaGTLWITbyGRbeHTrqHSryH
+RryHSLqISbmITruJSayMZbyKS76KTLqLUrqMVLqMVZSUlLuNVbuOVryOVsCN
+Ub2OVryPWL2QWMCRVcCSVr+SWsCTWMSSVsGVXMKVXMKWXMOWX56ensaYVsOY
+YMaYWMeYWMSZYMSZYcaYYaCgoKGhocabZMacZMibZ8ecZcmdYcidZcidZsqd
+YcieZsifaMqfY8mfaMqebcqfaMuja8yka8ykbMykbc2kbc6ka8ylbc6kbsym
+bc6mb9ClcM+mcM+ncM+ncs+nfNKndtCpcdGodNOqetOqe7KystKtdtOse9Su
+d9auf9KvhdSwfNavgLa2tre2ttewgNizf9m0hNW2jtq2hde7ldm+mdq+mcPD
+w+G9lNzAnd/AluDAmeDBmeLCm+PCnMjIyOPDnOTEneTGoM/Pz9DQ0OXQs9XV
+1efSudbW1tjY2OnVvtnZ2e7Vt+3WuO7Yuu7Yu+7YvO/Yu+3ZwN3d3e/avvDa
+v+/bv97e3uHh4eLi4ubm5ufn5+np6e3t7e/v78uja8uja8uja8uja8uja8uj
+a8uja8uja8uja8uja8uja8uja8uja8uja8uja8uja8uja8uja8uja8uja8uj
+a8uja8uja8uja8uja8uja8uja8uja8uja8uja8uja8uja8uja8uja8uja8uj
+a8uja8uja8uja8uja8uja8uja8uja8uja8uja8uja8uja8uja8uja8uja8uj
+a8uja8uja8uja8uja8ujayH5BAEKAP8ALAAAAAAYABgAAAj+AP8JHEiwoMGD
+CBMqHAigYcOFBgEoEDOMGCo1BSAy1GBsWKxXvGStmQBAo4RjrC40NBCilaMK
+EAEIkwWhpMABIVBFsZmwQDFQPAUiCCYm6MEHwCwZBUDsklGCAhok2JBhAQEH
+CQ4koMABQwQGAQ4C+LVrFixXojx5+uSp06ZJiEA8/QfA16pKkAjdYdNGzhsy
+Woa4+DAXQK5UlRoVytOGTh06aLgYiSFXLC5TkvCk2TLFCpYrSWb4UNGhcC9V
+mDhRUvTHj6A9dszgSOGhsK5SjNyEoeLkiRQoQWTwWCGicK5TkjRFMrRHDx89
+c8bkQDGisK1Qi9JgIaKjh5AgNlhKwChBovAtUo0yPRq0pw8gPnDK0HhxonCt
+UYkCxTnj5QsYMFkw4UMTJhS2xCFdVIHEDjXc8IMSRxQBRAsWzEWXQxhm+JBG
+HHaYUEAAOw==}
 
 
 ###
