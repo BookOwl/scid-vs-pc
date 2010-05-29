@@ -100,63 +100,51 @@ foreach {code title anchor} $glistFields {
 #  Number White WElo Black BElo Event Site Round Date Result Length ECO Opening Deleted Flags Vars Comments Annos Start
 
 proc ::windows::gamelist::FilterText {} {
-
-  global glstart glistCodes
+  global glstart
   variable findtext
 
   ::utils::history::AddEntry ::windows::gamelist::findtext $findtext
   .glistWin.b.find selection range end end
 
-  busyCursor .glistWin 1
-  update
+  set temp [sc_filter textfilter $::windows::gamelist::findcase $findtext]
+  #         sc_filter textfilter  CASE_FLAG  TEXT
 
- # Run through unfiltered games... It's a little clumsy S.A.
- for {set line [sc_base numGames]} {$line >= 1} {incr line -1} {
+  busyCursor .glistWin 0
 
-    set game [sc_filter locate $line]
-    if {[sc_filter index $game] != $line} continue
-
-    if {![regexp $::windows::gamelist::findcase $findtext [sc_game list $game 1 $glistCodes]]} {
-      sc_filter remove $line
-    }
-  }
-  set glstart 1
-  ::windows::gamelist::Refresh
-  unbusyCursor .glistWin
-  update
-}
-
-proc ::windows::gamelist::FindText {} {
-  global glstart glistCodes
-  variable findtext
-
-  busyCursor .glistWin 1
-  update
-  ::utils::history::AddEntry ::windows::gamelist::findtext $findtext
-  .glistWin.b.find selection range end end
-
-  set line $glstart 
-  incr line
-  set totalSize [sc_filter count]
-  while {$line <= $totalSize} {
-    if {[regexp $::windows::gamelist::findcase $findtext \
-           [sc_game list $line 1 $glistCodes]]} {
-      break
-    }
-    incr line 1
-  }
-
-  if {$line > $totalSize} {
+  if {$temp == {0}} {
+    puts "$temp matches"
     set glstart 1
     ::windows::gamelist::Refresh
     bell
   } else {
-    set glstart $line
+    set glstart 1
     ::windows::gamelist::Refresh
     .glistWin.tree selection set [lindex [.glistWin.tree children {}] 0]
   }
-  unbusyCursor .glistWin
-  update
+}
+
+### Rewrote this ... again. S.A
+#
+# Find text only matches against White/Black/Event/Site
+
+proc ::windows::gamelist::FindText {} {
+  global glstart
+  variable findtext
+
+  ::utils::history::AddEntry ::windows::gamelist::findtext $findtext
+  .glistWin.b.find selection range end end
+
+  set temp [sc_filter textfind $::windows::gamelist::findcase $glstart $findtext]
+  busyCursor .glistWin 0
+  if {$temp < 1} {
+    set glstart 1
+    ::windows::gamelist::Refresh
+    bell
+  } else {
+    set glstart $temp
+    ::windows::gamelist::Refresh
+    .glistWin.tree selection set [lindex [.glistWin.tree children {}] 0]
+  }
 }
 
 proc ::windows::gamelist::Load {number} {
@@ -398,8 +386,8 @@ proc ::windows::gamelist::Open {} {
   bind $w.b.find <End> "$w.b.find icursor end; break"
 
   checkbutton $w.b.findcase -text "Ignore Case" \
-    -variable ::windows::gamelist::findcase -onvalue {-nocase} -offvalue {--}
-  set ::windows::gamelist::findcase {--}
+    -variable ::windows::gamelist::findcase -onvalue 1 -offvalue 0
+  set ::windows::gamelist::findcase 0
 
   pack $w.b.findcase $w.b.find $w.b.findlabel $w.b.filter -side right
   pack $w.b.negate $w.b.reset $w.b.remove -side left 
