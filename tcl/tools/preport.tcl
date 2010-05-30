@@ -41,7 +41,7 @@ proc ::preport::preportDlg {args} {
 
   label $w.g.where -text "Player:"
   grid $w.g.where -row 0 -column 0 -sticky w
-  ::combobox::combobox $w.g.player -textvariable ::preport::_player
+  ttk::combobox $w.g.player -width 40 -textvariable ::preport::_player
   ::utils::history::SetCombobox ::preport::_player $w.g.player
   grid $w.g.player -row 0 -column 1 -columnspan 2 
 

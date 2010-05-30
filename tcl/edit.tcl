@@ -64,7 +64,8 @@ proc pasteFEN {} {
   updateBoard -pgn
 }
 
-proc setSetupBoardToFen {w setupFen} {
+proc setSetupBoardToFen {} {
+  global setupFen
 
   # Called from ".setup.fencombo" FEN combo S.A
 
@@ -245,6 +246,7 @@ proc exitSetupBoard {} {
 
   #### Do a sanity check on castling
   #    .. helpful because illegal FENs crash engines
+  #    and we could also have one for enpassant
 
   set c [lindex $setupFen 2]
 
@@ -326,10 +328,21 @@ set pastePiece K       ;# Piece being pasted, "K", "k", "Q", "q", etc.
 
 # Traces to keep entry values sensible:
 
-trace variable moveNum w {::utils::validate::Integer 999 0}
-trace variable epFile w {::utils::validate::Regexp {^(-|[a-h])?$}}
-trace variable castling w {::utils::validate::Regexp {^(-|[KQkq]*)$}}
-
+proc check_moveNum {a b c} {
+  ::utils::validate::Integer 999 0 $a $b $c
+  makeSetupFen
+}
+proc check_epFile {a b c} {
+  ::utils::validate::Regexp {^(-|[a-h])?$} $a $b $c
+  makeSetupFen
+}
+proc check_castling {a b c} {
+  ::utils::validate::Regexp {^(-|[KQkq]*)$} $a $b $c
+  makeSetupFen
+}
+trace variable moveNum w check_moveNum
+trace variable epFile w check_epFile
+trace variable castling w check_castling
 
 # setupBoard:
 #   The main procedure for creating the dialog for setting the start board.
@@ -486,7 +499,7 @@ proc setupBoard {} {
 
   frame $sr.mid.movenum
   label $sr.mid.movenum.label -textvar ::tr(MoveNumber:)
-  entry $sr.mid.movenum.e -width 3 -background white -textvariable moveNum
+  entry $sr.mid.movenum.e -width 3 -textvariable moveNum
 
   pack $sr.mid.movenum -pady 10 -expand yes -fill x
   pack $sr.mid.movenum.label $sr.mid.movenum.e -side left -anchor w -expand yes -fill x
@@ -495,11 +508,7 @@ proc setupBoard {} {
 
   frame $sr.mid.castle
   label $sr.mid.castle.label -textvar ::tr(Castling:)
-  ::combobox::combobox $sr.mid.castle.e -width 5 \
-    -textvariable castling -command makeSetupFen
-  foreach c {KQkq KQ kq K Q k q -} {
-    $sr.mid.castle.e list insert end $c
-  }
+  ttk::combobox $sr.mid.castle.e -width 5 -textvariable castling -values {KQkq KQ kq K Q k q -}
 
   set castling [lindex $origFen 2]
 
@@ -510,12 +519,7 @@ proc setupBoard {} {
 
   frame $sr.mid.ep
   label $sr.mid.ep.label -textvar ::tr(EnPassantFile:)
-  ::combobox::combobox $sr.mid.ep.e -width 2 -background white -textvariable epFile \
-    -command makeSetupFen
-
-  foreach f {- a b c d e f g h} {
-    $sr.mid.ep.e list insert end $f
-  }
+  ttk::combobox $sr.mid.ep.e -width 2 -textvariable epFile -values {- a b c d e f g h}
 
   set epFile [string index [lindex $origFen 3] 0]
 
@@ -574,9 +578,8 @@ proc setupBoard {} {
   }
   button .setup.clear -textvar ::tr(ClearFen) -command {set setupFen ""}
 
-  ::combobox::combobox .setup.fencombo -relief sunken -textvariable setupFen \
-    -background white -height 10 -maxheight 10 -command setSetupBoardToFen
-
+  ttk::combobox .setup.fencombo -textvariable setupFen -height 10
+  bind .setup.fencombo <<ComboboxSelected>> setSetupBoardToFen
   ::utils::history::SetCombobox setupFen .setup.fencombo
 
   update ; # necessary in case of quick-draw user interactions

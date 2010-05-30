@@ -360,11 +360,12 @@ proc ::optable::setOptions {} {
         spinbox $w.f.s$i -textvariable ::optable($i) -from 0 -to 5000 -increment 50 \
             -state readonly -width 5 -justify right -font font_Small
       } else  {
-        ::combobox::combobox $w.f.s$i -textvariable ::optable($i) \
-            -editable false -width 2 -height 11 -justify right -font font_Small
+        set tmpcombo {}
+
         for {set x $from} {$x <= $to} {incr x $res} {
-          $w.f.s$i list insert end $x
+          lappend tmpcombo $x
         }
+        ttk::combobox $w.f.s$i -textvariable ::optable($i) -width 2 -height 11 -values $tmpcombo
       }
       
       label $w.f.t$i -textvar ::tr(Oprep$i) -font font_Small

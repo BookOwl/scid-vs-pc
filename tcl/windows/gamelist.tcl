@@ -373,8 +373,7 @@ proc ::windows::gamelist::Open {} {
   # button $w.b.findall -relief flat -text "Find All" \
   #   -command {::windows::gamelist::FindText}
 
-  ### could use ttk::combo box everywhere 
-  ::combobox::combobox $w.b.find -width 12 -textvariable ::windows::gamelist::findtext
+  ttk::combobox $w.b.find -width 12 -textvariable ::windows::gamelist::findtext
   ::utils::history::SetCombobox ::windows::gamelist::findtext $w.b.find
 
   ### doesn't work

@@ -89,20 +89,29 @@ namespace eval book {
     frame $w.f
     # load book names
     set bookPath $::scidBooksDir
-    ::combobox::combobox $w.f.combo -editable false -width 12
     set bookList [  lsort -dictionary [ glob -nocomplain -directory $bookPath *.bin ] ]
+    # No book found
+    if { [llength $bookList] == 0 } {
+      tk_messageBox -title "Scid" -type ok -icon error -message "No books found. Check books directory"
+      set ::book::isOpen 0
+      set ::book::currentBook ""
+      destroy $w
+      return
+    }
     set i 0
     set idx 0
+    set tmp {}
     foreach file  $bookList {
       set f [ file tail $file ]
-      $w.f.combo list insert end $f
+      lappend tmp $f
       if {$name == $f} {
         set idx $i
       }
       incr i
     }
+    ttk::combobox $w.f.combo -width 12 -values $tmp
     
-    $w.f.combo select $idx
+    catch { $w.f.combo current $idx }
     pack $w.f.combo
     
     # text displaying book moves
@@ -111,7 +120,7 @@ namespace eval book {
     
     pack $w.f
     
-    $w.f.combo configure -command ::book::bookSelect
+    bind $w.f.combo <<ComboboxSelected>> ::book::bookSelect
     bind $w <Destroy> "::book::closeMainBook"
     bind $w <Escape> { destroy  .bookWin }
     if { [catch {bookSelect} ] } {
@@ -181,6 +190,7 @@ namespace eval book {
   #
   ################################################################################
   proc bookSelect { { n "" }  { v  0} } {
+    set ::book::lastBook [.bookWin.f.combo get]
     scBookOpen [.bookWin.f.combo get] $::book::bookSlot
     refresh
   }
@@ -207,21 +217,31 @@ namespace eval book {
     frame $w.f
     # load book names
     set bookPath $::scidBooksDir
-    ::combobox::combobox $w.fcombo.combo -editable false -width 0
-    pack $w.fcombo.combo -expand yes -fill x
     set bookList [  lsort -dictionary [ glob -nocomplain -directory $bookPath *.bin ] ]
+    # No book found
+    if { [llength $bookList] == 0 } {
+      tk_messageBox -title "Scid" -type ok -icon error -message "No books found. Check books directory"
+      set ::book::isOpen 0
+      set ::book::currentBook ""
+      destroy $w
+      ::docking::cleanup $w
+      return
+    }
     set i 0
     set idx 0
+    set tmp {}
     foreach file  $bookList {
       set f [ file tail $file ]
-      $w.fcombo.combo list insert end $f
+      lappend tmp $f
       if {$name == $f} {
         set idx $i
       }
       incr i
     }
     
-    $w.fcombo.combo select $idx
+    ttk::combobox $w.fcombo.combo -width 12 -values $tmp
+    catch { $w.fcombo.combo current $idx }
+    pack $w.fcombo.combo -expand yes -fill x
     
     frame $w.fbutton
     button $w.fbutton.bExport -text $::tr(Export) -command ::book::export
@@ -230,7 +250,7 @@ namespace eval book {
     
     pack $w.fcombo $w.f $w.fbutton -side top
     
-    $w.fcombo.combo configure -command ::book::bookTuningSelect
+    bind $w.fcombo.combo <<ComboboxSelected>> ::book::bookTuningSelect
     bind $w <Destroy> "::book::closeTuningBook"
     bind $w <Escape> { destroy  .bookTuningWin }
     bind $w <F1> { helpWindow BookTuning }

@@ -96,18 +96,15 @@ proc ::plist::Open {} {
 
   set f $w.o1
   label $f.nlabel -text $::tr(Player:) -font $fbold
-  ::combobox::combobox $f.name -textvariable ::plist::name -width 20 -font $font
+  ttk::combobox $f.name -textvariable ::plist::name -width 20
   ::utils::history::SetCombobox ::plist::name $f.name
   bindFocusColors $f.name
   focus $f.name
   label $f.size -text $::tr(TmtLimit:) -font $fbold
-  ::combobox::combobox $f.esize -width 4 -justify right -textvar ::plist::size \
-    -font $font
+  ttk::combobox $f.esize -width 4 -justify right -textvar ::plist::size -values {50 100 200 500 1000}
   trace variable ::plist::size w {::utils::validate::Integer 1000 0}
   bindFocusColors $f.esize
-  foreach n {50 100 200 500 1000} {
-    $f.esize list insert end $n
-  }
+
   pack $f.esize $f.size -side right
   pack $f.nlabel $f.name -side left
 

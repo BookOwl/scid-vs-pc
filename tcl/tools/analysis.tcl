@@ -747,13 +747,22 @@ proc configAnnotation {} {
   checkbutton $w.cbBook  -text $::tr(UseBook) -variable ::useAnalysisBook
   # load book names
   set bookPath $::scidBooksDir
-  ::combobox::combobox $w.comboBooks -editable false -width 12
   set bookList [ lsort -dictionary [ glob -nocomplain -directory $bookPath *.bin ] ]
-  foreach file  $bookList {
-    $w.comboBooks list insert end [ file tail $file ]
-  }
-  $w.comboBooks select 0
-  pack $w.cbBook $w.comboBooks -side top
+  
+    # No book found
+    if { [llength $bookList] == 0 } {
+        set ::useAnalysisBook 0
+        $f.cbBook configure -state disabled
+    }
+    
+    set tmp {}
+    set i 0
+    foreach file  $bookList {
+        lappend tmp [ file tail $file ]
+        incr i
+    }
+    ttk::combobox $w.comboBooks -width 12 -values $tmp
+    pack $w.cbBook $w.comboBooks -side top
   
   addHorizontalRule $w
   

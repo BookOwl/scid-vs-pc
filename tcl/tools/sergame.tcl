@@ -120,15 +120,24 @@ namespace eval sergame {
     # load book names
     checkbutton $w.fbook.cbUseBook -text $::tr(UseBook) -variable ::sergame::useBook
     set bookPath $::scidBooksDir
-    ::combobox::combobox $w.fbook.combo -editable false -width 12
     set bookList [ lsort -dictionary [ glob -nocomplain -directory $bookPath *.bin ] ]
+    if { [llength $bookList] == 0 } {
+      $w.fbook.cbUseBook configure -state disabled
+      set ::sergame::useBook 0
+    }
     set i 0
     set idx 0
+    set tmp {}
     foreach file  $bookList {
-      set f [ file tail $file ]
-      $w.fbook.combo list insert end $f
+      lappend tmp [ file tail $file ]
+      if { $::sergame::bookToUse == [ file tail $file ]} {
+        set idx $i
+      }
+      incr i
     }
-    $w.fbook.combo select 0
+    
+    ttk::combobox $w.fbook.combo -width 12 -values $tmp
+    catch { ch$w.fbook.combo current $idx }
     
     set row 0
     
@@ -232,6 +241,9 @@ namespace eval sergame {
       set ::sergame::chosenOpening [.configSerGameWin.fopening.fOpeningList.lbOpening curselection]
       if {$::sergame::useBook} {
         set ::sergame::bookToUse [.configSerGameWin.fbook.combo get]
+        if {$::sergame::bookToUse == "" } {
+          set ::sergame::useBook 0
+        }
       }
       set ::uci::uciInfo(wtime3) [expr [.configSerGameWin.ftime.timebonus.whitespminutes get]*1000*60]
       set ::uci::uciInfo(btime3) [expr [.configSerGameWin.ftime.timebonus.blackspminutes get]*1000*60]
@@ -333,7 +345,7 @@ namespace eval sergame {
     }
     
     toplevel $w
-    wm title $w "$::tr(coachgame) ($::sergame::engineName)"
+    wm title $w "Serious Game ($::sergame::engineName)"
     
     setWinLocation $w
     
