@@ -737,22 +737,16 @@ proc configAnnotation {parent} {
 
   
   label $w.anlabel -text $::tr(Annotate...)
-  radiobutton $w.allmoves -text $::tr(AnnotateAllMoves) -variable annotateBlunders -value allmoves -anchor w \
-    -command "$w.blunderbox.spBlunder configure -state disabled"
-  radiobutton $w.notbest -text $::tr(AnnotateNotBest) -variable annotateBlunders -value notbest -anchor w \
-    -command "$w.blunderbox.spBlunder configure -state disabled"
+  radiobutton $w.allmoves -text $::tr(AnnotateAllMoves) -variable annotateBlunders -value allmoves -anchor w 
+  radiobutton $w.notbest -text $::tr(AnnotateNotBest) -variable annotateBlunders -value notbest -anchor w
   radiobutton $w.blundersonly -text $::tr(AnnotateBlundersOnly) \
-    -variable annotateBlunders -value blundersonly -anchor w \
-    -command "$w.blunderbox.spBlunder configure -state normal"
+    -variable annotateBlunders -value blundersonly -anchor w
 
   frame $w.blunderbox
 
-  label $w.blunderbox.label -text $::tr(BlundersThreshold:)
+  label $w.blunderbox.label -text "$::tr(Blunder) $::tr(BlundersThreshold)"
   spinbox $w.blunderbox.spBlunder -width 4 -textvariable blunderThreshold \
       -from 0.1 -to 3.0 -increment 0.1
-  if {$::annotateBlunders == "allmoves" || $::annotateBlunders == "notbest"} {
-    $w.blunderbox.spBlunder configure -state disabled
-  }
 
   pack $w.avlabel -side top
   pack $w.all $w.white $w.black -side top -fill x
@@ -761,8 +755,8 @@ proc configAnnotation {parent} {
 
   pack $w.anlabel -side top
   pack $w.allmoves $w.notbest $w.blundersonly -side top -fill x
-  pack $w.blunderbox -side top -padx 10 -pady 5 -fill x
-  pack $w.blunderbox.label $w.blunderbox.spBlunder -side left -padx 5 -pady 5
+  pack $w.blunderbox -side top -padx 10 -fill x
+  pack $w.blunderbox.label $w.blunderbox.spBlunder -side left -padx 5
 
   addHorizontalRule $w
   checkbutton $w.cbAnnotateVar  -text $::tr(AnnotateVariations) -variable ::isAnnotateVar -anchor w
