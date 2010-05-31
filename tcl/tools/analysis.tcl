@@ -1700,7 +1700,7 @@ proc makeAnalysisWin { {n 1} } {
   set analysis(showEngineInfo$n) 0 
   
   frame $w.b1
-  pack  $w.b1 -side bottom -fill x
+  pack  $w.b1 -side top -fill x
   set relief flat	; # -width 24 -height 24
 
   checkbutton $w.b1.automove -image tb_training  -indicatoron false  \
@@ -1779,7 +1779,7 @@ proc makeAnalysisWin { {n 1} } {
       -wrap word -setgrid 1 -yscrollcommand "$w.hist.ybar set"
   $w.hist.text tag configure indent -lmargin2 [font measure font_Fixed "xxxxxxxxxxxx"]
   scrollbar $w.hist.ybar -command "$w.hist.text yview" -takefocus 0
-  pack $w.text -side top -fill both
+  pack $w.text -side bottom -fill both
   pack $w.hist -side top -expand 1 -fill both
   pack $w.hist.ybar -side right -fill y
   pack $w.hist.text -side left -expand 1 -fill both
