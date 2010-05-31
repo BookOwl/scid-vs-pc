@@ -961,7 +961,7 @@ $m add command -label OptionsSave -command {
           gameInfo(show) gameInfo(photos) gameInfo(hideNextMove) gameInfo(wrap) \
           gameInfo(fullComment) gameInfo(showMarks) \
           gameInfo(showMaterial) gameInfo(showFEN) gameInfo(showTB) \
-          engines(F2) engines(F3) engines(F4) engineCoach1 engineCoach2 scidBooksDir scidBasesDir \
+          engines(F2) engines(F3) engines(F4) engineCoach1 engineCoach2 scidBooksDir scidBasesDir ::book::lastBook \
           crosstab(type) crosstab(ages) crosstab(countries) crosstab(ratings) crosstab(titles) crosstab(breaks) crosstab(deleted) crosstab(colors) crosstab(cnumbers) crosstab(groups) crosstab(sort) \
           ::utils::sound::soundFolder ::utils::sound::announceNew \
           ::utils::sound::announceForward ::utils::sound::announceBack \

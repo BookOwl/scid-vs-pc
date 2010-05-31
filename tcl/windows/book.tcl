@@ -70,7 +70,7 @@ namespace eval book {
   # arg name : gm2600.bin for example
   ################################################################################
   proc open { {name ""} } {
-    global ::book::bookList ::book::bookPath ::book::currentBook ::book::isOpen
+    global ::book::bookList ::book::bookPath ::book::currentBook ::book::isOpen ::book::lastBook
     
     set w .bookWin
     
@@ -88,6 +88,9 @@ namespace eval book {
     
     frame $w.f
     # load book names
+    if { $name == "" && $lastBook != "" } {
+      set name $lastBook
+    }
     set bookPath $::scidBooksDir
     set bookList [  lsort -dictionary [ glob -nocomplain -directory $bookPath *.bin ] ]
     # No book found

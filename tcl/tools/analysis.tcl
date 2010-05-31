@@ -692,11 +692,11 @@ proc ::enginelist::edit {index} {
 ################################################################################
 #
 ################################################################################
-proc configAnnotation {} {
+proc configAnnotation {parent} {
   global autoplayDelay tempdelay blunderThreshold annotateModeButtonValue
   
   set w .configAnnotation
-  if { [winfo exists $w] } { focus $w ; return }
+  if { [winfo exists $w] } { destroy $w }
   if { ! $annotateModeButtonValue } { ; # end annotation
     toggleAutoplay
     return
@@ -706,8 +706,9 @@ proc configAnnotation {} {
   
   set tempdelay [expr {$autoplayDelay / 1000.0}]
   toplevel $w
+  wm state $w withdrawn
   wm title $w Scid
-  wm resizable $w 0 0
+
   label $w.label -text $::tr(AnnotateTime:)
   pack $w.label -side top -pady 5 -padx 5
   spinbox $w.spDelay -width 4 -textvariable tempdelay -from 1 -to 300 -increment 1
@@ -756,12 +757,17 @@ proc configAnnotation {} {
     }
     
     set tmp {}
+    set idx 0
     set i 0
     foreach file  $bookList {
         lappend tmp [ file tail $file ]
+        if {$::book::lastBook == [ file tail $file ] } {
+            set idx $i
+        }
         incr i
     }
     ttk::combobox $w.comboBooks -width 12 -values $tmp
+    catch { $w.comboBooks current $idx }
     pack $w.cbBook $w.comboBooks -side top
   
   addHorizontalRule $w
@@ -798,13 +804,15 @@ proc configAnnotation {} {
   frame $w.buttons
   pack $w.buttons -side top -fill x
   button $w.buttons.cancel -text $::tr(Cancel) -command {
+    bind .configAnnotation <Destroy> {}
     destroy .configAnnotation
     set annotateMode 0
     set annotateModeButtonValue 0
   }
   button $w.buttons.ok -text "OK" -command {
     set ::useAnalysisBookName [.configAnnotation.comboBooks get]
-    set  ::wentOutOfBook 0
+    set ::wentOutOfBook 0
+    set ::book::lastBook $::useAnalysisBookName
     
     # tactical positions is selected, must be in multipv mode
     if {$::markTacticalExercises} {
@@ -828,10 +836,13 @@ proc configAnnotation {} {
   }
   pack $w.buttons.cancel $w.buttons.ok -side right -padx 5 -pady 5
   focus $w.spDelay
-  update ; # or grab will fail
-  grab $w
-  bind $w <Destroy> { focus . }
+
+  bind $w <Destroy> "$w.buttons.cancel invoke"
+  placeWinOverParent $w $parent
+  wm state $w normal
+  update
 }
+
 ################################################################################
 # Part of annotation process : will check the moves if they are in the book,
 # and add a comment when going out of it
@@ -1729,7 +1740,7 @@ proc makeAnalysisWin { {n 1} } {
   # ::utils::tooltip::Set $w.b1.showinfo $::tr(ShowInfo)
 
   checkbutton $w.b1.annotate -image tb_annotate -indicatoron false \
-    -variable annotateModeButtonValue -command configAnnotation -relief $relief
+    -variable annotateModeButtonValue -command "configAnnotation .analysisWin$n" -relief $relief
   ::utils::tooltip::Set $w.b1.annotate $::tr(Annotate...)
 
   checkbutton $w.b1.priority -image tb_cpu -indicatoron false -variable analysis(priority$n) \

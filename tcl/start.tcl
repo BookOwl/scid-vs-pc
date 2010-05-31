@@ -693,6 +693,7 @@ set ::utils::sound::announceNew 0
 set ::utils::sound::announceForward 0
 set ::utils::sound::announceBack 0
 
+set ::book::lastBook "" ; # book name without extension (.bin)
 
 # Engines list file: -- OLD NAMES, NO LONGER USED
 #set engines(file) [file join $scidUserDir "engines.lis"]
