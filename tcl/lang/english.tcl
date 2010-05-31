@@ -660,10 +660,10 @@ translate E StartEngine {Start engine}
 translate E LockEngine {Lock engine to current position}
 translate E AnalysisCommand {Analysis Command}
 translate E PreviousChoices {Previous Choices}
-translate E AnnotateTime {Set the time between moves in seconds}
+translate E AnnotateTime {Time between moves (seconds)}
 translate E AnnotateWhich {Add variations}
 translate E AnnotateAll {For moves by both sides}
-translate E AnnotateAllMoves {Annotate all moves}
+translate E AnnotateAllMoves {All moves}
 translate E AnnotateWhite {For White moves only}
 translate E AnnotateBlack {For Black moves only}
 translate E AnnotateNotBest {When game move is not best move}
@@ -1458,7 +1458,7 @@ translate E TimeSec {sec}
 translate E AllExercisesDone {All exercises done}
 translate E MoveOutOfBook {Move out of book}
 translate E LastBookMove {Last book move}
-translate E AnnotateSeveralGames {Annotate several games\nfrom current to :}
+translate E AnnotateSeveralGames {Annotate several games\nFrom current to :}
 translate E FindOpeningErrors {Find opening errors}
 translate E MarkTacticalExercises {Mark tactical exercises}
 translate E UseBook {Use book}

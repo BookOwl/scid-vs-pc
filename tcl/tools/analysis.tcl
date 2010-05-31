@@ -689,6 +689,16 @@ proc ::enginelist::edit {index} {
   wm resizable $w 1 0
   catch {grab $w}
 }
+
+proc  checkState {arg widget} {
+     if {[set $arg]} {
+       set state normal
+     } else {
+       set state disabled
+     }
+     $widget configure -state $state
+}
+
 ################################################################################
 #
 ################################################################################
@@ -707,35 +717,53 @@ proc configAnnotation {parent} {
   set tempdelay [expr {$autoplayDelay / 1000.0}]
   toplevel $w
   wm state $w withdrawn
-  wm title $w Scid
+  wm title $w "Configure Annotation"
 
-  label $w.label -text $::tr(AnnotateTime:)
-  pack $w.label -side top -pady 5 -padx 5
-  spinbox $w.spDelay -width 4 -textvariable tempdelay -from 1 -to 300 -increment 1
-  pack $w.spDelay -side top -pady 5
+  frame $w.delay
+  pack $w.delay -side top -padx 15 -pady 5 -fill x
+
+  label $w.delay.label -text $::tr(AnnotateTime)
+  spinbox $w.delay.spDelay -width 4 -textvariable tempdelay -from 1 -to 300 -increment 1
+  pack $w.delay.label -side left -padx 2 -pady 5
+  pack $w.delay.spDelay -side left -padx 2 -pady 5
   bind $w <Escape> { .configAnnotation.buttons.cancel invoke }
   bind $w <Return> { .configAnnotation.buttons.ok invoke }
   
   addHorizontalRule $w
-  label $w.avlabel -text $::tr(AnnotateWhich:)
+  label $w.avlabel -text $::tr(AnnotateWhich...)
   radiobutton $w.all -text $::tr(AnnotateAll) -variable annotateMoves -value all -anchor w
   radiobutton $w.white -text $::tr(AnnotateWhite) -variable annotateMoves -value white -anchor w
   radiobutton $w.black -text $::tr(AnnotateBlack) -variable annotateMoves -value black -anchor w
-  radiobutton $w.allmoves -text $::tr(AnnotateAllMoves) -variable annotateBlunders -value allmoves -anchor w
-  radiobutton $w.notbest -text $::tr(AnnotateNotBest) -variable annotateBlunders -value notbest -anchor w
+
+  
+  label $w.anlabel -text $::tr(Annotate...)
+  radiobutton $w.allmoves -text $::tr(AnnotateAllMoves) -variable annotateBlunders -value allmoves -anchor w \
+    -command "$w.blunderbox.spBlunder configure -state disabled"
+  radiobutton $w.notbest -text $::tr(AnnotateNotBest) -variable annotateBlunders -value notbest -anchor w \
+    -command "$w.blunderbox.spBlunder configure -state disabled"
   radiobutton $w.blundersonly -text $::tr(AnnotateBlundersOnly) \
-      -variable annotateBlunders -value blundersonly -anchor w
-  pack $w.avlabel -side top
-  pack $w.all $w.white $w.black $w.allmoves $w.notbest $w.blundersonly -side top -fill x
-  
+    -variable annotateBlunders -value blundersonly -anchor w \
+    -command "$w.blunderbox.spBlunder configure -state normal"
+
   frame $w.blunderbox
-  pack $w.blunderbox -side top -padx 5 -pady 5
-  
+
   label $w.blunderbox.label -text $::tr(BlundersThreshold:)
   spinbox $w.blunderbox.spBlunder -width 4 -textvariable blunderThreshold \
       -from 0.1 -to 3.0 -increment 0.1
+  if {$::annotateBlunders == "allmoves" || $::annotateBlunders == "notbest"} {
+    $w.blunderbox.spBlunder configure -state disabled
+  }
+
+  pack $w.avlabel -side top
+  pack $w.all $w.white $w.black -side top -fill x
+
+  addHorizontalRule $w
+
+  pack $w.anlabel -side top
+  pack $w.allmoves $w.notbest $w.blundersonly -side top -fill x
+  pack $w.blunderbox -side top -padx 10 -pady 5 -fill x
   pack $w.blunderbox.label $w.blunderbox.spBlunder -side left -padx 5 -pady 5
-  
+
   addHorizontalRule $w
   checkbutton $w.cbAnnotateVar  -text $::tr(AnnotateVariations) -variable ::isAnnotateVar -anchor w
   checkbutton $w.cbShortAnnotation  -text $::tr(ShortAnnotations) -variable ::isShortAnnotation -anchor w
@@ -744,81 +772,96 @@ proc configAnnotation {parent} {
   pack $w.cbAnnotateVar $w.cbShortAnnotation $w.cbAddScore $w.cbAddAnnotatorTag -anchor w
   
   # choose a book for analysis
-  addHorizontalRule $w
-  checkbutton $w.cbBook  -text $::tr(UseBook) -variable ::useAnalysisBook
+
+  frame $w.usebook
+  pack  $w.usebook -side top -fill x
+
+  checkbutton $w.usebook.cbBook  -text $::tr(UseBook) -variable ::useAnalysisBook \
+    -command "checkState ::useAnalysisBook $w.usebook.comboBooks"
+
   # load book names
   set bookPath $::scidBooksDir
   set bookList [ lsort -dictionary [ glob -nocomplain -directory $bookPath *.bin ] ]
-  
-    # No book found
-    if { [llength $bookList] == 0 } {
-        set ::useAnalysisBook 0
-        $f.cbBook configure -state disabled
-    }
-    
-    set tmp {}
-    set idx 0
-    set i 0
-    foreach file  $bookList {
-        lappend tmp [ file tail $file ]
-        if {$::book::lastBook == [ file tail $file ] } {
-            set idx $i
-        }
-        incr i
-    }
-    ttk::combobox $w.comboBooks -width 12 -values $tmp
-    catch { $w.comboBooks current $idx }
-    pack $w.cbBook $w.comboBooks -side top
-  
-  addHorizontalRule $w
-  
+
+  if { [llength $bookList] == 0 } {
+      set ::useAnalysisBook 0
+      $w.usebook.cbBook configure -state disabled
+  }
+
+  set tmp {}
+  set idx 0
+  set i 0
+  foreach file  $bookList {
+      lappend tmp [ file tail $file ]
+      if {$::book::lastBook == [ file tail $file ] } {
+	  set idx $i
+      }
+      incr i
+  }
+
+  ttk::combobox $w.usebook.comboBooks -width 12 -values $tmp
+  catch { $w.usebook.comboBooks current $idx }
+  checkState ::useAnalysisBook $w.usebook.comboBooks
+  pack $w.usebook.cbBook -side left -padx 4
+  pack $w.usebook.comboBooks -side left -padx 4
+
   # batch annotation of consecutive games, and optional opening errors finder
   frame $w.batch
   pack $w.batch -side top -fill x
   set to [sc_base numGames]
   if {$to <1} { set to 1}
-  checkbutton $w.batch.cbBatch -text $::tr(AnnotateSeveralGames) -variable ::isBatch
-  spinbox $w.batch.spBatchEnd -width 8 -textvariable ::batchEnd \
+  checkbutton $w.batch.cbBatch -text $::tr(AnnotateSeveralGames) -variable ::isBatch \
+    -command "checkState ::isBatch $w.batch.spBatchEnd"
+
+  spinbox $w.batch.spBatchEnd -width 6 -textvariable ::batchEnd \
       -from 1 -to $to -increment 1 -validate all -vcmd { regexp {^[0-9]+$} %P }
-  checkbutton $w.batch.cbBatchOpening -text $::tr(FindOpeningErrors) -variable ::isBatchOpening
+
+  checkState ::isBatch $w.batch.spBatchEnd
+
+  checkbutton $w.batch.cbBatchOpening -text $::tr(FindOpeningErrors) -variable ::isBatchOpening \
+     -command "checkState ::isBatchOpening $w.batch.spBatchOpening"
+
   spinbox $w.batch.spBatchOpening -width 2 -textvariable ::isBatchOpeningMoves \
       -from 10 -to 20 -increment 1 -validate all -vcmd { regexp {^[0-9]+$} %P }
+
+  checkState ::isBatchOpening $w.batch.spBatchOpening
+
   label $w.batch.lBatchOpening -text $::tr(moves)
   # pack $w.batch.cbBatch $w.batch.spBatchEnd -side top -fill x
   # pack $w.batch.cbBatchOpening $w.batch.spBatchOpening $w.batch.lBatchOpening  -side left -fill x
   grid $w.batch.cbBatch -column 0 -row 0 -sticky w
-  grid $w.batch.spBatchEnd -column 1 -row 0 -sticky w
+  grid $w.batch.spBatchEnd -column 1 -row 0 -columnspan 2
   grid $w.batch.cbBatchOpening -column 0 -row 1 -sticky w
-  grid $w.batch.spBatchOpening -column 1 -row 1 -sticky e
+  grid $w.batch.spBatchOpening -column 1 -row 1 -sticky e -padx 2
   grid $w.batch.lBatchOpening -column 2 -row 1 -sticky w
   set ::batchEnd $to
-  
+
   checkbutton $w.batch.cbMarkTactics -text $::tr(MarkTacticalExercises) -variable ::markTacticalExercises
   grid $w.batch.cbMarkTactics -column 0 -row 2 -sticky w
   if {! $::analysis(uci1)} {
     set ::markTacticalExercises 0
     $w.batch.cbMarkTactics configure -state disabled
   }
-  
+
   addHorizontalRule $w
   frame $w.buttons
   pack $w.buttons -side top -fill x
-  button $w.buttons.cancel -text $::tr(Cancel) -command {
+  dialogbutton $w.buttons.cancel -text $::tr(Cancel) -command {
     bind .configAnnotation <Destroy> {}
     destroy .configAnnotation
     set annotateMode 0
     set annotateModeButtonValue 0
   }
-  button $w.buttons.ok -text "OK" -command {
-    set ::useAnalysisBookName [.configAnnotation.comboBooks get]
+  dialogbutton $w.buttons.ok -text "OK" -command {
+    set ::useAnalysisBookName [.configAnnotation.usebook.comboBooks get]
     set ::wentOutOfBook 0
     set ::book::lastBook $::useAnalysisBookName
     
     # tactical positions is selected, must be in multipv mode
     if {$::markTacticalExercises} {
       if { $::analysis(multiPVCount1) < 2} {
-        set ::analysis(multiPVCount1) 4
-        changePVSize 1
+	set ::analysis(multiPVCount1) 4
+	changePVSize 1
       }
     }
     
@@ -835,7 +878,7 @@ proc configAnnotation {parent} {
     if {$autoplayMode == 0} { toggleAutoplay }
   }
   pack $w.buttons.cancel $w.buttons.ok -side right -padx 5 -pady 5
-  focus $w.spDelay
+  # focus $w.delay.spDelay
 
   bind $w <Destroy> "$w.buttons.cancel invoke"
   placeWinOverParent $w $parent
