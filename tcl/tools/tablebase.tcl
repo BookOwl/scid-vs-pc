@@ -149,14 +149,14 @@ proc ::tb::Open {} {
   }
   autoscrollframe $f.list text $f.list.text \
       -width 35 -height 7 -font font_Fixed -wrap none \
-      -foreground black -background white -cursor top_left_arrow
+      -foreground black  -cursor top_left_arrow
   pack $f.list -side top
   pack [frame $f.separator -height 2]
   # addHorizontalRule $f
   
   autoscrollframe $f.data text $f.data.text \
       -width 35 -height 0 -font font_Fixed -wrap none \
-      -foreground black -background white -cursor top_left_arrow
+      -foreground black  -cursor top_left_arrow
   pack $f.data -side top -fill y -expand yes
   
   $f.list.text tag configure avail -foreground blue
@@ -167,7 +167,7 @@ proc ::tb::Open {} {
   
   set f $w.pos
   autoscrollframe $f text $f.text -width 30 -height 20 -font font_Small \
-      -wrap word -foreground black -background white -setgrid 1
+      -wrap word -foreground black  -setgrid 1
   $f.text tag configure indent -lmargin2 [font measure font_Fixed  "        "]
   
   ::board::new $f.board 25

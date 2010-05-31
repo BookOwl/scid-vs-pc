@@ -475,7 +475,7 @@ proc search::header {} {
   pack $w.b.cancel $w.b.search -side right -padx 5
   
   
-  canvas $w.progress -height 20 -width 300 -bg white -relief solid -border 1
+  canvas $w.progress -height 20 -width 300  -relief solid -border 1
   $w.progress create rectangle 0 0 0 0 -fill blue -outline blue -tags bar
   $w.progress create text 295 10 -anchor e -font font_Regular -tags time \
       -fill black -text "0:00 / 0:00"
@@ -614,7 +614,7 @@ proc chooseEcoRange {} {
   wm minsize $w 30 5
   
   listbox $w.list -yscrollcommand "$w.ybar set" -height 20 -width 60 \
-      -background white -setgrid 1
+       -setgrid 1
   foreach i $ecoCommonRanges { $w.list insert end $i }
   scrollbar $w.ybar -command "$w.list yview" -takefocus 0
   pack [frame $w.b] -side bottom -fill x

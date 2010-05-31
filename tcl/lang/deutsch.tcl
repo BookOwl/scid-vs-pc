@@ -255,6 +255,7 @@ menuText D CCMailMove "Zug per eMail senden..." 0 {Verschickt den letzten Zug pe
 # Options menu:
 menuText D Options "Optionen" 0
 menuText D OptionsBoard "Schachbrett" 6 {Schachbrettoptionen}
+menuText D OptionsColour "Background Colour" 0 {Default text widget color}
 menuText D OptionsNames "Meine Spielernamen..." 0 {Editiere meine Spielernamen}
 menuText D OptionsExport "Export" 1 {Textausgabeoptionen ändern}
 menuText D OptionsFonts "Schriftarten" 3 {Schriftart wechseln}

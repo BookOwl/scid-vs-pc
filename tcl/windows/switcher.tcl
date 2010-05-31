@@ -295,7 +295,7 @@ proc changeBaseType {baseNum} {
   wm title $w "Scid: Choose database icon"
 
   text $w.t -yscrollcommand "$w.yscroll set" -font font_Regular \
-    -height 25 -width 40 -background white -wrap none \
+    -height 25 -width 40  -wrap none \
     -cursor top_left_arrow
   $w.t tag configure selected -background {#ffff80}
 
@@ -406,7 +406,7 @@ proc ::windows::switcher::Open {} {
   set numBases [sc_base count total]
 
   for {set i 1} {$i <= $numBases} {incr i} {
-    set f [frame $w.c.f$i -background white -borderwidth 2 -relief ridge]
+    set f [frame $w.c.f$i  -borderwidth 2 -relief ridge]
     $w.c create window 0 0 -window $w.c.f$i -anchor nw -tag tag$i
 
     set f $w.c.f$i

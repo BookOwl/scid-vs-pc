@@ -69,7 +69,7 @@ proc ::tourney::Open {} {
 
   foreach i {t o1 o2 o3 b} {frame $w.$i}
   text $w.t.text -width 75 -height 22 -font font_Small -wrap none \
-    -fg black -bg white -yscrollcommand "$w.t.ybar set" -setgrid 1 \
+    -fg black  -yscrollcommand "$w.t.ybar set" -setgrid 1 \
     -cursor top_left_arrow -xscrollcommand "$w.t.xbar set"
   scrollbar $w.t.ybar -command "$w.t.text yview" -width 12 -takefocus 0
   scrollbar $w.t.xbar -orient horiz -command "$w.t.text xview" -width 12 \

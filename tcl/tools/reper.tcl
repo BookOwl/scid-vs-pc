@@ -16,7 +16,7 @@ set ::rep::Win 0
 #   arguments to the canvas widget that is created.
 #
 proc ::rep::create {w args} {
-  eval canvas $w -bg white -width 1 $args
+  eval canvas $w  -width 1 $args
   bind $w <Destroy> "catch {::rep::clear $w}"
   ::rep::_defaults $w /
   ::rep::_drawWhenIdle $w
@@ -740,9 +740,9 @@ proc ::rep::makeWindow {} {
   scrollbar $w.f.w.sb -orient vertical -command "$w.f.w.rep yview"
   pack $w.f.w.sb -side right -fill y
   pack $w.f.w.rep -side left -fill both -expand 1 -padx 5 -pady 5
-  text $w.f.text.moves -height 3 -fg darkBlue -bg white -font font_Small -state disabled -cursor top_left_arrow -wrap word
-  entry $w.f.text.entry -width 1 -fg black -bg white -font font_Small
-  text $w.f.text.note -width 40 -height 10 -fg black -bg white -font font_Small
+  text $w.f.text.moves -height 3 -fg darkBlue  -font font_Small -state disabled -cursor top_left_arrow -wrap word
+  entry $w.f.text.entry -width 1 -fg black  -font font_Small
+  text $w.f.text.note -width 40 -height 10 -fg black  -font font_Small
   pack $w.f.text.moves -side top -fill x
   pack $w.f.text.entry -side top -fill x
   pack $w.f.text.note -side top -expand 1 -fill both
@@ -1157,7 +1157,7 @@ proc ::rep::search {repwin {type all}} {
   ::search::addFilterOpFrame $w
   addHorizontalRule $w
   
-  canvas $w.progress -height 20 -width 300 -bg white -relief solid -border 1
+  canvas $w.progress -height 20 -width 300  -relief solid -border 1
   $w.progress create rectangle 0 0 0 0 -fill blue -outline blue -tags bar
   $w.progress create text 295 10 -anchor e -font font_Regular -tags time \
       -fill black -text "0:00 / 0:00"
@@ -1270,7 +1270,7 @@ append data {
 }
 
 image create bitmap ::rep::_shown -data $data -maskdata $maskdata \
-    -foreground black -background white
+    -foreground black 
 
 set data "#define closed_width 9\n#define closed_height 9"
 append data {
@@ -1281,7 +1281,7 @@ append data {
 }
 
 image create bitmap ::rep::_hidden -data $data -maskdata $maskdata \
-    -foreground black -background white
+    -foreground black 
 
 ###
 ### End of file: reper.tcl

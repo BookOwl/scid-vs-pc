@@ -129,7 +129,7 @@ proc updateHelpWindow {name {heading {}}} {
     pack $w.scroll -side right -fill y -padx 2 -pady 2
     pack $w.text -fill both -expand 1 -padx 5
     
-    $w.text configure -font font_Regular -fore black -back white
+    $w.text configure -font font_Regular
     ::htext::init $w.text
     bind $w <Configure> "recordWinSize $w"
   } else {

@@ -52,7 +52,7 @@ proc ::windows::eco::Refresh {{code "x"}} {
     canvas $graph.c -width 500 -height 250
     pack $graph.c -side top -fill both -expand yes
     text $text.text -height 12 -width 75 -wrap word -font font_Regular \
-      -background white -selectbackground lightBlue \
+       -selectbackground lightBlue \
       -yscroll "$text.ybar set" -xscroll "$text.xbar set"
     $text.text tag configure bold -font font_Bold
     $text.text tag configure indent -lmargin2 20

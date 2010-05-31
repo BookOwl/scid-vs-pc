@@ -779,6 +779,9 @@ set menuindex 0
 $m add command -label OptionsBoard -command chooseBoardColors
 set helpMessage($m,[incr menuindex]) OptionsBoard
 
+$m add command -label OptionsColour -command SetBackgroundColour
+set helpMessage($m,[incr menuindex]) OptionsColour
+
 foreach menu $optMenus label $optLabels {
   $m add cascade -label Options$label -menu $m.$menu
   set helpMessage($m,[incr menuindex]) Options$label
@@ -942,7 +945,7 @@ $m add command -label OptionsSave -command {
     puts $optionF "# format or it will not set your Scid options properly."
     puts $optionF ""
     foreach i {menuVisible boardSize boardStyle language ::pgn::showColor \
-          ::pgn::indentVars ::pgn::indentComments \
+          ::pgn::indentVars ::pgn::indentComments ::defaultBackground \
           ::pgn::shortHeader ::pgn::boldMainLine ::pgn::stripMarks \
           ::pgn::symbolicNags ::pgn::moveNumberSpaces ::pgn::columnFormat myPlayerNames \
           tree(order) tree(autoSave) optionsAutoSave \
@@ -1501,7 +1504,7 @@ proc setLanguageMenus {{lang ""}} {
   foreach tag {ToolsExpFilterPGN ToolsExpFilterHTML ToolsExpFilterHTMLJS ToolsExpFilterLaTeX} {
     configMenuText .menu.tools.exportfilter [tr $tag $oldLang] $tag $lang
   }
-  foreach tag {Board Export Fonts GInfo Language Moves Numbers
+  foreach tag {Board Colour Export Fonts GInfo Language Moves Numbers
     Startup Sounds Toolbar Names Windows ECO Spell Table BooksDir TacticsBasesDir Recent Save AutoSave} {
     configMenuText .menu.options [tr Options$tag $oldLang] Options$tag $lang
   }

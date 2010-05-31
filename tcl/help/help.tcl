@@ -5848,7 +5848,7 @@ set helpText(Changelog) {<h1>Scid Vs PC</h1>
 <li> (Add a "Font" button to the help and crosstable widgets) </li>
 <li> Fix focus issues with the Set Game Info widget </li>
 <li> Reorganise Scid start-up (includes reading font info _before_ drawing splash widget, removing unused old logo and start-up checks) </li>
-<li> Remove quite a few "-background white" statements from all over (to allow for custom coloured backgrounds in future) </li>
+<li> Remove quite a few "" statements from all over (to allow for custom coloured backgrounds in future) </li>
 <li> Fix up padding issues with the analysis widget's small text widget </li>
 <li> Player Info got a fair bit of tweaking - nicer info display (spellchk.cpp, tkscid.cpp) with full country names, and tcl widget tweaked too </li>
 <li> Upgrade to toga 131 </li>

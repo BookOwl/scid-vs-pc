@@ -152,13 +152,13 @@ proc newEpdWin {cmd {fname ""}} {
   bind $w <F1> { helpWindow EPD }
   
   frame $w.grid
-  text $w.text -background white -font font_Regular -width 60 -height 7 \
+  text $w.text  -font font_Regular -width 60 -height 7 \
       -wrap none -setgrid 1 -yscrollcommand "$w.ybar set" \
       -xscrollcommand "$w.xbar set"
   scrollbar $w.ybar -takefocus 0 -command "$w.text yview"
   scrollbar $w.xbar -orient horizontal -takefocus 0 -command "$w.text xview"
   label $w.status -width 1 -anchor w -font font_Small -relief sunken
-  listbox $w.lb -background white -font font_Regular -width 60 -height 7 -setgrid 1 -yscrollcommand "$w.ybar2 set" \
+  listbox $w.lb  -font font_Regular -width 60 -height 7 -setgrid 1 -yscrollcommand "$w.ybar2 set" \
       -xscrollcommand "$w.xbar2 set" -selectmode single
   scrollbar $w.ybar2 -takefocus 0 -command "$w.lb yview"
   scrollbar $w.xbar2 -orient horizontal -takefocus 0 -command "$w.lb xview"
@@ -325,7 +325,7 @@ proc epd_Analyse { textwidget id } {
   wm title $y "Scid EPD"
   label $y.label -text $::tr(AnnotateTime:)
   pack $y.label -side top -pady 5 -padx 5
-  spinbox $y.spDelay -background white -width 8 -textvariable ::delayEpd -from 1 -to 300 -increment 1 -validate all -vcmd { regexp {^[0-9]+$} %P }
+  spinbox $y.spDelay  -width 8 -textvariable ::delayEpd -from 1 -to 300 -increment 1 -validate all -vcmd { regexp {^[0-9]+$} %P }
   pack $y.spDelay -side top -pady 5
   button $y.ok -text "OK" -command "destroy $y ; epd_LaunchAnalysis $id $textwidget"
   pack $y.ok -side right -padx 5 -pady 5
@@ -397,7 +397,7 @@ proc epd_chooseStripField {id} {
   wm resizable $w false false
   label $w.label -text "Enter the name of the EPD field you want\n\
       removed from all positions in this file:"
-  entry $w.e -width 10 -background white -textvariable epd_stripField
+  entry $w.e -width 10  -textvariable epd_stripField
   pack $w.label $w.e -side top -pady 5 -padx 5
   addHorizontalRule $w
   set b [frame $w.buttons]

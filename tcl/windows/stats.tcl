@@ -65,10 +65,10 @@ proc ::windows::stats::Open {} {
 #Klimmek: use autoscrollframe to display large infos     
 #  text $w.stats -borderwidth 0 \
     -width $::winWidth($w) -height $::winHeight($w) -font font_Fixed \
-    -foreground black -background white -cursor top_left_arrow -wrap none \
+    -foreground black  -cursor top_left_arrow -wrap none \
       -setgrid 1 -yscrollcommand {.statsWin.sb set } 
   autoscrollframe $w.statsasb text $w.stats -width 80 -height 40\
-      -foreground black -background white -font font_Fixed\
+      -foreground black  -font font_Fixed\
        -wrap none 
 
   pack $w.statsasb -side top -fill both -expand yes

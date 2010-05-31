@@ -261,6 +261,7 @@ menuText B CCMailMove "Mail Move..." 0 {Send the move via eMail to the opponent}
 # Options menu:
 menuText B Options "Opcoes" 0
 menuText B OptionsBoard "Chessboard" 0 {Chess board appearance options} ;# ***
+menuText B OptionsColour "Background Colour" 0 {Default text widget color}
 menuText B OptionsNames "My Player Names..." 0 {Edit my player names} ;# ***
 menuText B OptionsExport "Exportacao" 0 {Muda as opcoes de exportacao de texto}
 menuText B OptionsFonts "Fontes" 0 {Muda os fontes}

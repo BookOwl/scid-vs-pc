@@ -246,6 +246,7 @@ menuText S CCMailMove "Enviar jugada via email..." 0 {Envía el movimiento via eM
 # Options menu:
 menuText S Options "Opciones" 0
 menuText S OptionsBoard "Tablero" 0 {Opciones sobre el aspecto del tablero}
+menuText S OptionsColour "Background Colour" 0 {Default text widget color}
 menuText S OptionsNames "Mis nombres de jugador..." 0 {Edita mis nombres de jugador}
 menuText S OptionsExport "Exportación" 0 {Cambia las opciones de exportación de texto}
 menuText S OptionsFonts "Fuentes" 0 {Cambia las fuentes}

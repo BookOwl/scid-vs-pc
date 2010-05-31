@@ -197,7 +197,7 @@ proc ::game::LoadNumber {} {
   label $w.label -text $::tr(LoadGameNumber)
   pack $w.label -side top -pady 5 -padx 5
   
-  entry $w.entry -background white -width 10 -textvariable ::game::entryLoadNumber
+  entry $w.entry  -width 10 -textvariable ::game::entryLoadNumber
   bind $w.entry <Escape> { .glnumDialog.buttons.cancel invoke }
   bind $w.entry <Return> { .glnumDialog.buttons.load invoke }
   pack $w.entry -side top -pady 5

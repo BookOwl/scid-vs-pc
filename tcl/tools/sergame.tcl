@@ -156,11 +156,11 @@ namespace eval sergame {
     
     label $w.ftime.timebonus.whitelabel -text $::tr(White)
     grid $w.ftime.timebonus.whitelabel -row $row -column 1
-    spinbox $w.ftime.timebonus.whitespminutes -background white -width 4 -from 1 -to 120 -increment 1 -validate all -vcmd { regexp {^[0-9]+$} %P }
+    spinbox $w.ftime.timebonus.whitespminutes  -width 4 -from 1 -to 120 -increment 1 -validate all -vcmd { regexp {^[0-9]+$} %P }
     grid $w.ftime.timebonus.whitespminutes -row $row -column 2
     label $w.ftime.timebonus.whitelminutes -text $::tr(TimeMin)
     grid $w.ftime.timebonus.whitelminutes -row $row -column 3
-    spinbox $w.ftime.timebonus.whitespseconds -background white -width 4 -from 0 -to 60 -increment 1 -validate all -vcmd { regexp {^[0-9]+$} %P }
+    spinbox $w.ftime.timebonus.whitespseconds  -width 4 -from 0 -to 60 -increment 1 -validate all -vcmd { regexp {^[0-9]+$} %P }
     grid $w.ftime.timebonus.whitespseconds -row $row -column 4
     label $w.ftime.timebonus.whitelseconds -text $::tr(TimeSec)
     grid $w.ftime.timebonus.whitelseconds -row $row -column 5
@@ -168,11 +168,11 @@ namespace eval sergame {
     incr row
     label $w.ftime.timebonus.blacklabel -text $::tr(Black)
     grid $w.ftime.timebonus.blacklabel -row $row -column 1
-    spinbox $w.ftime.timebonus.blackspminutes -background white -width 4 -from 1 -to 120 -increment 1 -validate all -vcmd { regexp {^[0-9]+$} %P }
+    spinbox $w.ftime.timebonus.blackspminutes  -width 4 -from 1 -to 120 -increment 1 -validate all -vcmd { regexp {^[0-9]+$} %P }
     grid $w.ftime.timebonus.blackspminutes -row $row -column 2
     label $w.ftime.timebonus.blacklminutes -text $::tr(TimeMin)
     grid $w.ftime.timebonus.blacklminutes -row $row -column 3
-    spinbox $w.ftime.timebonus.blackspseconds -background white -width 4 -from 0 -to 60 -increment 1 -validate all -vcmd { regexp {^[0-9]+$} %P }
+    spinbox $w.ftime.timebonus.blackspseconds  -width 4 -from 0 -to 60 -increment 1 -validate all -vcmd { regexp {^[0-9]+$} %P }
     grid $w.ftime.timebonus.blackspseconds -row $row -column 4
     label $w.ftime.timebonus.blacklseconds -text $::tr(TimeSec)
     grid $w.ftime.timebonus.blacklseconds -row $row -column 5
@@ -185,7 +185,7 @@ namespace eval sergame {
     # Fixed depth
     frame $w.ftime.depth
     radiobutton $w.ftime.depth.button -text $::tr(FixedDepth) -value "depth" -variable ::sergame::timeMode
-    spinbox $w.ftime.depth.value -background white -width 4 -from 1 -to 20 -increment 1 -validate all -vcmd { regexp {^[0-9]+$} %P }
+    spinbox $w.ftime.depth.value  -width 4 -from 1 -to 20 -increment 1 -validate all -vcmd { regexp {^[0-9]+$} %P }
     $w.ftime.depth.value set 3
     
     pack $w.ftime.depth -side top -fill x
@@ -194,7 +194,7 @@ namespace eval sergame {
     
     frame $w.ftime.nodes
     radiobutton $w.ftime.nodes.button -text "$::tr(Nodes) (x1000)" -value "nodes" -variable ::sergame::timeMode
-    spinbox $w.ftime.nodes.value -background white -width 4 -from 5 -to 10000 -increment 5 -validate all -vcmd { regexp {^[0-9]+$} %P }
+    spinbox $w.ftime.nodes.value  -width 4 -from 5 -to 10000 -increment 5 -validate all -vcmd { regexp {^[0-9]+$} %P }
     $w.ftime.nodes.value set 10
     
     pack $w.ftime.nodes -side top -fill x
@@ -203,7 +203,7 @@ namespace eval sergame {
     
     frame $w.ftime.movetime
     radiobutton $w.ftime.movetime.button -text $::tr(SecondsPerMove) -value "movetime" -variable ::sergame::timeMode
-    spinbox $w.ftime.movetime.value -background white -width 4 -from 1 -to 120 -increment 1 -validate all -vcmd { regexp {^[0-9]+$} %P }
+    spinbox $w.ftime.movetime.value  -width 4 -from 1 -to 120 -increment 1 -validate all -vcmd { regexp {^[0-9]+$} %P }
     $w.ftime.movetime.value set 5
     
     pack $w.ftime.movetime -side top -fill x

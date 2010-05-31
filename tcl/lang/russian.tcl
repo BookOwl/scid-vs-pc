@@ -271,6 +271,7 @@ menuText R CCMailMove "Mail Move..." 0 {Send the move via eMail to the opponent}
 # Options menu:
 menuText R Options "Установки" 0
 menuText R OptionsBoard "Chessboard" 0 {Chess board appearance options}
+menuText R OptionsColour "Background Colour" 0 {Default text widget color}
 menuText R OptionsNames "My Player Names..." 0 {Edit my player names}
 menuText R OptionsExport "Экспорт" 0 {Изменить установки экспорта}
 menuText R OptionsFonts "Шрифты" 0 {Изменить шрифты}

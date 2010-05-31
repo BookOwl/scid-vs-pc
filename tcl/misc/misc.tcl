@@ -253,7 +253,7 @@ set vertRuleCounter 0
 proc addHorizontalRule {w {ypadding 5} {relief sunken} {height 2} } {
   global horizRuleCounter
   set f [ frame $w.line$horizRuleCounter -height $height -borderwidth 2 \
-      -relief $relief -background white ]
+      -relief $relief  ]
   pack $f -fill x -pady $ypadding
   incr horizRuleCounter
   return $f
@@ -262,7 +262,7 @@ proc addHorizontalRule {w {ypadding 5} {relief sunken} {height 2} } {
 proc addVerticalRule {w {xpadding 5} {relief sunken}} {
   global vertRuleCounter
   set f [ frame $w.line$vertRuleCounter -width 2 -borderwidth 2 \
-      -relief $relief -background white ]
+      -relief $relief  ]
   pack $f -fill y -padx $xpadding -side left
   incr vertRuleCounter
   return $f
@@ -293,7 +293,7 @@ proc progressWindow {args} {
   wm title $w $title
   label $w.t -text $text
   pack $w.t -side top
-  canvas $w.c -width 400 -height 20 -bg white -relief solid -border 1
+  canvas $w.c -width 400 -height 20  -relief solid -border 1
   $w.c create rectangle 0 0 0 0 -fill blue -outline blue -tags bar
   $w.c create text 395 10 -anchor e -font font_Regular -tags time \
       -fill black -text "0:00 / 0:00"

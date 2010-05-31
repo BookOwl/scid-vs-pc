@@ -278,6 +278,7 @@ menuText N CCMailMove "Mail Move..." 0 {Send the move via eMail to the opponent}
 # Options menu:
 menuText N Options "Opties" 0
 menuText N OptionsBoard "Bord" 0 {Opties  Uitzicht Schaakbord} ;
+menuText N OptionsColour "Background Colour" 0 {Default text widget color}
 menuText N OptionsNames "Mijn Spelersnamen ..." 0 {Bewerk mijn spelersnamen} ;
 menuText N OptionsExport "Export" 1 {Wijzig tekst export opties}
 menuText N OptionsFonts "Lettertypes" 0 {Wijzig lettertype}

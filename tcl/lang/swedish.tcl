@@ -271,6 +271,7 @@ menuText W CCMailMove "Skicka Drag..." 0 {Skicka draget via eMail till motstånda
 # Options menu:
 menuText W Options "Alternativ" 2
 menuText W OptionsBoard "Brädet" 0 {Ändra brädets utseende}
+menuText W OptionsColour "Background Colour" 0 {Default text widget color}
 menuText W OptionsNames "Spelarnamn..." 0 {Redigera spelares namn}
 menuText W OptionsExport "Export" 0 {Ändra exportalternativ}
 menuText W OptionsFonts "Typsnitt" 0 {Ändra typsnitt}

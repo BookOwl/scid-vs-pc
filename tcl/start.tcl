@@ -104,6 +104,7 @@ foreach ns {
 ### ::pause is used as a semaphore by the trace command in tacgame (and fics)
 
 set ::pause 0
+set ::defaultBackground white
 set ::tacgame::threshold 0.9
 set ::tacgame::blunderwarning false
 set ::tacgame::blunderwarningvalue 0.0
@@ -923,6 +924,16 @@ foreach i {Regular Menu Small Tiny Fixed} {
   }
 }
 
+# font_Regular is the default font for widgets:
+option add *Font font_Regular
+option add *Text*background $defaultBackground widgetDefault
+# Use font_Menu for menu entries:
+option add *Menu*Font font_Menu
+# option add *Menubutton*Font font_Menu
+if {$unixOS} {
+  option add Scrollbar*borderWidth 1
+}
+
 ### Fonts now fully configure :> S.A
 
 # Start up splash screen:
@@ -936,7 +947,7 @@ proc ::splash::make {} {
   frame $w.f
   frame $w.b
   text $w.t -height 15 -width 55 -cursor top_left_arrow \
-      -background white -font font_Regular -wrap word \
+       -font font_Regular -wrap word \
       -yscrollcommand [list $w.ybar set] -setgrid 1
   scrollbar $w.ybar -command [list $w.t yview]
   checkbutton $w.auto -text "Keep open after startup" \
@@ -1093,17 +1104,6 @@ set boardSize $newSize
 # Check for old (single-directory) tablebase option:
 if {[info exists initialDir(tablebase)]} {
   set initialDir(tablebase1) $initialDir(tablebase)
-}
-
-# font_Regular is the default font for widgets:
-option add *Font font_Regular
-
-# Use font_Menu for menu entries:
-option add *Menu*Font font_Menu
-# option add *Menubutton*Font font_Menu
-
-if {$unixOS} {
-  option add Scrollbar*borderWidth 1
 }
 
 # Set the radiobutton and checkbutton background color if desired.

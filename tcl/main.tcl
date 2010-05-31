@@ -402,12 +402,14 @@ if {$boardSTM} {
 # .gameInfo is the game information widget:
 
 autoscrollframe .gameInfoFrame text .gameInfo
-.gameInfo configure -width 20 -height [expr 4 + $gameInfo(showFEN)] -fg black -bg gray90 -wrap none \
+.gameInfo configure -width 20 -height [expr 4 + $gameInfo(showFEN)] -wrap none \
     -state disabled -cursor top_left_arrow -setgrid 1
 ::htext::init .gameInfo
 
-# Right-mouse button menu for gameInfo frame:
-menu .gameInfo.menu -tearoff 0
+### Right-mouse button menu for gameInfo frame:
+#   These menus seem to take the defaultBackground colour, for some reason
+
+menu .gameInfo.menu -tearoff 0 -background gray90
 
 .gameInfo.menu add checkbutton -label {Show Side to Move} \
     -variable boardSTM -offvalue 0 -onvalue 1 -command {::board::togglestm .board}
@@ -835,8 +837,8 @@ proc updateBoard {args} {
 
 image create photo photoW
 image create photo photoB
-label .photoW -background white -image photoW -anchor ne
-label .photoB -background white -image photoB -anchor ne
+label .photoW  -image photoW -anchor ne
+label .photoB  -image photoB -anchor ne
 
 proc readPhotoFile {fname} {
   set oldcount [array size ::photo]
@@ -1369,7 +1371,7 @@ proc setAutoplayDelay {} {
   wm resizable $w 0 0
   label $w.label -text $::tr(AnnotateTime:)
   pack $w.label -side top -pady 5 -padx 5
-  spinbox $w.spDelay -background white -width 4 -textvariable tempdelay -from 1 -to 300 -increment 1
+  spinbox $w.spDelay  -width 4 -textvariable tempdelay -from 1 -to 300 -increment 1
   pack $w.spDelay -side top -pady 5
   
   set b [frame $w.buttons]

@@ -268,10 +268,10 @@ proc ::bookmarks::Edit {} {
   wm title $w "Scid: [tr FileBookmarksEdit]"
   wm transient $w .
   bind $w <F1> {helpWindow Bookmarks}
-  entry $w.e -width 40 -foreground black -background white \
+  entry $w.e -width 40 -foreground black  \
     -textvariable bookmarks(edit) -font font_Small -exportselection 0
   bind $w.e <FocusIn>  {.bmedit.e configure -background lightYellow}
-  bind $w.e <FocusOut> {.bmedit.e configure -background white}
+  bind $w.e <FocusOut> {.bmedit.e configure -background {}}
 
   trace variable bookmarks(edit) w ::bookmarks::EditRefresh
   pack $w.e -side top -fill x
@@ -279,7 +279,7 @@ proc ::bookmarks::Edit {} {
   pack [frame $w.b1] -side bottom -fill x
   pack [frame $w.f] -side top -fill both -expand 1
   listbox $w.f.list -width 50 -height 10 -yscrollcommand "$w.f.ybar set" \
-    -fg black -bg white -exportselection 0 -font font_Small -setgrid 1
+    -fg black  -exportselection 0 -font font_Small -setgrid 1 ;# -bg text_bg_color
   scrollbar $w.f.ybar -takefocus 0 -command "$w.f.list yview"
   bind $w.f.list <<ListboxSelect>>  ::bookmarks::EditSelect
   pack $w.f.ybar -side right -fill y

@@ -262,6 +262,7 @@ menuText C CCMailMove "Mail Move..." 0 {Send the move via eMail to the opponent}
 # Options menu:
 menuText C Options "Volby" 0
 menuText C OptionsBoard "©achovnice" 1 {Volby zobrazení ¹achovnice}
+menuText C OptionsColour "Background Colour" 0 {Default text widget color}
 menuText C OptionsNames "Jména mých hráèù..." 0 {Editovat jména mých hráèù}
 menuText C OptionsExport "Volby exportu" 7 {Zmìnit volby pro textový export}
 menuText C OptionsFonts "Fonty" 2 {Zmìnit fonty}

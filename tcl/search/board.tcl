@@ -49,7 +49,7 @@ proc ::search::board {} {
   
   ### Progress bar:
   
-  canvas $w.progress -height 20 -width 300 -bg white -relief solid -border 1
+  canvas $w.progress -height 20 -width 300  -relief solid -border 1
   $w.progress create rectangle 0 0 0 0 -fill blue -outline blue -tags bar
   $w.progress create text 295 10 -anchor e -font font_Regular -tags time \
       -fill black -text "0:00 / 0:00"

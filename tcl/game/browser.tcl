@@ -24,14 +24,14 @@ proc ::gbrowser::new {base gnum {ply -1}} {
   pack $w.bd -side left -padx 4 -pady 4
 
   #pack [frame $w.t] -side right -fill both -expand yes
-  #text $w.t.text -foreground black -background white -wrap word \
+  #text $w.t.text -foreground black  -wrap word \
   #  -width 45 -height 12 -font font_Small -yscrollcommand "$w.t.ybar set" \
   #  -setgrid 1
   #scrollbar $w.t.ybar -command "$w.t.text yview" -takefocus 0
   #pack $w.t.ybar -side right -fill y
   #pack $w.t.text -side left -fill both -expand yes
   autoscrollframe $w.t text $w.t.text \
-    -foreground black -background white -wrap word \
+    -foreground black  -wrap word \
     -width 45 -height 12 -font font_Small -setgrid 1
   pack $w.t -side right -fill both -expand yes
 

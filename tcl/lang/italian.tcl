@@ -236,6 +236,7 @@ menuText I CCMailMove "Mossa per eMail..." 0 {Spedisce la mossa all'avversariio 
 # Options menu:
 menuText I Options "Opzioni" 0
 menuText I OptionsBoard "Scacchiera" 0 {Opzioni di visualizzazione della scacchiera}
+menuText I OptionsColour "Background Colour" 0 {Default text widget color}
 menuText I OptionsNames "I nomi dei miei giocatori ..." 0 {Edita i nomi dei miei giocatori}
 menuText I OptionsExport "Esportazione" 2 {Cambia le opzioni di importazione testo}
 menuText I OptionsFonts "Fonts" 0 {Cambia fonts}

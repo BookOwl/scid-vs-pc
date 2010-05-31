@@ -37,7 +37,7 @@ proc ::tools::email {} {
   label $f.title -text "Opponent list" -font font_Bold
   listbox $f.list -height 16 -width 40 -exportselection false \
     -selectmode browse -selectbackground lightBlue -font font_Fixed \
-    -yscrollcommand "$f.scroll set" -background white -setgrid 1
+    -yscrollcommand "$f.scroll set"  -setgrid 1
   scrollbar $f.scroll -command "$w.list yview" -takefocus 0
   pack $f -side left -expand true -fill both
   pack $f.title -side top
@@ -104,10 +104,10 @@ proc ::tools::email::config {} {
   label $w.use -text "Send email using:" -font font_Bold
   frame $w.smtp
   radiobutton $w.smtp.b -text "SMTP server:" -variable email(smtp) -value 1
-  entry $w.smtp.s -width 30 -textvar email(server) -bg white
+  entry $w.smtp.s -width 30 -textvar email(server) 
   frame $w.sm
   radiobutton $w.sm.b -text "sendmail process:" -variable email(smtp) -value 0
-  entry $w.sm.s -width 30 -textvar email(smproc) -bg white
+  entry $w.sm.s -width 30 -textvar email(smproc) 
   pack $w.use -side top
   pack $w.smtp $w.sm -side top -fill x
   pack $w.smtp.s $w.smtp.b -side right
@@ -116,10 +116,10 @@ proc ::tools::email::config {} {
   label $w.addr -text "Email address fields:" -font font_Bold
   frame $w.from
   label $w.from.lab -text "From:"
-  entry $w.from.e -textvar email(from) -width 30 -bg white
+  entry $w.from.e -textvar email(from) -width 30 
   frame $w.bcc
   label $w.bcc.lab -text "Bcc:"
-  entry $w.bcc.e -textvar email(bcc) -width 30 -bg white
+  entry $w.bcc.e -textvar email(bcc) -width 30 
   pack $w.addr $w.from $w.bcc -side top -fill x
   pack $w.from.e $w.from.lab -side right
   pack $w.bcc.e $w.bcc.lab -side right
@@ -218,7 +218,7 @@ proc ::tools::email::TimesButton {type} {
   label $w.title -text "Email Times for [lindex $details 0]"
   frame $w.t
   text $w.t.text -height 15 -width 30 -font font_Fixed -setgrid 1 \
-    -yscrollcommand "$w.t.ybar set" -bg white -fg black
+    -yscrollcommand "$w.t.ybar set"  -fg black
   scrollbar $w.t.ybar -command "$w.t.text yview"
   frame $w.b
   button $w.b.ok -text "OK" -command {
@@ -357,19 +357,19 @@ proc emailMessageEditor {idx name addr subj gamelist sig} {
   set f [frame $w.fields]
 
   label $f.fromlab -text "From: "
-  entry $f.from -background white
+  entry $f.from 
   $f.from insert end $email(from)
 
   label $f.tolab -text "To: "
-  entry $f.to -background white
+  entry $f.to 
   $f.to insert end $addr
 
   label $f.subjlab -text "Subject: "
-  entry $f.subj -background white
+  entry $f.subj 
   $f.subj insert end $subj
 
   label $f.bcclab -text "Bcc: "
-  entry $f.bcc -background white
+  entry $f.bcc 
   $f.bcc insert end $email(bcc)
 
   button $f.send -text "Send" -command "::tools::email::processMessage $w $idx"
@@ -394,7 +394,7 @@ proc emailMessageEditor {idx name addr subj gamelist sig} {
   scrollbar $f.ybar -command "$f.text yview"
   scrollbar $f.xbar -orient horizontal -command "$f.text xview"
   text $f.text -yscrollcommand "$f.ybar set" -xscrollcommand "$f.xbar set" \
-    -setgrid 1 -width 72 -height 20 -background white -wrap none
+    -setgrid 1 -width 72 -height 20  -wrap none
 
   grid $f.text -row 0 -column 0 -sticky news
   grid $f.ybar -row 0 -column 1 -sticky news
@@ -513,22 +513,22 @@ proc modifyEmailDetails {i} {
   }
   set f [frame $w.name]
   label $f.label -text "Name: "
-  entry $f.entry -width 30 -background white -textvariable emailData_name
+  entry $f.entry -width 30  -textvariable emailData_name
   set ::tools::email::helpBar(name) "Enter the opponent's name"
 
   set f [frame $w.addr]
   label $f.label -text "Email address: "
-  entry $f.entry -width 30 -background white -textvariable emailData_addr
+  entry $f.entry -width 30  -textvariable emailData_addr
   set ::tools::email::helpBar(addr) "Enter the opponent's email address"
 
   set f [frame $w.subj]
   label $f.label -text "Subject: "
-  entry $f.entry -width 30 -background white -textvariable emailData_subj
+  entry $f.entry -width 30  -textvariable emailData_subj
   set ::tools::email::helpBar(subj) "Enter the subject for each message"
 
   set f [frame $w.glist]
   label $f.label -text "Game Numbers: "
-  entry $f.entry -width 30 -background white -textvariable emailData_glist
+  entry $f.entry -width 30  -textvariable emailData_glist
   set ::tools::email::helpBar(glist) \
     "Enter opponent's game numbers, separated by spaces"
 
@@ -538,17 +538,17 @@ proc modifyEmailDetails {i} {
     set e $w.$f.entry
     bind $e <FocusIn> "$e configure -background lightYellow;
       set emailData_helpBar \$::tools::email::helpBar($f)"
-    bind $e <FocusOut> "$e configure -background white"
+    bind $e <FocusOut> "$e configure "
   }
 
   addHorizontalRule $w
 
   set f [frame $w.sig]
   label $f.label -text "Signature: " -anchor n
-  text $f.entry -width 30 -height 5 -background white
+  text $f.entry -width 30 -height 5 
   bind $f.entry <FocusIn> "$f.entry configure -background lightYellow
     set emailData_helpBar {Enter the closing text for each message}"
-  bind $f.entry <FocusOut> "$f.entry configure -background white"
+  bind $f.entry <FocusOut> "$f.entry configure "
 
   pack $f -side top -fill x
   pack $f.entry $f.label -side right -anchor n

@@ -245,7 +245,7 @@ proc ::maint::ChangeBaseDescription {} {
   toplevel $w
   wm title $w "Scid: $::tr(Description): [file tail [sc_base filename]]"
   set font font_Small
-  entry $w.entry -width 50 -relief sunken -background white
+  entry $w.entry -width 50 -relief sunken 
   $w.entry insert end [sc_base description]
   pack $w.entry -side top -pady 4
   frame $w.b
@@ -344,7 +344,7 @@ proc ::maint::SetAutoloadGame {} {
   pack [frame $w.f] -side top
   label $w.f.label -text $::tr(AutoloadGame:)
   entry $w.f.entry -textvar autoloadGame -justify right -width 10 \
-      -foreground black -background white
+      -foreground black 
   pack $w.f.label $w.f.entry -side left
   
   pack [frame $w.set] -side top -fill x
@@ -505,7 +505,7 @@ proc markTwins {{parent .}} {
   dialogbutton $w.b.cancel -text $::tr(Cancel) -font $small \
       -command "grab release $w; focus .; destroy $w"
   
-  canvas $w.progress -width 300 -height 20 -bg white -relief solid -border 1
+  canvas $w.progress -width 300 -height 20  -relief solid -border 1
   $w.progress create rectangle 0 0 0 0 -fill blue -outline blue -tags bar
   $w.progress create text 295 10 -anchor e -font font_Regular -tags time \
       -fill black -text "0:00 / 0:00"
@@ -677,7 +677,7 @@ proc makeClassifyWin {} {
     ::windows::gamelist::Refresh
   }
   button $w.b.cancel -textvar ::tr(Close) -command "focus .; destroy $w"
-  canvas $w.progress -width 300 -height 20 -bg white -relief solid -border 1
+  canvas $w.progress -width 300 -height 20  -relief solid -border 1
   $w.progress create rectangle 0 0 0 0 -fill blue -outline blue -tags bar
   $w.progress create text 295 10 -anchor e -font font_Regular -tags time \
       -fill black -text "0:00 / 0:00"
@@ -733,7 +733,7 @@ proc updateTwinChecker {} {
       label $f.tmt -font font_Small -text "" -anchor w -width 1 -relief sunken
       pack $f.tmt -side bottom -fill x
       autoscrollframe $f.t text $f.t.text \
-          -height 16 -width 40 -background white \
+          -height 16 -width 40  \
           -takefocus 0 -wrap word
       $f.t.text tag configure h -background lightSteelBlue
       pack $f.t -side top -fill both -expand yes
@@ -1084,7 +1084,7 @@ proc makeSortWin {} {
   
   label $w.torder -textvar ::tr(SortCriteria:) -font font_Bold
   pack $w.torder -side top
-  label $w.order -textvar sortCriteria(translated) -width 40 -bg white \
+  label $w.order -textvar sortCriteria(translated) -width 40  \
       -relief solid -anchor w
   pack $w.order -side top -fill x -pady 2 -padx 2
   addHorizontalRule $w

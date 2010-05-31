@@ -273,6 +273,7 @@ menuText P CCMailMove "Mail Move..." 0 {Send the move via eMail to the opponent}
 
 menuText P Options "Opcje" 0
 menuText P OptionsBoard "Szachownica" 0 {Konfiguracja wygl±du szachownicy}
+menuText P OptionsColour "Background Colour" 0 {Default text widget color}
 menuText P OptionsNames "Moje nazwiska" 0 {Modyfikuj listê moich graczy}
 menuText P OptionsExport "Eksport" 0 {Zmieñ opcje eksportu tekstu}
 menuText P OptionsFonts "Czcionka" 0 {Zmieñ font}

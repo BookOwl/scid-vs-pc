@@ -18,7 +18,7 @@ proc importPgnGame {} {
   pack $pane -side top -expand true -fill both
 
   set edit $w.pane.edit
-  text $edit.text -height 12 -width 80 -wrap word -background white \
+  text $edit.text -height 12 -width 80 -wrap word  \
       -yscroll "$edit.ybar set" -xscroll "$edit.xbar set"  -setgrid 1
   # Override tab-binding for this widget:
   bind $edit.text <Key-Tab> "[bind all <Key-Tab>]; break"
@@ -184,7 +184,7 @@ proc doPgnFileImport {fname text {multiple 0} } {
     toplevel $w
     wm title $w "Scid: Importing PGN file"
 
-    canvas $w.progress -width 500 -height 20 -bg white -relief solid 
+    canvas $w.progress -width 500 -height 20  -relief solid 
     $w.progress create rectangle 0 0 0 0 -fill rosybrown3 -outline rosybrown3 -tags bar
     $w.progress create text 495 10 -anchor e -font font_Regular -tags time \
         -fill black -text "0:00 / 0:00"

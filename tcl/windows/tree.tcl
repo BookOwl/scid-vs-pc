@@ -189,15 +189,15 @@ proc ::tree::make { { baseNumber -1 } } {
   
   autoscrollframe $w.f text $w.f.tl \
       -width $::winWidth(.treeWin) -height $::winHeight(.treeWin) -wrap none -selectbackground lightgrey -selectforeground black \
-      -font font_Fixed -foreground black -background white -setgrid 1 -exportselection 1
+      -font font_Fixed -foreground black  -setgrid 1 -exportselection 1
   #define default tags
   $w.f.tl tag configure greybg -background #fa1cfa1cfa1c
-  $w.f.tl tag configure whitebg -background white
+  $w.f.tl tag configure whitebg 
   $w.f.tl tag configure bluefg -foreground blue
   $w.f.tl tag configure greenfg -foreground SeaGreen
   $w.f.tl tag configure redfg -foreground red
   
-  canvas $w.progress -width 250 -height 15 -bg white -relief solid -border 1
+  canvas $w.progress -width 250 -height 15  -relief solid -border 1
   $w.progress create rectangle 0 0 0 0 -fill blue -outline blue -tags bar
   selection handle $w.f.tl "::tree::copyToSelection $baseNumber"
   bindMouseWheel $w $w.f.tl
@@ -886,7 +886,7 @@ proc ::tree::best { baseNumber } {
     ::utils::pane::SetRange $w.pane 0.3 0.8
     pack $pane -side top -expand true -fill both
     scrollbar $pane.blist.ybar -command "$pane.blist.list yview" -takefocus 0
-    listbox $pane.blist.list -background white -yscrollcommand "$pane.blist.ybar set" -font font_Small
+    listbox $pane.blist.list  -yscrollcommand "$pane.blist.ybar set" -font font_Small
     pack $pane.blist.ybar -side right -fill y
     pack $pane.blist.list -side left -fill both -expand yes
     bind $pane.blist.list <<ListboxSelect>> "::tree::bestPgn $baseNumber"

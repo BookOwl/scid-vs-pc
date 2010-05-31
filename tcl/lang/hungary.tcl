@@ -268,6 +268,7 @@ menuText H CCMailMove "Mail Move..." 0 {Send the move via eMail to the opponent}
 # Options menu:
 menuText H Options "Beállítások" 0
 menuText H OptionsBoard "Sakktábla" 0 {Sakktábla megjelenésének megváltoztatása}
+menuText H OptionsColour "Background Colour" 0 {Default text widget color}
 menuText H OptionsNames "Játékosnevek..." 0 {Játékosnevek átszerkesztése}
 menuText H OptionsExport "Exportálás" 1 {Exportálási beállítások változtatása}
 menuText H OptionsFonts "Karakterkészlet" 0 {Karakterkészlet változtatása}

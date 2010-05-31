@@ -478,7 +478,7 @@ namespace eval opening {
     label $w.f2.lStats1 -textvariable ::opening::lStats1 -width 4 -anchor center -background green
     label $w.f2.lStats2 -textvariable ::opening::lStats2 -width 4 -anchor center -background yellow
     label $w.f2.lStats3 -textvariable ::opening::lStats3 -width 4 -anchor center -background red
-    label $w.f2.lStats4 -textvariable ::opening::lStats4 -width 4 -anchor center -background white
+    label $w.f2.lStats4 -textvariable ::opening::lStats4 -width 4 -anchor center 
     
     label $w.f2.lStats1exp -text $::tr(NumberOfGoodMovesPlayed)
     label $w.f2.lStats2exp -text $::tr(NumberOfDubiousMovesPlayed)
@@ -696,7 +696,7 @@ namespace eval opening {
     setWinLocation $w
     
     frame $w.ft
-    text $w.ft.text -height 10 -width 40 -wrap word -background white
+    text $w.ft.text -height 10 -width 40 -wrap word 
     pack $w.ft.text
     pack $w.ft
     

@@ -159,7 +159,7 @@ proc mergeGame {{base 0} {gnum 0}} {
   pack $w.title -side top
   pack [frame $w.b] -side bottom -fill x
   frame $w.f
-  text $w.f.text -background white -wrap word -width 60 -height 20 \
+  text $w.f.text  -wrap word -width 60 -height 20 \
       -font font_Small -yscrollcommand "$w.f.ybar set"
   scrollbar $w.f.ybar -takefocus 0 -command "$w.f.text yview"
   event generate $w.f.text <ButtonRelease-1>
@@ -251,12 +251,12 @@ proc setExportText {exportType} {
   pack $pane -side top -expand true -fill both
   foreach f [list $pane.start $pane.end] type {start end} {
     label $f.title -font font_Bold -text "Text at $type of $exportType file:"
-    text $f.text -wrap none -background white \
+    text $f.text -wrap none  \
         -yscroll "$f.ybar set" -xscroll "$f.xbar set"
     scrollbar $f.ybar -orient vertical -command "$f.text yview"
     scrollbar $f.xbar -orient horizontal -command "$f.text xview"
     bind $f.text <FocusIn> {%W configure -background lightYellow}
-    bind $f.text <FocusOut> {%W configure -background white}
+    bind $f.text <FocusOut> {%W configure -background {}}
     grid $f.title -row 0 -column 0 -sticky w
     grid $f.text -row 1 -column 0 -sticky nesw
     grid $f.ybar -row 1 -column 1 -sticky nesw
@@ -635,7 +635,7 @@ proc copyFilter {frombaseNum tobaseNum} {
   updateStatusBar
   "
   dialogbutton $w.b.cancel -text $::tr(Cancel) -command "focus .; destroy $w"
-  canvas $w.bar -width 300 -height 20 -bg white -relief solid -border 1
+  canvas $w.bar -width 300 -height 20  -relief solid -border 1
   $w.bar create rectangle 0 0 0 0 -fill blue -outline blue -tags bar
   $w.bar create text 295 10 -anchor e -font font_Regular -tags time \
       -fill black -text "0:00 / 0:00"
@@ -846,22 +846,22 @@ proc nameEditor {} {
   label $w.g.space -text "    "
   grid $w.g.space $w.g.space -row 0 -column 0
   label $w.g.fromL -textvar ::tr(NameEditReplace:) -font font_Bold -anchor e
-  entry $w.g.fromE -width 40 -background white -relief sunken \
+  entry $w.g.fromE -width 40  -relief sunken \
       -textvariable editName
-  entry $w.g.fromD -width 15 -background white -relief sunken \
+  entry $w.g.fromD -width 15  -relief sunken \
       -textvariable editDate
   grid $w.g.fromL -row 0 -column 1 -sticky e
   grid $w.g.fromE -row 0 -column 2 -sticky we
   
   label $w.g.toL -textvar ::tr(NameEditWith:) -font font_Bold -anchor e
-  entry $w.g.toE -width 40 -background white -relief sunken \
+  entry $w.g.toE -width 40  -relief sunken \
       -textvariable editNameNew
-  entry $w.g.toD -width 15 -background white -relief sunken \
+  entry $w.g.toD -width 15  -relief sunken \
       -textvariable editDateNew
   grid $w.g.toL -row 1 -column 1 -sticky e
   grid $w.g.toE -row 1 -column 2 -sticky we
   
-  entry $w.g.ratingE -width 5 -background white -relief sunken \
+  entry $w.g.ratingE -width 5  -relief sunken \
       -textvariable editNameRating -justify right
   eval tk_optionMenu $w.g.rtype editNameRType [sc_info ratings]
   $w.g.rtype configure -pady 2
@@ -881,7 +881,7 @@ proc nameEditor {} {
   
   foreach i {fromE toE ratingE fromD toD} {
     bind $w.g.$i <FocusIn> { %W configure -background lightYellow }
-    bind $w.g.$i <FocusOut> { %W configure -background white }
+    bind $w.g.$i <FocusOut> { %W configure  }
   }
   foreach {i j} {.nedit.g.fromE "editName"  .nedit.g.toE "editNameNew" } {
     for {set z 1} {$z <= 9} {incr z} {
@@ -936,7 +936,7 @@ proc nameEditor {} {
 #
 proc addGameSaveEntry { name row textname } {
   label .save.g.label$name -textvar $textname
-  entry .save.g.entry$name -width 30 -background white -relief sunken \
+  entry .save.g.entry$name -width 30  -relief sunken \
       -textvariable $name
   grid .save.g.label$name -row $row -column 0 -sticky w
   grid .save.g.entry$name -row $row -column 1 -columnspan 7 -sticky w
@@ -1004,13 +1004,13 @@ proc gameSave { gnum } {
   
   frame $f.dateframe
   label $f.datelabel -textvar ::tr(Date:)
-  entry $f.dateyear -width 6 -background white -relief sunken \
+  entry $f.dateyear -width 6  -relief sunken \
       -textvariable year -justify right
   label $f.datedot1 -text "."
-  entry $f.datemonth -width 3 -background white -relief sunken \
+  entry $f.datemonth -width 3  -relief sunken \
       -textvariable month -justify right
   label $f.datedot2 -text "."
-  entry $f.dateday -width 3 -background white -relief sunken \
+  entry $f.dateday -width 3  -relief sunken \
       -textvariable day -justify right
   grid $f.datelabel -row 2 -column 0 -sticky w
   grid $f.dateframe -row 2 -column 1 -columnspan 5 -sticky w
@@ -1036,13 +1036,13 @@ proc gameSave { gnum } {
   
   frame $f.edateframe
   label $f.edatelabel -textvar ::tr(EventDate:)
-  entry $f.edateyear -width 6 -background white -relief sunken \
+  entry $f.edateyear -width 6  -relief sunken \
       -textvariable eyear -justify right
   label $f.edatedot1 -text "."
-  entry $f.edatemonth -width 3 -background white -relief sunken \
+  entry $f.edatemonth -width 3  -relief sunken \
       -textvariable emonth -justify right
   label $f.edatedot2 -text "."
-  entry $f.edateday -width 3 -background white -relief sunken \
+  entry $f.edateday -width 3  -relief sunken \
       -textvariable eday -justify right
   grid $f.edatelabel -row 3 -column 0 -sticky w
   grid $f.edateframe -row 3 -column 1 -columnspan 5 -sticky w
@@ -1071,7 +1071,7 @@ proc gameSave { gnum } {
   addGameSaveEntry black 6 ::tr(Black:)
   
   label $f.reslabel -textvar ::tr(Result:)
-  entry $f.resentry -width 2 -background white -relief sunken \
+  entry $f.resentry -width 2  -relief sunken \
       -textvariable resultVal
   label $f.rescomment -text "(1, =, 0, *)"
   grid $f.reslabel -row 7 -column 0 -sticky w
@@ -1081,13 +1081,13 @@ proc gameSave { gnum } {
   label $f.welolabel -text "$::tr(White) "
   eval tk_optionMenu $f.wrtype whiteRType [sc_info ratings]
   $f.wrtype configure -indicatoron 0 -width 7 -takefocus 1
-  entry $f.weloentry -width 5 -background white -relief sunken \
+  entry $f.weloentry -width 5  -relief sunken \
       -textvariable whiteElo -justify right
   
   label $f.belolabel -text "$::tr(Black) "
   eval tk_optionMenu $f.brtype blackRType [sc_info ratings]
   $f.brtype configure -indicatoron 0 -width 7 -takefocus 1
-  entry $f.beloentry -width 5 -background white -relief sunken \
+  entry $f.beloentry -width 5  -relief sunken \
       -textvariable blackElo -justify right
   
   grid $f.welolabel -row 8 -column 0 -sticky w
@@ -1098,7 +1098,7 @@ proc gameSave { gnum } {
   grid $f.beloentry -row 9 -column 2 -sticky w
   
   label $f.ecolabel -text "ECO Code:"
-  entry $f.ecoentry -width 6 -background white -relief sunken \
+  entry $f.ecoentry -width 6  -relief sunken \
       -textvariable eco
   grid $f.ecolabel -row 10 -column 0 -sticky w
   grid $f.ecoentry -row 10 -column 1 -sticky w
@@ -1116,7 +1116,7 @@ proc gameSave { gnum } {
       "Extra Tags: (example format: Annotator \"Anand, V\") "
   pack .save.extralabel -side top
   frame .save.extra
-  text .save.extra.text -height 4 -width 40 -bg white -wrap none \
+  text .save.extra.text -height 4 -width 40  -wrap none \
       -yscrollcommand ".save.extra.scroll set"
   # Override tab-binding for this text widget:
   bind .save.extra.text <Key-Tab> "[bind all <Key-Tab>]; break"
@@ -1140,10 +1140,10 @@ proc gameSave { gnum } {
         weloentry beloentry ecoentry edateyear edatemonth edateday} {
     bind $f.$i <Return> {.save.buttons.save invoke}
     # bind $f.$i <FocusIn> {%W configure -background lightYellow }
-    # bind $f.$i <FocusOut> {%W configure -background white }
+    # bind $f.$i <FocusOut> {%W configure  }
   }
   bind .save.extra.text <FocusIn> {%W configure -background lightYellow }
-  bind .save.extra.text <FocusOut> {%W configure -background white }
+  bind .save.extra.text <FocusOut> {%W configure  }
   
   # Bindings so Ctrl-1 to Ctrl-9 select a matching name in the player,
   # site, event and round entryboxes:

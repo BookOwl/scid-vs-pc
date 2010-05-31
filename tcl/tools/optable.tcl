@@ -114,7 +114,7 @@ proc ::optable::makeReportWin {args} {
     foreach i {1 2} name { "Searching database for report games" "Generating report information" } {
       label $w.text$i -text "$i. $name"
       pack $w.text$i -side top
-      canvas $w.c$i -width 400 -height 20 -bg white -relief solid -border 1
+      canvas $w.c$i -width 400 -height 20  -relief solid -border 1
       $w.c$i create rectangle 0 0 0 0 -fill blue -outline blue -tags bar
       $w.c$i create text 395 10 -anchor e -font font_Regular -tags time \
           -fill black -text "0:00 / 0:00"
@@ -205,7 +205,7 @@ proc ::optable::makeReportWin {args} {
     bindMouseWheel $w $w.text
     
     text $w.text -height 30 -width 85 -font font_Small -setgrid 1 \
-        -wrap word -bg white -foreground black -yscrollcommand "$w.ybar set" \
+        -wrap word  -foreground black -yscrollcommand "$w.ybar set" \
         -cursor top_left_arrow
     ::htext::init $w.text
     scrollbar $w.ybar -command "$w.text yview"
@@ -345,8 +345,8 @@ proc ::optable::setOptions {} {
     } elseif {$i == "gap"} {
       # nothing
     } elseif {$i == "sep"} {
-      frame $w.f.fsep$row$left -height 2 -borderwidth 2 -relief sunken -bg white
-      frame $w.f.tsep$row$left -height 2 -borderwidth 2 -relief sunken -bg white
+      frame $w.f.fsep$row$left -height 2 -borderwidth 2 -relief sunken 
+      frame $w.f.tsep$row$left -height 2 -borderwidth 2 -relief sunken 
       grid $w.f.fsep$row$left -row $row -column $left -sticky we -columnspan 4
     } elseif {[info exists yesno($i)]} {
       checkbutton $w.f.f$i -variable ::optable($i) -onvalue 1 -offvalue 0
@@ -1203,8 +1203,7 @@ proc ::optable::addFavoriteDlg {} {
   label $w.old -text "Existing favorite report names:"
   pack $w.old -side top
   pack [frame $w.existing] -side top -fill x -padx 2
-  text $w.existing.list -width 30 -height 10 -background gray90 \
-      -yscrollcommand [list $w.existing.ybar set]
+  text $w.existing.list -width 30 -height 10 -yscrollcommand [list $w.existing.ybar set]
   scrollbar $w.existing.ybar -command [list $w.existing.list yview]
   pack $w.existing.ybar -side right -fill y
   pack $w.existing.list -side left -fill both -expand yes
@@ -1258,16 +1257,16 @@ proc ::optable::editFavoritesDlg {} {
   wm title $w "Scid: [tr OprepFavoritesEdit]"
   wm transient $w .
   bind $w <F1> {helpWindow Reports Opening}
-  entry $w.e -width 60 -foreground black -background white \
+  entry $w.e -width 60 -foreground black  \
       -textvariable reportFavoritesName -font font_Small -exportselection 0
   bind $w.e <FocusIn>  "$w.e configure -background lightYellow"
-  bind $w.e <FocusOut> "$w.e configure -background white"
+  bind $w.e <FocusOut> "$w.e configure -background {}"
   
   trace variable reportFavoritesName w ::optable::editFavoritesRefresh
   pack $w.e -side top -fill x
   pack [frame $w.b] -side bottom -fill x
   autoscrollframe $w.f listbox $w.f.list -width 50 -height 10 \
-      -fg black -bg white -exportselection 0 -font font_Small -setgrid 1
+      -fg black  -exportselection 0 -font font_Small -setgrid 1
   pack $w.f -side top -fill both -expand yes
   bind $w.f.list <<ListboxSelect>>  ::optable::editFavoritesSelect
   foreach entry $::reportFavoritesTemp {
@@ -1440,7 +1439,7 @@ proc ::optable::generateFavoriteReports {} {
   addHorizontalRule $w
   pack [frame $w.dir] -side top -padx 2 -pady 2
   label $w.dir.label -text "Save reports in the folder: " -font font_Bold
-  entry $w.dir.entry -background white -textvariable ::reportDir
+  entry $w.dir.entry  -textvariable ::reportDir
   button $w.dir.choose -text $::tr(Browse...) -command {
     set tmpdir [tk_chooseDirectory -parent .reportFavoritesDlg \
         -title "Scid: Choose Report Folder"]

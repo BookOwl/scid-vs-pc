@@ -35,7 +35,7 @@ set ::utils::graph::_options(graph) {
 }
 set ::utils::graph::_defaults(graph) \
   { -width 400 -height 300 -xtop 50 -ytop 30 -ticksize 5 -textgap 2 \
-    -xtick 5 -ytick 5 -tickcolor black -font fixed -background white \
+    -xtick 5 -ytick 5 -tickcolor black -font fixed  \
       -canvas {} -hline {} -vline {} -textcolor black \
       -xlabels {} -ylabels {} -brect {} }
 

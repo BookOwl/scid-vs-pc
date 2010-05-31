@@ -123,8 +123,10 @@ namespace eval pgn {
     ::pgn::ConfigMenus
     
     text $w.text -width $::winWidth($w) -height $::winHeight($w) -wrap word \
-        -background $pgnColor(Background) -cursor crosshair \
-        -setgrid 1 -tabs {1c right 2c 4c}
+        -cursor crosshair -setgrid 1 -tabs {1c right 2c 4c}
+    if {$pgnColor(Background) != {white} && $pgnColor(Background) != {#ffffff}} {
+	$w.text configure -background $pgnColor(Background)
+    }
     if { $::pgn::boldMainLine } {
       $w.text configure -font font_Bold
     }
@@ -356,11 +358,13 @@ namespace eval pgn {
   proc ResetColors {} {
     global pgnColor
     if {![winfo exists .pgnWin]} { return }
-    .pgnWin.text configure -background $pgnColor(Background)
-    .pgnWin.text tag configure Current -background $pgnColor(Current)
     ::htext::init .pgnWin.text
     ::htext::updateRate .pgnWin.text 60
     ::pgn::Refresh 1
+    if {$pgnColor(Background) != {white} && $pgnColor(Background) != {#ffffff}} {
+	.pgnWin.text configure -background $pgnColor(Background)
+	.pgnWin.text tag configure Current -background $pgnColor(Current)
+    }
   }
   ################################################################################
   # ::pgn::Refresh

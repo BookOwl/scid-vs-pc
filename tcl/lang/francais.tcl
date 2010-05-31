@@ -237,6 +237,7 @@ menuText F CCMailMove "eMailer le coup..." 0 {Envoyer le coup par eMail à l'adve
 # Options menu:
 menuText F Options "Options" 0
 menuText F OptionsBoard "Echiquier" 0 {Options d'aspect de l'échiquier}
+menuText F OptionsColour "Background Colour" 0 {Default text widget color}
 menuText F OptionsNames "Mes noms de joueurs..." 0 {Editer mes noms de joueurs}
 menuText F OptionsExport "Exportation" 0 {Changer les options d'exportation}
 menuText F OptionsFonts "Polices" 0 {Changer les polices}

@@ -241,10 +241,11 @@ proc ::crosstab::Open {} {
   pack $w.f -side top -fill both -expand true
   text $w.f.text -width $::winWidth($w) -height $::winHeight($w) \
     -wrap none -font font_Fixed \
-    -background white -yscroll "$w.f.ybar set" \
+     -yscroll "$w.f.ybar set" \
     -xscroll "$w.f.xbar set" -setgrid 1 -cursor top_left_arrow
   ::htext::init $w.f.text
-  $w.f.text tag configure bgGray -background gray95
+  $w.f.text tag configure bgGray -background {}
+  # Crosstable will have striped appearance if {} is replaced by another colour
   scrollbar $w.f.ybar -command "$w.f.text yview"
   scrollbar $w.f.xbar -orient horizontal -command "$w.f.text xview"
   grid $w.f.text -row 0 -column 0 -sticky nesw

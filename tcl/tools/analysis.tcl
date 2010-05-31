@@ -375,7 +375,7 @@ proc ::enginelist::choose {} {
   frame $w.buttons
 
   text $w.title -width 50 -height 1 -font font_Fixed -relief flat \
-      -cursor top_left_arrow
+      -cursor top_left_arrow -background gray95
 
   $w.title insert end $::tr(EngineName) Name
   for {set i [string length $::tr(EngineName)]} {$i < 19} { incr i } {
@@ -400,7 +400,7 @@ proc ::enginelist::choose {} {
     -side top -expand yes -fill both -padx 4 -pady 3
 
   listbox $w.list.list -height 10 -selectmode browse -setgrid 1 \
-      -yscrollcommand "$w.list.ybar set" -font font_Fixed -exportselection 0
+      -yscrollcommand "$w.list.ybar set" -font font_Fixed -exportselection 0 ; # -bg text_bg_color
 
   bind $w.list.list <Double-ButtonRelease-1> "$w.buttons.start invoke; break"
   scrollbar $w.list.ybar -command "$w.list.list yview"
@@ -1762,7 +1762,7 @@ proc makeAnalysisWin { {n 1} } {
     $w.b1.multipv configure -state readonly
     pack forget $w.b1.update
     $w.b1.update  configure -state disabled
-    text $w.text -height 1 -font font_Regular -wrap word
+    text $w.text -height 1 -font font_Regular -wrap word -bg gray95
   } else  {
     # pack forget $w.b1.showinfo
     # $w.b1.showinfo configure -state disabled
@@ -1771,7 +1771,7 @@ proc makeAnalysisWin { {n 1} } {
     pack forget $w.b1.alllines
     $w.b1.multipv configure -state disabled
     $w.b1.alllines configure -state disabled
-    text $w.text -height 4 -font font_Regular -wrap word
+    text $w.text -height 4 -font font_Regular -wrap word -bg gray95
   }
 
   frame $w.hist

@@ -268,6 +268,7 @@ menuText Y CCMailMove "Mail Move..." 0 {Send the move via eMail to the opponent}
 # Options menu:
 menuText Y Options "Opcije" 0
 menuText Y OptionsBoard "Chessboard" 0 {Chess board appearance options} ;# ***
+menuText Y OptionsColour "Background Colour" 0 {Default text widget color}
 menuText Y OptionsNames "My Player Names..." 0 {Edit my player names} ;# ***
 menuText Y OptionsExport "Izvoz" 0 {Promeni opcije tekstualnog izvoza}
 menuText Y OptionsFonts "Fontovi" 0 {Promeni fontove}

@@ -120,7 +120,7 @@ namespace eval fics {
 
     incr row
     # horizontal line
-    frame $w.line$row -height 2 -borderwidth 2 -relief sunken -background white
+    frame $w.line$row -height 2 -borderwidth 2 -relief sunken 
     grid $w.line$row -pady 5 -column 0 -row $row -columnspan 3 -sticky ew
 
     incr row
@@ -143,7 +143,7 @@ namespace eval fics {
 
     incr row
     # horizontal line
-    frame $w.line$row -height 2 -borderwidth 2 -relief sunken -background white
+    frame $w.line$row -height 2 -borderwidth 2 -relief sunken 
     grid $w.line$row -pady 5 -column 0 -row $row -columnspan 3 -sticky ew
     
     incr row
@@ -948,7 +948,7 @@ namespace eval fics {
 
     pack [button $w.cancel -text "Cancel" \
 	-command "::fics::writechan unseek ; destroy $w"] -side bottom -pady 5
-    pack [frame $w.line -height 2 -borderwidth 2 -relief sunken -background white] \
+    pack [frame $w.line -height 2 -borderwidth 2 -relief sunken ] \
         -fill x -expand 1 -side bottom -pady 2
 
     set ::fics::Offers 0

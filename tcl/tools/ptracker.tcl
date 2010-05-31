@@ -122,7 +122,7 @@ proc ::ptrack::make {} {
   label $w.status -width 1 -anchor w -relief sunken -font font_Small
   pack $w.status -side bottom -fill x
 
-  canvas $w.progress -height 20 -width 400 -bg white -relief solid -border 1
+  canvas $w.progress -height 20 -width 400  -relief solid -border 1
   $w.progress create rectangle 0 0 0 0 -fill blue -outline blue -tags bar
   $w.progress create text 395 10 -anchor e -font font_Regular -tags time \
     -fill black -text "0:00 / 0:00"
@@ -146,7 +146,7 @@ proc ::ptrack::make {} {
 
   set ::ptrack::shade {}
   for {set i 0} {$i < 64} {incr i} {
-    label $w.bd.sq$i -image ptrack -background white -border 1 -relief raised
+    label $w.bd.sq$i -image ptrack  -border 1 -relief raised
     set rank [expr {$i / 8}]
     set file [expr {$i % 8} ]
     grid $w.bd.sq$i -row [expr {7 - $rank} ] -column [expr {$file + 1} ]
@@ -236,7 +236,7 @@ proc ::ptrack::make {} {
 
   set f $w.t.text
   pack [frame $f] -side top -fill both -expand yes -padx 2 -pady 2
-  text $f.text -width 28 -height 1 -foreground black -background white \
+  text $f.text -width 28 -height 1 -foreground black  \
     -yscrollcommand "$f.ybar set" -relief sunken -takefocus 0 \
     -wrap none -font font_Small
   set xwidth [font measure [$f.text cget -font] "x"]

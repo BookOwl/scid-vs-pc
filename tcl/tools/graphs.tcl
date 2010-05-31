@@ -165,7 +165,7 @@ proc tools::graphs::filter::Open {} {
   frame $w.b
   pack $w.b -side bottom -fill x
   label $w.b.status -width 1 -font font_Small -anchor w
-  frame $w.sep -height 2 -borderwidth 2 -relief sunken -background white
+  frame $w.sep -height 2 -borderwidth 2 -relief sunken 
   pack $w.sep -side bottom -fill x -pady 4
 
   canvas $w.c -width 600 -height 400
@@ -629,7 +629,7 @@ proc tools::graphs::absfilter::Open {} {
   frame $w.b
   pack $w.b -side bottom -fill x
   label $w.b.status -width 1 -font font_Small -anchor w
-  frame $w.sep -height 2 -borderwidth 2 -relief sunken -background white
+  frame $w.sep -height 2 -borderwidth 2 -relief sunken 
   pack $w.sep -side bottom -fill x -pady 4
 
   canvas $w.c -width 600 -height 400

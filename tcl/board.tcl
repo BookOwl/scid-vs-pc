@@ -20,6 +20,18 @@ set colorSchemes {
 }
 array set newColors {}
 
+proc SetBackgroundColour {} {
+  global defaultBackground
+  set temp [tk_chooseColor -initialcolor $defaultBackground -title Scid]
+  if {$temp != {}} {
+    set defaultBackground $temp
+    option add *Text*background $temp widgetDefault
+    .gameInfo configure -bg $temp
+    if {[winfo exists .pgnWin.text]} { .pgnWin.text configure -bg $temp }
+    if {[winfo exists .helpWin.text]} { .helpWin.text configure -bg $temp }
+  }
+}
+
 proc SetBoardTextures {} {
   global boardfile_dark boardfile_lite
   # handle cases of old configuration files
@@ -1110,7 +1122,7 @@ proc ::board::new {w {psize 40} {showmat "nomat"} } {
   frame $w.stmgap -width 3
   frame $w.stm
   # frame $w.mat
-  frame $w.wtm -background white -relief solid -borderwidth 1
+  frame $w.wtm  -relief solid -borderwidth 1
   frame $w.btm -background black -relief solid -borderwidth 1
   grid $w.stmgap -row 1 -column 1
   grid $w.stm -row 2 -column 0 -rowspan 5 -padx 2

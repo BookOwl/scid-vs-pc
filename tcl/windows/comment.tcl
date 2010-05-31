@@ -75,7 +75,7 @@ proc ::commenteditor::Open {} {
 
   frame $w.nf
   frame $w.nf.tf
-  entry $w.nf.tf.text -width 20 -background white
+  entry $w.nf.tf.text -width 20 
   bindFocusColors $w.nf.tf.text
   bind $w.nf.tf.text <Alt-KeyRelease-c> { .commentWin.b.cancel invoke }
   
@@ -136,10 +136,10 @@ proc ::commenteditor::Open {} {
   frame $w.cf
   frame $w.cf.buttons
   text $w.cf.text -width 16 -height 2 \
-      -background white -wrap word -font font_Regular \
+       -wrap word -font font_Regular \
       -yscrollcommand ".commentWin.cf.scroll set" -setgrid 1
   scrollbar $w.cf.scroll -command ".commentWin.cf.text yview"
-  bindFocusColors $w.cf.text
+  # bindFocusColors $w.cf.text
   bind $w.cf.text <Alt-KeyRelease-c> { .commentWin.b.cancel invoke }
   bind $w.cf.text <Alt-KeyRelease-s> { .commentWin.b.apply invoke }
 

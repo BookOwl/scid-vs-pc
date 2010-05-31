@@ -270,6 +270,7 @@ menuText O CCMailMove "Mail Move..." 0 {Send the move via eMail to the opponent}
 # Options menu:
 menuText O Options "Innstillinger" 0
 menuText O OptionsBoard "Chessboard" 0 {Chess board appearance options} ;# ***
+menuText O OptionsColour "Background Colour" 0 {Default text widget color}
 menuText O OptionsNames "My Player Names..." 0 {Edit my player names} ;# ***
 menuText O OptionsExport "Eksport" 0 {Endre innstillinger for eksport av tekst}
 menuText O OptionsFonts "Skrifttyper" 0 {Endre skrifttyper}

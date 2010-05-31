@@ -152,7 +152,7 @@ proc ::preport::makeReportWin {args} {
                         "Generating report information"} {
       label $w.text$i -text "$i. $name"
       pack $w.text$i -side top
-      canvas $w.c$i -width 400 -height 20 -bg white -relief solid -border 1
+      canvas $w.c$i -width 400 -height 20  -relief solid -border 1
       $w.c$i create rectangle 0 0 0 0 -fill blue -outline blue -tags bar
       $w.c$i create text 395 10 -anchor e -font font_Regular -tags time \
         -fill black -text "0:00 / 0:00"
@@ -245,7 +245,7 @@ proc ::preport::makeReportWin {args} {
 
     autoscrollframe -bars y $w.scroll text $w.text \
       -height 30 -width 85 -font font_Small -setgrid 1 -wrap word \
-      -background white -foreground black -cursor top_left_arrow
+       -foreground black -cursor top_left_arrow
     ::htext::init $w.text
     frame $w.b
     button $w.b.opts -text [tr OprepFileOptions] -command ::preport::setOptions
@@ -294,8 +294,8 @@ proc ::preport::setOptions {} {
       set from 0; set to 500; set tick 100; set res 50
     }
     if {$i == "sep"} {
-      frame $w.f.fsep$row -height 2 -borderwidth 2 -relief sunken -bg white
-      frame $w.f.tsep$row -height 2 -borderwidth 2 -relief sunken -bg white
+      frame $w.f.fsep$row -height 2 -borderwidth 2 -relief sunken 
+      frame $w.f.tsep$row -height 2 -borderwidth 2 -relief sunken 
       grid $w.f.fsep$row -row $row -column 0 -sticky we -columnspan 4
       #grid $w.f.tsep$row -row $row -column 1 -sticky we -columnspan 2
     } elseif {[info exists yesno($i)]} {

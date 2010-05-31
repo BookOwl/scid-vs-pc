@@ -136,7 +136,7 @@ proc openSpellCheckWin {type {parent .}} {
   scrollbar $f.xbar -orient horizontal -command "$f.text xview"
   text $f.text -yscrollcommand "$f.ybar set" -xscrollcommand "$f.xbar set" \
     -setgrid 1 -width $::winWidth($w) -height $::winHeight($w) \
-    -background white -wrap none
+     -wrap none
   $f.text configure -tabs \
     [font measure font_Regular  "xxxxxxxxxxxxxxxxxxxxxxxxx"]
 
