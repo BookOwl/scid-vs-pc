@@ -1265,9 +1265,7 @@ incr menuindex
 $m  add command -label HelpAbout -command {helpWindow Author}
 set helpMessage($m,[incr menuindex]) HelpAbout
 
-bind . <F1> {helpWindow Contents}
-
-
+bind . <F1> toggleHelp
 
 ##################################################
 

@@ -70,6 +70,14 @@ proc help_PopStack {} {
 }
 
 
+proc toggleHelp {} {
+  if {[winfo exists .helpWin]} {
+    destroy .helpWin
+  } else {
+    helpWindow Contents
+  }
+}
+
 proc helpWindow {name {heading {}}} {
   help_PushStack $name
   updateHelpWindow $name $heading
@@ -132,6 +140,7 @@ proc updateHelpWindow {name {heading {}}} {
     $w.text configure -font font_Regular
     ::htext::init $w.text
     bind $w <Configure> "recordWinSize $w"
+    bind $w <F1> toggleHelp
   } else {
     raise $w .
   }
