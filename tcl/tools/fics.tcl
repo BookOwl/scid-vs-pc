@@ -849,7 +849,7 @@ namespace eval fics {
 	::fics::delOffer [string tolower [lindex [split $line] 2]]
     }
 
-    if {[string match "* withdraws * offer" $line]} {
+    if {[string match "* withdraws * offer*" $line]} {
 	::fics::delOffer [string tolower [lindex [split $line] 0]]
     }
 
