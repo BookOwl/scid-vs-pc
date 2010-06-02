@@ -73,7 +73,7 @@ proc setWinLocation {win} {
     if { $y < 0 } { set x 0 }
     if { $x > [winfo screenwidth .] } { set x [winfo screenwidth .] }
     if { $y > [winfo screenwidth .] } { set x [winfo screenwidth .] }
-    
+
     catch [list wm geometry $win "+$x+$y"]
   }
 }

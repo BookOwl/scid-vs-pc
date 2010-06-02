@@ -135,9 +135,9 @@ proc ::tb::Open {} {
   pack [frame $w.info] -side left -fill y
   addVerticalRule $w
   pack [frame $w.pos] -side right -fill both -expand yes
-  
+
   # Left frame: tablebase browser and summary info
-  
+
   set f $w.info
   pack [frame $f.sec] -side top -fill x
   foreach i $tbInfo(sections) {
@@ -153,23 +153,23 @@ proc ::tb::Open {} {
   pack $f.list -side top
   pack [frame $f.separator -height 2]
   # addHorizontalRule $f
-  
+
   autoscrollframe $f.data text $f.data.text \
       -width 35 -height 0 -font font_Fixed -wrap none \
       -foreground black  -cursor top_left_arrow
   pack $f.data -side top -fill y -expand yes
-  
+
   $f.list.text tag configure avail -foreground blue
   $f.list.text tag configure unavail -foreground gray40
   $f.data.text tag configure fen -foreground blue
-  
+
   # Right frame: tablebase results for current position
-  
+
   set f $w.pos
   autoscrollframe $f text $f.text -width 30 -height 20 -font font_Small \
       -wrap word -foreground black  -setgrid 1
   $f.text tag configure indent -lmargin2 [font measure font_Fixed  "        "]
-  
+
   ::board::new $f.board 25
   $f.board configure -relief solid -borderwidth 1
   for {set i 0} {$i < 64} {incr i} {
@@ -178,7 +178,7 @@ proc ::tb::Open {} {
   if {$::tbBoard} {
     grid $f.board -row 0 -column 2 -rowspan 2
   }
-  
+
   checkbutton $w.b.training -text $::tr(Training) -variable tbTraining -command ::tb::training -relief raised -padx 4 -pady 5
   # button $w.b.online -text Online -command ::tb::updateOnline -relief raised -padx 4 -pady 5
   if { !$::tb::online_available } {
@@ -319,7 +319,7 @@ proc ::tb::summary {{material ""}} {
   global tbInfo tbs
   set w .tbWin
   if {! [winfo exists $w]} { return }
-  
+
   if {$material == ""} { set material $tbInfo(material) }
   set tbInfo(material) $material
   set t $w.info.data.text
@@ -332,15 +332,15 @@ proc ::tb::summary {{material ""}} {
     return
   }
   set data $tbs($material)
-  
+
   $t insert end [format "    %5u games per million\n\n" [lindex $data 0]]
-  
+
   # Longest-mate and result-percentage stats:
-  
+
   $t insert end "Side    Longest    %     %     %\n"
   $t insert end "to move   mate    Win  Draw  Loss\n"
   $t insert end "---------------------------------\n"
-  
+
   # Stats for White:
   $t insert end "White     "
   set len [lindex $data 1]
@@ -362,7 +362,7 @@ proc ::tb::summary {{material ""}} {
   $t insert end [format " %5s" [lindex $data 6]]
   $t insert end [format " %5s" [lindex $data 7]]
   $t insert end "\n"
-  
+
   # Stats for Black:
   $t insert end "Black     "
   set len [lindex $data 3]
@@ -384,7 +384,7 @@ proc ::tb::summary {{material ""}} {
   $t insert end [format " %5s" [lindex $data 9]]
   $t insert end [format " %5s" [lindex $data 10]]
   $t insert end "\n\n"
-  
+
   set mzugs [lindex $data 11]
   $t insert end "Mutual zugzwangs: "
   if {$mzugs >= 0} { $t insert end "$mzugs\n" } else { $t insert end "?\n" }
@@ -392,7 +392,7 @@ proc ::tb::summary {{material ""}} {
     $t configure -state disabled
     return
   }
-  
+
   # Extra Zugzwang info:
   set nBtmLoses [lindex $data 12]
   set nWtmLoses [lindex $data 14]
@@ -412,7 +412,7 @@ proc ::tb::summary {{material ""}} {
     $t insert end [lindex $zugnames 2]
     $t insert end [format "%5d\n" $nBothLose]
   }
-  
+
   # Selected zugzwang positions:
   set btmFens [lindex $data 13]
   set wtmFens [lindex $data 15]
@@ -425,7 +425,7 @@ proc ::tb::summary {{material ""}} {
     $t configure -state disabled
     return
   }
-  
+
   # Print the lists of selected zugzwang positions:
   $t insert end "\nSelected zugzwang positions:"
   foreach n [list $nBtmFens $nWtmFens $nBothFens] \
@@ -449,7 +449,7 @@ proc ::tb::summary {{material ""}} {
           $t tag bind $fen <ButtonPress-1> [list ::tb::setFEN $fen]
         }
       }
-  
+
   $t configure -state disabled
 }
 
@@ -461,12 +461,12 @@ proc ::tb::results {} {
   global tbTraining
   set w .tbWin
   if {! [winfo exists $w]} { return }
-  
+
   # Reset results board:
   ::board::recolor $w.pos.board
   ::board::clearText $w.pos.board
   ::board::update $w.pos.board [sc_pos board]
-  
+
   # Update results panel:
   set t $w.pos.text
   $t delete 1.0 end
@@ -484,10 +484,10 @@ proc ::tb::updateOnline {} {
   global tbTraining
   set w .tbWin
   if {! [winfo exists $w]} { return }
-  
+
   # proxy configuration - needs UI
   # ::http::config -proxyhost $::tb::proxyhost -proxyport $::tb::proxyport
-  
+
   set t $w.pos.text
   if { ! $tbTraining } {
     set query [ ::http::formatQuery hook null action egtb fen [sc_pos fen] ]
@@ -498,13 +498,13 @@ proc ::tb::updateOnline {} {
 #
 ################################################################################
 proc ::tb::httpCallback { token } {
-  
+
   upvar #0 $token state
-  
+
   set w .tbWin
   if {! [winfo exists $w]} { return }
   set t $w.pos.text
-  
+
   # delete previous online output
   foreach tag {tagonline} {
     while {1} {
@@ -513,15 +513,15 @@ proc ::tb::httpCallback { token } {
       catch {$t delete [lindex $del 0] [lindex $del 1]}
     }
   }
-  
+
   if {$state(status) != "ok"} {
     $t insert end $state(status) tagonline
     return
   }
-  
+
   set b $state(body)
   set result ""
-  
+
   if {[sc_pos side] == "black"} {
     set tmp ""
     set found 0
@@ -536,7 +536,7 @@ proc ::tb::httpCallback { token } {
     }
     set b $tmp
   }
-  
+
   foreach line [split $b "\n" ] {
     if {$line == "NEXTCOLOR"} {
       break

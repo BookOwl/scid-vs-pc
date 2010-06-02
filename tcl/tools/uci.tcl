@@ -8,16 +8,16 @@
 namespace eval uci {
   # will contain the UCI engine options saved
   variable newOptions {}
-  
+
   # set pipe ""
   set uciOptions {}
   set optList {}
   set oldOptions ""
   array set check ""
-  
+
   set autoSaveOptions 0 ; # UCI options are saved as soon as the options dialog is closed
   set autoSaveOptionsIndex -1
-  
+
   # The list of token that comes with info
   set infoToken { depth seldepth time nodes pv multipv score cp mate lowerbound upperbound \
         currmove currmovenumber hashfull nps tbhits sbhits cpuload string refutation currline }
@@ -58,7 +58,7 @@ namespace eval uci {
   ################################################################################
   proc  processAnalysisInput { { n 1 } { analyze 1 } } {
     global analysis ::uci::uciInfo ::uci::infoToken ::uci::optionToken
-    
+
     if {$analyze} {
       set pipe $analysis(pipe$n)
       if { ! [ ::checkEngineIsAlive $n ] } { return }
@@ -67,7 +67,7 @@ namespace eval uci {
       set pipe $uciInfo(pipe$n)
       if { ! [ ::uci::checkEngineIsAlive $n ] } { return }
     }
-    
+
     if {$analyze} {
       if {! $analysis(seen$n)} {
         set analysis(seen$n) 1
@@ -82,19 +82,19 @@ namespace eval uci {
         ::uci::sendToEngine $n "uci"
       }
     }
-    
+
     # Get one line from the engine:
     set line [gets $pipe]
     if {$line == ""} { return }
-    
+
     # To speed up parsing of engine's output. Should be removed if currmove info is used
     # if {[string first "info currmove" $line ] == 0} { return }
-    
+
     logEngine $n "Engine: $line"
-    
+
     # keep UI responsive when engine outputs lots of info (garbage ?)
     update idletasks
-    
+
     if {[string match "bestmove*" $line]} {
       set data [split $line]
       set uciInfo(bestmove$n) [lindex $data 1]
@@ -109,7 +109,7 @@ namespace eval uci {
         return
       }
     }
-    
+
     if {[string match "id *name *" $line]} {
       set name [ regsub {id[ ]?name[ ]?} $line "" ]
       if {$analyze} {
@@ -124,7 +124,7 @@ namespace eval uci {
         catch {wm title .analysisWin$n "Scid: Analysis $n: $name"}
       }
     }
-    
+
     set toBeFormatted 0
     # parse an info line
     if {[string first "info" $line ] == 0} {
@@ -249,7 +249,7 @@ namespace eval uci {
       }
       
     } ;# end of info line
-    
+
     # the UCI engine answers to <uci> command
     if { $line == "uciok"} {
       if {$analysis(waitForUciOk$n)} {
@@ -267,7 +267,7 @@ namespace eval uci {
         set uciInfo(uciok$n) 1
       }
     }
-    
+
     # the UCI engine answers to <isready> command
     if { $line == "readyok"} {
       if {$analysis(waitForReadyOk$n)} {
@@ -275,7 +275,7 @@ namespace eval uci {
       }
       return
     }
-    
+
     # get options and save only part of data
     if { [string first "option name" $line] == 0 && $analyze } {
       set min "" ; set max ""
@@ -308,7 +308,7 @@ namespace eval uci {
   ################################################################################
   proc readUCI { n } {
     global ::uci::uciOptions
-    
+
     set line [string trim [gets $::uci::uciInfo(pipe$n)] ]
     # end of options
     if {$line == "uciok"} {
@@ -327,7 +327,7 @@ namespace eval uci {
   ################################################################################
   proc uciConfig { n cmd arg dir options } {
     global ::uci::uciOptions ::uci::oldOptions
-    
+
     if {[info exists ::uci::uciInfo(pipe$n)]} {
       if {$::uci::uciInfo(pipe$n) != ""} {
         tk_messageBox -title "Scid" -icon warning -type ok -message "An engine is already running"
@@ -335,7 +335,7 @@ namespace eval uci {
       }
     }
     set oldOptions $options
-    
+
     # If the analysis directory is not current dir, cd to it:
     set oldpwd ""
     if {$dir != "."} {
@@ -349,32 +349,32 @@ namespace eval uci {
           -icon warning -type ok -message "Unable to start the program:\n$cmd"
       return
     }
-    
+
     set ::uci::uciInfo(pipe$n) $pipe
-    
+
     # Configure pipe for line buffering and non-blocking mode:
     fconfigure $pipe -buffering full -blocking 0
     fileevent $pipe readable "::uci::readUCI $n"
-    
+
     # Return to original dir if necessary:
     if {$oldpwd != ""} { catch {cd $oldpwd} }
-    
+
     set uciOptions {}
-    
+
     puts $pipe "uci"
     flush $pipe
-    
+
     # give a few seconds for the engine to output its options, then automatically kill it
     # (to handle xboard engines)
     after 5000  "::uci::closeUCIengine $n 0"
   }
-  
+
   ################################################################################
   #   builds the dialog for UCI engine configuration
   ################################################################################
   proc uciConfigWin {} {
     global ::uci::uciOptions ::uci::optList ::uci::optionToken ::uci::oldOptions ::uci::optionImportant
-    
+
     set w .uciConfigWin
     if { [winfo exists $w]} { return }
     toplevel $w
@@ -389,7 +389,7 @@ namespace eval uci {
     grid rowconfigure .uciConfigWin 0 -weight 1
     grid columnconfigure .uciConfigWin 0 -weight 1
     set w .uciConfigWin.sf.scrolled
-    
+
     proc tokeep {opt} {
       foreach tokeep $::uci::optionToKeep {
         if { [lsearch $opt $tokeep] != -1 } {
@@ -398,7 +398,7 @@ namespace eval uci {
       }
       return 0
     }
-    
+
     set optList ""
     array set elt {}
     foreach opt $uciOptions {
@@ -464,7 +464,7 @@ namespace eval uci {
       }
       lappend optList [array get elt]
     }
-    
+
     # sort list of options so that important ones come first
     set tmp $optList
     set optList {}
@@ -480,11 +480,11 @@ namespace eval uci {
         lappend optList $l
       }
     }
-    
+
     set optnbr 0
     frame $w.fopt
     frame $w.fbuttons
-    
+
     set row 0
     set col 0
     set isImportantParam 1
@@ -545,7 +545,7 @@ namespace eval uci {
 	    incr i
 	}
 	ttk::combobox $w.fopt.opt$optnbr -values $tmp
-	
+
 	$w.fopt.opt$optnbr current $idx
         grid $w.fopt.label$optnbr -row $row -column $col -sticky e
         incr col
@@ -566,7 +566,7 @@ namespace eval uci {
       incr col
       incr optnbr
     }
-    
+
     button $w.fbuttons.save -text $::tr(Save) -command {
       ::uci::saveConfig
       destroy .uciConfigWin
@@ -588,7 +588,7 @@ namespace eval uci {
     set newOptions {}
     set w .uciConfigWin.sf.scrolled
     set optnbr 0
-    
+
     foreach l $optList {
       array set elt $l
       set value ""
@@ -616,7 +616,7 @@ namespace eval uci {
     set elt [lindex $::engines(list) $::uci::autoSaveOptionsIndex]
     set elt [ lreplace $elt 8 8 $::uci::newOptions]
     set ::engines(list) [lreplace $::engines(list) $::uci::autoSaveOptionsIndex $::uci::autoSaveOptionsIndex $elt]
-    
+
     ::enginelist::write
   }
   ################################################################################
@@ -651,14 +651,14 @@ namespace eval uci {
     set analysisCommand [ toAbsPath [lindex $engineData 1] ]
     set analysisArgs [lindex $engineData 2]
     set analysisDir [ toAbsPath [lindex $engineData 3] ]
-    
+
     # If the analysis directory is not current dir, cd to it:
     set oldpwd ""
     if {$analysisDir != "."} {
       set oldpwd [pwd]
       catch {cd $analysisDir}
     }
-    
+
     # Try to execute the analysis program:
     if {[catch {set uciInfo(pipe$n) [open "| [list $analysisCommand] $analysisArgs" "r+"]} result]} {
       if {$oldpwd != ""} { catch {cd $oldpwd} }
@@ -666,16 +666,16 @@ namespace eval uci {
           -message "Unable to start the program:\n$analysisCommand"
       return
     }
-    
+
     set ::analysis(index$n) $index
     set ::analysis(pipe$n) $uciInfo(pipe$n)
-    
+
     # Return to original dir if necessary:
     if {$oldpwd != ""} { catch {cd $oldpwd} }
-    
+
     fconfigure $uciInfo(pipe$n) -buffering line -blocking 0
     fileevent $uciInfo(pipe$n) readable "::uci::processAnalysisInput $n 0"
-    
+
     # wait a few seconds to be sure the engine had time to start
     set counter 0
     while {! $::uci::uciInfo(uciok$n) && $counter < 50 } {
@@ -713,14 +713,14 @@ namespace eval uci {
   ################################################################################
   proc closeUCIengine { n { uciok 1 } } {
     global windowsOS ::uci::uciInfo
-    
+
     set pipe $uciInfo(pipe$n)
     # Check the pipe is not already closed:
     if {$pipe == ""} { return }
-    
+
     after cancel "::uci::closeUCIengine $n 0"
     fileevent $pipe readable {}
-    
+
     if {! $uciok } {
       if {[winfo exists .configSerGameWin]} {
         tk_messageBox -title "Scid: error closing UCI engine" -icon warning -type ok -message "Not an UCI engine" -parent .configSerGameWin
@@ -728,16 +728,16 @@ namespace eval uci {
         tk_messageBox -title "Scid: error closing UCI engine" -icon warning -type ok -message "Not an UCI engine" 
       }
     }
-    
+
     # Some engines in analyze mode may not react as expected to "quit"
     # so ensure the engine exits analyze mode first:
     catch { puts $pipe "stop" ; puts $pipe "quit" }
     #in case an xboard engine
     catch { puts $pipe "exit" ; puts $pipe "quit" }
-    
+
     # last resort : try to kill the engine (TODO if Windows : no luck, welcome zombies !)
     if { ! $windowsOS } { catch { exec -- kill -s INT [ pid $pipe ] }  }
-    
+
     catch { flush $pipe }
     catch { close $pipe }
     set uciInfo(pipe$n) ""
@@ -747,7 +747,7 @@ namespace eval uci {
   # returns 1 if an error occured when entering a move
   ################################################################################
   proc sc_move_add { moves } {
-    
+
     foreach m $moves {
       # get rid of leading piece
       set c [string index $m 0]
@@ -780,7 +780,7 @@ namespace eval uci {
   #make UCI output more readable (b1c3 -> Nc3)
   ################################################################################
   proc formatPv { moves fen } {
-    
+
     sc_info preMoveCmd {}
     # Push a temporary copy of the current game:
     if {$fen != ""} {
@@ -796,12 +796,12 @@ namespace eval uci {
       append tmp " $prev"
     }
     set tmp [string trim $tmp]
-    
+
     # Pop the temporary game:
     sc_game pop
     # Restore pre-move command:
     sc_info preMoveCmd preMoveCommand
-    
+
     return $tmp
   }
 }

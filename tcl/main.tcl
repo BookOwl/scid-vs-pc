@@ -31,12 +31,12 @@ proc moveEntry_Clear {} {
 
 proc moveEntry_Complete {} {
   global moveEntry
-  
+
   if { [winfo exists .fics] && $::fics::playing == -1} { ;# not player's turn
     moveEntry_Clear
     return
   }
-  
+
   set len [llength $moveEntry(List)]
   if {$len > 0} {
     if {$moveEntry(AutoExpand)} {
@@ -61,7 +61,7 @@ proc moveEntry_Complete {} {
       sc_var promote [expr {[sc_var count] - 1}]
       sc_move forward 1
     }
-    
+
     # Now send the move done to FICS and NOVAG Citrine
     set promoletter ""
     set moveuci [sc_game info previousMoveUCI]
@@ -76,11 +76,11 @@ proc moveEntry_Complete {} {
         ::fics::writechan [ string range $moveuci 0 3 ]
       }
     }
-    
+
     if {$::novag::connected} {
       ::novag::addMove "[ string range $moveuci 0 3 ]$promoLetter"
     }
-    
+
     moveEntry_Clear
     updateBoard -pgn -animate
     ::utils::sound::AnnounceNewMove $move
@@ -113,7 +113,7 @@ proc moveEntry_Char {ch} {
     # case insensitive to allow for 'b' to match both pawn and
     # Bishop moves.
     set move [string tolower [lindex $moveEntry(List) 0]]
-    
+
     if {$moveEntry(AutoExpand) > 0  ||
       ![string compare [string tolower $moveEntry(Text)] $move]} {
       moveEntry_Complete
@@ -173,7 +173,7 @@ proc updateStatusBar {} {
   ::windows::switcher::Refresh
   ::maint::Refresh
   set statusBar "  "
-  
+
   if {$moveEntry(Text) != ""} {
     append statusBar "Enter move: \[" $moveEntry(Text) "\]  "
     foreach thisMove $moveEntry(List) {
@@ -181,10 +181,10 @@ proc updateStatusBar {} {
     }
     return
   }
-  
+
   # Check if translations have not been set up yet:
   if {! [info exists ::tr(Database)]} { return }
-  
+
   # Show "%%" if base is read-only, "XX" if game altered, "--" otherwise:
   if {[sc_base isReadOnly]} {
     append statusBar "%%"
@@ -193,7 +193,7 @@ proc updateStatusBar {} {
   } else {
     append statusBar "--"
   }
-  
+
   set current [sc_base current]
   append statusBar "  $::tr(Database)"
   if {$current != [sc_info clipbase]} {
@@ -204,7 +204,7 @@ proc updateStatusBar {} {
   set fname [file tail $fname]
   if {$fname == ""} { set fname "<none>" }
   append statusBar $fname
-  
+
   # Show filter count:
   append statusBar "   $::tr(Filter)"
   append statusBar ": [filterText]"
@@ -510,27 +510,27 @@ proc getNextMoves { {num 4} } {
 # displays a box with main line and variations for easy selection with keyboard
 ################################################################################
 proc showVars {} {
-  
+
   # No need to display an empty menu
   if {[sc_var count] == 0} {
     return
   }
-  
+
   if {[sc_var count] == 1 &&  [sc_game info nextMove] == ""} {
     # There is only one variation and no main line, so enter it
     sc_var moveInto 0
     updateBoard
     return
   }
-  
+
   sc_info preMoveCmd {}
-  
+
   set w .variations
   if {[winfo exists $w]} { return }
-  
+
   set varList [sc_var list]
   set numVars [sc_var count]
-  
+
   # Present a menu of the possible variations
   toplevel $w
   wm title $w $::tr(Variations)
@@ -538,7 +538,7 @@ proc showVars {} {
   if { $h> 19} { set h 19 }
   listbox $w.lbVar -selectmode browse -height $h -width 20
   pack $w.lbVar -expand yes -fill both -side top
-  
+
   #insert main line
   set move [sc_game info nextMove]
   if {$move == ""} {
@@ -548,7 +548,7 @@ proc showVars {} {
     bind $w <KeyPress-0> "enterVar 0"
     bind $w <Button-5>   "bind $w <Button-5> {} ; enterVar 0"
   }
-  
+
   # insert variations
   for {set i 0} {$i < $numVars} {incr i} {
     set move [::trans [lindex $varList $i]]
@@ -591,7 +591,7 @@ proc showVars {} {
   bind $w <Button-4> { destroy .variations ; focus -force .board }
 
   sc_info preMoveCmd preMoveCommand
-  
+
   catch {
     focus $w
     placeWinOverParent $w .
@@ -636,7 +636,7 @@ proc editMyPlayerNames {} {
   wm state $w withdrawn
   wm title $w "Scid: [tr OptionsNames]"
   pack [frame $w.b] -side bottom -fill x
-  
+
   frame $w.desc -borderwidth 0
   text $w.desc.text -background gray90 -width 50 -height 8 -wrap word
   $w.desc.text insert end [string trim $::tr(MyPlayerNamesDescription)]
@@ -726,17 +726,17 @@ proc updateBoard {args} {
     if {! [string compare $arg "-pgn"]} { set pgnNeedsUpdate 1 }
     if {! [string compare $arg "-animate"]} { set animate 1 }
   }
-  
+
   # Remove marked squares informations.
   # (This must be done _before_ updating the board!)
   ::board::mark::clear .board
-  
+
   ::board::resize .board $boardSize
   ::board::update .board [sc_pos board] $animate
   ::board::material .board
-  
+
   # Draw arrows and marks, color squares:
-  
+
   foreach {cmd discard} [::board::mark::getEmbeddedCmds [sc_pos getComment]] {
     set type   [lindex $cmd 0]
     set square [::board::sq [lindex $cmd 1]]
@@ -747,7 +747,7 @@ proc updateBoard {args} {
     # add mark to board
     eval ::board::mark::add .board $type $square $dest $color
   }
-  
+
   # Update the status of each navigation button:
   if {[sc_pos isAt start]} {
     .button.start configure -state disabled
@@ -788,7 +788,7 @@ proc updateBoard {args} {
   } else {
     .button.exitVar configure -state normal
   }
-  
+
   if {![sc_base inUse]  ||  $::trialMode  ||  [sc_base isReadOnly]} {
     .tb.save configure -state disabled
   } else {
@@ -887,7 +887,7 @@ set photo(oldBlack) {}
 # Try to change the engine name: ignore version number, try to ignore blanks
 proc trimEngineName { engine } {
   set engine [sc_name retrievename $engine]
-  
+
   set engine [string tolower $engine]
   if { [string first "deep " $engine] == 0 } {
     # strip "deep "
@@ -965,7 +965,7 @@ set photosMinimized 0
 proc togglePhotosSize {} {
   set distance [expr {[image width photoB] + 2}]
   if { $distance < 10 } { set distance 82 }
-  
+
   if {$::photosMinimized} {
     set ::photosMinimized 0
     if { [winfo ismapped .photoW] } {
@@ -983,7 +983,7 @@ proc togglePhotosSize {} {
       place .photoB -in .gameInfo -x -1 -relx 1.0  -relheight 0.15 -width 15 -anchor ne
     }
   }
-  
+
 }
 #########################################################
 ### Chess move input
@@ -1045,12 +1045,12 @@ set addVariationWithoutAsking 0
 
 proc confirmReplaceMove {} {
   global askToReplaceMoves trialMode
-  
+
   if {$::addVariationWithoutAsking} { return "var" }
-  
+
   if {! $askToReplaceMoves} { return "replace" }
   if {$trialMode} { return "replace" }
-  
+
   option add *Dialog.msg.wrapLength 4i interactive
   catch {tk_dialog .dialog "Scid: $::tr(ReplaceMove)?" \
         $::tr(ReplaceMoveMessage) {} 2 \
@@ -1079,7 +1079,7 @@ proc addNullMove {} {
 #
 proc addMove { sq1 sq2 {animate ""}} {
   if { $::fics::playing == -1} { return } ;# not player's turn
-  
+
   global EMPTY
   set nullmove 0
   if {$sq1 == "null"  &&  $sq2 == "null"} { set nullmove 1 }
@@ -1097,7 +1097,7 @@ proc addMove { sq1 sq2 {animate ""}} {
     if { [winfo exists .promoWin] } { return }
     set promo [getPromoPiece]
   }
-  
+
   set promoLetter ""
   switch -- $promo {
     2 { set promoLetter "q"}
@@ -1125,7 +1125,7 @@ proc addMove { sq1 sq2 {animate ""}} {
        incr i
   }
 
-  
+
   set action "replace"
   if {![sc_pos isAt vend]} {
     set action [confirmReplaceMove]
@@ -1138,7 +1138,7 @@ proc addMove { sq1 sq2 {animate ""}} {
     # Do not add the move at all:
     return
   }
-  
+
   if {$nullmove} {
     sc_move addSan null
   } else {
@@ -1156,9 +1156,9 @@ proc addMove { sq1 sq2 {animate ""}} {
     }
     after idle [list ::utils::sound::AnnounceNewMove $san]
   }
-  
+
   if {[winfo exists .fics]} {
-    
+
     if { $::fics::playing == 1} {
       if { $promo != $EMPTY } {
         ::fics::writechan "promote $promoLetter"
@@ -1166,16 +1166,16 @@ proc addMove { sq1 sq2 {animate ""}} {
       ::fics::writechan [ string range [sc_game info previousMoveUCI] 0 3 ]
     }
   }
-  
+
   if {$::novag::connected} {
     ::novag::addMove "[::board::san $sq2][::board::san $sq1]$promoLetter"
   }
-  
+
   moveEntry_Clear
   updateBoard -pgn $animate
-  
+
   ::tree::doTraining
-  
+
 }
 
 # addSanMove
@@ -1271,17 +1271,17 @@ proc leaveSquare { square } {
 #
 proc pressSquare {square confirm} {
   global selectedSq highcolor
-  
+
   set ::addVariationWithoutAsking $confirm
 
   if { [winfo exists .fics] && $::fics::playing == -1} { return } ;# not player's turn
-  
+
   # if training with calculations of var is on, just log the event
   if { [winfo exists .calvarWin] } {
     ::calvar::pressSquare $square
     return
   }
-  
+
   if {$selectedSq == -1} {
     set selectedSq $square
     ::board::recolor .board
@@ -1311,11 +1311,11 @@ proc pressSquare {square confirm} {
 #   part of a move.
 #
 proc releaseSquare { x y } {
-  
+
   if { [winfo exists .calvarWin] } { return }
-  
+
   global selectedSq bestSq currentSq
-  
+
   set w .board
   ::board::setDragSquare $w -1
   set square [::board::getSquare $w $x $y]
@@ -1324,7 +1324,7 @@ proc releaseSquare { x y } {
     ::board::recolor $w
     return
   }
-  
+
   if {$square == $selectedSq} {
     if {$::suggestMoves} {
       # User pressed and released on same square, so make the
@@ -1375,7 +1375,7 @@ proc setAutoplayDelay {} {
   pack $w.label -side top -pady 5 -padx 5
   spinbox $w.spDelay  -width 4 -textvariable tempdelay -from 1 -to 300 -increment 1
   pack $w.spDelay -side top -pady 5
-  
+
   set b [frame $w.buttons]
   pack $b -side top -fill x
   button $b.cancel -text $::tr(Cancel) -command {
@@ -1412,13 +1412,13 @@ proc toggleAutoplay { } {
 ################################################################################
 proc autoplay {} {
   global autoplayDelay autoplayMode annotateMode analysis
-  
+
   if {$autoplayMode == 0} { return }
-  
+
   if {$annotateMode} {
     if { ![sc_pos isAt start] } { addAnnotation }
   }
-  
+
   # stop game annotation when out of opening
   if { $::isBatch && $annotateMode && $::isBatchOpening && \
         [sc_pos moveNumber] > $::isBatchOpeningMoves } {
@@ -1441,7 +1441,7 @@ proc autoplay {} {
       return
     }
   }
-  
+
   if { [sc_pos isAt end] } {
     if {$annotateMode} { ; # end of game if not mate, add the thinking line
       set move_done [sc_game info previousMoveNT]
@@ -1482,7 +1482,7 @@ proc autoplay {} {
     cancelAutoplay
     return
   }
-  
+
   # annotate all sub variations
   if { $annotateMode && $::isAnnotateVar } {
     if { [sc_pos isAt vend] } {
@@ -1509,7 +1509,7 @@ proc autoplay {} {
     after $autoplayDelay autoplay
     return
   }
-  
+
   ::move::Forward
   after $autoplayDelay autoplay
 }
@@ -1546,7 +1546,7 @@ proc setTrialMode {mode} {
   }
   if {$mode == $trialMode} { return }
   if {$mode == "update"} { set mode $trialMode }
-  
+
   if {$mode == 1} {
     set trialMode 1
     sc_game push copy

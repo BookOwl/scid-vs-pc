@@ -29,7 +29,7 @@ proc importPgnGame {} {
   grid $edit.xbar -row 1 -column 0 -sticky nesw
   grid rowconfig $edit 0 -weight 1 -minsize 0
   grid columnconfig $edit 0 -weight 1 -minsize 0
-  
+
   # Right-mouse button cut/copy/paste menu:
   menu $edit.text.rmenu -tearoff 0
   $edit.text.rmenu add command -label "Cut" -command "tk_textCut $edit.text"
@@ -38,7 +38,7 @@ proc importPgnGame {} {
   $edit.text.rmenu add command -label "Select all" -command \
       "$edit.text tag add sel 1.0 end"
   bind $edit.text <ButtonPress-3> "tk_popup $edit.text.rmenu %X %Y"
-  
+
   text $pane.err.text -height 6 -width 75 -wrap word \
       -yscroll "$pane.err.scroll set"
   $pane.err.text insert end $::tr(ImportHelp1)
@@ -47,7 +47,7 @@ proc importPgnGame {} {
   scrollbar $pane.err.scroll -command "$pane.err.text yview" -takefocus 0
   pack $pane.err.scroll -side right -fill y
   pack $pane.err.text -side left -expand true -fill both
-  
+
   dialogbutton $w.b.paste -text "$::tr(PasteCurrentGame)" -command {
     .importWin.pane.edit.text insert end [sc_game pgn -width 70]
     .importWin.pane.err.text delete 1.0 end
@@ -78,7 +78,7 @@ proc importPgnGame {} {
   }
   # Select all of the pasted text:
   # $w.pane.edit.text tag add sel 1.0 end
-  
+
   bind $w <F1> { helpWindow Import }
   bind $w <Escape> { .importWin.b.cancel invoke }
   bind $w <Control-a> { .importWin.pane.edit.text tag add sel 1.0 end }
@@ -118,9 +118,9 @@ proc importMoveList {line} {
 #
 ################################################################################
 proc importMoveListTrans {line} {
-  
+
   set doImport 0
-  
+
   if { $::askToReplaceMoves } {
     if {[llength [sc_game firstMoves 0 1]] == 0} {
       set doImport 1
@@ -136,7 +136,7 @@ proc importMoveListTrans {line} {
     sc_move addSan $line
     updateBoard -pgn
   }
-  
+
 }
 
 set importPgnErrors ""
@@ -145,7 +145,7 @@ set importPgnErrors ""
 
 proc importPgnFile {} {
   global importPgnErrors
-  
+
   set err ""
   if {[sc_base isReadOnly]} { set err "This database is read-only." }
   if {![sc_base inUse]} { set err "This is not an open database." }
@@ -188,7 +188,7 @@ proc doPgnFileImport {fname text {multiple 0} } {
     $w.progress create rectangle 0 0 0 0 -fill rosybrown3 -outline rosybrown3 -tags bar
     $w.progress create text 495 10 -anchor e -font font_Regular -tags time \
         -fill black -text "0:00 / 0:00"
-    
+
     frame $w.buttons
     pack $w.buttons -side bottom -fill x
     pack $w.progress -side bottom -pady 7
@@ -196,7 +196,7 @@ proc doPgnFileImport {fname text {multiple 0} } {
     dialogbutton $w.buttons.stop -textvar ::tr(Stop) -command {sc_progressBar}
     dialogbutton $w.buttons.close -textvar ::tr(Close) -command "focus .; destroy $w"
     pack $w.buttons.close $w.buttons.stop -side right -padx 5 -pady 5
-    
+
     pack [frame $w.tf] -side top -expand yes -fill both
     text $w.text -height 8 -width 60 -background gray90 \
         -wrap none -cursor watch -setgrid 1 -yscrollcommand "$w.ybar set"
@@ -204,7 +204,7 @@ proc doPgnFileImport {fname text {multiple 0} } {
     pack $w.ybar -in $w.tf -side right -fill y
     pack $w.text -in $w.tf -side left -fill both -expand yes
   }
-  
+
   sc_progressBar $w.progress bar 501 21 time
   update
   busyCursor .
@@ -214,10 +214,10 @@ proc doPgnFileImport {fname text {multiple 0} } {
   $w.text insert end $text
   $w.text insert end "Importing PGN games from [file tail $fname]...\n\n"
   $w.text configure -state disabled
-  
+
   set importPgnErrors ""
   set err [catch {sc_base import file $fname} result]
-  
+
   set warnings ""
   $w.text configure -state normal
   $w.text configure -cursor top_left_arrow
@@ -237,7 +237,7 @@ proc doPgnFileImport {fname text {multiple 0} } {
     # This needs testing S.A. &&&
     ::recentFiles::add $fname
   }
-  
+
   $w.text configure -state disabled
   $w.buttons.close configure -state normal
   $w.buttons.stop configure -state disabled

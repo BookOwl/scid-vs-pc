@@ -106,7 +106,7 @@ namespace eval Xfcc {
 			::Xfcc::ReadConfig $xfccrcfile
 		}
 	}
-	
+
 	#----------------------------------------------------------------------
 	# Delete the currently selected server entry
 	#----------------------------------------------------------------------
@@ -139,14 +139,14 @@ namespace eval Xfcc {
  		set ::Xfcc::xfccsrv($size,2) "Your_Login"
  		set ::Xfcc::xfccsrv($size,3) "SeCrEt!"
  		set ::Xfcc::xfccsrv($size,1) "http://"
- 
+
  		set ::Xfcc::Server    $::Xfcc::xfccsrv($size,0)
  		set ::Xfcc::Username  $::Xfcc::xfccsrv($size,2)
  		set ::Xfcc::Password  $::Xfcc::xfccsrv($size,3)
  		set ::Xfcc::URI       $::Xfcc::xfccsrv($size,1)
- 
+
  		lappend ::Xfcc::lsrvname [list $::Xfcc::xfccsrv($size,0)]
- 
+
  		set ::Xfcc::Oldnum    $size
 	}
 
@@ -466,7 +466,7 @@ namespace eval Xfcc {
 			set uri      [$srv selectNodes {string(uri)}]
 			set username [$srv selectNodes {string(user)}]
 			set password [$srv selectNodes {string(pass)}]
-			
+
 			if {$name == $server} {
 				::CorrespondenceChess::updateConsole "info Processing $gameid for $username\@$name..."
 				::CorrespondenceChess::updateConsole "info Sending $movecount\. $move \{$comment\}"
@@ -1075,7 +1075,7 @@ namespace eval CorrespondenceChess {
 
 	# wether the console is already open or not
 	set isOpen   0
-	
+
 	# default Database
 	set CorrBase        [file nativename [file join $scidDataDir "Correspondence.si3"]]
 
@@ -1123,7 +1123,7 @@ namespace eval CorrespondenceChess {
 
 		set fullname [tk_getOpenFile -initialdir $idir -title "Scid Correspondence Chess: Select $i"]
 		if {$fullname == ""} { return }
-	  
+
 		return $fullname
 	}
 
@@ -1214,7 +1214,7 @@ namespace eval CorrespondenceChess {
 			}
 		}
 	}
-	
+
 	#----------------------------------------------------------------------
 	# Check for the default DB, create it if it does not exist.
 	#----------------------------------------------------------------------

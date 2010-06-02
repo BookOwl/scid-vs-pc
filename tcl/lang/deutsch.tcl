@@ -942,7 +942,7 @@ translate D TwinCriteria2 {Es wird empfohlen, dass bei der Auswahl "Nein" für "g
 
 Wollen Sie fortsetzen und mit dieser Auswahl die Dubletten löschen? }
 translate D TwinCriteria3 {Es wird empfohlen, dass bei der Auswahl "Ja" für mindestens 2 der Parameter "gleicher Ort", "gleiche Runde" und "gleiches Jahr" gesetzt werden.
-    
+
 Wollen Sie fortsetzen und mit dieser Auswahl die Dubletten löschen?}
 translate D TwinCriteriaConfirm {Scid: Bestätigen der Dublettensuchparameter}
 translate D TwinChangeTag "Ändern der folgenden Partie-Tags:\n\n"
@@ -5035,7 +5035,7 @@ Die Zugeingabe erfolgt durch Mausklicks auf die Felder des Brettes, allerdings w
 Wurde eine Variante mit einer NAG-Code-Bewertung abgeschlossen, berechnet die Engine ihre Bewertung der Variante und hängt ihre Variante und Bewertung direkt an die Benutzer-Variante an. 
   <p><h3>Fertig mit der Stellung</h3></p>
 Ist der Anwender der Meinung alle besten Varianten gefunden zu haben, drückt er <b>Fertig mit Stellung</b>. Es werden dann noch alle Varianten (mit dem Kommentar <b>Fehlende Varianten</b>) mit einer höheren Bewertung als die beste Variante des Anwenders hinzugefügt. 
-  
+
   <p><footer>(Aktualisiert: Scid 3.6.21, Dezember 2007)</footer></p>
 }
 
@@ -5881,7 +5881,7 @@ set helpText(D,OpeningTrainer) {<h1>Eröffnungstrainer</h1>
   <li>Openings for either Color</li> <br>
   Der Typ muss mit der Auswahl "Konfiguration Trainingsrepertoire" (Weiß, Schwarz, Beide) übereinstimmen. Jede Partie repräsentiert eine Eröffnungsvariante. 
   </p>
-  
+
   <h3>Eröffnungstrainer Statistik</h3>
   <p>
    Vier Zahlen zeigen die Statistik für die aktuelle Stellung:
@@ -5892,7 +5892,7 @@ set helpText(D,OpeningTrainer) {<h1>Eröffnungstrainer</h1>
   <li>Weiß : Häufigkeit der Stellung</li>
   </ul>
   </p>
-  
+
   <h3>Der Bericht</h3>
   <p>
   Der Bericht zeigt für das ganze Repertoire Statistiken und gibt Informationen über das Wissen des Anwenders:  

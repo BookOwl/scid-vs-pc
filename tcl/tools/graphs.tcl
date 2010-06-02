@@ -84,7 +84,7 @@ proc configureFilterGraph {} {
   if {[winfo exists $w]} {
     destroy $w
   }
-  
+
   toplevel $w
   wm title $w $::tr(ConfigureFilter)
   setWinLocation $w
@@ -113,7 +113,7 @@ proc configureFilterGraph {} {
       incr row
       set col 0
   }
-  
+
   button $w.close -textvar ::tr(Close) -command {
       checkConfigFilterGraph; ::tools::graphs::filter::Refresh
       ::tools::graphs::absfilter::Refresh; destroy .configFilterGraph  }
@@ -712,7 +712,7 @@ proc ::tools::graphs::absfilter::Refresh {} {
       lappend vlines [list $vlineColor 1 at $i.5]
     }
   }
-    
+
   ::utils::graph::create absfilter -width $width -height $height -xtop 40 -ytop 35 \
     -ytick 1 -xtick 1 -font font_Small -canvas $w.c -textcolor black \
     -vline $vlines -background lightYellow -tickcolor black -xmin 0 -xmax 1

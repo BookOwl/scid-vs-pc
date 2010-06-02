@@ -813,11 +813,11 @@ menuText N PgnColorAnno "Annotaties..." 0
 menuText N PgnColorComments "Commentaar..." 0
 menuText N PgnColorVars "Varianten..." 0
 menuText N PgnColorBackground "Achtergrond kleur..." 0
- 
+
 menuText N PgnColorMain "Main line..." 0
- 
+
 menuText N PgnColorCurrent "Current move background..." 1
- 
+
 menuText N PgnColorNextMove "Next move background..." 0
 menuText N PgnHelp "Help" 0
 menuText N PgnHelpPgn "PGN help" 0
@@ -966,11 +966,11 @@ translate N GlistWidth {Breedte}
 translate N GlistAlign {Uitlijnen}
 translate N GlistColor {Kleuren}
 translate N GlistSep {Separator}
- 
+
 translate N GlistRemoveThisGameFromFilter  {Remove this game from Filter}
- 
+
 translate N GlistRemoveGameAndAboveFromFilter  {Remove game (and all above it) from Filter}
- 
+
 translate N GlistRemoveGameAndBelowFromFilter  {Remove game (and all below it) from Filter}
 # ====== TODO To be translated ======
 translate N GlistDeleteGame {(Un)Delete this game} 
@@ -1487,39 +1487,39 @@ translate N difficulty {moeilijkheid}
 translate N hard {erg moeilijk}
 translate N easy {gemakkelijk}
 translate N Playwith {Speel met}
- 
+
 translate N white {wit}
- 
+
 translate N black {zwart}
- 
+
 translate N both {beide}
- 
+
 translate N Play {Spel}
- 
+
 translate N Noblunder {Geen blunder}
- 
+
 translate N blunder {Blunder}
- 
+
 translate N Noinfo {-- Geen info --}
 # ====== TODO To be translated ======
 translate N PhalanxOrTogaMissing {Phalanx or Toga not found}
- 
- 
- 
+
+
+
 translate N moveblunderthreshold {zet is blunder als het verlies groter is dan}
- 
+
 translate N limitanalysis {limiet machiene analyse tijd}
- 
+
 translate N seconds {seconden}
- 
+
 translate N Abort {Geeft op}
 # ====== TODO To be translated ======
 translate N Resume {Resume}
- 
+
 translate N OutOfOpening {Uit de opening}
- 
+
 translate N NotFollowedLine {Je volgde de variant niet}
- 
+
 translate N DoYouWantContinue {Wil je verder gaan?}
 # ====== TODO To be translated ======
 translate N CoachIsWatching {Coach is watching}
@@ -1533,17 +1533,17 @@ translate N DubiousMovePlayedTakeBack {Dubious move played, do you want to take 
 translate N WeakMovePlayedTakeBack {Weak move played, do you want to take back ?}
 # ====== TODO To be translated ======
 translate N BadMovePlayedTakeBack {Bad move played, do you want to take back ?}
- 
+
 translate N Iresign {Ik geef op}
- 
+
 translate N yourmoveisnotgood {Je zet is niet goed}
- 
+
 translate N EndOfVar {Eind van variant}
- 
+
 translate N Openingtrainer {Opening trainer}
- 
+
 translate N DisplayCM {Toon kandidaat zetten}
- 
+
 translate N DisplayCMValue {Toon waarde kandidaat zetten}
 # ====== TODO To be translated ======
 translate N DisplayOpeningStats {Show statistics}
@@ -1557,25 +1557,25 @@ translate N NumberOfDubiousMovesPlayed {dubious moves played}
 translate N NumberOfMovesPlayedNotInRepertoire {moves played not in repertoire}
 # ====== TODO To be translated ======
 translate N NumberOfTimesPositionEncountered {times position encountered}
- 
+
 translate N PlayerBestMove  {Laat alleen beste zetten toe}
- 
+
 translate N OpponentBestMove {Tegenstander speelt beste zetten}
- 
+
 translate N OnlyFlaggedLines {Enkel gemarkeerde varianten}
 # ====== TODO To be translated ======
 translate N resetStats {Reset statistics}
- 
+
 translate N Repertoiretrainingconfiguration {Repertorium training configuratie}
- 
+
 translate N Loadingrepertoire {Repertorium Laden}
- 
+
 translate N Movesloaded {Zetten geladen}
- 
+
 translate N Repertoirenotfound {Repertorium niet gevonden}
- 
+
 translate N Openfirstrepertoirewithtype {Open eerste repertorium database met ikoon/type aanr rechterzijde gezet}
- 
+
 translate N Movenotinrepertoire {Zet niet in Repertorium}
 # ====== TODO To be translated ======
 translate N PositionsInRepertoire {Positions in repertoire}
@@ -1589,47 +1589,47 @@ translate N Success {Success}
 translate N DubiousMoves {Dubious moves}
 # ====== TODO To be translated ======
 translate N OutOfRepertoire {OutOfRepertoire}
-  
+
 translate N ConfigureTactics {Configureer takiek}
- 
+
 translate N ResetScores {Initialiseer scores}
- 
+
 translate N LoadingBase {Laad database}
- 
+
 translate N Tactics {Taktiek}
- 
+
 translate N ShowSolution {Toon oplossing}
- 
+
 translate N Next {Volgende}
- 
+
 translate N ResettingScore {Initialiseer score}
- 
+
 translate N LoadingGame {Laad partij}
- 
+
 translate N MateFound {Mat gevonden}
- 
+
 translate N BestSolutionNotFound {Beste oplossing NIET gevonden!}
- 
+
 translate N MateNotFound {Mat NIET gevonden}
- 
+
 translate N ShorterMateExists {Korter mat bestaat}
- 
+
 translate N ScorePlayed {Score gespeeld}
- 
+
 translate N Expected {verwacht}
- 
+
 translate N ChooseTrainingBase {Kies training base}
- 
+
 translate N Thinking {Denkend}
- 
+
 translate N AnalyzeDone {Analyse gedaan}
- 
+
 translate N WinWonGame {Win gewonnen partij}
- 
+
 translate N Lines {Varianten}
- 
+
 translate N ConfigureUCIengine {Configureer UCI machiene}
- 
+
 translate N SpecificOpening {Specifieke opening}
 # ====== TODO To be translated ======
 translate N StartNewGame {Start new game}
@@ -1664,29 +1664,29 @@ translate N TimeMin {min}
 translate N TimeSec {sec}
 # ====== TODO To be translated ======
 # ====== TODO To be translated ======
- 
+
 translate N AllExercisesDone {Alle oefeningen gedaan}
- 
+
 translate N MoveOutOfBook {Zet buiten boek}
- 
+
 translate N LastBookMove {Laatste zet boek}
- 
+
 translate N AnnotateSeveralGames {Becommentarieer verschillende partijen \n van huidig tot :}
- 
+
 translate N FindOpeningErrors {Vind openingsfouten}
 # ====== TODO To be translated ======
 translate N MarkTacticalExercises {Mark tactical exercises}
- 
+
 translate N UseBook {Gebruik boek}
- 
+
 translate N MultiPV {Meerder varianten}
- 
+
 translate N Hash {Hash Geheugentabel}
- 
+
 translate N OwnBook {Gebruik machiene boek}
- 
+
 translate N BookFile {Opening boek}
- 
+
 translate N AnnotateVariations {Becommentarieer varianten}
 # ====== TODO To be translated ======
 translate N ShortAnnotations {Short annotations}
@@ -1694,124 +1694,124 @@ translate N ShortAnnotations {Short annotations}
 translate N addAnnotatorTag {Add annotator tag}
 # ====== TODO To be translated ======
 translate N AddScoreToShortAnnotations {Add score to short annotations}
- 
+
 translate N Export {Export}
- 
+
 translate N BookPartiallyLoaded {Boek gedeeltelijk geladen}
 # ====== TODO To be translated ======
 translate N Calvar {Calculation of variations}
 # ====== TODO To be translated ======
 translate N ConfigureCalvar {Configuration}
- 
- 
+
+
 translate N Reti {Reti}
- 
+
 translate N English {Engels}
- 
+
 translate N d4Nf6Miscellaneous {1.d4 Nf6 Verscheidene}
- 
+
 translate N Trompowsky {Trompowsky}
- 
+
 translate N Budapest {Boedapest}
- 
+
 translate N OldIndian {Oud Indisch}
- 
+
 translate N BenkoGambit {Benko Gambiet}
- 
+
 translate N ModernBenoni {Moderne Benoni}
- 
+
 translate N DutchDefence {Dutch Defence}
- 
+
 translate N Scandinavian {Scandinavian}
- 
+
 translate N AlekhineDefence {Alechin Verdediging}
- 
+
 translate N Pirc {Pirc}
- 
+
 translate N CaroKann {Caro-Kann}
- 
+
 translate N CaroKannAdvance {Caro-Kann Doorschuif}
- 
+
 translate N Sicilian {Siciliaans}
- 
+
 translate N SicilianAlapin {Siciliaans Alapin}
- 
+
 translate N SicilianClosed {Siciliaans Gesloten}
- 
+
 translate N SicilianRauzer {Siciliaans Rauzer}
- 
+
 translate N SicilianDragon {Siciliaans Draak}
- 
+
 translate N SicilianScheveningen {Siciliaans Scheveningen}
- 
+
 translate N SicilianNajdorf {Siciliaans Najdorf}
- 
+
 translate N OpenGame {Open Spel}
- 
+
 translate N Vienna {Weens}
- 
+
 translate N KingsGambit {Konings Gambiet}
- 
+
 translate N RussianGame {Russisch}
- 
+
 translate N ItalianTwoKnights {Italiaans/Tweepaardenspel}
- 
+
 translate N Spanish {Spaans}
- 
+
 translate N SpanishExchange {Spaans Ruil}
- 
+
 translate N SpanishOpen {Spaans Open}
- 
+
 translate N SpanishClosed {Spaans Gesloten}
- 
+
 translate N FrenchDefence {Frans}
- 
+
 translate N FrenchAdvance {Frans Doorschuif}
- 
+
 translate N FrenchTarrasch {Frans Tarrasch}
- 
+
 translate N FrenchWinawer {Frans Winawer}
- 
+
 translate N FrenchExchange {Frans Ruil}
- 
+
 translate N QueensPawn {Damepion}
- 
+
 translate N Slav {Slavisch}
- 
+
 translate N QGA {Aangenomen Damegambiet}
- 
+
 translate N QGD {Damegambiet}
- 
+
 translate N QGDExchange {Damegambiet Ruil}
- 
+
 translate N SemiSlav {Half-Slavisch}
- 
+
 translate N QGDwithBg5 {Damegambiet met Lg5}
- 
+
 translate N QGDOrthodox {Damegambiet Orthodox}
- 
+
 translate N Grunfeld {Grünfeld}
- 
+
 translate N GrunfeldExchange {Grünfeld Ruil}
- 
+
 translate N GrunfeldRussian {Grünfeld Russisch}
- 
+
 translate N Catalan {Catalaans}
- 
+
 translate N CatalanOpen {Catalaans Open}
- 
+
 translate N CatalanClosed {Catalaans Gesloten}
- 
+
 translate N QueensIndian {Dameindisch}
- 
+
 translate N NimzoIndian {Nimzo-Indisch}
- 
+
 translate N NimzoIndianClassical {Nimzo-Indisch Klassiek Dc2}
- 
+
 translate N NimzoIndianRubinstein {Nimzo-Indisch Rubinstein}
- 
+
 translate N KingsIndian {Koningsindisch}
- 
+
 translate N KingsIndianSamisch {Koningsindisch Sämisch}
 
 translate N KingsIndianMainLine {Koningsindisch Hoofdvariant}

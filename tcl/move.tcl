@@ -20,13 +20,13 @@ proc ::move::End {} {
 proc ::move::Back {{count 1}} {
   if {$::tree(refresh)} { return }
   if {[sc_pos isAt start]} { return }
-  
+
   ### if playing, remove this move from hash array S.A
 
   set ::tacgame::lFen [lrange $::tacgame::lFen 0 end-$count]
-  
+
   set ::pause 1
-  
+
   sc_move back $count
   # Pascal Georges : make it easier to navigate in a game
   # TODO : if left mouse arrow leaves var, then comments are doubled at Var start and comments can no longer be entered
@@ -34,7 +34,7 @@ proc ::move::Back {{count 1}} {
   # if {[sc_pos isAt vstart]} {
   # sc_var exit
   # }
-  
+
   if {$count == 1} {
     # Do animation and speech:
     updateBoard -animate
@@ -57,7 +57,7 @@ proc ::move::Forward {{count 1}} {
     } else  {
       sc_move forward
     }
-    
+
     # Animate and speak this move:
     updateBoard -animate
     ::utils::sound::AnnounceForward $move

@@ -15,26 +15,26 @@ set oldStatus ""
 #
 proc statusBarHelp {window {item {}}} {
   global showHelp helpMessage statusBar language
-  
+
   set status ""
   if {! $showHelp} { return }
-  
+
   # Tcl/Tk seems to generate strange window names for menus that
   # are configured to be a toplevel window main menu, e.g.
   # .menu.file get reported as ".#menu.#menu#file" and
   # .menu.file.utils is ".#menu.#menu#file.#menu#file#utils"
   # I have no idea why it does this, but to avoid it we
   # convert a window paths with hashes to its true value:
-  
+
   if {[string first {.#} $window] != -1} {
     set idx [string last . $window]
     set window [string range $window [expr {$idx+1} ] end]
     regsub -all "\#" $window . window
   }
-  
+
   # Look for a status bar help message for the current button
   # or menu entry, in the current language or English:
-  
+
   if {$item == ""} { set index $window } else { set index "$window,$item" }
   if {[info exists helpMessage($language,$index)]} {
     set status "  $helpMessage($language,$index)"
@@ -48,9 +48,9 @@ proc statusBarHelp {window {item {}}} {
       set status "  $helpMessage(E,$tag)"
     } else { set status $tag }
   }
-  
+
   if {$status == ""} { statusBarRestore $window; return }
-  
+
   if {[string range $window 0 7] == ".treeWin"} {
     set bn ""
     catch { scan $window .treeWin%d.%s bn dummy}
@@ -65,7 +65,7 @@ proc statusBarHelp {window {item {}}} {
 #
 proc statusBarRestore {window} {
   global showHelp statusBar
-  
+
   if {! $showHelp} { return }
   if {[string range $window 0 7] == ".treeWin"} {
     set bn ""
@@ -832,7 +832,7 @@ if {![sc_info tb]} { $m entryconfigure 13 -state disabled }
 proc setTableBaseDir {} {
   global initialDir tempDir
   set ftype { { "Tablebase files" {".emd" ".nbw" ".nbb"} } }
-  
+
   set w .tbDialog
   toplevel $w
   wm title $w Scid
@@ -869,7 +869,7 @@ proc openTableBaseDirs {} {
       append tableBaseDirs [file nativename $tbDir]
     }
   }
-  
+
   set npieces [sc_info tb $tableBaseDirs]
   if {$npieces == 0} {
     set msg "No tablebases were found."
@@ -884,19 +884,19 @@ proc openTableBaseDirs {} {
   }
   tk_messageBox -type ok -icon info -title "Scid: Tablebase results" \
       -message $msg
-  
+
 }
 proc chooseTableBaseDir {i} {
   global tempDir
-  
+
   set ftype { { "Tablebase files" {".emd" ".nbw" ".nbb"} } }
   set idir $tempDir(tablebase$i)
   if {$idir == ""} { set idir [pwd] }
-  
+
   set fullname [tk_getOpenFile -initialdir $idir -filetypes $ftype \
       -title "Scid: Select a Tablebase file"]
   if {$fullname == ""} { return }
-  
+
   set tempDir(tablebase$i) [file dirname $fullname]
 }
 
@@ -1034,7 +1034,7 @@ $m add command -label OptionsSave -command {
       puts $optionF "set informant($i) [list $informant($i)]"
     }
     puts $optionF ""
-    
+
     # save FICS config
     foreach i { use_timeseal timeseal_exec port_fics port_timeseal login password consolebg consolefg } {
       puts $optionF "set ::fics::$i [list [set ::fics::$i]]"
@@ -1042,7 +1042,7 @@ $m add command -label OptionsSave -command {
     foreach i [lsort [array names ::fics::findopponent]] {
       puts $optionF "set ::fics::findopponent($i) [list $::fics::findopponent($i)]"
     }
-    
+
     close $optionF
     set ::statusBar "Options were saved to: [scidConfigFile options]"
   }
@@ -1088,7 +1088,7 @@ menu $m.entry -tearoff 1
 $m.entry add checkbutton -label OptionsMovesAsk \
     -variable askToReplaceMoves -offvalue 0 -onvalue 1
 set helpMessage($m.entry,0) OptionsMovesAsk \
-    
+
 $m.entry add cascade -label OptionsMovesAnimate -menu $m.entry.animate
 menu $m.entry.animate -tearoff 1
 foreach i {0 100 150 200 250 300 400 500 600 800 1000} {
@@ -1288,12 +1288,12 @@ proc updateMenuStates {} {
   foreach i {Player Event Site Round} {
     $m.file.utils.name entryconfig [tr FileMaintName$i] -state disabled
   }
-  
+
   $m.file entryconfig [tr FileReadOnly] -state disabled
-  
+
   # update recent Tree list (open base as Tree)
   set ntreerecent [::recentFiles::treeshow .menu.file.recenttrees]
-  
+
   ### S.A
   # Remove and reinsert the Recent files list and Exit command:
   $m.file add separator
@@ -1311,7 +1311,7 @@ proc updateMenuStates {} {
       -command ::file::Exit
   set helpMessage($m.file,$idx) FileExit
   # &&& remove
-  
+
   # Configure File menu entry states::
   if {[sc_base inUse]} {
     set isReadOnly [sc_base isReadOnly]
@@ -1324,85 +1324,85 @@ proc updateMenuStates {} {
       }
       $m.file entryconfig [tr FileReadOnly] -state normal
     }
-    
+
     # Load first/last/random buttons:
     set filtercount [sc_filter count]
     if {$filtercount == 0} {set state disabled} else {set state normal}
     $m.game entryconfig [tr GameFirst] -state $state
     $m.game entryconfig [tr GameLast] -state $state
     $m.game entryconfig [tr GameRandom] -state $state
-    
+
     # Load previous button:
     if {[sc_filter previous]} {set state normal} else {set state disabled}
     $m.game entryconfig [tr GamePrev] -state $state
     .tb.gprev configure -state $state
-    
+
     # Reload button:
     if {[sc_game number]} {set state normal} else {set state disabled}
     $m.game entryconfig [tr GameReload] -state $state
-    
+
     # Load next button:
     if {[sc_filter next]} {set state normal} else {set state disabled}
     $m.game entryconfig [tr GameNext] -state $state
     .tb.gnext configure -state $state
-    
+
     $m.game entryconfig [tr GameNumber] -state normal
-    
+
     # Save add button:
     set state normal
     if {$isReadOnly  ||  $::trialMode} {set state disabled}
     $m.game entryconfig [tr GameAdd] -state $state
-    
+
     # Save replace button:
     set state normal
     if {[sc_game number] == 0  ||  $isReadOnly  ||  $::trialMode} {
       set state disabled
     }
     $m.game entryconfig [tr GameReplace] -state $state
-    
+
     # Searching:
     foreach i {Reset Negate} {
       $m.search entryconfig [tr Search$i] -state normal
     }
     #$m.windows entryconfig [tr WindowsTree] -state normal
-    
+
     # Tools:
     $m.tools entryconfig [tr ToolsEmail] -state normal
     $m.tools entryconfig [tr ToolsOpReport] -state normal
     $m.tools entryconfig [tr ToolsPlayerReport] -state normal
-    
+
   } else {
     # Base is not in use:
     $m.file entryconfig [tr FileClose] -state disabled
-    
+
     foreach i {First Prev Reload Next Last Random Number Replace Add} {
       $m.game entryconfig [tr Game$i] -state disabled
     }
     .tb.gprev configure -state disabled
     .tb.gnext configure -state disabled
-    
+
     # search:
     foreach i {Reset Negate} {
       $m.search entryconfig [tr Search$i] -state disabled
     }
     #$m.windows entryconfig [tr WindowsTree] -state disabled
-    
+
     # tools:
     $m.tools entryconfig [tr ToolsEmail] -state disabled
     $m.tools entryconfig [tr ToolsOpReport] -state disabled
     $m.tools entryconfig [tr ToolsPlayerReport] -state disabled
   }
-  
+
   if {[sc_base numGames] == 0} {
     $m.tools entryconfig [tr ToolsExpFilter] -state disabled
   } else {
     $m.tools entryconfig [tr ToolsExpFilter] -state normal
   }
-  
+
   set state disabled
   if {[baseIsCompactable]} { set state normal }
   $m.file.utils entryconfig [tr FileMaintCompact] -state $state
-  
+
   ::search::Config
   ::windows::switcher::Refresh
   ::maint::Refresh
@@ -1430,36 +1430,36 @@ proc configMenuText {menu entry tag lang} {
 
 proc setLanguageMenus {{lang ""}} {
   global menuLabel menuUnder oldLang
-  
+
   if {$lang == ""} {set lang $::language}
-  
+
   foreach tag {CorrespondenceChess ToolsTraining ToolsTacticalGame ToolsSeriousGame ToolsTrainFics} {
     configMenuText .menu.play [tr $tag $oldLang] $tag $lang
   }
-  
+
   foreach tag {TrainOpenings TrainTactics TrainCalvar TrainFindBestMove} {
     configMenuText .menu.play.training [tr Tools$tag $oldLang] Tools$tag $lang
   }
-  
+
   foreach tag { CCConfigure CCOpenDB CCRetrieve CCInbox CCPrevious \
         CCNext CCSend CCResign CCClaimDraw CCOfferDraw CCAcceptDraw   \
         CCNewMailGame CCMailMove } {
     configMenuText .menu.play.correspondence [tr $tag $oldLang] $tag $lang
   }
-  
+
   foreach tag {File Edit Game Search Play Windows Tools Options Help} {
     configMenuText .menu [tr $tag $oldLang] $tag $lang
   }
-  
+
   foreach tag {New Open SavePgn Close Finder Bookmarks Maint ReadOnly Switch Exit} {
     configMenuText .menu.file [tr File$tag $oldLang] File$tag $lang
   }
-  
+
   # open base as tree was moved from tools to file menus
   foreach tag { ToolsOpenBaseAsTree ToolsOpenRecentBaseAsTree } {
     configMenuText .menu.file [tr $tag $oldLang] $tag $lang
   }
-  
+
   foreach tag {Win Compact Delete Twin Class Sort Name FixBase} {
     configMenuText .menu.file.utils [tr FileMaint$tag $oldLang] \
         FileMaint$tag $lang
@@ -1483,17 +1483,17 @@ proc setLanguageMenus {{lang ""}} {
   foreach tag {Reset Negate Material Current Header Using} {
     configMenuText .menu.search [tr Search$tag $oldLang] Search$tag $lang
   }
-  
+
   foreach tag {Gameinfo Comment GList PGN Cross PList Tmt Switcher Maint ECO Repertoire Stats Tree TB Book CorrChess } {
     configMenuText .menu.windows [tr Windows$tag $oldLang] Windows$tag $lang
   }
-  
+
   foreach tag {Analysis Email FilterGraph AbsFilterGraph OpReport Tracker
     Rating Score ExpCurrent ExpFilter ImportOne ImportFile StartEngine1 StartEngine2 BookTuning
     PInfo PlayerReport ConnectHardware} {
     configMenuText .menu.tools [tr Tools$tag $oldLang] Tools$tag $lang
   }
-  
+
   .menu.tools.pinfo entryconfigure 0 -label $::tr(White)
   .menu.tools.pinfo entryconfigure 1 -label $::tr(Black)
   foreach tag {ToolsExpCurrentPGN ToolsExpCurrentHTML ToolsExpCurrentHTMLJS ToolsExpCurrentLaTeX} {
@@ -1510,7 +1510,7 @@ proc setLanguageMenus {{lang ""}} {
   foreach tag { Configure NovagCitrineConnect InputEngineConnect  } {
     configMenuText .menu.tools.hardware [tr ToolsConnectHardware$tag $oldLang] ToolsConnectHardware$tag $lang
   }
-  
+
   foreach tag {Regular Menu Small Fixed} {
     configMenuText .menu.options.fonts [tr OptionsFonts$tag $oldLang] \
         OptionsFonts$tag $lang
@@ -1541,7 +1541,7 @@ proc setLanguageMenus {{lang ""}} {
   foreach tag {Contents Index Tip Startup About} {
     configMenuText .menu.help [tr Help$tag $oldLang] Help$tag $lang
   }
-  
+
   # Should sort out what the Delete , Mark menus did.
   # Its' proably tied in with my half-baked Gamelist Widget, and FLAGS
   #  foreach tag {HideNext Material FEN Marks Wrap FullComment Photos TBNothing TBResult TBAll Delete Mark} 
@@ -1557,7 +1557,7 @@ proc setLanguageMenus {{lang ""}} {
   ::optable::ConfigMenus
   ::preport::ConfigMenus
   ::tourney::ConfigMenus
-  
+
   # Check for duplicate menu underline characters in this language:
   # set ::verifyMenus 1
   if {[info exists ::verifyMenus] && $::verifyMenus} {
@@ -1673,12 +1673,12 @@ proc standardShortcuts {w} {
 ################################################################################
 proc configInformant {} {
   global informant
-  
+
   set w .configInformant
   if {[winfo exists $w]} {
     destroy $w
   }
-  
+
   toplevel $w
   wm state $w withdrawn
   wm title $w $::tr(ConfigureInformant)
@@ -1686,7 +1686,7 @@ proc configInformant {} {
   frame $w.spinF
   set idx 0
   set row 0
-  
+
   foreach i [lsort [array names informant]] {
     label $w.spinF.labelExpl$idx -text [ ::tr "Informant[ string trim $i "\""]" ]
     label $w.spinF.label$idx -text [string trim $i {"}]
@@ -1697,7 +1697,7 @@ proc configInformant {} {
     incr row
     incr idx
   }
-  
+
   button $w.close -textvar ::tr(Close) -command "destroy $w"
   pack $w.spinF $w.close -pady 5
 

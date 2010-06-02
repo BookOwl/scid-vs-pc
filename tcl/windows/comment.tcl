@@ -2,16 +2,16 @@
 ### Comment Editor window
 
 namespace eval ::commenteditor {
-  
+
   namespace export open close update storeComment addNag
-  
+
   # List of colors and types used to mark a square
-  
+
   variable  colorList {}  markTypeList {}
   set colorList {red orange yellow green blue darkBlue purple white black}
   # Each list is a set of buttons in the dialog menu:
   set markTypeList {{circle disk full x + - = ? !} {1 2 3 4 5 6 7 8 9}}
-  
+
   # IO state of the comment editor
   variable  State
   array set State {
@@ -20,7 +20,7 @@ namespace eval ::commenteditor {
 	text {}
 	pending {}
   }
-  
+
   proc addMark {args} {eval ::board::mark::add $args}
   proc delMark {args} {eval ::board::mark::remove $args}
 }
@@ -49,7 +49,7 @@ proc ::commenteditor::Open {} {
   variable colorList
   variable markTypeList
   variable State
-  
+
   set w .commentWin
   if {[winfo exists $w]} {
     wm deiconify $w
@@ -65,7 +65,7 @@ proc ::commenteditor::Open {} {
   bind $w <Destroy> ""
   bind $w <Configure> "recordWinSize $w"
   standardShortcuts $w
-  
+
   set mark [frame $w.markFrame]
   if { $::commenteditor::showBoard } {
     pack $mark -side bottom -fill x -padx 10
@@ -78,7 +78,7 @@ proc ::commenteditor::Open {} {
   entry $w.nf.tf.text -width 20 
   bindFocusColors $w.nf.tf.text
   bind $w.nf.tf.text <Alt-KeyRelease-c> { .commentWin.b.cancel invoke }
-  
+
   set nagbox $w.nf.tf.text
   set nagbuttons $w.nf.b
   frame $w.nf.b
@@ -110,11 +110,11 @@ proc ::commenteditor::Open {} {
     grid $nagbuttons.b$i -row [expr {$i % 2}] -column [expr {int($i / 2)}] -padx 2 -pady 2
     incr i
   }
-  
+
   label $w.nf.label -font font_Regular -textvar ::tr(AnnotationSymbols)
   pack $w.nf -side top -pady 2 -padx 5 -fill x -expand 1
   #addHorizontalRule $w
-  
+
   button $w.nf.tf.clear -textvar ::tr(Clear) -command {
     .commentWin.nf.tf.text delete 0 end
     ::commenteditor::storeComment
@@ -127,7 +127,7 @@ proc ::commenteditor::Open {} {
   pack $w.nf.tf.text -side left -fill x -expand 1
   pack $w.nf.tf.clear -side right -padx 20 -pady 5
   pack $w.nf.b -side top
-  
+
   label $w.cflabel -font font_Regular -textvar ::tr(Comment)
   pack $w.cflabel -side top -pady 2
 
@@ -149,7 +149,7 @@ proc ::commenteditor::Open {} {
   button $w.cf.buttons.revert -textvar ::tr(Revert) \
       -command ::commenteditor::Refresh
   set helpMessage(E,$w.cf.buttons.revert) {Revert to the stored comment}
-  
+
   pack $w.cf -side top -padx 5 -expand 1 -fill both
 
   pack $w.cf.buttons -side right -padx 5
@@ -158,12 +158,12 @@ proc ::commenteditor::Open {} {
 
   pack $w.cf.scroll -side right -fill y
   pack $w.cf.text -side left -expand 1 -fill both
-  
+
   ### Main buttons
-  
+
   frame $w.b
   pack $w.b -side top -ipady 4 -padx 2 -pady 4 -expand 1 -fill x
-  
+
   button $w.b.hide -width 3 -pady 1 \
       -command "::commenteditor::toggleBoard $mark"
   if { $::commenteditor::showBoard } {
@@ -187,18 +187,18 @@ proc ::commenteditor::Open {} {
       -command "focus .
                 destroy .commentWin"
   set helpMessage(E,$w.b.cancel) {Close comment editor window}
-  
+
   pack $w.b.hide $w.b.space $w.b.ok $w.b.apply $w.b.cancel -side left -fill x -expand 1 -padx 2
-  
+
   ### Insert-mark frame
-  
+
   label $mark.header -font font_Regular -text $::tr(InsertMark)
   pack $mark.header -side top -ipady 1 -fill x -padx 1
-  
+
   # pack [frame [set usage $mark.usage]] -side bottom -pady 1 -expand true
   # pack [label [set usage $usage.text] \
       -text [string trim $::tr(InsertMarkHelp)] -justify left]
-  
+
   # Subframes for insert board and two button rows:
   pack [frame [set colorButtons $mark.colorButtons]] \
       -side top -pady 1 -anchor n
@@ -206,7 +206,7 @@ proc ::commenteditor::Open {} {
       -side top -pady 1
   pack [frame [set typeButtons $mark.typeButtons]] \
       -side top -pady 5 -anchor s
-  
+
   ### Color (radio)buttons
 
   foreach color $colorList {
@@ -222,7 +222,7 @@ proc ::commenteditor::Open {} {
         -command [namespace code [list SetMarkColor $color]]
     pack $colorButtons.c$color -side left -padx 1 -pady 4
   }
-  
+
   ### A small board
 
   set board [::board::new $insertBoard.board 25]
@@ -241,7 +241,7 @@ proc ::commenteditor::Open {} {
     ::board::bind $board $square <ButtonPress-3> [namespace code \
         [list InsertMark $board [expr {$square + 64}]]]
   }
-  
+
   ### Type/Shape (pseudo-radio)buttons
 
   set size 20	;# button/rectangle size
@@ -272,9 +272,9 @@ proc ::commenteditor::Open {} {
   } ;# foreach button_line
   # "Press" button:
   SetMarkType $board $State(markType)
-  
+
   ### Start editing
-  
+
   setWinLocation $w
 
   # wm state $w normal
@@ -373,7 +373,7 @@ proc ::commenteditor::InsertMark {board square} {
   # Right mouse click results in square-no + 64:
   set from [expr {$State(pending) % 64}]
   set to   [expr {$square         % 64}]
-  
+
   set key $::board::mark::Command
   array set tag [list remove 0 value {}]
   if {$square == $State(pending)} {
@@ -405,7 +405,7 @@ proc ::commenteditor::InsertMark {board square} {
     }
   }
   set State(pending) ""
-  
+
   if {$tag(remove)} {
     set remove [lindex $tag(value) 0]
     if [llength [$textwin tag range $remove]] {
@@ -470,7 +470,7 @@ proc ::commenteditor::storeComment {} {
       sc_pos addNag $i
     }
   }
-  
+
   # The "end-1c" below is because Tk adds a newline to text contents:
   set newComment [.commentWin.cf.text get 1.0 end-1c]
   set oldComment [sc_pos getComment]
@@ -488,14 +488,14 @@ proc ::commenteditor::storeComment {} {
 #
 proc ::commenteditor::Refresh {} {
   if {![winfo exists .commentWin]} { return }
-  
+
   set nag [sc_pos getNags]
   .commentWin.nf.tf.text configure -state normal
   .commentWin.nf.tf.text delete 0 end
   if {$nag != "0"} {
     .commentWin.nf.tf.text insert end $nag
   }
-  
+
   # if at vstart, disable NAG codes
   if {[sc_pos isAt vstart]} {
     set state "disabled"
@@ -508,7 +508,7 @@ proc ::commenteditor::Refresh {} {
   foreach c [winfo children .commentWin.nf.b] {
     $c configure -state $state
   }
-  
+
   # Rewrite text window, tag embedded commands,
   # and draw marks according to text window commands.
   set text  .commentWin.cf.text

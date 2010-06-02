@@ -36,7 +36,7 @@ namespace eval ::ezsmtp {
     elseif {[info exists env(USERNAME)]}  {set mail(from) $env(USERNAME)} \
     elseif {[info exists env(USER)]}      {set mail(from) $env(USER)} \
     else   {set mail(from) {}}
-    
+
     # Trim any leading/trailing spaces and add @ current host name
     set mail(from) [string trim $mail(from)]
     if {[string length $mail(from)] > 0} {
@@ -291,7 +291,7 @@ proc ::ezsmtp::private_add_header {var key value} {
         }
         lappend vall $ln
     }
-    
+
     # set in the current send session's array by appending colon to key.
     private_log 6 "Header $key=[join $vall "\n\t"]"
     set cur([set key]:) $vall

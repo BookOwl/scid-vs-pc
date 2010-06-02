@@ -4,7 +4,7 @@
 
 set helpTitle(Contents) "Scid Vs PC"
 set helpText(Contents) {<h1>Scid Vs PC</h1>
-  
+
   <ul> <ul> <ul> <ul> <ul> <ul> <ul> <ul> <ul>
 
   <br> <li><img splash></li>
@@ -160,7 +160,7 @@ and only as single games. If you open a PGN file with multiple games, Scid does 
 
 set helpTitle(Scid) "Scid"
 set helpText(Scid) {<h1>Scid Help Contents</h1>
-  
+
   <h4>Starting out and general help</h4>
   <ul>
   <li><a Guide><b>Quick Guide</b> to using Scid</a></li>
@@ -172,7 +172,7 @@ set helpText(Scid) {<h1>Scid Help Contents</h1>
   <li><a Clipbase>Using the <b>Clipbase</b> database</a></li>
   <li><a Annotating><b>Annotating games</b></a></li>
   </ul>
-  
+
   <h4>Other Scid windows</h4>
   <ul>
   <li><a Analysis><b>Analysis</b> window</a></li>
@@ -198,7 +198,7 @@ set helpText(Scid) {<h1>Scid Help Contents</h1>
   <li><a Graphs><b>Graph</b> windows</a></li>
   <li><a TB>Using <b>Tablebases</b> in Scid</a></li>
   </ul>
-  
+
   <h4>Other utilities and information</h4>
   <ul>
   <li><a Bookmarks><b>Bookmarks</b></a></li>
@@ -218,7 +218,7 @@ set helpText(Scid) {<h1>Scid Help Contents</h1>
   <li><a Formats>Scid database <b>file formats</b></a></li>
   <li><a Author>Contact information</a></li>
   </ul>
-  
+
   <p><footer>(Updated: Scid 3.6.23, March 2008)</footer></p>
 }
 
@@ -227,7 +227,7 @@ set helpText(Scid) {<h1>Scid Help Contents</h1>
 
 set helpTitle(Index) "Scid Help Topic Index"
 set helpText(Index) {<h1>Scid Help Index</h1>
-  
+
 <br>
 <a Index A>  A</a> <a Index B>  B</a> <a Index C>  C</a> <a Index D>  D</a> <a Index  E> E</a> <a Index F>  F</a> <a Index G>  G</a> <a Index H>  H</a> <a Index I>  I</a> <a Index  J> J</a> <a Index K>  K</a> <a Index L>  L</a> <a Index M>  M</a> <a Index N>  N</a> <a Index O>  O</a> <a Index P>  P</a> <a Index Q>  Q</a> <a Index R>  R</a> <a Index S>  S</a> <a Index T>  T</a> <a Index U>  U</a> <a Index V>  V</a> <a Index W>  W</a> <a Index X>  X</a> <a Index Y>  Y</a> <a Index Z>  Z</a>
 <br>
@@ -239,7 +239,7 @@ set helpText(Index) {<h1>Scid Help Index</h1>
   <li><a Author>Author, contacting</a></li>
   <li><a MainWindow Autoplay>Autoplay mode</a></li>
   </ul>
-  
+
   <h3><name B>B</name></h3>
   <ul>
   <li><a Tree Best>Best games</a> window</li>
@@ -249,7 +249,7 @@ set helpText(Index) {<h1>Scid Help Index</h1>
   <li><a Bookmarks>Bookmarks</a></li>
   <li><a GameList Browsing>Browsing games</a></li>
   </ul>
-  
+
   <h3><name C>C</name></h3>
   <ul>
   <li><a Maintenance Cleaner>Cleaner</a></li>
@@ -264,7 +264,7 @@ set helpText(Index) {<h1>Scid Help Index</h1>
   <li><a Contents>Contents</a></li>
   <li><a Crosstable>Crosstable</a> window</li>
   </ul>
-  
+
   <h3><name D>D</name></h3>
   <ul>
   <li><a Compact>Database compaction</a></li>
@@ -274,7 +274,7 @@ set helpText(Index) {<h1>Scid Help Index</h1>
   <li><a Switcher>Database switcher</a> window</li>
   <li><a Maintenance Twins>Deleting twin games</a></li>
   </ul>
-  
+
   <h3><name E>E</name></h3>
   <ul>
   <li><a ECO Browser>ECO Browser</a> window</li>
@@ -288,7 +288,7 @@ set helpText(Index) {<h1>Scid Help Index</h1>
   <li><a EPD>EPD files</a></li>
   <li><a Export>Exporting games to text files</a></li>
   </ul>
-  
+
   <h3><name F>F</name></h3>
   <ul>
   <li><a FICSOver>FICS Overview</a></li>
@@ -306,7 +306,7 @@ set helpText(Index) {<h1>Scid Help Index</h1>
   <li><a Flags>Flags</a></li>
   <li><a Options Fonts>Fonts</a></li>
   </ul>
-  
+
   <h3><name G>G</name></h3>
   <ul>
   <li><a Flags>Game flags</a></li>
@@ -314,14 +314,14 @@ set helpText(Index) {<h1>Scid Help Index</h1>
   <li><a Menus Game>Game menu</a></li>
   <li><a Graphs>Graph windows</a></li>
   </ul>
-  
+
   <h3><name H>H</name></h3>
   <ul>
   <li><a Searches Header>Header searches</a></li>
   <li><a Menus Help>Help menu</a></li>
   <li><a Hints>Hints</a></li>
   </ul>
-  
+
   <h3><name I>I</name></h3>
   <ul>
   <li><a Import>Import</a> window</li>
@@ -336,13 +336,13 @@ set helpText(Index) {<h1>Scid Help Index</h1>
   <h3><name K>K</name></h3>
   <ul>
   </ul>
-  
+
   <h3><name L>L</name></h3>
   <ul>
   <li><a LaTeX>LaTeX</a> output format</li>
   <li><a Related>Links</a></li>
   </ul>
-  
+
   <h3><name M>M</name></h3>
   <ul>
   <li><a MainWindow>Main Window</a></li>
@@ -352,7 +352,7 @@ set helpText(Index) {<h1>Scid Help Index</h1>
   <li><a GameList Browsing>Merging games</a></li>
   <li><a Moves>Move entry</a></li>
   </ul>
-  
+
   <h3><name N>N</name></h3>
   <ul>
   <li><a Maintenance Editing>Names, editing</a></li>
@@ -360,7 +360,7 @@ set helpText(Index) {<h1>Scid Help Index</h1>
   <li><a NAGs>NAG annotation values</a></li>
   <li><a Annotating Null>Null moves</a></li>
   </ul>
-  
+
   <h3><name O>O</name></h3>
   <ul>
   <li><a ECO>Opening classification (ECO)</a></li>
@@ -369,7 +369,7 @@ set helpText(Index) {<h1>Scid Help Index</h1>
   <li><a OpeningTrainer>Training: Openings</a></li>
   <li><a Options>Options</a></li>
   </ul>
-  
+
   <h3><name P>P</name></h3>
   <ul>
   <li><a PGN>PGN</a> window</li>
@@ -382,18 +382,18 @@ set helpText(Index) {<h1>Scid Help Index</h1>
   <li><a TacticalGame>Play tactical game</a></li>
   <li><a SeriousGame>Play serious game</a></li>
   </ul>
-  
+
   <h3><name Q>Q</name></h3>
   <ul>
   <li><a Guide>Quick guide to using Scid</a></li>
   </ul>
-  
+
   <h3><name R>R</name></h3>
   <ul>
   <li><a Graphs Rating>Rating graph</a></li>
   <li><a Repertoire>Repertoire editor</a></li>
   </ul>
-  
+
   <h3><name S>S</name></h3>
   <ul>
   <li><a Searches Filter>Search filter</a></li>
@@ -404,7 +404,7 @@ set helpText(Index) {<h1>Scid Help Index</h1>
   <li><a Maintenance Spellcheck>Spellchecking names</a></li>
   <li><a Switcher>Switcher</a> window</li>
   </ul>
-  
+
   <h3><name T>T</name></h3>
   <ul>
   <li><a TB>Tablebases</a></li>
@@ -419,16 +419,16 @@ set helpText(Index) {<h1>Scid Help Index</h1>
   <li><a Moves Trial>Trial mode</a></li>
   <li><a Maintenance Twins>Twin (duplicate) games</a></li>
   </ul>
-  
+
   <h3><name U>U</name></h3>
   <ul>
   </ul>
-  
+
   <h3><name V>V</name></h3>
   <ul>
   <li><a Annotating Vars>Variations</a></li>
   </ul>
-  
+
   <h3><name W>W</name></h3>
   <ul>
   <li><a Menus Windows>Windows menu</a></li>
@@ -501,7 +501,7 @@ set helpText(Guide) {<h1>Quick Guide to using Scid</h1>
   See the <a Author>contact information</a> page if you need to contact the
   author of Scid.
   </p>
-  
+
   <p><footer>(Updated: Scid 3.6.2, December 2006)</footer></p>
 }
 
@@ -519,7 +519,7 @@ set helpText(Hints) {<h1>Scid Hints</h1>
   If you think of a useful hint to add to this page, please send it
   to the <a Author>author of Scid</a>.
   </p>
-  
+
   <h4>Can I get Scid to load a database when it starts?</h4>
   <p>
   Yes, you can add databases, PGN files or <a EPD>EPD files</a>
@@ -530,14 +530,14 @@ set helpText(Hints) {<h1>Scid Hints</h1>
   will load the Scid database <b>mybase</b> and also load the
   Gzip-compressed PGN file <b>games.pgn.gz</b>.
   </p>
-  
+
   <h4>Is there an easier way to change the board size than using the
   options menu?</h4>
   <p>
   Yes, you can use the shortcut keys <b>Control+Shift+LeftArrow</b> and
   <b>Control+Shift+RightArrow</b> to decrease or increase the board size.
   </p>
-  
+
   <h4>I am training by playing through a game, so I do not want Scid to
   print the next move in the game information area below the chessboard.
   Can I hide it?</h4>
@@ -546,7 +546,7 @@ set helpText(Hints) {<h1>Scid Hints</h1>
   game information area, and selecting <b>Hide next move</b> from the
   menu that appears.
   </p>
-  
+
   <h4>How can I see the ECO opening code for the current position?</h4>
   <p>
   The ECO code is displayed on the bottom line of the game
@@ -555,21 +555,21 @@ set helpText(Hints) {<h1>Scid Hints</h1>
   The <a ECO>ECO codes</a> help page explains how to load the ECO classification
   file and save options so it will be loaded every time you start Scid.
   </p>
-  
+
   <h4>I am entering a game, and I am up to move 30, but just saw that move
   10 was wrong. How can I correct it and keep all the moves after it?</h4>
   <p>
   You can use the <a Import>Import</a> window; see the
   <a Moves Mistakes>entering moves</a> help page for more information.
   </p>
-  
+
   <h4>How do I copy games from one database to another?</h4>
   <p>
   Use the <a Switcher>database switcher window</a>: drag from the source
   database to the target database to copy all games in the source database
   <a Searches Filter>filter</a>.
   </p>
-  
+
   <h4>Every time I enter a move where one already exists, I get a
   "Replace move?" dialog box. How do I avoid that?</h4>
   <p>
@@ -579,12 +579,12 @@ set helpText(Hints) {<h1>Scid Hints</h1>
   which actually removes the move from the game if you are at the last move of
   the game.
   </p>
-  
+
   <h4>How do I change column widths in the Game List window?</h4>
   <p>
   Click the left or right mouse button on each column title.
   </p>
-  
+
   <h4>How can I use the tree window on a selection of games, not my whole
   database?</h4>
   <p>
@@ -593,13 +593,13 @@ set helpText(Hints) {<h1>Scid Hints</h1>
   <a Switcher>database switcher</a>. Then, just open the tree window in the
   clipbase.
   </p>
-  
+
   <h4>The Tree is slow for large databases. How do I speed it up?</h4>
   <p>
   Save the Tree cache often, to save tree results for future use.
   See the caching section of the <a Tree>Tree</a> help page for details.
   </p>
-  
+
   <h4>How can I edit the PGN representation of the game directly?</h4>
   <p>
   You cannot use the <a PGN>PGN</a> window to edit the current game, but you can
@@ -607,7 +607,7 @@ set helpText(Hints) {<h1>Scid Hints</h1>
   Just open it (shortcut key: <b>Control+Shift+I</b>) and then press the
   <b>Paste current game</b> button, then edit the game, then press <b>Import</b>.
   </p>
-  
+
   <h4>My database has several spellings for some player names. How do I
   correct them all?</h4>
   <p>
@@ -615,7 +615,7 @@ set helpText(Hints) {<h1>Scid Hints</h1>
   with the commands in the <menu>File: Maintenance</menu> menu.
   See the <a Maintenance Editing>maintenance</a> page.
   </p>
-  
+
   <h4>I have two databases open: one with my own games, and a large database of
   grandmaster games. How do I compare one of my games to those in the large
   database?</h4>
@@ -625,7 +625,7 @@ set helpText(Hints) {<h1>Scid Hints</h1>
   switcher. Alternatively, a base can directly be opened as tree via
   the <term>File</term> menu.
   </p>
-  
+
   <p><footer>(Updated: Scid 3.6.28, December 2008)</footer></p>
 }
 
@@ -641,7 +641,7 @@ set helpText(MainWindow) {<h1>Scid main window</h1>
   Separate help pages describe the <a Menus>menus</a> and ways to
   <a Moves>enter chess moves</a>.
   </p>
-  
+
   <h3>Game navigation buttons</h3>
   <p>
   The navigation buttons above the board have the following meanings, from
@@ -661,7 +661,7 @@ set helpText(MainWindow) {<h1>Scid main window</h1>
   <li> <button tb_coords> Show/hide board coordinates. [0]</li>
   </ul>
   Keyboard shortcuts are given in square brackets.
-  
+
   <h4><name Autoplay>Autoplay mode</name></h4>
   <p>
   In autoplay mode, Scid automatically plays the moves in the current game,
@@ -679,7 +679,7 @@ set helpText(MainWindow) {<h1>Scid main window</h1>
   are added to the game as a new variation just before each move is made.
   See the <a Analysis>analysis window</a> help page for details.
   </p>
-  
+
   <h3>The game information area</h3>
   <p>
   The area below the chessboard showing information about the game is
@@ -716,14 +716,14 @@ set helpText(MainWindow) {<h1>Scid main window</h1>
   bishop while black has captured a knight, a white bishop and a black
   knight show up.
   </p>
-  
+
   <h4>Tablebases</h4>
   <p>
   The game information area also displays tablebase results whenever the
   displayed position reaches a material configuration found in a
   tablebase file. See the <a TB>tablebases</a> help page for details.
   </p>
-  
+
   <h3>The status bar</h3>
   <p>
   The status bar shows information about the current database.
@@ -741,7 +741,7 @@ set helpText(MainWindow) {<h1>Scid main window</h1>
   The status bar also shows how many games are currently in the
   <a Searches Filter>filter</a>.
   </p>
-  
+
   <p><footer>(Updated: Scid 3.6.26, October 2008)</footer></p>
 }
 
@@ -751,7 +751,7 @@ set helpText(MainWindow) {<h1>Scid main window</h1>
 
 set helpTitle(Menus) "Menus"
 set helpText(Menus) {<h1>Scid menus</h1>
-  
+
   <h3><name File>File</name></h3>
   <ul>
   <li><menu>New</menu>: Creates a new empty Scid database.</li>
@@ -778,7 +778,7 @@ set helpText(Menus) {<h1>Scid menus</h1>
   database.</li>
   <li><menu>Exit</menu>: Exits Scid. </li>
   </ul>
-  
+
   <h3><name Edit>Edit</name></h3>
   <ul>
   <li><menu>Add Variation</menu>: Adds a new empty variation for the
@@ -807,7 +807,7 @@ set helpText(Menus) {<h1>Scid menus</h1>
   <li><menu>Paste start board</menu>: Sets the start board from the current
   text selection (clipboard).</li>
   </ul>
-  
+
   <h3><name Game>Game</name></h3>
   <ul>
   <li><menu>New Game</menu>: Resets the active game to an empty state,
@@ -831,7 +831,7 @@ set helpText(Menus) {<h1>Scid menus</h1>
   <li><menu>Find novelty</menu>: Finds the first move of the current game
   that has not been played before.</li>
   </ul>
-  
+
   <h3><name Search>Search</name></h3>
   <ul>
   <li><menu>Reset Filter</menu>: Resets the <a Searches Filter>filter</a>
@@ -849,7 +849,7 @@ set helpText(Menus) {<h1>Scid menus</h1>
   <li><menu>Using search file</menu>: Searches using
   <a Searches Settings>settings</a> from a SearchOptions file.</li>
   </ul>
-  
+
   <h3><name Windows>Windows</name></h3>
   <ul>
   <li><menu>Comment Editor</menu>: Opens/closes the
@@ -880,7 +880,7 @@ set helpText(Menus) {<h1>Scid menus</h1>
   <li><menu>Endgame Tablebase window</menu>: Opens/closes the window that
   displays <a TB>tablebase</a> information.</li>
   </ul>
-  
+
   <h3><name Tools>Tools</name></h3>
   <ul>
   <li><menu>Analysis engine</menu>: Starts/stops the chess analysis
@@ -917,7 +917,7 @@ set helpText(Menus) {<h1>Scid menus</h1>
   games in PGN format to the current database. Note, that several PGN
   files can be selected in this dialogue at once.</li>
   </ul>
-  
+
   <h3><name Options>Options</name></h3>
   <p>
   This menu provides entries for setting most of Scid's configurable
@@ -927,14 +927,14 @@ set helpText(Menus) {<h1>Scid menus</h1>
   directory of the Scid executable programs for Windows users);
   this file is loaded each time you start up Scid.
   </p>
-  
+
   <h3><name Help>Help</name></h3>
   <p>
   This menu contains help functions, and access to the tip of the day
   window or the startup window which provides information about the
   files Scid loaded when it started.
   </p>
-  
+
   <p><footer>(Updated: Scid 3.6.26, October 2008)</footer></p>
 }
 
@@ -962,14 +962,14 @@ set helpText(Moves) {<h1>Entering chess moves</h1>
   confirmation, use the middle mouse button of the mouse to enter the
   move.
   </p>
-  
+
   <h4>Retracting a move</h4>
   <p>
   To take back a move, press the right mouse button, Control + Delete
   or Control + Backspace. This goes back one move, and deletes the
   move if it is the last in the game or variation.
   </p>
-  
+
   <h4>Replacing old moves</h4>
   <p>
   When you enter a move at a point in the game where a move already exists,
@@ -992,7 +992,7 @@ set helpText(Moves) {<h1>Entering chess moves</h1>
   again results in a green, the middle in a yellow and the right mouse
   button in a red arrow.
   </p>
-  
+
   <h4><name Trial>Trial mode</name></h4>
   <p>
   If you are studying a game and reach a position where you want to try
@@ -1001,7 +1001,7 @@ set helpText(Moves) {<h1>Entering chess moves</h1>
   mode. In this mode, you can make temporary moves and changes to the
   game, then return to the original position when you exit trial mode.
   </p>
-  
+
   <h3><name Mistakes>Correcting mistakes</name></h3>
   <p>
   If you are entering a game and suddenly see an incorrect move several
@@ -1010,7 +1010,7 @@ set helpText(Moves) {<h1>Entering chess moves</h1>
   of the game: open the <a Import>Import</a> window, select "Paste current
   game", correct the incorrect move, then select "Import".
   </p>
-  
+
   <h3>Keyboard move entry</h3>
   <p>
   To enter moves at the keyboard, simply press letter and digit
@@ -1036,7 +1036,7 @@ set helpText(Moves) {<h1>Entering chess moves</h1>
   [b] can match to a pawn or Bishop, but if there is a conflict
   you must use a capital [B] for the Bishop move.
   </p>
-  
+
   <h4>Auto-Completion</h4>
   <p>
   In the Options menu, you can turn on or off <term>Auto-Completion</term>
@@ -1046,7 +1046,7 @@ set helpText(Moves) {<h1>Entering chess moves</h1>
   auto-completion, you would only need to type [n][f] instead
   of [n][f][3] for <b>Nf3</b> in the starting position.
   </p>
-  
+
   <h3><name Null>Entering null moves</name></h3>
   <p>
   <a Annotating Null>Null</a> (empty) moves can be useful in variations, where
@@ -1054,7 +1054,7 @@ set helpText(Moves) {<h1>Entering chess moves</h1>
   mouse by capturing one king with the other king, or with the keyboard by
   typing "<b>--</b>" (that is, pressing the minus key twice).
   </p>
-  
+
   <h3><name Informant>Entering common annotation symbols</h3>
   <p>
   You can also add common <a NAGs>annotation symbols</a> using the keyboard
@@ -1081,7 +1081,7 @@ set helpText(Moves) {<h1>Entering chess moves</h1>
   annotations, also. To this end, these symbols have to be associated
   with a certain pawn value. These pawn values can be set via Options
   / Game information / Configure Informant values.
-  
+
   <p><footer>(Updated: Scid 3.6.26, October 2008)</footer></p>
 }
 
@@ -1103,7 +1103,7 @@ set helpText(Searches) {<h1>Searches in Scid</h1>
   In addition to these, there is also an automatic search mode called the
   <a Tree>Tree window</a> which is explained separately.
   </p>
-  
+
   <h3><name Filter>The Search Filter</name></h3>
   <p>
   Searches in Scid are based on the concept of a <term>filter</term>.
@@ -1129,7 +1129,7 @@ set helpText(Searches) {<h1>Searches in Scid</h1>
   <b>Note</b> that searches only apply to the main line moves of a game,
   not to any moves in variations.
   </p>
-  
+
   <h3><name Board>Search: Current Board</name></h3>
   <p>
   This search finds games that contain the current displayed position,
@@ -1163,7 +1163,7 @@ set helpText(Searches) {<h1>Searches in Scid</h1>
   checkbox, but this may make the search much slower if your database
   is large and has many games with variations.
   </p>
-  
+
   <h3><name Material>Search: Material/Pattern</name></h3>
   <p>
   This search is useful for finding endgame or middlegame themes.
@@ -1181,7 +1181,7 @@ set helpText(Searches) {<h1>Searches in Scid</h1>
   if you set the minimum move number to 20 for an ending, all games that
   end in under 20 moves can be skipped.
   </p>
-  
+
   <h3><name Header>Search: Header</name></h3>
   <p>
   This search can be used to find aspects of the game that are stored
@@ -1234,7 +1234,7 @@ set helpText(Searches) {<h1>Searches in Scid</h1>
   <b>Note</b> If a search by <a ECO>ECO</a> code is performed, games
   that have no ECO code attached are ignored.
   </p>
-  
+
   <h3><name Settings>Saving search settings</name></h3>
   <p>
   The Material/Pattern and Header search windows provide a
@@ -1244,7 +1244,7 @@ set helpText(Searches) {<h1>Searches in Scid</h1>
   To search using a previously saved SearchOptions (.sso) file, select
   <menu>Open</menu> from the <menu>Search</menu> menu.
   </p>
-  
+
   <h3>Search times and skipped games</h3>
   <p>
   Most searches produce a message indicating the time taken and the number
@@ -1253,7 +1253,7 @@ set helpText(Searches) {<h1>Searches in Scid</h1>
   information stored in the index. See the help page on
   <a Formats>file formats</a> for more information.
   </p>
-  
+
   <p><footer>(Updated: Scid 3.6.2, December 2006)</footer></p>
 }
 
@@ -1296,7 +1296,7 @@ set helpText(Clipbase) {<h1>The Clipbase database</h1>
   The clipbase has a limit of 100,000 games at any time, since it exists in
   memory only.
   </p>
-  
+
   <p><footer>(Updated: Scid 3.6.8,March  2007)</footer></p>
 }
 
@@ -1311,7 +1311,7 @@ set helpText(Annotating) {<h1>Annotating games</h1>
   variations. This section describes manual annotations, see the <a
   Analysis Annotating>Analyis</a> for engine supported analysis.
   </p>
-  
+
   <h3>Symbols and comments</h3>
   <p>
   Symbols are used to indicate an evaluation of the position (such as
@@ -1325,7 +1325,7 @@ set helpText(Annotating) {<h1>Annotating games</h1>
   one comment. A comment before the first move of the game is printed as text
   before the start of the game.
   </p>
-  
+
   <h3><name Vars>Variations</name></h3>
   <p>
   A <term>variation</term> of a move is an alternative sequence of
@@ -1335,7 +1335,7 @@ set helpText(Annotating) {<h1>Annotating games</h1>
   <menu>Edit</menu> menu, can be used to create, navigate and edit
   variations.
   </p>
-  
+
   <h4>Keyboard shortcuts</h4>
   <p>
   When a move has variations, they are shown in the game information
@@ -1353,7 +1353,7 @@ set helpText(Annotating) {<h1>Annotating games</h1>
   the beginning of the variation, the up arrow can be used
   alternatively.
   </p>
-  
+
   <h3><name Null>Null moves</name></h3>
   <p>
   Sometimes, you may find it useful in a variation to skip over a move
@@ -1377,7 +1377,7 @@ set helpText(Annotating) {<h1>Annotating games</h1>
   as a null move, a notation that is common in some commercial chess
   applications.
   </p>
-  
+
   <p><footer>(Updated: Scid 3.6.26, October 2008)</footer></p>
 }
 
@@ -1390,7 +1390,7 @@ set helpText(Comment) {<h1>The Comment Editor window</h1>
   The Comment Editor window lets you add or edit comments and symbolic
   annotation symbols for moves in the active chess game.
   </p>
-  
+
   <h3>Annotation symbols</h3>
   <p>
   Scid uses the <a Related>PGN standard</a>
@@ -1415,7 +1415,7 @@ set helpText(Comment) {<h1>The Comment Editor window</h1>
   This is especially useful if you are <a Moves>entering chess moves</a>
   using the keyboard.
   </p>
-  
+
   <h3>Comments</h3>
   <p>
   You can edit comments by typing in the text area provided and using
@@ -1428,7 +1428,7 @@ set helpText(Comment) {<h1>The Comment Editor window</h1>
   go to the first move and hit the left arrow key once and then insert
   the comment.
   </p>
-  
+
   <h3>Coloring squares</h3>
   <p>
   You can color any square with any color using a special embedded command
@@ -1455,7 +1455,7 @@ set helpText(Comment) {<h1>The Comment Editor window</h1>
   will color d6 <red>red</red> and b5 with the dark-blue color
   <darkblue>#000070</darkblue>.
   </p>
-  
+
   <h3>Drawing arrows</h3>
   <p>
   You can draw an arrow from one square to another using a special
@@ -1493,7 +1493,7 @@ set helpText(Comment) {<h1>The Comment Editor window</h1>
   again results in a green, the middle in a yellow and the right mouse
   button in a red arrow.
   </p>
-  
+
   <p><footer>(Updated: Scid 3.6.26, October 2008)</footer></p>
 }
 
@@ -1522,7 +1522,7 @@ set helpText(Crosstable) {<h1>The Crosstable window</h1>
   <a Searches Filter>filter</a>
   with the <b>Add to filter</b> button in the crosstable window.
   </p>
-  
+
   <h4>Crosstable window menus</h4>
   <p>
   The <menu>File</menu> menu lets you print the current table to a file
@@ -1564,7 +1564,7 @@ set helpText(Crosstable) {<h1>The Crosstable window</h1>
   lot of time.
   However, in plain text mode you cannot click on players or games.
   </p>
-  
+
   <h4>Duplicate games in crosstables</h4>
   <p>
   To get good results with the crosstable, you should mark duplicate games
@@ -1574,7 +1574,7 @@ set helpText(Crosstable) {<h1>The Crosstable window</h1>
   deleting duplicate games and editing (or spellchecking)
   player/event/site names.
   </p>
-  
+
   <p><footer>(Updated: Scid 3.6.15, May 2007)</footer></p>
 }
 
@@ -1610,7 +1610,7 @@ set helpText(Switcher) {<h1>The Database Switcher window</h1>
   change the orientation of the window (to arrange the database slots
   vertically or horizontally) which is useful for smaller screens.
   </p>
-  
+
   <p><footer>(Updated: Scid 3.6.2, December 2006)</footer></p>
 }
 
@@ -1630,7 +1630,7 @@ set helpText(Finder) {<h1>The File Finder window</h1>
   (see below) and date of last modification. You can open any displayed
   file by selecting it with a single left mouse button click.
   </p>
-  
+
   <h3>Looking in subdirectories</h3>
   <p>
   When you want to find all files in all subdirectories of the current
@@ -1641,7 +1641,7 @@ set helpText(Finder) {<h1>The File Finder window</h1>
   root of the file system. You can interrupt the file search by pressing
   the <b>Stop</b> button.
   </p>
-  
+
   <h3>File sizes</h3>
   <p>
   The meaning of a file size displayed by the Finder depends on the file
@@ -1675,7 +1675,7 @@ set helpText(Finder) {<h1>The File Finder window</h1>
    These functions are especially helpful for Scid databases as these
    consist of several files.
   </p>
-  
+
   <p><footer>(Updated: Scid 3.6.26, October 2008)</footer></p>
 }
 
@@ -1716,7 +1716,7 @@ set helpText(Tmt) {<h1>The Tournament Finder window</h1>
   these will greatly reduce the number of games Scid has to consider
   when trying to form tournaments out of the games in the database.
   </p>
-  
+
   <p><footer>(Updated: Scid 3.6.2, December 2006)</footer></p>
 }
 
@@ -1734,7 +1734,7 @@ Double-clicking will load a game.  </p>
   <h3>Deleted and Filtered Games</h3>
   <p>
   Scid has two notions of removed games - which can be confusing.</p>
-  
+
   <p>The first is <b>Filtered Games</b>.  In the Gamelist widget,
   selecting some game(s) and pressing "Remove" or "Filter"
   will <b>filter</b> those games. They will disappear from the Game List
@@ -1775,7 +1775,7 @@ set helpText(Import) {<h1>The Import window</h1>
   the text of the game in PGN format, and the gray frame below it
   provides feedback of any errors or warnings.
   </p>
-  
+
   <h3>Editing the current game with the Import window</h3>
   <p>
   The Import window also doubles as a convenient way to make a few changes
@@ -1783,7 +1783,7 @@ set helpText(Import) {<h1>The Import window</h1>
   Import window (with the <b>Paste current game</b> button), edit the
   text, and click <b>Import</b> when done.
   </p>
-  
+
   <h3>PGN tags in the Import window</h3>
   <p>
   Scid expects to see PGN header tags such as
@@ -1796,7 +1796,7 @@ set helpText(Import) {<h1>The Import window</h1>
   </ul>
   without any header tags and Scid will import it.
   </p>
-  
+
   <h3>Using PGN files in Scid</h3>
   <p>
   If you want to use a PGN format file in Scid but do not
@@ -1813,7 +1813,7 @@ set helpText(Import) {<h1>The Import window</h1>
   comparable Scid database, so this is only recommended for relatively
   small PGN files.
   </p>
-  
+
   <p><footer>(Updated: Scid 3.6.2, December 2006)</footer></p>
 }
 
@@ -1835,7 +1835,7 @@ set helpText(Export) {<h1>Exporting games</h1>
   When exporting, you can choose to create a new file, or add the
   games to an existing file of games exported by Scid.
   </p>
-  
+
   <h3>Diagrams</h3>
   <p>
   When exporting in HTML or LaTeX format, Scid will automatically add
@@ -1843,7 +1843,7 @@ set helpText(Export) {<h1>Exporting games</h1>
   Comment>comment</a> that starts with the character "#" appears in
   the game.
   </p>
-  
+
   <h3><name Null>Null moves in PGN Export</name></h3>
   <p>
   Scid allows <a Annotating Null>null (empty) moves</a> to be stored
@@ -1860,7 +1860,7 @@ set helpText(Export) {<h1>Exporting games</h1>
   comments. However, if you want to create a PGN file that can be imported
   back into Scid later with null moves preserved, leave the option off.
   </p>
-  
+
   <h3>HTML Export</h3>
   <p>
   Scid can export games to an HTML file. For diagrams to appear, you
@@ -1885,7 +1885,7 @@ set helpText(Export) {<h1>Exporting games</h1>
   filter places them. However, the whole folder can easily be uploaded
   to some web server.
   </p>
-  
+
   <h3>LaTeX Export</h3>
   <p>
   Scid can export games to a LaTeX file.  Games be printed two columns
@@ -1896,7 +1896,7 @@ set helpText(Export) {<h1>Exporting games</h1>
   <p>
   See the <a LaTeX>Using LaTeX with Scid</a> help page for more information.
   </p>
-  
+
   <p><footer>(Updated: Scid 3.6.26, October 2008)</footer></p>
 }
 
@@ -1921,7 +1921,7 @@ set helpText(LaTeX) {<h1>Using LaTeX with Scid</h1>
   <url http://scid.sourceforge.net/latex.html>Using LaTeX with Scid</url>
   page at the <url http://scid.sourceforge.net/>Scid website</url>.
   </p>
-  
+
   <p><footer>(Updated: Scid 3.6.2, December 2006)</footer></p>
 }
 
@@ -1930,7 +1930,7 @@ set helpText(LaTeX) {<h1>Using LaTeX with Scid</h1>
 
 set helpTitle(PGN) "PGN window"
 set helpText(PGN) {<h1>The PGN window</h1>
-  
+
   <h3>PGN format</h3>
   <p>
   PGN (<url http://www.saremba.de/chessgml/standards/pgn/pgn-complete.htm>Portable Game Notation</url>) is a common standard for transferring
@@ -1951,7 +1951,7 @@ set helpText(PGN) {<h1>The PGN window</h1>
   standard PGN representation. In the move text, comments appear {in
      braces} and variations appear (in parentheses).
   </p>
-  
+
   <h3>Actions in the PGN window</h3>
   <p>
   You can use the PGN window to navigate around the game: clicking the
@@ -2015,7 +2015,7 @@ set helpText(PGN) {<h1>The PGN window</h1>
   options file whenever you <b>Save Options</b> from the <menu>Options</menu>
   menu of the main window.
   </p>
- 
+
   <h3>Editting PGN directly</h3>
   <p>
   You cannot use the PGN window to edit the current game, but you can
@@ -2023,7 +2023,7 @@ set helpText(PGN) {<h1>The PGN window</h1>
   Just open it (shortcut key: <b>Control+Shift+I</b>) and then press the
   <b>Paste current game</b> button, then edit the game, then press <b>Import</b>.
   </p>
-  
+
   <p><footer>(Updated: Scid 3.6.26, October 2008)</footer></p>
 }
 
@@ -2050,7 +2050,7 @@ set helpText(PTracker) {<h1>The Piece Tracker window</h1>
   The tracked piece movement information is displayed in two ways: a
   graphical "footprint", and a text list with one line of data per square.
   </p>
-  
+
   <h3>Selecting the tracked piece</h3>
   <p>
   The chess pieces are displayed as in the standard chess starting position
@@ -2059,7 +2059,7 @@ set helpText(PTracker) {<h1>The Piece Tracker window</h1>
   pieces of the same type and color (such as all White pawns or both Black
   rooks) can be selected using the right mouse button.
   </p>
-  
+
   <h3>Other piece tracker settings</h3>
   <p>
   The move number range controls when tracking should start and stop in
@@ -2078,7 +2078,7 @@ set helpText(PTracker) {<h1>The Piece Tracker window</h1>
   tracked piece has spent on each square.
   </ul>
   </p>
-  
+
   <h3>Hints</h3>
   <p>
   There are (at least) three good uses for the Piece Tracker: opening
@@ -2108,7 +2108,7 @@ set helpText(PTracker) {<h1>The Piece Tracker window</h1>
   discover how likely the player is to fianchetto bishops, castle
   queenside, or set up a d5 or e5 pawn wedge, for example.
   </p>
-  
+
   <p><footer>(Updated: Scid 3.6.2, December 2006)</footer></p>
 }
 
@@ -2124,7 +2124,7 @@ set helpText(Repertoire) {<h1>The Repertoire editor window</h1>
   reach or try to avoid, and you can use it to manage your chess opening
   preferences and also to search databases in Scid.
   </p>
-  
+
   <h3>Repertoire groups and lines</h3>
   <p>
   A repertoire contains two types of elements: <term>groups</term> and
@@ -2142,7 +2142,7 @@ set helpText(Repertoire) {<h1>The Repertoire editor window</h1>
   1.d4 d5 2.c4 dxc4 3.e4 as an include line and 1.d4 d5 2.c4 dxc4 3.e4 Nf6 as
   an exclude line.
   </p>
-  
+
   <h3>Comments and notes</h3>
   <p>
   Each group or line can have comments attached to it. There are two types:
@@ -2150,7 +2150,7 @@ set helpText(Repertoire) {<h1>The Repertoire editor window</h1>
   next to the moves of a group or line, while a long (multiple-line) comment
   is only shown when the group or line is selected.
   </p>
-  
+
   <h3>Using the repertoire editor window</h3>
   <p>
   The <b>left</b> side of the window shows the repertoire hierarchy. You can
@@ -2178,7 +2178,7 @@ set helpText(Repertoire) {<h1>The Repertoire editor window</h1>
   The second frame contains the short comment for the line or group, and
   the third frame contains its long comment.
   </p>
-  
+
   <h3>Adding groups and lines to the repertoire</h3>
   <p>
   To add a line or group to the window, just make its moves on the
@@ -2189,7 +2189,7 @@ set helpText(Repertoire) {<h1>The Repertoire editor window</h1>
   To delete a group or line, click the right mouse button on it and select
   the appropriate command from the menu that appears.
   </p>
-  
+
   <h3><name Search>Searching databases using repertoire files</name></h3>
   <p>
   The repertoire editor <menu>Search</menu> menu lets you search the
@@ -2205,7 +2205,7 @@ set helpText(Repertoire) {<h1>The Repertoire editor window</h1>
   interested in the 1.e4 lines, simply collapse the 1.d4 group and then
   search by displayed lines only.
   </p>
-  
+
   <h3>Extra hints</h3>
   <p>
   A repertoire file is great for finding new games in your opening systems.
@@ -2228,7 +2228,7 @@ set helpText(Repertoire) {<h1>The Repertoire editor window</h1>
   You can edit a repertoire (.sor) file in any text editor, but be careful
   to preserve its format or it may not be loadable or searchable in Scid.
   </p>
-  
+
   <p><footer>(Updated: Scid 3.6.2, December 2006)</footer></p>
 }
 
@@ -2298,7 +2298,7 @@ set helpText(Tree) {<h1>The Tree window</h1>
   to show games with a particular result and also limit the number of
   games shown in this list.
   </p>
-  
+
   <h3><name Graph>Tree graph window</name></h3>
   <p>
   The tree window buttons include a button marked <term>Graph</term>
@@ -2316,7 +2316,7 @@ set helpText(Tree) {<h1>The Tree window</h1>
   to assist comparison of moves. Note that white usually scores around 55%
   in master level chess.
   </p>
-  
+
   <h3><name Lock>Locking the tree window</name></h3>
   <p>
   Each tree window is associated with a specific base, that is, if
@@ -2332,7 +2332,7 @@ set helpText(Tree) {<h1>The Tree window</h1>
   Note that opening a base as tree from the file menu will
   automatically lock the database by default.
   </p>
-  
+
   <h3><name Training>Training</name></h3>
   <p>
   When the <term>Training</term> checkbox in the tree window is selected,
@@ -2396,7 +2396,7 @@ set helpText(Tree) {<h1>The Tree window</h1>
   variations and NAG annotations using the menu <term>Fill with
   game</term> or <term>Fill with Database</term>.
   </p>
-  
+
   <h3>Caching for faster results</h3>
   <p>
   Scid maintains a cache of tree search results for the positions with the
@@ -2446,7 +2446,7 @@ set helpText(Tree) {<h1>The Tree window</h1>
   whenever an action occurs that could leave it out of date -- for example,
   adding or replacing a game, or sorting the database.
   </p>
-  
+
   <p><footer>(Updated: Scid 3.6.26, October 2008)</footer></p>
 }
 
@@ -2464,7 +2464,7 @@ set helpText(Compact) {<h1>Database compaction</h1>
   Compacting a database means removing any unused space in its files.
   There are two types: name file and game file compaction.
   </p>
-  
+
   <h3>Name file compaction</h3>
   <p>
   Over time, you may find a database starts to contain a number of player,
@@ -2473,7 +2473,7 @@ set helpText(Compact) {<h1>Database compaction</h1>
   the name file, and can slow down name searches.
   Name file compaction removes all names that are not used in any games.
   </p>
-  
+
   <h3>Game file compaction</h3>
   <p>
   Whenever a game is replaced or deleted, wasted space is left in the game
@@ -2487,7 +2487,7 @@ set helpText(Compact) {<h1>Database compaction</h1>
   database, to keep the order of the game file consistent with the sorted
   index file.
   </p>
-  
+
   <p><footer>(Updated: Scid 3.6.2, December 2006)</footer></p>
 }
 
@@ -2503,7 +2503,7 @@ set helpText(Maintenance) {<h1>Database maintenance</h1>
   database <a Compact>compaction</a> and <a Sorting>sorting</a>
   functions are explained in separate help pages.
   </p>
-  
+
   <h3>Maintenance window</h3>
   <p>
   Most Scid database maintenance can be done from the Maintenance
@@ -2517,7 +2517,7 @@ set helpText(Maintenance) {<h1>Database maintenance</h1>
   for the current database (for example, because it may be read-only
   or a PGN file) will be grayed out.
   </p>
-  
+
   <h3><name Twins>Deleting twin games</name></h3>
   <p>
   The <menu>File: Maintenance</menu> menu has a command
@@ -2544,7 +2544,7 @@ set helpText(Maintenance) {<h1>Database maintenance</h1>
   menu, or the shortcut key <b>Ctrl+Shift+T</b>) to verify that each game is
   deleted because it actually is a twin of another game.
   </p>
-  
+
   <h3><name Editing>Editing player, event, site and round names</name></h3>
   <p>
   You may find mis-spelt names in your databases and want to correct them.
@@ -2556,7 +2556,7 @@ set helpText(Maintenance) {<h1>Database maintenance</h1>
   Each unique name is only stored once in the name file, so changing a name
   actually changes all occurrences of it.
   </p>
-  
+
   <h3><name Spellcheck>Spellchecking names</name></h3>
   <p>
   Scid comes with a <term>spellcheck</term> file named <b>spelling.ssp</b>,
@@ -2592,7 +2592,7 @@ set helpText(Maintenance) {<h1>Database maintenance</h1>
   listed in the spellcheck file. Over 6500 strong players of the past and
   present are listed in the <b>spelling.ssp</b> file that comes with Scid.
   </p>
-  
+
   <h3><name Ratings>Adding Elo ratings to games</name></h3>
   <p>
   The "Add Elo ratings..." button in the Maintenance window causes Scid
@@ -2608,7 +2608,7 @@ set helpText(Maintenance) {<h1>Database maintenance</h1>
   of it called "ratings.ssp" is available from the <url
   http://scid.sourceforge.net/>Scid website</url>.
   </p>
-  
+
   <h3><name Cleaner>The Cleaner</name></h3>
   <p>
   The Scid <term>Cleaner</term> (available from the Maintenance window) is
@@ -2617,7 +2617,7 @@ set helpText(Maintenance) {<h1>Database maintenance</h1>
   perform them on the current database without requiring user interaction.
   This is especially useful for maintenance of large databases.
   </p>
-  
+
   <h3>Setting the database autoload game</h3>
   <p>
   The <term>autoload</term> game of a database is the game automatically
@@ -2627,7 +2627,7 @@ set helpText(Maintenance) {<h1>Database maintenance</h1>
   of games in the database), just set it to a very high number such as
   9999999.
   </p>
-  
+
   <h3>Repair a base</h3>
   <p>
   In the rare cases that a Scid database is corrupted one might try to
@@ -2651,7 +2651,7 @@ set helpText(Sorting) {<h1>Sorting a database</h1>
   When two games are equal according to the the first criteria, they
   are sorted using the second criteria, and so on.
   </p>
-  
+
   <h3>Sort criteria</h3>
   <p>
   The available sorting criteria are:
@@ -2670,7 +2670,7 @@ set helpText(Sorting) {<h1>Sorting a database</h1>
   <li> Length (number of full moves in the game)
   <li> ECO (the <a ECO>Encyclopedia of Chess Openings code</a>)
   </ul>
-  
+
   <h3>Sort results</h3>
   <p>
   When you sort a Scid database that is not read-only, the sort
@@ -2688,7 +2688,7 @@ set helpText(Sorting) {<h1>Sorting a database</h1>
   Note that sorting a database resets the <a Searches Filter>search
   filter</a> to contain all games.
   </p>
-  
+
   <h3>Important note about sorting databases:</h3>
   <p>
   When a database is sorted, the index file is altered but the game file
@@ -2704,7 +2704,7 @@ set helpText(Sorting) {<h1>Sorting a database</h1>
   tree search modes. This however, also requires to compact the
   database after the sort procedure!
   </p>
-  
+
   <p><footer>(Updated: Scid 3.6.26, October 2008)</footer></p>
 }
 
@@ -2713,7 +2713,7 @@ set helpText(Sorting) {<h1>Sorting a database</h1>
 
 set helpTitle(Flags) "Game Flags"
 set helpText(Flags) {<h1>Game Flags</h1>
-  
+
   <p>
   A <term>flag</term> is an indicator of some chess characteristic
   that can be turned on or off for each game in the database.
@@ -2726,7 +2726,7 @@ set helpText(Flags) {<h1>Game Flags</h1>
   <p>
   The other 12 user-settable flags and their symbols are:
   </p>
-  
+
   <ul>
   <li>White opening (W)</li>
   <li>Black opening (B)</li>
@@ -2741,7 +2741,7 @@ set helpText(Flags) {<h1>Game Flags</h1>
   <li>Blunder (?)</li>
   <li>User-defined (U)</li>
   </ul>
-  
+
   <p>
   A flag can be set for the current game, all filter games, or all
   database games using the <a Maintenance>maintenance</a> window.
@@ -2769,7 +2769,7 @@ set helpText(Flags) {<h1>Game Flags</h1>
      <li><a Analysis Annotate>Find best move</a>: evaluates the (T) flag
      <li><a Analysis Annotate>Find tactical exercise</a>: sets the (T) flag
   </ul>
-  
+
   <p><footer>(Updated: Scid 3.6.26, October 2008)</footer></p>
 }
 
@@ -2951,14 +2951,14 @@ The <b>Add Variation</b> button <button tb_addvar> adds the
   playing style of the engine.
   </p>
 
-  
+
   <h3>Training</h3>
   <p>
   With the <b>Training</b> button, you can play moves against the analysis
   engine. The time for each move is fixed, and the analysis results are
   not shown when training mode is on.
   </p>
-  
+
   <h3><name Annotating>Annotating a game</name></h3>
   <p>
   The "variation" and "add all variation" buttons add the
@@ -3117,7 +3117,7 @@ set helpText(EPD) {<h1>EPD files</h1>
   <li> <b>pm</b> Predicted move: the first move of the PV.</li>
   <li> <b>pv</b> Predicted variation: the line of best play.</li>
   </ul>
-  
+
   <p>
   EPD files have a number of uses: Scid uses an EPD file to classify
   games according to the <a ECO>Encyclopedia of Chess Openings</a> (ECO)
@@ -3129,7 +3129,7 @@ set helpText(EPD) {<h1>EPD files</h1>
   <menu>New</menu> and <menu>Open</menu> commands of the
   <menu>File</menu> menu. At most four EPD files can be open at any time.
   </p>
-  
+
   <h3>EPD windows</h3>
   <p>
   For each open EPD file, you will see a window which shows the text for
@@ -3137,7 +3137,7 @@ set helpText(EPD) {<h1>EPD files</h1>
   any changes you make to a positions text; the text will be stored whenever
   you move to a different position in the game.
   </p>
-  
+
   <h3>Navigating EPD files</h3>
   <p>
   To browse through the positions in a EPD file, use the
@@ -3185,7 +3185,7 @@ set helpText(EPD) {<h1>EPD files</h1>
   <li>- legal moves from the current position reach another position
   in this EPD file.</li>
   </ul>
-  
+
   <p><footer>(Updated: Scid 3.6.26, October 2008)</footer></p>
 }
 
@@ -3212,7 +3212,7 @@ set helpText(Email) {<h1>The Email window</h1>
   <li><b>3)</b> Select <b>Send email</b> in the email window each time you
   have added moves to the game(s) and want to send a message. </li>
   </ul>
-  
+
   <p>
   When you send an email message, Scid generates the message with the games
   in PGN format <b>without</b> any comments, annotations or variations, since
@@ -3227,13 +3227,13 @@ set helpText(Email) {<h1>The Email window</h1>
   or sorting your database of email games, since this will rearrange games
   and the game numbers for each opponent will be incorrect.
   </p>
-  
+
   <h3>Limitations</h3>
   <p>
   Scid does not have any capability to check your email folder yet, so you
   still need to add your opponents moves to the games manually.
   </p>
-  
+
   <h3>Configuration</h3>
   <p>
   A copy of each email message sent by Scid is stored in the file
@@ -3250,7 +3250,7 @@ set helpText(Email) {<h1>The Email window</h1>
   Scid stores the opponent details for a database in a file
   with the same name as the database and the suffix "<b>.sem</b>".
   </p>
-  
+
   <p><footer>(Updated: Scid 3.6.2, December 2006)</footer></p>
 }
 
@@ -3264,7 +3264,7 @@ set helpText(Reports) {<h1>Reports</h1>
   a particular position and/or player. There are two types of report Scid can
   generate: Opening Reports and Player Reports.
   </p>
-  
+
   <h3><name Opening>Opening Reports</name></h3>
   <p>
   Scid can produce an <term>opening report</term> that displays interesting
@@ -3315,7 +3315,7 @@ set helpText(Reports) {<h1>Reports</h1>
   the whole games as variations to the game, including the full
   reference.
   </p>
-  
+
   <h4>Favorites</h4>
   <p>
   The <menu>Favorites</menu> menu in the report window lets you maintain a
@@ -3333,7 +3333,7 @@ set helpText(Reports) {<h1>Reports</h1>
   format you selected (e.g. ".html" for HTML format) will be added to each
   report file name.
   </p>
-  
+
   <h3><name Player>Player Reports</name></h3>
   <p>
   A <term>Player Report</term> is very similar to an opening report, but it
@@ -3346,7 +3346,7 @@ set helpText(Reports) {<h1>Reports</h1>
   with the specified pieces, or for only the subset of those games which reach
   the current position on the main window chessboard.
   </p>
-  
+
   <h3>Limits</h3>
   <p>
   There is a limit of 2000 games for most data generated by reports, so
@@ -3359,7 +3359,7 @@ set helpText(Reports) {<h1>Reports</h1>
   average Elo rating are used to generate the theory table. You can adjust the
   number of games used to generate the theory table in the Report options.
   </p>
-  
+
   <p><footer>(Updated: Scid 3.6.26, October 2008)</footer></p>
 }
 
@@ -3388,7 +3388,7 @@ set helpText(PList) {<h1>The Player Finder window</h1>
   name prefix (such as "ada" to search for "Adams"), and restrict the
   ranges of Elo rating and number of games played.
   </p>
-  
+
   <p><footer>(Updated: Scid 3.6.2, December 2006)</footer></p>
 }
 
@@ -3398,7 +3398,7 @@ set helpText(PList) {<h1>The Player Finder window</h1>
 set helpTitle(PInfo) "Player Info window"
 set helpText(PInfo) {<h1>The Player Info window</h1>
   <p>
-  
+
   The <term>Player Information</term> window shows information from the Spellcheck
   file. It includes ratings, country of origin and official titles.</p>
 
@@ -3421,7 +3421,7 @@ set helpText(PInfo) {<h1>The Player Info window</h1>
   Any number printed in red can be clicked with the left mouse button to set
   the <a Searches Filter>filter</a> to the games it represents.
   </p>
-  
+
   <p><footer>(Updated: Scid 3.6.26.9, April 2010)</footer></p>
 }
 
@@ -3434,7 +3434,7 @@ set helpText(Graphs) {<h1>Graph windows</h1>
   Scid has a number of windows which display information graphically.
   They are explained below.
   </p>
-  
+
   <h3><name Filter>Relative and absolute Filter Graph windows</name></h3>
   <p>
   The <term>relative Filter Graph</term> window shows trends by date or by
@@ -3473,7 +3473,7 @@ set helpText(Graphs) {<h1>Graph windows</h1>
   For example, if one player is rated 2500 and the opponent has no rating,
   the mean rating is (2500+2200)/2=2350.
   </p>
-  
+
   <h3><name Rating>Rating Graph window</name></h3>
   <p>
   The <term>Rating Graph</term> window shows the rating history of one
@@ -3483,7 +3483,7 @@ set helpText(Graphs) {<h1>Graph windows</h1>
   window, or produce it for the two players of the current game by
   selecting <b>Rating graph</b> from the <menu>Tools</menu> menu.
   </p>
-  
+
   <h3><name Score>Score Graph window</name></h3>
   <p>
   The <term>Score Graph</term> window shows the numeric evaluations (scores)
@@ -3510,7 +3510,7 @@ set helpText(Graphs) {<h1>Graph windows</h1>
   this.
   ###--- Checking both ??? ---###
   </p>
-  
+
   <h3><name Tree>Tree Graph window</name></h3>
   <p>
   The <term>Tree Graph</term> window is available from the tree
@@ -3518,7 +3518,7 @@ set helpText(Graphs) {<h1>Graph windows</h1>
   current position. More information is available from the
   <a Tree Graph>Tree</a> help page.
   </p>
-  
+
   <p><footer>(Updated: Scid 3.6.26, October 2008)</footer></p>
 }
 
@@ -3527,7 +3527,7 @@ set helpText(Graphs) {<h1>Graph windows</h1>
 
 set helpTitle(TB) "Tablebases"
 set helpText(TB) {<h1>Tablebases</h1>
-  
+
   <p>
   A <term>tablebase</term> is a file containing the perfect result
   information about all positions of a particular material setup,
@@ -3541,7 +3541,7 @@ set helpText(TB) {<h1>Tablebases</h1>
   or <b>.nbb.emd</b>. All 3-, 4- and 5-men Nalimov tablebases can be
   used in Scid.
   </p>
-  
+
   <h3>Using tablebases in Scid</h3>
   <p>
   To use tablebase files in Scid, simply set their directories by
@@ -3559,7 +3559,7 @@ set helpText(TB) {<h1>Tablebases</h1>
   gives the most useful information, but is much often slower than
   the "result only" option.
   </p>
-  
+
   <h3>The Tablebase window</h3>
   <p>
   You can get even more tablebase information about the current position
@@ -3573,7 +3573,7 @@ set helpText(TB) {<h1>Tablebases</h1>
   tablebase. The results frame (on the right) shows optimal results for
   all moves from the current position displayed in the main window.
   </p>
-  
+
   <h4>The summary frame</h4>
   <p>
   The top part of the summary frame lets you select a particular
@@ -3602,7 +3602,7 @@ set helpText(TB) {<h1>Tablebases</h1>
   You can set up a random position from the selected tablebase by pressing
   the <b>Random</b> button.
   </p>
-  
+
   <h4>The results frame</h4>
   <p>
   The results frame is updated whenever the chessboard in the main window
@@ -3611,7 +3611,7 @@ set helpText(TB) {<h1>Tablebases</h1>
   list of results, ranking them from shortest to longest mates, then draws,
   then longest to shortest losses. All distances are to checkmate.
   </p>
-  
+
   <h4>The results board</h4>
   <p>
   In a tablebase position, it is often useful what the tablebase results
@@ -3641,13 +3641,13 @@ set helpText(TB) {<h1>Tablebases</h1>
   a red <b>?</b> means the result is unknown because the necessary
   tablebase file is not available.
   </p>
-  
+
   <h3>Obtaining Tablebase files</h3>
   <p>
   See the <a Related>related links</a> section for help on finding
   tablebase files on the Internet.
   </p>
-  
+
   <p><footer>(Updated: Scid 3.6.2, December 2006)</footer></p>
 }
 
@@ -3680,13 +3680,13 @@ set helpText(Bookmarks) {<h1>Bookmarks</h1>
   loaded instead. So it is a good idea to re-bookmark a game if you edit
   its players, site, result, round or year.
   </p>
-  
+
   <h3>Editing bookmarks</h3>
   <p>
   With the bookmark editor, you can change the menu text displayed for
   each bookmarked game and add folders to categorize bookmarks.
   </p>
-  
+
   <h3>Hints</h3>
   <p>
   You can use bookmarks for fast access to databases you use often
@@ -3699,7 +3699,7 @@ set helpText(Bookmarks) {<h1>Bookmarks</h1>
   bookmark folders: they can be shown as submenus (useful when there are
   many bookmarks), or as a single list.
   </p>
-  
+
   <p><footer>(Updated: Scid 3.6.2, December 2006)</footer></p>
 }
 
@@ -3740,7 +3740,7 @@ set helpText(Cmdline) {<h1>Command-line options</h1>
   set of games. This can e.g. be used to select a list of unfinished
   games in a pgn file.
   </p>
-  
+
   <p><footer>(Updated: Scid 3.6.26, October 2008)</footer></p>
 }
 
@@ -3778,7 +3778,7 @@ set helpText(Pgnscid) {<h1>Pgnscid</h1>
   directly, so if you have a large PGN file compressed with Gzip to save
   disk space, you do not have to un-gzip it first.
   </p>
-  
+
   <h3>Options</h3>
   <p>
   There are two optional arguments pgnscid can accept before the filename:
@@ -3794,7 +3794,7 @@ set helpText(Pgnscid) {<h1>Pgnscid</h1>
   game that follows. This option only affects text between games; standard
   comments inside each game are still converted and stored.
   </p>
-  
+
   <h3>Formatting player names</h3>
   <p>
   To reduce the number of multiple spellings of names that refer to the
@@ -3809,7 +3809,7 @@ set helpText(Pgnscid) {<h1>Pgnscid</h1>
   You can edit (and even spellcheck) player, event, site and round names in
   Scid; see the <a Maintenance Editing>Maintenance</a> help page for details.
   </p>
-  
+
   <p><footer>(Updated: Scid 3.6.2, December 2006)</footer></p>
 }
 
@@ -3824,7 +3824,7 @@ set helpText(Formats) {<h1>Scid File Formats</h1>
   file and a Game file. All have a three-letter suffix starting with "s":
   ".si3" for index files, ".sn3" for name files, and ".sg3" for game files.
   </p>
-  
+
   <h3>The Index (.si3) file</h3>
   <p>
   This file contains a description for the database and a small fixed-size
@@ -3838,7 +3838,7 @@ set helpText(Formats) {<h1>Scid File Formats</h1>
   game that is used to speed up position, material and pattern searches.
   See the section <a Formats Fast>Fast searches</a> below for more information.
   </p>
-  
+
   <h3>The Name (.sn3) file</h3>
   <p>
   This file contains all player, event, site and round names used in the
@@ -3858,7 +3858,7 @@ set helpText(Formats) {<h1>Scid File Formats</h1>
   the game file, so wasted space can accumulate over time. You can restore
   a database to its minimal size by <a Compact>compacting</a> it.
   </p>
-  
+
   <h3>Other Scid files</h3>
   <p>
   An <a EPD>EPD</a> file (suffix: ".epd")
@@ -3874,7 +3874,7 @@ set helpText(Formats) {<h1>Scid File Formats</h1>
   <a Searches Header>header</a> or
   <a Searches Material>material/pattern</a> search settings.
   </p>
-  
+
   <h3><name Fast>Fast searches in Scid</name></h3>
   <p>
   As mentioned above, the index file stores some redundant but useful
@@ -3894,7 +3894,7 @@ set helpText(Formats) {<h1>Scid File Formats</h1>
   French defence (1.e4 e6), every game starts with 1.e4 c5, or 1.d4, etc, will
   be skipped, but games starting with 1.e4 e5 will still need to be searched.
   </p>
-  
+
   <p><footer>(Updated: Scid 3.6.2, December 2006)</footer></p>
 }
 
@@ -3917,7 +3917,7 @@ set helpText(Options) {<h1>Options and preferences</h1>
   operating systems (such as Solaris or Linux) the file
   is <b>~/.scid/scidrc</b>.
   </p>
-  
+
   <h3><name MyPlayerNames>Setting your player names</name></h3>
   <p>
   There may be a player name (or several names) for whom, whenever a game
@@ -3928,7 +3928,7 @@ set helpText(Options) {<h1>Options and preferences</h1>
   Wildcard characters ("<b>?</b>" for exactly one character and "<b>*</b>"
   for a sequence of zero or more characters) can be used.
   </p>
-  
+
   <h3><name Fonts>Setting Fonts</name></h3>
   <p>
   Scid has three basic fonts it uses in most of its windows, and you can
@@ -3939,7 +3939,7 @@ set helpText(Options) {<h1>Options and preferences</h1>
   The fixed font should be a fixed-width (not proportional) font. It is used
   for the <a Tree>tree</a> and <a Crosstable>crosstable</a> windows.
   </p>
-  
+
   <p><footer>(Updated: Scid 3.6.2, December 2006)</footer></p>
 }
 
@@ -4095,7 +4095,7 @@ set helpText(NAGs) {<h1>Standard NAG values</h1>
   <li>139   Black has severe time control pressure </li>
   </ul>
   </cyan>
-  
+
   <p>
   Other proposed NAG values for Chess Informant publication symbols include:
   </p>
@@ -4118,7 +4118,7 @@ set helpText(NAGs) {<h1>Standard NAG values</h1>
   <li>154   Bishops of same color </li>
   </ul>
   </cyan>
-  
+
   <p>
   Other suggested values are:
   </p>
@@ -4132,7 +4132,7 @@ set helpText(NAGs) {<h1>Standard NAG values</h1>
   <li>195   Backwards pawn </li>
   </ul>
   </cyan>
-  
+
   <p>
   Symbols defined by Scid for its own use are:
   </p>
@@ -4141,7 +4141,7 @@ set helpText(NAGs) {<h1>Standard NAG values</h1>
   <li>201   Diagram ("D", sometimes denoted "#") </li>
   </ul>
   </cyan>
-  
+
   <p><footer>(Updated: Scid 3.6.2, December 2006)</footer></p>
 }
 
@@ -4154,7 +4154,7 @@ set helpText(ECO) {<h1>ECO openings classification</h1>
   An standard ECO code consists of a letter (A..E) followed by two
   digits, so there are 500 distinct standard ECO codes.
   </p>
-  
+
   <h3>Scid extensions to the ECO system</h3>
   <p>
   The ECO system is very limited and not sufficient for modern games:
@@ -4167,7 +4167,7 @@ set helpText(ECO) {<h1>ECO openings classification</h1>
   Many of the most common ECO codes found in modern master-level games have
   extensions defined in the Scid ECO file.
   </p>
-  
+
   <h3><name Browser>The ECO Browser window</name></h3>
   <p>
   The <term>ECO Browser</term> window shows you the positions that are
@@ -4193,7 +4193,7 @@ set helpText(ECO) {<h1>ECO openings classification</h1>
   The lower pane shows the positions that comprise a particular ECO code,
   according to the ECO file you have loaded.
   </p>
-  
+
   <h3>Loading the Scid ECO file</h3>
   <p>
   The ECO file that comes with Scid is called <b>scid.eco</b>,
@@ -4208,7 +4208,7 @@ set helpText(ECO) {<h1>ECO openings classification</h1>
   </ul>
   After you do this, the ECO file will be loaded every time you start Scid.
   </p>
-  
+
   <h3><name Codes>ECO code system</name></h3>
   <p>
   The basic structure of the ECO system is:
@@ -4230,7 +4230,7 @@ set helpText(ECO) {<h1>ECO openings classification</h1>
   <li>  <b>A8</b>  1.d4 f5: <i>Dutch Defence</i> </li>
   <li>  <b>A9</b>  1.d4 f5 2.c4 e6: <i>Dutch Defence</i> </li>
   </ul>
-  
+
   <p>
   <b><blue><run ::windows::eco::Refresh B>B</run></blue></b>
   1.e4 c5;  1.e4 c6;  1.e4 d6;  1.e4 <i>various</i>
@@ -4248,7 +4248,7 @@ set helpText(ECO) {<h1>ECO openings classification</h1>
   <li>  <b>B8</b>  B5 + 4.Nxd4 Nf6 5.Nc3 e6: <i>Sicilian Scheveningen</i> </li>
   <li>  <b>B9</b>  B5 + 4.Nxd4 Nf6 5.Nc3 a6: <i>Sicilian Najdorf</i> </li>
   </ul>
-  
+
   <p>
   <b><blue><run ::windows::eco::Refresh C>C</run></blue></b>
   1.e4 e5;  1.e4 e6
@@ -4266,7 +4266,7 @@ set helpText(ECO) {<h1>ECO openings classification</h1>
   <b>C84-C89</b>  5.O-O Be7: <i>Spanish, Closed System</i>) </li>
   <li>  <b>C9</b>  C8 + 5...Be7 6.Re1 b5 7.Bb3 d6: <i>Spanish, Closed</i> </li>
   </ul>
-  
+
   <p>
   <b><blue><run ::windows::eco::Refresh D>D</run></blue></b>
   1.d4 d5; 1.d4 Nf6 2.c4 g6 with 3...d5
@@ -4282,7 +4282,7 @@ set helpText(ECO) {<h1>ECO openings classification</h1>
   <li>  <b>D8</b>  1.d4 Nf6 2.c4 g6 3.Nc3 d5: <i>Grunfeld</i> </li>
   <li>  <b>D9</b>  1.d4 Nf6 2.c4 g6 3.Nc3 d5 4.Nf3: <i>Grunfeld</i> </li>
   </ul>
-  
+
   <p>
   <b><blue><run ::windows::eco::Refresh E>E</run></blue></b>
   1.d4 Nf6 2.c4 e6; 1.d4 Nf6 2.c4 g6 </li>
@@ -4298,7 +4298,7 @@ set helpText(ECO) {<h1>ECO openings classification</h1>
   <li>  <b>E8</b>  E7 + 4...d6 5.f3: <i>King's Indian, Samisch</i> </li>
   <li>  <b>E9</b>  E7 + 4...d6 5.Nf3: <i>King's Indian, main lines</i> </li>
   </ul>
-  
+
   <p><footer>(Updated: Scid 3.6.2, December 2006)</footer></p>
 }
 
@@ -4327,7 +4327,7 @@ set helpText(Author) "<h1>Scid Vs PC</h1>
   <p><footer>(Project Updated: $::scidvspcVersion, $::scidVersionDate)</footer></p>
   </p>
 "
-  
+
 set helpTitle(Related) "Links"
 set helpText(Related) {<h1>Related Links</h1>
   <p>
@@ -4489,7 +4489,7 @@ set helpText(OpeningTrainer) {<h1>Opening Trainer</h1>
   statistics</term> is enabled, the current statistics is shown in the
   colour coded fields below the checkbox. Otherwise the overall
   statistics can be accessed by the button <term>Show report</term>
-  
+
   <h3>Opening trainer statistics</h3>
   <p>
   Four numbers are displayed showing statistics for current position:
@@ -4504,7 +4504,7 @@ set helpText(OpeningTrainer) {<h1>Opening Trainer</h1>
   encountered</li>
   </ul>
   </p>
-  
+
   <h3>The report</h3>
   <p>
   The report shows statistics for the whole repertoire and gives

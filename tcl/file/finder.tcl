@@ -21,16 +21,16 @@ image create photo ::file::finder::updir -data {
 proc ::file::finder::Open {} {
   set w .finder
   if {[winfo exists $w]} { return }
-  
+
   toplevel $w
   wm title $w "Scid: $::tr(FileFinder)"
   bind $w <F1> {helpWindow Finder}
   setWinLocation $w
   bind $w <Configure> "recordWinSize $w"
-  
+
   menu $w.menu
   $w configure -menu $w.menu
-  
+
   $w.menu add cascade -label FinderFile -menu $w.menu.file
   menu $w.menu.file
   $w.menu.file add checkbutton -label FinderFileSubdirs \
@@ -38,7 +38,7 @@ proc ::file::finder::Open {} {
       -command ::file::finder::Refresh
   $w.menu.file add separator
   $w.menu.file add command -label FinderFileClose -command "destroy $w"
-  
+
   $w.menu add cascade -label FinderSort -menu $w.menu.sort
   menu $w.menu.sort
   foreach {name value} {Type type Size size Mod mod Filename name Path path} {
@@ -46,7 +46,7 @@ proc ::file::finder::Open {} {
         -variable ::file::finder::data(sort) -value $value \
         -command {::file::finder::Refresh -fast}
   }
-  
+
   $w.menu add cascade -label FinderTypes -menu $w.menu.types
   menu $w.menu.types
   foreach type {Scid Old PGN Rep EPD} {
@@ -54,13 +54,13 @@ proc ::file::finder::Open {} {
         -variable ::file::finder::data($type) -onvalue 1 -offvalue 0 \
         -command ::file::finder::Refresh
   }
-  
+
   $w.menu add cascade -label FinderHelp -menu $w.menu.helpmenu
   menu $w.menu.helpmenu
   $w.menu.helpmenu add command -label FinderHelpFinder \
       -accelerator F1 -command {helpWindow Finder}
   $w.menu.helpmenu add command -label FinderHelpIndex -command {helpWindow Index}
-  
+
   pack [frame $w.d] -side top -fill x
   label $w.d.label -text "$::tr(FinderDir):" -font font_Small
   set ::file::finder::data(menu) [tk_optionMenu $w.d.mb ::file::finder::data(dir) ""]
@@ -70,7 +70,7 @@ proc ::file::finder::Open {} {
   pack $w.d.label -side left -padx 5
   pack $w.d.up -side right -padx 5
   pack $w.d.mb -side left -fill x -expand yes
-  
+
   frame $w.t
   frame $w.b
   text $w.t.text -width 65 -height 25 -font font_Small -wrap none \
@@ -94,7 +94,7 @@ proc ::file::finder::Open {} {
   }
   $w.t.text configure -tabs $tablist
   bindMouseWheel $w $w.t.text
-  
+
   checkbutton $w.b.sub -text [tr FinderFileSubdirs] \
       -variable ::file::finder::data(recurse) -onvalue 1 -offvalue 0 \
       -command ::file::finder::Refresh
@@ -131,7 +131,7 @@ proc ::file::finder::Refresh {{newdir ""}} {
   set w .finder
   if {! [winfo exists $w]} { return }
   set t $w.t.text
-  
+
   # When parameter is "-fast", just re-sort the existing data:
   set fastmode 0
   if {$newdir == "-fast"} {
@@ -140,7 +140,7 @@ proc ::file::finder::Refresh {{newdir ""}} {
   }
   if {$newdir == ".."} { set newdir [file dirname $data(dir)] }
   if {$newdir != ""} { set data(dir) $newdir }
-  
+
   busyCursor .
   set data(stop) 0
   $w.b.close configure -state disabled
@@ -150,14 +150,14 @@ proc ::file::finder::Refresh {{newdir ""}} {
   catch {grab $w.b.stop}
   $t configure -state normal
   update
-  
+
   if {$fastmode} {
     set flist $data(flist)
   } else {
     set flist [::file::finder::GetFiles $data(dir)]
     set data(flist) $flist
   }
-  
+
   switch $data(sort) {
     "none" {}
     "type" { set flist [lsort -decreasing -index 1 $flist] }
@@ -166,13 +166,13 @@ proc ::file::finder::Refresh {{newdir ""}} {
     "path" { set flist [lsort -dict -index 3 $flist] }
     "mod"  { set flist [lsort -integer -decreasing -index 4 $flist] }
   }
-  
+
   set hc yellow
   $t delete 1.0 end
   set dcount 0
   $t insert end "$::tr(FinderDirs)\n" {center bold}
   set dlist {}
-  
+
   # Insert drive letters, on Windows:
   if {$::windowsOS} {
     foreach drive [lsort -dictionary [file volume]] {
@@ -186,10 +186,10 @@ proc ::file::finder::Refresh {{newdir ""}} {
     }
     $t insert end "\n"
   }
-  
+
   # Insert parent directory entry:
   lappend dlist ..
-  
+
   # Generate other directory entries:
   set dirlist [lsort -dictionary [glob -nocomplain [file join $data(dir) *]]]
   foreach dir $dirlist {
@@ -217,7 +217,7 @@ proc ::file::finder::Refresh {{newdir ""}} {
     $t tag bind d$d <Any-Leave> \
         "$t tag configure [list d$d] -background {}"
   }
-  
+
   # Add File section headings:
   $t insert end "\n\n"
   if {[llength $flist] != 0} {
@@ -240,7 +240,7 @@ proc ::file::finder::Refresh {{newdir ""}} {
     $t insert end "[tr FinderSortPath]" sPath
     $t insert end "\n"
   }
-  
+
   # Add each file:
   foreach i $flist {
     set size [lindex $i 0]
@@ -264,11 +264,11 @@ proc ::file::finder::Refresh {{newdir ""}} {
     } else  {
       set fullpath $data(dir)/$dir/$tail
     }
-    
+
     $t tag bind f$path <ButtonPress-1> "::file::Open [list $fullpath]"
     # Bind right button to popup a contextual menu:
     $t tag bind f$path <ButtonPress-3> "::file::finder::contextMenu .finder.t.text [list $fullpath] %x %y %X %Y"
-    
+
     $t tag bind f$path <Any-Enter> \
         "$t tag configure [list f$path] -background $hc"
     $t tag bind f$path <Any-Leave> \
@@ -283,7 +283,7 @@ proc ::file::finder::Refresh {{newdir ""}} {
     $t insert end $tail [list t$path f$path]
   }
   $t configure -state disabled
-  
+
   # Update directory menubutton:
   $data(menu) delete 0 end
   set mlist {}
@@ -295,26 +295,26 @@ proc ::file::finder::Refresh {{newdir ""}} {
   foreach m $mlist {
     $data(menu) add command -label $m -command "::file::finder::Refresh [list $m]"
   }
-  
+
   catch {grab release $w.b.stop}
   $w.b.stop configure -state disabled
   $w.b.help configure -state normal
   $w.b.close configure -state normal
   $w.b.sub configure -state normal
   unbusyCursor .
-  
+
 }
 ################################################################################
 #
 ################################################################################
 proc ::file::finder::contextMenu {win fullPath x y xc yc} {
-  
+
   update idletasks
-  
+
   set mctxt $win.ctxtMenu
-  
+
   if { [winfo exists $mctxt] } { destroy $mctxt }
-  
+
   menu $mctxt
   $mctxt add command -label [tr FinderCtxOpen ] -command "::file::Open [list $fullPath]"
   $mctxt add command -label [tr FinderCtxBackup ] -command "::file::finder::backup [list $fullPath]"
@@ -322,9 +322,9 @@ proc ::file::finder::contextMenu {win fullPath x y xc yc} {
   $mctxt add command -label [tr FinderCtxMove ] -command "::file::finder::move [list $fullPath]"
   $mctxt add separator
   $mctxt add command -label [tr FinderCtxDelete ] -command "::file::finder::delete $fullPath"
-  
+
   $mctxt post [winfo pointerx .] [winfo pointery .]
-  
+
 }
 ################################################################################
 # will backup a base in the form name-date.ext
@@ -340,12 +340,12 @@ proc ::file::finder::backup { f } {
     }
     catch { file copy "$r.stc" "$r$d.stc" }
   }
-  
+
   if { [catch { file copy "$r[file extension $f]" "$r$d[file extension $f]" } err ] } {
     tk_messageBox -title Scid -icon error -type ok -message "File copy error $err"
     return
   }
-  
+
   ::file::finder::Refresh
 }
 ################################################################################
@@ -366,12 +366,12 @@ proc ::file::finder::copy { f } {
       
       catch { file copy "[file rootname $f].stc" $dir }
     }
-    
+
     if { [catch { file copy $f $dir } err ] } {
       tk_messageBox -title Scid -icon error -type ok -message "File copy error $err"
       return
     }
-    
+
   }
 }
 ################################################################################
@@ -392,7 +392,7 @@ proc ::file::finder::move { f } {
       }
       catch { file rename "[file rootname $f].stc" $dir }
     }
-    
+
     if { [catch { file rename $f $dir } err ] } {
       tk_messageBox -title Scid -icon error -type ok -message "File rename error $err"
       return
@@ -448,7 +448,7 @@ proc ::file::finder::GetFiles {dir {len -1}} {
   if {$len < 0} {
     set len [expr {[string length $dir] + 1} ]
   }
-  
+
   foreach f [glob -nocomplain [file join $dir *]] {
     if {[file isdir $f]} {
       lappend dlist $f

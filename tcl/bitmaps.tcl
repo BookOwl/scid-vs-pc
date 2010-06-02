@@ -8151,7 +8151,7 @@ if { $png_image_support } {
     YMCAAQMGDBgwYMCAAQMGDBgwYMCAAQMGDBgwYMCAAQMGDBgwYMCAAQMGDBgwYMCAAQMGDBgw
     YMCAAQMGDBgwYMCAAQMGDBgwYMCAAQMGDBgwYGCu4v8DcpGqQ14QukUAAAAASUVORK5CYII=
   }
-  
+
 }
 
 ####################
@@ -8159,7 +8159,7 @@ if { $png_image_support } {
 #http://linuz.sns.it/~monge/wiki/index.php/Chess_pieces
 
 if {$png_image_support} {
-  
+
   lappend boardStyles Fantasy
   set pieceImageData(Fantasy,25) {
     iVBORw0KGgoAAAANSUhEUgAAASwAAAAZCAYAAACLvRPfAAAABmJLR0QA/wD/AP+gvaeTAAAA
@@ -17838,7 +17838,7 @@ if {$png_image_support} {
     37DEzXEaGtM+z8/w9+w4O86Os+PsODvOjrPj7Dg7zo6z4+w4Ow5z/B+Nr/6tdQYLeQAAAABJ
     RU5ErkJggg==
   }
-  
+
 }
 
 ### chess set Fantasy. Dark pieces are in brown
@@ -52188,7 +52188,7 @@ image create photo LightWood3-l -data {
   g9MFT5M0a7AyMKM0YDeEn5AAQFUXlyBtaoBTU0WE9sFxu+MEYlcE69hTI2VdcNIFwiEGqFAF
   MLU7G7kg5HgI0mAH/UU6HrmOUhUJDBmOajE78qQ2xUAIMbkgV6NSUGNLwlIzfdE2cedssVE8
   u7BYvHFUTyAFkgCJhSAe/UhV9CQhINUJm3ciRWd1enAE0iMYD8PQO4JxUGOpPn0gbb4RBAA7
-  
+
 }
 image create photo LightWood3-d -data {
   R0lGODlhUABQAIQdAKyKZLSWbKyKdLSSZLSWfKyKbKySdLSWdLSSfKyOZKySbLSafKyObKyO

@@ -46,7 +46,7 @@ proc ::recentFiles::remove {fname} {
 proc ::recentFiles::add {fname {delete 0}} {
   global recentFiles
   set rlist $recentFiles(data)
-  
+
   # Remove file ot be added from its current place in the
   # list, if it is there:
   while {1} {
@@ -54,17 +54,17 @@ proc ::recentFiles::add {fname {delete 0}} {
     if {$idx < 0} { break }
     set rlist [lreplace $rlist $idx $idx]
   }
-  
+
   if {!$delete} {
     # Insert the current file at the start of the list:
     set rlist [linsert $rlist 0 $fname]
-    
+
     # Trim the list if necessary:
     if {[llength $rlist] < $recentFiles(limit)} {
       set rlist [lrange $rlist 0 [expr {$recentFiles(limit) - 1} ]]
     }
   }
-  
+
   set recentFiles(data) $rlist
   # ::recentFiles::save
 }
@@ -95,7 +95,7 @@ proc ::recentFiles::treeshow {menu} {
   $menu delete 0 end
   set nfiles [llength $rlist]
   if {$nfiles > $recentFiles(limit)} { set nfiles $recentFiles(limit) }
-  
+
   for {set i 0} {$i<$nfiles} {incr i} {
     set name [lindex $rlist $i]
     $menu add command -label "$name" -command [list ::file::openBaseAsTree $name]
@@ -119,9 +119,9 @@ proc ::recentFiles::show {menu} {
     set nExtraFiles $recentFiles(extra)
   }
   if {$nExtraFiles < 0} { set nExtraFiles 0 }
-  
+
   # Add menu commands for the most recent files:
-  
+
   for {set i 0} {$i < $nfiles} {incr i} {
     set fname [lindex $rlist $i]
     set mname [::recentFiles::menuname $fname]
@@ -135,10 +135,10 @@ proc ::recentFiles::show {menu} {
     set ::helpMessage($menu,$idx) "  [file nativename $fname]"
     incr idx
   }
-  
+
   # If no extra submenu of recent files is needed, return now:
   if {$nExtraFiles <= 0} { return $nfiles }
-  
+
   # Now add the extra submenu of files:
   catch {destroy $menu.recentFiles}
   menu $menu.recentFiles
@@ -172,7 +172,7 @@ proc ::recentFiles::menuname {fname} {
     set mname [file rootname $mname]
   }
   if {[string length $mname] < 25} { return $mname }
-  
+
   # Generate a menu name " ..../path/filename" for the file:
   set dir [file dirname $fname]
   while {1} {
@@ -220,7 +220,7 @@ proc ::recentFiles::configure {} {
   dialogbutton $w.b.cancel -text $::tr(Cancel) \
       -command "catch {grab release $w}; destroy $w"
   pack $w.b.cancel $w.b.ok -side right -padx 5 -pady 5
-  
+
   placeWinOverParent $w .
   wm state $w normal
   update

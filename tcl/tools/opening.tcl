@@ -16,58 +16,58 @@ namespace eval opening {
   set onlyFlaggedLines 0
   set repColor "w"
   set resetStats 0
-  
+
   set movesLoaded 0
   set fenLastUpdate 0
   set fenLastStatsUpdate 0
   set cancelLoadRepertoire 0
   set lastMainLoopFen 0
   set lastMainLoopFlipped [sc_pos side]
-  
+
   # parameters for opening trainer window
   set displayCM 0
   set DisplayCMValue 0
   set tCM ""
   set lastCMFen ""
   set lastCM "-1"
-  
+
   set displayOpeningStats 1
   set listStats {} ;# list of {fen x y z t} where x:good move played, y:dubious move, z:move out of rep, t:position played
-  
+
   ################################################################################
   # Configuration
   ################################################################################
   proc config {} {
     global ::opening::playerBestMove ::opening::opBestMove ::opening::repColor
-    
+
     set w .openingConfig
     if { [winfo exists $w] } { focus $w ; return  }
     if { [winfo exists ".openingWin"] } { focus ".openingWin" ; return }
-    
+
     toplevel $w
     wm title $w $::tr(Repertoiretrainingconfiguration)
     setWinLocation $w
     frame $w.f0 -relief groove
-    
+
     radiobutton $w.f0.rbRepColorW -value "w" -variable ::opening::repColor -text $::tr(white)
     radiobutton $w.f0.rbRepColorB -value "b" -variable ::opening::repColor -text $::tr(black)
     radiobutton $w.f0.rbRepColorWB -value "wb" -variable ::opening::repColor -text $::tr(both)
     pack $w.f0.rbRepColorW $w.f0.rbRepColorB $w.f0.rbRepColorWB -side left  -expand yes -fill both
-    
+
     frame $w.f1
     checkbutton $w.f1.cbPlayerBestMove -text $::tr(PlayerBestMove) -variable ::opening::playerBestMove
     checkbutton $w.f1.cbOpBestMove -text $::tr(OpponentBestMove) -variable ::opening::opBestMove
     checkbutton $w.f1.cbOnlyFlaggedLines -text $::tr(OnlyFlaggedLines) -variable ::opening::onlyFlaggedLines
     checkbutton $w.f1.cbResetStats -text $::tr(resetStats) -variable ::opening::resetStats
     pack $w.f1.cbPlayerBestMove $w.f1.cbOpBestMove $w.f1.cbOnlyFlaggedLines $w.f1.cbResetStats -anchor w -side top
-    
+
     frame $w.f2
     button $w.f2.ok -text $::tr(Continue) -command " destroy $w ; ::opening::openRep"
     button $w.f2.cancel -text $::tr(Cancel) -command "focus .; destroy $w"
     pack $w.f2.ok $w.f2.cancel -expand yes -side left -padx 20 -pady 2
-    
+
     pack $w.f0 $w.f1 $w.f2 -side top -fill both
-    
+
     bind $w <F1> { helpWindow OpeningTrainer }
     bind $w <Escape> "destroy $w"
     bind $w <Destroy> ""
@@ -78,18 +78,18 @@ namespace eval opening {
   ################################################################################
   proc openRep {} {
     global ::windows::switcher::base_types ::opening::repColor ::opening::repBase
-    
+
     if {$::opening::resetStats} {
       set ::opening::listStats {}
     } else  {
       loadStats
     }
-    
+
     set repBase -1
     set typeW [lsearch $base_types {Openings for White} ]
     set typeB [lsearch $base_types {Openings for Black} ]
     set typeWB [lsearch $base_types {Openings for either color} ]
-    
+
     for {set x 1} {$x <= [ expr [sc_base count]-1 ]} {incr x} {
       set type [sc_base type $x]
       if {$type == $typeW && $repColor == "w" || $type == $typeB && $repColor == "b" || $type == $typeWB && $repColor == "wb"} {
@@ -97,13 +97,13 @@ namespace eval opening {
         break
       }
     }
-    
+
     if {$repBase == -1} {
       tk_messageBox -title $::tr(Repertoirenotfound) -type ok -icon warning \
           -message $::tr(Openfirstrepertoirewithtype)
       return
     }
-    
+
     set prevBase [sc_base current]
     if {$prevBase != $repBase} { sc_base switch $repBase }
     loadRep "$repBase - [sc_base filename $repBase]" "[sc_base description]"
@@ -112,16 +112,16 @@ namespace eval opening {
     } else  {
       sc_base switch clipbase
     }
-    
+
     if { $::opening::movesLoaded == 0 } {
       tk_messageBox -title $::tr(Repertoirenotfound) -type ok -icon error -message $::tr(ZeroMovesLoaded)
     }
-    
+
     if { ! [sc_base inUse $prevBase] } {
       # switch to clipboard base if the current base is empty
       sc_base switch clipbase
     }
-    
+
     # add a blank game for training in current base, if the current base is opened
     sc_game new
     sc_game tags set -event $::tr(Openingtrainer)
@@ -129,7 +129,7 @@ namespace eval opening {
     updateBoard -pgn -animate
     ::windows::gamelist::Refresh
     updateTitle
-    
+
     ::opening::openingWin
     ::opening::mainLoop
   }
@@ -142,12 +142,12 @@ namespace eval opening {
     global ::opening::repBase ::opening::fenMovesEvalList ::opening::allLinesFenList \
         ::opening::allLinesHashList ::opening::hashList ::opening::onlyFlaggedLines \
         ::opening::movesLoaded ::opening::cancelLoadRepertoire
-    
+
     set movesLoaded 0
     set cancelLoadRepertoire 0
     set allLinesFenList {}
     set allLinesHashList {}
-    
+
     progressWindow "Scid" "$::tr(Loadingrepertoire)..." $::tr(Cancel) "::opening::sc_progressBar"
     for {set g 1} { $g <= [sc_base numGames]} { incr g} {
       if {$cancelLoadRepertoire} { break  }
@@ -165,7 +165,7 @@ namespace eval opening {
       lappend allLinesHashList $hashList
     }
     # puts "$allLinesFenList"
-    
+
     closeProgressWindow
   }
   ################################################################################
@@ -216,28 +216,28 @@ namespace eval opening {
   ################################################################################
   proc fillFen {} {
     global ::opening::fenMovesEvalList ::opening::hashList ::opening::movesLoaded
-    
+
     if {[sc_pos isAt vend] && [sc_var count] == 0 } {
       return
     }
-    
+
     set s [split [sc_pos fen]]
     set fen "[lindex $s 0] [lindex $s 1] [lindex $s 2] [lindex $s 3]"
-    
+
     set newFen {}
     set moves {}
     set newIndex -1
     incr movesLoaded
-    
+
     lappend hashList [sc_pos hash]
-    
+
     # check if the fen already exists in the list
     for {set i 0} { $i < [llength $fenMovesEvalList]} {incr i} {
       set f [lindex $fenMovesEvalList $i]
       if {[lindex $f 0] == $fen} { set newFen $fen ; set moves [lindex $f 1] ; set newIndex $i ; break }
     }
     set newFen $fen
-    
+
     # the main move
     if {! [sc_pos isAt vend] } {
       set m [sc_game info nextMove]
@@ -274,7 +274,7 @@ namespace eval opening {
       }
       sc_var exit
     }
-    
+
     # put the newFen in the list
     if {$newIndex == -1} {
       lappend fenMovesEvalList [list $fen $moves ]
@@ -287,9 +287,9 @@ namespace eval opening {
   ################################################################################
   proc mainLoop {} {
     global ::opening::allLinesHashList ::opening::allLinesFenList tCM
-    
+
     after cancel ::opening::mainLoop
-    
+
     # Handle case of player's turn (which always plays from bottom of the board)
     if { [sc_pos side] == "white" &&  ![::board::isFlipped .board] || [sc_pos side] == "black" &&  [::board::isFlipped .board] } {
       # it is player's turn : update UI
@@ -298,13 +298,13 @@ namespace eval opening {
       after 1000  ::opening::mainLoop
       return
     }
-    
+
     # check the position has not been treated already
     if {[sc_pos fen] == $::opening::lastMainLoopFen && [::board::isFlipped .board] == $::opening::lastMainLoopFlipped} {
       after 1000 ::opening::mainLoop
       return
     }
-    
+
     # the player moved : check if his move was in the repertoire and as good as expected
     set move_done [sc_game info previousMove]
     if { $move_done != "" } {
@@ -379,13 +379,13 @@ namespace eval opening {
     # end of player's move check
     # now it is computer's turn
     set cm [ getCm ]
-    
+
     if {[llength $cm] != 0} {
       ::opening::play $cm
     }
     set ::opening::lastMainLoopFen [sc_pos fen]
     set ::opening::lastMainLoopFlipped [::board::isFlipped .board]
-    
+
     ::opening::update_tCM
     ::opening::updateStats
     after 1000  ::opening::mainLoop
@@ -406,11 +406,11 @@ namespace eval opening {
   ################################################################################
   proc getCm {  } {
     global ::opening::allLinesHashList ::opening::allLinesFenList ::opening::lastCMFen
-    
+
     set fen [ sc_pos fen ]
     # avoids calculation
     if {$fen == $lastCMFen } { return $lastCM }
-    
+
     set cm {}
     # First find the position in hash lists to spare time
     set linesFound {}
@@ -418,7 +418,7 @@ namespace eval opening {
       set res [lsearch -sorted [lindex $allLinesHashList $i] [sc_pos hash]]
       if {$res != -1} { lappend linesFound $i }
     }
-    
+
     set s [split $fen]
     set fen "[lindex $s 0] [lindex $s 1] [lindex $s 2] [lindex $s 3]"
     foreach i $linesFound {
@@ -427,10 +427,10 @@ namespace eval opening {
         if {[lindex $f 0] == $fen} { set cm [concat $cm [lindex $f 1]] }
       }
     }
-    
+
     set lastCM $cm
     set lastCMFen $fen
-    
+
     return $cm
   }
   ################################################################################
@@ -440,11 +440,11 @@ namespace eval opening {
     # addStatsPrev -good 0 -dubious 0 -absent 0 -total 1
     set r [expr int(rand()*[llength $cm]/2) ]
     set m [ lindex $cm [ expr $r * 2 ] ]
-    
+
     if {[sc_pos moveNumber] == 1 && [sc_pos side] == "white"} {
       ::game::Clear
     }
-    
+
     if {![catch {sc_move addSan [::untrans $m] }]} {
     }
     updateBoard -pgn -animate
@@ -454,17 +454,17 @@ namespace eval opening {
   ################################################################################
   proc openingWin {} {
     global ::opening::displayCM ::opening::displayCMValue ::opening::tCM ::opening::fenLastUpdate
-    
+
     set w ".openingWin"
     if {[winfo exists $w]} { focus $w ; return }
-    
+
     toplevel $w
     wm title $w $::tr(Openingtrainer)
     setWinLocation $w
     frame $w.f1
     frame $w.f2 -relief raised -bd 2
     frame $w.f3
-    
+
     checkbutton $w.f1.cbDisplayCM  -text $::tr(DisplayCM) -variable ::opening::displayCM -relief flat \
         -command "set fenLastUpdate 0 ; ::opening::update_tCM 1"
     checkbutton $w.f1.cbDisplayCMValue  -text $::tr(DisplayCMValue) -variable ::opening::displayCMValue -relief flat \
@@ -472,37 +472,37 @@ namespace eval opening {
     label $w.f1.lCM -textvariable ::opening::tCM
     pack $w.f1.cbDisplayCM $w.f1.cbDisplayCMValue -anchor w -side top
     pack $w.f1.lCM -side top -anchor center
-    
+
     checkbutton $w.f2.cbDisplayStats  -text $::tr(DisplayOpeningStats) -variable ::opening::displayOpeningStats -relief flat \
         -command "::opening::updateStats 1"
     label $w.f2.lStats1 -textvariable ::opening::lStats1 -width 4 -anchor center -background green
     label $w.f2.lStats2 -textvariable ::opening::lStats2 -width 4 -anchor center -background yellow
     label $w.f2.lStats3 -textvariable ::opening::lStats3 -width 4 -anchor center -background red
     label $w.f2.lStats4 -textvariable ::opening::lStats4 -width 4 -anchor center 
-    
+
     label $w.f2.lStats1exp -text $::tr(NumberOfGoodMovesPlayed)
     label $w.f2.lStats2exp -text $::tr(NumberOfDubiousMovesPlayed)
     label $w.f2.lStats3exp -text $::tr(NumberOfMovesPlayedNotInRepertoire)
     label $w.f2.lStats4exp -text $::tr(NumberOfTimesPositionEncountered)
-    
+
     grid $w.f2.cbDisplayStats -row 0 -column 0 -columnspan 2
     grid $w.f2.lStats4 -row 1 -column 0 -sticky w -padx 5
     grid $w.f2.lStats1 -row 2 -column 0 -sticky w -padx 5
     grid $w.f2.lStats2 -row 3 -column 0 -sticky w -padx 5
     grid $w.f2.lStats3 -row 4 -column 0 -sticky w -padx 5
-    
-    
+
+
     grid $w.f2.lStats4exp -row 1 -column 1 -sticky w -padx 5
     grid $w.f2.lStats1exp -row 2 -column 1 -sticky w -padx 5
     grid $w.f2.lStats2exp -row 3 -column 1 -sticky w -padx 5
     grid $w.f2.lStats3exp -row 4 -column 1 -sticky w -padx 5
-    
+
     button $w.f3.report -textvar ::tr(ShowReport) -command ::opening::report
     button $w.f3.close -textvar ::tr(Abort) -command ::opening::endTraining
-    
+
     pack $w.f3.report $w.f3.close -side top -anchor center -fill x
     pack $w.f1 $w.f2 $w.f3 -fill x
-    
+
     bind $w <F1> { helpWindow OpeningTrainer }
     bind $w <Escape> "destroy $w"
     bind $w <Destroy> ""
@@ -523,25 +523,25 @@ namespace eval opening {
   ################################################################################
   proc  update_tCM { { forceUpdate 0 } } {
     global ::opening::displayCM ::opening::displayCMValue ::opening::tCM ::opening::fenLastUpdate
-    
+
     # If current fen is the same as the one used during latest update call, do nothing
     if {$fenLastUpdate == [sc_pos fen] && ! $forceUpdate} { return }
-    
+
     set cm [ getCm ]
-    
+
     if { [llength $cm] == 0 } {
       .openingWin.f1.lCM configure -bg LightCoral
       set tCM $::tr(EndOfVar)
       set fenLastUpdate [sc_pos fen]
       return
     }
-    
+
     if { !$displayCM } { set tCM "" ; set fenLastUpdate 0 ; return }
-    
+
     .openingWin.f1.lCM configure -bg linen
-    
+
     set tmp ""
-    
+
     for {set x 0} {$x<[llength $cm]} { set x [expr $x+2]} {
       set m [lindex $cm $x]
       # if the move already found, skip it, even if it has other nags : to be corrected ?
@@ -557,7 +557,7 @@ namespace eval opening {
       # go to new line every 3 (moves,nags)
       if {[expr $x % 3] == 2} { append tmp "\n" }
     }
-    
+
     set fenLastUpdate [sc_pos fen]
     set tCM $tmp
   }
@@ -606,7 +606,7 @@ namespace eval opening {
     }
     return {}
   }
-  
+
   ################################################################################
   # addStats
   # x = success best moves only, y = success all moves z = failures t = coverage by computer
@@ -616,14 +616,14 @@ namespace eval opening {
     set dy 0
     set dz 0
     set dt 0
-    
+
     for {set i 0 } {$i < [llength $args]} {incr i 2} {
       if {[lindex $args $i] == "-good"} { set dx [lindex $args [expr $i + 1] ] ; continue }
       if {[lindex $args $i] == "-dubious"} { set dy [lindex $args [expr $i + 1] ] ; continue }
       if {[lindex $args $i] == "-absent"} { set dz [lindex $args [expr $i + 1] ] ; continue }
       if {[lindex $args $i] == "-total"} { set dt [lindex $args [expr $i + 1] ] ; continue }
     }
-    
+
     set s [split [sc_pos fen]]
     set fen "[lindex $s 0] [lindex $s 1] [lindex $s 2] [lindex $s 3]"
     set found 0
@@ -635,7 +635,7 @@ namespace eval opening {
       }
       incr idx
     }
-    
+
     if {$found} {
       set lval [lindex $l 1]
       set ::opening::listStats [ lreplace $::opening::listStats $idx $idx [list $fen [list \
@@ -664,12 +664,12 @@ namespace eval opening {
   ################################################################################
   proc updateStats { {force 0} } {
     global ::opening::fenLastStatsUpdate
-    
+
     # If current fen is the same as the one used during latest update call, do nothing
     if {$fenLastStatsUpdate == [sc_pos fen] && !$force} { return }
-    
+
     set fenLastStatsUpdate [sc_pos fen]
-    
+
     if { $::opening::displayOpeningStats } {
       set gs [getStats]
       set ::opening::lStats1 [lindex $gs 0]
@@ -690,20 +690,20 @@ namespace eval opening {
     global ::opening::listStats ::opening::allLinesFenList
     set w ".openingWin.optrainerreport"
     if {[winfo exists $w]} { focus $w ; return }
-    
+
     toplevel $w
     wm title $w $::tr(Openingtrainer)
     setWinLocation $w
-    
+
     frame $w.ft
     text $w.ft.text -height 10 -width 40 -wrap word 
     pack $w.ft.text
     pack $w.ft
-    
+
     frame $w.fclose
     button $w.fclose.close -textvar ::tr(Close) -command "destroy $w"
     pack $w.fclose.close
-    
+
     # builds stats report
     set posNotPlayed 0
     set posTotalPlayed 0
@@ -743,9 +743,9 @@ namespace eval opening {
     $w.ft.text insert end "$::tr(Success) $success\n"
     $w.ft.text insert end "$::tr(DubiousMoves) $dubMoves\n"
     $w.ft.text insert end "$::tr(OutOfRepertoire) $outOfRep\n"
-    
+
     $w.ft.text configure -state disabled
-    
+
     bind $w <F1> { helpWindow OpeningTrainer }
     bind $w <Escape> "destroy $w"
     bind $w <Destroy> ""

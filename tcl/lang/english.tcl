@@ -92,7 +92,7 @@ menuText E FileSwitch "Switch to Database" 0 \
   {Switch to a different opened database}
 menuText E FileExit "Exit" 1 {Exit Scid}
 menuText E FileMaintFixBase "Repair base" 0 {Try to repair a corrupted base}
-  
+
 # Edit menu:
 menuText E Edit "Edit" 0
 menuText E EditAdd "Add Variation" 0 {Add a variation at this move in the game}
@@ -603,7 +603,7 @@ translate E FinderCtxBackup {Backup}
 translate E FinderCtxCopy {Copy}
 translate E FinderCtxMove {Move}
 translate E FinderCtxDelete {Delete}
- 
+
 # Player finder:
 menuText E PListFile "Player Finder" 0
 menuText E PListFileUpdate "Update" 0
@@ -681,7 +681,7 @@ translate E Informant+= {White has a slight advantage}
 translate E Informant+/- {White has a moderate advantage}
 translate E Informant+- {White has a decisive advantage}
 translate E Informant++- {The game is considered won}
-  
+
 # Book window
 translate E Book {Book}
 

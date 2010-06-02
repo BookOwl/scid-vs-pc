@@ -71,7 +71,7 @@ array set ::utils::graph::_data {}
 proc ::utils::graph::create args {
   set graph [lindex $args 0]
   lappend ::utils::graph::_graphs $graph
-  
+
   # Remove any existing data for this graph name:
   foreach key [array names ::utils::graph::_data] {
     if {[string match "$graph,*" $key]} { unset ::utils::graph::_data($key) }

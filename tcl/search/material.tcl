@@ -124,7 +124,7 @@ proc ::search::material::any {} {
 
 proc clearPatterns {} {
   global pattPiece pattFyle pattRank pattBool nPatterns
-  
+
   for { set i 1 } { $i <= $nPatterns } { incr i } {
     set pattPiece($i) "?";  set pattFyle($i) "?";  set pattRank($i) "?"
     set pattBool($i) "Yes"
@@ -134,7 +134,7 @@ proc clearPatterns {} {
 
 proc setPatterns {pattlist} {
   global pattPiece pattFyle pattRank pattBool nPatterns
-  
+
   clearPatterns
   set count 1
   foreach patt $pattlist {
@@ -161,7 +161,7 @@ proc ::search::material {} {
   global glstart dark pMin pMax ignoreColors minMoveNum maxMoveNum
   global pattPiece pattFyle pattRank pattBool oppBishops nPatterns
   global minHalfMoves smDisplayed
-  
+
   set w .sm
   if {[winfo exists $w]} {
     wm deiconify $w
@@ -169,7 +169,7 @@ proc ::search::material {} {
     return
   }
   set small font_Small
-  
+
   toplevel $w
   wm title $w "Scid: $::tr(MaterialSearch)"
   #  button $w.piecelabel -font font_Bold -textvar ::tr(Material:) -command {
@@ -182,22 +182,22 @@ proc ::search::material {} {
   #        -after .sm.piecelabel
   #    }
   #  }
-  
+
   bind $w <F1> { helpWindow Searches Material }
   bind $w <Escape> "$w.b3.cancel invoke"
   bind $w <Return> "$w.b3.search invoke"
-  
+
   pack [frame $w.mp] -side top
   pack [frame $w.mp.material] -side left
-  
+
   label $w.mp.material.title -font font_Bold -textvar ::tr(Material:)
   pack $w.mp.material.title -side top -pady 3
-  
+
   foreach piece {q r b n m p} {
     frame $w.mp.material.$piece
     pack $w.mp.material.$piece -side top ;# -padx 2
   }
-  
+
   foreach i {q r b n m p} {
     set f $w.mp.material.$i
     button $f.w0 -text "0" -command "set pMin(w$i) 0; set pMax(w$i) 0"
@@ -212,7 +212,7 @@ proc ::search::material {} {
     entry $f.wmax -width 2 -relief sunken -textvar pMax(w$i) -font font_Small \
         -justify right
     pack $f.w0 $f.w1 $f.w2 $f.wa $f.w1p $f.wi $f.wmin $f.wto $f.wmax -side left -pady 1
-    
+
     pack [frame $f.space -width 20] -side left
     button $f.b0 -text "0" -command "set pMin(b$i) 0; set pMax(b$i) 0"
     button $f.b1 -text "1" -command "set pMin(b$i) 1; set pMax(b$i) 1"
@@ -226,7 +226,7 @@ proc ::search::material {} {
     entry $f.bmax -width 2 -relief sunken -textvar pMax(b$i) -font font_Small \
         -justify right
     pack $f.b0 $f.b1 $f.b2 $f.ba $f.b1p $f.bi $f.bmin $f.bto $f.bmax -side left -pady 1
-    
+
     foreach b {0 1 2 a 1p} {
       $f.w$b configure -width 2 -pady 0 -padx 1 -takefocus 0 -font $small
       $f.b$b configure -width 2 -pady 0 -padx 1 -takefocus 0 -font $small
@@ -247,11 +247,11 @@ proc ::search::material {} {
       $f.ba configure -command "set pMin(bm) 0; set pMax(bm) 4"
     }
   }
-  
+
   # Buttons that manipulate material settings:
   set f $w.mp.material.b1
   pack [frame $f] -side top -ipady 2
-  
+
   dialogbutton $f.zero -textvar ::tr(Zero) -font $small -command ::search::material::zero
   dialogbutton $f.reset -textvar ::tr(Any) -font $small -command ::search::material::any
   dialogbutton $f.current -textvar ::tr(CurrentBoard) -font $small -command {
@@ -264,7 +264,7 @@ proc ::search::material {} {
       }
     }
   }
-  
+
   menubutton $f.common -textvar ::tr(CommonEndings...) \
       -menu $f.common.m -relief raised -font $small
   menu $f.common.m -font $small
@@ -338,12 +338,12 @@ proc ::search::material {} {
     array set pMin {wb 2 bn 2 wm 2 bm 2}
     array set pMax {wq 1 bq 1 wr 2 br 2 wb 2 bn 2 wm 2 bm 2 wp 8 bp 8}
   }
-  
+
   pack $f.zero $f.reset $f.current $f.common -side left -pady 5 -padx 10
   #if {! $smDisplayed(Material)} {
   #  pack forget .sm.q .sm.r .sm.b .sm.n .sm.m .sm.p .sm.b1 .sm.mdiff
   #}
-  
+
   set f $w.mp.material.mdiff
   pack [frame $f] -side top
   label $f.label -font font_SmallBold -textvar ::tr(MaterialDiff:)
@@ -370,12 +370,12 @@ proc ::search::material {} {
   label $f.explan -font $small \
       -text "($::tr(MaterialDiff) = $::tr(White) - $::tr(Black); Q=9 R=5 B=3 N=3 P=1)"
   pack $f.explan -side top
-  
+
   addVerticalRule $w.mp
-  
+
   set f [frame $w.mp.patt]
   pack $f -side top
-  
+
   #dialogbutton $w.pattl -font font_Bold -textvar ::tr(Patterns:) -command {
   #  if {$smDisplayed(Patterns)} {
   #    set smDisplayed(Patterns) 0
@@ -387,7 +387,7 @@ proc ::search::material {} {
   #}
   label $w.mp.patt.title -textvar ::tr(Patterns:) -font font_Bold
   pack $w.mp.patt.title -side top -pady 3
-  
+
   pack [frame $f.grid] -side top
   for { set i 1 } { $i <= $nPatterns } { incr i } {
     makeBoolMenu $f.grid.b$i pattBool($i)
@@ -408,9 +408,9 @@ proc ::search::material {} {
       grid $f.grid.sp_$i -row $row -column $column
     }
   }
-  
+
   updatePatternImages
-  
+
   ### Buttons that manipulate patterns:
   set f .sm.mp.patt.b2
   frame $f
@@ -487,18 +487,18 @@ proc ::search::material {} {
     set pMin(wb) 2; set pMin(bb) 2
     setPatterns { {wb b 2 Yes} {wb g 2 Yes} {bb b 7 Yes} {bb g 7 Yes} }
   }
-  
+
   pack $f -side top
   pack $f.clearPat $f.common -side left -pady 5 -padx 10
   #if {! $smDisplayed(Patterns)} {
   #  pack forget $w.patt $w.b2
   #}
   updatePatternImages
-  
+
   addHorizontalRule $w
-  
+
   ### Now the move counter:
-  
+
   set f $w.bishops
   pack [frame $f] -side top
   label $f.t1 -text "1" -font font_Small
@@ -513,7 +513,7 @@ proc ::search::material {} {
   radiobutton $f.either -textvar ::tr(Either) -variable oppBishops \
       -value "Either" -padx 5 -pady 4 -font font_Small
   foreach i {t1 t2 t3 t4 t5 same opp either} { pack $f.$i -side left }
-  
+
   set f $w.move
   pack [frame $f] -side top -ipady 5
   label $f.fromlab -textvar ::tr(MoveNumberRange:)
@@ -529,30 +529,30 @@ proc ::search::material {} {
   bindFocusColors $f.hmoves
   pack $f.fromlab $f.from $f.tolab $f.to $f.space \
       $f.label1 $f.hmoves $f.label2 -side left
-  
+
   addHorizontalRule $w
   ::search::addFilterOpFrame $w 1
   addHorizontalRule $w
-  
+
   ### Progress bar:
-  
+
   canvas $w.progress -height 20 -width 300  -relief solid -border 1
   $w.progress create rectangle 0 0 0 0 -outline blue -fill blue -tags bar
   $w.progress create text 295 10 -anchor e -font font_Regular -tags time \
       -fill black -text "0:00 / 0:00"
-  
+
   ### Last of all, the buttons frame:
-  
+
   set f $w.b3
   pack [frame $f] -side top -ipady 5 -fill x
   checkbutton $f.ignorecol -textvar ::tr(IgnoreColors) \
       -variable ignoreColors -padx 4
-  
+
   dialogbutton $f.save -textvar ::tr(Save...) -padx 10 -command ::search::material::save
-  
+
   dialogbutton $f.stop -textvar ::tr(Stop) -command sc_progressBar
   $f.stop configure -state disabled
-  
+
   dialogbutton $f.search -textvar ::tr(Search) -command {
     busyCursor .
     .sm.b3.stop configure -state normal
@@ -586,22 +586,22 @@ proc ::search::material {} {
     .sm.status configure -text $str
     set glstart 1
     ::windows::gamelist::Refresh
-    
+
     ::search::loadFirstGame
-    
+
     ::windows::stats::Refresh
   }
-  
+
   dialogbutton $f.cancel -textvar ::tr(Close) \
       -command { focus .; destroy .sm }
-  
+
   pack $f.ignorecol $w.b3.save -side left -pady 5 -padx 5
   pack $w.b3.cancel $w.b3.search $w.b3.stop -side right -pady 5 -padx 5
   pack $w.progress -side top -pady 2
-  
+
   label $w.status -text "" -width 1 -font font_Small -relief sunken -anchor w
   pack $w.status -side bottom -fill x
-  
+
   # update
   wm resizable $w 0 0
   standardShortcuts $w
@@ -612,15 +612,15 @@ proc ::search::material {} {
 proc ::search::material::save {} {
   global pMin pMax ignoreColors minMoveNum maxMoveNum minHalfMoves
   global pattPiece pattFyle pattRank pattBool oppBishops nPatterns
-  
+
   set ftype { { "Scid SearchOptions files" {".sso"} } }
   set fName [tk_getSaveFile -initialdir [pwd] -filetypes $ftype -title "Create a SearchOptions file"]
   if {$fName == ""} { return }
-  
+
   if {[string compare [file extension $fName] ".sso"] != 0} {
     append fName ".sso"
   }
-  
+
   if {[catch {set searchF [open $fName w]}]} {
     tk_messageBox -title "Error: Unable to open file" -type ok -icon error \
         -message "Unable to create SearchOptions file: $fName"

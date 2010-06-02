@@ -18,7 +18,7 @@ namespace eval book {
   set hashList ""
   set bookSlot 0
   set bookTuningSlot 2
-  
+
   ################################################################################
   # open a book, closing any previously opened one (called by annotation analysis)
   # arg name : gm2600.bin for example
@@ -36,11 +36,11 @@ namespace eval book {
       }
       set ::book::currentTuningBook $name
     }
-    
+
     set bn [ file join $::scidBooksDir $name ]
     sc_book load $bn $slot
   }
-  
+
   ################################################################################
   # Return a move in book for position fen. If there is no move in book, returns ""
   # Is used by engines, not book windows
@@ -64,28 +64,28 @@ namespace eval book {
     sc_book close $slot
     return $m
   }
-  
+
   ################################################################################
   #  Open a window to select book and display book moves
   # arg name : gm2600.bin for example
   ################################################################################
   proc open { {name ""} } {
     global ::book::bookList ::book::bookPath ::book::currentBook ::book::isOpen ::book::lastBook
-    
+
     set w .bookWin
-    
+
     if {[winfo exists $w]} { return }
-    
+
     set ::book::isOpen 1
-    
+
     toplevel $w
     wm title $w $::tr(Book)
     wm resizable $w 0 1
-    
+
     setWinLocation $w
     bind $w <Configure> "recordWinSize $w"
     bind $w <F1> { helpWindow Book }
-    
+
     frame $w.f
     # load book names
     if { $name == "" && $lastBook != "" } {
@@ -113,16 +113,16 @@ namespace eval book {
       incr i
     }
     ttk::combobox $w.f.combo -width 12 -values $tmp
-    
+
     catch { $w.f.combo current $idx }
     pack $w.f.combo
-    
+
     # text displaying book moves
     text $w.f.text -wrap word -state disabled -width 12
     pack $w.f.text -expand yes -fill both
-    
+
     pack $w.f
-    
+
     bind $w.f.combo <<ComboboxSelected>> ::book::bookSelect
     bind $w <Destroy> "::book::closeMainBook"
     bind $w <Escape> { destroy  .bookWin }
@@ -148,7 +148,7 @@ namespace eval book {
   ################################################################################
   proc refresh {} {
     global ::book::bookMoves
-    
+
     foreach t [.bookWin.f.text tag names] {
       if { [string match "bookMove*" $t] } {
         .bookWin.f.text tag delete $t
@@ -202,20 +202,20 @@ namespace eval book {
   ################################################################################
   proc tuning { {name ""} } {
     global ::book::bookList ::book::bookPath ::book::currentBook ::book::isOpen
-    
+
     set w .bookTuningWin
-    
+
     if {[winfo exists $w]} {
       return
     }
-    
+
     toplevel $w
     wm title $w $::tr(Book)
     # wm resizable $w 0 0
-    
+
     bind $w <F1> { helpWindow BookTuningWindow }
     setWinLocation $w
-    
+
     frame $w.fcombo
     frame $w.f
     # load book names
@@ -241,25 +241,25 @@ namespace eval book {
       }
       incr i
     }
-    
+
     ttk::combobox $w.fcombo.combo -width 12 -values $tmp
     catch { $w.fcombo.combo current $idx }
     pack $w.fcombo.combo -expand yes -fill x
-    
+
     frame $w.fbutton
     button $w.fbutton.bExport -text $::tr(Export) -command ::book::export
     button $w.fbutton.bSave -text $::tr(Save) -command ::book::save
     pack $w.fbutton.bExport $w.fbutton.bSave -side top -fill x -expand yes
-    
+
     pack $w.fcombo $w.f $w.fbutton -side top
-    
+
     bind $w.fcombo.combo <<ComboboxSelected>> ::book::bookTuningSelect
     bind $w <Destroy> "::book::closeTuningBook"
     bind $w <Escape> { destroy  .bookTuningWin }
     bind $w <F1> { helpWindow BookTuning }
 
     bookTuningSelect
-    
+
   }
   ################################################################################
   #
@@ -282,7 +282,7 @@ namespace eval book {
   ################################################################################
   proc refreshTuning {} {
     set moves [sc_book moves $::book::bookTuningSlot]
-    
+
     set w .bookTuningWin
     bind $w <Destroy> "" ;# avoid the closing of the book
     # erase previous children
@@ -290,7 +290,7 @@ namespace eval book {
     foreach c $children {
       destroy $c
     }
-    
+
     set row 0
     for {set i 0} {$i<[llength $moves]} {incr i 2} {
       label $w.f.m$row -text [::trans [lindex $moves $i]]
@@ -303,7 +303,7 @@ namespace eval book {
       grid $w.f.sp$row -row $row -column 1 -sticky w
       incr row
     }
-    
+
   }
   ################################################################################
   # sends to book the list of updated probs in order. As the list of moves is in the same order, no need
@@ -344,7 +344,7 @@ namespace eval book {
   ################################################################################
   proc book2pgn { } {
     global ::book::hashList
-    
+
     if {$::book::cancelBookExport} { return  }
     if { $::book::exportCount >= $::book::exportMax } {
       return
@@ -356,7 +356,7 @@ namespace eval book {
       lappend hashList $hash
       set hashList [lsort -integer -unique $hashList]
     }
-    
+
     set bookMoves [sc_book moves $::book::bookTuningSlot]
     incr ::book::exportCount
     if {[expr $::book::exportCount % 50] == 0} {
@@ -365,7 +365,7 @@ namespace eval book {
       update
     }
     if {[llength $bookMoves] == 0} { return }
-    
+
     for {set i 0} {$i<[llength $bookMoves]} {incr i 2} {
       set move [lindex $bookMoves $i]
       if {$i == 0} {
@@ -379,7 +379,7 @@ namespace eval book {
         sc_var exit
       }
     }
-    
+
   }
   ################################################################################
   # cancel book export

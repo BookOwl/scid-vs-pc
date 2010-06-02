@@ -52,20 +52,20 @@ set languages {czech deutsch francais hungary italian nederlan norsk polish
 ################################################################################
 proc checkfile {code langfile enc} {
   # Read this language file and the english file:
-  
+
   set f [open english.tcl r]
   set data [read $f]
   close $f
   set englishData [split $data "\n"]
   set englishNames {}
-  
+
   set f [open $langfile.tcl r]
   fconfigure $f -encoding $enc
   set data [read $f]
   close $f
   set langData [split $data "\n"]
   set langNames {}
-  
+
   foreach line $langData {
     set fields [split $line]
     set command [lindex $fields 0]
@@ -77,17 +77,17 @@ proc checkfile {code langfile enc} {
       lappend langNames $line
     }
   }
-  
+
   set fnew [open $langfile.tcl.new w]
   fconfigure $fnew -encoding $enc
-  
+
   set lastLine -1
   foreach line $englishData {
     set fields [split $line]
     set command [lindex $fields 0]
     set lang [lindex $fields 1]
     set name [lindex $fields 2]
-    
+
     if {$lang == "E"  &&  ($command == "menuText" || $command == "translate" || $command == "helpMsg")} {
       set lineCount [lsearch -exact $langNames $command:$name]
       if { $lineCount < 0} {
@@ -107,7 +107,7 @@ proc checkfile {code langfile enc} {
       }
     }
   }
-  
+
   foreach l [lrange $langData [ expr $lastLine + 1 ] end] {
     puts $fnew $l
   }

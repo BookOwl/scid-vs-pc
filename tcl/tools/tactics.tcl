@@ -7,11 +7,11 @@
 #
 
 namespace eval tactics {
-  
+
   set infoEngineLabel ""
-  
+
   set basePath $::scidBasesDir
-  
+
   set baseList {}
   set solved "problem solved"
   set failed "problem failed"
@@ -28,7 +28,7 @@ namespace eval tactics {
   set engineSlot 5
   # Don't try to find the exact best move but to win a won game (that is a mate in 5 is ok even if there was a pending mate in 2)
   set winWonGame 0
-  
+
   ################################################################################
   # Current base must contain games with Tactics flag and **** markers
   # for certain moves. The first var should contain the best move (the next best move
@@ -37,11 +37,11 @@ namespace eval tactics {
   ################################################################################
   proc findBestMove {} {
     set old_game [sc_game number]
-    
+
     set found 0
-    
+
     if {![sc_base inUse] || [sc_base numGames] == 0} { return }
-    
+
     # Try to find in current game, from current pos (exit vars first)
     if {[sc_game flag T [sc_game number]]} {
       while {[sc_var level] != 0} { sc_var exit }
@@ -49,7 +49,7 @@ namespace eval tactics {
         set found 1
       }
     }
-    
+
     if {!$found} {
       for {set g [expr [sc_game number] +1] } { $g <= [sc_base numGames]} { incr g} {
         sc_game load $g
@@ -61,7 +61,7 @@ namespace eval tactics {
         }
       }
     }
-    
+
     if { ! $found } {
       sc_game load $old_game
       tk_messageBox -type ok -icon info -title "Scid" -message "No game with Tactics flag\nor no tactics comment found"      
@@ -96,13 +96,13 @@ namespace eval tactics {
   proc config {} {
     global ::tactics::basePath ::tactics::baseList
     set basePath $::scidBasesDir
-    
+
     # check if tactics window is already opened. If so, abort serial.
     set w .tacticsWin
     if {[winfo exists $w]} {
       destroy $w
     }
-    
+
     set w ".configTactics"
     if {[winfo exists $w]} {
       focus $w
@@ -111,12 +111,12 @@ namespace eval tactics {
     toplevel $w
     wm title $w $::tr(ConfigureTactics)
     setWinLocation $w
-    
+
     if {[sc_base count free] == 0} {
       tk_messageBox -type ok -icon info -title "Scid" -message "Too many databases are open; close one first"
       return
     }
-    
+
     set prevBase [sc_base current]
     # go through all bases and take descriptions
     set baseList {}
@@ -141,15 +141,15 @@ namespace eval tactics {
         sc_base close [sc_base slot $file]
       }
     }
-    
+
     updateMenuStates
     updateStatusBar
     updateTitle
-    
+
     frame $w.fconfig -relief raised -borderwidth 1
     label $w.fconfig.l1 -text $::tr(ChooseTrainingBase)
     pack $w.fconfig.l1
-    
+
     frame $w.fconfig.flist
     listbox $w.fconfig.flist.lb -selectmode single -exportselection 0 \
         -yscrollcommand "$w.fconfig.flist.ybar set" -height 10 -width 30
@@ -159,18 +159,18 @@ namespace eval tactics {
       $w.fconfig.flist.lb insert end [lindex $baseList $i]
     }
     $w.fconfig.flist.lb selection set 0
-    
+
     frame $w.fconfig.reset
     button $w.fconfig.reset.button -text $::tr(ResetScores) \
         -command {::tactics::resetScores [ lindex $::tactics::baseList [expr [.configTactics.fconfig.flist.lb curselection] * 2 ] ]}
     pack $w.fconfig.reset.button -expand yes -fill both
-    
+
     # in order to limit CPU usage, limit the time for analysis (this prevents noise on laptops)
     frame $w.fconfig.flimit
     label $w.fconfig.flimit.blimit -text $::tr(limitanalysis) -relief flat
     scale $w.fconfig.flimit.analysisTime -orient horizontal -from 1 -to 60 -length 120 -label $::tr(seconds) -variable ::tactics::analysisTime -resolution 1
     pack $w.fconfig.flimit.blimit $w.fconfig.flimit.analysisTime -side left -expand yes
-    
+
     frame $w.fconfig.fbutton
     button $w.fconfig.fbutton.ok -text $::tr(Continue) -command {
       set base [ lindex $::tactics::baseList [expr [.configTactics.fconfig.flist.lb curselection] * 2 ] ]
@@ -179,7 +179,7 @@ namespace eval tactics {
     }
     button $w.fconfig.fbutton.cancel -text $::tr(Cancel) -command "focus .; destroy $w"
     pack $w.fconfig.fbutton.ok $w.fconfig.fbutton.cancel -expand yes -side left -padx 20 -pady 2
-    
+
     pack $w.fconfig $w.fconfig.flist $w.fconfig.reset $w.fconfig.flimit $w.fconfig.fbutton
     bind $w <Configure> "recordWinSize $w"
     bind $w <F1> { helpWindow TacticsTrainer }
@@ -190,17 +190,17 @@ namespace eval tactics {
   ################################################################################
   proc start { base } {
     global ::tactics::analysisEngine ::askToReplaceMoves ::tactics::askToReplaceMoves_old
-    
+
     set ::tactics::lastGameLoaded 0
-    
+
     if { ! [::tactics::launchengine] } { return }
-    
+
     set askToReplaceMoves_old $askToReplaceMoves
     set askToReplaceMoves 0
-    
+
     set w .tacticsWin
     if {[winfo exists $w]} { focus $w ; return }
-    
+
     toplevel $w
     wm title $w $::tr(Tactics)
     setWinLocation $w
@@ -210,22 +210,22 @@ namespace eval tactics {
     label $w.f1.labelInfo -textvariable ::tactics::infoEngineLabel -bg linen
     checkbutton $w.f1.cbWinWonGame -text $::tr(WinWonGame) -variable ::tactics::winWonGame
     pack $w.f1.labelInfo $w.f1.cbWinWonGame -expand yes -fill both -side top
-    
+
     frame $w.fclock
     ::gameclock::new $w.fclock 1 80 0
     ::gameclock::reset 1
     ::gameclock::start 1
-    
+
     frame $w.f2 -relief groove
     checkbutton $w.f2.cbSolution -text $::tr(ShowSolution) -variable ::tactics::showSolution -command ::tactics::toggleSolution
     label $w.f2.lSolution -textvariable ::tactics::labelSolution -wraplength 120
     pack $w.f2.cbSolution $w.f2.lSolution -expand yes -fill both -side top
-    
+
     frame $w.fbuttons -relief groove -borderwidth 1
     pack $w.f1 $w.fclock $w.f2 $w.fbuttons -expand yes -fill both
-    
+
     setInfoEngine $::tr(LoadingBase)
-    
+
     button $w.fbuttons.next -text $::tr(Next) -command {
       ::tactics::stopAnalyze
       ::tactics::loadNextGame }
@@ -234,9 +234,9 @@ namespace eval tactics {
     bind $w <Destroy> { ::tactics::endTraining }
     bind $w <Configure> "recordWinSize $w"
     bind $w <F1> { helpWindow TacticsTrainer }
-    
+
     ::tactics::loadBase [file rootname $base]
-    
+
     setInfoEngine "---"
     ::tactics::loadNextGame
     ::tactics::mainLoop
@@ -255,7 +255,7 @@ namespace eval tactics {
     set ::askToReplaceMoves $::tactics::askToReplaceMoves_old
     focus .
     destroy $w
-    
+
     catch { ::uci::closeUCIengine $::tactics::engineSlot }
   }
   ################################################################################
@@ -274,11 +274,11 @@ namespace eval tactics {
   ################################################################################
   proc resetScores {name} {
     global ::tactics::cancelScoreReset ::tactics::baseList
-    
+
     set base [file rootname $name]
-    
+
     set wasOpened 0
-    
+
     if {[sc_base count free] == 0} {
       tk_messageBox -type ok -icon info -title "Scid" -message "Too many databases are opened\nClose one first"
       return
@@ -293,7 +293,7 @@ namespace eval tactics {
         return
       }
     }
-    
+
     #reset site tag for each game
     progressWindow "Scid" $::tr(ResettingScore) $::tr(Cancel) "::tactics::sc_progressBar"
     set numGames [sc_base numGames]
@@ -351,12 +351,12 @@ namespace eval tactics {
       return
     }
     set ::tactics::lastGameLoaded $g
-    
+
     sideToMoveAtBottom
-    
+
     ::gameclock::reset 1
     ::gameclock::start 1
-    
+
     updateBoard -pgn
     set ::tactics::prevFen [sc_pos fen]
     ::windows::gamelist::Refresh
@@ -422,46 +422,46 @@ namespace eval tactics {
   ################################################################################
   proc mainLoop {} {
     global ::tactics::prevScore ::tactics::prevLine ::tactics::analysisEngine ::tactics::nextEngineMove
-    
+
     after cancel ::tactics::mainLoop
-    
+
     if {[sc_pos fen] != $::tactics::prevFen && [sc_pos isAt start]} {
       ::tactics::abnormalContinuation
       return
     }
-    
+
     # is this player's turn (which always plays from bottom of the board) ?
     if { [::tactics::isPlayerTurn] } {
       after 1000  ::tactics::mainLoop
       return
     }
-    
+
     set ::tactics::prevFen [sc_pos fen]
-    
+
     # check if player's move is a direct mate : no need to wait for engine analysis in this case
     set move_done [sc_game info previousMove]
     if { [string index $move_done end] == "#"} { ::tactics::exSolved; return }
-    
+
     # if the engine is still analyzing, wait the end of it
     if {$analysisEngine(analyzeMode)} { vwait ::tactics::analysisEngine(analyzeMode) }
-    
+
     if {[sc_pos fen] != $::tactics::prevFen  && [sc_pos isAt start]} {
       ::tactics::abnormalContinuation
       return
     }
-    
+
     # the player moved and analysis is over : check if his move was as good as expected
     set prevScore $analysisEngine(score)
     set prevLine $analysisEngine(moves)
     ::tactics::startAnalyze
-    
+
     # now wait for the end of analyzis
     if {$analysisEngine(analyzeMode)} { vwait ::tactics::analysisEngine(analyzeMode) }
     if {[sc_pos fen] != $::tactics::prevFen  && [sc_pos isAt start]} {
       ::tactics::abnormalContinuation
       return
     }
-    
+
     # compare results
     set res [::tactics::foundBestLine]
     if {  $res != ""} {
@@ -486,7 +486,7 @@ namespace eval tactics {
         sc_game save [sc_game number]
       }
     }
-    
+
     after 1000 ::tactics::mainLoop
   }
   ################################################################################
@@ -499,12 +499,12 @@ namespace eval tactics {
     global ::tactics::analysisEngine ::tactics::prevScore ::tactics::prevLine ::tactics::nextEngineMove ::tactics::matePending
     set score $analysisEngine(score)
     set line $analysisEngine(moves)
-    
+
     set s [ regsub -all "\[\.\]{3} " $line "" ]
     set s [ regsub -all "\[0-9\]+\[\.\] " $s "" ]
     set nextEngineMove [ lindex [ split $s ] 0 ]
     set ply [ llength [split $s] ]
-    
+
     # check if the player played the same move predicted by engine
     set s [ regsub -all "\[\.\]{3} " $prevLine "" ]
     set s [ regsub -all "\[0-9\]+\[\.\] " $s "" ]
@@ -512,7 +512,7 @@ namespace eval tactics {
     if { [sc_game info previousMoveNT] == $prevBestMove} {
       return ""
     }
-    
+
     # Case of mate
     if { [string index $prevLine end] == "#"} {
       set matePending 1
@@ -570,7 +570,7 @@ namespace eval tactics {
   # Loads a base bundled with Scid (in ./bases directory)
   ################################################################################
   proc loadBase { name } {
-    
+
     if {[sc_base count free] == 0} {
       tk_messageBox -type ok -icon info -title "Scid" -message "Too many databases are open; close one first"
       return
@@ -584,7 +584,7 @@ namespace eval tactics {
         return
       }
     }
-    
+
     ::windows::gamelist::Refresh
     ::tree::refresh
     ::windows::stats::Refresh
@@ -619,18 +619,18 @@ namespace eval tactics {
     set ::tactics::infoEngineLabel $s
     .tacticsWin.f1.labelInfo configure -background $color
   }
-  
+
   ################################################################################
   #  Will start engine
   # in case of an error, return 0, or 1 if the engine is ok
   ################################################################################
   proc launchengine {} {
     global ::tactics::analysisEngine
-    
+
     ::uci::resetUciInfo $::tactics::engineSlot
-    
+
     set analysisEngine(analyzeMode) 0
-    
+
     # find engine
     set engineFound 0
     set index 0
@@ -645,11 +645,11 @@ namespace eval tactics {
       tk_messageBox -type ok -icon warning -parent . -title "Scid" -message "Unable to find engine.\nPlease configure engine with Toga as name"
       return 0
     }
-    
+
     ::uci::startEngine $index $::tactics::engineSlot ;# start engine in analysis mode
     return 1
   }
-  
+
   # ======================================================================
   # sendToEngine:
   #   Send a command to a running analysis engine.
@@ -657,7 +657,7 @@ namespace eval tactics {
   proc sendToEngine {text} {
     ::uci::sendToEngine $::tactics::engineSlot $text
   }
-  
+
   # ======================================================================
   # startAnalyzeMode:
   #   Put the engine in analyze mode
@@ -665,12 +665,12 @@ namespace eval tactics {
   proc startAnalyze { } {
     global ::tactics::analysisEngine ::tactics::analysisTime
     setInfoEngine "$::tr(Thinking) ..." PaleVioletRed
-    
+
     # Check that the engine has not already had analyze mode started:
     if {$analysisEngine(analyzeMode)} {
       ::tactics::sendToEngine  "exit"
     }
-    
+
     set analysisEngine(analyzeMode) 1
     after cancel ::tactics::stopAnalyze
     ::tactics::sendToEngine "position fen [sc_pos fen]"
@@ -685,16 +685,16 @@ namespace eval tactics {
     global ::tactics::analysisEngine ::tactics::analysisTime
     # Check that the engine has already had analyze mode started:
     if {!$analysisEngine(analyzeMode)} { return }
-    
+
     set pv [lindex $::analysis(multiPV$::tactics::engineSlot) 0]
     set analysisEngine(score) [lindex $pv 1]
     set analysisEngine(moves) [lindex $pv 2]
-    
+
     set analysisEngine(analyzeMode) 0
     ::tactics::sendToEngine  "stop"
     setInfoEngine $::tr(AnalyzeDone) PaleGreen3
   }
-  
+
 }
 ###
 ### End of file: tactics.tcl

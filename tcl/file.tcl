@@ -26,12 +26,12 @@ proc ::file::Exit {}  {
   }
   # Switch back to original database:
   sc_base switch $savedBase
-  
+
   if {$msg != ""} {
     append msg "\n"
   }
   append msg $::tr(ExitDialog)
-  
+
   # Only ask before exiting if there are unsaved changes:
   if {$unsavedCount > 0} {
     set answer [tk_messageBox -title "Scid: [tr FileExit]" \
@@ -111,7 +111,7 @@ proc ::file::Open {{fName ""}} {
         -message "Too many databases are open; close one first"
     return
   }
-  
+
   if {[sc_info gzip]} {
     set ftype {
       { "All Scid files" {".si3" ".si" ".pgn" ".pgn.gz" ".epd" ".epd.gz" ".sor"} }
@@ -135,11 +135,11 @@ proc ::file::Open {{fName ""}} {
     set fName [tk_getOpenFile -initialdir $::initialDir(base) -filetypes $ftype -title "Open a Scid file"]
     if {$fName == ""} { return }
   }
-  
+
   if {[file extension $fName] == ""} {
     set fName "$fName.si3"
   }
-  
+
   if {[file extension $fName] == ".sor"} {
     if {[catch {::rep::OpenWithFile $fName} err]} {
       tk_messageBox -parent . -type ok -icon info -title "Scid" \
@@ -147,12 +147,12 @@ proc ::file::Open {{fName ""}} {
     }
     return
   }
-  
+
   if {[file extension $fName] == ".si"} {
     ::file::Upgrade [file rootname $fName]
     return
   }
-  
+
   # The ::recentFiles::remove and ::recentFiles::add should probably be 
   # handled when "if {err == 0}"
 
@@ -195,7 +195,7 @@ proc ::file::Open {{fName ""}} {
       }
     }
   }
-  
+
   if {$err == 0} {
     catch {sc_game load auto}
     flipBoardForPlayerNames $::myPlayerNames
@@ -225,7 +225,7 @@ proc ::file::Upgrade {name} {
     ::file::Open "$name.si3"
     return
   }
-  
+
   set msg [string trim $::tr(ConfirmUpgrade)]
   set res [tk_messageBox -title "Scid" -type yesno -icon info -message $msg]
   if {$res == "no"} { return }
@@ -279,13 +279,13 @@ proc ::file::Close {{base -1}} {
       return
     }
     sc_base close
-    
+
     # If base to close was the current one, reset current game
     if { $current == $base } {
       setTrialMode 0
       sc_game new
     }
-    
+
     ::file::SwitchToBase $current
   } else {
     updateMenuStates
@@ -318,13 +318,13 @@ proc ::file::SwitchToBase {b} {
 ################################################################################
 proc ::file::openBaseAsTree { { fName "" } } {
   set current [sc_base current]
-  
+
   if {[sc_base count free] == 0} {
     tk_messageBox -type ok -icon info -title "Scid" \
         -message "Too many databases are open; close one first"
     return
   }
-  
+
   if {$fName == ""} {
     if {[sc_info gzip]} {
       set ftype {
@@ -344,11 +344,11 @@ proc ::file::openBaseAsTree { { fName "" } } {
     set ::initialDir(base) [file dirname $fName]
     set ::initialDir(file) [file tail $fName]
   }
-  
+
   if {[file extension $fName] == ""} {
     set fName "$fName.si3"
   }
-  
+
   if {[file extension $fName] == ".sor"} {
     if {[catch {::rep::OpenWithFile $fName} err]} {
       tk_messageBox -parent . -type ok -icon info -title "Scid" \
@@ -361,7 +361,7 @@ proc ::file::openBaseAsTree { { fName "" } } {
     ::file::Upgrade [file rootname $fName]
     return
   }
-  
+
   set err 0
   busyCursor .
   if {[file extension $fName] == ".si3"} {
@@ -391,7 +391,7 @@ proc ::file::openBaseAsTree { { fName "" } } {
       ::recentFiles::add $fName
     }
   }
-  
+
   unbusyCursor .
   ::tree::make [sc_base current]
   .treeWin[sc_base current].buttons.lock invoke

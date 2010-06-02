@@ -10,7 +10,7 @@ namespace eval novag {
   set fd ""
   set connected 0
   set waitBetweenMessages 0
-  
+
   ##########################################################
   proc config {} {
     global ::novag::serial
@@ -32,7 +32,7 @@ namespace eval novag {
   ##########################################################
   proc connect {} {
     global ::novag::serial ::novag::fd
-    
+
     set w .novag
     toplevel $w
     text $w.output -width 40 -height 30
@@ -44,10 +44,10 @@ namespace eval novag {
     bind $w.input <Return> " $w.send invoke "
     bind $w <Destroy> { catch ::novag::disconnect }
     bind $w <F1> { helpWindow Novag}
-    
+
     pack $w.output $w.input $w.send
     update
-    
+
     puts "connecting to $serial"
     set fd [open $serial r+]
     puts "fd $fd"
@@ -72,14 +72,14 @@ namespace eval novag {
     close $fd
     set ::novag::connected 0
   }
-  
+
   ##########################################################
   proc addMove {san} {
     # if promotion add "/"
     if {[string length $san] == 5} {
       set san "[string range $san 0 3]/[string range $san 4 end]"
     }
-    
+
     ::novag::send "M $san"
     if { [ string first "x" [sc_game info previousMove] ] != -1 } {
       wait 3000
@@ -103,14 +103,14 @@ namespace eval novag {
     puts "received $l"
     .novag.output insert end "$l\n"
     .novag.output yview moveto 1
-    
+
     if {[string match -nocase "New Game*" $l]} {
       sc_game new
       updateBoard -pgn
       ::novag::send "U ON"
       return
     }
-    
+
     if {[lindex $l 0] == "M"} {
       
       if {[sc_pos side] == "white" && [string index [lindex $l 1] end ] == ","} {  return }
@@ -131,13 +131,13 @@ namespace eval novag {
       updateBoard -pgn
       return
     }
-    
+
     if {[lindex $l 0] == "T"} {
       sc_move back
       updateBoard -pgn
       return
     }
-    
+
   }
   ##########################################################
   proc wait {ms} {

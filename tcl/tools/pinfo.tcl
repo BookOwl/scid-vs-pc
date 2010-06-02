@@ -64,7 +64,7 @@ proc playerInfo {{player ""}} {
     update
     wm state $w normal
     bind $w <Configure> "recordWinSize $w"
-    
+
   }
   set player [trimEngineName $player]
   if {[info exists ::photo($player)]} {

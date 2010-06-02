@@ -195,7 +195,7 @@ proc engine {arglist} {
   # puts this option here for compatibility with previous file format (?!)
   if {! [info exists newEngine(UCI)]} { set newEngine(UCI) 0 }
   if {! [info exists newEngine(UCIoptions)]} { set newEngine(UCIoptions) {} }
-  
+
   lappend engines(list) [list $newEngine(Name) $newEngine(Cmd) \
       $newEngine(Args) $newEngine(Dir) \
       $newEngine(Elo) $newEngine(Time) \
@@ -215,7 +215,7 @@ proc ::enginelist::read {} {
 
 proc ::enginelist::write {} {
   global engines ::uci::newOptions scidUserDir scidShareDir
-  
+
   set enginesFile [scidConfigFile engines]
   set enginesBackupFile [scidConfigFile engines.bak]
   # Try to rename old file to backup file and open new file:
@@ -224,7 +224,7 @@ proc ::enginelist::write {} {
     catch {file rename $enginesBackupFile $enginesFile}
     return 0
   }
-  
+
   puts $f "\# Analysis engines list file for Scid [sc_info version] with UCI support"
   puts $f {}
   foreach e $engines(list) {
@@ -304,7 +304,7 @@ proc ::enginelist::date {time} {
 
 proc ::enginelist::listEngines {{focus 0}} {
   global engines
-  
+
   set w .enginelist
   if {! [winfo exists $w]} { return }
   set f $w.list.list
@@ -339,7 +339,7 @@ proc ::enginelist::listEngines {{focus 0}} {
     $f insert end $text
   }
   $f selection set $focus
-  
+
   $w.title configure -state normal
   foreach i {Name Elo Time} {
     $w.title tag configure $i -font font_Fixed -foreground {}
@@ -369,7 +369,7 @@ proc ::enginelist::choose {} {
 
   label $w.flabel -text $::tr(EngineList) -font font_Large
   pack $w.flabel -side top -pady 5
-  
+
   frame $w.buttons
 
   text $w.title -width 50 -height 1 -font font_Fixed -relief flat \
@@ -391,7 +391,7 @@ proc ::enginelist::choose {} {
   $w.title insert end "$::tr(EngineTime)" Time
   $w.title configure -state disabled
   pack $w.title -side top -fill x
-  
+
   ### list of engines
 
   pack [frame $w.list -relief flat -borderwidth 0] \
@@ -406,7 +406,7 @@ proc ::enginelist::choose {} {
   pack $w.list.ybar -side right -fill y
   pack $w.list.list -side top -fill both -expand yes
   $w.list.list selection set 0
-  
+
   dialogbutton $w.buttons.add -text $::tr(EngineNew) -command {::enginelist::edit -1}
 
   dialogbutton $w.buttons.edit -text $::tr(EngineEdit) -command {
@@ -431,7 +431,7 @@ proc ::enginelist::choose {} {
   pack $w.buttons -side top -pady 12 -padx 2 -fill x
   pack $w.close -side bottom -pady 8
   focus $w.buttons.start
-  
+
   ::enginelist::listEngines
   update
   placeWinOverParent $w .
@@ -483,13 +483,13 @@ proc ::enginelist::edit {index} {
   global engines
   if {$index == ""} { return }
 
-  
+
   if {$index >= 0  ||  $index >= [llength $engines(list)]} {
     set e [lindex $engines(list) $index]
   } else {
     set e [list "" "" "" . 0 0 "" 1]
   }
-  
+
   set engines(newIndex) $index
   set engines(newName)	[lindex $e 0]
   set engines(newCmd)	[lindex $e 1]
@@ -500,19 +500,19 @@ proc ::enginelist::edit {index} {
   set engines(newURL)	[lindex $e 6]
   set engines(newUCI)	[lindex $e 7]
   set engines(newUCIoptions) [lindex $e 8]
-  
+
   set engines(newDate) $::tr(None)
   if {$engines(newTime) > 0 } {
     set engines(newDate) [::enginelist::date $engines(newTime)]
   }
-  
+
   set w .engineEdit
   toplevel $w
   wm title $w Scid
 
   bind $w <Configure> "recordWinSize $w"
   setWinLocation $w
-  
+
   set f [frame $w.f]
   pack $f -side top -fill x -expand yes
   set row 0
@@ -525,7 +525,7 @@ proc ::enginelist::edit {index} {
     bindFocusColors $f.e$i
     grid $f.l$i -row $row -column 0 -sticky w
     grid $f.e$i -row $row -column 1 -sticky we
-    
+
     # Browse button for choosing an executable file:
     if {$i == "Cmd"} {
       button $f.b$i -text "..." -command {
@@ -554,7 +554,7 @@ proc ::enginelist::edit {index} {
       }
       grid $f.b$i -row $row -column 2 -sticky we
     }
-    
+
     if {$i == "Dir"} {
       button $f.current -text " . " -command {
         set engines(newDir) .
@@ -568,19 +568,19 @@ proc ::enginelist::edit {index} {
       grid $f.current -row $row -column 2 -sticky we
       grid $f.user -row $row -column 3 -sticky we
     }
-    
+
     if {$i == "URL"} {
       button $f.bURL -text [tr FileOpen] -command {
         if {$engines(newURL) != ""} { openURL $engines(newURL) }
       }
       grid $f.bURL -row $row -column 2 -sticky we
     }
-    
+
     incr row
   }
-  
+
   grid columnconfigure $f 1 -weight 1
-  
+
   checkbutton $f.cbUci -text UCI -variable engines(newUCI)
   button $f.bConfigUCI -text $::tr(ConfigureUCIengine) -command {
     ::uci::uciConfig 2 [ toAbsPath $engines(newCmd) ] $engines(newArgs) \
@@ -591,7 +591,7 @@ proc ::enginelist::edit {index} {
   $f.lCmd configure -font font_Bold
   $f.lDir configure -font font_Bold
   $f.cbUci configure -font font_Bold
-  
+
   label $f.lElo -text $::tr(EngineElo)
   entry $f.eElo -textvariable engines(newElo) -justify right -width 5
   bindFocusColors $f.eElo
@@ -601,7 +601,7 @@ proc ::enginelist::edit {index} {
   grid $f.cbUci -row $row -column 0 -sticky w
   grid $f.bConfigUCI -row $row -column 1 -sticky w
   incr row
-  
+
   label $f.lTime -text $::tr(EngineTime)
   label $f.eTime -textvariable engines(newDate) -anchor w -width 1
   grid $f.lTime -row $row -column 0 -sticky w
@@ -679,7 +679,7 @@ proc ::enginelist::edit {index} {
   pack $f -side bottom
   pack $f.cancel -side right -padx 20 -pady 5
   pack $f.ok -side left -padx 20 -pady 5
-  
+
   bind $w <Return> "$f.ok invoke"
   bind $w <Escape> "destroy $w"
   bind $w <F1> { helpWindow Analysis List }
@@ -702,16 +702,16 @@ proc  checkState {arg widget} {
 ################################################################################
 proc initAnnotation {n} {
   global autoplayDelay tempdelay blunderThreshold annotateModeButtonValue annotateMode analysis
-  
+
   set w .configAnnotation
   if { [winfo exists $w] } { destroy $w }
   if { ! $annotateModeButtonValue } { ; # end annotation
     toggleAutoplay
     return
   }
-  
+
   trace variable blunderThreshold w {::utils::validate::Regexp {^[0-9]*\.?[0-9]*$}}
-  
+
   set tempdelay [expr {$autoplayDelay / 1000.0}]
   toplevel $w
   wm state $w withdrawn
@@ -730,7 +730,7 @@ proc initAnnotation {n} {
   bind $w <Return> { .configAnnotation.buttons.ok invoke }
 
   ### Add variations frame
-  
+
   addHorizontalRule $w
   label $w.avlabel -text $::tr(AnnotateWhich...)
   radiobutton $w.all -text $::tr(AnnotateAll) -variable annotateMoves -value all -anchor w
@@ -740,7 +740,7 @@ proc initAnnotation {n} {
   pack $w.avlabel -side top
   pack $w.all $w.white $w.black -side top -fill x
   addHorizontalRule $w
-  
+
   ### Annotate frame
 
   label $w.anlabel -text $::tr(Annotate...)
@@ -768,7 +768,7 @@ proc initAnnotation {n} {
   checkbutton $w.cbAddScore  -text $::tr(AddScoreToShortAnnotations) -variable ::addScoreToShortAnnotations -anchor w
   checkbutton $w.cbAddAnnotatorTag  -text $::tr(addAnnotatorTag) -variable ::addAnnotatorTag -anchor w
   pack $w.cbAnnotateVar $w.cbShortAnnotation $w.cbAddScore $w.cbAddAnnotatorTag -anchor w
-  
+
   # choose a book for analysis
 
   frame $w.usebook
@@ -875,7 +875,7 @@ proc okAnnotation {n} {
   set ::useAnalysisBookName [.configAnnotation.usebook.comboBooks get]
   set ::wentOutOfBook 0
   set ::book::lastBook $::useAnalysisBookName
-  
+
   # tactical positions is selected, must be in multipv mode
   if {$::markTacticalExercises} {
     if { $::analysis(multiPVCount$n) < 2} {
@@ -883,7 +883,7 @@ proc okAnnotation {n} {
       changePVSize $n
     }
   }
-  
+
   if {$tempdelay < 0.1} { set tempdelay 0.1 }
   set autoplayDelay [expr {int($tempdelay * 1000)}]
   bind .configAnnotation <Destroy> {}
@@ -904,13 +904,13 @@ proc okAnnotation {n} {
 ################################################################################
 proc bookAnnotation { {n 1} } {
   global analysis
-  
+
   if {$::annotateMode && $::useAnalysisBook} {
-    
+
     set prevbookmoves {}
     set bn [ file join $::scidBooksDir $::useAnalysisBookName ]
     sc_book load $bn $::analysisBookSlot
-    
+
     set bookmoves [sc_book moves $::analysisBookSlot]
     while {[string length $bookmoves] != 0 && ![sc_pos isAt vend]} {
       # we are in book, so move immediately forward
@@ -920,14 +920,14 @@ proc bookAnnotation { {n 1} } {
     }
     sc_book close $::analysisBookSlot
     set ::wentOutOfBook 1
-    
+
     set verboseMoveOutOfBook {}
     set verboseLastBookMove {}
     if {! $::isShortAnnotation } {
       set verboseMoveOutOfBook " $::tr(MoveOutOfBook)"
       set verboseLastBookMove " $::tr(LastBookMove)"
     }
-    
+
     if { [ string match -nocase "*[sc_game info previousMoveNT]*" $prevbookmoves ] != 1 } {
       if {$prevbookmoves != {}} {
         sc_pos setComment "[sc_pos getComment]$verboseMoveOutOfBook ($prevbookmoves)"
@@ -937,7 +937,7 @@ proc bookAnnotation { {n 1} } {
     } else  {
       sc_pos setComment "[sc_pos getComment]$verboseLastBookMove"
     }
-    
+
     # last move was out of book or the last move in book : it needs to be analyzed, so take back
     if { ![catch { sc_move back 1 } ] } {
       resetAnalysis $n
@@ -958,11 +958,11 @@ proc markExercise { prevscore score } {
   set n $annotateMode
 
   if {!$::markTacticalExercises} { return }
-  
+
   # check at which depth the tactical shot is found
   # this assumes analysis by an UCI engine
   if {! $::analysis(uci$n)} { return }
-  
+
   set deltamove [expr {$score - $prevscore}]
   # filter tactics so only those with high gains are kept
   if { [expr abs($deltamove)] < $::informant("+/-") } { return }
@@ -971,7 +971,7 @@ proc markExercise { prevscore score } {
     if { [expr abs($prevscore) ] > $::informant("++-") } { return }
     if { [expr abs($prevscore)] > $::informant("+-") && [expr abs($score) ] < [expr 2 * abs($prevscore)]} { return }
   }
-  
+
   # The best move is much better than others.
   if { [llength $::analysis(multiPV$n)] < 2 } {
     puts "error, not enough PV"
@@ -979,17 +979,17 @@ proc markExercise { prevscore score } {
   }
   set sc2 [lindex [ lindex $::analysis(multiPV$n) 1 ] 1]
   if { [expr abs( $score - $sc2 )] < 1.5 } { return }
-  
+
   # There is no other winning moves (the best move may not win, of course, but
   # I reject exercises when there are e.g. moves leading to +9, +7 and +5 scores)
   if { [expr $score * $sc2] > 0.0 && [expr abs($score)] > $::informant("+-") && [expr abs($sc2)] > $::informant("+-") } {
     return
   }
-  
+
   # The best move does not lose position.
   if {[sc_pos side] == {white} && $score < [expr 0.0 - $::informant("+/-")] } { return }
   if {[sc_pos side] == {black} && $score > $::informant("+/-") } { return }
-  
+
   # Move is not obvious: check that it is not the first move guessed at low depths
   set pv [ lindex [ lindex $::analysis(multiPV$n) 0 ] 2 ]
   set bm0 [lindex $pv 0]
@@ -1001,7 +1001,7 @@ proc markExercise { prevscore score } {
     puts "obvious move"
     return
   }
-  
+
   # find what time is needed to get the solution (use internal analyze function)
   set timer {1 2 5 10 50 100 200 1000}
   # set scorelist {}
@@ -1014,7 +1014,7 @@ proc markExercise { prevscore score } {
     # lappend scorelist $score_analyze
     lappend movelist $move_analyze
   }
-  
+
   # find at what timing the right move was reliably found
   # only the move is checked, not if the score is close to the expected one
   for {set t [expr [llength $timer] -1]} {$t >= 0} { incr t -1} {
@@ -1022,9 +1022,9 @@ proc markExercise { prevscore score } {
       break
     }
   }
-  
+
   set difficulty [expr $t +2]
-  
+
   puts "flag T pour [sc_game number] difficulty $difficulty"
   sc_game flag T [sc_game number] 1
   sc_pos setComment "****D${difficulty} [format %.1f $prevscore]->[format %.1f $score] [sc_pos getComment]"
@@ -1035,7 +1035,7 @@ proc markExercise { prevscore score } {
 ################################################################################
 proc addAnnotation {} {
   global analysis annotateMoves annotateBlunders annotateMode blunderThreshold
-  
+
   set n $annotateMode
   if {!$n} {
     puts stderr "Scid: addAnnotation called while annotateMode is 0"
@@ -1046,13 +1046,13 @@ proc addAnnotation {} {
     bookAnnotation
     return
   }
-  
+
   # Cannot add a variation to an empty variation:
   if {[sc_pos isAt vstart]  &&  [sc_pos isAt vend]} { return }
-  
+
   # Cannot (yet) add a variation at the end of the game or a variation:
   if {[sc_pos isAt vend]} { return }
-  
+
   set tomove [sc_pos side]
   if {$annotateMoves == {white}  &&  $tomove == {white} ||
     $annotateMoves == {black}  &&  $tomove == {black} } {
@@ -1060,17 +1060,17 @@ proc addAnnotation {} {
     set analysis(prevmoves$n) $analysis(moves$n)
     return
   }
-  
+
   # to parse scores if the engine's name contains - or + chars (see sc_game_scores)
   set engine_name  [string map {- { } + { }} $analysis(name$n)]
-  
+
   set text [format "%d:%+.2f" $analysis(depth$n) $analysis(score$n)]
   set moves $analysis(moves$n)
-  
+
   # if next move is what engine guessed, do nothing
   if { $analysis(prevmoves$n) != {} && ![sc_pos isAt vend] && $annotateBlunders != {allmoves}} {
     set move2 [sc_game info previousMoveNT]
-    
+
     sc_info preMoveCmd {}
     sc_game push copyfast
     set move1 [lindex $analysis(prevmoves$n) 0]
@@ -1079,21 +1079,21 @@ proc addAnnotation {} {
     set move1 [sc_game info previousMoveNT]
     sc_game pop
     sc_info preMoveCmd preMoveCommand
-    
+
     if {$move1 == $move2} {
       set analysis(prevscore$n) $analysis(score$n)
       set analysis(prevmoves$n) $analysis(moves$n)
       return
     }
   }
-  
+
   # Temporarily clear the pre-move command since we want to add a
   # whole line without Scid updating stuff:
   sc_info preMoveCmd {}
-  
+
   set score $analysis(score$n)
   set prevscore $analysis(prevscore$n)
-  
+
   set deltamove [expr {$score - $prevscore}]
   set isBlunder 0
   if {$annotateBlunders == {blundersonly}} {
@@ -1112,7 +1112,7 @@ proc addAnnotation {} {
       set isBlunder 1
     }
   }
-  
+
   set text [format "%+.2f" $score]
   if {$annotateBlunders == {allmoves}} {
     set absdeltamove [expr { abs($deltamove) } ]
@@ -1128,8 +1128,8 @@ proc addAnnotation {} {
         markExercise $prevscore $score
       }
     }
-    
-    
+
+
     if {! $::isShortAnnotation } {
       sc_pos setComment "[sc_pos getComment] $engine_name: $text"
     } else {
@@ -1137,7 +1137,7 @@ proc addAnnotation {} {
         sc_pos setComment "[sc_pos getComment] $text"
       }
     }
-    
+
     if {$::isBatchOpening} {
       if { [sc_pos moveNumber] < $::isBatchOpeningMoves} {
         appendAnnotator "opBlunder [sc_pos moveNumber] ([sc_pos side])"
@@ -1148,7 +1148,7 @@ proc addAnnotation {} {
     if {$nag != {}} {
       sc_pos addNag $nag
     }
-    
+
     sc_move back
     if { $analysis(prevmoves$n) != {}} {
       sc_var create
@@ -1164,7 +1164,7 @@ proc addAnnotation {} {
   } elseif { $isBlunder } {
     # Add the comment to highlight the blunder
     set absdeltamove [expr { abs($deltamove) } ]
-    
+
     # if the game was won and the score remains high, don't add comment
     if { $score > $::informant("++-") && $tomove == {black} || \
           $score < [expr 0.0 - $::informant("++-") ] && $tomove == {white} } {
@@ -1196,7 +1196,7 @@ proc addAnnotation {} {
         }
       }
     }
-    
+
     if {$::isBatchOpening} {
       if { [sc_pos moveNumber] < $::isBatchOpeningMoves} {
         appendAnnotator "opBlunder [sc_pos moveNumber] ([sc_pos side])"
@@ -1210,7 +1210,7 @@ proc addAnnotation {} {
     # Rewind, request a diagram
     sc_move back
     sc_pos addNag D
-    
+
     # Add the variation:
     if { $analysis(prevmoves$n) != {}} {
       sc_var create
@@ -1225,10 +1225,10 @@ proc addAnnotation {} {
       sc_move forward
     }
   }
-  
+
   set analysis(prevscore$n) $analysis(score$n)
   set analysis(prevmoves$n) $analysis(moves$n)
-  
+
   # Restore the pre-move command:
   sc_info preMoveCmd preMoveCommand
   updateBoard -pgn
@@ -1279,7 +1279,7 @@ proc appendAnnotator { s } {
       continue
     }
   }
-  
+
   if {$oldAnn != {}} {
     set ann "Annotator \"$oldAnn $s\"\n"
   } else  {
@@ -1324,19 +1324,19 @@ proc popAnalysisData { { n 1 } } {
 ################################################################################
 proc addAnalysisVariation {n} {
   global analysis
-  
+
   if {! [winfo exists .analysisWin$n]} { return }
-  
+
   set addAtStart [expr [sc_pos isAt vstart]  &&  [sc_pos isAt vend]]
-  
+
   # if we are at the end of the game, we cannot add variation
   # so we add the analysis one move before and append the last game move at the beginning of the analysis
   set addAtEnd [sc_pos isAt vend]
-  
+
   # Temporarily clear the pre-move command since we want to add a
   # whole line without Scid updating stuff:
   sc_info preMoveCmd {}
-  
+
   set moves $analysis(moves$n)
   if {$analysis(uci$n)} {
     set tmp_moves [ lindex [ lindex $analysis(multiPV$n) 0 ] 2 ]
@@ -1344,14 +1344,14 @@ proc addAnalysisVariation {n} {
   } else  {
     set text [format "\[%s\] %d:%+.2f" $analysis(name$n) $analysis(depth$n) $analysis(score$n)]
   }
-  
+
   if {$addAtEnd} {
     # get the last move of the game
     set lastMove [sc_game info previousMoveUCI]
     #back one move
     sc_move back
   }
-  
+
   # Add the variation:
   sc_var create
   # Add the comment at the start of the variation:
@@ -1363,7 +1363,7 @@ proc addAnalysisVariation {n} {
   # Add as many moves as possible from the engine analysis:
   sc_move_add $moves $n
   sc_var exit
-  
+
   if {$addAtStart} {
     sc_move start
   } elseif {$addAtEnd} {
@@ -1374,12 +1374,12 @@ proc addAnalysisVariation {n} {
       ### How about automatically goto variation S.A.
       sc_var enter 0
   }
-  
+
   # Restore the pre-move command:
   sc_info preMoveCmd preMoveCommand
-  
+
   if {[winfo exists .pgnWin]} { ::pgn::Refresh 1 }
-  
+
   # Update score graph if it is open:
   if {[winfo exists .sgraph]} { ::tools::graphs::score::Refresh }
 }
@@ -1388,32 +1388,32 @@ proc addAnalysisVariation {n} {
 ################################################################################
 proc addAllVariations {{n 1}} {
   global analysis
-  
+
   if {! [winfo exists .analysisWin$n]} { return }
-  
+
   # Cannot add a variation to an empty variation:
   if {[sc_pos isAt vstart]  &&  [sc_pos isAt vend]} { return }
-  
+
   # if we are at the end of the game, we cannot add variation
   # so we add the analysis one move before and append the last game move at the beginning of the analysis
   set addAtEnd [sc_pos isAt vend]
-  
+
   # Temporarily clear the pre-move command since we want to add a
   # whole line without Scid updating stuff:
   sc_info preMoveCmd {}
-  
+
   foreach i $analysis(multiPVraw$n) j $analysis(multiPV$n) {
     set moves [lindex $i 2]
-    
+
     set tmp_moves [ lindex $j 2 ]
     set text [format "\[%s\] %d:%s" $analysis(name$n) [lindex $i 0] [scoreToMate [lindex $i 1] $tmp_moves $n]]
-    
+
     if {$addAtEnd} {
       # get the last move of the game
       set lastMove [sc_game info previousMoveUCI]
       sc_move back
     }
-    
+
     # Add the variation:
     sc_var create
     # Add the comment at the start of the variation:
@@ -1425,17 +1425,17 @@ proc addAllVariations {{n 1}} {
     # Add as many moves as possible from the engine analysis:
     sc_move_add $moves $n
     sc_var exit
-    
+
     if {$addAtEnd} {
       #forward to the last move
       sc_move forward
     }
-    
+
   }
-  
+
   # Restore the pre-move command:
   sc_info preMoveCmd preMoveCommand
-  
+
   if {[winfo exists .pgnWin]} { ::pgn::Refresh 1 }
   # Update score graph if it is open:
   if {[winfo exists .sgraph]} { ::tools::graphs::score::Refresh }
@@ -1447,7 +1447,7 @@ proc addAllVariations {{n 1}} {
 proc addAnalysisToComment {line {n 1}} {
   global analysis
   if {! [winfo exists .analysisWin$n]} { return }
-  
+
   # If comment editor window is open, add the score there, otherwise
   # just add the comment directly:
   if {[winfo exists .commentWin]} {
@@ -1456,14 +1456,14 @@ proc addAnalysisToComment {line {n 1}} {
     set tempStr [sc_pos getComment]
   }
   set score $analysis(score$n)
-  
+
   # If line is true, add the whole line, else just add the score:
   if {$line} {
     set scoretext [format "%+.2f: %s" $score $analysis(moves$n)]
   } else {
     set scoretext [format "%+.2f" $score]
   }
-  
+
   # Strip out old score if it exists at the start of the comment:
   regsub {^\".*\"} $tempStr {} tempStr
   set newText "\"$scoretext\"$tempStr"
@@ -1502,7 +1502,7 @@ proc makeAnalysisMove {{n 1}} {
   if {$action == {var}} { sc_var create }
 
   if { [sc_move_add $move $n] } { puts "erreur de sc_move_add" ; set res 0 }
-  
+
   updateBoard -pgn -animate
   ::utils::sound::AnnounceNewMove $move
   return $res
@@ -1519,23 +1519,23 @@ proc destroyAnalysisWin {{n 1}} {
   # Is this working properly. We seem to have a process left S.A. &&&
 
   global windowsOS analysis annotateModeButtonValue
-  
+
   if { $annotateModeButtonValue } { ; # end annotation
     set annotateModeButtonValue 0
     toggleAutoplay
   }
-  
+
   # Check the pipe is not already closed:
   if {$analysis(pipe$n) == {}} {
     set ::analysisWin$n 0
     return
   }
-  
+
   # Send interrupt signal if the engine wants it:
   if {(!$windowsOS)  &&  $analysis(send_sigint$n)} {
     catch {exec -- kill -s INT [pid $analysis(pipe$n)]}
   }
-  
+
   # Some engines in analyze mode may not react as expected to "quit"
   # so ensure the engine exits analyze mode first:
   if {$analysis(uci$n)} {
@@ -1546,16 +1546,16 @@ proc destroyAnalysisWin {{n 1}} {
     sendToEngine $n quit
   }
   catch { flush $analysis(pipe$n) }
-  
+
   # Uncomment the following line to turn on blocking mode before
   # closing the engine (but probably not a good idea!)
   #   fconfigure $analysis(pipe$n) -blocking 1
-  
+
   # Close the engine, ignoring any errors since nothing can really
   # be done about them anyway -- maybe should alert the user with
   # a message box?
   catch {close $analysis(pipe$n)}
-  
+
   if {$analysis(log$n) != {}} {
     catch {close $analysis(log$n)}
     set analysis(log$n) {}
@@ -1598,16 +1598,16 @@ proc sendMoveToEngine {n move} {
 #
 proc logEngine {n text} {
   global analysis
-  
+
   # Print the log message to stdout if applicable:
   if {$::analysis(log_stdout)} {
     puts stdout $text
   }
-  
+
   if { [ info exists ::analysis(log$n)] && $::analysis(log$n) != {}} {
     puts $::analysis(log$n) $text
     catch { flush $::analysis(log$n) }
-    
+
     # Close the log file if the limit is reached:
     incr analysis(logCount$n)
     if {$analysis(logCount$n) >= $analysis(logMax)} {
@@ -1658,9 +1658,9 @@ proc makeAnalysisWin { {n 1} } {
     resetEngine $n
     return
   }
-  
+
   set annotateModeButtonValue 0
-  
+
   # What an f-ing mess.
   # Previously the engines were sorted , and only engine 1 or 2 (in the sort order)
   # could be used. Engines often got resorted, and the key bindings would change.
@@ -1675,7 +1675,7 @@ proc makeAnalysisWin { {n 1} } {
   set index [expr {$n - 1}]
 
   # index is now which engine to run from engine list
-  
+
   if {$index == {}  ||  $index < 0} {
     set analysisWin$n 0
     return
@@ -1689,18 +1689,18 @@ proc makeAnalysisWin { {n 1} } {
   set analysisArgs [lindex $engineData 2]
   set analysisDir [ toAbsPath [lindex $engineData 3] ]
   set analysis(uci$n) [ lindex $engineData 7 ]
-  
+
   # If the analysis directory is not current dir, cd to it:
   set oldpwd {}
   if {$analysisDir != {.}} {
     set oldpwd [pwd]
     catch {cd $analysisDir}
   }
-  
+
   if {! $analysis(uci$n) } {
     set analysis(multiPVCount$n) 1
   }
-  
+
   # Try to execute the analysis program:
   if {[catch {set analysis(pipe$n) [open "| [list $analysisCommand] $analysisArgs" "r+"]} result]} {
     if {$oldpwd != {}} { catch {cd $oldpwd} }
@@ -1716,13 +1716,13 @@ proc makeAnalysisWin { {n 1} } {
     resetEngine $n
     return
   }
-  
+
   # destroy .enginelist
   set analysisWin$n 1
-  
+
   # Return to original dir if necessary:
   if {$oldpwd != ""} { catch {cd $oldpwd} }
-  
+
   # Open log file if applicable:
   set analysis(log$n) {}
   if {$analysis(logMax) > 0} {
@@ -1738,12 +1738,12 @@ proc makeAnalysisWin { {n 1} } {
       logEngine $n ""
     }
   }
-  
+
   set analysis(name$n) $analysisName
-  
+
   # Configure pipe for line buffering and non-blocking mode:
   fconfigure $analysis(pipe$n) -buffering line -blocking 0
-  
+
   #
   # Set up the  analysis window:
   #
@@ -1753,7 +1753,7 @@ proc makeAnalysisWin { {n 1} } {
   setWinLocation $w
   setWinSize $w
   standardShortcuts $w
-  
+
   ::board::new $w.bd 25
   $w.bd configure -relief solid -borderwidth 1
   set analysis(showBoard$n) 0
@@ -1761,7 +1761,7 @@ proc makeAnalysisWin { {n 1} } {
   # This is no longer configurable, except here. (Used to be associated with b1.showinfo)
   # If set, it show heaps of hash info in the second line of text widget
   set analysis(showEngineInfo$n) 0 
-  
+
   frame $w.b1
   pack  $w.b1 -side top -fill x
   set relief flat	; # -width 24 -height 24
@@ -1790,14 +1790,14 @@ proc makeAnalysisWin { {n 1} } {
   # start/stop engine analysis
   button $w.b1.bStartStop -image tb_pause -command "toggleEngineAnalysis $n" -relief $relief
   ::utils::tooltip::Set $w.b1.bStartStop "$::tr(StopEngine)(a)"
-  
+
   set ::finishGameMode 0
   button $w.b1.bFinishGame -image finish_off -command "toggleFinishGame $n"  -relief $relief
   ::utils::tooltip::Set $w.b1.bFinishGame $::tr(FinishGame)
 
   button $w.b1.showboard -image tb_coords -command "toggleAnalysisBoard $n" -relief $relief
   ::utils::tooltip::Set $w.b1.showboard $::tr(ShowAnalysisBoard)
-  
+
   # checkbutton $w.b1.showinfo -image tb_engineinfo -indicatoron false \
   #  -variable analysis(showEngineInfo$n) -command "toggleEngineInfo $n" -relief $relief
   # ::utils::tooltip::Set $w.b1.showinfo $::tr(ShowInfo)
@@ -1818,7 +1818,7 @@ proc makeAnalysisWin { {n 1} } {
   button $w.b1.update -image tb_update \
     -command "if {$analysis(uci$n)} {sendToEngine $n .}"  -relief $relief
   ::utils::tooltip::Set $w.b1.update $::tr(Update)
-  
+
   pack $w.b1.bStartStop $w.b1.lockengine $w.b1.move $w.b1.line $w.b1.multipv \
        $w.b1.alllines $w.b1.annotate $w.b1.automove $w.b1.bFinishGame $w.b1.showboard \
        $w.b1.update $w.b1.priority -side left -pady 2 -padx 1
@@ -1850,7 +1850,7 @@ proc makeAnalysisWin { {n 1} } {
   pack $w.hist -side top -expand 1 -fill both
   pack $w.hist.ybar -side right -fill y
   pack $w.hist.text -side left -expand 1 -fill both
-  
+
   bind $w.hist.text <ButtonPress-3> "toggleMovesDisplay $n"
   $w.text tag configure blue -foreground blue
   $w.hist.text tag configure blue -foreground blue -lmargin2 [font measure font_Fixed "xxxxxxxxxxxx"]
@@ -1866,14 +1866,14 @@ proc makeAnalysisWin { {n 1} } {
   bind $w <Key-a> "$w.b1.bStartStop invoke"
   wm minsize $w 25 0
   bindMouseWheel $w $w.hist.text
-  
+
   if {$analysis(uci$n)} {
     fileevent $analysis(pipe$n) readable "::uci::processAnalysisInput $n"
   } else  {
     fileevent $analysis(pipe$n) readable "processAnalysisInput $n"
   }
   after 1000 "checkAnalysisStarted $n"
-  
+
   # finish MultiPV spinbox configuration
   if {$analysis(uci$n)} {
     # find UCI engine MultiPV capability
@@ -1908,7 +1908,7 @@ proc makeAnalysisWin { {n 1} } {
       }
     }
   } ;# end of MultiPV spinbox configuration
-  
+
   # We hope the engine is correctly started at that point, so we can send the first analyze command
   # this problem only happens with winboard engine, as we don't know when they are ready
   if { !$analysis(uci$n) } {
@@ -1919,7 +1919,7 @@ proc makeAnalysisWin { {n 1} } {
     set analysis(priority$n) idle
     setAnalysisPriority $n
   }
-  
+
 }
 ################################################################################
 #
@@ -1970,13 +1970,13 @@ proc changePVSize { n } {
 ################################################################################
 proc setAnalysisPriority {n} {
   global analysis
-  
+
   # Get the process ID of the analysis engine:
   if {$analysis(pipe$n) == {}} { return }
   set pidlist [pid $analysis(pipe$n)]
   if {[llength $pidlist] < 1} { return }
   set pid [lindex $pidlist 0]
-  
+
   # Set the priority class (idle or normal):
   if {$::windowsOS} {
     catch {sc_info priority $pid $analysis(priority$n)}
@@ -1985,7 +1985,7 @@ proc setAnalysisPriority {n} {
     if {$analysis(priority$n) == {idle}} { set priority 15 }
     catch {sc_info priority $pid $priority}
   }
-  
+
   # Re-read the priority class for confirmation:
   if {[catch {sc_info priority $pid} newpriority]} { return }
   if {$::windowsOS} {
@@ -2014,9 +2014,9 @@ proc checkAnalysisStarted {n} {
   # proc will issue the same initialization commands as
   # those in processAnalysisInput below, but without the need
   # for a triggering fileevent to occur.
-  
+
   logEngineNote $n {Quiet engine (still no output); sending it initial commands.}
-  
+
   if {$analysis(uci$n)} {
     # in order to get options
     sendToEngine $n uci
@@ -2040,9 +2040,9 @@ proc checkAnalysisStarted {n} {
 ################################################################################
 proc initialAnalysisStart {n} {
   global analysis
-  
+
   update
-  
+
   if { $analysis(processInput$n) == 0 } {
     after 500 initialAnalysisStart $n
     return
@@ -2061,17 +2061,17 @@ proc initialAnalysisStart {n} {
 ################################################################################
 proc processAnalysisInput {{n 1}} {
   global analysis
-  
+
   # Get one line from the engine:
   set line [gets $analysis(pipe$n)]
-  
+
   # this is only useful at startup but costs less than 10 microseconds
   set analysis(processInput$n) [clock clicks -milliseconds]
-  
+
   logEngine $n "Engine: $line"
-  
+
   if { ! [ checkEngineIsAlive $n ] } { return }
-  
+
   if {! $analysis(seen$n)} {
     set analysis(seen$n) 1
     # First line of output from the program, so send initial commands:
@@ -2081,7 +2081,7 @@ proc processAnalysisInput {{n 1}} {
     sendToEngine $n {ponder off}
     sendToEngine $n post
   }
-  
+
   # Check for "feature" commands so we can determine if the engine
   # has the setboard and analyze commands:
   #
@@ -2098,7 +2098,7 @@ proc processAnalysisInput {{n 1}} {
     }
     return
   }
-  
+
   # Check for a line starting with "Crafty", so Scid can work well
   # with older Crafty versions that do not recognize "protover":
   #
@@ -2119,7 +2119,7 @@ proc processAnalysisInput {{n 1}} {
     set analysis(has_analyze$n) 1
     return
   }
-  
+
   # Scan the line from the engine for the analysis data:
   #
   set res [scan $line "%d%c %d %d %s %\[^\n\]\n" \
@@ -2136,23 +2136,23 @@ proc processAnalysisInput {{n 1}} {
     set analysis(moves$n) [formatAnalysisMoves $temp_moves]
     set analysis(time$n) $temp_time
     set analysis(nodes$n) [calculateNodes $temp_nodes]
-    
+
     # Convert time to seconds from centiseconds:
     if {! $analysis(wholeSeconds$n)} {
       set analysis(time$n) [expr {double($analysis(time$n)) / 100.0} ]
     }
-    
+
     updateAnalysisText $n
-    
+
     if {! $analysis(seenEval$n)} {
       # This is the first evaluation line seen, so send the current
       # position details to the engine:
       set analysis(seenEval$n) 1
     }
-    
+
     return
   }
-  
+
   # Check for a "stat01:" line, the reply to the "." command:
   #
   if {! [string compare [string range $line 0 6] "stat01:"]} {
@@ -2169,7 +2169,7 @@ proc processAnalysisInput {{n 1}} {
     }
     return
   }
-  
+
   # Check for other engine-specific lines:
   # The following checks are intended to make Scid work with
   # various WinBoard engines that are not properly configured
@@ -2181,7 +2181,7 @@ proc processAnalysisInput {{n 1}} {
   if { !$analysis(wbEngineDetected$n) } {
     detectWBEngine $n $line
   }
-  
+
 }
 ################################################################################
 # Returns 0 if engine died abruptly or 1 otherwise
@@ -2189,7 +2189,7 @@ proc processAnalysisInput {{n 1}} {
 ################################################################################
 proc checkEngineIsAlive { {n 1} } {
   global analysis
-  
+
   if {[eof $analysis(pipe$n)]} {
     fileevent $analysis(pipe$n) readable {}
     catch {close $analysis(pipe$n)}
@@ -2222,16 +2222,16 @@ proc formatAnalysisMoves {text} {
   if {[strIsPrefix {t } $text]} { set text [string range $text 2 end]}
   if {[strIsPrefix {t- } $text]} { set text [string range $text 3 end]}
   if {[strIsPrefix {t+ } $text]} { set text [string range $text 3 end]}
-  
+
   # Trim any initial or final whitespace:
   set text [string trim $text]
-  
+
   # Yace often adds "H" after a move, e.g. "Bc4H". Remove them:
   regsub -all {H } $text { } text
-  
+
   # Crafty adds "<HT>" for a hash table comment. Change it to "{HT}":
   regsub <HT> $text {{HT}} text
-  
+
   return $text
 }
 ################################################################################
@@ -2240,11 +2240,11 @@ proc formatAnalysisMoves {text} {
 proc toggleFinishGame {n} {
   global analysis
   set b ".analysisWin$n.b1.bFinishGame"
-  
+
   if { $::annotateModeButtonValue || $::autoplayMode || !$analysis(analyzeMode$n) || ! [sc_pos isAt vend] } {
     return
   }
-  
+
   set ::finishGameMode [expr ! $::finishGameMode]
   if {$::finishGameMode} {
     $b configure -image finish_on
@@ -2273,11 +2273,11 @@ proc autoplayFinishGame {n} {
 proc toggleEngineAnalysis {n {force 0}} {
   global analysis
   set b .analysisWin$n.b1.bStartStop
-  
+
   if { ($::annotateModeButtonValue || $::finishGameMode) && ! $force } {
     return
   }
-  
+
   if {$analysis(analyzeMode$n)} {
     stopAnalyzeMode $n
     $b configure -image tb_play
@@ -2300,7 +2300,7 @@ proc toggleEngineAnalysis {n {force 0}} {
 ################################################################################
 proc startAnalyzeMode {{n 1} {force 0}} {
   global analysis
-  
+
   # Check that the engine has not already had analyze mode started:
   if {$analysis(analyzeMode$n) && ! $force } { return }
   set analysis(analyzeMode$n) 1
@@ -2382,7 +2382,7 @@ proc toggleLockEngine {n} {
 ################################################################################
 proc updateAnalysisText {{n 1}} {
   global analysis
-  
+
   set nps 0
   if {$analysis(currmovenumber$n) > $analysis(maxmovenumber$n) } {
     set analysis(maxmovenumber$n) $analysis(currmovenumber$n)
@@ -2391,13 +2391,13 @@ proc updateAnalysisText {{n 1}} {
     set nps [expr {round($analysis(nodes$n) / $analysis(time$n))} ]
   }
   set score $analysis(score$n)
-  
+
   set t .analysisWin$n.text
   set h .analysisWin$n.hist.text
-  
+
   $t configure -state normal
   $t delete 0.0 end
-  
+
   if { $analysis(uci$n) } {
     if { [expr abs($score)] == 327.0 } {
       if { [catch { set tmp [format "M%d " $analysis(scoremate$n)]} ] } {
@@ -2407,7 +2407,7 @@ proc updateAnalysisText {{n 1}} {
       set tmp [format "%+.1f " $score]
     }
     $t insert end $tmp
-    
+
     $t insert end "[tr Depth]: "
     if {$analysis(showEngineInfo$n) && $analysis(seldepth$n) != 0} {
       $t insert end [ format "%2u/%u " $analysis(depth$n) $analysis(seldepth$n)]
@@ -2440,15 +2440,15 @@ proc updateAnalysisText {{n 1}} {
     append newStr [format "Score: %+8.2f      Time: %9.2f seconds\n" $score $analysis(time$n)]
     $t insert 1.0 $newStr
   }
-  
-  
+
+
   if {$analysis(automove$n)} {
     if {$analysis(automoveThinking$n)} {
       set moves {   Thinking..... }
     } else {
       set moves {   Your move..... }
     }
-    
+
     if { ! $analysis(uci$n) } {
       $t insert end $moves blue
     }
@@ -2456,7 +2456,7 @@ proc updateAnalysisText {{n 1}} {
     updateAnalysisBoard $n {}
     return
   }
-  
+
   if {! $::analysis(movesDisplay$n)}  {
     $h configure -state normal
     $h delete 0.0 end
@@ -2466,20 +2466,20 @@ proc updateAnalysisText {{n 1}} {
     $h configure -state disabled
     return
   }
-  
+
   if { $analysis(uci$n) } {
     set moves [ lindex [ lindex $analysis(multiPV$n) 0 ] 2 ]
   } else  {
     set moves $analysis(moves$n)
   }
-  
+
   $h configure -state normal
   set cleared 0
   if { $analysis(depth$n) < $analysis(prev_depth$n)  || $analysis(prev_depth$n) == 0 } {
     $h delete 1.0 end
     set cleared 1
   }
-  
+
   ################################################################################
   if { $analysis(uci$n) } {
     if {$cleared} { set analysis(multiPV$n) {} ; set analysis(multiPVraw$n) {} }
@@ -2518,7 +2518,7 @@ proc updateAnalysisText {{n 1}} {
     $h insert end [format "%2d %+5.2f %s (%.2f)\n" $analysis(depth$n) $score [::trans $moves] $analysis(time$n)] indent
     $h see end-1c
   }
-  
+
   $h configure -state disabled
   set analysis(prev_depth$n) $analysis(depth$n)
   if { ! $analysis(uci$n) } {
@@ -2526,7 +2526,7 @@ proc updateAnalysisText {{n 1}} {
   }
   # $t tag add score 2.0 2.13
   $t configure -state disabled
-  
+
   updateAnalysisBoard $n $analysis(moves$n)
 }
 ################################################################################
@@ -2534,16 +2534,16 @@ proc updateAnalysisText {{n 1}} {
 # returns M X if mate detected (# or ++) or original score
 ################################################################################
 proc scoreToMate { score pv n } {
-  
+
   if {$::analysis(lockEngine$n)} {
     return [format "%+5.2f" $score]
   }
-  
+
   if { [string index $pv end] == {#} || [string index $pv end] == {+} && [string index $pv end-1] == {+}} {
     set plies [llength $pv]
-    
+
     set mate [expr $plies / 2 + 1 ]
-    
+
     set sign {}
     if {[expr $plies % 2] == 0 && [sc_pos side] == {white} || [expr $plies % 2] == 1 && [sc_pos side] == {black}} {
       set sign -
@@ -2561,12 +2561,12 @@ proc scoreToMate { score pv n } {
         set mate [expr $plies / 2 + 1 ]
       }
     }
-    
+
     set ret M$sign$mate
   } else  {
     set ret [format "%+5.2f" $score]
   }
-  
+
   return $ret
 }
 ################################################################################
@@ -2660,17 +2660,17 @@ proc updateAnalysisBoard {n moves} {
   global analysis
   # PG : this should not be commented
   if {! $analysis(showBoard$n)} { return }
-  
+
   set bd .analysisWin$n.bd
   # Temporarily wipe the premove command:
   sc_info preMoveCmd {}
   # Push a temporary copy of the current game:
   sc_game push copyfast
-  
+
   # Make the engine moves and update the board:
   sc_move_add $moves $n
   ::board::update $bd [sc_pos board]
-  
+
   # Pop the temporary game:
   sc_game pop
   # Restore pre-move command:
@@ -2694,13 +2694,13 @@ proc updateAnalysisWindows {} {
 proc updateAnalysis {{n 1}} {
   global analysisWin analysis windowsOS
   if {$analysis(pipe$n) == {}} { return }
-  
+
   # Just return if no output has been seen from the analysis program yet:
   if {! $analysis(seen$n)} { return }
-  
+
   # No need to update if no analysis is running
   if { ! $analysis(analyzeMode$n) } { return }
-  
+
   # If too close to the previous update, and no other future update is
   # pending, reschedule this update to occur in another 0.3 seconds:
   #
@@ -2717,17 +2717,17 @@ proc updateAnalysis {{n 1}} {
   set analysis(lastClicks$n) $clicks
   set analysis(after$n) {}
   after cancel updateAnalysis $n
-  
+
   set old_movelist $analysis(movelist$n)
   set movelist [sc_game moves coord list]
   set analysis(movelist$n) $movelist
   set nonStdStart [sc_game startBoard]
   set old_nonStdStart $analysis(nonStdStart$n)
   set analysis(nonStdStart$n) $nonStdStart
-  
+
   # No need to send current board if engine is locked
   if { $analysis(lockEngine$n) } { return }
-  
+
   if { $analysis(uci$n) } {
     sendToEngine $n stop
     set analysis(waitForBestMove$n) 1
@@ -2867,9 +2867,9 @@ proc setAutomoveTime {{n 1}} {
   pack $w.entry -side top -pady 5
   bind $w.entry <Escape> { .apdialog.buttons.cancel invoke }
   bind $w.entry <Return> { .apdialog.buttons.ok invoke }
-  
+
   addHorizontalRule $w
-  
+
   set dialogResult {}
   set b [frame $w.buttons]
   pack $b -side top -fill x

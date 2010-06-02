@@ -30,16 +30,16 @@ set languages {czech deutsch francais hungary italian nederlan norsk polish
 ################################################################################
 proc remove {langfile enc token} {
   # Read the language file
-  
+
   set f [open $langfile.tcl r]
   fconfigure $f -encoding $enc
   set data [read $f]
   close $f
   set langData [split $data "\n"]
-  
+
   set fnew [open $langfile.tcl.new w]
   fconfigure $fnew -encoding $enc
-  
+
   foreach line $langData {
     set fields [split $line]
     set command [lindex $fields 0]

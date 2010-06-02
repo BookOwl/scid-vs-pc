@@ -51,13 +51,13 @@ proc ::rep::_findGroup {w v parent} {
   foreach g $::rep::_data($w:$p:children) {
     set len [string length $g]
     set v2 [string range $v 0 [expr {$len - 1} ]]
-    
+
     # If the next character in the line is a "-", it means we have a
     # situation with both the castling moves "O-O" and "O-O-O".
     # To avoid "O-O-O" looking like a child line of "O-O", we need to
     # deliberately ignore this possibility.
     if {[string length $v] > $len  &&  [string index $v $len] == "-"} { continue }
-    
+
     regsub -all " " $v2 "," v2
     if {! [string compare $v2 $g]} {
       set v [string trim [string range $v $len end]]
@@ -146,7 +146,7 @@ proc ::rep::_newItem {w v args} {
   set group 0
   set include 1
   set shown 1
-  
+
   foreach {op arg} $args {
     switch -exact -- $op {
       -image {set image $arg}
@@ -178,7 +178,7 @@ proc ::rep::_newItem {w v args} {
   } else {
     incr ::rep::_data($w:nlines)
   }
-  
+
   lappend ::rep::_data($w:$dir:children) $n
   set ::rep::_data($w:$dir:children) [lsort $::rep::_data($w:$dir:children)]
   ::rep::_defaults $w $v
@@ -415,7 +415,7 @@ proc ::rep::_drawLevel {w v in} {
     $w create text $in $y -font font_Small -anchor w -text "(empty)"
     return
   }
-  
+
   foreach c $::rep::_data($w:$v:children) {
     set y $::rep::_data($w:y)
     incr ::rep::_data($w:y) 17
@@ -432,7 +432,7 @@ proc ::rep::_drawLevel {w v in} {
       if {$::rep::_data($w:$p/$c:include)} { set icon ::rep::_tick }
     }
     set x [expr {$in + 12} ]
-    
+
     if {$icon != ""} {
       set tag [$w create image $x $y -image $icon -anchor w -tags $taglist]
       incr x 20
@@ -467,7 +467,7 @@ proc ::rep::_drawLevel {w v in} {
       $w bind $tag <3> "::rep::_popupMenu $w $p/$c %X %Y"
       set ::rep::_data($w:tag:$tag) $p/$c
     }
-    
+
     if {[llength $::rep::_data($w:$p/$c:children)] > 0} {
       if {$::rep::_data($w:$p/$c:shown)} {
         set tag [$w create image $in $y -image ::rep::_shown]
@@ -638,10 +638,10 @@ proc ::rep::makeWindow {} {
   if {[winfo exists $w]} { return }
   set ::rep::Win 1
   toplevel $w
-  
+
   standardShortcuts $w
   wm protocol $w WM_DELETE_WINDOW ::rep::closeWindow
-  
+
   frame $w.m -bd 1 -relief raised
   pack $w.m -side top -fill x
   menu $w.menu
@@ -664,7 +664,7 @@ proc ::rep::makeWindow {} {
   $w.menu.file add command -label RepFileClose -accelerator "Ctrl+Q" \
       -command "destroy $w"
   bind $w <Control-q> "destroy $w"
-  
+
   $w.menu add cascade -label RepEdit -menu $w.menu.edit
   menu $w.menu.edit
   $w.menu.edit add command -label RepEditGroup -accelerator "Ctrl+G" \
@@ -676,27 +676,27 @@ proc ::rep::makeWindow {} {
   $w.menu.edit add command -label RepEditExclude -accelerator "Ctrl+X" \
       -command "::rep::AddCurrentBoard $w.f.w.rep exclude"
   bind $w <Control-x> "$w.menu.edit invoke 2"
-  
+
   $w.menu add cascade -label RepView -menu $w.menu.view
   menu $w.menu.view
   $w.menu.view add command -label RepViewExpand \
       -command "::rep::showAll $w.f.w.rep"
   $w.menu.view add command -label RepViewCollapse \
       -command "::rep::hideAll $w.f.w.rep"
-  
+
   $w.menu add cascade -label RepSearch -menu $w.menu.search
   menu $w.menu.search
   $w.menu.search add command -label RepSearchAll \
       -command "::rep::search $w.f.w.rep all"
   $w.menu.search add command -label RepSearchDisplayed \
       -command "::rep::search $w.f.w.rep displayed"
-  
+
   $w.menu add cascade -label RepHelp -menu $w.menu.helpmenu
   menu $w.menu.helpmenu
   $w.menu.helpmenu add command -label RepHelpRep -command {helpWindow Repertoire}
   $w.menu.helpmenu add command -label RepHelpIndex -command {helpWindow Index}
-  
-  
+
+
   # Toolbar:
   set f [frame $w.toolbar -relief raised -border 1]
   pack $f -side top -fill x
@@ -711,7 +711,7 @@ proc ::rep::makeWindow {} {
       -command "::rep::AddCurrentBoard $w.f.w.rep include"
   button $f.exclude -image ::rep::_tb_exclude \
       -command "::rep::AddCurrentBoard $w.f.w.rep exclude"
-  
+
   foreach i {new open save close group include exclude} {
     $f.$i configure -relief flat -border 1 -highlightthickness 0 -anchor n \
         -takefocus 0
@@ -727,15 +727,15 @@ proc ::rep::makeWindow {} {
   pack $f.new $f.open $f.save $f.close $f.space1 \
       $f.group $f.include $f.exclude \
       -side left -padx 0 -ipadx 0 -pady 0 -ipady 0 -expand yes
-  
+
   label $w.status -relief sunken -width 1 -anchor w -font font_Small
   pack $w.status -side bottom -anchor w -fill x -expand yes
-  
+
   set pane [::utils::pane::Create $w.f w text 600 600 0.5 h] ;# 600 300
   ::utils::pane::SetRange $w.f 0.2 0.8
   #::pane::SetDrag $w.f 0
   pack $w.f -fill both -expand 1
-  
+
   ::rep::create $w.f.w.rep -yscrollcommand "$w.f.w.sb set"
   scrollbar $w.f.w.sb -orient vertical -command "$w.f.w.rep yview"
   pack $w.f.w.sb -side right -fill y
@@ -747,7 +747,7 @@ proc ::rep::makeWindow {} {
   pack $w.f.text.entry -side top -fill x
   pack $w.f.text.note -side top -expand 1 -fill both
   $w.status configure -textvar ::rep::_data($w.f.w.rep:status)
-  
+
   bind $w <F1> {helpWindow Repertoire}
   bind $w <Down> "$w.f.w.rep yview scroll +1 units"
   bind $w <Up> "$w.f.w.rep yview scroll -1 units"
@@ -757,14 +757,14 @@ proc ::rep::makeWindow {} {
   bind $w <End> "$w.f.w.rep yview moveto 0.99"
   $w.f.w.rep xview moveto 0.0
   $w.f.w.rep yview moveto 0.0
-  
+
   $w.f.w.rep bind x <1> \
       "::rep::singleClick $w.f.w.rep \[::rep::labelAtXY %W %x %y\]"
   $w.f.w.rep bind x <Double-Button-1> \
       "::rep::doubleClick $w.f.w.rep \[::rep::labelAtXY %W %x %y\]"
-  
+
   bind $w.f.text.moves <1> "if {\[string length \[$w.f.text.moves get 1.0 end\]\] > 1} { importMoveList \[$w.f.text.moves get 1.0 end\] }"
-  
+
   bind $w.f.text.entry <KeyPress> {
     after idle {
       set label [::rep::getSelection .repWin.f.w.rep]
@@ -775,7 +775,7 @@ proc ::rep::makeWindow {} {
       }
     }
   }
-  
+
   bind $w.f.text.note <KeyPress> {
     after idle {
       set label [::rep::getSelection .repWin.f.w.rep]
@@ -785,7 +785,7 @@ proc ::rep::makeWindow {} {
       }
     }
   }
-  
+
   ::rep::ConfigMenus $w
   ::rep::updateWinTitle $w.f.w.rep
   wm geometry $w =500x400
@@ -843,7 +843,7 @@ proc ::rep::_extract {w v returnList} {
     set text [string trim $::rep::_data($w:$p/$c:text)]
     set comment [string trim $::rep::_data($w:$p/$c:comment)]
     set moves [::rep::_decode $p/$c]
-    
+
     set recurse 0
     if {$::rep::_data($w:$p/$c:group)} {
       if {! [info exists ::rep::_data($w:$p/$c:prune)]} { set recurse 1 }
@@ -857,7 +857,7 @@ proc ::rep::_extract {w v returnList} {
     if {! [info exists ::rep::_data($w:$p/$c:delete)]} {
       lappend returnList $cmd
     }
-    
+
     if {$recurse  &&  [llength $::rep::_data($w:$p/$c:children)] > 0} {
       set returnList [::rep::_extract $w $p/$c $returnList]
     }
@@ -880,7 +880,7 @@ proc ::rep::_searchLines {w type v returnList} {
     set text [string trim $::rep::_data($w:$p/$c:text)]
     set comment [string trim $::rep::_data($w:$p/$c:comment)]
     set moves [::rep::_decode $p/$c]
-    
+
     set recurse 0
     if {$::rep::_data($w:$p/$c:group)} {
       if {$type == "all"  ||  $::rep::_data($w:$p/$c:shown)} {
@@ -889,7 +889,7 @@ proc ::rep::_searchLines {w type v returnList} {
     } else {
       lappend returnList "$::rep::_data($w:$p/$c:include) $moves"
     }
-    
+
     if {$recurse  &&  [llength $::rep::_data($w:$p/$c:children)] > 0} {
       set returnList [::rep::_searchLines $w $type $p/$c $returnList]
     }
@@ -907,7 +907,7 @@ proc ::rep::readFile {w fname} {
   #} else {
   #  close $f
   #}
-  
+
   if {[catch {open $fname r} f]} {
     return -code error "Unable to open the file: $fname"
   }
@@ -930,7 +930,7 @@ proc ::rep::readFile {w fname} {
       set comment [string trim [string range $line [expr {$sep + 1} ] end]]
     }
     set c [string index $line 0]
-    
+
     switch -exact -- $c {
       "\#" {
         set line [string trim [string range $line 1 end]]
@@ -1018,7 +1018,7 @@ proc ::rep::_writeFileLevel {w f v in} {
   set p $v
   if {$v == "/"} { set p "" }
   if {[llength $::rep::_data($w:$v:children)] == 0} { return }
-  
+
   foreach c $::rep::_data($w:$v:children) {
     if {$in == 0} { puts $f "" }
     set text [split [string trim $::rep::_data($w:$p/$c:text)] "\n"]
@@ -1027,7 +1027,7 @@ proc ::rep::_writeFileLevel {w f v in} {
       puts -nonewline $f "\# "
       puts $f [string trim $line]
     }
-    
+
     for {set i 0} {$i < $in} {incr i} { puts -nonewline $f " " }
     if {$::rep::_data($w:$p/$c:group)} {
       puts -nonewline $f "\[ "
@@ -1141,30 +1141,30 @@ proc ::rep::search {repwin {type all}} {
         -message "The repertoire you want to search for has no included lines, so it cannot possibly match any games."
     return
   }
-  
+
   set w .searchRep
   toplevel $w
   wm title $w "Scid: $::tr(RepSearch)"
   bind $w <Escape> "$w.b.cancel invoke"
   bind $w <Return> "$w.b.search invoke"
   bind $w <F1> {helpWindow Repertoire Search}
-  
+
   pack [label $w.l -anchor w] -side top -fill x
   set t "$::tr(RepSearch): $numIncluded $::tr(RepIncludedLines), "
   append t "$numExcluded $::tr(RepExcludedLines)"
   $w.l configure -text $t
-  
+
   ::search::addFilterOpFrame $w
   addHorizontalRule $w
-  
+
   canvas $w.progress -height 20 -width 300  -relief solid -border 1
   $w.progress create rectangle 0 0 0 0 -fill blue -outline blue -tags bar
   $w.progress create text 295 10 -anchor e -font font_Regular -tags time \
       -fill black -text "0:00 / 0:00"
-  
+
   frame $w.b
   pack $w.b -side top -ipady 5 -fill x
-  
+
   set ::_searchRep $repwin
   button $w.b.search -textvar ::tr(Search) -command {
     busyCursor .

@@ -196,11 +196,11 @@ if { $NOT_FOR_RELEASE } {
 #======================================================================
 
 namespace eval inputengine {
-  
+
   set engine     "/home/arwagner/bin/i386/dgtdrv2.i686";
   set port       "/dev/ttyUSB0"
   set param      "la"
-  
+
   set InputEngine(pipe)     ""
   set InputEngine(log)      ""
   set InputEngine(logCount) 0
@@ -208,7 +208,7 @@ namespace eval inputengine {
   set connectimg            tb_eng_ok
   set MovingPieceImg        $::board::letterToPiece(.)80
   set MoveText              "     "
-  
+
   #----------------------------------------------------------------------
   # config:
   #    Opens the configuration dialog to input driver engines binary
@@ -216,7 +216,7 @@ namespace eval inputengine {
   #----------------------------------------------------------------------
   proc config {} {
     global ::inputengine::port ::inputengine::engine ::inputengine::param
-    
+
     .button.inputengine configure -image tb_eng_query -relief flat
     set w .inputengineConfig
     if { [winfo exists $w]} { return }
@@ -228,76 +228,76 @@ namespace eval inputengine {
     label $w.f1.lengine -text "Engine commmand"
     entry $w.f1.eengine -width 50 -textvariable ::inputengine::engine
     pack $w.f1.lengine $w.f1.eengine
-    
+
     label $w.f1.lport -text "Enter port"
     entry $w.f1.eport -width 50 -textvariable ::inputengine::port
     pack $w.f1.lport $w.f1.eport
-    
+
     label $w.f1.lparam -text "Parameter"
     entry $w.f1.eparam -width 50 -textvariable ::inputengine::param
     pack $w.f1.lparam $w.f1.eparam
-    
+
     button $w.f2.bOk -text OK -command "destroy $w ; ::inputengine::connectdisconnect"
     button $w.f2.bCancel -text Cancel -command "destroy $w"
     pack $w.f2.bOk $w.f2.bCancel -side left
   }
-  
+
   #----------------------------------------------------------------------
   #
   #----------------------------------------------------------------------
   proc consoleWindow {} {
-    
+
     set w .inputengineconsole
     if { [winfo exists $w]} { return }
     toplevel $w
-    
+
     wm title $w "Input Engine Console"
-    
+
     scrollbar $w.ysc     -command { .inputengineconsole.console yview }
     text      $w.console -height 5 -width 60 -wrap word -yscrollcommand "$w.ysc set"
-    
+
     label     $w.lmode   -text "Sending:"
-    
+
     radiobutton $w.sendboth  -text "Both"  -variable send -value 1 -command { ::inputengine::sendToEngine sendboth  }
     radiobutton $w.sendwhite -text "White" -variable send -value 2 -command { ::inputengine::sendToEngine sendwhite }
     radiobutton $w.sendblack -text "Black" -variable send -value 3 -command { ::inputengine::sendToEngine sendblack }
-    
+
     button $w.bInfo  -text Info -command { ::inputengine::sysinfo }
-    
+
     font create moveFont -family Helvetica -size 39 -weight bold
-    
+
     # Buttons for visual move announcement
     button $w.bPiece -image $inputengine::MovingPieceImg
     button $w.bMove  -font moveFont -text  $inputengine::MoveText
     $w.bPiece configure -relief flat -border 0 -highlightthickness 0 -anchor n -takefocus 0
     $w.bMove  configure -relief flat -border 0 -highlightthickness 0 -anchor n -takefocus 0
-    
+
     grid $w.console   -column 0 -row 0 -columnspan 4
     grid $w.ysc       -column 4 -row 0
-    
+
     grid $w.lmode     -column 0 -row 1
     grid $w.sendboth  -column 1 -row 1
     grid $w.sendwhite -column 2 -row 1
     grid $w.sendblack -column 3 -row 1
-    
+
     grid $w.bInfo     -column 0 -row 2
     grid $w.bPiece    -column 1 -row 3
     grid $w.bMove     -column 2 -row 3
-    
+
   }
-  
+
   proc updateConsole {line} {
     set t .inputengineconsole.console
     $t insert end "$line\n"
     $t yview moveto 1
   }
-  
+
   #----------------------------------------------------------------------
   # userSend:
   #    Send arbitrary stings to the input engine
   #----------------------------------------------------------------------
   proc userSend {} {
-    
+
     set w .inputengineSend
     set toSend "bla"
     if { [winfo exists $w]} { return }
@@ -306,16 +306,16 @@ namespace eval inputengine {
     frame $w.f1
     frame $w.f2
     pack $w.f1 $w.f2
-    
+
     label $w.f1.lengine -text "Command:"
     entry $w.f1.eengine -width 125 -textvariable toSend
     pack $w.f1.lengine $w.f1.eengine
-    
+
     button $w.f2.bOk -text OK -command "destroy $w ; ::inputengine::sendToEngine display ; ::inputengine::sendToEngine getposition"
     button $w.f2.bCancel -text Cancel -command "destroy $w"
     pack $w.f2.bOk $w.f2.bCancel -side left
   }
-  
+
   #----------------------------------------------------------------------
   # connectdisconnect()
   #   Connects or disconnects depending on the current status of the
@@ -323,9 +323,9 @@ namespace eval inputengine {
   #----------------------------------------------------------------------
   proc connectdisconnect {} {
     global  ::inputengine::InputEngine
-    
+
     set connection $::inputengine::InputEngine(pipe)
-    
+
     if {$connection == ""} {
       consoleWindow
       inputengine::connect
@@ -334,7 +334,7 @@ namespace eval inputengine {
           inputengine::disconnect
         }
   }
-  
+
   #----------------------------------------------------------------------
   # connect():
   #     Fire upt the input engine and connect it to a local pipe.
@@ -343,9 +343,9 @@ namespace eval inputengine {
   proc connect {} {
     global ::inputengine::InputEngine ::inputengine::engine \
         ::inputengine::port ::inputengine::param
-    
+
     .button.inputengine configure -image tb_eng_connecting -relief flat
-    
+
     if {[catch {set InputEngine(pipe) [open "| $engine $port $param" "r+"]} result]} {
       .button.inputengine configure -image tb_eng_error -relief flat
       tk_messageBox -title "Scid: Input Engine" -icon warning -type ok \
@@ -353,10 +353,10 @@ namespace eval inputengine {
       ::inputengine::resetEngine
       return
     }
-    
+
     ::inputengine::Init
   }
-  
+
   #----------------------------------------------------------------------
   # disconnect()
   #    Disconnect and close the input engine
@@ -364,14 +364,14 @@ namespace eval inputengine {
   proc disconnect {} {
     global ::inputengine::InputEngine
     set pipe $::inputengine::InputEngine(pipe)
-    
+
     ::inputengine::sendToEngine "stop"
     ::inputengine::sendToEngine "quit"
     puts $pipe "stop"
     puts $pipe "quit"
     set inputengine::connectimg tb_eng_disconnected
   }
-  
+
   #----------------------------------------------------------------------
   # logEngine
   #    Simple log routine, ie. writing to stdout
@@ -380,7 +380,7 @@ namespace eval inputengine {
     # puts stdout "$msg"
     updateConsole "$msg"
   }
-  
+
   #----------------------------------------------------------------------
   # sendToEngine()
   #    Send a string to the engine and log it by means of logEngine
@@ -388,12 +388,12 @@ namespace eval inputengine {
   proc sendToEngine {msg} {
     global ::inputengine::InputEngine
     set pipe $::inputengine::InputEngine(pipe)
-    
+
     ::inputengine::logEngine "> $msg"
     puts $pipe $msg
     flush $pipe
   }
-  
+
   #----------------------------------------------------------------------
   # init()
   #    Initialises the engine and internal data
@@ -401,23 +401,23 @@ namespace eval inputengine {
   proc Init {} {
     global ::inputengine::InputEngine
     set pipe $::inputengine::InputEngine(pipe)
-    
+
     # Configure the pipe and intitiate the engine
     set pipe $::inputengine::InputEngine(pipe)
     fconfigure $pipe -buffering full -blocking 0
     # register the eventhandler
     fileevent  $pipe readable "::inputengine::readFromEngine"
-    
+
     ::inputengine::newgame
   }
-  
+
   #----------------------------------------------------------------------
   # resetEngine()
   #    Resets the engines global variables
   #----------------------------------------------------------------------
   proc resetEngine {} {
     global ::inputengine::InputEngine
-    
+
     .button.inputengine configure -image tb_eng_disconnected -relief flat
     destroy .inputengineconsole
     set inputengine::InputEngine(pipe)     ""
@@ -425,8 +425,8 @@ namespace eval inputengine {
     set inputengine::InputEngine(logCount) 0
     set inputengine::InputEngine(init)     0
   }
-  
-  
+
+
   #----------------------------------------------------------------------
   # sysinfo()
   #    Initialises the engine and internal data
@@ -434,11 +434,11 @@ namespace eval inputengine {
   proc sysinfo {} {
     global ::inputengine::InputEngine
     set pipe $::inputengine::InputEngine(pipe)
-    
+
     # call system information
     ::inputengine::sendToEngine "sysinfo"
   }
-  
+
   #----------------------------------------------------------------------
   # newgame()
   #    Handle NewGame event from board
@@ -448,7 +448,7 @@ namespace eval inputengine {
     sc_game tags set -event "InputEngine Input"
     sc_game tags set -date [::utils::date::today]
   }
-  
+
   #----------------------------------------------------------------------
   # endgame()
   #    Handle game ending (end game event + result)
@@ -456,19 +456,19 @@ namespace eval inputengine {
   proc endgame {} {
     logEngine "-> End Game"
   }
-  
+
   #----------------------------------------------------------------------
   # synchronise()
   #    read board position and set scid's representation accordingly
   #----------------------------------------------------------------------
   proc synchronise {} {
     global ::inputengine::InputEngine
-    
+
     logEngine "Sync called"
     set InputEngine(init) 0
     inputengine::sendToEngine "getposition"
   }
-  
+
   #----------------------------------------------------------------------
   # readFromEngine()
   #     Event Handler for commands and moves sent from the input
@@ -477,16 +477,16 @@ namespace eval inputengine {
   proc readFromEngine {} {
     global ::inputengine::InputEngine ::inputengine::connectimg
     set pipe $::inputengine::InputEngine(pipe)
-    
+
     set line [string trim [gets $pipe] ]
-    
+
     # Close the pipe in case the engine was stoped
     if [eof $pipe] {
       catch {close $pipe}
       inputengine::resetEngine
       return
     }
-    
+
     switch -regexp -- $line \
         "^move *" {
           logEngine "$line"
@@ -616,7 +616,7 @@ namespace eval inputengine {
           logEngine "< $line"
         }
   }
-  
+
 }
 
 

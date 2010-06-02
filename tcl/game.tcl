@@ -33,7 +33,7 @@ proc ::game::ConfirmDiscard2 {} {
   if {! [sc_game altered]} { return 1 }
   # set answer [ tk_dialog .cgDialog "Scid: [tr GameNew]" $::tr(ClearGameDialog) "" 2 \
   # $::tr(SaveAndContinue) $::tr(DiscardChangesAndContinue) $::tr(GoBack) ]
-  
+
   set w .confirmDiscard
   toplevel $w
   wm state $w withdrawn
@@ -42,13 +42,13 @@ proc ::game::ConfirmDiscard2 {} {
   pack [frame $w.top] -side top
   addHorizontalRule $w
   pack [frame $w.bottom] -expand 1 -fill x -side bottom
-  
+
   # label $w.top.icon -bitmap question
   # pack $w.top.icon -side left -padx 20 -pady 5
 
   label $w.top.txt -text "This game has been altered.\nDo you wish to save it?"
   pack $w.top.txt -padx 5 -pady 5 -side right
-  
+
   # This widget was f-ing awful. Translations previously used were
   # message - ::tr(ClearGameDialog)
   # buttons - ::tr(SaveAndContinue) ::tr(DiscardChangesAndContinue) ::tr(GoBack)
@@ -57,15 +57,15 @@ proc ::game::ConfirmDiscard2 {} {
   button $w.bottom.b2 -width 10 -text {Don't Save} -command {destroy .confirmDiscard ; set ::game::answer 1}
   button $w.bottom.b3 -width 10 -text $::tr(Cancel) -command {destroy .confirmDiscard ; set ::game::answer 2}
   pack $w.bottom.b1 $w.bottom.b2 $w.bottom.b3 -side left -padx 10 -pady 5
-  
+
   bind $w <Destroy> {set ::game::answer 2}
-  
+
   update
   placeWinOverParent $w .
   wm state $w normal
 
   catch { grab $w }
-  
+
   focus $w.bottom.b3
   vwait ::game::answer
   return $::game::answer
@@ -83,7 +83,7 @@ proc ::game::Clear {} {
     sc_game save [sc_game number]
     # ::gameReplace
   }
-  
+
   setTrialMode 0
   sc_game new
   updateBoard -pgn
@@ -181,27 +181,27 @@ trace variable ::game::entryLoadNumber w {::utils::validate::Regexp {^[0-9]*$}}
 proc ::game::LoadNumber {} {
   set ::game::entryLoadNumber ""
   if {![sc_base inUse]} { return }
-  
+
   set confirm [::game::ConfirmDiscard2]
   if {$confirm == 2} { return }
   if {$confirm == 0} {
     # ::gameReplace
     sc_game save [sc_game number]
   }
-  
+
   if {[sc_base numGames] < 1} { return }
   set w [toplevel .glnumDialog]
   wm title $w "Scid: [tr GameNumber]"
   grab $w
-  
+
   label $w.label -text $::tr(LoadGameNumber)
   pack $w.label -side top -pady 5 -padx 5
-  
+
   entry $w.entry  -width 10 -textvariable ::game::entryLoadNumber
   bind $w.entry <Escape> { .glnumDialog.buttons.cancel invoke }
   bind $w.entry <Return> { .glnumDialog.buttons.load invoke }
   pack $w.entry -side top -pady 5
-  
+
   set b [frame $w.buttons]
   pack $b -side top -fill x
   dialogbutton $b.load -text "OK" -command {
@@ -223,11 +223,11 @@ proc ::game::LoadNumber {} {
     focus .
   }
   packbuttons right $b.cancel $b.load
-  
+
   set x [ expr {[winfo width .] / 4 + [winfo rootx .] }]
   set y [ expr {[winfo height .] / 4 + [winfo rooty .] }]
   wm geometry $w "+$x+$y"
-  
+
   focus $w.entry
 }
 
@@ -245,7 +245,7 @@ proc ::game::Load { selection } {
     sc_game save [sc_game number]
     # ::gameReplace
   }
-  
+
   setTrialMode 0
   sc_game load $selection
   flipBoardForPlayerNames $::myPlayerNames
@@ -293,15 +293,15 @@ proc ::game::GotoMoveNumber {} {
   set w [toplevel .mnumDialog]
   wm title $w "Scid: [tr GameGotoMove]"
   grab $w
-  
+
   label $w.label -text $::tr(GotoMoveNumber)
   pack $w.label -side top -pady 5 -padx 5
-  
+
   entry $w.entry -width 8 -textvariable ::game::moveEntryNumber -borderwidth 0 ; # -justify right
   bind $w.entry <Escape> { .mnumDialog.buttons.cancel invoke }
   bind $w.entry <Return> { .mnumDialog.buttons.load invoke }
   pack $w.entry -side top -pady 5
-  
+
   set b [frame $w.buttons]
   pack $b -side top -fill x
   dialogbutton $b.load -text "OK" -command {
@@ -320,9 +320,9 @@ proc ::game::GotoMoveNumber {} {
     focus .
   }
   packbuttons right $b.cancel $b.load
-  
+
   placeWinOverParent $w .
-  
+
   focus $w.entry
 }
 

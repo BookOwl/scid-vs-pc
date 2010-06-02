@@ -52,7 +52,7 @@ namespace eval pgn {
     setWinLocation $w
     setWinSize $w
     bind $w <Configure> "recordWinSize $w"
-    
+
     menu $w.menu
     $w configure -menu $w.menu
 
@@ -85,7 +85,7 @@ namespace eval pgn {
 
     $w.menu.file add command -label PgnFileClose -accelerator Esc \
         -command "focus .; destroy $w"
-    
+
     $w.menu.opt add checkbutton -label PgnOptColor \
         -variable ::pgn::showColor -command {updateBoard -pgn}
     $w.menu.opt add checkbutton -label PgnOptShort \
@@ -104,7 +104,7 @@ namespace eval pgn {
         -variable ::pgn::stripMarks -command {updateBoard -pgn}
     $w.menu.opt add checkbutton -label PgnOptBoldMainLine \
         -variable ::pgn::boldMainLine -command {updateBoard -pgn}
-    
+
     $w.menu.color add command -label PgnColorHeader \
         -command {::pgn::ChooseColor Header "header text"}
     $w.menu.color add command -label PgnColorAnno \
@@ -115,13 +115,13 @@ namespace eval pgn {
         -command {::pgn::ChooseColor Var variation}
     $w.menu.color add command -label PgnColorBackground \
         -command {::pgn::ChooseColor Background background}
-    
+
     $w.menu.help add command -label PgnHelpPgn \
         -accelerator F1 -command {helpWindow PGN}
     $w.menu.help add command -label PgnHelpIndex -command {helpWindow Index}
-    
+
     ::pgn::ConfigMenus
-    
+
     text $w.text -width $::winWidth($w) -height $::winHeight($w) -wrap word \
         -cursor crosshair -setgrid 1 -tabs {1c right 2c 4c}
     if {$pgnColor(Background) != {white} && $pgnColor(Background) != {#ffffff}} {
@@ -130,7 +130,7 @@ namespace eval pgn {
     if { $::pgn::boldMainLine } {
       $w.text configure -font font_Bold
     }
-    
+
     pack [frame $w.buttons] -side bottom -fill x
     pack $w.text -fill both -expand yes
     button $w.buttons.help -textvar ::tr(Help) -command { helpWindow PGN }
@@ -138,19 +138,19 @@ namespace eval pgn {
     #pack $w.buttons.close $w.buttons.help -side right -padx 5 -pady 2
     set pgnWin 1
     bind $w <Destroy> { set pgnWin 0 }
-    
+
     # Bind left button to close ctxt menu:
     bind $w <ButtonPress-1> {
       if {[winfo exists .pgnWin.text.ctxtMenu]} { destroy .pgnWin.text.ctxtMenu; focus .pgnWin }
     }
-    
+
     # Bind middle button to popup a PGN board:
     bind $w <ButtonPress-2> "::pgn::ShowBoard .pgnWin.text 5 %x %y %X %Y"
     bind $w <ButtonRelease-2> ::pgn::HideBoard
-    
+
     # Bind right button to popup a contextual menu:
     bind $w <ButtonPress-3> "::pgn::contextMenu .pgnWin.text 5 %x %y %X %Y"
-    
+
     standardShortcuts $w
     bind $w <F1> { helpWindow PGN }
     bind $w <Escape> {
@@ -165,16 +165,16 @@ namespace eval pgn {
     standardShortcuts $w
     bindMouseWheel $w $w.text
     bind $w <Control-s> "::pgn::savePgn $w"
-    
+
     # Add variation navigation bindings:
     bind $w <KeyPress-v> [bind . <KeyPress-v>]
     bind $w <KeyPress-z> [bind . <KeyPress-z>]
-    
+
     $w.text tag add Current 0.0 0.0
     # populate text widget
     ::pgn::ResetColors
   }
-  
+
   ################################################################################
   #
   ################################################################################
@@ -223,9 +223,9 @@ namespace eval pgn {
   }
 
   proc contextMenu {win startLine x y xc yc} {
-    
+
     update idletasks
-    
+
     set mctxt $win.ctxtMenu
     if { [winfo exists $mctxt] } { destroy $mctxt }
     if {[sc_var level] == 0} {
@@ -243,23 +243,23 @@ namespace eval pgn {
     $mctxt add separator
     $mctxt add command -label "[tr EditStrip]:[tr EditStripComments]" -command {::game::Strip comments .pgnWin}
     $mctxt add command -label "[tr EditStrip]:[tr EditStripVars]" -command {::game::Strip variations .pgnWin}
-    
+
     $mctxt post [winfo pointerx .] [winfo pointery .]
-    
+
   }
-  
+
   proc deleteVar { var } {
     sc_var exit
     sc_var delete $var
     updateBoard -pgn
   }
-  
+
   proc firstVar { var } {
     sc_var exit
     sc_var first $var
     updateBoard -pgn
   }
-  
+
   proc mainVar { var } {
     sc_var exit
     sc_var promote $var
@@ -285,14 +285,14 @@ namespace eval pgn {
         }
       }
     }
-    
+
     for {set col 0} {$col <= $lastcol} {incr col} {
       set t [$win tag names $lastline.$col]
       if {[lsearch -glob $t "c_*"] == -1} {
         append ret [$win get $lastline.$col]
       }
     }
-    
+
     return $ret
   }
   ################################################################################
@@ -303,14 +303,14 @@ namespace eval pgn {
   ################################################################################
   proc ShowBoard {win startLine x y xc yc} {
     global lite dark
-    
+
     set txt [removeCommentTag $win $startLine [ $win index @$x,$y]]
     # set bd [sc_pos pgnBoard [::untrans [$win get $startLine.0 @$x,$y]] ]
     set bd [ sc_pos pgnBoard [::untrans $txt ] ]
     set w .pgnPopup
     set psize 30
     if {$psize > $::boardSize} { set psize $::boardSize }
-    
+
     if {! [winfo exists $w]} {
       toplevel $w -relief solid -borderwidth 2
       wm withdraw $w
@@ -319,9 +319,9 @@ namespace eval pgn {
       pack $w.bd -side top -padx 2 -pady 2
       wm withdraw $w
     }
-    
+
     ::board::update $w.bd $bd
-    
+
     # Make sure the popup window can fit on the screen:
     incr xc 5
     incr yc 5
@@ -338,7 +338,7 @@ namespace eval pgn {
     wm deiconify $w
     raiseWin $w
   }
-  
+
   ################################################################################
   # ::pgn::HideBoard
   #
@@ -348,7 +348,7 @@ namespace eval pgn {
   proc HideBoard {} {
     wm withdraw .pgnPopup
   }
-  
+
   ################################################################################
   # # ::pgn::ResetColors
   #
@@ -376,17 +376,17 @@ namespace eval pgn {
   #    tags will be updated.
   ################################################################################
   proc Refresh {{pgnNeedsUpdate 0}} {
-    
+
     if {![winfo exists .pgnWin]} { return }
-    
+
     set format plain
     if {$::pgn::showColor} {set format color}
-    
+
     set pgnStr [sc_game pgn -symbols $::pgn::symbolicNags \
         -indentVar $::pgn::indentVars -indentCom $::pgn::indentComments \
         -space $::pgn::moveNumberSpaces -format $format -column $::pgn::columnFormat \
         -short $::pgn::shortHeader -markCodes $::pgn::stripMarks]
-    
+
     if {$pgnNeedsUpdate} {
       busyCursor .
       set windowTitle [format $::tr(PgnWindowTitle) [sc_game number]]
@@ -403,7 +403,7 @@ namespace eval pgn {
       }
       unbusyCursor .
     }
-    
+
     if {$::pgn::showColor} {
       if { $::pgn::boldMainLine } {
         .pgnWin.text configure -font font_Bold
@@ -429,5 +429,5 @@ namespace eval pgn {
   ################################################################################
   #
   ################################################################################
-  
+
 }

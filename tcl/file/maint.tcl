@@ -17,12 +17,12 @@ proc ::maint::fixCorruptedBase {} {
   set fName [tk_getOpenFile -initialdir $::initialDir(base) -filetypes $ftype -title "Open a Scid file"]
   if {$fName == ""} { return }
   set fName [file rootname $fName]
-  
+
   if {[sc_base slot $fName] != 0} {
     tk_messageBox -type ok -icon info -title "Scid" -message "$fName is already opened.\nClose it first"
     return
   }
-  
+
   progressWindow "Scid" [concat $::tr(CompactNames) "..."]
   busyCursor .
   set err [catch {sc_base fixCorrupted $fName} result]
@@ -33,7 +33,7 @@ proc ::maint::fixCorruptedBase {} {
   } else {
     tk_messageBox -type ok -icon info -title "Scid" -message "Base $fName was repaired"
   }
-  
+
 }
 
 ################################################################################
@@ -115,7 +115,7 @@ proc ::maint::OpenClose {} {
     addHorizontalRule $w
   }
   pack $w.buttons -side top -fill x
-  
+
   label $w.title.name -textvar ::tr(DatabaseName) -font font_Bold
   label $w.title.games -textvar ::tr(NumOfGames) -font font_SmallBold
   label $w.title.icon -textvar ::tr(TypeIcon)
@@ -133,11 +133,11 @@ proc ::maint::OpenClose {} {
   pack $w.title.desc.lab -side left
   pack $w.title.desc.edit -side right -padx 2
   pack $w.title.desc.text -side left -fill x -expand yes
-  
+
   foreach name {name games delete mark filter dates ratings} {
     label $w.title.v$name -text "0" -font $font
   }
-  
+
   set row 0
   set col 0
   foreach name {name icon games filter delete mark dates ratings} {
@@ -152,13 +152,13 @@ proc ::maint::OpenClose {} {
   $w.title.vname configure -font font_Bold
   $w.title.vgames configure -font font_SmallBold
   grid $w.title.desc -row $row -column 0 -columnspan 5 -sticky we
-  
+
   foreach grid {title delete mark spell db} cols {5 3 3 4 3} {
     for {set i 0} {$i < $cols} {incr i} {
       grid columnconfigure $w.$grid $i -weight 1
     }
   }
-  
+
   label $w.delete.title -textvar ::tr(DeleteFlag) -font $bold
   menubutton $w.mark.title -menu $w.mark.title.m \
       -indicatoron 1 -relief raised -font $bold
@@ -174,7 +174,7 @@ proc ::maint::OpenClose {} {
       button $w.$flag.off$b -textvar "::tr($off$b)" -font $font \
           -command "::maint::SetGameFlags $flag [string tolower $b] 0"
     }
-    
+
     grid $w.$flag.title -columnspan 3 -row 0 -column 0 -sticky n
     grid $w.$flag.onCurrent -row 1 -column 0 -sticky we
     grid $w.$flag.offCurrent -row 2 -column 0 -sticky we
@@ -183,7 +183,7 @@ proc ::maint::OpenClose {} {
     grid $w.$flag.onAll -row 1 -column 2 -sticky we
     grid $w.$flag.offAll -row 2 -column 2 -sticky we
   }
-  
+
   label $w.spell.title -textvar ::tr(Spellchecking) -font $bold
   grid $w.spell.title -columnspan 4 -row 0 -column 0 -sticky n
   button $w.spell.player -textvar ::tr(Players...) -font $font \
@@ -198,15 +198,15 @@ proc ::maint::OpenClose {} {
   grid $w.spell.event -row 1 -column 1 -sticky we
   grid $w.spell.site -row 1 -column 2 -sticky we
   grid $w.spell.round -row 1 -column 3 -sticky we
-  
+
   bind $w <Alt-p> "$w.spell.player invoke"
   bind $w <Alt-e> "$w.spell.event invoke"
   bind $w <Alt-s> "$w.spell.site invoke"
   bind $w <Alt-r> "$w.spell.round invoke"
-  
+
   label $w.db.title -textvar ::tr(DatabaseOps) -font $bold
   grid $w.db.title -columnspan 3 -row 0 -column 0 -sticky n
-  
+
   button $w.db.eco -textvar ::tr(ReclassifyGames...) -command classifyAllGames
   button $w.db.compact -textvar ::tr(CompactDatabase...) -command makeCompactWin
   button $w.db.sort -textvar ::tr(SortDatabase...) -command makeSortWin
@@ -215,12 +215,12 @@ proc ::maint::OpenClose {} {
   button $w.db.cleaner -textvar ::tr(Cleaner...) -command cleanerWin
   button $w.db.autoload -textvar ::tr(AutoloadGame...) -command ::maint::SetAutoloadGame
   button $w.db.strip -textvar ::tr(StripTags...) -command stripTags
-  
+
   foreach i {eco compact sort elo dups cleaner autoload strip} {
     $w.db.$i configure -font $font
   }
   bind $w <Alt-d> "$w.db.dups invoke"
-  
+
   grid $w.db.eco -row 1 -column 0 -sticky we
   grid $w.db.compact -row 1 -column 1 -sticky we
   grid $w.db.sort -row 1 -column 2 -sticky we
@@ -229,7 +229,7 @@ proc ::maint::OpenClose {} {
   grid $w.db.cleaner -row 2 -column 2 -sticky we
   grid $w.db.autoload -row 3 -column 0 -sticky we
   grid $w.db.strip -row 3 -column 1 -sticky we
-  
+
   dialogbutton $w.buttons.help -textvar ::tr(Help) -command {helpWindow Maintenance}
   dialogbutton $w.buttons.close -textvar ::tr(Close) -command "destroy $w"
   packbuttons right $w.buttons.close $w.buttons.help
@@ -267,7 +267,7 @@ proc ::maint::Refresh {} {
   global maintFlag maintFlags
   updateSortWin
   updateClassifyWin
-  
+
   set w .maintWin
   if {![winfo exists $w]} { return }
   set ng [sc_base numGames]
@@ -286,12 +286,12 @@ proc ::maint::Refresh {} {
       -text "[lindex $dates 0]-[lindex $dates 1] ([lindex $dates 2])"
   $w.title.vratings configure \
       -text "[lindex $ratings 0]-[lindex $ratings 1] ([lindex $ratings 2])"
-  
+
   set flagname "$::tr(Flag): $::tr($maintFlags($maintFlag)) ($maintFlag)"
   $w.mark.title configure -text $flagname
   $w.title.mark configure -text $flagname
   $w.title.desc.text configure -text [sc_base description]
-  
+
   # Disable buttons if current base is closed or read-only:
   set state disabled
   if {[sc_base inUse]  &&  ![sc_base isReadOnly]} {
@@ -309,13 +309,13 @@ proc ::maint::Refresh {} {
   $w.title.desc.edit configure -state $state
   $w.db.elo configure -state $state
   $w.db.autoload configure -state $state
-  
+
   set state disabled
   if {[sc_base inUse]} { set state normal }
   $w.db.eco configure -state $state
   $w.db.sort configure -state $state
   $w.db.strip configure -state $state
-  
+
   set state disabled
   if {[baseIsCompactable]} {
     set state normal
@@ -340,13 +340,13 @@ proc ::maint::SetAutoloadGame {} {
   toplevel $w
   wm title $w "Scid"
   set autoloadGame [sc_base autoload]
-  
+
   pack [frame $w.f] -side top
   label $w.f.label -text $::tr(AutoloadGame:)
   entry $w.f.entry -textvar autoloadGame -justify right -width 10 \
       -foreground black 
   pack $w.f.label $w.f.entry -side left
-  
+
   pack [frame $w.set] -side top -fill x
   button $w.set.none -text $::tr(None) -command {set autoloadGame 0}
   button $w.set.first -text $::tr(First) -command {set autoloadGame 1}
@@ -356,16 +356,16 @@ proc ::maint::SetAutoloadGame {} {
   foreach i {none first current last} {$w.set.$i configure -font font_Small}
   pack $w.set.none $w.set.first $w.set.current $w.set.last \
       -side left -padx 1 -pady 2
-  
+
   addHorizontalRule $w
-  
+
   pack [frame $w.b] -side top -fill x
   button $w.b.ok -text OK -command \
       "sc_base autoload \$autoloadGame; catch {grab release $w}; destroy $w"
   button $w.b.cancel -text $::tr(Cancel) -command \
       "catch {grab release $w}; destroy $w"
   pack $w.b.cancel $w.b.ok -side right -padx 2
-  
+
   bind $w.f.entry <Return> "$w.b.ok invoke"
   bind $w.f.entry <Escape> "$w.b.cancel invoke"
   wm resizable $w 0 0
@@ -387,7 +387,7 @@ proc markTwins {{parent .}} {
         -message $::tr(TwinCheckNoDelete)
     return
   }
-  
+
   set w .twinSettings
   if {! [winfo exists $w]} {
     toplevel $w
@@ -400,7 +400,7 @@ proc markTwins {{parent .}} {
     addHorizontalRule $w
     label $w.tc -text $::tr(TwinsCriteria) -font font_Bold
     pack $w.tc -side top
-    
+
     frame $w.g
     pack $w.g -side top
     set row 0
@@ -424,12 +424,12 @@ proc markTwins {{parent .}} {
         -text $::tr(TwinsPlayersExact) -font $small
     radiobutton $w.players.no -variable twinSettings(players) -value No \
         -text $::tr(TwinsPlayersPrefix) -font $small
-    
+
     pack $w.players -side top
     pack $w.players.label $w.players.yes $w.players.no -side left
   }
-  
-  
+
+
   addHorizontalRule $w
   label $w.twhich -text $::tr(TwinsWhich:) -font font_Bold
   pack $w.twhich -side top
@@ -444,7 +444,7 @@ proc markTwins {{parent .}} {
   grid $w.g2.exfil -row 0 -column 2 -sticky w
   grid columnconfigure $w.g2 0 -weight 1
   grid columnconfigure $w.g2 2 -weight 1
-  
+
   addHorizontalRule $w
   label $w.twhen -text $::tr(TwinsWhen:) -font font_Bold
   pack $w.twhen -side top
@@ -479,11 +479,11 @@ proc markTwins {{parent .}} {
     pack $w.g3.vdelete.v$v -side left -padx 5
   }
   grid $w.g3.vdelete -row $row -column 0 -columnspan 3
-  
+
   #foreach g {g2 g3} {
   #  grid columnconfigure $w.$g 0 -weight 1
   #}
-  
+
   addHorizontalRule $w
   frame $w.b
   dialogbutton $w.b.defaults -textvar ::tr(Defaults) -command {
@@ -501,15 +501,15 @@ proc markTwins {{parent .}} {
       if {$result > 0} { updateTwinChecker }
     }
   }
-  
+
   dialogbutton $w.b.cancel -text $::tr(Cancel) -font $small \
       -command "grab release $w; focus .; destroy $w"
-  
+
   canvas $w.progress -width 300 -height 20  -relief solid -border 1
   $w.progress create rectangle 0 0 0 0 -fill blue -outline blue -tags bar
   $w.progress create text 295 10 -anchor e -font font_Regular -tags time \
       -fill black -text "0:00 / 0:00"
-  
+
   pack $w.progress -side bottom -padx 2 -pady 2
   pack $w.b -side bottom -fill x
   packbuttons right  $w.b.cancel $w.b.go
@@ -530,9 +530,9 @@ proc markTwins {{parent .}} {
 #
 proc twinCriteriaOK {{parent .}} {
   global twinSettings
-  
+
   set msg $::tr(TwinCriteria1)
-  
+
   # First, check that if same moves is off, then the same colors, event,
   # site, round, year and month flags should all be set:
   if {$twinSettings(moves) == "No"} {
@@ -546,7 +546,7 @@ proc twinCriteriaOK {{parent .}} {
       if {$result == "no"} { return 0 } else { return 1 }
     }
   }
-  
+
   # Now check that at least two of site, round, and year are set:
   set count 0
   if {$twinSettings(site) == "Yes"} { incr count }
@@ -565,12 +565,12 @@ proc twinCriteriaOK {{parent .}} {
 
 proc doMarkDups {{parent .}} {
   global twinSettings
-  
+
   busyCursor .
   if {$twinSettings(undelete) == "Yes"} {
     catch {sc_game flag delete all 0}
   }
-  
+
   if {[catch {sc_base duplicates -colors $twinSettings(colors) \
           -event $twinSettings(event) -site $twinSettings(site) \
           -round $twinSettings(round) -year $twinSettings(year) \
@@ -656,7 +656,7 @@ proc makeClassifyWin {} {
       -variable classifyOption(ExtendedCodes) -value 0
   radiobutton $w.basic -textvar ::tr(ClassifyExtended) \
       -variable classifyOption(ExtendedCodes) -value 1
-  
+
   frame $w.b
   button $w.b.go -textvar ::tr(Classify) -command {
     busyCursor .
@@ -681,7 +681,7 @@ proc makeClassifyWin {} {
   $w.progress create rectangle 0 0 0 0 -fill blue -outline blue -tags bar
   $w.progress create text 295 10 -anchor e -font font_Regular -tags time \
       -fill black -text "0:00 / 0:00"
-  
+
   pack $w.label $w.g -side top -pady 5
   addHorizontalRule $w
   pack $w.codes $w.extended $w.basic -side top -pady 5
@@ -773,7 +773,7 @@ proc updateTwinChecker {} {
     wm resizable $w 0 1
     wm title $w $::tr(TwinChecker)
   }
-  
+
   set gn [sc_game number]
   set dup 0
   if {$gn > 0} {
@@ -781,9 +781,9 @@ proc updateTwinChecker {} {
   }
   set twincheck(left) 0
   set twincheck(right) 0
-  
+
   $w.f.left.title.label configure -text [concat $::tr(game) " $gn:  "]
-  
+
   if {$gn > 0} {
     set twincheck(left) [sc_game flag delete $gn]
     $w.f.left.title.d configure -command "sc_game flag delete $gn invert; updateBoard"
@@ -806,7 +806,7 @@ proc updateTwinChecker {} {
     $w.f.right.title.d configure -state disabled
     $w.f.right.tmt configure -text ""
   }
-  
+
   $w.b.share configure -state disabled -command {}
   if {$gn > 0  &&  $dup > 0} {
     if {[llength [sc_game tags share check $gn $dup]] > 0} {
@@ -817,7 +817,7 @@ proc updateTwinChecker {} {
   $t configure -state normal
   $t delete 1.0 end
   $t insert end [sc_game pgn]
-  
+
   set t $w.f.right.t.text
   $t configure -state normal
   $t delete 1.0 end
@@ -826,12 +826,12 @@ proc updateTwinChecker {} {
   } else {
     $t insert end $::tr(TwinCheckNoTwinfound)
   }
-  
+
   # Now color the differences if appropriate:
   if {$dup > 0} {
     set rlen [$w.f.right.t.text index end-1c]
     set llen [$w.f.right.t.text index end-1c]
-    
+
     for {set i 0} {$i < $rlen} {incr i} {
       set line [$w.f.right.t.text get $i.0 "$i.0 lineend"]
       set length [string length $line]
@@ -846,7 +846,7 @@ proc updateTwinChecker {} {
         $w.f.right.t.text tag add h $i.$max "$i.0 lineend"
       }
     }
-    
+
     for {set i 0} {$i < $llen} {incr i} {
       set line [$w.f.left.t.text get $i.0 "$i.0 lineend"]
       set length [string length $line]
@@ -862,17 +862,17 @@ proc updateTwinChecker {} {
       }
     }
   }
-  
+
   if {[sc_base inUse]} {
     $w.b.delete configure -state normal
   } else {
     $w.b.delete configure -state disabled
   }
-  
+
   foreach side {left right} {
     $w.f.$side.t.text configure -state disabled
   }
-  
+
 }
 
 # shareTwinTags:
@@ -883,7 +883,7 @@ proc updateTwinChecker {} {
 proc shareTwinTags {g1 g2 {parent .}} {
   set sharelist [sc_game tags share check $g1 $g2]
   if {[llength $sharelist] == 0} { return }
-  
+
   set msg $::tr(TwinChangeTag)
   foreach {gn tag old new} $sharelist {
     append msg [concat $::tr(game) " $gn: $tag: \"$old\" -> \"$new\""]
@@ -926,7 +926,7 @@ proc makeCompactWin {} {
   pack $w.games -in $w.top -side left -fill x -anchor n
   addHorizontalRule $w
   pack $w.buttons -side top -fill x
-  
+
   for {set i 0} {$i < 3} {incr i} {
     grid columnconfigure $w.names $i -weight 1
     grid columnconfigure $w.games $i -weight 1
@@ -953,7 +953,7 @@ proc makeCompactWin {} {
     grid $w.names.u$n -row $row -column 2 -sticky e
     incr row
   }
-  
+
   label $w.games.title -text $::tr(GameFile) -font font_Bold
   grid $w.games.title -columnspan 3 -row 0 -column 0 -sticky n
   label $w.games.gt -text "  [::utils::string::Capital $::tr(games)]"
@@ -977,7 +977,7 @@ proc makeCompactWin {} {
     grid $w.games.s$g -row $row -column 2 -sticky e
     incr row
   }
-  
+
   button $w.buttons.n -text $::tr(CompactNames) -command compactNames
   button $w.buttons.g -text $::tr(CompactGames) -command compactGames
   button $w.buttons.help -text $::tr(Help) -command {helpWindow Compact}
@@ -1081,7 +1081,7 @@ proc makeSortWin {} {
   toplevel $w
   wm title $w "Scid: [tr FileMaintSort]"
   wm resizable $w 0 0
-  
+
   label $w.torder -textvar ::tr(SortCriteria:) -font font_Bold
   pack $w.torder -side top
   label $w.order -textvar sortCriteria(translated) -width 40  \
@@ -1111,13 +1111,13 @@ proc makeSortWin {} {
   grid $w.add.eco -row 4 -column 0 -sticky we
   grid $w.add.deleted -row 4 -column 1 -sticky we
   grid $w.add.eventdate -row 4 -column 2 -sticky we
-  
+
   for {set i 0} {$i < 3} {incr i} {
     grid columnconfigure $w.add $i -weight 1
   }
-  
+
   addHorizontalRule $w
-  
+
   label $w.tcommon -textvar ::tr(CommonSorts:) -font font_Bold
   pack $w.tcommon -side top
   pack [frame $w.tc] -side top -fill x
@@ -1280,7 +1280,7 @@ proc stripTags {} {
     return
   }
   set stripTagList {}
-  
+
   # Find extra PGN tags:
   set ::interrupt 0
   progressWindow "Scid" "Searching for extra PGN tags..." \
@@ -1294,7 +1294,7 @@ proc stripTags {} {
     tk_messageBox -title "Scid" -icon warning -type ok -message $result
     return
   }
-  
+
   # Make list of extra tags and their frequency:
   array unset stripTagCount
   set nTags 0
@@ -1302,13 +1302,13 @@ proc stripTags {} {
     set stripTagCount($tag) $count
     incr nTags
   }
-  
+
   if {$nTags == 0} {
     tk_messageBox -title "Scid" -icon info -type ok \
         -message "No extra tags were found."
     return
   }
-  
+
   toplevel $w
   wm title $w "Scid: $::tr(StripTags)"
   label $w.title -text "Extra PGN tags:" -font font_Bold
@@ -1316,7 +1316,7 @@ proc stripTags {} {
   pack [frame $w.f] -side top -fill x
   addHorizontalRule $w
   pack [frame $w.b] -side bottom -fill x
-  
+
   set row 0
   foreach tag [lsort [array names stripTagCount]] {
     set count $stripTagCount($tag)
@@ -1399,11 +1399,11 @@ set cleaner(tree) 0
 proc cleanerWin {} {
   set w .mtoolWin
   if {[winfo exists $w]} { return }
-  
+
   toplevel $w
   wm title $w "Scid: $::tr(Cleaner)"
   bind $w <F1> {helpWindow Maintenance Cleaner}
-  
+
   pack [frame $w.help] -side top -fill x
   text $w.help.text -width 1 -height 8 -wrap word \
       -relief ridge -cursor top_left_arrow -yscrollcommand "$w.help.ybar set"
@@ -1413,7 +1413,7 @@ proc cleanerWin {} {
   pack $w.help.text -side left -fill x -expand yes
   $w.help.text insert end [string trim $::tr(CleanerHelp)]
   $w.help.text configure -state disabled
-  
+
   pack [frame $w.f] -side top -padx 20
   foreach i {players events sites rounds} j {Players Events Sites Rounds} {
     label $w.f.$i -text "$::tr(Spellchecking): $::tr($j)"
@@ -1424,7 +1424,7 @@ proc cleanerWin {} {
   label $w.f.cnames -text $::tr(CompactNames)
   label $w.f.cgames -text $::tr(CompactGames)
   label $w.f.tree -text [tr TreeFileFill]
-  
+
   foreach i {players events sites rounds eco elo twins cnames cgames tree} {
     radiobutton $w.f.y$i -variable cleaner($i) -value 1 -text $::tr(Yes)
     radiobutton $w.f.n$i -variable cleaner($i) -value 0 -text $::tr(No)
@@ -1436,7 +1436,7 @@ proc cleanerWin {} {
     grid $w.f.n$i -row $row -column 2 -sticky w
     incr row
   }
-  
+
   addHorizontalRule $w
   pack [frame $w.b] -side bottom -fill x
   button $w.b.ok -text "OK" -command "catch {grab release $w}; destroy $w; doCleaner"
@@ -1454,12 +1454,12 @@ proc cleanerWin {} {
 
 proc doCleaner {} {
   global cleaner twinSettings
-  
+
   set answer [tk_dialog .mtoolDialog "Scid" \
       [string trim $::tr(CleanerConfirm)] "" \
       0 $::tr(Yes) $::tr(No)]
   if {$answer != 0} { return }
-  
+
   set w .mtoolStatus
   if {! [winfo exists $w]} {
     toplevel $w
@@ -1477,18 +1477,18 @@ proc doCleaner {} {
     pack $w.b.close -side right -padx 2 -pady 2
     wm minsize $w 20 5
   }
-  
+
   busyCursor .
   catch {grab $w}
   set t $w.t.text
   $t delete 1.0 end
   $t insert end "$::tr(Cleaner)."
   $t insert end "  $::tr(Database): [file tail [sc_base filename]]\n"
-  
+
   $w.b.close configure -state disabled
-  
+
   set count 1
-  
+
   foreach nameType {Player Event Site Round} {
     set names $nameType
     append names "s"
@@ -1505,7 +1505,7 @@ proc doCleaner {} {
       $t see end
     }
   }
-  
+
   if {$cleaner(eco)} {
     mtoolAdd $t "$count: $::tr(ReclassifyGames)..."
     incr count
@@ -1514,7 +1514,7 @@ proc doCleaner {} {
     $t insert end "   $result\n"
     $t see end
   }
-  
+
   if {$cleaner(elo)} {
     mtoolAdd $t "$count: $::tr(AddEloRatings)..."
     incr count
@@ -1526,7 +1526,7 @@ proc doCleaner {} {
       $t insert end "   Scid added $r Elo ratings in $g games.\n"
     }
   }
-  
+
   if {$cleaner(twins)} {
     mtoolAdd $t "$count: $::tr(DeleteTwins)..."
     incr count
@@ -1552,7 +1552,7 @@ proc doCleaner {} {
     }
     $t insert end "   $message.\n"
   }
-  
+
   if {$cleaner(cnames)} {
     mtoolAdd $t "$count: $::tr(CompactNames)..."
     incr count
@@ -1570,7 +1570,7 @@ proc doCleaner {} {
     }
     $t see end
   }
-  
+
   if {$cleaner(cgames)} {
     mtoolAdd $t "$count: $::tr(CompactGames)..."
     incr count
@@ -1588,7 +1588,7 @@ proc doCleaner {} {
     }
     $t see end
   }
-  
+
   if {$cleaner(tree)} {
     mtoolAdd $t "$count: [tr TreeFileFill]..."
     incr count
@@ -1607,7 +1607,7 @@ proc doCleaner {} {
     sc_game pop
     $t insert end "   Done.\n"
   }
-  
+
   mtoolAdd $t "Done."
   updateBoard
   ::windows::gamelist::Refresh

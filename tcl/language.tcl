@@ -74,7 +74,7 @@ proc menuText {lang tag label underline {helpMsg ""}} {
     catch {set label [encoding convertfrom $langEncoding($lang) $label]}
     catch {set helpMsg [encoding convertfrom $langEncoding($lang) $helpMsg]}
   }
-  
+
   set ::menuLabel($lang,$tag) $label
   set ::menuUnder($lang,$tag) $underline
   if {$helpMsg != ""} {
@@ -155,9 +155,9 @@ proc tr {tag {lang ""}} {
 ################################################################################
 proc setLanguage {{lang ""}} {
   global menuLabel menuUnder oldLang hasEncoding langEncoding
-  
+
   if {$lang == ""} {set lang $::language}
-  
+
   if { $::translatePieces } {
     switch $lang {
       F {sc_info language fr}
@@ -174,16 +174,16 @@ proc setLanguage {{lang ""}} {
   } else {
     sc_info language en
   }
-  
+
   if {[catch {setLanguage_$lang} err]} { puts "Error: $err" }
   # TODO: Check this:
   if {$hasEncoding  &&  $langEncoding($lang) != ""} {
     # encoding system $langEncoding($lang)
   }
-  
+
   # If using Tk, translate all menus:
   if {! [catch {winfo exists .}]} { setLanguageMenus $lang }
-  
+
   foreach i [array names ::tr] {
     if {[info exists ::translations($lang,$i)]} {
       set ::tr($i) $::translations($lang,$i)

@@ -28,7 +28,7 @@ proc updateEpdWin {id} {
   set w .epd$id
   $w.text delete 1.0 end
   $w.text insert end [sc_epd get $id]
-  
+
   # Update the EPD window status bar:
   set str "  --  "
   if {[sc_epd readonly $id]} {
@@ -132,7 +132,7 @@ proc newEpdWin {cmd {fname ""}} {
     } else { return 0 }
   }
   if {$fname == ""} { return 0 }
-  
+
   busyCursor . 1
   if {[catch {sc_epd $cmd $fname} result]} {
     if {$showErrors} {
@@ -150,7 +150,7 @@ proc newEpdWin {cmd {fname ""}} {
   wm minsize $w 40 1
   bind $w <Destroy> "closeEpdWin $id"
   bind $w <F1> { helpWindow EPD }
-  
+
   frame $w.grid
   text $w.text  -font font_Regular -width 60 -height 7 \
       -wrap none -setgrid 1 -yscrollcommand "$w.ybar set" \
@@ -162,19 +162,19 @@ proc newEpdWin {cmd {fname ""}} {
       -xscrollcommand "$w.xbar2 set" -selectmode single
   scrollbar $w.ybar2 -takefocus 0 -command "$w.lb yview"
   scrollbar $w.xbar2 -orient horizontal -takefocus 0 -command "$w.lb xview"
-  
+
   frame $w.menu -borderwidth 3 -relief raised
   pack $w.menu  -side top -fill x
   menubutton $w.menu.file -text File -menu $w.menu.file.m -underline 0
   menubutton $w.menu.edit -text Edit -menu $w.menu.edit.m -underline 0
   menubutton $w.menu.tools -text Tools -menu $w.menu.tools.m -underline 0
   menubutton $w.menu.help -text Help -menu $w.menu.help.m -underline 0
-  
+
   foreach i {file edit tools help} {
     menu $w.menu.$i.m -tearoff 0
     pack $w.menu.$i -side left
   }
-  
+
   set m $w.menu.file.m
   $m add command -label "New" -acc "Ctrl+N" -underline 0 \
       -command {newEpdWin create}
@@ -192,7 +192,7 @@ proc newEpdWin {cmd {fname ""}} {
   $m add command -label "Close" -acc "Ctrl+Q" -underline 0 \
       -command "confirmCloseEpd $id"
   bind $w <Control-q> "confirmCloseEpd $id"
-  
+
   set m $w.menu.edit.m
   $m add command -label "Cut" -acc "Ctrl+X" -underline 2 -command "tk_textCut $w.text"
   bind $w <Control-x> "tk_textCut $w.text; break"
@@ -210,7 +210,7 @@ proc newEpdWin {cmd {fname ""}} {
   $m add command -label "Sort lines" -accel "Ctrl+Shift+S" \
       -underline 0 -command "epd_sortLines $w.text"
   bind $w <Control-S> "epd_sortLines $w.text; break"
-  
+
   set m $w.menu.tools.m
   $m add command -label "Find Deepest game position" \
       -underline 5 -command "epd_MoveToDeepestMatch $id"
@@ -231,12 +231,12 @@ proc newEpdWin {cmd {fname ""}} {
   $m add separator
   $m add command -label "Strip out EPD field" -underline 0 \
       -command "epd_chooseStripField $id"
-  
+
   $w.menu.help.m add command -label "EPD files help" -underline 0 \
       -acc "F1" -command "helpWindow EPD"
   $w.menu.help.m add command -label "General index" -underline 0 \
       -command "helpWindow Index"
-  
+
   pack $w.status -side bottom -fill x
   pack $w.grid -fill both -expand yes
   grid $w.text -in $w.grid -row 0 -column 0 -sticky news
@@ -245,23 +245,23 @@ proc newEpdWin {cmd {fname ""}} {
   grid $w.lb -in $w.grid -row 2 -column 0 -sticky news
   grid $w.ybar2 -in $w.grid -row 2 -column 1 -sticky news
   grid $w.xbar2 -in $w.grid -row 3 -column 0 -sticky news
-  
+
   grid rowconfig $w.grid 0 -weight 1 -minsize 0
   grid columnconfig $w.grid 0 -weight 1 -minsize 0
-  
+
   # Right-mouse button cut/copy/paste menu:
   menu $w.text.edit -tearoff 0
   $w.text.edit add command -label "Cut"  -command "tk_textCut $w.text"
   $w.text.edit add command -label "Copy" -command "tk_textCopy $w.text"
   $w.text.edit add command -label "Paste" -command "tk_textPaste $w.text"
   bind $w.text <ButtonPress-3> "tk_popup $w.text.edit %X %Y"
-  
+
   updateEpdWin $id
-  
+
   loadEpdLines $id
-  
+
   bind $w.lb <<ListboxSelect>> "refreshEpd $id"
-  
+
   return 1
 }
 ################################################################################
@@ -316,9 +316,9 @@ proc epd_sortLines {textwidget} {
 ################################################################################
 proc epd_Analyse { textwidget id } {
   global analysis
-  
+
   if {! [winfo exists $textwidget]} { return }
-  
+
   # choose analysis time
   set y .epdDelay
   toplevel $y
@@ -332,7 +332,7 @@ proc epd_Analyse { textwidget id } {
   focus $y.spDelay
   update ; # or grab will fail
   grab $y
-  
+
 }
 ################################################################################
 # strips all fields that will be pasted from analysis window

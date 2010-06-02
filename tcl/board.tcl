@@ -43,7 +43,7 @@ proc SetBoardTextures {} {
     bgl20 copy $boardfile_lite -from 0 0 20 20
     bgd20 copy $boardfile_dark -from 0 0 20 20
   }
-  
+
   foreach size $::boardSizes {
     # create lite and dark squares
     image create photo bgl$size -width $size -height $size
@@ -60,7 +60,7 @@ SetBoardTextures
 
 proc chooseBoardTextures {i} {
   global boardfile_dark boardfile_lite
-  
+
   set prefix [lindex $::textureSquare $i]
   set boardfile_dark ${prefix}-d
   set boardfile_lite ${prefix}-l
@@ -81,7 +81,7 @@ proc setBoardColor {choice} {
 proc applyBoardColors {} {
 
   global newColors lite dark highcolor bestcolor borderwidth
- 
+
   set w .boardOptions
   set colors {lite dark highcolor bestcolor}
 
@@ -100,7 +100,7 @@ proc applyBoardColors {} {
   foreach i $colors {
     $w.select.b$i configure -background $newColors($i)
   }
-  
+
   ### too noisy to always change the border width widget
 
   # foreach i {0 1 2 3} {
@@ -153,10 +153,10 @@ proc initBoardColors {} {
 
   global lite dark highcolor bestcolor
   global colorSchemes newColors boardStyles boardStyle boardSizes
-  
+
   set colors {lite dark highcolor bestcolor}
   set w .boardOptions
-  
+
   if { [winfo exists $w] } {
     wm deiconify $w
     raise $w .
@@ -171,7 +171,7 @@ proc initBoardColors {} {
 
   setWinLocation $w
   bind $w <Configure> "recordWinSize $w"
-  
+
   ### Main widgets ordered here ###
 
   frame $w.pieces
@@ -227,7 +227,7 @@ proc initBoardColors {} {
   pack [frame $w.border] -side top
   addHorizontalRule $w
   pack [frame $w.buttons] -side top -fill x
-  
+
   set psize [boardSize_plus_n -2]
   set p2size [expr $psize / 2]
 
@@ -241,7 +241,7 @@ proc initBoardColors {} {
     grid $bd.w$j -row 1 -column $column
     incr column
   }
-  
+
   set f $w.select
   foreach row {0 1 0 1} column {0 0 2 2} c {
     lite dark highcolor bestcolor
@@ -282,7 +282,7 @@ proc initBoardColors {} {
 
     incr count
   }
-  
+
   ### Textures ###
 
   set f $w.texture
@@ -304,12 +304,12 @@ proc initBoardColors {} {
     $f create image [expr $p2size + 1] [expr $p2size + 1] -image ${tex}-l -anchor nw
     bind $f <Button-1> "chooseBoardTextures $count"
     # pack $f -side top -fill x
-    
+
     incr count
     incr col
     if {$col > 4} { set col 0 ; incr row }
   }
-  
+
   ### Border width ###
 
   set f $w.border
@@ -328,7 +328,7 @@ proc initBoardColors {} {
     $c itemconfigure lite -fill $lite -outline $lite
   }
   set ::newborderwidth $::borderwidth
-  
+
   ### Button
 
   dialogbutton $w.buttons.ok -text "OK" -command "destroy $w"
@@ -610,7 +610,7 @@ proc configToolbar {} {
   toplevel $w
   wm state $w withdrawn
   wm title $w "Scid: [tr OptionsToolbar]"
-  
+
   array set ::toolbar_temp [array get ::toolbar]
 
   set button_options {-height 20 -width 22 -command changeToolbar}
@@ -1018,9 +1018,9 @@ MRIkyiwsUKaIHk16ChQsaHsFAgA7}
 ##############################
 
 namespace eval ::board {
-  
+
   namespace export sq san recolor colorSquare isFlipped
-  
+
   # List of square names in order; used by sq procedure.
   variable squareIndex [list a1 b1 c1 d1 e1 f1 g1 h1 a2 b2 c2 d2 e2 f2 g2 h2 \
       a3 b3 c3 d3 e3 f3 g3 h3 a4 b4 c4 d4 e4 f4 g4 h4 \
@@ -1053,7 +1053,7 @@ proc ::board::san {sqno} {
   return [format %c%c \
       [expr {($sqno % 8) + [scan a %c]}] \
       [expr {($sqno / 8) + [scan 1 %c]}]]
-  
+
 }
 
 # ::board::new
@@ -1064,7 +1064,7 @@ proc ::board::san {sqno} {
 #
 proc ::board::new {w {psize 40} {showmat "nomat"} } {
   if {[winfo exists $w]} { return }
-  
+
   set ::board::_size($w) $psize
   set ::board::_border($w) $::borderwidth
   set ::board::_coords($w) 0
@@ -1075,10 +1075,10 @@ proc ::board::new {w {psize 40} {showmat "nomat"} } {
   set ::board::_mark($w) {}
   set ::board::_drag($w) -1
   set ::board::_showmat($w) [expr {"$showmat" != "nomat"}]
-  
+
   set border $::board::_border($w)
   set bsize [expr {$psize * 8 + $border * 9} ]
-  
+
   ### Main board initialised S.A
   # moved the side to move column from the right to the left
 
@@ -1087,10 +1087,10 @@ proc ::board::new {w {psize 40} {showmat "nomat"} } {
   if {[info tclversion] == 8.5} {
     grid anchor $w center
   }
-  
+
   grid $w.bd -row 1 -column 3 -rowspan 8 -columnspan 8
   set bd $w.bd
-  
+
   # Create empty board:
   for {set i 0} {$i < 64} {incr i} {
     set xi [expr {$i % 8} ]
@@ -1099,11 +1099,11 @@ proc ::board::new {w {psize 40} {showmat "nomat"} } {
     set y1 [expr {(7 - $yi) * ($psize + $border) + $border +1 } ]
     set x2 [expr {$x1 + $psize }]
     set y2 [expr {$y1 + $psize }]
-    
+
     $bd create rectangle $x1 $y1 $x2 $y2 -tag sq$i -outline ""
     ::board::colorSquare $w $i
   }
-  
+
   # Set up coordinate labels:
   for {set i 1} {$i <= 8} {incr i} {
     label $w.lrank$i -text [expr {9 - $i}]
@@ -1117,7 +1117,7 @@ proc ::board::new {w {psize 40} {showmat "nomat"} } {
     label $w.bfile$file -text $file
     grid $w.bfile$file -row 9 -column [expr $i + 2] -sticky n
   }
-  
+
   # Set up side-to-move icons:
   frame $w.stmgap -width 3
   frame $w.stm
@@ -1132,7 +1132,7 @@ proc ::board::new {w {psize 40} {showmat "nomat"} } {
   if {$::board::_showmat($w)} {
     canvas $w.mat -width $::materialwidth -height [expr $::board::_size($w) * 8] -insertborderwidth 0 -borderwidth 0 -highlightthickness 0
   }
-  
+
   if {"$w" == ".board"} {
     set ::board::_showmat($w) $::gameInfo(showMaterial)
   }
@@ -1142,7 +1142,7 @@ proc ::board::new {w {psize 40} {showmat "nomat"} } {
   if {$::board::_showmat($w)} {
     grid $w.mat -row 1 -column 12 -rowspan 8
   }
-  
+
   ::board::togglestm $w
   ::board::coords $w
   ::board::resize $w redraw
@@ -1203,7 +1203,7 @@ proc ::board::resize {w psize} {
 
 proc ::board::resize2 {w psize} {
   global boardSize boardSizes
-  
+
   ### When changing the border width, widget flickers but can't fix it - S.A.
   # $w.bd configure -state disabled
 
@@ -1214,19 +1214,19 @@ proc ::board::resize2 {w psize} {
   } elseif {$psize == -1 || $psize == +1} {
     set psize [boardSize_plus_n $psize]
   }
-  
+
   # Verify that we have a valid size:
   if {[lsearch -exact $boardSizes $psize] < 0} {
     puts "Scid: invalid psize"
     return
   }
-  
+
   set border $::board::_border($w)
   set bsize [expr {$psize * 8 + $border * 9} ]
-  
+
   $w.bd configure -width $bsize -height $bsize
   set ::board::_size($w) $psize
-  
+
   # Resize each square:
   for {set i 0} {$i < 64} {incr i} {
     set xi [expr {$i % 8}]
@@ -1237,7 +1237,7 @@ proc ::board::resize2 {w psize} {
     set y2 [expr {$y1 + $psize }]
     $w.bd coords sq$i $x1 $y1 $x2 $y2
   }
-  
+
   # Resize the side-to-move icons:
   set stmsize [expr {round($psize / 4) + 5}]
   $w.stm configure -width $stmsize
@@ -1255,7 +1255,7 @@ proc ::board::resize2 {w psize} {
   }
 
   ::board::update $w {} 0 1
- 
+
   # ::update
   # $w.bd configure -state normal
 }
@@ -1275,7 +1275,7 @@ proc ::board::getSquare {w x y} {
   set border $::board::_border($w)
   set x [expr {int($x / ($psize+$border))}]
   set y [expr {int($y / ($psize+$border))}]
-  
+
   if {$x < 0  ||  $y < 0  ||  $x > 7  ||  $y > 7} {
     set sq -1
   } else {
@@ -1331,7 +1331,7 @@ proc ::board::colorSquare {w i {color ""}} {
     $w.bd delete p$i
     $w.bd create image $xc $yc -image $::board::letterToPiece($piece)$psize -tag p$i
   }
-  
+
   #if {$::board::_showMarks($w) && [info exists ::board::_mark($w)]} {}
   if {[info exists ::board::_mark($w)]} {
     set color ""
@@ -1368,16 +1368,16 @@ proc ::board::midSquare {w sq} {
 ### Namespace ::board::mark
 
 namespace eval ::board::mark {
-  
+
   namespace export getEmbeddedCmds
   namespace export add drawAll clear remove
-  
+
   namespace import [namespace parent]::sq
   #namespace import [namespace parent]::isFlipped
-  
+
   # Regular expression constants for
   # matching Scid's embedded commands in PGN files.
-  
+
   variable StartTag {\[%}
   variable ScidKey  {mark|arrow}
   variable Command  {draw}
@@ -1386,7 +1386,7 @@ namespace eval ::board::mark {
   variable Square   {[a-h][1-8]\M}
   variable Color    {[\w#][^]]*\M}	;# FIXME: too lax for #nnnnnn!
   variable EndTag   {\]}
-  
+
   # Current (non-standard) version:
   variable ScidCmdRegex \
       "$StartTag              # leading tag
@@ -1437,7 +1437,7 @@ proc ::board::mark::getEmbeddedCmds {comment} {
   variable ScidCmdRegex
   variable StdCmdRegex
   set result {}
-  
+
   # Build regex and search script for embedded commands:
   set regex  ""
   foreach r [list $ScidCmdRegex $StdCmdRegex] {
@@ -1445,9 +1445,9 @@ proc ::board::mark::getEmbeddedCmds {comment} {
   }
   set locateScript  {regexp -expanded -indices -start $start \
         $regex $comment indices}
-  
+
   # Loop over all embedded commands contained in comment string:
-  
+
   for {set start 0} {[eval $locateScript]} {incr start} {
     foreach {first last} $indices {}	;# just a multi-assign
     foreach re [list $ScidCmdRegex $StdCmdRegex] {
@@ -1563,14 +1563,14 @@ proc ::board::mark::add {win args} {
     lappend args "true"
   }
   if {[llength $args] == 4} { set args [linsert $args 2 ""]}
-  
+
   # Here we (should) have: args == <type> <square> ?<arg>? <color> <new>
   foreach {type square dest color new} $args {break}	;# assign
   if {[llength $args] != 5 } { return }
-  
+
   set board $win.bd
   set type  [lindex $args 0]
-  
+
   # Remove existing marks:
   if {$type == "arrow"} {
     $board delete "mark${square}:${dest}" "mark${dest}:${square}"
@@ -1580,7 +1580,7 @@ proc ::board::mark::add {win args} {
     #not needed anymore
     #    ::board::colorSquare $win $square [::board::defaultColor $square]
   }
-  
+
   switch -- $type {
     full    { ::board::colorSquare $win $square $color }
     DEL     { set new 1 }
@@ -1621,7 +1621,7 @@ proc ::board::mark::DrawCircle {pathName square color} {
   # Some "constants":
   set size 0.6	;# inner (enclosing) box size, 0.0 <  $size < 1.0
   set width 0.1	;# outline around circle, 0.0 < $width < 1.0
-  
+
   set box [GetBox $pathName $square $size]
   lappend pathName create oval [lrange $box 0 3] \
       -tag [list mark circle mark$square p$square]
@@ -1641,7 +1641,7 @@ proc ::board::mark::DrawCircle {pathName square color} {
 proc ::board::mark::DrawDisk {pathName square color} {
   # Size of the inner (enclosing) box within the square:
   set size 0.6	;# 0.0 <  $size < 1.0 = size of rectangle
-  
+
   set box [GetBox $pathName $square $size]
   eval $pathName \
       {create oval [lrange $box 0 3]} \
@@ -1667,7 +1667,7 @@ proc ::board::mark::DrawText {pathName square char color {size 0} {shadowColor "
         {-text [string index $char 0]}     \
         {-anchor c} \
         {-tag  [list mark text text$square mark$square p$square]}
-    
+
   }
   eval $pathName \
       create text $x $y -fill $color     \
@@ -1776,7 +1776,7 @@ proc ::board::mark::DrawTux {pathName square discard} {
 proc ::board::mark::GetArrowCoords {board from to {shrink 0.6}} {
   if {$shrink < 0.0} {set shrink 0.0}
   if {$shrink > 1.0} {set shrink 1.0}
-  
+
   # Get left, top, right, bottom, length, midpoint_x, midpoint_y:
   set fromXY [GetBox $board $from]
   set toXY   [GetBox $board $to]
@@ -1785,12 +1785,12 @@ proc ::board::mark::GetArrowCoords {board from to {shrink 0.6}} {
   foreach {x0 y0} [lrange $fromXY 5 6] {x1 y1} [lrange $toXY 5 6] {break}
   set dX [expr {$x1 - $x0}]
   set dY [expr {$y1 - $y0}]
-  
+
   # Check if we have good coordinates and shrink factor:
   if {($shrink == 0.0) || ($dX == 0.0 && $dY == 0.0)} {
     return [list $x0 $y0 $x1 $y1]
   }
-  
+
   # Solve equation: "midpoint + (lamda * vector) = edge point":
   if {abs($dX) > abs($dY)} {
     set edge [expr {($dX > 0) ? [lindex $fromXY 2] : [lindex $fromXY 0]}]
@@ -1799,7 +1799,7 @@ proc ::board::mark::GetArrowCoords {board from to {shrink 0.6}} {
     set edge [expr {($dY > 0) ? [lindex $fromXY 3] : [lindex $fromXY 1]}]
     set lambda [expr {($edge - $y0) / $dY}]
   }
-  
+
   # Check and adjust shrink factor for adjacent squares
   # (i.e. don't make arrows too short):
   set maxShrinkForAdjacent 0.667
@@ -1810,7 +1810,7 @@ proc ::board::mark::GetArrowCoords {board from to {shrink 0.6}} {
       set shrink $maxShrinkForAdjacent
     }
   }
-  
+
   # Return shrinked line coordinates {x0', y0', x1', y1'}:
   set shrink [expr {$shrink * $lambda}]
   return [list [expr {$x0 + $shrink * $dX}] [expr {$y0 + $shrink * $dY}]\
@@ -1960,7 +1960,7 @@ proc  ::board::lastMoveHighlight {w} {
 
 proc ::board::update {w {board ""} {animate 0} {resize 0}} {
   global highcolor currentSq bestSq bestcolor selectedSq
-  
+
   set oldboard $::board::_data($w)
   if {$board == {}} {
     set board $::board::_data($w)
@@ -1968,13 +1968,13 @@ proc ::board::update {w {board ""} {animate 0} {resize 0}} {
     set ::board::_data($w) $board
   }
   set psize $::board::_size($w)
-  
+
   # Cancel any current animation:
   after cancel "::board::_animate $w"
-  
+
   # Remove all marks (incl. arrows) from the board:
   $w.bd delete mark
-  
+
   # Draw each square
   set light 0
   set sq -1
@@ -2051,7 +2051,7 @@ proc ::board::flip {w {newstate -1}} {
   if {$newstate == $::board::_flip($w)} { return }
   set flip [expr {1 - $::board::_flip($w)} ]
   set ::board::_flip($w) $flip
-  
+
   # Swap squares:
   for {set i 0} {$i < 32} {incr i} {
     set swap [expr {63 - $i}]
@@ -2060,7 +2060,7 @@ proc ::board::flip {w {newstate -1}} {
     $w.bd coords sq$i    $coords(North)
     $w.bd coords sq$swap $coords(South)
   }
-  
+
   # Change coordinate labels:
   for {set i 1} {$i <= 8} {incr i} {
     set value [expr {9 - [$w.lrank$i cget -text]} ]
@@ -2114,7 +2114,7 @@ proc ::board::material {w} {
   }
 
   $f delete material
-  
+
   if {! $::gameInfo(showMaterial)} { return }
   set fen [lindex [sc_pos fen] 0]
 
@@ -2147,7 +2147,7 @@ proc ::board::material {w} {
   }
 
   ### Display material
- 
+
   set width $::materialwidth
   set h [$f cget -height]
   set x [expr {$width / 2}]
@@ -2230,7 +2230,7 @@ proc ::board::coords {w} {
   set coords [expr {1 + $::board::_coords($w)} ]
   if { $coords > 2 } { set coords 0 }
   set ::board::_coords($w) $coords
-  
+
   if {$coords == 0 } {
     for {set i 1} {$i <= 8} {incr i} {
       grid configure $w.lrank$i
@@ -2268,7 +2268,7 @@ proc ::board::coords {w} {
 proc ::board::animate {w oldboard newboard} {
   global animateDelay
   if {$animateDelay <= 0} { return }
-  
+
   # Find which squares differ between the old and new boards:
   # Mate this looks slow... but it's only performed once per move
 
@@ -2279,28 +2279,28 @@ proc ::board::animate {w oldboard newboard} {
     }
   }
   set diffcount [llength $difflist]
-  
+
   # Check the number of differences could mean a valid move:
   if {$diffcount < 2  ||  $diffcount > 4} { return }
-  
+
   for {set i 0} {$i < $diffcount} {incr i} {
     set sq($i) [lindex $difflist $i]
     set old($i) [string index $oldboard $sq($i)]
     set new($i) [string index $newboard $sq($i)]
   }
-  
+
   set from -1
   set to -1
   set captured -1
   set capturedPiece "."
-  
+
   if {$diffcount == 4} {
     # Check for making/unmaking a castling move:
     set castlingList [list [sq e1] [sq g1] [sq h1] [sq f1] \
         [sq e8] [sq g8] [sq h8] [sq f8] \
         [sq e1] [sq c1] [sq a1] [sq d1] \
         [sq e8] [sq c8] [sq a8] [sq d8]]
-    
+
     foreach {kfrom kto rfrom rto} $castlingList {
       if {[lsort $difflist] == [lsort [list $kfrom $kto $rfrom $rto]]} {
         if {[string tolower [string index $oldboard $kfrom]] == "k"  &&
@@ -2324,7 +2324,7 @@ proc ::board::animate {w oldboard newboard} {
       }
     }
   }
-  
+
   if {$diffcount == 3} {
     # Three squares are different, so check for an En Passant capture:
     foreach i {0 1 2} {
@@ -2353,16 +2353,16 @@ proc ::board::animate {w oldboard newboard} {
       }
     }
   }
-  
+
   if {$diffcount == 2} {
     # Check for a regular move or capture: one old square should have the
     # same (non-empty) piece as the other new square, and at least one
     # of the old or new squares should be empty.
-    
+
     if {$old(0) != "." && $old(1) != "." && $new(0) != "." && $new(1) != "."} {
       return
     }
-    
+
     foreach i {0 1} {
       foreach j {0 1} {
         if {$i == $j} { continue }
@@ -2395,23 +2395,23 @@ proc ::board::animate {w oldboard newboard} {
       }
     }
   }
-  
+
   # Check that we found a valid-looking move to animate:
   if {$from < 0  ||  $to < 0} { return }
-  
+
   # Redraw the captured piece during the animation if necessary:
   if {$capturedPiece != "."  &&  $captured >= 0} {
     ::board::drawPiece $w $from $capturedPiece
     eval $w.bd coords p$from [::board::midSquare $w $captured]
   }
-  
+
   # Move the animated piece back to its starting point:
   eval $w.bd coords p$to [::board::midSquare $w $from]
   $w.bd raise p$to
-  
+
   # Remove side-to-move icon while animating:
   grid remove $w.wtm $w.btm
-  
+
   # Start the animation:
   set start [clock clicks -milli]
   set ::board::_animate($w,start) $start
@@ -2435,7 +2435,7 @@ proc ::board::_animate {w} {
     ::board::update $w
     return
   }
-  
+
   # Compute where the moving piece should be displayed and move it:
   set ratio [expr {double($now - $start) / double($end - $start)} ]
   set fromMid [::board::midSquare $w $from]
@@ -2448,7 +2448,7 @@ proc ::board::_animate {w} {
   set y [expr {$fromY + round(($toY - $fromY) * $ratio)} ]
   $w.bd coords p$to $x $y
   $w.bd raise p$to
-  
+
   # Schedule another animation update in a few milliseconds:
   after 5 "::board::_animate $w"
 }

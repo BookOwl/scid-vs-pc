@@ -20,9 +20,9 @@ proc ::utils::win::Centre {w} {
 if {[info exists ::scrolledframe::version]} { return }
 namespace eval ::scrolledframe {
   # beginning of ::scrolledframe namespace definition
-  
+
   namespace export scrolledframe
-  
+
   # ==============================
   #
   # scrolledframe
@@ -47,9 +47,9 @@ namespace eval ::scrolledframe {
   # v 0.9.1
   #  automatic scroll on resize
   # ==============================
-  
+
   package provide Scrolledframe $version
-  
+
   # --------------
   #
   # create a scrolled frame
@@ -91,7 +91,7 @@ namespace eval ::scrolledframe {
         # return widget ref
         return $w
       }
-  
+
   # --------------
   #
   # dispatch the trapped command
@@ -112,7 +112,7 @@ namespace eval ::scrolledframe {
           default { uplevel 1 [linsert $args 0 ::scrolledframe::_$w    $cmd] }
         }
       }
-  
+
   # --------------
   # configure operation
   #
@@ -173,7 +173,7 @@ namespace eval ::scrolledframe {
           uplevel 1 [linsert $options 0 ::scrolledframe::_$w config]
         }
       }
-  
+
   # --------------
   # resize proc
   #
@@ -216,7 +216,7 @@ namespace eval ::scrolledframe {
           # xset $w
         }
       } ;# end proc resize
-  
+
   # --------------
   # xset proc
   #
@@ -231,7 +231,7 @@ namespace eval ::scrolledframe {
         set cmd $($w:xscroll)
         if {$cmd != ""} { catch { eval $cmd [xview $w] } }
       }
-  
+
   # --------------
   # yset proc
   #
@@ -246,7 +246,7 @@ namespace eval ::scrolledframe {
         set cmd $($w:yscroll)
         if {$cmd != ""} { catch { eval $cmd [yview $w] } }
       }
-  
+
   # -------------
   # xview
   #
@@ -321,7 +321,7 @@ namespace eval ::scrolledframe {
           
         }
       }
-  
+
   # -------------
   # yview
   #
@@ -396,6 +396,6 @@ namespace eval ::scrolledframe {
           }
         }
       }
-  
+
   # end of ::scrolledframe namespace definition
 }

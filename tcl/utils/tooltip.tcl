@@ -65,7 +65,7 @@ proc ::utils::tooltip::Enter {button} {
   variable showToolTips
   variable enteredWidget
   variable tooltipDelay
-  
+
   if {! $showToolTips} { return }
   set enteredWidget $button
   after $tooltipDelay [list ::utils::tooltip::Check $button]
@@ -80,21 +80,21 @@ proc ::utils::tooltip::Enter {button} {
 #
 proc ::utils::tooltip::Check {button} {
   variable enteredWidget
-  
+
   if {$enteredWidget != $button} {
     # The mouse cursor has moved somewhere else; display no tooltip
     return
   }
-  
+
   if {! [info exists ::utils::tooltip::message($button)]} { return }
-  
+
   .tooltip.text configure -text [tr $::utils::tooltip::message($button)]
   set x [winfo pointerx .]
   set y [winfo pointery .]
   incr x 10
   incr y 4
   catch {wm transient .tooltip [winfo toplevel $button]}
-  
+
   # make the tooltip visible
   set maxw [ winfo vrootwidth .]
   set maxh [ winfo vrootheight .]
@@ -106,11 +106,11 @@ proc ::utils::tooltip::Check {button} {
   if { [expr $y + $h] > $maxh } {
     set y [expr $maxh - $h]
   }
-  
+
   catch {wm geometry .tooltip +$x+$y}
   wm deiconify .tooltip
   raise .tooltip
-  
+
   # Automatically erase tooltip after a short delay
   after 15000 [ list ::utils::tooltip::Leave $button ]
 }
@@ -135,7 +135,7 @@ proc ::utils::tooltip::Leave {button} {
 proc ::utils::tooltip::trimWidth { msg } {
   set ret ""
   foreach line [split $msg "\n"] {
-    
+
     if {[string length $line] < $::utils::tooltip::tooltipWidth} {
       append ret "$line\n"
       continue

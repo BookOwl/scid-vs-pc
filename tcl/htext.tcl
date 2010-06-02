@@ -87,14 +87,14 @@ proc helpWindow {name {heading {}}} {
 proc updateHelpWindow {name {heading {}}} {
   global helpWin helpText helpTitle windowsOS language helpName
   set w .helpWin
-  
+
   set helpName $name ; # used by forward stack
   set slist [split $name " "]
   if {[llength $slist] > 1} {
     set name [lindex $slist 0]
     set heading [lindex $slist 1]
   }
-  
+
   if {[info exists helpText($language,$name)] && [info exists helpTitle($language,$name)]} {
     set title $helpTitle($language,$name)
     set helptext $helpText($language,$name)
@@ -104,7 +104,7 @@ proc updateHelpWindow {name {heading {}}} {
   } else {
     return
   }
-  
+
   if {![winfo exists $w]} {
     toplevel $w
     # wm geometry $w -10+0
@@ -115,7 +115,7 @@ proc updateHelpWindow {name {heading {}}} {
         -height $::winHeight($w) -relief sunken -border 2 \
         -yscroll "$w.scroll set"
     scrollbar $w.scroll -relief sunken -command "$w.text yview"
-    
+
     frame $w.b -relief raised -border 2
     pack $w.b -side bottom -fill x
     button $w.b.contents -textvar ::tr(Contents) -width 6 -command { helpWindow Contents }
@@ -136,7 +136,7 @@ proc updateHelpWindow {name {heading {}}} {
     pack $w.b.font -side right -padx 3 -pady 2
     pack $w.scroll -side right -fill y -padx 2 -pady 2
     pack $w.text -fill both -expand 1 -padx 5
-    
+
     $w.text configure -font font_Regular
     ::htext::init $w.text
     bind $w <Configure> "recordWinSize $w"
@@ -144,11 +144,11 @@ proc updateHelpWindow {name {heading {}}} {
   } else {
     raise $w .
   }
-  
+
   $w.text configure -cursor top_left_arrow
   $w.text configure -state normal
   $w.text delete 0.0 end
-  
+
   $w.b.index configure -state normal
   if {$name == "Index"} { $w.b.index configure -state disabled }
   $w.b.contents configure -state normal
@@ -165,10 +165,10 @@ proc updateHelpWindow {name {heading {}}} {
   } else {
     $w.b.forward configure -state normal
   }
-  
+
   wm title $w "Scid Help: $title"
   wm iconname $w "Scid help"
-  
+
   $w.text delete 0.0 end
   bind $w <Up> "$w.text yview scroll -1 units"
   bind $w <Down> "$w.text yview scroll 1 units"
@@ -181,7 +181,7 @@ proc updateHelpWindow {name {heading {}}} {
   bind $w <Alt-Left> "$w.b.back invoke"
   bind $w <Alt-Right> "$w.b.forward invoke"
   bind $w <Key-i> "$w.b.index invoke"
-  
+
   ::htext::display $w.text $helptext $heading 0
   focus $w
 }
@@ -194,7 +194,7 @@ proc ::htext::init {w} {
   set cyan "\#007000"
   set maroon "\#990000"
   set green "springgreen"
-  
+
   set ::htext::updates($w) 100
   $w tag configure black -fore black
   $w tag configure white -fore white
@@ -210,7 +210,7 @@ proc ::htext::init {w} {
   # $w tag configure lastmove -fore red
   $w tag configure lastmove -fore royalblue2 -font font_Bold
   # hmmm... salmon4 rosybrown4 royalblue royalblue2 chartreuse4 springgreen4
-  
+
   $w tag configure bgBlack -back black
   $w tag configure bgWhite -back white
   $w tag configure bgRed -back red
@@ -219,11 +219,11 @@ proc ::htext::init {w} {
   $w tag configure bgGreen -back $green
   $w tag configure bgCyan -back $cyan
   $w tag configure bgYellow -back yellow
-  
+
   $w tag configure tab -lmargin2 50
   $w tag configure li -lmargin2 50
   $w tag configure center -justify center
-  
+
   if {[$w cget -font] == "font_Small"} {
     $w tag configure b -font font_SmallBold
     $w tag configure i -font font_SmallItalic
@@ -243,10 +243,10 @@ proc ::htext::init {w} {
 
   # $w tag configure hc -font font_H5 -fore $::htext::headingColor -justify center
   # doesnt work properly S.A.
-  
+
   $w tag configure term -font font_BoldItalic -fore $::htext::headingColor
   $w tag configure menu -font font_Bold -fore $cyan
-  
+
   # PGN-window-specific tags:
   $w tag configure tag -fore $::pgnColor(Header)
   if { $::pgn::boldMainLine } {
@@ -289,7 +289,7 @@ proc ::htext::extractSectionName {tagName} {
 set ::htext::interrupt 0
 
 ### Some tcl string optimisations by S.A. 5/12/2009
-  
+
 proc ::htext::display {w helptext {section {}} {fixed 1}} {
   global helpWin
   # set start [clock clicks -milli]
@@ -298,7 +298,7 @@ proc ::htext::display {w helptext {section {}} {fixed 1}} {
   $w mark set insert 0.0
   $w configure -state normal
   set linkName {}
-  
+
   set count 0
   set str $helptext
   if {$fixed} {
@@ -311,23 +311,23 @@ proc ::htext::display {w helptext {section {}} {fixed 1}} {
   }
   set tagType {}
   set seePoint {}
-  
+
   if {! [info exists ::htext::updates($w)]} {
     set ::htext::updates($w) 100
   }
 
   # Loop through the text finding the next formatting tag:
-  
+
   while {1} {
     set startPos [string first < $str]
     if {$startPos < 0} { break }
     set endPos [string first > $str]
     if {$endPos < 1} { break }
-    
+
     set tagName [string range $str [expr {$startPos + 1}] [expr {$endPos - 1}]]
-    
+
     # starting tag (no "/" at the start)
-    
+
     if {![strIsPrefix {/} $tagName]} {
       
       # link tag
@@ -457,16 +457,16 @@ proc ::htext::display {w helptext {section {}} {fixed 1}} {
       
       if {$tagName == {h1}} {$w insert end \n}
     }
-    
+
     # Now insert the text up to the formatting tag
     $w insert end [string range $str 0 [expr {$startPos - 1}]]
-    
+
     # Check if it is a name tag matching the section we want
     if {$section != {}  &&  [strIsPrefix {name } $tagName]} {
       set sect [string range $tagName 5 end]
       if {$section == $sect} { set seePoint [$w index insert] }
     }
-    
+
     if {[string index $tagName 0] == {/}} {
       ### process tag close, e.g. </menu>
       # Get rid of initial "/" character
@@ -515,7 +515,7 @@ proc ::htext::display {w helptext {section {}} {fixed 1}} {
       set startIndex($tagName) [$w index insert]
       if {$tagName == {menu}} {$w insert end \[}
     }
-    
+
     # Image or button tag
     if {[strIsPrefix {img } $tagName]} {
       set imgName [string range $tagName 4 end]
@@ -535,7 +535,7 @@ proc ::htext::display {w helptext {section {}} {fixed 1}} {
       set winName [string range $tagName 7 end]
       $w window create end -window $winName
     }
-    
+
     # Now eliminate the processed text from the string
     set str [string replace $str 0 $endPos]
     incr count
@@ -545,10 +545,10 @@ proc ::htext::display {w helptext {section {}} {fixed 1}} {
       return
     }
   }
-  
+
   # Now add any remaining text:
   if {! $::htext::interrupt} { $w insert end $str }
-  
+
   if {$seePoint != {}} { $w yview $seePoint }
   $w configure -state disabled
   # set elapsed [expr {[clock clicks -milli] - $start}]
@@ -572,9 +572,9 @@ proc openURL {url} {
     unbusyCursor .
     return
   }
-  
+
   # On Unix systems try Firefox or Mozilla
-  
+
   if {[file executable /usr/bin/firefox]  ||
     [file executable /usr/local/bin/firefox]} {
     # First, try -remote mode

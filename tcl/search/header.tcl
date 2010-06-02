@@ -73,7 +73,7 @@ proc ::search::header::defaults {} {
   global sGnumMin sGnumMax
   global sResWin sResLoss sResDraw sResOther glstart
   global sPgntext sTitles
-  
+
   set sWhite "";  set sBlack ""
   set sEvent ""; set sSite "";  set sRound ""
   set sWhiteEloMin 0; set sWhiteEloMax [sc_info limit elo]
@@ -109,27 +109,27 @@ proc search::header {} {
   global sEloDiffMin sEloDiffMax sSideToMove
   global sEco sEcoMin sEcoMax sHeaderFlags sGlMin sGlMax sTitleList sTitles
   global sResWin sResLoss sResDraw sResOther glstart sPgntext
-  
+
   set w .sh
   if {[winfo exists $w]} {
     wm deiconify $w
     raiseWin $w
     return
   }
-  
+
   toplevel $w
   wm title $w "Scid: $::tr(HeaderSearch)"
   foreach frame {cWhite cBlack ignore tw tb eventsite dateround res gl ends eco} {
     frame $w.$frame
   }
-  
+
   bind $w <F1> { helpWindow Searches Header }
   bind $w <Escape> "$w.b.cancel invoke"
   bind $w <Return> "$w.b.search invoke"
-  
+
   set regular font_Small
   set bold font_SmallBold
-  
+
   foreach color {White Black} {
     pack $w.c$color -side top -fill x
     label $w.c$color.lab -textvar ::tr($color:) -font $bold -width 9 -anchor w
@@ -150,7 +150,7 @@ proc search::header {} {
     pack $w.c$color.elomax $w.c$color.elo2 $w.c$color.elomin $w.c$color.elo1 \
         -side right
   }
-  
+
   pack $w.ignore -side top -fill x
   label $w.ignore.l -textvar ::tr(IgnoreColors:) -font $bold
   radiobutton $w.ignore.yes -variable sIgnoreCol -value Yes \
@@ -168,7 +168,7 @@ proc search::header {} {
   bindFocusColors $w.ignore.rdmax
   pack $w.ignore.rdmax $w.ignore.rdto $w.ignore.rdmin $w.ignore.rdiff \
       -side right
-  
+
   set spellstate normal
   if {[lindex [sc_name read] 0] == 0} { set spellstate disabled }
   foreach c {w b} name {White Black} {
@@ -185,9 +185,9 @@ proc search::header {} {
       pack $w.t$c.b$i -side left -padx 1
     }
   }
-  
+
   addHorizontalRule $w
-  
+
   set f $w.eventsite
   pack $f -side top -fill x
   foreach i {Event Site} {
@@ -199,7 +199,7 @@ proc search::header {} {
   }
   pack $f.lEvent $f.eEvent -side left
   pack $f.eSite $f.lSite -side right
-  
+
   set f $w.dateround
   pack $f -side top -fill x
   label $f.l1 -textvar ::tr(Date:) -font $bold
@@ -235,14 +235,14 @@ proc search::header {} {
   } else {
     pack $f.l1 $f.emin $f.l2 $f.emax $f.l3 $f.lyear -side left
   }
-  
+
   label $f.lRound -textvar ::tr(Round:) -font $bold
   entry $f.eRound -textvariable sRound -width 10 -font $regular
   bindFocusColors $f.eRound
   pack $f.eRound $f.lRound -side right
-  
+
   addHorizontalRule $w
-  
+
   pack .sh.res -side top -fill x
   label $w.res.l1 -textvar ::tr(Result:) -font $bold
   pack $w.res.l1 -side left
@@ -252,7 +252,7 @@ proc search::header {} {
         checkbutton $w.res.e$i -text $text -variable $v -offvalue 0 -onvalue 1
         pack $w.res.e$i -side left
       }
-  
+
   label $w.gl.l1 -textvar ::tr(GameLength:) -font $bold
   label $w.gl.l2 -text "-" -font $regular
   label $w.gl.l3 -textvar ::tr(HalfMoves) -font $regular
@@ -262,7 +262,7 @@ proc search::header {} {
   bindFocusColors $w.gl.emax
   pack $w.gl -in $w.res -side right -fill x
   pack $w.gl.l1 $w.gl.emin $w.gl.l2 $w.gl.emax $w.gl.l3 -side left
-  
+
   label $w.ends.label -textvar ::tr(EndSideToMove:) -font $bold
   frame $w.ends.sep1 -width 5
   frame $w.ends.sep2 -width 5
@@ -272,7 +272,7 @@ proc search::header {} {
   pack $w.ends.label $w.ends.white $w.ends.sep1 \
       $w.ends.black $w.ends.sep2 $w.ends.both -side left
   pack $w.ends -side top -fill x
-  
+
   label $w.eco.l1 -textvar ::tr(ECOCode:) -font $bold
   label $w.eco.l2 -text "-" -font $regular
   label $w.eco.l3 -text " " -font $regular
@@ -296,7 +296,7 @@ proc search::header {} {
   pack $w.eco -side top -fill x
   pack $w.eco.l1 $w.eco.emin $w.eco.l2 $w.eco.emax \
       $w.eco.range $w.eco.l3 $w.eco.l4 $w.eco.yes $w.eco.no -side left
-  
+
   set f [frame $w.gnum]
   pack $f -side top -fill x
   label $f.l1 -textvar ::tr(GlistGameNumber:) -font $bold
@@ -322,7 +322,7 @@ proc search::header {} {
         -command "set sGnumMin -$x; set sGnumMax -1"
   }
   pack $f.l3 $f.all $f.first $f.last -side left -padx 2
-  
+
   set f [frame $w.pgntext]
   pack $f -side top -fill x
   label $f.l1 -textvar ::tr(PgnContains:) -font $bold
@@ -335,9 +335,9 @@ proc search::header {} {
   bindFocusColors $f.e2
   bindFocusColors $f.e3
   pack $f.l1 $f.e1 $f.l2 $f.e2 $f.l3 $f.e3 -side left
-  
+
   addHorizontalRule $w
-  
+
   button $w.flagslabel -textvar ::tr(FindGamesWith:) -font $bold -command {
     if {$sHeaderFlagFrame} {
       set sHeaderFlagFrame 0
@@ -348,12 +348,12 @@ proc search::header {} {
     }
   }
   pack $w.flagslabel -side top
-  
+
   frame $w.flags
   if {$::sHeaderFlagFrame} {
     pack $w.flags -side top
   }
-  
+
   set count 0
   set row 0
   set col 0
@@ -383,13 +383,13 @@ proc search::header {} {
   }
   grid [label $w.flags.space -text "" -font $regular] -row 0 -column 4
   grid [label $w.flags.space2 -text "" -font $regular] -row 0 -column 9
-  
+
   addHorizontalRule $w
   ::search::addFilterOpFrame $w 1
   addHorizontalRule $w
-  
+
   ### Header search: search/cancel buttons
-  
+
   frame $w.b
   pack $w.b -side top -pady 2 -fill x
   button $w.b.defaults -textvar ::tr(Defaults) -padx 20 \
@@ -401,7 +401,7 @@ proc search::header {} {
     ::utils::history::AddEntry HeaderSearchBlack $sBlack
     ::utils::history::AddEntry HeaderSearchEvent $sEvent
     ::utils::history::AddEntry HeaderSearchSite $sSite
-    
+
     set sPgnlist {}
     foreach i {1 2 3} {
       set temp [string trim $sPgntext($i)]
@@ -417,7 +417,7 @@ proc search::header {} {
       if $sTitles(w:$i) { lappend wtitles $i }
       if $sTitles(b:$i) { lappend btitles $i }
     }
-    
+
     set str [sc_search header -white $sWhite -black $sBlack \
         -event $sEvent -site $sSite -round $sRound \
         -date [list $sDateMin $sDateMax] \
@@ -450,31 +450,31 @@ proc search::header {} {
         -fUser $sHeaderFlags(UserFlag) \
         -pgn $sPgnlist -wtitles $wtitles -btitles $btitles \
         ]
-    
+
     grab release .sh.b.stop
     pack forget .sh.b.stop
     unbusyCursor .
-    
+
     .sh.status configure -text $str
     set glstart 1
     ::windows::gamelist::Refresh
-    
+
     ::search::loadFirstGame
-    
+
     ::windows::stats::Refresh
   }
-  
+
   button $w.b.cancel -textvar ::tr(Close) -padx 20 \
       -command {focus .; destroy .sh}
-  
+
   foreach i {defaults save cancel search stop} {
     $w.b.$i configure -font $regular
   }
-  
+
   pack $w.b.defaults $w.b.save -side left -padx 5
   pack $w.b.cancel $w.b.search -side right -padx 5
-  
-  
+
+
   canvas $w.progress -height 20 -width 300  -relief solid -border 1
   $w.progress create rectangle 0 0 0 0 -fill blue -outline blue -tags bar
   $w.progress create text 295 10 -anchor e -font font_Regular -tags time \
@@ -495,15 +495,15 @@ proc ::search::header::save {} {
   global sEloDiffMin sEloDiffMax sGlMin sGlMax
   global sEco sEcoMin sEcoMax sHeaderFlags sSideToMove
   global sResWin sResLoss sResDraw sResOther glstart sPgntext
-  
+
   set ftype { { "Scid SearchOptions files" {".sso"} } }
   set fName [tk_getSaveFile -initialdir [pwd] -filetypes $ftype -title "Create a SearchOptions file"]
   if {$fName == ""} { return }
-  
+
   if {[string compare [file extension $fName] ".sso"] != 0} {
     append fName ".sso"
   }
-  
+
   if {[catch {set searchF [open [file nativename $fName] w]} ]} {
     tk_messageBox -title "Error: Unable to open file" -type ok -icon error \
         -message "Unable to create SearchOptions file: $fName"
@@ -511,7 +511,7 @@ proc ::search::header::save {} {
   }
   puts $searchF "\# SearchOptions File created by Scid [sc_info version]"
   puts $searchF "set searchType Header"
-  
+
   # First write the regular variables:
   foreach i {sWhite sBlack sEvent sSite sRound sDateMin sDateMax sResWin
     sResLoss sResDraw sResOther sWhiteEloMin sWhiteEloMax sBlackEloMin
@@ -519,7 +519,7 @@ proc ::search::header::save {} {
     sIgnoreCol sSideToMove sGlMin sGlMax ::search::filter::operation} {
     puts $searchF "set $i [list [set $i]]"
   }
-  
+
   # Now write the array values:
   foreach i [array names sHeaderFlags] {
     puts $searchF "set sHeaderFlags($i) [list $sHeaderFlags($i)]"
@@ -527,7 +527,7 @@ proc ::search::header::save {} {
   foreach i [array names sPgntext] {
     puts $searchF "set sPgntext($i) [list $sPgntext($i)]"
   }
-  
+
   tk_messageBox -type ok -icon info -title "Search Options saved" \
       -message "Header search options saved to: $fName"
   close $searchF
@@ -606,13 +606,13 @@ proc chooseEcoRange {} {
       "E80-E89     [tr KingsIndianSamisch]: 4.e4 d6 5.f3" \
       "E90-E99     [tr KingsIndianMainLine]: [trans [list 4.e4 d6 5.Nf3]]" \
       ]
-  
+
   if {[winfo exists .ecoRangeWin]} { return }
   set w .ecoRangeWin
   toplevel $w
   wm title $w "Scid: Choose ECO Range"
   wm minsize $w 30 5
-  
+
   listbox $w.list -yscrollcommand "$w.ybar set" -height 20 -width 60 \
        -setgrid 1
   foreach i $ecoCommonRanges { $w.list insert end $i }
@@ -620,7 +620,7 @@ proc chooseEcoRange {} {
   pack [frame $w.b] -side bottom -fill x
   pack $w.ybar -side right -fill y
   pack $w.list -side left -fill both -expand yes
-  
+
   button $w.b.ok -text "OK" -command {
     set sel [.ecoRangeWin.list curselection]
     if {[llength $sel] > 0} {

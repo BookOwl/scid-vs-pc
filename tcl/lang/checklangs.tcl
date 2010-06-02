@@ -45,7 +45,7 @@ proc multiLines {tmp} {
     lappend data $line
   }
   set strippedData {}
-  
+
   foreach line $data {
     if { [catch {set command [lindex $line 0]} ] } {
       continue
@@ -55,27 +55,27 @@ proc multiLines {tmp} {
       }
     }
   }
-  
+
   return $strippedData
 }
 ################################################################################
 proc checkfile {code langfile} {
   # Read this language file and the english file:
-  
+
   set f [open english.tcl r]
   set data [read $f]
   close $f
   set tmp [split $data "\n"]
   set englishData [multiLines $tmp]
-  
+
   set f [open $langfile.tcl r]
   set data [read $f]
   close $f
   set tmp [split $data "\n"]
   set langData [multiLines $tmp]
-  
+
   set langNames {}
-  
+
   foreach line $langData {
     if { [catch {set command [lindex $line 0]} ] } {
       # puts "problem->$line"
@@ -87,7 +87,7 @@ proc checkfile {code langfile} {
       lappend langNames $command:$name
     }
   }
-  
+
   set lastMatch -1
   foreach line $englishData {
     if { [catch {set command [lindex $line 0]} ] } { continue }

@@ -42,7 +42,7 @@ proc findNovelty {} {
   }
   toplevel $w
   wm title $w "Scid: $::tr(FindNovelty)"
-  
+
   pack [frame $w.help] -side top -fill x
   text $w.help.text -width 1 -height 5 -wrap word \
       -relief ridge -cursor top_left_arrow -yscrollcommand "$w.help.ybar set"
@@ -52,7 +52,7 @@ proc findNovelty {} {
   pack $w.help.text -side left -fill x -expand yes
   $w.help.text insert end [string trim $::tr(NoveltyHelp)]
   $w.help.text configure -state disabled
-  
+
   label $w.title -text $::tr(Database:) -font font_Bold
   pack $w.title -side top
   set numBases [sc_base count total]
@@ -61,7 +61,7 @@ proc findNovelty {} {
     pack $w.b$i -side top -anchor w -padx 10
   }
   addHorizontalRule $w
-  
+
   label $w.which -text $::tr(TwinsWhich:) -font font_Bold
   pack $w.which -side top
   radiobutton $w.all -text $::tr(SelectAllGames) \
@@ -69,9 +69,9 @@ proc findNovelty {} {
   radiobutton $w.older -text $::tr(SelectOlderGames) \
       -variable noveltyOlder -value 1
   pack $w.all $w.older -side top -anchor w -padx 10
-  
+
   addHorizontalRule $w
-  
+
   label $w.status -text "" -width 1 -font font_Small -relief sunken -anchor w
   pack $w.status -side bottom -fill x
   pack [frame $w.b] -side top -fill x
@@ -222,7 +222,7 @@ proc updateMergeGame {args} {
 #
 proc setExportText {exportType} {
   global exportStartFile exportEndFile
-  
+
   switch -- $exportType {
     "PGN" {
       set title "Set PGN file export text"
@@ -237,15 +237,15 @@ proc setExportText {exportType} {
       return
     }
   }
-  
+
   set w .setExportText$exportType
   if {[winfo exists $w]} { return }
   toplevel $w
   wm title $w "Scid: $title"
-  
+
   frame $w.buttons
   pack $w.buttons -side bottom -fill x -anchor e
-  
+
   set pane [::utils::pane::Create $w.pane start end 500 400]
   ::utils::pane::SetRange $w.pane 0.3 0.7
   pack $pane -side top -expand true -fill both
@@ -264,10 +264,10 @@ proc setExportText {exportType} {
     grid rowconfig $f 1 -weight 1 -minsize 0
     grid columnconfig $f 0 -weight 1 -minsize 0
   }
-  
+
   $pane.start.text insert end $exportStartFile($exportType)
   $pane.end.text insert end $exportEndFile($exportType)
-  
+
   button $w.buttons.default -text "Reset to Default" -command "
   $pane.start.text delete 1.0 end
   $pane.start.text insert end \$default_exportStartFile($exportType)
@@ -354,7 +354,7 @@ image create photo htmldiag1 -data {
 #
 proc exportOptions {exportType} {
   global exportFlags
-  
+
   set w .exportFlagsWin
   set exportFlags(ok) -1
   toplevel $w
@@ -364,7 +364,7 @@ proc exportOptions {exportType} {
   bind $w <Escape> "$w.b.cancel invoke"
   bind $w <Return> "$w.b.ok invoke"
   bind $w <F1> {helpWindow Export}
-  
+
   pack [frame $w.o] -side top -fill x -pady 5 -padx 5
   label $w.o.append -text $::tr(AddToExistingFile)
   radiobutton $w.o.appendYes -text $::tr(Yes) \
@@ -428,7 +428,7 @@ proc exportOptions {exportType} {
   grid $w.o.symbols -row 7 -column 0 -sticky w
   grid $w.o.symbolsOn -row 7 -column 1 -sticky w
   grid $w.o.symbolsOff -row 7 -column 2 -sticky w
-  
+
   # Extra option for PGN format: handling of null moves
   if {$exportType == "PGN"} {
     label $w.o.space -text ""
@@ -442,7 +442,7 @@ proc exportOptions {exportType} {
     grid $w.o.convertNullMoves -row 9 -column 1 -sticky w
     grid $w.o.keepNullMoves -row 9 -column 2 -sticky w
   }
-  
+
   # Extra option for HTML format: diagram image set
   if {$exportType == "HTML"} {
     label $w.o.space -text ""
@@ -460,7 +460,7 @@ proc exportOptions {exportType} {
     grid $w.o.hl0 -row 10 -column 1
     grid $w.o.hl1 -row 10 -column 2
   }
-  
+
   addHorizontalRule $w
   pack [frame $w.b] -side top
   dialogbutton $w.b.ok -text "OK" -command {
@@ -470,7 +470,7 @@ proc exportOptions {exportType} {
     set exportFlags(ok) 0
   }
   pack $w.b.ok $w.b.cancel -side left -padx 5 -pady 5
-  
+
   wm withdraw $w
   update idletasks
   set x [expr {[winfo screenwidth $w]/2 - [winfo reqwidth $w]/2 \
@@ -479,7 +479,7 @@ proc exportOptions {exportType} {
         - [winfo vrooty [winfo parent $w]]}]
   wm geom $w +$x+$y
   wm deiconify $w
-  
+
   grab $w
   tkwait variable exportFlags(ok)
   grab release $w
@@ -507,10 +507,10 @@ proc exportGames {selection exportType} {
       return
     }
   }
-  
+
   if {[exportOptions $exportType] == 0} { return }
   sc_info html $exportFlags(htmldiag)
-  
+
   switch -- $exportType {
     "PGN" {
       set ftype {
@@ -541,7 +541,7 @@ proc exportGames {selection exportType} {
     }
     default { return }
   }
-  
+
   if {$exportFlags(append)} {
     set getfile tk_getOpenFile
     set title "Add games to $title"
@@ -552,7 +552,7 @@ proc exportGames {selection exportType} {
   set fName [$getfile -initialdir $idir -filetypes $ftype \
       -defaultextension $default -title $title]
   if {$fName == ""} { return }
-  
+
   if {$exportFilter} {
     progressWindow "Scid" "Exporting games..." $::tr(Cancel) "sc_progressBar"
   }
@@ -595,13 +595,13 @@ proc copyFilter {frombaseNum tobaseNum} {
   if {$frombaseNum == $tobaseNum} {
     set err "$::tr(CopyErrSource) == $::tr(CopyErrTarget)."
   }
-  
+
   if {$err != ""} {
     tk_messageBox -type ok -icon info -title "Scid" \
         -message "$::tr(CopyErr) \n\"$fromName\" -> \"$targetName\": \n$err"
     return
   }
-  
+
   # If copying to the clipbase, do not bother asking for confirmation:
   if {$tobaseNum == [sc_info clipbase]} {
     progressWindow "Scid" "$::tr(CopyGames)..." $::tr(Cancel) "sc_progressBar"
@@ -614,7 +614,7 @@ proc copyFilter {frombaseNum tobaseNum} {
     }
     return
   }
-  
+
   set w [toplevel .fcopyWin]
   wm title $w "Scid: $::tr(CopyGames)"
   label $w.text -text [subst $::tr(CopyConfirm)]
@@ -639,7 +639,7 @@ proc copyFilter {frombaseNum tobaseNum} {
   $w.bar create rectangle 0 0 0 0 -fill blue -outline blue -tags bar
   $w.bar create text 295 10 -anchor e -font font_Regular -tags time \
       -fill black -text "0:00 / 0:00"
-  
+
   pack $w.text $w.b -side top -pady 5
   pack $w.bar -side bottom
   pack $w.b.go $w.b.cancel -side left -padx 10 -pady 10
@@ -685,7 +685,7 @@ proc updateMatchList { tw nametype maxMatches name el op } {
   global nameMatches nameMatchCount
   global $name editNameType
   if {![winfo exists $tw]} return
-  
+
   if {$nametype == ""} { set nametype $editNameType }
   if {$nametype == "rating"} { set nametype "player" }
   set val [set $name]
@@ -762,7 +762,7 @@ proc setNameEditorType {type} {
 proc nameEditor {} {
   global editName editNameType editNameNew nameEditorWin editNameSelect
   global editNameRating editDate editDateNew
-  
+
   set w .nedit
   if {[winfo exists $w]} {
     destroy $w
@@ -773,7 +773,7 @@ proc nameEditor {} {
   set nameEditorWin 1
   setWinLocation $w
   bind $w <Configure> "recordWinSize $w"
-  
+
   label $w.typeLabel -textvar ::tr(NameEditType:) -font font_Bold
   frame $w.typeButtons
   pack $w.typeLabel $w.typeButtons -side top -pady 5
@@ -824,9 +824,9 @@ proc nameEditor {} {
       }
   pack $w.typeButtons.rating $w.typeButtons.date $w.typeButtons.edate \
       -side left -padx 5
-  
+
   addHorizontalRule .nedit
-  
+
   label $w.selectLabel -textvar ::tr(NameEditSelect) -font font_Bold
   frame $w.selectButtons
   pack $w.selectLabel $w.selectButtons -side top -pady 5
@@ -839,9 +839,9 @@ proc nameEditor {} {
         -variable editNameSelect -value $i
     grid $w.selectButtons.$i -row $row -column 0 -sticky w
   }
-  
+
   addHorizontalRule $w
-  
+
   pack [frame $w.g] -side top
   label $w.g.space -text "    "
   grid $w.g.space $w.g.space -row 0 -column 0
@@ -852,7 +852,7 @@ proc nameEditor {} {
       -textvariable editDate
   grid $w.g.fromL -row 0 -column 1 -sticky e
   grid $w.g.fromE -row 0 -column 2 -sticky we
-  
+
   label $w.g.toL -textvar ::tr(NameEditWith:) -font font_Bold -anchor e
   entry $w.g.toE -width 40  -relief sunken \
       -textvariable editNameNew
@@ -860,25 +860,25 @@ proc nameEditor {} {
       -textvariable editDateNew
   grid $w.g.toL -row 1 -column 1 -sticky e
   grid $w.g.toE -row 1 -column 2 -sticky we
-  
+
   entry $w.g.ratingE -width 5  -relief sunken \
       -textvariable editNameRating -justify right
   eval tk_optionMenu $w.g.rtype editNameRType [sc_info ratings]
   $w.g.rtype configure -pady 2
-  
+
   label $w.g.title -textvar ::tr(NameEditMatches) \
       -font font_Bold
   text $w.g.list -height 9 -width 40 -relief sunken \
       -background grey90 -tabs {2c right 2.5c left} -wrap none
-  
+
   label $w.g.padding -text ""
   grid $w.g.padding -row 2 -column 0
-  
+
   grid $w.g.title -row 3 -column 1 -columnspan 2 -sticky n
   grid $w.g.list -row 4 -column 1 -rowspan 9 -columnspan 2 -sticky n
-  
+
   updateMatchList $w.g.list "" 9 editName "" w
-  
+
   foreach i {fromE toE ratingE fromD toD} {
     bind $w.g.$i <FocusIn> { %W configure -background lightYellow }
     bind $w.g.$i <FocusOut> { %W configure  }
@@ -890,9 +890,9 @@ proc nameEditor {} {
               set %s \$nameMatches(%d)}}; break" $z $j $z ]
     }
   }
-  
+
   addHorizontalRule $w
-  
+
   frame $w.buttons
   button $w.buttons.replace -textvar ::tr(NameEditReplace) -command {
     if {$editNameType == "rating"} {
@@ -912,14 +912,14 @@ proc nameEditor {} {
     updateBoard -pgn
     ::windows::gamelist::Refresh
   }
-  
+
   dialogbutton $w.buttons.cancel -textvar ::tr(Close) -command {focus .; destroy .nedit}
   pack $w.buttons -side top -pady 5
   pack $w.buttons.replace $w.buttons.cancel -side left -padx 10
-  
+
   label $w.status -text "" -width 1 -font font_Small -relief sunken -anchor w
   pack $w.status -side bottom -fill x
-  
+
   wm resizable $w 0 0
   bind $w <Escape> { focus .; destroy .nedit }
   bind $w <Return> {.nedit.buttons.replace invoke}
@@ -951,14 +951,14 @@ proc gameSave { gnum } {
   global date year month day white black resultVal event site round
   global whiteElo blackElo whiteRType blackRType eco extraTags gsaveNum
   global edate eyear emonth eday
-  
+
   if {![sc_base inUse]} {
     # We can't load a game, no database is open
     tk_messageBox -title "Scid: No database open" -type ok -icon info \
         -message "No database is open; open or create one first."
     return
   }
-  
+
   # Make a new toplevel that contains the game save dialog:
   set w .save
   toplevel $w
@@ -969,14 +969,14 @@ proc gameSave { gnum } {
   }
   set gsaveNum $gnum
   catch {grab $w}
-  
+
   set f [frame $w.g]
   pack $f -side top
-  
+
   label $f.title -textvar ::tr(NameEditMatches)
   text $f.list -height 9 -width 40 -relief sunken -background grey90 \
       -tabs {2c right 2.5c left} -wrap none
-  
+
   # Get current values of tags:
   set year [sc_game tag get Year];    set eyear [sc_game tag get EYear]
   set month [sc_game tag get Month];  set emonth [sc_game tag get EMonth]
@@ -990,7 +990,7 @@ proc gameSave { gnum } {
   set blackRType [sc_game tag get BlackRType]
   set eco [sc_game tag get ECO];  set extraTags [sc_game tag get Extra]
   clearMatchList $f.list
-  
+
   # Use question marks instead of zero values in date:
   if {$year == 0} { set year "????" }
   if {$month == 0} { set month "??" }
@@ -998,10 +998,10 @@ proc gameSave { gnum } {
   if {$eyear == 0} { set eyear "????" }
   if {$emonth == 0} { set emonth "??" }
   if {$eday == 0} { set eday "??" }
-  
+
   addGameSaveEntry event 0 ::tr(Event:)
   addGameSaveEntry site 1 ::tr(Site:)
-  
+
   frame $f.dateframe
   label $f.datelabel -textvar ::tr(Date:)
   entry $f.dateyear -width 6  -relief sunken \
@@ -1033,7 +1033,7 @@ proc gameSave { gnum } {
     pack $f.datechoose -in $f.dateframe -side left
   }
   pack $f.today -in $f.dateframe -side left
-  
+
   frame $f.edateframe
   label $f.edatelabel -textvar ::tr(EventDate:)
   entry $f.edateyear -width 6  -relief sunken \
@@ -1065,11 +1065,11 @@ proc gameSave { gnum } {
     pack $f.edatechoose -in $f.edateframe -side left
   }
   pack $f.esame -in $f.edateframe -side left
-  
+
   addGameSaveEntry round 4 ::tr(Round:)
   addGameSaveEntry white 5 ::tr(White:)
   addGameSaveEntry black 6 ::tr(Black:)
-  
+
   label $f.reslabel -textvar ::tr(Result:)
   entry $f.resentry -width 2  -relief sunken \
       -textvariable resultVal
@@ -1077,41 +1077,41 @@ proc gameSave { gnum } {
   grid $f.reslabel -row 7 -column 0 -sticky w
   grid $f.resentry -row 7 -column 1 -sticky w
   grid $f.rescomment -row 7 -column 2 -columnspan 4 -sticky w
-  
+
   label $f.welolabel -text "$::tr(White) "
   eval tk_optionMenu $f.wrtype whiteRType [sc_info ratings]
   $f.wrtype configure -indicatoron 0 -width 7 -takefocus 1
   entry $f.weloentry -width 5  -relief sunken \
       -textvariable whiteElo -justify right
-  
+
   label $f.belolabel -text "$::tr(Black) "
   eval tk_optionMenu $f.brtype blackRType [sc_info ratings]
   $f.brtype configure -indicatoron 0 -width 7 -takefocus 1
   entry $f.beloentry -width 5  -relief sunken \
       -textvariable blackElo -justify right
-  
+
   grid $f.welolabel -row 8 -column 0 -sticky w
   grid $f.wrtype -row 8 -column 1 -sticky w
   grid $f.weloentry -row 8 -column 2 -sticky w
   grid $f.belolabel -row 9 -column 0 -sticky w
   grid $f.brtype -row 9 -column 1 -sticky w
   grid $f.beloentry -row 9 -column 2 -sticky w
-  
+
   label $f.ecolabel -text "ECO Code:"
   entry $f.ecoentry -width 6  -relief sunken \
       -textvariable eco
   grid $f.ecolabel -row 10 -column 0 -sticky w
   grid $f.ecoentry -row 10 -column 1 -sticky w
-  
+
   button $f.ecob -textvar ::tr(ClassifyGame) -command {set eco [sc_eco game]}
   grid $f.ecob -row 10 -column 2 -sticky w
-  
+
   grid $f.title -row 0 -column 8 -sticky n -padx 10
   grid $f.list -row 1 -column 8 -rowspan 9 -sticky nw -padx 10
-  
+
   frame .save.bar -height 2 -borderwidth 1 -relief sunken
   pack .save.bar -fill x -pady 4
-  
+
   label .save.extralabel -text \
       "Extra Tags: (example format: Annotator \"Anand, V\") "
   pack .save.extralabel -side top
@@ -1134,7 +1134,7 @@ proc gameSave { gnum } {
   }
   pack .save.extra.scroll -side right -fill y
   .save.extra.text insert 1.0 $extraTags
-  
+
   foreach i {entryevent entrysite dateyear datemonth dateday \
         entryround entrywhite entryblack resentry \
         weloentry beloentry ecoentry edateyear edatemonth edateday} {
@@ -1144,10 +1144,10 @@ proc gameSave { gnum } {
   }
   bind .save.extra.text <FocusIn> {%W configure -background lightYellow }
   bind .save.extra.text <FocusOut> {%W configure  }
-  
+
   # Bindings so Ctrl-1 to Ctrl-9 select a matching name in the player,
   # site, event and round entryboxes:
-  
+
   set j 0
   foreach {i j} {entryevent "event" entrysite "site"
     entrywhite "white" entryblack "black"
@@ -1158,7 +1158,7 @@ proc gameSave { gnum } {
             {set %s \$nameMatches(%d)}}" $z $j $z ]
     }
   }
-  
+
   frame .save.bar2 -height 2 -borderwidth 1 -relief sunken
   pack .save.bar2 -fill x -pady 10
   frame .save.buttons
@@ -1171,14 +1171,14 @@ proc gameSave { gnum } {
     gsave $gsaveNum;
     destroy .save
   }
-  
+
   dialogbutton .save.buttons.cancel -textvar ::tr(Cancel) -command {destroy .save}
   pack .save.buttons -side bottom -pady 10 -fill x
   if {$gnum == 0} {
     #pack .save.buttons.prev -side left -padx 10
   }
   packbuttons right .save.buttons.cancel .save.buttons.save
-  
+
   bind .save <Alt-s> {
     set extraTags [.save.extra.text get 1.0 end-1c]
     gsave $gsaveNum;
@@ -1201,7 +1201,7 @@ proc gsave { gnum } {
   global date year month day white black resultVal event site round
   global whiteElo blackElo whiteRType blackRType eco extraTags
   global edate eyear emonth eday
-  
+
   set date [format "%s.%s.%s" $year $month $day]
   set edate [format "%s.%s.%s" $eyear $emonth $eday]
   set extraTagsList [split $extraTags "\n"]
@@ -1239,7 +1239,7 @@ set startArrowSquare ""
 proc addMarker {sq color} {
   set to [::board::san $sq]
   set oldComment [sc_pos getComment]
-  
+
   # check if the square is already of the same color
   set erase [regexp "\[\x5B\]%draw full,$to,$color\[\x5D\]" $oldComment]
   regsub "\[\x5B\]%draw full,$to,(green|yellow|red)\[\x5D\]" $oldComment "" newComment
@@ -1288,7 +1288,7 @@ for {set i 0} { $i < 64 } { incr i } {
   ::board::bind .board $i <B1-Motion> "::board::dragPiece %X %Y"
   ::board::bind .board $i <ButtonRelease-1> "releaseSquare %X %Y"
   ::board::bind .board $i <ButtonRelease-2> "releaseSquare %X %Y"
-  
+
   ### Too dangerous. (backSquare deprecated for ::move::back) S.A.
   # ::board::bind .board $i <ButtonPress-3> backSquare
 }
@@ -1790,7 +1790,7 @@ bind .statusbar <Unmap> { showHideAllWindows iconify}
 # returns a list of all toplevel windows, except some that are utilities
 ################################################################################
 proc getTopLevel {} {
-  
+
   set topl {}
   set exclude { ".splash" ".tooltip" ".glistExtra" ".menu" "." ".pgnPopup" }
   foreach c [winfo children .] {
@@ -1810,15 +1810,15 @@ proc getTopLevel {} {
 #   Should be called type = "iconify" or "deiconify"
 #
 proc showHideAllWindows {type} {
-  
+
   # Don't do this if user option is off:
   if {! $::autoIconify} { return }
-  
+
   # Some window managers like KDE generate Unmap events for other
   # situations like switching to another desktop, etc.
   # So if the main window is still mapped, do not iconify others:
   if {($type == "iconify")  && ([winfo ismapped .] == 1)} { return }
-  
+
   # Now iconify/deiconify all the major Scid windows that exist:
   foreach w [getTopLevel] {
     # .baseWin .glistWin .pgnWin .tourney .maintWin \
@@ -1828,15 +1828,15 @@ proc showHideAllWindows {type} {
     # .rgraph .sgraph .importWin .helpWin .tipsWin
     if {[winfo exists $w]} { catch {wm $type $w} }
   }
-  
+
 }
 
 proc raiseAllWindows {} {
   # Don't do this if auto-raise option is turned off:
   if {! $::autoRaise} { return }
-  
+
   showHideAllWindows deiconify
-  
+
   foreach w [getTopLevel] {
     # .baseWin .glistWin .pgnWin .tourney .maintWin \
     # .ecograph .crosstabWin .treeWin .analysisWin1 .anslysisWin2 \
@@ -1869,7 +1869,7 @@ proc raiseAllWindows {} {
       close $f
     }
   }
-  
+
   # hmm... Control-Shift-F7 doesn;t work for me ???
   bind . <Control-F7> {
 	puts "Dumping images to /tmp/ScidImages"

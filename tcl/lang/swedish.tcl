@@ -3007,7 +3007,7 @@ och startfönstret som informerar om vilka filer Scid laddat vid uppstart.
 
 <p><footer>(Uppdaterad: Scid 3.5, februari 2003)</footer></p>
 }
-	
+
 ####################
 ### Entering moves help:
 
@@ -5264,7 +5264,7 @@ D 1.d4 d5; 1.d4 Nf6 2.c4 g6 med 3...d5
 <li>D8 1.d4 Nf6 2.c4 g6 3.Nc3 d5: Grünfeld </li>
 <li>D9 1.d4 Nf6 2.c4 g6 3.Nc3 d5 4.Nf3: Grünfeld </li>
 </ul>
- 
+
 E 1.d4 Nf6 2.c4 e6; 1.d4 Nf6 2.c4 g6 
 
 <ul>
@@ -6146,7 +6146,7 @@ set helpText(W,OpeningTrainer) {<h1>Öppningstränare</h1>
   <p>
   En Sciddatabas kan användas som en repetoar, där varje parti representerar en öppningsvariant.
   </p>
-  
+
   <h3>Öppningstränarstatistik</h3>
   <p>
   Fyra tal visas för att visa statistik för den aktuella positionen :
@@ -6157,7 +6157,7 @@ set helpText(W,OpeningTrainer) {<h1>Öppningstränare</h1>
   <li>Vit : antalet gånger positionen påträffades</li>
   </ul>
   </p>
-  
+
   <h3>Rapporten</h3>
   <p>
   Rapporten visar statistik för hela repertoaren och ger information om användarens kunskaper :
