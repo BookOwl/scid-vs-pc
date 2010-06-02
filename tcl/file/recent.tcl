@@ -196,18 +196,20 @@ proc ::recentFiles::configure {} {
   set recentFiles(temp_extra) $recentFiles(extra)
   set w .recentFilesDlg
   toplevel $w
+  wm withdraw $w
   wm title $w "Scid: [tr OptionsRecent]"
+
   label $w.lmenu -text $::tr(RecentFilesMenu)
-  scale $w.menu -variable recentFiles(temp_menu) -from 0 -to 10 -length 250 \
-      -orient horizontal -showvalue 0 -tickinterval 1 -font font_Small
+  scale $w.menu -variable recentFiles(temp_menu) -from 0 -to 20 -length 250 \
+      -orient horizontal -showvalue 0 -tickinterval 2 -font font_Small
   frame $w.sep -height 4
   label $w.lextra -text $::tr(RecentFilesExtra)
-  scale $w.extra -variable recentFiles(temp_extra) -from 0 -to 10 -length 250 \
-      -orient horizontal -showvalue 0 -tickinterval 1 -font font_Small
+  scale $w.extra -variable recentFiles(temp_extra) -from 0 -to 20 -length 250 \
+      -orient horizontal -showvalue 0 -tickinterval 2 -font font_Small
   pack $w.lmenu $w.menu $w.sep $w.lextra $w.extra -side top -padx 10
   addHorizontalRule $w
   pack [frame $w.b] -side bottom
-  button $w.b.ok -text "OK" -command {
+  dialogbutton $w.b.ok -text "OK" -command {
     set recentFiles(menu) $recentFiles(temp_menu)
     set recentFiles(extra) $recentFiles(temp_extra)
     catch {grab release .recentFilesDlg}
@@ -215,9 +217,12 @@ proc ::recentFiles::configure {} {
     ::recentFiles::save
     updateMenuStates
   }
-  button $w.b.cancel -text $::tr(Cancel) \
+  dialogbutton $w.b.cancel -text $::tr(Cancel) \
       -command "catch {grab release $w}; destroy $w"
   pack $w.b.cancel $w.b.ok -side right -padx 5 -pady 5
-  catch {grab $w}
+  
+  placeWinOverParent $w .
+  wm state $w normal
+  update
 }
 
