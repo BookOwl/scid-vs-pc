@@ -2184,7 +2184,8 @@ proc processAnalysisInput {{n 1}} {
   
 }
 ################################################################################
-# returns 0 if engine died abruptly or 1 otherwise
+# Returns 0 if engine died abruptly or 1 otherwise
+# - this procedure is duplicated(?) in uci.tcl
 ################################################################################
 proc checkEngineIsAlive { {n 1} } {
   global analysis
@@ -2195,8 +2196,15 @@ proc checkEngineIsAlive { {n 1} } {
     set analysis(pipe$n) {}
     logEngineNote $n {Engine terminated without warning.}
     catch {destroy .analysisWin$n}
-    tk_messageBox -type ok -icon info -parent . -title Scid \
-        -message {The analysis engine terminated without warning. It probably crashed or had an internal error.}
+
+    if {[winfo exists .enginelist]} {
+      set parent .enginelist
+    } else {
+      set parent .
+    }
+
+    tk_messageBox -type ok -icon info -parent $parent -title Scid \
+        -message {The analysis engine terminated without warning. It Probably crashed or had an internal error.}
     return 0
   }
   return 1
