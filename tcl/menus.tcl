@@ -1335,7 +1335,7 @@ proc updateMenuStates {} {
     # Load previous button:
     if {[sc_filter previous]} {set state normal} else {set state disabled}
     $m.game entryconfig [tr GamePrev] -state $state
-    .tb.gprev configure -state $state
+    # .tb.gprev configure -state $state
 
     # Reload button:
     if {[sc_game number]} {set state normal} else {set state disabled}
@@ -1344,7 +1344,7 @@ proc updateMenuStates {} {
     # Load next button:
     if {[sc_filter next]} {set state normal} else {set state disabled}
     $m.game entryconfig [tr GameNext] -state $state
-    .tb.gnext configure -state $state
+    # .tb.gnext configure -state $state
 
     $m.game entryconfig [tr GameNumber] -state normal
 
@@ -1378,8 +1378,8 @@ proc updateMenuStates {} {
     foreach i {First Prev Reload Next Last Random Number Replace Add} {
       $m.game entryconfig [tr Game$i] -state disabled
     }
-    .tb.gprev configure -state disabled
-    .tb.gnext configure -state disabled
+    # .tb.gprev configure -state disabled
+    # .tb.gnext configure -state disabled
 
     # search:
     foreach i {Reset Negate} {

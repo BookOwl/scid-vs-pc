@@ -361,36 +361,40 @@ image create photo tb_save -data {
 }
 
 image create photo tb_close -data {
-  R0lGODlhEQARAKEAANnZ2YsAAP///////yH5BAEKAAAALAAAAAARABEAAAIk
-  hI+pyxeh4HqJMguenFI3o2FN+IFeGW6XJVZYi7TwqJb2jRsFADs=
+R0lGODlhEAAQAIABAIsAAP///yH5BAEKAAEALAAAAAAQABAAAAIljI9pAIq8
+oGMt1icPxZdbZ21gOGriSJ2KqJpd2wZn/MndepdGAQA7
 }
 
 image create photo tb_finder -data {
-  R0lGODdhEQARAMIAANnZ2QAAAKmpqf///76+vrDE3gAAAAAAACwAAAAAEQARAAADUgi63B0w
-  RuFAGDjfQF/WGOd9g9RZEPlFSkC4RCwTpcBJ0jvZghoWwMLNNpi9Cpggh2gMIINCAeUyc0Kj
-  06LM+sS2BlIpF9vB3SYQRni9ZlUqkAQAOw==
+R0lGODlhEQARAMIFAAAAAKmpqb6+vrDE3tnZ2f///////////yH5BAEKAAcA
+LAAAAAARABEAAANSeLrcDTBG4Q4oOF9AX9YY4FxfITFR+UUKxwlwLJiBKEmC
+FNSWag7AAYB3keUGmCCnZwQgg0JFriBzQqMtasz6xB6mux1XGEDdbjVRpcJa
+NwiQBAA7
 }
 
 image create photo tb_bkm -data {
-  R0lGODdhEQARAMIAANnZ2YsAAAAAAP///6mpqbDE3gAAAAAAACwAAAAAEQARAAADTgi60ftQ
-  iBakFXEMqrsgy0VdwxcWKIUWQgkqwqqirQkXVM66Z67WL0AMp9vZhLLGCniSrYzB4XPJu02p
-  R+SV9QnCLheCVyEum8WQtBqQAAA7
+R0lGODlhEAARAMIEAAAAAIsAAKmpqbDE3v///////////////yH5BAEKAAcA
+LAAAAAAQABEAAANMeKrR+w+AFqQFkRCqOxDKRV3EFw4ohQ5ACR7AqqKtCQ9U
+zrpnrtavGE63swmHgRXwJFsVg87o8hZV8g6Co/Tzwl6+gq4iTC6LIehHAgA7
 }
 
 image create photo tb_cut -data {
-  R0lGODdhEQARAKEAANnZ2QAAAKmpqb+/vywAAAAAEQARAAACNYSPqZEhehyS0DD7Kt7aAtp9
-  AhiSXYBm2piZU2qhkMNiwzUNdyvsjU5x+Bq0iAsgUBmSoVABADs=
+R0lGODlhEQARAKEDAAAAAKmpqb+/v////yH5BAEKAAMALAAAAAARABEAAAI2
+nI+pkBB6HJLQMPsq3toO2n0BGJIdgGbamJlTaqGQw2LCNQl3G+yNTnH4GrRI
+MRFIIpKqEKQAADs=
 }
 
 image create photo tb_copy -data {
-  R0lGODdhEQARAKEAANnZ2QAAAP///6mpqSwAAAAAEQARAAACPYSPecHtCoKYdIahpNsvVllR
-  gaE1AndioBWK6mmilye21sucsJPSrD2TrW6GgXEw/GASHMdScYwaIdSqtQAAOw==
+R0lGODlhEQARAMIDAAAAAKmpqdnZ2f///////////////////yH5BAEKAAQA
+LAAAAAARABEAAANASLrcCzBKR8C4+ILgrPxTlVkZBiheNIArR2ql6a4qu4lm
+rM3QSkstHEx3s712ioAycBxxGAKQ5OlYWpWUrHabAAA7
 }
 
 image create photo tb_paste -data {
-  R0lGODdhEQARAMIAANnZ2VFR+wAAAKmpqf///76+vgAAAAAAACwAAAAAEQARAAADUggKIb4w
-  MickpCE3N6IgBUUNg9AtXzGoLGlexFqKtJKuH6HvRAV8sg9N2LmFeLwXUCWk9YogHHKnjDF7
-  ziqpNNW9fiIs8gvY5qZk1HBkKW/fnQQAOw==
+R0lGODlhEQARAMIEAAAAAFFR+6mpqb6+vv///////////////yH5BAEKAAcA
+LAAAAAARABEAAANSeHoBvjAyBySkITcnIiADRQkC0C3fIKgsaV7EWoq0kq4f
+oe9EdXyyD03YuYV4vBdQJaT1iiAccqeMMXvOKqk01b1+Iizye9jmpmTUcGQp
+b9+dBAA7
 }
 
 image create photo tb_gprev -data {
@@ -406,9 +410,10 @@ image create photo tb_gnext -data {
 }
 
 image create photo tb_rfilter -data {
-  R0lGODlhEQARACIAACH5BAkAAAAALAAAAAARABEAotnZ2YsAALDE3gAAAP//
-  /76+vgAAAAAAAAM+CBChvu+xOKOrC9vKmpWd913dCGpj6A3sQHHBIMyCq5S3
-  TBC0jeq0mkkWFI6IAp7xGBwUTIqWkwWNtKoPVgIAOw==
+R0lGODlhEAAQAMIFAAAAAIsAAJkiIr6+vrDE3v///////////yH+FUNyZWF0
+ZWQgd2l0aCBUaGUgR0lNUAAh+QQBCgAHACwAAAAAEAAQAAADOxh6fBotPjaj
+fMtarDXvDZZ1VSAAKHBBDUC8hEqxjFsUsKzZcAy6PV8HSMAJhz3AAFRLDVBM
+SyoaQSUAADs=
 }
 
 image create photo tb_bsearch -data {
@@ -424,9 +429,14 @@ image create photo tb_hsearch -data {
 }
 
 image create photo tb_msearch -data {
-  R0lGODlhEQARACIAACH5BAkAAAAALAAAAAARABEAotnZ2QAAAP///wAngbDE
-  3rLA3MDAwAAAAANLCLrcDmM8F4YQcqp6b34B132U6GmhSIIqkAZNaHVBYRfw
-  Zgr1Rdi5Ha8g+BEIwRntyERulJfaseh0Ra6RQDNg0L2+IUNIU8qRF6EEADs=
+R0lGODlhEAAQAKUtAAAAAAUFBAcHBwgICAkJCRsZFR4dHCEfGywpIi0tLDEv
+KzU1NElDOEpEOUZGRk9JPVZWVldXV2tjUmxkU25mVYtubnt7e4d8aIeHh5aN
+e46OjpmZmaaZgJ2dnaqdg5+fn6+vr7S0tL29vb6+vrDE3sHBwcrKytXV1djY
+2ODg4Ozs7Pn5+fz8/P//////////////////////////////////////////
+/////////////////////////////////yH5BAEKAD8ALAAAAAAQABAAAAZ0
+wJ8wIZEkhMjkj5NItVonhTLJAD2fGslUiEBdW6HH9tf4fC2UsccQYq06h7Fw
+AiAIAhmAHpC8FBwbJSIVACSGJHxCCyZfAyRPh4kWXy2FLYeIQpNfhZiZP5tX
+nY+GiREREKkQGKOIIypyewAjenJKe7ZJekEAOw==
 }
 
 image create photo tb_switcher -data {
@@ -459,26 +469,27 @@ image create photo tb_glist -data {
 }
 
 image create photo tb_tmt -data {
-  R0lGODdhFAAUAMIAANnZ2QAngf///wAAAIsAALDE3gAAAAAAACwAAAAAFAAUAAADXgi63B0w
-  ykmrvZiKzbvnkDCMokCY6HkKoTd8Xji+J52ibACXu0yqpdlr09oNCsjC0GerFTbJV/FzFCSV
-  OdEPdbxip66k9aub3UTXAUAA0O02QsCo/YbN3HXXIDNZDBIAOw==
+R0lGODlhFAAUAMIFAAAAAAAngYsAALDE3tnZ2f///////////yH5BAEKAAcA
+LAAAAAAUABQAAANbSLrcHTDKSau9mJbNu+dQAYxiIZjoeRahB3xeOL4nnaJs
+AJe7TKql2WvT2gEGyMHQZ6sNNslX8XMsJJU50Q91vGKnrqT1q5vdRFcAIbvb
+CAkjcNsdn8PimQogAQA7
 }
 
 image create photo tb_maint -data {
-R0lGODlhFAAUAMYAAAAngWRkeZBdLWZme2hoeWZph21tfIRsWYlwWrtmEY9z
-WK9xIJJ4XLxwFa90JJV4Wn5+h5d6Wn5+ipx9W6KBWMKAGqiHW8mIGs+HGM6J
-G8WLLuaCCM+JJe2BCM+LKOmGBtKPG5WVo9SQGv6ABJeXopiYqdqSF/6FBv2G
-Bpubrv6JB/OPC7Cej/6RBv6RCaKitbOhlvGcDfyYC/6YCKamtqmpt/6fDfik
-EP6iEL2qmv6jEP6kEP2mEK+vv/6pE/6sE7OzwrK2zre4x/61GLm5v7m5yLu7
-xby8yf68Gb29yv6+G76+y7+/y8DAysTEy8bG0cPG2sfHy8jI0v7OIM7O19DQ
-2NHR19LS2tLS3NTU3NjY4NjY4dra4tvb4Nvb4tzc4t7e5OLf29/f5ODg5ODg
-5uHh5+Li5+Pj6Ofn6+np7uvr7u7t7e3t8u7u8vHx9ff3+fj4+fv7+/7+/v//
-/wAngQAngQAngQAngQAngQAngQAngQAngQAngQAngQAngQAngSH5BAEKAH8A
-LAAAAAAUABQAAAfEgH+Cg4SFhQCIiYqLjI2Oj5CMc5NzNVlXRlGUm5OIm0RU
-cnJfJJyUnpxNcXJVpp0AplZqcm1Orp4vJZRScG9tIbewNGhiXUxuaWxernOo
-ZlhJZ2RjZU9CYaaeEilgZVtcWktBLBoWnKgGcz1FQEdQORwbJhSbqHMQBAMB
-BTAeHygrREw4BcvUGgcxdOjAcQNEhFfMHmRAomSIDx4YGDQr6ErBhSk/VJyQ
-sWAjs0kIKuxwMaJFA5Mn5xxIYGNGBwEbIzkKBAA7
+R0lGODlhFAAUAMZPAAAngZBdLYRsWYlwWrtmEY9zWK9xIJJ4XLxwFa90JJV4
+Wn5+h5d6Wn5+ipx9W6KBWMKAGqiHW8mIGs+HGM6JG8WLLuaCCM+JJc+LKOmG
+BtKPG9SQGv6ABNqSF/6FBv2GBpubrv6JB/OPC7Cej/6RBv6RCbOhlvGcDfyY
+C/ikEP6iEL2qmv6jEP6kEP2mEK+vv/6pE/6sE7OzwrK2zv61GLm5yLy8yf68
+Gb29yv6+G76+y8PG2v7OINLS3NjY4NjY4dra4tzc4t7e5ODg5ODg5uHh5+Li
+5+Pj6Onp7uvr7u3t8vf3+fj4+fv7+/7+/v//////////////////////////
+////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////yH5BAEKAH8A
+LAAAAAAUABQAAAe8gH+Cg4SFhQCIiYqLjI2Oj5CMT5NPRjUNmEaUm0+Im5c7
+TpeclJ6cC01ODZqkppsLSaINpJ0AlbOTNUxLo622DTsLCzVBSEqrtJ6rPThH
+RENFlxG+Tw0gQkU/QD46MyMV05umDTUvNTI2OysXFh0P4raVC5gNNiYYGR8i
+Gw6l8ZwNEpxgwUJFCg0MJrnipIDCjRw0YLiYcKAWrUkFJPCIEcIDCgMWLz4Z
+AKFFCQ4kEIQUKYAAg5cBakVyFAgAOw==
 }
 
 image create photo tb_eco -data {
@@ -581,8 +592,8 @@ foreach i {new open save close finder bkm cut copy paste gprev gnext \
       switcher glist pgn tmt maint eco tree crosst engine help} {
   .tb.$i configure -relief flat -border 1 -highlightthickness 0 -anchor n \
       -takefocus 0
-  bind .tb.$i <Any-Enter> "+.tb.$i configure -relief groove"
-  bind .tb.$i <Any-Leave> "+.tb.$i configure -relief flat; statusBarRestore %W; break"
+  # bind .tb.$i <Any-Enter> "+.tb.$i configure -relief groove"
+  # bind .tb.$i <Any-Leave> "+.tb.$i configure -relief flat; statusBarRestore %W; break"
 }
 
 #pack .tb -side top -fill x -before .button
