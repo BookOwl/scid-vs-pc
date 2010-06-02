@@ -123,6 +123,7 @@ set ::tacgame::analysisTime 10
 set ::tacgame::openingType new
 set ::commenteditor::showBoard 0
 set ::windows::gamelist::widths {}
+set ::windows::gamelist::findcase 1
 
 #############################################################
 # Customisable variables:

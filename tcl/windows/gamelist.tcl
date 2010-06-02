@@ -387,7 +387,6 @@ proc ::windows::gamelist::Open {} {
 
   checkbutton $w.b.findcase -text "Ignore Case" \
     -variable ::windows::gamelist::findcase -onvalue 1 -offvalue 0
-  set ::windows::gamelist::findcase 0
 
   pack $w.b.findcase $w.b.find $w.b.findlabel $w.b.filter -side right
   pack $w.b.negate $w.b.reset $w.b.remove -side left 

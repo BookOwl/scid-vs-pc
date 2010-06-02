@@ -960,7 +960,7 @@ $m add command -label OptionsSave -command {
           exportFlags(column) exportFlags(symbols) \
           exportFlags(htmldiag) exportFlags(convertNullMoves) \
           email(smtp) email(smproc) email(server) \
-          email(from) email(bcc) ::windows::gamelist::widths \
+          email(from) email(bcc) ::windows::gamelist::widths ::windows::gamelist::findcase \
           gameInfo(show) gameInfo(photos) gameInfo(hideNextMove) gameInfo(wrap) \
           gameInfo(fullComment) gameInfo(showMarks) \
           gameInfo(showMaterial) gameInfo(showFEN) gameInfo(showTB) \
