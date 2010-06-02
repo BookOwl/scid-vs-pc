@@ -2959,33 +2959,48 @@ The <b>Add Variation</b> button <button tb_addvar> adds the
   not shown when training mode is on.
   </p>
   
-  <h3><a Annotate>Annotating a game</h3>
+  <h3><name Annotating>Annotating a game</name></h3>
   <p>
-  The <b>Add variation</b> buttons <button tb_addvar> or <button
-  tb_addallvars> add the current score and
-  best line of play as a new variation in the game.
-  You can do this automatically for a number of moves (annotating the
-  game) by pressing the <b>Annotate</b> button <button tb_annotate>.
-  Besides, the engines best lines also <a Moves Informant>Informant</a>
-  style evaluation symbols are added in this process.  First, the
-  parameters for automatic annotations have to be set:
+  The "variation" and "add all variation" buttons add the
+  current score and best line of play as a new variation in
+  the game.  This can also be <b>done automatically</b> using
+  the <b>Annotate</b> <button tb_annotate> feature.</p>
+
+  <p>It will automatically add comments , <a Moves Informant>Informants
+  </a> and best-lines to a game, and can also be performed
+  on  <b>multiple games</b>.</p>
+
+  <p>After configuring options and pressing OK, <b>autoplay
+  mode is enabled</b> and the engine starts its analysis.
+  A variation containing the score and best line of play is
+  automatically added for each position as autoplay mode moves
+  through the game.  Only positions from the current position
+  until the end of the game (or until you exit autoplay mode)
+  are annotated, so you can skip annotation of opening moves
+  by moving to a middle-game position before starting autoplay.
+  To cancel annotation at any time, just turn off autoplay mode
+  </p>
+  <p><i>
+  The <b>Annotate</b> feature of Scid Vs PC can be used with any engine,
+  but be sure not to open any other anaylsis windows while
+annotation is in progress!
+  </i></p>
+
+  <p>Options:
   <ul>
-     <li><term>Set the time between moves in seconds:</term> this
-     gives the time, the engine can spend on analysis before moving on
-     to the next move.</li>
-     <li><term>Add variations</term>: here, one has the choice if
-     moves for both sides or only one colour should be added, if all
-     moves should get an annotation or only if the game move is not
-     the best move according to the engines evaluation. Additionally,
-     one can add an annotation only if the game move is a blunder. The
-     threshold defines the drop of the evaluation necessary to signify
-     a blunder, the number is given in units of pawns (i.e. 0.2 means
-     that if the evaluation drops by more than 2 centi pawns, the game
-     move is a blunder).
-     </li>
+     <li><term>Time between moves</term>
+     number of seconds engine spends on analysing each move.</li>
+     <li><term>Add variations...</term> 
+     Select which side (or both) should be annotated.
+     <li><term>Annotate...</term>
+     Additionally, one can add an annotation only if the game
+     move is a blunder, or not the best move.
+     The "Blunder Threshold" is given in units of pawns (i.e. 0.2 means 
+     an evaluation drop of more than 2 pawns).  </li>
+
      <li><term>Annotate variations</term> will include variations
      within the game in the analysis by the engine.</li>
-     <li><term>Short annotations<term> will only add minimal
+     <li><term>Short annotations</term> will only add minimal
      annotations, that is the pure lines and NAG codes without the
      engines names and usually without the current scores.</li>
      <li><term>Add score to annotations</term> will add the engines
@@ -3000,14 +3015,10 @@ The <b>Add Variation</b> button <button tb_addvar> adds the
      </li>
      <li><term>Use book</term> allows the specification of an opening
      book. Moves that are contained in this opening book are skipped
-     in the annotation process, that is the annotation starts
-     automatically in the middle game.</li>
-     <li><term>Annotate several games</term>  Scid will first annotate
-     the current game with the settings specified, store the results,
-     then automatically load the next game and annotate that as well.
-     This is repeated till the game loaded reaches the number given in
-     the spin box. By this procedure, many games can be annotated
-     automatically without any user intervention.
+     in the annotation process, and the annotation starts in the middle game.</li>
+     <li><term>Annotate several games</term> 
+     Will automatically annotate a sequence of games,
+storing the annotations into the database.
      </li>
      <li><term>Find opening errors</term> will check the opening phase
      up to the move specified for blunders. Additionally, the
@@ -3020,24 +3031,6 @@ The <b>Add Variation</b> button <button tb_addvar> adds the
      engines.
      </li>
   </ul>
-  After pressing the Ok button,  autoplay mode is enabled and the
-  engine starts to analyse the game.  When autoplay mode is used and
-  the analysis window is open, a variation containing the score and
-  best line of play is automatically added for each position as
-  autoplay mode moves through the game.  Only positions from the
-  current position until the end of the game (or until you exit
-  autoplay mode) are annotated, so you can skip annotation of opening
-  moves by moving to a middlegame position before starting autoplay.
-  </p>
-  <p>
-  To cancel annotation at any time, just turn off autoplay mode, for example by
-  pressing the <b>Escape</b> key in the main window.
-  </p>
-  <p>
-  Note that for simplicity, the <b>Annotate</b> button is only available
-  in the window opened as analysis engine 1. If you open an engine as
-  analysis engine 2, you cannot use it to annotate the game.
-  </p>
 
   <p><footer>(Updated: Scid Vs PC 1.0, May 2010)</footer></p>
 }

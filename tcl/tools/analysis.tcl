@@ -129,8 +129,8 @@ proc resetEngine {n} {
 
 resetEngines
 
-set annotateMode 0
-set annotateModeButtonValue 0 ; # feedback of annotate mode
+set annotateMode 0		; # $n of engine annotating
+set annotateModeButtonValue 0	; # annotate checkbutton value
 
 set annotateMoves all
 set annotateBlunders blundersonly
@@ -348,10 +348,8 @@ proc ::enginelist::listEngines {{focus 0}} {
 }
 
 ################################################################################
-# ::enginelist::choose
-#
 #   Configure chess engines
-#   rewritten by S.A. July 7 2009 &&&
+#   rewritten by S.A. July 7 2009 &&& (and beyond :>)
 ################################################################################
 proc ::enginelist::choose {} {
   global engines
@@ -700,10 +698,10 @@ proc  checkState {arg widget} {
 }
 
 ################################################################################
-#
+# Annotaion configuration widget
 ################################################################################
-proc configAnnotation {parent} {
-  global autoplayDelay tempdelay blunderThreshold annotateModeButtonValue
+proc initAnnotation {n} {
+  global autoplayDelay tempdelay blunderThreshold annotateModeButtonValue annotateMode analysis
   
   set w .configAnnotation
   if { [winfo exists $w] } { destroy $w }
@@ -719,6 +717,8 @@ proc configAnnotation {parent} {
   wm state $w withdrawn
   wm title $w "Configure Annotation"
 
+  ### Move delay frame
+
   frame $w.delay
   pack $w.delay -side top -padx 15 -pady 5 -fill x
 
@@ -728,6 +728,8 @@ proc configAnnotation {parent} {
   pack $w.delay.spDelay -side left -padx 2 -pady 5
   bind $w <Escape> { .configAnnotation.buttons.cancel invoke }
   bind $w <Return> { .configAnnotation.buttons.ok invoke }
+
+  ### Add variations frame
   
   addHorizontalRule $w
   label $w.avlabel -text $::tr(AnnotateWhich...)
@@ -735,7 +737,12 @@ proc configAnnotation {parent} {
   radiobutton $w.white -text $::tr(AnnotateWhite) -variable annotateMoves -value white -anchor w
   radiobutton $w.black -text $::tr(AnnotateBlack) -variable annotateMoves -value black -anchor w
 
+  pack $w.avlabel -side top
+  pack $w.all $w.white $w.black -side top -fill x
+  addHorizontalRule $w
   
+  ### Annotate frame
+
   label $w.anlabel -text $::tr(Annotate...)
   radiobutton $w.allmoves -text $::tr(AnnotateAllMoves) -variable annotateBlunders -value allmoves -anchor w 
   radiobutton $w.notbest -text $::tr(AnnotateNotBest) -variable annotateBlunders -value notbest -anchor w
@@ -748,17 +755,14 @@ proc configAnnotation {parent} {
   spinbox $w.blunderbox.spBlunder -width 4 -textvariable blunderThreshold \
       -from 0.1 -to 3.0 -increment 0.1
 
-  pack $w.avlabel -side top
-  pack $w.all $w.white $w.black -side top -fill x
-
-  addHorizontalRule $w
-
   pack $w.anlabel -side top
   pack $w.allmoves $w.notbest $w.blundersonly -side top -fill x
   pack $w.blunderbox -side top -padx 10 -fill x
   pack $w.blunderbox.label $w.blunderbox.spBlunder -side left -padx 5
-
   addHorizontalRule $w
+
+  ### General options frame
+
   checkbutton $w.cbAnnotateVar  -text $::tr(AnnotateVariations) -variable ::isAnnotateVar -anchor w
   checkbutton $w.cbShortAnnotation  -text $::tr(ShortAnnotations) -variable ::isShortAnnotation -anchor w
   checkbutton $w.cbAddScore  -text $::tr(AddScoreToShortAnnotations) -variable ::addScoreToShortAnnotations -anchor w
@@ -832,7 +836,7 @@ proc configAnnotation {parent} {
 
   checkbutton $w.batch.cbMarkTactics -text $::tr(MarkTacticalExercises) -variable ::markTacticalExercises
   grid $w.batch.cbMarkTactics -column 0 -row 2 -sticky w
-  if {! $::analysis(uci1)} {
+  if {! $::analysis(uci$n)} {
     set ::markTacticalExercises 0
     $w.batch.cbMarkTactics configure -state disabled
   }
@@ -846,38 +850,52 @@ proc configAnnotation {parent} {
     set annotateMode 0
     set annotateModeButtonValue 0
   }
-  dialogbutton $w.buttons.ok -text "OK" -command {
-    set ::useAnalysisBookName [.configAnnotation.usebook.comboBooks get]
-    set ::wentOutOfBook 0
-    set ::book::lastBook $::useAnalysisBookName
-    
-    # tactical positions is selected, must be in multipv mode
-    if {$::markTacticalExercises} {
-      if { $::analysis(multiPVCount1) < 2} {
-	set ::analysis(multiPVCount1) 4
-	changePVSize 1
-      }
-    }
-    
-    if {$tempdelay < 0.1} { set tempdelay 0.1 }
-    set autoplayDelay [expr {int($tempdelay * 1000)}]
-    destroy .configAnnotation
-    set annotateMode 1
-    if {! $analysis(analyzeMode1)} {
-      toggleEngineAnalysis 1 1
-    }
-    if {$::addAnnotatorTag} {
-      appendAnnotator "$analysis(name1)"
-    }
-    if {$autoplayMode == 0} { toggleAutoplay }
-  }
-  pack $w.buttons.cancel $w.buttons.ok -side right -padx 5 -pady 5
-  # focus $w.delay.spDelay
+  dialogbutton $w.buttons.help -text $::tr(Help) -command {helpWindow Analysis Annotating}
+  dialogbutton $w.buttons.ok -text "OK" -command "okAnnotation $n"
 
-  bind $w <Destroy> "$w.buttons.cancel invoke"
-  placeWinOverParent $w $parent
-  wm state $w normal
-  update
+    pack $w.buttons.cancel $w.buttons.help $w.buttons.ok -side right -padx 5 -pady 5
+    # focus $w.delay.spDelay
+
+    bind $w <Destroy> "$w.buttons.cancel invoke"
+    placeWinOverParent $w .analysisWin$n
+    wm state $w normal
+    update
+}
+
+################################################################################
+# Start Annotation
+################################################################################
+proc okAnnotation {n} {
+  global autoplayDelay tempdelay annotateMode analysis autoplayMode
+
+  if {$annotateMode} {
+    puts stderr "Scid: initAnnotation reports engine $annotateMode already annotating"
+    return
+  }
+  set ::useAnalysisBookName [.configAnnotation.usebook.comboBooks get]
+  set ::wentOutOfBook 0
+  set ::book::lastBook $::useAnalysisBookName
+  
+  # tactical positions is selected, must be in multipv mode
+  if {$::markTacticalExercises} {
+    if { $::analysis(multiPVCount$n) < 2} {
+      set ::analysis(multiPVCount$n) 4
+      changePVSize $n
+    }
+  }
+  
+  if {$tempdelay < 0.1} { set tempdelay 0.1 }
+  set autoplayDelay [expr {int($tempdelay * 1000)}]
+  bind .configAnnotation <Destroy> {}
+  destroy .configAnnotation
+  set annotateMode $n
+  if {! $analysis(analyzeMode$n)} {
+    toggleEngineAnalysis $n 1
+  }
+  if {$::addAnnotatorTag} {
+    appendAnnotator "$analysis(name$n)"
+  }
+  if {$autoplayMode == 0} { toggleAutoplay }
 }
 
 ################################################################################
@@ -936,11 +954,14 @@ proc bookAnnotation { {n 1} } {
 #
 ################################################################################
 proc markExercise { prevscore score } {
+  global annotateMode
+  set n $annotateMode
+
   if {!$::markTacticalExercises} { return }
   
   # check at which depth the tactical shot is found
   # this assumes analysis by an UCI engine
-  if {! $::analysis(uci1)} { return }
+  if {! $::analysis(uci$n)} { return }
   
   set deltamove [expr {$score - $prevscore}]
   # filter tactics so only those with high gains are kept
@@ -952,11 +973,11 @@ proc markExercise { prevscore score } {
   }
   
   # The best move is much better than others.
-  if { [llength $::analysis(multiPV1)] < 2 } {
+  if { [llength $::analysis(multiPV$n)] < 2 } {
     puts "error, not enough PV"
     return
   }
-  set sc2 [lindex [ lindex $::analysis(multiPV1) 1 ] 1]
+  set sc2 [lindex [ lindex $::analysis(multiPV$n) 1 ] 1]
   if { [expr abs( $score - $sc2 )] < 1.5 } { return }
   
   # There is no other winning moves (the best move may not win, of course, but
@@ -970,7 +991,7 @@ proc markExercise { prevscore score } {
   if {[sc_pos side] == {black} && $score > $::informant("+/-") } { return }
   
   # Move is not obvious: check that it is not the first move guessed at low depths
-  set pv [ lindex [ lindex $::analysis(multiPV1) 0 ] 2 ]
+  set pv [ lindex [ lindex $::analysis(multiPV$n) 0 ] 2 ]
   set bm0 [lindex $pv 0]
   foreach depth {1 2 3} {
     set res [ sc_pos analyze -time 1000 -hashkb 32 -pawnkb 1 -searchdepth $depth ]
@@ -1012,9 +1033,14 @@ proc markExercise { prevscore score } {
 ################################################################################
 #
 ################################################################################
-proc addAnnotation { {n 1} } {
+proc addAnnotation {} {
   global analysis annotateMoves annotateBlunders annotateMode blunderThreshold
   
+  set n $annotateMode
+  if {!$n} {
+    puts stderr "Scid: addAnnotation called while annotateMode is 0"
+    return
+  }
   # First look in the book selected
   if { ! $::wentOutOfBook && $::useAnalysisBook} {
     bookAnnotation
@@ -1036,7 +1062,7 @@ proc addAnnotation { {n 1} } {
   }
   
   # to parse scores if the engine's name contains - or + chars (see sc_game_scores)
-  set engine_name  [string map {- { } + { }} $analysis(name1)]
+  set engine_name  [string map {- { } + { }} $analysis(name$n)]
   
   set text [format "%d:%+.2f" $analysis(depth$n) $analysis(score$n)]
   set moves $analysis(moves$n)
@@ -1161,7 +1187,7 @@ proc addAnnotation { {n 1} } {
         markExercise $prevscore $score
       }
       
-      set text [format "%s %+.2f / %+.2f" $::tr(AnnotateBlundersOnlyScoreChange) $prevscore $score]
+      set text [format "%s %+.2f / %+.2f" $::tr(Blunder) $prevscore $score]
       if {! $::isShortAnnotation } {
         sc_pos setComment "[sc_pos getComment] $engine_name: $text"
       } else {
@@ -1621,7 +1647,7 @@ proc startAnalysisWin { FunctionKey } {
 ################################################################################
 
 proc makeAnalysisWin { {n 1} } {
-  global analysisWin$n font_Analysis analysisCommand analysis annotateModeButtonValue
+  global analysisWin$n font_Analysis analysisCommand analysis annotateModeButtonValue annotateMode
   set w .analysisWin$n
 
   if {[winfo exists $w]} {
@@ -1776,9 +1802,13 @@ proc makeAnalysisWin { {n 1} } {
   #  -variable analysis(showEngineInfo$n) -command "toggleEngineInfo $n" -relief $relief
   # ::utils::tooltip::Set $w.b1.showinfo $::tr(ShowInfo)
 
-  checkbutton $w.b1.annotate -image tb_annotate -indicatoron false \
-    -variable annotateModeButtonValue -command "configAnnotation .analysisWin$n" -relief $relief
-  ::utils::tooltip::Set $w.b1.annotate $::tr(Annotate...)
+  if {!$annotateModeButtonValue && !$annotateMode} {
+    checkbutton $w.b1.annotate -image tb_annotate -indicatoron false \
+      -variable annotateModeButtonValue -command "initAnnotation $n" -relief $relief
+    ::utils::tooltip::Set $w.b1.annotate $::tr(Annotate...)
+  } else {
+    frame $w.b1.annotate -width 0 -height 0
+  }
 
   checkbutton $w.b1.priority -image tb_cpu -indicatoron false -variable analysis(priority$n) \
     -onvalue idle -offvalue normal -command "setAnalysisPriority $n" -relief $relief
