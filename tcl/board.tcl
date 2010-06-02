@@ -1359,7 +1359,7 @@ proc ::board::midSquare {w sq} {
   # set x [expr {([lindex $c 0] + [lindex $c 2]) / 2} ]
   # set y [expr {([lindex $c 1] + [lindex $c 3]) / 2} ]
   set psize $::board::_size($w)
-  if { $psize % 2 } { set psize [expr {$psize - 1}] }
+  if { $psize % 2 } { incr psize -1 }
   set x [expr {[lindex $c 0] + $psize/2} ]
   set y [expr {[lindex $c 1] + $psize/2} ]
   return [list $x $y]
@@ -1935,7 +1935,7 @@ proc ::board::drawText {w sq text color args {shadow ""} } {
   #}
 }
 
-# Highlight last move played by drawing a red rectangle around the two squares
+# Highlight last move played by drawing a coloured rectangle around the two squares
 proc  ::board::lastMoveHighlight {w} {
   $w.bd delete highlightLastMove
   if { ! $::highlightLastMove } {return}
@@ -1962,7 +1962,7 @@ proc ::board::update {w {board ""} {animate 0} {resize 0}} {
   global highcolor currentSq bestSq bestcolor selectedSq
   
   set oldboard $::board::_data($w)
-  if {$board == ""} {
+  if {$board == {}} {
     set board $::board::_data($w)
   } else {
     set ::board::_data($w) $board
@@ -2121,11 +2121,11 @@ proc ::board::material {w} {
   # Evaluate piece differences
   # Negative values mean black is ahead
   # (Uppercase chars in fen are white)
-  set p [expr [regexp -all P $fen] - [regexp -all p $fen]]
-  set n [expr [regexp -all N $fen] - [regexp -all n $fen]]
-  set b [expr [regexp -all B $fen] - [regexp -all b $fen]]
-  set r [expr [regexp -all R $fen] - [regexp -all r $fen]]
-  set q [expr [regexp -all Q $fen] - [regexp -all q $fen]]
+  set p [expr {[regexp -all P $fen] - [regexp -all p $fen]}]
+  set n [expr {[regexp -all N $fen] - [regexp -all n $fen]}]
+  set b [expr {[regexp -all B $fen] - [regexp -all b $fen]}]
+  set r [expr {[regexp -all R $fen] - [regexp -all r $fen]}]
+  set q [expr {[regexp -all Q $fen] - [regexp -all q $fen]}]
 
   # Flesh out differences into white and black lists
   set matwhite {}
@@ -2150,7 +2150,7 @@ proc ::board::material {w} {
  
   set width $::materialwidth
   set h [$f cget -height]
-  set x [expr $width / 2]
+  set x [expr {$width / 2}]
 
   if {[ ::board::isFlipped $w ]} {
     set sign1 + ; set sign2 -
@@ -2159,23 +2159,23 @@ proc ::board::material {w} {
   }
 
   # Material is drawn either side of half-way unless one side has too much
-  set halfway [expr $h / 2]
-  if {[expr [llength $matblack] * $width > $halfway]} {
+  set halfway [expr {$h / 2}]
+  if {[expr {[llength $matblack] * $width > $halfway}]} {
     if {[ ::board::isFlipped $w ]} {
-      set halfway [expr $h - ([llength $matblack] * $width)]
+      set halfway [expr {$h - ([llength $matblack] * $width)}]
       if {$halfway < 0} {set halfway 0}
     } else {
-      set halfway [expr [llength $matblack] * $width]
+      set halfway [expr {[llength $matblack] * $width}]
       if {$halfway > $h} {set halfway $h}
     }
   } else {
 
-  if {[expr [llength $matwhite] * $width > $halfway]} {
+  if {[expr {[llength $matwhite] * $width > $halfway}]} {
     if {[ ::board::isFlipped $w ]} {
-      set halfway [expr [llength $matwhite] * $width]
+      set halfway [expr {[llength $matwhite] * $width}]
       if {$halfway > $h} {set halfway $h}
     } else {
-      set halfway [expr $h - ([llength $matwhite] * $width)]
+      set halfway [expr {$h - ([llength $matwhite] * $width)}]
       if {$halfway < 0} {set halfway 0}
     }
   }
@@ -2187,7 +2187,7 @@ proc ::board::material {w} {
     set offset [expr $offset $sign1 $width]
   }
 
-  set offset [expr $halfway $sign2 $x ]
+  set offset [expr $halfway $sign2 $x]
   foreach pi $matwhite {
     $f create image $x $offset -image w${pi}$width -tag material
     set offset [expr $offset $sign2 $width]
@@ -2270,15 +2270,15 @@ proc ::board::animate {w oldboard newboard} {
   if {$animateDelay <= 0} { return }
   
   # Find which squares differ between the old and new boards:
-  # Mate this looks slow S.A. ... 90 microseconds
-  set diffcount 0
-  set difflist [list]
+  # Mate this looks slow... but it's only performed once per move
+
+  set difflist {}
   for {set i 0} {$i < 64} {incr i} {
     if {[string index $oldboard $i] != [string index $newboard $i]} {
-      incr diffcount
       lappend difflist $i
     }
   }
+  set diffcount [llength $difflist]
   
   # Check the number of differences could mean a valid move:
   if {$diffcount < 2  ||  $diffcount > 4} { return }
