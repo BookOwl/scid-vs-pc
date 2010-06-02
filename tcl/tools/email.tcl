@@ -538,7 +538,7 @@ proc modifyEmailDetails {i} {
     set e $w.$f.entry
     bind $e <FocusIn> "$e configure -background lightYellow;
       set emailData_helpBar \$::tools::email::helpBar($f)"
-    bind $e <FocusOut> "$e configure "
+    bind $e <FocusOut> "$e configure -background {}"
   }
 
   addHorizontalRule $w
@@ -548,7 +548,7 @@ proc modifyEmailDetails {i} {
   text $f.entry -width 30 -height 5 
   bind $f.entry <FocusIn> "$f.entry configure -background lightYellow
     set emailData_helpBar {Enter the closing text for each message}"
-  bind $f.entry <FocusOut> "$f.entry configure "
+  bind $f.entry <FocusOut> "$f.entry configure -background {}"
 
   pack $f -side top -fill x
   pack $f.entry $f.label -side right -anchor n

@@ -358,6 +358,8 @@ namespace eval pgn {
   proc ResetColors {} {
     global pgnColor
     if {![winfo exists .pgnWin]} { return }
+    .pgnWin.text configure -background $pgnColor(Background)
+    .pgnWin.text tag configure Current -background $pgnColor(Current)
     ::htext::init .pgnWin.text
     ::htext::updateRate .pgnWin.text 60
     ::pgn::Refresh 1
