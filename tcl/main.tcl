@@ -592,10 +592,12 @@ proc showVars {} {
 
   sc_info preMoveCmd preMoveCommand
   
-  focus $w
-  placeWinOverParent $w .
+  catch {
+    focus $w
+    placeWinOverParent $w .
+    grab $w
+  }
   update
-  grab $w
 }
 
 proc enterVar {{n {}}} {
