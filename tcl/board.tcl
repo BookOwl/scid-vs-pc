@@ -596,7 +596,7 @@ foreach {b m} {
   rfilter SearchReset bsearch SearchCurrent
   hsearch SearchHeader msearch SearchMaterial
   switcher WindowsSwitcher glist WindowsGList pgn WindowsPGN tmt WindowsTmt
-  maint WindowsMaint eco WindowsECO tree WindowsTree crosst ToolsCross
+  maint WindowsMaint eco WindowsECO tree WindowsTree crosst WindowsCross
   engine ToolsAnalysis
 } {
   set helpMessage(.tb.$b) $m
