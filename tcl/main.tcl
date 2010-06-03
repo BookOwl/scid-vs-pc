@@ -158,10 +158,13 @@ proc updateTitle {} {
   if {![string match {\[*\]} $fname]} {
     set fname "\[$fname\]"
   }
+
+  if {$fname == {[clipbase]}} {set fname $::scidvspcVersion}
+
   if {$white == {?} && $black == {?}} {
-    wm title . "Scid: $fname"
+    wm title . "Scid  $fname"
   } else {
-    wm title . "Scid: $white - $black $fname"
+    wm title . "Scid:  $white - $black $fname"
   }
 }
 
