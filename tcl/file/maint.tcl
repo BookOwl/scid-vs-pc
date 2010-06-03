@@ -103,6 +103,7 @@ proc ::maint::OpenClose {} {
   set bold font_SmallBold
   toplevel $w
   wm title $w "Scid: [tr FileMaint]"
+  wm withdraw $w
   wm resizable $w 0 0
   bind $w <F1> {helpWindow Maintenance}
   bind $w <Escape> "destroy $w; break"
@@ -236,6 +237,8 @@ proc ::maint::OpenClose {} {
   bind $w <Alt-h> "$w.buttons.help invoke"
   bind $w <Alt-c> "destroy $w; break"
   standardShortcuts $w
+  placeWinOverParent $w .
+  wm state $w normal
   ::maint::Refresh
 }
 
