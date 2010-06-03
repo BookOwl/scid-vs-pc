@@ -88,12 +88,12 @@ bind Menu <<MenuSelect>> {+
   }
 }
 
-bind Menubutton <Any-Enter> "+statusBarHelp %W"
-bind Menubutton <Any-Leave> "+statusBarRestore %W"
-bind Button <Any-Enter> "+statusBarHelp %W"
-bind Button <Any-Leave> "+statusBarRestore %W"
-bind Label <Any-Enter> "+statusBarHelp %W"
-bind Label <Any-Leave> "+statusBarRestore %W"
+# bind Menubutton <Any-Enter> "+statusBarHelp %W"
+# bind Menubutton <Any-Leave> "+statusBarRestore %W"
+# bind Button <Any-Enter> "+statusBarHelp %W"
+# bind Button <Any-Leave> "+statusBarRestore %W"
+# bind Label <Any-Enter> "+statusBarHelp %W"
+# bind Label <Any-Leave> "+statusBarRestore %W"
 
 proc toggleMenubar {} {
   if {$::menuVisible} {

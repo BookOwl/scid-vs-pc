@@ -585,15 +585,31 @@ button .tb.eco -image tb_eco -command ::windows::eco::OpenClose
 button .tb.tree -image tb_tree -command ::tree::make
 button .tb.crosst -image tb_crosst -command ::crosstab::OpenClose
 button .tb.engine -image tb_engine -command makeAnalysisWin
-button .tb.help -image tb_help -command {helpWindow Index}
+# button .tb.help -image tb_help -command {helpWindow Index} ; # seems unused
+
+# Set toolbar help status messages:
+foreach {b m} {
+  new FileNew open FileOpen finder FileFinder
+  save GameReplace close FileClose bkm FileBookmarks
+  gprev GamePrev gnext GameNext
+  cut GameNew copy EditCopy paste EditPaste
+  rfilter SearchReset bsearch SearchCurrent
+  hsearch SearchHeader msearch SearchMaterial
+  switcher WindowsSwitcher glist WindowsGList pgn WindowsPGN tmt WindowsTmt
+  maint WindowsMaint eco WindowsECO tree WindowsTree crosst ToolsCross
+  engine ToolsAnalysis
+} {
+  set helpMessage(.tb.$b) $m
+  # ::utils::tooltip::Set $tb.$b $m
+}
+set helpMessage(.button.addVar) EditAdd
+set helpMessage(.button.trial) EditTrial
 
 foreach i {new open save close finder bkm cut copy paste gprev gnext \
-      rfilter bsearch hsearch msearch \
-      switcher glist pgn tmt maint eco tree crosst engine help} {
-  .tb.$i configure -relief flat -border 1 -highlightthickness 0 -anchor n \
-      -takefocus 0
-  # bind .tb.$i <Any-Enter> "+.tb.$i configure -relief groove"
-  # bind .tb.$i <Any-Leave> "+.tb.$i configure -relief flat; statusBarRestore %W; break"
+      rfilter bsearch hsearch msearch switcher glist pgn tmt maint \
+      eco tree crosst engine} {
+  .tb.$i configure -relief flat -border 1 -highlightthickness 0 -anchor n -takefocus 0
+  ::utils::tooltip::Set .tb.$i [tr $::helpMessage(.tb.$i)]
 }
 
 #pack .tb -side top -fill x -before .button
@@ -749,24 +765,6 @@ proc setToolbar {x} {
     grid forget .tb
   }
 }
-
-# Set toolbar help status messages:
-foreach {b m} {
-  new FileNew open FileOpen finder FileFinder
-  save GameReplace close FileClose bkm FileBookmarks
-  gprev GamePrev gnext GameNext
-  cut GameNew copy EditCopy paste EditPaste
-  rfilter SearchReset bsearch SearchCurrent
-  hsearch SearchHeader msearch SearchMaterial
-  switcher WindowsSwitcher glist WindowsGList pgn WindowsPGN tmt WindowsTmt
-  maint WindowsMaint eco WindowsECO tree WindowsTree crosst ToolsCross
-  engine ToolsAnalysis
-} {
-  set helpMessage(.tb.$b) $m
-  # ::utils::tooltip::Set $tb.$b $m
-}
-set helpMessage(.button.addVar) EditAdd
-set helpMessage(.button.trial) EditTrial
 
 
 image create photo tb_start -data {
