@@ -35,7 +35,7 @@ set ::utils::graph::_options(graph) {
 }
 set ::utils::graph::_defaults(graph) \
   { -width 400 -height 300 -xtop 50 -ytop 30 -ticksize 5 -textgap 2 \
-    -xtick 5 -ytick 5 -tickcolor black -font fixed  \
+    -xtick 5 -ytick 5 -tickcolor black -font fixed -background white \
       -canvas {} -hline {} -vline {} -textcolor black \
       -xlabels {} -ylabels {} -brect {} }
 
@@ -71,7 +71,7 @@ array set ::utils::graph::_data {}
 proc ::utils::graph::create args {
   set graph [lindex $args 0]
   lappend ::utils::graph::_graphs $graph
-
+  
   # Remove any existing data for this graph name:
   foreach key [array names ::utils::graph::_data] {
     if {[string match "$graph,*" $key]} { unset ::utils::graph::_data($key) }
