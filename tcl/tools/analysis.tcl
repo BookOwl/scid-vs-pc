@@ -2948,7 +2948,7 @@ proc automove_go {{n 1}} {
 # returns the error caught by catch
 ################################################################################
 proc sc_move_add { moves n } {
-  if { $::analysis(uci$n) } {
+  if { [info exists ::analysis(uci$n)] && $::analysis(uci$n) } {
     return [::uci::sc_move_add $moves]
   } else  {
     return [ catch { sc_move addSan $moves } ]
