@@ -119,9 +119,9 @@ namespace eval uci {
       }
       
       if {$n == 1} {
-        catch {wm title .analysisWin$n "Scid: Analysis: $name"}
+        catch {wm title .analysisWin$n "Scid: $name"}
       } else {
-        catch {wm title .analysisWin$n "Scid: Analysis $n: $name"}
+        catch {wm title .analysisWin$n "Scid: $name"}
       }
     }
 

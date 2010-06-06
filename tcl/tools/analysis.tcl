@@ -1769,7 +1769,7 @@ proc makeAnalysisWin { {n 1} } {
   # Set up the  analysis window:
   #
   toplevel $w
-  wm title $w "Scid: Analysis $n: $analysisName"
+  wm title $w "Scid: $analysisName"
   bind $w <F1> { helpWindow Analysis }
   setWinLocation $w
   setWinSize $w
@@ -1783,82 +1783,82 @@ proc makeAnalysisWin { {n 1} } {
   # If set, it show heaps of hash info in the second line of text widget
   set analysis(showEngineInfo$n) 0 
 
-  frame $w.b1
-  pack  $w.b1 -side top -fill x
+  frame $w.b
+  pack  $w.b -side top -fill x
   set relief flat	; # -width 24 -height 24
 
-  checkbutton $w.b1.automove -image tb_training  -indicatoron false  \
+  checkbutton $w.b.automove -image tb_training  -indicatoron false  \
     -command "toggleAutomove $n" -variable analysis(automove$n) -relief $relief
-  ::utils::tooltip::Set $w.b1.automove $::tr(Training)
+  ::utils::tooltip::Set $w.b.automove $::tr(Training)
 
-  checkbutton $w.b1.lockengine -image tb_lockengine -indicatoron false \
+  checkbutton $w.b.lockengine -image tb_lockengine -indicatoron false \
     -variable analysis(lockEngine$n) -command "toggleLockEngine $n" -relief $relief
-  ::utils::tooltip::Set $w.b1.lockengine $::tr(LockEngine)
+  ::utils::tooltip::Set $w.b.lockengine $::tr(LockEngine)
 
-  button $w.b1.line -image tb_addvar -command "addAnalysisVariation $n" -relief $relief
-  ::utils::tooltip::Set $w.b1.line $::tr(AddVariation)
+  button $w.b.line -image tb_addvar -command "addAnalysisVariation $n" -relief $relief
+  ::utils::tooltip::Set $w.b.line $::tr(AddVariation)
 
-  button $w.b1.alllines -image tb_addallvars -command "addAllVariations $n" -relief $relief
-  ::utils::tooltip::Set $w.b1.alllines $::tr(AddAllVariations)
+  button $w.b.alllines -image tb_addallvars -command "addAllVariations $n" -relief $relief
+  ::utils::tooltip::Set $w.b.alllines $::tr(AddAllVariations)
 
-  button $w.b1.move -image tb_addmove -command "makeAnalysisMove $n" -relief $relief
-  ::utils::tooltip::Set $w.b1.move $::tr(AddMove)
+  button $w.b.move -image tb_addmove -command "makeAnalysisMove $n" -relief $relief
+  ::utils::tooltip::Set $w.b.move $::tr(AddMove)
 
-  spinbox $w.b1.multipv -from 1 -to 8 -increment 1 -textvariable analysis(multiPVCount$n) -width 2 \
+  spinbox $w.b.multipv -from 1 -to 8 -increment 1 -textvariable analysis(multiPVCount$n) -width 2 \
       -command "changePVSize $n" 
-  ::utils::tooltip::Set $w.b1.multipv $::tr(Lines)
+  ::utils::tooltip::Set $w.b.multipv $::tr(Lines)
 
   # start/stop engine analysis
-  button $w.b1.bStartStop -image tb_pause -command "toggleEngineAnalysis $n" -relief $relief
-  ::utils::tooltip::Set $w.b1.bStartStop "$::tr(StopEngine)(a)"
+  button $w.b.startStop -image tb_pause -command "toggleEngineAnalysis $n" -relief $relief
+  ::utils::tooltip::Set $w.b.startStop "$::tr(StopEngine)(a)"
 
   set ::finishGameMode 0
-  button $w.b1.bFinishGame -image finish_off -command "toggleFinishGame $n"  -relief $relief
-  ::utils::tooltip::Set $w.b1.bFinishGame $::tr(FinishGame)
+  button $w.b.finishGame -image finish_off -command "toggleFinishGame $n"  -relief $relief
+  ::utils::tooltip::Set $w.b.finishGame $::tr(FinishGame)
 
-  button $w.b1.showboard -image tb_coords -command "toggleAnalysisBoard $n" -relief $relief
-  ::utils::tooltip::Set $w.b1.showboard $::tr(ShowAnalysisBoard)
+  button $w.b.showboard -image tb_coords -command "toggleAnalysisBoard $n" -relief $relief
+  ::utils::tooltip::Set $w.b.showboard $::tr(ShowAnalysisBoard)
 
-  # checkbutton $w.b1.showinfo -image tb_engineinfo -indicatoron false \
+  # checkbutton $w.b.showinfo -image tb_engineinfo -indicatoron false \
   #  -variable analysis(showEngineInfo$n) -command "toggleEngineInfo $n" -relief $relief
-  # ::utils::tooltip::Set $w.b1.showinfo $::tr(ShowInfo)
+  # ::utils::tooltip::Set $w.b.showinfo $::tr(ShowInfo)
 
   if {!$annotateModeButtonValue && !$annotateMode} {
-    checkbutton $w.b1.annotate -image tb_annotate -indicatoron false \
+    checkbutton $w.b.annotate -image tb_annotate -indicatoron false \
       -variable annotateModeButtonValue -command "initAnnotation $n" -relief $relief
-    ::utils::tooltip::Set $w.b1.annotate $::tr(Annotate...)
+    ::utils::tooltip::Set $w.b.annotate $::tr(Annotate...)
   } else {
-    frame $w.b1.annotate -width 0 -height 0
+    frame $w.b.annotate -width 0 -height 0
   }
 
-  checkbutton $w.b1.priority -image tb_cpu -indicatoron false -variable analysis(priority$n) \
+  checkbutton $w.b.priority -image tb_cpu -indicatoron false -variable analysis(priority$n) \
     -onvalue idle -offvalue normal -command "setAnalysisPriority $n" -relief $relief
-  ::utils::tooltip::Set $w.b1.priority $::tr(LowPriority)
+  ::utils::tooltip::Set $w.b.priority $::tr(LowPriority)
 
   # UCI does not support . command (Is this correct ? S.A)
-  button $w.b1.update -image tb_update \
+  button $w.b.update -image tb_update \
     -command "if {$analysis(uci$n)} {sendToEngine $n .}"  -relief $relief
-  ::utils::tooltip::Set $w.b1.update $::tr(Update)
+  ::utils::tooltip::Set $w.b.update $::tr(Update)
 
-  pack $w.b1.bStartStop $w.b1.lockengine $w.b1.move $w.b1.line $w.b1.multipv \
-       $w.b1.alllines $w.b1.annotate $w.b1.automove $w.b1.bFinishGame $w.b1.showboard \
-       $w.b1.update $w.b1.priority -side left -pady 2 -padx 1
+  pack $w.b.startStop $w.b.lockengine $w.b.move $w.b.line $w.b.multipv \
+       $w.b.alllines $w.b.annotate $w.b.automove $w.b.finishGame $w.b.showboard \
+       $w.b.update $w.b.priority -side left -pady 2 -padx 1
 
-  # pack  $w.b1.showinfo 
+  # pack  $w.b.showinfo 
 
   if {$analysis(uci$n)} {
-    $w.b1.multipv configure -state readonly
-    pack forget $w.b1.update
-    $w.b1.update  configure -state disabled
+    $w.b.multipv configure -state readonly
+    pack forget $w.b.update
+    $w.b.update  configure -state disabled
     text $w.text -height 1 -font font_Regular -wrap word -bg gray95
   } else  {
-    # pack forget $w.b1.showinfo
-    # $w.b1.showinfo configure -state disabled
+    # pack forget $w.b.showinfo
+    # $w.b.showinfo configure -state disabled
 
-    pack forget $w.b1.multipv 
-    pack forget $w.b1.alllines
-    $w.b1.multipv configure -state disabled
-    $w.b1.alllines configure -state disabled
+    pack forget $w.b.multipv 
+    pack forget $w.b.alllines
+    $w.b.multipv configure -state disabled
+    $w.b.alllines configure -state disabled
     text $w.text -height 4 -font font_Regular -wrap word -bg gray95
   }
 
@@ -1884,7 +1884,7 @@ proc makeAnalysisWin { {n 1} } {
   bind $w <Destroy> "destroyAnalysisWin $n"
   bind $w <Configure> "recordWinSize $w"
   bind $w <Escape> "focus .; destroy $w"
-  bind $w <Key-a> "$w.b1.bStartStop invoke"
+  bind $w <Key-a> "$w.b.startStop invoke"
   wm minsize $w 25 0
   bindMouseWheel $w $w.hist.text
 
@@ -1923,9 +1923,9 @@ proc makeAnalysisWin { {n 1} } {
     #    changePVSize $n
     catch {
       if { $hasMultiPV } {
-        $w.b1.multipv configure -from $min -to $max -state readonly
+        $w.b.multipv configure -from $min -to $max -state readonly
       } else  {
-        $w.b1.multipv configure -from 1 -to 1 -state disabled
+        $w.b.multipv configure -from 1 -to 1 -state disabled
       }
     }
   } ;# end of MultiPV spinbox configuration
@@ -2114,7 +2114,7 @@ proc processAnalysisInput {{n 1}} {
     if {[string match "*myname=*" $line] } {
       if { !$analysis(wbEngineDetected$n) } { detectWBEngine $n $line  }
       if { [regexp "myname=\"(\[^\"\]*)\"" $line dummy name]} {
-        catch {wm title .analysisWin$n "Scid: Analysis $n: $name"}
+        catch {wm title .analysisWin$n "Scid: $name"}
       }
     }
     return
@@ -2261,7 +2261,7 @@ proc formatAnalysisMoves {text} {
 ################################################################################
 proc toggleFinishGame {n} {
   global analysis
-  set b ".analysisWin$n.b1.bFinishGame"
+  set b ".analysisWin$n.b.finishGame"
 
   if { $::annotateModeButtonValue || $::autoplayMode || !$analysis(analyzeMode$n) || ! [sc_pos isAt vend] } {
     return
@@ -2282,7 +2282,7 @@ proc toggleFinishGame {n} {
 ################################################################################
 proc autoplayFinishGame {n} {
   if {!$::finishGameMode || ![winfo exists .analysisWin$n]} {return}
-  .analysisWin$n.b1.move invoke
+  .analysisWin$n.b.move invoke
   if { [string index [sc_game info previousMove] end] == {#}} {
     toggleFinishGame $n
     return
@@ -2294,7 +2294,7 @@ proc autoplayFinishGame {n} {
 ################################################################################
 proc toggleEngineAnalysis {n {force 0}} {
   global analysis
-  set b .analysisWin$n.b1.bStartStop
+  set b .analysisWin$n.b.startStop
 
   if { ($::annotateModeButtonValue || $::finishGameMode) && ! $force } {
     return
@@ -2307,13 +2307,13 @@ proc toggleEngineAnalysis {n {force 0}} {
     # reset lock mode and disable lock button
     set analysis(lockEngine$n) 0
     toggleLockEngine $n
-    .analysisWin$n.b1.lockengine configure -state disabled
+    .analysisWin$n.b.lockengine configure -state disabled
   } else  {
     startAnalyzeMode $n
     $b configure -image tb_pause
     ::utils::tooltip::Set $b "$::tr(StopEngine)(a)"
     # enable lock button
-    .analysisWin$n.b1.lockengine configure -state normal
+    .analysisWin$n.b.lockengine configure -state normal
   }
 }
 ################################################################################
@@ -2388,15 +2388,15 @@ proc toggleLockEngine {n} {
     set state normal
   }
   set w .analysisWin$n
-  $w.b1.move configure -state $state
-  $w.b1.line configure -state $state
+  $w.b.move configure -state $state
+  $w.b.line configure -state $state
   if {$analysis(uci$n)} {
-    $w.b1.multipv configure -state $state
+    $w.b.multipv configure -state $state
   }
-  $w.b1.alllines configure -state $state
-  $w.b1.automove configure -state $state
-  $w.b1.annotate configure -state $state
-  $w.b1.bFinishGame configure -state $state
+  $w.b.alllines configure -state $state
+  $w.b.automove configure -state $state
+  $w.b.annotate configure -state $state
+  $w.b.finishGame configure -state $state
 }
 ################################################################################
 # updateAnalysisText
@@ -3201,15 +3201,17 @@ proc tourneyNM {n m} {
   
   sc_game tags set -white $analysis(name$n)
   sc_game tags set -black $analysis(name$m)
+  sc_game tags set -event {Scid-vs-Pc Tourney}
+  sc_game tags set -date [::utils::date::today]
 
   # Engine N goes first
   set tourney(move) $n
   set tourney(nextmove) $m
   if {$analysis(analyzeMode$m)} {
-    .analysisWin$m.b1.bStartStop invoke
+    .analysisWin$m.b.startStop invoke
   }
   if {!$analysis(analyzeMode$n)} {
-    .analysisWin$n.b1.bStartStop invoke
+    .analysisWin$n.b.startStop invoke
   }
 
   ### Whose move it is is handled in makeAnalysisMove, in case of bad moves
@@ -3218,21 +3220,16 @@ proc tourneyNM {n m} {
 }
 
 proc tourneyMove {} {
-    .analysisWin$::tourney(move).b1.move invoke
-    .analysisWin$::tourney(move).b1.bStartStop invoke
-    .analysisWin$::tourney(nextmove).b1.bStartStop invoke
+    .analysisWin$::tourney(move).b.move invoke
+    .analysisWin$::tourney(move).b.startStop invoke
+    .analysisWin$::tourney(nextmove).b.startStop invoke
     update
     after 3000 tourneyMove
 }
 
 proc tourneyGameEnd {} {
 puts tourneyGameEnd
-    if {$::analysis(analyzeMode$::tourney(move))} {
-      .analysisWin$::tourney(move).b1.bStartStop invoke
-    }
-    if {$::analysis(analyzeMode$::tourney(nextmove))} {
-      .analysisWin$::tourney(nextmove).b1.bStartStop invoke
-    }
+    after cancel tourneyMove
     tourneyStop
 }
 
@@ -3242,6 +3239,8 @@ puts tourneyStop
     after cancel tourneyMove
     set :tourney(move) {}
     set :tourney(nextmove) {}
+    catch {after 1000 {destroy .analysisWin$::tourney(move)}}
+    catch {after 1000 {destroy .analysisWin$::tourney(nextmove)}}
 }
 
 ###
