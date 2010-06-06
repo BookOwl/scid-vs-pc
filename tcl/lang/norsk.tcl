@@ -171,6 +171,7 @@ menuText O ToolsOpenRecentBaseAsTree "Open recent base as tree" 0   {Open a rece
 menuText O ToolsTracker "Brikkesporing"  0 {Åpne brikkesporingsvinduet}
 # ====== TODO To be translated ======
 menuText O ToolsTraining "Training"  0 {Training tools (tactics, openings,...) }
+menuText E ToolsTourney "Tournament" 2 {Chess engine tournament}
 # ====== TODO To be translated ======
 menuText O ToolsTacticalGame "Tactical game"  0 {Play a game with tactics}
 # ====== TODO To be translated ======

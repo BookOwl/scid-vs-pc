@@ -168,6 +168,7 @@ menuText F ToolsOpenBaseAsTree "Ouvrir base dans arbre" 0   {Ouvrir une base dan
 menuText F ToolsOpenRecentBaseAsTree "Ouvrir base récente dans arbre" 0   {Ouvrir une base récente dans la fenêtre d'arbre}
 menuText F ToolsTracker "Suivi de pièce"  0 {Ouvrir la fenêtre de suivi de pièce}
 menuText F ToolsTraining "Entrainement"  0 {Entrainement (tactique, ouvertures, ...) }
+menuText E ToolsTourney "Tournament" 2 {Chess engine tournament}
 menuText F ToolsTacticalGame "Partie tactique"  0 {Jouer une partie tactique}
 menuText F ToolsSeriousGame "Partie sérieuse"  0 {Jouer une partie sans handicap}
 menuText F ToolsTrainOpenings "Ouvertures"  0 {Entrainement sur un répertoire}

@@ -481,6 +481,9 @@ set helpMessage($m,[incr menuindex]) ToolsTrainFics
 $m add separator
 incr menuindex
 
+$m add command -label ToolsTourney -command {tourneyInit}
+set helpMessage($m,[incr menuindex]) ToolsTourney
+
 # sub-menu for training
 menu $m.training
 $m add cascade -label ToolsTraining -menu $m.training
@@ -1433,7 +1436,7 @@ proc setLanguageMenus {{lang ""}} {
 
   if {$lang == ""} {set lang $::language}
 
-  foreach tag {CorrespondenceChess ToolsTraining ToolsTacticalGame ToolsSeriousGame ToolsTrainFics} {
+  foreach tag {CorrespondenceChess ToolsTraining ToolsTacticalGame ToolsSeriousGame ToolsTrainFics ToolsTourney} {
     configMenuText .menu.play [tr $tag $oldLang] $tag $lang
   }
 
