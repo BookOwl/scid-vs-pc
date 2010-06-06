@@ -83,8 +83,11 @@ proc ::file::New {} {
   } elseif {[file extension $fName] == ".epd"} {
     newEpdWin create $fName
     return
-  } else {
     set fName [file rootname $fName]
+  } else {
+    if {[file extension $fName] == ".si3"} {
+      set fName [file rootname $fName]
+    } 
     if {[catch {sc_base create $fName} result]} {
       tk_messageBox -icon warning -type ok -parent . \
           -title "Scid: Unable to create base" -message $result

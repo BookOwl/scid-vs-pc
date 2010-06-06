@@ -4349,8 +4349,10 @@ set helpText(Related) {<h1>Related Links</h1>
 -- A few popular chess portals. </li>
 <br>
 
-  <li><url http://www.pgnmentor.com/index.html>http://www.pgnmentor.com/index.html</url> --
+  <li><url http://www.pgnmentor.com/files.html#players>http://www.pgnmentor.com/files.html#players</url> --
   Pgn archive of famous players.</li>
+  <li><url http://www.pgnmentor.com/files.html#events>http://www.pgnmentor.com/files.html#events</url> --
+  Pgn archive of events.</li>
   <li><url http://www.tim-mann.org/chess.html>http://www.tim_mann.org/chess.html</url> --
   Home page of Tim Mann's <b>xboard & winboard</b> program which is a PGN
   reader and an interface for Internet chess servers. His site also has
