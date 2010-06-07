@@ -1945,7 +1945,7 @@ proc makeAnalysisWin { {n 1} } {
 ################################################################################
 #
 ################################################################################
-proc toggleMovesDisplay { {n 1} } {
+proc toggleMovesDisplay {n} {
   set ::analysis(movesDisplay$n) [expr 1 - $::analysis(movesDisplay$n)]
   set h .analysisWin$n.hist.text
   $h configure -state normal
@@ -2080,7 +2080,7 @@ proc initialAnalysisStart {n} {
 #   Called from a fileevent whenever there is a line of input
 #   from an analysis engine waiting to be processed.
 ################################################################################
-proc processAnalysisInput {{n 1}} {
+proc processAnalysisInput {n} {
   global analysis
 
   # Get one line from the engine:
@@ -2462,7 +2462,6 @@ proc updateAnalysisText {{n 1}} {
     append newStr [format "Score: %+8.2f      Time: %9.2f seconds\n" $score $analysis(time$n)]
     $t insert 1.0 $newStr
   }
-
 
   if {$analysis(automove$n)} {
     if {$analysis(automoveThinking$n)} {
@@ -3176,17 +3175,71 @@ UYkCxTnj5QsYMFkw4UMTJhS2xCFdVIHEDjXc8IMSRxQBRAsWzEWXQxhm+JBG
 HHaYUEAAOw==}
 
 proc tourneyInit {} {
+  global tourney
+
   set w .initTourney
 
   toplevel $w
   wm state $w withdrawn
-  wm title $w "Configure Annotation"
+  wm title $w "Configure Tournament"
+  # &&&
+
+  pack [frame $w.engines] -side top
+  pack [frame $w.config] -side right
+
+  pack [label $w.engines.label -text "Number of Engines"] -side top -padx 5 -pady 5
+
+  pack [frame $w.engines.top] -side top -padx 10 -pady 5 -expand 1 -fill x
+  pack [spinbox $w.engines.top.count -textvariable tourney(count) -from 2 -to [llength $::engines(list)] -width 5] \
+    -side left -padx 5 -pady 5
+  dialogbutton $w.engines.top.update -text Update -command drawCombos
+  pack $w.engines.top.update -side right -padx 5 -pady 5
+
+  set tourney(count) 2
+  drawCombos
+
+  frame $w.buttons
+  dialogbutton $w.buttons.cancel -text Cancel -command {
+    destroy .initTourney
+  }
+  dialogbutton $w.buttons.ok -text Launch -command {
+    set n [.initTourney.engines.list.0 current]
+    set m [.initTourney.engines.list.1 current]
+    incr n ; incr m
+    destroy .initTourney
+    tourneyNM $n $m
+  }
+  pack $w.buttons -side bottom -pady 10 -padx 5
+  pack $w.buttons.ok -side left -padx 5
+  pack $w.buttons.cancel -side right -padx 5
 
   placeWinOverParent $w .
   wm state $w normal
   update
 
-  tourneyNM 1 2 ; destroy $w
+}
+
+proc drawCombos {} {
+  set w .initTourney
+  set l $w.engines.list
+  if {[winfo exists $l]} {destroy $l}
+
+  pack [frame $l] -side top -padx 10 -pady 10
+
+  set values {}
+
+  foreach e $::engines(list) {
+    lappend values [lindex $e 0]
+  }
+
+  for {set i 0} {$i < $::tourney(count)} {incr i} {
+    ttk::combobox  $l.$i -width 20 -state readonly -values $values
+    $l.$i current $i
+    pack $l.$i -side top -pady 5
+  }
+  update
+
+
 }
 
 proc tourneyNM {n m} {
@@ -3194,9 +3247,11 @@ proc tourneyNM {n m} {
 
   if {![winfo exists .analysisWin$n]} {
     makeAnalysisWin $n
+    toggleMovesDisplay $n
   }
   if {![winfo exists .analysisWin$m]} {
     makeAnalysisWin $m
+    toggleMovesDisplay $m
   }
   
   sc_game tags set -white $analysis(name$n)
