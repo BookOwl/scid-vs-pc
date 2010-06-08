@@ -635,7 +635,7 @@ proc copyFilter {frombaseNum tobaseNum} {
   updateStatusBar
   "
   dialogbutton $w.b.cancel -text $::tr(Cancel) -command "focus .; destroy $w"
-  canvas $w.bar -width 300 -height 20  -relief solid -border 1
+  canvas $w.bar -width 300 -height 20 -bg white -relief solid -border 1
   $w.bar create rectangle 0 0 0 0 -fill blue -outline blue -tags bar
   $w.bar create text 295 10 -anchor e -font font_Regular -tags time \
       -fill black -text "0:00 / 0:00"
