@@ -3231,7 +3231,6 @@ proc tourneyInit {} {
       puts "player $i is $j"
     }
     destroy .initTourney
-    set ::tourney(game) 1
 
     for {set i 0} {$i < $::tourney(count)} {incr i} {
       for {set j 0} {$j <= $i} {incr j} {
@@ -3292,6 +3291,7 @@ proc tourneyNM {n m} {
   global analysis tourney
 
   sc_game new
+  set tourney(game) 1
   update
   if {[winfo exists .analysisWin$n]} "destroy .analysisWin$n"
   if {[winfo exists .analysisWin$m]} "destroy .analysisWin$m"
