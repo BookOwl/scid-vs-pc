@@ -784,6 +784,13 @@ namespace eval tacgame {
         } else {
           set side Phalanx
         }
+	if {[sc_pos side] == {black}} {
+          sc_game tags set -result 1
+        } else {
+          sc_game tags set -result 0
+        }
+	updateBoard -pgn
+
         tk_messageBox -type ok -message "$side Wins" -parent .board -icon info -title Checkmate
       }
       return 1
