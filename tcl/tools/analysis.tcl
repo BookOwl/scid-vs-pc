@@ -1506,12 +1506,18 @@ proc makeAnalysisMove {n} {
     set res 0
     puts "makeAnalysisMove: error adding move $move" ; # &&&
   } else {
-    if {[info exists ::tourney(move)]} {
+    if {$::tourney(game) > 0} {
       puts "engine $n moves $move"
       set movetemp $::tourney(move)
       set ::tourney(move) $::tourney(nextmove)
       set ::tourney(nextmove) $movetemp
       if { [string index [sc_game info previousMove] end] == {#}} {
+	if {[sc_pos side] == {black}} {
+	  sc_game tags set -result 1
+        } else {
+	  sc_game tags set -result 0
+        }
+        
 	tourneyGameEnd
       }
     } 
@@ -1539,8 +1545,9 @@ proc destroyAnalysisWin {n} {
 
   global windowsOS analysis annotateModeButtonValue
 
+puts "destroyAnalysisWin $n"
   bind .analysisWin$n <Destroy> {}
-  if {[info exists ::tourney(move)]} {tourneyStop}
+  if {$::tourney(game) > 0} {tourneyStop}
   if { $annotateModeButtonValue } { ; # end annotation
     set annotateModeButtonValue 0
     toggleAutoplay
@@ -1554,6 +1561,7 @@ proc destroyAnalysisWin {n} {
 
   # Send interrupt signal if the engine wants it:
   if {(!$windowsOS)  &&  $analysis(send_sigint$n)} {
+puts "killing $analysis(pipe$n), [pid $analysis(pipe$n)]"
     catch {exec -- kill -s INT [pid $analysis(pipe$n)]}
   }
 
@@ -1575,7 +1583,8 @@ proc destroyAnalysisWin {n} {
   # Close the engine, ignoring any errors since nothing can really
   # be done about them anyway -- maybe should alert the user with
   # a message box?
-  catch {close $analysis(pipe$n)}
+  close $analysis(pipe$n)
+  #catch {close $analysis(pipe$n)}
 
   if {$analysis(log$n) != {}} {
     catch {close $analysis(log$n)}
@@ -1590,7 +1599,9 @@ proc destroyAnalysisWin {n} {
 #
 proc sendToEngine {n text} {
   logEngine $n "Scid  : $text"
-  catch {puts $::analysis(pipe$n) $text}
+puts "$n $text"
+  puts $::analysis(pipe$n) $text
+  # catch {puts $::analysis(pipe$n) $text}
 }
 
 # sendMoveToEngine:
@@ -3174,6 +3185,10 @@ c8bkQDGisK1Qi9JgIaKjh5AgNlhKwChBovAtUo0yPRq0pw8gPnDK0HhxonCt
 UYkCxTnj5QsYMFkw4UMTJhS2xCFdVIHEDjXc8IMSRxQBRAsWzEWXQxhm+JBG
 HHaYUEAAOw==}
 
+set ::tourney(game) 0
+set ::tourney(current) 0
+set ::tourney(games) {}
+
 proc tourneyInit {} {
   global tourney
 
@@ -3202,13 +3217,32 @@ proc tourneyInit {} {
   dialogbutton $w.buttons.cancel -text Cancel -command {
     destroy .initTourney
   }
-  dialogbutton $w.buttons.ok -text Launch -command {
-    set n [.initTourney.engines.list.0 current]
-    set m [.initTourney.engines.list.1 current]
-    incr n ; incr m
+  dialogbutton $w.buttons.ok -text OK -command {
+    ### Play out round robin, each pairing playing two games (white and black)
+
+    set players {}
+    set names {}
+    for {set i 0} {$i < $::tourney(count)} {incr i} {
+      set j [.initTourney.engines.list.$i current]
+      lappend players [expr $j + 1]
+      lappend names   [lindex [lindex $::engines(list) $j] 0]
+    }
+    foreach i $players j $names {
+      puts "player $i is $j"
+    }
     destroy .initTourney
-    tourneyNM $n $m
+    set ::tourney(game) 1
+
+    for {set i 0} {$i < $::tourney(count)} {incr i} {
+      for {set j 0} {$j <= $i} {incr j} {
+        if {$i == $j} {continue}
+        tourneyCueGame [lindex $players $i] [lindex $players $j] [lindex $names $i] [lindex $names $j]
+        tourneyCueGame [lindex $players $j] [lindex $players $i] [lindex $names $j] [lindex $names $i]
+      }
+    }
+    tourneyNextGame
   }
+  focus $w.buttons.ok
   pack $w.buttons -side bottom -pady 10 -padx 5
   pack $w.buttons.ok -side left -padx 5
   pack $w.buttons.cancel -side right -padx 5
@@ -3238,21 +3272,33 @@ proc drawCombos {} {
     pack $l.$i -side top -pady 5
   }
   update
+}
 
+proc tourneyCueGame {n m name1 name2} {
+  lappend ::tourney(games) "$n $m $name1 $name2"
+}
 
+proc tourneyNextGame {} {
+puts $::tourney(games)
+  foreach {n m name1 name2} [lindex $::tourney(games) $::tourney(current)] {}
+  if {$n != {} && $m != {}} {
+    puts "Game $::tourney(current): $name1 vs. $name2"
+    incr ::tourney(current)
+    tourneyNM $n $m
+  }
 }
 
 proc tourneyNM {n m} {
   global analysis tourney
 
-  if {![winfo exists .analysisWin$n]} {
-    makeAnalysisWin $n
-    toggleMovesDisplay $n
-  }
-  if {![winfo exists .analysisWin$m]} {
-    makeAnalysisWin $m
-    toggleMovesDisplay $m
-  }
+  sc_game new
+  update
+  if {[winfo exists .analysisWin$n]} "destroy .analysisWin$n"
+  if {[winfo exists .analysisWin$m]} "destroy .analysisWin$m"
+  makeAnalysisWin $n
+  toggleMovesDisplay $n
+  makeAnalysisWin $m
+  toggleMovesDisplay $m
   
   sc_game tags set -white $analysis(name$n)
   sc_game tags set -black $analysis(name$m)
@@ -3270,20 +3316,32 @@ proc tourneyNM {n m} {
   }
 
   ### Whose move it is is handled in makeAnalysisMove, in case of bad moves
+  set ::tourney(prevmove) $m
   after 3000 tourneyMove
-
 }
 
 proc tourneyMove {} {
+    after 3000 tourneyMove
+#    if {$::tourney(prevmove) == $::tourney(move)} {
+#      #restart stupid engine
+#      puts "restarting engine $::tourney(move)"
+#      .analysisWin$::tourney(move).b.startStop invoke
+#      .analysisWin$::tourney(move).b.startStop invoke
+#    } else {
+#      set ::tourney(prevmove) $::tourney(move)
+#    }
     .analysisWin$::tourney(move).b.move invoke
     .analysisWin$::tourney(move).b.startStop invoke
     .analysisWin$::tourney(nextmove).b.startStop invoke
     update
-    after 3000 tourneyMove
 }
 
 proc tourneyGameEnd {} {
-puts tourneyGameEnd
+puts "tourneyGameEnd"
+    if {![sc_base isReadOnly]} {
+puts "saving game"
+      sc_game save [sc_game number]
+    }
     after cancel tourneyMove
     tourneyStop
 }
@@ -3292,13 +3350,12 @@ proc tourneyStop {} {
 
 puts tourneyStop
     after cancel tourneyMove
-    set :tourney(move) {}
-    set :tourney(nextmove) {}
     catch {after 1000 {destroy .analysisWin$::tourney(move)}}
     catch {after 1000 {destroy .analysisWin$::tourney(nextmove)}}
+    set ::tourney(game) {}
+    after 5000 tourneyNextGame
 }
 
 ###
 ### End of file: analysis.tcl
-###
 ###
