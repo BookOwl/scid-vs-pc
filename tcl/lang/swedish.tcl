@@ -172,7 +172,7 @@ menuText W ToolsOpenRecentBaseAsTree "Öppna senaste databasen som träd" 0   {Öpp
 menuText W ToolsTracker "Sök material"  0 {Öppnar dialog för att söka efter en viss materiell balans} 
 # ====== TODO To be translated ======
 menuText W ToolsTraining "Träning"  0 {Träningsverktyg (taktik, öppningar,...) }
-menuText E ToolsTourney "Tournament" 2 {Chess engine tournament}
+menuText E ToolsComp "Tournament" 2 {Chess engine tournament}
 # ====== TODO To be translated ======
 menuText W ToolsTacticalGame "Taktiskt parti"  0 {Spela ett parti med taktik}
 # ====== TODO To be translated ======

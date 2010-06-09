@@ -175,7 +175,7 @@ menuText P ToolsOpenRecentBaseAsTree "Open recent base as tree" 0   {Open a rece
 menuText P ToolsTracker "¦ledzenie figur"  10 {Otwórz/zamknij okno ¶ledzenia figur} 
 # ====== TODO To be translated ======
 menuText P ToolsTraining "Training"  0 {Training tools (tactics, openings,...) }
-menuText E ToolsTourney "Tournament" 2 {Chess engine tournament}
+menuText E ToolsComp "Tournament" 2 {Chess engine tournament}
 # ====== TODO To be translated ======
 menuText P ToolsTacticalGame "Tactical game"  0 {Play a game with tactics}
 # ====== TODO To be translated ======

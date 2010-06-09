@@ -1506,11 +1506,11 @@ proc makeAnalysisMove {n} {
     set res 0
     puts "makeAnalysisMove: error adding move $move" ; # &&&
   } else {
-    if {$::tourney(game) > 0} {
+    if {$::comp(playing) > 0} {
       puts "engine $n moves $move"
-      set movetemp $::tourney(move)
-      set ::tourney(move) $::tourney(nextmove)
-      set ::tourney(nextmove) $movetemp
+      set movetemp $::comp(move)
+      set ::comp(move) $::comp(nextmove)
+      set ::comp(nextmove) $movetemp
       if { [string index [sc_game info previousMove] end] == {#}} {
 	if {[sc_pos side] == {black}} {
 	  sc_game tags set -result 1
@@ -1518,7 +1518,7 @@ proc makeAnalysisMove {n} {
 	  sc_game tags set -result 0
         }
         
-	tourneyGameEnd
+	compGameEnd
       }
     } 
   }
@@ -1547,7 +1547,7 @@ proc destroyAnalysisWin {n} {
 
 puts "destroyAnalysisWin $n"
   bind .analysisWin$n <Destroy> {}
-  if {$::tourney(game) > 0} {tourneyStop}
+  if {$::comp(playing) > 0} {compStop}
   if { $annotateModeButtonValue } { ; # end annotation
     set annotateModeButtonValue 0
     toggleAutoplay
@@ -3185,14 +3185,14 @@ c8bkQDGisK1Qi9JgIaKjh5AgNlhKwChBovAtUo0yPRq0pw8gPnDK0HhxonCt
 UYkCxTnj5QsYMFkw4UMTJhS2xCFdVIHEDjXc8IMSRxQBRAsWzEWXQxhm+JBG
 HHaYUEAAOw==}
 
-set ::tourney(game) 0
-set ::tourney(current) 0
-set ::tourney(games) {}
+set ::comp(playing) 0
+set ::comp(current) 0
+set ::comp(games) {}
 
-proc tourneyInit {} {
-  global tourney
+proc compInit {} {
+  global comp
 
-  set w .initTourney
+  set w .initComp
 
   toplevel $w
   wm state $w withdrawn
@@ -3205,41 +3205,41 @@ proc tourneyInit {} {
   pack [label $w.engines.label -text "Number of Engines"] -side top -padx 5 -pady 5
 
   pack [frame $w.engines.top] -side top -padx 10 -pady 5 -expand 1 -fill x
-  pack [spinbox $w.engines.top.count -textvariable tourney(count) -from 2 -to [llength $::engines(list)] -width 5] \
+  pack [spinbox $w.engines.top.count -textvariable comp(count) -from 2 -to [llength $::engines(list)] -width 5] \
     -side left -padx 5 -pady 5
   dialogbutton $w.engines.top.update -text Update -command drawCombos
   pack $w.engines.top.update -side right -padx 5 -pady 5
 
-  set tourney(count) 2
+  set comp(count) 2
   drawCombos
 
   frame $w.buttons
   dialogbutton $w.buttons.cancel -text Cancel -command {
-    destroy .initTourney
+    destroy .initComp
   }
   dialogbutton $w.buttons.ok -text OK -command {
     ### Play out round robin, each pairing playing two games (white and black)
 
     set players {}
     set names {}
-    for {set i 0} {$i < $::tourney(count)} {incr i} {
-      set j [.initTourney.engines.list.$i current]
+    for {set i 0} {$i < $::comp(count)} {incr i} {
+      set j [.initComp.engines.list.$i current]
       lappend players [expr $j + 1]
       lappend names   [lindex [lindex $::engines(list) $j] 0]
     }
     foreach i $players j $names {
       puts "player $i is $j"
     }
-    destroy .initTourney
+    destroy .initComp
 
-    for {set i 0} {$i < $::tourney(count)} {incr i} {
+    for {set i 0} {$i < $::comp(count)} {incr i} {
       for {set j 0} {$j <= $i} {incr j} {
         if {$i == $j} {continue}
-        tourneyCueGame [lindex $players $i] [lindex $players $j] [lindex $names $i] [lindex $names $j]
-        tourneyCueGame [lindex $players $j] [lindex $players $i] [lindex $names $j] [lindex $names $i]
+        compCueGame [lindex $players $i] [lindex $players $j] [lindex $names $i] [lindex $names $j]
+        compCueGame [lindex $players $j] [lindex $players $i] [lindex $names $j] [lindex $names $i]
       }
     }
-    tourneyNextGame
+    compNextGame
   }
   focus $w.buttons.ok
   pack $w.buttons -side bottom -pady 10 -padx 5
@@ -3253,7 +3253,7 @@ proc tourneyInit {} {
 }
 
 proc drawCombos {} {
-  set w .initTourney
+  set w .initComp
   set l $w.engines.list
   if {[winfo exists $l]} {destroy $l}
 
@@ -3265,7 +3265,7 @@ proc drawCombos {} {
     lappend values [lindex $e 0]
   }
 
-  for {set i 0} {$i < $::tourney(count)} {incr i} {
+  for {set i 0} {$i < $::comp(count)} {incr i} {
     ttk::combobox  $l.$i -width 20 -state readonly -values $values
     $l.$i current $i
     pack $l.$i -side top -pady 5
@@ -3273,25 +3273,29 @@ proc drawCombos {} {
   update
 }
 
-proc tourneyCueGame {n m name1 name2} {
-  lappend ::tourney(games) "$n $m $name1 $name2"
+proc compCueGame {n m name1 name2} {
+  lappend ::comp(games) "$n $m $name1 $name2"
 }
 
-proc tourneyNextGame {} {
-puts $::tourney(games)
-  foreach {n m name1 name2} [lindex $::tourney(games) $::tourney(current)] {}
-  if {$n != {} && $m != {}} {
-    puts "Game $::tourney(current): $name1 vs. $name2"
-    incr ::tourney(current)
-    tourneyNM $n $m
+proc compNextGame {} {
+  set thisgame [lindex $::comp(games) $::comp(current)]
+  if {$thisgame != {} } {
+    foreach {n m name1 name2} $thisgame {}
+    if {$n != {} && $m != {}} {
+      puts "Game $::comp(current): $name1 vs. $name2"
+      incr ::comp(current)
+      compNM $n $m
+    }
+  } else {
+    puts "Comp finished"
   }
 }
 
-proc tourneyNM {n m} {
-  global analysis tourney
+proc compNM {n m} {
+  global analysis comp
 
   sc_game new
-  set tourney(game) 1
+  set comp(playing) 1
   update
   if {[winfo exists .analysisWin$n]} "destroy .analysisWin$n"
   if {[winfo exists .analysisWin$m]} "destroy .analysisWin$m"
@@ -3302,12 +3306,12 @@ proc tourneyNM {n m} {
   
   sc_game tags set -white $analysis(name$n)
   sc_game tags set -black $analysis(name$m)
-  sc_game tags set -event {Scid-vs-Pc Tourney}
+  sc_game tags set -event {Scid-vs-Pc Tournament}
   sc_game tags set -date [::utils::date::today]
 
   # Engine N goes first
-  set tourney(move) $n
-  set tourney(nextmove) $m
+  set comp(move) $n
+  set comp(nextmove) $m
   if {$analysis(analyzeMode$m)} {
     .analysisWin$m.b.startStop invoke
   }
@@ -3316,44 +3320,46 @@ proc tourneyNM {n m} {
   }
 
   ### Whose move it is is handled in makeAnalysisMove, in case of bad moves
-  set ::tourney(prevmove) $m
-  after 3000 tourneyMove
+  set ::comp(prevmove) $m
+  after 3000 compMove
+  after 3000 updateTitle
 }
 
-proc tourneyMove {} {
-    after 3000 tourneyMove
-#    if {$::tourney(prevmove) == $::tourney(move)} {
+proc compMove {} {
+    after 3000 compMove
+#    if {$::comp(prevmove) == $::comp(move)} {
 #      #restart stupid engine
-#      puts "restarting engine $::tourney(move)"
-#      .analysisWin$::tourney(move).b.startStop invoke
-#      .analysisWin$::tourney(move).b.startStop invoke
+#      puts "restarting engine $::comp(move)"
+#      .analysisWin$::comp(move).b.startStop invoke
+#      .analysisWin$::comp(move).b.startStop invoke
 #    } else {
-#      set ::tourney(prevmove) $::tourney(move)
+#      set ::comp(prevmove) $::comp(move)
 #    }
-    .analysisWin$::tourney(move).b.move invoke
-    .analysisWin$::tourney(move).b.startStop invoke
-    .analysisWin$::tourney(nextmove).b.startStop invoke
+    .analysisWin$::comp(move).b.move invoke
+    .analysisWin$::comp(move).b.startStop invoke
+    .analysisWin$::comp(nextmove).b.startStop invoke
     update
 }
 
-proc tourneyGameEnd {} {
-puts "tourneyGameEnd"
+proc compGameEnd {} {
+puts "compGameEnd"
     if {![sc_base isReadOnly]} {
 puts "saving game"
       sc_game save [sc_game number]
+      ::windows::gamelist::Refresh
     }
-    after cancel tourneyMove
-    tourneyStop
+    after cancel compMove
+    compStop
 }
 
-proc tourneyStop {} {
+proc compStop {} {
 
-puts tourneyStop
-    after cancel tourneyMove
-    catch {after 1000 {destroy .analysisWin$::tourney(move)}}
-    catch {after 1000 {destroy .analysisWin$::tourney(nextmove)}}
-    set ::tourney(game) {}
-    after 5000 tourneyNextGame
+puts compStop
+    after cancel compMove
+    catch {after 1000 {destroy .analysisWin$::comp(move)}}
+    catch {after 1000 {destroy .analysisWin$::comp(nextmove)}}
+    set ::comp(playing) {}
+    after 5000 compNextGame
 }
 
 ###
