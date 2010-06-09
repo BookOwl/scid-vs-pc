@@ -1131,7 +1131,7 @@ proc ::board::new {w {psize 40} {showmat "nomat"} } {
   frame $w.stmgap -width 3
   frame $w.stm
   # frame $w.mat
-  frame $w.wtm  -relief solid -borderwidth 1
+  frame $w.wtm -background white -relief solid -borderwidth 1
   frame $w.btm -background black -relief solid -borderwidth 1
   grid $w.stmgap -row 1 -column 1
   grid $w.stm -row 2 -column 0 -rowspan 5 -padx 2

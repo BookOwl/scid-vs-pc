@@ -881,7 +881,7 @@ proc nameEditor {} {
 
   foreach i {fromE toE ratingE fromD toD} {
     bind $w.g.$i <FocusIn> { %W configure -background lightYellow }
-    bind $w.g.$i <FocusOut> { %W configure  }
+    bind $w.g.$i <FocusOut> { %W configure -background {} }
   }
   foreach {i j} {.nedit.g.fromE "editName"  .nedit.g.toE "editNameNew" } {
     for {set z 1} {$z <= 9} {incr z} {
@@ -1140,10 +1140,10 @@ proc gameSave { gnum } {
         weloentry beloentry ecoentry edateyear edatemonth edateday} {
     bind $f.$i <Return> {.save.buttons.save invoke}
     # bind $f.$i <FocusIn> {%W configure -background lightYellow }
-    # bind $f.$i <FocusOut> {%W configure  }
+    # bind $f.$i <FocusOut> {%W configure -background {} }
   }
   bind .save.extra.text <FocusIn> {%W configure -background lightYellow }
-  bind .save.extra.text <FocusOut> {%W configure  }
+  bind .save.extra.text <FocusOut> {%W configure -background {} }
 
   # Bindings so Ctrl-1 to Ctrl-9 select a matching name in the player,
   # site, event and round entryboxes:
