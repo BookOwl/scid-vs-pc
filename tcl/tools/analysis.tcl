@@ -1503,22 +1503,26 @@ proc makeAnalysisMove {n} {
   if {$action == {var}} { sc_var create }
 
   if { [sc_move_add $move $n] } {
+    # move failed
     set res 0
     puts "makeAnalysisMove: error adding move $move" ; # &&&
+    if {$::comp(playing) > 0} {
+      compRepeatMove
+    }
   } else {
+    # move success
     if {$::comp(playing) > 0} {
       puts "engine $n moves $move"
-      set movetemp $::comp(move)
-      set ::comp(move) $::comp(nextmove)
-      set ::comp(nextmove) $movetemp
       if { [string index [sc_game info previousMove] end] == {#}} {
+	### checkmate
 	if {[sc_pos side] == {black}} {
 	  sc_game tags set -result 1
         } else {
 	  sc_game tags set -result 0
         }
-        
 	compGameEnd
+      } else {
+	compNextMove
       }
     } 
   }
@@ -3197,7 +3201,6 @@ proc compInit {} {
   toplevel $w
   wm state $w withdrawn
   wm title $w "Configure Tournament"
-  # &&&
 
   pack [frame $w.engines] -side top
   pack [frame $w.config] -side right
@@ -3235,8 +3238,8 @@ proc compInit {} {
     for {set i 0} {$i < $::comp(count)} {incr i} {
       for {set j 0} {$j <= $i} {incr j} {
         if {$i == $j} {continue}
-        compCueGame [lindex $players $i] [lindex $players $j] [lindex $names $i] [lindex $names $j]
         compCueGame [lindex $players $j] [lindex $players $i] [lindex $names $j] [lindex $names $i]
+        compCueGame [lindex $players $i] [lindex $players $j] [lindex $names $i] [lindex $names $j]
       }
     }
     compNextGame
@@ -3279,10 +3282,11 @@ proc compCueGame {n m name1 name2} {
 
 proc compNextGame {} {
   set thisgame [lindex $::comp(games) $::comp(current)]
+puts "thigame is \"$thisgame\", games are \"$::comp(games)\""
   if {$thisgame != {} } {
     foreach {n m name1 name2} $thisgame {}
     if {$n != {} && $m != {}} {
-      puts "Game $::comp(current): $name1 vs. $name2"
+      puts "Game [expr $::comp(current) + 1]: $name1 vs. $name2"
       incr ::comp(current)
       compNM $n $m
     }
@@ -3304,6 +3308,7 @@ proc compNM {n m} {
   makeAnalysisWin $m
   toggleMovesDisplay $m
   
+puts "compNM : setting white $analysis(name$n) , black $analysis(name$m)"
   sc_game tags set -white $analysis(name$n)
   sc_game tags set -black $analysis(name$m)
   sc_game tags set -event {Scid-vs-Pc Tournament}
@@ -3321,12 +3326,14 @@ proc compNM {n m} {
 
   ### Whose move it is is handled in makeAnalysisMove, in case of bad moves
   set ::comp(prevmove) $m
-  after 3000 compMove
-  after 3000 updateTitle
+  updateTitle
+  after 3000 {
+    compMove
+  }
 }
 
 proc compMove {} {
-    after 3000 compMove
+    # after 3000 compMove
 #    if {$::comp(prevmove) == $::comp(move)} {
 #      #restart stupid engine
 #      puts "restarting engine $::comp(move)"
@@ -3336,19 +3343,38 @@ proc compMove {} {
 #      set ::comp(prevmove) $::comp(move)
 #    }
     .analysisWin$::comp(move).b.move invoke
+}
+proc compNextMove {} {
     .analysisWin$::comp(move).b.startStop invoke
     .analysisWin$::comp(nextmove).b.startStop invoke
+    set movetemp $::comp(move)
+    set ::comp(move) $::comp(nextmove)
+    set ::comp(nextmove) $movetemp
     update
+    after 3000 compMove
+}
+proc compRepeatMove {} {
+puts "compRepeatMove $::comp(move)"
+puts "stopping"
+    .analysisWin$::comp(move).b.startStop invoke
+    update
+puts "state is $::analysis(analyzeMode$::comp(move))"
+    after 500
+puts "starting"
+    .analysisWin$::comp(move).b.startStop invoke
+    update
+puts "state is $::analysis(analyzeMode$::comp(move))"
+    after 3000 compMove
 }
 
 proc compGameEnd {} {
 puts "compGameEnd"
+    after cancel compMove
     if {![sc_base isReadOnly]} {
 puts "saving game"
       sc_game save [sc_game number]
       ::windows::gamelist::Refresh
     }
-    after cancel compMove
     compStop
 }
 
@@ -3356,9 +3382,13 @@ proc compStop {} {
 
 puts compStop
     after cancel compMove
-    catch {after 1000 {destroy .analysisWin$::comp(move)}}
-    catch {after 1000 {destroy .analysisWin$::comp(nextmove)}}
     set ::comp(playing) {}
+    after 1000 {
+      catch {
+        destroy .analysisWin$::comp(move)
+        destroy .analysisWin$::comp(nextmove)
+      }
+    }
     after 5000 compNextGame
 }
 
