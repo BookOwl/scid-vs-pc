@@ -1503,14 +1503,14 @@ proc makeAnalysisMove {n} {
   if {$action == {var}} { sc_var create }
 
   if { [sc_move_add $move $n] } {
-    # move failed
+    ### Move fail
     set res 0
     puts "makeAnalysisMove: error adding move $move" ; # &&&
     if {$::comp(playing) > 0} {
       compRepeatMove
     }
   } else {
-    # move success
+    ### Move success
     if {$::comp(playing) > 0} {
       puts "engine $n moves $move"
       if { [string index [sc_game info previousMove] end] == {#}} {
@@ -1522,6 +1522,7 @@ proc makeAnalysisMove {n} {
         }
 	compGameEnd
       } else {
+        ### todo: check for draw
 	compNextMove
       }
     } 
@@ -3194,7 +3195,7 @@ set ::comp(current) 0
 set ::comp(games) {}
 
 proc compInit {} {
-  global comp
+  global analysis comp engines
 
   set w .initComp
 
@@ -3208,7 +3209,7 @@ proc compInit {} {
   pack [label $w.engines.label -text "Number of Engines"] -side top -padx 5 -pady 5
 
   pack [frame $w.engines.top] -side top -padx 10 -pady 5 -expand 1 -fill x
-  pack [spinbox $w.engines.top.count -textvariable comp(count) -from 2 -to [llength $::engines(list)] -width 5] \
+  pack [spinbox $w.engines.top.count -textvariable comp(count) -from 2 -to [llength $engines(list)] -width 5] \
     -side left -padx 5 -pady 5
   dialogbutton $w.engines.top.update -text Update -command drawCombos
   pack $w.engines.top.update -side right -padx 5 -pady 5
@@ -3225,17 +3226,17 @@ proc compInit {} {
 
     set players {}
     set names {}
-    for {set i 0} {$i < $::comp(count)} {incr i} {
+    for {set i 0} {$i < $comp(count)} {incr i} {
       set j [.initComp.engines.list.$i current]
       lappend players [expr $j + 1]
-      lappend names   [lindex [lindex $::engines(list) $j] 0]
+      lappend names   [lindex [lindex $engines(list) $j] 0]
     }
     foreach i $players j $names {
       puts "player $i is $j"
     }
     destroy .initComp
 
-    for {set i 0} {$i < $::comp(count)} {incr i} {
+    for {set i 0} {$i < $comp(count)} {incr i} {
       for {set j 0} {$j <= $i} {incr j} {
         if {$i == $j} {continue}
         compCueGame [lindex $players $j] [lindex $players $i] [lindex $names $j] [lindex $names $i]
@@ -3256,6 +3257,8 @@ proc compInit {} {
 }
 
 proc drawCombos {} {
+  global analysis comp engines
+
   set w .initComp
   set l $w.engines.list
   if {[winfo exists $l]} {destroy $l}
@@ -3264,11 +3267,11 @@ proc drawCombos {} {
 
   set values {}
 
-  foreach e $::engines(list) {
+  foreach e $engines(list) {
     lappend values [lindex $e 0]
   }
 
-  for {set i 0} {$i < $::comp(count)} {incr i} {
+  for {set i 0} {$i < $comp(count)} {incr i} {
     ttk::combobox  $l.$i -width 20 -state readonly -values $values
     $l.$i current $i
     pack $l.$i -side top -pady 5
@@ -3277,17 +3280,20 @@ proc drawCombos {} {
 }
 
 proc compCueGame {n m name1 name2} {
-  lappend ::comp(games) "$n $m $name1 $name2"
+  global analysis comp
+  lappend comp(games) "$n $m $name1 $name2"
 }
 
 proc compNextGame {} {
-  set thisgame [lindex $::comp(games) $::comp(current)]
-puts "thigame is \"$thisgame\", games are \"$::comp(games)\""
+  global analysis comp
+
+  set thisgame [lindex $comp(games) $comp(current)]
+puts "thigame is \"$thisgame\", games are \"$comp(games)\""
   if {$thisgame != {} } {
     foreach {n m name1 name2} $thisgame {}
     if {$n != {} && $m != {}} {
-      puts "Game [expr $::comp(current) + 1]: $name1 vs. $name2"
-      incr ::comp(current)
+      puts "Game [expr $comp(current) + 1]: $name1 vs. $name2"
+      incr comp(current)
       compNM $n $m
     }
   } else {
@@ -3317,57 +3323,67 @@ puts "compNM : setting white $analysis(name$n) , black $analysis(name$m)"
   # Engine N goes first
   set comp(move) $n
   set comp(nextmove) $m
-  if {$analysis(analyzeMode$m)} {
-    .analysisWin$m.b.startStop invoke
-  }
-  if {!$analysis(analyzeMode$n)} {
-    .analysisWin$n.b.startStop invoke
-  }
 
-  ### Whose move it is is handled in makeAnalysisMove, in case of bad moves
-  set ::comp(prevmove) $m
+  # For some reason, xboard (but not uci) engines now start out of sync!
+  # I cant figure it out , but i have a good reset mechanism now
+
+  # This seems un-needed
+  #
+  # if {$analysis(analyzeMode$m)} {
+  #   .analysisWin$m.b.startStop invoke
+  # }
+  # if {!$analysis(analyzeMode$n)} {
+  #   .analysisWin$n.b.startStop invoke
+  # }
+
+  # Whose move it is is handled in makeAnalysisMove
+
+  set comp(prevmove) $m
   updateTitle
-  after 3000 {
-    compMove
-  }
+  after 3000 compMove
 }
 
 proc compMove {} {
-    # after 3000 compMove
-#    if {$::comp(prevmove) == $::comp(move)} {
-#      #restart stupid engine
-#      puts "restarting engine $::comp(move)"
-#      .analysisWin$::comp(move).b.startStop invoke
-#      .analysisWin$::comp(move).b.startStop invoke
-#    } else {
-#      set ::comp(prevmove) $::comp(move)
-#    }
-    .analysisWin$::comp(move).b.move invoke
+    global analysis comp
+
+    set n $comp(move)
+    .analysisWin$n.b.move invoke
 }
+
 proc compNextMove {} {
-    .analysisWin$::comp(move).b.startStop invoke
-    .analysisWin$::comp(nextmove).b.startStop invoke
-    set movetemp $::comp(move)
-    set ::comp(move) $::comp(nextmove)
-    set ::comp(nextmove) $movetemp
+    global analysis comp
+
+    set n $comp(move)
+    set m $comp(nextmove)
+    .analysisWin$n.b.startStop invoke
+    .analysisWin$m.b.startStop invoke
+    set comp(move) $m
+    set comp(nextmove) $n
     update
     after 3000 compMove
 }
+
+# Move didn't work (damn-it) , so rest engine and try again
 proc compRepeatMove {} {
-puts "compRepeatMove $::comp(move)"
-puts "stopping"
-    .analysisWin$::comp(move).b.startStop invoke
+    global analysis comp
+
+    set n $comp(move)
+puts "toggling $n"
+    .analysisWin$n.b.startStop invoke
     update
-puts "state is $::analysis(analyzeMode$::comp(move))"
-    after 500
-puts "starting"
-    .analysisWin$::comp(move).b.startStop invoke
-    update
-puts "state is $::analysis(analyzeMode$::comp(move))"
+puts "state is $analysis(analyzeMode$n)"
+    if {!$analysis(analyzeMode$n)} {
+      after 500
+puts "toggling $n again"
+      .analysisWin$n.b.startStop invoke
+      update
+    }
+puts "state is $analysis(analyzeMode$n)"
     after 3000 compMove
 }
 
 proc compGameEnd {} {
+    global analysis comp
 puts "compGameEnd"
     after cancel compMove
     if {![sc_base isReadOnly]} {
@@ -3379,14 +3395,15 @@ puts "saving game"
 }
 
 proc compStop {} {
+    global analysis comp
 
 puts compStop
     after cancel compMove
-    set ::comp(playing) {}
+    set comp(playing) {}
     after 1000 {
       catch {
-        destroy .analysisWin$::comp(move)
-        destroy .analysisWin$::comp(nextmove)
+        destroy .analysisWin$comp(move)
+        destroy .analysisWin$comp(nextmove)
       }
     }
     after 5000 compNextGame
