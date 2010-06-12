@@ -830,6 +830,7 @@ proc updateBoard {args} {
     set ::statusBar "Fics: warning, board doesn't show current game position"
     .statusbar configure -foreground red3
   }
+  update idletasks
 
   if {[winfo exists .twinchecker]} { updateTwinChecker }
   if {[winfo exists .pgnWin]} { ::pgn::Refresh $pgnNeedsUpdate }
