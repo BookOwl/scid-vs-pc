@@ -182,7 +182,7 @@ menuText N ToolsOpenBaseAsTree "Open base as tree" 0   {Open a base and use it i
 menuText N ToolsOpenRecentBaseAsTree "Open recent base as tree" 0   {Open a recent base and use it in Tree window}
 menuText N ToolsTracker "Stuk Spoorvolger "  0 {Open het Stuk Spoorvolger venster}
 menuText N ToolsTraining "Training"  0 {Training gereedschappen (taktiek, openingen,...) }
-menuText E ToolsComp "Tournament" 2 {Chess engine tournament}
+menuText E ToolsComp "Computer Tournament" 2 {Chess engine tournament}
 menuText N ToolsTacticalGame "Taktische partij"  0 {Speel en taktische partij}
 # ====== TODO To be translated ======
 menuText N ToolsSeriousGame "Serious game"  0 {Play a serious game}

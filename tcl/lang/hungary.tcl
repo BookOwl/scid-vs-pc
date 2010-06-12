@@ -169,7 +169,7 @@ menuText H ToolsOpenRecentBaseAsTree "Open recent base as tree" 0   {Open a rece
 menuText H ToolsTracker "Figurakövetõ"  0 {Kinyitja/becsukja a figurakövetõ ablakot.}
 # ====== TODO To be translated ======
 menuText H ToolsTraining "Training"  0 {Training tools (tactics, openings,...) }
-menuText E ToolsComp "Tournament" 2 {Chess engine tournament}
+menuText E ToolsComp "Computer Tournament" 2 {Chess engine tournament}
 # ====== TODO To be translated ======
 menuText H ToolsTacticalGame "Tactical game"  0 {Play a game with tactics}
 # ====== TODO To be translated ======

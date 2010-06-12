@@ -170,7 +170,7 @@ menuText B ToolsOpenRecentBaseAsTree "Open recent base as tree" 0   {Open a rece
 menuText B ToolsTracker "Piece Tracker"  0 {Open the Piece Tracker window} ;# ***
 # ====== TODO To be translated ======
 menuText B ToolsTraining "Training"  0 {Training tools (tactics, openings,...) }
-menuText E ToolsComp "Tournament" 2 {Chess engine tournament}
+menuText E ToolsComp "Computer Tournament" 2 {Chess engine tournament}
 # ====== TODO To be translated ======
 menuText B ToolsTacticalGame "Tactical game"  0 {Play a game with tactics}
 # ====== TODO To be translated ======

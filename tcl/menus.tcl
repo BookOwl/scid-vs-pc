@@ -472,17 +472,17 @@ set m .menu.play
 $m add command -label ToolsTacticalGame -command ::tacgame::config
 set helpMessage($m,[incr menuindex]) ToolsTacticalGame
 
-$m add command -label ToolsSeriousGame -command ::sergame::config
-set helpMessage($m,[incr menuindex]) ToolsSeriousGame
-
 $m add command -label ToolsTrainFics -command ::fics::config
 set helpMessage($m,[incr menuindex]) ToolsTrainFics
+
+$m add command -label ToolsComp -command {compInit}
+set helpMessage($m,[incr menuindex]) ToolsComp
 
 $m add separator
 incr menuindex
 
-$m add command -label ToolsComp -command {compInit}
-set helpMessage($m,[incr menuindex]) ToolsComp
+$m add command -label ToolsSeriousGame -command ::sergame::config
+set helpMessage($m,[incr menuindex]) ToolsSeriousGame
 
 # sub-menu for training
 menu $m.training
@@ -1660,8 +1660,6 @@ proc standardShortcuts {w} {
   bind $w <F2> {::startAnalysisWin F2}
   bind $w <F3> {::startAnalysisWin F3}
   bind $w <F4> {::startAnalysisWin F4}
-  # broke bind $w <F4> { catch { .analysisWin1.b1.bStartStop invoke } }
-  # broke bind $w <F5> { catch { .analysisWin2.b1.bStartStop invoke } }
   bind $w <F11>  ::book::open
   bind $w <Control-c> {catch {sc_clipbase copy}; ::updateBoard}
   bind $w <Control-v> {catch {sc_clipbase paste}; ::updateBoard -pgn}

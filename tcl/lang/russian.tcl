@@ -172,7 +172,7 @@ menuText R ToolsOpenRecentBaseAsTree "Open recent base as tree" 0   {Open a rece
 menuText R ToolsTracker "Положение фигуры"  4 {Открыть окно положения фигуры}
 # ====== TODO To be translated ======
 menuText R ToolsTraining "Training"  0 {Training tools (tactics, openings,...) }
-menuText E ToolsComp "Tournament" 2 {Chess engine tournament}
+menuText E ToolsComp "Computer Tournament" 2 {Chess engine tournament}
 # ====== TODO To be translated ======
 menuText R ToolsTacticalGame "Tactical game"  0 {Play a game with tactics}
 # ====== TODO To be translated ======

@@ -176,7 +176,7 @@ menuText S ToolsOpenBaseAsTree "Abrir base como árbol" 0   {Abrir una base y usa
 menuText S ToolsOpenRecentBaseAsTree "Abrir base reciente como árbol" 0   {Abre una base reciente y la usa en Ventana de árbol (Tree)} 
 menuText S ToolsTracker "Rastreador de piezas"  14 {Abre la ventana del rastreador de piezas}
 menuText S ToolsTraining "Entrenamiento"  0 {Entrenamiento (táctica, aperturas,...}
-menuText E ToolsComp "Tournament" 2 {Chess engine tournament}
+menuText E ToolsComp "Computer Tournament" 2 {Chess engine tournament}
 menuText S ToolsTacticalGame "Partida Táctica"  0 {Jugar una partida táctica}
 menuText S ToolsSeriousGame "Partida seria"  0 {Jugar una partida seria}
 menuText S ToolsTrainOpenings "Entrenamiento de aperturas"  0 {Entrenamiento con un repertorio}

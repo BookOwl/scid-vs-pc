@@ -193,7 +193,7 @@ menuText E ToolsOpenBaseAsTree "Open base as tree..." 0   {Open a base and use i
 menuText E ToolsOpenRecentBaseAsTree "Open recent base as tree" 0   {Open a recent base and use it in Tree window}
 menuText E ToolsTracker "Piece Tracker"  6 {Open the Piece Tracker window}
 menuText E ToolsTraining "Training"  0 {Training tools (tactics, openings,...) }
-menuText E ToolsComp "Tournament" 2 {Chess engine tournament}
+menuText E ToolsComp "Computer Tournament" 2 {Chess engine tournament}
 menuText E ToolsTacticalGame "Tactical game"  0 {Play a game with tactics}
 menuText E ToolsSeriousGame "Serious game"  0 {Play a serious game}
 menuText E ToolsTrainOpenings "Openings"  0 {Train with a repertoire}
