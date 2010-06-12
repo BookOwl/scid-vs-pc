@@ -394,10 +394,7 @@ namespace eval pgn {
       .pgnWin.text configure -state normal
       .pgnWin.text delete 1.0 end
       if {$::pgn::showColor} {
-        #set start [clock clicks -milli]
         ::htext::display .pgnWin.text $pgnStr
-        #set end [clock clicks -milli]
-        #puts "PGN: [expr $end - $start] ms"
       } else {
         .pgnWin.text insert 1.0 $pgnStr
       }
@@ -417,7 +414,13 @@ namespace eval pgn {
       set offset [sc_pos pgnOffset]
       set moveRange [.pgnWin.text tag nextrange "m_$offset" 1.0]
       if {[llength $moveRange] == 2} {
-        .pgnWin.text tag add Current [lindex $moveRange 0] [lindex $moveRange 1]
+       .pgnWin.text tag add Current [lindex $moveRange 0] [lindex $moveRange 1]
+
+       ### There's a bottleneck here when large pgn files are shown on one line
+       # time {.pgnWin.text see 4.1577} -> 17049 microseconds per iteration
+       # (compared to 2000 microseconds for the beginning of the pgn)
+       # SCID does things differently, but i couldnt get it going here
+
        .pgnWin.text see [lindex $moveRange 0]
        .pgnWin.text see [lindex $moveRange 1]
       }
