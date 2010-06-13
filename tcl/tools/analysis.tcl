@@ -3433,7 +3433,7 @@ proc compNextGame {} {
 proc compNM {n m k} {
   global analysis comp
 
-  # sc_game new
+  sc_game new
   set comp(playing) 1
   set comp(fen) {}
   update
