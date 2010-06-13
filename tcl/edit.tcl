@@ -70,7 +70,7 @@ proc setSetupBoardToFen {} {
   # Called from ".setup.fencombo" FEN combo S.A
 
   # Once the FEN combo box in the Setup board widget is accessed, the original
-  # game poisiotn can still be had, but game history is lost
+  # game position can still be had, but game history is lost
 
   global setupboardSize setupBd
 
@@ -581,6 +581,7 @@ proc setupBoard {} {
   ttk::combobox .setup.fencombo -textvariable setupFen -height 10
   bind .setup.fencombo <<ComboboxSelected>> setSetupBoardToFen
   ::utils::history::SetCombobox setupFen .setup.fencombo
+  ::utils::history::SetLimit setupFen 20
 
   update ; # necessary in case of quick-draw user interactions
 
