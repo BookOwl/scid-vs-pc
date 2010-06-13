@@ -1445,7 +1445,7 @@ proc addAllVariations {{n 1}} {
 ################################################################################
 # TODO fonction obsolète à virer ??
 proc addAnalysisToComment {line {n 1}} {
-  global analysis 
+  global analysis
   if {! [winfo exists .analysisWin$n]} { return }
 
   # If comment editor window is open, add the score there, otherwise
@@ -1479,7 +1479,9 @@ proc addAnalysisToComment {line {n 1}} {
 #
 ################################################################################
 proc makeAnalysisMove {n} {
-  set s $::analysis(moves$n)
+  global analysis comp
+
+  set s $analysis(moves$n)
   set res 1
 
   # Scan over any leading number/etc. This is ugly
@@ -1499,38 +1501,52 @@ proc makeAnalysisMove {n} {
     set action [confirmReplaceMove]
   }
   if {$action == {cancel}} { return }
-  set ::analysis(automoveThinking$n) 0
+  set analysis(automoveThinking$n) 0
   if {$action == {var}} { sc_var create }
 
   if { [sc_move_add $move $n] } {
     ### Move fail
     set res 0
     puts "makeAnalysisMove: error adding move $move" ; # &&&
-    if {$::comp(playing) > 0} {
+    if {$comp(playing) > 0} {
       compRepeatMove
     }
-  } else {
+  } elseif {$comp(playing) > 0} {
     ### Move success
-    if {$::comp(playing) > 0} {
-      puts_ "engine $n moves $move"
-      if { [string index [sc_game info previousMove] end] == {#}} {
-	### checkmate
-	if {[sc_pos side] == {black}} {
-	  sc_game tags set -result 1
-        } else {
-	  sc_game tags set -result 0
-        }
+    puts_ "engine $n moves $move"
+
+    set score [sc_pos analyze -time 50]
+    if { $score == {0 {}}} {
+      ### stalemate
+      sc_game tags set -result =
+      puts_ Stalemate
+      compGameEnd
+    } elseif { $score == {-32000 {}}} {
+      ### checkmate
+      if {[sc_pos side] == {black}} {
+	sc_game tags set -result 1
+      } else {
+	sc_game tags set -result 0
+      }
+      puts_ Checkmate
+      compGameEnd
+    } else {
+      set f [lindex [split [sc_pos fen]] 0]
+      lappend comp(fen) $f
+      if {[llength [lsearch -all $comp(fen) $f]] > 2 } {
+        sc_game tags set -result =
+	### draw
+        puts_ Draw
 	compGameEnd
       } else {
-        ### todo: check for draw
+        ### execute next move
 	compNextMove
       }
-    } 
+    }
   }
     
-
-## tried to fix these error messages by using flush and gets (pipe), to no avail
-## Probably better not to invoke buttons, but write our own command
+  ## tried to fix these error messages by using flush and gets (pipe), to no avail
+  ## Probably better not to invoke buttons, but write our own command
 
   updateBoard -pgn -animate
   ::utils::sound::AnnounceNewMove $move
@@ -3194,9 +3210,10 @@ c8bkQDGisK1Qi9JgIaKjh5AgNlhKwChBovAtUo0yPRq0pw8gPnDK0HhxonCt
 UYkCxTnj5QsYMFkw4UMTJhS2xCFdVIHEDjXc8IMSRxQBRAsWzEWXQxhm+JBG
 HHaYUEAAOw==}
 
-set ::comp(playing) 0
-set ::comp(current) 0
-set ::comp(games) {}
+set comp(playing) 0
+set comp(current) 0
+set comp(games) {}
+set comp(debug) 1
 
 proc compInit {} {
   global analysis comp engines
@@ -3206,6 +3223,7 @@ proc compInit {} {
   toplevel $w
   wm state $w withdrawn
   wm title $w "Configure Tournament"
+  setWinLocation $w
 
   pack [frame $w.engines] -side top
   addHorizontalRule $w
@@ -3230,7 +3248,7 @@ proc compInit {} {
 
   set row 0
 
-  label $w.config.eventlabel -text {Tourney Name}
+  label $w.config.eventlabel -text {Event Name}
   entry $w.config.evententry -width 10 -textvariable comp(name) -borderwidth 1
 
   grid $w.config.eventlabel -row $row -column 0 -sticky w -padx 5 -pady 2
@@ -3281,7 +3299,7 @@ proc compInit {} {
   pack $w.buttons.ok $w.buttons.help -side left -padx 5
   pack $w.buttons.cancel -side right -padx 5
 
-  placeWinOverParent $w .
+  bind $w <Configure> "recordWinSize $w"
   wm state $w normal
   update
 
@@ -3415,8 +3433,9 @@ proc compNextGame {} {
 proc compNM {n m k} {
   global analysis comp
 
-  sc_game new
+  # sc_game new
   set comp(playing) 1
+  set comp(fen) {}
   update
   if {[winfo exists .analysisWin$n]} "destroy .analysisWin$n"
   if {[winfo exists .analysisWin$m]} "destroy .analysisWin$m"
@@ -3429,7 +3448,7 @@ proc compNM {n m k} {
   sc_game tags set -white $analysis(name$n)
   sc_game tags set -black $analysis(name$m)
   if {$comp(name) == {}} {
-    sc_game tags set -event {Scid-vs-Pc Tournament}
+    sc_game tags set -event {Scid-vs-PC Tournament}
   } else {
     sc_game tags set -event "$comp(name)"
   }
