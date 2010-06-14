@@ -710,19 +710,43 @@ set engines(F4)  {}
 set engineCoach1 {}
 set engineCoach2 {}
 
-# Set up Scid icon in Windows:
-if {$::windowsOS} {
-  # Look in each of the following directories for a file named scid.ico:
-  set iconFileDirs [list \
-      $scidExeDir $scidUserDir $scidConfigDir [file join $scidExeDir "src"]]
+image create photo icon -format gif -data {
+R0lGODlhOAAwAMZRAAChAACiAACjAROhAA+iFRaiAhKjFhmjBA2kIxWkGBCl
+JBilGROmJSOkLSekJCSmLimlJianLyOoOCioMSWpOSqpMjOnODCoQTSoOTGp
+Qi6qSTapOzOqQzypSj+pQz2qSzqrUj6rS0SpUUWqUkOsWUasU0StWkWuW0qs
+YU6sWkutYk+tW02uY06vZFKtaVatY1OualeuZFWva1qucV2ua1uvcl6vbFyw
+c2GveWSvc16wgGKwemOxe2avgGqvemixgmqzg26xiW+zinC0i3SykXeyi3W0
+kna1k3qzmX2zk3u1mny2m4O0m4C2ooG3o4i1o4m2pP//////////////////
+////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////yH5BAEKAH8A
+LAAAAAA4ADAAAAf+gH+Cg4SFhoeIiYqLjI2Oj4gNDYwqLDEwkJmFEBWMKy8u
+mJqjkhUUiCYrlTCio5kTFRIbiCsoKi6XrpqSErIZGRofHyMiI6mhMDY3uo+x
+FhsXGxkeHyIgIyuqljAzNcyMCg68EhcXGhwfIca1Kyyhgjk7O0DfhxAQkhsb
+sh4dGiPXUpxQ8YKbIBzz6NUbtEDBA3z5yk3zAFBECm0sRN3AgQMIECEL/yBw
+oKABvn36PGgAoc7ECFsFZRzE0eOjQmYLcipgMGFCg33lPGRIJ+JEqkouZNjw
+9gcHjyBChhjBuQDBAggOewHN0KHatVoEWc1Y9seHRyFFiuAk4ABBAwb+vGb9
+yYCuWDFVBZPVyIFD0EchRo4kcUVAZ0lxzwRxFTZiXaVLNWogFNQDMGAlrqo6
+cADhQYUGWn8FG2YiFYqM3CTv8AukiBEjg0cRKNwQLmhoEz+ACJgNlAwaNW6s
+/tMjCJHAmDMVYEtgZAMHFSxoNde12AhBq2Z0i8dDIVojSDTlLJATgUNJz6B5
+QDfs+p+wSVXXFOT6yBFIA2aXN68AIjlyGnQFgiBHXdJNcHx5B1tsjhAAQH60
+bfZAPuRc4AE1HwiSTTsxKCUZD/P9McRljgAAwGyFNdeQAp/9pA91whCIAigs
+dLMRRwq5BluJJkJIW0ksgjbdSiJomE1G8Qn+Z5YgRpDYiIkOCqLiAg545uIF
+GRBijAm2sNDCdjnw0BGTrzG4SI8LCJITSQyUJKQshIBg0UWgJMURDzp4d1x4
+jTgIAHn6jYTIYo2RwKUKl9Agg2Q+dPSRIEcgoQQTjJxYmKUjKYDIeukQc5EK
+LcRwYJhmCQHSH/Yp0USJBAywwGyIQNNBV8OQkM0tGS2qZGWnRjppia7Shkg5
+F9RFTCovZETDDRvtoEOpgiSRhKohadVPMNdYZAJBLtDQDUfPVgZpEkhQuhAG
+0ARVDTaHbqOrD6X2qkQSq37TQCy9YMlBB3KSQGcoMwBXAw87QPuHEUv8au9t
+WM7qlQi1nAbwnWf+KYRcvcwIqY80/dh1lLKL8vUsVIAJUm4TTzDzGVAX+MOY
+CSmgMKOokcljVmVGqPWHqk+kPAoDEAG1AQfoyOmYCyikJlyef031h6Qou1Il
+aFf2sy42XcLgLUcF+2BqzoKo6oTPkDTkVgMU5NswYxbhJdYN8QBR6msmm6uJ
+AuEEfYEEwARjTWOqwHAJDKrFa6ogS2D8yJo7cZJPSsE0BvNAAEfGVw9zO30y
+2Y3k1JAkFFpoYacpbLtCC6wshVBHpqIVNsqcM+L5AkDHspVKu4lgqy0xdBgc
+QpjjrDkTUT+CwEi2xSWBSheKEALE2aAugwzMNvqX638k7oQTkDTnQG02yl8Y
+ggfF7J7dt856HYRUdffcfU4MQGd7hRqsVE0K/6aOww08mPUR2H+gVxOgEJIC
+GvCAiAgEADs=}
 
-  foreach iconFileDir $iconFileDirs {
-    set scidIconFile [file join $iconFileDir "scid.ico"]
-    if {[file readable $scidIconFile]} {
-      catch {wm iconbitmap . -default $scidIconFile}
-    }
-  }
-}
+wm iconphoto . -default icon
 
 # Opening files by drag & drop on Scid icon on Mac
 if { $macOS } {
@@ -1077,7 +1101,7 @@ proc ::splash::add {text} {
 ::splash::add "(C) 1999-2004 Shane Hudson  (sgh@users.sourceforge.net)"
 ::splash::add "(C) 2006-2008 Pascal Georges  (pascal.georges1@free.fr)"
 ::splash::add "(C) 2008-2010 Steven Atkinson (stevenaaus@yahoo.com)"
-::splash::add "Scid Vs PC $::scidvspcVersion, released $::scidVersionDate."
+::splash::add "Scid vs. Pc $::scidvspcVersion, released $::scidVersionDate."
 ::splash::add "Website: http://scidvspc.sourceforge.net\n"
 
 # add cached splash comments
