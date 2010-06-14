@@ -1507,13 +1507,14 @@ proc makeAnalysisMove {n} {
   if { [sc_move_add $move $n] } {
     ### Move fail
     set res 0
-    puts "makeAnalysisMove: error adding move $move" ; # &&&
+    puts "Error adding move $move" ; # &&&
     if {$comp(playing) > 0} {
       compRepeatMove
     }
   } elseif {$comp(playing) > 0} {
     ### Move success
     puts_ "engine $n moves $move"
+    set comp(badmoves) 0
 
     set score [sc_pos analyze -time 50]
     if { $score == {0 {}}} {
@@ -3210,16 +3211,20 @@ c8bkQDGisK1Qi9JgIaKjh5AgNlhKwChBovAtUo0yPRq0pw8gPnDK0HhxonCt
 UYkCxTnj5QsYMFkw4UMTJhS2xCFdVIHEDjXc8IMSRxQBRAsWzEWXQxhm+JBG
 HHaYUEAAOw==}
 
+### Computer Tournament procedures
+
 set comp(playing) 0
 set comp(current) 0
 set comp(games) {}
 set comp(debug) 1
+set comp(badmoves) 0
 
 proc compInit {} {
   global analysis comp engines
 
   set w .initComp
 
+  if {[winfo exists $w]} {return}
   toplevel $w
   wm state $w withdrawn
   wm title $w "Configure Tournament"
@@ -3256,7 +3261,7 @@ proc compInit {} {
 
   incr row
   label $w.config.timelabel -text {Seconds per Move}
-  spinbox $w.config.timevalue -textvariable comp(seconds) -from 1 -to 300 -width 5
+  spinbox $w.config.timevalue -textvariable comp(seconds) -from 1 -to 300 -width 9
   set comp(seconds) 3
 
   grid $w.config.timelabel -row $row -column 0 -sticky w -padx 5 -pady 2
@@ -3264,7 +3269,7 @@ proc compInit {} {
 
   incr row
   label $w.config.roundslabel -text {Number of Rounds}
-  spinbox $w.config.roundsvalue -textvariable comp(rounds) -from 1 -to 6 -width 5
+  spinbox $w.config.roundsvalue -textvariable comp(rounds) -from 1 -to 6 -width 9
   set comp(rounds) 2
 
   grid $w.config.roundslabel -row $row -column 0 -sticky w -padx 5 -pady 2
@@ -3289,47 +3294,54 @@ proc compInit {} {
 
   ### OK, Cancel Buttons
 
-  dialogbutton $w.buttons.cancel -text Cancel -command {
-    destroy .initComp
-  }
-  dialogbutton $w.buttons.ok -text OK -command okComp
-  dialogbutton $w.buttons.help -text $::tr(Help) -command {helpWindow Analysis}
+  dialogbutton $w.buttons.cancel -text Cancel -command compClose
+  dialogbutton $w.buttons.ok -text OK -command compOk
+  dialogbutton $w.buttons.help -text $::tr(Help) -command {helpWindow Tourney}
 
   focus $w.buttons.ok
   pack $w.buttons.ok $w.buttons.help -side left -padx 5
   pack $w.buttons.cancel -side right -padx 5
 
   bind $w <Configure> "recordWinSize $w"
+  bind $w <Destroy> compClose
   wm state $w normal
   update
 
 }
 
-proc okComp {} {
+proc compOk {} {
   global analysis comp engines
 
   set w .initComp
+
+  if {[sc_base isReadOnly]} {
+    set answer [tk_messageBox -title Tournanment -icon question -type okcancel \
+	-message {Database is read only, continue ?} -parent $w]
+    if {$answer != "ok"} {return}
+  }
     
   set players {}
   set names {}
   set comp(time) [expr $comp(seconds) * 1000]
   puts_ "Move delay is $comp(time) seconds"
+  set comp(current) 0
 
   ### Reconfigure init widget for pausing
 
   # destroy $w
   foreach i {.config.eventlabel .config.evententry \
-             .config.timevalue .config.timelabel .config.roundsvalue .config.roundslabel \
-	     .engines.label .engines.top.count .engines.top.update \
-	     .config.verbosevalue .config.verboselabel .config.iconizevalue .config.iconizelabel \
+    .config.timevalue .config.timelabel .config.roundsvalue .config.roundslabel \
+    .engines.label .engines.top.count .engines.top.update \
+    .config.verbosevalue .config.verboselabel .config.iconizevalue .config.iconizelabel \
   } {
     $w$i configure -state disabled
   }
   $w.buttons.ok configure -text Pause -command compPause
-  $w.buttons.help configure -text "End Game" -command compAbortGame
+  $w.buttons.help configure -text "End Game" -command compGameEnd
   $w.buttons.cancel configure -text Abort -command compAbort
   wm title $w "Scid Tournament"
   focus $w.buttons.ok
+  bind $w <Destroy> compAbort
   
   ### Init game cue and start games
 
@@ -3387,7 +3399,10 @@ proc drawCombos {} {
 
   set w .initComp
   set l $w.engines.list
+
+  bind $w <Destroy> {} ; # stupid thing!
   if {[winfo exists $l]} {destroy $l}
+  bind $w <Destroy> compClose
 
   pack [frame $l] -side top -padx 10 -pady 10
 
@@ -3436,7 +3451,7 @@ proc compNM {n m k} {
   sc_game new
   set comp(playing) 1
   set comp(fen) {}
-  update
+
   if {[winfo exists .analysisWin$n]} "destroy .analysisWin$n"
   if {[winfo exists .analysisWin$m]} "destroy .analysisWin$m"
   makeAnalysisWin $n
@@ -3475,6 +3490,7 @@ proc compNM {n m k} {
 
   set comp(prevmove) $m
   updateTitle
+  update
   after $comp(time) compMove
 }
 
@@ -3502,19 +3518,94 @@ proc compNextMove {} {
 proc compRepeatMove {} {
     global analysis comp
 
-    set n $comp(move)
-    puts_ "toggling $n"
-    .analysisWin$n.b.startStop invoke
-    update
-    puts_ "state is $analysis(analyzeMode$n)"
-    if {!$analysis(analyzeMode$n)} {
-      after 500
-      puts_ "toggling $n again"
+    incr comp(badmoves)
+
+    if {$comp(badmoves) < 3} {
+      set n $comp(move)
+      puts_ "toggling $n"
       .analysisWin$n.b.startStop invoke
       update
+      puts_ "state is $analysis(analyzeMode$n)"
+
+      if {!$analysis(analyzeMode$n)} {
+	after 500
+	puts_ "toggling $n again"
+	.analysisWin$n.b.startStop invoke
+	update idletasks
+      }
+
+      puts_ "state is $analysis(analyzeMode$n)"
+      after $comp(time) compMove
+    } else {
+      ### Bad, bad, bad
+      # Crafty seems to have issues with Scid, but this may be a good enough work-around.
+      # The alternative is to thouroughly debug Scid's whole analysis
+
+      puts_ "THREE bad moves, trying back/forward work-around"
+      set n $comp(move)
+
+      # stop engine
+
+      puts_ "toggling $n"
+      .analysisWin$n.b.startStop invoke
+      update
+      puts_ "state is $analysis(analyzeMode$n)"
+
+      # move game position back, then forward. "updateBoard" seems necessary
+
+      compPause
+      update
+      sc_move back
+      updateBoard -pgn
+      update
+      after 2000
+
+      if {!$analysis(analyzeMode$n)} {
+        puts_ "toggling $n again"
+        .analysisWin$n.b.startStop invoke
+	puts_ "state is $analysis(analyzeMode$n)"
+        after 2000
+      }
+
+      sc_move forward
+      updateBoard -pgn
+      update
+      after 2000
+      compResume
+      update
+      after 2000
     }
-    puts_ "state is $analysis(analyzeMode$n)"
-    after $comp(time) compMove
+}
+
+proc compAbort {} {
+    # called when game is active
+    global analysis comp
+
+    bind .initComp <Destroy> {}
+    puts_ compAbort
+    set comp(playing) 0
+    set comp(iconize) 0
+    set comp(games) {}
+    after cancel compMove
+    after 2000 {
+      catch {
+        destroy .analysisWin$comp(move)
+        destroy .analysisWin$comp(nextmove)
+      }
+    }
+    destroy .initComp
+}
+
+proc compClose {} {
+    # called when game is inactive
+    global analysis comp
+
+    bind .initComp <Destroy> {}
+    puts_ compClose
+    set comp(playing) 0
+    set comp(iconize) 0
+    set comp(games) {}
+    destroy .initComp
 }
 
 proc compGameEnd {} {
@@ -3533,7 +3624,7 @@ proc compStop {} {
     global analysis comp
 
     puts_ compStop
-    set comp(playing) {}
+    set comp(playing) 0
     after cancel compMove
     after 2000 {
       catch {
@@ -3544,25 +3635,6 @@ proc compStop {} {
     after 5000 compNextGame
 }
 
-proc compAbort {} {
-    global analysis comp
-
-    puts_ compAbort
-    set comp(playing) {}
-    after cancel compMove
-    after 2000 {
-      catch {
-        destroy .analysisWin$comp(move)
-        destroy .analysisWin$comp(nextmove)
-      }
-    }
-    destroy .initComp
-}
-
-proc compAbortGame {} {
-  sc_game save [sc_game number]
-  compStop
-}
 ###
 ### End of file: analysis.tcl
 ###

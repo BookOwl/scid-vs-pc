@@ -2,8 +2,8 @@
 
 #################################################
 
-set helpTitle(Contents) "Scid Vs PC"
-set helpText(Contents) {<h1>Scid Vs PC</h1>
+set helpTitle(Contents) "Scid vs. Pc"
+set helpText(Contents) {<h1>Scid vs. Pc</h1>
 
   <ul> <ul> <ul> <ul> <ul> <ul> <ul> <ul> <ul>
 
@@ -17,6 +17,8 @@ set helpText(Contents) {<h1>Scid Vs PC</h1>
   <br>
   <li><a FICSOver>Playing on the Internet with FICS</a></li>
   <br>
+  <li><a Tourney>Computer Tournaments</a></li>
+  <br>
   <li><a BrowsingPGN>Browsing Games and Tournaments</a></li>
   <br>
   <br>
@@ -29,11 +31,11 @@ set helpText(Contents) {<h1>Scid Vs PC</h1>
   </ul> </ul> </ul>
   <p><footer>(Updated: Scid Vs PC 3.6.26.8, December 2009)</footer></p>
 }
-set helpTitle(Intro) "Scid Vs PC"
+set helpTitle(Intro) "Scid vs. Pc"
 set helpText(Intro) {<h1>Introduction</h1>
 
 <p>
-<url http://scidvspc.sourceforge.net/>Scid Vs PC</url>
+<url http://scidvspc.sourceforge.net/>Scid vs. Pc</url>
 is a usability and bug-fix fork of Scid. With it you can play chess online
 or against the computer, browse tournaments downloaded in pgn format, and
 create huge chess databases.</p>
@@ -45,14 +47,14 @@ about winners, losers and openings played. Scid is a program whose original
 purpose was to combine all this information into databases of various
 sorts; hence it's name "Shane's Chess Information Database". As it turns
 out, computers are very good at  playing  chess too. This is the focus of
-Scid Vs PC.</p>
+Scid vs. Pc</p>
 
 <h3>Motivation</h3>
 <p>
 Scid is an amazing project,  but for several reasons I've decided to start a new project.
 <ul>
 <br>
-<li> The focus of Scid is Databases. Scid Vs PC is about improving the computer vs
+<li> The focus of Scid is Databases. Scid vs. Pc is about improving the computer vs
 player experience. </li>
 <br>
 <li>Many widgets are rough, ugly and poorly designed, and need refinement or rewriting.</li>
@@ -257,6 +259,7 @@ set helpText(Index) {<h1>Scid Help Index</h1>
   <li><a Changelog>Changelog</a></li>
   <li><a Cmdline>Command-line options</a></li>
   <li><a Comment>Comment editor</a></li>
+  <li><a Tourney>Computer Tournament</a></li>
   <li><a Compact>Compacting a database</a></li>
   <li><a Correspondence>Correspondence Chess</a></li>
   <li><a CCIcons>Correspondence Chess Icons</a></li>
@@ -410,6 +413,7 @@ set helpText(Index) {<h1>Scid Help Index</h1>
   <li><a TB>Tablebases</a></li>
   <li><a TacticalGame>Tactical game</a></li>
   <li><a Menus Tools>Tools menu</a></li>
+  <li><a Tourney>Tournament</a>of Chess Engines</li>
   <li><a Tmt>Tournament finder</a></li>
   <li><a FindBestMove>Training: Find best move</a></li>
   <li><a OpeningTrainer>Training: Openings</a></li>
@@ -2981,7 +2985,7 @@ The <b>Add Variation</b> button <button tb_addvar> adds the
   To cancel annotation at any time, just turn off autoplay mode
   </p>
   <p><i>
-  The <b>Annotate</b> feature of Scid Vs PC can be used with any engine,
+  The <b>Annotate</b> feature of Scid vs. Pc can be used with any engine,
   but be sure not to open any other anaylsis windows while
 annotation is in progress!
   </i></p>
@@ -3032,6 +3036,36 @@ storing the annotations into the database.
      </li>
   </ul>
 
+  <p><footer>(Updated: Scid Vs PC 1.0, May 2010)</footer></p>
+}
+
+####################
+### Computer Tournament 
+set helpTitle(Tourney) "Computer Tournament"
+set helpText(Tourney) {<h1>Computer Tournament</h1>
+  <p>Scid vs. Pc's latest feature is an automated
+  <run ::compInit><green>Computer Tournament</green></run>.
+  Any engine configured via the
+  <run ::enginelist::choose><green>Tools--<gt>Analysis Engines</green></run>
+  widget can be added.
+  </p>
+  <p>
+  Make sure you have a database open so the results can be saved, then select
+  the number of competitors, the tournament name, and Press "OK".
+  Games are saved after each is completed.
+  </p>
+  <p>
+  Caveats/Todo:
+<ul>
+  <li>Unlike normal match time controls, the tournament is run
+  with a per-move time limit.</li>
+  <li>Scid's interface to some chess engines is not perfect. </li>
+  <li>Chess Engines can crash... Scid also has (fairly rare) program crashes.</li>
+  <li>Scid's in-built engine, <b>Scidlet</b>, probably has too many bugs to be useful.</li>
+  <li>Only tested with times of three seconds.</li>
+  <li>Niggling non-issue with xboard engines moving first.</li>
+</ul>
+  </p>
   <p><footer>(Updated: Scid Vs PC 1.0, May 2010)</footer></p>
 }
 
@@ -4304,12 +4338,12 @@ set helpText(ECO) {<h1>ECO openings classification</h1>
 
 
 set helpTitle(Author) "About"
-set helpText(Author) "<h1>Scid Vs PC</h1>
+set helpText(Author) "<h1>Scid vs. Pc</h1>
   <p>
 <ul> <ul> <ul> <ul> <ul> <ul> <ul> <ul> <ul>
   <li><img splash></li>
   </ul></ul>
-  <li>Scid Vs PC  version $::scidvspcVersion
+  <li>Scid vs. Pc  version $::scidvspcVersion
   <br>
   <li>(C) Steven Atkinson, stevenaaus@yahoo.com</li>
   <br>
@@ -4333,37 +4367,31 @@ set helpText(Related) {<h1>Related Links</h1>
   <p>
   <ul>
   <li><url http://scidvspc.sourceforge.net/>http://scidvspc.sourceforge.net/</url> --
-  Scid Vs PC</li>
+  Scid vs. Pc</li>
   <br>
   <li><url http://scid.sourceforge.net/>http://scid.sourceforge.net/</url> --
   Scid Web Page</li>
   <li><url http://sourceforge.net/mailarchive/forum.php?forum_name=scid-users>http://sourceforge.net/mailarchive/forum.php...</url>-- Scid Mailing List</url> 
   <li><url http://www.freechess.org>www.freechess.org</url> -- Fics homepage</li>
   <br>
-  <li><url http://www.saremba.de/chessgml/standards/pgn/pgn-complete.htm>http://www.saremba.de/chessgml/standards/pgn...</url> -- The PGN Standard,
+  <li><url www.saremba.de/chessgml/standards/pgn/pgn-complete.htm>www.saremba.de/chessgml/standards/pgn...</url> -- The PGN Standard,
   created by Steven J. Edwards in 1994, explains the PGN and EPD formats in detail.</li>
   <br>
-  <li> <url http://www.chessvibes.com>http://www.chessvibes.com </url></li>
-  <li> <url http://www.chessbase.com/index.asp>http://www.chessbase.com/index.asp </url></li>
-  <li> <url http://www.chesscenter.com/twic/>http://www.chesscenter.com/twic/</url> 
+  <li> <url www.chessvibes.com>www.chessvibes.com </url></li>
+  <li> <url www.chessbase.com/index.asp>www.chessbase.com/index.asp </url></li>
+  <li> <url www.chesscenter.com/twic/>www.chesscenter.com/twic/</url> 
 -- A few popular chess portals. </li>
 <br>
 
-  <li><url http://www.pgnmentor.com/files.html#players>http://www.pgnmentor.com/files.html#players</url> --
+  <li><url www.pgnmentor.com/files.html#players>www.pgnmentor.com/files.html#players</url> --
   Pgn archive of famous players.</li>
-  <li><url http://www.pgnmentor.com/files.html#events>http://www.pgnmentor.com/files.html#events</url> --
+  <li><url www.pgnmentor.com/files.html#events>www.pgnmentor.com/files.html#events</url> --
   Pgn archive of events.</li>
-  <li><url http://www.tim-mann.org/chess.html>http://www.tim_mann.org/chess.html</url> --
-  Home page of Tim Mann's <b>xboard & winboard</b> program which is a PGN
-  reader and an interface for Internet chess servers. His site also has
-  good information on Crafty, GNUchess and other free chess programs.</li>
 
-  <li><url ftp://ftp.cis.uab.edu/pub/hyatt/>ftp://ftp.cis.uab.edu/pub/hyatt/</url> --
-  the strong chess-playing program Crafty.
-  The subdirectory there named <b>TB</b> has many Nalimov-format tablebase
-  files that you can use in several chess programs and in Scid.</li>
+  <li><url www.virtualpieces.net>www.virtualpieces.net</url> --
+  Professional quality chess icons, providing this project's new logo.</li>
   </ul>
-<p><footer>(Updated: Scid Vs PC 3.6.26.8, December 2009)</footer></p>
+<p><footer>(Updated: Scid Vs PC 3.6.26.10, June 2010)</footer></p>
 }
 
 # Book window help
@@ -4428,7 +4456,7 @@ blunders the player makes.  </p>
      with the current board position.</li>
      <li><term>Play Fischer Chess</term>: Fischer Chess is a variant (named
 for Bobby Fischer) where the first and last rows of pieces are
-pseudo-randomnly arranged. Scid Vs PC does not properly implement a few
+pseudo-randomnly arranged. Scid vs. Pc does not properly implement a few
 rules.. notably, castling <b>is</b> allowed in Fischer Chess, but not in
 our game.</li>
      <li><term>Random Pawns</term>: will randomly place pawns on the second and third ranks.</li>
@@ -5822,7 +5850,7 @@ set helpText(Novag) {<h1>Connecting the Novag Citrine Chess board</h1>
 }
 
 set helpTitle(Changelog) "Scid vs PC Changelog"
-set helpText(Changelog) {<h1>Scid Vs PC</h1>
+set helpText(Changelog) {<h1>Scid vs. Pc</h1>
 
 <h4>3.6.26.9 (April 19, 2010)</h4>
 <ul>
