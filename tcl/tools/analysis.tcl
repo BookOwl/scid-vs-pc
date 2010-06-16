@@ -3250,6 +3250,7 @@ proc compInit {} {
   pack $w.engines.top.update -side right -padx 5 -pady 5
 
   set comp(count) 2
+  set comp(countcombos) $comp(count)
   drawCombos
 
   ### Config widgets
@@ -3316,6 +3317,11 @@ proc compOk {} {
   global analysis comp engines
 
   set w .comp
+
+  if {$comp(count) != $comp(countcombos)} {
+    drawCombos
+    return
+  }
 
   if {[sc_base isReadOnly]} {
     set answer [tk_messageBox -title Tournanment -icon question -type okcancel \
@@ -3444,6 +3450,7 @@ proc drawCombos {} {
     $l.$i current $i
     pack $l.$i -side top -pady 5
   }
+  set comp(countcombos) $comp(count)
   update
 }
 
