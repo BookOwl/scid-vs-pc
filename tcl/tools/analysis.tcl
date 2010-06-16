@@ -3225,7 +3225,7 @@ set comp(badmoves) 0
 proc compInit {} {
   global analysis comp engines
 
-  set w .initComp
+  set w .comp
 
   if {[winfo exists $w]} {return}
   toplevel $w
@@ -3237,7 +3237,7 @@ proc compInit {} {
   addHorizontalRule $w
   pack [frame $w.config] -fill x -expand 1
   addHorizontalRule $w
-  pack [frame $w.buttons] -pady 10 -padx 5
+  pack [frame $w.buttons] -side bottom -pady 10 -padx 5
 
   ### Engines
 
@@ -3315,7 +3315,7 @@ proc compInit {} {
 proc compOk {} {
   global analysis comp engines
 
-  set w .initComp
+  set w .comp
 
   if {[sc_base isReadOnly]} {
     set answer [tk_messageBox -title Tournanment -icon question -type okcancel \
@@ -3329,9 +3329,28 @@ proc compOk {} {
   puts_ "Move delay is $comp(time) seconds"
   set comp(current) 0
 
+  for {set i 0} {$i < $comp(count)} {incr i} {
+    set j [$w.engines.list.$i current]
+    lappend players [expr $j + 1]
+    lappend names   [lindex [lindex $engines(list) $j] 0]
+  }
+
+  ### Check players are unique
+  if {[llength [lsort -unique $players]] != $comp(count)} {
+    tk_messageBox -type ok -parent $w -title {Scid: error} \
+      -message {Duplicate engines not supported}
+    return
+  }
+
+  foreach i $players j $names {
+    puts_ "player $i is $j"
+  }
+
   ### Reconfigure init widget for pausing
 
-  # destroy $w
+  for {set i 0} {$i < $comp(count)} {incr i} {
+    $w.engines.list.$i configure -state disabled ; # disable widgets too
+  }
   foreach i {.config.eventlabel .config.evententry \
     .config.timevalue .config.timelabel .config.roundsvalue .config.roundslabel \
     .engines.label .engines.top.count .engines.top.update \
@@ -3349,16 +3368,6 @@ proc compOk {} {
   ### Init game cue and start games
 
   for {set i 0} {$i < $comp(count)} {incr i} {
-    set j [$w.engines.list.$i current]
-    $w.engines.list.$i configure -state disabled ; # disable widgets too
-    lappend players [expr $j + 1]
-    lappend names   [lindex [lindex $engines(list) $j] 0]
-  }
-  foreach i $players j $names {
-    puts_ "player $i is $j"
-  }
-
-  for {set i 0} {$i < $comp(count)} {incr i} {
     for {set j 0} {$j <= $i} {incr j} {
       if {$i == $j} {continue}
       for {set k 1} {$k <= $comp(rounds)} {incr k} {
@@ -3370,12 +3379,27 @@ proc compOk {} {
       }
     }
   }
+  ttk::progressbar $w.progress -mode determinate \
+    -maximum [expr {[factorial $comp(count)] * $comp(rounds) / 2}] -variable comp(current)
+  pack $w.progress -side bottom -fill x -padx 10 -pady 5
+
   compNextGame
 }
 
+proc factorial {x} {
+  set i 1
+  set product 1
+  while {$i <= $x} {
+    set product [expr $product * $i]
+    incr i
+  }
+  return $product
+}
+
+
 proc compPause {} {
   global analysis comp engines
-  set w .initComp
+  set w .comp
 
   $w.buttons.ok configure -text Resume -command compResume
   set comp(playing) 0
@@ -3384,7 +3408,7 @@ proc compPause {} {
 
 proc compResume {} {
   global analysis comp engines
-  set w .initComp
+  set w .comp
 
   $w.buttons.ok configure -text Pause -command compPause
   set comp(playing) 1
@@ -3400,7 +3424,7 @@ proc puts_ {message} {
 proc drawCombos {} {
   global analysis comp engines
 
-  set w .initComp
+  set w .comp
   set l $w.engines.list
 
   bind $w <Destroy> {} ; # stupid thing!
@@ -3425,14 +3449,14 @@ proc drawCombos {} {
 
 proc compCueGame {n m name1 name2 k} {
   global analysis comp
-  lappend comp(games) "$n $m $name1 $name2 $k"
+  lappend comp(games) [list $n $m $name1 $name2 $k]
 }
 
 proc compNextGame {} {
   global analysis comp
 
   set thisgame [lindex $comp(games) $comp(current)]
-  puts_ "thigame is \"$thisgame\", games are \"$comp(games)\""
+  puts_ "thisgame is \"$thisgame\", games are \"$comp(games)\""
   if {$thisgame != {} } {
     set n     [lindex $thisgame 0]
     set m     [lindex $thisgame 1]
@@ -3446,8 +3470,14 @@ proc compNextGame {} {
     }
   } else {
     puts_ {Comp finished}
-    if {[winfo exists .initComp]} {
-      destroy .initComp
+    if {[winfo exists .comp]} {
+      bind .comp <Destroy> {}
+      .comp.buttons.ok   configure -text Tourney  -state disabled
+      .comp.buttons.help configure -text finished -state disabled
+      .comp.buttons.cancel configure -text Close    -command {
+	destroy .comp
+      }
+      focus .comp.buttons.cancel
     }
   }
 }
@@ -3592,7 +3622,7 @@ proc compAbort {} {
     # called when game is active
     global analysis comp
 
-    bind .initComp <Destroy> {}
+    bind .comp <Destroy> {}
     puts_ compAbort
     set comp(playing) 0
     set comp(iconize) 0
@@ -3604,19 +3634,19 @@ proc compAbort {} {
         destroy .analysisWin$comp(nextmove)
       }
     }
-    destroy .initComp
+    destroy .comp
 }
 
 proc compClose {} {
     # called when game is inactive
     global analysis comp
 
-    bind .initComp <Destroy> {}
+    bind .comp <Destroy> {}
     puts_ compClose
     set comp(playing) 0
     set comp(iconize) 0
     set comp(games) {}
-    destroy .initComp
+    destroy .comp
 }
 
 proc compGameEnd {} {
