@@ -23,7 +23,7 @@ namespace eval uci {
         currmove currmovenumber hashfull nps tbhits sbhits cpuload string refutation currline }
   set optionToken {name type default min max var }
   set optionImportant { MultiPV Hash OwnBook BookFile UCI_LimitStrength UCI_Elo }
-  set optionToKeep { UCI_LimitStrength UCI_Elo UCI_shredderbases }
+  set optionToKeep { UCI_LimitStrength UCI_Elo UCI_ShredderbasesPath }
   array set uciInfo {}
   ################################################################################
   #
@@ -154,6 +154,10 @@ namespace eval uci {
         if { $t == "score" } {
           incr i
           set next [ lindex $data $i ]
+	  # Needed for Prodeo, which is not UCI compliant
+	  if { $next != "cp" && $next != "mate" } {
+	      return
+	  }
           if { $next == "cp" } {
             incr i
             set uciInfo(tmp_score$n) [ lindex $data $i ]
@@ -736,8 +740,12 @@ namespace eval uci {
     catch { puts $pipe "exit" ; puts $pipe "quit" }
 
     # last resort : try to kill the engine (TODO if Windows : no luck, welcome zombies !)
-    if { ! $windowsOS } { catch { exec -- kill -s INT [ pid $pipe ] }  }
-
+    # No longer try to kill the engine as :
+    # - it does not work on Windows
+    # - Rybka MP uses processes instead of threads : killing the main process will leave the children processes running
+    # - engines should normally exit
+    # if { ! $windowsOS } { catch { exec -- kill -s INT [ pid $pipe ] }  }
+        
     catch { flush $pipe }
     catch { close $pipe }
     set uciInfo(pipe$n) ""
