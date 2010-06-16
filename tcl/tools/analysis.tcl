@@ -1622,7 +1622,6 @@ proc destroyAnalysisWin {n} {
 proc sendToEngine {n text} {
   logEngine $n "Scid  : $text"
   puts_ "$n $text"
-  # puts $::analysis(pipe$n) $text
   catch {puts $::analysis(pipe$n) $text}
 }
 
@@ -2191,7 +2190,6 @@ proc processAnalysisInput {n} {
     # Convert score to pawns from centipawns:
     set analysis(score$n) [expr {double($analysis(score$n)) / 100.0} ]
     set analysis(moves$n) [formatAnalysisMoves $temp_moves]
-# puts "processAnalysisInput $n $analysis(moves$n)"
     set analysis(time$n) $temp_time
     set analysis(nodes$n) [calculateNodes $temp_nodes]
 
@@ -2375,6 +2373,7 @@ proc startAnalyzeMode {{n 1} {force 0}} {
       sendToEngine $n "setboard [sc_pos fen]"
     }
     if { $analysis(has_analyze$n) } {
+      # why is this commented out. It crashes engine when re-instated S.A
       #updateAnalysis $n
       sendToEngine $n analyze
     } else  {
@@ -2786,6 +2785,8 @@ proc updateAnalysis {{n 1}} {
   if { $analysis(lockEngine$n) } { return }
 
   if { $analysis(uci$n) } {
+    # Should probably not be sending stop to engine... but not doing so
+    # causes the next engine's move to be in error
     sendToEngine $n stop
     set analysis(waitForBestMove$n) 1
     vwait analysis(waitForBestMove$n)
@@ -2802,7 +2803,9 @@ proc updateAnalysis {{n 1}} {
       # XBoard mode, and some users have noticed Crafty not being in
       # that mode at this point -- although I cannot reproduce this.
       # So just re-send "xboard" to Crafty to make sure:
-      if {$analysis(isCrafty$n)} { sendToEngine $n xboard }
+
+      ### try living without this S.A.
+      # if {$analysis(isCrafty$n)} { sendToEngine $n xboard }
       
       sendToEngine $n "force"  ;# Stop engine replying to moves.
       # Check if the setboard command must be used -- that is, if the
@@ -3431,7 +3434,11 @@ proc compNextGame {} {
   set thisgame [lindex $comp(games) $comp(current)]
   puts_ "thigame is \"$thisgame\", games are \"$comp(games)\""
   if {$thisgame != {} } {
-    foreach {n m name1 name2 k} $thisgame {}
+    set n     [lindex $thisgame 0]
+    set m     [lindex $thisgame 1]
+    set name1 [lindex $thisgame 2]
+    set name2 [lindex $thisgame 3]
+    set k     [lindex $thisgame 4]
     if {$n != {} && $m != {}} {
       puts_ "Game [expr $comp(current) + 1]: $name1 vs. $name2"
       incr comp(current)
@@ -3477,16 +3484,17 @@ proc compNM {n m k} {
   # For some reason, xboard (but not uci) engines now start out of sync!
   # I cant figure it out , but i have a good reset mechanism now
 
-  # This seems un-needed
-  #
-  # if {$analysis(analyzeMode$m)} {
-  #   .analysisWin$m.b.startStop invoke
-  # }
-  # if {!$analysis(analyzeMode$n)} {
-  #   .analysisWin$n.b.startStop invoke
-  # }
+  # Is this un-needed ? 
+  # Start n , stop m
 
-  # Whose move it is is handled in makeAnalysisMove
+  if {$analysis(analyzeMode$m)} {
+    .analysisWin$m.b.startStop invoke
+  }
+  if {!$analysis(analyzeMode$n)} {
+    .analysisWin$n.b.startStop invoke
+  }
+
+  # Alternating moves are handled in makeAnalysisMove
 
   set comp(prevmove) $m
   updateTitle
@@ -3506,8 +3514,9 @@ proc compNextMove {} {
 
     set n $comp(move)
     set m $comp(nextmove)
-    .analysisWin$n.b.startStop invoke
-    .analysisWin$m.b.startStop invoke
+    # stop n , start m
+    if { $analysis(analyzeMode$n)} { .analysisWin$n.b.startStop invoke }
+    if {!$analysis(analyzeMode$m)} { .analysisWin$m.b.startStop invoke }
     set comp(move) $m
     set comp(nextmove) $n
     update
@@ -3537,9 +3546,11 @@ proc compRepeatMove {} {
       puts_ "state is $analysis(analyzeMode$n)"
       after $comp(time) compMove
     } else {
-      ### Bad, bad, bad
+      ### Bad, bad, bad Hack for xboard engines
+
+      # Scidlet still doesn't work though.
       # Crafty seems to have issues with Scid, but this may be a good enough work-around.
-      # The alternative is to thouroughly debug Scid's whole analysis
+      # The alternative is to thoroughly debug Scid's whole analysis TODO
 
       puts_ "THREE bad moves, trying back/forward work-around"
       set n $comp(move)

@@ -3055,15 +3055,21 @@ set helpText(Tourney) {<h1>Computer Tournament</h1>
   Games are saved after each is completed.
   </p>
   <p>
+  Currently, Scid's time control and Uci/Xboard interfaces aren't vey good,
+  and the tournament implements a per-move time limit instead of a more sophisticated
+time control. Hopefully, this will be fixed in a subsequent version.
+  </p>
+  <p>
+  <i>It's possible that screen-savers will interfere with this feature, so disabling them is recommended.</i>
+  </p>
+  <p>
   Caveats/Todo:
 <ul>
-  <li>Unlike normal match time controls, the tournament is run
-  with a per-move time limit.</li>
-  <li>Scid's interface to some chess engines is not perfect. </li>
   <li>Chess Engines can crash... Scid also has (fairly rare) program crashes.</li>
-  <li>Scid's in-built engine, <b>Scidlet</b>, probably has too many bugs to be useful.</li>
+  <li>Scid's in-built engine, <b>Scidlet</b>, doesn't seem to work properly, and probably has too many bugs to be useful anyway.</li>
   <li>Only tested with times of three seconds.</li>
   <li>Niggling non-issue with xboard engines moving first.</li>
+  <li>Todo - Rewrite analysis.tcl's Uci and Xboard interfaces.</li>
 </ul>
   </p>
   <p><footer>(Updated: Scid Vs PC 1.0, May 2010)</footer></p>
