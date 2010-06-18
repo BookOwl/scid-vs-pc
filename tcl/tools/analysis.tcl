@@ -1803,7 +1803,7 @@ proc makeAnalysisWin { {n 1} } {
   toplevel $w
   wm title $w "Scid: $analysisName"
   bind $w <F1> { helpWindow Analysis }
-  if {[info exists ::comp(iconize)] && $::comp(iconize)} {
+  if {$::comp(iconize)} {
     wm iconify $w
   }
   setWinLocation $w
@@ -3221,13 +3221,18 @@ set comp(current) 0
 set comp(games) {}
 set comp(debug) 1
 set comp(badmoves) 0
+set comp(iconize) 0
 
 proc compInit {} {
   global analysis comp engines
 
   set w .comp
 
-  if {[winfo exists $w]} {return}
+  if {[winfo exists $w]} {
+    raise $w
+    focus $w
+    return
+  }
   toplevel $w
   wm state $w withdrawn
   wm title $w "Configure Tournament"
@@ -3477,12 +3482,13 @@ proc compNextGame {} {
     }
   } else {
     puts_ {Comp finished}
+    set comp(iconize) 0
     if {[winfo exists .comp]} {
       bind .comp <Destroy> {}
       .comp.buttons.ok   configure -text Tourney  -state disabled
       .comp.buttons.help configure -text finished -state disabled
       .comp.buttons.cancel configure -text Close    -command {
-	destroy .comp
+	 destroy .comp
       }
       focus .comp.buttons.cancel
     }
@@ -3493,6 +3499,8 @@ proc compNM {n m k} {
   global analysis comp
 
   sc_game new
+  updateBoard -pgn
+  update
   set comp(playing) 1
   set comp(fen) {}
 
