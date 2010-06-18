@@ -1569,7 +1569,7 @@ proc destroyAnalysisWin {n} {
 
   puts_ "destroyAnalysisWin $n"
   bind .analysisWin$n <Destroy> {}
-  if {$::comp(playing) > 0} {compStop}
+
   if { $annotateModeButtonValue } { ; # end annotation
     set annotateModeButtonValue 0
     toggleAutoplay
@@ -3336,6 +3336,7 @@ proc compOk {} {
     
   set players {}
   set names {}
+  set comp(games) {}
   set comp(time) [expr $comp(seconds) * 1000]
   puts_ "Move delay is $comp(time) seconds"
   set comp(current) 0
@@ -3573,9 +3574,9 @@ proc compRepeatMove {} {
     global analysis comp
 
     incr comp(badmoves)
+    set n $comp(move)
 
     if {$comp(badmoves) < 3} {
-      set n $comp(move)
       puts_ "toggling $n"
       .analysisWin$n.b.startStop invoke
       update
@@ -3591,45 +3592,22 @@ proc compRepeatMove {} {
       puts_ "state is $analysis(analyzeMode$n)"
       after $comp(time) compMove
     } else {
-      ### Bad, bad, bad Hack for xboard engines
+      ### Bad, bad, bad hack for xboard engines
 
-      # Scidlet still doesn't work though.
-      # Crafty seems to have issues with Scid, but this may be a good enough work-around.
-      # The alternative is to thoroughly debug Scid's whole analysis TODO
+      # Crafty seems to have issues with Scid, but this will have to do till we re-write it properly
+      # Scidlet still doesn't work 
 
-      puts_ "THREE bad moves, trying back/forward work-around"
-      set n $comp(move)
-
-      # stop engine
-
-      puts_ "toggling $n"
-      .analysisWin$n.b.startStop invoke
-      update
-      puts_ "state is $analysis(analyzeMode$n)"
-
-      # move game position back, then forward. "updateBoard" seems necessary
-
-      compPause
-      update
-      sc_move back
-      updateBoard -pgn
-      update
+      puts_ "THREE bad moves..."
+      after cancel compMove;	# needed ?
+      puts_ "Destroying analysis window $n"
+      destroyAnalysisWin $n
+      update idletasks
       after 2000
-
-      if {!$analysis(analyzeMode$n)} {
-        puts_ "toggling $n again"
-        .analysisWin$n.b.startStop invoke
-	puts_ "state is $analysis(analyzeMode$n)"
-        after 2000
-      }
-
-      sc_move forward
-      updateBoard -pgn
-      update
+      catch {destroy .analysisWin$n};	# i don't know why it still needs killing.
+      puts_ "Restarting analysis window $n"
+      makeAnalysisWin $n
       after 2000
-      compResume
-      update
-      after 2000
+      after $comp(time) compMove
     }
 }
 
