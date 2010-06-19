@@ -3036,7 +3036,7 @@ storing the annotations into the database.
      </li>
   </ul>
 
-  <p><footer>(Updated: Scid Vs PC 1.0, May 2010)</footer></p>
+  <p><footer>(Updated: Scid Vs PC 3.6.26.10, May 2010)</footer></p>
 }
 
 ####################
@@ -3055,24 +3055,19 @@ set helpText(Tourney) {<h1>Computer Tournament</h1>
   Games are saved after each is completed.
   </p>
   <p>
-  Currently, Scid's time control and Uci/Xboard interfaces aren't vey good,
-  and the tournament implements a per-move time limit instead of a more sophisticated
-time control. Hopefully, this will be fixed in a subsequent version.
+  If, for any reason a game fails in some way, pressing the <b>End Game</b> button will save the game, and
+progress to the next.
   </p>
-  <p>
-  <i>It's possible that screen-savers will interfere with this feature, so disabling them is recommended.</i>
-  </p>
-  <p>
-  Caveats/Todo:
-<ul>
-  <li>Chess Engines can crash... Scid also has (fairly rare) program crashes.</li>
-  <li>Scid's in-built engine, <b>Scidlet</b>, doesn't seem to work properly, and probably has too many bugs to be useful anyway.</li>
-  <li>Only tested with times of three seconds.</li>
-  <li>Niggling non-issue with xboard engines moving first.</li>
-  <li>Todo - Rewrite analysis.tcl's Uci and Xboard interfaces.</li>
-</ul>
-  </p>
-  <p><footer>(Updated: Scid Vs PC 1.0, May 2010)</footer></p>
+  <h3>Issues</h3>
+<br>
+  * The tournament currently implements a <b>per-move time limit</b> instead of a more sophisticated
+time control. This is fairly crude, and a rewrite is on the to-do list.<br>
+  * Overall, the feature is not fool-proof and sundry engines may not work. <b>Xboard</b> support
+   (notably, Crafty and Phalanx) is not as solid as for <b>UCI</b>, and less established engines
+   such as Chenard and <b>Scidlet</b> can falter.<br>
+  * It is recommended to disable screensavers, and not run a second instance of
+    Scid during the tournament<br>
+  <p><footer>(Updated: Scid Vs PC 3.6.26.10, June 2010)</footer></p>
 }
 
 ####################
@@ -4475,7 +4470,7 @@ our game.</li>
   limited the coach is allowed to think in the background.</li>
   </ul>
 
-<p><footer>(Updated: Scid Vs PC 1.0, May 2010)</footer></p>
+<p><footer>(Updated: Scid Vs PC 3.6.26.10, May 2010)</footer></p>
 }
 
 # Opening Trainer window help

@@ -1549,6 +1549,7 @@ proc makeAnalysisMove {n} {
   ## tried to fix these error messages by using flush and gets (pipe), to no avail
   ## Probably better not to invoke buttons, but write our own command
 
+  # update idletasks ; # added by S.A. to fix tournament issues &&& ???
   updateBoard -pgn -animate
   ::utils::sound::AnnounceNewMove $move
   return $res
@@ -2785,8 +2786,6 @@ proc updateAnalysis {{n 1}} {
   if { $analysis(lockEngine$n) } { return }
 
   if { $analysis(uci$n) } {
-    # Should probably not be sending stop to engine... but not doing so
-    # causes the next engine's move to be in error
     sendToEngine $n stop
     set analysis(waitForBestMove$n) 1
     vwait analysis(waitForBestMove$n)
@@ -3500,8 +3499,6 @@ proc compNM {n m k} {
   global analysis comp
 
   sc_game new
-  updateBoard -pgn
-  update
   set comp(playing) 1
   set comp(fen) {}
 
@@ -3522,15 +3519,14 @@ proc compNM {n m k} {
   }
   sc_game tags set -date [::utils::date::today]
   sc_game tags set -round $k
+  update idletasks
+  updateBoard -pgn
 
   # Engine N goes first
   set comp(move) $n
   set comp(nextmove) $m
 
-  # For some reason, xboard (but not uci) engines now start out of sync!
-  # I cant figure it out , but i have a good reset mechanism now
-
-  # Is this un-needed ? 
+  # Is this needed ? 
   # Start n , stop m
 
   if {$analysis(analyzeMode$m)} {
@@ -3591,7 +3587,7 @@ proc compRepeatMove {} {
 
       puts_ "state is $analysis(analyzeMode$n)"
       after $comp(time) compMove
-    } else {
+    } elseif {$comp(badmoves) < 6} {
       ### Bad, bad, bad hack for xboard engines
 
       # Crafty seems to have issues with Scid, but this will have to do till we re-write it properly
@@ -3608,6 +3604,9 @@ proc compRepeatMove {} {
       makeAnalysisWin $n
       after 2000
       after $comp(time) compMove
+    } else { 
+      # save un-finished game and go to next
+      compGameEnd
     }
 }
 
