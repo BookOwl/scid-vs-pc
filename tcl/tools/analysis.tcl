@@ -1516,6 +1516,9 @@ proc makeAnalysisMove {n} {
     puts_ "engine $n moves $move"
     set comp(badmoves) 0
 
+    after cancel compTimeout
+    after 60000 compTimeout
+
     set score [sc_pos analyze -time 50]
     if { $score == {0 {}}} {
       ### stalemate
@@ -2284,7 +2287,7 @@ proc formatAnalysisMoves {text} {
   # Trim any initial or final whitespace:
   set text [string trim $text]
 
-  # Yace often adds "H" after a move, e.g. "Bc4H". Remove them
+  ### Yace often adds "H" after a move, e.g. "Bc4H". Remove them
   # regsub -all {H } $text { } text
 
   # Crafty adds "<HT>" for a hash table comment. Change it to "{HT}"
@@ -3532,13 +3535,24 @@ proc compNM {n m k} {
   updateTitle
   update
   after $comp(time) compMove
+  after 60000 compTimeout
 }
 
 proc compMove {} {
     global analysis comp
 
     set n $comp(move)
-    .analysisWin$n.b.move invoke
+
+    # .analysisWin$n.b.move invoke
+    if {![makeAnalysisMove $n]} { compRepeatMove }
+      
+}
+
+proc compTimeout {} {
+
+    puts_ "!!! compTimeout"
+    puts_ "!!! Move timed out, starting next game"
+    compGameEnd
 }
 
 proc compNextMove {} {
@@ -3583,7 +3597,7 @@ proc compRepeatMove {} {
       # Crafty seems to have issues with Scid, but this will have to do till we re-write it properly
       # Scidlet still doesn't work 
 
-      puts_ "THREE bad moves..."
+      puts_ "three BAD moves..."
       after cancel compMove;	# needed ?
       puts_ "Destroying analysis window $n"
       destroyAnalysisWin $n
@@ -3596,6 +3610,7 @@ proc compRepeatMove {} {
       after $comp(time) compMove
     } else { 
       # save un-finished game and go to next
+      puts_ "six BAD moves... terminating game"
       compGameEnd
     }
 }
@@ -3610,6 +3625,7 @@ proc compAbort {} {
     set comp(iconize) 0
     set comp(games) {}
     after cancel compMove
+    after cancel compTimeout
     after 2000 {
       catch {
         destroy .analysisWin$comp(move)
@@ -3635,6 +3651,7 @@ proc compGameEnd {} {
     global analysis comp
     puts_ compGameEnd
     after cancel compMove
+    after cancel compTimeout
     if {![sc_base isReadOnly]} {
     puts_ {saving game}
       sc_game save [sc_game number]
@@ -3649,6 +3666,7 @@ proc compStop {} {
     puts_ compStop
     set comp(playing) 0
     after cancel compMove
+    after cancel compTimeout
     after 2000 {
       catch {
         destroy .analysisWin$comp(move)
