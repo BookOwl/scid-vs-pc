@@ -2171,6 +2171,7 @@ proc processAnalysisInput {n} {
     # Set a fairly low noise value so Crafty is responsive to board changes,
     # but not so low that we get lots of short-ply search data:
     sendToEngine $n {noise 1000}
+    sendToEngine $n {egtb off} ; # turn off end game table book
     set analysis(isCrafty$n) 1
     set analysis(has_setboard$n) 1
     set analysis(has_analyze$n) 1
@@ -2273,20 +2274,20 @@ proc checkEngineIsAlive { {n 1} } {
 #   the text more compatible for adding as a variation.
 ################################################################################
 proc formatAnalysisMoves {text} {
-  # Yace puts ".", "t", "t-" or "t+" at the start of its moves text,
-  # unless directed not to in its .ini file. Get rid of it:
-  if {[strIsPrefix {. } $text]} { set text [string range $text 2 end]}
-  if {[strIsPrefix {t } $text]} { set text [string range $text 2 end]}
-  if {[strIsPrefix {t- } $text]} { set text [string range $text 3 end]}
-  if {[strIsPrefix {t+ } $text]} { set text [string range $text 3 end]}
+  ### Yace puts ".", "t", "t-" or "t+" at the start of its moves text,
+  ### unless directed not to in its .ini file. Get rid of it
+  # if {[strIsPrefix {. } $text]} { set text [string range $text 2 end]}
+  # if {[strIsPrefix {t } $text]} { set text [string range $text 2 end]}
+  # if {[strIsPrefix {t- } $text]} { set text [string range $text 3 end]}
+  # if {[strIsPrefix {t+ } $text]} { set text [string range $text 3 end]}
 
   # Trim any initial or final whitespace:
   set text [string trim $text]
 
-  # Yace often adds "H" after a move, e.g. "Bc4H". Remove them:
-  regsub -all {H } $text { } text
+  # Yace often adds "H" after a move, e.g. "Bc4H". Remove them
+  # regsub -all {H } $text { } text
 
-  # Crafty adds "<HT>" for a hash table comment. Change it to "{HT}":
+  # Crafty adds "<HT>" for a hash table comment. Change it to "{HT}"
   regsub <HT> $text {{HT}} text
 
   return $text
@@ -3396,17 +3397,6 @@ proc compOk {} {
 
   compNextGame
 }
-
-proc factorial {x} {
-  set i 1
-  set product 1
-  while {$i <= $x} {
-    set product [expr $product * $i]
-    incr i
-  }
-  return $product
-}
-
 
 proc compPause {} {
   global analysis comp engines
