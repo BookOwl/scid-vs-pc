@@ -3391,7 +3391,7 @@ proc compOk {} {
     }
   }
   ttk::progressbar $w.progress -mode determinate \
-    -maximum [expr {[factorial $comp(count)] * $comp(rounds) / 2}] -variable comp(current)
+    -maximum [expr {$comp(count) * ($comp(count)-1) * $comp(rounds) / 2}] -variable comp(current)
   pack $w.progress -side bottom -fill x -padx 10 -pady 5
 
   compNextGame
