@@ -3043,30 +3043,68 @@ storing the annotations into the database.
 ### Computer Tournament 
 set helpTitle(Tourney) "Computer Tournament"
 set helpText(Tourney) {<h1>Computer Tournament</h1>
-  <p>Scid vs. Pc's latest feature is an automated
-  <run ::compInit><green>Computer Tournament</green></run>.
+  <p>Scid vs. Pc's now has an automated
+  <run ::compInit><green>Computer Tournament</green></run> feature.
   Any engine configured via the
   <run ::enginelist::choose><green>Tools--<gt>Analysis Engines</green></run>
-  widget can be added.
+  widget can be added. Support for different engines is, afaik, very good, but a few
+  old engines definitely don't work.
   </p>
   <p>
   Make sure you have a database open so the results can be saved, then select
-  the number of competitors, the tournament name, and Press "OK".
+  the number of competitors, tournament name and move period, then Press "OK".
   Games are saved after each is completed.
   </p>
   <p>
-  If, for any reason a game fails in some way, pressing the <b>End Game</b> button will save the game, and
+  Though there's been some testing, it's probably still possible for single games to hang.
+To address this, there is a <b>Seconds for Time-out</b> value, which determines the
+maximum time that any one move sould take before the game is ended automatically.
+In this case, the game is still saved , and game result can be editted manually later.
+  </p>
+  <p>
+  If a game drags on for any reason, pressing the <b>End Game</b> button will save the game, and
 progress to the next.
   </p>
-  <h3>Issues</h3>
+  <p>
+  Once the tournament ic completed, make sure to have a look at the 
+  <run ::crosstab::Open><green>Crosstable</green></run> window
+  to see the results in a nice format.
+  </p>
+  <h3>Engines</h3>
+<p>
+The author has tested quite a few engines, with good results. Out of the following
+<b>RobboLito</b>,
+<b>Phalanx</b>,
+<b>Crafty</b>,
+<b>Glaurung</b>,
+<b>Toga 131</b> (Fruit),
+<b>Scidlet</b>,
+<b>Stockfish 1.6.2</b>,
+<b>Gnu Chess</b>,
+<b>Faile</b>,
+<b>Sjeng</b>,
+<b>XChenard</b>,
+<b>Spike</b>,
+<b>Stockfish 171</b>,
+<b>Hoi Chess</b>,
+<b>Arasanx</b>,
+<b>Shredder Classic 4</b>,
+<b>Scorpio</b>
+, only Faile doesnt work; while Arasan and Spike have issues pertinent to time control.
+</p>
+<p>Considering the number of engines available, unforseen issues probably will arise.
+</p>
+  <h3>Known issues</h3>
 <br>
   * The tournament currently implements a <b>per-move time limit</b> instead of a more sophisticated
-time control. This is fairly crude, and a rewrite is on the to-do list.<br>
-  * Overall, the feature is not fool-proof and sundry engines may not work. <b>Xboard</b> support
-   (notably, Crafty and Phalanx) is not as solid as for <b>UCI</b>, and less established engines
-   such as Chenard and <b>Scidlet</b> can falter.<br>
-  * It is recommended to disable screensavers, and not run a second instance of
-    Scid during the tournament<br>
+time control. This is slightly crude, but engine analysis is (now) continuous through-out.
+<br>
+  * <b>Xboard</b> support is not as solid as for <b>UCI</b>, but afaics it is only quite old
+  engines such as Faile, Arasan, and Spike that don't work properly, with most known
+issues centering around time issues. Some old xboard engines may ignore time constraints altogether.
+  The xboard <b>resign</b> request is supported.
+<br>
+  * It may be wise to disable screensavers during long tournaments, but perhaps this is not necessary<br>
   <p><footer>(Updated: Scid Vs PC 3.6.26.10, June 2010)</footer></p>
 }
 
