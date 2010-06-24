@@ -637,6 +637,7 @@ namespace eval inputengine {
         ::inputengine::port ::inputengine::param
 
     set ::inputengine::port $::ExtHardware::port
+    set ::inputengine::engine $::ExtHardware::engine
     ::ExtHardware::HWbuttonImg tb_eng_connecting
 
     if {[catch {set InputEngine(pipe) [open "| $engine $port $param" "r+"]} result]} {
