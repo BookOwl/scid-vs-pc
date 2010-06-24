@@ -687,6 +687,13 @@ PgnParser::GetRestOfPawnMove (char * buffer)
         }
         // Convert "K" for promoted piece from King to Knight:
         //if (ch == 'K') { ch = 'N'; }
+        if (ch == 'q' || ch == 'r' || ch == 'b'  ||  ch == 'n') {
+            // Promotion with the "=" sign missing.
+            // Faile and Spike use lower case letters.. Will this break anything else ? S.A.
+            ADDCHAR (buffer, '=');
+            ADDCHAR (buffer, toupper(ch));
+            return TOKEN_Move_Promote;
+        }
         if (ch == 'Q' || ch == 'R' || ch == 'B'  ||  ch == 'N') {
             // Promotion with the "=" sign missing. We insert it.
             ADDCHAR (buffer, '=');
