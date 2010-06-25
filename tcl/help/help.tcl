@@ -3043,7 +3043,7 @@ storing the annotations into the database.
 ### Computer Tournament 
 set helpTitle(Tourney) "Computer Tournament"
 set helpText(Tourney) {<h1>Computer Tournament</h1>
-  <p>Scid vs. Pc's now has an automated
+  <p>Scid vs. PC now has an automated
   <run ::compInit><green>Computer Tournament</green></run> feature.
   Any engine configured via the
   <run ::enginelist::choose><green>Tools--<gt>Analysis Engines</green></run>
@@ -3066,10 +3066,21 @@ In this case, the game is still saved , and game result can be editted manually 
 progress to the next.
   </p>
   <p>
-  Once the tournament ic completed, make sure to have a look at the 
+  Once the tournament is completed, make sure to have a look at the 
   <run ::crosstab::Open><green>Crosstable</green></run> window
   to see the results in a nice format.
   </p>
+
+  <h3>Known Issues</h3>
+<br>
+  * The tournament currently implements a <b>per-move time limit</b> instead of a more sophisticated
+time control. This is slightly crude, but engine analysis is (now) continuous through-out.
+<br>
+  * <b>Xboard</b> support is not as solid as for <b>UCI</b> (see below).
+  The xboard <b>resign</b> request is supported.
+<br>
+  * It may be wise to disable screensavers during long tournaments, but perhaps this is not necessary<br>
+
   <h3>Engines</h3>
 <p>
 The author has tested quite a few engines, with good results. Out of the following
@@ -3080,7 +3091,7 @@ The author has tested quite a few engines, with good results. Out of the followi
 <b>Toga 131</b> (Fruit),
 <b>Scidlet</b>,
 <b>Stockfish 1.6.2</b>,
-<b>Gnu Chess</b>,
+<b>Gnu Chess 5</b>,
 <b>Faile</b>,
 <b>Sjeng</b>,
 <b>XChenard</b>,
@@ -3090,22 +3101,16 @@ The author has tested quite a few engines, with good results. Out of the followi
 <b>Arasanx</b>,
 <b>Shredder Classic 4</b>,
 <b>Scorpio</b>
-, only Faile doesnt work; while Arasan and Spike have issues pertinent to time control.
+, only Faile doesnt work; while Arasan, Spike, Sjeng and XChenard have issues pertinent to time control.
+(In a nutshell, they are buggy, and on average only use 10% of their allowed time slice
+so as to _never_ use _more_ than the slice and get defaulted.) This is exasperated when playing each other, probably because of a bug in the tournament.
+Phalanx , on the other hand, has no time control, and takes it's own (sweet) time.
 </p>
 <p>Considering the number of engines available, unforseen issues probably will arise.
 </p>
-  <h3>Known issues</h3>
-<br>
-  * The tournament currently implements a <b>per-move time limit</b> instead of a more sophisticated
-time control. This is slightly crude, but engine analysis is (now) continuous through-out.
-<br>
-  * <b>Xboard</b> support is not as solid as for <b>UCI</b>, but afaics it is only quite old
-  engines such as Faile, Arasan, and Spike that don't work properly, with most known
-issues centering around time issues. Some old xboard engines may ignore time constraints altogether.
-  The xboard <b>resign</b> request is supported.
-<br>
-  * It may be wise to disable screensavers during long tournaments, but perhaps this is not necessary<br>
+
   <p><footer>(Updated: Scid Vs PC 3.6.26.10, June 2010)</footer></p>
+
 }
 
 ####################

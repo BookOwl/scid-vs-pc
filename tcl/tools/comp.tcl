@@ -304,7 +304,10 @@ proc compNM {n m k} {
     } else {
 	sendToEngine $current_engine "bk off"
 	sendToEngine $current_engine "st $comp(seconds)"
-	# sendToEngine $current_engine new
+	# if Sjeng or Chen ..
+	# sendToEngine $current_engine hard
+	# but it really slows phalanx down
+	# if {$current_engine == $m} { sendToEngine $current_engine new }
     }
   }
 
@@ -334,15 +337,20 @@ proc compNM {n m k} {
 
       # "st TIME" [time limit] and "playother" are only for protoversion 2
       # phalanx and other older(?) engines won't honour time limit
-      # but they'll get beat anyway, so dont' worry about it
+      # but they'll get beat anyway
       # Should fix it up though
 
-      if {$analysis(has_setboard$current_engine)} {
-	sendToEngine $current_engine "setboard [sc_pos fen]"
-      }
-      # Some xboard engines move very rapidly.. Are they thinking ok ?
+      ## Don't test for setboard as Phalanx doest report this working feature
+      # if {$analysis(has_setboard$current_engine)}
+      sendToEngine $current_engine "setboard [sc_pos fen]"
+
+      # Some xboard engines move very rapidly... there might be a 
+      # inbred bug confusing centiseconds and seconds.
+
+      # This needs sorting out properly
       sendToEngine $current_engine "st $comp(seconds)"
-      sendToEngine $current_engine "time $comp(seconds)"
+      sendToEngine $current_engine "time [expr $comp(seconds) * 100]"
+
       sendToEngine $current_engine "go"
       vwait analysis(waitForBestMove$current_engine)
 
