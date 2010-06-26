@@ -65,6 +65,8 @@ proc ::commenteditor::Open {} {
   bind $w <Destroy> ""
   bind $w <Configure> "recordWinSize $w"
   standardShortcuts $w
+  bind $w <Left> {}
+  bind $w <Right> {}
 
   set mark [frame $w.markFrame]
   if { $::commenteditor::showBoard } {
