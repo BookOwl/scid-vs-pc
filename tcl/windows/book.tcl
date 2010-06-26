@@ -98,7 +98,6 @@ namespace eval book {
     wm resizable $w 0 1
 
     setWinLocation $w
-    bind $w <Configure> "recordWinSize $w"
     bind $w <F1> { helpWindow Book }
 
     frame $w.f
@@ -157,6 +156,7 @@ namespace eval book {
       set ::book::currentBook ""
       destroy  .bookWin
     }
+    bind $w <Configure> "recordWinSize $w"
   }
   ################################################################################
   #
@@ -306,6 +306,7 @@ namespace eval book {
     bind $w <Destroy> "::book::closeTuningBook"
     bind $w <Escape> { destroy  .bookTuningWin }
     bind $w <F1> { helpWindow BookTuning }
+    bind $w <Configure> "recordWinSize $w"
 
     bookTuningSelect
 
