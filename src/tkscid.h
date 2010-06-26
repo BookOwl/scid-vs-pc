@@ -521,6 +521,7 @@ int sc_pos_pgnBoard   (TCL_ARGS);
 int sc_pos_probe      (TCL_ARGS);
 int sc_pos_probe_board (TCL_ARGS);
 int sc_pos_setComment (TCL_ARGS);
+int sc_pos_moves      (TCL_ARGS);
 
 int sc_progressBar    (TCL_ARGS);
 
@@ -554,7 +555,9 @@ int sc_book  					(TCL_ARGS);
 int sc_book_load  		(TCL_ARGS);
 int sc_book_close  		(TCL_ARGS);
 int sc_book_moves  		(TCL_ARGS);
+int sc_book_positions  		(TCL_ARGS);
 int sc_book_update		(TCL_ARGS);
+int sc_book_movesupdate		(TCL_ARGS);
 //////////////////////////////////////////////////////////////////////
 /// END of tkscid.h
 //////////////////////////////////////////////////////////////////////

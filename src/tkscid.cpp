@@ -9845,14 +9845,14 @@ sc_pos (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
         "fen", "getComment", "getNags", "hash", "html",
         "isAt", "isLegal", "isPromotion",
         "matchMoves", "moveNumber", "pgnBoard", "pgnOffset",
-        "probe", "setComment", "side", "tex", NULL
+        "probe", "setComment", "side", "tex", "moves", NULL
     };
     enum {
         POS_ADDNAG, POS_ANALYZE, POS_BESTSQ, POS_BOARD, POS_CLEARNAGS,
         POS_FEN, POS_GETCOMMENT, POS_GETNAGS, POS_HASH, POS_HTML,
         POS_ISAT, POS_ISLEGAL, POS_ISPROMO,
         POS_MATCHMOVES, POS_MOVENUM, POS_PGNBOARD, POS_PGNOFFSET,
-        POS_PROBE, POS_SETCOMMENT, POS_SIDE, POS_TEX
+        POS_PROBE, POS_SETCOMMENT, POS_SIDE, POS_TEX, POS_MOVES
     };
 
     char boardStr[200];
@@ -9913,6 +9913,9 @@ sc_pos (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
 
     case POS_MATCHMOVES:
         return sc_pos_matchMoves (cd, ti, argc, argv);
+
+    case POS_MOVES:
+        return sc_pos_moves (cd, ti, argc, argv);
 
     case POS_MOVENUM:
         // This used to return:
@@ -10391,6 +10394,26 @@ sc_pos_matchMoves (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
         }
     }
 
+    return TCL_OK;
+}
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// sc_pos_moves: Return the list of legal moves in SAN notation
+//
+int
+sc_pos_moves (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
+{
+    if (argc != 2) {
+        return errorResult (ti, "Usage: sc_pos moves");
+    }
+    Position * p = db->game->GetCurrentPos();
+    p->ClearSANStrings();
+    p->CalcSANStrings (SAN_NO_CHECKTEST);
+    sanListT * sanList = p->GetSANStrings();
+
+    for (uint i=0; i < sanList->num; i++) {
+            Tcl_AppendElement (ti, sanList->list[i]);
+    }
     return TCL_OK;
 }
 
@@ -16081,10 +16104,10 @@ int
 sc_book (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
 {
     static const char * options [] = {
-        "load", "close", "moves", "update", NULL
+        "load", "close", "moves", "positions", "movesupdate", "update", NULL
     };
     enum {
-        BOOK_LOAD,    BOOK_CLOSE, BOOK_MOVE, BOOK_UPDATE,
+        BOOK_LOAD,    BOOK_CLOSE, BOOK_MOVE, BOOK_POSITIONS, BOOK_MOVES_UPDATE, BOOK_UPDATE,
     };
     int index = -1;
 
@@ -16100,8 +16123,14 @@ sc_book (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
     case BOOK_MOVE:  
         return sc_book_moves (cd, ti, argc, argv);
 
+    case BOOK_POSITIONS:  
+        return sc_book_positions (cd, ti, argc, argv);
+
     case BOOK_UPDATE:  
         return sc_book_update (cd, ti, argc, argv);
+
+    case BOOK_MOVES_UPDATE:  
+        return sc_book_movesupdate (cd, ti, argc, argv);
         
     default:
         return InvalidCommand (ti, "sc_book", options);
@@ -16121,10 +16150,22 @@ sc_book_load (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
     }
  
     uint slot = strGetUnsigned (argv[3]);
-    if (polyglot_open(argv[2], slot) == -1 ) {
+
+    int bookstate = polyglot_open(argv[2], slot);
+
+    if (bookstate == -1 ) {
 			return errorResult (ti, "Unable to load book");
 		}
+    if (bookstate  >  0 ) {
+		   // state == 1: book is read only
+			return setIntResult (ti, bookstate);
+	 }
     return TCL_OK;
+
+//--//    if (polyglot_open(argv[2], slot) == -1 ) {
+//--//			return errorResult (ti, "Unable to load book");
+//--//		}
+//--//    return TCL_OK;
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -16160,6 +16201,23 @@ sc_book_moves (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
     return TCL_OK;
 }
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// sc_positions:
+//    returns a TCL list of moves to a position in the book
+int
+sc_book_positions (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
+{
+		char moves[200] = "";
+		char boardStr[100];
+    if (argc != 3) {
+        return errorResult (ti, "Usage: sc_book oppmoves slot");
+    }
+    uint slot = strGetUnsigned (argv[2]);
+		db->game->GetCurrentPos()->PrintFEN (boardStr, FEN_ALL_FIELDS);
+		polyglot_positions(moves, (const char *) boardStr, slot);
+    Tcl_AppendResult (ti, moves, NULL);
+    return TCL_OK;
+}
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // sc_book_update:
 //    updates the opened book with probability values
 int
@@ -16170,6 +16228,19 @@ sc_book_update (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
     }
     uint slot = strGetUnsigned (argv[3]);
 		scid_book_update( (char*) argv[2], slot );
+    return TCL_OK;
+}
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// sc_book_movesupdate:
+//    updates the opened book with moves and probability values
+int
+sc_book_movesupdate (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
+{
+    if (argc != 6) {
+        return errorResult (ti, "Usage: sc_book update <moves> <probs> slot tempfile");
+    }
+    uint slot = strGetUnsigned (argv[4]);
+    scid_book_movesupdate( (char*) argv[2], (char*) argv[3], slot, (char*) argv[5] );
     return TCL_OK;
 }
 //////////////////////////////////////////////////////////////////////

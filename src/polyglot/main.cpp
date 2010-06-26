@@ -78,6 +78,7 @@ int polyglot_open(const char * BookFile, const int BookNumber) {
    // opening book
   book_clear(BookNumber);
   res = scid_book_open(BookFile, BookNumber);
+
 	return res;
 }
 /////////////////////////////////////////////////////////////////////
@@ -94,6 +95,14 @@ int polyglot_moves(char *moves, const char *fen, const int BookNumber) {
  	board_from_fen(board, fen);
   scid_book_disp(board, moves, BookNumber);
 	return 0;
+}
+/////////////////////////////////////////////////////////////////////
+// find moves to positions in the book
+int polyglot_positions (char *moves, const char *fen, const int BookNumber) {
+  board_t board[1];
+  board_from_fen(board, fen);
+  scid_position_book_disp(board,moves, BookNumber);
+  return 0;
 }
 
 // parse_option()

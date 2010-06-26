@@ -5,15 +5,18 @@
 
 #include <cerrno>
 #include <cstdio>
-//#include <cstdlib>
+#include <cstdlib>
 #include <cstring>
 
 #include "board.h"
 #include "book.h"
 #include "move.h"
 #include "move_legal.h"
+#include "move_gen.h"
+#include "move_do.h"
 #include "san.h"
 #include "util.h"
+#include "list.h"
 
 // types
 
@@ -40,6 +43,14 @@ static int    find_pos      (uint64 key, const int BookNumber);
 
 static void   read_entry    (entry_t * entry, int n, const int BookNumber);
 static void   write_entry   (const entry_t * entry, int n, const int BookNumber);
+
+#ifdef WINCE
+static void   read_entry_file    (Tcl_Channel file, entry_t * entry);
+static void   write_entry_file   (Tcl_Channel file, const entry_t * entry);
+#else
+static void   read_entry_file    (FILE *f, entry_t * entry);
+static void   write_entry_file   (FILE *f, const entry_t * entry);
+#endif
 
 #ifdef WINCE
 static uint64 read_integer  (Tcl_Channel file, int size);
@@ -102,6 +113,159 @@ void scid_book_update(char * probs, const int BookNumber) {
    }
 }
 
+#define MAX_MOVES 100
+
+int scid_book_movesupdate(char * moves, char * probs, const int BookNumber, char *tempfile) {
+ 
+    int maximum;
+    int pos;
+    entry_t entry[1], entry1[1];
+    uint16 move[MAX_MOVES];
+    int prob[MAX_MOVES];
+    int move_count = 0;
+    int prob_count = 0;
+    int prob_max = 0;
+    double coef=1.0;
+    int probs_written;
+    int write_count;
+    int i;
+#ifdef WINCE
+  Tcl_Channel f;
+#else
+    FILE *f;
+#endif
+    char *probs_copy, *moves_copy;
+    //	printf("Updating book: moves=%s; probs=%s; tempfile=%s; key=%016llx.\n",moves,probs,tempfile,scid_board[BookNumber]->key);
+        /* parse probs and fill prob array */
+    char *s;
+    probs_copy=strdup(probs);  // strtok modifies its first argument
+    s = strtok( probs_copy, " " );
+    if(s!=NULL){
+        sscanf( s, "%d", &(prob[prob_count]) );
+        prob_count++;
+        while ( (s = strtok(NULL, " ")) != NULL) {
+            if(prob_count>=MAX_MOVES){
+                return -1; // fail
+            }
+            sscanf( s, "%d", &(prob[prob_count]) );
+            prob_count++;
+        }
+    }
+    free(probs_copy);
+        // max
+    maximum = 0xfff0;
+    
+    for (i=0; i< prob_count; i++)
+        if(prob[i]>prob_max) prob_max=prob[i];
+    if(prob_max!=0){   // avoid division by zero
+      coef = double(maximum)/double(prob_max);
+    }
+    
+        /* parse moves and fill move array */
+    moves_copy=strdup(moves);  // strtok modifies its first argument
+    move_count=0;
+    s = strtok( moves_copy, " " );
+    if(s!=NULL){
+        move[move_count]=move_from_san(s,scid_board[BookNumber]);
+        move_count++;
+        while ( (s = strtok(NULL, " ")) != NULL) {
+            if(move_count>=MAX_MOVES){
+                return -1; // fail
+            }
+            move[move_count]=move_from_san(s,scid_board[BookNumber]);
+            move_count++;
+        }
+    }
+    free(moves_copy);   
+    if (prob_count!=move_count){
+        return -1; //fail
+    }
+    if(prob_count==0){
+        return 0; // nothing to do
+    }
+
+#ifdef WINCE
+  if ((f = my_Tcl_OpenFileChannel(NULL, tempfile, "w+", 0666) ) == NULL) {
+#else
+    if(!(f=fopen(tempfile,"wb+"))){
+#endif
+        return -1;  //fail
+    }
+    probs_written=0;
+    write_count=0;
+
+#ifdef WINCE
+    my_Tcl_Seek(BookFile[BookNumber],0,SEEK_SET);
+#else
+    fseek(BookFile[BookNumber],0,SEEK_SET);
+#endif
+
+    for(pos=0; pos<BookSize[BookNumber];pos++){
+        read_entry_file(BookFile[BookNumber],entry);
+        if ((entry->key < scid_board[BookNumber]->key)||
+	    ((entry->key >scid_board[BookNumber]->key) && probs_written)
+	    ){
+            write_count++;
+            write_entry_file(f,entry);
+        }else if(!probs_written) {
+            for(i=0;i<move_count;i++){
+                entry1->key=scid_board[BookNumber]->key;
+                entry1->move=move[i];
+                if (prob[i] != 0) {
+                    entry1->count = int( double(prob[i]) * coef );
+                } else {
+                    entry1->count = 1;
+                }
+                entry1->n=0;
+                entry1->sum=0;
+                write_count++;
+                write_entry_file(f,entry1);
+            }
+            if(entry->key> scid_board[BookNumber]->key){
+                write_count++;
+                write_entry_file(f,entry);
+            }
+            probs_written=1;
+        }
+    }
+    if(!probs_written) { // not nice...
+      for(i=0;i<move_count;i++){
+	entry1->key=scid_board[BookNumber]->key;
+	entry1->move=move[i];
+	if (prob[i] != 0) {
+	  entry1->count = int( double(prob[i]) * coef );
+	} else {
+	  entry1->count = 1;
+	}
+	entry1->n=0;
+	entry1->sum=0;
+	write_count++;
+	write_entry_file(f,entry1);
+      }
+      probs_written=1;
+    }
+    ASSERT(probs_written);
+#ifdef WINCE
+    my_Tcl_Seek(BookFile[BookNumber],0,SEEK_SET);
+    my_Tcl_Seek(f,0,SEEK_SET);
+#else
+    fseek(BookFile[BookNumber],0,SEEK_SET);
+    fseek(f,0,SEEK_SET);
+#endif
+    for(pos=0; pos<write_count ;pos++){
+        read_entry_file(f,entry);
+        write_entry_file(BookFile[BookNumber],entry);
+    }
+#ifdef WINCE   
+    my_Tcl_Close(NULL, f);
+#else
+    fclose(f);
+#endif
+    BookSize[BookNumber]=write_count;
+    book_flush(BookNumber); // commit changes to disk
+    return 0; // success
+}
+
 // =================================================================
 int scid_book_close(const int BookNumber) {
 	if (BookFile[BookNumber] != NULL) {
@@ -120,13 +284,27 @@ int scid_book_close(const int BookNumber) {
 // =================================================================
 int scid_book_open(const char file_name[], const int BookNumber) {
 
+   int ReadOnlyFile = 0;
+
 #ifdef WINCE
    BookFile[BookNumber] = my_Tcl_OpenFileChannel(NULL, file_name, "r+", 0666);
 #else
    BookFile[BookNumber] = fopen(file_name,"rb+");
 #endif
 
-   if (BookFile[BookNumber] == NULL) return -1;
+   //--------------------------------------------------
+   if (BookFile[BookNumber] == NULL) {
+      // the book can not be opened in read/write mode, try read only
+#ifdef WINCE
+      BookFile[BookNumber] = my_Tcl_OpenFileChannel(NULL, file_name, "r", 0666);
+#else
+      BookFile[BookNumber] = fopen(file_name,"rb");
+#endif
+      ReadOnlyFile = 1;
+      if (BookFile[BookNumber] == NULL) return -1;
+   }
+   //--------------------------------------------------
+
 
 #ifdef WINCE
    my_Tcl_SetChannelOption(NULL, BookFile[BookNumber], "-encoding", "binary");
@@ -145,8 +323,28 @@ int scid_book_open(const char file_name[], const int BookNumber) {
     BookSize[BookNumber] = ftell(BookFile[BookNumber]) / 16;
 #endif
    if (BookSize[BookNumber] == 0) return -1;
-   return 0; //success
+   return(0+ReadOnlyFile); //success
 }
+
+// =========================================================
+// similar signature as gen_legal_moves
+int gen_book_moves(list_t * list, const board_t * board, const int BookNumber){
+    int first_pos, pos;
+    entry_t entry[1];
+    list_clear(list);
+    first_pos = find_pos(board->key, BookNumber);
+    for (pos = first_pos; pos < BookSize[BookNumber]; pos++) {
+        read_entry(entry,pos,BookNumber);
+        if (entry->key != board->key) break;
+        if (entry->count > 0 &&
+            entry->move != MoveNone &&
+            move_is_legal(entry->move,board)) {
+            list_add(list,entry->move);
+        }
+    }
+    return 0; 
+}
+
 // =================================================================
 int scid_book_disp(const board_t * board, char * s, const int BookNumber) {
 
@@ -194,6 +392,37 @@ int scid_book_disp(const board_t * board, char * s, const int BookNumber) {
 
 	return 0;
 }
+
+// =================================================================
+int scid_position_book_disp(const board_t *board, char * s, const int BookNumber) {
+
+   int move;
+   char move_string[256];
+   char tmp[256];
+   list_t /*book_moves[1],*/ legal_moves[1];
+   board_t new_board[1];
+   int i;
+   s[0] = '\0';
+   gen_legal_moves(legal_moves,board);
+//   gen_book_moves(book_moves,board,BookNumber);
+   for (i = 0; i < list_size(legal_moves); i++) {
+       move = list_move(legal_moves,i);
+//       if(list_contain(book_moves,move)) continue;
+           // scratch_board
+       memcpy(new_board, board, sizeof(board_t));
+       move_do(new_board,move);
+       move_to_san(move,board,move_string,256);
+       if(is_in_book(new_board,BookNumber)){
+           move_to_san(move,board,move_string,256);
+           sprintf(tmp, " %s",move_string);
+           strcat(s, tmp);
+       }
+   }
+   return 0;
+}
+
+
+
 
 // =================================================================
 
@@ -259,7 +488,6 @@ bool is_in_book(const board_t * board, const int BookNumber) {
    entry_t entry[1];
 
    ASSERT(board!=NULL);
-
    for (pos = find_pos(board->key, BookNumber); pos < BookSize[BookNumber]; pos++) {
       read_entry(entry,pos,BookNumber);
       if (entry->key == board->key) return true;
@@ -415,7 +643,6 @@ static int find_pos(uint64 key, const int BookNumber) {
    entry_t entry[1];
 
    // binary search (finds the leftmost entry)
-
    left = 0;
    right = BookSize[BookNumber]-1;
 
@@ -443,6 +670,23 @@ static int find_pos(uint64 key, const int BookNumber) {
 }
 
 // read_entry()
+#ifdef WINCE
+static void read_entry_file(Tcl_Channel f, entry_t * entry) {
+#else
+static void read_entry_file(FILE *f, entry_t * entry) {
+#endif
+   ASSERT(entry!=NULL);
+
+   entry->key   = read_integer(f,8);
+   entry->move  = read_integer(f,2);
+   entry->count = read_integer(f,2);
+   entry->n     = read_integer(f,2);
+   entry->sum   = read_integer(f,2);
+}
+
+
+
+// read_entry()
 
 static void read_entry(entry_t * entry, int n, const int BookNumber) {
    ASSERT(entry!=NULL);
@@ -461,6 +705,20 @@ static void read_entry(entry_t * entry, int n, const int BookNumber) {
    entry->n     = read_integer(BookFile[BookNumber],2);
    entry->sum   = read_integer(BookFile[BookNumber],2);
 }
+
+// write_entry_file
+#ifdef WINCE
+static void write_entry_file(Tcl_Channel f, const entry_t * entry) {
+#else
+static void write_entry_file(FILE * f, const entry_t * entry) {
+#endif
+   ASSERT(entry!=NULL);
+   write_integer(f,8,entry->key);
+   write_integer(f,2,entry->move);
+   write_integer(f,2,entry->count);
+   write_integer(f,2,entry->n);
+   write_integer(f,2,entry->sum);
+}   
 
 // write_entry()
 
@@ -492,7 +750,6 @@ static uint64 read_integer(FILE * file, int size) {
    uint64 n;
    int i;
    int b;
-   unsigned char c;
    ASSERT(file!=NULL);
    ASSERT(size>0&&size<=8);
 
@@ -501,6 +758,7 @@ static uint64 read_integer(FILE * file, int size) {
    for (i = 0; i < size; i++) {
 
 #ifdef WINCE
+      unsigned char c;
       my_Tcl_Read(file, (char *)&c , 1);
       b = c;
 #else
@@ -529,7 +787,6 @@ static void write_integer(FILE * file, int size, uint64 n) {
 #endif
    int i;
    int b;
-   unsigned char c;
    ASSERT(file!=NULL);
    ASSERT(size>0&&size<=8);
    ASSERT(size==8||n>>(size*8)==0);
@@ -539,6 +796,7 @@ static void write_integer(FILE * file, int size, uint64 n) {
       b = (n >> (i*8)) & 0xFF;
       ASSERT(b>=0&&b<256);
 #ifdef WINCE
+      unsigned char c;
       c = b;
       if (my_Tcl_Write(file, (char*) &c, 1) != 1) {
 #else

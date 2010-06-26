@@ -7,6 +7,7 @@
 
 namespace eval book {
   set isOpen 0
+  set isReadonly 0
   set bookList ""
   set bookPath ""
   set currentBook "" ; # book in form abc.bin
@@ -18,6 +19,7 @@ namespace eval book {
   set hashList ""
   set bookSlot 0
   set bookTuningSlot 2
+  set oppMovesVisible 0
 
   ################################################################################
   # open a book, closing any previously opened one (called by annotation analysis)
@@ -38,7 +40,7 @@ namespace eval book {
     }
 
     set bn [ file join $::scidBooksDir $name ]
-    sc_book load $bn $slot
+    set ::book::isReadonly [sc_book load $bn $slot]
   }
 
   ################################################################################
@@ -63,6 +65,19 @@ namespace eval book {
     }
     sc_book close $slot
     return $m
+  }
+  ################################################################################
+  #  Show moves leading to book positions
+  ################################################################################
+  proc togglePositionsDisplay {} {
+    global ::book::oppMovesVisible
+    if { $::book::oppMovesVisible == 0} {
+      set ::book::oppMovesVisible 1
+      pack .bookWin.f.text1 -expand yes -fill both
+    } else {
+      set ::book::oppMovesVisible 0
+      pack forget .bookWin.f.text1
+    }
   }
 
   ################################################################################
@@ -92,7 +107,7 @@ namespace eval book {
       set name $lastBook
     }
     set bookPath $::scidBooksDir
-    set bookList [  lsort -dictionary [ glob -nocomplain -directory $bookPath *.bin ] ]
+    set bookList [ lsort -dictionary [ glob -nocomplain -directory $bookPath *.bin ] ]
     # No book found
     if { [llength $bookList] == 0 } {
       tk_messageBox -title "Scid" -type ok -icon error -message "No books found. Check books directory"
@@ -118,14 +133,24 @@ namespace eval book {
     pack $w.f.combo
 
     # text displaying book moves
-    text $w.f.text -wrap word -state disabled -width 12
-    pack $w.f.text -expand yes -fill both
-
-    pack $w.f
+   frame $w.f.fscroll
+    autoscrollframe -bars y $w.f.fscroll text $w.f.text -wrap word -state disabled -width 12
+    
+    button $w.f.b -text {Opponent's book}  -command { ::book::togglePositionsDisplay }
+    ::utils::tooltip::Set $w.f.b {Moves to which the opponent has a reply}
+    
+    text $w.f.text1 -wrap word -state disabled -width 12
+    
+    pack $w.f.fscroll -expand yes -fill both
+    pack $w.f.b
+    pack $w.f.text1 -expand yes -fill both
+    
+    pack $w.f -expand 1 -fill both
 
     bind $w.f.combo <<ComboboxSelected>> ::book::bookSelect
     bind $w <Destroy> "::book::closeMainBook"
     bind $w <Escape> { destroy  .bookWin }
+    # we make a redundant check here, another one is done a few line above
     if { [catch {bookSelect} ] } {
       tk_messageBox -title "Scid" -type ok -icon error -message "No books found. Check books directory"
       set ::book::isOpen 0
@@ -154,6 +179,11 @@ namespace eval book {
         .bookWin.f.text tag delete $t
       }
     }
+    foreach t [.bookWin.f.text1 tag names] {
+      if { [string match "bookMove*" $t] } {
+        .bookWin.f.text1 tag delete $t
+      }
+    }
     set bookMoves [sc_book moves $::book::bookSlot]
     .bookWin.f.text configure -state normal
     .bookWin.f.text delete 1.0 end
@@ -166,6 +196,22 @@ namespace eval book {
       .bookWin.f.text tag bind bookMove$line <ButtonPress-1> "::book::makeBookMove [lindex $bookMoves $i]"
     }
     .bookWin.f.text configure -state disabled -height [expr [llength $bookMoves] / 2 ]
+
+    set oppBookMoves [sc_book positions $::book::bookSlot]
+    .bookWin.f.text1 configure -state normal
+    .bookWin.f.text1 delete 1.0 end
+    for {set i 0} {$i<[llength $oppBookMoves]} {incr i 1} {
+      set line [expr $i +1]
+      set m ""
+      append m [::trans [lindex $oppBookMoves $i]]  "\n"
+      .bookWin.f.text1 insert end $m
+      .bookWin.f.text1 tag add bookMove$line $line.0 $line.end
+      .bookWin.f.text1 tag bind bookMove$line <ButtonPress-1> "::book::makeBookMove [lindex $oppBookMoves $i]"
+    }
+    .bookWin.f.text1 configure -state disabled -height [llength $oppBookMoves]
+    if { $::book::oppMovesVisible == 0 } {
+      pack forget .bookWin.f.text1
+    }
   }
   ################################################################################
   #
@@ -227,7 +273,6 @@ namespace eval book {
       set ::book::isOpen 0
       set ::book::currentBook ""
       destroy $w
-      ::docking::cleanup $w
       return
     }
     set i 0
@@ -247,9 +292,13 @@ namespace eval book {
     pack $w.fcombo.combo -expand yes -fill x
 
     frame $w.fbutton
+   menubutton $w.fbutton.mbAdd -text $::tr(AddMove) -menu $w.fbutton.mbAdd.otherMoves
+    menu $w.fbutton.mbAdd.otherMoves
+    
     button $w.fbutton.bExport -text $::tr(Export) -command ::book::export
     button $w.fbutton.bSave -text $::tr(Save) -command ::book::save
-    pack $w.fbutton.bExport $w.fbutton.bSave -side top -fill x -expand yes
+    
+    pack $w.fbutton.mbAdd $w.fbutton.bExport $w.fbutton.bSave -side top -fill x -expand yes
 
     pack $w.fcombo $w.f $w.fbutton -side top
 
@@ -274,13 +323,46 @@ namespace eval book {
   #
   ################################################################################
   proc bookTuningSelect { { n "" }  { v  0} } {
+    set w .bookTuningWin
     scBookOpen [.bookTuningWin.fcombo.combo get] $::book::bookTuningSlot
+    if { $::book::isReadonly > 0 } {
+      $w.fbutton.bSave configure -state disabled
+    } else {
+      $w.fbutton.bSave configure -state normal
+    }
     refreshTuning
   }
+  ################################################################################
+  #   add a move to displayed bookmoves
+  ################################################################################
+  proc addBookMove { move } {
+    global ::book::bookTuningMoves
+    
+    if { $::book::isReadonly > 0 } { return }
+    
+    set w .bookTuningWin
+    set children [winfo children $w.f]
+    set count [expr [llength $children] / 2]
+    label $w.f.m$count -text [::trans $move]
+    bind $w.f.m$count <ButtonPress-1> " ::book::makeBookMove $move"
+    spinbox $w.f.sp$count -from 0 -to 100 -width 3
+    $w.f.sp$count set 0
+    grid $w.f.m$count -row $count -column 0 -sticky w
+    grid $w.f.sp$count -row $count -column 1 -sticky w
+    $w.fbutton.mbAdd.otherMoves delete [::trans $move]
+    lappend ::book::bookTuningMoves $move
+  }
+
   ################################################################################
   #   updates book display when board changes
   ################################################################################
   proc refreshTuning {} {
+    if { $::book::isReadonly > 0 } { return }
+    
+    #unfortunately we need this as the moves on the widgets are translated
+    #and widgets have no clientdata in tcl/tk
+    global ::book::bookTuningMoves
+    set ::book::bookTuningMoves {}
     set moves [sc_book moves $::book::bookTuningSlot]
 
     set w .bookTuningWin
@@ -293,6 +375,7 @@ namespace eval book {
 
     set row 0
     for {set i 0} {$i<[llength $moves]} {incr i 2} {
+      lappend ::book::bookTuningMoves [lindex $moves $i]
       label $w.f.m$row -text [::trans [lindex $moves $i]]
       bind $w.f.m$row <ButtonPress-1> " ::book::makeBookMove [lindex $moves $i] "
       spinbox $w.f.sp$row -from 0 -to 100 -width 3
@@ -304,12 +387,24 @@ namespace eval book {
       incr row
     }
 
+    # load legal moves
+    $w.fbutton.mbAdd.otherMoves delete 0 end
+    $w.fbutton.mbAdd.otherMoves add command -label $::tr(None)
+    set moveList [ sc_pos moves ]
+    foreach move $moveList {
+      if { [ lsearch  $moves $move ] == -1 } {
+        $w.fbutton.mbAdd.otherMoves add command -label [::trans $move] -command "::book::addBookMove $move"
+      }
+    }
+    bind $w <Destroy> "::book::closeTuningBook"
   }
   ################################################################################
-  # sends to book the list of updated probs in order. As the list of moves is in the same order, no need
-  # to send the moves.
+  # sends to book the list of moves and probabilities.
   ################################################################################
   proc save {} {
+    global ::book::bookTuningMoves
+    if { $::book::isReadonly > 0 } { return }
+
     set prob {}
     set w .bookTuningWin
     set children [winfo children $w.f]
@@ -317,7 +412,12 @@ namespace eval book {
     for {set row 0} {$row < $count} {incr row} {
       lappend prob [$w.f.sp$row get]
     }
-    sc_book update $prob $::book::bookTuningSlot
+    set tempfile [file join $::scidUserDir tempfile.[pid]]
+    sc_book movesupdate $::book::bookTuningMoves $prob $::book::bookTuningSlot $tempfile
+    file delete $tempfile
+    if {  [ winfo exists .bookWin ] } {
+      ::book::refresh
+    }
   }
   ################################################################################
   #
@@ -357,11 +457,12 @@ namespace eval book {
       set hashList [lsort -integer -unique $hashList]
     }
 
+    updateBoard -pgn
+
     set bookMoves [sc_book moves $::book::bookTuningSlot]
     incr ::book::exportCount
     if {[expr $::book::exportCount % 50] == 0} {
       updateProgressWindow $::book::exportCount $::book::exportMax
-      updateBoard
       update
     }
     if {[llength $bookMoves] == 0} { return }
