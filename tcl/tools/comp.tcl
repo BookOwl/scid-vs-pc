@@ -264,9 +264,19 @@ proc compNM {n m k} {
 
   if {[winfo exists .analysisWin$n]} "destroy .analysisWin$n"
   if {[winfo exists .analysisWin$m]} "destroy .analysisWin$m"
+
   makeAnalysisWin $n
+  if {![winfo exists .analysisWin$n]} {
+    puts_ ".analysisWin$n dead, exitting Tournament"
+    return
+  }
   toggleMovesDisplay $n
+
   makeAnalysisWin $m
+  if {![winfo exists .analysisWin$n]} {
+    puts_ ".analysisWin$n dead, exitting Tournament"
+    return
+  }
   toggleMovesDisplay $m
 
   #Stop all engines
@@ -304,9 +314,17 @@ proc compNM {n m k} {
     } else {
 	sendToEngine $current_engine "bk off"
 	sendToEngine $current_engine "st $comp(seconds)"
-	# if Sjeng or Chen ..
-	# sendToEngine $current_engine hard
-	# but it really slows phalanx down
+	# Sjeng or Chen run too fast unless "hard" is issued
+	if {[regexp -nocase sjeng $analysis(name$current_engine)]} {
+	  puts_ {Sjeng detected. Issuing "hard"}
+	  sendToEngine $current_engine hard
+	}
+	if {[regexp -nocase xchen $analysis(name$current_engine)] || \
+	    [regexp -nocase chenard $analysis(name$current_engine)] } {
+	  puts_ {Chenard detected. Issuing "hard"}
+	  sendToEngine $current_engine hard
+	}
+        # I thought this might be necessary to ?
 	# if {$current_engine == $m} { sendToEngine $current_engine new }
     }
   }

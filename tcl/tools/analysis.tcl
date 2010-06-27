@@ -1861,7 +1861,6 @@ proc makeAnalysisWin { {n 1} } {
        $w.b.update $w.b.priority -side left -pady 2 -padx 1
 
   # pack  $w.b.showinfo 
-
   if {$analysis(uci$n)} {
     $w.b.multipv configure -state readonly
     pack forget $w.b.update
@@ -1914,7 +1913,10 @@ proc makeAnalysisWin { {n 1} } {
   # finish MultiPV spinbox configuration
   if {$analysis(uci$n)} {
     # find UCI engine MultiPV capability
-    while { ! $analysis(uciok$n) } { ;# done after uciok
+
+    # Wait for uciok
+    while { !($analysis(uciok$n)) } { 
+      # && [winfo exists .analysisWin$n]
       update
       after 200
     }
@@ -2272,16 +2274,29 @@ proc checkEngineIsAlive { {n 1} } {
     catch {close $analysis(pipe$n)}
     set analysis(pipe$n) {}
     logEngineNote $n {Engine terminated without warning.}
-    catch {destroy .analysisWin$n}
+    if {$::comp(playing)} {
+      set ::comp(move) $n
+      compAbort
+    } else {
+      catch {destroy .analysisWin$n}
+    }
 
-    if {[winfo exists .enginelist]} {
+    if {[winfo exists .comp]} {
+      set parent .comp
+    } elseif {[winfo exists .enginelist]} {
       set parent .enginelist
     } else {
       set parent .
     }
 
-    tk_messageBox -type ok -icon info -parent $parent -title Scid \
-        -message {The analysis engine terminated without warning. It Probably crashed or had an internal error.}
+    tk_messageBox -type ok -icon info -parent $parent -title Scid -message \
+      "Analysis engine $analysis(name$n) terminated without warning. \
+       It probably crashed, had an internal errors, or is misconfigured."
+    if {[winfo exists .comp]} {
+      puts_ "Engine failed... destroying .analysisWin$n, comp widget"
+      compDestroy
+      destroy .analysisWin$n
+    }
     return 0
   }
   return 1

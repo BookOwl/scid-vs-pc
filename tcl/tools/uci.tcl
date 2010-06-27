@@ -705,8 +705,14 @@ namespace eval uci {
       catch {close $uciInfo(pipe$n)}
       set uciInfo(pipe$n) ""
       logEngineNote $n {Engine terminated without warning.}
-      tk_messageBox -type ok -icon info -parent . -title "Scid" \
-          -message "The analysis engine terminated without warning; it probably crashed or had an internal error."
+      tk_messageBox -type ok -icon info -parent . -title "Scid" -message \
+          "UCI analysis engine $::analysis(name$n) terminated without warning. \
+           It probably crashed, had an internal errors, or is misconfigured."
+      if {[winfo exists .comp]} {
+	puts_ "Uci engine failed... destroying .analysisWin$n, comp widget"
+	compDestroy
+	destroy .analysisWin$n
+      }
       return 0
     }
     return 1
