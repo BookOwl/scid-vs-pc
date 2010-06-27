@@ -1177,11 +1177,11 @@ proc ::board::size {w} {
 
 # doesn't change boardSize
 
-proc boardSize_plus_n {n} {
+proc boardSize_plus_n {n {w .board}} {
 
-  global boardSizes boardSize
+  global boardSizes
 
-  set index [lsearch -exact $boardSizes $boardSize]
+  set index [lsearch -exact $boardSizes $::board::_size($w)]
     incr index $n
     if {$index < 0} {
       set index 0
@@ -1221,7 +1221,7 @@ proc ::board::resize2 {w psize} {
   if {$psize == "redraw"} {
     set psize $oldsize
   } elseif {$psize == -1 || $psize == +1} {
-    set psize [boardSize_plus_n $psize]
+    set psize [boardSize_plus_n $psize $w]
   }
 
   # Verify that we have a valid size:
