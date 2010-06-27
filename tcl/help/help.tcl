@@ -2,8 +2,8 @@
 
 #################################################
 
-set helpTitle(Contents) "Scid vs. Pc"
-set helpText(Contents) {<h1>Scid vs. Pc</h1>
+set helpTitle(Contents) "Scid vs. PC"
+set helpText(Contents) {<h1>Scid vs. PC</h1>
 
   <ul> <ul> <ul> <ul> <ul> <ul> <ul> <ul> <ul>
 
@@ -31,11 +31,11 @@ set helpText(Contents) {<h1>Scid vs. Pc</h1>
   </ul> </ul> </ul>
   <p><footer>(Updated: Scid Vs PC 3.6.26.8, December 2009)</footer></p>
 }
-set helpTitle(Intro) "Scid vs. Pc"
+set helpTitle(Intro) "Scid vs. PC"
 set helpText(Intro) {<h1>Introduction</h1>
 
 <p>
-<url http://scidvspc.sourceforge.net/>Scid vs. Pc</url>
+<url http://scidvspc.sourceforge.net/>Scid vs. PC</url>
 is a usability and bug-fix fork of Scid. With it you can play chess online
 or against the computer, browse tournaments downloaded in pgn format, and
 create huge chess databases.</p>
@@ -47,14 +47,14 @@ about winners, losers and openings played. Scid is a program whose original
 purpose was to combine all this information into databases of various
 sorts; hence it's name "Shane's Chess Information Database". As it turns
 out, computers are very good at  playing  chess too. This is the focus of
-Scid vs. Pc</p>
+Scid vs. PC</p>
 
 <h3>Motivation</h3>
 <p>
 Scid is an amazing project,  but for several reasons I've decided to start a new project.
 <ul>
 <br>
-<li> The focus of Scid is Databases. Scid vs. Pc is about improving the computer vs
+<li> The focus of Scid is Databases. Scid vs. PC is about improving the computer vs
 player experience. </li>
 <br>
 <li>Many widgets are rough, ugly and poorly designed, and need refinement or rewriting.</li>
@@ -2985,7 +2985,7 @@ The <b>Add Variation</b> button <button tb_addvar> adds the
   To cancel annotation at any time, just turn off autoplay mode
   </p>
   <p><i>
-  The <b>Annotate</b> feature of Scid vs. Pc can be used with any engine,
+  The <b>Annotate</b> feature of Scid vs. PC can be used with any engine,
   but be sure not to open any other anaylsis windows while
 annotation is in progress!
   </i></p>
@@ -3058,8 +3058,8 @@ set helpText(Tourney) {<h1>Computer Tournament</h1>
   <p>
   Though there's been some testing, it's probably still possible for single games to hang.
 To address this, there is a <b>Seconds for Time-out</b> value, which determines the
-maximum time that any one move sould take before the game is ended automatically.
-In this case, the game is still saved , and game result can be editted manually later.
+maximum time that any one move should take before the game is ended automatically.
+In this case, the game is still saved , and game result can be edited manually later.
   </p>
   <p>
   If a game drags on for any reason, pressing the <b>End Game</b> button will save the game, and
@@ -3101,10 +3101,12 @@ The author has tested quite a few engines, with good results. Out of the followi
 <b>Arasanx</b>,
 <b>Shredder Classic 4</b>,
 <b>Scorpio</b>
-, only Faile doesnt work; while Arasan, Spike, Sjeng and XChenard have issues pertinent to time control.
-(In a nutshell, they are buggy, and on average only use 10% of their allowed time slice
-so as to _never_ use _more_ than the slice and get defaulted.) This is exasperated when playing each other, probably because of a bug in the tournament.
-Phalanx , on the other hand, has no time control, and takes it's own (sweet) time.
+, Arasan, Spike, Sjeng and XChenard have issues pertinent to time control.
+Sjeng and XChenard are issued the "hard" command, and seem to work.
+<br>
+Phalanx has no time control, and takes it's own (sweet) time.
+<br>
+Faile seems not to issue "move" under some circumstances.
 </p>
 <p>Considering the number of engines available, unforseen issues probably will arise.
 </p>
@@ -4382,12 +4384,12 @@ set helpText(ECO) {<h1>ECO openings classification</h1>
 
 
 set helpTitle(Author) "About"
-set helpText(Author) "<h1>Scid vs. Pc</h1>
+set helpText(Author) "<h1>Scid vs. PC</h1>
   <p>
 <ul> <ul> <ul> <ul> <ul> <ul> <ul> <ul> <ul>
   <li><img splash></li>
   </ul></ul>
-  <li>Scid vs. Pc  version $::scidvspcVersion
+  <li>Scid vs. PC  version $::scidvspcVersion
   <br>
   <li>(C) Steven Atkinson, stevenaaus@yahoo.com</li>
   <br>
@@ -4411,7 +4413,7 @@ set helpText(Related) {<h1>Related Links</h1>
   <p>
   <ul>
   <li><url http://scidvspc.sourceforge.net/>http://scidvspc.sourceforge.net/</url> --
-  Scid vs. Pc</li>
+  Scid vs. PC</li>
   <br>
   <li><url http://scid.sourceforge.net/>http://scid.sourceforge.net/</url> --
   Scid Web Page</li>
@@ -4500,7 +4502,7 @@ blunders the player makes.  </p>
      with the current board position.</li>
      <li><term>Play Fischer Chess</term>: Fischer Chess is a variant (named
 for Bobby Fischer) where the first and last rows of pieces are
-pseudo-randomnly arranged. Scid vs. Pc does not properly implement a few
+pseudo-randomnly arranged. Scid vs. PC does not properly implement a few
 rules.. notably, castling <b>is</b> allowed in Fischer Chess, but not in
 our game.</li>
      <li><term>Random Pawns</term>: will randomly place pawns on the second and third ranks.</li>
@@ -5894,8 +5896,42 @@ set helpText(Novag) {<h1>Connecting the Novag Citrine Chess board</h1>
 }
 
 set helpTitle(Changelog) "Scid vs PC Changelog"
-set helpText(Changelog) {<h1>Scid vs. Pc</h1>
+set helpText(Changelog) {<h1>Scid vs. PC</h1>
 
+<h4>3.6.26.10 (July 1, 2010)</h4>
+<ul>
+<li>Computer Chess tournament feature!</li>
+<li>Rewrite the gamelist widget to work with huge databases, and add a case insensitive search</li>
+<li>Add a background colour option that applies to many text widgets, including gameinfo, pgn window and help window</li>
+<li>Restructured the analysis widgets, putting toolbar on top, tiny board at bottom, tweaking toolbar icons and reparenting analysis died error dialog</li>
+<li>Update the book and book-tuning windows (from SCID)</li>
+<li>Bind mouse wheel to move progression (and widget resize) for the little browser windows</li>
+<li>Change all comboboxes to ttk::combobox</li>
+<li>Allow xboard lowercase promotion moves (eg while g7g8Q always worked, g7g8q previously failed)</li>
+<li>Enable hovering over toolbar help pop-ups</li>
+<li>Fix up analysis widget "lock to position" feature</li>
+<li>All analysis windows can now use annotation, and autoplay feature</li>
+<li>Bind F4 to start another analysis window</li>
+<li>Various C fixes from SCID</li>
+<li>Sync the tools::connect-hardware feature with SCID (untested)</li>
+<li>When using the setup board widget, do a sanity check about the FEN's castling field</li>
+<li>Some minor version fixes anticipating tcl8.6</li>
+<li>Small bugfix: variation pop-up could previously throw errors if moving through movs fast</li>
+<li>F1 *toggles* help window</li>
+<li>[Remove space-only lines from project - they mess up vim's paragraph traversal feature]</li>
+<li>Fics "withdraws offer" fix</li>
+<li>Toolbar icons tweak</li>
+<li>Some wm title tweaks</li>
+<li>Allow databses to have "." in their name</li>
+<li>Tactical Game stores sets game result</li>
+<li>Set Game Info widget includes Site field</li>
+<li>Small "update idletasks" in main.tcl improves main board responsiveness</li>
+<li>Fix up the history limit of combobox-es (especially the setup board FEN combo)</li>
+<li>UCI kludges for Prodeo and Rybka from SCID (untested)</li>
+<li>Turn off craftys egtb (end game tablebook) for the analysis widget</li>
+<li>Comment editor bugfix - unbind left/right from main board</li>
+<li>Fix for matsig.cpp overflow (unapplied? , untested)</li>
+</ul>
 <h4>3.6.26.9 (April 19, 2010)</h4>
 <ul>
 <li> Added a random pawns feature to tacgame </li>

@@ -29,8 +29,8 @@ exec `dirname $0`/tkscid "$0" "$@"
 
 # Alter the version if any patches have been made to the Tcl code only:
 set scidVersion "3.6.26"
-set scidvspcVersion "3.6.26.9"
-set scidVersionDate "April 2010"
+set scidvspcVersion "3.6.26.10"
+set scidVersionDate "July 1, 2010"
 
 # Set to 0 before releasing, so some alpha-state code is not included
 # Set to 1 to have access to all code
