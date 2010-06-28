@@ -38,7 +38,8 @@ proc help_PushStack {name {heading {}}} {
   set helpWin(index) [expr $helpWin(len) - 1]
 }
 
-set ::htext::headingColor "\#990000"
+# set ::htext::headingColor "\#990000"
+set ::htext::headingColor darkslateblue
 array set ::htext:updates {}
 
 proc help_MoveForward {} {
@@ -234,7 +235,7 @@ proc ::htext::init {w} {
   $w tag configure bi -font font_BoldItalic
   $w tag configure tt -font font_Fixed
   $w tag configure u -underline 1
-  $w tag configure h1 -font font_H1 -fore $::htext::headingColor -justify center
+  $w tag configure h1 -font {Arial 24 normal} -fore $::htext::headingColor -justify center
   $w tag configure h2 -font font_H2 -fore $::htext::headingColor
   $w tag configure h3 -font font_H3 -fore $::htext::headingColor
   $w tag configure h4 -font font_H4 -fore $::htext::headingColor
@@ -336,10 +337,10 @@ proc ::htext::display {w helptext {section {}} {fixed 1}} {
         set sectionName [::htext::extractSectionName $tagName]
         set linkTag "link ${linkName} ${sectionName}"
         set tagName a
-        $w tag configure $linkTag -fore blue
+        $w tag configure $linkTag -fore dodgerblue2
         $w tag bind $linkTag <ButtonRelease-1> "helpWindow $linkName $sectionName"
         $w tag bind $linkTag <Any-Enter> \
-            "$w tag configure \"$linkTag\" -back gray90
+            "$w tag configure \"$linkTag\" -back gray80
              $w configure -cursor hand2"
         $w tag bind $linkTag <Any-Leave> \
             "$w tag configure \"$linkTag\" -back {}
@@ -521,7 +522,7 @@ proc ::htext::display {w helptext {section {}} {fixed 1}} {
       set imgName [string range $tagName 4 end]
       set winName $w.$imgName
       while {[winfo exists $winName]} { append winName a }
-      label $winName -image $imgName -relief flat -borderwidth 0 -back white
+      label $winName -image $imgName -relief flat -borderwidth 0
       $w window create end -window $winName
     }
     if {[strIsPrefix {button } $tagName]} {
