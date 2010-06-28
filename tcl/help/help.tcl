@@ -29,7 +29,7 @@ set helpText(Contents) {<h1>Scid vs. PC</h1>
   <br>
   <li><a Author>About</a></li>
   </ul> </ul> </ul>
-  <p><footer>(Updated: Scid Vs PC 3.6.26.8, December 2009)</footer></p>
+  <p><footer>Updated: Scid Vs PC 3.6.26.10, June 2010</footer></p>
 }
 set helpTitle(Intro) "Scid vs. PC"
 set helpText(Intro) {<h1>Introduction</h1>
@@ -75,7 +75,7 @@ justified for some dubious eye candy.</li>
 <li>Despite some work together, the current Scid project manager and I don't get on.
  Free software is like that ;-)</li>
 </ul>
-<p><footer>(Updated: Scid Vs PC 3.6.26.8, December 2009)</footer></p>
+<p><footer>Updated: Scid Vs PC 3.6.26.8, December 2009</footer></p>
 }
 
 set helpTitle(FICSOver) "Fics"
@@ -106,7 +106,7 @@ console. Enter play [game number] to accept a game challenge.</p>
 <p>For a detailed description of the services offered, or to create a FICS
 account, visit <url http://www.freechess.org>www.freechess.org</url> </p>
 
-<p><footer>(Updated: Scid Vs PC 3.6.26.8, December 2009)</footer></p>
+<p><footer>Updated: Scid Vs PC 3.6.26.8, December 2009</footer></p>
 }
 
 set helpTitle(BrowsingPGN) "PGN"
@@ -157,7 +157,7 @@ and only as single games. If you open a PGN file with multiple games, Scid does 
 <ul><p>For more detail about the PGN window's function, see <a PGN>here</a>.</p>
 </ul>
 
-<p><footer>(Updated: Scid Vs PC 3.6.26.8, December 2009)</footer></p>
+<p><footer>Updated: Scid Vs PC 3.6.26.8, December 2009</footer></p>
 }
 
 set helpTitle(Scid) "Scid"
@@ -221,7 +221,7 @@ set helpText(Scid) {<h1>Scid Help Contents</h1>
   <li><a Author>Contact information</a></li>
   </ul>
 
-  <p><footer>(Updated: Scid 3.6.23, March 2008)</footer></p>
+  <p><footer>Updated: Scid 3.6.23, March 2008</footer></p>
 }
 
 ###############
@@ -451,7 +451,7 @@ set helpText(Index) {<h1>Scid Help Index</h1>
   <ul>
   </ul>
 
-  <p><footer>(Updated: Scid 3.6.23, March 2008)</footer></p>
+  <p><footer>Updated: Scid vs PC 3.6.26.10, June 2010</footer></p>
 }
 
 
@@ -506,7 +506,7 @@ set helpText(Guide) {<h1>Quick Guide to using Scid</h1>
   author of Scid.
   </p>
 
-  <p><footer>(Updated: Scid 3.6.2, December 2006)</footer></p>
+  <p><footer>Updated: Scid 3.6.2, December 2006</footer></p>
 }
 
 
@@ -630,7 +630,7 @@ set helpText(Hints) {<h1>Scid Hints</h1>
   the <term>File</term> menu.
   </p>
 
-  <p><footer>(Updated: Scid 3.6.28, December 2008)</footer></p>
+  <p><footer>Updated: Scid 3.6.28, December 2008</footer></p>
 }
 
 
@@ -746,7 +746,7 @@ set helpText(MainWindow) {<h1>Scid main window</h1>
   <a Searches Filter>filter</a>.
   </p>
 
-  <p><footer>(Updated: Scid 3.6.26, October 2008)</footer></p>
+  <p><footer>Updated: Scid 3.6.26, October 2008</footer></p>
 }
 
 
@@ -939,7 +939,7 @@ set helpText(Menus) {<h1>Scid menus</h1>
   files Scid loaded when it started.
   </p>
 
-  <p><footer>(Updated: Scid 3.6.26, October 2008)</footer></p>
+  <p><footer>Updated: Scid 3.6.26, October 2008</footer></p>
 }
 
 
@@ -1086,7 +1086,7 @@ set helpText(Moves) {<h1>Entering chess moves</h1>
   with a certain pawn value. These pawn values can be set via Options
   / Game information / Configure Informant values.
 
-  <p><footer>(Updated: Scid 3.6.26, October 2008)</footer></p>
+  <p><footer>Updated: Scid 3.6.26, October 2008</footer></p>
 }
 
 
@@ -1258,7 +1258,7 @@ set helpText(Searches) {<h1>Searches in Scid</h1>
   <a Formats>file formats</a> for more information.
   </p>
 
-  <p><footer>(Updated: Scid 3.6.2, December 2006)</footer></p>
+  <p><footer>Updated: Scid 3.6.2, December 2006</footer></p>
 }
 
 
@@ -1301,7 +1301,7 @@ set helpText(Clipbase) {<h1>The Clipbase database</h1>
   memory only.
   </p>
 
-  <p><footer>(Updated: Scid 3.6.8,March  2007)</footer></p>
+  <p><footer>Updated: Scid 3.6.8,March  2007</footer></p>
 }
 
 #################################
@@ -1382,7 +1382,7 @@ set helpText(Annotating) {<h1>Annotating games</h1>
   applications.
   </p>
 
-  <p><footer>(Updated: Scid 3.6.26, October 2008)</footer></p>
+  <p><footer>Updated: Scid 3.6.26, October 2008</footer></p>
 }
 
 ###############################
@@ -1498,7 +1498,7 @@ set helpText(Comment) {<h1>The Comment Editor window</h1>
   button in a red arrow.
   </p>
 
-  <p><footer>(Updated: Scid 3.6.26, October 2008)</footer></p>
+  <p><footer>Updated: Scid 3.6.26, October 2008</footer></p>
 }
 
 ####################
@@ -1579,7 +1579,7 @@ set helpText(Crosstable) {<h1>The Crosstable window</h1>
   player/event/site names.
   </p>
 
-  <p><footer>(Updated: Scid 3.6.15, May 2007)</footer></p>
+  <p><footer>Updated: Scid 3.6.15, May 2007</footer></p>
 }
 
 
@@ -1615,7 +1615,7 @@ set helpText(Switcher) {<h1>The Database Switcher window</h1>
   vertically or horizontally) which is useful for smaller screens.
   </p>
 
-  <p><footer>(Updated: Scid 3.6.2, December 2006)</footer></p>
+  <p><footer>Updated: Scid 3.6.2, December 2006</footer></p>
 }
 
 
@@ -1680,7 +1680,7 @@ set helpText(Finder) {<h1>The File Finder window</h1>
    consist of several files.
   </p>
 
-  <p><footer>(Updated: Scid 3.6.26, October 2008)</footer></p>
+  <p><footer>Updated: Scid 3.6.26, October 2008</footer></p>
 }
 
 ####################
@@ -1721,7 +1721,7 @@ set helpText(Tmt) {<h1>The Tournament Finder window</h1>
   when trying to form tournaments out of the games in the database.
   </p>
 
-  <p><footer>(Updated: Scid 3.6.2, December 2006)</footer></p>
+  <p><footer>Updated: Scid 3.6.2, December 2006</footer></p>
 }
 
 ####################
@@ -1761,7 +1761,7 @@ Double-clicking will load a game.  </p>
   are interested in adding the whole game or just its opening phase.
   </p>
 
-  <p><footer>(Updated: Scid Vs PC 3.6.26.8, May 2010)</footer></p>
+  <p><footer>Updated: Scid Vs PC 3.6.26.8, May 2010</footer></p>
 }
 
 
@@ -1818,7 +1818,7 @@ set helpText(Import) {<h1>The Import window</h1>
   small PGN files.
   </p>
 
-  <p><footer>(Updated: Scid 3.6.2, December 2006)</footer></p>
+  <p><footer>Updated: Scid 3.6.2, December 2006</footer></p>
 }
 
 ####################
@@ -1901,7 +1901,7 @@ set helpText(Export) {<h1>Exporting games</h1>
   See the <a LaTeX>Using LaTeX with Scid</a> help page for more information.
   </p>
 
-  <p><footer>(Updated: Scid 3.6.26, October 2008)</footer></p>
+  <p><footer>Updated: Scid 3.6.26, October 2008</footer></p>
 }
 
 ####################
@@ -1926,7 +1926,7 @@ set helpText(LaTeX) {<h1>Using LaTeX with Scid</h1>
   page at the <url http://scid.sourceforge.net/>Scid website</url>.
   </p>
 
-  <p><footer>(Updated: Scid 3.6.2, December 2006)</footer></p>
+  <p><footer>Updated: Scid 3.6.2, December 2006</footer></p>
 }
 
 ####################
@@ -2028,7 +2028,7 @@ set helpText(PGN) {<h1>The PGN window</h1>
   <b>Paste current game</b> button, then edit the game, then press <b>Import</b>.
   </p>
 
-  <p><footer>(Updated: Scid 3.6.26, October 2008)</footer></p>
+  <p><footer>Updated: Scid 3.6.26, October 2008</footer></p>
 }
 
 
@@ -2113,7 +2113,7 @@ set helpText(PTracker) {<h1>The Piece Tracker window</h1>
   queenside, or set up a d5 or e5 pawn wedge, for example.
   </p>
 
-  <p><footer>(Updated: Scid 3.6.2, December 2006)</footer></p>
+  <p><footer>Updated: Scid 3.6.2, December 2006</footer></p>
 }
 
 
@@ -2233,7 +2233,7 @@ set helpText(Repertoire) {<h1>The Repertoire editor window</h1>
   to preserve its format or it may not be loadable or searchable in Scid.
   </p>
 
-  <p><footer>(Updated: Scid 3.6.2, December 2006)</footer></p>
+  <p><footer>Updated: Scid 3.6.2, December 2006</footer></p>
 }
 
 ####################
@@ -2451,7 +2451,7 @@ set helpText(Tree) {<h1>The Tree window</h1>
   adding or replacing a game, or sorting the database.
   </p>
 
-  <p><footer>(Updated: Scid 3.6.26, October 2008)</footer></p>
+  <p><footer>Updated: Scid 3.6.26, October 2008</footer></p>
 }
 
 
@@ -2492,7 +2492,7 @@ set helpText(Compact) {<h1>Database compaction</h1>
   index file.
   </p>
 
-  <p><footer>(Updated: Scid 3.6.2, December 2006)</footer></p>
+  <p><footer>Updated: Scid 3.6.2, December 2006</footer></p>
 }
 
 
@@ -2641,7 +2641,7 @@ set helpText(Maintenance) {<h1>Database maintenance</h1>
   back in a consistent and usable state.
   </p>
 
-  <p><footer>(Updated: Scid 3.6.26, October 2008)</footer></p>
+  <p><footer>Updated: Scid 3.6.26, October 2008</footer></p>
 }
 
 ####################
@@ -2709,7 +2709,7 @@ set helpText(Sorting) {<h1>Sorting a database</h1>
   database after the sort procedure!
   </p>
 
-  <p><footer>(Updated: Scid 3.6.26, October 2008)</footer></p>
+  <p><footer>Updated: Scid 3.6.26, October 2008</footer></p>
 }
 
 ####################
@@ -2774,7 +2774,7 @@ set helpText(Flags) {<h1>Game Flags</h1>
      <li><a Analysis Annotate>Find tactical exercise</a>: sets the (T) flag
   </ul>
 
-  <p><footer>(Updated: Scid 3.6.26, October 2008)</footer></p>
+  <p><footer>Updated: Scid 3.6.26, October 2008</footer></p>
 }
 
 ####################
@@ -3036,7 +3036,7 @@ storing the annotations into the database.
      </li>
   </ul>
 
-  <p><footer>(Updated: Scid Vs PC 3.6.26.10, May 2010)</footer></p>
+  <p><footer>Updated: Scid Vs PC 3.6.26.10, May 2010</footer></p>
 }
 
 ####################
@@ -3047,17 +3047,22 @@ set helpText(Tourney) {<h1>Computer Tournament</h1>
   <run ::compInit><green>Computer Tournament</green></run> feature.
   Any engine configured via the
   <run ::enginelist::choose><green>Tools--<gt>Analysis Engines</green></run>
-  widget can be added. Support for different engines is, afaik, very good, but a few
-  old engines definitely don't work.
+  widget can be added.
+</p>
+<p>
+Support for different engines is, afaik, good, but <b>a few old engines don't work</b>.
+  Of the engines included with Scid vs. PC, only Toga works well in a tournament, so
+  you'll probably want to download and install some other engines if you haven't already.
+  For more information about various engines see below.
   </p>
   <p>
-  Make sure you have a database open so the results can be saved, then select
-  the number of competitors, tournament name and move period, then Press "OK".
-  Games are saved after each is completed.
+  Make sure you <b>open a database</b> so the results can be saved, then select
+  the number of competitors, tournament name and move period, and Press "OK".
+  <b>Games are saved</b> after each is completed.
   </p>
   <p>
   Though there's been some testing, it's probably still possible for single games to hang.
-To address this, there is a <b>Seconds for Time-out</b> value, which determines the
+To address this, there is a <b>Seconds for Timeout</b> value, which determines the
 maximum time that any one move should take before the game is ended automatically.
 In this case, the game is still saved , and game result can be edited manually later.
   </p>
@@ -3076,42 +3081,46 @@ progress to the next.
   * The tournament currently implements a <b>per-move time limit</b> instead of a more sophisticated
 time control. This is slightly crude, but engine analysis is (now) continuous through-out.
 <br>
-  * <b>Xboard</b> support is not as solid as for <b>UCI</b> (see below).
+  * <b>Xboard/Winboard</b> protocol support is not as solid as for <b>UCI</b> (see below).
   The xboard <b>resign</b> request is supported.
 <br>
-  * It may be wise to disable screensavers during long tournaments, but perhaps this is not necessary<br>
-
+  * It may be wise to disable screensavers during long tournaments, but perhaps this is not necessary
+<br>
+  * In the uncommon event of a game engine crashing, unfortunately the tournament will be ended.
+<br>
   <h3>Engines</h3>
 <p>
-The author has tested quite a few engines, with good results. Out of the following
-<b>RobboLito</b>,
-<b>Phalanx</b>,
-<b>Crafty</b>,
-<b>Glaurung</b>,
-<b>Toga 131</b> (Fruit),
-<b>Scidlet</b>,
-<b>Stockfish 1.6.2</b>,
-<b>Gnu Chess 5</b>,
-<b>Faile</b>,
-<b>Sjeng</b>,
-<b>XChenard</b>,
-<b>Spike</b>,
-<b>Stockfish 171</b>,
-<b>Hoi Chess</b>,
-<b>Arasanx</b>,
-<b>Shredder Classic 4</b>,
-<b>Scorpio</b>
-, Arasan, Spike, Sjeng and XChenard have issues pertinent to time control.
+The author has tested quite a few engines, with good results. These include:
+<br>
+<br>
+Arasanx<br>
+Crafty<br>
+Faile<br>
+Glaurung<br>
+Gnu Chess 5<br>
+Hoi Chess<br>
+Homer<br>
+Phalanx<br>
+RobboLito<br>
+Scidlet<br>
+Scorpio<br>
+Shredder Classic 4<br>
+Sjeng<br>
+Spike<br>
+Stockfish 1.6.2<br>
+Stockfish 1.7.1<br>
+Toga 131 (Fruit)<br>
+XChenard<br>
+<br>
+Arasan, Spike, Sjeng, Homer and XChenard have issues relating to time control.
 Sjeng and XChenard are issued the "hard" command, and seem to work.
-<br>
 Phalanx has no time control, and takes it's own (sweet) time.
-<br>
-Faile seems not to issue "move" under some circumstances.
+Faile seems not to issue "move" under some circumstances, despite being in xboard mode.
 </p>
 <p>Considering the number of engines available, unforseen issues probably will arise.
 </p>
 
-  <p><footer>(Updated: Scid Vs PC 3.6.26.10, June 2010)</footer></p>
+  <p><footer>Updated: Scid Vs PC 3.6.26.10, June 2010</footer></p>
 
 }
 
@@ -3156,7 +3165,7 @@ set helpText(CalVar) {<h1>The calculation of variation window</h1>
    entered by the user.
   </p>
 
-  <p><footer>(Updated: Scid 3.6.21, December 2007)</footer></p>
+  <p><footer>Updated: Scid 3.6.21, December 2007</footer></p>
 }
 
 
@@ -3266,7 +3275,7 @@ set helpText(EPD) {<h1>EPD files</h1>
   in this EPD file.</li>
   </ul>
 
-  <p><footer>(Updated: Scid 3.6.26, October 2008)</footer></p>
+  <p><footer>Updated: Scid 3.6.26, October 2008</footer></p>
 }
 
 ####################
@@ -3331,7 +3340,7 @@ set helpText(Email) {<h1>The Email window</h1>
   with the same name as the database and the suffix "<b>.sem</b>".
   </p>
 
-  <p><footer>(Updated: Scid 3.6.2, December 2006)</footer></p>
+  <p><footer>Updated: Scid 3.6.2, December 2006</footer></p>
 }
 
 ####################
@@ -3440,7 +3449,7 @@ set helpText(Reports) {<h1>Reports</h1>
   number of games used to generate the theory table in the Report options.
   </p>
 
-  <p><footer>(Updated: Scid 3.6.26, October 2008)</footer></p>
+  <p><footer>Updated: Scid 3.6.26, October 2008</footer></p>
 }
 
 
@@ -3469,7 +3478,7 @@ set helpText(PList) {<h1>The Player Finder window</h1>
   ranges of Elo rating and number of games played.
   </p>
 
-  <p><footer>(Updated: Scid 3.6.2, December 2006)</footer></p>
+  <p><footer>Updated: Scid 3.6.2, December 2006</footer></p>
 }
 
 ####################
@@ -3502,7 +3511,7 @@ set helpText(PInfo) {<h1>The Player Info window</h1>
   the <a Searches Filter>filter</a> to the games it represents.
   </p>
 
-  <p><footer>(Updated: Scid 3.6.26.9, April 2010)</footer></p>
+  <p><footer>Updated: Scid 3.6.26.9, April 2010</footer></p>
 }
 
 ####################
@@ -3599,7 +3608,7 @@ set helpText(Graphs) {<h1>Graph windows</h1>
   <a Tree Graph>Tree</a> help page.
   </p>
 
-  <p><footer>(Updated: Scid 3.6.26, October 2008)</footer></p>
+  <p><footer>Updated: Scid 3.6.26, October 2008</footer></p>
 }
 
 ####################
@@ -3728,7 +3737,7 @@ set helpText(TB) {<h1>Tablebases</h1>
   tablebase files on the Internet.
   </p>
 
-  <p><footer>(Updated: Scid 3.6.2, December 2006)</footer></p>
+  <p><footer>Updated: Scid 3.6.2, December 2006</footer></p>
 }
 
 ####################
@@ -3780,7 +3789,7 @@ set helpText(Bookmarks) {<h1>Bookmarks</h1>
   many bookmarks), or as a single list.
   </p>
 
-  <p><footer>(Updated: Scid 3.6.2, December 2006)</footer></p>
+  <p><footer>Updated: Scid 3.6.2, December 2006</footer></p>
 }
 
 ####################
@@ -3821,7 +3830,7 @@ set helpText(Cmdline) {<h1>Command-line options</h1>
   games in a pgn file.
   </p>
 
-  <p><footer>(Updated: Scid 3.6.26, October 2008)</footer></p>
+  <p><footer>Updated: Scid 3.6.26, October 2008</footer></p>
 }
 
 ####################
@@ -3890,7 +3899,7 @@ set helpText(Pgnscid) {<h1>Pgnscid</h1>
   Scid; see the <a Maintenance Editing>Maintenance</a> help page for details.
   </p>
 
-  <p><footer>(Updated: Scid 3.6.2, December 2006)</footer></p>
+  <p><footer>Updated: Scid 3.6.2, December 2006</footer></p>
 }
 
 
@@ -3975,7 +3984,7 @@ set helpText(Formats) {<h1>Scid File Formats</h1>
   be skipped, but games starting with 1.e4 e5 will still need to be searched.
   </p>
 
-  <p><footer>(Updated: Scid 3.6.2, December 2006)</footer></p>
+  <p><footer>Updated: Scid 3.6.2, December 2006</footer></p>
 }
 
 ####################
@@ -4020,7 +4029,7 @@ set helpText(Options) {<h1>Options and preferences</h1>
   for the <a Tree>tree</a> and <a Crosstable>crosstable</a> windows.
   </p>
 
-  <p><footer>(Updated: Scid 3.6.2, December 2006)</footer></p>
+  <p><footer>Updated: Scid 3.6.2, December 2006</footer></p>
 }
 
 ####################
@@ -4222,7 +4231,7 @@ set helpText(NAGs) {<h1>Standard NAG values</h1>
   </ul>
   </cyan>
 
-  <p><footer>(Updated: Scid 3.6.2, December 2006)</footer></p>
+  <p><footer>Updated: Scid 3.6.2, December 2006</footer></p>
 }
 
 
@@ -4379,7 +4388,7 @@ set helpText(ECO) {<h1>ECO openings classification</h1>
   <li>  <b>E9</b>  E7 + 4...d6 5.Nf3: <i>King's Indian, main lines</i> </li>
   </ul>
 
-  <p><footer>(Updated: Scid 3.6.2, December 2006)</footer></p>
+  <p><footer>Updated: Scid 3.6.2, December 2006</footer></p>
 }
 
 
@@ -4404,7 +4413,7 @@ set helpText(Author) "<h1>Scid vs. PC</h1>
   <li>Scid is licenced under the GNU General Public License.</li>
 
 </ul> </ul> </ul> 
-  <p><footer>(Project Updated: $::scidvspcVersion, $::scidVersionDate)</footer></p>
+  <p><footer>(Project Updated: $::scidvspcVersion, $::scidVersionDate</footer></p>
   </p>
 "
 
@@ -4437,7 +4446,7 @@ set helpText(Related) {<h1>Related Links</h1>
   <li><url www.virtualpieces.net>www.virtualpieces.net</url> --
   Professional quality chess icons, providing this project's new logo.</li>
   </ul>
-<p><footer>(Updated: Scid Vs PC 3.6.26.10, June 2010)</footer></p>
+<p><footer>Updated: Scid vs PC 3.6.26.10, June 2010</footer></p>
 }
 
 # Book window help
@@ -4466,7 +4475,7 @@ set helpText(Book) {<h1>Book window</h1>
   The book in use can be selected from the drop down list in the
   book window.
   </p>
-  <p><footer>(Updated: Scid 3.6.26, October 2008)</footer></p>
+  <p><footer>Updated: Scid 3.6.26, October 2008</footer></p>
 }
 
 # Tactical game window help
@@ -4515,7 +4524,7 @@ our game.</li>
   limited the coach is allowed to think in the background.</li>
   </ul>
 
-<p><footer>(Updated: Scid Vs PC 3.6.26.10, May 2010)</footer></p>
+<p><footer>Updated: Scid Vs PC 3.6.26.10, May 2010</footer></p>
 }
 
 # Opening Trainer window help
@@ -4602,7 +4611,7 @@ set helpText(OpeningTrainer) {<h1>Opening Trainer</h1>
   player that were not in repertoire</li>
   </ul>
   </p> 
-  <p><footer>(Updated: Scid 3.6.26, October 2008)</footer></p>
+  <p><footer>Updated: Scid 3.6.26, October 2008</footer></p>
 }
 
 ####################
@@ -4802,7 +4811,7 @@ exchanged in server based correspondence chess.
 </p>
 
 
-<p><footer>(Updated: Scid 3.6.25, August 2008)</footer></p>
+<p><footer>Updated: Scid 3.6.25, August 2008</footer></p>
 }
 
 set helpTitle(CCIcons) "Correspondence Chess Icons and Status Indicators"
@@ -5010,7 +5019,7 @@ tool. (See <a CCeMailChess>Correspondence Chess via eMail</a> for
 information about the fields required.)
 </p>
 
-<p><footer>(Updated: Scid 3.6.23, March 2008)</footer></p>
+<p><footer>Updated: Scid 3.6.23, March 2008</footer></p>
 }
 
 #############
@@ -5166,7 +5175,7 @@ not add more than your half move. Scid does not check here wether
 more than one half move was added to the mainline, simply as Scid does
 not know which move it was, when you sent yours.
 </p>
-<p><footer>(Updated: Scid 3.6.23, March 2008)</footer></p>
+<p><footer>Updated: Scid 3.6.23, March 2008</footer></p>
 }
 
 #############
@@ -5384,7 +5393,7 @@ used in <term>mailx</term> mode.
 This parameter is used to specify the subject of the mail message. It
 is <b>only</b> used in <term>mailx</term> mode.
 </p>
-<p><footer>(Updated: Scid 3.6.24, March 2008)</footer></p>
+<p><footer>Updated: Scid 3.6.24, March 2008</footer></p>
 }
 
 #############
@@ -5458,7 +5467,7 @@ are added to the setup. By pressing <term>Cancel</term> all changes
 are lost, the old setup stays in place.
 </p>
 
-<p><footer>(Updated: Scid 3.6.24, May 2008)</footer></p>
+<p><footer>Updated: Scid 3.6.24, May 2008</footer></p>
 }
 
 # Serious game window help
@@ -5557,7 +5566,7 @@ set helpText(SeriousGame) {<h1>Serious Game</h1>
   start up and initialise properly.
   </p>
 
-  <p><footer>(Updated: Scid 3.6.26, October 2008)</footer></p>
+  <p><footer>Updated: Scid 3.6.26, October 2008</footer></p>
 }
 
 # Tactics Trainer
@@ -5628,7 +5637,7 @@ set helpText(TacticsTrainer) {<h1>Training: Tactics</h1>
   game via Ctrl-? or jumping to some bookmark or simply by the <a
   GameList>game list</a>.
   </p>
-  <p><footer>(Updated: Scid 3.6.26, October 2008)</footer></p>
+  <p><footer>Updated: Scid 3.6.26, October 2008</footer></p>
 }
 
 # Find best move 
@@ -5660,7 +5669,7 @@ set helpText(FindBestMove) {<h1>Training: Find best move</h1>
   For this exercise it is advisable to close the PGN window and set
   <term>Hide next move</term> from the status areas context menu.
   </p>
-  <p><footer>(Updated: Scid 3.6.26, October 2008)</footer></p>
+  <p><footer>Updated: Scid 3.6.26, October 2008</footer></p>
 }
 
 # FICS Login
@@ -5699,7 +5708,7 @@ Start at <url http://www.freechess.org>www.freechess.org</url>.
   <b>Note</b> Fics also offers a bunch of chess
   variants like bughouse or crazyhouse but Scid does not support any
   of these variations. </p>
-  <p><footer>(Updated: Scid vs PC 3.6.26.9, March 2010)</footer></p>
+  <p><footer>Updated: Scid vs PC 3.6.26.9, March 2010</footer></p>
 }
 
 # FICS Find Opponent
@@ -5727,7 +5736,7 @@ set helpText(FICSfindOpp) {<h1>Fics Find Opponent</h1>
   <br>
    Click the <term>Make Offer</term> button to place your offer.
   </p>
-  <p><footer>(Updated: Scid vs PC 3.6.26.9, March 2010)</footer></p>
+  <p><footer>Updated: Scid vs PC 3.6.26.9, March 2010</footer></p>
 }
 
 set helpTitle(FICS) "Fics: Play on the Internet"
@@ -5783,7 +5792,7 @@ timing (5 min., no increment) while the second red line marks the standard
 <term>Rapid</term> timing (15 min., no increment).
   </p>
 <br>
-  <p><footer>(Updated: Scid Vs PC 3.6.26.9, April 2010)</footer></p>
+  <p><footer>Updated: Scid Vs PC 3.6.26.9, April 2010</footer></p>
 }
 
 set helpTitle(FICSLectures) "Fics: Play on the Internet"
@@ -5828,7 +5837,7 @@ set helpText(FICSLectures) {<h1>FICS Lectures</h1>
   Note that only one game can be observed within Scid.
   </p>
 
-  <p><footer>(Updated: Scid Vs PC 3.6.26.9, April 2010)</footer></p>
+  <p><footer>Updated: Scid Vs PC 3.6.26.9, April 2010</footer></p>
 }
 
 # Book tuning
@@ -5868,7 +5877,7 @@ set helpText(BookTuning) {<h1>Book tuning</h1>
    can be done incrementally. That is, new lines are added to already
    existing ones. This also allows to merge several books.
    </p>
-  <p><footer>(Updated: Scid 3.6.26, October 2008)</footer></p>
+  <p><footer>Updated: Scid 3.6.26, October 2008</footer></p>
 }
 
 # Novag Citrine
@@ -5892,7 +5901,7 @@ set helpText(Novag) {<h1>Connecting the Novag Citrine Chess board</h1>
    to hook up the board.
    ###--- Detailed description needed ---###
    </p>
-  <p><footer>(Updated: Scid 3.6.26, October 2008)</footer></p>
+  <p><footer>Updated: Scid 3.6.26, October 2008</footer></p>
 }
 
 set helpTitle(Changelog) "Scid vs PC Changelog"
@@ -5900,11 +5909,11 @@ set helpText(Changelog) {<h1>Scid vs. PC</h1>
 
 <h4>3.6.26.10 (July 1, 2010)</h4>
 <ul>
-<li>Computer Chess tournament feature!</li>
-<li>Rewrite the gamelist widget to work with huge databases, and add a case insensitive search</li>
+<li>Computer Chess tournament feature</li>
+<li>The gamelist widget has been rewritten to work with huge databases, and add a case insensitive search</li>
 <li>Add a background colour option that applies to many text widgets, including gameinfo, pgn window and help window</li>
 <li>Restructured the analysis widgets, putting toolbar on top, tiny board at bottom, tweaking toolbar icons and reparenting analysis died error dialog</li>
-<li>Update the book and book-tuning windows (from SCID)</li>
+<li>Update the book and book-tuning windows (untested, from SCID)</li>
 <li>Bind mouse wheel to move progression (and widget resize) for the little browser windows</li>
 <li>Change all comboboxes to ttk::combobox</li>
 <li>Allow xboard lowercase promotion moves (eg while g7g8Q always worked, g7g8q previously failed)</li>
