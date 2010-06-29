@@ -198,6 +198,9 @@ scid.coff: scid.rc
 clean:
 	rm -f src/*.o src/zlib/*.o src/polyglot/*.o $(EXECS) scid.gui scid.coff
 
+strip:
+	$(MINGW_TARGET)-strip $(EXECS)
+
 
 src/tcscid.o: src/tkscid.cpp
 	$(COMPILE) $(CPPFLAGS) -I$(TCL_INCLUDE) -DTCL_ONLY -c src/tkscid.cpp \
