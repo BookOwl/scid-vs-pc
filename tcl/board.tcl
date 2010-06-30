@@ -2462,6 +2462,71 @@ proc ::board::_animate {w} {
   after 5 "::board::_animate $w"
 }
 
+# Capture board screenshot.
+# Based on code from David Easton:
+# http://wiki.tcl.tk/9127
+
+set window_image_support 1
+if { [catch {package require img::window}] } {
+  set window_image_support 0
+}
+
+if {!$png_image_support || !$window_image_support} {
+  .menu.tools entryconfig {Board Screenshot} -state disabled
+  if {!$png_image_support} {
+    ::splash::add "Board screenshot disabled - no png support"
+  } else {
+    ::splash::add "Board screenshot disabled - no image window support"
+  }
+}
+
+proc boardToFile { format filepath } {
+
+  set w .board
+  set board $w.bd
+
+  if { $format == "" } {
+    set format png
+  }
+  set filename $filepath
+
+  # Make the base image based on the board
+  ::board::update $w
+  update idletask
+  set image [image create photo -format window -data $board]
+
+  if { $filename == "" } {
+    set filename [sc_game tag get White]-[sc_game tag get Black]
+    if {[regexp {\?} $filename] || [regexp {\*} $filename]} {
+      set filename [string trim [string map {? {} * {}} [wm title .]]]
+    }
+    if {[file exists $::env(HOME)/$filename.$format]} {
+      set i 1
+      while {[file exists $::env(HOME)/$filename-$i.$format]} {
+        incr i
+      }
+      set filename $filename-$i
+    }
+
+    # set types {{"Image Files" {.$format}}}
+    set types {{"All Files" {*}}}
+    set filename [tk_getSaveFile \
+	-filetypes $types \
+	-parent . \
+	-initialfile $filename.$format \
+	-initialdir $::env(HOME) \
+	-defaultextension .$format \
+	-title {Scid: Board Screenshot}]
+  }
+
+  if {[llength $filename]} {
+    if {[catch {$image write -format $format $filename} result ]} {
+      tk_messageBox -type ok -icon error -title "Scid" -message $result -parent .
+    }
+  }
+  image delete $image
+}
+
 
 ###
 ### End of file: board.tcl

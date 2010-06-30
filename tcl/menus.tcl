@@ -772,6 +772,13 @@ set helpMessage($m,[incr menuindex]) ToolsImportOne
 $m add command -label ToolsImportFile -command importPgnFile
 set helpMessage($m,[incr menuindex]) ToolsImportFile
 
+$m add separator
+incr menuindex
+
+$m add command -label {Board Screenshot} -command {boardToFile {} {}}
+set helpMessage($m,[incr menuindex]) {Board Screenshot}
+
+
 ### Options menu:
 
 set m .menu.options
