@@ -1359,6 +1359,10 @@ namespace eval CorrespondenceChess {
 			set ::CorrespondenceChess::isOpen 0
 			return
 		}
+		::CorrespondenceChess::checkInOutbox
+		::CorrespondenceChess::checkXfccrc
+		::CorrespondenceChess::checkCorrBase
+
 		set ::CorrespondenceChess::isOpen 1
 
 		toplevel $w
@@ -2794,10 +2798,6 @@ namespace eval CorrespondenceChess {
 		::splash::add "tDOM package not found, disabling internal Xfcc support"
 		set XfccInternal -1
 	}
-
-	::CorrespondenceChess::checkInOutbox
-	::CorrespondenceChess::checkXfccrc
-	::CorrespondenceChess::checkCorrBase
 	#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 }
 
