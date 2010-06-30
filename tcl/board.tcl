@@ -2496,10 +2496,19 @@ proc boardToFile { format filepath } {
   set image [image create photo -format window -data $board]
 
   if { $filename == "" } {
-    set filename [sc_game tag get White]-[sc_game tag get Black]
+ 
+    set filename "[sc_game tag get White]-[sc_game tag get Black]"
     if {[regexp {\?} $filename] || [regexp {\*} $filename]} {
       set filename [string trim [string map {? {} * {}} [wm title .]]]
     }
+
+    if {[sc_pos side] == {white} && [sc_pos moveNumber] != {1} } {
+      set move [sc_pos moveNumber]..[sc_game info previousMove]
+    } else {
+      set move [sc_pos moveNumber][sc_game info previousMove]
+    }
+    set filename "$filename ($move)"
+
     if {[file exists $::env(HOME)/$filename.$format]} {
       set i 1
       while {[file exists $::env(HOME)/$filename-$i.$format]} {
