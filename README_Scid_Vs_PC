@@ -15,19 +15,21 @@
 
   5. how to play
   6. news
-  7. changes
-        7..1 Scid vs PC 3.6.26.9
-        7..2 Scid vs PC 3.6.26.8
-        7..3 Scid vs PC 3.6.26.7
-        7..4 Scid vs PC 3.6.26.6
-        7..5 Scid vs PC 3.6.26.5
-        7..6 Scid vs PC 3.6.26.4
-        7..7 Scid vs PC 3.6.26.3
-        7..8 Scid vs PC 3.6.26.2
-        7..9 Scid vs PC 3.6.26.1
+  7. bugs
+  8. changes
+        8..1 Scid vs PC 4.0
+        8..2 Scid vs PC 3.6.26.9
+        8..3 Scid vs PC 3.6.26.8
+        8..4 Scid vs PC 3.6.26.7
+        8..5 Scid vs PC 3.6.26.6
+        8..6 Scid vs PC 3.6.26.5
+        8..7 Scid vs PC 3.6.26.4
+        8..8 Scid vs PC 3.6.26.3
+        8..9 Scid vs PC 3.6.26.2
+        8..10 Scid vs PC 3.6.26.1
 
-  8. todo
-  9. author
+  9. todo
+  10. author
 
 
   ______________________________________________________________________
@@ -37,9 +39,9 @@
 
 
   Scid vs PC <http://scidvspc.sourceforge.net/> is a usability and bug-
-  fix fork of Scid. With it you can play chess online or against the
-  computer, browse tournaments downloaded in pgn format, and create huge
-  chess databases.
+  fix fork of Scid (written by Shane Hudson and Pascal Georges). With it
+  you can play chess online or against the computer, browse tournaments
+  downloaded in pgn format, and create huge chess databases.
 
   Chess is a very technical thing. A single game can be analysed through
   and through, openings can fill volumes, and tournaments are full of
@@ -53,22 +55,31 @@
   without having to understand the complex database capabilities of
   Scid.
 
-
   2.  features
 
 
   Improvements over Scid:
 
 
-  o  Improved Tactical Game and Internet Chess programs.
+  o  A Computer Engine tournament feature.
+
+  o  Improved Tactical Game program.
 
   o  A redone Button Bar with a nicer look and feel.
 
   o  The Fics interface is fairly different, with a nice accept/decline
      widget for multiple offers.
 
+  o  The Chessboard/Pieces config widget has been totally overhauled.
+     There are some nice colour and tile theme, and great piece set
+     available if the optional TkImg package is installed.
+
+  o  The Setup Start Board has many fixes and improvements.  Annoyingly,
+     if Scid uses a tiled theme, it's setup board is displayed a
+     different colour.
+
   o  The main board has a handy right-click menu, and the side-to-move
-     indicator is now on the right.
+     indicator is now on the left.
 
   o  The Help index is now meaningful to new users, with links to the
      game's main features.
@@ -76,19 +87,11 @@
   o  The Gamelist widget (which isn't 100% finalised), now looks and
      works much better. Scid's gamelist widget is awful.
 
-  o  The Chessboard/Pieces config widget has been totally overhauled.
-     There are some nice colour and tile themes, and great piece sets
-     available if the optional TkImg package is installed.
-
-  o  The Setup Start Board has many fixes and improvements.  Annoyingly,
-     if Scid uses a tiled theme, it's setup board is displayed a
-     different colour.
-
   o  The Comment editor has been overhauled, and is much more stream-
      lined.
 
   o  Restructured workings of the Analysis Engines widget. The F2 and F3
-     key bindings can now be set specifically.
+     key bindings can now be set explicitly.
 
   o  The over ambitious adhoc Windowing System, and Theme features of
      Scid are not included.
@@ -99,12 +102,12 @@
   3.  download
 
 
-  source scid_vs_pc-3.6.26.9.tgz
-  <https://sourceforge.net/project/downloading.php?group_id=263836&filename=scid_vs_pc-3.6.26.9.tgz>
+  source scid_vs_pc-4.0.tgz
+  <https://sourceforge.net/project/downloading.php?group_id=263836&filename=scid_vs_pc-4.0.tgz>
 
-  windows scid_vs_pc-windows-3.6.26.9.zip
+  windows scid_vs_pc-windows-4.0.zip
   <https://sourceforge.net/project/downloading.php?group_id=263836&filename=scid_vs_pc-
-  windows-3.6.26.9.zip>
+  windows-4.0.zip>
 
   mac ScidVsMac-3.6.26.8.dmg
   <https://sourceforge.net/project/downloading.php?group_id=263836&filename=ScidVsMac-3.6.26.8.dmg>
@@ -120,7 +123,7 @@
   Scid vs PC requires Tcl/Tk
   <http://tkgames.sourceforge.net/index.html#ss1.2> 8.5
 
-  Tcl 8.4 will work in a pinch, and 8.6 is still in development.
+  Tcl 8.4 will work with a few errors, and 8.6 is still in development.
 
 
   4.0.1.  Linux , FreeBSD
@@ -133,8 +136,8 @@
   Then, installing from source:
 
   ______________________________________________________________________
-  tar -xzf scid_vs_pc-3.6.26.9.tgz
-  cd scid_vs_pc-3.6.26.9
+  tar -xzf scid_vs_pc-4.0.tgz
+  cd scid_vs_pc-4.0
   configure
   make install
   scid
@@ -142,7 +145,7 @@
 
 
   It is also possible to install Scid vs PC into /usr, instead of the
-  normal /usr/local.  Thsi allows for parallel installation with
+  normal /usr/local.  This allows for parallel installation with
   mainline Scid, and is done by:
   ./configure BINDIR=/usr/bin/ SHAREDIR=/usr/share/scid/
 
@@ -178,7 +181,6 @@
         1200 (a bright teenager with some experience), to 2200 (a
         National Master).
 
-
      Playing on the Internet
         Playing on the Internet is done via the the Play->Internet menu
         item. I recommend visiting the Fics <http://www.freechess.org>
@@ -195,6 +197,25 @@
 
   6.  news
 
+
+   July 3, 2010
+
+  New release coming up. It's my tenth, but have gone with verison
+  number 4.0 instead of 3.6.26.10.
+
+  It's pretty big too :).
+
+  The Computer Tournament feature runs great ... now.  Initially i had a
+  poor control mechanism, but thanks to some UCI snippets from Fulvio, i
+  got inspiration to rewrite it properly, and every thing seems fine
+  except for  some  smaller engines poor handling of time slices.
+
+  RobboLito is the best Linux engine i tested. Stockfish is very close,
+  and Gnu Chess 5.0 can hold it's head up, managing to beat Crafty once.
+
+  The other main feature is a zippy Gamelist widget, allowing for huge
+  databases to be rendered in seconds rather than minutes. There's also
+  lots of Gui correctness stuff as always. Ciao
 
    April 19, 2010
 
@@ -223,6 +244,7 @@
   changes this release (3.6.26.8) include overhauling the material and
   FICs widgets, new help menus, as well as some code to fix the recent
   files menu items. Lots of other stuff too.
+
 
    November 14, 2009
 
@@ -280,10 +302,111 @@
   incorporate.
 
 
-  7.  changes
+  7.  bugs
 
 
-  7.0.1.  Scid vs PC 3.6.26.9
+  o  Windows only:
+
+     o  The Phalanx windows binary still has the castling bug. (Anyone
+        compile me a new version?)
+
+
+     o  Using "ALT+F"... etc key bindings to access the menus is badly
+        broke. This is a Tcl/Tk issue.
+
+     o  Window focus/raise issues, another Tcl/Tk issue.
+
+  o  There is no drag-and-drop file opening.
+
+  o  Not really a bug, but Scid vs. PC doesn't support the new .si4
+     database format of mainline Scid.
+
+  o  In some uncommon circumstances, moving board pieces won't work
+     perfectly.
+
+
+  8.  changes
+
+
+  8.0.1.  Scid vs PC 4.0
+
+
+  o  Computer Chess tournament feature
+
+  o  The gamelist widget has been rewritten to work with huge databases,
+     and add a case insensitive search
+
+  o  Add a background colour option that applies to many text widgets,
+     including gameinfo, pgn window and help window
+
+  o  Restructured the analysis widgets, putting toolbar on top, tiny
+     board at bottom, tweaking toolbar icons and reparenting analysis
+     died error dialog
+
+  o  Update the book and book-tuning windows (untested, from SCID)
+
+  o  Add a new logo, and some wm title tweaks
+
+  o  Board Screenshot feature (Control+F12)
+
+  o  Bind mouse wheel to move progression (and widget resize) for the
+     little browser windows
+
+  o  Change all comboboxes to ttk::combobox
+
+  o  Allow xboard lowercase promotion moves (eg while g7g8Q always
+     worked, g7g8q previously failed)
+
+  o  Enable hovering over toolbar help pop-ups
+
+  o  Fix up analysis widget "lock to position" feature
+
+  o  All analysis windows can now use annotation, and autoplay feature
+
+  o  Bind F4 to start another analysis window
+
+  o  Various C fixes from SCID
+
+  o  Sync the tools::connect-hardware feature with SCID (untested)
+
+  o  When using the setup board widget, do a sanity check about the
+     FEN's castling field
+
+  o  Some minor version fixes anticipating tcl8.6
+
+  o  Small bugfix: variation pop-up could previously throw errors if
+     moving through movs fast
+  o  F1 *toggles* help window
+
+  o  Remove space-only lines from project - they mess up vim's paragraph
+     traversal feature
+
+  o  Fics "withdraws offer" fix
+
+  o  Toolbar icons tweak
+
+  o  Allow databses to have "." in their name
+
+  o  Tactical Game stores game result
+
+  o  Set Game Info widget includes Site field
+
+  o  Small "update idletasks" in main.tcl improves main board
+     responsiveness
+
+  o  Fix up the history limit of combobox-es (especially the setup board
+     FEN combo)
+
+  o  UCI kludges for Prodeo and Rybka from SCID (untested)
+
+  o  Turn off craftys egtb (end game tablebook) for the analysis widget
+
+  o  Comment editor bugfix - unbind left/right from main board
+
+  o  Fix for matsig.cpp overflow (unapplied? , untested)
+
+
+  8.0.2.  Scid vs PC 3.6.26.9
 
 
   o  Added a random pawns feature to tacgame
@@ -356,7 +479,7 @@
      feature for next release
 
 
-  7.0.2.  Scid vs PC 3.6.26.8
+  8.0.3.  Scid vs PC 3.6.26.8
 
 
   o  The Fics widgets have been redone, including buttons, the graph and
@@ -384,6 +507,7 @@
   o  The analysis engines now support RobboLito, and an unlimited number
      of engines
 
+
   o  The File::Open menus have had quite a bit of debugging
 
   o  Some ne tile themes
@@ -410,7 +534,7 @@
      o  Some widget reparenting
 
 
-  7.0.3.  Scid vs PC 3.6.26.7
+  8.0.4.  Scid vs PC 3.6.26.7
 
 
   o  Include a mac configuration patch
@@ -422,7 +546,7 @@
   o  Small change to Tacgame about getMyPlayerName
 
 
-  7.0.4.  Scid vs PC 3.6.26.6
+  8.0.5.  Scid vs PC 3.6.26.6
 
 
   o  The Setup Board widget now shows tiles (when the main board uses
@@ -449,7 +573,6 @@
 
   o  Fix the MyPlayerNames widget. (No autoscrollframe, no grab
      (interfered with Help))
-
   o  Add MyPlayerName info to Tacgame
 
   o  Tacgame show a modest checkmate widget when game is over (for the
@@ -477,7 +600,7 @@
   o  Add Control-m binding for toggling the menubar
 
 
-  7.0.5.  Scid vs PC 3.6.26.5
+  8.0.6.  Scid vs PC 3.6.26.5
 
 
   o  Revamped the main button bar, making it a little larger too.
@@ -485,7 +608,7 @@
   o  Fixed installation issues with tacgame/toga/phalanx on unix systems
 
   o  Restructured workings of the Analysis widget, - the F2 and F3 key
-     bindings can now be set specifically
+     bindings can now be set explicitly.
 
   o  More functionality added to the gamelist widget.
 
@@ -499,7 +622,7 @@
      Variation buttons swap position, Spellcheck installation fix.
 
 
-  7.0.6.  Scid vs PC 3.6.26.4
+  8.0.7.  Scid vs PC 3.6.26.4
 
 
   o  New Gamelist widget. It's much more powerful than the old one, but
@@ -530,7 +653,7 @@
      and menu tweaks
 
 
-  7.0.7.  Scid vs PC 3.6.26.3
+  8.0.8.  Scid vs PC 3.6.26.3
 
 
   o  Replaced most all of the old colour schemes and tiles.
@@ -550,7 +673,7 @@
      customisation.
 
 
-  7.0.8.  Scid vs PC 3.6.26.2
+  8.0.9.  Scid vs PC 3.6.26.2
 
 
   o  Game info panel restructured ;>
@@ -578,7 +701,7 @@
   o  Gave the show_material canvas a little more space
 
 
-  7.0.9.  Scid vs PC 3.6.26.1
+  8.0.10.  Scid vs PC 3.6.26.1
 
 
   o  Overhauling the tactical game feature.
@@ -600,29 +723,22 @@
   o  Last move displayed in bold.
 
 
-  8.  todo
+  9.  todo
 
 
-  o  Include Random Pawn feature with new release.
+  o  Fics: prominent "says" from opponent, add time comments to pgn.
 
   o  Update project to work with Scid (version 4) databases.
 
-  o  Enable the gamelist widget to work smoothly with huge databases.
-
   o  And give it context menus, and a delete game feature.
 
-  o  Computer vs Computer tournaments (done via opening two analysis
-     engines, and controlled via button invoke commands).
-
   o  Nicer CSS web page.
-
-  o  New combo boxes. (No "-command" widget).
 
   o  Fix bug about moving pieces / clicking on squares, which sometimes
      breaks.
 
 
-  9.  author
+  10.  author
 
   Stevenaaus is a uni graduate in math and computer science, who
   programs as a hobby in tcl/tk, bash and C. I live and work in rural
