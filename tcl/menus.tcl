@@ -504,9 +504,7 @@ $m.correspondence add command -label CCConfigure   -command {::CorrespondenceChe
 set helpMessage($m.correspondence,0) CCConfigure
 
 $m.correspondence add separator
-$m.correspondence add command -label CCOpenDB      -command {::CorrespondenceChess::OpenCorrespondenceDB} \
-    -accelerator "Ctrl+F12"
-bind . <Control-F12> {::CorrespondenceChess::OpenCorrespondenceDB}
+$m.correspondence add command -label CCOpenDB      -command {::CorrespondenceChess::OpenCorrespondenceDB} 
 set helpMessage($m.correspondence,2) CCOpenDB
 
 $m.correspondence add separator
@@ -775,7 +773,8 @@ set helpMessage($m,[incr menuindex]) ToolsImportFile
 $m add separator
 incr menuindex
 
-$m add command -label {Board Screenshot} -command {boardToFile {} {}}
+$m add command -label {Board Screenshot} -command {boardToFile {} {}} -accelerator Ctrl+F12
+bind . <Control-F12> {boardToFile {} {}}
 set helpMessage($m,[incr menuindex]) {Board Screenshot}
 
 

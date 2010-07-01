@@ -2,7 +2,7 @@
 
 #################################################
 
-set helpTitle(Contents) "Scid vs. PC"
+set helpTitle(Contents) "$::scidName"
 set helpText(Contents) {<h1>Scid vs. PC</h1>
 
   <ul> <ul> <ul> <ul> <ul> <ul> <ul> <ul> <ul>
@@ -29,9 +29,9 @@ set helpText(Contents) {<h1>Scid vs. PC</h1>
   <br>
   <li><a Author>About</a></li>
   </ul> </ul> </ul>
-  <p><footer>Updated: Scid Vs PC 3.6.26.10, June 2010</footer></p>
+  <p><footer>Updated: Scid Vs PC 4.0, June 2010</footer></p>
 }
-set helpTitle(Intro) "Scid vs. PC"
+set helpTitle(Intro) "$::scidName"
 set helpText(Intro) {<h1>Introduction</h1>
 
 <p>
@@ -451,7 +451,7 @@ set helpText(Index) {<h1>Scid Help Index</h1>
   <ul>
   </ul>
 
-  <p><footer>Updated: Scid vs PC 3.6.26.10, June 2010</footer></p>
+  <p><footer>Updated: Scid vs PC 4.0, June 2010</footer></p>
 }
 
 
@@ -3036,7 +3036,7 @@ storing the annotations into the database.
      </li>
   </ul>
 
-  <p><footer>Updated: Scid Vs PC 3.6.26.10, May 2010</footer></p>
+  <p><footer>Updated: Scid Vs PC 4.0, May 2010</footer></p>
 }
 
 ####################
@@ -3050,7 +3050,7 @@ set helpText(Tourney) {<h1>Computer Tournament</h1>
   widget can be added.
 </p>
 <p>
-Support for different engines is, afaik, good, but <b>a few old engines don't work</b>.
+  Support for different engines is, afaik, good, but <b>a few old engines won't work</b>.
   Of the engines included with Scid vs. PC, only Toga works well in a tournament, so
   you'll probably want to download and install some other engines if you haven't already.
   For more information about various engines see below.
@@ -3120,7 +3120,7 @@ Faile seems not to issue "move" under some circumstances, despite being in xboar
 <p>Considering the number of engines available, unforseen issues probably will arise.
 </p>
 
-  <p><footer>Updated: Scid Vs PC 3.6.26.10, June 2010</footer></p>
+  <p><footer>Updated: Scid Vs PC 4.0, June 2010</footer></p>
 
 }
 
@@ -4398,7 +4398,7 @@ set helpText(Author) "<h1>Scid vs. PC</h1>
 <ul> <ul> <ul> <ul> <ul> <ul> <ul> <ul> <ul>
   <li><img splash></li>
   </ul></ul>
-  <li>Scid vs. PC  version $::scidvspcVersion
+  <li>Scid vs. PC  version $::scidVersion
   <br>
   <li>(C) Steven Atkinson, stevenaaus@yahoo.com</li>
   <br>
@@ -4413,7 +4413,7 @@ set helpText(Author) "<h1>Scid vs. PC</h1>
   <li>Scid is licenced under the GNU General Public License.</li>
 
 </ul> </ul> </ul> 
-  <p><footer>(Project Updated: $::scidvspcVersion, $::scidVersionDate</footer></p>
+  <p><footer>(Project Updated: $::scidVersion, $::scidVersionDate</footer></p>
   </p>
 "
 
@@ -4446,7 +4446,7 @@ set helpText(Related) {<h1>Related Links</h1>
   <li><url www.virtualpieces.net>www.virtualpieces.net</url> --
   Professional quality chess icons, providing this project's new logo.</li>
   </ul>
-<p><footer>Updated: Scid vs PC 3.6.26.10, June 2010</footer></p>
+<p><footer>Updated: Scid vs PC 4.0, June 2010</footer></p>
 }
 
 # Book window help
@@ -4524,7 +4524,7 @@ our game.</li>
   limited the coach is allowed to think in the background.</li>
   </ul>
 
-<p><footer>Updated: Scid Vs PC 3.6.26.10, May 2010</footer></p>
+<p><footer>Updated: Scid Vs PC 4.0, May 2010</footer></p>
 }
 
 # Opening Trainer window help
@@ -5907,13 +5907,15 @@ set helpText(Novag) {<h1>Connecting the Novag Citrine Chess board</h1>
 set helpTitle(Changelog) "Scid vs PC Changelog"
 set helpText(Changelog) {<h1>Scid vs. PC</h1>
 
-<h4>3.6.26.10 (July 1, 2010)</h4>
+<h4>4.0 (July 1, 2010)</h4>
 <ul>
 <li>Computer Chess tournament feature</li>
 <li>The gamelist widget has been rewritten to work with huge databases, and add a case insensitive search</li>
 <li>Add a background colour option that applies to many text widgets, including gameinfo, pgn window and help window</li>
 <li>Restructured the analysis widgets, putting toolbar on top, tiny board at bottom, tweaking toolbar icons and reparenting analysis died error dialog</li>
 <li>Update the book and book-tuning windows (untested, from SCID)</li>
+<li>Add a new logo, and some wm title tweaks</li>
+<li>Board Screenshot feature (Control+F12)</li>
 <li>Bind mouse wheel to move progression (and widget resize) for the little browser windows</li>
 <li>Change all comboboxes to ttk::combobox</li>
 <li>Allow xboard lowercase promotion moves (eg while g7g8Q always worked, g7g8q previously failed)</li>
@@ -5930,7 +5932,6 @@ set helpText(Changelog) {<h1>Scid vs. PC</h1>
 <li>[Remove space-only lines from project - they mess up vim's paragraph traversal feature]</li>
 <li>Fics "withdraws offer" fix</li>
 <li>Toolbar icons tweak</li>
-<li>Some wm title tweaks</li>
 <li>Allow databses to have "." in their name</li>
 <li>Tactical Game stores sets game result</li>
 <li>Set Game Info widget includes Site field</li>

@@ -1479,7 +1479,7 @@ proc getCommandLineOptions {} {
       switch -glob -- $argName {
         -*   {
          puts "
-Scid vs. Pc Version $::scidvspcVersion ($::scidVersionDate)
+$::scidName Version $::scidVersion ($::scidVersionDate)
 Based on: Shane's Chess Information Database $::scidVersion
 Using Tcl/Tk version: [info patchlevel]
 

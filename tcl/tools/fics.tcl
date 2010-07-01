@@ -306,7 +306,7 @@ namespace eval fics {
     incr row
     button $w.bottom.buttons.clear -text Clear -command "
       $w.console.text delete 0.0 end
-      $w.console.text insert 0.0 \"FICs (Scid Vs PC $::scidvspcVersion)\n\"
+      $w.console.text insert 0.0 \"FICs ($::scidName $::scidVersion)\n\"
     "
     button $w.bottom.buttons.info  -text Info -command {
       ::fics::writechan finger

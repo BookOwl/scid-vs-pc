@@ -12,7 +12,7 @@
 # Shane Hudson. His email is sgh@users.sourceforge.net
 
 #
-# The following few comments are only for Unix versions of Scid:
+# The following few comments are only for Unix versions of Scid
 #
 
 # The "\" at the end of the comment line below is necessary! It means
@@ -28,9 +28,9 @@ exec `dirname $0`/tkscid "$0" "$@"
 ############################################################
 
 # Alter the version if any patches have been made to the Tcl code only:
-set scidVersion "3.6.26"
-set scidvspcVersion "3.6.26.10"
-set scidVersionDate "July 1, 2010"
+set scidName {Scid vs. PC}
+set scidVersion 4.0
+set scidVersionDate {July 1, 2010}
 
 # Set to 0 before releasing, so some alpha-state code is not included
 # Set to 1 to have access to all code
@@ -40,7 +40,7 @@ package require Tcl 8.5
 package require Tk  8.5
 
 # Determine operating system platform: unix or windows
-#
+
 set windowsOS	[expr {$tcl_platform(platform) == "windows"}]
 set unixOS	[expr {$tcl_platform(platform) == "unix"}]
 
@@ -49,18 +49,18 @@ if {![catch {tk windowingsystem} wsystem] && $wsystem == "aqua"} { set macOS 1 }
 
 # Check that on Unix, the version of tkscid matches the version of this
 # script or on Windows, that the scid.exe and scid.gui versions are identical.
-#
+
 if {[string compare [sc_info version] $scidVersion]} {
   wm withdraw .
   if {$windowsOS} {
-    set msg "This is Scid version [sc_info version], but the scid.gui data\n"
+    set msg "This is $::scidName version [sc_info version], but the scid.gui data\n"
     append msg "file has the version number $scidVersion.\n"
   } else {
-    set msg "This program,\n\"$argv0\",\nis version $scidVersion,\nbut the "
+    set msg "This is $::scidName version $scidVersion,\nbut the "
     append msg "tkscid program \nit uses is version [sc_info version].\n"
     append msg "Check that the path to tkscid is correct."
   }
-  tk_messageBox -type ok -icon error -title "Scid: Version Error" -message $msg
+  tk_messageBox -type ok -icon error -title "Scid: version error" -message $msg
   exit 1
 }
 
@@ -968,7 +968,7 @@ proc ::splash::make {} {
   set w [toplevel .splash]
   wm withdraw $w
   wm protocol $w WM_DELETE_WINDOW [list wm withdraw $w]
-  wm title $w "Welcome to Scid $::scidvspcVersion"
+  wm title $w "Welcome to $::scidName $::scidVersion"
   frame $w.f
   frame $w.b
   text $w.t -height 15 -width 55 -cursor top_left_arrow \
@@ -1001,7 +1001,7 @@ proc ::splash::make {} {
   $w.t tag configure indent -lmargin2 20
   $w.t tag configure scid_title -font {Arial 24 normal} -foreground darkslateblue
 
-  $w.t insert end "        Scid vs. PC     " scid_title
+  $w.t insert end "        $::scidName     " scid_title
   $w.t image create end -image splash -padx 20 -pady 10
 }
 
@@ -1094,10 +1094,10 @@ proc ::splash::add {text} {
   }
 }
 
-::splash::add "(C) 1999-2004 Shane Hudson  (sgh@users.sourceforge.net)"
+::splash::add "(C) 1999-2004 Shane Hudson"
 ::splash::add "(C) 2006-2008 Pascal Georges  (pascal.georges1@free.fr)"
 ::splash::add "(C) 2008-2010 Steven Atkinson (stevenaaus@yahoo.com)"
-::splash::add "Scid vs. Pc $::scidvspcVersion, released $::scidVersionDate."
+::splash::add "$::scidName $::scidVersion, released $::scidVersionDate."
 ::splash::add "Website: http://scidvspc.sourceforge.net\n"
 
 # add cached splash comments

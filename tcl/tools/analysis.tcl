@@ -1600,7 +1600,7 @@ proc destroyAnalysisWin {n} {
 
 # sendToEngine:
 #   Send a command to a running analysis engine.
-#
+
 proc sendToEngine {n text} {
   logEngine $n "Scid  : $text"
   puts_ "$n $text"

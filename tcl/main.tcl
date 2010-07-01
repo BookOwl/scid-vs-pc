@@ -162,9 +162,9 @@ proc updateTitle {} {
   if {$fname == "\[$::tr(clipbase)\]"} {set fname {}}
 
   if {$white == {?} && $black == {?}} {
-    wm title . "Scid $::scidvspcVersion $fname"
+    wm title . "$::scidName $fname"
   } else {
-    wm title . "Scid:  $white - $black $fname"
+    wm title . "$::scidName: $white - $black $fname"
   }
 }
 
@@ -637,7 +637,7 @@ proc editMyPlayerNames {} {
   if {[winfo exists $w]} { return }
   toplevel $w
   wm state $w withdrawn
-  wm title $w "Scid: [tr OptionsNames]"
+  wm title $w "$::scidName: [tr OptionsNames]"
   pack [frame $w.b] -side bottom -fill x
 
   frame $w.desc -borderwidth 0
