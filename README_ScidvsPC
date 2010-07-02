@@ -61,7 +61,11 @@
   Improvements over Scid:
 
 
-  o  A Computer Engine tournament feature.
+  o  A Computer Tournament feature.
+
+  o  The Gamelist widget (which now handles large DBs) looks and works
+     much better. Deleted items are greyed out, and there's a "Compact"
+     button.
 
   o  Improved Tactical Game program.
 
@@ -83,9 +87,6 @@
 
   o  The Help index is now meaningful to new users, with links to the
      game's main features.
-
-  o  The Gamelist widget (which isn't 100% finalised), now looks and
-     works much better. Scid's gamelist widget is awful.
 
   o  The Comment editor has been overhauled, and is much more stream-
      lined.
@@ -181,6 +182,7 @@
         1200 (a bright teenager with some experience), to 2200 (a
         National Master).
 
+
      Playing on the Internet
         Playing on the Internet is done via the the Play->Internet menu
         item. I recommend visiting the Fics <http://www.freechess.org>
@@ -209,13 +211,12 @@
   poor control mechanism, but thanks to some UCI snippets from Fulvio, i
   got inspiration to rewrite it properly, and every thing seems fine
   except for  some  smaller engines poor handling of time slices.
-
   RobboLito is the best Linux engine i tested. Stockfish is very close,
   and Gnu Chess 5.0 can hold it's head up, managing to beat Crafty once.
 
-  The other main feature is a zippy Gamelist widget, allowing for huge
-  databases to be rendered in seconds rather than minutes. There's also
-  lots of Gui correctness stuff as always. Ciao
+  The other main feature is a zippy Gamelist widget - allowing for huge
+  databases to be rendered in seconds rather than minutes. Also, deleted
+  items are now greyed-out, and there's a new "Compact" button.
 
    April 19, 2010
 
@@ -244,7 +245,6 @@
   changes this release (3.6.26.8) include overhauling the material and
   FICs widgets, new help menus, as well as some code to fix the recent
   files menu items. Lots of other stuff too.
-
 
    November 14, 2009
 
@@ -309,8 +309,6 @@
 
      o  The Phalanx windows binary still has the castling bug. (Anyone
         compile me a new version?)
-
-
      o  Using "ALT+F"... etc key bindings to access the menus is badly
         broke. This is a Tcl/Tk issue.
 
@@ -333,8 +331,9 @@
 
   o  Computer Chess tournament feature
 
-  o  The gamelist widget has been rewritten to work with huge databases,
-     and add a case insensitive search
+  o  The Gamelist widget has been rewritten to work with huge databases.
+     Other new features include a case insensitive search, deleted items
+     are greyed out, and there's a "Compact" button to empty trash with.
 
   o  Add a background colour option that applies to many text widgets,
      including gameinfo, pgn window and help window
@@ -374,8 +373,10 @@
 
   o  Some minor version fixes anticipating tcl8.6
 
+
   o  Small bugfix: variation pop-up could previously throw errors if
      moving through movs fast
+
   o  F1 *toggles* help window
 
   o  Remove space-only lines from project - they mess up vim's paragraph
@@ -405,6 +406,11 @@
 
   o  Fix for matsig.cpp overflow (unapplied? , untested)
 
+  o  Key binding for first/last game is now Control+Home/End instead of
+     Control+Shift+Up/Down
+
+  o  Perform a db refresh after importing PGN file(s)
+
 
   8.0.2.  Scid vs PC 3.6.26.9
 
@@ -432,6 +438,7 @@
      handling of multiple challenges
 
   o  Fics: Tweak the Make Offer dialog
+
 
   o  Fics: update help files, and add a Font button
 
@@ -507,7 +514,6 @@
   o  The analysis engines now support RobboLito, and an unlimited number
      of engines
 
-
   o  The File::Open menus have had quite a bit of debugging
 
   o  Some ne tile themes
@@ -564,6 +570,7 @@
   o  Fixed up the toolbar cofniguration widget, and re-did a few little
      images
 
+
   o  Variation pop-ups now center over the main window, and enable
      KeyPress-1, KeyPress-2, etc bindings
 
@@ -573,6 +580,7 @@
 
   o  Fix the MyPlayerNames widget. (No autoscrollframe, no grab
      (interfered with Help))
+
   o  Add MyPlayerName info to Tacgame
 
   o  Tacgame show a modest checkmate widget when game is over (for the
@@ -627,7 +635,6 @@
 
   o  New Gamelist widget. It's much more powerful than the old one, but
      is not quite yet feature complete.
-
   o  Many changes to the Gameinfo widget,
 
   o  , including a new "Set Game Information" widget.
