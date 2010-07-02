@@ -1034,6 +1034,15 @@ proc compactGames {parent} {
         -message $::tr(NoUnusedGames)
     return
   }
+
+  set stats [sc_compact stats games]
+  set numberDeleted [expr {[lindex $stats 0] - [lindex $stats 2]}]
+  if {[tk_messageBox -title "Scid: Compact" -parent $parent \
+      -icon question -type yesno -message \
+      "$numberDeleted games will be permanently deleted.\nAre you sure ?"] != {yes}} {
+    return
+  }
+  
   progressWindow "Scid" [concat $::tr(CompactGames) "..."] \
       $::tr(Cancel) "sc_progressBar"
   busyCursor .
