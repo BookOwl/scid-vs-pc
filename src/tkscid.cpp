@@ -10736,8 +10736,8 @@ sc_name_correct (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
 
     for (idNumberT id=0; id < nameCount; id++) {
         newIDs[id] = id;
-        startDate[0] = ZERO_DATE;
-        endDate[0] = ZERO_DATE;
+        startDate[id] = ZERO_DATE;
+        endDate[id] = ZERO_DATE;
     }
 
     while (*str != 0) {
@@ -10782,6 +10782,8 @@ sc_name_correct (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
         my_Tcl_Free((char*) newIDs);
 #else
         delete[] newIDs;
+        delete[] startDate;
+        delete[] endDate;
 #endif
 
         return setResult (ti, "No valid corrections were found.");
@@ -10793,6 +10795,8 @@ sc_name_correct (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
         my_Tcl_Free((char*) newIDs);
 #else
         delete[] newIDs;
+        delete[] startDate;
+        delete[] endDate;
 #endif
         return errorResult (ti, "Error writing name file.");
     }
@@ -10876,6 +10880,8 @@ sc_name_correct (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
         my_Tcl_Free((char*) newIDs);
 #else
         delete[] newIDs;
+	delete[] startDate;
+	delete[] endDate;
 #endif
                 return errorResult (ti, "Error writing index file.");
             }
@@ -10886,6 +10892,8 @@ sc_name_correct (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
         my_Tcl_Free((char*) newIDs);
 #else
         delete[] newIDs;
+	delete[] startDate;
+	delete[] endDate;
 #endif
 
     if (db->idx->WriteHeader() != OK) {

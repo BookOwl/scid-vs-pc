@@ -1197,8 +1197,8 @@ Game::TruncateStart (void)
     FirstMove->next = CurrentMove;
     CurrentMove->prev = FirstMove;
     TextBuffer tb;
-    tb.SetBufferSize (20000);
-    tb.SetWrapColumn (20000);
+    tb.SetBufferSize (TBUF_SIZE);
+    tb.SetWrapColumn (TBUF_SIZE);
     gameFormatT gfmt = PgnFormat;
     SetPgnFormat (PGN_FORMAT_Plain);
     // we need to switch off short header style or PGN parsing will not work
@@ -3779,7 +3779,6 @@ Game::Encode (ByteBuffer * buf, IndexEntry * ie)
         }
         ie->SetStoredLineCode (storedLineCode);
     }
-
     return err;
 }
 
