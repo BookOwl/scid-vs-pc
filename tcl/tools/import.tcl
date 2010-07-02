@@ -171,6 +171,8 @@ proc importPgnFile {} {
   foreach fname $fnames {
     doPgnFileImport $fname "" 1
   }
+
+  refreshWindows
 }
 
 proc doPgnFileImport {fname text {multiple 0} } {

@@ -93,14 +93,7 @@ proc ::file::New {} {
           -title "Scid: Unable to create base" -message $result
     }
   }
-  ::windows::gamelist::Refresh
-  ::tree::refresh
-  ::windows::stats::Refresh
-  ::crosstab::Refresh
-  ::plist::refresh
-  updateMenuStates
-  updateTitle
-  updateStatusBar
+  refreshWindows
 }
 
 # ::file::Open
@@ -205,13 +198,19 @@ proc ::file::Open {{fName ""}} {
   }
   unbusyCursor .
   set glstart 1
+
+  refreshWindows
+
+  updateBoard -pgn
+}
+
+proc refreshWindows {} {
   ::windows::gamelist::Refresh
   ::tree::refresh
   ::windows::stats::Refresh
   ::crosstab::Refresh
   ::plist::refresh
   updateMenuStates
-  updateBoard -pgn
   updateTitle
   updateStatusBar
 }
@@ -307,15 +306,10 @@ proc ::file::SwitchToBase {b} {
   if {[winfo exists .emailWin]} { destroy .emailWin }
 
   if {[winfo exists .emailWin]} { destroy .emailWin }
+
   updateBoard -pgn
-  updateTitle
-  updateMenuStates
-  updateStatusBar
-  ::windows::gamelist::Refresh
-  ::tree::refresh
-  ::windows::stats::Refresh
-  ::crosstab::Refresh
-  ::plist::refresh
+
+  refreshWindows
 }
 
 ################################################################################
