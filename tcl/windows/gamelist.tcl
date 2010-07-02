@@ -346,8 +346,6 @@ proc ::windows::gamelist::Open {} {
     ::windows::gamelist::showNum $::windows::gamelist::goto
   }
 
-  frame $w.b.space -width 20
-
   button $w.b.negate -text Negate -relief flat -command {
     .glistWin.tree selection toggle [.glistWin.tree children {}]
   }
@@ -397,7 +395,7 @@ proc ::windows::gamelist::Open {} {
   checkbutton $w.b.findcase -text "Ignore Case" \
     -variable ::windows::gamelist::findcase -onvalue 1 -offvalue 0
 
-  pack $w.b.current $w.b.space $w.b.goto -side left -padx 0
+  pack $w.b.current $w.b.goto -side left -padx 0
   pack $w.b.findcase $w.b.find $w.b.findlabel $w.b.filter $w.b.reset -side right
   pack $w.b.negate $w.b.remove -side left 
 
