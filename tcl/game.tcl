@@ -333,6 +333,7 @@ set ::game::infoArray {
   Black		-black
   BlackElo	-blackElo
   Date		-date
+  Site          -site
   Event		-event
   Result	-result
 }
@@ -385,7 +386,6 @@ proc ::game::SetInfo {{default White}} {
 
   # don't know what it does, but it expands the entries S.A
   grid columnconfigure $w.dialogs 1 -weight 1
-
 
   addHorizontalRule $w
 

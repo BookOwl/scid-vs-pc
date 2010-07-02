@@ -258,9 +258,9 @@ proc ::enginelist::write {} {
 
 catch { ::enginelist::read }
 if {[llength $engines(list)] == 0} {
-  # No engines, so set up a default engine list with Scidlet and Crafty:
+  # No engines, so set up a default engine list with Scidlet, Toga and Phalanx
 
-  ### sicdlet
+  ### scidlet
 
   if {$::windowsOS} { set cmd [file join $::scidExeDir scidlet.exe]
   } else { set cmd scidlet }
@@ -268,16 +268,6 @@ if {[llength $engines(list)] == 0} {
   engine "Name Scidlet
           Cmd  $cmd
           Dir  ."
-
-  ### crafty
-
-  # if {$::windowsOS} { set cmd wcrafty.exe
-  # } else { set cmd crafty }
-
-  # engine "Name Crafty
-  #         Cmd  $cmd
-  #         Dir  .
-  #         URL  ftp://ftp.cis.uab.edu/pub/hyatt/"
 
   ### toga
 
@@ -291,7 +281,7 @@ if {[llength $engines(list)] == 0} {
 
   engine "Name Phalanx
           Cmd  phalanx
-          Dir  $scidShareDir/engines/Phalanx-XXII"
+          Dir  $scidUserDir"
 
 }
 
@@ -1784,7 +1774,7 @@ proc makeAnalysisWin { {n 1} } {
   toplevel $w
   wm title $w "Scid: $analysisName"
   bind $w <F1> { helpWindow Analysis }
-  if {$::comp(iconize)} {
+  if {$::comp(iconize) && ![winfo exists .enginelist]} {
     wm iconify $w
   }
   setWinLocation $w

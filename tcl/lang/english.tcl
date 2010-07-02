@@ -193,7 +193,7 @@ menuText E ToolsOpenBaseAsTree "Open base as tree..." 0   {Open a base and use i
 menuText E ToolsOpenRecentBaseAsTree "Open recent base as tree" 0   {Open a recent base and use it in Tree window}
 menuText E ToolsTracker "Piece Tracker"  6 {Open the Piece Tracker window}
 menuText E ToolsTraining "Training"  0 {Training tools (tactics, openings,...) }
-menuText E ToolsComp "Computer Tournament" 2 {Chess engine tournament}
+menuText E ToolsComp "Computer Tournament" 0 {Chess engine tournament}
 menuText E ToolsTacticalGame "Tactical game"  0 {Play a game with tactics}
 menuText E ToolsSeriousGame "Serious game"  0 {Play a serious game}
 menuText E ToolsTrainOpenings "Openings"  0 {Train with a repertoire}
@@ -247,7 +247,7 @@ menuText E ToolsStartEngine2 "Start engine 2" 0  {Start engine 2}
 menuText E Play "Play" 0
 
 # --- Correspondence Chess
-menuText E CorrespondenceChess "Correspondence Chess" 0 {Functions for eMail and Xfcc based correspondence chess}
+menuText E CorrespondenceChess "Correspondence Chess" 2 {Functions for eMail and Xfcc based correspondence chess}
 menuText E CCConfigure "Configure..." 0 {Configure external tools and general setup}
 menuText E CCOpenDB "Open Database..." 0 {Open the default Correspondence database}
 menuText E CCRetrieve "Retrieve Games" 0 {Retrieve games via external (Xfcc-)helper}

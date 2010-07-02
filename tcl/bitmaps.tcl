@@ -10,6 +10,11 @@
 #   Merida: Armando H. Marroquin.
 
 set png_image_support 1
+
+### For when tcl-8.6 has png support
+# scan [info patchlevel] {%f} tmp
+# if { [catch { package require img::png } ] && $tmp < 8.6 } 
+
 if { [catch { package require img::png } ] } {
   set png_image_support 0
   ::splash::add "Img package not found (tkimg). Some piece sets are disabled."

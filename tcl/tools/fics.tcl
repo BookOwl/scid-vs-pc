@@ -74,7 +74,7 @@ namespace eval fics {
         }
     }
     entry $w.timeseal_entry -width 25 -textvariable ::fics::timeseal_exec
-    dialogbutton $w.timeseal_browse -text ". . ." -command { set ::fics::timeseal_exec [tk_getOpenFile -parent .ficsConfig] } 
+    button $w.timeseal_browse -text ". . ." -command { set ::fics::timeseal_exec [tk_getOpenFile -parent .ficsConfig] } -pady 0.8
 
     if {!$::fics::use_timeseal} {
       $w.timeseal_entry configure -state disabled
@@ -97,7 +97,7 @@ namespace eval fics {
     }
     focus $w.button.connect
 
-    button $w.button.connectguest -text {Login as guest} -command {
+    button $w.button.connectguest -text {Login as Guest} -command {
       set ::fics::reallogin guest
       ::fics::connect guest
     }
@@ -127,7 +127,7 @@ namespace eval fics {
     grid $w.timeseal -column 1 -row $row -sticky w
 
     incr row
-    grid $w.timeseal_entry -column 0 -row $row -columnspan 2 -sticky ew
+    grid $w.timeseal_entry -column 0 -row $row -columnspan 2 -sticky ew -padx 5 
     grid $w.timeseal_browse -column 2 -row $row -sticky w -padx 5
 
     incr row
@@ -587,7 +587,7 @@ namespace eval fics {
     variable logged
     if {[eof $::fics::sockchan]} {
       fileevent $::fics::sockchan readable {}
-      tk_messageBox -title "Read error" -icon error -type ok -message "Network error\nFics will exit."
+      tk_messageBox -title "Read error" -icon error -type ok -message "Network error\nFics will exit." -parent .fics
       ::fics::close error
       return
     }

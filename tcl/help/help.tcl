@@ -3086,8 +3086,6 @@ time control. This is slightly crude, but engine analysis is (now) continuous th
   * <b>Xboard/Winboard</b> protocol support is not as solid as for <b>UCI</b> (see below).
   The xboard <b>resign</b> request is supported.
 <br>
-  * It may be wise to disable screensavers during long tournaments, but perhaps this is not necessary
-<br>
   * In the uncommon event of a game engine crashing, unfortunately the tournament will be ended.
 <br>
   <h3>Engines</h3>
