@@ -261,10 +261,13 @@ proc ::windows::gamelist::Open {} {
 
   # title font isn't working &&& I don't think it's configurable !
   $w.tree tag configure treetitle -font font_H1
-  # this font is working, but doesn't affect how many entries fit on a screen
+
+  # this font is working, but doesn't affect how many entries fit on a screen, and isn't enabled
   $w.tree tag configure treefont -font font_Regular
 
   $w.tree tag bind click2 <Double-Button-1> {::windows::gamelist::Load [%W set [%W focus] Number]}
+  $w.tree tag configure deleted -foreground gray70
+
   # $w.tree tag configure colour -background $::defaultBackground
   # $w.tree tag bind click1 <Button-1> {}
 
@@ -565,14 +568,13 @@ proc ::windows::gamelist::Refresh {} {
     set glistEnd $totalSize
   }
 
-  # for {set line $glistEnd} {$line >= $glstart} {incr line -1} {
-  #   set values [sc_game list $line 1 $glistCodes]
-  #   $w.tree insert {} 0 -values $values -tag [list click2 treefont]
-  # }
-
   for {set line $glstart} {$line <= $glistEnd} {incr line} {
     set values [sc_game list $line 1 $glistCodes]
-    $w.tree insert {} end -values $values -tag [list click2 treefont] ;# colour
+    if {[lindex $values 13] == {D }} {
+      $w.tree insert {} end -values $values -tag [list click2 deleted] ;#treefont
+    } else {
+      $w.tree insert {} end -values $values -tag [list click2] ;#treefont
+    }
   }
 
   setGamelistTitle

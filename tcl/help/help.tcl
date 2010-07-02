@@ -1763,7 +1763,7 @@ This can be done by the <b>Compact</b> button, or
   are interested in adding the whole game or just its opening phase.
   </p>
 
-  <p><footer>Updated: Scid Vs PC 3.6.26.8, May 2010</footer></p>
+  <p><footer>Updated: Scid vs. PC 4.0, July 2010</footer></p>
 }
 
 
@@ -5912,7 +5912,7 @@ set helpText(Changelog) {<h1>Scid vs. PC</h1>
 <h4>4.0 (July 1, 2010)</h4>
 <ul>
 <li>Computer Chess tournament feature</li>
-<li>The gamelist widget has been rewritten to work with huge databases, and add a case insensitive search</li>
+<li>The Gamelist widget has been rewritten to work with huge databases. Other new features include a case insensitive search, deleted items are greyed out, and there's a "Compact" button to empty trash with.</li>
 <li>Add a background colour option that applies to many text widgets, including gameinfo, pgn window and help window</li>
 <li>Restructured the analysis widgets, putting toolbar on top, tiny board at bottom, tweaking toolbar icons and reparenting analysis died error dialog</li>
 <li>Update the book and book-tuning windows (untested, from SCID)</li>
@@ -5943,6 +5943,8 @@ set helpText(Changelog) {<h1>Scid vs. PC</h1>
 <li>Turn off craftys egtb (end game tablebook) for the analysis widget</li>
 <li>Comment editor bugfix - unbind left/right from main board</li>
 <li>Fix for matsig.cpp overflow (unapplied? , untested)</li>
+<li>Key binding for first/last game is now Control+Home/End instead of Control+Shift+Up/Down</li>
+<li>Perform a db refresh after importing PGN file(s)</li>
 </ul>
 <h4>3.6.26.9 (April 19, 2010)</h4>
 <ul>
