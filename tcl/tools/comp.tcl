@@ -312,9 +312,15 @@ proc compNM {n m k} {
 	vwait analysis(waitForReadyOk$current_engine)
 	# if {!$comp(playing)} {break}
     } else {
+	sendToEngine $current_engine xboard
+	sendToEngine $current_engine "ponder on"
 	sendToEngine $current_engine "bk off"
 	sendToEngine $current_engine "st $comp(seconds)"
 	# Sjeng or Chen run too fast unless "hard" is issued
+	if {[regexp -nocase arasan $analysis(name$current_engine)]} {
+	  puts_ {Arasan detected. Issuing "hard"}
+	  sendToEngine $current_engine hard
+	}
 	if {[regexp -nocase sjeng $analysis(name$current_engine)]} {
 	  puts_ {Sjeng detected. Issuing "hard"}
 	  sendToEngine $current_engine hard
@@ -476,7 +482,7 @@ proc compResume {} {
 }
 
 proc puts_ {message} {
-  if {$::comp(debug)} {
+  if {$::comp(debug) && $::comp(playing)} {
     puts "$message"
   }
 }
