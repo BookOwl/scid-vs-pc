@@ -1747,9 +1747,11 @@ Double-clicking will load a game.  </p>
 
   <p><b>Deleted</b> games on the other hand, are not removed from the Game List widget.
   They are simply marked as deleted, and no further action is taken until
-  database <a Compact>compact</a>ing is performed from the <a Maintenance>maintenance</a> window
-  - whence they will be <b>permanently deleted</b> from the database.</p>
-
+  the database is compacted - whence they will be <b>permanently deleted</b> from the database.
+This can be done by the <b>Compact</b> button, or 
+  from the <a Maintenance>maintenance</a> window.</p>
+<p><i>The default database (Clipbase) cannot be compacted</i>.</p>
+  
   <h3><name Browsing>Merging Games</name></h3>
   <p>
   The Merge Game feature (accessed from <b>Browse</b> game) provides a way to include the
@@ -3051,9 +3053,9 @@ set helpText(Tourney) {<h1>Computer Tournament</h1>
 </p>
 <p>
   Support for different engines is, afaik, good, but <b>a few old engines won't work</b>.
-  Of the engines included with Scid vs. PC, only Toga works well in a tournament, so
-  you'll probably want to download and install some other engines if you haven't already.
-  For more information about various engines see below.
+  Phalanx has very poor time control, so you'll probably want to download and
+  install some other engines if you haven't already.  For more information about
+  various engines see below.
   </p>
   <p>
   Make sure you <b>open a database</b> so the results can be saved, then select
@@ -5933,7 +5935,7 @@ set helpText(Changelog) {<h1>Scid vs. PC</h1>
 <li>Fics "withdraws offer" fix</li>
 <li>Toolbar icons tweak</li>
 <li>Allow databses to have "." in their name</li>
-<li>Tactical Game stores sets game result</li>
+<li>Tactical Game stores game result</li>
 <li>Set Game Info widget includes Site field</li>
 <li>Small "update idletasks" in main.tcl improves main board responsiveness</li>
 <li>Fix up the history limit of combobox-es (especially the setup board FEN combo)</li>

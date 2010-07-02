@@ -982,7 +982,7 @@ proc makeCompactWin {} {
   }
 
   button $w.buttons.n -text $::tr(CompactNames) -command compactNames
-  button $w.buttons.g -text $::tr(CompactGames) -command compactGames
+  button $w.buttons.g -text $::tr(CompactGames) -command "compactGames $w"
   button $w.buttons.help -text $::tr(Help) -command {helpWindow Compact}
   button $w.buttons.cancel -text $::tr(Cancel) \
       -command "focus .; grab release $w; destroy $w"
@@ -1021,12 +1021,16 @@ proc compactNames {} {
   ::maint::Refresh
 }
 
-proc compactGames {} {
-  set w .compactWin
+# returns true is no deletions marked
+proc compactGamesEmpty {} {
   set stats [sc_compact stats games]
-  if {[lindex $stats 1] == [lindex $stats 3]  && \
-        [lindex $stats 0] == [lindex $stats 2]} {
-    tk_messageBox -type ok -icon info -parent $w -title [concat "Scid: " $::tr(CompactGames)] \
+  return [expr {[lindex $stats 1] == [lindex $stats 3]  && \
+        [lindex $stats 0] == [lindex $stats 2]}]
+}
+
+proc compactGames {parent} {
+  if {[compactGamesEmpty]} {
+    tk_messageBox -type ok -icon info -parent $parent -title [concat "Scid: " $::tr(CompactGames)] \
         -message $::tr(NoUnusedGames)
     return
   }
@@ -1037,15 +1041,16 @@ proc compactGames {} {
   unbusyCursor .
   closeProgressWindow
   if {$err} {
-    tk_messageBox -type ok -icon warning -parent $w \
+    tk_messageBox -type ok -icon warning -parent $parent \
         -title "Scid: Error compacting file" -message $result
   } else {
-    tk_messageBox -type ok -icon info -parent $w \
+    tk_messageBox -type ok -icon info -parent $parent \
         -title [concat "Scid: " $::tr(CompactGames)] \
         -message [subst $::tr(GameFileCompacted)]
   }
-  grab release $w
-  destroy $w
+  if {$parent == {.compactWin}} {
+    destroy $parent
+  }
   updateBoard
   ::windows::gamelist::Refresh
   ::maint::Refresh
@@ -1577,9 +1582,7 @@ proc doCleaner {} {
   if {$cleaner(cgames)} {
     mtoolAdd $t "$count: $::tr(CompactGames)..."
     incr count
-    set stats [sc_compact stats games]
-    if {[lindex $stats 1] == [lindex $stats 3]  && \
-          [lindex $stats 0] == [lindex $stats 2]} {
+    if {[compactGamesEmpty]} {
       $t insert end "   Game file already compacted.\n"
     } else {
       set err [catch {sc_compact games} result]

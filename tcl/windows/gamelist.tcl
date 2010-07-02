@@ -338,6 +338,16 @@ proc ::windows::gamelist::Open {} {
 
   ### Top row of buttons, etc
 
+  button $w.b.current -relief flat -textvar ::tr(Current) \
+    -command ::windows::gamelist::showCurrent
+  set ::windows::gamelist::goto {}
+  entry $w.b.goto -width 8 -justify right -textvariable ::windows::gamelist::goto
+  bind $w.b.goto <Return> {
+    ::windows::gamelist::showNum $::windows::gamelist::goto
+  }
+
+  frame $w.b.space -width 20
+
   button $w.b.negate -text Negate -relief flat -command {
     .glistWin.tree selection toggle [.glistWin.tree children {}]
   }
@@ -362,7 +372,6 @@ proc ::windows::gamelist::Open {} {
   }
   bind $w <Delete> "$w.b.remove invoke"
 
-  frame $w.b.space -width 20
 
   ### Filter items against the find entry widget
    button $w.b.filter -relief flat -text "Filter" \
@@ -388,20 +397,11 @@ proc ::windows::gamelist::Open {} {
   checkbutton $w.b.findcase -text "Ignore Case" \
     -variable ::windows::gamelist::findcase -onvalue 1 -offvalue 0
 
-  pack $w.b.findcase $w.b.find $w.b.findlabel $w.b.filter -side right
-  pack $w.b.negate $w.b.reset $w.b.remove -side left 
+  pack $w.b.current $w.b.space $w.b.goto -side left -padx 0
+  pack $w.b.findcase $w.b.find $w.b.findlabel $w.b.filter $w.b.reset -side right
+  pack $w.b.negate $w.b.remove -side left 
 
   ### Bottom row of buttons , etc
-
-  button $w.c.current -relief flat -textvar ::tr(Current) \
-    -command ::windows::gamelist::showCurrent
-  set ::windows::gamelist::goto {}
-  entry $w.c.goto -width 8 -justify right -textvariable ::windows::gamelist::goto
-  bind $w.c.goto <Return> {
-    ::windows::gamelist::showNum $::windows::gamelist::goto
-  }
-
-  frame $w.c.space -width 30
 
   dialogbutton $w.c.browse -text $::tr(Browse) -command {
     set selection [.glistWin.tree selection]
@@ -419,14 +419,18 @@ proc ::windows::gamelist::Open {} {
 
   dialogbutton $w.c.delete -text {(Un)Delete} -command {
     ::windows::gamelist::ToggleFlag delete
+    configDeleteButtons
   }
+
+  dialogbutton $w.c.empty -text {Compact} -command "compactGames $w ; configDeleteButtons"
+
+  configDeleteButtons
 
   dialogbutton $w.c.export -textvar ::tr(Save...) -command openExportGList
   dialogbutton $w.c.help  -textvar ::tr(Help) -command { helpWindow GameList }
   dialogbutton $w.c.close -textvar ::tr(Close) -command { focus .; destroy .glistWin }
 
-  pack $w.c.current $w.c.goto -side left -padx 0
-  pack $w.c.space $w.c.browse $w.c.load $w.c.delete -side left -padx 3
+  pack $w.c.browse $w.c.load $w.c.delete $w.c.empty -side left -padx 3
   pack $w.c.close $w.c.help $w.c.export -side right -padx 3
 
   ::windows::gamelist::Refresh
@@ -436,6 +440,26 @@ proc ::windows::gamelist::Open {} {
     recordWidths
     recordWinSize .glistWin
     ::windows::gamelist::Refresh
+  }
+}
+proc configDeleteButtons {} {
+  set w .glistWin
+  if {[sc_base current] == [sc_info clipbase]} {
+    ### clipbase open
+    $w.c.delete configure -state normal
+    $w.c.empty configure -state disabled
+  } else {
+    if {[sc_base isReadOnly]} {
+      $w.c.delete configure -state disabled
+      $w.c.empty configure -state disabled
+    } else {
+      $w.c.delete configure -state normal
+      if {[compactGamesEmpty]} {
+	$w.c.empty configure -state disabled
+      } else {
+	$w.c.empty configure -state normal
+      }
+    }
   }
 }
 
