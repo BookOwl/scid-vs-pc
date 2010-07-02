@@ -354,9 +354,9 @@ $m add command -label GameNew -accelerator "Ctrl+X" -command ::game::Clear
 bind . <Control-x> ::game::Clear
 set helpMessage($m,[incr menuindex]) GameNew
 
-$m add command -label GameFirst -accelerator "Ctrl+Shift+Up" \
+$m add command -label GameFirst -accelerator "Ctrl+Home" \
     -command {::game::LoadNextPrev first}
-bind . <Control-Shift-Up> {::game::LoadNextPrev first}
+bind . <Control-Home> {::game::LoadNextPrev first}
 set helpMessage($m,[incr menuindex]) GameFirst
 
 $m add command -label GamePrev -accelerator "Ctrl+Up" \
@@ -374,9 +374,9 @@ $m add command -label GameNext -accelerator "Ctrl+Down" \
 bind . <Control-Down> {::game::LoadNextPrev next}
 set helpMessage($m,[incr menuindex]) GameNext
 
-$m add command -label GameLast -accelerator "Ctrl+Shift+Down" \
+$m add command -label GameLast -accelerator "Ctrl+End" \
     -command {::game::LoadNextPrev last}
-bind . <Control-Shift-Down> {::game::LoadNextPrev last}
+bind . <Control-End> {::game::LoadNextPrev last}
 set helpMessage($m,[incr menuindex]) GameLast
 
 $m add command -label GameRandom -command ::game::LoadRandom -accelerator "Ctrl+?"
