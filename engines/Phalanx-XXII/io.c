@@ -1339,6 +1339,23 @@ puts("# (comment)");
 		return 1;
 	}
 
+/* COMMAND: st <SECONDS> */
+/* added by stevenaaus */
+	if( strncmp( Inp, "st ", 3 ) == 0 )
+	{
+	  int seconds;
+	  if( sscanf(Inp+3,"%i",&seconds) == 0 ) {
+	    // expected a time in seconds
+	    printf ("Error: \"st:\" expected integer , but got %s\n", Inp+3);
+	  }
+	  // time argv S.A.
+	  printf ("Setting average time to %i seconds\n",seconds);
+	  Flag.centiseconds = 100*seconds;
+	  Flag.level = averagetime;
+	  Inp[0] = '\0';
+	  return 1;
+	}
+
 /* COMMAND: test a position */
 	if( sevenslashes(Inp) ) /* test */
 	{
