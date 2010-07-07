@@ -681,9 +681,11 @@ proc ::enginelist::edit {index} {
       ::enginelist::write
     }
   }
+  dialogbutton $f.help -text $::tr(Help) -command {helpWindow Analysis List}
   dialogbutton $f.cancel -text $::tr(Cancel) -command "destroy $w"
   pack $f -side bottom
   pack $f.cancel -side right -padx 20 -pady 5
+  pack $f.help -side right -padx 20 -pady 5
   pack $f.ok -side left -padx 20 -pady 5
 
   bind $w <Return> "$f.ok invoke"

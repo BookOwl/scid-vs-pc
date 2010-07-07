@@ -2897,24 +2897,26 @@ The <b>Add Variation</b> button <button tb_addvar> adds the
   </p>
   <p>
 
-  <h3><name List>Configuring Engines</name></h3>
+  <h1><name List>Configuring Engines</name></h1>
   <p>
   The <run ::enginelist::choose><green>Tools--<gt>Analysis Engines</green></run>
-  widget is where you can configure and add new chess engines.</p>
-
-<p>
-  A few engines should already be configured, but installing new engines is not
-  impossible. You'll need to now the program's Command, any Parameter's it
-  takes, whether it is an UCI engine or not, and also specify the
-  directory Scid should run it in.
+  widget is where you can <b>Configure</b>, <b>Add</b>, and <b>Start</b> Chess Engines.
   </p>
 
-  <p>
-  The most likely cause of engine starting problems is the choice of
-  which directory to use. Many engines require an
+<p>
+  Scid vs. PC installs a few engines by default but it is also possible to install new ones
+  To do so you'll need to know the program's <b>Command</b>, any <b>Parameters</b> it takes,
+  whether it is uses the <b>UCI or Xboard</b> protocol, and also the
+  <b>Directory</b> it should be run in.
+  This sounds complicated, but is not too hard :-)
+  Sticking points are likely to be the choice of
+  which directory to use, and whether it's UCI or not.</p>
+
+  <h3>Details</h3>
+<p> Many engines require an
   initialization or opening book file in their start directory to run
-  properly.  Other engines (like Crafty) write log files to the
-  directory they start in, so write access here will be required.
+  properly.  Other engines, like Crafty and Phalanx, write log files to the
+  directory they start in, so write access will be required.
   If the directory setting for an engine
   is ".", Scid will just start the engine in the current directory.
   </p>
@@ -2922,45 +2924,38 @@ The <b>Add Variation</b> button <button tb_addvar> adds the
   <p>
   If an engine fails to start, try
   changing its directory setting. To avoid engines creating log files
-  in many different directories, I recommend starting engines in
-  the directory of the Scid User files (this is where the <b>scid.exe</b>
-  file is located on Windows, or <b>~/.scidvspc</b> on Unix); there is a
-  button in the dialog box for editing engine details 
-  that lets you set the engine to use these directories.
+  in many different directories, I recommend trying the <b>~/.scdivspc</b>
+  button. Engines necessitating opening books and/or .ini files, will need
+  a directory of their own however.
+  </p>
+  <p>
+  UCI and Xboard (also known as Winboard) are two protocols
+  for communicating with engines, and it is necessary to set this flag accordingly.
+  If you're not sure, try one then the other, as nothing will break. Some chess
+engines support both formats.
   </p>
   <p>
   If an engine needs additional parameters for startup (e.g. a
   specific opening book) they can be specified in the
-  <b>Parameters</b> field. Please refer to the engines documentation.
+  <b>Parameters</b> field. ... Please refer to the engines documentation.
   </p>
-  <p><b>URL</b> allows you to set the engines homepage. This
+  <p><b>Webpage</b> allows you to set the engines homepage. This
   comes in handy to check for updates e.g. or to have a look at recent
   developments. Pressing the <term>Open...</term> button will open
   this page in the web browser.
   </p>
 
   <p>
-  Finally, If the engine uses the <term>UCI</term> protocol please mark the
-  associated checkbox. Generally, there are two major engine protocols
-  available today: xboard sometimes referred to as winboard (UCI must
-  not be checked) which many, especially older engines use, and the
-  UCI protocol that can be found in most of the modern chess engines.
-  The main advantage of an <term>UCI</term> engine is, that this
-  protocol allows the user to configure the engines parameters from
-  within his preferred chess GUI like Scid, while for the other
-  engines usually configuration files are used that have to be edited.
-  Therefore, if the engine is an <term>UCI</term> engine, pressing the
-  <term>Configure UCI engine</term> button offers a graphical dialogue
-  where all engine parameters can be tuned to the users liking. This
-  dialogue will look different for each engine as each engine has
-  other parameters that can be set. Most of them will influence the
-  playing style of the engine.
+  Finally, If the engine uses the <b>UCI</b> protocol 
+  , it can be configured by pressing the <b>Configure</b> button.
+  A dialog will be shown where all engine parameters can be tuned to the users
+  liking.
   </p>
 
 
   <h3>Training</h3>
   <p>
-  With the <b>Training</b> button, you can play moves against the analysis
+  With the <b>Training</b> button <button tb_training>, you can play moves against the analysis
   engine. The time for each move is fixed, and the analysis results are
   not shown when training mode is on.
   </p>
@@ -3038,7 +3033,7 @@ storing the annotations into the database.
      </li>
   </ul>
 
-  <p><footer>Updated: Scid Vs PC 4.0, May 2010</footer></p>
+  <p><footer>Updated: Scid Vs PC 4.1, July 2010</footer></p>
 }
 
 ####################

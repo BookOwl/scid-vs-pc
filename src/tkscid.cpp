@@ -11455,8 +11455,18 @@ sc_name_info (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
     uint wbtWidth = wWidth;
     if (bWidth > wbtWidth) { wbtWidth = bWidth; }
     if (tWidth > wbtWidth) { wbtWidth = tWidth; }
-    const char * fmt = \
-     "%s  %-*s %3u%c%02u%%   +%s%3u%s  =%s%3u%s  -%s%3u%s  %4u%c%c /%s%4u%s";
+
+    /* sprintf format to display won, drawn, lost statistics S.A */
+    const char * fmt = "%s  %-*s %3u%c%02u%%   Won%s%3u%s  Drawn%s%3u%s  Lost%s%3u%s  %4u%c%c /%s%4u%s";
+
+    /*
+     * Are Won, Drawn, Lost strings translated ?
+     *
+     * char fmt[200];
+     * sprintf (fmt, "%s%s%s%s%s%s%s", "%s  %-*s %3u%c%02u%%   ",	translate (ti, "Won"),  \
+     * "%s%3u%s  ", translate (ti, "Drawn"), "%s%3u%s  ", translate (ti, "Lost"), \
+     * "%s%3u%s  %4u%c%c /%s%4u%s");
+     */
 
     if (ratingsOnly) { goto doRatings; }
     Tcl_AppendResult (ti, startBold, playerName, endBold, newline, newline, NULL);
@@ -11632,7 +11642,7 @@ sc_name_info (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
 
     strCopy (temp, translate (ti, "PInfoAll"));
     if (! htextOutput) { strTrimMarkup (temp); }
-    Tcl_AppendResult (ti, newline, startHeading, temp, ":",
+    Tcl_AppendResult (ti, newline, startHeading, temp,
                       endHeading, newline, NULL);
 
     score = percent = 0;
@@ -11720,7 +11730,7 @@ sc_name_info (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
 
     strCopy (temp, translate (ti, "PInfoFilter"));
     if (! htextOutput) { strTrimMarkup (temp); }
-    Tcl_AppendResult (ti, startHeading, temp, ":",
+    Tcl_AppendResult (ti, startHeading, temp,
                       endHeading, newline, NULL);
     score = percent = 0;
     if (whitecount[STATS_FILTER] > 0) {
@@ -11787,7 +11797,7 @@ sc_name_info (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
     if (opponent != NULL) {
         Tcl_AppendResult (ti, startHeading,
                           translate (ti, "PInfoAgainst"), " ",
-                          startBold, opponent, endBold, ":",
+                          startBold, opponent, endBold,
                           endHeading, newline, NULL);
 
         score = percent = 0;
@@ -11889,7 +11899,7 @@ sc_name_info (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
                     const char * s = (color == WHITE ? "PInfoMostWhite" :
                                       "PInfoMostBlack");
                     Tcl_AppendResult (ti, newline, startHeading,
-                                      translate (ti, s), ":",
+                                      translate (ti, s),
                                       endHeading, newline, NULL);
                 } else if (count == 3) {
                     Tcl_AppendResult (ti, newline, NULL);
@@ -11919,7 +11929,7 @@ sc_name_info (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
     if (seenRating) {
         if (! ratingsOnly) {
             Tcl_AppendResult (ti, newline, newline, startHeading,
-                              translate (ti, "PInfoRating"), ":",
+                              translate (ti, "PInfoRating"),
                               endHeading, NULL);
         }
         eloT previousElo = 0;
