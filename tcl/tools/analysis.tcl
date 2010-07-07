@@ -348,7 +348,9 @@ proc ::enginelist::choose {} {
   if { [winfo exists $w] } { destroy $w }
 
   toplevel $w
-  wm state $w withdrawn
+  setWinLocation $w
+  setWinSize $w
+
   wm title $w "Scid: [tr ToolsAnalysis]"
   wm protocol $w WM_DELETE_WINDOW "destroy $w"
   bind $w <F1> { helpWindow Analysis List }
@@ -424,8 +426,7 @@ proc ::enginelist::choose {} {
 
   ::enginelist::listEngines
   update
-  placeWinOverParent $w .
-  wm state $w normal
+  bind $w <Configure> "recordWinSize $w"
 }
 
 # ::enginelist::setTime
@@ -472,6 +473,11 @@ Confirm delete engine\n"
 proc ::enginelist::edit {index} {
   global engines
   if {$index == ""} { return }
+  if {[winfo exists .engineEdit]} {
+    focus .engineEdit
+    raise .engineEdit .
+    return
+  }
 
 
   if {$index >= 0  ||  $index >= [llength $engines(list)]} {
@@ -498,27 +504,25 @@ proc ::enginelist::edit {index} {
 
   set w .engineEdit
   toplevel $w
-  wm title $w Scid
+  wm title $w {Scid: Configure Engine}
+  wm state $w withdrawn
 
-  bind $w <Configure> "recordWinSize $w"
-  setWinLocation $w
-
-  set f [frame $w.f]
-  pack $f -side top -fill x -expand yes
+  set f [frame $w.frame]
+  pack $f -side top -fill x -expand yes -padx 3 -pady 7
   set row 0
-  foreach i {Name Cmd Args Dir URL} {
+  foreach i {Name Cmd Dir Args URL} {
     label $f.l$i -text $i
     if {[info exists ::tr(Engine$i)]} {
       $f.l$i configure -text $::tr(Engine$i)
     }
-    entry $f.e$i -textvariable engines(new$i) -width 30
+    entry $f.e$i -textvariable engines(new$i) -width 22
     bindFocusColors $f.e$i
-    grid $f.l$i -row $row -column 0 -sticky w
-    grid $f.e$i -row $row -column 1 -sticky we
+    grid $f.l$i -row $row -column 0 -sticky w -pady 1 -padx 3
+    grid $f.e$i -row $row -column 1 -sticky we -pady 1 -padx 3
 
     # Browse button for choosing an executable file:
     if {$i == "Cmd"} {
-      button $f.b$i -text "..." -command {
+      button $f.b$i -text Browse... -command {
         if {$::windowsOS} {
           set scid_temp(filetype) {
             {"Applications" {".bat" ".exe"} }
@@ -530,7 +534,7 @@ proc ::enginelist::edit {index} {
           }
         }
         set scid_temp(cmd) [tk_getOpenFile -initialdir $engines(newDir) -parent .engineEdit \
-            -title "Scid: [tr ToolsAnalysis]" -filetypes $scid_temp(filetype)]
+            -title "Scid: Select Executable" -filetypes $scid_temp(filetype)]
         if {$scid_temp(cmd) != ""} {
           set engines(newCmd) $scid_temp(cmd)
           # if {[string first " " $scid_temp(cmd)] >= 0} {
@@ -542,7 +546,7 @@ proc ::enginelist::edit {index} {
           if {$engines(newDir) == ""} [ set engines(newDir) .]
         }
       }
-      grid $f.b$i -row $row -column 2 -sticky we
+      grid $f.b$i -row $row -column 2 -sticky we -pady 1 -padx 3
     }
 
     if {$i == "Dir"} {
@@ -555,15 +559,16 @@ proc ::enginelist::edit {index} {
       if {$::windowsOS} {
         $f.user configure -text "scid.exe dir"
       }
-      grid $f.current -row $row -column 2 -sticky we
-      grid $f.user -row $row -column 3 -sticky we
+      grid $f.current -row $row -column 2 -sticky we -pady 1 -padx 3
+      grid $f.user -row $row -column 3 -sticky we -pady 1 -padx 3
     }
 
     if {$i == "URL"} {
+      $f.l$i configure -text Webpage
       button $f.bURL -text [tr FileOpen] -command {
         if {$engines(newURL) != ""} { openURL $engines(newURL) }
       }
-      grid $f.bURL -row $row -column 2 -sticky we
+      grid $f.bURL -row $row -column 2 -sticky we -pady 1 -padx 3
     }
 
     incr row
@@ -571,31 +576,42 @@ proc ::enginelist::edit {index} {
 
   grid columnconfigure $f 1 -weight 1
 
-  checkbutton $f.cbUci -text UCI -variable engines(newUCI)
-  button $f.bConfigUCI -text $::tr(ConfigureUCIengine) -command {
-    ::uci::uciConfig 2 [ toAbsPath $engines(newCmd) ] $engines(newArgs) \
-        [ toAbsPath $engines(newDir) ] $engines(newUCIoptions)
+  label $f.lUCI -text Protocol
+  frame $f.rb
+  radiobutton $f.rb.uci -variable engines(newUCI) -value 1 -text UCI \
+    -command "checkState ::engines(newUCI) $f.bUCI"
+  radiobutton $f.rb.xboard -variable engines(newUCI) -value 0 -text Xboard \
+    -command "checkState ::engines(newUCI) $f.bUCI"
+  pack $f.rb.uci -side left
+  pack $f.rb.xboard -side right
+  button $f.bUCI -text Configure -command {
+    ::uci::uciConfig 2 [toAbsPath $engines(newCmd)] $engines(newArgs) \
+                       [toAbsPath $engines(newDir)] $engines(newUCIoptions)
   }
+  checkState ::engines(newUCI) $f.bUCI
+
   # Mark required fields:
   $f.lName configure -font font_Bold
   $f.lCmd configure -font font_Bold
   $f.lDir configure -font font_Bold
-  $f.cbUci configure -font font_Bold
+  $f.lUCI configure -font font_Bold
 
   label $f.lElo -text $::tr(EngineElo)
-  entry $f.eElo -textvariable engines(newElo) -justify right -width 5
+  entry $f.eElo -textvariable engines(newElo) -width 22
   bindFocusColors $f.eElo
-  grid $f.lElo -row $row -column 0 -sticky w
-  grid $f.eElo -row $row -column 1 -sticky w
+  grid $f.lElo -row $row -column 0 -sticky w -pady 1 -padx 3
+  grid $f.eElo -row $row -column 1 -sticky we -pady 1 -padx 3
+
   incr row
-  grid $f.cbUci -row $row -column 0 -sticky w
-  grid $f.bConfigUCI -row $row -column 1 -sticky w
+  grid $f.lUCI -row $row -column 0 -sticky w -pady 1 -padx 3
+  grid $f.rb   -row $row -column 1 -sticky w -pady 1 -padx 3
+  grid $f.bUCI -row $row -column 2 -sticky w -pady 1 -padx 3
   incr row
 
   label $f.lTime -text $::tr(EngineTime)
   label $f.eTime -textvariable engines(newDate) -anchor w -width 1
-  grid $f.lTime -row $row -column 0 -sticky w
-  grid $f.eTime -row $row -column 1 -sticky we
+  grid $f.lTime -row $row -column 0 -sticky w -pady 1 -padx 3
+  grid $f.eTime -row $row -column 1 -sticky we -pady 1 -padx 3
   button $f.clearTime -text $::tr(Clear) -command {
     set engines(newTime) 0
     set engines(newDate) $::tr(None)
@@ -604,8 +620,8 @@ proc ::enginelist::edit {index} {
     set engines(newTime) [clock seconds]
     set engines(newDate) [::enginelist::date $engines(newTime)]
   }
-  grid $f.clearTime -row $row -column 2 -sticky we
-  grid $f.nowTime -row $row -column 3 -sticky we
+  grid $f.clearTime -row $row -column 2 -sticky we -pady 1 -padx 3
+  grid $f.nowTime -row $row -column 3 -sticky we -pady 1 -padx 3
 
   frame $w.radio
   label $w.radio.label -text {Hot Key}
@@ -673,9 +689,13 @@ proc ::enginelist::edit {index} {
   bind $w <Return> "$f.ok invoke"
   bind $w <Escape> "destroy $w"
   bind $w <F1> { helpWindow Analysis List }
-  focus $w.f.eName
-  wm resizable $w 1 0
-  catch {grab $w}
+  # focus $w.f.eName
+
+  placeWinOverParent $w .enginelist
+  wm state $w normal
+  # bind $w <Configure> "recordWinSize $w"
+  # wm resizable $w 1 0
+  # catch {grab $w}
 }
 
 proc  checkState {arg widget} {
@@ -2098,6 +2118,11 @@ proc processAnalysisInput {n} {
 
   # Get one line from the engine:
   set line [gets $analysis(pipe$n)]
+
+  ### Gaviota sends nasty characters...
+  ### but still doesnt work
+  # set line [string map {\" {} \} {} \{ {}} [gets $analysis(pipe$n)]]
+
 
   # this is only useful at startup but costs less than 10 microseconds
   set analysis(processInput$n) [clock clicks -milliseconds]

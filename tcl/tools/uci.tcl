@@ -349,8 +349,13 @@ namespace eval uci {
     # Try to execute the analysis program:
     if {[catch {set pipe [open "| [list $cmd] $arg" "r+"]} result]} {
       if {$oldpwd != ""} { catch {cd $oldpwd} }
-      tk_messageBox -title "Scid: error starting UCI engine" \
-          -icon warning -type ok -message "Unable to start the program:\n$cmd"
+      if {[winfo exists .engineEdit]} {
+        set parent .engineEdit
+      } else {
+        set parent .
+      }
+      tk_messageBox -title "Error starting UCI engine" \
+          -icon warning -type ok -message "Unable to start program \n\"$cmd\"" -parent $parent
       return
     }
 
@@ -666,7 +671,7 @@ namespace eval uci {
     # Try to execute the analysis program:
     if {[catch {set uciInfo(pipe$n) [open "| [list $analysisCommand] $analysisArgs" "r+"]} result]} {
       if {$oldpwd != ""} { catch {cd $oldpwd} }
-      tk_messageBox -title "Scid: error starting engine" -icon warning -type ok \
+      tk_messageBox -title "Error starting engine" -icon warning -type ok \
           -message "Unable to start the program:\n$analysisCommand"
       return
     }
@@ -732,11 +737,14 @@ namespace eval uci {
     fileevent $pipe readable {}
 
     if {! $uciok } {
-      if {[winfo exists .configSerGameWin]} {
-        tk_messageBox -title "Scid: error closing UCI engine" -icon warning -type ok -message "Not an UCI engine" -parent .configSerGameWin
-      } else {
-        tk_messageBox -title "Scid: error closing UCI engine" -icon warning -type ok -message "Not an UCI engine" 
+      set parent .
+      foreach pparent {.configSerGameWin .engineEdit} {
+	if {[winfo exists $pparent]} {
+	  set parent $pparent
+	}
       }
+      tk_messageBox -title "Error closing UCI engine" -icon warning -type ok \
+                    -message "Not an UCI engine" -parent $parent
     }
 
     # Some engines in analyze mode may not react as expected to "quit"
