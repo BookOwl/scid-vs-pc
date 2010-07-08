@@ -18,29 +18,7 @@ set ::windows::gamelist::goto {}
 ### This trace messes up some other widgets i think S.A.
 # trace variable ::windows::gamelist::goto w {::utils::validate::Regexp {^[0-9]*$}}
 
-### Still have to sort this out properly S.A. &&&
-
-# set glistFields {
-#   { g  7 right black      1 }
-#   { w 14 left  darkBlue   0 }
-#   { W  5 right darkGreen  1 }
-#   { b 14 left  darkBlue   0 }
-#   { B  5 right darkGreen  1 }
-#   { e 10 left  black      0 }
-#   { s 10 left  black      0 }
-#   { n  2 right black      1 }
-#   { d  7 left  darkRed    1 }
-#   { r  3 left  blue       0 }
-#   { m  3 right black      1 }
-#   { o  5 left  darkGreen  0 }
-#   { O  6 left  darkGreen  1 }
-#   { D  1 left  darkRed    0 }
-#   { U  2 left  blue       1 }
-#   { V  2 right blue       0 }
-#   { C  2 right blue       0 }
-#   { A  2 right blue       0 }
-#   { S  1 left  darkRed    0 }
-# }
+# glistFields: Layout of the GameList window fields.
 
 # b:  Black player name.
 # B:  Black Elo. Prints in width of 4, ignoring specified width.
@@ -58,34 +36,45 @@ set ::windows::gamelist::goto {}
 # W:  White Elo. Prints in width of 4, ignoring specified width.
 # y:  Year. Prints in width of 4, ignoring specified width.
 
-# I think these fields can be reordered on whim S.A.
+#    Note that the "g" (game number) field MUST appear somewhere,
+#    but the fields can be in any order.
+#    See the comments at the start of the function "PrintGameInfo" in
+#    src/index.cpp for a list of available field codes.
+
+# code  name  anchor  width
 
 set glistFields {
-  g Number	e
-  w White	w
-  W WElo	e
-  b Black	w
-  B BElo	e
-  r Result	e
-  m Length	e
-  e Event	w
-  s Site	w
-  n Round	e
-  d Date	w
-  o ECO		e
-  O Opening	w
-  D Deleted	e
-  U Flags	e
-  V Vars	e
-  C Comments	w
-  A Annos	e
-  S Start	e
+  g Number	e 7
+  w White	w 14
+  b Black	w 14
+  r Result	e 5
+  m Length	e 5
+  e Event	w 10
+  n Round	e 5
+  d Date	w 10
+  s Site	w 10
+  W WElo	e 5
+  B BElo	e 5
+  o ECO		e 5
+  O Opening	w 6
+  D Deleted	e 2
+  U Flags	e 2
+  V Vars	e 2
+  C Comments	w 2
+  A Annos	e 2
+  S Start	e 1
 }
 
 set glistCodes {} 
 set glistNames {}
 
-foreach {code title anchor} $glistFields {
+# ???
+# lappend glistFields { c  3 left  black      0 }
+# lappend glistFields { E  7 left  darkRed    0 }
+# lappend glistFields { F  7 left  darkBlue   0 }
+
+
+foreach {code title anchor null} $glistFields {
   # Unusual glistCodes format is needed for [sc_game list ...]
   # SCID uses - append cformat "*\n" - but appending a space works too
 
@@ -248,13 +237,10 @@ proc ::windows::gamelist::Open {} {
     # -yscroll "$w.vsb set" -xscroll "$w.hsb set"
 
 
-  if { $::windows::gamelist::widths == "" } {
-    set ::windows::gamelist::widths {}
-    set charwidths { 4      10    5    10    5    10    10   4     8    4      4      4   20      2       2     2    2        2     2 }
-    #        names { Number White WElo Black BElo Event Site Round Date Result Length ECO Opening Deleted Flags Vars Comments Annos Start }
-
+  if { $::windows::gamelist::widths == {} } {
+    # initialise field widths
     set fontwidth [font measure [ttk::style lookup [$w.tree cget -style] -font] "X"]
-    foreach i $charwidths {
+    foreach {nulla nullb nullc i} $glistFields {
 	lappend ::windows::gamelist::widths [expr $fontwidth * $i]
     }
   }
@@ -289,7 +275,7 @@ proc ::windows::gamelist::Open {} {
   ### Init the ttk_treeview column titles
 
   set font [ttk::style lookup [$w.tree cget -style] -font]
-  foreach {code col anchor} $glistFields width $::windows::gamelist::widths {
+  foreach {code col anchor null} $glistFields width $::windows::gamelist::widths {
       $w.tree heading $col -text  $col   -command "SortBy $w.tree $col"
       $w.tree column  $col -width $width -anchor $anchor -stretch 0
   }

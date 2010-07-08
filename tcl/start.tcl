@@ -458,46 +458,6 @@ set startup(gamelist) 0
 set startup(stats) 0
 set startup(book) 0
 
-# glistFields: Layout of the GameList window fields.
-#    element 0: code (e.g. g for gameNumber, w for White name)
-#    element 1: initial width, in characters
-#    element 2: justification (left or right)
-#    element 3: color
-#    element 4: true if a separator field should follow
-#
-#    Note that the "g" (game number) field MUST appear somewhere,
-#    but the fields can be in any order.
-#    See the comments at the start of the function "PrintGameInfo" in
-#    src/index.cpp for a list of available field codes.
-#
-set glistFields {
-  { g  7 right black      1 }
-  { w 14 left  darkBlue   0 }
-  { W  5 right darkGreen  1 }
-  { b 14 left  darkBlue   0 }
-  { B  5 right darkGreen  1 }
-  { e 10 left  black      0 }
-  { s 10 left  black      0 }
-  { n  2 right black      1 }
-  { d  7 left  darkRed    1 }
-  { r  3 left  blue       0 }
-  { m  3 right black      1 }
-  { o  5 left  darkGreen  0 }
-  { O  6 left  darkGreen  1 }
-  { D  1 left  darkRed    0 }
-  { U  2 left  blue       1 }
-  { V  2 right blue       0 }
-  { C  2 right blue       0 }
-  { A  2 right blue       0 }
-  { S  1 left  darkRed    0 }
-}
-
-set glistDefaultFields $glistFields
-set glistAllFields $glistFields
-lappend glistAllFields { c  3 left  black      0 }
-lappend glistAllFields { E  7 left  darkRed    0 }
-lappend glistAllFields { F  7 left  darkBlue   0 }
-
 # myPlayerNames:
 #   List of player name patterns for which the chessboard should be
 #   flipped each time a game is loaded to show the board from that
