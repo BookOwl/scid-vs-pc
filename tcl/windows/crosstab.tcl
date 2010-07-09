@@ -67,6 +67,7 @@ proc ::crosstab::Open {} {
   global crosstab crosstabWin
 
   set w .crosstabWin
+  if {[winfo exists $w]} { raiseWin $w }
 
   set crosstabWin 1
   toplevel $w

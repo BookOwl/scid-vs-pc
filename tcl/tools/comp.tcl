@@ -31,8 +31,7 @@ proc compInit {} {
   set w .comp
 
   if {[winfo exists $w]} {
-    raise $w
-    focus $w
+    raiseWin $w
     return
   }
   toplevel $w

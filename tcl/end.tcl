@@ -1881,8 +1881,7 @@ if {$startup(tip)} { ::tip::show }
 
 .splash.t yview moveto 0
 if {$::splash::keepopen} {
-  raise .splash .
-  focus .splash
+  raiseWin .splash
   update
 } else {
   after 500 { wm withdraw .splash }

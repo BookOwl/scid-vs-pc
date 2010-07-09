@@ -52,8 +52,7 @@ proc ::commenteditor::Open {} {
 
   set w .commentWin
   if {[winfo exists $w]} {
-    wm deiconify $w
-    raise $w
+    raiseWin $w
     return
   }
 

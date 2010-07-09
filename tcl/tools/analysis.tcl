@@ -472,10 +472,11 @@ Confirm delete engine\n"
 
 proc ::enginelist::edit {index} {
   global engines
+
+  set w .engineEdit
   if {$index == ""} { return }
-  if {[winfo exists .engineEdit]} {
-    focus .engineEdit
-    raise .engineEdit .
+  if {[winfo exists $w]} {
+    raiseWin $w
     return
   }
 
@@ -502,7 +503,6 @@ proc ::enginelist::edit {index} {
     set engines(newDate) [::enginelist::date $engines(newTime)]
   }
 
-  set w .engineEdit
   toplevel $w
   wm title $w {Scid: Configure Engine}
   wm state $w withdrawn

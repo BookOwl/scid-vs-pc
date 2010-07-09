@@ -606,11 +606,21 @@ set ::windows::switcher::icons 1
 # so I have heard) have a bug where the Tcl/Tk "raise" command times out
 # and takes a few seconds. Setting autoRaise to 0 will help avoid this.
 
+# The above mentioned "1 second" bug is relevant to kde1 i think.
+# Kde 3.5 (and WinXP) have focus stealing code that stops "raise"
+# from working by default. In kde this can be changed by
+# configuring "desktop > window behavior > advanced > focus stealing prevention"
+# to "none"
+
 set autoRaise 1
 
 proc raiseWin {w} {
   global autoRaise
-  if {$autoRaise} { raise $w }
+  if {$autoRaise} {
+    wm deiconify $w
+    raise $w
+    focus $w
+  }
   return
 }
 

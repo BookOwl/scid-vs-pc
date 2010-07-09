@@ -253,6 +253,7 @@ proc ::game::Load { selection } {
   ### don't S.A
   # ::windows::gamelist::Refresh
   updateTitle
+  raiseWin .
 }
 
 # ::game::LoadMenu

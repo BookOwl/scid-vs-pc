@@ -143,7 +143,7 @@ proc updateHelpWindow {name {heading {}}} {
     bind $w <Configure> "recordWinSize $w"
     bind $w <F1> toggleHelp
   } else {
-    raise $w .
+    raiseWin $w
   }
 
   $w.text configure -cursor top_left_arrow

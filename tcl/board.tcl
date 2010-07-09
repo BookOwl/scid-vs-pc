@@ -158,8 +158,7 @@ proc initBoardColors {} {
   set w .boardOptions
 
   if { [winfo exists $w] } {
-    wm deiconify $w
-    raise $w .
+    raiseWin $w
     return
   }
 
