@@ -110,7 +110,10 @@ proc epd_MoveToDeepestMatch {id} {
 proc newEpdWin {cmd {fname ""}} {
   global maxEpd
   set showErrors 1
-  if {$cmd == "openSilent"} { set showErrors 0 }
+  if {$cmd == "openSilent"} {
+    set showErrors 0
+    set cmd open
+  }
   if {$fname == ""} { set showErrors 1 }
   if {[sc_epd available] < 1} {
     if {$showErrors} {
@@ -143,6 +146,8 @@ proc newEpdWin {cmd {fname ""}} {
     return 0
   }
   busyCursor . 0
+
+  # id is 1 for first epd window, 2 for second...
   set id $result
   set w .epd$id
   toplevel $w
@@ -174,6 +179,7 @@ proc newEpdWin {cmd {fname ""}} {
     menu $w.menu.$i.m -tearoff 0
     pack $w.menu.$i -side left
   }
+  pack $w.menu.help -side right
 
   set m $w.menu.file.m
   $m add command -label "New" -acc "Ctrl+N" -underline 0 \
@@ -216,13 +222,11 @@ proc newEpdWin {cmd {fname ""}} {
       -underline 5 -command "epd_MoveToDeepestMatch $id"
   $m add separator
   $m add command -label "Next position in file" \
-      -accelerator "Ctrl+DownArrow" -underline 0 \
-      -command "sc_epd next $id; updateBoard -pgn"
-  bind $w <Control-Down> "sc_epd next $id; updateBoard -pgn; break"
+      -accelerator "Ctrl+DownArrow" -underline 0 -command "nextEpd $id"
+  bind $w <Control-Down> "nextEpd $id ; break"
   $m add command -label "Previous position in file" \
-      -accelerator "Ctrl+UpArrow" -underline 0 \
-      -command "sc_epd prev $id; updateBoard -pgn"
-  bind $w <Control-Up> "sc_epd prev $id; updateBoard -pgn; break"
+      -accelerator "Ctrl+UpArrow" -underline 0  -command "prevEpd $id"
+  bind $w <Control-Up> "prevEpd $id; break"
   $m add separator
   $m add command -label "Paste analysis" -accelerator "Ctrl+Shift+A" \
       -underline 6 -command "epd_pasteAnalysis $w.text"
@@ -274,6 +278,41 @@ proc refreshEpd { id } {
   set ::selection($id) $idx
   updateBoard -pgn
 }
+
+### idx starts at 1, while curselection starts at 0
+
+proc prevEpd {id} {
+  set w .epd$id
+  set idx [ expr [$w.lb curselection] +1 ]
+  if {$idx > 1} {
+    incr idx -1
+    sc_epd load $id $::selection($id) $idx
+    set ::selection($id) $idx
+    updateBoard -pgn
+    $w.lb selection clear 0 end
+    $w.lb selection set [expr $idx - 1]
+  }
+}
+
+proc nextEpd {id} {
+  set w .epd$id
+  set idx [ expr [$w.lb curselection] +1 ]
+  if {$idx < [$w.lb index end]} {
+    incr idx 1
+    sc_epd load $id $::selection($id) $idx
+    set ::selection($id) $idx
+    updateBoard -pgn
+    $w.lb selection clear 0 end
+    $w.lb selection set [expr $idx - 1]
+  }
+}
+
+### Used to be
+
+# proc nextEpd {id} 
+#   sc_epd next $id
+#   switchEpd $id 1
+
 ################################################################################
 #
 ################################################################################
