@@ -1967,7 +1967,7 @@ proc  ::board::lastMoveHighlight {w} {
 #   N.B. resize (and update) is also called when changing background tiles
 
 proc ::board::update {w {board ""} {animate 0} {resize 0}} {
-  global highcolor currentSq bestSq bestcolor selectedSq
+  global highcolor currentSq bestSq bestcolor 
 
   set oldboard $::board::_data($w)
   if {$board == {}} {
@@ -1993,23 +1993,21 @@ proc ::board::update {w {board ""} {animate 0} {resize 0}} {
     # Compute the XY coordinates for the centre of the square:
     foreach {xc yc} [::board::midSquare $w $sq] {}
 
-    if {$resize} {
-      #update every square with color and texture
-      set color [::board::defaultColor $sq]
-      $w.bd itemconfigure sq$sq -fill $color -outline {} ; # -outline $color
+    #update every square with color and texture
+    set color [::board::defaultColor $sq]
+    $w.bd itemconfigure sq$sq -fill $color -outline {} ; # -outline $color
 
-      if { $light } {
-        set boc bgl$psize
-      } else {
-        set boc bgd$psize
-      }
-      if {($sq % 8) != 7} {
-        set light [expr {! $light}]
-      }
-
-      $w.bd delete br$sq
-      $w.bd create image $xc $yc -image $boc -tag br$sq
+    if { $light } {
+      set boc bgl$psize
+    } else {
+      set boc bgd$psize
     }
+    if {($sq % 8) != 7} {
+      set light [expr {! $light}]
+    }
+
+    $w.bd delete br$sq
+    $w.bd create image $xc $yc -image $boc -tag br$sq
 
     # Delete any old image for this square, and add the new one:
     $w.bd delete p$sq
