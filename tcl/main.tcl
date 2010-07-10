@@ -25,7 +25,7 @@ foreach key {a b c d e f g h i j k l m n o p q r s t u v w x y z} {
 
 proc moveEntry_Clear {} {
   global moveEntry
-  set moveEntry(Text) ""
+  set moveEntry(Text) {}
   set moveEntry(List) {}
 }
 
@@ -1093,7 +1093,11 @@ proc addMove { sq1 sq2 {animate ""}} {
     set board [sc_pos board]
     set k1 [string tolower [string index $board $sq1]]
     set k2 [string tolower [string index $board $sq2]]
-    if {$k1 == "k"  &&  $k2 == "k"} { set nullmove 1 } else { return }
+    if {$k1 == "k"  &&  $k2 == "k"} {
+      set nullmove 1
+    } else {
+      return
+    }
   }
   set promo $EMPTY
   if {[sc_pos isPromotion $sq1 $sq2] == 1} {
@@ -1118,6 +1122,7 @@ proc addMove { sq1 sq2 {animate ""}} {
        updateBoard
        return
   }
+
   set varList [sc_var list UCI]
   set i 0
   foreach { move } $varList {
@@ -1350,6 +1355,12 @@ proc releaseSquare { x y } {
     ::board::colorSquare $w $square
   }
   set ::addVariationWithoutAsking 0
+
+  # Necessary to keep bindings for this board square
+  # It has to do with bindings and stacking order
+  # Any bugs ???
+
+  .board.bd raise p$square
 }
 
 
