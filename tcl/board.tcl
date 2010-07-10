@@ -151,7 +151,7 @@ proc initBoardColors {} {
 
   # These procedures re-written by S.A.
 
-  global lite dark highcolor bestcolor
+  global lite dark highcolor bestcolor png_image_support
   global colorSchemes newColors boardStyles boardStyle boardSizes
 
   set colors {lite dark highcolor bestcolor}
@@ -173,10 +173,15 @@ proc initBoardColors {} {
 
   ### Main widgets ordered here ###
 
-  frame $w.pieces
   frame $w.sizes
   pack $w.sizes -side top -padx 3 -expand 1 -fill x -padx 20
-  pack $w.pieces -side top
+
+  frame $w.pieces1
+  pack $w.pieces1 -side top
+  if {$png_image_support} {
+    frame $w.pieces0
+    pack $w.pieces0 -side top
+  }
 
   ### Piece type and size ###
 
@@ -194,12 +199,25 @@ proc initBoardColors {} {
     -command {::board::resize .board +1}
   pack $w.sizes.frame.larger $w.sizes.frame.smaller -side right
 
-  foreach i $boardStyles {
-    set j [string tolower $i]
-    button $w.pieces.$j -text $i -font font_Small -relief flat -command "
-      set boardStyle $i
-      setPieceFont $i"
-    pack $w.pieces.$j -side left
+  if {$png_image_support} {
+    set l 0
+    foreach i $boardStyles {
+      set j [string tolower $i]
+      button $w.pieces$l.$j -text $i -font font_Small -relief flat -command "
+	set boardStyle $i
+	setPieceFont $i"
+      pack $w.pieces$l.$j -side left
+
+      set l [expr !$l]
+    }
+  } else {
+    foreach i $boardStyles {
+      set j [string tolower $i]
+      button $w.pieces1.$j -text $i -font font_Small -relief flat -command "
+	set boardStyle $i
+	setPieceFont $i"
+      pack $w.pieces1.$j -side left
+    }
   }
 
   foreach i $colors { set newColors($i) [set $i] }
