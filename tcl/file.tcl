@@ -82,8 +82,8 @@ proc ::file::New {} {
     # do nothing
   } elseif {[file extension $fName] == ".epd"} {
     newEpdWin create $fName
-    return
     set fName [file rootname $fName]
+    return
   } else {
     if {[file extension $fName] == ".si3"} {
       set fName [file rootname $fName]
@@ -167,6 +167,7 @@ proc ::file::Open {{fName ""}} {
     }
   } elseif {[string match "*.epd" [string tolower $fName]]} {
     # EPD file:
+    ::recentFiles::add $fName
     newEpdWin open $fName
   } else {
     # PGN file:
@@ -289,6 +290,10 @@ proc ::file::Close {{base -1}} {
     }
 
     ::file::SwitchToBase $current
+
+    # Need these here, as otherwise a db "open base as tree" window won't close. S.A.
+    if {[winfo exists .treeWin$base]} { destroy .treeWin$base }
+    if {[winfo exists .emailWin]} { destroy .emailWin }
   } else {
     updateMenuStates
     updateStatusBar
@@ -302,9 +307,6 @@ proc ::file::SwitchToBase {b} {
 
   # Close Tree and Email windows whenever a base is closed/switched:
   if {[winfo exists .treeWin$b]} { destroy .treeWin$b }
-
-  if {[winfo exists .emailWin]} { destroy .emailWin }
-
   if {[winfo exists .emailWin]} { destroy .emailWin }
 
   updateBoard -pgn
