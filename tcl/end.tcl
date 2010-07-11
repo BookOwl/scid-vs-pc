@@ -1735,8 +1735,10 @@ while {$argc > 0} {
       if {! $err} { ::recentFiles::add "[file rootname $startbase].si3" }
     }
     if {$err} {
-      ###  above err and errMessage should be shown as dialog messages S.A.
-      ::splash::add "   Error: could not open database \"$startbase\":\n  $errMessage"
+      ### Above err and errMessage should be shown as dialog messages S.A.
+      ### Umm... they are. ? S.A.
+      set errMessage "$errMessage\nCould not open database \"$startbase\""
+      ::splash::add $errMessage
       tk_messageBox -title "Scid: Error" -type ok -icon error -message $errMessage
     } else {
       ::splash::add "   Database \"$startbase\" opened: [sc_base numGames] games."
