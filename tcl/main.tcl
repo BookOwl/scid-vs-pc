@@ -1428,7 +1428,7 @@ proc toggleAutoplay { } {
 proc autoplay {} {
   global autoplayDelay autoplayMode annotateMode analysis
 
-  if {$autoplayMode == 0} { return }
+  if {!$autoplayMode} { return }
 
   if {$annotateMode} {
     if { ![sc_pos isAt start] } { addAnnotation }
@@ -1452,13 +1452,14 @@ proc autoplay {} {
       after $autoplayDelay autoplay
       return
     } else  {
-      cancelAutoplay
+      cancelAutoplay 1
       return
     }
   }
 
   if { [sc_pos isAt end] } {
-    if {$annotateMode} { ; # end of game if not mate, add the thinking line
+    if {$annotateMode} { 
+      # end of game if not mate, add the thinking line
       set move_done [sc_game info previousMoveNT]
       if { [string index $move_done end] != "#"} {
         set text [format "%d:%+.2f" $analysis(depth1) $analysis(score1)]
@@ -1489,7 +1490,7 @@ proc autoplay {} {
           after $autoplayDelay autoplay
           return
         } else  {
-          cancelAutoplay
+          cancelAutoplay 1
           return
         }
       }
@@ -1531,13 +1532,21 @@ proc autoplay {} {
 ################################################################################
 #
 ################################################################################
-proc cancelAutoplay {} {
+proc cancelAutoplay {{kill 0}} {
   global autoplayMode annotateMode annotateModeButtonValue
+
+  set window .analysisWin$annotateMode
+
   set autoplayMode 0
   set annotateMode 0
   set annotateModeButtonValue 0
   after cancel autoplay
   .button.autoplay configure -image autoplay_off ; # -relief flat S.A
+
+  # kill analysisWin after batch annotation
+  if {$kill} {
+    destroy $window
+  }
 }
 ################################################################################
 #

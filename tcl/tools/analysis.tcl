@@ -594,7 +594,7 @@ proc ::enginelist::edit {index} {
   $f.lName configure -font font_Bold
   $f.lCmd configure -font font_Bold
   $f.lDir configure -font font_Bold
-  $f.lUCI configure -font font_Bold
+  # $f.lUCI configure -font font_Bold
 
   label $f.lElo -text $::tr(EngineElo)
   entry $f.eElo -textvariable engines(newElo) -width 22
