@@ -1,31 +1,16 @@
 #!/bin/sh
 
-# Scid (Shane's Chess Information Database)
+# Scid vs. PC
 #
-# Copyright (C) 1999-2004  Shane Hudson. All rights reserved.
+# Based on Shane's Chess Information Database
 #
+# Copyright Steven Atkinson (stevenaaus@yahoo.com) , Pascal Georges, Shane Hudson
+# Released under the GPL
 # This is freely redistributable software; see the file named "COPYING"
 # or "copying.txt" that came with this program.
-#
-# To contact the current maintainer of Scid, email to pascal.georges1@free.fr
-# Scid's current version is an enhanced version of the original Scid, the author of which is
-# Shane Hudson. His email is sgh@users.sourceforge.net
 
-#
-# The following few comments are only for Unix versions of Scid
-#
-
-# The "\" at the end of the comment line below is necessary! It means
-#   that the "exec" line is a comment to Tcl/Tk, but not to /bin/sh.
 # The next line restarts using tkscid: \
 exec `dirname $0`/tkscid "$0" "$@"
-
-# For the above to work, tkscid must be in a directory in your PATH.
-# Alternatively, you can set the first line to start tkscid directly
-# by specifying the full name of tkscid, eg:
-# #!/home/myname/bin/tkscid
-
-############################################################
 
 # Alter the version if any patches have been made to the Tcl code only:
 set scidName {Scid vs. PC}
@@ -1064,11 +1049,13 @@ proc ::splash::add {text} {
   }
 }
 
-::splash::add "(C) 1999-2004 Shane Hudson"
-::splash::add "(C) 2006-2008 Pascal Georges  (pascal.georges1@free.fr)"
+::splash::add "$::scidName $::scidVersion ($::scidVersionDate)."
+::splash::add "http://scidvspc.sourceforge.net"
+::splash::add ""
 ::splash::add "(C) 2008-2010 Steven Atkinson (stevenaaus@yahoo.com)"
-::splash::add "$::scidName $::scidVersion, released $::scidVersionDate."
-::splash::add "Website: http://scidvspc.sourceforge.net\n"
+::splash::add "(C) 2006-2008 Pascal Georges"
+::splash::add "(C) 1999-2004 Shane Hudson"
+::splash::add ""
 
 # add cached splash comments
 foreach line $::splash::cache {

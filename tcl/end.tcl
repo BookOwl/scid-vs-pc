@@ -1480,12 +1480,12 @@ proc getCommandLineOptions {} {
         -*   {
          puts "
 $::scidName Version $::scidVersion ($::scidVersionDate)
-Based on: Shane's Chess Information Database $::scidVersion
+Based on: Shane's Chess Information Database
 Using Tcl/Tk version: [info patchlevel]
 
 Author: Shane Hudson
 Contribution: Pascal Georges
-Scid vs PC: Steven Atkinson
+$::scidName: Steven Atkinson
 Email: stevenaaus@yahoo.com
 Http://scidvspc.sourceforge.net
 "
