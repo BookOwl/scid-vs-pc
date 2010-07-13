@@ -1356,7 +1356,7 @@ Every time a game with a player in the list is loaded, the main window chessboar
 }
 
 #Coach
-translate E showblunderexists {show blunder exists}
+translate E showblunderexists {show phalanx blunder}
 translate E showblundervalue {show blunder value}
 translate E showscore {show score}
 translate E coachgame {coach game}

@@ -3085,7 +3085,7 @@ time control. This is slightly crude, but engine analysis is (now) continuous th
 <br>
   <h3>Engines</h3>
 <p>
-The author has tested quite a few engines, with good results. These include:
+The author has tested quite a few engines under <b>Linux</b>, with good results. These include:
 <br>
 <br>
 Arasanx<br>
@@ -3109,13 +3109,15 @@ XChenard<br>
 <br>
 Arasan, Spike, Sjeng, Homer and XChenard have issues relating to time control.
 Sjeng and XChenard are issued the "hard" command, and seem to work.
-Phalanx has no time control, and takes it's own (sweet) time.
+Pervious versions of Phalanx had no time control, but it now works well.
+Gnu Chess needs the "-xboard" parameter.
 Faile seems not to issue "move" under some circumstances, despite being in xboard mode.
 </p>
-<p>Considering the number of engines available, unforseen issues probably will arise.
-</p>
+<p>
+Testing under <b>Windows</b> has not been terribly extensive, and considering
+the number of engines available, unforseen issues will probably arise.  </p>
 
-  <p><footer>Updated: Scid Vs PC 4.0, June 2010</footer></p>
+  <p><footer>Updated: Scid Vs PC 4.1, July 2010</footer></p>
 
 }
 
@@ -4482,7 +4484,7 @@ is the <run ::tacgame::config><green>Play--<gt>Tactical Game</green></run> menu 
 </p><p>
 Your opponent is played by the <b>Phalanx</b> engine, and there is also a
 computer coach (<b>Toga II</b>) watching the game who will indicate any
-blunders the player makes.  </p>
+blunders Phalanx makes.  </p>
 
 <p>
 <i>Other computer opponents can be found in the

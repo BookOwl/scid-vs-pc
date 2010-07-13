@@ -766,6 +766,7 @@ namespace eval fics {
           tk_messageBox -title "Game result" -icon info -type ok -message "$res"
         }
         sc_game tags set -result $res
+        sc_game save [sc_game number]
         updateBoard -pgn
         set ::fics::playing 0
         set ::fics::observedGame -1

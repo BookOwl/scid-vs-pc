@@ -536,7 +536,7 @@ namespace eval tacgame {
     }
     check_Fischer_Game
     sc_game tags set -date [::utils::date::today]
-    if {[sc_base inUse [sc_base current]]} { catch {sc_game save 0}  }
+    # if {[sc_base inUse [sc_base current]]} { catch {sc_game save 0}  }
   }
 
   ################################################################################
@@ -816,7 +816,10 @@ namespace eval tacgame {
       return
     }
 
-    if { [::tacgame::endOfGame] } { return }
+    if { [::tacgame::endOfGame] } {
+      sc_game save [sc_game number]
+      return
+    }
 
     # check if Phalanx is already thinking
     if { $analysisCoach(automoveThinking1) == 1 } {
@@ -916,6 +919,7 @@ namespace eval tacgame {
       ::tacgame::pauseGame
       set ::tacgame::drawShown 1
       tk_messageBox -type ok -message $::tr(Draw) -parent .board -icon info
+      sc_game save [sc_game number]
       return 1
     }
     return 0
