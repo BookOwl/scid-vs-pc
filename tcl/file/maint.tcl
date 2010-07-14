@@ -1053,6 +1053,9 @@ proc compactGames {parent} {
     tk_messageBox -type ok -icon warning -parent $parent \
         -title "Scid: Error compacting file" -message $result
   } else {
+    updateBoard
+    ::windows::gamelist::Refresh
+    ::maint::Refresh
     tk_messageBox -type ok -icon info -parent $parent \
         -title [concat "Scid: " $::tr(CompactGames)] \
         -message [subst $::tr(GameFileCompacted)]
@@ -1060,9 +1063,6 @@ proc compactGames {parent} {
   if {$parent == {.compactWin}} {
     destroy $parent
   }
-  updateBoard
-  ::windows::gamelist::Refresh
-  ::maint::Refresh
 }
 
 set sortCriteria(real) ""
