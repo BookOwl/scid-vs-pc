@@ -9,14 +9,21 @@ array set ::board::letterToPiece [list \
     "Q" wq "q" bq "K" wk "k" bk "P" wp "p" bp "." e \
     ]
 
-#   "name (unused), lite, dark, highcolor, bestcolor"
+#   name (unused), lite, dark, highcolor, bestcolor
 
-set colorSchemes {
-  { "Blue-white" "#f3f3f3" "#7389b6" "#f3f484" "#b8cbf8" "#ffffff" "#000000" "#000000" "#ffffff" }
-  { "Blue-ish" "#d0e0d0" "#80a0a0" "#b0d0e0" "#f0f0a0" }
-  { "M. Thomas" "#d3d9a8" "#51a068" "#e0d873" "#86a000" }
-  { "Green-Yellow" "#e0d070" "#70a070" "#b0d0e0" "#bebebe" }
-  { "Brown" "#d0c0a0" "#a08050" "#b0d0e0" "#bebebe" }
+set colorSchemes1 {
+  { Blue-white	#f3f3f3 #7389b6 #f3f484 #b8cbf8 }
+  { Blue-ish	#d0e0d0 #80a0a0 #b0d0e0 #f0f0a0 }
+  { M.Thomas	#d3d9a8 #51a068 #e0d873 #86a000 }
+  { GreenYellow	#e0d070 #70a070 #b0d0e0 #bebebe }
+  { Brown	#d0c0a0 #a08050 #b0d0e0 #bebebe }
+}
+set colorSchemes2 {
+  { Tan	#fbdbc4 #cc9c83 #b0d0e0 #bebebe }
+  { Grey #dfdfdf #808080 #b0d0e0 #bebebe }
+  { Rosy #f8dbcc rosybrown #b0d0e0 #bebebe }
+  { SteelBlue lightsteelblue steelblue #51a068 #e0d873 }
+  { Red rosybrown1 indianred3 #ffa07a lightsalmon }
 }
 array set newColors {}
 
@@ -67,11 +74,11 @@ proc chooseBoardTextures {i} {
   SetBoardTextures
 }
 
-proc setBoardColor {choice} {
+proc setBoardColor {row choice} {
 
-  global colorSchemes newColors
+  global newColors
 
-  set list [lindex $colorSchemes $choice]
+  set list [lindex [set ::colorSchemes$row] $choice]
   set newColors(lite) [lindex $list 1]
   set newColors(dark) [lindex $list 2]
   set newColors(highcolor) [lindex $list 3]
@@ -109,6 +116,9 @@ proc applyBoardColors {} {
   #  $c itemconfigure lite -fill $newColors(lite) -outline $newColors(lite)
   # }
 
+  ### use this command if you want a third color to be used instead of black
+  # .board.bd configure -background $newColors(dark)
+
   ::board::resize .board redraw
 }
 
@@ -123,7 +133,7 @@ proc applyBorderWidth {new} {
 }
 
 proc chooseAColor {w c} {
-  global colorSchemes newColors
+  global newColors
 
   set x [tk_chooseColor -initialcolor $newColors($c) -title Scid -parent $w]
 
@@ -152,7 +162,7 @@ proc initBoardColors {} {
   # These procedures re-written by S.A.
 
   global lite dark highcolor bestcolor png_image_support
-  global colorSchemes newColors boardStyles boardStyle boardSizes
+  global newColors boardStyles boardStyle boardSizes
 
   set colors {lite dark highcolor bestcolor}
   set w .boardOptions
@@ -231,7 +241,12 @@ proc initBoardColors {} {
   pack [frame $w.select] -side top -padx 5
 
   # addHorizontalRule $w
-  pack [frame $w.preset] -side top 
+
+  ### Two rows of Color schemes
+
+  pack [frame $w.preset1] -side top 
+  pack [frame $w.preset2] -side top 
+
   addHorizontalRule $w
 
   # pack [label $w.l2 -text Tiles -font font_H4]
@@ -274,30 +289,33 @@ proc initBoardColors {} {
     grid $f.l$c -row $row -column [expr {$column + 1} ] -sticky w
   }
 
-  ### Color schemes ###
+  ### Two rows of Color schemes 
 
-  set count 0
+  foreach i {1 2} {
+    set scheme ::colorSchemes$i
+    set count 0
+    foreach list [set $scheme] {
+      set f $w.preset$i.$count
+      set c1 [lindex $list 1]
+      set c2 [lindex $list 2]
 
-  foreach list $colorSchemes {
-    set f $w.preset.p$count
-    set c1 [lindex $list 1]
-    set c2 [lindex $list 2]
+      # each 2 by 2 color grid is a unique canvas
+      canvas $f -height $psize -width $psize
+      $f create rectangle 0 0 $p2size $p2size -tag dark -fill $c1 -outline $c1
+      $f create rectangle $p2size $p2size $psize $psize -tag dark -fill $c1 -outline $c1
+      $f create rectangle 0 $p2size $p2size $psize -tag lite -fill $c2 -outline $c2
+      $f create rectangle $p2size 0 $psize $p2size -tag lite -fill $c2 -outline $c2
+      pack $f -side left -padx 10 -pady 10
 
-    canvas $f -height $psize -width $psize
-    $f create rectangle 0 0 $p2size $p2size -tag dark -fill $c1 -outline $c1
-    $f create rectangle $p2size $p2size $psize $psize -tag dark -fill $c1 -outline $c1
-    $f create rectangle 0 $p2size $p2size $psize -tag lite -fill $c2 -outline $c2
-    $f create rectangle $p2size 0 $psize $p2size -tag lite -fill $c2 -outline $c2
-    pack $f -side left -padx 10 -pady 10
+      bind $f <Button-1> "
+	setBoardColor $i $count
+	set ::boardfile_dark emptySquare
+	set ::boardfile_lite emptySquare
+	::SetBoardTextures
+	applyBoardColors"
 
-    bind $f <Button-1> "
-      setBoardColor $count
-      set ::boardfile_dark emptySquare
-      set ::boardfile_lite emptySquare
-      ::SetBoardTextures
-      applyBoardColors"
-
-    incr count
+      incr count
+    }
   }
 
   ### Textures ###
@@ -308,7 +326,7 @@ proc initBoardColors {} {
   set col 0
   # pack [frame $f] -side top -padx 2 -pady 15
   foreach tex $::textureSquare {
-    set f $w.texture.p$count
+    set f $w.texture.$count
 
     ### Grids are required to easily allign in rows of five
 
@@ -1175,14 +1193,18 @@ proc ::board::new {w {psize 40} {showmat "nomat"} } {
   return $w
 }
 
-# ::board::defaultColor
 #   Returns the color (the value of the global
 #   variable "lite" or "dark") depending on whether the
 #   specified square number (0=a1, 1=b1, ..., 63=h8) is
 #   a light or dark square.
-#
-proc ::board::defaultColor {sq} {
-  return [expr {($sq + ($sq / 8)) % 2 ? "$::lite" : "$::dark"}]
+
+# ::board::defaultColor
+# return [expr {($sq + ($sq / 8)) % 2 ? "$::lite" : "$::dark"}]
+
+### Remove this proc and use a 64 element truth table instead S.A
+
+for {set i 0} {$i <= 63} {incr i} {
+  set sqcol($i) [expr {($i + ($i / 8)) % 2}]
 }
 
 # ::board::size
@@ -1333,22 +1355,28 @@ proc ::board::recolor {w} {
 #   If the color is the empty string, the appropriate
 #   color for the square (light or dark) is used.
 #
-proc ::board::colorSquare {w i {color ""}} {
-  if {$i < 0  ||  $i > 63} { return }
-  if {$color != ""} {
+proc ::board::colorSquare {w i {color {}}} {
+  # if {$i < 0 || $i > 63} return
+  if {$i < 0} return
+  if {$color != {}} {
     $w.bd delete br$i
-    $w.bd itemconfigure sq$i -fill $color -outline "" ;# -outline $color
+    $w.bd itemconfigure sq$i -fill $color -outline {} ;# -outline $color
     return
   }
-  set color [::board::defaultColor $i]
+
+  set psize $::board::_size($w)
+  if {$::sqcol($i)} {
+    set color $::lite
+    set boc bgl$psize
+  } else {
+    set color $::dark
+    set boc bgd$psize
+  }
   $w.bd itemconfigure sq$i -fill $color -outline "" ; #-outline $color
   #this inserts a textures on a square and restore piece
   set midpoint [::board::midSquare $w $i]
   set xc [lindex $midpoint 0]
   set yc [lindex $midpoint 1]
-  set psize $::board::_size($w)
-  set boc bgd$psize
-  if { ($i + ($i / 8)) % 2 } { set boc bgl$psize }
   $w.bd delete br$i
   $w.bd create image $xc $yc -image $boc -tag br$i
   set piece [string index $::board::_data($w) $i]
@@ -1998,11 +2026,10 @@ proc ::board::update {w {board ""} {animate 0} {resize 0}} {
   # Cancel any current animation:
   after cancel "::board::_animate $w"
 
-  # Remove all marks (incl. arrows) from the board:
+  # Remove all marks (incl. arrows) from the board
   $w.bd delete mark
 
   # Draw each square
-  set light 0
   set sq -1
   # for {set sq 0} { $sq < 64 } { incr sq } 
   foreach piece [lrange [split $board {}] 0 63] {
@@ -2011,28 +2038,28 @@ proc ::board::update {w {board ""} {animate 0} {resize 0}} {
     # Compute the XY coordinates for the centre of the square:
     foreach {xc yc} [::board::midSquare $w $sq] {}
 
-    #update every square with color and texture
-    set color [::board::defaultColor $sq]
-    $w.bd itemconfigure sq$sq -fill $color -outline {} ; # -outline $color
+    # Update every square with color and texture
 
-    if { $light } {
+    # still not very optimal
+    if {$::sqcol($sq)} {
+      set color $::lite
       set boc bgl$psize
     } else {
+      set color $::dark
       set boc bgd$psize
     }
-    if {($sq % 8) != 7} {
-      set light [expr {! $light}]
-    }
+
+    $w.bd itemconfigure sq$sq -fill $color -outline {} ; # -outline $color
 
     $w.bd delete br$sq
     $w.bd create image $xc $yc -image $boc -tag br$sq
 
-    # Delete any old image for this square, and add the new one:
+    # Delete any old image for this square, and add the new one
     $w.bd delete p$sq
     $w.bd create image $xc $yc -image $::board::letterToPiece($piece)$psize -tag p$sq
   }
 
-  # Update side-to-move icon:
+  # Update side-to-move icon
   grid remove $w.wtm $w.btm
   if {$::board::_stm($w)} {
     set side [string index $::board::_data($w) 65]

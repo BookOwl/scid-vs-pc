@@ -354,7 +354,7 @@ trace variable castling w check_castling
 
 proc setupBoard {} {
 
-  global boardSizes boardSize setupboardSize lite dark setupBd pastePiece \
+  global boardSizes boardSize setupboardSize setupBd pastePiece \
          toMove epFile moveNum castling setupFen highcolor origFen borderwidth
 
   if {[winfo exists .setup]} { return }
@@ -423,7 +423,9 @@ proc setupBoard {} {
     set x2 [expr {$x1 + $psize }]
     set y2 [expr {$y1 + $psize }]
 
-    $sbd.bd create rectangle $x1 $y1 $x2 $y2 -tag sq$i -outline "" -fill [::board::defaultColor $i]
+    $sbd.bd create rectangle $x1 $y1 $x2 $y2 -tag sq$i -outline {} \
+      -fill [expr {$::sqcol($i) ? "$::lite" : "$::dark"} ]
+
     # ::board::colorSquare $sbd $i
     #this inserts a textures on a square and restore piece
     set xc [expr ($x1 + $x2) /2]
