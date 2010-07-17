@@ -817,7 +817,7 @@ namespace eval tacgame {
     }
 
     if { [::tacgame::endOfGame] } {
-      sc_game save [sc_game number]
+      catch {sc_game save [sc_game number]}
       return
     }
 
@@ -919,7 +919,7 @@ namespace eval tacgame {
       ::tacgame::pauseGame
       set ::tacgame::drawShown 1
       tk_messageBox -type ok -message $::tr(Draw) -parent .board -icon info
-      sc_game save [sc_game number]
+      catch {sc_game save [sc_game number]}
       return 1
     }
     return 0

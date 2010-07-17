@@ -2146,29 +2146,32 @@ proc processAnalysisInput {n} {
     sendToEngine $n post
   }
 
-  ### Match "my move is", "My move is:"
-  if {[string match "*y move is*" $line]} {
-    set analysis(moves$n) [lrange $line 3 end]
-    set analysis(waitForBestMove$n) 0
-  }
-  if {[lrange $line 0 0] == {move}} {
-    set analysis(moves$n) [lrange $line 1 end]
-    set analysis(waitForBestMove$n) 0
-  }
+  if {$comp(playing)} {
 
-  if {[lindex $line 0] == {1-0} || \
-      [lindex $line 0] == {0-1} || \
-      [lindex $line 0] == {resign} } {
-    puts_ "RESIGNS (engine $n)"
-    if {$n == $comp(white)} {
-      sc_game tags set -result 0
-      sc_pos setComment "White resigns"
-    } else {
-      sc_game tags set -result 1
-      sc_pos setComment "Black resigns"
+    ### Match "my move is", "My move is:"
+    if {[string match "*y move is*" $line]} {
+      set analysis(moves$n) [lrange $line 3 end]
+      set analysis(waitForBestMove$n) 0
     }
-    set comp(playing) 0
-    set analysis(waitForBestMove$n) 0
+    if {[lrange $line 0 0] == {move}} {
+      set analysis(moves$n) [lrange $line 1 end]
+      set analysis(waitForBestMove$n) 0
+    }
+
+    if {[lindex $line 0] == {1-0} || \
+	[lindex $line 0] == {0-1} || \
+	[lindex $line 0] == {resign} } {
+      puts_ "RESIGNS (engine $n)"
+      if {$n == $comp(white)} {
+	sc_game tags set -result 0
+	sc_pos setComment "White resigns"
+      } else {
+	sc_game tags set -result 1
+	sc_pos setComment "Black resigns"
+      }
+      set comp(playing) 0
+      set analysis(waitForBestMove$n) 0
+    }
   }
 
   # Check for "feature" commands so we can determine if the engine
