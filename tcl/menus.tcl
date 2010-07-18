@@ -781,8 +781,8 @@ set helpMessage($m,[incr menuindex]) {Board Screenshot}
 ### Options menu:
 
 set m .menu.options
-set optMenus {export fonts ginfo language entry numbers startup windows}
-set optLabels {Export Fonts GInfo Language Moves Numbers Startup Windows}
+set optMenus {fonts ginfo entry startup language numbers windows export}
+set optLabels {Fonts GInfo Moves Startup Language Numbers Windows Export}
 set menuindex 0
 
 $m add command -label OptionsBoard -command chooseBoardColors
@@ -791,22 +791,22 @@ set helpMessage($m,[incr menuindex]) OptionsBoard
 $m add command -label OptionsColour -command SetBackgroundColour
 set helpMessage($m,[incr menuindex]) OptionsColour
 
-foreach menu $optMenus label $optLabels {
-  $m add cascade -label Options$label -menu $m.$menu
-  set helpMessage($m,[incr menuindex]) Options$label
-}
-
-$m add command -label OptionsSounds -command ::utils::sound::OptionsDialog
-set helpMessage($m,[incr menuindex]) OptionsSounds
-
 $m add command -label OptionsToolbar -command configToolbar
 set helpMessage($m,[incr menuindex]) OptionsToolbar
 
 $m add command -label OptionsNames -command editMyPlayerNames
 set helpMessage($m,[incr menuindex]) OptionsNames
 
+$m add command -label OptionsRecent -command ::recentFiles::configure
+set helpMessage($m,[incr menuindex]) OptionsRecent
+
 $m add separator
 incr menuindex
+
+foreach menu $optMenus label $optLabels {
+  $m add cascade -label Options$label -menu $m.$menu
+  set helpMessage($m,[incr menuindex]) Options$label
+}
 
 $m add command -label OptionsECO -command {
   set ftype { { "Scid ECO files" {".eco"} } }
@@ -909,8 +909,8 @@ proc chooseTableBaseDir {i} {
   set tempDir(tablebase$i) [file dirname $fullname]
 }
 
-$m add command -label OptionsRecent -command ::recentFiles::configure
-set helpMessage($m,[incr menuindex]) OptionsRecent
+$m add command -label OptionsSounds -command ::utils::sound::OptionsDialog
+set helpMessage($m,[incr menuindex]) OptionsSounds
 
 $m add command -label OptionsBooksDir -command setBooksDir
 set helpMessage($m,[incr menuindex]) OptionsBooksDir
@@ -1511,8 +1511,8 @@ proc setLanguageMenus {{lang ""}} {
   foreach tag {ToolsExpFilterPGN ToolsExpFilterHTML ToolsExpFilterHTMLJS ToolsExpFilterLaTeX} {
     configMenuText .menu.tools.exportfilter [tr $tag $oldLang] $tag $lang
   }
-  foreach tag {Board Colour Export Fonts GInfo Language Moves Numbers
-    Startup Sounds Toolbar Names Windows ECO Spell Table BooksDir TacticsBasesDir Recent Save AutoSave} {
+  foreach tag {Board Colour Toolbar Names Recent Fonts GInfo Moves Startup Language
+    Numbers Windows Export ECO Spell Table BooksDir TacticsBasesDir Sounds Save AutoSave} {
     configMenuText .menu.options [tr Options$tag $oldLang] Options$tag $lang
   }
 
