@@ -38,8 +38,9 @@ proc ::tourney::Open {} {
 
   toplevel $w
   wm title $w "Scid: [tr WindowsTmt]"
+  wm withdraw $w
   setWinLocation $w
-  bind $w <Configure> "recordWinSize $w"
+  setWinSize $w
 
   bind $w <F1> {helpWindow Tmt}
   bind $w <Escape> "$w.b.close invoke"
@@ -184,6 +185,10 @@ proc ::tourney::Open {} {
   grid $w.t.xbar -row 1 -column 0 -sticky news
   grid rowconfig $w.t 0 -weight 1 -minsize 0
   grid columnconfig $w.t 0 -weight 1 -minsize 0
+
+  bind $w <Configure> "recordWinSize $w"
+  update
+  wm deiconify $w
 
   ::tourney::ConfigMenus
   ::tourney::refresh
@@ -332,12 +337,10 @@ proc ::tourney::refresh {{option ""}} {
     set best "$one $white, $two $black, ..."
     if {$np == 2} { set best "$one $white, $two $black" }
 
-    $t tag bind g$count <ButtonPress-1> [list ::tourney::select $g]
-    $t tag bind g$count <ButtonPress-3> [list ::tourney::select $g 1]
-    $t tag bind g$count <Any-Enter> \
-      "$t tag configure g$count -background $hc"
-    $t tag bind g$count <Any-Leave> \
-      "$t tag configure g$count -background {}"
+    $t tag bind g$count <ButtonPress-1> [list ::tourney::select $g $event]
+    $t tag bind g$count <ButtonPress-3> [list ::tourney::select $g $event 1]
+    $t tag bind g$count <Any-Enter> "$t tag configure g$count -background $hc"
+    $t tag bind g$count <Any-Leave> "$t tag configure g$count -background {}"
     $t insert end "\n"
     $t insert end "\t$count\t" g$count
     $t insert end $date [list date g$count]
@@ -381,11 +384,18 @@ proc ::tourney::check {} {
   }
 }
 
-proc ::tourney::select {gnum {openCrosstable 0}} {
+proc ::tourney::select {gnum event {openCrosstable 0}} {
   if {[catch {::game::Load $gnum} result]} {
     tk_messageBox -type ok -icon info -title "Scid" -message $result
     return
   }
+
+  # Filter this event... Could we ctach this ? S.A.
+  ::search::filter::reset
+  ::search::filter::negate
+  sc_game crosstable filter
+  ::windows::gamelist::Refresh
+
   flipBoardForPlayerNames $::myPlayerNames
   updateBoard -pgn
   updateTitle

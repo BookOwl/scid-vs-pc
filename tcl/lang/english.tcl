@@ -619,7 +619,7 @@ menuText E PListSortNewest "Newest" 2
 # Tournament finder:
 menuText E TmtFile "Tournament Finder" 0
 menuText E TmtFileUpdate "Update" 0
-menuText E TmtFileClose "Close Tournament Finder" 0
+menuText E TmtFileClose "Close" 0
 menuText E TmtSort "Sort" 0
 menuText E TmtSortDate "Date" 0
 menuText E TmtSortPlayers "Players" 0

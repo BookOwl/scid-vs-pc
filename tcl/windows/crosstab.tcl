@@ -69,14 +69,16 @@ proc ::crosstab::Open {} {
   set w .crosstabWin
   if {[winfo exists $w]} {
     ::crosstab::Refresh
-    raiseWin $w
+    return
   }
 
   set crosstabWin 1
   toplevel $w
   wm title $w "Scid: [tr WindowsCross]"
-  wm minsize $w 50 5
+  wm minsize $w 10 5
+  wm withdraw $w
   setWinLocation $w
+  setWinSize $w
 
   menu $w.menu
   $w configure -menu $w.menu
@@ -243,10 +245,10 @@ proc ::crosstab::Open {} {
 
   frame $w.f
   pack $w.f -side top -fill both -expand true
-  text $w.f.text -width $::winWidth($w) -height $::winHeight($w) \
-    -wrap none -font font_Fixed \
-     -yscroll "$w.f.ybar set" \
-    -xscroll "$w.f.xbar set" -setgrid 1 -cursor top_left_arrow
+  # Causes flicker when updated
+  # -width $::winWidth($w) -height $::winHeight($w) &&&
+  text $w.f.text -wrap none -font font_Fixed -setgrid 1 -cursor top_left_arrow \
+     -yscroll "$w.f.ybar set" -xscroll "$w.f.xbar set"
   ::htext::init $w.f.text
   $w.f.text tag configure bgGray -background {}
   # Crosstable will have striped appearance if {} is replaced by another colour
@@ -294,7 +296,6 @@ proc ::crosstab::Open {} {
   pack $w.b.cancel $w.b.update -side right -pady 3 -padx 5
   pack $w.b.setfilter $w.b.addfilter $w.b.space $w.b.label $w.b.type $w.b.font -side left -pady 3 -padx 5
 
-  bind $w <Configure> "recordWinSize $w"
   bind $w <F1> { helpWindow Crosstable }
   bind $w <Return> { .crosstabWin.b.update invoke }
   bind $w <Escape> { .crosstabWin.b.cancel invoke }
@@ -321,6 +322,10 @@ proc ::crosstab::Open {} {
 
   bind $w <Destroy> { set crosstabWin 0 }
   ::crosstab::Refresh
+
+  bind $w <Configure> "recordWinSize $w"
+  update
+  wm deiconify $w
 }
 
 proc ::crosstab::Refresh {} {
@@ -369,6 +374,8 @@ proc ::crosstab::Refresh {} {
     $w.b.$button configure -state normal
   }
   $w.f.text configure -state disabled
-  raiseWin $w
+  if {![winfo exists .tourney]} {
+    raiseWin $w
+  }
 }
 
