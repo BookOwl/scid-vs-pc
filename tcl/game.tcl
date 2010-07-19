@@ -257,6 +257,7 @@ proc ::game::Load { selection } {
   if {![winfo exists .tourney]} {
     raiseWin .
   }
+  ::windows::gamelist::Refresh
 }
 
 # ::game::LoadMenu

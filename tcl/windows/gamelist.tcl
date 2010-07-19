@@ -253,6 +253,7 @@ proc ::windows::gamelist::Open {} {
 
   $w.tree tag bind click2 <Double-Button-1> {::windows::gamelist::Load [%W set [%W focus] Number]}
   $w.tree tag configure deleted -foreground gray70
+  $w.tree tag configure current -foreground RoyalBlue3
 
   # $w.tree tag configure colour -background $::defaultBackground
   # $w.tree tag bind click1 <Button-1> {}
@@ -554,12 +555,15 @@ proc ::windows::gamelist::Refresh {} {
     set glistEnd $totalSize
   }
 
+  set current [sc_game number]
   for {set line $glstart} {$line <= $glistEnd} {incr line} {
     set values [sc_game list $line 1 $glistCodes]
     if {[lindex $values 13] == {D }} {
       $w.tree insert {} end -values $values -tag [list click2 deleted] ;#treefont
+    } elseif {[lindex $values 0] == "$current "} {
+      $w.tree insert {} end -values $values -tag [list click2 current]
     } else {
-      $w.tree insert {} end -values $values -tag [list click2] ;#treefont
+      $w.tree insert {} end -values $values -tag click2
     }
   }
 
