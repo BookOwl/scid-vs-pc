@@ -271,7 +271,7 @@ proc ::bookmarks::Edit {} {
   entry $w.e -width 40 -foreground black  \
     -textvariable bookmarks(edit) -font font_Small -exportselection 0
   bind $w.e <FocusIn>  {.bmedit.e configure -background lightYellow}
-  bind $w.e <FocusOut> {.bmedit.e configure -background {}}
+  bind $w.e <FocusOut> {.bmedit.e configure -background white}
 
   trace variable bookmarks(edit) w ::bookmarks::EditRefresh
   pack $w.e -side top -fill x

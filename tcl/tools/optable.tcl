@@ -1260,7 +1260,7 @@ proc ::optable::editFavoritesDlg {} {
   entry $w.e -width 60 -foreground black  \
       -textvariable reportFavoritesName -font font_Small -exportselection 0
   bind $w.e <FocusIn>  "$w.e configure -background lightYellow"
-  bind $w.e <FocusOut> "$w.e configure -background {}"
+  bind $w.e <FocusOut> "$w.e configure -background white"
 
   trace variable reportFavoritesName w ::optable::editFavoritesRefresh
   pack $w.e -side top -fill x

@@ -256,7 +256,7 @@ proc setExportText {exportType} {
     scrollbar $f.ybar -orient vertical -command "$f.text yview"
     scrollbar $f.xbar -orient horizontal -command "$f.text xview"
     bind $f.text <FocusIn> {%W configure -background lightYellow}
-    bind $f.text <FocusOut> {%W configure -background {}}
+    bind $f.text <FocusOut> {%W configure -background white}
     grid $f.title -row 0 -column 0 -sticky w
     grid $f.text -row 1 -column 0 -sticky nesw
     grid $f.ybar -row 1 -column 1 -sticky nesw
@@ -693,6 +693,7 @@ proc updateMatchList { tw nametype maxMatches name el op } {
   $tw delete 0.0 end
   set matches {}
   catch {set matches [sc_name match $nametype $val $maxMatches]}
+puts "matches :$matches"
   set count [llength $matches]
   set nameMatchCount [expr {$count / 2}]
   for {set i 0} { $i < $count } {incr i 2} {
@@ -881,7 +882,7 @@ proc nameEditor {} {
 
   foreach i {fromE toE ratingE fromD toD} {
     bind $w.g.$i <FocusIn> { %W configure -background lightYellow }
-    bind $w.g.$i <FocusOut> { %W configure -background {} }
+    bind $w.g.$i <FocusOut> { %W configure -background white }
   }
   foreach {i j} {.nedit.g.fromE "editName"  .nedit.g.toE "editNameNew" } {
     for {set z 1} {$z <= 9} {incr z} {
@@ -1143,7 +1144,7 @@ proc gameSave { gnum } {
     # bind $f.$i <FocusOut> {%W configure -background {} }
   }
   bind .save.extra.text <FocusIn> {%W configure -background lightYellow }
-  bind .save.extra.text <FocusOut> {%W configure -background {} }
+  bind .save.extra.text <FocusOut> {%W configure -background white }
 
   # Bindings so Ctrl-1 to Ctrl-9 select a matching name in the player,
   # site, event and round entryboxes:
