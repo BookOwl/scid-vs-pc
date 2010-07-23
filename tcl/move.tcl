@@ -17,9 +17,16 @@ proc ::move::End {} {
   updateBoard
 }
 
+proc ::move::ExitVar {} {
+  sc_var exit; 
+  updateBoard -animate; 
+  # Do comments work properly ?
+}
+
 proc ::move::Back {{count 1}} {
   if {$::tree(refresh)} { return }
   if {[sc_pos isAt start]} { return }
+  if {[sc_pos isAt vstart]} { ::move::ExitVar; return }
 
   ### if playing, remove this move from hash array S.A
 
@@ -28,12 +35,6 @@ proc ::move::Back {{count 1}} {
   set ::pause 1
 
   sc_move back $count
-  # Pascal Georges : make it easier to navigate in a game
-  # TODO : if left mouse arrow leaves var, then comments are doubled at Var start and comments can no longer be entered
-  # before the first move of a line
-  # if {[sc_pos isAt vstart]} {
-  # sc_var exit
-  # }
 
   if {$count == 1} {
     # Do animation and speech:

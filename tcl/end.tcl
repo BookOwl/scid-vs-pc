@@ -693,7 +693,6 @@ proc updateMatchList { tw nametype maxMatches name el op } {
   $tw delete 0.0 end
   set matches {}
   catch {set matches [sc_name match $nametype $val $maxMatches]}
-puts "matches :$matches"
   set count [llength $matches]
   set nameMatchCount [expr {$count / 2}]
   for {set i 0} { $i < $count } {incr i 2} {
