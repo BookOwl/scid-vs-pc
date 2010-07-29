@@ -358,7 +358,7 @@ proc ::windows::gamelist::Open {} {
     set ::windows::gamelist::finditems {}
     setGamelistTitle
   }
-  bind $w <Delete> "$w.b.remove invoke"
+  bind $w.tree <Delete> "$w.b.remove invoke"
 
 
   ### Filter items against the find entry widget
