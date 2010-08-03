@@ -2191,10 +2191,6 @@ proc processAnalysisInput {n} {
     return
   }
 
-  # hack to quit processAnalysisInput when playing a comp
-  if {$comp(playing)} {
-    return
-  }
 
   # Check for a line starting with "Crafty", so Scid can work well
   # with older Crafty versions that do not recognize "protover":
@@ -2212,9 +2208,15 @@ proc processAnalysisInput {n} {
     # but not so low that we get lots of short-ply search data:
     sendToEngine $n {noise 1000}
     sendToEngine $n {egtb off} ; # turn off end game table book
+    sendToEngine $n {resign 0} ; # turn off alarm (resigning ?)
     set analysis(isCrafty$n) 1
     set analysis(has_setboard$n) 1
     set analysis(has_analyze$n) 1
+    return
+  }
+
+  # hack to quit processAnalysisInput when playing a comp
+  if {$comp(playing)} {
     return
   }
 
