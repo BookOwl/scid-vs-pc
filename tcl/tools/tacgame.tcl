@@ -201,6 +201,13 @@ namespace eval tacgame {
     # or choose a specific opening
     radiobutton $w.fopening.cbSpecific -text $::tr(SpecificOpening) -variable ::tacgame::openingType -value specific
 
+    # Tweak opening type according to game pos
+    if {[sc_pos isAt start]} {
+      if {$::tacgame::openingType == {current}} { set ::tacgame::openingType new }
+    } else {
+      if {$::tacgame::openingType == {new}} { set ::tacgame::openingType current }
+    }
+
     pack $w.fopening.cbNew -anchor w -padx 100
     pack $w.fopening.cbPosition -anchor w -padx 100
     pack $w.fopening.cbFischer   -anchor w -padx 100
