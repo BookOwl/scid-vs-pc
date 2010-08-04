@@ -1339,14 +1339,16 @@ proc addAnalysisVariation {n} {
 
   if {! [winfo exists .analysisWin$n]} { return }
 
-  set addAtStart [expr [sc_pos isAt vstart]  &&  [sc_pos isAt vend]]
+  # if we are at the end of the game, we cannot add variation, so we add the
+  # analysis one move before and append the last game move at the beginning of
+  # the analysis
 
-  # if we are at the end of the game, we cannot add variation
-  # so we add the analysis one move before and append the last game move at the beginning of the analysis
-  set addAtEnd [sc_pos isAt vend]
+  set addAtStart [expr [sc_pos isAt vstart]  &&  [sc_pos isAt vend]]
+  set isAt_end [sc_pos isAt end]
+  set isAt_vend [sc_pos isAt vend]
 
   # Temporarily clear the pre-move command since we want to add a
-  # whole line without Scid updating stuff:
+  # whole line without Scid updating stuff
   sc_info preMoveCmd {}
 
   set moves $analysis(moves$n)
@@ -1357,34 +1359,44 @@ proc addAnalysisVariation {n} {
     set text [format "\[%s\] %d:%+.2f" $analysis(name$n) $analysis(depth$n) $analysis(score$n)]
   }
 
-  if {$addAtEnd} {
+  if { $isAt_vend} {
     # get the last move of the game
     set lastMove [sc_game info previousMoveUCI]
-    #back one move
+    # back one move
     sc_move back
   }
 
-  # Add the variation:
-  sc_var create
-  # Add the comment at the start of the variation:
-  sc_pos setComment "[sc_pos getComment] $text"
-  if {$addAtEnd} {
+  if {!$isAt_vend || $isAt_end} {
+    # Add a variation if not already at end of a variation
+    # (in which case we append moves to this var)
+    sc_var create
+  }
+
+  # Add comment identifying analysis engine if at vstart
+  # (perhaps this code belongs just above)
+  if {[sc_pos isAt vstart]} {
+    sc_pos setComment "[sc_pos getComment] $text"
+  }
+
+  if {$isAt_vend} {
     # Add the last move of the game at the beginning of the analysis
     sc_move_add $lastMove $n
   }
+
   # Add as many moves as possible from the engine analysis:
   sc_move_add $moves $n
+
+  # We should now go back to the previous place, but it's hard to realise
+  # and instead exit the var which works fine except when we're appending 
+  # onto the end of an existing var.
   sc_var exit
+  # sc_move back [llength $moves]
 
   if {$addAtStart} {
     sc_move start
-  } elseif {$addAtEnd} {
-      #forward to the last move
-      # sc_move forward
-
-      ### Why ? S.A.
-      ### How about automatically goto variation S.A.
-      sc_var enter 0
+  } elseif {$isAt_vend} {
+    ### Automatically goto variation S.A.
+    sc_var enter 0
   }
 
   # Restore the pre-move command:
