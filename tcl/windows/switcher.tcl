@@ -290,8 +290,9 @@ proc changeBaseType {baseNum} {
   if {$baseNum > [sc_base count total]} { return }
   set temp_dbtype [sc_base type $baseNum]
   if {$temp_dbtype >= $numBaseTypeIcons} { set temp_dbtype 0 }
-  toplevel .btypeWin
   set w .btypeWin
+  toplevel $w
+  wm withdraw $w
   wm title $w "Scid: Choose database icon"
 
   text $w.t -yscrollcommand "$w.yscroll set" -font font_Regular \
@@ -305,7 +306,7 @@ proc changeBaseType {baseNum} {
   pack $w.t -side left -fill both -expand yes
 
   dialogbutton $w.b.set -text "OK" -command \
-    "catch {sc_base type $baseNum \$temp_dbtype}; ::windows::switcher::Refresh;
+    "catch {sc_base type $baseNum \$temp_dbtype}; ::windows::switcher::Refresh; ::maint::Refresh;
      focus .; destroy $w"
 
   dialogbutton $w.b.cancel -text $::tr(Cancel) -command "focus .; destroy $w"
@@ -338,6 +339,9 @@ proc changeBaseType {baseNum} {
   bind $w <End> { selectBaseType [expr [llength $base_types] - 1] }
   bind $w <Escape> "$w.b.cancel invoke"
   bind $w <Return> "$w.b.set invoke"
+
+  placeWinOverParent $w .maintWin
+  wm state $w normal
 
   focus $w.t
   grab $w

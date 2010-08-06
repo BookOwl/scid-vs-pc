@@ -117,8 +117,8 @@ proc ::maint::OpenClose {} {
   }
   pack $w.buttons -side top -fill x
 
-  label $w.title.name -textvar ::tr(DatabaseName) -font font_Bold
-  label $w.title.games -textvar ::tr(NumOfGames) -font font_SmallBold
+  label $w.title.name -textvar ::tr(DatabaseName) -font $font
+  label $w.title.games -textvar ::tr(NumOfGames) -font  $font
   label $w.title.icon -textvar ::tr(TypeIcon)
   label $w.title.delete -textvar ::tr(NumDeletedGames) -font $font
   label $w.title.mark -font $font
@@ -127,21 +127,25 @@ proc ::maint::OpenClose {} {
   label $w.title.ratings -textvar ::tr(RatingRange) -font $font
   button $w.title.vicon -command {changeBaseType [sc_base current]}
   frame $w.title.desc
-  label $w.title.desc.lab -text $::tr(Description:) -font font_SmallBold
+  label $w.title.desc.lab -text $::tr(Description:) -font  $font
   label $w.title.desc.text -width 1 -font $font -relief sunken -anchor w
-  button $w.title.desc.edit -text "[tr Edit]..." -font $font \
-      -command ::maint::ChangeBaseDescription
-  pack $w.title.desc.lab -side left
-  pack $w.title.desc.edit -side right -padx 2
-  pack $w.title.desc.text -side left -fill x -expand yes
+  dialogbutton $w.title.desc.edit -text "[tr Edit]..." -font $font \
+      -command ::maint::ChangeBaseDescription -padx 3
+  pack $w.title.desc.lab -side left -padx 3
+  pack $w.title.desc.edit -side right -padx 3
+  pack $w.title.desc.text -side left -fill x -expand yes -padx 3
 
   foreach name {name games delete mark filter dates ratings} {
     label $w.title.v$name -text "0" -font $font
   }
 
-  set row 0
+  # make the top row a little different
+  grid $w.title.vname -row 0 -column 1 -padx 5 -pady 5
+  grid $w.title.vicon -row 0 -column 3 -padx 5 -pady 5
+
+  set row 1
   set col 0
-  foreach name {name icon games filter delete mark dates ratings} {
+  foreach name {games filter delete mark dates ratings} {
     grid $w.title.$name -row $row -column $col -sticky w
     incr col
     grid $w.title.v$name -row $row -column $col -sticky e
@@ -151,8 +155,8 @@ proc ::maint::OpenClose {} {
   }
   grid [label $w.title.space -text "   "] -row 0 -column 2
   $w.title.vname configure -font font_Bold
-  $w.title.vgames configure -font font_SmallBold
-  grid $w.title.desc -row $row -column 0 -columnspan 5 -sticky we
+  $w.title.vgames configure -font $font
+  grid $w.title.desc -row $row -column 0 -columnspan 5 -sticky we -pady 4
 
   foreach grid {title delete mark spell db} cols {5 3 3 4 3} {
     for {set i 0} {$i < $cols} {incr i} {
@@ -247,20 +251,26 @@ proc ::maint::ChangeBaseDescription {} {
   if {[winfo exists $w]} { return }
   toplevel $w
   wm title $w "Scid: $::tr(Description): [file tail [sc_base filename]]"
+  wm withdraw $w
+
   set font font_Small
   entry $w.entry -width 50 -relief sunken 
   $w.entry insert end [sc_base description]
   pack $w.entry -side top -pady 4
   frame $w.b
-  button $w.b.ok -text OK -command {
+  dialogbutton $w.b.ok -text OK -command {
     catch {sc_base description [.bdesc.entry get]}
     grab release .bdesc
     destroy .bdesc
     ::maint::Refresh
   }
-  button $w.b.cancel -text $::tr(Cancel) -command "grab release $w; destroy $w"
+  dialogbutton $w.b.cancel -text $::tr(Cancel) -command "grab release $w; destroy $w"
   pack $w.b -side bottom -fill x
   pack $w.b.cancel $w.b.ok -side right -padx 2 -pady 2
+  bind $w.entry <Return> "$w.b.ok invoke"
+
+  placeWinOverParent $w .maintWin
+  wm state $w normal
   wm resizable $w 0 0
   catch {grab $w}
 }
