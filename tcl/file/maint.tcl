@@ -101,21 +101,21 @@ proc ::maint::OpenClose {} {
   set maintWin 1
   set font font_Small
   set bold font_SmallBold
+
   toplevel $w
   wm title $w "Scid: [tr FileMaint]"
-  wm withdraw $w
+  setWinLocation $w
   wm resizable $w 0 0
   bind $w <F1> {helpWindow Maintenance}
   bind $w <Escape> "destroy $w; break"
   bind $w <Destroy> {set maintWin 0}
-  foreach f {title delete mark spell db buttons} {
-    frame $w.$f
-  }
+
+  ### Init main frames and titles
+
   foreach f {title delete mark spell db} {
-    pack $w.$f -side top -fill x
-    addHorizontalRule $w
+    frame $w.$f -padx 5
+    pack  $w.$f -side top -fill x -pady 3
   }
-  pack $w.buttons -side top -fill x
 
   label $w.title.name -textvar ::tr(DatabaseName) -font $font
   label $w.title.games -textvar ::tr(NumOfGames) -font  $font
@@ -139,7 +139,9 @@ proc ::maint::OpenClose {} {
     label $w.title.v$name -text "0" -font $font
   }
 
-  # make the top row a little different
+  ### Make the top row a little different.
+  # We don't really need labels, and .title.name and .title.icon aren't used now
+
   grid $w.title.vname -row 0 -column 1 -padx 5 -pady 5
   grid $w.title.vicon -row 0 -column 3 -padx 5 -pady 5
 
@@ -153,7 +155,7 @@ proc ::maint::OpenClose {} {
     if {$col == 2} { incr col }
     if {$col >= 5} { set col 0; incr row }
   }
-  grid [label $w.title.space -text "   "] -row 0 -column 2
+
   $w.title.vname configure -font font_Bold
   $w.title.vgames configure -font $font
   grid $w.title.desc -row $row -column 0 -columnspan 5 -sticky we -pady 4
@@ -166,12 +168,15 @@ proc ::maint::OpenClose {} {
 
   label $w.delete.title -textvar ::tr(DeleteFlag) -font $bold
   menubutton $w.mark.title -menu $w.mark.title.m \
-      -indicatoron 1 -relief raised -font $bold
+      -indicatoron 1 -relief flat -font $bold
   menu $w.mark.title.m -font $font
   foreach i $maintFlaglist  {
-    $w.mark.title.m add command -label "$::tr($maintFlags($i)) ($i)" \
+    $w.mark.title.m add command -label "$::tr($maintFlags($i))  $i" \
         -command "set maintFlag $i; ::maint::Refresh"
   }
+
+  ### Six buttons each for "Delete" and General flags sections
+
   foreach flag {delete mark} on {Delete Mark} off {Undelete Unmark} {
     foreach b {Current Filter All} {
       button $w.$flag.on$b -textvar "::tr($on$b)" -font $font \
@@ -235,14 +240,21 @@ proc ::maint::OpenClose {} {
   grid $w.db.autoload -row 3 -column 0 -sticky we
   grid $w.db.strip -row 3 -column 1 -sticky we
 
+  ### Buttons
+
+  addHorizontalRule $w
+
+  frame $w.buttons -padx 5
+  pack  $w.buttons -side top -fill x
+
   dialogbutton $w.buttons.help -textvar ::tr(Help) -command {helpWindow Maintenance}
   dialogbutton $w.buttons.close -textvar ::tr(Close) -command "destroy $w"
   packbuttons right $w.buttons.close $w.buttons.help
-  bind $w <Alt-h> "$w.buttons.help invoke"
-  bind $w <Alt-c> "destroy $w; break"
+
+  ###
+
   standardShortcuts $w
-  placeWinOverParent $w .
-  wm state $w normal
+  bind $w <Configure> "recordWinSize $w"
   ::maint::Refresh
 }
 
@@ -300,7 +312,7 @@ proc ::maint::Refresh {} {
   $w.title.vratings configure \
       -text "[lindex $ratings 0]-[lindex $ratings 1] ([lindex $ratings 2])"
 
-  set flagname "$::tr(Flag): $::tr($maintFlags($maintFlag)) ($maintFlag)"
+  set flagname "$::tr($maintFlags($maintFlag)) [string tolower $::tr(Flag)]"
   $w.mark.title configure -text $flagname
   $w.title.mark configure -text $flagname
   $w.title.desc.text configure -text [sc_base description]

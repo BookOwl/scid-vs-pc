@@ -298,7 +298,7 @@ proc changeBaseType {baseNum} {
   text $w.t -yscrollcommand "$w.yscroll set" -font font_Regular \
     -height 25 -width 40  -wrap none \
     -cursor top_left_arrow
-  $w.t tag configure selected -background {#ffff80}
+  $w.t tag configure selected -background lightblue
 
   scrollbar $w.yscroll -command "$w.t yview" -takefocus 0
   pack [frame $w.b] -side bottom -pady 5
