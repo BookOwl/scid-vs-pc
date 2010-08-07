@@ -208,7 +208,7 @@ proc search::header {} {
   entry $f.emin -textvariable sDateMin -width 10 -font $regular
   button $f.eminCal -image ::utils::date::calendar -padx 0 -pady 0 -command {
     regsub -all {[.]} $sDateMin "-" newdate
-    set ndate [::utils::date::chooser $newdate]
+    set ndate [::utils::date::chooser $newdate .sh]
     if {[llength $ndate] == 3} {
       set sDateMin "[lindex $ndate 0].[lindex $ndate 1].[lindex $ndate 2]"
     }
@@ -216,7 +216,7 @@ proc search::header {} {
   entry $f.emax -textvariable sDateMax -width 10 -font $regular
   button $f.emaxCal -image ::utils::date::calendar -padx 0 -pady 0 -command {
     regsub -all {[.]} $sDateMax "-" newdate
-    set ndate [::utils::date::chooser $newdate]
+    set ndate [::utils::date::chooser $newdate .sh]
     if {[llength $ndate] == 3} {
       set sDateMax "[lindex $ndate 0].[lindex $ndate 1].[lindex $ndate 2]"
     }

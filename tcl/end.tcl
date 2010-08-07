@@ -960,8 +960,9 @@ proc gameSave { gnum } {
   }
 
   set w .save
+
   toplevel $w
-  catch {grab $w}
+  # bad !; catch {grab $w}
 
   if {$gnum == 0} {
     wm title $w "[tr GameAdd]"
@@ -1011,7 +1012,7 @@ proc gameSave { gnum } {
   grid $f.datelabel -row 2 -column 0 -sticky w
   grid $f.dateframe -row 2 -column 1 -columnspan 5 -sticky w
   button $f.datechoose -image ::utils::date::calendar -command {
-    set newdate [::utils::date::chooser "$year-$month-$day"]
+    set newdate [::utils::date::chooser "$year-$month-$day" .save]
     if {[llength $newdate] == 3} {
       set year [lindex $newdate 0]
       set month [lindex $newdate 1]
@@ -1041,7 +1042,7 @@ proc gameSave { gnum } {
   grid $f.edatelabel -row 3 -column 0 -sticky w
   grid $f.edateframe -row 3 -column 1 -columnspan 5 -sticky w
   button $f.edatechoose -image ::utils::date::calendar -command {
-    set newdate [::utils::date::chooser "$eyear-$emonth-$eday"]
+    set newdate [::utils::date::chooser "$eyear-$emonth-$eday" .save]
     if {[llength $newdate] == 3} {
       set eyear [lindex $newdate 0]
       set emonth [lindex $newdate 1]

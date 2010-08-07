@@ -32,7 +32,7 @@ RqpW1QN6q+DRdrfomsvh2mvtSAAAOw==
 #   Originally based on code from Effective Tcl/Tk Programming by
 #   Mark Harrison, but with lots of changes and improvements.
 #
-proc ::utils::date::chooser {{date "now"}} {
+proc ::utils::date::chooser {{date now} {parent .}} {
   set time [clock seconds]
   if {$date != "now"} {
     catch {set time [clock scan $date]}
@@ -42,6 +42,8 @@ proc ::utils::date::chooser {{date "now"}} {
 
   set win .dateChooser
   toplevel $win
+  wm state $win withdrawn
+
   canvas $win.cal -width 300 -height 220
   pack [frame $win.b] -side bottom -fill x
   button $win.b.ok -text "OK" -command "destroy $win"
@@ -70,9 +72,15 @@ proc ::utils::date::chooser {{date "now"}} {
 
   wm minsize $win 250 200
   wm title $win "Scid: Choose Date"
-  focus $win
+
+  placeWinOverParent $win $parent
+  wm state $win normal
+  update
+
+  # grab and tkwait are bad... should be fixed S.A.
   grab $win
   tkwait window $win
+
   if {$::utils::date::_selected == ""} { return {} }
   set time [clock scan $::utils::date::_selected]
   return [list \
