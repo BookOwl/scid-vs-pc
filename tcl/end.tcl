@@ -959,23 +959,20 @@ proc gameSave { gnum } {
     return
   }
 
-  # Make a new toplevel that contains the game save dialog:
   set w .save
   toplevel $w
-  if {$gnum == 0} {
-    wm title $w "Scid: [tr GameAdd]"
-  } else {
-    wm title $w "Scid: [tr GameReplace]"
-  }
-  set gsaveNum $gnum
   catch {grab $w}
 
+  if {$gnum == 0} {
+    wm title $w "[tr GameAdd]"
+  } else {
+    wm title $w "[tr GameReplace]"
+  }
+  set gsaveNum $gnum
+
+  # frame $f holds everything except save/cancel buttons 
   set f [frame $w.g]
   pack $f -side top
-
-  label $f.title -textvar ::tr(NameEditMatches)
-  text $f.list -height 9 -width 40 -relief sunken -background grey90 \
-      -tabs {2c right 2.5c left} -wrap none
 
   # Get current values of tags:
   set year [sc_game tag get Year];    set eyear [sc_game tag get EYear]
@@ -989,7 +986,6 @@ proc gameSave { gnum } {
   set whiteRType [sc_game tag get WhiteRType]
   set blackRType [sc_game tag get BlackRType]
   set eco [sc_game tag get ECO];  set extraTags [sc_game tag get Extra]
-  clearMatchList $f.list
 
   # Use question marks instead of zero values in date:
   if {$year == 0} { set year "????" }
@@ -1029,9 +1025,7 @@ proc gameSave { gnum } {
   }
   pack $f.dateyear $f.datedot1 $f.datemonth $f.datedot2 $f.dateday \
       -in $f.dateframe -side left
-  if {$::tcl_version >= 8.3} {
-    pack $f.datechoose -in $f.dateframe -side left
-  }
+  pack $f.datechoose -in $f.dateframe -side left -padx 3
   pack $f.today -in $f.dateframe -side left
 
   frame $f.edateframe
@@ -1061,34 +1055,32 @@ proc gameSave { gnum } {
   }
   pack $f.edateyear $f.edatedot1 $f.edatemonth $f.edatedot2 $f.edateday \
       -in $f.edateframe -side left
-  if {$::tcl_version >= 8.3} {
-    pack $f.edatechoose -in $f.edateframe -side left
-  }
+  pack $f.edatechoose -in $f.edateframe -side left -padx 3
   pack $f.esame -in $f.edateframe -side left
 
   addGameSaveEntry round 4 ::tr(Round:)
   addGameSaveEntry white 5 ::tr(White:)
   addGameSaveEntry black 6 ::tr(Black:)
 
-  label $f.reslabel -textvar ::tr(Result:)
-  entry $f.resentry -width 2  -relief sunken \
-      -textvariable resultVal
-  label $f.rescomment -text "(1, =, 0, *)"
+  # Game result
+
+  ttk::label $f.reslabel -textvar ::tr(Result:)
+  ttk::combobox $f.resentry -values {1 0 = *} -width 7 \
+    -textvariable resultVal -state readonly
   grid $f.reslabel -row 7 -column 0 -sticky w
   grid $f.resentry -row 7 -column 1 -sticky w
-  grid $f.rescomment -row 7 -column 2 -columnspan 4 -sticky w
 
-  label $f.welolabel -text "$::tr(White) "
-  eval tk_optionMenu $f.wrtype whiteRType [sc_info ratings]
-  $f.wrtype configure -indicatoron 0 -width 7 -takefocus 1
-  entry $f.weloentry -width 5  -relief sunken \
-      -textvariable whiteElo -justify right
+  # White/Black Elo
 
-  label $f.belolabel -text "$::tr(Black) "
-  eval tk_optionMenu $f.brtype blackRType [sc_info ratings]
-  $f.brtype configure -indicatoron 0 -width 7 -takefocus 1
-  entry $f.beloentry -width 5  -relief sunken \
-      -textvariable blackElo -justify right
+  ttk::label $f.welolabel -text "$::tr(White) "
+  ttk::combobox $f.wrtype -values [sc_info ratings] -width 7 \
+    -textvariable whiteRType -state readonly
+  ttk::entry $f.weloentry -width 6 -textvariable whiteElo -justify right
+  
+  ttk::label $f.belolabel -text "$::tr(Black) "
+  ttk::combobox $f.brtype -values [sc_info ratings] -width 7 \
+    -textvariable blackRType -state readonly
+  ttk::entry $f.beloentry -width 6 -textvariable blackElo -justify right
 
   grid $f.welolabel -row 8 -column 0 -sticky w
   grid $f.wrtype -row 8 -column 1 -sticky w
@@ -1097,60 +1089,73 @@ proc gameSave { gnum } {
   grid $f.brtype -row 9 -column 1 -sticky w
   grid $f.beloentry -row 9 -column 2 -sticky w
 
+  # Eco
+
   label $f.ecolabel -text "ECO Code:"
-  entry $f.ecoentry -width 6  -relief sunken \
-      -textvariable eco
+  ttk::entry $f.ecoentry -width 6  -textvariable eco -justify right
   grid $f.ecolabel -row 10 -column 0 -sticky w
-  grid $f.ecoentry -row 10 -column 1 -sticky w
+  grid $f.ecoentry -row 10 -column 2 -sticky w
 
-  button $f.ecob -textvar ::tr(ClassifyGame) -command {set eco [sc_eco game]}
-  grid $f.ecob -row 10 -column 2 -sticky w
+  ttk::button $f.ecob -textvar ::tr(Classify) -command {set eco [sc_eco game]} -width 8 -takefocus 0
+  grid $f.ecob -row 10 -column 1 -sticky w
 
-  grid $f.title -row 0 -column 8 -sticky n -padx 10
-  grid $f.list -row 1 -column 8 -rowspan 9 -sticky nw -padx 10
+  # Autocomplete text widget and label
 
-  frame .save.bar -height 2 -borderwidth 1 -relief sunken
-  pack .save.bar -fill x -pady 4
+  text $f.list -height 9 -width 40 -relief sunken -background grey90 \
+      -tabs {2c right 2.5c left} -wrap none
+  clearMatchList $f.list
 
-  label .save.extralabel -text \
-      "Extra Tags: (example format: Annotator \"Anand, V\") "
-  pack .save.extralabel -side top
-  frame .save.extra
-  text .save.extra.text -height 4 -width 40  -wrap none \
-      -yscrollcommand ".save.extra.scroll set"
-  # Override tab-binding for this text widget:
-  bind .save.extra.text <Key-Tab> "[bind all <Key-Tab>]; break"
-  scrollbar .save.extra.scroll -command ".save.extra.text yview" \
-      -takefocus 0
-  button .save.extra.last -text "Use\nlast\ngame's\ntags" -command {
+  label $f.title -textvar ::tr(NameEditMatches) -font font_Italic
+
+  grid $f.list -row 0 -rowspan 7 -column 8 -columnspan 2 -sticky nsew -padx 10
+  grid $f.title -row 7           -column 8 -columnspan 2 -sticky n -padx 10
+
+  # Extra tags text widget+scrollbar (in frame)
+
+  frame $f.extra
+  grid $f.extra -row 8 -rowspan 2 -column 8 -columnspan 2 -padx 10
+
+  text $f.extratext -height 2 -width 40 -wrap none -yscrollcommand "$f.extrascroll set"
+  # Override tab-binding for this text widget
+  bind $f.extratext <Key-Tab> "[bind all <Key-Tab>]; break"
+  $f.extratext insert 1.0 $extraTags
+
+  scrollbar $f.extrascroll -command "$f.extratext yview" -takefocus 0
+
+  pack $f.extratext   -in $f.extra -side left -fill both -expand 1
+  pack $f.extrascroll -in $f.extra -side right -fill y
+
+  # Extra tags label+button (below)
+
+  label $f.extralabel -text {Extra tags (eg: Annotator "Anand")} -font font_Italic
+  grid $f.extralabel -row 10 -column 8  -sticky n -pady 3
+
+  ttk::button $f.extrabutton -text "Use prev tags" -command {
     set extraTags [sc_game tag get -last Extra]
-    .save.extra.text delete 1.0 end
-    .save.extra.text insert 1.0 $extraTags
+    .save.g.extratext delete 1.0 end
+    .save.g.extratext insert 1.0 $extraTags
   }
-  pack .save.extra -side top -ipady 10
-  pack .save.extra.text -side left -fill both -expand 1
   if {$gnum == 0} {
-    pack .save.extra.last -side right -padx 10
+    grid $f.extrabutton -row 10 -column 9 -sticky ew -pady 3
   }
-  pack .save.extra.scroll -side right -fill y
-  .save.extra.text insert 1.0 $extraTags
+
+  # <Return> invokes "save"
 
   foreach i {entryevent entrysite dateyear datemonth dateday \
-        entryround entrywhite entryblack resentry \
-        weloentry beloentry ecoentry edateyear edatemonth edateday} {
-    bind $f.$i <Return> {.save.buttons.save invoke}
-    # bind $f.$i <FocusIn> {%W configure -background lightYellow }
-    # bind $f.$i <FocusOut> {%W configure -background {} }
+	     entryround entrywhite entryblack resentry \
+	     weloentry beloentry ecoentry edateyear edatemonth edateday} {
+    bind $f.$i <Return> "$w.buttons.save invoke"
   }
-  bind .save.extra.text <FocusIn> {%W configure -background lightYellow }
-  bind .save.extra.text <FocusOut> {%W configure -background white }
 
   # Bindings so Ctrl-1 to Ctrl-9 select a matching name in the player,
   # site, event and round entryboxes:
 
   set j 0
-  foreach {i j} {entryevent "event" entrysite "site"
-    entrywhite "white" entryblack "black"
+  foreach {i j} { \
+    entryevent "event"
+    entrysite  "site"
+    entrywhite "white"
+    entryblack "black"
     entryround "round" } {
     for {set z 1} {$z <= 9} {incr z} {
       bind $f.$i [format "<Control-Key-%d>" $z] \
@@ -1159,37 +1164,43 @@ proc gameSave { gnum } {
     }
   }
 
-  frame .save.bar2 -height 2 -borderwidth 1 -relief sunken
-  pack .save.bar2 -fill x -pady 10
-  frame .save.buttons
+  # Divider
+  pack [frame $w.bar -height 2 -borderwidth 1 -relief sunken] -fill x -pady 5
+
+  # Save/Cancel buttons
+
+  frame $w.buttons
   if {$gnum == 0} {
-    button .save.buttons.prev -text "As last game" -command {
+    button $w.buttons.prev -text "As last game" -command {
     }
   }
-  dialogbutton .save.buttons.save -textvar ::tr(Save) -underline 0 -command {
-    set extraTags [.save.extra.text get 1.0 end-1c]
+  dialogbutton $w.buttons.save -textvar ::tr(Save) -underline 0 -command {
+    set extraTags [.save.g.extratext get 1.0 end-1c]
     gsave $gsaveNum;
     destroy .save
   }
 
-  dialogbutton .save.buttons.cancel -textvar ::tr(Cancel) -command {destroy .save}
-  pack .save.buttons -side bottom -pady 10 -fill x
+  dialogbutton $w.buttons.cancel -textvar ::tr(Cancel) -command "destroy $w"
+  pack $w.buttons -side bottom -pady 10 -fill x
   if {$gnum == 0} {
     #pack .save.buttons.prev -side left -padx 10
   }
-  packbuttons right .save.buttons.cancel .save.buttons.save
+  packbuttons right $w.buttons.cancel $w.buttons.save
 
-  bind .save <Alt-s> {
-    set extraTags [.save.extra.text get 1.0 end-1c]
+  bind $w <Alt-s> {
+    set extraTags [.save.g.extratext get 1.0 end-1c]
     gsave $gsaveNum;
     focus .
     destroy .save
     break
   }
-  bind .save <Escape> { focus .; destroy .save; }
-  ::utils::win::Centre .save
-  focus .save.g.entryevent
-  .save.g.entryevent selection range 0 end
+  bind $w <Escape> {
+    focus .
+    destroy .save
+  }
+
+  placeWinOverParent $w .
+
   if {$gnum > 0} { focus .save.buttons.save }
 }
 
@@ -1211,9 +1222,8 @@ proc gsave { gnum } {
       -blackElo $blackElo -blackRatingType $blackRType \
       -eco $eco -eventdate $edate -extra $extraTagsList
   set res [sc_game save $gnum]
-  if {$res != ""} {
-    tk_messageBox -type ok -icon info -parent .save \
-        -title "Scid" -message $res
+  if {$res != {}} {
+    tk_messageBox -type ok -icon info -parent .save -title "Scid" -message $res
   }
   updateBoard -pgn
   ::windows::gamelist::Refresh
