@@ -124,6 +124,7 @@ menuText C SearchUsing "Hledat pomocí souboru voleb..." 14 {Hledat s pou¾itím vo
 
 # Windows menu:
 menuText C Windows "Okna" 0
+menuText C WindowsGameinfo "Game Info" 0 {Show/hide the game info panel}
 menuText C WindowsComment "Editor komentáøù" 0 {Otevøít/zavøít editor komentáøù}
 menuText C WindowsGList "Seznam partií" 2 {Otevøít/zavøít okno se seznamem partií}
 menuText C WindowsPGN "Okno PGN" 5 {Otevøít/zavøít okno PGN}

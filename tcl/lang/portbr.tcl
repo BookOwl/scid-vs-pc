@@ -12,6 +12,7 @@ menuText B FileNew "Novo..." 0 {Cria uma nova base de dados Scid}
 menuText B FileOpen "Abrir..." 0 {Abre uma base de dados Scid existente}
 menuText B FileClose "Fechar" 0 {Fecha a base de dados Scid ativa}
 menuText B FileFinder "Buscador" 0 {Abre a janela do Buscador de Arquivos}
+menuText B FileSavePgn "Save Pgn..." 0 {}
 menuText B FileBookmarks "Favoritos" 0 {Menu de Favoritos (atalho: Ctrl+B)}
 menuText B FileBookmarksAdd "Adicionar a Favoritos" 0 \
   {Adiciona o posicao do jogo do banco de dados atual}
@@ -193,6 +194,12 @@ menuText B ToolsNovagCitrine "Novag Citrine" 0 {Novag Citrine}
 menuText B ToolsNovagCitrineConfig "Configuration" 0 {Novag Citrine configuration}
 # ====== TODO To be translated ======
 menuText B ToolsNovagCitrineConnect "Connect" 0 {Novag Citrine connect}
+
+menuText B ToolsConnectHardware "Connect Hardware" 0 {Connect external hardware}
+menuText B ToolsConnectHardwareConfigure "Configure..." 0 {Configure external hardware and connection}
+menuText B ToolsConnectHardwareNovagCitrineConnect "Connect Novag Citrine" 9 {Connect Novag Citrine with Scid}
+menuText B ToolsConnectHardwareInputEngineConnect "Connect Input Engine" 9 {Connect Input Engine (e.g. DGT board) with Scid}
+
 menuText B ToolsPInfo "Informacao do Jogador"  0 \
   {Abre/atualiza a janela de informacao do jogador}
 menuText B ToolsPlayerReport "Player Report" 3 \

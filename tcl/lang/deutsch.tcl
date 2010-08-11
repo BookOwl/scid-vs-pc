@@ -7133,22 +7133,4 @@ entfernt und alle neu angelegten hinzugefügt. Durch drücken von
 <p><footer>(Updated: Scid 3.6.24, May 2008)</footer></p>
 }
 
-
-
-
 ### End of file: deutsch.tcl
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
