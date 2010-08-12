@@ -2526,29 +2526,28 @@ set helpText(Maintenance) {<h1>Database maintenance</h1>
 
   <h3><name Twins>Deleting twin games</name></h3>
   <p>
-  The <menu>File: Maintenance</menu> menu has a command
-  <menu>Delete twin games...</menu> for detecting extra copies
-  (twins) of games in the database.
-  This command finds all pairs of games that are twins and, for each pair,
-  flags the shorter game deleted leaving the longer game undeleted.
-  Two games are considered to be twins if their players
-  (and any other tags that you can optionally specify) match exactly.
+  The <menu>File: Maintenance</menu> menu command
+  <menu>Delete twin games...</menu> enables deleting extra
+  copies (twins) of games in the database.  It finds all pairs
+  that are twins and, flags one as deleted.  Two games are
+  considered to be twins if their players, and any other tags
+  that you can optionally specify, match exactly.  </p>
+  <p>
+  If you <b>specify the "same moves" option</b>, each pair
+  of games must have the same actual moves up to the length of
+  the shorter game (or up to move 60, whichever comes first)
+  to be twins.
   </p>
   <p>
-  If you specify the "same moves" option, each pair of games must have the
-  same actual moves up to the length of the shorter game (or up to move 60,
-  whichever comes first) to be twins.
-  </p>
-  <p>
-  When you have deleted twins, it is a good idea to check that each
-  game deleted really is a copy of another game.
-  You can do this easily if you selected the
-  "<b>Set filter to all deleted games</b>" option in the
-  delete twins dialog box. The filter will now contain all deleted games.
-  You can browse through them (using the <b>p</b> and <b>n</b> keys) with
-  the <term>twins checker</term> window (available from the maintenance
-  menu, or the shortcut key <b>Ctrl+Shift+T</b>) to verify that each game is
-  deleted because it actually is a twin of another game.
+  When you have identified twins, it is a good idea to
+  <b>confirm each game</b> really is a copy of another.  By
+  selecting the "Set filter to all deleted games" option in
+  the Delete Twins dialog box, the filter will contain all
+  deleted games, and you can browse through them (using the
+  arrow keys) with the <term>twins checker</term> window
+  (available from the maintenance menu, or the shortcut key
+  <b>Ctrl+Shift+T</b>).  Use the "1", "2" and "u" keys to
+  toggle the delete fields of one or both games.
   </p>
 
   <h3><name Editing>Editing player, event, site and round names</name></h3>

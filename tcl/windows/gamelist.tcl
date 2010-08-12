@@ -558,10 +558,10 @@ proc ::windows::gamelist::Refresh {} {
   set current [sc_game number]
   for {set line $glstart} {$line <= $glistEnd} {incr line} {
     set values [sc_game list $line 1 $glistCodes]
-    if {[lindex $values 13] == {D }} {
-      $w.tree insert {} end -values $values -tag [list click2 deleted] ;#treefont
-    } elseif {[lindex $values 0] == "$current "} {
+    if {[lindex $values 0] == "$current "} {
       $w.tree insert {} end -values $values -tag [list click2 current]
+    } elseif {[lindex $values 13] == {D }} {
+      $w.tree insert {} end -values $values -tag [list click2 deleted] ;#treefont
     } else {
       $w.tree insert {} end -values $values -tag click2
     }

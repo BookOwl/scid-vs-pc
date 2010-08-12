@@ -127,7 +127,7 @@ proc ::maint::OpenClose {} {
   label $w.title.ratings -textvar ::tr(RatingRange) -font $font
   button $w.title.vicon -command {changeBaseType [sc_base current]}
   frame $w.title.desc
-  label $w.title.desc.lab -text $::tr(Description:) -font  $font
+  label $w.title.desc.lab -text $::tr(Description) -font  $font
   label $w.title.desc.text -width 1 -font $font -relief sunken -anchor w
   dialogbutton $w.title.desc.edit -text "[tr Edit]..." -font $font \
       -command ::maint::ChangeBaseDescription -padx 3
@@ -367,7 +367,7 @@ proc ::maint::SetAutoloadGame {} {
   set autoloadGame [sc_base autoload]
 
   pack [frame $w.f] -side top
-  label $w.f.label -text $::tr(AutoloadGame:)
+  label $w.f.label -text $::tr(AutoloadGame)
   entry $w.f.entry -textvar autoloadGame -justify right -width 10 \
       -foreground black 
   pack $w.f.label $w.f.entry -side left
@@ -456,7 +456,7 @@ proc markTwins {{parent .}} {
 
 
   addHorizontalRule $w
-  label $w.twhich -text $::tr(TwinsWhich:) -font font_Bold
+  label $w.twhich -text $::tr(TwinsWhich) -font font_Bold
   pack $w.twhich -side top
   pack [frame $w.g2] -side top -fill x
   radiobutton $w.g2.exall -text $::tr(SelectAllGames) -font $small \
@@ -471,7 +471,7 @@ proc markTwins {{parent .}} {
   grid columnconfigure $w.g2 2 -weight 1
 
   addHorizontalRule $w
-  label $w.twhen -text $::tr(TwinsWhen:) -font font_Bold
+  label $w.twhen -text $::tr(TwinsWhen) -font font_Bold
   pack $w.twhen -side top
   pack [frame $w.g3] -side top
   set row 0
@@ -523,7 +523,11 @@ proc markTwins {{parent .}} {
       set result [doMarkDups .twinSettings]
       focus .
       destroy .twinSettings
-      if {$result > 0} { updateTwinChecker }
+      if {$result > 0} {
+        set gn [sc_filter first]
+        ::game::Load $gn
+        updateTwinChecker
+      }
     }
   }
 
@@ -566,8 +570,7 @@ proc twinCriteriaOK {{parent .}} {
           $twinSettings(month) == "No"} {
       append msg $::tr(TwinCriteria2)
       set result [tk_messageBox -type yesno -parent $parent -icon warning \
-          -title $::tr(TwinCriteriaConfirm) \
-          -message $msg]
+          -title $::tr(TwinCriteriaConfirm) -message $msg]
       if {$result == "no"} { return 0 } else { return 1 }
     }
   }
@@ -580,8 +583,7 @@ proc twinCriteriaOK {{parent .}} {
   if {$count < 2} {
     append msg $::tr(TwinCriteria3)
     set result [tk_messageBox -type yesno -parent $parent -icon warning \
-        -title $::tr(TwinCriteriaConfirm) \
-        -message $msg]
+        -title $::tr(TwinCriteriaConfirm) -message $msg]
     if {$result == "no"} { return 0 } else { return 1 }
   }
   return 1
@@ -676,7 +678,7 @@ proc makeClassifyWin {} {
     grid $w.g.$f -row $row -column 0 -sticky w
     incr row
   }
-  label $w.codes -font font_Bold -textvar ::tr(ClassifyCodes:)
+  label $w.codes -font font_Bold -textvar ::tr(ClassifyCodes)
   radiobutton $w.extended -textvar ::tr(ClassifyBasic) \
       -variable classifyOption(ExtendedCodes) -value 0
   radiobutton $w.basic -textvar ::tr(ClassifyExtended) \
@@ -735,40 +737,60 @@ set twincheck(left) 0
 set twincheck(right) 0
 
 proc updateTwinChecker {} {
+  # todo: make the pgn windows resize symetrically
   global twincheck
+
   set w .twinchecker
   if {![winfo exists $w]} {
     toplevel $w
+    setWinLocation $w
+    setWinSize $w
+
+    # buttons
     pack [frame $w.b] -side bottom -fill x
+
+    # pgn windows
     pack [frame $w.f] -side top -fill both -expand yes
+
     frame $w.f.left
-    pack $w.f.left -side left -fill y -expand yes
-    frame $w.f.split -width 2 -borderwidth 2 -relief sunken
-    pack $w.f.split -side left -fill y -padx 5
+    pack $w.f.left -side left -fill both -expand yes
+
+    # frame $w.f.split -width 2 -borderwidth 2 -relief sunken
+    # pack $w.f.split -side left -fill y -padx 3
+
     frame $w.f.right
-    pack $w.f.right -side left -fill y -expand yes
+    pack $w.f.right -side right -fill both -expand yes
+
     foreach i {left right} {
       set f $w.f.$i
       pack [frame $f.title] -side top -fill x
-      label $f.title.label -font font_Bold -text [concat $::tr(game) " 0: "]
+      label $f.title.label -font font_Bold -text [concat $::tr(game) " 0 "]
       checkbutton $f.title.d -text $::tr(Deleted) -pady 5 \
           -variable twincheck($i) -font font_Small
       label $f.title.note -font font_Small
-      pack $f.title.label $f.title.d $f.title.note -side left
+      pack $f.title.label -side left
+      pack $f.title.note $f.title.d -side right -padx 3
       label $f.tmt -font font_Small -text "" -anchor w -width 1 -relief sunken
       pack $f.tmt -side bottom -fill x
       autoscrollframe $f.t text $f.t.text \
-          -height 16 -width 40  \
+          -height 16 -width 20  \
           -takefocus 0 -wrap word
       $f.t.text tag configure h -background lightSteelBlue
       pack $f.t -side top -fill both -expand yes
+
+      ### Synchronize yviews of  left+right text widgets
+      # comment out next two lines to allow for individual text scrolling
+      $f.t.ybar configure -command dualshow
+      $f.t.text configure -yscrollcommand dualscroll
+      # wheel mouse bindings
+      bind $f.t.text <ButtonPress-4> "dualplus -1 $i"
+      bind $f.t.text <ButtonPress-5> "dualplus 1 $i"
     }
+
     $w.f.left.title.note configure -text [concat "(\"1\"" $::tr(TwinCheckUndelete)]
     $w.f.right.title.note configure -text  [concat "(\"2\"" $::tr(TwinCheckUndelete)]
-    button $w.b.prev -text $::tr(TwinCheckprevPair) \
-        -command {::game::LoadNextPrev previous}
-    button $w.b.next -text $::tr(TwinChecknextPair) -underline 0 \
-        -command {::game::LoadNextPrev next}
+    button $w.b.prev -text {  << } -command {::game::LoadNextPrev previous}
+    button $w.b.next -text {  >> } -command {::game::LoadNextPrev next}
     button $w.b.share -text $::tr(TwinCheckTag) -underline 0
     button $w.b.delete -text $::tr(DeleteTwins) -underline 0 \
         -command "markTwins $w"
@@ -778,12 +800,9 @@ proc updateTwinChecker {} {
     pack $w.b.prev $w.b.next $w.b.share -side left -padx 5 -pady 2
     bind $w <F1> "$w.b.help invoke"
     bind $w <Escape> "focus .; destroy $w"
-    bind $w <Alt-p> {::game::LoadNextPrev previous}
-    bind $w <KeyPress-p> {::game::LoadNextPrev previous}
-    bind $w <Alt-n> {::game::LoadNextPrev next}
-    bind $w <KeyPress-n> {::game::LoadNextPrev next}
+    bind $w <KeyPress-Left> {::game::LoadNextPrev previous}
+    bind $w <KeyPress-Right> {::game::LoadNextPrev next}
     bind $w <Alt-d> "markTwins $w"
-    bind $w <KeyPress-d> "markTwins $w"
     bind $w <KeyPress-1> "$w.f.left.title.d invoke"
     bind $w <KeyPress-2> "$w.f.right.title.d invoke"
     bind $w <KeyPress-s> "$w.b.share invoke"
@@ -791,12 +810,9 @@ proc updateTwinChecker {} {
       if {$twincheck(left)} {.twinchecker.f.left.title.d invoke}
       if {$twincheck(right)} {.twinchecker.f.right.title.d invoke}
     }
-    bind $w <Alt-u> {
-      if {$twincheck(left)} {.twinchecker.f.left.title.d invoke}
-      if {$twincheck(right)} {.twinchecker.f.right.title.d invoke}
-    }
     wm resizable $w 0 1
     wm title $w $::tr(TwinChecker)
+    bind $w <Configure> "recordWinSize $w"
   }
 
   set gn [sc_game number]
@@ -807,7 +823,7 @@ proc updateTwinChecker {} {
   set twincheck(left) 0
   set twincheck(right) 0
 
-  $w.f.left.title.label configure -text [concat $::tr(game) " $gn:  "]
+  $w.f.left.title.label configure -text [concat $::tr(game) " $gn  "]
 
   if {$gn > 0} {
     set twincheck(left) [sc_game flag delete $gn]
@@ -821,7 +837,7 @@ proc updateTwinChecker {} {
   }
   if {$dup > 0} {
     set twincheck(right) [sc_game flag delete $dup]
-    $w.f.right.title.label configure -text [concat $::tr(game) " $dup:  "]
+    $w.f.right.title.label configure -text [concat $::tr(game) " $dup  "]
     $w.f.right.title.d configure -command "sc_game flag delete $dup invert; updateBoard"
     $w.f.right.title.d configure -state normal
     set tmt [sc_game crosstable count -game $dup +deleted]
@@ -899,6 +915,26 @@ proc updateTwinChecker {} {
   }
 
 }
+
+proc dualscroll {a b} {
+  _autoscroll .twinchecker.f.left.t.ybar $a $b
+  _autoscroll .twinchecker.f.right.t.ybar $a $b
+}
+proc dualshow {a b} {
+  .twinchecker.f.right.t.text yview $a $b
+  .twinchecker.f.left.t.text yview $a $b
+}
+proc dualplus {n side} {
+  # the wheel mouse automatically scrolls one side, so over compensate other side
+  if {$side == {left} } {
+    .twinchecker.f.left.t.text  yview scroll $n unit
+    .twinchecker.f.right.t.text yview scroll [expr $n * 3] unit
+  } else {
+    .twinchecker.f.right.t.text yview scroll $n unit
+    .twinchecker.f.left.t.text  yview scroll [expr $n * 3] unit
+  }
+}
+
 
 # shareTwinTags:
 #   Updates the tags of two twin games by sharing information,
@@ -1121,13 +1157,13 @@ proc makeSortWin {} {
   wm title $w "Scid: [tr FileMaintSort]"
   wm resizable $w 0 0
 
-  label $w.torder -textvar ::tr(SortCriteria:) -font font_Bold
+  label $w.torder -textvar ::tr(SortCriteria) -font font_Bold
   pack $w.torder -side top
   label $w.order -textvar sortCriteria(translated) -width 40  \
       -relief solid -anchor w
   pack $w.order -side top -fill x -pady 2 -padx 2
   addHorizontalRule $w
-  label $w.tadd -textvar ::tr(AddCriteria:) -font font_Bold
+  label $w.tadd -textvar ::tr(AddCriteria) -font font_Bold
   pack $w.tadd -side top
   pack [frame $w.add] -side top -fill x
   foreach b {Date Year Month Event Site Country Round Result Length
@@ -1157,7 +1193,7 @@ proc makeSortWin {} {
 
   addHorizontalRule $w
 
-  label $w.tcommon -textvar ::tr(CommonSorts:) -font font_Bold
+  label $w.tcommon -textvar ::tr(CommonSorts) -font font_Bold
   pack $w.tcommon -side top
   pack [frame $w.tc] -side top -fill x
   button $w.tc.ymsedr -text "$::tr(Year), $::tr(Month), $::tr(Site), $::tr(Event), $::tr(Date), $::tr(Round)" -command {
@@ -1350,7 +1386,7 @@ proc stripTags {} {
 
   toplevel $w
   wm title $w "Scid: $::tr(StripTags)"
-  label $w.title -text "Extra PGN tags:" -font font_Bold
+  label $w.title -text "Extra PGN tags" -font font_Bold
   pack $w.title -side top
   pack [frame $w.f] -side top -fill x
   addHorizontalRule $w
