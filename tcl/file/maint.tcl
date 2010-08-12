@@ -218,8 +218,8 @@ proc ::maint::OpenClose {} {
   grid $w.db.title -columnspan 3 -row 0 -column 0 -sticky n
 
   button $w.db.eco -textvar ::tr(ReclassifyGames...) -command classifyAllGames
-  button $w.db.compact -textvar ::tr(CompactDatabase...) -command makeCompactWin
-  button $w.db.sort -textvar ::tr(SortDatabase...) -command makeSortWin
+  button $w.db.compact -textvar ::tr(CompactDatabase...) -command "makeCompactWin $w"
+  button $w.db.sort -textvar ::tr(SortDatabase...) -command "makeSortWin $w"
   button $w.db.elo -textvar ::tr(AddEloRatings...) -command allocateRatings
   button $w.db.dups -textvar ::tr(DeleteTwins...) -command "markTwins $w"
   button $w.db.cleaner -textvar ::tr(Cleaner...) -command cleanerWin
@@ -406,6 +406,7 @@ proc ::maint::SetAutoloadGame {} {
 #
 proc markTwins {{parent .}} {
   global twinSettings
+
   if {! [sc_base inUse]} { return }
   if {[sc_base numGames] == 0} {
     tk_messageBox -type ok -icon info -title [concat "Scid: " $::tr(noGames)] \
@@ -414,50 +415,63 @@ proc markTwins {{parent .}} {
   }
 
   set w .twinSettings
-  if {! [winfo exists $w]} {
-    toplevel $w
-    wm resizable $w 0 0
-    wm title $w "Scid: $::tr(DeleteTwins)"
-    set small font_Small
-    label $w.note -text $::tr(TwinsNote) -justify left \
-        -wraplength 500 -font $small
-    pack $w.note -side top -anchor w -ipady 0 -pady 0
-    addHorizontalRule $w
-    label $w.tc -text $::tr(TwinsCriteria) -font font_Bold
-    pack $w.tc -side top
-
-    frame $w.g
-    pack $w.g -side top
-    set row 0
-    set col 0
-    foreach name {Colors Event Site Round Year Month Day Result ECO Moves} {
-      set n [string tolower $name]
-      checkbutton $w.g.b$n -text $::tr(Twins$name) \
-          -variable twinSettings($n) -onvalue Yes -offvalue No
-      grid $w.g.b$n -row $row -column $col -sticky w
-      incr col
-      if {$col >= 4} {
-        incr row; set col 0
-      } else {
-        grid [label $w.g.space$n -text "   "] -row $row -column $col
-        incr col
-      }
-    }
-    frame $w.players
-    label $w.players.label -text $::tr(TwinsPlayers) -font $small
-    radiobutton $w.players.yes -variable twinSettings(players) -value Yes \
-        -text $::tr(TwinsPlayersExact) -font $small
-    radiobutton $w.players.no -variable twinSettings(players) -value No \
-        -text $::tr(TwinsPlayersPrefix) -font $small
-
-    pack $w.players -side top
-    pack $w.players.label $w.players.yes $w.players.no -side left
+  if {[winfo exists $w]} {
+    raiseWin $w
+    return
   }
 
+  toplevel $w
+  wm withdraw $w
+  wm resizable $w 0 0
+  wm title $w "$::tr(DeleteTwins): [file tail [sc_base filename]]"
+  set small font_Small
+
+  # Usage note
+
+  label $w.note -text $::tr(TwinsNote) -justify left -wraplength 200 -font font_Italic
+  pack $w.note -side top -anchor w -ipady 0 -pady 0
 
   addHorizontalRule $w
-  label $w.twhich -text $::tr(TwinsWhich) -font font_Bold
-  pack $w.twhich -side top
+
+  # Criteria to be twins
+
+  label $w.tc -text $::tr(TwinsCriteria) -font font_Bold
+  pack $w.tc -side top
+
+  frame $w.g
+  pack $w.g -side top
+  set row 0
+  set col 0
+  foreach name {Colors Event Site Round Year Month Day Result ECO Moves} {
+    set n [string tolower $name]
+    checkbutton $w.g.b$n -text $::tr(Twins$name) \
+	-variable twinSettings($n) -onvalue Yes -offvalue No
+    grid $w.g.b$n -row $row -column $col -sticky w
+    incr col
+    if {$col >= 4} {
+      incr row; set col 0
+    } else {
+      grid [label $w.g.space$n -text "   "] -row $row -column $col
+      incr col
+    }
+  }
+  frame $w.players
+  label $w.players.label -text $::tr(TwinsPlayers) -font $small
+  radiobutton $w.players.yes -variable twinSettings(players) -value Yes \
+      -text $::tr(TwinsPlayersExact) -font $small
+  radiobutton $w.players.no -variable twinSettings(players) -value No \
+      -text $::tr(TwinsPlayersPrefix) -font $small
+
+  pack $w.players -side top
+  pack $w.players.label $w.players.yes $w.players.no -side left
+
+  addHorizontalRule $w
+
+  # Examine which (all or filter) games
+
+  label $w.which -text $::tr(TwinsWhich) -font font_Bold
+  pack $w.which -side top
+
   pack [frame $w.g2] -side top -fill x
   radiobutton $w.g2.exall -text $::tr(SelectAllGames) -font $small \
       -variable twinSettings(usefilter) -value No
@@ -471,54 +485,62 @@ proc markTwins {{parent .}} {
   grid columnconfigure $w.g2 2 -weight 1
 
   addHorizontalRule $w
-  label $w.twhen -text $::tr(TwinsWhen) -font font_Bold
-  pack $w.twhen -side top
+
+  # When deleting twin games
+
+  label $w.when -text $::tr(TwinsWhen) -font font_Bold
+  pack $w.when -side top
   pack [frame $w.g3] -side top
   set row 0
   set col 0
   foreach n {skipshort undelete setfilter comments variations} \
-      name {SkipShort Undelete SetFilter Comments Vars} {
-        checkbutton $w.g3.b$n -text $::tr(Twins$name) -variable twinSettings($n) -onvalue Yes -offvalue No
-        grid $w.g3.b$n -row $row -column $col -sticky w
-        incr col
-        if {$col >= 2} {
-          incr row; set col 0
-        } else {
-          grid [label $w.g3.space$n -text "   "] -row $row -column $col
-          incr col
-        }
+      name {Undelete SkipShort SetFilter Comments Vars} {
+        checkbutton $w.g3.$n -text $::tr(Twins$name) -variable twinSettings($n) -onvalue Yes -offvalue No
+        grid $w.g3.$n -row $row -column $col -sticky w -padx 5 -pady 2
+        incr row
       }
-  incr row
   #$w.g3.lskipshort configure -text $::tr(TwinsSkipShort)
   #$w.g3.lundelete configure -text $::tr(TwinsUndelete)
   #$w.g3.lsetfilter configure -text $::tr(TwinsSetFilter)
   #$w.g3.lcomments configure -text $::tr(TwinsComments)
   #$w.g3.lvariations configure -text $::tr(TwinsVars)
-  label $w.g3.ldelete -text $::tr(TwinsDeleteWhich) -font font_Bold
-  grid $w.g3.ldelete -row $row -column 0 -sticky we -columnspan 3
+
+  addHorizontalRule $w
+
+  # Delete shorter/lesser/greater
+
+  pack [frame $w.g4] -side top
+  set row 0
+  set col 0
+  label $w.g4.delete -text $::tr(TwinsDeleteWhich) -font font_Bold
+  grid $w.g4.delete -row $row -column 0 -sticky we -columnspan 3
   incr row
-  frame $w.g3.vdelete
+
+  frame $w.g4.vdelete
   foreach v {Shorter Older Newer} {
-    radiobutton $w.g3.vdelete.v$v -text $::tr(TwinsDelete$v) \
+    radiobutton $w.g4.vdelete.v$v -text $::tr(TwinsDelete$v) \
         -variable twinSettings(delete) -value $v -font $small
-    pack $w.g3.vdelete.v$v -side left -padx 5
+    pack $w.g4.vdelete.v$v -side left -padx 5
   }
-  grid $w.g3.vdelete -row $row -column 0 -columnspan 3
+  grid $w.g4.vdelete -row $row -column 0 -columnspan 3
 
   #foreach g {g2 g3} {
   #  grid columnconfigure $w.$g 0 -weight 1
   #}
 
   addHorizontalRule $w
+
+  # Buttons
+
   frame $w.b
-  dialogbutton $w.b.defaults -textvar ::tr(Defaults) -command {
+  pack $w.b -side bottom -fill x
+  button $w.b.defaults -textvar ::tr(Defaults) -command {
     array set twinSettings [array get twinSettingsDefaults]
   }
-  dialogbutton $w.b.help -text $::tr(Help) -font $small \
+  button $w.b.help -text $::tr(Help) -font $small \
       -command "helpWindow Maintenance Twins; focus $w"
-  dialogbutton $w.b.go -text $::tr(TwinsDelete) -font $small -command {
+  button $w.b.go -text $::tr(TwinsDelete) -font $small -command {
     if {[twinCriteriaOK .twinSettings]} {
-      grab release .twinSettings
       sc_progressBar .twinSettings.progress bar 301 21 time
       set result [doMarkDups .twinSettings]
       focus .
@@ -531,25 +553,28 @@ proc markTwins {{parent .}} {
     }
   }
 
-  dialogbutton $w.b.cancel -text $::tr(Cancel) -font $small \
-      -command "grab release $w; focus .; destroy $w"
+  button $w.b.cancel -text $::tr(Cancel) -font $small \
+      -command "focus . ; destroy $w"
+
+  # Progress bar
 
   canvas $w.progress -width 300 -height 20  -relief solid -border 1
   $w.progress create rectangle 0 0 0 0 -fill blue -outline blue -tags bar
   $w.progress create text 295 10 -anchor e -font font_Regular -tags time \
       -fill black -text "0:00 / 0:00"
 
-  pack $w.progress -side bottom -padx 2 -pady 2
-  pack $w.b -side bottom -fill x
+  pack $w.progress -side bottom -padx 2 -pady 8
   packbuttons right  $w.b.cancel $w.b.go
   packbuttons left $w.b.defaults $w.b.help
   bind $w <F1> "$w.b.help invoke"
   bind $w <Escape> "$w.b.cancel invoke"
   bind $w <Return> "$w.b.go invoke"
-  grab $w
-  update idletasks
-  $w.note configure -wraplength [winfo width $w]
-  return
+
+  update
+  $w.note configure -wraplength [winfo reqwidth $w]
+  placeWinOverParent $w $parent
+  wm state $w normal
+
 }
 
 # twinCriteriaOK:
@@ -687,8 +712,7 @@ proc makeClassifyWin {} {
   frame $w.b
   button $w.b.go -textvar ::tr(Classify) -command {
     busyCursor .
-    .classify.b.cancel configure -command "sc_progressBar"
-    .classify.b.cancel configure -textvar ::tr(Stop)
+    .classify.b.cancel configure -command sc_progressBar -textvar ::tr(Stop)
     sc_progressBar .classify.progress bar 301 21 time
     grab .classify.b.cancel
     if {[catch  {sc_eco base $classifyOption(AllGames) $classifyOption(ExtendedCodes)} result]} {
@@ -792,8 +816,7 @@ proc updateTwinChecker {} {
     button $w.b.prev -text {  << } -command {::game::LoadNextPrev previous}
     button $w.b.next -text {  >> } -command {::game::LoadNextPrev next}
     button $w.b.share -text $::tr(TwinCheckTag) -underline 0
-    button $w.b.delete -text $::tr(DeleteTwins) -underline 0 \
-        -command "markTwins $w"
+    button $w.b.delete -text $::tr(DeleteTwins) -underline 0 -command "markTwins $w"
     button $w.b.help -text $::tr(Help) -command {helpWindow Maintenance Twins}
     button $w.b.close -text $::tr(Close) -command "focus .; destroy $w"
     pack $w.b.close $w.b.help $w.b.delete -side right -padx 5 -pady 2
@@ -974,24 +997,23 @@ proc baseIsCompactable {} {
 # makeCompactWin:
 # Opens the database compaction dialog box.
 #
-proc makeCompactWin {} {
+proc makeCompactWin {{parent .}} {
   if {! [baseIsCompactable]} { return }
   set w .compactWin
   toplevel $w
-  wm title $w "Scid: $::tr(CompactDatabase)"
+  wm withdraw $w
+  wm title $w "$::tr(CompactDatabase): [file tail [sc_base filename]]"
   wm resizable $w 0 0
-  foreach f {top names games buttons} { frame $w.$f }
-  pack $w.top -side top -fill x -padx 5
-  pack $w.names -in $w.top -side left -fill x -anchor n
+  foreach f {top names games buttons} {
+    frame $w.$f
+  }
+  pack $w.top -side top -padx 5
+  pack $w.names -in $w.top -side left -anchor n
   addVerticalRule $w.top 12
-  pack $w.games -in $w.top -side left -fill x -anchor n
+  pack $w.games -in $w.top -side right -anchor n
   addHorizontalRule $w
   pack $w.buttons -side top -fill x
 
-  for {set i 0} {$i < 3} {incr i} {
-    grid columnconfigure $w.names $i -weight 1
-    grid columnconfigure $w.games $i -weight 1
-  }
   label $w.names.title -text $::tr(NameFile) -font font_Bold
   grid $w.names.title -columnspan 3 -row 0 -column 0 -sticky n
   label $w.names.nt -text "  $::tr(Names)"
@@ -1043,10 +1065,12 @@ proc makeCompactWin {} {
   button $w.buttons.g -text $::tr(CompactGames) -command "compactGames $w"
   button $w.buttons.help -text $::tr(Help) -command {helpWindow Compact}
   button $w.buttons.cancel -text $::tr(Cancel) \
-      -command "focus .; grab release $w; destroy $w"
+      -command "focus . ; destroy $w"
   pack $w.buttons.cancel $w.buttons.help -side right -padx 5 -pady 2
   pack $w.buttons.n $w.buttons.g -side left -padx 5 -pady 2
-  grab $w
+
+  placeWinOverParent $w $parent
+  wm state $w normal
 }
 
 proc compactNames {} {
@@ -1146,7 +1170,7 @@ proc addSortCriteria {args} {
   updateSortWin
 }
 
-proc makeSortWin {} {
+proc makeSortWin {{parent .}} {
   global sortCriteria
   set w .sortWin
   if {[winfo exists $w]} {
@@ -1154,6 +1178,7 @@ proc makeSortWin {} {
     return
   }
   toplevel $w
+  wm withdraw $w
   wm title $w "Scid: [tr FileMaintSort]"
   wm resizable $w 0 0
 
@@ -1223,6 +1248,9 @@ proc makeSortWin {} {
   pack $w.b.clear $w.b.help -side left -padx 5 -pady 2
   bind $w <F1> {helpWindow Sorting}
   bind $w <Escape> "$w.b.close invoke"
+
+  placeWinOverParent $w $parent
+  wm state $w normal
   standardShortcuts $w
   updateSortWin
 }

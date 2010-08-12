@@ -1207,7 +1207,7 @@ translate E SelectTournamentGames {Only games in the current tournament}
 translate E SelectOlderGames {Only older games}
 
 # Delete Twins window:
-translate E TwinsNote {To be twins, two games must at least have the same two players, and criteria you can set below. When a pair of twins is found, the shorter game is deleted. Hint: it is best to spellcheck the database before deleting twins, since it improves twin detection. }
+translate E TwinsNote {To be regarded as twins, games must have the same players, and other criteria as per below. Note - It is best to spellcheck the database before detecting twins. }
 translate E TwinsCriteria {Criteria: Twin games must have...}
 translate E TwinsWhich {Examine which games}
 translate E TwinsColors {Same player colors}
@@ -1226,13 +1226,13 @@ translate E TwinsPlayersPrefix {First 4 letters only}
 translate E TwinsWhen {When deleting twin games}
 translate E TwinsSkipShort {Ignore all games under 5 moves long}
 translate E TwinsUndelete {Undelete all games first}
-translate E TwinsSetFilter {Set filter to all deleted twin games}
+translate E TwinsSetFilter {Set filter to twins to be deleted}
 translate E TwinsComments {Always keep games with comments}
 translate E TwinsVars {Always keep games with variations}
 translate E TwinsDeleteWhich {Delete which game}
 translate E TwinsDeleteShorter {Shorter game}
-translate E TwinsDeleteOlder {Smaller game number}
-translate E TwinsDeleteNewer {Larger game number}
+translate E TwinsDeleteOlder {Lesser game number}
+translate E TwinsDeleteNewer {Greater game number}
 translate E TwinsDelete {Delete games}
 
 # Name editor window:

@@ -2501,8 +2501,8 @@ set helpText(Compact) {<h1>Database compaction</h1>
 ####################
 ### Database maintenance tools help:
 
-set helpTitle(Maintenance) "Database maintenance"
-set helpText(Maintenance) {<h1>Database maintenance</h1>
+set helpTitle(Maintenance) "Database Maintenance"
+set helpText(Maintenance) {<h1>Database Maintenance</h1>
   <p>
   Scid provides a number of tools for maintaining databases,
   available from the Scid <a Menus File>File</a> menu. The
@@ -2526,17 +2526,18 @@ set helpText(Maintenance) {<h1>Database maintenance</h1>
 
   <h3><name Twins>Deleting twin games</name></h3>
   <p>
-  The <menu>File: Maintenance</menu> menu command
-  <menu>Delete twin games...</menu> enables deleting extra
-  copies (twins) of games in the database.  It finds all pairs
-  that are twins and, flags one as deleted.  Two games are
-  considered to be twins if their players, and any other tags
-  that you can optionally specify, match exactly.  </p>
+  The Delete twin games feature (accesible from the
+  <b>Maintenance</b> menu) enables deleting extra
+  copies, or twins, in the database.  It finds all pairs
+  that are twins and flags one as deleted.
+  </p>
   <p>
-  If you <b>specify the "same moves" option</b>, each pair
-  of games must have the same actual moves up to the length of
-  the shorter game (or up to move 60, whichever comes first)
-  to be twins.
+  Two games are considered to be twins if their players, and
+  any other tags that you can optionally specify, exactly
+  match.  If you specify the "<b>same moves</b>" option (which
+  is strongly recommended), each pair of games must have the
+  same actual moves up to the length of the shorter game (or
+  move 60, whichever comes first) to be twins.
   </p>
   <p>
   When you have identified twins, it is a good idea to
@@ -2544,9 +2545,8 @@ set helpText(Maintenance) {<h1>Database maintenance</h1>
   selecting the "Set filter to all deleted games" option in
   the Delete Twins dialog box, the filter will contain all
   deleted games, and you can browse through them (using the
-  arrow keys) with the <term>twins checker</term> window
-  (available from the maintenance menu, or the shortcut key
-  <b>Ctrl+Shift+T</b>).  Use the "1", "2" and "u" keys to
+  arrow keys) with the <term>twins checker</term> window.
+  Use the "1", "2" and "u" keys to
   toggle the delete fields of one or both games.
   </p>
 
@@ -2642,7 +2642,7 @@ set helpText(Maintenance) {<h1>Database maintenance</h1>
   back in a consistent and usable state.
   </p>
 
-  <p><footer>Updated: Scid 3.6.26, October 2008</footer></p>
+  <p><footer>Updated: Scid vs. PC 4.1, August 2010</footer></p>
 }
 
 ####################
