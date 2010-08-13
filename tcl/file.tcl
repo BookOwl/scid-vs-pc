@@ -100,11 +100,11 @@ proc ::file::New {} {
 #
 #    Opens file-open dialog and opens the selected Scid database.
 #
-proc ::file::Open {{fName ""}} {
+proc ::file::Open {{fName ""} {parent .}} {
   global glstart
   if {[sc_base count free] == 0} {
     tk_messageBox -type ok -icon info -title "Scid" \
-        -message "Too many databases are open; close one first"
+        -message "Too many databases are open; close one first" -parent $parent
     return
   }
 
@@ -132,7 +132,8 @@ proc ::file::Open {{fName ""}} {
     if {! [file isdirectory $::initialDir(base)] } {
       set ::initialDir(base) $::env(HOME)
     }
-    set fName [tk_getOpenFile -initialdir $::initialDir(base) -filetypes $ftype -title "Open a Scid file"]
+    set fName [tk_getOpenFile -initialdir $::initialDir(base) -filetypes $ftype \
+                 -title "Open a Scid file" -parent $parent]
     if {$fName == ""} { return }
   }
 
@@ -142,7 +143,7 @@ proc ::file::Open {{fName ""}} {
 
   if {[file extension $fName] == ".sor"} {
     if {[catch {::rep::OpenWithFile $fName} err]} {
-      tk_messageBox -parent . -type ok -icon info -title "Scid" \
+      tk_messageBox -parent $parent -type ok -icon info -title "Scid" \
           -message "Unable to open \"$fName\": $err"
     }
     return
@@ -162,7 +163,7 @@ proc ::file::Open {{fName ""}} {
     set fName [file rootname $fName]
     if {[catch {openBase $fName} result]} {
       set err 1
-      tk_messageBox -icon warning -type ok -parent . \
+      tk_messageBox -icon warning -type ok -parent $parent \
           -title "Scid: Error opening file" -message $result
       ::recentFiles::remove "$fName.si3"
     } else {
@@ -178,14 +179,14 @@ proc ::file::Open {{fName ""}} {
     if {![file exists $fName]} {
       set err 1
       ::recentFiles::remove $fName
-      tk_messageBox -icon warning -type ok -parent . \
+      tk_messageBox -icon warning -type ok -parent $parent \
           -title "Scid: Error opening file" -message "File $fName doesn't exist."
     } else {
       set result "File $fName is not readable."
       if {(![file readable $fName])  || \
 	    [catch {sc_base create $fName true} result]} {
 	set err 1
-	tk_messageBox -icon warning -type ok -parent . \
+	tk_messageBox -icon warning -type ok -parent $parent \
 	    -title "Scid: Error opening file" -message $result
       } else {
 	doPgnFileImport $fName "Opening [file tail $fName] read-only...\n"

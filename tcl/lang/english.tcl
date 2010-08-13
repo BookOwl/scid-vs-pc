@@ -1297,8 +1297,8 @@ translate E CopyConfirm {
  to the database "$targetName"?
 }
 translate E CopyErr {Cannot copy games}
-translate E CopyErrSource {the source database}
-translate E CopyErrTarget {the target database}
+translate E CopyErrSource {The source database}
+translate E CopyErrTarget {The target database}
 translate E CopyErrNoGames {has no games in its filter}
 translate E CopyErrReadOnly {is read-only}
 translate E CopyErrNotOpen {is not open}

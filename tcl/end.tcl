@@ -588,7 +588,7 @@ proc copyFilter {frombaseNum tobaseNum} {
     set err "$::tr(CopyErrSource) $::tr(CopyErrNoGames)."
   }
   if {$targetReadOnly} {
-    set err "$::tr(CopyErrTarget) ($targetName) $::tr(CopyErrReadOnly)."
+    set err "$::tr(CopyErrTarget) $::tr(CopyErrReadOnly)."
   }
   if {! $targetInUse} {set err "$::tr(CopyErrTarget) $::tr(CopyErrNotOpen)."}
   if {! $fromInUse} {set err "$::tr(CopyErrSource) $::tr(CopyErrNotOpen)."}
@@ -598,7 +598,7 @@ proc copyFilter {frombaseNum tobaseNum} {
 
   if {$err != ""} {
     tk_messageBox -type ok -icon info -title "Scid" \
-        -message "$::tr(CopyErr) \n\"$fromName\" -> \"$targetName\": \n$err"
+        -message "$::tr(CopyErr) \nfrom \"$fromName\" to \"$targetName\".\n$err"
     return
   }
 

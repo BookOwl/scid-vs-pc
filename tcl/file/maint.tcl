@@ -125,7 +125,7 @@ proc ::maint::OpenClose {} {
   label $w.title.filter -textvar ::tr(NumFilterGames) -font $font
   label $w.title.dates -textvar ::tr(YearRange) -font $font
   label $w.title.ratings -textvar ::tr(RatingRange) -font $font
-  button $w.title.vicon -command {changeBaseType [sc_base current]}
+  button $w.title.vicon -command {changeBaseType [sc_base current] .maintWin}
   frame $w.title.desc
   label $w.title.desc.lab -text $::tr(Description) -font  $font
   label $w.title.desc.text -width 1 -font $font -relief sunken -anchor w

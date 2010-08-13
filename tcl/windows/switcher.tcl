@@ -2,6 +2,7 @@
 ### windows/switcher.tcl: part of Scid
 ### Copyright (C) 2000-2004  Shane Hudson.
 
+# super lame icons S.A
 
 # 0: Unknown/empty
 image create photo dbt0 -format gif -data \
@@ -260,7 +261,6 @@ variable ::windows::switcher::base_types {
   {Theory: Open Games: 1.e4 e5}
 }
 
-
 set numBaseTypeIcons [llength $::windows::switcher::base_types]
 
 set temp_dbtype 0
@@ -285,7 +285,7 @@ proc clickBaseType {x y} {
   selectBaseType $type
 }
 
-proc changeBaseType {baseNum} {
+proc changeBaseType {baseNum {parent .}} {
   global temp_dbtype ::windows::switcher::base_types numBaseTypeIcons
   if {$baseNum > [sc_base count total]} { return }
   set temp_dbtype [sc_base type $baseNum]
@@ -296,8 +296,7 @@ proc changeBaseType {baseNum} {
   wm title $w "Scid: Choose database icon"
 
   text $w.t -yscrollcommand "$w.yscroll set" -font font_Regular \
-    -height 25 -width 40  -wrap none \
-    -cursor top_left_arrow
+    -height 25 -width 40  -wrap none -cursor top_left_arrow
   $w.t tag configure selected -background lightblue
 
   scrollbar $w.yscroll -command "$w.t yview" -takefocus 0
@@ -340,7 +339,7 @@ proc changeBaseType {baseNum} {
   bind $w <Escape> "$w.b.cancel invoke"
   bind $w <Return> "$w.b.set invoke"
 
-  placeWinOverParent $w .maintWin
+  placeWinOverParent $w $parent
   wm state $w normal
 
   focus $w.t
@@ -348,8 +347,6 @@ proc changeBaseType {baseNum} {
   update
   selectBaseType $temp_dbtype
 }
-
-
 
 proc ::windows::switcher::pressMouseEvent {i} {
   if {! [winfo exists .baseWin]} {return}
@@ -395,18 +392,17 @@ proc ::windows::switcher::Open {} {
   bind $w <F1> { helpWindow Switcher }
   standardShortcuts $w
 
-  canvas $w.c -width 300 -height 100 -yscrollcommand [list $w.ybar set]
+  canvas $w.c -width 300 -height 100 -yscrollcommand [list $w.ybar set] -bg $::defaultBackground
   scrollbar $w.ybar -takefocus 0 -command [list $w.c yview]
   label $w.status -width 1 -anchor w -relief sunken -borderwidth 1
 
   grid $w.c -row 0 -column 0 -sticky news
   grid $w.ybar -row 0 -column 1 -sticky ns
-  grid $w.status -row 1 -column 0 -sticky we
+  # Superfluous S.A.
+  # grid $w.status -row 1 -column 0 -sticky we
   grid rowconfigure $w 0 -weight 1
   grid columnconfigure $w 0 -weight 1
 
-  #set side left
-  #if {$::windows::switcher::vertical} { set side top }
   set numBases [sc_base count total]
 
   for {set i 1} {$i <= $numBases} {incr i} {
@@ -429,10 +425,7 @@ proc ::windows::switcher::Open {} {
     menu $f.menu -tearoff 0
     $f.menu add command -label [tr SearchReset] \
       -command "sc_filter reset $i; ::windows::stats::Refresh"
-    $f.menu add command -label "Change icon..." -command "changeBaseType $i"
-    $f.menu add separator
-    $f.menu add command -label [tr FileOpen] -command ::file::Open
-    set closeLabel [tr FileClose]
+    set closeLabel "[tr FileClose] [tr Database]"
     if {$i == [sc_info clipbase]} { set closeLabel [tr EditReset] }
     $f.menu add command -label $closeLabel \
       -command [list ::file::Close $i]
@@ -440,34 +433,13 @@ proc ::windows::switcher::Open {} {
       bind $f$win <ButtonPress-3> "tk_popup $f.menu %X %Y"
     }
     $f.menu add separator
-    $f.menu add checkbutton -label "Icons" -variable ::windows::switcher::icons \
+    $f.menu add command -label "Change icon" -command "changeBaseType $i .baseWin"
+    # $f.menu add command -label [tr FileOpen] -command {::file::Open {} .baseWin}
+    $f.menu add checkbutton -label {Show icons} -variable ::windows::switcher::icons \
       -command ::windows::switcher::Refresh
-    #$f.menu add separator
-    #$f.menu add command -label $::tr(ChangeOrient) -command ::windows::switcher::Orientate
   }
   setWinSize $w
   ::windows::switcher::Refresh
-}
-
-proc ::windows::switcher::Orientate {} {
-  #variable vertical
-  #if {$vertical} {
-  #  set vertical 0
-  #  set side left
-  #} else {
-  #  set vertical 1
-  #  set side top
-  #}
-
-  #set w .baseWin
-  #set numBases [sc_base count total]
-
-  #for {set i 1} {$i <= $numBases} {incr i} {
-  #  pack forget $w.f$i
-  #}
-  #for {set i 1} {$i <= $numBases} {incr i} {
-  #  pack $w.f$i -side $side
-  #}
 }
 
 proc ::windows::switcher::Refresh {} {
@@ -519,7 +491,8 @@ proc ::windows::switcher::Refresh {} {
 
       # Set a different color for the current database.
       if {$i == $current} {
-        set color lightSteelBlue
+        set color lemonchiffon
+        # $w.c.f$i.name configure -font font_Bold
         set status $filename
         if {[sc_base isReadOnly]} { append status " ($::tr(readonly))" }
       }
