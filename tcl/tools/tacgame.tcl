@@ -205,7 +205,7 @@ namespace eval tacgame {
     if {[sc_pos isAt start]} {
       if {$::tacgame::openingType == {current}} { set ::tacgame::openingType new }
     } else {
-      if {$::tacgame::openingType == {new}} { set ::tacgame::openingType current }
+      set ::tacgame::openingType current
     }
 
     pack $w.fopening.cbNew -anchor w -padx 100
@@ -783,7 +783,8 @@ namespace eval tacgame {
     if { $score == {-32000 {}}} {
       ::gameclock::stop 1
       ::gameclock::stop 2
-      if {!$::tacgame::mateShown} {
+      # if {!$::tacgame::mateShown} 
+      if {1} {
         # mate dialog
         set ::tacgame::mateShown 1
 	if { [getPhalanxColor] == [sc_pos side] } {
