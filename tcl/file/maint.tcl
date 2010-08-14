@@ -126,14 +126,17 @@ proc ::maint::OpenClose {} {
   label $w.title.dates -textvar ::tr(YearRange) -font $font
   label $w.title.ratings -textvar ::tr(RatingRange) -font $font
   button $w.title.vicon -command {changeBaseType [sc_base current] .maintWin}
+
+  # description
+
   frame $w.title.desc
-  label $w.title.desc.lab -text $::tr(Description) -font  $font
-  label $w.title.desc.text -width 1 -font $font -relief sunken -anchor w
+  label $w.title.desc.lab -text $::tr(Description): -font $font
+  label $w.title.desc.text -width 1 -font $font
   dialogbutton $w.title.desc.edit -text "[tr Edit]..." -font $font \
       -command ::maint::ChangeBaseDescription -padx 3
   pack $w.title.desc.lab -side left -padx 3
+  pack $w.title.desc.text -side left -fill x -expand yes -padx 8
   pack $w.title.desc.edit -side right -padx 3
-  pack $w.title.desc.text -side left -fill x -expand yes -padx 3
 
   foreach name {name games delete mark filter dates ratings} {
     label $w.title.v$name -text "0" -font $font
@@ -175,7 +178,7 @@ proc ::maint::OpenClose {} {
         -command "set maintFlag $i; ::maint::Refresh"
   }
 
-  ### Six buttons each for "Delete" and General flags sections
+  ### Six buttons each for "Delete" and General flags sections ( 12 = 2 * 3 * 2 )
 
   foreach flag {delete mark} on {Delete Mark} off {Undelete Unmark} {
     foreach b {Current Filter All} {
@@ -186,12 +189,12 @@ proc ::maint::OpenClose {} {
     }
 
     grid $w.$flag.title -columnspan 3 -row 0 -column 0 -sticky n
-    grid $w.$flag.onCurrent -row 1 -column 0 -sticky we
-    grid $w.$flag.offCurrent -row 2 -column 0 -sticky we
-    grid $w.$flag.onFilter -row 1 -column 1 -sticky we
-    grid $w.$flag.offFilter -row 2 -column 1 -sticky we
-    grid $w.$flag.onAll -row 1 -column 2 -sticky we
-    grid $w.$flag.offAll -row 2 -column 2 -sticky we
+    grid $w.$flag.onCurrent  -row 1 -column 0 -sticky we -padx 1 -pady 1
+    grid $w.$flag.offCurrent -row 2 -column 0 -sticky we -padx 1 -pady 1
+    grid $w.$flag.onFilter  -row 1 -column 1 -sticky we -padx 1 -pady 1
+    grid $w.$flag.offFilter -row 2 -column 1 -sticky we -padx 1 -pady 1
+    grid $w.$flag.onAll  -row 1 -column 2 -sticky we -padx 1 -pady 1
+    grid $w.$flag.offAll -row 2 -column 2 -sticky we -padx 1 -pady 1
   }
 
   label $w.spell.title -textvar ::tr(Spellchecking) -font $bold
@@ -204,10 +207,10 @@ proc ::maint::OpenClose {} {
       -command "openSpellCheckWin Site $w"
   button $w.spell.round -textvar ::tr(Rounds...) -font $font \
       -command "openSpellCheckWin Round $w"
-  grid $w.spell.player -row 1 -column 0 -sticky we
-  grid $w.spell.event -row 1 -column 1 -sticky we
-  grid $w.spell.site -row 1 -column 2 -sticky we
-  grid $w.spell.round -row 1 -column 3 -sticky we
+  grid $w.spell.player -row 1 -column 0 -sticky we -padx 1 -pady 1
+  grid $w.spell.event -row 1 -column 1 -sticky we -padx 1 -pady 1
+  grid $w.spell.site -row 1 -column 2 -sticky we -padx 1 -pady 1
+  grid $w.spell.round -row 1 -column 3 -sticky we -padx 1 -pady 1
 
   bind $w <Alt-p> "$w.spell.player invoke"
   bind $w <Alt-e> "$w.spell.event invoke"
@@ -217,28 +220,28 @@ proc ::maint::OpenClose {} {
   label $w.db.title -textvar ::tr(DatabaseOps) -font $bold
   grid $w.db.title -columnspan 3 -row 0 -column 0 -sticky n
 
-  button $w.db.eco -textvar ::tr(ReclassifyGames...) -command classifyAllGames
+  button $w.db.eco     -textvar ::tr(ReclassifyGames...) -command "classifyAllGames $w"
   button $w.db.compact -textvar ::tr(CompactDatabase...) -command "makeCompactWin $w"
-  button $w.db.sort -textvar ::tr(SortDatabase...) -command "makeSortWin $w"
-  button $w.db.elo -textvar ::tr(AddEloRatings...) -command allocateRatings
-  button $w.db.dups -textvar ::tr(DeleteTwins...) -command "markTwins $w"
-  button $w.db.cleaner -textvar ::tr(Cleaner...) -command cleanerWin
-  button $w.db.autoload -textvar ::tr(AutoloadGame...) -command ::maint::SetAutoloadGame
-  button $w.db.strip -textvar ::tr(StripTags...) -command stripTags
+  button $w.db.sort    -textvar ::tr(SortDatabase...)    -command "makeSortWin $w"
+  button $w.db.elo     -textvar ::tr(AddEloRatings...)   -command "allocateRatings $w"
+  button $w.db.dups    -textvar ::tr(DeleteTwins...)     -command "markTwins $w"
+  button $w.db.cleaner -textvar ::tr(Cleaner...)         -command cleanerWin
+  button $w.db.autoload -textvar ::tr(AutoloadGame...)   -command "::maint::SetAutoloadGame $w"
+  button $w.db.strip -textvar ::tr(StripTags...)         -command "stripTags $w"
 
   foreach i {eco compact sort elo dups cleaner autoload strip} {
     $w.db.$i configure -font $font
   }
   bind $w <Alt-d> "$w.db.dups invoke"
 
-  grid $w.db.eco -row 1 -column 0 -sticky we
-  grid $w.db.compact -row 1 -column 1 -sticky we
-  grid $w.db.sort -row 1 -column 2 -sticky we
-  grid $w.db.elo -row 2 -column 0 -sticky we
-  grid $w.db.dups -row 2 -column 1 -sticky we
-  grid $w.db.cleaner -row 2 -column 2 -sticky we
-  grid $w.db.autoload -row 3 -column 0 -sticky we
-  grid $w.db.strip -row 3 -column 1 -sticky we
+  grid $w.db.eco -row 1 -column 0 -sticky we -padx 1 -pady 1
+  grid $w.db.compact -row 1 -column 1 -sticky we -padx 1 -pady 1
+  grid $w.db.sort -row 1 -column 2 -sticky we -padx 1 -pady 1
+  grid $w.db.elo -row 2 -column 0 -sticky we -padx 1 -pady 1
+  grid $w.db.dups -row 2 -column 1 -sticky we -padx 1 -pady 1
+  grid $w.db.cleaner -row 2 -column 2 -sticky we -padx 1 -pady 1
+  grid $w.db.autoload -row 3 -column 0 -sticky we -padx 1 -pady 1
+  grid $w.db.strip -row 3 -column 1 -sticky we -padx 1 -pady 1
 
   ### Buttons
 
@@ -358,7 +361,7 @@ trace variable autoloadGame w {::utils::validate::Integer 9999999 0}
 #   Creates a dialog for setting the autoload game number of the
 #   current database.
 #
-proc ::maint::SetAutoloadGame {} {
+proc ::maint::SetAutoloadGame {{parent .}} {
   global autoloadGame
   set w .autoload
   if {[winfo exists $w]} { return }
@@ -385,18 +388,16 @@ proc ::maint::SetAutoloadGame {} {
   addHorizontalRule $w
 
   pack [frame $w.b] -side top -fill x
-  button $w.b.ok -text OK -command \
-      "sc_base autoload \$autoloadGame; catch {grab release $w}; destroy $w"
-  button $w.b.cancel -text $::tr(Cancel) -command \
-      "catch {grab release $w}; destroy $w"
+  button $w.b.ok -text OK -command "sc_base autoload \$autoloadGame; destroy $w"
+  button $w.b.cancel -text $::tr(Cancel) -command "destroy $w"
   pack $w.b.cancel $w.b.ok -side right -padx 2
 
   bind $w.f.entry <Return> "$w.b.ok invoke"
   bind $w.f.entry <Escape> "$w.b.cancel invoke"
   wm resizable $w 0 0
   ::utils::win::Centre $w
-  focus $w.f.entry
-  grab $w
+  placeWinOverParent $w $parent
+  wm state $w normal
 }
 
 # markTwins:
@@ -410,7 +411,7 @@ proc markTwins {{parent .}} {
   if {! [sc_base inUse]} { return }
   if {[sc_base numGames] == 0} {
     tk_messageBox -type ok -icon info -title [concat "Scid: " $::tr(noGames)] \
-        -message $::tr(TwinCheckNoDelete)
+        -message $::tr(TwinCheckNoDelete) -parent $parent
     return
   }
 
@@ -660,11 +661,11 @@ set classifyOption(ExtendedCodes) 1
 #   User can choose to reclassify all games, or only those games that
 #   currently have no ECO code assigned.
 #
-proc classifyAllGames {} {
-  makeClassifyWin
+proc classifyAllGames {{parent .}} {
+  makeClassifyWin $parent
 }
 
-proc makeClassifyWin {} {
+proc makeClassifyWin {{parent .}} {
   global classifyOption
   set w .classify
   if {[winfo exists $w]} {
@@ -672,6 +673,7 @@ proc makeClassifyWin {} {
     return
   }
   toplevel $w
+  wm withdraw $w
   wm title $w "Scid: [tr FileMaintClass]"
   label $w.label -font font_Bold -textvar ::tr(ClassifyWhich)
   frame $w.g
@@ -743,6 +745,9 @@ proc makeClassifyWin {} {
   wm resizable $w 0 0
   bind $w <F1> {helpWindow ECO}
   bind $w <Escape> "$w.b.cancel invoke"
+  placeWinOverParent $w $parent
+  wm state $w normal
+
   updateClassifyWin
 }
 
@@ -1310,9 +1315,9 @@ proc makeBaseReadOnly {} {
 set addRatings(overwrite) 0
 set addRatings(filter) 0
 
-proc allocateRatings {} {
+proc allocateRatings {{parent .}} {
   if {[catch {sc_name ratings -test 1} result]} {
-    tk_messageBox -type ok -icon info -parent . -title "Scid" -message $result
+    tk_messageBox -type ok -icon info -parent $parent -title "Scid" -message $result
     return
   }
   set w .ardialog
@@ -1375,7 +1380,7 @@ proc doAllocateRatings {} {
 
 array set stripTagCount {}
 
-proc stripTags {} {
+proc stripTags {{parent .}} {
   global stripTagChoice stripTagCount
   set w .striptags
   if {[winfo exists $w]} {
@@ -1394,7 +1399,7 @@ proc stripTags {} {
   closeProgressWindow
   if {$::interrupt} { return }
   if {$err} {
-    tk_messageBox -title "Scid" -icon warning -type ok -message $result
+    tk_messageBox -title "Scid" -icon warning -type ok -message $result -parent $parent
     return
   }
 
@@ -1408,7 +1413,7 @@ proc stripTags {} {
 
   if {$nTags == 0} {
     tk_messageBox -title "Scid" -icon info -type ok \
-        -message "No extra tags were found."
+        -message "No extra tags were found." -parent $parent
     return
   }
 

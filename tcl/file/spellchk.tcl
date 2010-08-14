@@ -57,9 +57,7 @@ proc openSpellCheckWin {type {parent .}} {
   global spellcheckAmbiguous
   set w .spellcheckWin
   if {[winfo exists $w]} {
-    tk_messageBox -type ok -icon info -title "Scid: Spellcheck error" \
-      -parent $parent \
-      -message "The spellcheck window is already open; close it first."
+    raiseWin $w
     return
   }
   if {[lindex [sc_name read] 0] == 0} {
@@ -82,6 +80,7 @@ proc openSpellCheckWin {type {parent .}} {
 
   toplevel $w
   wm title $w "Scid: Spellcheck Results"
+  wm withdraw $w
   wm minsize $w 50 10
 
   bind $w <F1> { helpWindow Maintenance }
@@ -149,6 +148,8 @@ proc openSpellCheckWin {type {parent .}} {
 
   $f.text insert end $result
   focus $f.text
+  placeWinOverParent $w $parent
+  wm state $w normal
 }
 
 
