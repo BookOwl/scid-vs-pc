@@ -1308,6 +1308,7 @@ translate E LightSquares {Light squares}
 translate E DarkSquares {Dark squares}
 translate E SelectedSquares {Selected squares}
 translate E SuggestedSquares {Suggested moves}
+translate E Grid {Grid}
 translate E WhitePieces {White pieces}
 translate E BlackPieces {Black pieces}
 translate E WhiteBorder {White border}

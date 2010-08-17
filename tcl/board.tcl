@@ -9,21 +9,21 @@ array set ::board::letterToPiece [list \
     "Q" wq "q" bq "K" wk "k" bk "P" wp "p" bp "." e \
     ]
 
-#   name (unused), lite, dark, highcolor, bestcolor
+#   name (unused), lite, dark, highcolor, bestcolor, bgcolor
 
 set colorSchemes1 {
-  { Blue-white	#f3f3f3 #7389b6 #f3f484 #b8cbf8 }
-  { Blue-ish	#d0e0d0 #80a0a0 #b0d0e0 #f0f0a0 }
-  { M.Thomas	#d3d9a8 #51a068 #e0d873 #86a000 }
-  { GreenYellow	#e0d070 #70a070 #b0d0e0 #bebebe }
-  { Brown	#d0c0a0 #a08050 #b0d0e0 #bebebe }
+  { Blue-white	#f3f3f3 #7389b6 #f3f484 #b8cbf8 steelblue4}
+  { Blue-ish	#d0e0d0 #80a0a0 #b0d0e0 #f0f0a0 grey}
+  { M.Thomas	#d3d9a8 #51a068 #e0d873 #86a000 grey20}
+  { GreenYellow	#e0d070 #70a070 #b0d0e0 #bebebe #29764e}
+  { Brown	#d0c0a0 #a08050 #b0d0e0 #bebebe tan4}
 }
 set colorSchemes2 {
-  { Tan	#fbdbc4 #cc9c83 #b0d0e0 #bebebe }
-  { Grey #dfdfdf #808080 #b0d0e0 #bebebe }
-  { Rosy #f8dbcc rosybrown #b0d0e0 #bebebe }
-  { SteelBlue lightsteelblue steelblue #51a068 #e0d873 }
-  { Red rosybrown1 indianred3 #ffa07a lightsalmon }
+  { Tan	#fbdbc4 #cc9c83 #b0d0e0 #bebebe rosybrown4}
+  { Grey #dfdfdf #808080 #b0d0e0 #bebebe black }
+  { Rosy #f8dbcc rosybrown #b0d0e0 #bebebe rosybrown4}
+  { SteelBlue lightsteelblue steelblue #51a068 #e0d873 #002958}
+  { Red rosybrown1 indianred3 #ffa07a lightsalmon #780000}
 }
 array set newColors {}
 
@@ -84,14 +84,15 @@ proc setBoardColor {row choice} {
   set newColors(dark) [lindex $list 2]
   set newColors(highcolor) [lindex $list 3]
   set newColors(bestcolor) [lindex $list 4]
+  set newColors(bgcolor)   [lindex $list 5]
 }
 
 proc applyBoardColors {} {
 
-  global newColors lite dark highcolor bestcolor borderwidth
+  global newColors lite dark highcolor bestcolor bgcolor borderwidth
 
   set w .boardOptions
-  set colors {lite dark highcolor bestcolor}
+  set colors {lite dark highcolor bestcolor bgcolor}
 
   foreach i $colors {
     set $i $newColors($i)
@@ -108,6 +109,7 @@ proc applyBoardColors {} {
   foreach i $colors {
     $w.select.b$i configure -background $newColors($i)
   }
+  .board.bd configure -bg $newColors(bgcolor)
 
   ### too noisy to always change the border width widget
 
@@ -162,10 +164,10 @@ proc initBoardColors {} {
 
   # These procedures re-written by S.A.
 
-  global lite dark highcolor bestcolor png_image_support
+  global lite dark highcolor bestcolor bgcolor png_image_support
   global newColors boardStyles boardStyle boardSizes
 
-  set colors {lite dark highcolor bestcolor}
+  set colors {lite dark highcolor bestcolor bgcolor}
   set w .boardOptions
 
   if { [winfo exists $w] } {
@@ -276,16 +278,14 @@ proc initBoardColors {} {
   }
 
   set f $w.select
-  foreach row {0 1 0 1} column {0 0 2 2} c {
-    lite dark highcolor bestcolor
+  foreach row {0 1 0 1 0} column {0 0 2 2 4} c {
+    lite dark highcolor bestcolor bgcolor
   } n {
-    LightSquares DarkSquares SelectedSquares SuggestedSquares
+    LightSquares DarkSquares SelectedSquares SuggestedSquares Grid
   } {
     button $f.b$c -image e20 -background [set $c] -command "chooseAColor $w $c"
 
-    button $f.l$c -text "$::tr($n)  " -command "
-      chooseAColor $w $c
-    " -relief flat
+    button $f.l$c -text "$::tr($n)  " -command "chooseAColor $w $c" -relief flat
     grid $f.b$c -row $row -column $column
     grid $f.l$c -row $row -column [expr {$column + 1} ] -sticky w
   }
@@ -1128,7 +1128,7 @@ proc ::board::new {w {psize 40} {showmat "nomat"} } {
   # moved the side to move column from the right to the left
 
   frame $w -class Board
-  canvas $w.bd -width $bsize -height $bsize -background black -borderwidth 0 -highlightthickness 0
+  canvas $w.bd -width $bsize -height $bsize -background $::bgcolor -borderwidth 0 -highlightthickness 0
   if {[info tclversion] == 8.5} {
     grid anchor $w center
   }
@@ -2014,7 +2014,7 @@ proc  ::board::lastMoveHighlight {w} {
 #   N.B. resize (and update) is also called when changing background tiles
 
 proc ::board::update {w {board ""} {animate 0} {resize 0}} {
-  global highcolor currentSq bestSq bestcolor 
+  global highcolor currentSq bestSq bestcolor bgcolor
 
   set oldboard $::board::_data($w)
   if {$board == {}} {
