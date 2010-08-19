@@ -560,7 +560,7 @@ proc markTwins {{parent .}} {
   # Progress bar
 
   canvas $w.progress -width 300 -height 20  -relief solid -border 1
-  $w.progress create rectangle 0 0 0 0 -fill blue -outline blue -tags bar
+  $w.progress create rectangle 0 0 0 0 -fill $::progcolor -outline $::progcolor -tags bar
   $w.progress create text 295 10 -anchor e -font font_Regular -tags time \
       -fill black -text "0:00 / 0:00"
 
@@ -731,7 +731,7 @@ proc makeClassifyWin {{parent .}} {
   }
   button $w.b.cancel -textvar ::tr(Close) -command "focus .; destroy $w"
   canvas $w.progress -width 300 -height 20  -relief solid -border 1
-  $w.progress create rectangle 0 0 0 0 -fill blue -outline blue -tags bar
+  $w.progress create rectangle 0 0 0 0 -fill $::progcolor -outline $::progcolor -tags bar
   $w.progress create text 295 10 -anchor e -font font_Regular -tags time \
       -fill black -text "0:00 / 0:00"
 

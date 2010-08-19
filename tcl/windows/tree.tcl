@@ -198,7 +198,7 @@ proc ::tree::make { { baseNumber -1 } } {
   $w.f.tl tag configure redfg -foreground red
 
   canvas $w.progress -width 250 -height 15  -relief solid -border 1
-  $w.progress create rectangle 0 0 0 0 -fill blue -outline blue -tags bar
+  $w.progress create rectangle 0 0 0 0 -fill $::progcolor -outline $::progcolor -tags bar
   selection handle $w.f.tl "::tree::copyToSelection $baseNumber"
   bindMouseWheel $w $w.f.tl
 

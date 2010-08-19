@@ -186,9 +186,9 @@ proc doPgnFileImport {fname text {multiple 0} } {
     toplevel $w
     wm title $w "Scid: Importing PGN file"
 
-    canvas $w.progress -width 500 -height 20  -relief solid 
+    canvas $w.progress -width 350 -height 20  -relief solid 
     $w.progress create rectangle 0 0 0 0 -fill rosybrown3 -outline rosybrown3 -tags bar
-    $w.progress create text 495 10 -anchor e -font font_Regular -tags time \
+    $w.progress create text 345 10 -anchor e -font font_Regular -tags time \
         -fill black -text "0:00 / 0:00"
 
     frame $w.buttons
@@ -207,7 +207,7 @@ proc doPgnFileImport {fname text {multiple 0} } {
     pack $w.text -in $w.tf -side left -fill both -expand yes
   }
 
-  sc_progressBar $w.progress bar 501 21 time
+  sc_progressBar $w.progress bar 351 21 time
   update
   busyCursor .
   catch {grab $w.buttons.stop}

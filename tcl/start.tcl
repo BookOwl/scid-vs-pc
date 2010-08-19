@@ -226,6 +226,7 @@ if {$windowsOS} {
 #   highcolor is the color when something is selected.
 #   bestcolor is used to indicate a suggested move square.
 #   bgcolor   is the canvas bgcolor, and appears as the lines between the squares
+#   progcolor is progress bar colour
 set lite {#f3f3f3}
 set dark {#7389b6}
 set whitecolor  {#ffffff}
@@ -235,6 +236,7 @@ set blackborder {#ffffff}
 set highcolor   {#b0d0e0}
 set bestcolor   {#bebebe}
 set bgcolor	grey20
+set progcolor   rosybrown
 set buttoncolor {#b0c0d0}
 set borderwidth 1
 

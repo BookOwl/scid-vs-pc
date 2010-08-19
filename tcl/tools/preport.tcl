@@ -153,7 +153,7 @@ proc ::preport::makeReportWin {args} {
       label $w.text$i -text "$i. $name"
       pack $w.text$i -side top
       canvas $w.c$i -width 400 -height 20  -relief solid -border 1
-      $w.c$i create rectangle 0 0 0 0 -fill blue -outline blue -tags bar
+      $w.c$i create rectangle 0 0 0 0 -fill $::progcolor -outline $::progcolor -tags bar
       $w.c$i create text 395 10 -anchor e -font font_Regular -tags time \
         -fill black -text "0:00 / 0:00"
       pack $w.c$i -side top -pady 10

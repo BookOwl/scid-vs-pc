@@ -293,8 +293,8 @@ proc progressWindow {args} {
   wm title $w $title
   label $w.t -text $text
   pack $w.t -side top
-  canvas $w.c -width 400 -height 20  -relief solid -border 1
-  $w.c create rectangle 0 0 0 0 -fill blue -outline blue -tags bar
+  canvas $w.c -width 300 -height 20  -relief solid -border 1
+  $w.c create rectangle 0 0 0 0 -fill $::progcolor -outline $::progcolor -tags bar
   $w.c create text 395 10 -anchor e -font font_Regular -tags time \
       -fill black -text "0:00 / 0:00"
   pack $w.c -side top -pady 10
