@@ -172,8 +172,11 @@ proc ::file::Open {{fName ""} {parent .}} {
     }
   } elseif {[string match "*.epd" [string tolower $fName]]} {
     # EPD file:
-    ::recentFiles::add $fName
-    newEpdWin open $fName
+    if {[newEpdWin open $fName]} {
+      ::recentFiles::add $fName
+    } else {
+      ::recentFiles::remove $fName
+    }
   } else {
     # PGN file:
     if {![file exists $fName]} {

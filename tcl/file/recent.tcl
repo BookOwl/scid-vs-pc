@@ -130,7 +130,7 @@ proc ::recentFiles::show {menu} {
     set underline -1
     if {$num <= 9} { set underline 0 }
     if {$num == 10} { set underline 1 }
-    $menu add command -label "$num: $mname" -underline $underline \
+    $menu add command -label "$num: [file tail $mname]" -underline $underline \
         -command [list ::recentFiles::load $fname]
     set ::helpMessage($menu,$idx) "  [file nativename $fname]"
     incr idx
@@ -153,7 +153,7 @@ proc ::recentFiles::show {menu} {
     set underline -1
     if {$num <= 9} { set underline 0 }
     if {$num == 10} { set underline 1 }
-    $menu.recentFiles add command -label "$num: $mname" -underline $underline \
+    $menu.recentFiles add command -label "$num: [file tail $mname]" -underline $underline \
         -command [list ::recentFiles::load $fname]
     set ::helpMessage($menu.recentFiles,$extra) "  $fname"
   }
