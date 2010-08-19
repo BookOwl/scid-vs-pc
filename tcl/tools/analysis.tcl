@@ -1370,6 +1370,9 @@ proc addAnalysisVariation {n} {
     # Add a variation if not already at end of a variation
     # (in which case we append moves to this var)
     sc_var create
+    set create_var 1
+  } else {
+    set create_var 0
   }
 
   # Add comment identifying analysis engine if at vstart
@@ -1386,15 +1389,16 @@ proc addAnalysisVariation {n} {
   # Add as many moves as possible from the engine analysis:
   sc_move_add $moves $n
 
-  # We should now go back to the previous place, but it's hard to realise
-  # and instead exit the var which works fine except when we're appending 
-  # onto the end of an existing var.
-  sc_var exit
-  # sc_move back [llength $moves]
+  # Now go back to the previous place
+  if {$create_var} {
+    sc_var exit
+  } else {
+    sc_move back [llength $moves]
+  }
 
   if {$addAtStart} {
     sc_move start
-  } elseif {$isAt_vend} {
+  } elseif {$isAt_vend && $create_var} {
     ### Automatically goto variation S.A.
     sc_var enter 0
   }
