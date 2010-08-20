@@ -423,37 +423,23 @@ proc ::htext::display {w helptext {section {}} {fixed 1}} {
         # Move tag
         set moveTag $tagName
         set tagName m
-        $w tag bind $moveTag <ButtonRelease-1> \
-            "set ::pause 1
-             sc_move pgn [string range $moveTag 2 end]
-             updateBoard"
-        # invoking contextual menu in PGN window
-        $w tag bind $moveTag <ButtonPress-3> \
-            "sc_move pgn [string range $moveTag 2 end]; updateBoard"
-        $w tag bind $moveTag <Any-Enter> \
-            "$w tag configure $moveTag -underline 1
-             $w configure -cursor hand2"
-        $w tag bind $moveTag <Any-Leave> \
-            "$w tag configure $moveTag -underline 0
-             $w configure -cursor {}"
+        # Too many bindings! 
+        $w tag bind $moveTag <ButtonRelease-1> "::pgn::move $moveTag"
+        $w tag bind $moveTag <ButtonPress-3>   "::pgn::move $moveTag"
+        $w tag bind $moveTag <Any-Enter> "$w tag configure $moveTag -underline 1"
+        $w tag bind $moveTag <Any-Leave> "$w tag configure $moveTag -underline 0"
       } elseif {[strIsPrefix c_ $tagName]} {
         # Comment tag
         set commentTag $tagName
         set tagName c
         if { $::pgn::boldMainLine } {
-          $w tag configure $commentTag -fore $::pgnColor(Comment) \
-              -font font_Regular
+          $w tag configure $commentTag -fore $::pgnColor(Comment) -font font_Regular
         } else {
           $w tag configure $commentTag -fore $::pgnColor(Comment)
         }
-        $w tag bind $commentTag <ButtonRelease-1> \
-            "sc_move pgn [string range $commentTag 2 end]; updateBoard; ::commenteditor::Open"
-        $w tag bind $commentTag <Any-Enter> \
-            "$w tag configure $commentTag -underline 1
-             $w configure -cursor hand2"
-        $w tag bind $commentTag <Any-Leave> \
-            "$w tag configure $commentTag -underline 0
-             $w configure -cursor {}"
+        $w tag bind $commentTag <ButtonRelease-1> "::pgn::comment $commentTag"
+        $w tag bind $commentTag <Any-Enter> "$w tag configure $commentTag -underline 1"
+        $w tag bind $commentTag <Any-Leave> "$w tag configure $commentTag -underline 0"
       }
       
       if {$tagName == {h1}} {$w insert end \n}

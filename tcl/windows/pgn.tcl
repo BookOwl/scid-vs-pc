@@ -123,7 +123,7 @@ namespace eval pgn {
     ::pgn::ConfigMenus
 
     text $w.text -width $::winWidth($w) -height $::winHeight($w) -wrap word \
-        -cursor crosshair -setgrid 1 -tabs {1c right 2c 4c}
+        -cursor {} -setgrid 1 -tabs {1c right 2c 4c}
     if {$pgnColor(Background) != {white} && $pgnColor(Background) != {#ffffff}} {
 	$w.text configure -background $pgnColor(Background)
     }
@@ -222,6 +222,23 @@ namespace eval pgn {
     }
   }
 
+  # These two bindings are done in a bad way in htext.tcl.
+  # Each text object has separate bindings, but they should 
+  # be handled in a general bind to the pgn text widget ala
+  # contextMenu
+
+  proc move {moveTag} {
+    set ::pause 1
+    sc_move pgn [string range $moveTag 2 end]
+    updateBoard
+  }
+
+  proc comment {commentTag} {
+    sc_move pgn [string range $commentTag 2 end]
+    updateBoard
+    ::commenteditor::Open
+  }
+
   proc contextMenu {win startLine x y xc yc} {
 
     update idletasks
@@ -233,19 +250,20 @@ namespace eval pgn {
     } else  {
       set state normal
     }
+    set varnum [sc_var number]
     menu $mctxt
-    $mctxt add command -label [tr EditDelete] -state $state -command "::pgn::deleteVar [sc_var number]"
-    $mctxt add command -label [tr EditFirst] -state $state -command "::pgn::firstVar [sc_var number]"
-    $mctxt add command -label [tr EditMain] -state $state -command "::pgn::mainVar [sc_var number]"
+    $mctxt add command -label [tr EditDelete] -state $state -command "::pgn::deleteVar $varnum"
+    $mctxt add command -label [tr EditFirst] -state $state -command "::pgn::firstVar $varnum"
+    $mctxt add command -label [tr EditMain] -state $state -command "::pgn::mainVar $varnum"
     $mctxt add separator
-    $mctxt add command -label "[tr EditStrip]:[tr EditStripBegin]" -command {::game::TruncateBegin}
-    $mctxt add command -label "[tr EditStrip]:[tr EditStripEnd]" -command {::game::Truncate}
+    $mctxt add command -label "[tr EditStrip] [tr EditStripComments]" -command {::game::Strip comments .pgnWin}
+    $mctxt add command -label "[tr EditStrip] [tr EditStripVars]" -command {::game::Strip variations .pgnWin}
+    $mctxt add command -label "[tr EditStrip] [tr EditStripBegin]" -command ::game::TruncateBegin
+    $mctxt add command -label "[tr EditStrip] [tr EditStripEnd]" -command ::game::Truncate
     $mctxt add separator
-    $mctxt add command -label "[tr EditStrip]:[tr EditStripComments]" -command {::game::Strip comments .pgnWin}
-    $mctxt add command -label "[tr EditStrip]:[tr EditStripVars]" -command {::game::Strip variations .pgnWin}
+    $mctxt add command -label "[tr WindowsComment]" -command ::commenteditor::Open
 
     $mctxt post [winfo pointerx .] [winfo pointery .]
-
   }
 
   proc deleteVar { var } {
@@ -303,6 +321,10 @@ namespace eval pgn {
   ################################################################################
   proc ShowBoard {win startLine x y xc yc} {
     global lite dark
+
+    # unpost context menu
+    set mctxt $win.ctxtMenu
+    if { [winfo exists $mctxt] } { destroy $mctxt }
 
     set txt [removeCommentTag $win $startLine [ $win index @$x,$y]]
     # set bd [sc_pos pgnBoard [::untrans [$win get $startLine.0 @$x,$y]] ]
