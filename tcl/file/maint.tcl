@@ -333,7 +333,8 @@ proc ::maint::Refresh {} {
     $w.mark.$button configure -state $state
   }
   $w.db.dups configure -state $state
-  $w.title.vicon configure -state $state
+  # Looks nicer enabled
+  # $w.title.vicon configure -state $state
   $w.title.desc.edit configure -state $state
   $w.db.elo configure -state $state
   $w.db.autoload configure -state $state

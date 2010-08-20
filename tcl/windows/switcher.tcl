@@ -2,263 +2,498 @@
 ### windows/switcher.tcl: part of Scid
 ### Copyright (C) 2000-2004  Shane Hudson.
 
-# super lame icons S.A
+set icons {
+{Unknown}
+{
+R0lGODlhIAAgAIAAAFpaWlpaWiH5BAEKAAEALAAAAAAgACAAAAIejI+py+0P
+o5y02ouz3rz7D4biSJbmiabqyrbuC5sFADs=
+}
 
-# 0: Unknown/empty
-image create photo dbt0 -format gif -data \
- "R0lGODdhIAAgAIAAAAAAAP///ywAAAAAIAAgAAACHoyPqcvtD6OctNqLs968+w+G4kiW5omm
-  6sq27gubBQA7"
+{Temporary database}
+{
+R0lGODlhIAAgAMYaACEhISQkJC0tLTExMTU1NTk5OTo6Oj09PT4+PkJCQkND
+Q0REREZGRklJSUtLS0xMTE1NTU5OTlFRUVJSUlNTU1RUVFVVVVdXV1hYWFlZ
+WVpaWltbW1xcXF5eXl9fX2BgYGFhYWJiYmNjY2RkZGVlZWhoaGlpaWpqamtr
+a2xsbG1tbW5ubm9vb3BwcHJycnNzc3R0dHV1dXZ2dnd3d3h4eHl5eXp6ent7
+e3x8fH19fX5+fn9/f4GBgYKCgoODg4SEhIWFhYaGhoeHh4iIiImJiYqKiouL
+i4yMjI2NjY6OjpGRkZKSkpOTk5SUlJaWlpeXl5iYmJmZmZqamp2dnaKioqam
+pqmpqaqqqre3t7m5ubq6uru7u729vVpaWlpaWlpaWlpaWlpaWlpaWlpaWlpa
+WlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpa
+WlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWiH5BAEKAH8A
+LAAAAAAgACAAAAf+gH+Cg4SFhoeIiYqLhVtZVlhYjJOCV1VTUlmJT4JJg02K
+XFpUjok2Nzc1pzZHilFQSlFUiky1tVGIPSq7vLsuiENLQkdHUog5GMnKySeI
+KEMnNTVBiRIP19gPrYcjIUQhITyJMgnl5hOJKjU7Ly9DihAE8gQGSIkULxbg
+MYo0HP8cSiSK0sCBiwYNVihqkaFhBg+JiGjIwKKhQkQ4HCjYuHHEoSYaOSpg
+cNFQAgQoUyKAYoiESpWUYsqcSbOmTZtJfkzioUMnoxsuXOhgFBQGIx8lSvBj
+JMTEu0UdNnQQ5EEcrUkVJFTg4UGCjURAVIhYYTXRhwVoFzgANS5FDkZDRgzI
+NQBi0QEDESY5YMB3iaImAgQMKMKoBovDi4JcWFz2UBQLBSIXWAAE0QzJkV8k
+EgCgs2cATgw5+dw5wLabqFEHAgA7
+}
 
-# 1: Temporary database
-image create photo dbt1 -format gif -data \
- "R0lGODdhIAAgAKEAAP///wAAAOHh4X9/fywAAAAAIAAgAAACXYSPqcvtD6OctNKAs9Y2iA+G
-  X2AB20mWnhimHduWpjDQX127lYfftn6x1YQC4IRnIxolyGFvGWn6cjKpskq8qrJPbE/7+na3
-  4p83OX7BRth1UWZCYeD0uv2Oz+sXBQA7"
+Clipbase
+{
+R0lGODlhIAAgAMIFAAAAADw8PI9JSci9verq6lpaWlpaWlpaWiH5BAEKAAcA
+LAAAAAAgACAAAAOqeLrc/jDKCYFVgGWbD5/dEnok2Y0OOm6X90WqVmK09HLb
+7KJUT+HAoLDVAAyOyKRyiUwxn9BBETmsBqcDnu9hzG573U5gTC6bz1gxYS1o
+rwltwTu+TisCczdbD9fbD3h7coJ5g38BdISKfYeJfYOPeY18jpUCh4WZipiL
+loYaR2qdlH6gXoCemoymYqmjk5CuqyKhd6qunJGjn7SngbrAibC3pFMhiKSx
+xQkAOw==
+}
 
-# 2: Clipbase
-image create photo dbt2 -format gif -data \
- "R0lGODdhIAAgAMIAAP///wAAqgAAAP//AOrq6gAAAAAAAAAAACwAAAAAIAAgAAADwAi63P4Q
-  hKkCs9NKWvVd2KeFUmmCjVeOG3tWqIpxrHvR2Xp7XOT/wKBwISgaj8ik8SEYOJ/QqPTpaE6v
-  2IZ1oOx2tU7BEGgVj39lUGbNbvcA6QphbpwT6vTinBGX2PF3enkCe0RhIH+CgYSDhQp9AYCS
-  ikV8hxWTjIuJllwgmYmalYaeco2nmwSdZn6ooKqkrAGhtKern5S5oqxwlxKvqYG3mLq1wrGI
-  rsWwj76zyruMw63Br9ORy9W8TbzY0cZFCQA7"
+{PGN file}
+{
+R0lGODlhIAAgAMIEAAAA/zw8PMhpaevu6a6urq6urq6urq6uriH5BAEKAAMA
+LAAAAAAgAB8AAANlOLrc/jDKSasVGLMslB6fEoyjx3XgmZrTp2UsHA5kua6z
+ybWq+6qLWkDn0+FyjhzsmEKJaqzGqVOUIJu/6JNk6XotwrB4bPt+yWiy2Zxu
+C9dntxzulc/pYHsbn9ej+RV+aYCEXwkAOw==
+}
 
-# 3: PGN file
-image create photo dbt3 -format gif -data \
- "R0lGODdhIAAgAKEAAP////8AAAAA/wAAACwAAAAAIAAgAAACZISPqcvtD6MMlKIajAXbiP9p
-  WMaNpfhsVoWyHQCG5/mKWGqqq3nEgq2z0WqKGmtYInliqMQoE3QQk7vmEiTJaiW+rvcr227B
-  ZLBYXE77zmO1m611v+FceZpet5PxEX2ZDxiIVwAAOw=="
+{Index of games}
+{
+R0lGODlhIAAgAMIFAAAAAAAAqlVV/6qqqv///8i9vci9vci9vSH5BAEKAAcA
+LAAAAAAgACAAAAOteLrc/jDKSau9OOtdgT9BeHhkCXREKqxr6r7EKZkmEQax
+lwLDAAEwGKu1i/UeNFsoV4sZfQ2gcBh0AnnQhe7GpOmsT4Z0KKi+rtajwssm
+FdHYtXkOhqulbem5Hh7RzXBpUHh5MIFXd39VhwIBiV1NhnWOj4p7V409lZZv
+MZRqN6GioXqYn4NkqWQAOFanWnleSwCZmg6quGSvD6O9o5pZD8DDxMQUxcjA
+HMvMEQkAOw==
+}
 
-# 4: My games
-image create photo dbt4 -format gif -data \
- "R0lGODdhIAAgANMAAAAAAAAAqgCqAACqqqoAAKoAqqpVAKqqqlVVVVVV/1X/VVX///9VVf9V
-  ////Vf///ywAAAAAIAAgAAAEg9DISau9lOjNu//eI45kaZ7cqa5kyr6mC8+PTL/2veY6uo2B
-  gCkIDBqNIxmxtHw0fZqiUFpkKZ9I0TP202aP1V3X+c2Sj8/rWdjcltTg9lSlJnvD9PFyP3e3
-  9HN4fkmAQ31oZjw9b2OLUASOYlGRj5SVloyTmISamzWNmyCio6SlphsRADs="
+{Blitz games}
+{
+R0lGODlhIAAgAKEDAAAAAMhpaaqqqq6uriH5BAEKAAMALAAAAAAgACAAAAJ8
+nI+py+0Po2yg2gtmqqF7n2kG932VOJBlVwmiurbuBJfyHNUmIPQ0sALxfBKd
+sIeDGFmY02MZZCmjUYsSQw3cisDqLUnpBr9gBvTL9Q6JVy+SPR2v4VeV5Y1K
+icl5+7yc03WHlKfH9AYYeEhYyDFI96L1V3jwCJmHSGlQAAA7
+}
 
-# 5: Large database
-image create photo dbt5 -format gif -data \
- "R0lGODdhIAAgAKEAAP8AAP///wAA/wAAACwAAAAAIAAgAAACiYSPqcvtH6KctFpks544iA9+
-  WRhGHQmOqGAeUblR8AnH3uzeNxunYkB7/VS8X1DIq6SELQNTspxEdcCcZTqldIjIzZaYrXzB
-  tvE1LLaChxmz9IeWuLtQtjbHDmN5xx33eRRHZ4THIlhnyFd4+LZEY9fjuEiyJum0Q3mG0gRg
-  4ymn9un1QFpqeloAADs="
+{Correspondence chess}
+{
+R0lGODlhIAAgAMIEAAAAAKpVAP9VVaqqqv///////////////yH5BAEKAAcA
+LAAAAAAgACAAAAO8eLoH7izKudy4F9LNwCBYqHEUAJ5hBpCSSbwoKK6s4sLw
+lw7jZn64HGrG8cSCL12q14npkE+ehzeZYo5Qa6alCmFf2m1kChBYLk6Q9Uyr
+ZATmM1q3zlA77/jj+qmrxnlke3Qiam02KmYzbIVSY2thUnYzd487l5FiVZki
+l5UlnDyeh6CZpqRVAQFykxhMPqqrcpA1FbEWuI61tqoevg+7Y7e/wam9oqjF
+AMO6xR23yM7CvcTSEccrydavJAkAOw==
+}
 
-# 6: Correspondence chess
-image create photo dbt6 -format gif -data \
- "R0lGODdhIAAgANMAAAAAAAAAqgCqAACqqqoAAKoAqqpVAKqqqlVVVVVV/1X/VVX///9VVf9V
-  ////Vf///ywAAAAAIAAgAAAEuPDJ+YC1NOs97fkfxo0UcDxgKpIcgL5p6LLZPJ24atM7leu8
-  1waHAo5MMM4PtKoliRniwTPdmFLJ4ZWpuVI/2U6sWgsxvk/UltrzMs5f6TpEFk/fF/RpLivf
-  zzJUaipqbTKATBd0XFNta1uJi5E9EnFjTJd1XZCXnFwkliqZlJueU52kNQYGlpxNoKusX480
-  JbEeuI21qqsmvhe7Xbe/wS23p6nBAMO6xcK9yM7Pss3SGdAuydKvNBEAOw=="
+Board
+{
+R0lGODlhIAAgAOcIAEVFRUdHR0hISE1NTVFRUVJSUlRUVFdXV1paWl1dXV9f
+X2FhYWNjY2RkZGVlZWZmZmdnZ2hoaGlpaWpqamtra2xsbG1tbW5ubm9vb3Bw
+cHFxcXJycnNzc3R0dHV1dXZ2dnd3d3h4eHl5eXp6ent7e3x8fH19fX5+fn9/
+f4CAgIGBgYKCgoODg4SEhIWFhYaGhoeHh4iIiImJiYqKiouLi4yMjI2NjY6O
+jo+Pj5CQkJGRkZKSkpOTk5SUlJWVlZaWlpeXl5iYmJmZmZqampubm5ycnJ2d
+nZ6enp+fn6CgoKGhoaKioqOjo6SkpKWlpaampqenp6ioqKmpqaqqqqurq6ys
+rK2tra6urq+vr7CwsLGxsbKysrOzs7S0tLW1tba2tre3t7i4uLm5ubq6uru7
+u7y8vL29vb6+vr+/v8DAwMHBwcLCwsPDw8TExMXFxcbGxsfHx8jIyMnJycrK
+ysvLy8zMzM3Nzc7Ozs/Pz9DQ0NHR0dLS0tPT09TU1NXV1dbW1tfX19jY2NnZ
+2dra2tvb29zc3N3d3d7e3t/f3+Dg4OHh4eLi4uPj4+Tk5OXl5ebm5urq6uvr
+6+3t7e/v71paWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpa
+WlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpa
+WlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpa
+WlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpa
+WlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpa
+WlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpa
+WlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpa
+WlpaWlpaWlpaWlpaWlpaWiH5BAEKAP8ALAAAAAAgACAAAAj+AP8JHEiwoMGD
+BAFg2MBQg0MNDDc8hNjwYcSJE/4JuDOoj6IoTpaYmfRn0hcnT7BMwhOpDRMn
+TiARWtSnSRMmOTTm4dLiEZIQJ8bIiSFICwoSUdSscIKGxYkigFLk2NNjBZAb
+GvE8WQAJCQQJYO4UEGQFgYEmcwQcQUPigBBHIlTkiaEAB1YBa3CAODMlxQwy
+Uz508eJiBZYyH5KgsYHCiZwRN+LwMBFkh0YhO274eOSGkJ0dNnj84WMHEegd
+bxSlgSTkhg4ukb5IUqIxSI4VPRhFkUMnh4odfc50MaRDRY42e5Y8CuLihhZF
+m2kLACLCQI5DGZLIaTFghp4bKQT+zSCAQo0VB4h6IOBwhc5Y6V3AZEFj5QWO
+L2SymOFSY0aWM1mIEQYPMESBhhZelEHEC0n0oBEcjjiySA4xxCBFhI0kUWEQ
+jUSoRYU1GBIhGzJUOINGbzDCSCI3vPACFCoucoSLPiyi4hUuzkCIimq4+MKJ
+ArBhiCGD3AADDE8MWYgRR/owpCFVHEnDH0OacSQMQPZQIQ15AAIIGSay4eUc
+JcbghZd84FChE14CUoRGOKCAwgp9FFIIGXKm0Iaddsh5Ahd2BgKDnErYuaRG
+NpRQAgp7DDKIGIqasIajdJigqBaO/tGCokc4OogRGhUBBBBCgDHGGFaMGoQW
+p3YRxKj+VJwaxhCjNnHqGD9ohIYff+yRAgggCOGHH33oBcILw/qRBLAl3PGH
+H1wACwIMGp3BBx95mOBBBz9cu4cNHnjQwrV8HNGBByLQca0W53rwgkZl6KHH
+HSQw1IO8edDA0Ap5yFsEQyDIIe8VHDDkgkZA2GDDDVdooUUTCtsQhcNURLyE
+w1jkoPAQDmvhoAAuWGCBBm3UUQcVImPQhclmXCAyEybH4YHIOZhcxxAatUAB
+BRisMcccUexswRY/k1HBzkr8/AYHO9/w8xxCaPQCBguRscYaTVCdgRVXe0E1
+BkdcfcYHVNtw9RpAaOTFGm+okYELHsjQxhtroDACCiDMzUb+DhnEUIEZbrCx
+hAQ5RMCC2mOAcUYFO4jwghlgmFGCCjJwgAYYZNjAARARjBGGGElIkIQDK2jU
+hRZXkDFBDyS0AIYVYIzQAg0akHFFFzR0MMQDYFyRxRERPMGACqHKAIMOMgzx
+gw01yHADDUEIMYPGM2hGxAw7vHA8Dkf0p1EJPbDLReBDSCDFAkZkoYUTD/Rw
+AQ9nrBGG+UGkEEYaYuQqwAgnSJHAFKcKggrS8AEk0AEPUJjBH6iggzS4gQsW
+iEIVTnCFKGxBf3ExAgOogIQk/GACuzOCEpLAPiOA4AZNSIIVGuCDFpAACkmY
+gg/+EQAVrIAFKtABDnBggxuq4AYWO/QNC1ZAgx3q4IYsgEEOcKADFPwjIAA7
+}
 
-# 7: Computer chess
-image create photo dbt7 -format gif -data \
- "R0lGODdhIAAgAKEAAP///wAAAOHh4QAA/ywAAAAAIAAgAAACdISPqcvtD6OctNrrgt680yCE
-  4kgGEigM6squoQmBrRrMgwA/cmvWLR7ZrXI+Vy6T4gGKxmByeGDejg3hgMoExp7XRJbKsHY0
-  LK0uZJu9TqT2CJwZy+HxuSdoz9Oj7v77rDdmFuZXuGcQaIexyNjo+AgZ6VAAADs="
+{Tournament, all-play-all}
+{
+R0lGODlhIAAgAMIDAAAAAAAA/zw8PMi9vci9vci9vci9vci9vSH5BAEKAAQA
+LAAAAAAgACAAAANoOLrc/jDKCaqt497JO9WZFYpeaZ5oFCjr0L5sKs9SYNsK
+oAh7P/A/H0dHixBlN1ww4wM6hZ5j0SEtJVtP5jILRFWni28t2fQRuUUxWN24
+lre595SdHt/eaG0XrOUzxG5wgll0foaHDQkAOw==
+}
 
-# 8: Index of games
-image create photo dbt8 -format gif -data \
- "R0lGODdhIAAgANMAAAAAAAAAqgCqAACqqqoAAKoAqqpVAKqqqlVVVVVV/1X/VVX///9VVf9V
-  ////Vf///ywAAAAAIAAgAAAEovDJSau9OOvNu/9gKALkE5wPqa5A10pJHGtvxrImqkrAcWC1
-  i2zGS/kut1wglUwZf5UgbIh09qCT0ml5w1mflNcwsWmZwbyuuvQ1H52hs/z9WkvbVvoIfy0y
-  11F8enFtCQGDgBZyKYeDIHKGPo4fco1vW5iZmDVmkZI8Y6FjAEtWllh2ajqebxSir2OnGJq0
-  mpJYF7e6u7scvL+3IsLDxMUUEQA7"
+{Tournament, Swiss}
+{
+R0lGODlhIAAgAKECAMhpaf///66urq6uriH5BAEKAAIALAAAAAAgACAAAAJF
+hI+py+0Po5y0WhCyzjft3SGfFh4jV2Jnqo7sGVTw/Dn0HTc4be9w73PpgkIG
+sbg41ii/VLP0DEU700vVcmVpt9yuV1EAADs=
+}
 
-# 9: Player collection
-image create photo dbt9 -format gif -data \
- "R0lGODdhIAAgAKEAAP///wAAANjGpuFCACwAAAAAIAAgAAACg4SPqcvtD6NMoYYJg9jiYqZx
-  m/dR4liaJ5oa4Uq2LxfLcKuyOBLW++wrVWBByewmXCExR2VRYYlKp9FGYIDNarfcQfCadXkq
-  YrHWB8aSAeu250zZltnj+jaWVtfn6/shj8W3R8c1VjjoZlDI1iUo2FUBiTgI2WV5iZmpKUnV
-  6Tm141AAADs="
+King
+{
+R0lGODlhIAAgAMZKAAwMDBERERQUFBwcHCYmJjAwMDU1NTo6Ojw8PD8/P0JC
+QkREREdHR0pKSk5OTk9PT1RUVFlZWV5eXmNjY2dnZ25ubnJycnR0dHh4eHl5
+eX19fYKCgoODg4eHh4mJiYyMjJCQkJGRkZKSkpSUlJaWlpeXl5iYmJubm5+f
+n6KioqOjo6WlpaysrK2trbCwsLKysrS0tLu7u76+vsLCwsPDw8bGxsfHx8jI
+yMvLy87Ozs/Pz9HR0dLS0tXV1dfX19jY2NnZ2dra2tvb29zc3N3d3d7e3t/f
+3+Hh4eXl5ebm5lpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpa
+WlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpa
+WlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpa
+WlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWiH5BAEKAH8A
+LAAAAAAgACAAAAf+gH+Cg4SFhoeIiTgvjDiJj4ZHf0MwJDBDf5KQkDOOPCE8
+fzgzm5AvJjQyHzI0Ji+ljy4ds7QdLrCJLShBORs5QSgtuIg1On87Gjt/OjXD
+hUdHSUhHORg5R0hJ0M5/Qism4CYjFiPhJitCpdDQQR8e7/DxHh9B65qGRSci
++/z9/v8nihwicmGCwYMIEyq8QOSQEA4SIkqcSLEih3SHUkTYyLGjx48pEvmg
+AKGkyZMoT1Lw8YjFg5cwY8qMyQKSkAoNcurcyTNnBYyPYjBYQLSo0aMMYpQa
+kiGB06dQo2bAVOqGggNYs2rNquDGMA8GwoodK9aDMxsF0qpdq9aGsx5c5uKa
+6+GsBoG7ePPibTZsx4i/gAMDVobLiIMBiBMrTuzACC4gKkBInkx5sgogsEoI
+CMC5s+fPAkpsKpIAgOnTqFObTiDwUZEJCGLLnk079oTWj37o3s27N+9DgQAA
+Ow==
+}
 
-# 10: Tournament, all-play-all
-image create photo dbt10 -format gif -data \
- "R0lGODdhIAAgAKEAAP///wAAAAAA//8AACwAAAAAIAAgAAACZoSPqcvtH6KMYM6HM7RVdq+F
-  4kg2gnEC6YqW7usIsmwExnDnAL7rmA1rAF0zWq+i4yl9mmFQ4QwVU0vkscojRZ+HbayY1AGx
-  QS/XnJiGr7X1E13+ztZka5ZrxSO8ara/CqcnOJhQAAA7"
+Box
+{
+R0lGODlhIAAgAOeQAB0dHSIiIicnJywsLDExMTIyMjc3Nzw8PEFBQUZGRk1N
+TU5OTk9PT1BQUFFRUVNTU1ZWVltbW2RkZGVlZWZmZmdnZ21tbW5ubm9vb3Fx
+b3NzcXNzc3R0dHV1dXZ2dnd3d3d3eHh4dnh4eHl5d3p6ent7fHx8enx8fHx8
+fX19fX19fn5+fX5+fn9/f4CAgICAgYODg4WFgoWFhYaGhoeHh4iIiYmJiYqK
+iouLi4yMjI2NjY6OjpCQkJKSkJKSkpOTk5SUkJSUlJWVlZWVmJaWlJaWlpeX
+lZeXmJiYmJiYmZmZmpqampubm5ycmpycnJycnZ2dm52dnZ2dnp6em56enp6e
+oJ+fn6CgoKGhoaKioqOjo6Skpqampqenp6ioqKqqqqurq62tra2tr66urq+v
+r7CwsLS0tLW1tba2tre3t7i4uL29vb6+vr+/v8DAwMHBwcLCwsPDw8TExMXF
+xcbGxsfHx8jIyMnJycrKyszMzM3Nzc7Ozs/Pz9DQ0NHR0dPT09bW1tfX19jY
+2NnZ2dra2tzc3N3d3d/f3+Dg4OPj4+Tk5OXl5ebm5ufn5+jo6O/v71paWlpa
+WlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpa
+WlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpa
+WlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpa
+WlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpa
+WlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpa
+WlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpa
+WlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpa
+WlpaWlpaWlpaWlpaWlpaWiH5BAEKAP8ALAAAAAAgACAAAAj+AP8JHEiwoMGD
+CBMqXMiwocIpXiJKnEiRYpUlCLdoWdGihZArV1y0sAEyR0cqV5B0VPGESUYu
+KGDgqLNoUQ4cXGqOwYHj0CI+OGSMuOLy4BYuJWj86PPokZAfY5qi+fHD0SNB
+P26EIPqSR5w9asKE0bNHjtg3e/aQCXNmz5weXI1yUWLIERgdOho50pMjxxxH
+jn7o0OIIEZS4Bo8mIcTIy40bihjheQyHESMeN7AwMtQEccGjIE7QkJMokQ0a
+Wkp/oUHDUKI8NFho8EzwqAcRMN4cQiQDhpVDh7rAgDHo0B0YJDLQHni0hY8o
+Ztq0oRLFi/QvUaKscZMmShATywX+Hg2yZ5CTEykEEWKDHg0hQjBS/CDkx0j4
+f0d/yMmz48IFPHmU4Z8XeeTRwQUz5EEHEfeJoUUMRRTRwgYbCFFEDhTaEKEH
+G5wQIQ1SFGVQFkBYYeKJKKaY4hBHIGQHIIXEKOOMNNaIx0F2FBKIIYXwKCOP
+hgTZY4xAxhjIH3IQZIMFTDbp5JNQPokBQRwkYOWVWGapZZYOENQBAmCGKeaY
+ZI7JAEEeHKDmmmy26WabChD0gQF01mnnnXjeGedAERDgJwEFBFoAoH8W+qeg
+gxawp0AMDODoo5BGKmmkCxDkgACYZqrpppxuWulADwQg6qiklmpqqQ0QBAEA
+rLbq6qsisL7a5UA1VGBrBRTkqusEE0jQK68T6JrrrS84ZOyxyBIUEAA7
+}
 
-# 11: Tournament, Swiss
-image create photo dbt11 -format gif -data \
- "R0lGODdhIAAgAIAAAP8AAP///ywAAAAAIAAgAAACRYSPqcvtD6OctFoQss437d0hnxYeI1di
-  Z6qO7BlU8Pw59B03OG3vcO9z6YJCBrG4ONYov1Sz9AxFO9NL1XJlabfcrldRAAA7"
+{Player collection}
+{
+R0lGODlhIAAgAOfIAABO/gBQ/AJU8QBU/gNV8QBW/QBb/gFb/gBc/QBg/gBh
+/Qxe7wFh/gBl/gFm/gBn/QBr/gBs/RRk9gNt/hJo9wBy/gBz/gB3/gB4/gB9
+/gt4/gB+/gJ+/gCC/gt9/gCD/gCJ/gCK/gGK/hKD+wCP/g6J/gGQ/hKI/CV/
+/gWR/gCU/jV97wGV/jZ8/hCQ/gCZ/hyL/h2L/gGa/i6F/g+V/huP/hCV/i+G
+/hyQ/gCg/iSP/gGh/gud/gai/iSV/B2b/gCr/gGr/iea/hCm/gCw/ham/gGx
+/kiQ+A+v/hCv/hCw/jad/iml/i+i/huu/hSy/RC1/RC1/kiZ/liR/gq6/lmS
+/gu7/kid/iO0/hW9/Ra+/jqs/l2d9Ce3/k6k/lyf9Su3+iy4+T6u/jmx/i65
++Se8/j2x/lyj9ju1/lym9yXC/lyp+Hmh3GWl/ki1/lys+XCk/lyw+mWs+km6
+/nCn/lW2/lyz+zbH/TfH/TjI/V22/DDN/l25/Wq1/kbI/E/E/kjI/F69/V/A
+/lvE/lzE/my8/lvF/lzF/mDD/nC7/kvQ/WHG/oG3+XK+/UvS/W/A/oG5+VfQ
+/WPK/oe4/lvP/FnQ/oC9/om5/lrS/XfE/lzS/X3G/n7G/nvI/nDP/pC//nDR
+/m3T/pDC/oPK/n7S7m/b/pXJ/nvY/JrK/pvK/pDR/o3T/pvM/p3M/oTc/p/S
+/oze/rbO/qfW/qnW/qLa/rbQ/rjP/q3W/rjR/qfa/rbU/rjU/rbW/rjW/rba
+/rjb/rDg/q3i/rLg/rbf/q3k/rjg/rjm/rjn/q6urq6urq6urq6urq6urq6u
+rq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6u
+rq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6u
+rq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6u
+rq6urq6urq6urq6urq6uriH5BAEKAP8ALAAAAAAgACAAAAj+AP8JHEiwoMGD
+CBMqXMiwocOHECMmJIUpksWLGDVJ/KcIz52PIEPmcSSxVLFilaxQUeMKFiwt
+VKzskXjnJCgjRMoQO3YsChEiWfwAGkq06FBKBGsW8xQESJdgxowpAQIECpgw
+WLNqxUrm1MA/gwgNOkSWkFlDZLEgScK2rVu2T0INdNKjxxxgwlYNqUtLmDA0
+OQILHix4h6SBRV68cDOsmCoeinOdNKO4smXLMhYNHLNlS51NnB6J6ZyJEycm
+KlKrXq2aBaKBnWTNKmSDRpNXs2b9oEEjBYnfwIMDNyFo4ChfvxKJACHk1q9f
+LkBIn069OogQgQY2YtWqD44aS0zPtWpVooP58+jTd/jAZ6APGDG8oEplSUeM
+GBwy6N/Pv3+GDXoMdMIFF1zBSy+ieEDgggw22CAGdgw0QgUVSKHLLp9oQOGG
+HHbYoQVxDCTHJJe0ccMMKEwAwYostuhiixG8MRAkteBChwMN5Kjjjjz22MAD
+awzESCy2wMFAAkgmqeSSTCagQBoDHTFFFS0cYMCVWGap5ZYGIHDGQBQMIOaY
+ZJZpZpkFfDGQBAC06eabcMYJZwBcDLQCAQLkqeeefPa55wJsbCTooIQWauih
+BwUEADs=}
 
-# 12: GM games
-image create photo dbt12 -format gif -data \
- "R0lGODdhIAAgANMAAAAAAAAAqgCqAACqqqoAAKoAqqpVAKqqqlVVVVVV/1X/VVX///9VVf9V
-  ////Vf///ywAAAAAIAAgAAAEjNDISau9lOjNu//eI45kaZ7cqa5kyr6mC8+PTL/2veY6upWB
-  YNA0BAZEMuFIuTwakT9RsUliSouuadX5sHaxUa1K6CRDNVeY+QtGf5vrt7lNSBO5w7kzy91S
-  34BJfWx/RXRwcHiDgVGJR1NijG49O42UPpOXMZaaLZydZ3WgJTygpZ2nmiCrrK2urxsRADs="
+{My games}
+{
+R0lGODlhIAAgAOeOACAgICUlJSoqKi4uLjMzMzY2Njg4ODo6Ojw8PD09PT49
+PT8+Pj8/P0BAQEJCQkREREVFRUZGRklISEpKSk1LS05OTk9PT1FRUVVSUlNT
+U1RUVFZWVllVVVhYWFtYWFxaWltbW1xcXF5cXF9cXF1dXWJfX2BgYGFhYWVi
+YmVjY2RkZGhlZWZmZmllZWhoaGtnZ2xoaGxpaWpqam9sbG9vb3Jvb3FxcXVy
+cnR0dHZ2dnl2dnd3d3h4eH13d3p6en55eXt7e4B6enx8fIB8fIN9fX9/f4CA
+gIR/f4GBgYKCgomDg4WFhYaGhoqFhYyGhoqKiouLi5CQkJWOjpaOjpGRkZKS
+kpeQkJSUlJWVlZuUlJ6Wlp6Xl5qampycnKKamp2dnaKbm56enqScnKCgoKef
+n6KioqmgoKqhoaWlpa2kpKioqLCmpqurq6ysrLGxsbKysrOzs7S0tLyysra2
+tr6zs7+1tbq6usO4uLy8vMO5ub29vcW7u8e8vMDAwMi9vcfHx8nJyczMzM7O
+zs/Pz9LS0tTU1NbW1tra2t3d3eLi4uTk5Ojo6Orq6uzs7P//////////////
+////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////
+/////////////////////yH5BAEKAP8ALAAAAAAgACAAAAj+AP8JHEiwoMGD
+CBMqXMiwocOHECMqtEOxokU7Ev+p+cKxo8eObSLC0YMHz5iTbkrGOVlGop1G
+MHnI7ANzkEweSSLOYcQTh089PAP5xHElitGjSJFyEfhmkVMaUO04BQSVxpMu
+WLNq1YpGIBMfYA2J7QKWilhDPGSoXcuWrRGBQljIVUQXi9wldBXlkMu3r18c
+AnmcGJyoMJXBSAonsjG4sePHNARCCUO5suXKKkJo3syZswyBYxCJ7kCajZ/T
+TUh3SHHaj44OrWOfFtjlkO0MuNW0JoM7w5DWNzKcFiOlePEsAqv8WW6i+ZjT
+e/JcqFBhS53TNSpgp86dhEATE8L9ny1yGoyfGOHpiDk9YwL78PA7CAQBoX6h
++0BOE/HjBIIIP0ecBgMEAtZnoAYCbdDAgoQ0uMNpLcixRgM/+PHBaSs0cJoW
+TnTYoQUCAdHGiM2BdxoKU/ghgRd0JHAiArK1NoFXgtRowI0GnFbCC368cIcV
+OfpRQpBD4mhABAIlEciSBDRJwGkjLMCHGX7A8KQfI1yZpZMEOCCQC0cNIOYA
+p3kwwBmnKUCmH2aWOaaYCQjEgAB01inAaRwI0IMfadCJ551+WEHEoIMqIdAB
+ASSqaACnYRAABX4EkWijjMY42z8TAKDpppx26umnBQz0gIGklmrqqfVlpOqq
+rEIUEAA7
+}
 
-# 13: IM games
-image create photo dbt13 -format gif -data \
- "R0lGODdhIAAgANMAAAAAAAAAqgCqAACqqqoAAKoAqqpVAKqqqlVVVVVV/1X/VVX///9VVf9V
-  ////Vf///ywAAAAAIAAgAAAEhNDISau9lOjNu//eI45kaZ7cqa5kyr6mC8+PTL/2veY6up2B
-  wChoIpZ4D2NSWFKOkMogUySN/YrT6tApgma10unz2vwaw1YN8LskcmtkUlSIfnu3VKY9js/7
-  l2kEa31yYl18f4BlgT04iI0tj5CHapM+lZZHkpNIlp2cm5Ago6SlpqcbEQA7"
+{GM games}
+{
+R0lGODlhIAAgAOevACAgICUlJSoqKi4uLjEwMDMzMzY2Njg4ODo6Ojw8PD09
+PT49PT8+Pj8/P0BAQEREREZEREVFRUlHR0lISEpKSk1KSk1LS0xMTE5OTlFR
+UVVSUlNTU1ZWVllVVVhYWFtYWFxaWltbW1xcXF1cXF5cXF9cXF5dXWJfX2Bg
+YGFhYWViYmVjY2RkZGZmZmllZWplZWhoaGtnZ2xoaGxpaWpqam1qam9ra3Ft
+bW9vb3FxcXR0dHhzc3Z2dnd3d3p2dnh4eH13d3x4eHp6en15eX55eXt7e4B6
+enx8fIB8fIN9fX9/f4CAgIR/f4GBgYZ/f4KCgomCgomDg4WFhYaGhoqFhYyG
+ho6Hh4qKio+IiIuLi5CJiZCLi5KMjJCQkJaOjpGRkZKSkpeQkJeRkZSUlJWV
+lZqTk5uUlJ6Xl5qampycnKGamqKamp2dnaKbm6Sbm56enqScnKWdnaCgoKef
+n6KioqmgoKqhoaWlpayjo62kpKioqK+lpbCmpqurq6ysrLOpqbOqqrasrLet
+rbeurrGxsbKysrmvr7Ozs7S0tLyysra2tr2zs76zs7+1tbq6usK4uMO4uLy8
+vMO5ucS5ub68vL29vcS6usW6usW7u8a7u8e8vMDAwMe9vci9vcfExMfHx8nJ
+yczMzM7OztLNzc/Pz9LS0tTU1NbW1tra2t3d3eLi4uTk5Ojo6Orq6uzs7P//
+////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////
+/////////////////////yH5BAEKAP8ALAAAAAAgACAAAAj+AP8JHEiwoMGD
+CBMqXMiwocOHECMqdESxokVHEv/pYcOxo8eOfiIeqhQpkpyThEoiOklHoiNX
+MH/I3ASTlMwfTyIqasVTh89KPEP51DGmi9GjSJGiEViIlVMcUB05BQUVx5U0
+WLNq1XpH4BQhYE+JTQP2i9hTP2ioXcuW7RKBR1rIXUWXjFwpdFfxkMu3r18d
+An+kGKyq8JfBTQqryjG4sePHOARmeUO5suXKLERo3syZMw2BclKJ9kC6j2hK
+ahJhkgRoiwnSnWJTIe1hRexO/9Kg2r2htx5UozR1wiMmTqZOg0ZsuD2n9wYk
+t/+B+UQdhXU5njh18oGhe43jXDD+xF4kKUP3M41i/0NBof1ZJWU6wWlPf8iN
+CxRit+k0oz0jOOqFEMGAphRYhCCdBDHgggzGlkQnVURAQidMqMeBAxiWomEP
+k3QSA4YghhibC4nw4QARnYCgXhF+tGgde5B04kICNN4WWwKxqeBFJxOswYgC
+6k0hypAHFHnAH53sYGQUUZgR2wGxnRCDh5CEASVuT4SiZQFcFmBFJ250yWUJ
+sRUQWwkMaFJHJzKYiRsMRw0g5wASXNKJDXMS8GAnA8T2wQB2xLZAn7g1IMCh
+iB76gnBwOKGFIbF5IUBsHQgARCd5HKoeAgF06qmnEGARiCWP7AFFBZ3GpkEA
+FnRiRKoduFEAwKy01mrrrbgaMNADDPbq66+9ZiTssMRCFBAAOw==
+}
 
-# 14: Blitz games
-image create photo dbt14 -format gif -data \
- "R0lGODdhIAAgANMAAAAAAAAAqgCqAACqqqoAAKoAqqpVAKqqqlVVVVVV/1X/VVX///9VVf9V
-  ////Vf///ywAAAAAIAAgAAAEgvDJSau9OOvNu89AKI7AV4VOqqqlKaHrGroPHKfh4dp3rn+8
-  mO/XCcoAhyQQcGMhlR6jM0nkSHGk2ebaxFm7XZGVBHYMo8zwsApKN9dsDHeNVj+hYzUV/33f
-  +WM2Ins0NW5whYJ/cUVpg1SFhlh7jI2TkJEoj4A7ZouRE5uchZSgEhEAOw=="
+{IM games}
+{
+R0lGODlhIAAgAOeNACAgICUlJSoqKi4uLjMzMzQ0NDY2Njg4ODo6Ojw8PD09
+PT49PT8+Pj8/P0BAQEJCQkREREVFRUZGRklISEpKSk1LS05OTk9PT1FRUVVS
+UlNTU1RUVFZWVllVVVhYWFtYWFxaWltbW1xcXF5cXF9cXF1dXWJfX2BgYGFh
+YWViYmVjY2RkZGhlZWZmZmllZWhoaGtnZ2xoaGxpaWpqam9sbG9vb3Jvb3Fx
+cXVycnR0dHZ2dnl2dnd3d3h4eH13d3p6en55eXt7e4B6enx8fIB8fIN9fX9/
+f4CAgIR/f4GBgYKCgoWFhYaGhoqFhYyGhoqKiouLi5CQkJaOjpGRkZKSkpeQ
+kJSUlJWVlZ6Xl5qampycnKKamp2dnaKbm56enqScnKCgoKefn6KioqmgoKqh
+oaWlpa2kpKioqKmpqbCmpqurq6ysrLGxsbKysrOzs7S0tLyysra2tr2zs76z
+s7i4uL+1tbq6usO4uLy8vMO5ub29vce8vMDAwMi9vcfHx8nJyczMzM7Ozs/P
+z9LS0tTU1NbW1tra2t3d3eLi4uTk5Ojo6Orq6uzs7P//////////////////
+////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////
+/////////////////////yH5BAEKAP8ALAAAAAAgACAAAAj+AP8JHEiwoMGD
+CBMqXMiwocOHECMqtEOxokU7Ev+d4cKxo8eOayK60YMHD5iTbEq+OSlGoh1G
+MHvI5ANTkMweSiLGWcQzh089PAH5zGElitGjSJFmEdhGkdMaUO04/QO1xhMt
+WLNq1VpGIJMfYAuJ1QJ2ithCPWaoXcuW7RGBQ1rITUT3itwldBPpkMu3r98c
+AnugGIyo8JTBSQojujG4sePHNQRC8UK5suXKK0Ro3syZ8wyBYA6J9kBajWg8
+Hvr02ZFadRPSHlSoXu2hhUAthnJr2H0mNx0NqnEAVx1mtwYis4WjEEjFj/MT
+0ME4R2NBtY3qfeTkwWDBApY61i3+lBB4goL5s0bMm1dNg4LqLn1kmJ/zhT0F
+DwJDRNhPqH+Q/fupFkMEqhXRhxMRjNAHEgJGsIFAHDgg4SAU8iChhKqx4IBq
+LsCRhgNA9AFChg5cIFAQa6QIXXkJtJiAaim82EcKUvQxwRZzKABjAhR4FciP
+BwQpZJCqmXBAkTD0AcMdVRzZh5ESCKQEIFQSYOWVVqpGAgFaMrDHGH3EwGUf
+Wz4g0AtHDaDmmmqq9sEAbg5AhmoLwNnHmwoI1IAAfPbppwCqdQBoH4L60IcZ
+fAYqwAECIRDAo5BGGoBqGUzaR6UV9CHEo5QGUIBAFAAg6qiklmrqqQYMBAGA
+rLbq6qsJ+2Uk66y0QhQQADs=
+}
 
-# 15: Tactics
-image create photo dbt15 -format gif -data \
- "R0lGODdhIAAgANMAAAAAAAAAqgCqAACqqqoAAKoAqqpVAKqqqlVVVVVV/1X/VVX///9VVf9V
-  ////Vf///ywAAAAAIAAgAAAEdtDISau9lOjNu//eI45kaZ7cqa5kyr6mC8+PTL/2veY6uqmB
-  wCkY9GmAwlLxsWz9hslRkxkV8URTKil71bK4T1NWWbWGyatx7bwtS93mIxSp6vZG9vtaLoZ7
-  Y2x6TnyCJXl3hz2JOos3jTSPM5EwIJWWl5iZGxEAOw=="
+Tactics
+{
+R0lGODlhIAAgAOeKACAgICUlJSoqKi4uLjMzMzQ0NDY2Njg4ODo6Ojw8PD09
+PT8/P0A/P0BAQEJCQkREREZEREVFRUZGRkpKSkxLS05OTk9PT1VSUlNTU1RU
+VFZWVllVVVhYWF1aWltbW1xcXF1dXV9eXmBfX2JfX2BgYGFhYWNhYWRiYmVi
+YmVjY2RkZGhlZWZmZmllZWhnZ2hoaGtnZ2toaGxoaGpqam1qam9ra29sbHJt
+bW9vb3Jvb3Rvb3FxcXZxcXVycnR0dHdzc3Z2dnl2dnd3d3h4eH14eHp6ent7
+e3x8fH9/f4CAgIGBgYKCgoWFhYaGhoqKiouLi5KMjJCQkJGRkZKSkpiSkpSU
+lJmTk5WVlZqampycnJ2dnaObm56enqCgoKKioqWlpayjo6ykpKioqK+mpqmp
+qaurq7KpqaysrLGxsbKysrOzs7S0tLuxsbyzs7a2tri4uL+1tcG2trq6ury8
+vMO5ub29vcS6usa7u8e8vMDAwMi9vcfHx8nJyczMzM7Ozs/Pz9LS0tTU1NbW
+1tra2t3d3eLi4uTk5Ojo6Orq6uzs7P//////////////////////////////
+////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////
+/////////////////////yH5BAEKAP8ALAAAAAAgACAAAAj+AP8JHEiwoMGD
+CBMqXMiwocOHECMqlEOxokU5Ev+J0cKxo8eOZyKqqTNnTpeTaEquOelFopxE
+MIfIzAPzj8whSyK6QcTTh886PPv49FElitGjSJFiEZjmkFMcUOU45QMVh5Ms
+WLNq1fpFYJMiYAWJzQJWilhBQ2aoXcuWbRKBR1jINUT3ilwmdA0Bkcu3r18f
+AoeUGFyosJTBSgoX2jG4sePHOAQ+4UK5suXKKj5o3syZ8wyBXQiJ5kC6jOg5
+pFPr0ROEg4stcO6woRKCNAuBWQbpxsBbjO43vIOv7iECjp4xVtroCcO7hMAp
+e6KTmN4lOpkK2LGvzgFFDxjsJ1bYp6gAQiCJCejPIkHPnv1qGzWImEBfYXWM
+CRwEeojAP5B/I/wFGOBqMggYwQ96xEFBBBkIpEEDEAIioRAQVljhaitYSAMd
+dsAAoQUCGXHGiNOdl8CJKJ64GgootoBHHB2gOIFXftR4wI045njjaiPgaIYe
+POQogUBL9GEkAUgmqSSSOugAQZI36MCAkg4I9MJRA2Sp5ZZcdrmlAgItIMCY
+ZJZp5mobkIlmmQcIhEAAcMYp55yrXRBnnXIWINAEAPTp55+ABiqoAQM9YOCh
+iCYaQUaMNuooRAEBADs=
+}
 
-# 16: Endings
-image create photo dbt16 -format gif -data \
- "R0lGODdhIAAgAKEAAP///wAAAP/73wAAACwAAAAAIAAgAAAChYSPqcsZDWOYsa5ns5lYXwoE
-  AsZ54TQ+orqCFToK6RynVsulONpBO6/L9Ro/Hkd4Kx6FQ2JLBpUZPbBltfmyWjeg0ql3jAY3
-  wTJYuySLxec1tIs+OuJD0RpLRZsUdvbe4Yan0RclmEH49oeAKKV4wDjiyKUlCcNm6EPnMghZ
-  iMmn6SXJUAAAOw=="
+Endings
+{ R0lGODlhIAAgAKUJAAoKChERESgoKCkpKS4uLjAwMDExMTc3Nzg4ODw8PD8/
+P0REREdHR05OTlFRUVJSUlZWVlxcXF1dXV5eXmBgYGFhYWJiYmRkZGVlZWZm
+ZmhoaGtra2xsbG5ubm9vb3BwcHFxcXJycnNzc3R0dHV1dXd3d3h4eHp6enx8
+fH5+fn9/f4CAgIKCgoODg4SEhIWFhYiIiIuLi42NjY+Pj5SUlJaWlpeXl5ub
+m52dnaCgoKSkpKenp6mpqaurq66urjw8PCH5BAEKAD8ALAAAAAAgACAAAAbq
+QJ9wKEwQj8ik0mdcOpeJaPRJRTar2GKWKot5v7HtkUQum80qsWTNbrdLYgtk
+Tq/TxcKGfs/XU/A+FQyDhIUMgEIKiouMF4g+GgeSk5IIj0IFmZqZEUctQzct
+N0MtO0ghqKmoo0M9KCkqKiizsSkoNEgduru6YUQjwMHCI0geBMfIyI8mfX0O
+iAEA0tPUAHBDGxg8GNzbGJc+IBw+HOXk45ckH+s66+vgDYQzheAsKTgpL/cp
+KeAKBycmBTwADoYLGy5qHHThApwBARBXDIAoAJyIXTl4XXqQrOMCRBma9ZkA
+qJpJaeBSAgoCADs=
+}
 
-# 17: Openings for White
-image create photo dbt17 -format gif -data \
- "R0lGODdhIAAgANMAAAAAAAAAqgCqAACqqqoAAKoAqqpVAKqqqlVVVVVV/1X/VVX///9VVf9V
-  ////Vf///ywAAAAAIAAgAAAErvDJSau9F+jNu9cYMBxDaZ4oCoRj6rqgJZJvXQLHWs22jec6
-  Ca/3+gWCjyExZUQqURLf4XCkPE2UWtPaSmWL0+rkWvrCws6u9yGlpmnQiRbNhWMrYHd9bVbR
-  x2plF2d6gHYDGIRiQoGIg0x/jIdLN5FJjZQDW4aZfoWSnSeboKGVn5eTlKOopaaLSRqtmpY/
-  H7YetD9Tu7y9vpawv8LCr0IbAcjJysvMSFa30BwSEQA7"
+{Openings for White}
+{ R0lGODlhIAAgAMIFAAAAADw8PACqqqqqqv///66urq6urq6uriH5BAEKAAcA
+LAAAAAAgACAAAAOweLrc/g/ISauVEIghuv8gCGRbaJqYo3Fn2wHD2KyuC8ey
+QtfnHeSHHS/kAwpBBIJtMPgxjp5kslV8lkJSZY/pXEA7WSrXeMVqt00yCykV
+p63raPYsGsPNYZTdWwbPp0R7On0Cf4B1b3xxhYZ6iYOLQy+CQYSSAlWKl4hd
+kJsfmZ6fk4+VkZKhpqOknUESq5iUNxe0FrI3TLm6u7yUrr3AwK06EwHGx8jJ
+ykBPtc4UCgkAOw==
+}
 
-# 18: Openings for Black
-image create photo dbt18 -format gif -data \
- "R0lGODdhIAAgANMAAAAAAAAAqgCqAACqqqoAAKoAqqpVAKqqqlVVVVVV/1X/VVX///9VVf9V
-  ////Vf///ywAAAAAIAAgAAAErvDJSau9F+jNu9cYMBxDaZ4oCoRj6rqgJZJvXQLHWs22jec6
-  Ca/3+gWCjyExZUQqVaJak/I0caSHw5HaYm6wWmcXqgFvJ1VrtJg9C8enKzvMpcU7c3cSfsPD
-  2mJ2fR5/dGh8H2txgHVkfiqMh4JLVpFvk5QDU5KZkIaXnYufe5iUm6ChN5akqaqjX62nSVmJ
-  tRyrGlm6u7y9u3pJP77DvcDBGgHJysvMzUhUttExEQA7"
+{Openings for Black}
+{ R0lGODlhIAAgAMIEAAAAADw8PACqqqqqqq6urq6urq6urq6uriH5BAEKAAQA
+LAAAAAAgACAAAAOtSLrc/g/ISauVEIghuv8gCGRbaJqYo3Fn2wHD2KyuC8ey
+QtfnHeSEHS/kAwpBgYBtMPgxjp5kslV8lkJSZY/pXEA7WSrXeMVqt00yCykV
+p63raPYsGsPNYZTdWwbPp0R7On0Cf4B1b3xxhYZ6iYOLQy+CQYSSAlWKl4hd
+kJsfmZ6fk4+VkZKhpqOknUESq5iUNxe0FrI3TLm6u7yUrr3AwK06E4bGf0BP
+tcsUCgkAOw==
+}
 
-# 19: Openings for either color
-image create photo dbt19 -format gif -data \
- "R0lGODdhIAAgANMAAAAAAAAAqgCqAACqqqoAAKoAqqpVAKqqqlVVVVVV/1X/VVX///9VVf9V
-  ////Vf///ywAAAAAIAAgAAAEuvDJSau9F+jNu9cYMBxDaZ4oCoRj6rqgJZKq+JrAsVZzrd2l
-  nG4n6Z04wIEwQHwYcZvksvmEJpWHA5NSVUaBU24LiryFJ1UPOLtFj73q17n4/tgkKja1/hlQ
-  jnpiNEB/OIFugzeFQYd0iYoPeVp7jy6LWJOCSRaGmYibFZ1tjoQXjJ6kkJyYo05vlqaslFdy
-  ja6VtLJcP7mSrUJ2wRy2GlnGx8jJx61OQsrPyczNGgHV1tfY2U27wt07EQA7"
+{Openings for either color}
+{ R0lGODlhIAAgAMIFAAAAADw8PACqqqqqqv///66urq6urq6uriH5BAEKAAcA
+LAAAAAAgACAAAAO8eLrc/g/ISauVEIghuv8gCGRbaJqYo3GidnrAMDZrK71d
+LM9K/VE4gS7AO/hgk+CweEQGhYMBkdEUJnFLagkJfGUXTQs2OgVvreLTt3e+
+uAgEEZnZvgjg8N9cy8Lh4zB7Zn0vf3pSdISFgIGIfE+GjWVsiiF/eTmClEGX
+jGtGZyadmJ9VIKOApaGWo5mOg09qmqCVsVCvPTe2crhGUW7AFLMSUcXGx8jG
+k7nJzc3LuRIB09TV1tdFVMHbKQkAOw==
+}
 
-# 20: Theory: 1.c4
-image create photo dbt20 -format gif -data \
- "R0lGODdhIAAgAKEAAP/739jGpgAAAP///ywAAAAAIAAgAAACfYRvoauIzNyBSyYaLMDZcv15
+{Theory: 1.c4}
+{ R0lGODdhIAAgAKEAAP/739jGpgAAAP///ywAAAAAIAAgAAACfYRvoauIzNyBSyYaLMDZcv15
   GDiKFHmaELqqkVvBXCN3UniXebq3/fuLBWlDmwN31CV5S18T+BRqokSqTSCYKB8lwWCQ3Wy1
   PCzZyU15wRdmerX+ZpHvCPY+H7fRZ2h9VvUX2CclaGTI4kc4uKfYWLh4GJkI+cgo5jZZo1EA
-  ADs="
+  ADs=
+}
 
-# 21: Theory: 1.d4
-image create photo dbt21 -format gif -data \
- "R0lGODdhIAAgAKEAAP/739jGpgAAAP///ywAAAAAIAAgAAACf4RvoauIzNyBSyYaLMDZcv15
+{Theory: 1.d4}
+{ R0lGODdhIAAgAKEAAP/739jGpgAAAP///ywAAAAAIAAgAAACf4RvoauIzNyBSyYaLMDZcv15
   GDiKFHmaELqqkVvBXCN3UniXebq3/fuLBWlDmwN31CV5S18T+BRqokSq8aEQCKRYJlYwGGyv
   E2VXyy17y2Bxtet8tMNbFlSuzZMva35cPXMHKOhHuGE2mFaoeNjX+Lf4ligZufdoiASHiVip
-  UQAAOw=="
+  UQAAOw==
+}
 
-# 22: Theory: 1.d4 d5
-image create photo dbt22 -format gif -data \
- "R0lGODdhIAAgAKEAAP/739jGpgAAAP///ywAAAAAIAAgAAACh4RvoauIzNyBSyYaLMDZcv15
+{Theory: 1.d4 d5}
+{ R0lGODdhIAAgAKEAAP/739jGpgAAAP///ywAAAAAIAAgAAACh4RvoauIzNyBSyYaLMDZcv15
   GDiKFHmaELqqkVvBXCN3UggIwlTepa67pHzDoLBFbAF3m57jswzinqPobvpwZocaKneL9Opi
   yZdPMBgIaGWyeM32hrNodRxsftbTa1b+YWUj98fzVThDeJTYZKjohvd4uIglGel4V4l5KQip
-  yTiXyRnqZwlQAAA7"
+  yTiXyRnqZwlQAAA7
+}
 
-# 23: Theory: QGD
-image create photo dbt23 -format gif -data \
- "R0lGODdhIAAgAKEAAP/739jGpgAAAP///ywAAAAAIAAgAAACmYRvoauIzNyB6wgxaZBJm3t1
+{Theory: QGD}
+{ R0lGODdhIAAgAKEAAP/739jGpgAAAP///ywAAAAAIAAgAAACmYRvoauIzNyB6wgxaZBJm3t1
   FAdo24eJEGmiYelxLQjCo+zRYYvfksn7xYS+l23VQ9JUkWQTYAw6eMvjc5rTWSvOig4jfQyx
   PhIZSURHFRduuikYDFJsuaDRxUNTtrb+DGfXETf3JzZCKBiQWMiStbSoc/LmBlh5CHSFqZlR
-  tnnZiWZpGMrJBHpKmjo5yvqpugUbVooa63pQAAA7"
+  tnnZiWZpGMrJBHpKmjo5yvqpugUbVooa63pQAAA7
+}
 
-# 24: Theory: Slav
-image create photo dbt24 -format gif -data \
- "R0lGODdhIAAgAKEAAP/739jGpgAAAP///ywAAAAAIAAgAAACmIRvoauIzI4QBy5XbTBzJo19
+{Theory: Slav}
+{ R0lGODdhIAAgAKEAAP/739jGpgAAAP///ywAAAAAIAAgAAACmIRvoauIzI4QBy5XbTBzJo19
   lkSJUAhoG9CVKvq23hvGcgrWOUbz6u7oBXceU0Q3YnWMF+SJU8IlfckWs+GMyCjCB2grfVLF
   wymqTPZOi9JJc3wUDAaugJyOhb/ZC3ceHTdXdyfwp3ZyJ5iSiAfzdWMns6JnmGF2+PMGqInJ
-  aZn2eUQ5uVl5RdppGiZaihrqeep4+aradVAAADs="
+  aZn2eUQ5uVl5RdppGiZaihrqeep4+aradVAAADs=
+}
 
-# 25: Theory: 1.d4 Nf6
-image create photo dbt25 -format gif -data \
- "R0lGODdhIAAgAKEAAP/739jGpgAAAP///ywAAAAAIAAgAAACioRvoauIKqJoLrFVrYwhg4tl
+{Theory: 1.d4 Nf6}
+{ R0lGODdhIAAgAKEAAP/739jGpgAAAP///ywAAAAAIAAgAAACioRvoauIKqJoLrFVrYwhg4tl
   wcZ5IFWNZCeeJiexqdtCZX29q0lXZNxznGTC4MN4GPJAyxyO0YQ+QzPmFFW0Vp1baZfqyXLF
   3iwHe9QWBYPBhJgep8/wJFLTfkfBD3bbXWeh1rdzFfhxhzg0aMcoKNcI+VgWRxlpOcl3qZmJ
-  tunZeahkuAeqKAlQAAA7"
+  tunZeahkuAeqKAlQAAA7
+}
 
-# 26: Theory: 1.e4
-image create photo dbt26 -format gif -data \
- "R0lGODdhIAAgAKEAAP/739jGpgAAAP///ywAAAAAIAAgAAACfYRvoauIzNyBSyYaLMDZcv15
+{Theory: 1.e4}
+{ R0lGODdhIAAgAKEAAP/739jGpgAAAP///ywAAAAAIAAgAAACfYRvoauIzNyBSyYaLMDZcv15
   GDiKFHmaELqqkVvBXCN3UniXebq3/fuLBWlDmwN31CV5S18T+BRqokSq8aETCCZKbEowGGw3
   XS5Pa3Z6W2DxhbmOtMNbZLyizdfLb3V6JnVXJXj1F2g4iFjYB0XI0qj4eMg4SQYXWSOZaFAA
-  ADs="
+  ADs=
+}
 
-# 27: Theory: Sicilian
-image create photo dbt27 -format gif -data \
- "R0lGODdhIAAgAKEAAP/739jGpgAAAP///ywAAAAAIAAgAAAChYRvoauIzNyBSyYaLMDZcv15
+{Theory: Sicilian}
+{ R0lGODdhIAAgAKEAAP/739jGpgAAAP///ywAAAAAIAAgAAAChYRvoauIzNyBSyYaLMDZcv15
   GDiKFHmaELqqkVvBXCN30iII8V3yeU7jpYTAoCPk+xkfveNPyXrdnsDo7thkDjXYrbYlBOcm
   WXJKMBgILl6zeM0Gd1todVw6j9TTa2S+QtVXdnf1NVPohmeISLiUyLgxGNnWaPPnWGmFOSm3
-  uOnnaRmqUQAAOw=="
+  uOnnaRmqUQAAOw==
+}
 
-# 28: Theory: Sicilian 1.e4 c5 2.Nd3 d6 3.d4
-image create photo dbt28 -format gif -data \
- "R0lGODdhIAAgAKEAAP/739jGpgAAAP///ywAAAAAIAAgAAACo4RvoauIzNxZQiyZYMOq1i1p
+{Theory: Sicilian 1.e4 c5 2.Nd3 d6 3.d4}
+{ R0lGODdhIAAgAKEAAP/739jGpgAAAP///ywAAAAAIAAgAAACo4RvoauIzNxZQiyZYMOq1i1p
   oENZ4yNiQOedU8p5rSoGtPzRcLiTdY/S6AIfV0bIIbZsSSRPeWlCdDLjCjjBWYbTGI757IYj
   UrJqHEVbS+nKy+kTDAYmg5x+FPugIHfeHDdXB3An8JdGcidoo4hXc/NFiHMFF6Rn+YOIGSVz
-  uJbSaPhYRjFnKorlSURXSHn5BuFB6JjqatY6qsaoiFoJy6BVUQAAOw=="
+  uJbSaPhYRjFnKorlSURXSHn5BuFB6JjqatY6qsaoiFoJy6BVUQAAOw==
+}
 
-# 29: Theory: Caro-Kann
-image create photo dbt29 -format gif -data \
- "R0lGODdhIAAgAKEAAP/739jGpgAAAP///ywAAAAAIAAgAAACh4RvoauIzI4QBy5XbTBzJo19
+{Theory: Caro-Kann}
+{ R0lGODdhIAAgAKEAAP/739jGpgAAAP///ywAAAAAIAAgAAACh4RvoauIzI4QBy5XbTBzJo19
   lkSJUAhoG9CVKvq23hvGcgrWOUbz6u7oBYEPYmakQ/qUQ2bReTwlpUtq0/rERiNTLqrqvYaz
   Xo9pvL2wBgOX8axmlXBQeGPdtq/AFwGbTSFE1ncjmHbH97MnFseI6Lg4+CgZeVipB/NGp4XZ
-  1UiZWbeJ1olRAAA7"
+  1UiZWbeJ1olRAAA7
+}
 
-# 30: Theory: French
-image create photo dbt30 -format gif -data \
- "R0lGODdhIAAgAKEAAP/739jGpgAAAP///ywAAAAAIAAgAAACiIRvoauIzNyB6wgxaZBJm3t1
+{Theory: French}
+{ R0lGODdhIAAgAKEAAP/739jGpgAAAP///ywAAAAAIAAgAAACiIRvoauIzNyB6wgxaZBJm3t1
   FAdo24eJEGmiYelxLQjCo+zRYYvfksn7xYQ+R9A4RBYfSeYy81RFeivqlFjFXpVZ7pbk7Ia/
   0OzLJi5PBYNB6jiuoNRyrZztlta9FXwbA0fXoAPYJHhiB4TI12C1F9eYuAg5echiqBfJWJnJ
-  iUbWeRn1+WjJUQAAOw=="
+  iUbWeRn1+WjJUQAAOw==
+}
 
-# 31: Theory: Open Games
-image create photo dbt31 -format gif -data \
- "R0lGODdhIAAgAKEAAP/739jGpgAAAP///ywAAAAAIAAgAAACh4RvoauIzNyBSyYaLMDZcv15
+{Theory: Open Games}
+{ R0lGODdhIAAgAKEAAP/739jGpgAAAP///ywAAAAAIAAgAAACh4RvoauIzNyBSyYaLMDZcv15
   GDiKFHmaELqqkVvBXCN3UngrghDnab7b0Xwtn3DowCUDQZ5t+Us2hazXbcqr9qBFDdf63T5K
   gN2EHKYJBgPBJTr+md/deGvdpoPtETzbrcRXgbWBJoh0OKOFeAbXWPe4Fyk2yahHeWlZ6Jj5
-  lLjoWRnaCapRAAA7"
+  lLjoWRnaCapRAAA7
+}
+} ;# icons
 
-variable ::windows::switcher::base_types { 
-  Unknown
-  {Temporary database}
-  Clipbase
-  {PGN format file}
-  {My games}
-  {Large database}
-  {Correspondence chess}
-  {Computer chess}
-  {Sorted Index of games}
-  {Player collection}
-  {Tournament: All-play-all}
-  {Tournament: Swiss}
-  {Grandmaster games}
-  {International Master games}
-  {Blitz (fast) games}
-  {Tactics}
-  {Endgames}
-  {Openings for White}
-  {Openings for Black}
-  {Openings for either color}
-  {Theory: 1.c4}
-  {Theory: 1.d4}
-  {Theory: 1.d4 d5}
-  {Theory: QGD: 1.d4 d5 2.c4 e6}
-  {Theory: Slav: 1.d4 d5 2.c4 c6}
-  {Theory: 1.d4 Nf6}
-  {Theory: 1.e4}
-  {Theory: Sicilian: 1.e4 c5}
-  {Theory: Sicilian: 1.e4 c5 2.Nf3 d6 3.d4}
-  {Theory: Caro-Kann: 1.e4 c6}
-  {Theory: French: 1.e4 e6}
-  {Theory: Open Games: 1.e4 e5}
+variable ::windows::switcher::base_types {}
+
+# Initialise icons nicely
+
+set i 0
+foreach {icon data} $icons {
+  lappend ::windows::switcher::base_types $icon
+  image create photo dbt$i -format gif -data $data
+  incr i
 }
 
 set numBaseTypeIcons [llength $::windows::switcher::base_types]
@@ -406,11 +641,11 @@ proc ::windows::switcher::Open {} {
   set numBases [sc_base count total]
 
   for {set i 1} {$i <= $numBases} {incr i} {
-    set f [frame $w.c.f$i  -borderwidth 2 -relief ridge]
+    set f [frame $w.c.f$i  -borderwidth 0] ;# -borderwidth 2 -relief ridge
     $w.c create window 0 0 -window $w.c.f$i -anchor nw -tag tag$i
 
     set f $w.c.f$i
-    label $f.img -image dbt0 -relief solid -borderwidth 1
+    label $f.img -image dbt0 ;# -relief solid  -borderwidth 1
     label $f.name -width 11 -anchor w -font font_Small
     label $f.ngames -text "0" -width 11 -anchor e -font font_Tiny
     grid $f.img -row 0 -column 0 -rowspan 2 -padx 2 -pady 2
@@ -482,7 +717,7 @@ proc ::windows::switcher::Refresh {} {
 
   for {set i 1} {$i <= $numBases} {incr i} {
     if {[sc_base inUse $i]} {
-      set color white
+      set color grey95
       set filename [file nativename [sc_base filename $i]]
       set n $i
       # Do we want to call the clipbase base number "C"?
@@ -491,7 +726,7 @@ proc ::windows::switcher::Refresh {} {
 
       # Set a different color for the current database.
       if {$i == $current} {
-        set color lemonchiffon
+        set color lemonchiffon ;# rosybrown2
         # $w.c.f$i.name configure -font font_Bold
         set status $filename
         if {[sc_base isReadOnly]} { append status " ($::tr(readonly))" }
@@ -509,7 +744,7 @@ proc ::windows::switcher::Refresh {} {
         set name [sc_base filename $i]
         $w.c.f$i.name configure -background $color \
       } else {
-        set name "$n: [file tail [sc_base filename $i]]"
+        set name "[file tail [sc_base filename $i]]"
       }
       $w.c.f$i.name configure -background $color -text $name
       $w.c.f$i.ngames configure -background $color \
