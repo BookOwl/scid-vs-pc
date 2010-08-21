@@ -132,6 +132,7 @@ if {$::menuVisible} {
 foreach menuname { file edit game search windows play tools options help } {
   menu .menu.$menuname
 }
+# .menu.file configure -tearoff 1
 .menu.windows configure -tearoff 1
 .menu.options configure -tearoff 1
 .menu.help configure -tearoff 1
@@ -239,22 +240,13 @@ set helpMessage($m,[incr menuindex]) FileReadOnly
 
 $m add cascade -label FileSwitch -menu $m.switch
 set helpMessage($m,[incr menuindex]) FileSwitch
-menu $m.switch
+
+# .menu.file.swicth menu items added in updateMenuStates
+menu $m.switch -tearoff 1
 
 set totalBaseSlots [sc_base count total]
 set clipbaseSlot [sc_info clipbase]
 set currentSlot [sc_base current]
-
-for {set i 1} { $i <= $totalBaseSlots} {incr i} {
-  $m.switch add radiobutton -variable currentSlot -value $i \
-      -label "Base $i: <none>" \
-      -underline 5 -accelerator "Ctrl+$i" -command [list ::file::SwitchToBase $i]
-  set helpMessage($m.switch,[expr {$i - 1} ]) "Switch to base slot $i"
-  if {$i == $clipbaseSlot} {
-    set helpMessage($m.switch,[expr {$i - 1} ]) "Switch to the clipbase database"
-  }
-  bind . "<Control-Key-$i>" [list ::file::SwitchToBase $i]
-}
 
 $m add separator
 incr menuindex
@@ -1280,17 +1272,33 @@ bind . <F1> toggleHelp
 
 # updateMenuStates:
 #   Update all the menus, rechecking which state each item should be in.
-#
+
 proc updateMenuStates {} {
   global totalBaseSlots windowsOS
   set ::currentSlot [sc_base current]
   set lang $::language
   set m .menu
+
+  # Switch to database number $i
+  set current [sc_base current]
+  $m.file.switch delete 0 9
+  
   for {set i 1} { $i <= $totalBaseSlots } { incr i } {
     set fname [file tail [sc_base filename $i]]
-    if {$fname == {[empty]} } { set fname {} }
-    $m.file.switch entryconfig [expr {$i - 1} ] -label "Base $i: $fname"
+
+    # Only show menu items for open database slots
+    if {$fname != {[empty]} } {
+      $m.file.switch add command -command "set currentSlot $i" \
+	  -label "$fname" -underline 5 -accelerator "Ctrl+$i" \
+          -command "::file::SwitchToBase $i"
+      bind . <Control-Key-$i> "::file::SwitchToBase $i"
+
+      if {$i == $current} {
+	$m.file.switch entryconfig $i -state disabled
+      }
+    }
   }
+
   foreach i {Compact Delete} {
     $m.file.utils entryconfig [tr FileMaint$i] -state disabled
   }
