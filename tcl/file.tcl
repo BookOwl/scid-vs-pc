@@ -81,18 +81,23 @@ proc ::file::New {} {
   if {$fName == ""} {
     # do nothing
   } elseif {[file extension $fName] == ".epd"} {
-    newEpdWin create $fName
-    set fName [file rootname $fName]
-    return
+    if {![newEpdWin create $fName]} {
+      return
+    }
   } else {
     if {[file extension $fName] == ".si3"} {
       set fName [file rootname $fName]
     } 
     if {[catch {sc_base create $fName} result]} {
       tk_messageBox -icon warning -type ok -parent . \
-          -title "Scid: Unable to create base" -message $result
+          -title "Scid: error" -message "$result\nCan't create $fName"
+      return
     }
+    # set default icon
+    catch {sc_base type [sc_base current] 1}
+    set fName $fName.si3
   }
+  ::recentFiles::add $fName
   refreshWindows
 }
 
@@ -164,7 +169,7 @@ proc ::file::Open {{fName ""} {parent .}} {
     if {[catch {openBase $fName} result]} {
       set err 1
       tk_messageBox -icon warning -type ok -parent $parent \
-          -title "Scid: Error opening file" -message $result
+          -title "Scid: Error opening file" -message "$result\nCan't open $fName"
       ::recentFiles::remove "$fName.si3"
     } else {
       set ::initialDir(base) [file dirname $fName]

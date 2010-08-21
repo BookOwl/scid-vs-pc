@@ -1667,8 +1667,8 @@ proc standardShortcuts {w} {
   bind $w <F3> {::startAnalysisWin F3}
   bind $w <F4> {::startAnalysisWin F4}
   bind $w <F11>  ::book::open
-  bind $w <Control-c> {catch {sc_clipbase copy}; ::updateBoard}
-  bind $w <Control-v> {catch {sc_clipbase paste}; ::updateBoard -pgn}
+  # bind $w <Control-c> {catch {sc_clipbase copy}; ::updateBoard}
+  # bind $w <Control-v> {catch {sc_clipbase paste}; ::updateBoard -pgn}
   bind $w <Control-S> ::setupBoard
   bind $w <Control-C> ::copyFEN
   bind $w <Control-V> ::pasteFEN
