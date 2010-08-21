@@ -1301,9 +1301,11 @@ proc sortDatabase {} {
 proc makeBaseReadOnly {} {
   if {! [sc_base inUse]} { return }
   if {[sc_base isReadOnly]} { return }
-  set result [tk_dialog .roDialog "Scid: [tr FileReadOnly]" \
-      $::tr(ReadOnlyDialog) "" 1 $::tr(Yes) $::tr(No)]
-  if {$result == 0} {
+
+  set result [tk_messageBox -title "Scid: [tr FileReadOnly]" -parent . \
+      -icon question -type yesno -message $::tr(ReadOnlyDialog)]
+
+  if {$result == "yes"} {
     sc_base isReadOnly set
     updateMenuStates
   }

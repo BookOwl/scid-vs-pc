@@ -1079,13 +1079,9 @@ You can replace it, discarding all moves after it, or add your move as a new var
 Options::Moves::Ask Before Replacing Moves).}
 
 # Make database read-only dialog:
-translate E ReadOnlyDialog {If you make this database read-only, no changes will be permitted.
-No games can be saved or replaced, and no delete flags can be altered.
-Any sorting or ECO-classification results will be temporary.
+translate E ReadOnlyDialog {Do you want to make this database read-only?
 
-You can easily make the database writable again, by closing and reopening it.
-
-Do you really want to make this database read-only?}
+(You can make the database writable again by closing and reopening it.)}
 
 # Clear game dialog:
 translate E ClearGameDialog {This game has been altered.

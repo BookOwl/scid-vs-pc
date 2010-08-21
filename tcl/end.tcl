@@ -572,7 +572,9 @@ proc exportGames {selection exportType} {
 }
 
 proc copyFilter {frombaseNum tobaseNum} {
-  # Check status of source and target bases:
+  ### This proc seems only called from the switcher, so parent all dialogs to .baseWin
+
+  # Check status of source and target bases
   set currentBaseNum [sc_base current]
   sc_base switch $frombaseNum
   set nGamesToCopy [sc_filter count]
@@ -598,7 +600,7 @@ proc copyFilter {frombaseNum tobaseNum} {
 
   if {$err != ""} {
     tk_messageBox -type ok -icon info -title "Scid" \
-        -message "$::tr(CopyErr) \nfrom \"$fromName\" to \"$targetName\".\n$err"
+        -message "$::tr(CopyErr) \nfrom \"$fromName\" to \"$targetName\".\n$err" -parent .baseWin
     return
   }
 
@@ -610,30 +612,30 @@ proc copyFilter {frombaseNum tobaseNum} {
     unbusyCursor .
     closeProgressWindow
     if {$copyErr} {
-      tk_messageBox -type ok -icon info -title "Scid" -message $result
+      tk_messageBox -type ok -icon info -title "Scid" -message $result -parent .baseWin
     }
     return
   }
 
   set w [toplevel .fcopyWin]
+  wm withdraw $w
   wm title $w "Scid: $::tr(CopyGames)"
   label $w.text -text [subst $::tr(CopyConfirm)]
   frame $w.b
   dialogbutton $w.b.go -text $::tr(CopyGames) -command "
-  busyCursor .
-  $w.b.cancel configure -command \"sc_progressBar\"
-  $w.b.cancel configure -text $::tr(Stop)
-  sc_progressBar $w.bar bar 301 21 time
-  grab $w.b.cancel
-  if {\[catch {sc_filter copy $frombaseNum $tobaseNum} result\]} {
-    tk_messageBox -type ok -icon info \
-        -title \"Scid\" -message \$result
-  }
-  unbusyCursor .
-  focus .
-  destroy $w
-  updateStatusBar
-  "
+    busyCursor .
+    $w.b.cancel configure -command \"sc_progressBar\"
+    $w.b.cancel configure -text $::tr(Stop)
+    sc_progressBar $w.bar bar 301 21 time
+    grab $w.b.cancel
+    if {\[catch {sc_filter copy $frombaseNum $tobaseNum} result\]} {
+      tk_messageBox -type ok -icon info \
+	  -title \"Scid\" -message \$result -parent .baseWin
+    }
+    unbusyCursor .
+    focus .
+    destroy $w
+    updateStatusBar"
   dialogbutton $w.b.cancel -text $::tr(Cancel) -command "focus .; destroy $w"
   canvas $w.bar -width 300 -height 20 -bg white -relief solid -border 1
   $w.bar create rectangle 0 0 0 0 -fill $::progcolor -outline $::progcolor -tags bar
@@ -643,6 +645,8 @@ proc copyFilter {frombaseNum tobaseNum} {
   pack $w.text $w.b -side top -pady 5
   pack $w.bar -side bottom
   pack $w.b.go $w.b.cancel -side left -padx 10 -pady 10
+  placeWinOverParent $w .baseWin
+  wm state $w normal
   grab $w
   bind $w <Return> "$w.b.go invoke"
   bind $w <Escape> "$w.b.cancel invoke"
@@ -947,7 +951,7 @@ proc addGameSaveEntry { name row textname } {
 #   value gnum is zero, it is to add a new game; otherwise it is to
 #   replace game number gnum.
 #
-proc gameSave { gnum } {
+proc gameSave {gnum} {
   global date year month day white black resultVal event site round
   global whiteElo blackElo whiteRType blackRType eco extraTags gsaveNum
   global edate eyear emonth eday
@@ -956,6 +960,12 @@ proc gameSave { gnum } {
     # We can't load a game, no database is open
     tk_messageBox -title "Scid: No database open" -type ok -icon info \
         -message "No database is open; open or create one first."
+    return
+  }
+
+  if {[sc_base isReadOnly]} {
+    tk_messageBox -type ok -icon error -title "Scid: Error" \
+      -message "Database \"[file tail [sc_base filename]]\" is read-only."
     return
   }
 
@@ -1238,7 +1248,7 @@ proc gameAdd {} { gameSave 0 }
 
 # gameReplace:
 #   Calls gameSave with the current game number, which should be nonzero.
-#
+
 proc gameReplace {} { gameSave [sc_game number] }
 
 

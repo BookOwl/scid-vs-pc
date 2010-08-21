@@ -147,7 +147,7 @@ proc importPgnFile {} {
   global importPgnErrors
 
   set err ""
-  if {[sc_base isReadOnly]} { set err "This database is read-only." }
+  if {[sc_base isReadOnly]} { set err "Database \"[file tail [sc_base filename]]\" is read-only." }
   if {![sc_base inUse]} { set err "This is not an open database." }
   if {$err != ""} {
     tk_messageBox -type ok -icon error -title "Scid: Error" -message $err
