@@ -33,10 +33,7 @@ proc ::file::finder::Open {} {
 
   $w.menu add cascade -label FinderFile -menu $w.menu.file
   menu $w.menu.file
-  $w.menu.file add checkbutton -label FinderFileSubdirs \
-      -variable ::file::finder::data(recurse) -onvalue 1 -offvalue 0 \
-      -command ::file::finder::Refresh
-  $w.menu.file add separator
+  $w.menu.file add command -label Open -command ::file::finder::OpenDIR
   $w.menu.file add command -label FinderFileClose -command "destroy $w"
 
   $w.menu add cascade -label FinderSort -menu $w.menu.sort
@@ -48,7 +45,7 @@ proc ::file::finder::Open {} {
   }
 
   $w.menu add cascade -label FinderTypes -menu $w.menu.types
-  menu $w.menu.types
+  menu $w.menu.types -tearoff 1
   foreach type {Scid Old PGN Rep EPD} {
     $w.menu.types add checkbutton -label FinderTypes$type \
         -variable ::file::finder::data($type) -onvalue 1 -offvalue 0 \
@@ -62,14 +59,8 @@ proc ::file::finder::Open {} {
   $w.menu.helpmenu add command -label FinderHelpIndex -command {helpWindow Index}
 
   pack [frame $w.d] -side top -fill x
-  label $w.d.label -text "$::tr(FinderDir):" -font font_Small
-  set ::file::finder::data(menu) [tk_optionMenu $w.d.mb ::file::finder::data(dir) ""]
-  $w.d.mb configure -font font_Small -width 1 -anchor e
-  $::file::finder::data(menu) configure -font font_Small
-  button $w.d.up -image ::file::finder::updir -command {::file::finder::Refresh ..}
-  pack $w.d.label -side left -padx 5
-  pack $w.d.up -side right -padx 5
-  pack $w.d.mb -side left -fill x -expand yes
+  label $w.d.label -font font_Bold ;# given a text value below
+  pack $w.d.label 
 
   frame $w.t
   frame $w.b
@@ -80,7 +71,7 @@ proc ::file::finder::Open {} {
   $w.t.text tag configure Dir -foreground brown
   $w.t.text tag configure Vol -foreground gray25
   $w.t.text tag configure PGN -foreground blue
-  $w.t.text tag configure Scid -foreground red
+  $w.t.text tag configure Scid -foreground skyblue
   $w.t.text tag configure Old -foreground black
   $w.t.text tag configure Rep -foreground darkGreen
   $w.t.text tag configure EPD -foreground orange
@@ -167,7 +158,7 @@ proc ::file::finder::Refresh {{newdir ""}} {
     "mod"  { set flist [lsort -integer -decreasing -index 4 $flist] }
   }
 
-  set hc yellow
+  set hc lemonchiffon
   $t delete 1.0 end
   set dcount 0
   $t insert end "$::tr(FinderDirs)\n" {center bold}
@@ -245,7 +236,7 @@ proc ::file::finder::Refresh {{newdir ""}} {
   foreach i $flist {
     set size [lindex $i 0]
     set type [lindex $i 1]
-    set fname [lindex $i 2]
+    set fname [string range [lindex $i 2] 0 15] ; # limit to 16 chars S.A.
     set path [lindex $i 3]
     set mtime [lindex $i 4]
     set est [lindex $i 5]
@@ -284,17 +275,7 @@ proc ::file::finder::Refresh {{newdir ""}} {
   }
   $t configure -state disabled
 
-  # Update directory menubutton:
-  $data(menu) delete 0 end
-  set mlist {}
-  set d {}
-  foreach subdir [file split $data(dir)] {
-    set d [file join $d $subdir]
-    lappend mlist $d
-  }
-  foreach m $mlist {
-    $data(menu) add command -label $m -command "::file::finder::Refresh [list $m]"
-  }
+  $w.d.label configure -text $data(dir)
 
   catch {grab release $w.b.stop}
   $w.b.stop configure -state disabled
@@ -316,6 +297,7 @@ proc ::file::finder::contextMenu {win fullPath x y xc yc} {
   if { [winfo exists $mctxt] } { destroy $mctxt }
 
   menu $mctxt
+  # context menus
   $mctxt add command -label [tr FinderCtxOpen ] -command "::file::Open [list $fullPath]"
   $mctxt add command -label [tr FinderCtxBackup ] -command "::file::finder::backup [list $fullPath]"
   $mctxt add command -label [tr FinderCtxCopy ] -command "::file::finder::copy [list $fullPath]"
@@ -353,14 +335,14 @@ proc ::file::finder::backup { f } {
 ################################################################################
 proc ::file::finder::copy { f } {
   if {[sc_base slot $f] != 0} {
-    tk_messageBox -title Scid -icon error -type ok -message "Close base first"
+    tk_messageBox -title Scid -icon error -type ok -message "Close base first" -parent .finder
     return
   }
-  set dir [tk_chooseDirectory -initialdir [file dirname $f] ]
+  set dir [tk_chooseDirectory -initialdir [file dirname $f] -parent .finder]
   if {$dir != ""} {
     if { [string tolower [file extension $f]] == ".si3" } {
       if { [catch { file copy "[file rootname $f].sg3" "[file rootname $f].sn3" $dir } err ] } {
-        tk_messageBox -title Scid -icon error -type ok -message "File copy error $err"
+        tk_messageBox -title Scid -icon error -type ok -message "File copy error $err" -parent .finder
         return
       }
       
@@ -368,7 +350,7 @@ proc ::file::finder::copy { f } {
     }
 
     if { [catch { file copy $f $dir } err ] } {
-      tk_messageBox -title Scid -icon error -type ok -message "File copy error $err"
+      tk_messageBox -title Scid -icon error -type ok -message "File copy error $err" -parent .finder
       return
     }
 
@@ -379,22 +361,22 @@ proc ::file::finder::copy { f } {
 ################################################################################
 proc ::file::finder::move { f } {
   if {[sc_base slot $f] != 0} {
-    tk_messageBox -title Scid -icon error -type ok -message "Close base first"
+    tk_messageBox -title Scid -icon error -type ok -message "Close base first" -parent .finder
     return
   }
-  set dir [tk_chooseDirectory -initialdir [file dirname $f] ]
+  set dir [tk_chooseDirectory -initialdir [file dirname $f] -parent .finder ]
   if {$dir != ""} {
     if { [string tolower [file extension $f]] == ".si3" } {
       
       if { [catch { file rename "[file rootname $f].sg3" "[file rootname $f].sn3" $dir } err ] } {
-        tk_messageBox -title Scid -icon error -type ok -message "File rename error $err"
+        tk_messageBox -title Scid -icon error -type ok -message "File rename error $err" -parent .finder
         return
       }
       catch { file rename "[file rootname $f].stc" $dir }
     }
 
     if { [catch { file rename $f $dir } err ] } {
-      tk_messageBox -title Scid -icon error -type ok -message "File rename error $err"
+      tk_messageBox -title Scid -icon error -type ok -message "File rename error $err" -parent .finder
       return
     }
   }
@@ -403,12 +385,14 @@ proc ::file::finder::move { f } {
 ################################################################################
 #
 ################################################################################
+
 proc ::file::finder::delete { f } {
   if {[sc_base slot $f] != 0} {
-    tk_messageBox -title Scid -icon error -type ok -message "Close base first"
+    tk_messageBox -title Scid -icon error -type ok -message "Close base first" -parent .finder
     return
   }
-  set answer [tk_messageBox -title Scid -icon warning -type yesno -message "Are you sure you want to permanently delete $f ?"]
+  set answer [tk_messageBox -title Scid -icon warning -type yesno -parent .finder \
+                -message "Do you want to permanently delete $f ?"]
   if {$answer == "yes"} {
     if { [string tolower [file extension $f]] == ".si3" } {
       file delete "[file rootname $f].sg3" "[file rootname $f].sn3" "[file rootname $f].stc"
@@ -417,6 +401,7 @@ proc ::file::finder::delete { f } {
   }
   ::file::finder::Refresh
 }
+
 ################################################################################
 #
 ################################################################################
@@ -427,13 +412,13 @@ proc ::file::finder::ConfigMenus {{lang ""}} {
   foreach idx {0 1 2 3} tag {File Sort Types Help} {
     configMenuText $m $idx Finder$tag $lang
   }
-  foreach idx {0 2} tag {Subdirs Close} {
+  foreach idx {1} tag {Close} {
     configMenuText $m.file $idx FinderFile$tag $lang
   }
   foreach idx {0 1 2 3 4} tag {Type Size Mod Name Path} {
     configMenuText $m.sort $idx FinderSort$tag $lang
   }
-  foreach idx {0 1 2 3 4} tag {Scid Old PGN Rep EPD} {
+  foreach idx {1 2 3 4 5} tag {Scid Old PGN Rep EPD} {
     configMenuText $m.types $idx FinderTypes$tag $lang
   }
   foreach idx {0 1} tag {Finder Index} {
@@ -507,5 +492,35 @@ proc ::file::finder::GetFiles {dir {len -1}} {
     }
   }
   return $flist
+}
+
+proc ::file::finder::OpenDIR {} {
+  # borrowed from file/maint.tcl
+  set w .finderdir ;#.bdesc
+  if {[winfo exists $w]} { return }
+  toplevel $w
+  wm title $w "Scid: Open"
+  wm withdraw $w
+
+  set font font_Small
+  entry $w.entry -width 50 -relief sunken 
+  pack $w.entry -side top -pady 4
+  frame $w.b
+  dialogbutton $w.b.ok -text OK -command {
+    if {[file isdir [.finderdir.entry get]]} {
+      ::file::finder::Refresh [.finderdir.entry get]
+    }
+    grab release .finderdir
+    destroy .finderdir
+  }
+  dialogbutton $w.b.cancel -text $::tr(Cancel) -command "grab release $w; destroy $w"
+  pack $w.b -side bottom -fill x
+  pack $w.b.cancel $w.b.ok -side right -padx 2 -pady 2
+  bind $w.entry <Return> "$w.b.ok invoke"
+
+  placeWinOverParent $w .finder
+  wm state $w normal
+  wm resizable $w 0 0
+  catch {grab $w}
 }
 

@@ -577,7 +577,7 @@ translate E Moves {Moves}
 # Finder window:
 menuText E FinderFile "Finder" 0
 menuText E FinderFileSubdirs "Look in Subdirectories" 0
-menuText E FinderFileClose "Close File Finder" 0
+menuText E FinderFileClose "Close" 0
 menuText E FinderSort "Sort" 0
 menuText E FinderSortType "Type" 0
 menuText E FinderSortSize "Size" 0
