@@ -79,7 +79,7 @@ proc ::file::finder::Open {} {
   $w.t.text tag configure center -justify center
   set xwidth [font measure [$w.t.text cget -font] "x"]
   set tablist {}
-  foreach {tab justify} {15 r 30 r 32 l 50 l} {
+  foreach {tab justify} {19 l 34 r 49 r 53 l} {
     set tabwidth [expr {$xwidth * $tab} ]
     lappend tablist $tabwidth $justify
   }
@@ -212,7 +212,7 @@ proc ::file::finder::Refresh {{newdir ""}} {
   # Add File section headings:
   $t insert end "\n\n"
   if {[llength $flist] != 0} {
-    foreach i {Type Size Mod Name Path} v {type size mod name path} {
+    foreach i {Name Type Size Mod Path} v {name type size mod path} {
       $t tag configure s$i -font font_SmallBold
       $t tag bind s$i <1> "set ::file::finder::data(sort) $v; ::file::finder::Refresh -fast"
       $t tag bind s$i <Any-Enter> "$t tag config s$i -foreground red"
@@ -220,13 +220,13 @@ proc ::file::finder::Refresh {{newdir ""}} {
     }
     $t insert end "$::tr(FinderFiles)\n" {center bold}
     $t insert end " "
+    $t insert end "[tr FinderSortName]" sName
+    $t insert end "\t"
     $t insert end "[tr FinderSortType]" sType
     $t insert end "\t"
     $t insert end "[tr FinderSortSize]" sSize
     $t insert end "\t"
     $t insert end "[tr FinderSortMod]" sMod
-    $t insert end "\t"
-    $t insert end "[tr FinderSortName]" sName
     $t insert end "\t"
     $t insert end "[tr FinderSortPath]" sPath
     $t insert end "\n"
@@ -241,13 +241,14 @@ proc ::file::finder::Refresh {{newdir ""}} {
     set mtime [lindex $i 4]
     set est [lindex $i 5]
     $t insert end "\n "
+    $t insert end "$fname\t" f$path
     $t insert end $type [list $type f$path]
     set esize ""
     if {$est} { set esize "~" }
     append esize [::utils::thousands $size]
     $t insert end "\t$esize" f$path
     $t insert end "\t[clock format $mtime -format {%b %d %Y}]" f$path
-    $t insert end "\t$fname\t" f$path
+    $t insert end "\t" f$path
     set dir [file dirname $path]
     set tail [file tail $path]
     if {$dir == "."} {
