@@ -244,6 +244,7 @@ set helpText(Index) {<h1>Scid Help Index</h1>
 
   <h3><name B>B</name></h3>
   <ul>
+  <li><a Finder>Backups</a></li>
   <li><a Tree Best>Best games</a> window</li>
   <li><a Searches Board>Board searches</a></li>
   <li><a Book>Book</a> window</li>
@@ -306,6 +307,7 @@ set helpText(Index) {<h1>Scid Help Index</h1>
   <li><a Searches Filter>Filter</a></li>
   <li><a Export>Filter, exporting</a></li>
   <li><a Graphs Filter>Filter graph</a></li>
+  <li><a Finder>Finder</a></li>
   <li><a Flags>Flags</a></li>
   <li><a Options Fonts>Fonts</a></li>
   </ul>
@@ -1622,65 +1624,60 @@ set helpText(Switcher) {<h1>The Database Switcher window</h1>
 ####################
 ### File Finder window help:
 
-set helpTitle(Finder) "File Finder window"
-set helpText(Finder) {<h1>The File Finder window</h1>
+set helpTitle(Finder) "File Finder Window"
+set helpText(Finder) {<h1>File Finder Window</h1>
   <p>
-  The <term>File Finder</term> helps you find files of any type you can
-  use in Scid: databases, <a PGN>PGN</a> files, <a EPD>EPD</a> files,
-  and <a Repertoire>repertoire</a> files.
+  With the <run ::file::finder::Open><green>File--<gt>Finder</green></run>
+  you can browse the
+filesystem for Scid files, perform backups and other file
+operations.
   </p>
+
   <p>
-  The Finder shows useful information about each file, such as its size
-  (see below) and date of last modification. You can open any displayed
-  file by selecting it with a single left mouse button click.
+  Clicking on a file will open it, while right-click will
+  show a <b>context menu</b> from which you can perform
+  various file operations:
+
+  <ul>
+      <li><term>Open</term>	Open the file in question.
+      The same as left-clicking the file.</li>
+      <li><term>Backup</term>	Makes a copy of the file
+      with the current date and time appended to its name.</li>
+      <li><term>Copy</term>	Copy the selected database to a new
+      location.</li>
+      <li><term>Move</term>	Move the selected database to a new
+      location.</li>
+      <li><term>Delete</term>	Delete the selected database.</li>
+   </ul>
+  <p>
+   These functions are especially helpful for Scid
+databases, which consist of several files.
   </p>
 
   <h3>Looking in subdirectories</h3>
   <p>
-  When you want to find all files in all subdirectories of the current
-  directory, turn on the <b>Look in subdirectories</b> checkbox. This
-  will make Scid recursively examine every subdirectory for files that
-  can be opened in Scid. This can take a long time if there are many
-  subdirectories, so you may not want to do it for a directory near the
-  root of the file system. You can interrupt the file search by pressing
-  the <b>Stop</b> button.
+  This checkbox makes Scid recursively examine subdirectories for compatible
+  files.  This, however, can take a long time, so you may not
+  want to do it for large directory trees.  The process can be
+  interrupted by pressing the <b>Stop</b> button.
   </p>
 
-  <h3>File sizes</h3>
+  <h3>Games field</h3>
   <p>
-  The meaning of a file size displayed by the Finder depends on the file
-  type. For Scid databases and PGN files, it is the number of games. For
-  EPD files, it is the number of positions. For repertoire files, it is
-  the number of (include or exclude) lines.
+  The meaning of this field depends on the file type;
+  For Databases and PGN files it is
+  the number of games, for EPD files, the number of
+  positions, and for repertoire files it is the number of
+  (include or exclude) lines.
   </p>
   <p>
-  For all file types except Scid databases, the file size is an estimate
-  taken by examining only the first 64 kilobytes of the file, so the size
-  may not be correct for files larger than 64 kb. Estimate sizes are shown
-  with a tilde (~) to show they are not exact.
-  </p>
-
-  <p>
-  For easy manipulation of Scid databases, the Finder offers a context
-  menu. From this menu, accessible by a right mouse click as usual,
-  the following functions can be performed
-  <ul>
-      <li><term>Open</term> will open the file in question, this is
-      the same as just clicking on the file with the left mouse
-      button.</li>
-      <li><term>Backup</term> copies the file to its original name
-      appended by the current date and time.</li>
-      <li><term>Copy</term> copies the selected database to a new
-      location.</li>
-      <li><term>Move</term> moves the selected database to a new
-      location.</li>
-      <li><term>Delete</term> deletes the selected database.</li>
-   </ul>
-   These functions are especially helpful for Scid databases as these
-   consist of several files.
+  For all file types except Scid databases, the file size is
+  an <b>estimate</b> taken by examining only the first 64 kilobytes
+  of the file, and is represented by a tilde (~).
   </p>
 
-  <p><footer>Updated: Scid 3.6.26, October 2008</footer></p>
+
+  <p><footer>Updated: Scid vs. PC 4.1, August 2010</footer></p>
 }
 
 ####################

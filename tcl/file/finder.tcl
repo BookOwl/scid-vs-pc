@@ -36,6 +36,8 @@ proc ::file::finder::Open {} {
   $w.menu.file add command -label Open -command ::file::finder::OpenDIR
   $w.menu.file add command -label FinderFileClose -command "destroy $w"
 
+  bind $w <Control-o> ::file::finder::OpenDIR
+
   $w.menu add cascade -label FinderSort -menu $w.menu.sort
   menu $w.menu.sort
   foreach {name value} {Type type Size size Mod mod Filename name Path path} {
@@ -64,7 +66,7 @@ proc ::file::finder::Open {} {
 
   frame $w.t
   frame $w.b
-  text $w.t.text -width 65 -height 25 -font font_Small -wrap none \
+  text $w.t.text -width 70 -height 25 -font font_Small -wrap none \
       -fg black  -yscrollcommand "$w.t.ybar set" -setgrid 1 \
       -cursor top_left_arrow
   scrollbar $w.t.ybar -command "$w.t.text yview" -width 12
@@ -79,7 +81,8 @@ proc ::file::finder::Open {} {
   $w.t.text tag configure center -justify center
   set xwidth [font measure [$w.t.text cget -font] "x"]
   set tablist {}
-  foreach {tab justify} {19 l 34 r 49 r 53 l} {
+  #                      name   size   type   date   path
+  foreach {tab justify} {       29 r   31 l   50 r   55 l} {
     set tabwidth [expr {$xwidth * $tab} ]
     lappend tablist $tabwidth $justify
   }
@@ -92,14 +95,7 @@ proc ::file::finder::Open {} {
   dialogbutton $w.b.stop -textvar ::tr(Stop) -command {set finder(stop) 1 }
   dialogbutton $w.b.help -textvar ::tr(Help) -command {helpWindow Finder}
   dialogbutton $w.b.close -textvar ::tr(Close) -command "destroy $w"
-  bind $w <Escape> {
-    if {[winfo exists .finder.t.text.ctxtMenu]} {
-      destroy .finder.t.text.ctxtMenu
-      focus .finder
-    } else {
-      .finder.b.stop invoke
-    }
-  }
+  bind $w <Escape> "$w.b.close invoke"
   # Bind left button to close ctxt menu:
   bind $w <ButtonPress-1> {
     if {[winfo exists .finder.t.text.ctxtMenu]} {
@@ -190,9 +186,11 @@ proc ::file::finder::Refresh {{newdir ""}} {
   }
   foreach dir $dlist {
     if {$dcount != 0} {
-      set sep "\n"
-      if {$dcount % 2 != 0} { set sep "\t\t\t" }
-      $t insert end $sep
+      if {$dcount % 3 == 0} {
+	$t insert end "\n"
+      } else {
+	$t insert end "\t\t"
+      }
     }
     incr dcount
     if {$dir == ".."} {
@@ -212,7 +210,7 @@ proc ::file::finder::Refresh {{newdir ""}} {
   # Add File section headings:
   $t insert end "\n\n"
   if {[llength $flist] != 0} {
-    foreach i {Name Type Size Mod Path} v {name type size mod path} {
+    foreach i {Name Size Type Mod Path} v {name size type mod path} {
       $t tag configure s$i -font font_SmallBold
       $t tag bind s$i <1> "set ::file::finder::data(sort) $v; ::file::finder::Refresh -fast"
       $t tag bind s$i <Any-Enter> "$t tag config s$i -foreground red"
@@ -222,9 +220,9 @@ proc ::file::finder::Refresh {{newdir ""}} {
     $t insert end " "
     $t insert end "[tr FinderSortName]" sName
     $t insert end "\t"
-    $t insert end "[tr FinderSortType]" sType
-    $t insert end "\t"
     $t insert end "[tr FinderSortSize]" sSize
+    $t insert end "\t"
+    $t insert end "[tr FinderSortType]" sType
     $t insert end "\t"
     $t insert end "[tr FinderSortMod]" sMod
     $t insert end "\t"
@@ -242,12 +240,12 @@ proc ::file::finder::Refresh {{newdir ""}} {
     set est [lindex $i 5]
     $t insert end "\n "
     $t insert end "$fname\t" f$path
-    $t insert end $type [list $type f$path]
     set esize ""
     if {$est} { set esize "~" }
     append esize [::utils::thousands $size]
-    $t insert end "\t$esize" f$path
-    $t insert end "\t[clock format $mtime -format {%b %d %Y}]" f$path
+    $t insert end "$esize\t" f$path
+    $t insert end $type [list $type f$path]
+    $t insert end "\t[clock format $mtime -format {%d-%m-%Y}]" f$path
     $t insert end "\t" f$path
     set dir [file dirname $path]
     set tail [file tail $path]
@@ -518,6 +516,8 @@ proc ::file::finder::OpenDIR {} {
   pack $w.b -side bottom -fill x
   pack $w.b.cancel $w.b.ok -side right -padx 2 -pady 2
   bind $w.entry <Return> "$w.b.ok invoke"
+  bind $w <Escape> "$w.b.cancel invoke"
+  focus $w.entry
 
   placeWinOverParent $w .finder
   wm state $w normal

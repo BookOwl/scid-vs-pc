@@ -580,7 +580,7 @@ menuText E FinderFileSubdirs "Look in Subdirectories" 0
 menuText E FinderFileClose "Close" 0
 menuText E FinderSort "Sort" 0
 menuText E FinderSortType "Type" 0
-menuText E FinderSortSize "Size" 0
+menuText E FinderSortSize "Games" 0
 menuText E FinderSortMod "Modified" 0
 menuText E FinderSortName "Name" 0
 menuText E FinderSortPath "Path" 0
