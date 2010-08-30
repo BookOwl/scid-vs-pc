@@ -63,9 +63,13 @@ proc ::commenteditor::Open {} {
   bind $w <Escape> "destroy  $w"
   bind $w <Destroy> ""
   bind $w <Configure> "recordWinSize $w"
-  standardShortcuts $w
-  bind $w <Left> {}
-  bind $w <Right> {}
+  # standardShortcuts $w
+  # bind $w <Left> {}
+  # bind $w <Right> {}
+  # bind $w <Up> {}
+  # bind $w <Down> {}
+  # bind $w <Control-r> {}
+  # bind $w <Control-s> {}
 
   set mark [frame $w.markFrame]
   if { $::commenteditor::showBoard } {
@@ -136,13 +140,17 @@ proc ::commenteditor::Open {} {
 
   frame $w.cf
   frame $w.cf.buttons
-  text $w.cf.text -width 16 -height 2 \
-       -wrap word -font font_Regular \
-      -yscrollcommand ".commentWin.cf.scroll set" -setgrid 1
+  text $w.cf.text -width 16 -height 2 -wrap word -font font_Regular \
+    -yscrollcommand {.commentWin.cf.scroll set} -setgrid 1 -undo 1
   scrollbar $w.cf.scroll -command ".commentWin.cf.text yview"
   # bindFocusColors $w.cf.text
   bind $w.cf.text <Alt-KeyRelease-c> { .commentWin.b.cancel invoke }
   bind $w.cf.text <Alt-KeyRelease-s> { .commentWin.b.apply invoke }
+  # broke! Control-a is hard bound to something else!
+  bind $w.cf.text <Control-A> {.commentWin.cf.text tag add sel 0.0 end-1c}
+  bind $w.cf.text <Control-z> {catch {.commentWin.cf.text edit undo}}; # seems automatic anyway
+  bind $w.cf.text <Control-y> {catch {.commentWin.cf.text edit redo}}
+  bind $w.cf.text <Control-r> {catch {.commentWin.cf.text edit redo}}
 
   button $w.cf.buttons.clear -textvar ::tr(Clear) \
       -command [namespace code [list ClearComments .commentWin]]
@@ -277,13 +285,8 @@ proc ::commenteditor::Open {} {
   ### Start editing
 
   setWinLocation $w
-
-  # wm state $w normal
-  # set x [winfo reqwidth $w]
-  # set y [winfo reqheight $w]
-  # puts "wm minsize $w $x $y"
-  # wm minsize $w $x $y
-  # wm minsize $w 10 4
+  # Cant set size as it messes with hiding the board widget
+  # setWinSize $w
 
   wm title $w "Scid: [tr {Comment editor}]"
   wm iconname $w "Scid: [tr {Comment editor}]"
