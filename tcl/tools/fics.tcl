@@ -34,6 +34,11 @@ namespace eval fics {
   set consolewidth 40
   set consoleheight 10
 
+  set ignore_abort 0
+  set ignore_adjourn 0
+  set ignore_draw 0
+  set ignore_takeback 0
+
   ################################################################################
   #
   ################################################################################
@@ -753,6 +758,10 @@ namespace eval fics {
       updateTitle
       # display the win / draw / loss score
       ::fics::writechan "assess" "noecho"
+      set ::fics::ignore_abort 0
+      set ::fics::ignore_takeback 0
+      set ::fics::ignore_draw 0
+      set ::fics::ignore_adjourn 0
       return
     }
 
@@ -854,43 +863,51 @@ namespace eval fics {
 	::fics::delOffer [string tolower [lindex [split $line] 0]]
     }
 
+    # JM: To avoid "denial of play" attack by the opponent constantly issuing request[s]
+    # SA: Add ignore_request checks, and use tk_dialog instead of tk_messageBox
+
     # abort request
-    if {[string match "* would like to abort the game;*" $line]} {
-      set ans [tk_messageBox -title Abort -icon question -type yesno -message "$line\nDo you accept ?" ]
-      if {$ans == yes} {
-        writechan accept
-      } else {
-        writechan decline
+
+    if {[string match "* would like to abort the game;*" $line] \
+     && ! $::fics::ignore_abort && ! [winfo exists .fics_dialog]} {
+      set ans [tk_dialog .fics_dialog Abort "$line\nDo you accept ?" question {} Yes No Ignore]
+      switch -- $ans {
+        0 {writechan accept}
+        1 {writechan decline}
+        2 {set ::fics::ignore_abort 1}
       }
     }
 
     # takeback
-    if {[string match "* would like to take back *" $line]} {
-      set ans [tk_messageBox -title {Take Back} -icon question -type yesno -message "$line\nDo you accept ?" ]
-      if {$ans == yes} {
-        writechan accept
-      } else {
-        writechan decline
+    if {[string match "* would like to take back *" $line] \
+     && ! $::fics::ignore_takeback && ! [winfo exists .fics_dialog]} {
+      set ans [tk_dialog .fics_dialog {Take Back} "$line\nDo you accept ?" question {} Yes No Ignore]
+      switch -- $ans {
+        0 {writechan accept}
+        1 {writechan decline}
+        2 {set ::fics::ignore_takeback 1}
       }
     }
 
     # draw
-    if {[string match "*offers you a draw*" $line]} {
-      set ans [tk_messageBox -title {Draw Offered} -icon question -type yesno -message "$line\nDo you accept ?" ]
-      if {$ans == yes} {
-        writechan accept
-      } else {
-        writechan decline
+    if {[string match "*offers you a draw*" $line]
+     && ! $::fics::ignore_draw && ! [winfo exists .fics_dialog]} {
+      set ans [tk_dialog .fics_dialog {Draw Offered} "$line\nDo you accept ?" question {} Yes No Ignore]
+      switch -- $ans {
+        0 {writechan accept}
+        1 {writechan decline}
+        2 {set ::fics::ignore_draw 1}
       }
     }
 
     # adjourn
-    if {[string match "*would like to adjourn the game*" $line]} {
-      set ans [tk_messageBox -title {Adjourn Offered} -icon question -type yesno -message "$line\nDo you accept ?" ]
-      if {$ans == yes} {
-        writechan accept
-      } else {
-        writechan decline
+    if {[string match "*would like to adjourn the game*" $line]
+     && ! $::fics::ignore_adjourn && ! [winfo exists .fics_dialog]} {
+      set ans [tk_dialog .fics_dialog {Adjourn Offered} "$line\nDo you accept ?" question {} Yes No Ignore]
+      switch -- $ans {
+        0 {writechan accept}
+        1 {writechan decline}
+        2 {set ::fics::ignore_adjourn 1}
       }
     }
 
