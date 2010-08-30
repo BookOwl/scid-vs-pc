@@ -456,6 +456,17 @@ proc ::commenteditor::ButtonReleased {board button x_root y_root} {
   InsertMark $board $square
 }
 
+# Append arg as a comment
+proc ::commenteditor::appendComment {arg} {
+  set comment [sc_pos getComment]
+  if {$comment == {}} {
+    sc_pos setComment "$arg"
+  } else {
+    sc_pos setComment "$comment, $arg"
+  }
+}
+
+
 # ::commenteditor::storeComment --
 #
 #	Set the comment of the current position to

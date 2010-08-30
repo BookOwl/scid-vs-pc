@@ -265,7 +265,9 @@ namespace eval fics {
     pack $w.console.text -side left -fill both -expand 1
 
     #define colors for console
-    $w.console.text tag configure seeking -foreground coral
+    $w.console.text tag configure seeking -foreground grey
+    $w.console.text tag configure tells -foreground coral
+    $w.console.text tag configure command -foreground skyblue
     $w.console.text tag configure game -foreground grey70
     $w.console.text tag configure gameresult -foreground SlateBlue1
 
@@ -791,17 +793,22 @@ namespace eval fics {
     }
 
     if {[string match "*Starting FICS session*" $line]} {
-      # init commands
-      writechan "iset seekremove 0"
-      writechan "iset seekinfo 0"
+      # mandatory init commands
+      writechan "iset seekremove 1"
+      writechan "iset seekinfo 1"
+      writechan "style 12"
+      writechan "iset nowrap 1"
+      writechan "iset nohighlight 1"
+
+      # user init commands
       writechan "set seek $::fics::gamerequests"
       # writechan "set gin  $::fics::gamerequests"
       writechan "set gin  0"
       writechan "set silence $::fics::silence"
       writechan "set chanoff [expr ! $::fics::silence ]"
       writechan "set echo 1"
-      writechan "set cshout 0"
-      writechan "style 12"
+      writechan "set cshout [expr ! $::fics::silence ]"
+
       # What is this ? S.A. writechan "iset nowrap 1"
       writechan "iset nohighlight 1"
       .fics.bottom.buttons.offers       configure -state normal
@@ -932,10 +939,23 @@ namespace eval fics {
 
     if { [string match "* seeking *" $line ] } {
       $t insert end "$line\n" seeking
+    } elseif { [string match "->>*" $line ] } {
+      $t insert end "$line\n" command
+      if { [string match "->>say *" $line ]} {
+	# How best to check we're playing a game ? I'll have to sort out ::fics::playing
+	catch {::commenteditor::appendComment "$::fics::reallogin: [lrange $line 1 end]"}
+      }
     } elseif { [string match "\{Game *\}" $line ] } {
       $t insert end "$line\n" game
     } elseif { [string match "\{Game *\} *" $line ] } {
       $t insert end "$line\n" gameresult
+    } elseif { [string match "* tells you: *" $line] } {
+      $t insert end "$line\n" tells
+      ::commenteditor::appendComment "[lindex $line 0]: [lrange $line 3 end]"
+    } elseif { [string match "(told *" $line] } {
+      $t insert end "$line\n" tells
+    } elseif { [string match "Auto-flagging*" $line ] } {
+      ::commenteditor::appendComment "Loses on time"
     } elseif { [string match "fics% *" $line ] } {
       $t insert end "[string range $line 6 end]\n" ficspercent
     } else {
@@ -1412,7 +1432,7 @@ namespace eval fics {
     }
   }
   ################################################################################
-  #
+  # hmmm.. not very  unique procname S.A.
   ################################################################################
   proc play {index} {
     writechan "play $index"
