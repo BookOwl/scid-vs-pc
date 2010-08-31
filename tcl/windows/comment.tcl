@@ -141,13 +141,13 @@ proc ::commenteditor::Open {} {
   frame $w.cf
   frame $w.cf.buttons
   text $w.cf.text -width 16 -height 2 -wrap word -font font_Regular \
-    -yscrollcommand {.commentWin.cf.scroll set} -setgrid 1 -undo 1
+    -yscrollcommand {.commentWin.cf.scroll set} -setgrid 1
   scrollbar $w.cf.scroll -command ".commentWin.cf.text yview"
   # bindFocusColors $w.cf.text
   bind $w.cf.text <Alt-KeyRelease-c> { .commentWin.b.cancel invoke }
   bind $w.cf.text <Alt-KeyRelease-s> { .commentWin.b.apply invoke }
-  # broke! Control-a is hard bound to something else!
-  bind $w.cf.text <Control-A> {.commentWin.cf.text tag add sel 0.0 end-1c}
+  # "break" stops subsequent built-in bindings from executing
+  bind $w.cf.text <Control-a> {.commentWin.cf.text tag add sel 0.0 end-1c ; break}
   bind $w.cf.text <Control-z> {catch {.commentWin.cf.text edit undo}}; # seems automatic anyway
   bind $w.cf.text <Control-y> {catch {.commentWin.cf.text edit redo}}
   bind $w.cf.text <Control-r> {catch {.commentWin.cf.text edit redo}}
@@ -291,6 +291,7 @@ proc ::commenteditor::Open {} {
   wm title $w "Scid: [tr {Comment editor}]"
   wm iconname $w "Scid: [tr {Comment editor}]"
   ::commenteditor::Refresh
+
   focus $w.cf.text
 }
 
@@ -504,6 +505,10 @@ proc ::commenteditor::storeComment {} {
 proc ::commenteditor::Refresh {} {
   if {![winfo exists .commentWin]} { return }
 
+  # Zero undo stack... re-enabling it when Refresh is finished
+  # (There's still issues though)
+  .commentWin.cf.text configure -undo 0
+
   set nag [sc_pos getNags]
   .commentWin.nf.tf.text configure -state normal
   .commentWin.nf.tf.text delete 0 end
@@ -549,7 +554,9 @@ proc ::commenteditor::Refresh {} {
     addMark $board $type $square $arg $color 1
   }
   $text insert insert [string range $comment $offset end]
-  ::board::update $board
+  ::board::update $board [sc_pos board]
+
+  .commentWin.cf.text configure -undo 1
 }
 
 ### End of namespace ::commenteditor
