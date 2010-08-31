@@ -12,7 +12,6 @@ namespace eval fics {
   set playing 0
   set waitForRating ""
   set waitForMoves ""
-  set silence 1
   # This variable is misnamed S.A. 1=noise 0=quiet
   set sought 0
   set soughtlist {}
@@ -29,7 +28,6 @@ namespace eval fics {
   set offers_maxelo 2500
   set offers_mintime 0
   set offers_maxtime 60
-  set gamerequests 0
   variable logged 0
   set consolewidth 40
   set consoleheight 10
@@ -294,9 +292,12 @@ namespace eval fics {
     ::gameclock::new $w.bottom.clocks 2 100 0
 
     set row 0
-    checkbutton $w.bottom.buttons.silence -text "Silence" -state disabled -variable ::fics::silence -onvalue 0 -offvalue 1 -command {
+    checkbutton $w.bottom.buttons.silence -text "Silence" -state disabled \
+    -variable ::fics::silence -command {
       ::fics::writechan "set silence $::fics::silence" echo
-      ::fics::writechan "set chanoff [expr ! $::fics::silence ]" echo
+      ::fics::writechan "set chanoff $::fics::silence" echo
+      ::fics::writechan "set cshout [expr ! $::fics::silence ]"
+      ::fics::writechan "set shout [expr ! $::fics::silence ]"
     }
     checkbutton $w.bottom.buttons.gamerequests -text "Game requests" -state disabled -variable ::fics::gamerequests -command {
       ::fics::writechan "set seek $::fics::gamerequests" echo
@@ -805,9 +806,10 @@ namespace eval fics {
       # writechan "set gin  $::fics::gamerequests"
       writechan "set gin  0"
       writechan "set silence $::fics::silence"
-      writechan "set chanoff [expr ! $::fics::silence ]"
       writechan "set echo 1"
+      writechan "set chanoff $::fics::silence"
       writechan "set cshout [expr ! $::fics::silence ]"
+      writechan "set shout [expr ! $::fics::silence ]"
 
       # What is this ? S.A. writechan "iset nowrap 1"
       writechan "iset nohighlight 1"
@@ -952,8 +954,6 @@ namespace eval fics {
     } elseif { [string match "* tells you: *" $line] } {
       $t insert end "$line\n" tells
       ::commenteditor::appendComment "[lindex $line 0]: [lrange $line 3 end]"
-    } elseif { [string match "(told *" $line] } {
-      $t insert end "$line\n" tells
     } elseif { [string match "Auto-flagging*" $line ] } {
       ::commenteditor::appendComment "Loses on time"
     } elseif { [string match "fics% *" $line ] } {
@@ -961,6 +961,7 @@ namespace eval fics {
     } else {
       $t insert end "$line\n"
     }
+    # You will not hear
 
     set pos [ lindex [ .fics.console.scroll get ] 1 ]
     if {$pos == 1.0} {
