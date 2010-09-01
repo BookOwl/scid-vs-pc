@@ -268,9 +268,11 @@ namespace eval fics {
     $w.console.text tag configure command -foreground skyblue
     $w.console.text tag configure game -foreground grey70
     $w.console.text tag configure gameresult -foreground SlateBlue1
+    $w.console.text tag configure channel -foreground rosybrown
 
     entry $w.command.entry -insertofftime 0 -bg grey75 -font font_Large
-    button $w.command.button -text Send -command ::fics::cmd
+    button $w.command.send -text Send -command ::fics::cmd
+    button $w.command.next -text Next -command {::fics::writechan next echo}
     bind $w.command.entry <Return> { ::fics::cmd }
     bind $w.command.entry <Up> { ::fics::cmdHistory up }
     bind $w.command.entry <Down> { ::fics::cmdHistory down }
@@ -280,11 +282,17 @@ namespace eval fics {
       incr i 1
       .fics.command.entry delete $i end
     }
+    bind $w <Control-p> ::pgn::OpenClose
+    bind $w <Prior> "$w.console.text yview scroll -1 page"
+    bind $w <Next>  "$w.console.text yview scroll +1 page"
+    bind $w <Home>  "$w.console.text yview moveto 0"
+    bind $w <End>   "$w.console.text yview moveto 1"
+
 
     # steer focus into the command entry, as typing into the text widget is pointless
     bind $w.console.text <FocusIn> "focus $w.command.entry"
-    pack $w.command.entry -side left -fill x -expand 1
-    pack $w.command.button -side right -padx 3 -pady 2
+    pack $w.command.entry -side left -fill x -expand 1 -padx 3 -pady 2
+    pack $w.command.next $w.command.send -side right -padx 3 -pady 2
     focus $w.command.entry
 
     # clock 1 is white
@@ -295,9 +303,9 @@ namespace eval fics {
     checkbutton $w.bottom.buttons.silence -text "Silence" -state disabled \
     -variable ::fics::silence -command {
       ::fics::writechan "set silence $::fics::silence" echo
-      ::fics::writechan "set chanoff $::fics::silence" echo
-      ::fics::writechan "set cshout [expr ! $::fics::silence ]"
-      ::fics::writechan "set shout [expr ! $::fics::silence ]"
+      ::fics::writechan "set chanoff $::fics::silence" noecho
+      ::fics::writechan "set cshout [expr ! $::fics::silence ]" noecho
+      ::fics::writechan "set shout [expr ! $::fics::silence ]" noecho
     }
     checkbutton $w.bottom.buttons.gamerequests -text "Game requests" -state disabled -variable ::fics::gamerequests -command {
       ::fics::writechan "set seek $::fics::gamerequests" echo
@@ -318,6 +326,7 @@ namespace eval fics {
     "
     button $w.bottom.buttons.info  -text Info -command {
       ::fics::writechan finger
+      ::fics::writechan "inchannel $::fics::reallogin"
       ::fics::writechan history
     }
     button $w.bottom.buttons.font -text Font -command {
@@ -413,6 +422,7 @@ namespace eval fics {
   }
 
   proc recordFicsSize {w} {
+    variable logged
     global ::fics::consoleheight ::fics::consolewidth
     recordWinSize $w
     set  t .fics.console.text
@@ -420,14 +430,17 @@ namespace eval fics {
       [$t cget -font] 0]]
     set height [expr ([winfo height $t] - 2 * [$t cget -borderwidth] - 4)/[font metrics \
       [$t cget -font] -linespace]]
+    incr height 2 ; # for some reason, two bigger is best for fics output
 
     if {$width != $::fics::consolewidth || $height != $::fics::consoleheight } {
       set ::fics::consolewidth $width
       set ::fics::consoleheight $height
-      catch {
-        writechan "set width  $width"  noecho
-        writechan "set height $height" noecho
-      }    }
+      if {$logged} {
+	writechan "set width  $width"  noecho
+	writechan "set height $height" noecho
+        $w.console.text yview moveto 1
+      }
+    }
   }
 
   ################################################################################
@@ -939,29 +952,27 @@ namespace eval fics {
 
     set t .fics.console.text
 
-    if { [string match "* seeking *" $line ] } {
-      $t insert end "$line\n" seeking
-    } elseif { [string match "->>*" $line ] } {
-      $t insert end "$line\n" command
-      if { [string match "->>say *" $line ]} {
-	# How best to check we're playing a game ? I'll have to sort out ::fics::playing
-	catch {::commenteditor::appendComment "$::fics::reallogin: [lrange $line 1 end]"}
+    # colors defined line 265
+
+    switch -glob $line {
+	{* seeking *}	{ $t insert end "$line\n" seeking }
+	{->>say *}	{ $t insert end "$line\n" command 
+			  # How best to check we're playing a game ?
+			  # I'll have to sort out ::fics::playing
+			  catch {::commenteditor::appendComment "$::fics::reallogin: [lrange $line 1 end]"}
+			}
+    	{->>*}		{ $t insert end "$line\n" command }
+
+	{\{Game *\}}	{ $t insert end "$line\n" game }
+	{\{Game *\} *}	{ $t insert end "$line\n" gameresult }
+	{* tells you:*}	{ $t insert end "$line\n" tells 
+      			  ::commenteditor::appendComment "[lindex $line 0]: [lrange $line 3 end]"
+			}
+	{Auto-flagging*} { ::commenteditor::appendComment "Loses on time" }
+	{fics% *}	{ $t insert end "[string range $line 6 end]\n" ficspercent}
+	default		{ $t insert end "$line\n" }
       }
-    } elseif { [string match "\{Game *\}" $line ] } {
-      $t insert end "$line\n" game
-    } elseif { [string match "\{Game *\} *" $line ] } {
-      $t insert end "$line\n" gameresult
-    } elseif { [string match "* tells you: *" $line] } {
-      $t insert end "$line\n" tells
-      ::commenteditor::appendComment "[lindex $line 0]: [lrange $line 3 end]"
-    } elseif { [string match "Auto-flagging*" $line ] } {
-      ::commenteditor::appendComment "Loses on time"
-    } elseif { [string match "fics% *" $line ] } {
-      $t insert end "[string range $line 6 end]\n" ficspercent
-    } else {
-      $t insert end "$line\n"
-    }
-    # You will not hear
+      # {*[A-Za-z]\(*\): *} { $t insert end "$line\n" channel }
 
     set pos [ lindex [ .fics.console.scroll get ] 1 ]
     if {$pos == 1.0} {
