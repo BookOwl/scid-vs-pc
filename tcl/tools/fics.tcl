@@ -76,7 +76,7 @@ namespace eval fics {
 	  .ficsConfig.timeseal_browse configure -state disabled
         }
     }
-    entry $w.timeseal_entry -width 25 -textvariable ::fics::timeseal_exec
+    entry $w.timeseal_entry -width 20 -textvariable ::fics::timeseal_exec
     button $w.timeseal_browse -text ". . ." -command { set ::fics::timeseal_exec [tk_getOpenFile -parent .ficsConfig] } -pady 0.8
 
     if {!$::fics::use_timeseal} {
@@ -114,12 +114,13 @@ namespace eval fics {
     set row 0
     # grid $w.guest  -column 1 -row $row -sticky w
     # incr row
+    grid columnconfigure $w 1 -weight 1
     grid $w.lLogin -column 0 -row $row
-    grid $w.login  -column 1 -row $row
+    grid $w.login  -column 1 -row $row -sticky ew
 
     incr row
     grid $w.lPwd   -column 0 -row $row
-    grid $w.passwd -column 1 -row $row
+    grid $w.passwd -column 1 -row $row -sticky ew
 
     incr row
     # horizontal line
@@ -127,22 +128,21 @@ namespace eval fics {
     grid $w.line$row -pady 5 -column 0 -row $row -columnspan 3 -sticky ew
 
     incr row
-    grid $w.timeseal -column 1 -row $row -sticky w
+    grid $w.timeseal -column 0 -row $row -sticky w
 
-    incr row
-    grid $w.timeseal_entry -column 0 -row $row -columnspan 2 -sticky ew -padx 5 
-    grid $w.timeseal_browse -column 2 -row $row -sticky w -padx 5
+    grid $w.timeseal_entry -column 1 -row $row -sticky ew -padx 2
+    grid $w.timeseal_browse -column 2 -row $row -sticky w -padx 2
 
     incr row
     # grid $w.lFICS_IP -column 0 -row $row
     # grid $w.ip -column 1 -row $row
     # incr row
     grid $w.lFICS_port -column 0 -row $row
-    grid $w.portserver -column 1 -row $row
+    grid $w.portserver -column 1 -row $row -sticky w -padx 2
 
     incr row
     grid $w.ltsport -column 0 -row $row
-    grid $w.portts -column 1 -row $row
+    grid $w.portts -column 1 -row $row -sticky w -padx 2
 
     incr row
     # horizontal line
@@ -152,7 +152,7 @@ namespace eval fics {
     incr row
     grid $w.button -column 0 -row $row -columnspan 4 -sticky ew -pady 3 -padx 5
     foreach i {connect connectguest help cancel} {
-      pack $w.button.$i -side left -padx 3 -expand 1 -fill x
+      pack $w.button.$i -side left -padx 3 -pady 3 -expand 1 -fill x
     }
 
     bind $w <Escape> "$w.button.cancel invoke"
