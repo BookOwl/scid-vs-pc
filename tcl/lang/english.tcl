@@ -1091,7 +1091,7 @@ Do you really want to continue and discard the changes made to it?
 
 # Exit dialog:
 translate E ExitDialog {Do you really want to exit Scid?}
-translate E ExitUnsaved {The following databases have unsaved game changes. If you exit now, these changes will be lost.}
+translate E ExitUnsaved {The following databases have unsaved games. If you exit now, these changes will be lost.}
 
 # Import window:
 translate E PasteCurrentGame {Paste current game}

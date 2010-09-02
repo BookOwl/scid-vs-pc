@@ -1057,7 +1057,7 @@ proc confirmReplaceMove {} {
 
   option add *Dialog.msg.wrapLength 4i interactive
   catch {tk_dialog .dialog "Scid: $::tr(ReplaceMove)?" \
-        $::tr(ReplaceMoveMessage) {} 2 \
+        $::tr(ReplaceMoveMessage) {} {} \
         $::tr(ReplaceMove) $::tr(NewMainLine) \
         $::tr(AddNewVar) [tr EditTrial] \
         $::tr(Cancel)} answer

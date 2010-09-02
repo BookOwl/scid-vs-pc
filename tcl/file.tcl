@@ -19,7 +19,7 @@ proc ::file::Exit {}  {
       incr unsavedCount
       set fname [file tail [sc_base filename]]
       set g [sc_game number]
-      append msg "   Base $i: $fname "
+      append msg "   $fname "
       append msg "($::tr(game) $g)"
       append msg "\n"
     }
@@ -34,9 +34,8 @@ proc ::file::Exit {}  {
 
   # Only ask before exiting if there are unsaved changes:
   if {$unsavedCount > 0} {
-    set answer [tk_messageBox -title "Scid: [tr FileExit]" \
-        -message $msg -type yesno -icon question]
-    if {$answer != "yes"} { return }
+    set answer [tk_dialog .unsaved "Scid: Unsaved Changes" $msg question {} "   [tr FileExit]   " [tr Cancel]]
+    if {$answer != 0} { return }
   }
   if {$::optionsAutoSave} {
     # restore askToReplaceMoves if necessary
