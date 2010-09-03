@@ -17,6 +17,10 @@ if { ! [file isdirectory $::scidBooksDir]} {
   tk_messageBox -title "Scid" -type ok -icon warning -message "Books directory not found"
 }
 
+::splash::add "scidShareDir is $scidShareDir"
+::splash::add "scidBasesDir is $scidBasesDir"
+::splash::add "scidBooksDir is $scidBooksDir"
+
 ############################################################
 ### Main window title, etc:
 

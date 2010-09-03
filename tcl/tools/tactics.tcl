@@ -93,21 +93,23 @@ namespace eval tactics {
   ################################################################################
   # Configuration dialog
   ################################################################################
+
+  # Had some associated core dumps here, possibly when scidBasesDir is wrongly set in config S.A
   proc config {} {
     global ::tactics::basePath ::tactics::baseList
     set basePath $::scidBasesDir
 
-    # check if tactics window is already opened. If so, abort serial.
     set w .tacticsWin
     if {[winfo exists $w]} {
       destroy $w
     }
 
-    set w ".configTactics"
+    set w .configTactics
     if {[winfo exists $w]} {
-      focus $w
+      raiseWin $w
       return
     }
+    update
     toplevel $w
     wm title $w $::tr(ConfigureTactics)
     setWinLocation $w
@@ -185,6 +187,7 @@ namespace eval tactics {
     bind $w <F1> { helpWindow TacticsTrainer }
 
   }
+
   ################################################################################
   #
   ################################################################################
@@ -314,7 +317,7 @@ namespace eval tactics {
       sc_base close
     }
     # update listbox
-    set w ".configTactics"
+    set w .configTactics
     set cs [$w.fconfig.flist.lb curselection]
     set idx [expr $cs * 2 +1]
     set tmp [lindex $baseList $idx]
