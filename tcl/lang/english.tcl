@@ -1360,7 +1360,7 @@ translate E showblunderexists {show phalanx blunder}
 translate E showblundervalue {show blunder value}
 translate E showscore {show score}
 translate E coachgame {coach game}
-translate E configurecoachgame {Configure tactical game}
+translate E configurecoachgame {Configure Tactical game}
 translate E configuregame {Game configuration}
 translate E Phalanxengine {Phalanx engine}
 translate E Coachengine {Coach engine}
@@ -1377,7 +1377,7 @@ translate E blunder {blunder}
 translate E Noinfo {-- No info --}
 translate E PhalanxOrTogaMissing {To play Tactical Games, both Phalanx and Toga engines must be configured in the Tools->Analysis menu}
 translate E moveblunderthreshold {move is a blunder if loss is greater than}
-translate E limitanalysis {limit engine analysis time}
+translate E limitanalysis {Maximum analysis time}
 translate E seconds {seconds}
 translate E Abort {Abort}
 translate E Resume {Resume}
@@ -1419,7 +1419,7 @@ translate E PositionsPlayed {Positions played}
 translate E Success {Success}
 translate E DubiousMoves {Dubious moves}
 translate E OutOfRepertoire {OutOfRepertoire}
-translate E ConfigureTactics {Configure tactics}
+translate E ConfigureTactics {Configure Tactics}
 translate E ResetScores {Reset scores}
 translate E LoadingBase {Loading base}
 translate E Tactics {Tactics}
@@ -1433,7 +1433,7 @@ translate E MateNotFound {Mate not found}
 translate E ShorterMateExists {Shorter mate exists}
 translate E ScorePlayed {Score played}
 translate E Expected {expected}
-translate E ChooseTrainingBase {Choose training base}
+translate E ChooseTrainingBase {Choose Training Base}
 translate E Thinking {Thinking}
 translate E AnalyzeDone {Analyze done}
 translate E WinWonGame {Win won game}

@@ -96,7 +96,7 @@ namespace eval tactics {
 
   # Had some associated core dumps here, possibly when scidBasesDir is wrongly set in config S.A
   proc config {} {
-    global ::tactics::basePath ::tactics::baseList
+    global ::tactics::basePath ::tactics::baseList ::tactics::baseDesc
     set basePath $::scidBasesDir
 
     set w .tacticsWin
@@ -122,6 +122,7 @@ namespace eval tactics {
     set prevBase [sc_base current]
     # go through all bases and take descriptions
     set baseList {}
+    set baseDesc {}
     set fileList [  lsort -dictionary [ glob -nocomplain -directory $basePath *.si3 ] ]
     foreach file  $fileList {
       if {[sc_base slot $file] == 0} {
@@ -132,12 +133,14 @@ namespace eval tactics {
         set wasOpened 1
       }
       
+      # Is there a quicker way to count solved instead of opening every game !?
       set solvedCount 0
       for {set g 1 } { $g <= [sc_base numGames]} { incr g} {
         sc_game load $g
         if {[sc_game tags get "Site"] == $::tactics::solved} { incr solvedCount }
       }
-      lappend baseList "$file" "[sc_base description] ($solvedCount/[sc_base numGames])"
+      lappend baseList "$file" "[sc_base description]  ($solvedCount/[sc_base numGames])"
+      lappend baseDesc [sc_base description]
       if {! $wasOpened } {
         sc_base switch $prevBase
         sc_base close [sc_base slot $file]
@@ -150,11 +153,14 @@ namespace eval tactics {
 
     frame $w.fconfig -relief raised -borderwidth 1
     label $w.fconfig.l1 -text $::tr(ChooseTrainingBase)
-    pack $w.fconfig.l1
+    pack $w.fconfig.l1 -pady 3
 
     frame $w.fconfig.flist
+
     listbox $w.fconfig.flist.lb -selectmode single -exportselection 0 \
         -yscrollcommand "$w.fconfig.flist.ybar set" -height 10 -width 30
+    bind $w.fconfig.flist.lb <Double-Button-1> ::tactics::start
+
     scrollbar $w.fconfig.flist.ybar -command "$w.fconfig.flist.lb yview"
     pack $w.fconfig.flist.lb $w.fconfig.flist.ybar -side left -fill y
     for {set i 1} {$i<[llength $baseList]} {incr i 2} {
@@ -163,26 +169,35 @@ namespace eval tactics {
     $w.fconfig.flist.lb selection set 0
 
     frame $w.fconfig.reset
-    button $w.fconfig.reset.button -text $::tr(ResetScores) \
-        -command {::tactics::resetScores [ lindex $::tactics::baseList [expr [.configTactics.fconfig.flist.lb curselection] * 2 ] ]}
-    pack $w.fconfig.reset.button -expand yes -fill both
+    button $w.fconfig.reset.button -text $::tr(ResetScores) -command {
+        set current [.configTactics.fconfig.flist.lb curselection]
+	set name [lindex $::tactics::baseList [expr $current * 2 ] ]
+	set desc [lindex $::tactics::baseDesc $current]
+	if {[tk_messageBox -type yesno -parent .configTactics -icon question \
+	       -title {Confirm Reset} -message "Confirm resetting \"$desc\" database"] == {yes}} {
+	  ::tactics::resetScores $name
+	}
+    }
+    pack $w.fconfig.reset.button
 
     # in order to limit CPU usage, limit the time for analysis (this prevents noise on laptops)
     frame $w.fconfig.flimit
-    label $w.fconfig.flimit.blimit -text $::tr(limitanalysis) -relief flat
-    scale $w.fconfig.flimit.analysisTime -orient horizontal -from 1 -to 60 -length 120 -label $::tr(seconds) -variable ::tactics::analysisTime -resolution 1
-    pack $w.fconfig.flimit.blimit $w.fconfig.flimit.analysisTime -side left -expand yes
+    label $w.fconfig.flimit.blimit -text "$::tr(limitanalysis) ($::tr(seconds))" -relief flat
+    scale $w.fconfig.flimit.analysisTime -orient horizontal -from 1 -to 30 -length 120 \
+      -variable ::tactics::analysisTime -resolution 1
+    pack $w.fconfig.flimit.blimit -side top
+    pack $w.fconfig.flimit.analysisTime -side bottom
 
     frame $w.fconfig.fbutton
-    button $w.fconfig.fbutton.ok -text $::tr(Continue) -command {
-      set base [ lindex $::tactics::baseList [expr [.configTactics.fconfig.flist.lb curselection] * 2 ] ]
-      destroy .configTactics
-      ::tactics::start $base
-    }
-    button $w.fconfig.fbutton.cancel -text $::tr(Cancel) -command "focus .; destroy $w"
+    dialogbutton $w.fconfig.fbutton.ok -text $::tr(Ok) -command ::tactics::start
+    dialogbutton $w.fconfig.fbutton.cancel -text $::tr(Cancel) -command "focus .; destroy $w"
     pack $w.fconfig.fbutton.ok $w.fconfig.fbutton.cancel -expand yes -side left -padx 20 -pady 2
 
-    pack $w.fconfig $w.fconfig.flist $w.fconfig.reset $w.fconfig.flimit $w.fconfig.fbutton
+    pack $w.fconfig $w.fconfig.flist $w.fconfig.reset -side top
+addHorizontalRule $w.fconfig
+    pack $w.fconfig.flimit -pady 5 -side top
+addHorizontalRule $w.fconfig
+    pack $w.fconfig.fbutton -pady 5 -side bottom
     bind $w <Configure> "recordWinSize $w"
     bind $w <F1> { helpWindow TacticsTrainer }
 
@@ -191,21 +206,29 @@ namespace eval tactics {
   ################################################################################
   #
   ################################################################################
-  proc start { base } {
+  proc start {} {
     global ::tactics::analysisEngine ::askToReplaceMoves ::tactics::askToReplaceMoves_old
+
+    set current [.configTactics.fconfig.flist.lb curselection]
+    set base [lindex $::tactics::baseList [expr $current * 2]]
+    set desc [lindex $::tactics::baseDesc $current]
+    destroy .configTactics
 
     set ::tactics::lastGameLoaded 0
 
-    if { ! [::tactics::launchengine] } { return }
+    if { ![::tactics::launchengine] } { return }
 
     set askToReplaceMoves_old $askToReplaceMoves
     set askToReplaceMoves 0
 
     set w .tacticsWin
-    if {[winfo exists $w]} { focus $w ; return }
+    if {[winfo exists $w]} {
+      raiseWin $w
+      return
+    }
 
     toplevel $w
-    wm title $w $::tr(Tactics)
+    wm title $w $desc
     setWinLocation $w
     # because sometimes the 2 buttons at the bottom are hidden
     wm minsize $w 170 170
@@ -225,14 +248,16 @@ namespace eval tactics {
     pack $w.f2.cbSolution $w.f2.lSolution -expand yes -fill both -side top
 
     frame $w.fbuttons -relief groove -borderwidth 1
-    pack $w.f1 $w.fclock $w.f2 $w.fbuttons -expand yes -fill both
+    pack $w.f1 -expand yes -fill both
+    pack $w.fclock
+    pack $w.f2 $w.fbuttons -expand yes -fill both
 
     setInfoEngine $::tr(LoadingBase)
 
     button $w.fbuttons.next -text $::tr(Next) -command {
       ::tactics::stopAnalyze
       ::tactics::loadNextGame }
-    button $w.fbuttons.close -textvar ::tr(Abort) -command ::tactics::endTraining
+    button $w.fbuttons.close -text Quit -command ::tactics::endTraining
     pack $w.fbuttons.next $w.fbuttons.close -expand yes -fill both -padx 20 -pady 2
     bind $w <Destroy> { ::tactics::endTraining }
     bind $w <Configure> "recordWinSize $w"
