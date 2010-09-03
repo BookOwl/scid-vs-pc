@@ -97,13 +97,12 @@ namespace eval fics {
       set ::fics::reallogin $::fics::login
       set ::fics::password  [.ficsConfig.passwd get]
       ::fics::connect
-    }
-    focus $w.button.connect
+    } -state disabled
 
     button $w.button.connectguest -text {Login as Guest} -command {
       set ::fics::reallogin guest
       ::fics::connect guest
-    }
+    } -state disabled
 
     button $w.button.help -text Help -command {helpWindow FICSLogin }
 
@@ -161,6 +160,7 @@ namespace eval fics {
     update
     placeWinOverParent $w .
     wm state $w normal
+    busyCursor .
     update
 
     # First handle the case of a network down
@@ -188,6 +188,12 @@ namespace eval fics {
 
     set ::fics::server_ip [lindex $peer 0]
     ::close $sockChan
+
+    $w.button.connect configure -state normal
+    $w.button.connectguest configure -state normal
+    focus $w.button.connect
+    unbusyCursor .
+    update
   }
 
   trace add variable ::pause write ::fics::pauseGame
@@ -229,6 +235,8 @@ namespace eval fics {
     toplevel $w
     wm title $w "Free Internet Chess Server ($::fics::reallogin)"
     wm state $w withdrawn
+
+    busyCursor .
 
     frame $w.console
     frame $w.command
@@ -285,7 +293,8 @@ namespace eval fics {
     bind $w <Control-p> ::pgn::OpenClose
     bind $w <Prior> "$w.console.text yview scroll -1 page"
     bind $w <Next>  "$w.console.text yview scroll +1 page"
-    bind $w <Home>  "$w.console.text yview moveto 0"
+    # i cant think how to separate the entry and console bind for 'Home' and 'End'
+    # bind $w <Home>  "$w.console.text yview moveto 0"
     bind $w <End>   "$w.console.text yview moveto 1"
 
 
@@ -300,15 +309,14 @@ namespace eval fics {
     ::gameclock::new $w.bottom.clocks 2 100 0
 
     set row 0
-    checkbutton $w.bottom.buttons.silence -text "Silence" -state disabled \
+    # silence button actually only affects tells now
+    checkbutton $w.bottom.buttons.silence -text "Tells" -state disabled \
     -variable ::fics::silence -command {
-      ::fics::writechan "set silence $::fics::silence" echo
-      ::fics::writechan "set chanoff $::fics::silence" noecho
-      ::fics::writechan "set cshout [expr ! $::fics::silence ]" noecho
-      ::fics::writechan "set shout [expr ! $::fics::silence ]" noecho
+      ::fics::writechan "set chanoff [expr !$::fics::silence]" noecho
     }
-    checkbutton $w.bottom.buttons.gamerequests -text "Game requests" -state disabled -variable ::fics::gamerequests -command {
-      ::fics::writechan "set seek $::fics::gamerequests" echo
+    checkbutton $w.bottom.buttons.shouts -text "Shouts" -state disabled -variable ::fics::shouts -command {
+      ::fics::writechan "set shout $::fics::shouts" echo
+      ::fics::writechan "set cshout $::fics::shouts" noecho
       # ::fics::writechan "set gin $::fics::gamerequests" echo
     }
 
@@ -316,7 +324,7 @@ namespace eval fics {
     # -state disabled ; enable for testing S.A. &&&
 
     grid $w.bottom.buttons.silence      -column 0 -row $row -sticky w
-    grid $w.bottom.buttons.gamerequests -column 1 -row $row -sticky w
+    grid $w.bottom.buttons.shouts	-column 1 -row $row -sticky w
     grid $w.bottom.buttons.offers       -column 2 -row $row -sticky w -padx 2 -pady 2
 
     incr row
@@ -411,6 +419,7 @@ namespace eval fics {
 
     if { [catch { set sockchan [socket $server $port] } ] } {
       tk_messageBox -title "Error" -icon error -type ok -message "Network error\nCan't connect to $::fics::server $port" -parent .fics
+      unbusyCursor .
       return
     }
 
@@ -418,7 +427,8 @@ namespace eval fics {
 
     fconfigure $sockchan -blocking 0 -buffering line -translation auto ;#-encoding iso8859-1 -translation crlf
     fileevent $sockchan readable ::fics::readchan
-    # &&&& setState disabled
+
+    unbusyCursor .
   }
 
   proc recordFicsSize {w} {
@@ -815,20 +825,20 @@ namespace eval fics {
       writechan "iset nohighlight 1"
 
       # user init commands
-      writechan "set seek $::fics::gamerequests"
+      # writechan "set seek $::fics::gamerequests"
       # writechan "set gin  $::fics::gamerequests"
       writechan "set gin  0"
-      writechan "set silence $::fics::silence"
+      writechan "set silence 1"
       writechan "set echo 1"
-      writechan "set chanoff $::fics::silence"
-      writechan "set cshout [expr ! $::fics::silence ]"
-      writechan "set shout [expr ! $::fics::silence ]"
+      writechan "set chanoff [expr !$::fics::silence]"
+      writechan "set cshout $::fics::shouts"
+      writechan "set shout $::fics::shouts"
 
       # What is this ? S.A. writechan "iset nowrap 1"
       writechan "iset nohighlight 1"
       .fics.bottom.buttons.offers       configure -state normal
       .fics.bottom.buttons.silence      configure -state normal
-      .fics.bottom.buttons.gamerequests configure -state normal
+      .fics.bottom.buttons.shouts	configure -state normal
       return
     }
 
@@ -954,13 +964,18 @@ namespace eval fics {
 
     # colors defined line 265
 
+    if {[string match {fics% *} $line]} {
+	set line [string range $line 6 end]
+    }
+
     switch -glob $line {
 	{* seeking *}	{ $t insert end "$line\n" seeking }
-	{->>say *}	{ $t insert end "$line\n" command 
+	{->>say *}	{ $t insert end "$line\n" tells 
 			  # How best to check we're playing a game ?
 			  # I'll have to sort out ::fics::playing
 			  catch {::commenteditor::appendComment "$::fics::reallogin: [lrange $line 1 end]"}
 			}
+	{->>tell *}	{ $t insert end "$line\n" tells }
     	{->>*}		{ $t insert end "$line\n" command }
 
 	{\{Game *\}}	{ $t insert end "$line\n" game }
@@ -969,10 +984,11 @@ namespace eval fics {
       			  ::commenteditor::appendComment "[lindex $line 0]: [lrange $line 3 end]"
 			}
 	{Auto-flagging*} { ::commenteditor::appendComment "Loses on time" }
-	{fics% *}	{ $t insert end "[string range $line 6 end]\n" ficspercent}
+	{*[A-Za-z]\(*\): *} { $t insert end "$line\n" channel }
+	{Width set *}	{}
+	{Height set *}	{}
 	default		{ $t insert end "$line\n" }
       }
-      # {*[A-Za-z]\(*\): *} { $t insert end "$line\n" channel }
 
     set pos [ lindex [ .fics.console.scroll get ] 1 ]
     if {$pos == 1.0} {

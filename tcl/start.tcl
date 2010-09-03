@@ -281,7 +281,7 @@ set ::fics::findopponent(formula) ""
 set ::fics::consolebg	grey35
 set ::fics::consolefg	LimeGreen
 set ::fics::silence	1
-set ::fics::gamerequests 1
+set ::fics::shouts	1
 
 # Defaults for initial directories:
 set initialDir(base) "."
