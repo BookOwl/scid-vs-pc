@@ -43,7 +43,7 @@ namespace eval fics {
   proc config {} {
     variable logged
     global ::fics::sockChan
-    set w ".ficsConfig"
+    set w .ficsConfig
 
     if {[winfo exists $w]} {
       focus $w
@@ -104,9 +104,9 @@ namespace eval fics {
       ::fics::connect guest
     } -state disabled
 
-    button $w.button.help -text Help -command {helpWindow FICSLogin }
+    button $w.button.help -text Help -command {helpWindow FICSlogin}
 
-    button $w.button.cancel -text Cancel -command { destroy .ficsConfig }
+    button $w.button.cancel -text Cancel -command {destroy .ficsConfig}
 
     ### Pack .ficsConfig widget in grid
 
@@ -155,7 +155,7 @@ namespace eval fics {
     }
 
     bind $w <Escape> "$w.button.cancel invoke"
-    bind $w <F1> { helpWindow FICSLogin }
+    bind $w <F1> {helpWindow FICSlogin}
 
     update
     placeWinOverParent $w .
@@ -165,6 +165,7 @@ namespace eval fics {
 
     # First handle the case of a network down
     if { [catch {set sockChan [socket -async $::fics::server $::fics::port_fics]} err]} {
+      ::fics::unbusy_config
       tk_messageBox -icon error -type ok -title "Unable to contact $::fics::server" -message $err -parent .ficsConfig
       return
     }
@@ -177,6 +178,7 @@ namespace eval fics {
 
       if { [catch {set peer [ fconfigure $sockChan -peername ]} err]} {
         if {$i == $timeOut} {
+	  ::fics::unbusy_config
           tk_messageBox -icon error -type ok -title "Unable to contact $::fics::server" -message $err -parent .ficsConfig
           return
         }
@@ -189,14 +191,20 @@ namespace eval fics {
     set ::fics::server_ip [lindex $peer 0]
     ::close $sockChan
 
+    ::fics::unbusy_config
+    update
+  }
+
+  proc unbusy_config {} {
+    set w .ficsConfig
     $w.button.connect configure -state normal
     $w.button.connectguest configure -state normal
     focus $w.button.connect
     unbusyCursor .
-    update
   }
 
   trace add variable ::pause write ::fics::pauseGame
+
   proc pauseGame {args} {
     if {[winfo exists .fics]} {
       # tcl/end.tcl:label .statusbar -textvariable statusBar -relief sunken -anchor w -width 1 
@@ -358,7 +366,7 @@ namespace eval fics {
     incr row
     button $w.bottom.buttons.takeback  -text {Take Back}   -command { ::fics::writechan takeback}
     button $w.bottom.buttons.takeback2 -text {Take Back 2} -command { ::fics::writechan {takeback 2}}
-    button $w.bottom.buttons.help      -text Help          -command { helpWindow FICS }
+    button $w.bottom.buttons.help    -text Help -command {helpWindow FICS}
     grid $w.bottom.buttons.takeback  -column 0 -row $row -sticky ew -padx 3 -pady 2
     grid $w.bottom.buttons.takeback2 -column 1 -row $row -sticky ew -padx 3 -pady 2
     grid $w.bottom.buttons.help      -column 2 -row $row -sticky ew -padx 3 -pady 2
@@ -377,7 +385,7 @@ namespace eval fics {
     bind $w <Destroy>   "catch ::fics::close"
     bind $w <Configure> "::fics::recordFicsSize $w"
 
-    bind $w <F1> { helpWindow FICS}
+    bind $w <F1> {helpWindow FICS}
 
     # needs a little voodoo to get minsize working properly with setWinSize
 
@@ -418,8 +426,8 @@ namespace eval fics {
     updateConsole "Socket opening"
 
     if { [catch { set sockchan [socket $server $port] } ] } {
-      tk_messageBox -title "Error" -icon error -type ok -message "Network error\nCan't connect to $::fics::server $port" -parent .fics
       unbusyCursor .
+      tk_messageBox -title "Error" -icon error -type ok -message "Network error\nCan't connect to $::fics::server $port" -parent .fics
       return
     }
 
@@ -596,10 +604,10 @@ namespace eval fics {
       destroy .ficsfindopp
       ::fics::initOffers
     } -width 10
-    button $w.help   -text "Help" -command "helpWindow FICSfindOpp" -width 10
+    button $w.help   -text "Help" -command "helpWindow FICSfindopp" -width 10
     button $w.cancel -text "Cancel" -command "destroy $w" -width 10
 
-    bind $w <F1> { helpWindow FICSfindOpp}
+    bind $w <F1> {helpWindow FICSfindopp}
 
     incr row
     grid $w.seek   -column 0 -row $row -padx 3 -pady 8

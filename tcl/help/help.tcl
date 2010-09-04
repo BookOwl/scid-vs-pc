@@ -15,7 +15,7 @@ set helpText(Contents) {<h1>Scid vs. PC</h1>
   <br>
   <li><a TacticalGame>Playing against the Computer</a></li>
   <br>
-  <li><a FICSOver>Playing on the Internet with FICS</a></li>
+  <li><a FICS>Playing on the Internet with FICS</a></li>
   <br>
   <li><a Tourney>Computer Tournaments</a></li>
   <br>
@@ -78,8 +78,8 @@ justified for some dubious eye candy.</li>
 <p><footer>Updated: Scid Vs PC 3.6.26.8, December 2009</footer></p>
 }
 
-set helpTitle(FICSOver) "Fics"
-set helpText(FICSOver) {<h1>Fics</h1>
+set helpTitle(FICS) "Fics"
+set helpText(FICS) {<h1>Fics</h1>
 <ul>
 <p>
 The Free Internet Chess Server (FICS) is a web portal where people from
@@ -87,26 +87,25 @@ all over the world play chess.  Features include a player rating system,
 international tournaments and the ability to follow and discuss other peoples
 games.</p>
 
-<p> Playing on the Internet is done via the the 
-<run ::fics::config><green>Play--<gt>Internet</green></run> 
-menu item. I recommend visiting the Fics website to create a user account, but
-it is also possible to play anonymously. To start a game, press the Login as
-Guest button, then watch the available games as they are announced in the
-console. Enter play [game number] to accept a game challenge.</p>
+<p>
+To create a user account, visit <url http://www.freechess.org>www.freechess.org</url>;
+though it is also possible to play anonymously.
+Using Fics with Scid vs. PC is done via the
+<run ::fics::config><green>Play--<gt>Internet</green></run> menu item.
+</p>
 
-<li><a FICSLogin>Logging In</a>
+<li><a FICSlogin>Logging In</a>
 <br>
-<li><a FICSfindOpp>Finding an Opponent</a></li>
+<li><a FICSwidget>The Fics Widget</a></li>
 <br>
-<li><a FICS>Using Fics</a></li>
+<li><a FICSfindopp>Finding an Opponent</a></li>
 <br>
-<li><a FICSLectures>Fics Lectures</a></li>
+<li><a FICScommands>Fics Commands and Variables</a></li>
+<br>
+<li><a FICStraining>Other Features</a></li>
 </ul>
-
-<p>For a detailed description of the services offered, or to create a FICS
-account, visit <url http://www.freechess.org>www.freechess.org</url> </p>
-
-<p><footer>Updated: Scid Vs PC 3.6.26.8, December 2009</footer></p>
+<br>
+  <p><footer>Updated: Scid Vs PC 3.4.1, September 2010</footer></p>
 }
 
 set helpTitle(BrowsingPGN) "PGN"
@@ -295,11 +294,7 @@ set helpText(Index) {<h1>Scid Help Index</h1>
 
   <h3><name F>F</name></h3>
   <ul>
-  <li><a FICSOver>FICS Overview</a></li>
-  <li><a FICSLogin>FICS Login</a></li>
-  <li><a FICSfindOpp>FICS Find opponent</a></li>
-  <li><a FICS>Using Fics</a></li>
-  <li><a FICS Training>FICS lectures</a></li>
+  <li><a FICS>FICS</a> (Free Internet Chess Server)</li>
   <li><a Finder>File Finder</a></li>
   <li><a FindBestMove>Training: Find best move</a></li>
   <li><a Formats>File formats</a></li>
@@ -332,6 +327,7 @@ set helpText(Index) {<h1>Scid Help Index</h1>
   <li><a Import>Import</a> window</li>
   <li><a Moves Informant>Informant Symbols</a></li>
   <li><a CCGameListIcons>Icons for Correspondence Chess</a></li>
+  <li><a FICS>Internet play</a></li>
   </ul>
 
   <h3><name J>J</name></h3>
@@ -420,7 +416,7 @@ set helpText(Index) {<h1>Scid Help Index</h1>
   <li><a FindBestMove>Training: Find best move</a></li>
   <li><a OpeningTrainer>Training: Openings</a></li>
   <li><a TacticsTrainer>Training: Tactics</a></li>
-  <li><a FICS Training>Training: FICS lectures</a></li>
+  <li><a FICStraining>Training: FICS lectures</a></li>
   <li><a Tree>Tree window</a></li>
   <li><a Moves Trial>Trial mode</a></li>
   <li><a Maintenance Twins>Twin (duplicate) games</a></li>
@@ -5666,12 +5662,12 @@ set helpText(FindBestMove) {<h1>Training: Find best move</h1>
 }
 
 # FICS Login
-set helpTitle(FICSLogin) "Fics Login"
-set helpText(FICSLogin) {<h1>Fics Login</h1>
+set helpTitle(FICSlogin) "Fics Login"
+set helpText(FICSlogin) {<h1>Fics Login</h1>
 
 <p><i>Fics supports anonymous login, but you'll find more people to play if you visit
 <url http://www.freechess.org>www.freechess.org</url> first and create an account.
-If you're having problems logging in, try de-selecting "timeseal".</i></p>
+If you're having problems logging in, try deselecting "timeseal".</i></p>
   <ul>
       <li><term>Username</term> This is your login name on the Fics
       server. To login anonymously, use the "Login as guest" button </li>
@@ -5686,8 +5682,8 @@ program. Its purpose is to cope with network lags and keep the clocks in
 correct order, which can otherwise create problems on slow network
 connections.
 
-Timeseal is available for free, but unfortunately, finding a working program can be a hassle.
-Start at <url http://www.freechess.org>www.freechess.org</url>.
+Timeseal is available from the
+<url http://sourceforge.net/projects/scidvspc>Scid vs. PC project page</url>.
   </li>
 
       <li><term>Server port</term> specifies the port on the server.
@@ -5697,79 +5693,45 @@ Start at <url http://www.freechess.org>www.freechess.org</url>.
       and should be ok for almost all needs.</li>
    </ul>
 
-  <p>
-  <b>Note</b> Fics also offers a bunch of chess
-  variants like bughouse or crazyhouse but Scid does not support any
-  of these variations. </p>
-  <p><footer>Updated: Scid vs PC 3.6.26.9, March 2010</footer></p>
+  <p><footer>Updated: Scid Vs PC 3.4.1, September 2010</footer></p>
 }
 
 # FICS Find Opponent
-set helpTitle(FICSfindOpp) "Fics Find Opponent"
-set helpText(FICSfindOpp) {<h1>Fics Find Opponent</h1>
+set helpTitle(FICSfindopp) "Finding an Opponent"
+set helpText(FICSfindopp) {<h1>Finding an Opponent</h1>
   <p>
-  This dialogue allows you to challenge other players for
-  a game. The game options include:
+  There are several ways to start playing. The two easiest are the
+<b>Find Opponent</b>
+  and
+<b>Offers Graph</b>
+widgets.
+  </p>
+
+  <h3>Find Opponent</h3>
+
+  <p>
+  Click on the <b>Find Opponent</b> button, and you'll see a dialogue from
+  which you can challenge other players for a game.
+  Select how long you'd like to play for, and other options, then 
+  press the <term>Make Offer</term> button.
+
+Options:
   <br>
   <ul>
 
-      <li><term>Initial time</term> Time for game in minutes.</li>
+      <li><term>Time</term> Base time for game in minutes.</li>
       <li><term>Increment</term> Seconds added to your time with each move.</li>
-      <li><term>Rated game</term> The result of rated games will affect your rating.
+      <li><term>Rated game</term> The result of rated games affect your rating.
       Unrated games make no adjustment.</li>
-      <li><term>Colour</term> Select whether to play White or Black or Auto.</li>
-      <li><term>Limit rating between</term> Only play those
-      with a given rating interval.</li>
       <li><term>Confirm manually</term> Allows you to confirm or deny a challenge.</li>
+      <li><term>Color</term> Select whether to play White or Black or Auto.</li>
+      <li><term>Limit rating between</term> Only play those with a given rating interval.</li>
       <li><term>Filter with formula</term> On Fics every player can
       set a formula that describes what challenges will be denied
       automatically. This formula can be enabled by checking this box.
       </li>
    </ul>
-  <br>
-   Click the <term>Make Offer</term> button to place your offer.
   </p>
-  <p><footer>Updated: Scid vs PC 3.6.26.9, March 2010</footer></p>
-}
-
-set helpTitle(FICS) "Fics: Play on the Internet"
-set helpText(FICS) {<h1>Using Fics</h1>
-  <p>
-Once you have <a FICSLogin>logged in</a>, the main Fics widget shows a
-console window, some command buttons and clocks.</p>
-
-  <h3>Fics Console</h3>
-
-  <p>
-  This is the main interface with the Fics server.  Normal messages are written
-in green; game offers from other players appear in red.  It can be a little
-confusing, but toggling the "Silence" and "Game requests" boxes can make it
-quieter.
-</p>
-
-<p> Interaction with Fics is via commands entered in the entry box (and also
-the Command Buttons, below). Describing all of them is beyond the scope of this
-document but FICS offers an extensive online help system. To see a list of
-possible commands enter <term>help commands</term>. To see the detailed
-documentation of a specific command just prepend its name by <term>help</term>.
-Note, that a command may have several help pages. To scroll down issue the
-<term>next</term> command.  </p>
-
-  <h3>Command Buttons</h3>
-
-  <p>
-  On the right hand side of the clocks appear the command buttons. They are
-fairly self explanatory, the most notable being the <a FICSfindOpp><term>Find
-Opponent</term> button</a>, which is a convenient way to start a game
-whose length you can choose. Other buttons include:
-  <br>
-  <ul>
-    <li><term>Silence</term> will filter out most of the messages on
-    FICS that are not explicitly directed to the user.
-    </li>
-    <li><term>Game requests</term> shows all requests. You may respond to
-any by typing "Play NUMBER" in the entry widget.</li>
-<br>
 
   <h3>Offers Graph</h3>
 
@@ -5783,29 +5745,146 @@ higher number means stronger player , while x-axis of the graph plots the time
 allowed for the game. The first grey line marks standard <term>Blitz</term>
 timing (5 min., no increment) while the second red line marks the standard
 <term>Rapid</term> timing (15 min., no increment).
+<p>
+Additionally, the offers use the following coding:
+    <ul>
+       <li><green>Green</green>: offers from human opponents</li>
+       <li><blue>Blue</blue>: offers from computer opponents</li>
+       <li><red>Red</red>: games with a total time of more than 1 hour</li>
+       <li><gray>Gray</gray>: anonymous offers, i.e. offers from guest logins</li>
+       <li>Boxes: unrated games</li>
+       <li>Circles: rated games</li>
+    </ul>
   </p>
-<br>
-  <p><footer>Updated: Scid Vs PC 3.6.26.9, April 2010</footer></p>
+
+<p>
+<i>
+Note Fics also offers a bunch of chess variants like bughouse or crazyhouse but
+Scid does not support any of these variations.
+</i></p>
+
+  <p><footer>Updated: Scid Vs PC 3.4.1, September 2010</footer></p>
 }
 
-set helpTitle(FICSLectures) "Fics: Play on the Internet"
-set helpText(FICSLectures) {<h1>FICS Lectures</h1>
+set helpTitle(FICSwidget) "Fics: Play on the Internet"
+set helpText(FICSwidget) {<h1>Using Fics</h1>
   <p>
-  FICS offers several options for chess training. One of the more
-  prominent once are the lecture bots <term>LectureBot</term> and
-  <term>WesBot</term>. They run all the time on FICS and offer various
-  training sessions that can be visited using Scid. The start of each
-  session is announced on <term>Channel 67</term> of FICS. Therefore,
-  to see these announcements one should first add this channel to the
-  personal observation list. This can be done by <term>+channel
-  67</term> (it can be removed again by <term>-channel 67</term>).
-  Once e.g. LectureBot announces a training session, one can take part
-  by issuing <term>observe lecturebot</term>. Please refer to the
-  online documentation of FICS for additional features of the Bots and
-  also other bots available.
-  </p>
+Once you have <a FICSlogin>logged in</a>, the main Fics widget shows a
+console window, some command buttons, and clocks.</p>
 
-  <h3><name Observe>Observe games on FICS</h3>
+  <h3>Fics Console</h3>
+
+  <p>
+  This is the main interface with the Fics server.
+
+<p> Interaction is via commands entered in the entry box, or by 
+the Command Buttons. For an outline of popular commands see the
+<a FICScommands><term>Commands</term></a> section.</p>
+
+<p>
+Normal messages are written in green; messages from other
+players appear in red.  It can be a little confusing, but
+toggling the <b>Tells</b> and <b>Shouts</b> boxes will make
+it quieter.
+</p>
+
+  <h3>Buttons</h3>
+  <p>
+  On the right hand side of the clocks appear the command buttons. They are
+fairly self explanatory, the most notable being the <a FICSfindopp><term>Find
+Opponent</term> and <term>Offers Graph</term></a> buttons. Other buttons include:
+  <br>
+  <ul>
+    <li><term>Tells</term> Show messages from channel tells</li>
+    <li><term>Shouts</term> Show messages from shouts and cshouts</li>
+    <li><term>Clear</term> Clear console of previous messages</li>
+    <li><term>Rematch</term> Request a rematch with previous opponent</li>
+  </ul>
+
+<br>
+  <p><footer>Updated: Scid Vs PC 3.4.1, September 2010</footer></p>
+}
+
+set helpTitle(FICScommands) {Fics Commands and Variables}
+set helpText(FICScommands) {<h1>Fics Commands and Variables</h1>
+
+<p>
+Fics' command line interface is fairly confusing,
+but below you'll find an outline of popular commands and
+variables.
+</p>
+
+<p><i>
+As well as on-line, help can also be got from the command line.
+Use <term>help COMMAND</term>, or <term>help v_VARIABLE</term>
+for info about specific commands and variables.
+</i></p>
+
+<h3>Commands</h3>
+<ul>
+    <li><term>match</term> PLAYER - Issue game request to a specific person</li>
+    <li><term>finger</term> PLAYER - Get info about a specific person</li>
+    <li><term>play</term> GAMENUMBER - Respond to a game request from another player</li>
+    <li><term>resume</term>   Issue challenges to users with whom you have a stored or interupted game</li>
+    <li><term>tell</term> CHANNEL MESSAGE - Send a message to chat channel</li>
+    <li><term>tell</term> PLAYER  MESSAGE - Send a message to a specific person</li>
+    <li><term>say</term> MESSAGE - Send a message to opponent</li>
+    <li><term>shout</term> MESSAGE - Shout message</li>
+    <li><term>flag</term>   Call time if your opponent has run out of time, and autoflag is disabled</li>
+    <li><term>=channel</term>   Show channels player is listening to</li>
+    <li><term>+channel</term> NUMBER - Listen to channel NUMBER</li>
+    <li><term>-channel</term> NUMBER - Stop listening to channel</li>
+    <li><term>news</term>   Show Fics news</li>
+</ul>
+
+<h3>Variables</h3>
+<p><i>To change settings use <term>set</term> VARIABLE VALUE. Often VALUE is a boolean 1 or 0.</i></p>
+
+<ul>
+<li><term>seek</term>	Show game requests</li>
+<li><term>silence</term>	Turn off shouts, cshouts and channel tells while you play, examine or observe a game</li>
+<li><term>gin</term>	Notify when games begin or end</li>
+<li><term>autoflag</term>	Automatically flag opponent as losing when his time runs out</li>
+
+<li><term>1</term>	Footnote 1 to player's personal information</li>
+<li><term>2</term>	Footnote 2 to player's personal information ....</li>
+</ul>
+
+<h3>Channels</h3>
+<p>Popular channels are:</p>
+<ul>
+<li><term>1</term>	Server Help and Assistance</li>
+<li><term>2</term>	General discussions about FICS</li>
+<li><term>4</term>	Guests</li>
+<li><term>49</term>	Mamer tournament channel</li>
+<li><term>50</term>	The Chat channel</li>
+</ul>
+</p>
+
+<h3>Aliases</h3>
+<ul>
+<li><term>f</term>	finger</li>
+<li><term>n</term>	next</li>
+<li><term>t</term>	tell</li>
+</ul>
+
+
+<h3>More Information</h3>
+
+<p>
+Visit Freechess.org for info about
+<url http://www.freechess.org/Help/HelpFiles/variables.html/>Variables</url>
+or 
+<url http://www.freechess.org/Help/HelpFiles/commands.html/>Commands</url>
+<br>
+  <p><footer>Updated: Scid Vs PC 3.4.1, September 2010</footer></p>
+}
+
+set helpTitle(FICStraining) {Fics: Other Features}
+set helpText(FICStraining) {<h1>Other Fics Features</h1>
+
+  <h3><name Observe>Observing Games</h3>
+
   <p>
   From time to time FICS <term>relays</term> major events in
   international chess. In these cases one can observe the games life
@@ -5828,6 +5907,23 @@ set helpText(FICSLectures) {<h1>FICS Lectures</h1>
   </p>
   <p>
   Note that only one game can be observed within Scid.
+  </p>
+
+  <h3>Lectures</h3>
+
+  <p>
+  FICS offers several options for chess training. One of the more
+  prominent once are the lecture bots <term>LectureBot</term> and
+  <term>WesBot</term>. They run all the time on FICS and offer various
+  training sessions that can be visited using Scid. The start of each
+  session is announced on <term>Channel 67</term> of FICS. Therefore,
+  to see these announcements one should first add this channel to the
+  personal observation list. This can be done by <term>+channel
+  67</term> (it can be removed again by <term>-channel 67</term>).
+  Once e.g. LectureBot announces a training session, one can take part
+  by issuing <term>observe lecturebot</term>. Please refer to the
+  online documentation of FICS for additional features of the Bots and
+  also other bots available.
   </p>
 
   <p><footer>Updated: Scid Vs PC 3.6.26.9, April 2010</footer></p>
@@ -5903,7 +5999,7 @@ set helpText(Changelog) {<h1>Scid vs. PC</h1>
 <h4>4.0 (July 1, 2010)</h4>
 <ul>
 <li>Computer Chess tournament feature</li>
-<li>The Gamelist widget has been rewritten to work with huge databases. Other new features include a case insensitive search, deleted items are greyed out, and there's a "Compact" button to empty trash with.</li>
+<li>The Gamelist widget has been rewritten to work with huge databases. Other new features include a case insensitive search, deleted items are greyed out, and there's a "Compact" button to empty trash with</li>
 <li>Add a background colour option that applies to many text widgets, including gameinfo, pgn window and help window</li>
 <li>Restructured the analysis widgets, putting toolbar on top, tiny board at bottom, tweaking toolbar icons and reparenting analysis died error dialog</li>
 <li>Update the book and book-tuning windows (untested, from SCID)</li>
