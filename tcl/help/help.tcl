@@ -15,7 +15,9 @@ set helpText(Contents) {<h1>Scid vs. PC</h1>
   <br>
   <li><a TacticalGame>Playing against the Computer</a></li>
   <br>
-  <li><a FICS>Playing on the Internet with FICS</a></li>
+  <li><a FICS>Playing on the Internet (FICS)</a></li>
+  <br>
+  <li><a TacticsTrainer>Puzzles</a></li>
   <br>
   <li><a Tourney>Computer Tournaments</a></li>
   <br>
@@ -29,7 +31,7 @@ set helpText(Contents) {<h1>Scid vs. PC</h1>
   <br>
   <li><a Author>About</a></li>
   </ul> </ul> </ul>
-  <p><footer>Updated: Scid Vs PC 4.0, June 2010</footer></p>
+  <p><footer>Updated: Scid vs. PC 4.0, June 2010</footer></p>
 }
 set helpTitle(Intro) "$::scidName"
 set helpText(Intro) {<h1>Introduction</h1>
@@ -75,7 +77,7 @@ justified for some dubious eye candy.</li>
 <li>Despite some work together, the current Scid project manager and I don't get on.
  Free software is like that ;-)</li>
 </ul>
-<p><footer>Updated: Scid Vs PC 3.6.26.8, December 2009</footer></p>
+<p><footer>Updated: Scid vs. PC 3.6.26.8, December 2009</footer></p>
 }
 
 set helpTitle(FICS) "Fics"
@@ -105,7 +107,7 @@ Using Fics with Scid vs. PC is done via the
 <li><a FICStraining>Other Features</a></li>
 </ul>
 <br>
-  <p><footer>Updated: Scid Vs PC 3.4.1, September 2010</footer></p>
+  <p><footer>Updated: Scid vs. PC 3.4.1, September 2010</footer></p>
 }
 
 set helpTitle(BrowsingPGN) "PGN"
@@ -156,7 +158,7 @@ and only as single games. If you open a PGN file with multiple games, Scid does 
 <ul><p>For more detail about the PGN window's function, see <a PGN>here</a>.</p>
 </ul>
 
-<p><footer>Updated: Scid Vs PC 3.6.26.8, December 2009</footer></p>
+<p><footer>Updated: Scid vs. PC 3.6.26.8, December 2009</footer></p>
 }
 
 set helpTitle(Scid) "Scid"
@@ -382,6 +384,7 @@ set helpText(Index) {<h1>Scid Help Index</h1>
   <li><a Reports Player>Player report</a> window</li>
   <li><a TacticalGame>Play tactical game</a></li>
   <li><a SeriousGame>Play serious game</a></li>
+  <li><a TacticsTrainer>Puzzles</a> - Mate in ... </li>
   </ul>
 
   <h3><name Q>Q</name></h3>
@@ -415,7 +418,6 @@ set helpText(Index) {<h1>Scid Help Index</h1>
   <li><a Tmt>Tournament finder</a></li>
   <li><a FindBestMove>Training: Find best move</a></li>
   <li><a OpeningTrainer>Training: Openings</a></li>
-  <li><a TacticsTrainer>Training: Tactics</a></li>
   <li><a FICStraining>Training: FICS lectures</a></li>
   <li><a Tree>Tree window</a></li>
   <li><a Moves Trial>Trial mode</a></li>
@@ -3025,7 +3027,7 @@ storing the annotations into the database.
      </li>
   </ul>
 
-  <p><footer>Updated: Scid Vs PC 4.1, July 2010</footer></p>
+  <p><footer>Updated: Scid vs. PC 4.1, July 2010</footer></p>
 }
 
 ####################
@@ -3109,7 +3111,7 @@ Faile seems not to issue "move" under some circumstances, despite being in xboar
 Testing under <b>Windows</b> has not been terribly extensive, and considering
 the number of engines available, unforseen issues will probably arise.  </p>
 
-  <p><footer>Updated: Scid Vs PC 4.1, July 2010</footer></p>
+  <p><footer>Updated: Scid vs. PC 4.1, July 2010</footer></p>
 
 }
 
@@ -4513,7 +4515,7 @@ our game.</li>
   limited the coach is allowed to think in the background.</li>
   </ul>
 
-<p><footer>Updated: Scid Vs PC 4.0, May 2010</footer></p>
+<p><footer>Updated: Scid vs. PC 4.0, May 2010</footer></p>
 }
 
 # Opening Trainer window help
@@ -5559,74 +5561,68 @@ set helpText(SeriousGame) {<h1>Serious Game</h1>
 }
 
 # Tactics Trainer
-set helpTitle(TacticsTrainer) "Training: Tactics"
-set helpText(TacticsTrainer) {<h1>Training: Tactics</h1>
+# Renamed to Puzzles S.A
+set helpTitle(TacticsTrainer) "Mate in ... Puzzles"
+set helpText(TacticsTrainer) {<h1>Mate in ... Puzzles</h1>
   <p>
-  Scid offers the possibility to solve chess puzzles. For this feature
-  special databases containing the puzzles are required. These
-  databases are searched in the <term>Bases</term> directory, that can
-  be specified via the menu Options / Bases directory. Unlike other
-  bases these bases usually do not contain full games but just a
-  starting position as is well known from the usual tactics puzzle
-  books. In fact, every puzzle book can easily be converted to such a
-  trainings base by just setting up the positions and storing them in
-  the <term>Bases</term> directory. Additionally, one has to set the
-  type of the base to <term>Tactics</term> by means of the <a
-  Maintenance>Maintenance</a> window.
+  Scid's
+<run ::tactics::config><green>Mate in ...</green></run> widget
+  is a handy way to improve your chess skills. And waste some time!
+  The feature is fairly straight forward, though not especially polished.
+</p>
+  <h3>Configuration</h3>
+  <p>
+  The <term>Engine analysis time</term> slider limits Toga's
+  time to solve the puzzle (which are generated on-the-fly).
+  Five seconds should generally
+  be enough as most puzzles contain forced continuations.
+  It does not describe how long one has to solve any puzzle.
+  </p>
+<p>
+  Scid stores data about solved puzzles within the database.
+  Clicking the <term>Reset scores</term> button will reset this
+  information marking all puzzles as unsolved. And unless care is taken, 
+<b>reinstalling Scid will overwrite puzzles solved</b>!
+  </p>
+
+  <h3>Playing</h3>
+  <p>
+  Clicking the <term>Next</term> button allows the user to skip any
+  puzzle, and individual exercises can be opened via the
+<run ::windows::gamelist::Open><green>Windows--<gt>Game List</green></run> widget.
   </p>
   <p>
-  After choosing Play / Training / Tactics a dialogue pops up that
-  allows to choose a trainings base. There, the name of the base is
-  displayed, followed by the number of solved puzzles and the total
-  number of puzzles in the base in brackets. That is, Scid stores the
-  puzzles the user already solved with the base. Choosing a base an
-  clicking the <term>Reset scores</term> button will reset this
-  information marking all puzzles as unsolved.
+  Some exercises do not end in a mate, with the
+  solution only giving a clear advantage. If one wants to play out these
+  scenarios and only count the exercise solved in case of a win, just
+  check the <term>Win won game</term> option. This option has no
+  meaning in case of a clear mate solution.
   </p>
   <p>
-  <b>Note</b> it is advisable to close the PGN window and check
-  <term>hide next move</term> in the context menu of the information
-  area of Scids main window. Otherwise cheating is pretty simple.
-  <p>
-  To get a solution for the puzzles in a base the positions are
-  analysed by the Toga chess engine (included with Scid). The
-  <term>Limit engine analysis time</term> slider allows to limit the
-  time the engine has to solve the position. Several seconds should be
-  enough for most cases as usually tactical puzzles contain a
-  forced continuation which will be found very quickly by almost all
-  chess engines.
-  </p>
-  <p>
-  Clicking the <term>Continue</term> button will start the exercise,
-  displaying the first unsolved puzzle. That is, it is possible to
-  continue to work through a base. Also if some puzzle was skipped in
-  the first session or unsolved, it will be redisplayed. A new window
-  will pop up containing a clock and several buttons. The clock is
+  The clock is
   only for the user to check how long he thought about the position at
   hand. No evaluation is done on the time required to solve a problem.
   </p>
-  <p>
-  Some tactical exercises do not end in a mate, but the correct
-  solution gives a clear advantage. If one wants to play out these
-  scenarios and only count the exercise solved in case of a win, just
-  check the <term>Win won game</term> option. (This option has no
-  meaning in case of a clear mate solution.)
+  <h3>Other notes</h3>
+<p>
+  This feature is implemented using special databases containing the puzzles
+  , installed in Scid's default <term>Bases</term> directory.
+  If for any reason this directory option has been changed , it
+  can be specified in
+<run setTacticsBasesDir><green>Options--<gt>Bases Directory</green></run>.
+</p>
+<p>
+  Unlike other bases puzzle bases do not contain full games, only starting positions.
+  Any puzzle book can be converted to a
+  trainings base by setting up the positions and storing the new database into
+  the <term>Bases</term> directory. (It is also recommended to set the new base type
+  to <term>Tactics</term>, by means of the <a Maintenance>Maintenance</a> window).
   </p>
   <p>
-  If a problem can not be solved, one can check the 
-  <term>Show solution</term> checkbox. The solution is then displayed
-  underneath in the dark gray field.
-  </p>
+  To avoid cheating, it is advisable to close the PGN window and check
+  <term>Hide Next Move</term> in Scid's right-click menu.
   <p>
-  Clicking the <term>Next</term> button allows the user to skip a
-  puzzle and move on, the <term>Abort</term> button will end tactical
-  training and close the database. Besides the <term>Next</term>
-  button, the user can choose an exercise by whatever means one can
-  select a game within a database in Scid, e.g. by choosing a random
-  game via Ctrl-? or jumping to some bookmark or simply by the <a
-  GameList>game list</a>.
-  </p>
-  <p><footer>Updated: Scid 3.6.26, October 2008</footer></p>
+  <p><footer>Updated: Scid vs. PC 4.1, July 2010</footer></p>
 }
 
 # Find best move 
@@ -5693,7 +5689,7 @@ Timeseal is available from the
       and should be ok for almost all needs.</li>
    </ul>
 
-  <p><footer>Updated: Scid Vs PC 3.4.1, September 2010</footer></p>
+  <p><footer>Updated: Scid vs. PC 3.4.1, September 2010</footer></p>
 }
 
 # FICS Find Opponent
@@ -5763,7 +5759,7 @@ Note Fics also offers a bunch of chess variants like bughouse or crazyhouse but
 Scid does not support any of these variations.
 </i></p>
 
-  <p><footer>Updated: Scid Vs PC 3.4.1, September 2010</footer></p>
+  <p><footer>Updated: Scid vs. PC 3.4.1, September 2010</footer></p>
 }
 
 set helpTitle(FICSwidget) "Fics: Play on the Internet"
@@ -5802,7 +5798,7 @@ Opponent</term> and <term>Offers Graph</term></a> buttons. Other buttons include
   </ul>
 
 <br>
-  <p><footer>Updated: Scid Vs PC 3.4.1, September 2010</footer></p>
+  <p><footer>Updated: Scid vs. PC 3.4.1, September 2010</footer></p>
 }
 
 set helpTitle(FICScommands) {Fics Commands and Variables}
@@ -5877,7 +5873,7 @@ Visit Freechess.org for info about
 or 
 <url http://www.freechess.org/Help/HelpFiles/commands.html/>Commands</url>
 <br>
-  <p><footer>Updated: Scid Vs PC 3.4.1, September 2010</footer></p>
+  <p><footer>Updated: Scid vs. PC 3.4.1, September 2010</footer></p>
 }
 
 set helpTitle(FICStraining) {Fics: Other Features}
@@ -5926,7 +5922,7 @@ set helpText(FICStraining) {<h1>Other Fics Features</h1>
   also other bots available.
   </p>
 
-  <p><footer>Updated: Scid Vs PC 3.6.26.9, April 2010</footer></p>
+  <p><footer>Updated: Scid vs. PC 3.6.26.9, April 2010</footer></p>
 }
 
 # Book tuning

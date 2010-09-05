@@ -197,7 +197,7 @@ menuText E ToolsComp "Computer Tournament" 0 {Chess engine tournament}
 menuText E ToolsTacticalGame "Tactical game"  0 {Play a game with tactics}
 menuText E ToolsSeriousGame "Serious game"  0 {Play a serious game}
 menuText E ToolsTrainOpenings "Openings"  0 {Train with a repertoire}
-menuText E ToolsTrainTactics "Tactics"  0 {Solve tactics}
+menuText E ToolsTrainTactics "Puzzles"  0 {Solve "Mate in" puzzles}
 menuText E ToolsTrainCalvar "Calculation of variations"  0 {Calculation of variations training}
 menuText E ToolsTrainFindBestMove "Find best move"  0 {Find best move}
 menuText E ToolsTrainFics "Internet"  0 {Play on freechess.org}
@@ -1377,7 +1377,7 @@ translate E blunder {blunder}
 translate E Noinfo {-- No info --}
 translate E PhalanxOrTogaMissing {To play Tactical Games, both Phalanx and Toga engines must be configured in the Tools->Analysis menu}
 translate E moveblunderthreshold {move is a blunder if loss is greater than}
-translate E limitanalysis {Maximum analysis time}
+translate E limitanalysis {Engine analysis time}
 translate E seconds {seconds}
 translate E Abort {Abort}
 translate E Resume {Resume}
@@ -1419,7 +1419,7 @@ translate E PositionsPlayed {Positions played}
 translate E Success {Success}
 translate E DubiousMoves {Dubious moves}
 translate E OutOfRepertoire {OutOfRepertoire}
-translate E ConfigureTactics {Configure Tactics}
+translate E ConfigureTactics {Select Puzzle}
 translate E ResetScores {Reset scores}
 translate E LoadingBase {Loading base}
 translate E Tactics {Tactics}

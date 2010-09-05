@@ -467,6 +467,9 @@ set helpMessage($m,[incr menuindex]) ToolsTacticalGame
 $m add command -label ToolsTrainFics -command ::fics::config
 set helpMessage($m,[incr menuindex]) ToolsTrainFics
 
+$m add command -label ToolsTrainTactics -command ::tactics::config
+set helpMessage($m,[incr menuindex]) ToolsTrainTactics
+
 $m add command -label ToolsComp -command {compInit}
 set helpMessage($m,[incr menuindex]) ToolsComp
 
@@ -481,7 +484,6 @@ menu $m.training
 $m add cascade -label ToolsTraining -menu $m.training
 set helpMessage($m,[incr menuindex]) ToolsTraining
 $m.training add command -label ToolsTrainOpenings -command ::opening::config
-$m.training add command -label ToolsTrainTactics -command ::tactics::config
 $m.training add command -label ToolsTrainCalvar -command ::calvar::config
 $m.training add command -label ToolsTrainFindBestMove -command ::tactics::findBestMove
 
@@ -1450,11 +1452,11 @@ proc setLanguageMenus {{lang ""}} {
 
   if {$lang == ""} {set lang $::language}
 
-  foreach tag {CorrespondenceChess ToolsTraining ToolsTacticalGame ToolsSeriousGame ToolsTrainFics ToolsComp} {
+  foreach tag {CorrespondenceChess ToolsTraining ToolsTacticalGame ToolsSeriousGame ToolsTrainFics ToolsComp ToolsTrainTactics} {
     configMenuText .menu.play [tr $tag $oldLang] $tag $lang
   }
 
-  foreach tag {TrainOpenings TrainTactics TrainCalvar TrainFindBestMove} {
+  foreach tag {TrainOpenings TrainCalvar TrainFindBestMove} {
     configMenuText .menu.play.training [tr Tools$tag $oldLang] Tools$tag $lang
   }
 

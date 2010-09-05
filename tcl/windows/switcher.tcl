@@ -2,6 +2,8 @@
 ### windows/switcher.tcl: part of Scid
 ### Copyright (C) 2000-2004  Shane Hudson.
 
+# Order of ~some~ icons (such as tactics, clipbase and pgn) is important
+
 set icons {
 {Unknown}
 {
@@ -292,6 +294,39 @@ iB76gnBwOKGFIbF5IUBsHQgARCd5HKoeAgF06qmnEGARiCWP7AFFBZ3GpkEA
 FnRiRKoduFEAwKy01mrrrbgaMNADDPbq66+9ZiTssMRCFBAAOw==
 }
 
+Tactics
+{
+R0lGODlhIAAgAOeKACAgICUlJSoqKi4uLjMzMzQ0NDY2Njg4ODo6Ojw8PD09
+PT8/P0A/P0BAQEJCQkREREZEREVFRUZGRkpKSkxLS05OTk9PT1VSUlNTU1RU
+VFZWVllVVVhYWF1aWltbW1xcXF1dXV9eXmBfX2JfX2BgYGFhYWNhYWRiYmVi
+YmVjY2RkZGhlZWZmZmllZWhnZ2hoaGtnZ2toaGxoaGpqam1qam9ra29sbHJt
+bW9vb3Jvb3Rvb3FxcXZxcXVycnR0dHdzc3Z2dnl2dnd3d3h4eH14eHp6ent7
+e3x8fH9/f4CAgIGBgYKCgoWFhYaGhoqKiouLi5KMjJCQkJGRkZKSkpiSkpSU
+lJmTk5WVlZqampycnJ2dnaObm56enqCgoKKioqWlpayjo6ykpKioqK+mpqmp
+qaurq7KpqaysrLGxsbKysrOzs7S0tLuxsbyzs7a2tri4uL+1tcG2trq6ury8
+vMO5ub29vcS6usa7u8e8vMDAwMi9vcfHx8nJyczMzM7Ozs/Pz9LS0tTU1NbW
+1tra2t3d3eLi4uTk5Ojo6Orq6uzs7P//////////////////////////////
+////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////
+/////////////////////yH5BAEKAP8ALAAAAAAgACAAAAj+AP8JHEiwoMGD
+CBMqXMiwocOHECMqlEOxokU5Ev+J0cKxo8eOZyKqqTNnTpeTaEquOelFopxE
+MIfIzAPzj8whSyK6QcTTh886PPv49FElitGjSJFiEZjmkFMcUOU45QMVh5Ms
+WLNq1fpFYJMiYAWJzQJWilhBQ2aoXcuWbRKBR1jINUT3ilwmdA0Bkcu3r18f
+AoeUGFyosJTBSgoX2jG4sePHOAQ+4UK5suXKKj5o3syZ8wyBXQiJ5kC6jOg5
+pFPr0ROEg4stcO6woRKCNAuBWQbpxsBbjO43vIOv7iECjp4xVtroCcO7hMAp
+e6KTmN4lOpkK2LGvzgFFDxjsJ1bYp6gAQiCJCejPIkHPnv1qGzWImEBfYXWM
+CRwEeojAP5B/I/wFGOBqMggYwQ96xEFBBBkIpEEDEAIioRAQVljhaitYSAMd
+dsAAoQUCGXHGiNOdl8CJKJ64GgootoBHHB2gOIFXftR4wI045njjaiPgaIYe
+POQogUBL9GEkAUgmqSSSOugAQZI36MCAkg4I9MJRA2Sp5ZZcdrmlAgItIMCY
+ZJZp5mobkIlmmQcIhEAAcMYp55yrXRBnnXIWINAEAPTp55+ABiqoAQM9YOCh
+iCYaQUaMNuooRAEBADs=
+}
+
 {IM games}
 {
 R0lGODlhIAAgAOeNACAgICUlJSoqKi4uLjMzMzQ0NDY2Njg4ODo6Ojw8PD09
@@ -324,39 +359,6 @@ BwQpZJCqmXBAkTD0AcMdVRzZh5ESCKQEIFQSYOWVVqpGAgFaMrDHGH3EwGUf
 Wz4g0AtHDaDmmmqq9sEAbg5AhmoLwNnHmwoI1IAAfPbppwCqdQBoH4L60IcZ
 fAYqwAECIRDAo5BGGoBqGUzaR6UV9CHEo5QGUIBAFAAg6qiklmrqqQYMBAGA
 rLbq6qsJ+2Uk66y0QhQQADs=
-}
-
-Tactics
-{
-R0lGODlhIAAgAOeKACAgICUlJSoqKi4uLjMzMzQ0NDY2Njg4ODo6Ojw8PD09
-PT8/P0A/P0BAQEJCQkREREZEREVFRUZGRkpKSkxLS05OTk9PT1VSUlNTU1RU
-VFZWVllVVVhYWF1aWltbW1xcXF1dXV9eXmBfX2JfX2BgYGFhYWNhYWRiYmVi
-YmVjY2RkZGhlZWZmZmllZWhnZ2hoaGtnZ2toaGxoaGpqam1qam9ra29sbHJt
-bW9vb3Jvb3Rvb3FxcXZxcXVycnR0dHdzc3Z2dnl2dnd3d3h4eH14eHp6ent7
-e3x8fH9/f4CAgIGBgYKCgoWFhYaGhoqKiouLi5KMjJCQkJGRkZKSkpiSkpSU
-lJmTk5WVlZqampycnJ2dnaObm56enqCgoKKioqWlpayjo6ykpKioqK+mpqmp
-qaurq7KpqaysrLGxsbKysrOzs7S0tLuxsbyzs7a2tri4uL+1tcG2trq6ury8
-vMO5ub29vcS6usa7u8e8vMDAwMi9vcfHx8nJyczMzM7Ozs/Pz9LS0tTU1NbW
-1tra2t3d3eLi4uTk5Ojo6Orq6uzs7P//////////////////////////////
-////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////
-/////////////////////yH5BAEKAP8ALAAAAAAgACAAAAj+AP8JHEiwoMGD
-CBMqXMiwocOHECMqlEOxokU5Ev+J0cKxo8eOZyKqqTNnTpeTaEquOelFopxE
-MIfIzAPzj8whSyK6QcTTh886PPv49FElitGjSJFiEZjmkFMcUOU45QMVh5Ms
-WLNq1fpFYJMiYAWJzQJWilhBQ2aoXcuWbRKBR1jINUT3ilwmdA0Bkcu3r18f
-AoeUGFyosJTBSgoX2jG4sePHOAQ+4UK5suXKKj5o3syZ8wyBXQiJ5kC6jOg5
-pFPr0ROEg4stcO6woRKCNAuBWQbpxsBbjO43vIOv7iECjp4xVtroCcO7hMAp
-e6KTmN4lOpkK2LGvzgFFDxjsJ1bYp6gAQiCJCejPIkHPnv1qGzWImEBfYXWM
-CRwEeojAP5B/I/wFGOBqMggYwQ96xEFBBBkIpEEDEAIioRAQVljhaitYSAMd
-dsAAoQUCGXHGiNOdl8CJKJ64GgootoBHHB2gOIFXftR4wI045njjaiPgaIYe
-POQogUBL9GEkAUgmqSSSOugAQZI36MCAkg4I9MJRA2Sp5ZZcdrmlAgItIMCY
-ZJZp5mobkIlmmQcIhEAAcMYp55yrXRBnnXIWINAEAPTp55+ABiqoAQM9YOCh
-iCYaQUaMNuooRAEBADs=
 }
 
 Endings
