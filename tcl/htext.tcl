@@ -239,11 +239,8 @@ proc ::htext::init {w} {
   $w tag configure h2 -font font_H2 -fore $::htext::headingColor
   $w tag configure h3 -font font_H3 -fore $::htext::headingColor
   $w tag configure h4 -font font_H4 -fore $::htext::headingColor
-  $w tag configure h5 -font font_H5 -fore $::htext::headingColor
+  $w tag configure ht -font font_Bold -fore $::htext::headingColor -justify center
   $w tag configure footer -font font_Small -justify center
-
-  # $w tag configure hc -font font_H5 -fore $::htext::headingColor -justify center
-  # doesnt work properly S.A.
 
   $w tag configure term -font font_BoldItalic -fore $::htext::headingColor
   $w tag configure menu -font font_Bold -fore $cyan
@@ -289,7 +286,7 @@ proc ::htext::extractSectionName {tagName} {
 
 set ::htext::interrupt 0
 
-### Some tcl string optimisations by S.A. 5/12/2009
+### Some tcl string optimisations by S.A. 5/12/2009, 06/09/2010
 
 proc ::htext::display {w helptext {section {}} {fixed 1}} {
   global helpWin
@@ -331,49 +328,45 @@ proc ::htext::display {w helptext {section {}} {fixed 1}} {
 
     if {![strIsPrefix {/} $tagName]} {
       
-      # link tag
-      if {[strIsPrefix {a } $tagName]} {
+      if {[strIsPrefix m_ $tagName]} {
+        # Move tag
+        set moveTag $tagName
+        set tagName m
+        # Too many bindings! 
+        $w tag bind $moveTag <ButtonRelease-1> [list ::pgn::move $moveTag]
+        $w tag bind $moveTag <ButtonPress-3>   [list ::pgn::move $moveTag]
+        $w tag bind $moveTag <Any-Enter> [list u1 $w $moveTag]
+        $w tag bind $moveTag <Any-Leave> [list u0 $w $moveTag]
+      } elseif {[strIsPrefix {a } $tagName]} {
+	# link tag
         set linkName [::htext::extractLinkName $tagName]
         set sectionName [::htext::extractSectionName $tagName]
         set linkTag "link ${linkName} ${sectionName}"
         set tagName a
         $w tag configure $linkTag -fore dodgerblue2
         $w tag bind $linkTag <ButtonRelease-1> "helpWindow $linkName $sectionName"
-        $w tag bind $linkTag <Any-Enter> \
-            "$w tag configure \"$linkTag\" -back gray80
-             $w configure -cursor hand2"
-        $w tag bind $linkTag <Any-Leave> \
-            "$w tag configure \"$linkTag\" -back {}
-             $w configure -cursor {}"
+        $w tag bind $linkTag <Any-Enter> [list uh1 $w $linkTag]
+        $w tag bind $linkTag <Any-Leave> [list uh0 $w $linkTag]
       } elseif {[strIsPrefix {url } $tagName]} {
         # URL tag
         set urlName [string range $tagName 4 end]
         set urlTag "url $urlName"
         set tagName url
-        $w tag configure $urlTag -fore red -underline 1
+        $w tag configure $urlTag -fore coral
         $w tag bind $urlTag <ButtonRelease-1> "openURL {$urlName}"
-        $w tag bind $urlTag <Any-Enter> \
-            "$w tag configure \"$urlTag\" -back gray
-             $w configure -cursor hand2"
-        $w tag bind $urlTag <Any-Leave> \
-            "$w tag configure \"$urlTag\" -back {}
-             $w configure -cursor {}"
+        $w tag bind $urlTag <Any-Enter> [list uh1 $w $urlTag]
+        $w tag bind $urlTag <Any-Leave> [list uh0 $w $urlTag]
       } elseif {[strIsPrefix {run } $tagName]} {
-        # Tcl command tag
+        # Tcl command tag, also used extensively in statistics windows
         set runName [string range $tagName 4 end]
         set runTag "run $runName"
         set tagName run
         $w tag bind $runTag <ButtonRelease-1> "catch {$runName}"
-        $w tag bind $runTag <Any-Enter> \
-            "$w tag configure \"$runTag\"
-             $w tag configure \"$runTag\" -back gray
-             $w configure -cursor hand2"
-        $w tag bind $runTag <Any-Leave> \
-            "$w tag configure \"$runTag\" -fore {}
-             $w tag configure \"$runTag\" -back {}
-             $w configure -cursor {}"
+        $w tag bind $runTag <Any-Enter> [list bh1 $w $runTag]
+        $w tag bind $runTag <Any-Leave> [list bh0 $w $runTag]
       } elseif {[strIsPrefix {go } $tagName]} {
         # Goto tag
+        # (is this used ??)
         set goName [string range $tagName 3 end]
         set goTag "go $goName"
         set tagName go
@@ -396,7 +389,7 @@ proc ::htext::display {w helptext {section {}} {fixed 1}} {
         $w tag bind $playerTag <ButtonRelease-1> "playerInfo \"$playerName\""
         $w tag bind $playerTag <Any-Enter> \
             "$w tag configure \"$playerTag\"
-             $w tag configure \"$playerTag\" -back gray
+             $w tag configure \"$playerTag\" -back gray85
              $w configure -cursor hand2"
         $w tag bind $playerTag <Any-Leave> \
             "$w tag configure \"$playerTag\" -fore Blue
@@ -413,21 +406,12 @@ proc ::htext::display {w helptext {section {}} {fixed 1}} {
             "::gbrowser::new [sc_base current] $gnum"
         $w tag bind $gameTag <Any-Enter> \
             "$w tag configure $gameTag
-             $w tag configure $gameTag -back gray
+             $w tag configure $gameTag -back gray85
              $w configure -cursor hand2"
         $w tag bind $gameTag <Any-Leave> \
             "$w tag configure $gameTag -fore {}
              $w tag configure $gameTag -back {}
              $w configure -cursor {}"
-      } elseif {[strIsPrefix m_ $tagName]} {
-        # Move tag
-        set moveTag $tagName
-        set tagName m
-        # Too many bindings! 
-        $w tag bind $moveTag <ButtonRelease-1> "::pgn::move $moveTag"
-        $w tag bind $moveTag <ButtonPress-3>   "::pgn::move $moveTag"
-        $w tag bind $moveTag <Any-Enter> "$w tag configure $moveTag -underline 1"
-        $w tag bind $moveTag <Any-Leave> "$w tag configure $moveTag -underline 0"
       } elseif {[strIsPrefix c_ $tagName]} {
         # Comment tag
         set commentTag $tagName
@@ -437,9 +421,9 @@ proc ::htext::display {w helptext {section {}} {fixed 1}} {
         } else {
           $w tag configure $commentTag -fore $::pgnColor(Comment)
         }
-        $w tag bind $commentTag <ButtonRelease-1> "::pgn::comment $commentTag"
-        $w tag bind $commentTag <Any-Enter> "$w tag configure $commentTag -underline 1"
-        $w tag bind $commentTag <Any-Leave> "$w tag configure $commentTag -underline 0"
+        $w tag bind $commentTag <ButtonRelease-1> [list ::pgn::comment $commentTag]
+        $w tag bind $commentTag <Any-Enter> [list u1 $w $commentTag]
+        $w tag bind $commentTag <Any-Leave> [list u0 $w $commentTag]
       }
       
       if {$tagName == {h1}} {$w insert end \n}
@@ -459,7 +443,7 @@ proc ::htext::display {w helptext {section {}} {fixed 1}} {
       # Get rid of initial "/" character
       set tagName [string range $tagName 1 end]
       switch -- $tagName {
-        h1 - h2 - h3 - h4 - h5  {$w insert end \n}
+        h1 - h2 - h3 - h4 - ht  {$w insert end \n}
       }
       if {$tagName == {p}} {$w insert end \n}
       #if {$tagName == {h1}} {$w insert end \n}
@@ -496,7 +480,7 @@ proc ::htext::display {w helptext {section {}} {fixed 1}} {
         q  {$w insert end \"}
         lt {$w insert end <}
         gt {$w insert end >}
-        h2 - h3 - h4 - h5  {$w insert end \n}
+        h2 - h3 - h4 - ht  {$w insert end \n}
       }
       #Set the start index for this type of tag
       set startIndex($tagName) [$w index insert]
@@ -541,6 +525,33 @@ proc ::htext::display {w helptext {section {}} {fixed 1}} {
   # set elapsed [expr {[clock clicks -milli] - $start}]
 }
 
+# Get some speed from optimising these into procs ? S.A
+# u - underline
+# uh - underline+hand
+# bh - background+hand
+
+proc u1 {w tag} {
+  $w tag configure $tag -underline 1
+}
+proc u0 {w tag} {
+  $w tag configure $tag -underline 0
+}
+proc uh1 {w tag} {
+  $w tag configure $tag -underline 1
+  $w configure -cursor hand2
+}
+proc uh0 {w tag} {
+  $w tag configure $tag -underline 0
+  $w configure -cursor {}
+}
+proc bh1 {w tag} {
+  $w tag configure $tag -back gray85
+  $w configure -cursor hand2
+}
+proc bh0 {w tag} {
+  $w tag configure $tag -back {}
+  $w configure -cursor {}
+}
 
 # openURL:
 #    Sends a command to the user's web browser to view a webpage given

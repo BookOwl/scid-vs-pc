@@ -5,33 +5,27 @@
 set helpTitle(Contents) "$::scidName"
 set helpText(Contents) {<h1>Scid vs. PC</h1>
 
-  <ul> <ul> <ul> <ul> <ul> <ul> <ul> <ul> <ul>
-
-  <br> <li><img splash></li>
-  </ul>
-  </ul>
-  <li><a Intro>Introduction</a></li>
+  <ht><img splash></ht>
+  <ht><a Intro>Introduction</a></ht>
+  <ht><a TacticalGame>Playing against the Computer</a></ht>
+  <br>
+  <ht><a FICS>Playing on the Internet (FICS)</a></ht>
+  <br>
+  <ht><a TacticsTrainer>Puzzles</a></ht>
+  <br>
+  <ht><a Tourney>Computer Tournaments</a></ht>
+  <br>
+  <ht><a BrowsingPGN>Browsing Games and Tournaments</a></ht>
   <br>
   <br>
-  <li><a TacticalGame>Playing against the Computer</a></li>
-  <br>
-  <li><a FICS>Playing on the Internet (FICS)</a></li>
-  <br>
-  <li><a TacticsTrainer>Puzzles</a></li>
-  <br>
-  <li><a Tourney>Computer Tournaments</a></li>
-  <br>
-  <li><a BrowsingPGN>Browsing Games and Tournaments</a></li>
+  <ht><a Scid>Databases and Advanced Use</a></ht>
   <br>
   <br>
-  <li><a Scid>General Scid Help, and Advanced Use</a></li>
+  <ht><a Related>Links</a></ht>
   <br>
+  <ht><a Author>About</a></ht>
   <br>
-  <li><a Related>Links</a></li>
-  <br>
-  <li><a Author>About</a></li>
-  </ul> </ul> </ul>
-  <p><footer>Updated: Scid vs. PC 4.0, June 2010</footer></p>
+  <p><footer>Updated: Scid vs. PC 4.1, September 2010</footer></p>
 }
 set helpTitle(Intro) "$::scidName"
 set helpText(Intro) {<h1>Introduction</h1>
@@ -51,31 +45,28 @@ sorts; hence it's name "Shane's Chess Information Database". As it turns
 out, computers are very good at  playing  chess too. This is the focus of
 Scid vs. PC</p>
 
-<h3>Motivation</h3>
-<p>
-Scid is an amazing project,  but for several reasons I've decided to start a new project.
+<h3>Features</h3>
 <ul>
-<br>
-<li> The focus of Scid is Databases. Scid vs. PC is about improving the computer vs
-player experience. </li>
-<br>
-<li>Many widgets are rough, ugly and poorly designed, and need refinement or rewriting.</li>
-<br>
-<li>I have strong aversions to two recently added Scid features, both of which involve large scale code changes.</li>
-<br>
+<li>Many rewritten interfaces and help files</li>
+<li>A Computer Tournament feature</li>
+<li>Compatibility with SCID's si3 databases</li>
+<li>The Gamelist widget looks and works much betters; deleted items are greyed out, and there's a "Compact" button</li>
+<li>Improved Tactical Game program</li>
+<li>Redone Button bar, Toolbar and Icons</li>
+<li>The Fics interface is fairly different, with a nice accept/decline widget for multiple offers</li>
+<li>Improvements to "Mate in ..." puzzles</li>
+<li>The Chessboard/Pieces config widget has been totally overhauled. There are some nice colour and tile theme, and great piece set available if the optional TkImg package is installed</li>
+<li>The Setup Start Board has many fixes and improvements. Annoyingly, if Scid uses a tiled theme, it's setup board is displayed a different colour</li>
+<li>The main board has a handy right-click menu, and the side-to-move indicator is now on the left</li>
+<li>The Help index is now meaningful to new users, with links to the game's main features</li>
+<li>The Comment editor has been overhauled, and is much more stream-lined</li>
+<li>Restructured workings of the Analysis Engines widget. The F2 and F3 key bindings can now be set explicitly.</li>
+</ul>
 <ul>
-<li>The new ad-hoc windowing system  just doesn't cut it. While Scid does
-have issues with window management, Tk just isn't sophisticated enough to
-make this new feature work. Even the Chessx project (which uses the amazing
-Qt-4 library) fairly struggles to fix this issue.</li>
-<br>
+<li>The over ambitious adhoc Windowing System is not included</li>
 <li>Wish 8.5 includes a basic implementation of themes, and there has been
 widespread changes to Scid to use them. Unfortunately, the changes are not
-justified for some dubious eye candy.</li>
-</ul>
-
-<li>Despite some work together, the current Scid project manager and I don't get on.
- Free software is like that ;-)</li>
+justified for some dubious eye candy</li>
 </ul>
 <p><footer>Updated: Scid vs. PC 3.6.26.8, December 2009</footer></p>
 }
@@ -161,19 +152,24 @@ and only as single games. If you open a PGN file with multiple games, Scid does 
 <p><footer>Updated: Scid vs. PC 3.6.26.8, December 2009</footer></p>
 }
 
-set helpTitle(Scid) "Scid"
-set helpText(Scid) {<h1>Scid Help Contents</h1>
+set helpTitle(Scid) {Advanced Use}
+set helpText(Scid) {<h1>Databases and Advanced Use</h1>
+  <p>
+  Scid is a chess database application; with it you can browse databases of
+  chess games, perform <a Searches>searches</a> , view best lines, and other
+  statistics. Databases are implemented via a fast, three-file <a
+  Formats>format</a>, and created by importing <a PGN>PGN</a> file archives.
+  </p>
 
   <h4>Starting out and general help</h4>
   <ul>
-  <li><a Guide><b>Quick Guide</b> to using Scid</a></li>
-  <li><a Hints><b>Hints</b> for getting more out of Scid</a></li>
   <li><a MainWindow>The Scid <b>main window</b></a></li>
   <li><a Menus>Scid <b>menus</b></a></li>
   <li><a Moves>Entering <b>chess moves</b></a></li>
   <li><a Searches><b>Searches</b> in Scid</a></li>
   <li><a Clipbase>Using the <b>Clipbase</b> database</a></li>
   <li><a Annotating><b>Annotating games</b></a></li>
+  <li><a Hints><b>Hints</b> for getting more out of Scid</a></li>
   </ul>
 
   <h4>Other Scid windows</h4>
@@ -222,7 +218,7 @@ set helpText(Scid) {<h1>Scid Help Contents</h1>
   <li><a Author>Contact information</a></li>
   </ul>
 
-  <p><footer>Updated: Scid 3.6.23, March 2008</footer></p>
+  <p><footer>Updated: Scid vs. PC 4.1, September 2010</footer></p>
 }
 
 ###############
@@ -389,7 +385,6 @@ set helpText(Index) {<h1>Scid Help Index</h1>
 
   <h3><name Q>Q</name></h3>
   <ul>
-  <li><a Guide>Quick guide to using Scid</a></li>
   </ul>
 
   <h3><name R>R</name></h3>
@@ -455,60 +450,6 @@ set helpText(Index) {<h1>Scid Help Index</h1>
 }
 
 
-####################
-### Quick Guide help:
-
-set helpTitle(Guide) "Quick Guide to using Scid"
-set helpText(Guide) {<h1>Quick Guide to using Scid</h1>
-  <p>
-  Scid is a chess database application; with it you can browse
-  databases of chess games, edit games and <a Searches>search</a>
-  for games by various criteria.
-  </p>
-  <p>
-  Scid uses its own special three-file <a Formats>database format</a>
-  which is very compact and fast, but it can convert to and from
-  the standard PGN (Portable Game Notation) format.
-  Scids <a PGN>PGN window</a> displays the text of the current game in
-  PGN format.
-  </p>
-  <p>
-  You can use Scid to add chess games to a database, using the keyboard or
-  mouse to enter moves. See the help page on <a Moves>entering chess moves</a>
-  for more details.
-  </p>
-  <p>
-  You can also use Scid as a <a PGN>PGN</a> file browser, by pasting
-  PGN text into Scids <a Import>Import</a> window or by opening a PGN file
-  in Scid.
-  However, PGN files cannot be edited by Scid (it opens them read-only) and
-  they use more memory and are slower to load, so for large PGN files it
-  is recommended that you create a Scid database from them first with the
-  <a Pgnscid>pgnscid</a> utility.
-  </p>
-  <p>
-  The <a MainWindow>main window</a>
-  of Scid (with the graphical chess board) shows details of
-  the active game and database. At any time, you can have up to four
-  databases open (five including the <a Clipbase>clipbase</a>),
-  and each will have its own active game.
-  (A game numbered 0 indicates a scratch game that is not part of the
-  actual database).
-  You can switch between the open databases with the
-  <a Menus File>File menu</a>.
-  </p>
-  <p>
-  For more information, please read the other help pages listed in the
-  <a Index>Help Index</a>.
-  </p>
-  <p>
-  See the <a Author>contact information</a> page if you need to contact the
-  author of Scid.
-  </p>
-
-  <p><footer>Updated: Scid 3.6.2, December 2006</footer></p>
-}
-
 
 ####################
 ### Hints page:
@@ -516,9 +457,7 @@ set helpTitle(Hints) "Scid Hints"
 set helpText(Hints) {<h1>Scid Hints</h1>
   <p>
   This page contains useful hints in question and answer format to help you
-  use Scid better. If you are new to Scid, please read the
-  <a Guide>quick guide</a> first.
-  Most of the information on this page is available in more detail on the
+  use Scid better. Most of the information on this page is available in more detail on the
   other help pages listed in the <a Index>index</a>.
   If you think of a useful hint to add to this page, please send it
   to the <a Author>author of Scid</a>.
@@ -1268,16 +1207,14 @@ set helpText(Searches) {<h1>Searches in Scid</h1>
 set helpTitle(Clipbase) "The Clipbase"
 set helpText(Clipbase) {<h1>The Clipbase database</h1>
   <p>
-  In addition to the databases you have open, Scid provides
-  a <term>clipbase</term> database, which is just like any other database
-  except that it exists in memory only and has no files for permanent storage.
+  In addition to physical databases existing on disk, Scid provides
+  a transient one known as <term>clipbase</term>. It is opened by default, and used to cut and paste games between other bases. Additionally, each base has a 
+  game numbered 0 which also acts as a scratch game.
   </p>
   <p>
   The clipbase is useful as a temporary database, for merging
   the results of searches on more than one database or for treating the
   results of a search as a separate database.
-  </p>
-  <p>
   For example, assume you want to prepare for an opponent and have searched
   a database so the <a Searches Filter>filter</a> contains only games where
   the opponent played White.
@@ -1932,19 +1869,15 @@ set helpText(LaTeX) {<h1>Using LaTeX with Scid</h1>
 set helpTitle(PGN) "PGN window"
 set helpText(PGN) {<h1>The PGN window</h1>
 
-  <h3>PGN format</h3>
   <p>
-  PGN (<url http://www.saremba.de/chessgml/standards/pgn/pgn-complete.htm>Portable Game Notation</url>) is a common standard for transferring
-  chess games between computer programs.  A PGN game consists of two
-  sections. The first is the header, which contains tags such as
+  PGN (Portable Game Notation) is a common standard for representing
+  chess games.  A PGN file consists of two
+  sections; a header containing tags such as
   <b>[White "Kasparov, Gary"]</b>
   and
-  <b>[Result "1/2-1/2"]</b>.
-  </p>
-  <p>
-  The second section contains the actual moves of the game, in
-  standard algebraic notation (SAN) along with any variations,
-  <a NAGs>annotation symbols</a> and <a Comment>comments</a>.
+  <b>[Result "1/2-1/2"]</b>, and a body containing the actual moves in standard
+  algebraic notation (SAN) along with any variations, <a NAGs>annotation
+  symbols</a> and <a Comment>comments</a>.
   </p>
 
   <p>
@@ -4385,10 +4318,9 @@ set helpText(ECO) {<h1>ECO openings classification</h1>
 
 set helpTitle(Author) "About"
 set helpText(Author) "<h1>Scid vs. PC</h1>
+  <ht><img splash></ht>
   <p>
-<ul> <ul> <ul> <ul> <ul> <ul> <ul> <ul> <ul>
-  <li><img splash></li>
-  </ul></ul>
+  <ul> <ul> <ul> <ul> <ul> <ul> <ul>
   <li>Scid vs. PC  version $::scidVersion
   <br>
   <li>(C) Steven Atkinson, stevenaaus@yahoo.com</li>
@@ -4401,7 +4333,7 @@ set helpText(Author) "<h1>Scid vs. PC</h1>
   <li>Contribution: Pascal Georges</li>
   <li>(C) Shane Hudson and others.</li>
   <br>
-  <li>Scid is licenced under the GNU General Public License.</li>
+  <li>Licenced under the GNU General Public License.</li>
 
 </ul> </ul> </ul> 
   <p><footer>(Project Updated: $::scidVersion, $::scidVersionDate</footer></p>
