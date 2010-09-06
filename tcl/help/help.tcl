@@ -5587,9 +5587,14 @@ set helpText(TacticsTrainer) {<h1>Mate in ... Puzzles</h1>
 
   <h3>Playing</h3>
   <p>
+  If you get stuck, select <term>Show Solution</term> to add the solution as
+  <run ::pgn::OpenClose><green>PGN</green></run>
+  (where it can be easily examined). Unclicking the button will reset the puzzle for another try.
+  </p>
+  <p>
   Clicking the <term>Next</term> button allows the user to skip any
   puzzle, and individual exercises can be opened via the
-<run ::windows::gamelist::Open><green>Windows--<gt>Game List</green></run> widget.
+<run ::windows::gamelist::Open><green>Game List</green></run> widget.
   </p>
   <p>
   Some exercises do not end in a mate, with the
@@ -5599,22 +5604,21 @@ set helpText(TacticsTrainer) {<h1>Mate in ... Puzzles</h1>
   meaning in case of a clear mate solution.
   </p>
   <p>
-  The clock is
-  only for the user to check how long he thought about the position at
-  hand. No evaluation is done on the time required to solve a problem.
+  The clock is only for the user to check how long he thought about the
+  position at hand. No evaluation is done on the time required to solve a problem.
   </p>
+
   <h3>Other notes</h3>
-<p>
+  <p>
   This feature is implemented using special databases containing the puzzles
   , installed in Scid's default <term>Bases</term> directory.
-  If for any reason this directory option has been changed , it
-  can be specified in
-<run setTacticsBasesDir><green>Options--<gt>Bases Directory</green></run>.
-</p>
-<p>
-  Unlike other bases puzzle bases do not contain full games, only starting positions.
-  Any puzzle book can be converted to a
-  trainings base by setting up the positions and storing the new database into
+  If for any reason this directory option has been changed , it can be specified in
+  <run setTacticsBasesDir><green>Options--<gt>Bases Directory</green></run>.
+  </p>
+  <p>
+  Unlike other bases, puzzle bases do not contain full games; only starting positions.
+  Any puzzle book can be converted to a trainings base by setting up the
+  positions and storing the new database into
   the <term>Bases</term> directory. (It is also recommended to set the new base type
   to <term>Tactics</term>, by means of the <a Maintenance>Maintenance</a> window).
   </p>

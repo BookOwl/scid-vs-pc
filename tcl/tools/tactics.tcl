@@ -5,6 +5,9 @@
 ### Solve tactics (mate in n moves for example)
 # use Site token in pgn notation to store progress
 #
+# S.A: Updated a little 6 Sept, 2010
+# "Show Solution" checkbox now adds solution as PGN for browsing, and pauses main loop
+# ... I still havent checked the "Win Won" functionality
 
 namespace eval tactics {
 
@@ -22,9 +25,11 @@ namespace eval tactics {
   set cancelScoreReset 0
   set askToReplaceMoves_old 0
   set showSolution 0
-  set labelSolution ". . . . . . "
+  set labelSolution {}
+  # set labelSolution {. . . . . . }
   set lastGameLoaded 0
   set prevFen ""
+  # This is a significant (?) constant
   set engineSlot 5
   # Don't try to find the exact best move but to win a won game (that is a mate in 5 is ok even if there was a pending mate in 2)
   set winWonGame 0
@@ -72,9 +77,11 @@ namespace eval tactics {
     ::windows::gamelist::Refresh
     updateTitle
   }
+
   ################################################################################
   # returns a list with depth score prevscore
   # or an empty list if marker not found
+
   proc gotoNextTacticMarker {} {
     while {![sc_pos isAt end]} {
       sc_move forward
@@ -92,9 +99,10 @@ namespace eval tactics {
   }
   ################################################################################
   # Configuration dialog
+  # (Had some associated core dumps here,
+  #  possibly when scidBasesDir is wrongly set in config S.A)
   ################################################################################
 
-  # Had some associated core dumps here, possibly when scidBasesDir is wrongly set in config S.A
   proc config {} {
     global ::tactics::basePath ::tactics::baseList ::tactics::baseDesc
     set basePath $::scidBasesDir
@@ -133,7 +141,7 @@ namespace eval tactics {
         set wasOpened 1
       }
       
-      # Is there a quicker way to count solved instead of opening every game !?
+      ###  Is there a quicker way to count solved instead of opening every game !? &&&
       set solvedCount 0
       for {set g 1 } { $g <= [sc_base numGames]} { incr g} {
         sc_game load $g
@@ -170,17 +178,17 @@ namespace eval tactics {
 
     frame $w.fconfig.reset
     button $w.fconfig.reset.button -text $::tr(ResetScores) -command {
-        set current [.configTactics.fconfig.flist.lb curselection]
-	set name [lindex $::tactics::baseList [expr $current * 2 ] ]
-	set desc [lindex $::tactics::baseDesc $current]
-	if {[tk_messageBox -type yesno -parent .configTactics -icon question \
-	       -title {Confirm Reset} -message "Confirm resetting \"$desc\" database"] == {yes}} {
-	  ::tactics::resetScores $name
-	}
+      set current [.configTactics.fconfig.flist.lb curselection]
+      set name [lindex $::tactics::baseList [expr $current * 2 ] ]
+      set desc [lindex $::tactics::baseDesc $current]
+      if {[tk_messageBox -type yesno -parent .configTactics -icon question \
+	     -title {Confirm Reset} -message "Confirm resetting \"$desc\" database"] == {yes}} {
+	::tactics::resetScores $name
+      }
     }
     pack $w.fconfig.reset.button
 
-    # in order to limit CPU usage, limit the time for analysis (this prevents noise on laptops)
+    # in order to limit CPU usage, limit time for analysis (this prevents noise on laptops)
     frame $w.fconfig.flimit
     label $w.fconfig.flimit.blimit -text "$::tr(limitanalysis) ($::tr(seconds))" -relief flat
     scale $w.fconfig.flimit.analysisTime -orient horizontal -from 1 -to 30 -length 120 \
@@ -192,15 +200,17 @@ namespace eval tactics {
     dialogbutton $w.fconfig.fbutton.ok -text $::tr(Ok) -command ::tactics::start
     dialogbutton $w.fconfig.fbutton.cancel -text $::tr(Cancel) -command "focus .; destroy $w"
     pack $w.fconfig.fbutton.ok $w.fconfig.fbutton.cancel -expand yes -side left -padx 20 -pady 2
-
     pack $w.fconfig $w.fconfig.flist $w.fconfig.reset -side top
-addHorizontalRule $w.fconfig
+
+    addHorizontalRule $w.fconfig
+
     pack $w.fconfig.flimit -pady 5 -side top
-addHorizontalRule $w.fconfig
+
+    addHorizontalRule $w.fconfig
+
     pack $w.fconfig.fbutton -pady 5 -side bottom
     bind $w <Configure> "recordWinSize $w"
     bind $w <F1> { helpWindow TacticsTrainer }
-
   }
 
   ################################################################################
@@ -237,28 +247,35 @@ addHorizontalRule $w.fconfig
     checkbutton $w.f1.cbWinWonGame -text $::tr(WinWonGame) -variable ::tactics::winWonGame
     pack $w.f1.labelInfo $w.f1.cbWinWonGame -expand yes -fill both -side top
 
-    frame $w.fclock
-    ::gameclock::new $w.fclock 1 80 0
+    frame $w.clock
+    ::gameclock::new $w.clock 1 80 0
     ::gameclock::reset 1
     ::gameclock::start 1
 
     frame $w.f2 -relief groove
-    checkbutton $w.f2.cbSolution -text $::tr(ShowSolution) -variable ::tactics::showSolution -command ::tactics::toggleSolution
-    label $w.f2.lSolution -textvariable ::tactics::labelSolution -wraplength 120
-    pack $w.f2.cbSolution $w.f2.lSolution -expand yes -fill both -side top
+    checkbutton $w.f2.solution -text $::tr(ShowSolution) -variable ::tactics::showSolution \
+      -command ::tactics::toggleSolution
+    label $w.f2.solved -textvariable ::tactics::labelSolution -wraplength 120
+    pack $w.f2.solution $w.f2.solved -expand yes -fill both -side top
 
-    frame $w.fbuttons -relief groove -borderwidth 1
+    frame $w.buttons -relief groove -borderwidth 1
     pack $w.f1 -expand yes -fill both
-    pack $w.fclock
-    pack $w.f2 $w.fbuttons -expand yes -fill both
+    pack $w.clock
+    pack $w.f2 $w.buttons -expand yes -fill both
 
     setInfoEngine $::tr(LoadingBase)
 
-    button $w.fbuttons.next -text $::tr(Next) -command {
+    button $w.buttons.next -text $::tr(Next) -command {
       ::tactics::stopAnalyze
-      ::tactics::loadNextGame }
-    button $w.fbuttons.close -text Quit -command ::tactics::endTraining
-    pack $w.fbuttons.next $w.fbuttons.close -expand yes -fill both -padx 20 -pady 2
+      # mark game as solved if solution shown
+      if {$::tactics::showSolution} {
+	sc_game tags set -site $::tactics::solved
+	sc_game save [sc_game number]
+      }
+      ::tactics::loadNextGame
+    }
+    button $w.buttons.close -text Quit -command ::tactics::endTraining
+    pack $w.buttons.next $w.buttons.close -expand yes -fill both -padx 20 -pady 2
     bind $w <Destroy> { ::tactics::endTraining }
     bind $w <Configure> "recordWinSize $w"
     bind $w <F1> { helpWindow TacticsTrainer }
@@ -291,12 +308,34 @@ addHorizontalRule $w.fconfig
   ################################################################################
   proc toggleSolution {} {
     global ::tactics::showSolution ::tactics::labelSolution ::tactics::analysisEngine
+
     if {$showSolution} {
-      set labelSolution "$analysisEngine(score) : $analysisEngine(moves)"
+      # pause main loop
+      after cancel ::tactics::mainLoop
+      if {![sc_pos isAt start]} {
+	# not sure why...but have to move back one
+	sc_move back
+      }
+
+      # add solution
+      sc_move addSan $analysisEngine(moves)
+
+      sc_move start
+
+      set labelSolution $analysisEngine(moves)
+      if {$analysisEngine(score) != {-327.0}} {
+	append labelSolution "\n(score $analysisEngine(score))"
+      }
     } else  {
-      set labelSolution ". . . . . . "
+      # restart this game
+      sc_game load $::tactics::lastGameLoaded
+      after 1000  ::tactics::mainLoop
+      set labelSolution {}
     }
+    updateBoard -pgn
+    update
   }
+
   ################################################################################
   #
   ################################################################################
@@ -322,7 +361,7 @@ addHorizontalRule $w.fconfig
       }
     }
 
-    #reset site tag for each game
+    # reset site tag for each game
     progressWindow "Scid" $::tr(ResettingScore) $::tr(Cancel) "::tactics::sc_progressBar"
     set numGames [sc_base numGames]
     set cancelScoreReset 0
@@ -404,24 +443,33 @@ addHorizontalRule $w.fconfig
       ::board::flip .board
     }
   }
+
   ################################################################################
   #
   ################################################################################
+
+  # We should probably disable "flip board" button, as it breaks game
   proc isPlayerTurn {} {
-    if { [sc_pos side] == "white" &&  ![::board::isFlipped .board] || [sc_pos side] == "black" &&  [::board::isFlipped .board] } {
+    if { [sc_pos side] == "white" &&  ![::board::isFlipped .board] || \
+         [sc_pos side] == "black" &&  [::board::isFlipped .board] } {
       return 1
+    } else {
+      return 0
     }
-    return 0
   }
+
   ################################################################################
   #
   ################################################################################
   proc exSolved {} {
     ::tactics::stopAnalyze
     ::gameclock::stop 1
-    tk_messageBox -title "Scid" -icon info -type ok -message $::tr(MateFound)
     sc_game tags set -site $::tactics::solved
     sc_game save [sc_game number]
+    if {$::tactics::showSolution} {
+      return
+    }
+    tk_messageBox -title "Scid" -icon info -type ok -message $::tr(MateFound)
     ::tactics::loadNextGame
   }
   ################################################################################
@@ -438,13 +486,15 @@ addHorizontalRule $w.fconfig
     updateTitle
     updateStatusBar
     updateBoard -pgn
-    if { [sc_pos side] == "white" && [::board::isFlipped .board] || [sc_pos side] == "black" &&  ![::board::isFlipped .board] } {
+    if { [sc_pos side] == "white" && [::board::isFlipped .board] \
+      || [sc_pos side] == "black" &&  ![::board::isFlipped .board] } {
       ::board::flip .board
     }
     set ::tactics::prevFen [sc_pos fen]
     ::tactics::startAnalyze
     ::tactics::mainLoop
   }
+
   ################################################################################
   # waits for the user to play and check the move played
   ################################################################################
@@ -458,7 +508,7 @@ addHorizontalRule $w.fconfig
       return
     }
 
-    # is this player's turn (which always plays from bottom of the board) ?
+    # is this player's turn (which always plays from bottom of the board) 
     if { [::tactics::isPlayerTurn] } {
       after 1000  ::tactics::mainLoop
       return
@@ -594,6 +644,7 @@ addHorizontalRule $w.fconfig
       }
     }
   }
+
   ################################################################################
   # Loads a base bundled with Scid (in ./bases directory)
   ################################################################################
@@ -621,6 +672,7 @@ addHorizontalRule $w.fconfig
     updateTitle
     updateStatusBar
   }
+
   ################################################################################
   ## resetValues
   #   Resets global data.
@@ -634,12 +686,14 @@ addHorizontalRule $w.fconfig
     set ::tactics::labelSolution ""
     set ::tactics::prevFen ""
   }
+
   ################################################################################
   #
   ################################################################################
   proc  restoreAskToReplaceMoves {} {
     set ::askToReplaceMoves $::tactics::askToReplaceMoves_old
   }
+
   ################################################################################
   #
   ################################################################################
@@ -670,11 +724,13 @@ addHorizontalRule $w.fconfig
       incr index
     }
     if { ! $engineFound } {
-      tk_messageBox -type ok -icon warning -parent . -title "Scid" -message "Unable to find engine.\nPlease configure engine with Toga as name"
+      tk_messageBox -type ok -icon warning -parent . -title "Scid" \
+        -message "Unable to find engine.\nPlease configure engine with Toga as name"
       return 0
     }
 
-    ::uci::startEngine $index $::tactics::engineSlot ;# start engine in analysis mode
+    # start engine in analysis mode
+    ::uci::startEngine $index $::tactics::engineSlot
     return 1
   }
 
@@ -693,6 +749,7 @@ addHorizontalRule $w.fconfig
   proc startAnalyze { } {
     global ::tactics::analysisEngine ::tactics::analysisTime
     setInfoEngine "$::tr(Thinking) ..." PaleVioletRed
+    .tacticsWin.f2.solution configure -state disabled
 
     # Check that the engine has not already had analyze mode started:
     if {$analysisEngine(analyzeMode)} {
@@ -705,6 +762,7 @@ addHorizontalRule $w.fconfig
     ::tactics::sendToEngine "go infinite ponder"
     after [expr 1000 * $analysisTime] ::tactics::stopAnalyze
   }
+
   # ======================================================================
   # stopAnalyzeMode:
   #   Stop the engine analyze mode
@@ -721,9 +779,11 @@ addHorizontalRule $w.fconfig
     set analysisEngine(analyzeMode) 0
     ::tactics::sendToEngine  "stop"
     setInfoEngine $::tr(AnalyzeDone) PaleGreen3
+    .tacticsWin.f2.solution configure -state normal
   }
 
 }
+
 ###
 ### End of file: tactics.tcl
 ###
