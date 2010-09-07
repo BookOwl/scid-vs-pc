@@ -409,8 +409,9 @@ autoscrollframe .gameInfoFrame text .gameInfo
     -state disabled -cursor top_left_arrow -setgrid 1
 ::htext::init .gameInfo
 
-### Right-mouse button menu for gameInfo frame:
-#   These menus seem to take the defaultBackground colour, for some reason
+################################################################################
+# Context menu for main board
+################################################################################
 
 menu .gameInfo.menu -tearoff 0 -background gray90
 
@@ -445,12 +446,16 @@ menu .gameInfo.menu -tearoff 0 -background gray90
 .gameInfo.menu add checkbutton -label {Show Game List} \
    -variable ::windows::gamelist::isOpen -command ::windows::gamelist::Open
 
-# Pop-up this menu with a right click on a few empty real estates
-# could also use: "tk_popup .menu.options.ginfo %X %Y" S.A
+proc contextmenu {x y} {
+  if {$::board::_drag(.board) < 0} {
+    tk_popup .gameInfo.menu $x $y
+  }
+}
 
-bind . <ButtonPress-3> "tk_popup .gameInfo.menu %X %Y"
-bind . <F9> "tk_popup .gameInfo.menu %X %Y"
+# Pop-up this menu with a right click on a few empty real estates (if not dragging)
 
+bind . <ButtonPress-3> {contextmenu %X %Y}
+bind . <F9> {contextmenu %X %Y}
 
 # updateVarMenus:
 #   Updates the menus for moving into or deleting an existing variation.
