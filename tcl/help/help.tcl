@@ -8,21 +8,14 @@ set helpText(Contents) {<h1>Scid vs. PC</h1>
   <ht><img splash></ht>
   <ht><a Intro>Introduction</a></ht>
   <ht><a TacticalGame>Playing against the Computer</a></ht>
-  <br>
   <ht><a FICS>Playing on the Internet (FICS)</a></ht>
-  <br>
   <ht><a TacticsTrainer>Puzzles</a></ht>
-  <br>
   <ht><a Tourney>Computer Tournaments</a></ht>
-  <br>
   <ht><a BrowsingPGN>Browsing Games and Tournaments</a></ht>
-  <br>
-  <br>
   <ht><a Scid>Databases and Advanced Use</a></ht>
   <br>
   <br>
   <ht><a Related>Links</a></ht>
-  <br>
   <ht><a Author>About</a></ht>
   <br>
   <p><footer>Updated: Scid vs. PC 4.1, September 2010</footer></p>
@@ -163,13 +156,13 @@ set helpText(Scid) {<h1>Databases and Advanced Use</h1>
 
   <h4>Starting out and general help</h4>
   <ul>
-  <li><a MainWindow>The Scid <b>main window</b></a></li>
-  <li><a Menus>Scid <b>menus</b></a></li>
-  <li><a Moves>Entering <b>chess moves</b></a></li>
+  <li><a MainWindow>The <b>Main Window</b></a></li>
+  <li><a Menus>Scid <b>Menus</b></a></li>
+  <li><a Moves>Entering <b>Moves</b></a></li>
+  <li><a Clipbase>Using the default database (<b>Clipbase</b>)</a></li>
   <li><a Searches><b>Searches</b> in Scid</a></li>
-  <li><a Clipbase>Using the <b>Clipbase</b> database</a></li>
   <li><a Annotating><b>Annotating games</b></a></li>
-  <li><a Hints><b>Hints</b> for getting more out of Scid</a></li>
+  <li><a Hints><b>Hints</b></a></li>
   </ul>
 
   <h4>Other Scid windows</h4>
@@ -455,13 +448,6 @@ set helpText(Index) {<h1>Scid Help Index</h1>
 ### Hints page:
 set helpTitle(Hints) "Scid Hints"
 set helpText(Hints) {<h1>Scid Hints</h1>
-  <p>
-  This page contains useful hints in question and answer format to help you
-  use Scid better. Most of the information on this page is available in more detail on the
-  other help pages listed in the <a Index>index</a>.
-  If you think of a useful hint to add to this page, please send it
-  to the <a Author>author of Scid</a>.
-  </p>
 
   <h4>Can I get Scid to load a database when it starts?</h4>
   <p>
@@ -576,63 +562,42 @@ set helpText(Hints) {<h1>Scid Hints</h1>
 ####################
 ### Main window help:
 
-set helpTitle(MainWindow) "Scid main window"
-set helpText(MainWindow) {<h1>Scid main window</h1>
+set helpTitle(MainWindow) "Scid Main Window"
+set helpText(MainWindow) {<h1>Scid Main Window</h1>
   <p>
-  The main window in Scid displays the current board position of the
-  active game and information about the current game and database.
+  The main window displays a large board with the current game,
+  a game information box, and a few other widgets.
   Separate help pages describe the <a Menus>menus</a> and ways to
   <a Moves>enter chess moves</a>.
   </p>
 
-  <h3>Game navigation buttons</h3>
+  <h4>Game navigation buttons</h4>
   <p>
-  The navigation buttons above the board have the following meanings, from
-  left to right:
+  The navigation buttons above the board have the following meanings [and key bindings].
   <ul>
-  <li> <button tb_start> Move to the start of the game. [Home] </li>
-  <li> <button tb_prev> Move back one move. [Left] </li>
-  <li> <button tb_next> Move forward one move. [Right] </li>
-  <li> <button tb_end> Move to the end of the game. [End] </li>
-  <li> <button tb_invar> Move into a variation. [v] </li>
-  <li> <button tb_outvar> Move out of the current variation. [z] </li>
-  <li> <button tb_addvar> Add a new variation. [Ctrl-A]</li>
-  <li> <button autoplay_off> Start/stop autoplay mode (see below).  [Ctrl-Z] </li>
-  <li> <button tb_trial> Start/stop <a Moves Trial>trial mode</a>.
-  [Ctrl-Space] </li>
-  <li> <button tb_flip> Rotate the board 180 degrees. [.]</li>
-  <li> <button tb_coords> Show/hide board coordinates. [0]</li>
+  <li> <button tb_start> Move to the start of the game  [Home] </li>
+  <li> <button tb_prev> Move back one move  [Left] </li>
+  <li> <button tb_next> Move forward one move  [Right] </li>
+  <li> <button tb_end> Move to the end of the game  [End] </li>
+  <li> <button tb_invar> Move into a <a Annotating Vars>variation</a>  [v] </li>
+  <li> <button tb_outvar> Move out of the current variation  [z] </li>
+  <li> <button tb_addvar> Add a new variation  [control+a]</li>
+  <li> <button autoplay_off> Start/stop <a MainWindow Autoplay>autoplay mode</a> [control+z] </li>
+  <li> <button tb_trial> Start/stop <a Moves Trial>trial mode</a> [control+space] </li>
+  <li> <button tb_flip> Flip the board [control+f]</li>
+  <li> <button tb_showmenu> Show/hide menus</li>
+  <li> <button tb_gameinfo> Show/hide game information</li>
   </ul>
-  Keyboard shortcuts are given in square brackets.
 
-  <h4><name Autoplay>Autoplay mode</name></h4>
+  <h4>Game Information Widget</h4>
   <p>
-  In autoplay mode, Scid automatically plays the moves in the current game,
-  moving forward until the end of the game. The time delay between moves can
-  be set from the <menu>Options: Moves</menu> menu, and is saved to your
-  options file when you save options.
+  The area below the chessboard shows general information about the current
+  game (if any). The first line has the <b>Event, Site, Date (and ECO code)</b>.
+  The next lines have information about the current game - <b>Players,
+  Titles, Ratings and (Game Result (Game Length))</b>.
   </p>
   <p>
-  The shortcut key <b>Control+Z</b> starts or stops autoplay mode, and
-  you can also exit autoplay mode by pressing the <b>Escape</b> key.
-  </p>
-  <p>
-  If you start autoplay mode when the <a Analysis>analysis window</a> is open,
-  the game is <term>annotated</term>: the score and analysis for each position
-  are added to the game as a new variation just before each move is made.
-  See the <a Analysis>analysis window</a> help page for details.
-  </p>
-
-  <h3>The game information area</h3>
-  <p>
-  The area below the chessboard showing information about the game is
-  called the <term>game information area</term>.  Its first three
-  lines show information such as the players, result, date, and site.
-  The fourth line indicates the current position in the game, and what
-  the next move is.
-  </p>
-  <p>
-  The fifth line shows the <a ECO>ECO</a> (Encyclopedia of Chess
+  The fourth line shows the <a ECO>ECO</a> (Encyclopedia of Chess
   Openings) code for the current position, if the position appears in
   the ECO file being used.
   </p>
@@ -646,18 +611,16 @@ set helpText(MainWindow) {<h1>Scid main window</h1>
   photos tend to hide some text in the information area.  Therefore,
   they can be minimised temporarily by clicking on them.
   </p>
+
+  <h4>Game Context Menu</h4>
   <p>
-  The game information area has a menu activated with the right mouse button,
-  with options to hide the next move (useful if you are training using a game
-  and want to guess each move) and to delete or undelete the current game.
-  You can also activate this menu without using the mouse, by pressing the
-  <b>[F9]</b> function key.
+  Right clicking the main board draws with commonly used options.
   </p>
+  <h4>Material Values</h4>
   <p>
   On the right hand side of the board the material balance can be
-  displayed by small piece symbols. E.g. if white has captured a
-  bishop while black has captured a knight, a white bishop and a black
-  knight show up.
+  displayed by small piece symbols. They repesent the piece <b>difference</b>
+  between black and white.
   </p>
 
   <h4>Tablebases</h4>
@@ -667,25 +630,33 @@ set helpText(MainWindow) {<h1>Scid main window</h1>
   tablebase file. See the <a TB>tablebases</a> help page for details.
   </p>
 
-  <h3>The status bar</h3>
+  <h4>The Status Bar</h4>
   <p>
   The status bar shows information about the current database.
   The first field indicates the game status: <b>XX</b> means it has been
   altered and not yet saved, while <b>--</b> means it is unchanged,
   and <b>%%</b> indicates the database is read-only (not alterable).
-  </p>
-  <p>
-  If you want a database to be opened read-only, just set the permissions
-  of its Scid files, or at least its index file, for example:
-  <b>chmod a-w myfile.si3</b>
-  as a shell command, and it will be opened read-only by Scid.
-  </p>
-  <p>
-  The status bar also shows how many games are currently in the
-  <a Searches Filter>filter</a>.
+  Also shown is how many games are currently in the game <a Searches Filter>filter</a>.
   </p>
 
-  <p><footer>Updated: Scid 3.6.26, October 2008</footer></p>
+  <h4><name Autoplay>Autoplay Mode</name></h4>
+  <p>
+  In autoplay mode, Scid automatically plays the moves in the current game,
+  moving forward until the end of the game. The time delay between moves can
+  be set from the <green>Options--<gt>Moves</green> menu
+  </p>
+  <p>
+  The shortcut key <b>control+z</b> starts or stops autoplay mode, and
+  you can also stop with <b>escape</b>.
+  </p>
+  <p>
+  If you start autoplay mode when the <a Analysis>analysis window</a> is open,
+  the game is <term>annotated</term>: the score and analysis for each position
+  are added to the game as a new variation just before each move is made.
+  See the <a Analysis>analysis window</a> help page for details.
+  </p>
+
+  <p><footer>Updated: Scid vs. PC 4.1 September 2010 </footer></p>
 }
 
 
@@ -1205,7 +1176,7 @@ set helpText(Searches) {<h1>Searches in Scid</h1>
 ### Clipbase help:
 
 set helpTitle(Clipbase) "The Clipbase"
-set helpText(Clipbase) {<h1>The Clipbase database</h1>
+set helpText(Clipbase) {<h1>The Default Database</h1>
   <p>
   In addition to physical databases existing on disk, Scid provides
   a transient one known as <term>clipbase</term>. It is opened by default, and used to cut and paste games between other bases. Additionally, each base has a 
@@ -1223,22 +1194,23 @@ set helpText(Clipbase) {<h1>The Clipbase database</h1>
   switch to the clipbase database, and then open
   the <a Tree>Tree window</a> to examine that players repertoire.
   </p>
+<h4>Notes</h4>
   <p>
-  Note that you can copy games in the filter of one database directly to another
+  You can copy games in the filter of one database directly to another
   opened database (without needing the clipbase as an intermediary
   location) using the <a Switcher>database switcher</a> window.
   </p>
   <p>
   Note that the clipbase <i>cannot</i> be closed; selecting the
-  <menu>File: Close</menu> command while in the clipbase is equivalent
-  to <menu>Edit: Reset Clipbase</menu> which empties the clipbase.
+  <green>File--<gt>Close</green> command while in the clipbase is equivalent
+  to <green>Edit--<gt>Empty Clipbase</green> which empties the clipbase.
   </p>
   <p>
   The clipbase has a limit of 100,000 games at any time, since it exists in
   memory only.
   </p>
 
-  <p><footer>Updated: Scid 3.6.8,March  2007</footer></p>
+  <p><footer>Updated: Scid vs. PC 4.1 September 2010</footer></p>
 }
 
 #################################
