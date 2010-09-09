@@ -12,9 +12,9 @@ DESTDIR =
 
 # BINDIR: where the Scid programs are copied for "make install".
 #
-BINDIR = /usr/local/bin
+BINDIR = /usr/bin/
 
-SHAREDIR = /usr/local/share/scid
+SHAREDIR = /usr/share/scid/
 
 ### TCL_VERSION: Set this according to the version of Tcl/Tk you have
 #   installed that you want Scid to use: 8.0, 8.1, 8.2, 8.3, etc.
@@ -228,7 +228,7 @@ install_scid: all_scid
 	install -m 755 -d $(DESTDIR)$(SHAREDIR)/data/
 	install -m 755 scid $(SCRIPTS) $(EXECS) $(DESTDIR)$(BINDIR)
 	install -m 644 -p scid.eco $(DESTDIR)$(SHAREDIR)/data/
-	install -m 644 -p spelling.ssp $(DESTDIR)$(SHAREDIR)
+	# install -m 644 -p spelling.ssp $(DESTDIR)$(SHAREDIR)
 	install -m 755 -d $(DESTDIR)$(SHAREDIR)/books
 	install -m 666 ./books/* $(DESTDIR)$(SHAREDIR)/books/
 	install -m 755 -d $(DESTDIR)$(SHAREDIR)/bases
