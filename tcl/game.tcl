@@ -255,7 +255,11 @@ proc ::game::Load { selection } {
   # ::windows::gamelist::Refresh
   updateTitle
 
-  if {![winfo exists .tourney] && ![winfo exists .twinchecker]} {
+  if {![winfo exists .tourney] && \
+      ![winfo exists .twinchecker] && \
+      ![winfo exists .sb] && \
+      ![winfo exists .sh] && \
+      ![winfo exists .sm] } {
     raiseWin .
   }
   ::windows::gamelist::Refresh
