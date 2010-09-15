@@ -449,6 +449,16 @@ $m  add command -label SearchMaterial \
 bind . <Control-M> ::search::material
 set helpMessage($m,[incr menuindex]) SearchMaterial
 
+$m add checkbutton -label WindowsPList \
+    -variable plistWin -command ::plist::toggle -accelerator "Ctrl+Shift+P"
+bind . <Control-P> ::plist::toggle
+set helpMessage($m,[incr menuindex]) WindowsPList
+
+$m add checkbutton -label WindowsTmt \
+    -variable tourneyWin -command ::tourney::toggle -accelerator "Ctrl+Shift+T"
+bind . <Control-T> ::tourney::toggle
+set helpMessage($m,[incr menuindex]) WindowsTmt
+
 $m  add separator
 incr menuindex
 
@@ -1495,12 +1505,16 @@ proc setLanguageMenus {{lang ""}} {
     configMenuText .menu.edit.strip [tr EditStrip$tag $oldLang] \
         EditStrip$tag $lang
   }
+  foreach tag {Reset Negate Material Current Header Using} {
+    configMenuText .menu.search [tr Search$tag $oldLang] Search$tag $lang
+  }
+  # These two items still appear in windows menu
+  configMenuText .menu.search [tr WindowsPList $oldLang] WindowsPList $lang
+  configMenuText .menu.search [tr WindowsTmt $oldLang] WindowsTmt $lang
+
   foreach tag {New First Prev Reload Next Last Random Number
     Replace Add Deepest GotoMove Novelty} {
     configMenuText .menu.game [tr Game$tag $oldLang] Game$tag $lang
-  }
-  foreach tag {Reset Negate Material Current Header Using} {
-    configMenuText .menu.search [tr Search$tag $oldLang] Search$tag $lang
   }
 
   foreach tag {Gameinfo Comment GList PGN Cross PList Tmt Switcher Maint ECO Repertoire Stats Tree TB Book CorrChess } {

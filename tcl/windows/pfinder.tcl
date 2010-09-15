@@ -95,36 +95,56 @@ proc ::plist::Open {} {
   set fbold font_SmallBold
 
   set f $w.o1
-  label $f.nlabel -text $::tr(Player:) -font $fbold
-  ttk::combobox $f.name -textvariable ::plist::name -width 20
-  ::utils::history::SetCombobox ::plist::name $f.name
-  bindFocusColors $f.name
-  focus $f.name
-  label $f.size -text $::tr(TmtLimit:) -font $fbold
-  ttk::combobox $f.esize -width 4 -justify right -textvar ::plist::size -values {50 100 200 500 1000}
-  trace variable ::plist::size w {::utils::validate::Integer 1000 0}
-  bindFocusColors $f.esize
 
-  pack $f.esize $f.size -side right
-  pack $f.nlabel $f.name -side left
+  # Games
 
-  set f $w.o2
-  label $f.elo -text "[tr PListSortElo]:" -font $fbold
-  entry $f.emin -textvariable ::plist::minElo
-  label $f.eto -text "-"
-  entry $f.emax -textvariable ::plist::maxElo
-  label $f.games -text "[tr PListSortGames]:" -font $fbold
+  label $f.games -text "[tr PListSortGames]" -font $fbold
   entry $f.gmin -textvariable ::plist::minGames
   label $f.gto -text "-"
   entry $f.gmax -textvariable ::plist::maxGames
+  pack $f.games $f.gmin $f.gto $f.gmax -side left
 
-  foreach entry {emin emax gmin gmax} {
-    $f.$entry configure -width 4 -justify right -font $font
+ foreach entry {gmin gmax} {
+    $f.$entry configure -width 5 -justify right -font $font
+    bindFocusColors $f.$entry
+    bind $f.$entry <FocusOut> +::plist::check
+  }
+
+  # Player
+
+  label $f.nlabel -text $::tr(Player) -font $fbold
+  ttk::combobox $f.name -textvariable ::plist::name -width 20
+  ::utils::history::SetCombobox ::plist::name $f.name
+  bindFocusColors $f.name
+
+  # focus $f.name
+
+  pack $f.name $f.nlabel -side right
+
+  set f $w.o2
+
+  # Elo
+
+  label $f.elo -text "[tr PListSortElo]        " -font $fbold
+  entry $f.emin -textvariable ::plist::minElo
+  label $f.eto -text "-"
+  entry $f.emax -textvariable ::plist::maxElo
+
+  foreach entry {emin emax} {
+    $f.$entry configure -width 5 -justify right -font $font
     bindFocusColors $f.$entry
     bind $f.$entry <FocusOut> +::plist::check
   }
   pack $f.elo $f.emin $f.eto $f.emax -side left
-  pack $f.gmax $f.gto $f.gmin $f.games -side right
+
+  # List Size
+
+  label $f.size -text $::tr(TmtLimit) -font $fbold
+  ttk::combobox $f.esize -width 5 -justify right -textvar ::plist::size -values {50 100 200 500 1000 10000}
+  trace variable ::plist::size w {::utils::validate::Integer 10000 0}
+  bindFocusColors $f.esize
+
+  pack $f.esize $f.size -side right
 
   dialogbutton $w.b.defaults -text $::tr(Defaults) -command ::plist::defaults
   dialogbutton $w.b.update -text $::tr(Update) -command ::plist::refresh
@@ -196,7 +216,7 @@ proc ::plist::refresh {} {
     return
   }
 
-  set hc yellow
+  set hc lemonchiffon
   set count 0
   foreach player $pdata {
     incr count

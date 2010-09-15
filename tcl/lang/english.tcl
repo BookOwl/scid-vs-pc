@@ -608,7 +608,7 @@ translate E FinderCtxDelete {Delete}
 # Player finder:
 menuText E PListFile "Player Finder" 0
 menuText E PListFileUpdate "Update" 0
-menuText E PListFileClose "Close Player Finder" 0
+menuText E PListFileClose "Close" 0
 menuText E PListSort "Sort" 0
 menuText E PListSortName "Name" 0
 menuText E PListSortElo "Elo" 0
@@ -628,7 +628,7 @@ menuText E TmtSortElo "Elo" 0
 menuText E TmtSortSite "Site" 0
 menuText E TmtSortEvent "Event" 1
 menuText E TmtSortWinner "Winner" 0
-translate E TmtLimit "List Limit"
+translate E TmtLimit "List Size"
 translate E TmtMeanElo "Mean Elo"
 translate E TmtNone "No matching tournaments were found."
 
@@ -636,7 +636,7 @@ translate E TmtNone "No matching tournaments were found."
 menuText E GraphFile "File" 0
 menuText E GraphFileColor "Save as Color PostScript..." 8
 menuText E GraphFileGrey "Save as Greyscale PostScript..." 8
-menuText E GraphFileClose "Close Window" 6
+menuText E GraphFileClose "Close" 0
 menuText E GraphOptions "Options" 0
 menuText E GraphOptionsWhite "White" 0
 menuText E GraphOptionsBlack "Black" 0

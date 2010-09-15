@@ -91,90 +91,115 @@ proc ::tourney::Open {} {
 
   set font font_Small
   set fbold font_SmallBold
+
+  # todo - The o1 o2 o3 frames should be gridded. S.A
+  # Should these 999 limits be increased ?
+
   set f $w.o1
-  label $f.from -text "[tr TmtSortDate]:" -font $fbold
-  entry $f.efrom -textvariable ::tourney::start -width 10 -font $font
-  bindFocusColors $f.efrom
-  bind $f.efrom <FocusOut> +::tourney::check
-  label $f.to -text "-" -font $font
-  entry $f.eto -textvariable ::tourney::end -width 10 -font $font
-  bindFocusColors $f.eto
-  bind $f.eto <FocusOut> +::tourney::check
-  pack $f.from $f.efrom $f.to $f.eto -side left
 
-  label $f.cn -text "  $::tr(Country):" -font $fbold
-  ttk::combobox $f.ecn -width 4 -textvar ::tourney::country -values \
-    {{} AUT CZE DEN ENG ESP FRA GER GRE HUN ITA NED POL RUS SCG SUI SWE USA YUG}
-  bindFocusColors $f.ecn
-  bind $f.ecn <FocusOut> +::tourney::check
-  pack $f.cn $f.ecn -side left
+  # num Games
 
-  label $f.size -text $::tr(TmtLimit:) -font $fbold
-  ttk::combobox $f.esize -width 4 -justify right -textvar ::tourney::size -values {10 20 50 100 200 500 1000}
-  trace variable ::tourney::size w {::utils::validate::Integer 1000 0}
-  bindFocusColors $f.esize
-  pack $f.esize $f.size -side right
-
-  set f $w.o2
-  label $f.players -text "[tr TmtSortPlayers]:" -font $fbold
-  entry $f.pmin -textvariable ::tourney::minPlayers \
-    -width 3 -justify right -font $font
-  bindFocusColors $f.pmin
-  bind $f.pmin <FocusOut> +::tourney::check
-  label $f.pto -text "-"
-  entry $f.pmax -textvariable ::tourney::maxPlayers \
-    -width 3 -justify right -font $font
-  bindFocusColors $f.pmax
-  bind $f.pmax <FocusOut> +::tourney::check
-  pack $f.players $f.pmin $f.pto $f.pmax -side left
-
-  label $f.games -text "   [tr TmtSortGames]:" -font $fbold
+  label $f.games -text "[tr TmtSortGames]    " -font $fbold
   entry $f.gmin -textvariable ::tourney::minGames \
-    -width 4 -justify right -font $font
+    -width 5 -justify right -font $font
   bindFocusColors $f.gmin
   bind $f.gmin <FocusOut> +::tourney::check
   label $f.gto -text "-" -font $font
   entry $f.gmax -textvariable ::tourney::maxGames \
-    -width 4 -justify right -font $font
+    -width 5 -justify right -font $font
   bindFocusColors $f.gmax
   bind $f.gmax <FocusOut> +::tourney::check
   pack $f.games $f.gmin $f.gto $f.gmax -side left
-  label $f.elolab -text "$::tr(TmtMeanElo):" -font $fbold
-  entry $f.elomin -textvariable ::tourney::minElo \
-    -width 5 -justify right -font $font
-  bindFocusColors $f.elomin
-  label $f.eto -text "-" -font $font
-  entry $f.elomax -textvariable ::tourney::maxElo \
-    -width 5 -justify right -font $font
-  bindFocusColors $f.elomax
-  pack $f.elomax $f.eto $f.elomin $f.elolab -side right
 
-  set f $w.o3
-  label $f.sitelab -text "$::tr(Site):" -font $fbold
-  ttk::combobox $f.site -textvariable ::tourney::site -width 12
-  ::utils::history::SetCombobox ::tourney::site $f.site
-  bindFocusColors $f.site
-  pack $f.sitelab $f.site -side left
+  # Event
 
-  label $f.eventlab -text "   $::tr(Event):" -font $fbold
+  label $f.eventlab -text "   $::tr(Event)" -font $fbold
   ttk::combobox $f.event -textvariable ::tourney::event -width 12
   ::utils::history::SetCombobox ::tourney::event $f.event
   bindFocusColors $f.event
-  pack $f.eventlab $f.event -side left
+  pack $f.event $f.eventlab -side right
 
-  label $f.playerlab -text "$::tr(Player):" -font $fbold
+  # Country
+
+  label $f.cn -text "  $::tr(Country)" -font $fbold
+  ttk::combobox $f.ecn -width 5 -textvar ::tourney::country -values \
+    {{} AUT CZE DEN ENG ESP FRA GER GRE HUN ITA NED POL RUS SCG SUI SWE USA YUG}
+  bindFocusColors $f.ecn
+  bind $f.ecn <FocusOut> +::tourney::check
+  pack $f.ecn $f.cn -side right
+
+  set f $w.o2
+
+  # Num Players
+
+  label $f.players -text "[tr TmtSortPlayers]   " -font $fbold
+  entry $f.pmin -textvariable ::tourney::minPlayers \
+    -width 5 -justify right -font $font
+  bindFocusColors $f.pmin
+  bind $f.pmin <FocusOut> +::tourney::check
+  label $f.pto -text "-"
+  entry $f.pmax -textvariable ::tourney::maxPlayers \
+    -width 5 -justify right -font $font
+  bindFocusColors $f.pmax
+  bind $f.pmax <FocusOut> +::tourney::check
+  pack $f.players $f.pmin $f.pto $f.pmax -side left
+
+  # Site
+
+  label $f.sitelab -text "$::tr(Site)" -font $fbold
+  ttk::combobox $f.site -textvariable ::tourney::site -width 12
+  ::utils::history::SetCombobox ::tourney::site $f.site
+  bindFocusColors $f.site
+  pack $f.site $f.sitelab -side right
+
+  set f $w.o3
+
+  # Mean ELO
+
+  label $f.elolab -text "$::tr(TmtMeanElo)" -font $fbold
+  entry $f.elomin -textvariable ::tourney::minElo \
+    -width 5 -justify right -font $font
+  bindFocusColors $f.elomin
+  label $f.eto -text "-"
+  entry $f.elomax -textvariable ::tourney::maxElo \
+    -width 5 -justify right -font $font
+  bindFocusColors $f.elomax
+  pack $f.elolab $f.elomin $f.eto $f.elomax -side left
+
+  # Date
+
+  label $f.from -text "[tr TmtSortDate]" -font $fbold
+  entry $f.efrom -textvariable ::tourney::start -width 10 -font $font -justify right
+  bindFocusColors $f.efrom
+  bind $f.efrom <FocusOut> +::tourney::check
+  label $f.to -text "-" -font $font
+  entry $f.eto2 -textvariable ::tourney::end -width 10 -font $font -justify right
+  bindFocusColors $f.eto2
+  bind $f.eto2 <FocusOut> +::tourney::check
+  pack [frame $f.space -width 12] $f.from $f.efrom $f.to $f.eto2 -side left
+
+  label $f.playerlab -text "$::tr(Player)" -font $fbold
   ttk::combobox $f.player -textvariable ::tourney::player -width 12
   ::utils::history::SetCombobox ::tourney::player $f.player
   bindFocusColors $f.player
   pack $f.player $f.playerlab -side right
-  focus $f.site
+  # focus $f.site
+
+  # Button bar
+
+  label $w.b.size -text $::tr(TmtLimit) -font $fbold
+  ttk::combobox $w.b.esize -width 5 -justify right -textvar ::tourney::size -values {10 20 50 100 200 500 1000 10000}
+  trace variable ::tourney::size w {::utils::validate::Integer 10000 0}
+  bindFocusColors $w.b.esize
 
   dialogbutton $w.b.defaults -textvar ::tr(Defaults) -command ::tourney::defaults
-  dialogbutton $w.b.help -textvar ::tr(Help) -command {helpWindow Tmt}
   dialogbutton $w.b.update -textvar ::tr(Update) -command ::tourney::refresh
+  dialogbutton $w.b.help -textvar ::tr(Help) -command {helpWindow Tmt}
   dialogbutton $w.b.close -textvar ::tr(Close) -command "destroy $w"
-  pack $w.b -side bottom -fill x
-  packbuttons right $w.b.close $w.b.update $w.b.help
+  pack $w.b -side bottom -fill x -pady 5
+  packbuttons right $w.b.close $w.b.help \
+    [frame $w.b.space1 -width 30] $w.b.update \
+    [frame $w.b.space2 -width 10] $w.b.esize $w.b.size 
   packbuttons left $w.b.defaults
   pack $w.o3 -side bottom -fill x -padx 2 -pady 2
   pack $w.o2 -side bottom -fill x -padx 2 -pady 2
@@ -307,7 +332,7 @@ proc ::tourney::refresh {{option ""}} {
     $t insert end $::tr(TmtNone)
   }
 
-  set hc yellow
+  set hc lemonchiffon
   set count 0
   foreach tmt $tlist {
     incr count
