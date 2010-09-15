@@ -784,7 +784,11 @@ namespace eval uci {
         set promo [string range $m 4 end]
         # inverse transformation : const char PIECE_CHAR [] = "xKQRBNP.xkqrbnpxMm";
         # it seems capitalisation does not matter (see addMove proc in main.tcl)
-        switch -- $promo {
+
+        ### Hmmm... generates "Promo error Q for moves a7a8Q" error
+        # from the analysis addvar routine, so better lowercase it. S.A
+
+        switch -- [string tolower $promo] {
           q { set p 2}
           r { set p 3}
           b { set p 4}
