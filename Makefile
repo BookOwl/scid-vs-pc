@@ -29,7 +29,7 @@ TCL_VERSION = 8.5
 # The settings determined by "./configure" are:
 #
 TCL_INCLUDE = -I/usr/local/include
-TCL_LIBRARY = -L/usr/local/lib -ltcl$(TCL_VERSION) -ldl
+TCL_LIBRARY = -L/usr/local/lib -ltcl$(TCL_VERSION)
 TK_LIBRARY  = $(TCL_LIBRARY) -ltk$(TCL_VERSION) -L/usr/lib -lX11
 
 ### Here are other commonly used settings for the Tcl/Tk compiler options:
@@ -228,7 +228,7 @@ install_scid: all_scid
 	install -m 755 -d $(DESTDIR)$(SHAREDIR)/data/
 	install -m 755 scid $(SCRIPTS) $(EXECS) $(DESTDIR)$(BINDIR)
 	install -m 644 -p scid.eco $(DESTDIR)$(SHAREDIR)/data/
-	# install -m 644 -p spelling.ssp $(DESTDIR)$(SHAREDIR)
+	install -m 644 -p spelling.ssp $(DESTDIR)$(SHAREDIR)
 	install -m 755 -d $(DESTDIR)$(SHAREDIR)/books
 	install -m 666 ./books/* $(DESTDIR)$(SHAREDIR)/books/
 	install -m 755 -d $(DESTDIR)$(SHAREDIR)/bases

@@ -31,7 +31,7 @@ proc ::tree::doConfigMenus { baseNumber  { lang "" } } {
     configMenuText $m.opt $idx TreeOpt$tag $lang
   }
   foreach idx {0 1} tag {Tree Index} {
-    configMenuText $m.helpmenu $idx TreeHelp$tag $lang
+    configMenuText $m.help $idx TreeHelp$tag $lang
   }
 }
 
@@ -101,8 +101,8 @@ proc ::tree::make { { baseNumber -1 } } {
   $w.menu add cascade -label TreeMask -menu $w.menu.mask
   $w.menu add cascade -label TreeSort -menu $w.menu.sort
   $w.menu add cascade -label TreeOpt  -menu $w.menu.opt
-  $w.menu add cascade -label TreeHelp -menu $w.menu.helpmenu
-  foreach i {file mask sort opt helpmenu} {
+  $w.menu add cascade -label TreeHelp -menu $w.menu.help
+  foreach i {file mask sort opt help} {
     menu $w.menu.$i -tearoff 0
   }
 
@@ -182,8 +182,8 @@ proc ::tree::make { { baseNumber -1 } } {
   set helpMessage($w.menu.opt,7) TreeOptFastAndSlowmode
   set tree(fastmode$baseNumber) 0
 
-  $w.menu.helpmenu add command -label TreeHelpTree -accelerator F1 -command {helpWindow Tree}
-  $w.menu.helpmenu add command -label TreeHelpIndex -command {helpWindow Index}
+  $w.menu.help add command -label TreeHelpTree -accelerator F1 -command {helpWindow Tree}
+  $w.menu.help add command -label TreeHelpIndex -command {helpWindow Index}
 
   ::tree::doConfigMenus $baseNumber
 
@@ -218,15 +218,15 @@ proc ::tree::make { { baseNumber -1 } } {
   label $w.status -width 1 -anchor w -font font_Small \
       -relief sunken -textvar tree(status$baseNumber)
   pack $w.status -side bottom -fill x
-  pack $w.progress -side bottom
   pack [frame $w.buttons -relief sunken] -side bottom -fill x
+  pack $w.progress -side bottom
   pack $w.f -side top -expand 1 -fill both
 
-  button $w.buttons.best -image b_list -command "::tree::best $baseNumber"
-  button $w.buttons.graph -image b_bargraph -command "::tree::graph $baseNumber"
-  # add a button to start/stop tree refresh
-  button $w.buttons.bStartStop -image engine_on -command "::tree::toggleRefresh $baseNumber" -relief flat
+  button $w.buttons.best -image b_list -command "::tree::toggleBest $baseNumber"
+  button $w.buttons.graph -image b_bargraph -command "::tree::toggleGraph $baseNumber"
 
+  checkbutton $w.buttons.refresh -text Refresh \
+      -variable tree(autorefresh$baseNumber) -command "::tree::toggleRefresh $baseNumber" 
   checkbutton $w.buttons.lock -textvar ::tr(LockTree) \
       -variable tree(locked$baseNumber) -command "::tree::toggleLock $baseNumber"
   checkbutton $w.buttons.training -textvar ::tr(Training) \
@@ -242,7 +242,7 @@ proc ::tree::make { { baseNumber -1 } } {
   dialogbutton $w.buttons.stop -textvar ::tr(Stop) -command { sc_progressBar }
   dialogbutton $w.buttons.close -textvar ::tr(Close) -command "::tree::closeTree $baseNumber"
 
-  pack $w.buttons.best $w.buttons.graph $w.buttons.bStartStop $w.buttons.lock $w.buttons.training \
+  pack $w.buttons.best $w.buttons.graph $w.buttons.refresh $w.buttons.lock $w.buttons.training \
       -side left -padx 3 -pady 2
   packbuttons right $w.buttons.close $w.buttons.stop
   $w.buttons.stop configure -state disabled
@@ -870,6 +870,16 @@ proc ::tree::prime { baseNumber } {
 # ::tree::best
 #   Updates the window of best (highest-rated) tree games.
 #
+
+proc ::tree::toggleBest { baseNumber } {
+  set w .treeBest$baseNumber
+  if {[winfo exists $w]} {
+    destroy $w
+  } else {
+    ::tree::best $baseNumber
+  }
+}
+
 proc ::tree::best { baseNumber } {
   global tree
   set w .treeBest$baseNumber
@@ -1006,8 +1016,20 @@ proc ::tree::bestPgn { baseNumber } {
 
 ################################################################################
 # ::tree::graph
-#   Updates the tree graph window, creating it if necessary.
+#   Create / Update the tree graph window
 #
+
+proc ::tree::toggleGraph { baseNumber } {
+  set w .treeGraph$baseNumber
+  if {[winfo exists $w]} {
+    destroy $w 
+  } else {
+    ::tree::graph $baseNumber
+  }
+}
+
+### todo - fix the multiple tree windows, esp. when switching between bases S.A.
+
 proc ::tree::graph { baseNumber } {
   set w .treeGraph$baseNumber
   if {! [winfo exists .treeWin$baseNumber]} { return }
@@ -1021,8 +1043,9 @@ proc ::tree::graph { baseNumber } {
     $w configure -menu $w.menu
     $w.menu add cascade -label GraphFile -menu $w.menu.file
     menu $w.menu.file
-    $w.menu.file add command -label GraphFileColor -command "saveGraph color $w.c"
-    $w.menu.file add command -label GraphFileGrey -command "saveGraph gray $w.c"
+    # saveGraph isn't written yet! S.A.
+    $w.menu.file add command -label GraphFileColor -command "saveGraph color $w.c" -state disabled
+    $w.menu.file add command -label GraphFileGrey -command "saveGraph gray $w.c" -state disabled
     $w.menu.file add separator
     $w.menu.file add command -label GraphFileClose -command "destroy $w"
 
@@ -1030,18 +1053,18 @@ proc ::tree::graph { baseNumber } {
     pack $w.c -side top -fill both -expand yes
     $w.c create text 25 10 -tag text -justify center -width 1 -font font_Regular -anchor n
     update
-    bind $w <Configure> " \
-        .treeGraph$baseNumber.c itemconfigure text -width [expr {[winfo width .treeGraph$baseNumber.c] - 50}] ;\
-        .treeGraph$baseNumber.c coords text [expr {[winfo width .treeGraph$baseNumber.c] / 2}] 10 ;\
-        ::utils::graph::configure tree$baseNumber -height [expr {[winfo height .treeGraph$baseNumber.c] - 100}] ;\
-        ::utils::graph::configure tree$baseNumber -width [expr {[winfo width .treeGraph$baseNumber.c] - 50}] ;\
-        ::utils::graph::redraw tree$baseNumber "
     bind $w.c <Button-1> "::tree::graph $baseNumber"
     wm title $w "Scid: Tree Graph $baseNumber: [file tail [sc_base filename $baseNumber]]"
-    # wm minsize $w 300 200
+
     standardShortcuts $w
-    ::tree::configGraphMenus "" $baseNumber
-  }
+    ::tree::configGraphMenus {} $baseNumber
+    bind $w <Configure> "
+      ::tree::graph $baseNumber
+      recordWinSize $w
+    "
+  } ; # end widget create
+
+  ### Refresh Widget
 
   $w.c itemconfigure text -width [expr {[winfo width $w.c] - 50}]
   $w.c coords text [expr {[winfo width $w.c] / 2}] 10
@@ -1114,7 +1137,7 @@ proc ::tree::graph { baseNumber } {
   ::utils::graph::data tree$baseNumber bounds -points 0 -lines 0 -bars 0 -coords {1 41 1 64}
 
   # Replot the graph:
-  ::utils::graph::data tree$baseNumber data -color red -points 0 -lines 0 -bars 1 \
+  ::utils::graph::data tree$baseNumber data -color lemonchiffon -points 0 -lines 0 -bars 1 \
       -barwidth 0.75 -outline black -coords $data
   ::utils::graph::configure tree$baseNumber -xlabels $xlabels -xmax [expr {$count + 0.5}] \
       -hline [list {gray80 1 each 5} {gray50 1 each 10} {black 2 at 50} \
@@ -1125,8 +1148,8 @@ proc ::tree::graph { baseNumber } {
   set moves ""
   catch {set moves [sc_game firstMoves 0 -1]}
   if {[string length $moves] == 0} { set moves $::tr(StartPos) }
-  set title "$moves ([::utils::thousands $totalGames] $::tr(games))"
-  $w.c itemconfigure text -text $title
+  set label "$moves ([::utils::thousands $totalGames] $::tr(games))"
+  $w.c itemconfigure text -text $label
 }
 
 ################################################################################
@@ -1145,14 +1168,8 @@ proc ::tree::configGraphMenus { lang baseNumber } {
 # ################################################################################
 proc ::tree::toggleRefresh { baseNumber } {
   global tree
-  set b .treeWin$baseNumber.buttons.bStartStop
 
   if {$tree(autorefresh$baseNumber)} {
-    $b configure -image engine_off -relief flat
-    set tree(autorefresh$baseNumber) 0
-  } else  {
-    $b configure -image engine_on -relief flat
-    set tree(autorefresh$baseNumber) 1
     ::tree::refresh $baseNumber
   }
 }

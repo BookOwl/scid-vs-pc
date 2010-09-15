@@ -2148,9 +2148,7 @@ set helpText(Tree) {<h1>The Tree window</h1>
   moves made from the current position in games in the database.
   In tree mode, the tree window is updated automatically whenever the
   main windows board changes. This can be slow for large databases and
-  can therefore be disabled using the <button engine_on>. To visualise
-  that a tree is not automatically refreshed this button changes to
-  <button engine_off>.
+  can therefore be disabled using the <b>Refresh</b> check box.
   </p>
   <p>To open the <term>Tree</term> window one can either first open a
   database and then choose Windows / Tree Window (Ctrl-T) from the
