@@ -233,7 +233,7 @@ proc ::windows::gamelist::Open {} {
 
   ttk::frame $w.f
   ttk::treeview $w.tree -columns $glistNames -show headings \
-                            -xscroll "$w.hsb set"
+    -xscroll "$w.hsb set"
     # -yscroll "$w.vsb set" -xscroll "$w.hsb set"
 
 
@@ -253,7 +253,10 @@ proc ::windows::gamelist::Open {} {
 
   $w.tree tag bind click2 <Double-Button-1> {::windows::gamelist::Load [%W set [%W focus] Number]}
   $w.tree tag configure deleted -foreground gray70
-  $w.tree tag configure current -foreground RoyalBlue3
+
+  # Hmm... seems no way to change the deafult blue bg colour for selected items
+  # without using (extra) tags. So this colour must look ok with a blue background
+  $w.tree tag configure current -foreground lightgreen
 
   # $w.tree tag configure colour -background $::defaultBackground
   # $w.tree tag bind click1 <Button-1> {}
