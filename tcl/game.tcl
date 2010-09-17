@@ -317,7 +317,7 @@ proc ::game::GotoMoveNumber {} {
   dialogbutton $b.load -text "OK" -command {
     grab release .mnumDialog
     if {$::game::moveEntryNumber > 0} {
-      catch {sc_move ply [expr {($::game::moveEntryNumber - 1) * 2}]}
+      catch {sc_move ply [expr {($::game::moveEntryNumber - 1) * 2}] ; sc_move forward}
     }
     focus .
     destroy .mnumDialog
