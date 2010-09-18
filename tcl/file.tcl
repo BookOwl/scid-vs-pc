@@ -114,21 +114,19 @@ proc ::file::Open {{fName ""} {parent .}} {
 
   if {[sc_info gzip]} {
     set ftype {
-      { "All Scid files" {".si3" ".si" ".pgn" ".pgn.gz" ".epd" ".epd.gz" ".sor"} }
-      { "Scid databases, PGN files" {".si3" ".si" ".pgn" ".PGN" ".pgn.gz"} }
-      { "Scid databases" {".si3" ".si"} }
-      { "PGN files" {".pgn" ".PGN" ".pgn.gz"} }
-      { "EPD files" {".epd" ".EPD" ".epd.gz"} }
-      { "Repertoire files" {".sor"} }
+      { {All Scid files} {.si3 .si .pgn .PGN .pgn.gz .epd .epd.gz .sor} }
+      { {Scid databases} {.si3 .si} }
+      { {PGN files} {.pgn .PGN .pgn.gz} }
+      { {EPD files} {.epd .EPD .epd.gz} }
+      { {Repertoire files} {.sor} }
     }
   } else {
     set ftype {
-      { "All Scid files" {".si3" ".si" ".pgn" ".epd" ".sor"} }
-      { "Scid databases, PGN files" {".si3" ".si" ".pgn" ".PGN"} }
-      { "Scid databases" {".si3" ".si"} }
-      { "PGN files" {".pgn" ".PGN"} }
-      { "EPD files" {".epd" ".EPD"} }
-      { "Repertoire files" {".sor"} }
+      { {All Scid files} {.si3 .si .pgn .PGN .epd .sor} }
+      { {Scid databases} {.si3 .si} }
+      { {PGN files} {.pgn .PGN} }
+      { {EPD files} {.epd .EPD} }
+      { {Repertoire files} {.sor} }
     }
   }
   if {$fName == ""} {

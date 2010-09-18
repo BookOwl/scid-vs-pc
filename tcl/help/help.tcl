@@ -1007,9 +1007,9 @@ set helpTitle(Searches) "Searches"
 set helpText(Searches) {<h1>Searches in Scid</h1>
   <p>
   Scid can perform many different types of searches.
-  The main types are:
+  The main ones are:
   <ul>
-  <li><b>General information</b> (such as players, result, date) in the game header </li>
+  <li><b>General information</b> searches (such as players, result, date) in the game header </li>
   <li><b>Game positions</b> identical to the current board </li>
   <li>Specific <b>material and piece</b> patterns </li>
   </ul>
@@ -1040,7 +1040,7 @@ set helpText(Searches) {<h1>Searches in Scid</h1>
   automatically.
   </p>
   <p>
-  <i>Note - searches only apply to the main line moves of a game,
+  <i>Note - most searches only apply to the main line moves of a game,
   not to variations</i>.
   </p>
 
@@ -5894,6 +5894,45 @@ set helpText(Novag) {<h1>Connecting the Novag Citrine Chess board</h1>
 
 set helpTitle(Changelog) "Scid vs PC Changelog"
 set helpText(Changelog) {<h1>Scid vs. PC</h1>
+
+<h4>4.1 (October 18, 2010)</h4>
+<ul>
+<li> Quite a few FICs tweaks, including new help pages and D.O.S. attack fixes</li>
+<li> Tactics feature fixed up: Renamed "Puzzle" , and Problem Solutions can now be browsed in-game</li>
+<li> Comment Editor has undo and redo bindings</li>
+<li> The board grid colour can be changed</li>
+<li> Gamelist widget ELO fields moved right</li>
+<li> New Marble tile theme</li>
+<li> Better window raising/focusing</li>
+<li> Kill analysis window after batch annotations</li>
+<li> New colour themes</li>
+<li> Change a few items in Options , Search and "Switch to Database" Menus</li>
+<li> Analysis window "add variation" now *appends* variations if at var end</li>
+<li> Gamelist widget now higlights current game better</li>
+<li> Recent Files menu is basename only</li>
+<li> Remove Control+V game paste binding .... too dangerous</li>
+<li></li>
+<li> Bugfixes -</li>
+<ul>
+<li> Phalanx observes tournament feature time control</li>
+<li> Fix "Show Suggested Move" feature</li>
+<li> Fix occasionaly issue with erroneously selecting squares, then being unable to reselect them</li>
+<li> Ignore crafty's resignations which caused X-window flash events</li>
+<li> No context menu if dragging a piece</li>
+<li> RobboLito (and others ?) had uppercase piece promotion which occasionally broke</li>
+</ul>
+<li> Widget tidies -
+<ul>
+<li> Analysis engine config widget</li>
+<li> Maintenance tweaks</li>
+<li> Game save widget made better</li>
+<li> Parent Date widget</li>
+<li> Delete twins</li>
+<li> Database Switcher changes, including new icons</li>
+<li> Finder now has three columns (and other changes)</li>
+<li> Player finder + Tournament Finder sub-widgets alligned</li>
+</ul>
+</ul>
 
 <h4>4.0 (July 1, 2010)</h4>
 <ul>
