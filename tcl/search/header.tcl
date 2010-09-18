@@ -118,6 +118,7 @@ proc search::header {} {
   }
 
   toplevel $w
+  wm withdraw $w
   wm title $w "Scid: $::tr(HeaderSearch)"
   foreach frame {cWhite cBlack ignore tw tb eventsite dateround res gl ends eco} {
     frame $w.$frame
@@ -338,7 +339,7 @@ proc search::header {} {
 
   addHorizontalRule $w
 
-  button $w.flagslabel -textvar ::tr(FindGamesWith:) -font $bold -command {
+  button $w.flagslabel -textvar ::tr(FindGamesWith) -font $bold -command {
     if {$sHeaderFlagFrame} {
       set sHeaderFlagFrame 0
       pack forget .sh.flags
@@ -386,12 +387,10 @@ proc search::header {} {
 
   addHorizontalRule $w
   ::search::addFilterOpFrame $w 1
-  addHorizontalRule $w
 
   ### Header search: search/cancel buttons
 
   frame $w.b
-  pack $w.b -side top -pady 2 -fill x
   button $w.b.defaults -textvar ::tr(Defaults) -padx 20 \
       -command ::search::header::defaults
   button $w.b.save -textvar ::tr(Save...) -padx 20 -command ::search::header::save
@@ -479,13 +478,17 @@ proc search::header {} {
   $w.progress create rectangle 0 0 0 0 -fill $::progcolor -outline $::progcolor -tags bar
   $w.progress create text 295 10 -anchor e -font font_Regular -tags time \
       -fill black -text "0:00 / 0:00"
-  pack $w.progress -side top -pady 2
   label $w.status -text "" -width 1 -font font_Small -relief sunken -anchor w
   pack $w.status -side bottom -fill x
+  pack $w.b -side bottom -pady 2 -fill x
+  pack $w.progress -side bottom -pady 2
   # update
   wm resizable $w 0 0
   standardShortcuts $w
   ::search::Config
+
+  placeWinOverParent $w .
+  wm state $w normal
   focus $w.cWhite.e
 }
 
@@ -497,7 +500,7 @@ proc ::search::header::save {} {
   global sResWin sResLoss sResDraw sResOther glstart sPgntext
 
   set ftype { { "Scid SearchOptions files" {".sso"} } }
-  set fName [tk_getSaveFile -initialdir [pwd] -filetypes $ftype -title "Create a SearchOptions file"]
+  set fName [tk_getSaveFile -initialdir [pwd] -filetypes $ftype -title "Create a SearchOptions file" -parent .sh]
   if {$fName == ""} { return }
 
   if {[string compare [file extension $fName] ".sso"] != 0} {

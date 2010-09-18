@@ -303,6 +303,7 @@ set helpText(Index) {<h1>Scid Help Index</h1>
   <li><a Flags>Game flags</a></li>
   <li><a GameList>Game List</a> window</li>
   <li><a Menus Game>Game menu</a></li>
+  <li><a Searches Header>General searches</a></li>
   <li><a Graphs>Graph windows</a></li>
   </ul>
 
@@ -388,9 +389,8 @@ set helpText(Index) {<h1>Scid Help Index</h1>
 
   <h3><name S>S</name></h3>
   <ul>
-  <li><a Searches Filter>Search filter</a></li>
-  <li><a Menus Search>Search menu</a></li>
   <li><a Searches>Searches</a></li>
+  <li><a Menus Search>Search menu</a></li>
   <li><a SeriousGame>Play serious game</a></li>
   <li><a Sorting>Sorting a database</a></li>
   <li><a Maintenance Spellcheck>Spellchecking names</a></li>
@@ -1006,31 +1006,31 @@ set helpText(Moves) {<h1>Entering chess moves</h1>
 set helpTitle(Searches) "Searches"
 set helpText(Searches) {<h1>Searches in Scid</h1>
   <p>
-  Scid can perform many different types of search on a database.
-  The three main types of search are:
+  Scid can perform many different types of searches.
+  The main types are:
   <ul>
-  <li><b>1)</b> for the current board, </li>
-  <li><b>2)</b> for specified material and piece patterns, and </li>
-  <li><b>3)</b> by header information such as players, result, date. </li>
+  <li><b>General information</b> (such as players, result, date) in the game header </li>
+  <li><b>Game positions</b> identical to the current board </li>
+  <li>Specific <b>material and piece</b> patterns </li>
   </ul>
   <p>
-  In addition to these, there is also an automatic search mode called the
-  <a Tree>Tree window</a> which is explained separately.
+  <i>In addition to these, there is also an automatic search mode called the
+  <a Tree>Tree window</a>, explained separately</i>.
   </p>
 
-  <h3><name Filter>The Search Filter</name></h3>
+  <h3><name Filter>The Filter</name></h3>
   <p>
-  Searches in Scid are based on the concept of a <term>filter</term>.
-  The filter represents a subset of the current database; at any time,
-  each game is either included in or excluded from the filter.
+  The Scid filter represents
+  a subset of games in the current database. At any time, each game is either
+  included in or excluded from the filter (as per the <a GameList>Game List</a> widget).
   </p>
   <p>
-  With each type of search, you can choose to restrict the existing
-  filter, add to it, or ignore it and search the whole database.
+  With each new search, you can choose to restrict the existing
+  filter, add to it, or reset it and search the whole database.
   This choice permits complex searches to be built up incrementally.
   </p>
   <p>
-  You can also copy all games in the filter of one database to another,
+  You can also copy all games in the filter of one database to another
   using the <a Switcher>database switcher</a> window.
   </p>
   <p>
@@ -1040,67 +1040,14 @@ set helpText(Searches) {<h1>Searches in Scid</h1>
   automatically.
   </p>
   <p>
-  <b>Note</b> that searches only apply to the main line moves of a game,
-  not to any moves in variations.
+  <i>Note - searches only apply to the main line moves of a game,
+  not to variations</i>.
   </p>
 
-  <h3><name Board>Search: Current Board</name></h3>
+  <h3><name Header>General (Header) Searches</name></h3>
   <p>
-  This search finds games that contain the current displayed position,
-  ignoring castling and <i>en passant</i> rights.
-  </p>
-  <p>
-  There are four board search types available. All four require a position
-  to have the same exact material and side to move for a match.
-  The types are:
-  <ul>
-  <li> [1] exact (the two positions must match on every square), </li>
-  <li> [2] pawns (the pawn structure must match exactly, but other pieces
-  can be anywhere), </li>
-  <li> [3] files (the number of white and black pawns on each file must match
-  exactly, but other pieces can be anywhere), and </li>
-  <li> [4] material (pawns and pieces can be anywhere). </li>
-  </ul>
-  <p>
-  The pawns search is useful for studying openings by pawn structure, and
-  the files and material searches are useful for finding similar positions
-  in an endgame.
-  </p>
-  <p>
-  To search for an arbitrary position, you can set the position first
-  (from the <menu>Edit: Setup Start Board</menu> menu) and then
-  start the search.
-  </p>
-  <p>
-  You can request that the search look in variations (instead of only
-  examining actual game moves) by selecting the <b>Look in variations</b>
-  checkbox, but this may make the search much slower if your database
-  is large and has many games with variations.
-  </p>
-
-  <h3><name Material>Search: Material/Pattern</name></h3>
-  <p>
-  This search is useful for finding endgame or middlegame themes.
-  You can specify minimum and maximum amounts of each type of material,
-  and find patterns such as a Bishop on f7, or a pawn on the f-file.
-  </p>
-  <p>
-  A number of common material and pattern settings are provided, such
-  as Rook vs. Pawn endings, or isolated Queens pawns.
-  </p>
-  <p>
-  <b>Hints:</b><br>
-  The speed of pattern searches can vary widely. You can reduce the time
-  needed for a search by setting restrictions intelligently. For example,
-  if you set the minimum move number to 20 for an ending, all games that
-  end in under 20 moves can be skipped.
-  </p>
-
-  <h3><name Header>Search: Header</name></h3>
-  <p>
-  This search can be used to find aspects of the game that are stored
-  in the header (such as date, result, names, flags and ratings), so
-  it does not require any moves to be decoded.
+  This search is for game information stored
+  in the header; such as player names, date, result, flags and ratings.
   </p>
   <p>
   For a game to match a Header search, <b>all</b> fields that you
@@ -1145,11 +1092,61 @@ set helpText(Searches) {<h1>Searches in Scid</h1>
   first to find games where a white bishop moves to h7.
   </p>
   <p>
-  <b>Note</b> If a search by <a ECO>ECO</a> code is performed, games
-  that have no ECO code attached are ignored.
+  <i>Note - if a search by <a ECO>ECO</a> code is performed, games
+  that have no ECO code attached are ignored</i>.
   </p>
 
-  <h3><name Settings>Saving search settings</name></h3>
+  <h3><name Board>Current Board Searches</name></h3>
+  <p>
+  This search finds games that contain the currently displayed position,
+  ignoring castling and <i>en passant</i> rights.
+  </p>
+  <p>
+  There are four different board searches:
+  <ul>
+  <li> <b>Exact</b> - the two positions must match on every square </li>
+  <li> <b>Pawns</b> - the pawn structure must match exactly, but other pieces
+  can be anywhere </li>
+  <li> <b>Files</b> - the number of white and black pawns on each file must match
+  exactly, but other pieces can be anywhere </li>
+  <li> <b>Material</b> - pawns and pieces can be anywhere </li>
+  </ul>
+  <p>
+  The pawns search is useful for studying openings by pawn structure, and
+  the files and material searches are useful for finding similar positions
+  in an endgame.
+  </p>
+  <p>
+  To search for an arbitrary position, you can set the position first
+  (from the <menu>Edit: Setup Start Board</menu> menu) and then
+  start the search.
+  </p>
+  <p>
+  You can request that the search look in variations (instead of only
+  examining actual game moves) by selecting <b>Look in variations</b>
+  , but this may slow the search if your database
+  is large with many games and variations.
+  </p>
+
+  <h3><name Material>Material/Pattern Searches</name></h3>
+  <p>
+  This powerful feature is useful for finding end-game or middle-game themes.
+  You can specify minimum and maximum amounts of each type of material,
+  and patterns such as a Bishop on f7, or a pawn on the f-file.
+  </p>
+  <p>
+  A number of common material and pattern settings are provided, such
+  as Rook vs. Pawn endings, or isolated Queens pawns.
+  </p>
+  <p>
+  <i>Hint -
+  The speed of pattern searches can vary widely, and be reduced 
+  by setting restrictions intelligently. For example,
+  if you set the minimum move number to 20 for an ending, all games that
+  end in under 20 moves can be skipped</i>.
+  </p>
+
+  <h3><name Settings>Saving Search Settings</name></h3>
   <p>
   The Material/Pattern and Header search windows provide a
   <term>Save settings</term> button. This lets you save the current
@@ -1159,7 +1156,7 @@ set helpText(Searches) {<h1>Searches in Scid</h1>
   <menu>Open</menu> from the <menu>Search</menu> menu.
   </p>
 
-  <h3>Search times and skipped games</h3>
+  <h3>Search Times and Skipped Games</h3>
   <p>
   Most searches produce a message indicating the time taken and the number
   of games that were <term>skipped</term>. A skipped game is one that can
@@ -1168,7 +1165,7 @@ set helpText(Searches) {<h1>Searches in Scid</h1>
   <a Formats>file formats</a> for more information.
   </p>
 
-  <p><footer>Updated: Scid 3.6.2, December 2006</footer></p>
+  <p><footer>Updated: Scid vs. PC 4.1 September 2010</footer></p>
 }
 
 

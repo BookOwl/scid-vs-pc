@@ -56,11 +56,11 @@ proc makeBoolMenu {w varName} {
   upvar #0 $varName var
   if {![info exists var]} { set var "Yes" }
   menubutton $w -textvariable $varName -indicatoron 0 -menu $w.menu \
-      -relief raised -bd 2 -highlightthickness 2 -anchor w -image ""
+      -relief raised -bd 2 -highlightthickness 0 -anchor w -image ""
   menu $w.menu -tearoff 0
   $w.menu add radiobutton -label Yes -image ::rep::_tick \
       -variable $varName -value Yes \
-      -command "$w configure -image ::rep::_tick" ;# -hidemargin 1
+      -command "$w configure -image ::rep::_tick" -hidemargin 1
   $w.menu add radiobutton -label No -image ::rep::_cross \
       -variable $varName -value No \
       -command "$w configure -image ::rep::_cross" ;# -hidemargin 1
@@ -72,14 +72,14 @@ proc makePieceMenu {w varName} {
   upvar #0 $varName var
   if {![info exists var]} { set var "?" }
   menubutton $w -textvariable $varName -indicatoron 0 -menu $w.menu \
-      -relief raised -bd 2 -highlightthickness 2 -anchor w -image ""
+      -relief raised -bd 1 -highlightthickness 0 -anchor w -image {}
   menu $w.menu -tearoff 0
   $w.menu add radiobutton -label " ? " -variable $varName -value "?" \
-      -command "$w configure -image e20" ;# -hidemargin 1
+      -command "$w configure -image e20" -hidemargin 1
   foreach i {wk wq wr wb wn wp bk bq br bb bn bp} {
     $w.menu add radiobutton -label $i -image ${i}20 -value $i \
         -variable $varName \
-        -command "$w configure -image ${i}20" ;# -hidemargin 1
+        -command "$w configure -image ${i}20" -hidemargin 1
   }
   foreach i {" ? " wk bk} {
     $w.menu entryconfigure $i -columnbreak 1
@@ -171,17 +171,8 @@ proc ::search::material {} {
   set small font_Small
 
   toplevel $w
+  wm withdraw $w
   wm title $w "Scid: $::tr(MaterialSearch)"
-  #  button $w.piecelabel -font font_Bold -textvar ::tr(Material:) -command {
-  #    if {$smDisplayed(Material)} {
-  #      set smDisplayed(Material) 0
-  #      pack forget .sm.q .sm.r .sm.b .sm.n .sm.m .sm.p .sm.b1 .sm.mdiff
-  #    } else {
-  #      set smDisplayed(Material) 1
-  #      pack .sm.q .sm.r .sm.b .sm.n .sm.m .sm.p .sm.b1 .sm.mdiff \
-  #        -after .sm.piecelabel
-  #    }
-  #  }
 
   bind $w <F1> { helpWindow Searches Material }
   bind $w <Escape> "$w.b3.cancel invoke"
@@ -190,7 +181,7 @@ proc ::search::material {} {
   pack [frame $w.mp] -side top
   pack [frame $w.mp.material] -side left
 
-  label $w.mp.material.title -font font_Bold -textvar ::tr(Material:)
+  label $w.mp.material.title -font font_Bold -textvar ::tr(Material)
   pack $w.mp.material.title -side top -pady 3
 
   foreach piece {q r b n m p} {
@@ -346,7 +337,7 @@ proc ::search::material {} {
 
   set f $w.mp.material.mdiff
   pack [frame $f] -side top
-  label $f.label -font font_SmallBold -textvar ::tr(MaterialDiff:)
+  label $f.label -font font_SmallBold -textvar ::tr(MaterialDiff)
   entry $f.min -width 3 -relief sunken -textvar minMatDiff -font $small \
       -justify right
   bindFocusColors $f.min
@@ -376,16 +367,7 @@ proc ::search::material {} {
   set f [frame $w.mp.patt]
   pack $f -side top
 
-  #dialogbutton $w.pattl -font font_Bold -textvar ::tr(Patterns:) -command {
-  #  if {$smDisplayed(Patterns)} {
-  #    set smDisplayed(Patterns) 0
-  #    pack forget .sm.patt .sm.b2
-  #  } else {
-  #    set smDisplayed(Patterns) 1
-  #    pack .sm.patt .sm.b2 -after .sm.pattl
-  #  }
-  #}
-  label $w.mp.patt.title -textvar ::tr(Patterns:) -font font_Bold
+  label $w.mp.patt.title -textvar ::tr(Patterns) -font font_Bold
   pack $w.mp.patt.title -side top -pady 3
 
   pack [frame $f.grid] -side top
@@ -395,8 +377,8 @@ proc ::search::material {} {
     tk_optionMenu $f.grid.f$i pattFyle($i) "?" a b c d e f g h
     tk_optionMenu $f.grid.r$i pattRank($i) "?" 1 2 3 4 5 6 7 8
     $f.grid.b$i configure -indicatoron 0 ;# -width 4
-    $f.grid.f$i configure -indicatoron 0 -width 1 -pady 1
-    $f.grid.r$i configure -indicatoron 0 -width 1 -pady 1
+    $f.grid.f$i configure -indicatoron 0 -width 1 -pady 0
+    $f.grid.r$i configure -indicatoron 0 -width 1 -pady 0
     set column [expr {5 * (($i - 1) / 5)} ]
     set row [expr {($i - 1) % 5} ]
     grid $f.grid.b$i -row $row -column $column -padx 0; incr column
@@ -544,7 +526,7 @@ proc ::search::material {} {
   ### Last of all, the buttons frame:
 
   set f $w.b3
-  pack [frame $f] -side top -ipady 5 -fill x
+  frame $f
   checkbutton $f.ignorecol -textvar ::tr(IgnoreColors) \
       -variable ignoreColors -padx 4
 
@@ -586,9 +568,7 @@ proc ::search::material {} {
     .sm.status configure -text $str
     set glstart 1
     ::windows::gamelist::Refresh
-
     ::search::loadFirstGame
-
     ::windows::stats::Refresh
   }
 
@@ -596,16 +576,21 @@ proc ::search::material {} {
       -command { focus .; destroy .sm }
 
   pack $f.ignorecol $w.b3.save -side left -pady 5 -padx 5
-  pack $w.b3.cancel $w.b3.search $w.b3.stop -side right -pady 5 -padx 5
-  pack $w.progress -side top -pady 2
+  pack $w.b3.cancel $w.b3.stop $w.b3.search -side right -pady 5 -padx 5
 
   label $w.status -text "" -width 1 -font font_Small -relief sunken -anchor w
+
   pack $w.status -side bottom -fill x
+  pack $f -side bottom -ipady 5 -fill x
+  pack $w.progress -side bottom -pady 2
 
   # update
   wm resizable $w 0 0
   standardShortcuts $w
   ::search::Config
+
+  placeWinOverParent $w .
+  wm state $w normal
   focus $f.search
 }
 
@@ -614,7 +599,8 @@ proc ::search::material::save {} {
   global pattPiece pattFyle pattRank pattBool oppBishops nPatterns
 
   set ftype { { "Scid SearchOptions files" {".sso"} } }
-  set fName [tk_getSaveFile -initialdir [pwd] -filetypes $ftype -title "Create a SearchOptions file"]
+  set fName [tk_getSaveFile -initialdir [pwd] -filetypes $ftype \
+             -parent .sm -title {Create a SearchOptions file}]
   if {$fName == ""} { return }
 
   if {[string compare [file extension $fName] ".sso"] != 0} {

@@ -20,6 +20,7 @@ proc ::search::board {} {
   }
 
   toplevel $w
+  wm withdraw $w
   wm title $w "Scid: $::tr(BoardSearch)"
 
   bind $w <Escape> "$w.b.cancel invoke"
@@ -47,7 +48,7 @@ proc ::search::board {} {
   ::search::addFilterOpFrame $w
   addHorizontalRule $w
 
-  ### Progress bar:
+  ### Progress bar
 
   canvas $w.progress -height 20 -width 300  -relief solid -border 1
   $w.progress create rectangle 0 0 0 0 -fill $::progcolor -outline $::progcolor -tags bar
@@ -57,7 +58,6 @@ proc ::search::board {} {
   frame $w.b2
   pack $w.b2 -side top
   frame $w.b
-  pack $w.b -side top -fill x
   checkbutton $w.b2.vars -textvar ::tr(LookInVars) -padx 10 -pady 5 \
       -onvalue 1 -offvalue 0 -variable searchInVars
   checkbutton $w.b2.flip -textvar ::tr(IgnoreColors) -padx 10 -pady 5 \
@@ -77,23 +77,24 @@ proc ::search::board {} {
     unbusyCursor .
     grab release .sb.b.stop
     .sb.b.stop configure -state disabled
-    #tk_messageBox -type ok -title $::tr(SearchResults) -message $str
     .sb.status configure -text $str
     set glstart 1
     ::windows::gamelist::Refresh
-
     ::search::loadFirstGame
-
     ::windows::stats::Refresh
   }
   dialogbutton $w.b.cancel -textvar ::tr(Close) -command "focus .; destroy $w"
   pack $w.b2.vars $w.b2.flip -side left -pady 2 -padx 5
-  packbuttons right $w.b.cancel .sb.b.search .sb.b.stop
-  pack $w.progress -side top -pady 2
+  packbuttons right $w.b.cancel .sb.b.stop .sb.b.search
   label $w.status -text "" -width 1 -font font_Small -relief sunken -anchor w
   pack $w.status -side bottom -fill x
+  pack $w.b -side bottom -fill x
+  pack $w.progress -side bottom -pady 2
   wm resizable $w 0 0
   standardShortcuts $w
   ::search::Config
+
+  placeWinOverParent $w .
+  wm state $w normal
   focus $w.b.search
 }

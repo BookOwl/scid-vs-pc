@@ -434,15 +434,15 @@ set helpMessage($m,[incr menuindex]) SearchNegate
 $m  add separator
 incr menuindex
 
-$m  add command -label SearchCurrent \
-    -command ::search::board -accelerator "Ctrl+Shift+B"
-bind . <Control-B> ::search::board
-set helpMessage($m,[incr menuindex]) SearchCurrent
-
 $m  add command -label SearchHeader \
     -command ::search::header -accelerator "Ctrl+Shift+H"
 bind . <Control-H> ::search::header
 set helpMessage($m,[incr menuindex]) SearchHeader
+
+$m  add command -label SearchCurrent \
+    -command ::search::board -accelerator "Ctrl+Shift+B"
+bind . <Control-B> ::search::board
+set helpMessage($m,[incr menuindex]) SearchCurrent
 
 $m  add command -label SearchMaterial \
     -command ::search::material -accelerator "Ctrl+Shift+M"

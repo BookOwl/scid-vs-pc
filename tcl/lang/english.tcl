@@ -154,8 +154,8 @@ menuText E GameNovelty "Find Novelty..." 7 \
 menuText E Search "Search" 0
 menuText E SearchReset "Reset Filter" 0 {Reset the filter so all games are included}
 menuText E SearchNegate "Negate Filter" 0 {Negate the filter to only include excluded games}
+menuText E SearchHeader "General..." 0 {Search by Header (player, event, etc) information}
 menuText E SearchCurrent "Current Board..." 0 {Search for the current board position}
-menuText E SearchHeader "Header..." 0 {Search by Header (player, event, etc) information}
 menuText E SearchMaterial "Material/Pattern..." 0 {Search for material or board patterns}
 menuText E SearchUsing "Using Search File..." 0 {Search using a SearchOptions file}
 
@@ -816,7 +816,7 @@ Do you really want to continue and discard the changes you have made?
 }
 
 # Header search:
-translate E HeaderSearch {Header Search}
+translate E HeaderSearch {General Search}
 translate E EndSideToMove {Side to move at end of game}
 translate E GamesWithNoECO {Games with no ECO?}
 translate E GameLength {Game length}
@@ -989,11 +989,11 @@ translate E Diagram {Diagram}
 
 # Board search:
 translate E BoardSearch {Board Search}
-translate E FilterOperation {Operation on current filter:}
-translate E FilterAnd {AND (Restrict filter)}
-translate E FilterOr {OR (Add to filter)}
-translate E FilterIgnore {IGNORE (Reset filter)}
-translate E SearchType {Search type:}
+translate E FilterOperation {Operation on current filter}
+translate E FilterAnd {Restrict filter (AND)}
+translate E FilterOr {Add to filter (OR)}
+translate E FilterIgnore {Reset filter}
+translate E SearchType {Search type}
 translate E SearchBoardExact {Exact position (all pieces on same squares)}
 translate E SearchBoardPawns {Pawns (same material, all pawns on same squares)}
 translate E SearchBoardFiles {Files (same material, all pawns on same files)}
