@@ -34,12 +34,42 @@ EgCgs2cATgw5+dw5wLabqFEHAgA7
 
 Clipbase
 {
-R0lGODlhIAAgAMIFAAAAADw8PI9JSci9verq6lpaWlpaWlpaWiH5BAEKAAcA
-LAAAAAAgACAAAAOqeLrc/jDKCYFVgGWbD5/dEnok2Y0OOm6X90WqVmK09HLb
-7KJUT+HAoLDVAAyOyKRyiUwxn9BBETmsBqcDnu9hzG573U5gTC6bz1gxYS1o
-rwltwTu+TisCczdbD9fbD3h7coJ5g38BdISKfYeJfYOPeY18jpUCh4WZipiL
-loYaR2qdlH6gXoCemoymYqmjk5CuqyKhd6qunJGjn7SngbrAibC3pFMhiKSx
-xQkAOw==
+R0lGODlhIAAgAOf/ACAhHyUnJCcoJigpJyosKSouMCwuLC8xLi4yNDAyLy8z
+NTEzMDIzMS80NjM0MjQ2MzI3OTU3NDQ4Ojc5Njg5NzU6PDY6PTk6ODo7OTg8
+Pjs9Ojo+QDw+Oz0/PDtAQj5APT9APkBBPz5CRUFDQENFQkJGSERGQ0NHSUVH
+REZIRURJS0dJRkhJR0VKTElKSEZLTUtJTUpLSUtNSkxOS01PTE5QTU1RU09R
+Tk1SVFBST05TVU9UVlJUUVNUUlBVV1RVU1VWVFJXWVZXVVZYVVlbWFhcXlpc
+WVldX1tdWlpeYFxeW11fXF5gXV9hXmBiX2FjYF9kZmJkYWNlYmRlY2VmZGZn
+ZWdoZmhpZ2lraGpsaWttamxua21vbG9xbnFzcHN1cnZ0eHR2c3V3dHZ4dXd5
+dnp4fHh6d3l7eHp8eXt9enx+e31/fH+BfoCCf4GDgIKEgYGGiYSGg4WHhIaI
+hYeJhoiKh4uJjYmLiIeMj4qMiY2Lj4uNioyOi4qPko+NkY2PjI6QjY2RlJCS
+j5GTkJKUkZOVkpSWk5eVmZWXlJaYlZeZlpial5qbmJecnpudmZyem52fnJ6g
+nZ+hnp6jpaGjoJ+kpqKkoaOloqajqKGmqaSmo6ekqaKnqqWnpKaopaSprKep
+pqiqp6mrqKitr6utqq6ssK+tsa2vrKuwsrCyrrKwtLGzr6+0trC1t7Wzt7O1
+srS2s7e0ubK3urW3tLO4u7m2u7e5trW6vbi6t7m7uLe8v7q8ubu9ur68wLy+
+u72/vLvAwr7BvcG/w8PAxMTBxb/Fx8XCx8PFwsHGycTGw8jFysbIxcnHy8fJ
+xsnLyMrMyc3Lz8vOys3Py8vQ0s7QzNHO08/RztLP1NDSz9TR1tLU0dPV0tbU
+2NTW09XX1NbY1dja1tnb19vd2tze293f3N7g3d/h3t3j5ePl4eTm4+Xn5Obo
+5efp5unr6Obs7urs6evu6u3v6+rw8u7w7fHz8PTy9vL08fP18vX38/P4+/n7
++Pr8+fv9+vz/+/7//P///yH5BAEKAP8ALAAAAAAgACAAAAj+AP8JHEiwoMGD
+CBMK5GPJjsKHBRm12rSJkiRNmyAqXOWOnz95x0pxq+cvX68yGge+YbTJ1bp9
+/rjt8tRNnz980ybpAQNx1blhmDRR2kSuWqRDSF0e0uMnDyBVfg7G+EUyn796
+qtB55HevVy54HvUxY6RsXr573A4VLCOE0Tx80TwxEsmvXa9CjJjV08cNlJ5U
+6OjVawYmAcFe4PwIKYPp0CBGverh8qOHTyFm1Py8cWPHTqEdBDJsIDirXjtX
+Z3h4ibyPX755naDVu1dv3jA9UzBQCBECAwaCr9Cxc3UHUBshedDpq3Zozp9g
+8+blmsKARZIrMDb4Jljq3DpXnV3+jWMEhAsfO23Y2EEDo0CGEFSuVOm9wQLB
+NYyesZpjx1W9c8qskcMVdkxhAQYxgCBCCFVUYQUMGLAAA0Fl2OGGJoy8oco6
+7DBjxyFlCMDCFFfYoBsMVFCRRA9TTLEChWWwUco6yfSyDjrEyMEUA1NUUaJv
+GxThAgVCJAHFhAOFwUYZIpXjCiPQBGPHHH7w2KANIMQghAUWXMBEiykQxEgw
+gJRCTjmxtGEHI4zEYQcCU1AxhQ1TQCEEBlwWaUMGYnLDzSzMhONKGWt0ws1Y
+DBQBgwU9JKEiBQ5QEINuDBBkCDjcmFIGI56UUYYm6JxzjQK6UcDiFEWA0CgI
+DjigAEH+e3DTjSlkbOqLHoyEQw43DujmQAwrwsBEEga2WulAVNjhSyljbIpp
+L9CEU40DGXTJAgbUTiFEsSLwOVAVXHDhhx1hHMINOCcxMowCIcCwxKK9LpFE
+ESwUIQQIBFkBRhaAVLOKJtxgcxIZb/BILAutZiBECAoIscQRo317xRV+SHON
+KYQw80oZXtjBABLawqAACAg7wECR9xZ0RRl6PCNNKVt44ccaXpTRsLYx2JCE
+DQowwAAQSLRnkAxrDANNKVeAsUc1pdjhgKIUwACyDQwUgAALCCh0Ax+bYEHg
+M9Aww4DJ1QmhBAwmC5BSD1x48QY01DCjAAU+h1BEqmqnNJAkEG8wE7YCDhTA
+QAgUAKD3QU9YQgwDFlBQwOEPQcFA3pBXrlBAADs=
 }
 
 {PGN file}
@@ -62,10 +92,25 @@ HMvMEQkAOw==
 
 {Blitz games}
 {
-R0lGODlhIAAgAKEDAAAAAMhpaaqqqq6uriH5BAEKAAMALAAAAAAgACAAAAJ8
-nI+py+0Po2yg2gtmqqF7n2kG932VOJBlVwmiurbuBJfyHNUmIPQ0sALxfBKd
-sIeDGFmY02MZZCmjUYsSQw3cisDqLUnpBr9gBvTL9Q6JVy+SPR2v4VeV5Y1K
-icl5+7yc03WHlKfH9AYYeEhYyDFI96L1V3jwCJmHSGlQAAA7
+R0lGODlhIAAgAMZUAFRUVFZWVllZWV1dXV5eXl9fX2BgYGFhYWJiYmRkZGVl
+ZWZmZmdnZ2hoaGlpaWpqamtra2xsbG1tbXBwcHFxcXJycnNzc3R0dHV1dXZ2
+dnd3d3h4eHl5eXp6ent7e35+fn9/f4ODg4iIiIqKioyMjJOTk5SUlJWVlZyc
+nKCgoKGhoaKioqSkpKampq2trbCwsLS0tLy8vL29vb6+vsDAwMHBwcLCwsTE
+xMbGxsfHx8jIyMzMzM3Nzc/Pz9LS0tTU1NbW1tjY2NnZ2dra2tvb29zc3N7e
+3t/f3+Hh4eLi4uPj4+bm5ufn5+jo6Orq6uzs7O3t7fPz8/T09Pf39///////
+////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////yH5BAEKAH8A
+LAAAAAAgACAAAAf+gH+Cg4SFhoeIiYqLjA0pJYyRhBRTUgWSiAwwLQ+CEiMg
+gw8tMAyYfxJRUJeCGBiDBVBREqd/G7SDKiqEEhuMHhqEAxWDCURECYMVA4Qa
+HoUST0wEgxc7yX8fT08fggk7F4METE+4ggwuKQ2DIk6hfy5OTi6CIE4ig44u
+poUB/H8vmuhIoCBJkyZJFCTQ0eTFIAYBEBmI0ckAkSVLOoTAiDFEB4xEDPx5
+EEMkIhNCJkhQwjJHDpYtX7KUMEGICUUWkBiZgaSnz58/ZxhBYkHRghpHkipd
+ylRpjQWLSBSZSrWqVaokGEEYwrWr169dITByACOI2bNo0waB4SASCCCPcOPK
+nQvkXaMeP/Lq3bu3xzpJLHwIHkyYMItTHHooXsyYMYdTCHDwmEy58mQcCGox
+uMC5s2fO/zCd0EG6tGnSJ2o1MFChtevXrQ38lRTBxo3buHPfthEB0wEAFIIL
+Hz4cwIFIAlbQWM68uXMaKwQwyiCjuvXr2K1nYPQAhffv4MN/77TIQoTz6NOr
+R1+0UCAAOw==
 }
 
 {Correspondence chess}
@@ -228,36 +273,24 @@ BwUEADs=}
 
 {My games}
 {
-R0lGODlhIAAgAOeOACAgICUlJSoqKi4uLjMzMzY2Njg4ODo6Ojw8PD09PT49
-PT8+Pj8/P0BAQEJCQkREREVFRUZGRklISEpKSk1LS05OTk9PT1FRUVVSUlNT
-U1RUVFZWVllVVVhYWFtYWFxaWltbW1xcXF5cXF9cXF1dXWJfX2BgYGFhYWVi
-YmVjY2RkZGhlZWZmZmllZWhoaGtnZ2xoaGxpaWpqam9sbG9vb3Jvb3FxcXVy
-cnR0dHZ2dnl2dnd3d3h4eH13d3p6en55eXt7e4B6enx8fIB8fIN9fX9/f4CA
-gIR/f4GBgYKCgomDg4WFhYaGhoqFhYyGhoqKiouLi5CQkJWOjpaOjpGRkZKS
-kpeQkJSUlJWVlZuUlJ6Wlp6Xl5qampycnKKamp2dnaKbm56enqScnKCgoKef
-n6KioqmgoKqhoaWlpa2kpKioqLCmpqurq6ysrLGxsbKysrOzs7S0tLyysra2
-tr6zs7+1tbq6usO4uLy8vMO5ub29vcW7u8e8vMDAwMi9vcfHx8nJyczMzM7O
-zs/Pz9LS0tTU1NbW1tra2t3d3eLi4uTk5Ojo6Orq6uzs7P//////////////
+R0lGODlhIAAgAMZkACEhISYmJioqKi4uLjQ0NDU1NTg4ODk5OTs7Ozw8PD4+
+PkBAQEFBQUJCQkZGRkdHR0pKSktLS09PT1BQUFJSUlNTU1RUVFdXV1hYWFlZ
+WVxcXF1dXWBgYGFhYWJiYmVlZWZmZmdnZ2lpaWtra3BwcHJycnR0dHZ2dnh4
+eHl5eXp6enx8fH19fYCAgIKCgoODg4aGhoiIiIuLi4yMjJCQkJGRkZKSkpOT
+k5WVlZaWlp2dnZ6enp+fn6CgoKGhoaKioqOjo6ampqmpqaqqqqysrLGxsbKy
+srS0tLa2tri4uLm5ubq6uru7u7y8vL29vb6+vr+/v8DAwMHBwcLCwsjIyMrK
+ys3Nzc7OztDQ0NTU1NbW1tfX19jY2Nzc3N7e3uLi4uTk5Onp6evr6+3t7f//
 ////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////
-/////////////////////yH5BAEKAP8ALAAAAAAgACAAAAj+AP8JHEiwoMGD
-CBMqXMiwocOHECMqtEOxokU7Ev+p+cKxo8eObSLC0YMHz5iTbkrGOVlGop1G
-MHnI7ANzkEweSSLOYcQTh089PAP5xHElitGjSJFyEfhmkVMaUO04BQSVxpMu
-WLNq1YpGIBMfYA2J7QKWilhDPGSoXcuWrRGBQljIVUQXi9wldBXlkMu3r18c
-AnmcGJyoMJXBSAonsjG4sePHNARCCUO5suXKKkJo3syZswyBYxCJ7kCajZ/T
-TUh3SHHaj44OrWOfFtjlkO0MuNW0JoM7w5DWNzKcFiOlePEsAqv8WW6i+ZjT
-e/JcqFBhS53TNSpgp86dhEATE8L9ny1yGoyfGOHpiDk9YwL78PA7CAQBoX6h
-+0BOE/HjBIIIP0ecBgMEAtZnoAYCbdDAgoQ0uMNpLcixRgM/+PHBaSs0cJoW
-TnTYoQUCAdHGiM2BdxoKU/ghgRd0JHAiArK1NoFXgtRowI0GnFbCC368cIcV
-OfpRQpBD4mhABAIlEciSBDRJwGkjLMCHGX7A8KQfI1yZpZMEOCCQC0cNIOYA
-p3kwwBmnKUCmH2aWOaaYCQjEgAB01inAaRwI0IMfadCJ551+WEHEoIMqIdAB
-ASSqaACnYRAABX4EkWijjMY42z8TAKDpppx26umnBQz0gIGklmrqqfVlpOqq
-rEIUEAA7
+/////////////////////////////////////////////////yH5BAEKAH8A
+LAAAAAAgACAAAAf+gH+Cg4SFhoeIiYqLjI2Oj4pRUJOUlVBTkIJFO5ydnp1J
+mUpPTk49p0alSKdATZlNY7Eps1KxWLMpPZlJYr0mv0+9Vr8mODXHyMnJQYJH
+Yc8k0UzPVdEkMjrZ2tvbzH8xKuFb4zrhNuNbKSPr7O3tLYIsIPNg9TnzMPVg
+J/P9/v8mBKHwQPCLQRsEXRj8UoKgw4cQSQiawaNip4oWOX3YwLGjR48jBPnw
+QhKDSSIknZhcybIlyxCCdHSZaaGmkJlLaurcyXOnB0E3qAjlQPSH0CESkipd
+ylTpBkEdIEjlQrWF1KtYs2qFkEGQBgdgtYhdAbas2bNoHVgQdIGB2yx3cFG4
+nUu3rl0GEwStIMLXIYQEgAMLHkw4giAYWBIbWMy4sePHjR8IenGlMoHLmDNr
+3py5gSARNEIPGE26tOnTpRUIWiCgtevXsGPLPiAIQYDbuHPr3s27gCAFAIIL
+H068uHHfgihUWM68ufPnzzNJn069uvVGgQAAOw==
 }
 
 {GM games}
@@ -280,18 +313,18 @@ yczMzM7OztLNzc/Pz9LS0tTU1NbW1tra2t3d3eLi4uTk5Ojo6Orq6uzs7P//
 ////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////
 /////////////////////yH5BAEKAP8ALAAAAAAgACAAAAj+AP8JHEiwoMGD
-CBMqXMiwocOHECMqdESxokVHEv/pYcOxo8eOfiIeqhQpkpyThEoiOklHoiNX
-MH/I3ASTlMwfTyIqasVTh89KPEP51DGmi9GjSJGiEViIlVMcUB05BQUVx5U0
-WLNq1XpH4BQhYE+JTQP2i9hTP2ioXcuW7RKBR1rIXUWXjFwpdFfxkMu3r18d
-An+kGKyq8JfBTQqryjG4sePHOARmeUO5suXKLERo3syZMw2BclKJ9kC6j2hK
-ahJhkgRoiwnSnWJTIe1hRexO/9Kg2r2htx5UozR1wiMmTqZOg0ZsuD2n9wYk
-t/+B+UQdhXU5njh18oGhe43jXDD+xF4kKUP3M41i/0NBof1ZJWU6wWlPf8iN
-CxRit+k0oz0jOOqFEMGAphRYhCCdBDHgggzGlkQnVURAQidMqMeBAxiWomEP
-k3QSA4YghhibC4nw4QARnYCgXhF+tGgde5B04kICNN4WWwKxqeBFJxOswYgC
-6k0hypAHFHnAH53sYGQUUZgR2wGxnRCDh5CEASVuT4SiZQFcFmBFJ250yWUJ
-sRUQWwkMaFJHJzKYiRsMRw0g5wASXNKJDXMS8GAnA8T2wQB2xLZAn7g1IMCh
-iB76gnBwOKGFIbF5IUBsHQgARCd5HKoeAgF06qmnEGARiCWP7AFFBZ3GpkEA
-FnRiRKoduFEAwKy01mrrrbgaMNADDPbq66+9ZiTssMRCFBAAOw==
+CBMqXMiwocOHECMm3ESxosWKEgm92cixI0dFER1VGimnZKGRikrSiRQxkquX
+P2Juekkq5g85ERW12qmjZ6WdoXrqIPOlqNGjR+8IRMSqKY6njpqCeoojC5ur
+WLNmVfpvipCvp8Ky+Qom7KkfNNKqXbt2icAjLeKumksm7pS5q3jE3cu3rw6B
+P1IIVkUYjOAnhFXlEMy4sWMcArN4nLyRhYnLmDNnpiFQTqrPHkL7+ZwIkyRA
+W0yE7sSaSmgPK1h3aiGQzedUG3Lr0dQJj5g4mToNGrFB9pzcG5DITiEQzKfn
+KKJz6uQDg/UawblgYL1IUgbrZxr+sTYhMAWF82Y7wTnPfsiNCxRYt+k04zwj
+OKw9CBQRoX9YQZ0E0d+ABLKWRCdVREBCJ0ywtoFAHDggoSmmTNJJDBJmqCFr
+LiTChwNEdAICaxm85ceJgkHSiQsJtCgbawmwpoIXnUywBiMKsEaBQFOQ4uMB
+B/zRyQ5AHhBFFGawdgBrJ8RwISRhLNmJBAI9IcqVBRRgRSduZOllCawVwFoJ
+DGhSRycyiNmJAwLB0MWbAwwgwSWd2BDnAAQc2MkArH0wgB2sLcBnJwwI5IAA
+iCb6Am9wOKGFIax5IQBrHQgARCd5IKqkQAgE4OmnAUCARSCWPLIHFBV4ypoG
+AVjQiREiqnZigEAMAGDrrbjmquuuswqUAXLABivssLlJZOyxyB4bEAA7
 }
 
 Tactics
@@ -643,14 +676,14 @@ proc ::windows::switcher::Open {} {
   set numBases [sc_base count total]
 
   for {set i 1} {$i <= $numBases} {incr i} {
-    set f [frame $w.c.f$i  -borderwidth 0] ;# -borderwidth 2 -relief ridge
+    set f [frame $w.c.f$i  -borderwidth 1 -relief raised] ;# -borderwidth 2 -relief ridge
     $w.c create window 0 0 -window $w.c.f$i -anchor nw -tag tag$i
 
     set f $w.c.f$i
     label $f.img -image dbt0 ;# -relief solid  -borderwidth 1
-    label $f.name -width 11 -anchor w -font font_Small
+    label $f.name -width 15 -anchor w -font font_Small
     label $f.ngames -text "0" -width 11 -anchor e -font font_Tiny
-    grid $f.img -row 0 -column 0 -rowspan 2 -padx 2 -pady 2
+    grid $f.img -row 0 -column 0 -rowspan 2 -padx 2 -pady 2 ; # grid item refreshed below
     grid $f.name -row 0 -column 1 -padx 2 -pady 0 -sticky we
     grid $f.ngames -row 1 -column 1 -padx 2 -pady 0 -sticky we
 
@@ -719,19 +752,17 @@ proc ::windows::switcher::Refresh {} {
 
   for {set i 1} {$i <= $numBases} {incr i} {
     if {[sc_base inUse $i]} {
-      set color grey95
       set filename [file nativename [sc_base filename $i]]
       set n $i
-      # Do we want to call the clipbase base number "C"?
-      # Only if we do it everywhere else for consistency.
-      # if {$i == $clipbase} { set n "C" }
 
-      # Set a different color for the current database.
+      # Highlight current database
       if {$i == $current} {
-        set color lemonchiffon ;# rosybrown2
+        set color lightSteelBlue ;# lemonchiffon # rosybrown2
         # $w.c.f$i.name configure -font font_Bold
         set status $filename
         if {[sc_base isReadOnly]} { append status " ($::tr(readonly))" }
+      } else {
+	set color grey95
       }
 
       $w.c.f$i configure -background $color
@@ -744,7 +775,7 @@ proc ::windows::switcher::Refresh {} {
       }
       if {$i == $clipbase} {
         set name [sc_base filename $i]
-        $w.c.f$i.name configure -background $color \
+        $w.c.f$i.name configure -background $color 
       } else {
         set name "[file tail [sc_base filename $i]]"
       }
