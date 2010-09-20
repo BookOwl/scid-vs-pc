@@ -403,7 +403,7 @@ proc setupBoard {} {
   pack $sl.hints.label2 $sl.hints.label3 $sl.hints.label4 -side left -expand yes -fill x
 
   frame $sbd
-  canvas $sbd.bd -width $bsize -height $bsize -background black \
+  canvas $sbd.bd -width $bsize -height $bsize -background $::bgcolor \
                  -borderwidth 0 -highlightthickness 0
   if {[info tclversion] >= 8.5} {
     grid anchor $sbd center
