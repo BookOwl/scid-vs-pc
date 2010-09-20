@@ -281,7 +281,7 @@ proc openBase {name} {
 #   Closes the active base.
 #
 proc ::file::Close {{base -1}} {
-  # Remember the current base:
+  # Remember the current base
   set current [sc_base current]
   if {$base < 0} { set base $current }
   # Switch to the base which will be closed, and check for changes:
@@ -293,13 +293,14 @@ proc ::file::Close {{base -1}} {
     }
     sc_base close
 
-    # If base to close was the current one, reset current game
+    # If closing current base - reset current game and switch to clipbase
     if { $current == $base } {
       setTrialMode 0
       sc_game new
+      ::file::SwitchToBase clipbase
+    } else {
+      ::file::SwitchToBase $current
     }
-
-    ::file::SwitchToBase $current
 
     # Need these here, as otherwise a db "open base as tree" window won't close. S.A.
     if {[winfo exists .treeWin$base]} { destroy .treeWin$base }
