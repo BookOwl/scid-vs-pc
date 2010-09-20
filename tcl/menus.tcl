@@ -318,9 +318,6 @@ $m add command -label EditPaste -accelerator "Ctrl+V" -command {
 bind . <Control-v> {catch {sc_clipbase paste}; updateBoard -pgn}
 set helpMessage($m,[incr menuindex]) EditPaste
 
-$m add command -label EditPastePGN -command importClipboardGame
-set helpMessage($m,[incr menuindex]) EditPastePGN
-
 $m add separator
 incr menuindex
 
@@ -337,6 +334,9 @@ $m add command -label EditPasteBoard -accelerator "Ctrl+Shift+V" \
     -command pasteFEN
 bind . <Control-V> pasteFEN
 set helpMessage($m,[incr menuindex]) EditPasteBoard
+
+$m add command -label EditPastePGN -command importClipboardGame
+set helpMessage($m,[incr menuindex]) EditPastePGN
 
 
 ### Game menu:

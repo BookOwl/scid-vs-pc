@@ -113,9 +113,9 @@ menuText E EditStripEnd "Moves to the end" 0 \
   {Strip moves to the end of the game}
 menuText E EditReset "Empty Clipbase" 0 \
   {Reset the clipbase to be completely empty}
-menuText E EditCopy "Copy This Game to Clipbase" 1 \
+menuText E EditCopy "Copy to Clipbase" 1 \
   {Copy this game to the Clipbase database}
-menuText E EditPaste "Paste Last Clipbase Game" 1 \
+menuText E EditPaste "Paste from Clipbase" 1 \
   {Paste the active Clipbase game here}
 menuText E EditPastePGN "Paste PGN" 18 \
   {Interpret the clipboard text as PGN and paste it here}

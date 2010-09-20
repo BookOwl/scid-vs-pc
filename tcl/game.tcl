@@ -5,15 +5,19 @@
 #   current game. Returns 1 if they selected yes, 0 otherwise.
 #
 
-# This procedure can sometimes be drawn underneath the comment editor &&&
+# ConfirmDiscard can sometimes be drawn underneath the comment editor 
+# It should be replaced by ConfirmDiscard2 anyway, which has a game save option. S.A.
+
 proc ::game::ConfirmDiscard {} {
-  if {$::trialMode} { return 1 }
-  if {[sc_base isReadOnly]} { return 1 }
-  if {! [sc_game altered]} { return 1 }
-  set answer [ tk_dialog .cgDialog "Scid: [tr GameNew]" \
-      $::tr(ClearGameDialog) "" 0 $::tr(Yes) $::tr(No) ]
-  if {$answer == 1} { return  0 }
-  return 1
+
+  if {$::trialMode}		{return 1}
+  if {[sc_base isReadOnly]}	{return 1}
+  if {! [sc_game altered]}	{return 1}
+
+  set answer [ tk_dialog .cgDialog "Scid: [tr GameNew]" $::tr(ClearGameDialog) {} {} \
+    [lindex [split $::tr(DiscardChangesAndContinue) "\n"] 0] $::tr(Cancel) ]
+
+  return [expr $answer == 0]
 }
 
 # ::game::ConfirmDiscard2
@@ -31,8 +35,6 @@ proc ::game::ConfirmDiscard2 {} {
   if {$::trialMode} { return 1 }
   if {[sc_base isReadOnly]} { return 1 }
   if {! [sc_game altered]} { return 1 }
-  # set answer [ tk_dialog .cgDialog "Scid: [tr GameNew]" $::tr(ClearGameDialog) "" 2 \
-  # $::tr(SaveAndContinue) $::tr(DiscardChangesAndContinue) $::tr(GoBack) ]
 
   set w .confirmDiscard
   toplevel $w
@@ -48,10 +50,6 @@ proc ::game::ConfirmDiscard2 {} {
 
   label $w.top.txt -text "This game has been altered.\nDo you wish to save it?"
   pack $w.top.txt -padx 5 -pady 5 -side right
-
-  # This widget was f-ing awful. Translations previously used were
-  # message - ::tr(ClearGameDialog)
-  # buttons - ::tr(SaveAndContinue) ::tr(DiscardChangesAndContinue) ::tr(GoBack)
 
   button $w.bottom.b1 -width 10 -text {Save} -command {destroy .confirmDiscard ; set ::game::answer 0}
   button $w.bottom.b2 -width 10 -text {Don't Save} -command {destroy .confirmDiscard ; set ::game::answer 1}
