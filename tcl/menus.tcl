@@ -449,6 +449,9 @@ $m  add command -label SearchMaterial \
 bind . <Control-M> ::search::material
 set helpMessage($m,[incr menuindex]) SearchMaterial
 
+$m  add separator
+incr menuindex
+
 $m add checkbutton -label WindowsPList \
     -variable plistWin -command ::plist::toggle -accelerator "Ctrl+Shift+P"
 bind . <Control-P> ::plist::toggle

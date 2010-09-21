@@ -65,11 +65,16 @@ proc ::plist::Open {} {
   $w.menu.file add command -label Update -command ::plist::refresh
   $w.menu.file add command -label Close -command "destroy $w"
   $w.menu add cascade -label PListSort -menu $w.menu.sort
+
   menu $w.menu.sort
   foreach name {Name Elo Games Oldest Newest} {
     $w.menu.sort add radiobutton -label $name -variable ::plist::sort \
       -value $name -command ::plist::refresh
   }
+
+  $w.menu add cascade -label $::tr(Help) -menu $w.menu.help
+  menu $w.menu.help
+  $w.menu.help add command -label $::tr(Help) -command {helpWindow PList}
 
   foreach i {t o1 o2 o3 b} {frame $w.$i}
   $w.t configure -relief sunken -borderwidth 1
@@ -89,7 +94,7 @@ proc ::plist::Open {} {
   $w.t.text tag configure date -foreground darkRed
   $w.t.text tag configure elo -foreground darkGreen
   $w.t.text tag configure name -foreground black
-  $w.t.text tag configure title -background lightSteelBlue; #-font font_SmallBold
+  $w.t.text tag configure title -font font_SmallBold
 
   set font font_Small
   set fbold font_SmallBold
@@ -198,8 +203,8 @@ proc ::plist::refresh {} {
   foreach i {Games Oldest Newest Elo Name} {
     $t tag configure s$i -font font_SmallBold
     $t tag bind s$i <1> "set ::plist::sort $i; ::plist::refresh"
-    $t tag bind s$i <Any-Enter> "$t tag config s$i -foreground red"
-    $t tag bind s$i <Any-Leave> "$t tag config s$i -foreground {}"
+    $t tag bind s$i <Any-Enter> "$t tag config s$i -background grey85"
+    $t tag bind s$i <Any-Leave> "$t tag config s$i -background {}"
     $t insert end "\t" title
     $t insert end [tr PListSort$i] [list title s$i]
   }

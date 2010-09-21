@@ -62,11 +62,17 @@ proc ::tourney::Open {} {
   $w.menu.file add command -label TmtFileUpdate -command ::tourney::refresh
   $w.menu.file add command -label TmtFileClose -command "destroy $w"
   $w.menu add cascade -label TmtSort -menu $w.menu.sort
+
   menu $w.menu.sort
   foreach name {Date Players Games Elo Site Event Winner} {
     $w.menu.sort add radiobutton -label TmtSor$name \
       -variable ::tourney::sort -value $name -command {::tourney::refresh -fast}
   }
+
+  $w.menu add cascade -label $::tr(Help) -menu $w.menu.help
+  menu $w.menu.help
+  $w.menu.help add command -label $::tr(Help) -command {helpWindow Tmt}
+
 
   foreach i {t o1 o2 o3 b} {frame $w.$i}
   text $w.t.text -width 75 -height 22 -font font_Small -wrap none \
@@ -86,7 +92,7 @@ proc ::tourney::Open {} {
   $w.t.text tag configure np -foreground darkBlue
   $w.t.text tag configure elo -foreground darkGreen
   $w.t.text tag configure best -foreground steelBlue
-  $w.t.text tag configure event -foreground darkRed
+  # $w.t.text tag configure event -foreground darkRed
   $w.t.text tag configure title -font font_SmallBold
 
   set font font_Small
@@ -194,12 +200,9 @@ proc ::tourney::Open {} {
 
   dialogbutton $w.b.defaults -textvar ::tr(Defaults) -command ::tourney::defaults
   dialogbutton $w.b.update -textvar ::tr(Update) -command ::tourney::refresh
-  dialogbutton $w.b.help -textvar ::tr(Help) -command {helpWindow Tmt}
   dialogbutton $w.b.close -textvar ::tr(Close) -command "destroy $w"
   pack $w.b -side bottom -fill x -pady 5
-  packbuttons right $w.b.close $w.b.help \
-    [frame $w.b.space1 -width 30] $w.b.update \
-    [frame $w.b.space2 -width 10] $w.b.esize $w.b.size 
+  packbuttons right $w.b.close $w.b.update  $w.b.esize $w.b.size 
   packbuttons left $w.b.defaults
   pack $w.o3 -side bottom -fill x -padx 2 -pady 2
   pack $w.o2 -side bottom -fill x -padx 2 -pady 2
@@ -310,8 +313,8 @@ proc ::tourney::refresh {{option ""}} {
     foreach i {Date Players Games Elo Site Event Winner} {
       $t tag configure s$i -font font_SmallBold
       $t tag bind s$i <1> "set ::tourney::sort $i; ::tourney::refresh -fast"
-      $t tag bind s$i <Any-Enter> "$t tag config s$i -foreground red"
-      $t tag bind s$i <Any-Leave> "$t tag config s$i -foreground {}"
+      $t tag bind s$i <Any-Enter> "$t tag config s$i -background grey85"
+      $t tag bind s$i <Any-Leave> "$t tag config s$i -background {}"
     }
     $t insert end "\t\t"
     $t insert end [tr TmtSortDate] sDate
