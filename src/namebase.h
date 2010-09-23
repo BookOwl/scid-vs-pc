@@ -110,6 +110,7 @@ typedef nameNodeT * nameNodePtrT;
 class NameBase
 {
   private:
+
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // NameBase:  Data structures
     fileNameT        Fname;
@@ -137,7 +138,9 @@ class NameBase
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     //  Namebase:  Public methods
+
   public:
+
 #ifdef WINCE
   void* operator new(size_t sz) {
     void* m = my_Tcl_Alloc(sz);
@@ -164,6 +167,9 @@ class NameBase
 
     static bool IsValidNameType (nameT nt) { return (nt < NUM_NAME_TYPES); }
     static nameT NameTypeFromString (const char * str);
+    bool   SortOrder;
+    void   ReverseSort () { SortOrder = !SortOrder; }
+	
     
     void      SetFileName (const char *s) { strcpy (Fname,s); }
     char  *   GetFileName ()          { return Fname; }

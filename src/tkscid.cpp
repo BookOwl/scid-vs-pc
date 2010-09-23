@@ -855,7 +855,7 @@ sc_base (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
         "isReadOnly",   "numGames",     "open",         "piecetrack",
         "slot",         "sort",         "stats",        "switch",
         "tag",          "tournaments",  "type",         "upgrade",
-        "fixCorrupted",
+        "fixCorrupted",	"reversesort",
         NULL
     };
     enum {
@@ -865,7 +865,7 @@ sc_base (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
         BASE_ISREADONLY,  BASE_NUMGAMES,    BASE_OPEN,        BASE_PTRACK,
         BASE_SLOT,        BASE_SORT,        BASE_STATS,       BASE_SWITCH,
         BASE_TAG,         BASE_TOURNAMENTS, BASE_TYPE,        BASE_UPGRADE,
-        BASE_FIX_CORRUPTED
+        BASE_FIX_CORRUPTED, BASE_REVERSESORT
     };
     int index = -1;
 
@@ -959,6 +959,9 @@ sc_base (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
 
     case BASE_FIX_CORRUPTED:
         return sc_base_fix_corrupted (cd, ti, argc, argv);
+
+    case BASE_REVERSESORT:
+        return sc_base_reversesort (cd, ti, argc, argv);
 
     default:
         return InvalidCommand (ti, "sc_base", options);
@@ -2116,6 +2119,13 @@ sc_base_sort (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
         removeFile (db->fileName, TREEFILE_SUFFIX);
     }
 
+    return TCL_OK;
+}
+
+int
+sc_base_reversesort (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
+{
+    db->nb->ReverseSort();
     return TCL_OK;
 }
 

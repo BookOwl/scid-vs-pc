@@ -48,6 +48,8 @@ enum {
     SORT_avgElo, SORT_country, SORT_month,
     SORT_deleted, SORT_eventdate, SORT_sentinel
 };
+// todo + "WElo", "BElo",
+// todo + SORT_WElo, SORT_BElo
 
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -793,6 +795,16 @@ IndexEntry::Compare (IndexEntry * ie, int * fields, NameBase * nb)
             res = rTwo - rOne;
             break;
 
+/* Needs fixing below (near SetRound)
+        case SORT_WElo:  // white Elo rating:
+            res = ie->WhiteElo - WhiteElo;
+            break;
+
+        case SORT_BElo:  // black Elo rating:
+            res = ie->BlackElo - BlackElo;
+            break;
+*/
+
         case SORT_country:  // Last 3 characters of site field:
             {
                 const char * sOne = GetSiteName (nb);
@@ -828,7 +840,13 @@ IndexEntry::Compare (IndexEntry * ie, int * fields, NameBase * nb)
             return 0;
         }
 
-        if (res != 0) { return res; }
+        if (res != 0) {
+	    // check if sort order is reversed
+	    if (nb->SortOrder)
+	      return -res;
+	    else 
+	      return res;
+	}
         fields++;
     }
 

@@ -205,7 +205,7 @@ proc ::windows::gamelist::Open {} {
   # default classic alt clam
 
   global highcolor helpMessage
-  global glistNames glistFields glistSortedBy
+  global glistNames glistFields glistSortedBy glSortReversed
   if {[winfo exists .glistWin]} {
     focus .
     destroy .glistWin
@@ -232,8 +232,7 @@ proc ::windows::gamelist::Open {} {
   pack [frame $w.b] -side bottom -fill x -ipady 5 -padx 10
 
   ttk::frame $w.f
-  ttk::treeview $w.tree -columns $glistNames -show headings \
-    -xscroll "$w.hsb set"
+  ttk::treeview $w.tree -columns $glistNames -show headings -xscroll "$w.hsb set"
     # -yscroll "$w.vsb set" -xscroll "$w.hsb set"
 
 
@@ -284,7 +283,8 @@ proc ::windows::gamelist::Open {} {
       $w.tree column  $col -width $width -anchor $anchor -stretch 0
   }
 
-  set glistSortedBy Number
+  set glistSortedBy {}
+  set glSortReversed 0
 
   bind $w <Left>  {}
   bind $w <Right> {}
@@ -496,25 +496,27 @@ proc ::windows::gamelist::SetSelection {code xcoord ycoord} {
 }
 
 proc SortBy {tree col} {
-    global glistCodes glistSortedBy glstart
+    global glistCodes glistSortedBy glstart glSortReversed
 
     set w .glistWin
 
     # hmmm. WElo, BElo and a few others are not valid sorting... apparently
-    # and no reverse order !?
 
     set ::windows::gamelist::finditems {}
-    catch {sc_base sort $col {}}
 
-    ### directions are actually reversed so we can insert
-    ### into tree instead of appending (for speedup)
-    if {$col != $glistSortedBy} {
-      set dir {-decreasing}
-      set glistSortedBy $col
+    if {$col == $glistSortedBy} {
+      sc_base reversesort
+      set glSortReversed [expr !$glSortReversed]
     } else {
-      set dir {-increasing}
-      set glistSortedBy {}
+      if {$glSortReversed} {
+	# make sorting normal
+	sc_base reversesort
+	set glSortReversed 0
+      }
+      set glistSortedBy $col
     }
+
+    catch {sc_base sort $col {}}
 
     set glstart 1
     ::windows::gamelist::Refresh
