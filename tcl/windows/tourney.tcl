@@ -309,31 +309,27 @@ proc ::tourney::refresh {{option ""}} {
     "Winner" { set tlist [lsort -dict -index 7 $tlist] }
   }
 
-  if {[llength $tlist] > 0} {
-    foreach i {Date Players Games Elo Site Event Winner} {
-      $t tag configure s$i -font font_SmallBold
-      $t tag bind s$i <1> "set ::tourney::sort $i; ::tourney::refresh -fast"
-      $t tag bind s$i <Any-Enter> "$t tag config s$i -background grey85"
-      $t tag bind s$i <Any-Leave> "$t tag config s$i -background {}"
-    }
-    $t insert end "\t\t"
-    $t insert end [tr TmtSortDate] sDate
-    $t insert end "\t"
-    $t insert end [tr TmtSortPlayers] sPlayers
-    $t insert end "\t"
-    $t insert end [tr TmtSortGames] sGames
-    $t insert end "\t"
-    $t insert end [tr TmtSortElo] sElo
-    $t insert end "\t"
-    $t insert end [tr TmtSortSite] sSite
-    $t insert end ": "
-    $t insert end [tr TmtSortEvent] sEvent
-    $t insert end "\t"
-    $t insert end [tr TmtSortWinner] sWinner
-    $t insert end "\n"
-  } else {
-    $t insert end $::tr(TmtNone)
+  foreach i {Date Players Games Elo Site Event Winner} {
+    $t tag configure s$i -font font_SmallBold
+    $t tag bind s$i <1> "set ::tourney::sort $i; ::tourney::refresh -fast"
+    $t tag bind s$i <Any-Enter> "$t tag config s$i -background grey85"
+    $t tag bind s$i <Any-Leave> "$t tag config s$i -background {}"
   }
+  $t insert end "\t\t"
+  $t insert end [tr TmtSortDate] sDate
+  $t insert end "\t"
+  $t insert end [tr TmtSortPlayers] sPlayers
+  $t insert end "\t"
+  $t insert end [tr TmtSortGames] sGames
+  $t insert end "\t"
+  $t insert end [tr TmtSortElo] sElo
+  $t insert end "\t"
+  $t insert end [tr TmtSortSite] sSite
+  $t insert end ": "
+  $t insert end [tr TmtSortEvent] sEvent
+  $t insert end "\t"
+  $t insert end [tr TmtSortWinner] sWinner
+  $t insert end "\n"
 
   set hc lemonchiffon
   set count 0

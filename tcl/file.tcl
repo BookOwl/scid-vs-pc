@@ -221,6 +221,7 @@ proc refreshWindows {} {
   ::windows::stats::Refresh
   ::crosstab::Refresh
   ::plist::refresh
+  ::tourney::refresh
   updateMenuStates
   updateTitle
   updateStatusBar

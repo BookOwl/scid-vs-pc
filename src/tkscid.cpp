@@ -3188,8 +3188,9 @@ sc_base_tournaments (ClientData cd, Tcl_Interp * ti, int argc, const char ** arg
         return errorResult (ti, errMsgNotOpen(ti));
     }
     if (db->numGames == 0) {
-        return errorResult (ti, "The current database has no games.");
+	return TCL_OK;
     }
+    // if (db->numGames == 0) { return errorResult (ti, "The current database has no games."); }
 
     static const char * options [] = {
         "-start", "-end", "-country", "-minElo", "-maxElo",
