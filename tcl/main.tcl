@@ -367,7 +367,7 @@ autoscrollframe .gameInfoFrame text .gameInfo
 
 menu .gameInfo.menu -tearoff 0 -background gray90
 
-.gameInfo.menu add checkbutton -label {Show Side to Move} \
+.gameInfo.menu add checkbutton -label {Side to Move} \
     -variable boardSTM -offvalue 0 -onvalue 1 -command {::board::togglestm .board}
 
 .gameInfo.menu add checkbutton -label GInfoMaterial \
@@ -389,13 +389,13 @@ menu .gameInfo.menu -tearoff 0 -background gray90
 
 .gameInfo.menu add separator
 
-.gameInfo.menu add checkbutton -label {Show Game Info} \
+.gameInfo.menu add checkbutton -label {Game Info} \
    -variable gameInfo(show) -command showGameInfo
 
-.gameInfo.menu add checkbutton -label {Show PGN Window} \
+.gameInfo.menu add checkbutton -label {PGN Window} \
    -variable pgnWin -command ::pgn::OpenClose
 
-.gameInfo.menu add checkbutton -label {Show Game List} \
+.gameInfo.menu add checkbutton -label {Game List} \
    -variable ::windows::gamelist::isOpen -command ::windows::gamelist::Open
 
 proc contextmenu {x y} {
