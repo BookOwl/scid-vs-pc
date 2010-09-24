@@ -39,17 +39,15 @@
 static const char * sortCriteriaNames[] = {
     "Date", "Year", "Event", "Site", "Round",
     "White", "Black", "Eco", "Result", "Length",
-    "Rating", "Country", "Month", "Deleted", "Eventdate", NULL
+    "Rating", "WElo", "BElo", "Country", "Month", "Deleted", "Eventdate", NULL
 };
 
 enum {
     SORT_date, SORT_year, SORT_event, SORT_site, SORT_round,
     SORT_white, SORT_black, SORT_eco, SORT_result, SORT_moveCount,
-    SORT_avgElo, SORT_country, SORT_month,
+    SORT_avgElo, SORT_WElo, SORT_BElo, SORT_country, SORT_month,
     SORT_deleted, SORT_eventdate, SORT_sentinel
 };
-// todo + "WElo", "BElo",
-// todo + SORT_WElo, SORT_BElo
 
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -795,7 +793,6 @@ IndexEntry::Compare (IndexEntry * ie, int * fields, NameBase * nb)
             res = rTwo - rOne;
             break;
 
-/* Needs fixing below (near SetRound)
         case SORT_WElo:  // white Elo rating:
             res = ie->WhiteElo - WhiteElo;
             break;
@@ -803,7 +800,6 @@ IndexEntry::Compare (IndexEntry * ie, int * fields, NameBase * nb)
         case SORT_BElo:  // black Elo rating:
             res = ie->BlackElo - BlackElo;
             break;
-*/
 
         case SORT_country:  // Last 3 characters of site field:
             {
@@ -1759,7 +1755,14 @@ Index::ParseSortCriteria (const char * inputStr)
                     return ERROR_Full;
                 }
                 name [length] = 0;
+
+		// Do some conversions, eg: date->Date welo->WElo
+		// todo : fix up bracketed elos (2380) wtf!,
+		//   and add WElo, BElo to sort widget
                 name[0] = toupper (name[0]);
+		if (*name && !strcmp(name+1,"elo"))
+		  name[1] = toupper (name[1]);
+
                 int index = strUniqueMatch (name, sortCriteriaNames);
                 if (index == -1) {
                     // Invalid criteria name:
