@@ -168,8 +168,6 @@ class NameBase
     static bool IsValidNameType (nameT nt) { return (nt < NUM_NAME_TYPES); }
     static nameT NameTypeFromString (const char * str);
     bool   SortOrder;
-    void   ReverseSort () { SortOrder = !SortOrder; }
-	
     
     void      SetFileName (const char *s) { strcpy (Fname,s); }
     char  *   GetFileName ()          { return Fname; }

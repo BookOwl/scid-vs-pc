@@ -82,7 +82,7 @@ foreach {code title anchor null} $glistFields {
   lappend glistNames $title
 }
 
-### not sure about these missing fileds at all &&&
+### not sure about these missing fields at all &&&
 
 # set glistNames { Number White WElo Black BElo Event Site Round Date Result Length ECO Opening Deleted Flags Vars Comments Annos Start }
 # Number Filtered White WElo Black BElo Event Site Round Date Year EDate Result Length Country ECO Opening EndMaterial Deleted Flags Vars Comments Annos Start
@@ -495,6 +495,16 @@ proc ::windows::gamelist::SetSelection {code xcoord ycoord} {
   set glNumber [.glistWin.cg.text get $glSelection.0 $glSelection.end]
 }
 
+image create photo arrow_up -format gif -data {
+R0lGODlhCgAKAIABAAAAAP///yH5BAEKAAEALAAAAAAKAAoAAAIPjI+pq8AA
+G4xnWmMz26gAADs=
+}
+
+image create photo arrow_down -format gif -data {
+R0lGODlhCgAKAIABAAAAAP///yH5BAEKAAEALAAAAAAKAAoAAAIPjI+pa+D/
+GnRoqrgA26wAADs=
+}
+
 proc SortBy {tree col} {
     global glistCodes glistSortedBy glstart glSortReversed
 
@@ -503,17 +513,24 @@ proc SortBy {tree col} {
     # hmmm. WElo, BElo and a few others are not valid sorting... apparently
 
     set ::windows::gamelist::finditems {}
-
+  
     if {$col == $glistSortedBy} {
-      sc_base reversesort
       set glSortReversed [expr !$glSortReversed]
     } else {
-      if {$glSortReversed} {
-	# make sorting normal
-	sc_base reversesort
-	set glSortReversed 0
+      if {$glistSortedBy != {} } {
+	$w.tree heading $glistSortedBy -image {}
       }
+      set glSortReversed 0
       set glistSortedBy $col
+    }
+
+
+    if {$glSortReversed} {
+      $w.tree heading $col -image arrow_down
+      sc_base sortdown
+    } else {
+      $w.tree heading $col -image arrow_up
+      sc_base sortup
     }
 
     catch {sc_base sort $col {}}
@@ -529,6 +546,23 @@ proc setGamelistTitle {} {
 
 proc setTitle {message} {
   wm title .glistWin "Scid: $message"
+}
+
+# called by file.tcl when db is changed
+
+proc ::windows::gamelist::Reload {} {
+  global glistSortedBy
+
+  set w .glistWin
+  if {![winfo exists $w]} {return}
+
+  if {$glistSortedBy != {} } {
+    $w.tree heading $glistSortedBy -image {}
+  }
+
+  set glistSortedBy {}
+  sc_base sortup
+  ::windows::gamelist::Refresh
 }
 
 proc ::windows::gamelist::Refresh {} {

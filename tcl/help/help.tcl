@@ -107,11 +107,10 @@ or many games pasted back to back.</p></ul>
 
 <ul><p>Once you have loaded a game from the command line or the 
 <run ::file::Open><green>File--<gt>Open</green></run> dialog,
-open the PGN Window (
-<run ::pgn::OpenClose><green>Windows--<gt>PGN Window</green></run>)
+open the <run ::pgn::OpenClose><green>PGN Window</green></run>
 to browse the game. Clicking on moves will move the game forward. (You can also
 use the buttons or the wheel mouse in the main window). Clicking on comments
-will  allow you to edit them.</p>
+allows you to edit them.</p>
 
 <p>In the Game Info window, you will see the names of the players and
 tournament. These names are also clickable, and will show you information about
@@ -120,11 +119,11 @@ database capabilities.</p></ul>
 
 <h3>Browsing Games</h3>
 
-<ul><p>If you have opened a multiple game PGN file, the
-<a GameList>Game List window</a> widget
-will allow you to browse the games, and select those of interest.</p>
+<ul><p>If you have opened a mult-game PGN, the
+<a GameList>Game List</a> widget
+allows you to browse the games and select those of interest.</p>
 
-<p>This window also serves to select and delete games from scid
+<p>This window also serves to select and delete games from Scid's
 databases.</p></ul>
 
 <h3>Saving Changes</h3>
@@ -507,11 +506,6 @@ set helpText(Hints) {<h1>Scid Hints</h1>
   Or, get into the habit of taking back moves using the right-mouse button,
   which actually removes the move from the game if you are at the last move of
   the game.
-  </p>
-
-  <h4>How do I change column widths in the Game List window?</h4>
-  <p>
-  Click the left or right mouse button on each column title.
   </p>
 
   <h4>How can I use the tree window on a selection of games, not my whole
@@ -1029,6 +1023,7 @@ set helpText(Searches) {<h1>Searches in Scid</h1>
   filter, add to it, or reset it and search the whole database.
   This choice permits complex searches to be built up incrementally.
   </p>
+  <p><i>Do not confuse Filtered games with Deleted games. They are separate ideas... See <a GameList>here</a> for more info</i></p>
   <p>
   You can also copy all games in the filter of one database to another
   using the <a Switcher>database switcher</a> window.
@@ -1040,8 +1035,7 @@ set helpText(Searches) {<h1>Searches in Scid</h1>
   automatically.
   </p>
   <p>
-  <i>Note - most searches only apply to the main line moves of a game,
-  not to variations</i>.
+  <i>Most searches only apply to the main line moves of a game, not to variations</i>.
   </p>
 
   <h3><name Header>General (Header) Searches</name></h3>
@@ -1495,7 +1489,9 @@ set helpText(Crosstable) {<h1>The Crosstable window</h1>
 set helpTitle(Switcher) "Database Switcher"
 set helpText(Switcher) {<h1>The Database Switcher window</h1>
   <p>
-  The Database Switcher window provides a view which makes it easy to
+  The 
+  <run ::windows::switcher::Open><green>Database Switcher</green></run>
+provides a view which makes it easy to
   switch between databases or copy games between databases.
   The name, <a Searches Filter>filter</a> state and graphic type icon
   of each database is displayed, and the active database is highlighted
@@ -1631,10 +1627,35 @@ set helpText(Tmt) {<h1>The Tournament Finder window</h1>
 set helpTitle(GameList) "Game List window"
 set helpText(GameList) {<h1>The Game List window</h1>
 
-  <p> The Game List widget allows easy perusal off all games in the the
-currently open database / PGN archive.  You can <b>search for a game</b> by entering
-text in the "Find" entry box, or <b>sort them</b> by clicking on the column titles.
-Double-clicking will load a game.  </p>
+  <p> The <run ::windows::gamelist::Open><green>Game List</green></run>
+widget allows easy perusal of all (filtered) games in the
+currently open Database / PGN archive.
+</p>
+<p>A common use of the widget is to search for games by entering
+text in the <b>Find</b> entry box. Clicking <b>Filter</b>
+shows all matching games.
+<i>For more info about Searches and Filters, see <a Searches>here</a>, or below</i>.
+</p>
+<p>
+Buttons:
+<ul>
+<li><b>Reset</b> - resets game filter</li>
+<li><b>Remove</b> - removes highlighted game(s) from filter</li>
+<li><b>Browse</b> - shows highlighted game in a pop-up window (resizable using Control+Wheel or Control+Shift+Left/Right). From here it is possible to <a GameList Browsing>merge</a> games.</li>
+<li><b>Current</b> - highlights the current game, <i>if it has not been filtered.</i></li>
+<li><b>Delete</b> - toggles the delete flag for highlighted games.</li>
+<li><b>Compact</b> - perform database compaction.</li>
+</ul>
+</p>
+<p>
+Other features include:
+<ul>
+<li>Load games by double-clicking.</li>
+<li>Multiple games can be selected by using Shift or Control while single clicking.
+<li>Resize column widths by dragging the column edge.</li>
+<li>Sort games by single clicking the column title (note - this resets the game filter).</li>
+</ul>
+
 
   <h3>Deleted and Filtered Games</h3>
   <p>
@@ -1651,11 +1672,11 @@ Double-clicking will load a game.  </p>
   the database is compacted - whence they will be <b>permanently deleted</b> from the database.
 This can be done by the <b>Compact</b> button, or 
   from the <a Maintenance>maintenance</a> window.</p>
-<p><i>The default database (Clipbase) cannot be compacted</i>.</p>
+<p><i>Note - the default database (Clipbase) cannot be compacted</i>.</p>
   
   <h3><name Browsing>Merging Games</name></h3>
   <p>
-  The Merge Game feature (accessed from <b>Browse</b> game) provides a way to include the
+  The Merge Game feature provides a way to include the
   selected game as a variation of the current game. Scid finds the
   deepest point where the selected game differs from the current
   game (taking transpositions into account) and adds a variation
@@ -1664,7 +1685,7 @@ This can be done by the <b>Compact</b> button, or
   are interested in adding the whole game or just its opening phase.
   </p>
 
-  <p><footer>Updated: Scid vs. PC 4.0, July 2010</footer></p>
+  <p><footer>Updated: Scid vs. PC 4.1, September 2010</footer></p>
 }
 
 
