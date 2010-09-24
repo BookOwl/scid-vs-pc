@@ -62,7 +62,7 @@ set var(WARNINGS) -Wall
 set var(ZLIB) -lz
 
 set defaultVar(TCL_INCLUDE) {-I/usr/include}
-set defaultVar(TCL_LIBRARY) {-L/usr/lib -ltcl$(TCL_VERSION) -ldl}
+set defaultVar(TCL_LIBRARY) {-L/usr/lib -ltcl$(TCL_VERSION)}
 set defaultVar(TK_LIBRARY) \
     {$(TCL_LIBRARY) -ltk$(TCL_VERSION) -L/usr/X11R6/lib -lX11}
 
@@ -292,7 +292,7 @@ proc findTclTkPaths {} {
             }
         }
         if {! [info exists var(TCL_LIBRARY)]} {
-            set var(TCL_LIBRARY) "-L$opt(tcl_lib) -l$opt(tcl_lib_file) -ldl"
+            set var(TCL_LIBRARY) "-L$opt(tcl_lib) -l$opt(tcl_lib_file)"
         }
         if {! [info exists var(TK_LIBRARY)]} {
             set var(TK_LIBRARY) {$(TCL_LIBRARY)}
