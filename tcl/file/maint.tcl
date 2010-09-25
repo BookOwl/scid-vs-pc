@@ -1280,11 +1280,13 @@ proc sortDatabase {} {
   }
   progressWindow "Scid" "Sorting the database..."
   busyCursor .
-  set err [catch {sc_base sort $sortCriteria(real) \
-        {changeProgressWindow "Storing results..."} \
-      } result]
+  set err [catch {sc_base sort $sortCriteria(real) {changeProgressWindow "Storing results..."} } result]
   unbusyCursor .
   closeProgressWindow
+
+  updateBoard
+  ::windows::gamelist::Refresh
+  ::maint::Refresh
   if {$err} {
     tk_messageBox -type ok -icon warning -parent $w \
         -title "Scid: Sort results" -message $result
@@ -1293,9 +1295,6 @@ proc sortDatabase {} {
         -title "Scid: Sort results" \
         -message "The database was successfully sorted."
   }
-  updateBoard
-  ::windows::gamelist::Refresh
-  ::maint::Refresh
 }
 
 proc makeBaseReadOnly {} {

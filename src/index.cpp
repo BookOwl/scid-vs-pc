@@ -784,7 +784,14 @@ IndexEntry::Compare (IndexEntry * ie, int * fields, NameBase * nb)
             break;
 
         case SORT_result:
-            res = (int)GetResult() - (int)ie->GetResult();
+            // i think we can fudge this here to make draws and no-results sort together
+            rOne = (int)GetResult();
+            rTwo = (int)ie->GetResult();
+            if (rOne == RESULT_None)
+		rOne = RESULT_Draw + 1;
+            if (rTwo == RESULT_None)
+		 rTwo = RESULT_Draw + 1;
+            res = rOne - rTwo;
             break;
 
         case SORT_avgElo:  // Average Elo rating:
