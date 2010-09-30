@@ -1884,9 +1884,12 @@ proc makeAnalysisWin { {n 1} } {
     -command "if {$analysis(uci$n)} {sendToEngine $n .}"  -relief $relief
   ::utils::tooltip::Set $w.b.update $::tr(Update)
 
-  pack $w.b.startStop $w.b.lockengine $w.b.move $w.b.line $w.b.multipv \
-       $w.b.alllines $w.b.annotate $w.b.automove $w.b.finishGame $w.b.showboard \
+  button $w.b.help -image tb_help  -command {helpWindow Analysis} -relief $relief
+
+  pack $w.b.startStop $w.b.lockengine $w.b.move $w.b.line $w.b.alllines \
+       $w.b.multipv $w.b.annotate $w.b.automove $w.b.finishGame $w.b.showboard \
        $w.b.update $w.b.priority -side left -pady 2 -padx 1
+  pack $w.b.help -side right -pady 2 -padx 1
 
   # pack  $w.b.showinfo 
   if {$analysis(uci$n)} {
@@ -1972,6 +1975,7 @@ proc makeAnalysisWin { {n 1} } {
         $w.b.multipv configure -from $min -to $max -state readonly
       } else  {
         $w.b.multipv configure -from 1 -to 1 -state disabled
+	$w.b.alllines configure -state disabled
       }
     }
   } ;# end of MultiPV spinbox configuration
@@ -2193,12 +2197,12 @@ proc processAnalysisInput {n} {
   # Check for "feature" commands so we can determine if the engine
   # has the setboard and analyze commands:
   #
-  if {! [string compare [string range $line 0 6] feature]} {
-    if {[string match "*analyze=1*" $line]} { set analysis(has_analyze$n) 1 }
-    if {[string match "*setboard=1*" $line]} { set analysis(has_setboard$n) 1 }
-    if {[string match "*usermove=1*" $line]} { set analysis(wants_usermove$n) 1 }
-    if {[string match "*sigint=1*" $line]} { set analysis(send_sigint$n) 1 }
-    if {[string match "*myname=*" $line] } {
+  if {[string match {feature*} $line]} {
+    if {[string match {*analyze=1*} $line]} { set analysis(has_analyze$n) 1 }
+    if {[string match {*setboard=1*} $line]} { set analysis(has_setboard$n) 1 }
+    if {[string match {*usermove=1*} $line]} { set analysis(wants_usermove$n) 1 }
+    if {[string match {*sigint=1*} $line]} { set analysis(send_sigint$n) 1 }
+    if {[string match {*myname=*} $line] } {
       if { !$analysis(wbEngineDetected$n) } { detectWBEngine $n $line  }
       if { [regexp "myname=\"(\[^\"\]*)\"" $line dummy name]} {
         catch {wm title .analysisWin$n "Scid: $name"}
@@ -2209,9 +2213,9 @@ proc processAnalysisInput {n} {
 
 
   # Check for a line starting with "Crafty", so Scid can work well
-  # with older Crafty versions that do not recognize "protover":
-  #
-  if {! [string compare [string range $line 0 5] Crafty]} {
+  # with older Crafty versions that do not recognize "protover"
+
+  if {[string match {Crafty*} $line]} {
     logEngineNote $n {Seen "Crafty"; assuming analyze and setboard commands.}
     set major 0
     if {[scan $line "Crafty v%d.%d" major minor] == 2  &&  $major >= 18} {
@@ -2610,7 +2614,8 @@ proc updateAnalysisText {{n 1}} {
     set cleared 1
   }
 
-  ################################################################################
+  set line {}
+
   if { $analysis(uci$n) } {
     if {$cleared} { set analysis(multiPV$n) {} ; set analysis(multiPVraw$n) {} }
     if {$analysis(multiPVCount$n) == 1} {
@@ -2619,8 +2624,7 @@ proc updateAnalysisText {{n 1}} {
 		[scoreToMate $score $moves $n]  \
 		[addMoveNumbers $n [::trans $moves]]]
       if {$newhst != $analysis(lastHistory$n) && $moves != ""} {
-        $h insert end [format "%s (%.2f)\n" $newhst $analysis(time$n)] indent
-        $h see end-1c
+        append line [format "%s (%.2f)\n" $newhst $analysis(time$n)]
         set analysis(lastHistory$n) $newhst
       }
     } else {
@@ -2638,27 +2642,29 @@ proc updateAnalysisText {{n 1}} {
         if {$lineNumber == 1} { incr lineNumber ; continue }
         $h insert end "$lineNumber " gray
         set score [scoreToMate [lindex $pv 1] [lindex $pv 2] $n]
-        $h insert end [format "%2d %s %s\n" [lindex $pv 0] $score [addMoveNumbers $n [::trans [lindex $pv 2]]] ] indent
+        append line [format "%2d %s %s\n" [lindex $pv 0] $score [addMoveNumbers $n [::trans [lindex $pv 2]]] ] 
         incr lineNumber
       }
     }
-    ################################################################################
   } else  {
     # original Scid analysis display
-    $h insert end [format "%2d %+5.2f %s (%.2f)\n" $analysis(depth$n) $score [::trans $moves] $analysis(time$n)] indent
-    $h see end-1c
+    append line [format "%2d %+5.2f %s (%.2f)\n" $analysis(depth$n) $score [::trans $moves] $analysis(time$n)] 
   }
+
+  ### Should we truncate line so it only takes up one line ? S.A.
+  $h insert end $line indent
+  $h see end-1c
 
   $h configure -state disabled
   set analysis(prev_depth$n) $analysis(depth$n)
   if { ! $analysis(uci$n) } {
     $t insert end [::trans $moves] blue
   }
-  # $t tag add score 2.0 2.13
   $t configure -state disabled
 
   updateAnalysisBoard $n $analysis(moves$n)
 }
+
 ################################################################################
 # args = score, pv
 # returns M X if mate detected (# or ++) or original score

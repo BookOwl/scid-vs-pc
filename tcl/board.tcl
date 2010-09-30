@@ -558,10 +558,8 @@ image create photo tb_crosst -data {
 }
 
 image create photo tb_help -data {
-  R0lGODdhEQARAIQAANnZ2QAAAKa/ovD07+vx6uHp4MvayfP289Lf0MPUwazDqLzPuCsrK+bt
-  5CEuH2WLXoythpa0kbjMtY2tiAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-  ACwAAAAAEQARAAAFSSAgjkFZjigaCANRGEGqGsdQ3EgsB8mgmIuCgiEDBBoO0k2XgqmEzKIo
-  cHtEi9QC5Lq7baWkiJbbjZB3JrB6bTx3JW6VZBJXnUMAOw==
+R0lGODlhGAAYAIABACA9bf///yH5BAEKAAEALAAAAAAYABgAAAIujI+py+0G
+onxJ2kmvBhlD64CVR41RuYjooa5Bu8KoXNI16eb6rtvdufPxhkRHAQA7
 }
 
 image create photo b_bargraph -data {
