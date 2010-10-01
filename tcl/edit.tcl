@@ -557,9 +557,67 @@ proc setupBoard {} {
     makeSetupFen
   } -width 10
 
-  pack $sr.b -side top -pady 15
-  pack $sr.b.clear -side top -padx 5 -pady 10
-  pack $sr.b.initial -side bottom -padx 5 -pady 10
+ # Are these bullet-proof and correct ? 
+
+  button $sr.b.swap -text {Swap Colours} -command {
+    set tmp {}
+    foreach char [split $setupBd {}] {
+      append tmp [::utils::string::invertcase $char]
+    }
+    set setupBd $tmp
+
+    set tmp {}
+    foreach char [split $castling {}] {
+      append tmp [::utils::string::invertcase $char]
+    }
+    set castling $tmp
+
+    setBoard .setup.l.bd $setupBd $setupboardSize
+
+    if {$toMove != {Black}} {
+      set toMove Black
+    } else {
+      set toMove White
+    }
+
+    makeSetupFen
+  } -width 10
+
+  button $sr.b.invert -text Invert -command {
+    # reverse line order
+    set tmp [lindex $setupBd 0] ; # sometimes setupBd has trailing side-to-move. Correct ???
+    set setupBd {}
+    set eight [string range $tmp 0 7]
+    while {$eight != {}} {
+      set setupBd "$eight$setupBd"
+      set tmp [string range $tmp 8 end]
+      set eight [string range $tmp 0 7]
+    }
+    setBoard .setup.l.bd $setupBd $setupboardSize
+    makeSetupFen
+  } -width 10
+
+  button $sr.b.transpose -text Transpose -command {
+    # reverse each line
+    set tmp [lindex $setupBd 0] ; # sometimes setupBd has trailing side-to-move. Correct ???
+    set setupBd {}
+    set eight [string range $tmp 0 7]
+    while {$eight != {}} {
+      set setupBd "$setupBd[string reverse $eight]"
+      set tmp [string range $tmp 8 end]
+      set eight [string range $tmp 0 7]
+    }
+    setBoard .setup.l.bd $setupBd $setupboardSize
+    makeSetupFen
+  } -width 10
+
+  pack $sr.b		-side top -pady 15
+  pack $sr.b.clear	-side top -padx 5 -pady 2
+  pack $sr.b.initial	-side top -padx 5 -pady 2
+  pack [frame $sr.b.space -height 10] -side top
+  pack $sr.b.swap	-side top -padx 5 -pady 2
+  pack $sr.b.invert	-side top -padx 5 -pady 2
+  pack $sr.b.transpose	-side top -padx 5 -pady 2
 
   ### Buttons: Setup and Cancel.
 

@@ -78,3 +78,11 @@ proc ::utils::string::PadCenter {str length {padChar " "}} {
   return $s
 }
 
+proc ::utils::string::invertcase {char} {
+  if {[string is lower $char]} {
+      return [string toupper $char]
+   } else {
+      return [string tolower $char]
+   }
+}
+
