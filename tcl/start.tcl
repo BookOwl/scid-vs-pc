@@ -1114,6 +1114,22 @@ set font [font configure font_Small -family]
 font create font_SmallBold -family $font -size $fontsize -weight bold
 font create font_SmallItalic -family $font -size $fontsize -slant italic
 
+## ttk init
+# Gregor's code to give readonly combos/enrties/spinboxes a non-grey background
+set fbg {}
+switch "_$::ttk::currentTheme" {
+   _alt     { set fbg [list readonly white disabled [ttk::style lookup $::ttk::currentTheme -background]] }
+   _clam    { set fbg [list readonly white {readonly focus} [ttk::style lookup $::ttk::currentTheme -selectbackground]] }
+   _default { set fbg [list readonly white disabled [ttk::style lookup $::ttk::currentTheme -background]] }
+}
+if {[llength $fbg]} {
+   ttk::style map TCombobox -fieldbackground $fbg
+   ttk::style map TEntry -fieldbackground $fbg
+   if {[info tclversion] >= "8.6"} { 
+      ttk::style map TSpinbox -fieldbackground $fbg
+   }
+}
+
 # Start in the clipbase, if no database is loaded at startup.
 sc_base switch clipbase
 
