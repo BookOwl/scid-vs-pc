@@ -103,11 +103,11 @@ proc ::windows::gamelist::FilterText {} {
   if {$temp == {0}} {
     puts "$temp matches"
     set glstart 1
-    ::windows::gamelist::Refresh
+    ::windows::gamelist::Refresh first
     bell
   } else {
     set glstart 1
-    ::windows::gamelist::Refresh
+    ::windows::gamelist::Refresh first
     .glistWin.tree selection set [lindex [.glistWin.tree children {}] 0]
   }
 }
@@ -127,11 +127,11 @@ proc ::windows::gamelist::FindText {} {
   busyCursor .glistWin 0
   if {$temp < 1} {
     set glstart 1
-    ::windows::gamelist::Refresh
+    ::windows::gamelist::Refresh first
     bell
   } else {
     set glstart $temp
-    ::windows::gamelist::Refresh
+    ::windows::gamelist::Refresh first
     .glistWin.tree selection set [lindex [.glistWin.tree children {}] 0]
   }
 }
@@ -147,14 +147,15 @@ proc ::windows::gamelist::Load {number} {
 proc ::windows::gamelist::showCurrent {} {
   global glistCodes
 
+  # Ooops. [sc_game number] returns 0 after sorting, making this widget useless after sorting
+
   set index [sc_game number]
   set ::windows::gamelist::goto $index
   ::windows::gamelist::showNum $index
 }
 
 proc ::windows::gamelist::showNum {index} {
-  global glstart
-
+  global glstart glistSize
   set result [sc_filter locate $index]
 
   # First, check that requested game is not filtered
@@ -175,8 +176,26 @@ proc ::windows::gamelist::showNum {index} {
       .glistWin.tree selection set $item
     } else {
       set glstart $result
-      ::windows::gamelist::Refresh
-      .glistWin.tree selection set [lindex [.glistWin.tree children {}] 0]
+
+      set totalSize [sc_filter count]
+      set lastEntry [expr $totalSize - $glistSize]
+      if {$lastEntry < 1} {
+	set lastEntry 1
+      }
+      if {$glstart > $lastEntry} {
+	set glstart $lastEntry
+      }
+
+      # Highlights CURRENT game if on screen, otherwise game "index"
+      # Even when we'd prefer just to highlight "index" :<
+
+      set current_item [::windows::gamelist::Refresh last]
+      if {$current_item == {}} {
+	# Nasty recursive call... "found" above will now trigger and highlight this game
+	::windows::gamelist::showNum $result
+      } else {
+	.glistWin.tree selection set $current_item
+      }
     }
   }
 }
@@ -293,7 +312,7 @@ proc ::windows::gamelist::Open {} {
   bind $w <Prior> {::windows::gamelist::Scroll -$glistSize}
   bind $w <Home> {
     set glstart 1
-    ::windows::gamelist::Refresh
+    ::windows::gamelist::Refresh first
   }
   bind $w <End> {
     set totalSize [sc_filter count]
@@ -305,7 +324,7 @@ proc ::windows::gamelist::Open {} {
     if {$glstart > $lastEntry} {
       set glstart $lastEntry
     }
-    ::windows::gamelist::Refresh
+    ::windows::gamelist::Refresh last
   }
   bind $w <Next>  {
     incr glstart $glistSize
@@ -317,7 +336,7 @@ proc ::windows::gamelist::Open {} {
     if {$glstart > $lastEntry} {
       set glstart $lastEntry
     }
-    ::windows::gamelist::Refresh
+    ::windows::gamelist::Refresh first
   }
   # MouseWheel bindings:
   # bind $w <MouseWheel> {::windows::gamelist::Scroll [expr {- (%D / 120)}]}
@@ -458,7 +477,11 @@ proc ::windows::gamelist::Scroll {nlines} {
   global glstart
 
   incr glstart $nlines
-  ::windows::gamelist::Refresh
+  if {$nlines < 0} {
+  ::windows::gamelist::Refresh last
+  } else {
+  ::windows::gamelist::Refresh first
+  }
 }
 
 proc ::windows::gamelist::SetSize {} {
@@ -565,10 +588,9 @@ proc ::windows::gamelist::Reload {} {
   ::windows::gamelist::Refresh
 }
 
-proc ::windows::gamelist::Refresh {} {
-  global glistCodes
-  global glstart
-  global glistSize 
+# Returns the treeview item for current game (if it is shown in widget)
+proc ::windows::gamelist::Refresh {{see {}}} {
+  global glistCodes glstart glistSize 
 
   set w .glistWin
   if {![winfo exists $w]} {return}
@@ -585,6 +607,9 @@ proc ::windows::gamelist::Refresh {} {
   if {$glstart < 1} {
     set glstart 1
   }
+  if {$glstart == 1} {
+    set see first
+  }
   if {$glstart > $totalSize} {
     set glstart $totalSize
   }
@@ -594,17 +619,25 @@ proc ::windows::gamelist::Refresh {} {
     set glistEnd $totalSize
   }
 
+  set current_item {}
   set current [sc_game number]
   for {set line $glstart} {$line <= $glistEnd} {incr line} {
     set values [sc_game list $line 1 $glistCodes]
     if {[lindex $values 0] == "$current "} {
-      $w.tree insert {} end -values $values -tag [list click2 current]
+      set current_item [$w.tree insert {} end -values $values -tag [list click2 current]]
     } elseif {[lindex $values 13] == {D }} {
       $w.tree insert {} end -values $values -tag [list click2 deleted] ;#treefont
     } else {
       $w.tree insert {} end -values $values -tag click2
     }
   }
+
+  if {$see == {first}} {
+    $w.tree see [lindex [.glistWin.tree children {}] 0]
+  } 
+  if {$see == {last}} {
+    $w.tree see [lindex [.glistWin.tree children {}] end]
+  } 
 
   setGamelistTitle
   # unbusyCursor .glistWin
@@ -616,6 +649,8 @@ proc ::windows::gamelist::Refresh {} {
   } else {
     $w.c.delete configure -state normal
   }
+
+  return $current_item
 }
 
 proc ::windows::gamelist::SetStart {unit} {
@@ -623,7 +658,7 @@ proc ::windows::gamelist::SetStart {unit} {
 
   set glstart [expr {int($unit)}]
 
-  ::windows::gamelist::Refresh
+  ::windows::gamelist::Refresh first
 }
 
 proc ::windows::gamelist::ToggleFlag {flag} {
@@ -634,12 +669,16 @@ proc ::windows::gamelist::ToggleFlag {flag} {
   if { "$items" == "" } {
     bell
   } else {
-    foreach item [.glistWin.tree selection] {
+    set sel [.glistWin.tree selection]
+    foreach item $sel {
       # mark item as "flag"
       set number [.glistWin.tree set $item Number]
       catch {sc_game flag $flag $number invert}
     }
     ::windows::gamelist::Refresh
+
+    # It'd be good to re-set the selection, but too hard to do after a Refresh
+    # .glistWin.tree selection set $sel
   }
 }
 

@@ -144,7 +144,6 @@ proc ::game::LoadNextPrev {action} {
     return
   }
   ::game::Load $number
-  ::windows::gamelist::Refresh
 }
 
 # ::game::Reload

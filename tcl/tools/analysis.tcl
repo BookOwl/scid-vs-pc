@@ -1885,6 +1885,8 @@ proc makeAnalysisWin { {n 1} } {
   ::utils::tooltip::Set $w.b.update $::tr(Update)
 
   button $w.b.help -image tb_help  -command {helpWindow Analysis} -relief $relief
+  ::utils::tooltip::Set $w.b.help $::tr(Help)
+
 
   pack $w.b.startStop $w.b.lockengine $w.b.move $w.b.line $w.b.alllines \
        $w.b.multipv $w.b.annotate $w.b.automove $w.b.finishGame $w.b.showboard \

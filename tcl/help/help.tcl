@@ -1653,7 +1653,8 @@ Other features include:
 <li>Load games by double-clicking.</li>
 <li>Multiple games can be selected by using Shift or Control while single clicking.
 <li>Resize column widths by dragging the column edge.</li>
-<li>Sort games by single clicking the column title (note - this resets the game filter).</li>
+<li>Sort games by single clicking the column title. </li>
+<li><b>Note</b>: <i>Sort resets the game filter, and the current game cannot be replaced</i>.</li>
 </ul>
 
 
@@ -2706,9 +2707,8 @@ Engines</a> widget, or by using the F2 , F3 or F4 hotkeys.
   </p>
 
   <p>
-  At the top of the window is found some general info,
+  At the bottom of the window is found some general info,
   and move predictions occupy the main text window.
-  Pressing the <button tb_coords> button will display a small board.
   </p>
 
   <p>
@@ -2716,49 +2716,33 @@ Engines</a> widget, or by using the F2 , F3 or F4 hotkeys.
   running different engines!
   </p>
 
-  <h3>Features</h3>
+  <h3>Buttons</h3>
   <p>
-  At the bottom you'll find many cryptic buttons...
+  At the top you'll find many cryptic buttons...
+  <ul>
+  <li> <button tb_addmove><b>Add Move</b> 
+  adds the engine's best move to the current game.</li>
+  <li> <button tb_addvar><b>Add Variation</b>  adds the
+  whole main line.</li>
+  <li> <button tb_addallvars><b>Multi-PV</b>  if the engine supports multi-pv, add all principal variations.</li>
+  <li> <button tb_pause><b>Pause</b>  temporarily interrupt engine analysis.</li>
+  <li> <button tb_play><b>Play</b>  restarts the engine.
+  <i>Note: This will cause most engines 
+  to restart their analysis, forgetting previous lines.
+  Only few engines are able to reuse the
+  results they have calculated till the analysis was stopped.</i> </li>
 
-  The <b>Add move</b> button <button tb_addmove>
-  adds the engines best move to the current game.
-The <b>Add Variation</b> button <button tb_addvar> adds the
-  whole main line., and
-  in case an engine offers the <b>Multi-PV</b> mode, pressing
-  <button tb_addallvars> will add all principal variations.
-  Inserting variations
-  also adds the engine's name as a PGN comment.
-  </p>
-
-  <p>
-  To temporarily interrupt engine analysis, one can use the
-  <b>Pause</b> button <button tb_pause>. Pressing <button tb_play>
-  will restart the engine. Note: Most engines will
-  restart the whole analysis again forgetting all results that where
-  achieved in an earlier run. Only few engines are able to reuse the
-  results they have calculated till the analysis was stopped. 
-  </p>
-
-  <p>
-  To <b>lock analysis</b> to a certain position use <button tb_lockengine>.
-  This will also set Scid's <a Moves Trial>Trial mode</a>.
+  <li> <button tb_lockengine> <b>Lock Analysis</b> lock analysis to a certain position.
+  <i>This also sets <a Moves Trial>Trial mode</a>.
   Then, to add the this analysis as a variation, first press the <b>Pause</b>
-  button, then <b>Add Varation</b>.
-  </p>
-
-  <p>
-  <b>Shoot out</b>, or "demo", mode allows the engine to play out the game.
-  It is only available for the first engine (listed in
-  <a Analysis List>Analysis Engines</a>), and is started by
-  this button <button finish_off>
-  </p>
-
-  <p>
-  If an engine is using too much CPU time and affecting the use of Scid
-  or other applications, turning on the <b>Low CPU priority</b> button
-  <button tb_cpu> may help; it gives the engine a low priority for CPU
+  button, then <b>Add Varation</b></i>.</li>
+  <li><button finish_off><b>Shoot out</b>, or "demo", mode allows the engine to play out the game. </li>
+  <li><button tb_coords><b>Show Board</b> displays a small working board.</li>
+  <li><button tb_cpu><b>Low CPU priority</b> 
+  give the engine a low priority for CPU
   scheduling. On Windows, engines are run on low priority by default.
-  On Unix systems the engines priority can not be set back to normal.
+  On Unix systems the engines priority can not be set back to normal.  </li>
+  </ul>
   </p>
 
   <p>
