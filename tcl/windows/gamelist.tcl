@@ -464,10 +464,10 @@ proc configDeleteButtons {} {
       $w.c.empty configure -state disabled
     } else {
       $w.c.delete configure -state normal
-      if {[compactGamesEmpty]} {
-	$w.c.empty configure -state disabled
+      if {[compactGamesNull]} {
+        $w.c.empty configure -state disabled
       } else {
-	$w.c.empty configure -state normal
+        $w.c.empty configure -state normal
       }
     }
   }
@@ -665,6 +665,11 @@ proc ::windows::gamelist::ToggleFlag {flag} {
 
   ### currently only used to mark games as (un)deleted
 
+  if {$flag != {delete}} {
+    puts "gamelist::ToggleFlag called with flag != delete"
+    return
+  }
+
   set items [.glistWin.tree selection]
   if { "$items" == "" } {
     bell
@@ -674,11 +679,16 @@ proc ::windows::gamelist::ToggleFlag {flag} {
       # mark item as "flag"
       set number [.glistWin.tree set $item Number]
       catch {sc_game flag $flag $number invert}
-    }
-    ::windows::gamelist::Refresh
 
-    # It'd be good to re-set the selection, but too hard to do after a Refresh
-    # .glistWin.tree selection set $sel
+      # toggle treeview delete field
+      set deleted [.glistWin.tree set $item Deleted]
+      if {$deleted == {D }} {
+        set deleted {  }
+      } else {
+        set deleted {D }
+      }
+      .glistWin.tree set $item Deleted $deleted
+    }
   }
 }
 

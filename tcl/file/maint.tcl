@@ -1110,6 +1110,12 @@ proc compactNames {} {
 }
 
 # returns true is no deletions marked
+proc compactGamesNull {} {
+  set stats [sc_compact stats games]
+  return [expr {[lindex $stats 0] == [lindex $stats 2]}]
+}
+
+# returns true is no deletions marked or space wasted
 proc compactGamesEmpty {} {
   set stats [sc_compact stats games]
   return [expr {[lindex $stats 1] == [lindex $stats 3]  && \
