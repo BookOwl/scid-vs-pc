@@ -495,9 +495,9 @@ proc markTwins {{parent .}} {
   pack [frame $w.g3] -side top
   set row 0
   set col 0
-  foreach n {skipshort undelete setfilter comments variations} \
-      name {Undelete SkipShort SetFilter Comments Vars} {
-        checkbutton $w.g3.$n -text $::tr(Twins$name) -variable twinSettings($n) -onvalue Yes -offvalue No
+  foreach n {undelete skipshort setfilter comments variations} \
+      name {TwinsUndelete TwinsSkipShort TwinsSetFilter TwinsComments TwinsVars} {
+        checkbutton $w.g3.$n -text $::tr($name) -variable twinSettings($n) -onvalue Yes -offvalue No
         grid $w.g3.$n -row $row -column $col -sticky w -padx 5 -pady 2
         incr row
       }
@@ -541,7 +541,7 @@ proc markTwins {{parent .}} {
   }
   button $w.b.help -text $::tr(Help) -font $small \
       -command "helpWindow Maintenance Twins; focus $w"
-  button $w.b.go -text $::tr(TwinsDelete) -font $small -command {
+  button $w.b.go -text $::tr(Ok) -font $small -command {
     if {[twinCriteriaOK .twinSettings]} {
       sc_progressBar .twinSettings.progress bar 301 21 time
       set result [doMarkDups .twinSettings]
@@ -805,6 +805,7 @@ proc updateTwinChecker {} {
       autoscrollframe $f.t text $f.t.text \
           -height 16 -width 20  \
           -takefocus 0 -wrap word
+
       $f.t.text tag configure h -background lightSteelBlue
       pack $f.t -side top -fill both -expand yes
 
@@ -816,6 +817,9 @@ proc updateTwinChecker {} {
       bind $f.t.text <ButtonPress-4> "dualplus -1 $i"
       bind $f.t.text <ButtonPress-5> "dualplus 1 $i"
     }
+    # This hack makes the two widgets a similar width under X windows.
+    # Problem is probably due to tk expanding unevenly
+    pack $w.f.right.t -padx 14
 
     $w.f.left.title.note configure -text [concat "(\"1\"" $::tr(TwinCheckUndelete)]
     $w.f.right.title.note configure -text  [concat "(\"2\"" $::tr(TwinCheckUndelete)]
@@ -900,35 +904,39 @@ proc updateTwinChecker {} {
   # Now color the differences if appropriate:
   if {$dup > 0} {
     set rlen [$w.f.right.t.text index end-1c]
-    set llen [$w.f.right.t.text index end-1c]
+    set llen [$w.f.left.t.text index end-1c]
 
-    for {set i 0} {$i < $rlen} {incr i} {
+    # Hesus!, this needs some comments
+    # Done in two parts, but should be redone as a single diff loop 
+
+    for {set i 1} {$i < $rlen} {incr i} {
       set line [$w.f.right.t.text get $i.0 "$i.0 lineend"]
       set length [string length $line]
       set max 0
-      for {set j 0} {$j < $llen} {incr j} {
+      for {set j 1} {$j < $llen} {incr j} {
         set otherLine [$w.f.left.t.text get $j.0 "$j.0 lineend"]
-        set plen [strPrefixLen $line $otherLine]
+        set plen [strPrefixLen $line $otherLine] ; # length of the common text
         if {$plen > $max} { set max $plen }
       }
       if {$max < $length} {
-        if {![string compare [string index $line 0] "\["]} { set max 0 }
+        # highlight all of the string if a tag
+        if {[string match {\[*} $line]} {set max 0}
         $w.f.right.t.text tag add h $i.$max "$i.0 lineend"
       }
     }
 
-    for {set i 0} {$i < $llen} {incr i} {
+    for {set i 1} {$i < $llen} {incr i} {
       set line [$w.f.left.t.text get $i.0 "$i.0 lineend"]
       set length [string length $line]
       set max 0
-      for {set j 0} {$j < $rlen} {incr j} {
+      for {set j 1} {$j < $rlen} {incr j} {
         set otherLine [$w.f.right.t.text get $j.0 "$j.0 lineend"]
         set plen [strPrefixLen $line $otherLine]
         if {$plen > $max} { set max $plen }
       }
       if {$max < $length} {
-        if {![string compare [string index $line 0] "\["]} { set max 0 }
-        $w.f.left.t.text tag add h $i.$max "$i.0 lineend"
+        if {[string match {\[*} $line]} {set max 0}
+	$w.f.left.t.text tag add h $i.$max "$i.0 lineend"
       }
     }
   }
@@ -1351,7 +1359,7 @@ proc allocateRatings {{parent .}} {
   pack $w.g.lab $w.g.all $w.g.filter -side top
   addHorizontalRule $w
   pack [frame $w.b] -side top -fill x
-  button $w.b.ok -text "OK" \
+  button $w.b.ok -text OK \
       -command "catch {grab release $w}; destroy $w; doAllocateRatings"
   button $w.b.cancel -text $::tr(Cancel) \
       -command "catch {grab release $w}; destroy $w"
@@ -1555,7 +1563,7 @@ proc cleanerWin {} {
 
   addHorizontalRule $w
   pack [frame $w.b] -side bottom -fill x
-  button $w.b.ok -text "OK" -command "catch {grab release $w}; destroy $w; doCleaner"
+  button $w.b.ok -text OK -command "catch {grab release $w}; destroy $w; doCleaner"
   button $w.b.cancel -text $::tr(Cancel) -command "catch {grab release $w}; destroy $w"
   pack $w.b.cancel $w.b.ok -side right -padx 2 -pady 2
   wm resizable $w 0 0
