@@ -71,9 +71,9 @@ proc ::tree::make { { baseNumber -1 } } {
   toplevel .treeWin$baseNumber
   set w .treeWin$baseNumber
   setWinLocation $w
+  setWinSize $w
 
-  # Set the tree window title now:
-  wm title $w "Scid: [tr WindowsTree] $baseNumber [file tail [sc_base filename $baseNumber] ]"
+  wm title $w "Scid: [tr Tree] \[[file tail [sc_base filename $baseNumber]]\]"
   set ::treeWin$baseNumber 1
   set tree(training$baseNumber) 0
   set tree(autorefresh$baseNumber) 1
@@ -187,9 +187,9 @@ proc ::tree::make { { baseNumber -1 } } {
 
   ::tree::doConfigMenus $baseNumber
 
-  autoscrollframe $w.f text $w.f.tl \
-      -width $::winWidth(.treeWin) -height $::winHeight(.treeWin) -wrap none -selectbackground lightgrey -selectforeground black \
-      -font font_Fixed -foreground black  -setgrid 1 -exportselection 1
+  autoscrollframe $w.f text $w.f.tl -width $::winWidth(.treeWin) -height $::winHeight(.treeWin) \
+    -wrap none -selectbackground lightgrey -selectforeground black \
+    -font font_Fixed -foreground black  -setgrid 1 -exportselection 1
   #define default tags
   $w.f.tl tag configure greybg -background #fa1cfa1cfa1c
   $w.f.tl tag configure whitebg 
@@ -214,6 +214,8 @@ proc ::tree::make { { baseNumber -1 } } {
   }
 
   bind $w <Configure> "recordWinSize $w"
+  bind $w <Button-4> ::move::Back
+  bind $w <Button-5> ::move::Forward
 
   label $w.status -width 1 -anchor w -font font_Small \
       -relief sunken -textvar tree(status$baseNumber)
@@ -528,7 +530,7 @@ proc ::tree::displayLines { baseNumber moves } {
     }
 
     # Move and stats
-    if {[expr $i % 2] && $i < [expr $len -3] } {
+    if {$i % 2 && $i < $len - 3} {
       $w.f.tl insert end "$line" [list greybg $tagfg tagclick$i tagtooltip$i]
     } else  {
       $w.f.tl insert end "$line" [list whitebg $tagfg tagclick$i tagtooltip$i]
