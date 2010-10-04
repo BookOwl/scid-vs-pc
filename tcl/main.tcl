@@ -197,11 +197,7 @@ proc updateStatusBar {} {
     append statusBar "--"
   }
 
-  set current [sc_base current]
   append statusBar "  $::tr(Database)"
-  if {$current != [sc_info clipbase]} {
-    append statusBar " $current"
-  }
   append statusBar ": "
   set fname [sc_base filename]
   set fname [file tail $fname]
