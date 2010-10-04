@@ -196,6 +196,7 @@ proc ::tree::make { { baseNumber -1 } } {
   $w.f.tl tag configure bluefg -foreground blue
   $w.f.tl tag configure greenfg -foreground SeaGreen
   $w.f.tl tag configure redfg -foreground red
+  $w.f.tl tag configure nextmove -foreground seagreen3
 
   canvas $w.progress -width 250 -height 15  -relief solid -border 1
   $w.progress create rectangle 0 0 0 0 -fill $::progcolor -outline $::progcolor -tags bar
@@ -497,20 +498,19 @@ proc ::tree::displayLines { baseNumber moves } {
     set line [lindex $moves $i]
     if {$line == ""} { continue }
     set move [lindex $line 1]
-
     set move [::untrans $move]
     lappend lMoves $move
     set colorScore [::tree::getColorScore $line]
     if { $move == "\[end\]" } { set colorScore "" }
 
-    set tagfg ""
+    set tagfg {}
 
-    if { $maskFile != "" && $i > 0 && $i < [expr $len - 3] } {
+    if { $maskFile != {} && $i > 0 && $i < [expr $len - 3] } {
       if { [::tree::mask::moveExists $move] } {
-        set tagfg "bluefg"
+        set tagfg bluefg
       }
     }
-    if { $maskFile != "" } {
+    if { $maskFile != {} } {
       if { $i > 0 && $i < [expr $len - 3] && $move != "\[end\]" } {
         # images
         foreach j { 0 1 } {
@@ -530,17 +530,26 @@ proc ::tree::displayLines { baseNumber moves } {
     }
 
     # Move and stats
-    if {$i % 2 && $i < $len - 3} {
-      $w.f.tl insert end "$line" [list greybg $tagfg tagclick$i tagtooltip$i]
-    } else  {
-      $w.f.tl insert end "$line" [list whitebg $tagfg tagclick$i tagtooltip$i]
+    set tags [list $tagfg tagclick$i tagtooltip$i]
+
+    # Should we add a tag for the Next Move ???
+    if {$move == [sc_game info nextMove]} {
+      lappend tags nextmove
     }
-    if {$colorScore != ""} {
+    if {$i % 2 && $i < $len - 3} {
+      lappend tags greybg
+    } else  {
+      lappend tags whitebg
+    }
+
+    $w.f.tl insert end $line $tags
+
+    if {$colorScore != {}} {
       $w.f.tl tag add $colorScore end-30c end-26c
     }
-    if {$move != "" && $move != "---" && $move != "\[end\]" && $i != [expr $len -2] && $i != 0} {
-      $w.f.tl tag bind tagclick$i <Button-1> "[list ::tree::selectCallback $baseNumber $move ] ; break"
-      if { $maskFile != "" } {
+    if {$move != {} && $move != {---} && $move != {[end]} && $i != $len-2 && $i != 0} {
+      $w.f.tl tag bind tagclick$i <Button-1> "::tree::selectCallback $baseNumber $move ; break"
+      if { $maskFile != {}} {
         # Bind right button to popup a contextual menu:
         $w.f.tl tag bind tagclick$i <ButtonPress-3> "::tree::mask::contextMenu $w.f.tl $move %x %y %X %Y"
       }
@@ -679,7 +688,7 @@ proc ::tree::status { msg baseNumber } {
   # set base [sc_base current]
   # if {$tree(locked$baseNumber)} { set base $tree(base$baseNumber) }
   set base $baseNumber
-  set status "  $::tr(Database) $base: [file tail [sc_base filename $base]]"
+  set status "  $::tr(Database): [file tail [sc_base filename $base]]"
   if {$tree(locked$baseNumber)} { append status " ($::tr(TreeLocked))" }
   append status "   $::tr(Filter)"
   append status ": [filterText $base]"
