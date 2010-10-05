@@ -14,7 +14,9 @@ proc ::windows::stats::Open {} {
   }
   toplevel $w
   wm title $w "Scid: Filter Statistics"
+  wm minsize $w 300 400
   setWinLocation $w
+  setWinSize $w
   bind $w <Configure> "recordWinSize $w"
 
   menu $w.menu
@@ -80,8 +82,7 @@ proc ::windows::stats::Open {} {
     set ::windows::stats::isOpen 0
   }
   standardShortcuts $w
-#Klimmek: enable Resize vertical
-  wm resizable $w 0 1
+  # wm resizable $w 0 1
   ::windows::stats::ConfigMenus
   ::windows::stats::Refresh
 }
@@ -112,6 +113,9 @@ proc ::windows::stats::Refresh {} {
   if {$len < $blen} { set len $blen }
   if {$len < $slen} { set len $slen }
 
+  # needs to be eighteen (17 is ok now) wide S.A.
+  if {$len < 18} { set len 18 }
+
   set height 4
   set ratings 0
   set years 0
@@ -128,60 +132,31 @@ proc ::windows::stats::Refresh {} {
   if {$ratings} { incr height }
   if {$years} { incr height }
 
-  set s ""
-  set sm "\n"  
-  set stat ""
-  append s " [::utils::string::Pad $stat [expr $len - 4]] [::utils::string::PadRight $games 10]"
-  append s "     1-0     =-=     0-1 [::utils::string::PadRight $score 8]\n"
-  append s "------------------------------------------------------------------------"
+  set s {}
+  set stat {}
+  set heading " [::utils::string::Pad $stat [expr $len - 4]] [::utils::string::PadRight $games 10]     1-0     =-=     0-1 [::utils::string::PadRight $score 8]\n"
+  append s "\n"
+  append s $heading
+  append s [string repeat - [string length $heading]]
   append s "\n [::utils::string::Pad $all $len]" [sc_filter stats all]
-#Klimmek: New Statistic: Count the games in intervalls "start elo  - end elo"
-#         if elo is deselected in option menu, then enlarge the intervall to next selectet elo.
-#Klimmek: New Statistic: Count the games in intervalls
+
+  # Old statistic: count the games from specific value to maximum value 
+
   if {$ratings} {
     append s "\n"
-    set j 0
-    set k [lindex $rlist $j]
-    while { $k!= "" && ! $display($k) } {
-	incr j
-	set k [lindex $ylist $j]
-	if { $k == "" } { break }
-    }
-    set nelo [string range [lindex $rlist $j] 1 end]
-    incr height
-#first line searches all games greater 2600 Elo
-    set stat "min. Elo $nelo-3500"
-    append s "\n [::utils::string::Pad $stat $len]"   [sc_filter stats elo $nelo 9999]
-    set stat "max. Elo $nelo-3500"
-    append sm "\n [::utils::string::Pad $stat $len]"   [sc_filter stats elo $nelo -9999]
-    set j 0
     foreach i $rlist {
-      incr j  
       if {$display($i)} {
         incr height
         set elo [string range $i 1 end]
-	set l $j
-	set k [lindex $rlist $l]
-        while { $k!= "" && ! $display($k) } {
-	    incr l
-	    set k [lindex $rlist $l]
-	    if { $k == "" } { break }
-	}
-	set nelo [string range [lindex $rlist $l] 1 end]
-	if { $nelo == "" } { set nelo 0 }  
-#count all games where player whith lowest Elo is in the specific range      
-        set stat "min. Elo $nelo-$elo"
-        append s "\n [::utils::string::Pad $stat $len]"   [sc_filter stats elo $nelo $elo]
-        set stat "max. Elo $nelo-$elo"
-#count all games where player whith highest Elo is in the specific range      
-# +10000 workaround to trigger max elo in filter function
-	append sm "\n [::utils::string::Pad $stat $len]"   [sc_filter stats elo $nelo [expr {$elo + 10000}]]
+        set stat "$both $elo+"
+        append s "\n [::utils::string::Pad $stat $len]"   [sc_filter stats elo $elo 0]
       }
     }
   }
-  append s $sm
-#Klimmek: New Statistic: Count the games in intervalls "from year - to year"
-#         if year is deselected in option menu, then enlarge the intervall to next selectet year.
+
+  #Klimmek: New Statistic: Count the games in intervalls "from year - to year"
+  #         if year is deselected in option menu, then enlarge the intervall to next selectet year.
+
   if {$years} {
     append s "\n"
     set j 0  
@@ -203,28 +178,9 @@ proc ::windows::stats::Refresh {} {
         append s "\n [::utils::string::Pad $stat $len]"   [sc_filter stats year $year $nyear]
       } 
     }
-  }
-#Old statistic: count the games from specific value to maximum value 
-  set stat ""
-  append s "\n\n"
-  append s " [::utils::string::Pad $stat [expr $len - 4]] [::utils::string::PadRight $games 10]"
-  append s "     1-0     =-=     0-1 [::utils::string::PadRight $score 8]\n"
-  append s "------------------------------------------------------------------------"
-  append s "\n [::utils::string::Pad $all $len]" [sc_filter stats all]
 
-  if {$ratings} {
-    append s "\n"
-    foreach i $rlist {
-      if {$display($i)} {
-        incr height
-        set elo [string range $i 1 end]
-        set stat "$both $elo+"
-        append s "\n [::utils::string::Pad $stat $len]"   [sc_filter stats elo $elo 0]
-      }
-    }
-  }
+    # Old year stats S.A.
 
-  if {$years} {
     append s "\n"
     foreach i $ylist {
       if {$display($i)} {
@@ -242,10 +198,6 @@ proc ::windows::stats::Refresh {} {
   $w configure -state normal
   $w delete 1.0 end
   $w insert end $s
-  $w tag configure blue -foreground darkBlue
-  $w tag configure red -foreground red
-  $w tag add blue 1.0 2.0
-  $w tag add red 2.0 3.0
   $w configure -height $height
   $w configure -state disabled
 }
@@ -257,7 +209,7 @@ proc ::windows::stats::ConfigMenus {{lang ""}} {
   foreach idx {0 1} tag {File Opt} {
     configMenuText $m $idx Stats$tag $lang
   }
-  foreach idx {0 2} tag {Print Close} {
-    configMenuText $m.file $idx StatsFile$tag $lang
+  foreach idx {0 2} tag {StatsFilePrint FileClose} {
+    configMenuText $m.file $idx $tag $lang
   }
 }

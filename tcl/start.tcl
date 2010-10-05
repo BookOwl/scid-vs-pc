@@ -374,13 +374,15 @@ array set ::windows::stats::display {
   y1970 0
   y1980 0
   y1990 0
-  y1995 0
   y2000 1
   y2002 1
   y2004 1
   y2006 1
   y2007 1
   y2008 1
+  y2009 1
+  y2010 1
+  y2011 1
 }
 
 # Default PGN display options:
