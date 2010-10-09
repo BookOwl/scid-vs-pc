@@ -359,7 +359,9 @@ proc ::windows::gamelist::Open {} {
   }
 
   button $w.b.negate -text Negate -relief flat -command {
-    .glistWin.tree selection toggle [.glistWin.tree children {}]
+    # .glistWin.tree selection toggle [.glistWin.tree children {}]
+    sc_filter negate
+    ::windows::gamelist::Refresh
   }
 
   button $w.b.reset -text Reset -relief flat -command ::search::filter::reset

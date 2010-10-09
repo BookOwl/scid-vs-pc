@@ -176,7 +176,6 @@ struct scidBaseT {
     ByteBuffer * bbuf;
     TextBuffer * tbuf;
     Filter *     filter;
-    Filter *     dbFilter;
     Filter *     treeFilter;
     uint *       duplicates;  // For each game: idx of duplicate game + 1,
                               // or 0 if there is no duplicate.

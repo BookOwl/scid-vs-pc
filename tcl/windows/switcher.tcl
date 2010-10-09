@@ -633,8 +633,11 @@ proc ::windows::switcher::releaseMouseEvent {fromBase x y} {
   set dropPoint [winfo containing $x $y]
   if {! [string match ".baseWin.c.f*" $dropPoint]} {return}
   set toBase [string range $dropPoint 12 12]
-  if {$toBase == $fromBase} {::file::SwitchToBase $toBase} else {
+  if {$toBase == $fromBase} {
+    ::file::SwitchToBase $toBase
+  } else {
     copyFilter $fromBase $toBase
+    ::windows::switcher::Refresh
   }
 }
 
