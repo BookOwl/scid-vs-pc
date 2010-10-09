@@ -2655,7 +2655,12 @@ proc updateAnalysisText {{n 1}} {
 
   ### Should we truncate line so it only takes up one line ? S.A.
   $h insert end $line indent
-  $h see end-1c
+  # $h see end-1c
+  set pos [lindex [ .analysisWin$n.hist.ybar get ] 1]
+  if {$pos == 1.0} {
+    $h yview moveto 1
+  }
+
 
   $h configure -state disabled
   set analysis(prev_depth$n) $analysis(depth$n)
