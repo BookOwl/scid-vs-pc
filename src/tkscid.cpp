@@ -15,8 +15,8 @@
 
 
 #include "tkscid.h"
-
 #include <sys/fcntl.h>
+
 #include <errno.h>
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -156,6 +156,21 @@ updateProgressBar (Tcl_Interp * ti, uint done, uint total)
         Tcl_Eval (ti, tempStr);
     }
     Tcl_Eval (ti, "update");
+}
+
+int updateMainFilter( scidBaseT * dbase)
+{
+	if( dbase->dbFilter != dbase->filter)
+	{
+   		for (uint i=0; i < dbase->numGames; i++)
+		{
+			if( dbase->dbFilter->Get(i) != 0 && dbase->treeFilter->Get(i) != 0)
+				dbase->filter->Set(i,dbase->treeFilter->Get(i));
+			else
+				dbase->filter->Set(i,0);
+		}
+	}
+	return TCL_OK;
 }
 
 static bool
@@ -398,9 +413,6 @@ main (int argc, char * argv[])
 #endif
     newArgv[0] = argv[0];
     for (int i = 1; i < argc; i++) { newArgv[i+1] = argv[i]; }
-
-    // Now generate the full path and name of the file to source:
-
     char sourceFileName [MAX_PATH];
     sourceFileName[0] = 0;
     HMODULE hModule = GetModuleHandle (NULL);
@@ -514,6 +526,8 @@ scid_InitTclTk (Tcl_Interp * ti)
         db->fileMode = FMODE_Both;
         db->inUse = false;
         db->filter = new Filter(0);
+		db->dbFilter = NULL;
+		db->treeFilter = NULL;
         db->numGames = 0;
         db->memoryOnly = false;
         db->duplicates = NULL;
@@ -1243,8 +1257,12 @@ sc_base_open (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
       db->nb->Clear();
       db->gfile->Close();
       db->idx->SetDescription (errMsgNotOpen(ti));
+      if (db->dbFilter && db->dbFilter != db->filter) { delete db->dbFilter; }
       if (db->filter) { delete db->filter; }
+      if (db->treeFilter) { delete db->treeFilter; }
       db->filter = new Filter(0);
+      db->dbFilter = NULL;
+      db->treeFilter = NULL;
       if (db->duplicates != NULL) {
         my_Tcl_Free((char*) db->duplicates);
         db->duplicates = NULL;
@@ -1281,8 +1299,12 @@ sc_base_open (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
     }
 
     // Initialise the filter: all games match at move 1 by default.
+    if (db->dbFilter && db->dbFilter != db->filter) { delete db->dbFilter; }
     if (db->filter) { delete db->filter; }
+    if (db->treeFilter) { delete db->treeFilter; }
     db->filter = new Filter (db->numGames);
+    db->dbFilter = db->filter;
+    db->treeFilter = NULL;
 
     strCopy (db->fileName, filename);
     strCopy (db->realFileName, realFileName);
@@ -1341,8 +1363,12 @@ sc_createbase (Tcl_Interp * ti, const char * filename, scidBaseT * base,
 
     // Initialise the filter:
     base->numGames = base->idx->GetNumGames();
+    if (base->dbFilter && base->dbFilter != base->filter) { delete base->dbFilter; }
     if (base->filter != NULL) { delete base->filter; }
+    if (base->treeFilter) { delete base->treeFilter; }
     base->filter = new Filter (base->numGames);
+    base->dbFilter = base->filter;
+    base->treeFilter = NULL;
 
     strCopy (base->fileName, filename);
     base->inUse = true;
@@ -1426,8 +1452,13 @@ sc_base_close (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
     basePtr->nb->Clear();
     basePtr->gfile->Close();
     basePtr->idx->SetDescription (errMsgNotOpen(ti));
-    if (basePtr->filter) { delete basePtr->filter; }
+
+    if (basePtr->dbFilter && basePtr->dbFilter != basePtr->filter) { delete basePtr->dbFilter; }
+	if (basePtr->filter) { delete basePtr->filter; }
+    if (basePtr->treeFilter) { delete basePtr->treeFilter; }
     basePtr->filter = new Filter(0);
+	basePtr->dbFilter = basePtr->filter;
+    basePtr->treeFilter = NULL;
 
     if (basePtr->duplicates != NULL) {
 #ifdef WINCE
@@ -4056,8 +4087,13 @@ sc_clipbase_clear (Tcl_Interp * ti)
     clipbase->idx->SetType (2);
 
     clipbase->numGames = 0;
+    if (clipbase->dbFilter && clipbase->dbFilter != clipbase->filter) { delete clipbase->dbFilter; }
     if (clipbase->filter != NULL) { delete clipbase->filter; }
+    if (clipbase->treeFilter != NULL) { delete clipbase->treeFilter; }
     clipbase->filter = new Filter (clipbase->numGames);
+	clipbase->dbFilter = clipbase->filter;
+    clipbase->treeFilter = NULL;
+
     clipbase->inUse = true;
     clipbase->gameNumber = -1;
     clipbase->treeCache->Clear();
@@ -4344,8 +4380,14 @@ sc_compact_games (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
     db->idx->OpenIndexFile (db->fileMode);
     db->idx->ReadEntireFile ();
     db->gfile->Open (db->fileName, db->fileMode);
-    delete db->filter;
+
+    if (db->dbFilter && db->dbFilter != db->filter) { delete db->dbFilter; }
+	delete db->filter;
+	if(db->treeFilter) delete db->treeFilter;
     db->filter = newFilter;
+	db->dbFilter = newFilter;
+	db->treeFilter = NULL;
+
     db->gameNumber = -1;
     db->numGames = db->idx->GetNumGames();
     recalcNameFrequencies (db->nb, db->idx);
@@ -4971,7 +5013,7 @@ void
 filter_reset (scidBaseT * base, byte value)
 {
     if (base->inUse) {
-        base->filter->Fill (value);
+        base->dbFilter->Fill (value);
     }
 }
 
@@ -5366,13 +5408,14 @@ int
 sc_filter_negate (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
 {
     if (db->inUse) {
-        Filter * filter = db->filter;
+        Filter * filter = db->dbFilter;
         for (uint i=0; i < db->numGames; i++) {
             uint newValue = 0;
             if (filter->Get(i) == 0) { newValue = 1; }
             filter->Set (i, newValue);
         }
     }
+    updateMainFilter( db);
     return TCL_OK;
 }
 
@@ -5429,8 +5472,9 @@ sc_filter_remove (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
     if (to > db->numGames) { to = db->numGames; }
 
     for (uint gnumber = from; gnumber <= to; gnumber++) {
-        db->filter->Set (gnumber - 1, 0);
+        db->dbFilter->Set (gnumber - 1, 0);
     }
+    updateMainFilter( db);
     return TCL_OK;
 }
 
@@ -5450,6 +5494,7 @@ sc_filter_reset (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
         basePtr = &(dbList[baseNum - 1]);
     }
     filter_reset (basePtr, 1);
+    updateMainFilter( basePtr);
     return TCL_OK;
 }
 
@@ -8177,6 +8222,11 @@ sc_savegame (Tcl_Interp * ti, Game * game, gameNumberT gnum, scidBaseT * base)
     // We need to increase the filter size if a game was added:
     if (! replaceMode) {
         base->filter->Append (1);  // Added game is in filter by default.
+		if(base->filter != base->dbFilter)
+			base->dbFilter->Append (1); 
+		if(base->treeFilter)
+			base->treeFilter->Append (1);
+
         if (base->duplicates != NULL) {
 #ifdef WINCE
           my_Tcl_Free((char*)base->duplicates);
@@ -13124,11 +13174,11 @@ sc_tree (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
 {
     static const char * options [] = {
         "best", "move", "positions", "search", "size", "time",  "write", "free",
-        "cachesize", "cacheinfo", NULL
+        "cachesize", "cacheinfo", "clean", NULL
     };
     enum {
         TREE_BEST, TREE_MOVE, TREE_POSITIONS, TREE_SEARCH, TREE_SIZE,
-        TREE_TIME, TREE_WRITE, TREE_FREE, TREE_CACHESIZE, TREE_CACHEINFO
+        TREE_TIME, TREE_WRITE, TREE_FREE, TREE_CACHESIZE, TREE_CACHEINFO, TREE_CLEAN
     };
 
     int index = -1;
@@ -13137,6 +13187,9 @@ sc_tree (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
     switch (index) {
     case TREE_BEST:
         return sc_tree_best (cd, ti, argc, argv);
+
+    case TREE_CLEAN:
+        return sc_tree_clean (cd, ti, argc, argv);
 
     case TREE_MOVE:
         return sc_tree_move (cd, ti, argc, argv);
@@ -13313,6 +13366,38 @@ sc_tree_best (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
 }
 
 
+int
+sc_tree_clean (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
+{
+    if (argc != 3) {
+        return errorResult (ti, "Usage: sc_tree move <baseNum> <lineNum>");
+    }
+
+    scidBaseT * base = db;
+    int baseNum = strGetInteger (argv[2]);
+    if (baseNum >= 1  &&  baseNum <= MAX_BASES) {
+        base = &(dbList[baseNum - 1]);
+    }
+    if (!base->inUse) {
+        return setResult (ti, errMsgNotOpen(ti));
+    }
+
+	if(base->treeFilter)
+	{
+		delete base->treeFilter;
+		base->treeFilter = NULL;
+	}
+	if( base->dbFilter != base->filter)
+	{
+	   	for (uint i=0; i < base->numGames; i++)
+			base->filter->Set( i, base->dbFilter->Get(i));
+		delete base->dbFilter;
+		base->dbFilter = base->filter;
+	}
+	return TCL_OK;
+}
+
+
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // sc_tree_move:
 //    Returns the move for a tree line.
@@ -13468,13 +13553,12 @@ sortTreeMoves (treeT * tree, int sortMethod, colorT toMove)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // sc_tree_search:
-//    Returns the tree for the current position and sets the filter
-//    accordingly.
+//    Returns the tree for the current position
 int
 sc_tree_search (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
 {
     static const char * usageStr =
-      "Usage: sc_tree search [-hideMoves <0|1>] [-sort alpha|eco|frequency|score] [-time <0|1>] [-epd <0|1>] [list <0|1>] [-fastmode <0|1>]";
+      "Usage: sc_tree search [-hideMoves <0|1>] [-sort alpha|eco|frequency|score] [-time <0|1>] [-epd <0|1>] [-list <0|1>] [-fastmode <0|1>] [-mask <0|1>]";
 
     // Sort options: these should match the moveSortE enumerated type.
     static const char * sortOptions[] = {
@@ -13499,6 +13583,7 @@ sc_tree_search (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
     bool showTimeStats = true;
     bool showEpdData = true;
     bool listMode = false;
+    bool maskMode = false;
     bool fastMode = false;
     int sortMethod = SORT_FREQUENCY; // default move order: frequency
 
@@ -13530,6 +13615,8 @@ sc_tree_search (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
             showEpdData = strGetBoolean (argv[arg+1]);
         } else if (strIsPrefix (argv[arg], "-list")) {
             listMode = strGetBoolean (argv[arg+1]);
+        } else if (strIsPrefix (argv[arg], "-mask")) {
+            maskMode = strGetBoolean (argv[arg+1]);
         } else if (strIsPrefix (argv[arg], "-fastmode")) {
             fastMode = strGetBoolean (argv[arg+1]);
         } else {
@@ -13540,8 +13627,17 @@ sc_tree_search (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
 
     if (sortMethod < 0) { return errorResult (ti, usageStr); }
 
+
     if (!base->inUse) {
         return setResult (ti, errMsgNotOpen(ti));
+    }
+
+    if( base->treeFilter == NULL)
+    {
+	    base->treeFilter = new Filter( base->numGames);
+	    base->dbFilter = new Filter( base->numGames);
+	    for (uint i=0; i < base->numGames; i++)
+		    base->dbFilter->Set( i, base->filter->Get(i));
     }
 
     IndexEntry * ie;
@@ -13553,7 +13649,7 @@ sc_tree_search (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
     Timer timer;  // Start timing this search.
 
     // Reset the filter to be empty:
-    base->filter->Fill (0);
+    base->treeFilter->Fill (0);
 
     Position * pos = db->game->GetCurrentPos();
     matSigT msig = matsig_Make (pos->GetMaterial());
@@ -13571,7 +13667,7 @@ sc_tree_search (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
     if (pct != NULL) {
         // It was in the cache! Use it to save time:
         if (pct->cfilter->Size() == base->numGames) {
-            if (pct->cfilter->UncompressTo (base->filter) == OK) {
+            if (pct->cfilter->UncompressTo (base->treeFilter) == OK) {
                 base->tree = pct->tree;
                 tree = &(base->tree);
                 foundInCache = true;
@@ -13586,7 +13682,7 @@ sc_tree_search (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
         if (pct != NULL) {
             // It was in the backup cache! Use it to save time:
             if (pct->cfilter->Size() == base->numGames) {
-                if (pct->cfilter->UncompressTo (base->filter) == OK) {
+                if (pct->cfilter->UncompressTo (base->treeFilter) == OK) {
                     base->tree = pct->tree;
                     tree = &(base->tree);
                     foundInCache = true;
@@ -13597,12 +13693,12 @@ sc_tree_search (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
 
 #ifndef WINCE
     // we went back before the saved filter data
-    if (base->filter->oldDataTreePly > db->game->GetCurrentPly()) {
-      base->filter->isValidOldDataTree = false;
+    if (base->treeFilter->oldDataTreePly > db->game->GetCurrentPly()) {
+      base->treeFilter->isValidOldDataTree = false;
     }
 
     if ( foundInCache && fastMode ) {
-      base->filter->saveFilterForFastMode(db->game->GetCurrentPly());
+      base->treeFilter->saveFilterForFastMode(db->game->GetCurrentPly());
     }
 #endif
 
@@ -13658,7 +13754,7 @@ sc_tree_search (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
 
 #ifndef WINCE
           // if the game is not already in the filter, continue
-          if ( fastMode && base->filter->isValidOldDataTree )
+          if ( fastMode && base->treeFilter->isValidOldDataTree )
             if ( oldFilterData[i] == 0)
               continue;
 #endif
@@ -13717,14 +13813,14 @@ sc_tree_search (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
                     ply = g->GetCurrentPly() + 1;
                     //if (ply > 255) { ply = 255; }
                     foundMatch = true;
-                    //base->filter->Set (i, (byte) ply);
+                    //base->treeFilter->Set (i, (byte) ply);
                 }
             }
 
             // If match was found, add it to the list of found moves:
             if (foundMatch) {
                 if (ply > 255) { ply = 255; }
-                base->filter->Set (i, (byte) ply);
+                base->treeFilter->Set (i, (byte) ply);
                 uint search;
                 node = tree->node;
                 for (search = 0; search < tree->moveCount; search++, node++) {
@@ -13781,6 +13877,9 @@ sc_tree_search (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
         } // end: for
     }
 
+    // Update the normal filter (if desired) S.A.
+    if (maskMode) updateMainFilter(base);
+
     // Now we generate the score of each move: it is the expected score per
     // 1000 games. Also generate the ECO code of each move.
 
@@ -13810,10 +13909,10 @@ sc_tree_search (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
     // If it wasn't in the cache, maybe it belongs there:
     // But only add to the cache if not in fastmode
     if (!foundInCache  &&  !interruptedProgress() && !fastMode) {
-        base->treeCache->Add (pos, tree, base->filter);
-        base->backupCache->Add (pos, tree, base->filter);
+        base->treeCache->Add (pos, tree, base->treeFilter);
+        base->backupCache->Add (pos, tree, base->treeFilter);
 #ifndef WINCE
-        base->filter->saveFilterForFastMode(db->game->GetCurrentPly());
+        base->treeFilter->saveFilterForFastMode(db->game->GetCurrentPly());
 #endif
     }
 
@@ -14123,25 +14222,34 @@ sc_search (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
 
     int index = -1;
     if (argc > 1) { index = strUniqueMatch (argv[1], options); }
+int ret = TCL_OK;
 
     switch (index) {
     case OPT_BOARD:
-        return sc_search_board (cd, ti, argc, argv);
+	ret = sc_search_board (cd, ti, argc, argv);
+	break;
+
 
     case OPT_HEADER:
-        return sc_search_header (cd, ti, argc, argv);
+	ret = sc_search_header (cd, ti, argc, argv);
+	break;
 
     case OPT_MATERIAL:
-        return sc_search_material (cd, ti, argc, argv);
+	ret = sc_search_material (cd, ti, argc, argv);
+	break;
 
     case OPT_REPERTOIRE:
-        return sc_search_repertoire (cd, ti, argc, argv);
+	ret = sc_search_repertoire (cd, ti, argc, argv);
+	break;
 
     default:
         return InvalidCommand (ti, "sc_search", options);
     }
 
-    return TCL_OK;
+    // Update the normal filter
+    updateMainFilter( db);
+
+    return ret;
 }
 
 
@@ -14149,7 +14257,7 @@ inline uint
 startFilterSize (scidBaseT * base, filterOpT filterOp)
 {
     if (filterOp == FILTEROP_AND) {
-        return base->filter->Count();
+        return base->dbFilter->Count();
     }
     return base->numGames;
 }
@@ -14239,25 +14347,25 @@ sc_search_board (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
         }
         // First, apply the filter operation:
         if (filterOp == FILTEROP_AND) {  // Skip any games not in the filter:
-            if (db->filter->Get(gameNum) == 0) {
+            if (db->dbFilter->Get(gameNum) == 0) {
                 skipcount++;
                 continue;
             }
         } else /* filterOp==FILTEROP_OR*/ { // Skip any games in the filter:
-            if (db->filter->Get(gameNum) != 0) {
+            if (db->dbFilter->Get(gameNum) != 0) {
                 skipcount++;
                 continue;
             } else {
                 // OK, this game is NOT in the filter.
                 // Add it so filterCounts are kept up to date:
-                db->filter->Set (gameNum, 1);
+                db->dbFilter->Set (gameNum, 1);
             }
         }
 
         ie = db->idx->FetchEntry (gameNum);
         if (ie->GetLength() == 0) {
             // Skip games with no gamefile record:
-            db->filter->Set (gameNum, 0);
+            db->dbFilter->Set (gameNum, 0);
             skipcount++;
             continue;
         }
@@ -14305,7 +14413,7 @@ sc_search_board (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
         }
 
         if (!possibleMatch  &&  !possibleFlippedMatch) {
-            db->filter->Set (gameNum, 0);
+            db->dbFilter->Set (gameNum, 0);
             skipcount++;
             continue;
         }
@@ -14357,7 +14465,7 @@ sc_search_board (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
             }
         }
         if (ply > 255) { ply = 255; }
-        db->filter->Set (gameNum, ply);
+        db->dbFilter->Set (gameNum, ply);
     }
 
     if (showProgress) { updateProgressBar (ti, 1, 1); }
@@ -14370,7 +14478,7 @@ sc_search_board (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
         Tcl_AppendResult (ti, errMsgSearchInterrupted(ti), "  ", NULL);
     }
     sprintf (temp, "%d / %d  (%d%c%02d s)",
-             db->filter->Count(), startFilterCount,
+             db->dbFilter->Count(), startFilterCount,
              centisecs / 100, decimalPointChar, centisecs % 100);
     Tcl_AppendResult (ti, temp, NULL);
 #ifdef SHOW_SKIPPED_STATS
@@ -14725,23 +14833,23 @@ sc_search_material (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv
         }
         // First, apply the filter operation:
         if (filterOp == FILTEROP_AND) {  // Skip any games not in the filter:
-            if (db->filter->Get(gameNum) == 0) {
+            if (db->dbFilter->Get(gameNum) == 0) {
                 skipcount++;
                 continue;
             }
         } else /* filterOp == FILTEROP_OR*/ { // Skip any games in the filter:
-            if (db->filter->Get(gameNum) != 0) {
+            if (db->dbFilter->Get(gameNum) != 0) {
                 skipcount++;
                 continue;
             }
             // OK, this game is NOT in the filter.
             // Add it so filterCounts are kept up to date:
-            db->filter->Set (gameNum, 1);
+            db->dbFilter->Set (gameNum, 1);
         }
 
         ie = db->idx->FetchEntry (gameNum);
         if (ie->GetLength() == 0) {  // Skip games with no gamefile record
-            db->filter->Set (gameNum, 0);
+            db->dbFilter->Set (gameNum, 0);
             skipcount++;
             continue;
         }
@@ -14749,7 +14857,7 @@ sc_search_material (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv
         if (ie->GetNumHalfMoves() < minMoves  &&  ! ie->GetStartFlag()) {
             // Skip games without enough moves to match, if they
             // have the standard starting position:
-            db->filter->Set (gameNum, 0);
+            db->dbFilter->Set (gameNum, 0);
             skipcount++;
             continue;
         }
@@ -14794,7 +14902,7 @@ sc_search_material (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv
         }
 
         if (!possibleMatch  &&  !possibleFlippedMatch) {
-            db->filter->Set (gameNum, 0);
+            db->dbFilter->Set (gameNum, 0);
             skipcount++;
             continue;
         }
@@ -14826,10 +14934,10 @@ sc_search_material (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv
             uint plyOfMatch = g->GetCurrentPly() + 1 - matchLength;
             byte b = (byte) (plyOfMatch + 1);
             if (b == 0) { b = 1; }
-            db->filter->Set (gameNum, b);
+            db->dbFilter->Set (gameNum, b);
         } else {
             // This game did NOT match:
-            db->filter->Set (gameNum, 0);
+            db->dbFilter->Set (gameNum, 0);
         }
     }
 
@@ -14843,7 +14951,7 @@ sc_search_material (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv
         Tcl_AppendResult (ti, errMsgSearchInterrupted(ti), "  ", NULL);
     }
     sprintf (temp, "%d / %d  (%d%c%02d s)",
-             db->filter->Count(), startFilterCount,
+             db->dbFilter->Count(), startFilterCount,
              centisecs / 100, decimalPointChar, centisecs % 100);
     Tcl_AppendResult (ti, temp, NULL);
 #ifdef SHOW_SKIPPED_STATS
@@ -15610,31 +15718,31 @@ sc_search_header (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
         }
         // First, apply the filter operation:
         if (filterOp == FILTEROP_AND) {  // Skip any games not in the filter:
-            if (db->filter->Get(i) == 0) {
+            if (db->dbFilter->Get(i) == 0) {
                 skipcount++;
                 continue;
             }
         } else /* filterOp == FILTEROP_OR*/ { // Skip any games in the filter:
-            if (db->filter->Get(i) != 0) {
+            if (db->dbFilter->Get(i) != 0) {
                 skipcount++;
                 continue;
             } else {
                 // OK, this game is NOT in the filter.
                 // Add it so filterCounts are kept up to date:
-                db->filter->Set (i, 1);
+                db->dbFilter->Set (i, 1);
             }
         }
 
         // Skip games outside the specified game number range:
         if (i+1 < gameNumMin  ||  i+1 > gameNumMax) {
-            db->filter->Set (i, 0);
+            db->dbFilter->Set (i, 0);
             skipcount++;
             continue;
         }
 
         ie = db->idx->FetchEntry (i);
         if (ie->GetLength() == 0) {  // Skip games with no gamefile record
-            db->filter->Set (i, 0);
+            db->dbFilter->Set (i, 0);
             skipcount++;
             continue;
         }
@@ -15708,12 +15816,12 @@ sc_search_header (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
         if (match) {
             // Game matched, so update the filter value. Only change it
             // to 1 if it is currently 0:
-            if (db->filter->Get(i) == 0) {
-                db->filter->Set (i, 1);
+            if (db->dbFilter->Get(i) == 0) {
+                db->dbFilter->Set (i, 1);
             }
         } else {
             // This game did NOT match:
-            db->filter->Set (i, 0);
+            db->dbFilter->Set (i, 0);
         }
     }
 #ifdef WINCE

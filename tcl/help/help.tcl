@@ -2160,34 +2160,44 @@ set helpText(Repertoire) {<h1>The Repertoire editor window</h1>
 ####################
 ### Tree window help:
 
-set helpTitle(Tree) "Tree window"
-set helpText(Tree) {<h1>The Tree window</h1>
+set helpTitle(Tree) "Tree Window"
+set helpText(Tree) {<h1>Tree Window</h1>
   <p>
-  The <term>Tree</term> window displays information on all the
-  moves made from the current position in games in the database.
-  In tree mode, the tree window is updated automatically whenever the
-  main windows board changes. This can be slow for large databases and
-  can therefore be disabled using the <b>Refresh</b> check box.
+  The 
+<run ::tree::make><green>Tree Window</green></run>
+  is an advanced Scid feature. The idea is to
+  show the most successful moves continuing from the current position.
   </p>
-  <p>To open the <term>Tree</term> window one can either first open a
-  database and then choose Windows / Tree Window (Ctrl-T) from the
-  menu, or open the base as tree right from the file menu.
   <p>
-  Note that whenever the tree window is updated, the <a Searches
-  Filter>filter</a> is reset and only the games that contain the
-  current position will be included. This is also the case if e.g. a
-  header search was done: once the next move is entered, the tree
-  window updates and the filter is set to the games matching the tree
-  window.
+  The Tree is updated whenever the
+  main board changes. This can require lots of CPU time,
+  and be slow for large databases, but dynamic updates
+  can be disabled deselecting the <b>Refresh</b> check-box.
   </p>
+  <p>
+  The <a Searches Filter>filter</a> will also be changed 
+  if <b>Adjust Filter</b> is checked. In this event, only games containing the
+  current position will be shown in the filter.
+</p>
   <p>
   Clicking the left mouse button on a move in the tree window adds
   that move to the game.
   </p>
-  <h3>Tree window contents</h3>
+<p>
+  <i>Be wary of doing filter operations while the Tree Window is open,
+  as <b>THE TREE MAY OVERRIDE THE FILTER</b>. To perform searches, and open new bases,
+it is best to close the Tree Window first.</i>
+  </p>
+  <h3>Opening a Tree</h3>
+  <p>To open the Tree Window one can either first open a
+  database and then choose <b>Windows--<gt>Tree Window</b> menu,
+  use the <b>Control-t</b> short-cut, or <b>Open Base as Tree</b> right from the file menu.
+  This last method means games in Database A can be examined with the tree from a different database.</p>
+
+  <h3>Tree Statistics</h3>
   <p>
-  The tree window shows the <a ECO>ECO code</a> (if any), frequency
-  (both as number of games, and a percentage) and score of each move.
+  The tree window shows the <a ECO>ECO code</a> (if any), frequency,
+  and score of each move.
   The <term>score</term> is always computed from the <b>White</b>
   perspective, so 100% means all White wins and 0% means all Black
   wins. Scores are highlighted for moves that have good (green) or bad
@@ -2202,45 +2212,43 @@ set helpText(Tree) {<h1>The Tree window</h1>
   values are calculated for the database displayed in the tree, and
   therefore depend of course on the games in this database.
   </p>
-  <p>
+  <p><i>
   Additional information is displayed if a <term>Mask</term> has been
-  opened. For the use of <term>Masks</term> see below.
+  opened. For the use of Masks see below.
+  </i></p>
   <p>
   The moves in the tree window can be sorted by move (alphabetically),
   ECO code, frequency, or score. You can change the sort method using
-  the <menu>Sort</menu> menu.
-  </p>
+    the <menu>Sort</menu> menu.
+    </p>
 
-  <h3><name Best>Best games window</name></h3>
-  <p>
-  The tree window has a File menu command and button for opening the
-  <term>Best games</term> window, which shows a list of the
-  highest-rated games in the currently displayed tree branch.
-  (Equivalently, one can use the <button b_list> button).  The games
-  are listed in order of average rating, and you can restrict the list
-  to show games with a particular result and also limit the number of
-  games shown in this list.
-  </p>
+    <h3><name Best>Best Games Window</name></h3>
+    <p>
+    This button <button b_list> will show the <term>Best games</term> widget.
+    This is a list of the highest-rated games in the current tree.  The games
+    are listed in order of average rating, and you can restrict the list
+    to show games with a particular result and also limit the number of
+    games shown in this list.
+    </p>
 
-  <h3><name Graph>Tree graph window</name></h3>
-  <p>
-  The tree window buttons include a button marked <term>Graph</term>
-  (<button b_bargraph>) which produces a graphical display of the
-  relative performance of each move from the current position.  All
-  moves that have been played at least 1% of the time, and at least 5
-  times, are displayed.  Percentage scores are always from White's
-  perspective even when it is Black to move. The graphs can be saved
-  in PostScript format via the file menu.
-  </p>
-  <p>
-  In the tree graph, a red line is plotted showing the mean over all games
-  from the current position, and the area between 50 and 55% (where most
-  standard openings are expected to score) is colored blue
-  to assist comparison of moves. Note that white usually scores around 55%
-  in master level chess.
-  </p>
+    <h3><name Graph>Tree Graph Window</name></h3>
+    <p>
+    The <b>Tree Graph</b> <button b_bargraph> presents a graphical display of the
+    <b>performance</b> of each move in the current tree.  Only
+    moves that have been played at least 1% of the time, and on 5 occasions
+    are displayed.  Percentage scores are always from White's
+    perspective even when it is Black to move. The graphs can be saved
+    in PostScript format via the file menu.
+    </p>
+    <p>
+    In the tree graph, a red line is plotted showing the mean over all games
+    from the current position, and the area between 50 and 55% (where most
+	standard openings are expected to score) is colored blue
+    to assist comparison of moves. Note that white usually scores around 55%
+    in master level chess.
+    </p>
 
-  <h3><name Lock>Locking the tree window</name></h3>
+  <h3><name Lock>Locking the Tree Window</name></h3>
   <p>
   Each tree window is associated with a specific base, that is, if
   several bases are opened simultaneously, several tree windows may
@@ -2268,7 +2276,7 @@ set helpText(Tree) {<h1>The Tree window</h1>
   opening offers <a OpeningTrainer>Training / Openings</a>.
   </p>
 
-  <h3>Using a Mask file to configure display</h3>
+  <h3>Using Mask Files</h3>
   <p>
   An Mask file (.stm) can be defined to change the way statistics are
   displayed in the Tree window. When a Mask file is opened, Tree
@@ -2370,7 +2378,7 @@ set helpText(Tree) {<h1>The Tree window</h1>
   adding or replacing a game, or sorting the database.
   </p>
 
-  <p><footer>Updated: Scid 3.6.26, October 2008</footer></p>
+  <p><footer>Updated: Scid vs. PC 4.1, October 2010</footer></p>
 }
 
 

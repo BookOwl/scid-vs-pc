@@ -3,6 +3,9 @@
 ### TREE window
 ### (C) 2007 Pascal Georges : multiple Tree windows support
 
+# Originally authored by Shane Hudson.
+# All Mask features by Pascal Georges [S.A.]
+
 namespace eval ::tree {
   set trainingBase 0
   array set cachesize {}
@@ -234,6 +237,8 @@ proc ::tree::make { { baseNumber -1 } } {
       -variable tree(locked$baseNumber) -command "::tree::toggleLock $baseNumber"
   checkbutton $w.buttons.training -textvar ::tr(Training) \
       -variable tree(training$baseNumber) -command "::tree::toggleTraining $baseNumber"
+  checkbutton $w.buttons.mask -text {Adjust Filter} \
+      -variable tree(maskfilter$baseNumber)
 
   foreach {b t} {
     best TreeFileBest graph TreeFileGraph lock TreeOptLock
@@ -245,8 +250,10 @@ proc ::tree::make { { baseNumber -1 } } {
   dialogbutton $w.buttons.stop -textvar ::tr(Stop) -command { sc_progressBar }
   dialogbutton $w.buttons.close -textvar ::tr(Close) -command "::tree::closeTree $baseNumber"
 
-  pack $w.buttons.best $w.buttons.graph $w.buttons.refresh $w.buttons.lock $w.buttons.training \
+  pack $w.buttons.best $w.buttons.graph $w.buttons.refresh $w.buttons.mask \
       -side left -padx 3 -pady 2
+  # $w.buttons.lock , $w.buttons.training  not packed..... to crowded
+
   packbuttons right $w.buttons.close $w.buttons.stop
   $w.buttons.stop configure -state disabled
 
@@ -289,6 +296,8 @@ proc ::tree::closeTree {baseNumber} {
 
   set ::geometry(treeWin$baseNumber) [wm geometry .treeWin$baseNumber]
   focus .
+
+  sc_tree clean $tree(base$baseNumber)
 
   if {$tree(autoSave$baseNumber)} {
     busyCursor .
@@ -422,7 +431,7 @@ proc ::tree::dorefresh { baseNumber } {
     set fastmode 1
   }
 
-  set moves [sc_tree search -hide $tree(training$baseNumber) -sort $tree(order$baseNumber) -base $base -fastmode $fastmode]
+  set moves [sc_tree search -hide $tree(training$baseNumber) -sort $tree(order$baseNumber) -base $base -fastmode $fastmode -mask $tree(maskfilter$baseNumber) ]
   displayLines $baseNumber $moves
 
   if {[winfo exists .treeBest$baseNumber]} { ::tree::best $baseNumber}

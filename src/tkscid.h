@@ -33,7 +33,6 @@
 #include "polyglot.h"
 
 #include "tclmy.h"
-
 #include <unistd.h>
 
 // Include header files for finding directory of executable program
@@ -177,6 +176,8 @@ struct scidBaseT {
     ByteBuffer * bbuf;
     TextBuffer * tbuf;
     Filter *     filter;
+    Filter *     dbFilter;
+    Filter *     treeFilter;
     uint *       duplicates;  // For each game: idx of duplicate game + 1,
                               // or 0 if there is no duplicate.
 };
@@ -536,6 +537,7 @@ int sc_tree_write     (TCL_ARGS);
 int sc_tree_free      (TCL_ARGS);
 int sc_tree_cachesize (TCL_ARGS);
 int sc_tree_cacheinfo (TCL_ARGS);
+int sc_tree_clean     (TCL_ARGS);
 
 int sc_var            (TCL_ARGS);
 int sc_var_delete     (TCL_ARGS);
