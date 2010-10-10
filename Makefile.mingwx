@@ -67,11 +67,10 @@ EXECS= pgnscid.exe scidt.exe scid.exe tcscid.exe scmerge.exe eco2epd.exe scidlet
 ### SCIDOBJS: not all the .o files that make up scid, just the standard
 ###   files that most of the scid programs use.
 ###
-SCIDOBJS= src/misc.o src/index.o src/date.o src/namebase.o \
-      src/position.o src/game.o src/gfile.o src/matsig.o \
-      src/bytebuf.o src/textbuf.o src/myassert.o src/stralloc.o \
-      src/mfile.o src/dstring.o src/pgnparse.o src/stored.o \
-      src/movelist.o \
+SCIDOBJS= src/misc.o src/index.o src/date.o src/namebase.o src/position.o \
+      src/game.o src/gfile.o src/matsig.o src/bytebuf.o src/textbuf.o \
+      src/myassert.o src/stralloc.o src/mfile.o src/dstring.o src/pgnparse.o \
+      src/stored.o src/movelist.o \
       src/polyglot/attack.o src/polyglot/board.o src/polyglot/book.o \
 			src/polyglot/book_make.o src/polyglot/book_merge.o src/polyglot/colour.o \
       src/polyglot/fen.o src/polyglot/game.o src/polyglot/hash.o \
@@ -84,19 +83,16 @@ SCIDOBJS= src/misc.o src/index.o src/date.o src/namebase.o \
 ### ZLIBOBJS: object files in the zlib compression library.
 ###
 ZLIBOBJS= src/zlib/adler32.o src/zlib/compress.o src/zlib/crc32.o \
-      src/zlib/gzio.o src/zlib/uncompr.o src/zlib/deflate.o \
-      src/zlib/trees.o src/zlib/zutil.o src/zlib/inflate.o \
-      src/zlib/infblock.o src/zlib/inftrees.o src/zlib/infcodes.o \
-      src/zlib/infutil.o src/zlib/inffast.o
+      src/zlib/gzio.o src/zlib/uncompr.o src/zlib/deflate.o src/zlib/trees.o \
+      src/zlib/zutil.o src/zlib/inflate.o src/zlib/infblock.o \
+      src/zlib/inftrees.o src/zlib/infcodes.o src/zlib/infutil.o \
+      src/zlib/inffast.o
 
 ### OBJS: all standard object files for scid.
 ###
 OBJS= $(SCIDOBJS) $(ZLIBOBJS)
 
-### LANGUAGES: all the extra language files for scid.
-LANGUAGES = tcl/lang/deutsch.tcl tcl/lang/francais.tcl tcl/lang/italian.tcl tcl/lang/russian.tcl \
-      tcl/lang/nederlan.tcl tcl/lang/spanish.tcl tcl/lang/portbr.tcl tcl/lang/swedish.tcl \
-      tcl/lang/norsk.tcl tcl/lang/polish.tcl tcl/lang/czech.tcl tcl/lang/hungary.tcl tcl/lang/serbian.tcl
+LANGUAGES = tcl/lang/deutsch.tcl tcl/lang/francais.tcl tcl/lang/italian.tcl tcl/lang/nederlan.tcl tcl/lang/spanish.tcl tcl/lang/portbr.tcl tcl/lang/swedish.tcl tcl/lang/norsk.tcl tcl/lang/polish.tcl tcl/lang/czech.tcl tcl/lang/hungary.tcl tcl/lang/serbian.tcl tcl/lang/russian.tcl
 
 ### TCLS: all the .tcl files that make up "scid".
 TCLS= \
@@ -131,7 +127,7 @@ TCLS= \
   tcl/help/help.tcl tcl/help/tips.tcl \
   tcl/menus.tcl tcl/board.tcl tcl/move.tcl tcl/main.tcl tcl/tools/correspondence.tcl \
     tcl/lang/english.tcl $(LANGUAGES) \
-  tcl/end.tcl tcl/tools/tacgame.tcl tcl/tools/sergame.tcl tcl/tools/fics.tcl tcl/tools/calvar.tcl tcl/tools/opening.tcl tcl/tools/tactics.tcl tcl/tools/uci.tcl tcl/tools/novag.tcl tcl/misc/flags.tcl tcl/tools/inputengine.tcl
+  tcl/end.tcl tcl/tools/tacgame.tcl tcl/tools/sergame.tcl tcl/tools/calvar.tcl tcl/tools/fics.tcl tcl/tools/opening.tcl tcl/tools/tactics.tcl tcl/tools/uci.tcl tcl/tools/novag.tcl tcl/misc/flags.tcl tcl/tools/inputengine.tcl
 
 
 ########################################
@@ -141,12 +137,12 @@ all: $(EXECS) scid.gui
 
 scid.gui: $(TCLS)
 	rm -f ./scid.gui
-	echo $(TCLS) > ./scid.gui
+	cat $(TCLS) > ./scid.gui
 
 # escid.gui: scid GUI with English only, no extra language support.
 escid.gui: $(TCLS)
 	rm -f ./escid.gui
-	echo $(TCLS_ENGLISH_ONLY) > ./escid.gui
+	cat $(TCLS_ENGLISH_ONLY) > ./escid.gui
 
 scmerge.exe: src/scmerge.o $(OBJS)
 	$(LINK) -o scmerge.exe src/scmerge.o $(OBJS)
