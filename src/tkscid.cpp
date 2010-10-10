@@ -7028,7 +7028,7 @@ sc_game_info (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
         strAppend (temp, "");	// ")"
         printNags = false;
     } else {
-        sprintf (temp, "<run ::move::Back>%u.%s%s</run>",
+        sprintf (temp, "<run ::commenteditor::Open>%u.%s%s</run>",
                  prevMoveCount, toMove==WHITE ? ".." : "", tempTrans);
         printNags = true;
     }
@@ -7079,7 +7079,7 @@ sc_game_info (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
         strAppend (temp, ")");
         printNags = false;
     } else {
-        sprintf (temp, "<run ::move::Forward>%u.%s%s</run>",
+        sprintf (temp, "<run ::commenteditor::Open>%u.%s%s</run>",
                  moveCount, toMove==WHITE ? "" : "..", tempTrans);//san);
         printNags = true;
     }
@@ -7156,7 +7156,7 @@ sc_game_info (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
 
     if (db->game->GetMoveComment() != NULL) {
         Tcl_AppendResult (ti, "<br>", translate(ti, "Comment"),
-                          " <green><run ::commmenteditor::Open>", NULL);
+                          " <green><run ::commenteditor::Open>", NULL);
         char * str = strDuplicate(db->game->GetMoveComment());
         strTrimMarkCodes (str);
         const char * s = str;

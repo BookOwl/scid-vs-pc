@@ -118,6 +118,10 @@ set ::windows::gamelist::findcase 1
 set scidExecutable [info nameofexecutable]
 if {[file type $scidExecutable] == "link"} {
   set scidExeDir [file dirname [file readlink $scidExecutable]]
+  if {[file pathtype $scidExeDir] == "relative"} {
+    set scidExeDir [file dirname [file join [file dirname $scidExecutable]\
+      [file readlink $scidExecutable]]]
+  }
 } else {
   set scidExeDir [file dirname $scidExecutable]
 }

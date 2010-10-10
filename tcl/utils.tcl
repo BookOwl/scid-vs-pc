@@ -33,3 +33,10 @@ proc ::utils::percentFormat {num denom} {
   if {$denom == 0} {set denom 1}
   return "[::utils::thousands $num] ([expr $num * 100 / $denom]%)"
 }
+
+# trace add execution PROC enterstep ::utils::traceok
+
+proc ::utils::traceok {string op} {
+  puts "$string , $op"
+}
+
