@@ -112,6 +112,38 @@ proc toggleMenubar {} {
 option add *Menu*TearOff 0
 
 menu .menu
+
+## Mac Application menu has to be before any call to configure.
+# (from SCID. untested S.A.)
+if { $macOS } {
+  # Application menu:
+  .menu add cascade -label Scid -menu .menu.apple
+  menu .menu.apple
+
+  set menuindex -1
+  set m .menu.apple
+
+  $m add command -label HelpAbout -command helpAbout
+  set helpMessage($m,[incr menuindex]) HelpAbout
+
+  $m add separator
+  incr menuindex
+
+  # To Quit
+  bind all <Command-q> "exit"
+  bind all <Command-Q> "exit"
+
+  ## To get Help
+  bind all <Command-?> {helpWindow Contents}
+  bind all <Help> {helpWindow Contents}
+
+  # Fix Quitting on MacOS X, now it will save options on quit:
+  proc exit {}  {
+    ::file::Exit
+  }
+
+}
+
 if {![info exists ::menuVisible]} {
   set ::menuVisible 1
 }

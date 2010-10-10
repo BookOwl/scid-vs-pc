@@ -11528,7 +11528,7 @@ sc_name_info (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
     if (tWidth > wbtWidth) { wbtWidth = tWidth; }
 
     /* sprintf format to display won, drawn, lost statistics S.A */
-    const char * fmt = "%s  %-*s %3u%c%02u%%   Won%s%3u%s  Drawn%s%3u%s  Lost%s%3u%s  %4u%c%c /%s%4u%s";
+    const char * fmt = "%s  %-*s %3u%c%02u%%   Won%s%4u%s  Drawn%s%4u%s  Lost%s%4u%s  %4u%c%c /%s%4u%s";
 
     /*
      * Are Won, Drawn, Lost strings translated ?

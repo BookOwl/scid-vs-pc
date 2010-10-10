@@ -1,25 +1,29 @@
 # end.tcl: part of Scid.
 # Copyright (C) 2000-2003 Shane Hudson.
 
-# detect the case where, under Linux, Scid is used without prior installation
-# the fallback directory is Scid's exec dir
-if {! [file isdirectory $::scidBasesDir] || ! [file isdirectory $::scidBooksDir]} {
-  set scidShareDir $::scidExeDir
-  set scidBasesDir [file nativename [file join $::scidShareDir "bases"]]
-  set scidBooksDir [file nativename [file join $scidShareDir "books"]]
-}
-
-if {! [file isdirectory $::scidBasesDir]} {
-  tk_messageBox -title "Scid" -type ok -icon warning -message "Bases directory not found"
-}
-
-if { ! [file isdirectory $::scidBooksDir]} {
-  tk_messageBox -title "Scid" -type ok -icon warning -message "Books directory not found"
-}
+### This is broke. S.A.
+#
+# # detect the case where, under Linux, Scid is used without prior installation
+# # the fallback directory is Scid's exec dir
+# if {! [file isdirectory $::scidBasesDir] || ! [file isdirectory $::scidBooksDir]} {
+#   set scidShareDir $::scidExeDir
+#   set scidBasesDir [file nativename [file join $::scidShareDir "bases"]]
+#   set scidBooksDir [file nativename [file join $scidShareDir "books"]]
+# }
 
 ::splash::add "scidShareDir is $scidShareDir"
-::splash::add "scidBasesDir is $scidBasesDir"
-::splash::add "scidBooksDir is $scidBooksDir"
+
+if {[file isdirectory $::scidBasesDir]} {
+  ::splash::add "scidBasesDir is $scidBasesDir"
+} else {
+  ::splash::add "scidBasesDir $scidBasesDir not found!" error
+}
+
+if {[file isdirectory $::scidBooksDir]} {
+  ::splash::add "scidBooksDir is $scidBooksDir"
+} else {
+  ::splash::add "scidBooksDir $scidBooksDir not found!" error
+}
 
 ############################################################
 ### Main window title, etc:
@@ -1548,7 +1552,7 @@ Http://scidvspc.sourceforge.net
         "s11" { set ::boardSize 64 }
         "s12" { set ::boardSize 72 }
         default {
-          ::splash::add "Warning: unknown option: \"$arg\""
+          ::splash::add "Warning: unknown option: \"$arg\"" error
         }
       }
     } else {
@@ -1650,13 +1654,13 @@ while {$argc > 0} {
   if {[string match "*.epd*" $startbase]} {
     ::splash::add "Opening EPD file: $startbase..."
     if {![newEpdWin openSilent $startbase]} {
-      ::splash::add "   Error opening EPD file: $startbase"
+      ::splash::add "   Error opening EPD file: $startbase" error
     }
     set initialDir(epd) [file dirname $startbase]
   } elseif {[string match "*.sso" $startbase]} {
     ::splash::add "Opening filter file: $startbase..."
     if {[catch {uplevel "#0" source $startbase} err]} {
-      ::splash::add "   Error opening $startbase: $err"
+      ::splash::add "   Error opening $startbase: $err" error
     } else {
       switch -- $::searchType {
         "Material" {
@@ -1737,7 +1741,7 @@ while {$argc > 0} {
   } elseif {[string match "*.sor" $startbase]} {
     ::splash::add "Opening repertoire file: $startbase..."
     if {[catch {::rep::OpenWithFile $startbase} err]} {
-      ::splash::add "Error opening $startbase: $err"
+      ::splash::add "Error opening $startbase: $err" error
     }
   } else {
     busyCursor .
@@ -1763,7 +1767,7 @@ while {$argc > 0} {
       ### Above err and errMessage should be shown as dialog messages S.A.
       ### Umm... they are. ? S.A.
       set errMessage "$errMessage\nCould not open database \"$startbase\""
-      ::splash::add $errMessage
+      ::splash::add $errMessage error
       tk_messageBox -title "Scid: Error" -type ok -icon error -message $errMessage
     } else {
       ::splash::add "   Database \"$startbase\" opened: [sc_base numGames] games."
@@ -1781,9 +1785,6 @@ while {$argc > 0} {
 }
 
 ::splash::add "\nStartup completed."
-::splash::add "Scid has 44 online help pages; just press F1 for help!\n"
-::splash::add "Also look at the online tutorial http://scid.sourceforge.net/tutorial"
-::splash::add "will always have the very latest."
 
 ##################################
 ### Main window initialisation ###

@@ -203,6 +203,12 @@ if {$windowsOS} {
   set fontOptions(Small)   [list Arial            9 normal roman]
   set fontOptions(Tiny)    [list Arial            8 normal roman]
   set fontOptions(Fixed)   [list Courier          9 normal roman]
+} elseif {$macOS} {
+  set fontOptions(Regular) [list system    11 normal roman]
+  set fontOptions(Menu)    [list menu      14 normal roman]
+  set fontOptions(Small)   [list system    10 normal roman]
+  set fontOptions(Tiny)    [list system     9 normal roman]
+  set fontOptions(Fixed)   [list Monaco    10 normal roman]
 } else {
   set fontOptions(Regular) [list helvetica 11 normal roman]
   set fontOptions(Menu)    [list helvetica 10 normal roman]
@@ -826,9 +832,9 @@ proc updateStatusBar {} {}
 set ::splash::keepopen 1
 set ::splash::cache {}
 
-# the function gets redfined once the fonts ahev been read from options.dat
+# the function gets redfined once the fonts have been read from options.dat
 
-proc ::splash::add {text} {
+proc ::splash::add {text {tag {indent}}} {
   lappend ::splash::cache $text
 }
 
@@ -867,7 +873,7 @@ proc scidConfigFile {type} {
 # Since the options file used to be ".scid", rename it:
 if {! [file isdirectory $scidUserDir]} {
   if {[catch {file mkdir $scidUserDir} err]} {
-    ::splash::add "Error creating $scidUserDir directory: $err"
+    ::splash::add "Error creating $scidUserDir directory: $err" error
   } else {
     catch {file rename "$scidUserDir.old" $optionsFile}
   }
@@ -877,7 +883,7 @@ if {! [file isdirectory $scidUserDir]} {
 proc makeScidDir {dir} {
   if {! [file isdirectory $dir]} {
     if {[catch {file mkdir $dir} err]} {
-      ::splash::add "Error creating directory $dir: $err"
+      ::splash::add "Error creating directory $dir: $err" error
     } else {
       ::splash::add "Created directory: $dir"
     }
@@ -893,7 +899,7 @@ makeScidDir $scidLogDir
 set optionsFile [scidConfigFile options]
 
 if {[catch {source $optionsFile} ]} {
-  ::splash::add "Unable to find the options file: [file tail $optionsFile]"
+  ::splash::add "Unable to find the options file: [file tail $optionsFile]" error
 } else {
   ::splash::add "Using options file \"[file tail $optionsFile]\"."
 }
@@ -964,6 +970,7 @@ proc ::splash::make {} {
   bind $w <Escape> {.splash.dismiss invoke}
 
   $w.t tag configure indent -lmargin2 20
+  $w.t tag configure error -foreground red
   $w.t tag configure scid_title -font {Arial 24 normal} -foreground darkslateblue
 
   $w.t insert end "        $::scidName     " scid_title
@@ -1052,9 +1059,12 @@ OvYBOlcdnNiJnviJoBiKojiKpFiKplgRAQEAOw==
 
 ::splash::make
 
-proc ::splash::add {text} {
+proc ::splash::add {text {tag {indent}}} {
   if {[winfo exists .splash]} {
-    .splash.t insert end "\n$text" indent
+    .splash.t insert end "\n$text" $tag
+    if {$tag == {error}} {
+      puts stderr $text
+    }
     update
   }
 }
