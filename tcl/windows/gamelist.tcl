@@ -36,8 +36,8 @@ set ::windows::gamelist::goto {}
 # W:  White Elo. Prints in width of 4, ignoring specified width.
 # y:  Year. Prints in width of 4, ignoring specified width.
 
-#    Note that the "g" (game number) field MUST appear somewhere,
-#    but the fields can be in any order.
+#    Note that the "g" (game number) field MUST appear somewhere. (Mebbee ?)
+#    The field order is how they are appear in the widget.
 #    See the comments at the start of the function "PrintGameInfo" in
 #    src/index.cpp for a list of available field codes.
 
@@ -52,12 +52,12 @@ set glistFields {
   e Event	w 10
   n Round	e 5
   d Date	w 10
-  s Site	w 10
   W WElo	e 5
   B BElo	e 5
+  s Site	w 10
   o ECO		e 5
-  O Opening	w 6
   D Deleted	e 2
+  O Opening	w 6
   U Flags	e 2
   V Vars	e 2
   C Comments	w 2
@@ -458,7 +458,7 @@ proc configDeleteButtons {} {
   set w .glistWin
   if {[sc_base current] == [sc_info clipbase]} {
     ### clipbase open
-    $w.c.delete configure -state normal
+    $w.c.delete configure -state disabled
     $w.c.empty configure -state disabled
   } else {
     if {[sc_base isReadOnly]} {
@@ -646,11 +646,7 @@ proc ::windows::gamelist::Refresh {{see {}}} {
 
   $w.vsb configure -to [expr $totalSize - $glistSize]
 
-  if {[sc_base isReadOnly]} {
-    $w.c.delete configure -state disabled
-  } else {
-    $w.c.delete configure -state normal
-  }
+  configDeleteButtons
 
   return $current_item
 }
