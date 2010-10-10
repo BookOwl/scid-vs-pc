@@ -168,7 +168,7 @@ menuText E WindowsPGN "PGN Window" 0 {Open/close the PGN (game notation) window}
 menuText E WindowsCross "Crosstable" 0 {Open/close the Tournament Crosstable}
 menuText E WindowsPList "Player Finder" 2 {Open/close the player finder}
 menuText E WindowsTmt "Tournament Finder" 2 {Open/close the tournament finder}
-menuText E WindowsSwitcher "Switcher" 0 \
+menuText E WindowsSwitcher "Databases" 0 \
   {Open/close the Database Switcher window}
 menuText E WindowsMaint "Maintenance Window" 0 \
   {Open/close the Maintenance window}
@@ -197,7 +197,7 @@ menuText E ToolsComp "Computer Tournament" 0 {Chess engine tournament}
 menuText E ToolsTacticalGame "Tactical game"  0 {Play a game with tactics}
 menuText E ToolsSeriousGame "Serious game"  0 {Play a serious game}
 menuText E ToolsTrainOpenings "Openings"  0 {Train with a repertoire}
-menuText E ToolsTrainTactics "Puzzles"  0 {Solve "Mate in" puzzles}
+menuText E ToolsTrainTactics "Puzzle"  0 {Solve "Mate in" puzzles}
 menuText E ToolsTrainCalvar "Calculation of variations"  0 {Calculation of variations training}
 menuText E ToolsTrainFindBestMove "Find best move"  0 {Find best move}
 menuText E ToolsTrainFics "Internet"  0 {Play on freechess.org}

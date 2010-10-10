@@ -642,7 +642,7 @@ set helpMessage($m,[incr menuindex]) WindowsRepertoire
 
 $m add checkbutton -label WindowsStats -variable ::windows::stats::isOpen \
     -accelerator "Ctrl+I" -command ::windows::stats::Open
-# bind . <Control-i> ::windows::stats::Open
+bind . <Control-i> ::windows::stats::Open
 set helpMessage($m,[incr menuindex]) WindowsStats
 
 $m add checkbutton -label WindowsTree \
@@ -1695,7 +1695,7 @@ proc standardShortcuts {w} {
   bind $w <Control-p> ::pgn::OpenClose
   bind $w <Control-T> ::tourney::toggle
   bind $w <Control-P> ::plist::toggle
-  bind $w <Control-i> ::toggleGameInfo
+  bind $w <Control-i> ::windows::stats::Open
   bind $w <Control-t> ::tree::make
   bind $w <Control-A> ::enginelist::choose
   bind $w <Control-X> ::crosstab::OpenClose

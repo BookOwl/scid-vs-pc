@@ -208,7 +208,6 @@ proc ::htext::init {w} {
   $w tag configure maroon -fore $maroon
   $w tag configure gray -fore gray20
 
-  # $w tag configure lastmove -fore red
   $w tag configure lastmove -fore royalblue2 -font font_Bold
   # hmmm... salmon4 rosybrown4 royalblue royalblue2 chartreuse4 springgreen4
 

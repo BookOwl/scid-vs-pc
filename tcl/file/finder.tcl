@@ -20,7 +20,10 @@ image create photo ::file::finder::updir -data {
 
 proc ::file::finder::Open {} {
   set w .finder
-  if {[winfo exists $w]} { return }
+  if {[winfo exists $w]} {
+    raiseWin $w
+    return
+  }
 
   toplevel $w
   wm title $w "Scid: $::tr(FileFinder)"
@@ -33,7 +36,7 @@ proc ::file::finder::Open {} {
 
   $w.menu add cascade -label FinderFile -menu $w.menu.file
   menu $w.menu.file
-  $w.menu.file add command -label Open -command ::file::finder::OpenDIR
+  $w.menu.file add command -label {Open Directory} -command ::file::finder::OpenDIR
   $w.menu.file add command -label FinderFileClose -command "destroy $w"
 
   bind $w <Control-o> ::file::finder::OpenDIR
@@ -54,11 +57,11 @@ proc ::file::finder::Open {} {
         -command ::file::finder::Refresh
   }
 
-  $w.menu add cascade -label FinderHelp -menu $w.menu.helpmenu
-  menu $w.menu.helpmenu
-  $w.menu.helpmenu add command -label FinderHelpFinder \
+  $w.menu add cascade -label FinderHelp -menu $w.menu.help
+  menu $w.menu.help
+  $w.menu.help add command -label FinderHelpFinder \
       -accelerator F1 -command {helpWindow Finder}
-  $w.menu.helpmenu add command -label FinderHelpIndex -command {helpWindow Index}
+  $w.menu.help add command -label FinderHelpIndex -command {helpWindow Index}
 
   pack [frame $w.d] -side top -fill x
   label $w.d.label -font font_Bold ;# given a text value below
@@ -255,7 +258,7 @@ proc ::file::finder::Refresh {{newdir ""}} {
       set fullpath $data(dir)/$dir/$tail
     }
 
-    $t tag bind f$path <ButtonPress-1> "::file::Open [list $fullpath]"
+    $t tag bind f$path <Double-Button-1> "::file::Open [list $fullpath]"
     # Bind right button to popup a contextual menu:
     $t tag bind f$path <ButtonPress-3> "::file::finder::contextMenu .finder.t.text [list $fullpath] %x %y %X %Y"
 
@@ -421,7 +424,7 @@ proc ::file::finder::ConfigMenus {{lang ""}} {
     configMenuText $m.types $idx FinderTypes$tag $lang
   }
   foreach idx {0 1} tag {Finder Index} {
-    configMenuText $m.helpmenu $idx FinderHelp$tag $lang
+    configMenuText $m.help $idx FinderHelp$tag $lang
   }
 }
 

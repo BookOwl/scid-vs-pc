@@ -1,4 +1,4 @@
-  Scid vs PC
+  Scid vs. PC
 
   ____________________________________________________________
 
@@ -7,6 +7,9 @@
 
   1. introduction
   2. features
+        2..1 Improvements over Scid
+        2..2 Features not currently implemented
+
   3. download
   4. installation
         4..1 Linux , FreeBSD
@@ -14,22 +17,24 @@
         4..3 Mac OSX
 
   5. how to play
-  6. news
-  7. bugs
-  8. changes
-        8..1 Scid vs PC 4.0
-        8..2 Scid vs PC 3.6.26.9
-        8..3 Scid vs PC 3.6.26.8
-        8..4 Scid vs PC 3.6.26.7
-        8..5 Scid vs PC 3.6.26.6
-        8..6 Scid vs PC 3.6.26.5
-        8..7 Scid vs PC 3.6.26.4
-        8..8 Scid vs PC 3.6.26.3
-        8..9 Scid vs PC 3.6.26.2
-        8..10 Scid vs PC 3.6.26.1
+  6. known issues
+  7. news
+  8. bugs
+  9. changes
+        9..1 Scid vs PC 4.1
+        9..2 Scid vs PC 4.0
+        9..3 Scid vs PC 3.6.26.9
+        9..4 Scid vs PC 3.6.26.8
+        9..5 Scid vs PC 3.6.26.7
+        9..6 Scid vs PC 3.6.26.6
+        9..7 Scid vs PC 3.6.26.5
+        9..8 Scid vs PC 3.6.26.4
+        9..9 Scid vs PC 3.6.26.3
+        9..10 Scid vs PC 3.6.26.2
+        9..11 Scid vs PC 3.6.26.1
 
-  9. todo
-  10. author
+  10. todo
+  11. author
 
 
   ______________________________________________________________________
@@ -53,13 +58,13 @@
   Scid vs PC is more of a consumer chess program than Scid. It's meant
   for people who want to play chess with an attractive interface,
   without having to understand the complex database capabilities of
-  Scid.
+  Scid. And it still maintains nearly all of Scid's features.
+
 
   2.  features
 
 
-  Improvements over Scid:
-
+  2.0.1.  Improvements over Scid
 
   o  A Computer Tournament feature.
 
@@ -100,15 +105,27 @@
   See ``changes'' for a comprehensive changelog.
 
 
+  2.0.2.  Features not currently implemented
+
+  o  New si4 database format not yet supported.
+
+  o  Alex's latest Correspondence widget
+
+  o  No undo
+
+  Help is welcome porting these features, and si4 support is scheduled
+  for the next release.
+
+
   3.  download
 
 
-  source scid_vs_pc-4.0.tgz
-  <https://sourceforge.net/project/downloading.php?group_id=263836&filename=scid_vs_pc-4.0.tgz>
+  source scid_vs_pc-4.1.tgz
+  <https://sourceforge.net/project/downloading.php?group_id=263836&filename=scid_vs_pc-4.1.tgz>
 
-  windows scid_vs_pc-windows-4.0.zip
+  windows scid_vs_pc-windows-4.1.zip
   <https://sourceforge.net/project/downloading.php?group_id=263836&filename=scid_vs_pc-
-  windows-4.0.zip>
+  windows-4.1.zip>
 
   mac ScidVsMac-3.6.26.8.dmg
   <https://sourceforge.net/project/downloading.php?group_id=263836&filename=ScidVsMac-3.6.26.8.dmg>
@@ -137,8 +154,8 @@
   Then, installing from source:
 
   ______________________________________________________________________
-  tar -xzf scid_vs_pc-4.0.tgz
-  cd scid_vs_pc-4.0
+  tar -xzf scid_vs_pc-4.1.tgz
+  cd scid_vs_pc-4.1
   configure
   make install
   scid
@@ -197,26 +214,43 @@
   the Scid Help menus.
 
 
-  6.  news
+  6.  known issues
 
+
+  o  Chinese Language Support. Scid's multilanguage support is broken
+     for some countries. The work around involves compiling from source,
+     using: ./configure LANGUAGES=""
+     Alternatively, remove all lines between "### deutsch.tcl" and "#
+     end of russian.tcl" in the scid.gui file.
+
+  o  Focus Issues. Kde users can allow Tcl apps to properly raise
+     themselves by configuring desktop > window behavior > advanced >
+     focus stealing prevention set to "none"
+
+
+  7.  news
+
+
+   October 10, 2010
+
+  Still no si4 , undo or fast tree updates.... todo.  Numerous features
+  though :) and the Gamelist widget is looking great.
 
    July 3, 2010
 
   New release coming up. It's my tenth, but have gone with verison
-  number 4.0 instead of 3.6.26.10.
-
-  It's pretty big too :).
+  number 4.0 instead of 3.6.26.10.  It's pretty big too :)
 
   The Computer Tournament feature runs great ... now.  Initially i had a
   poor control mechanism, but thanks to some UCI snippets from Fulvio, i
-  got inspiration to rewrite it properly, and every thing seems fine
-  except for  some  smaller engines poor handling of time slices.
-  RobboLito is the best Linux engine i tested. Stockfish is very close,
-  and Gnu Chess 5.0 can hold it's head up, managing to beat Crafty once.
+  found inspiration to rewrite it and every thing seems fine except for
+  some xboard engines poor handling of time slices.  The best Linux
+  engine i've tested is either RobboLito or Stockfish. Gnu Chess 5.0 and
+  Scidlet can hold their head's up... performing better than i expected.
 
   The other main feature is a zippy Gamelist widget - allowing for huge
   databases to be rendered in seconds rather than minutes. Also, deleted
-  items are now greyed-out, and there's a new "Compact" button.
+  items are now greyed-out, and there's a "Compact" button.
 
    April 19, 2010
 
@@ -251,7 +285,7 @@
   I've discovered the great WatchBot
   <http://mekk.waw.pl/mk/watchbot/index> web page. It automatically
   records (some) Fics games, and allows for playback via your web
-  browser. Here is a recent match between mukidi and stevenaaus.
+  browser. Here is a recent match between stevenaaus and fjgold.
 
    October 25, 2009
 
@@ -302,13 +336,14 @@
   incorporate.
 
 
-  7.  bugs
+  8.  bugs
 
 
   o  Windows only:
 
      o  The Phalanx windows binary still has the castling bug. (Anyone
         compile me a new version?)
+
      o  Using "ALT+F"... etc key bindings to access the menus is badly
         broke. This is a Tcl/Tk issue.
 
@@ -323,10 +358,119 @@
      perfectly.
 
 
-  8.  changes
+  9.  changes
 
 
-  8.0.1.  Scid vs PC 4.0
+  9.0.1.  Scid vs PC 4.1
+
+
+  o  Quite a few FICs tweaks, including new help pages and D.O.S. attack
+     fixes
+
+  o  Numerous Gamelist improvements (see below)
+
+  o  Tree widget improvements: next move is highlighted, main filter is
+     now independant of Tree filter, wheel mouse bindings.
+
+
+  o  Tactics feature fixed up: Renamed "Puzzle" , and Problem Solutions
+     can now be browsed in-game
+
+  o  Analysis window "add variation" now *appends* variations if at var
+     end
+
+  o  Comment Editor has undo and redo bindings
+
+  o  Main board grid colour can be changed
+
+  o  Setup board can rotate and flip the board
+
+  o  Clicking on moves in the gameinfo area shows Comment Editor
+
+  o  Better window raising/focusing
+
+  o  Kill analysis window after batch annotations
+
+  o  New marble tile theme and colour themes
+
+  o  Some menu re-ordering
+
+  o  Recent Files menu is basename only
+
+  o  Remove Control+V game paste binding .... too dangerous
+
+  o  Further refinements of Switcher widget and Icons
+
+  o  ttk comboboxes are no longer grey
+
+  o  Analysis widget scrolling will pause to allow backwards review
+
+  o  Splash widget changes, and remove pop-up for missing Bases and Book
+     directories
+
+  o  Rewritten Help items
+
+  o  Gamelist improvements -
+
+     o  Field order rearranged
+
+     o  Columns now sort in both directions, with arrow depicting
+        direction
+
+     o  Deleting items works better
+
+     o  Can be sorted by ELO
+
+     o  Draws sorted alongside no-result
+
+     o  Delete and Compact buttons disable better
+
+
+  o  Bugfixes -
+
+     o  Twinchecker PGN text diff-ing was sometimes broken
+
+     o  Phalanx observes tournament feature time control
+
+     o  Fix "Show Suggested Move" feature
+
+     o  Fix occasionaly issue with erroneously selecting squares, then
+        being unable to reselect them
+
+     o  Ignore crafty's resignations which caused X-window flash events
+
+     o  No context menu if dragging a piece
+
+     o  RobboLito (and others ?) had uppercase piece promotion which
+        occasionally broke
+
+     o  "Show Suggested Move" was broken
+
+     o  Gamelist sometimes left off the last or first item
+
+
+  o  Widget tidies -
+
+     o  Analysis engine config widget
+
+     o  Maintenance tweaks
+
+     o  Game save widget made better
+
+     o  Parent Date widget
+
+     o  Delete twins
+
+     o  Database Switcher changes, including new icons
+
+     o  Finder now has three columns (and other changes)
+
+     o  Player finder + Tournament Finder sub-widgets alligned
+
+     o  Statistics window restructured
+
+
+  9.0.2.  Scid vs PC 4.0
 
 
   o  Computer Chess tournament feature
@@ -360,6 +504,7 @@
 
   o  Fix up analysis widget "lock to position" feature
 
+
   o  All analysis windows can now use annotation, and autoplay feature
 
   o  Bind F4 to start another analysis window
@@ -372,7 +517,6 @@
      FEN's castling field
 
   o  Some minor version fixes anticipating tcl8.6
-
 
   o  Small bugfix: variation pop-up could previously throw errors if
      moving through movs fast
@@ -412,7 +556,7 @@
   o  Perform a db refresh after importing PGN file(s)
 
 
-  8.0.2.  Scid vs PC 3.6.26.9
+  9.0.3.  Scid vs PC 3.6.26.9
 
 
   o  Added a random pawns feature to tacgame
@@ -426,6 +570,7 @@
 
   o  Centralise procedures called when switching between DBs
 
+
   o  Crosstable: make options persistant, tweak menus, fix html export
      blank fields
 
@@ -438,7 +583,6 @@
      handling of multiple challenges
 
   o  Fics: Tweak the Make Offer dialog
-
 
   o  Fics: update help files, and add a Font button
 
@@ -486,11 +630,12 @@
      feature for next release
 
 
-  8.0.3.  Scid vs PC 3.6.26.8
+  9.0.4.  Scid vs PC 3.6.26.8
 
 
   o  The Fics widgets have been redone, including buttons, the graph and
      labels, config windows, and console tweaks
+
 
   o  Made a few friendly help menus, as well as adding a "Forward"
      button to the help interface
@@ -540,7 +685,7 @@
      o  Some widget reparenting
 
 
-  8.0.4.  Scid vs PC 3.6.26.7
+  9.0.5.  Scid vs PC 3.6.26.7
 
 
   o  Include a mac configuration patch
@@ -552,7 +697,7 @@
   o  Small change to Tacgame about getMyPlayerName
 
 
-  8.0.5.  Scid vs PC 3.6.26.6
+  9.0.6.  Scid vs PC 3.6.26.6
 
 
   o  The Setup Board widget now shows tiles (when the main board uses
@@ -569,7 +714,6 @@
 
   o  Fixed up the toolbar cofniguration widget, and re-did a few little
      images
-
 
   o  Variation pop-ups now center over the main window, and enable
      KeyPress-1, KeyPress-2, etc bindings
@@ -608,7 +752,7 @@
   o  Add Control-m binding for toggling the menubar
 
 
-  8.0.6.  Scid vs PC 3.6.26.5
+  9.0.7.  Scid vs PC 3.6.26.5
 
 
   o  Revamped the main button bar, making it a little larger too.
@@ -630,11 +774,12 @@
      Variation buttons swap position, Spellcheck installation fix.
 
 
-  8.0.7.  Scid vs PC 3.6.26.4
+  9.0.8.  Scid vs PC 3.6.26.4
 
 
   o  New Gamelist widget. It's much more powerful than the old one, but
      is not quite yet feature complete.
+
   o  Many changes to the Gameinfo widget,
 
   o  , including a new "Set Game Information" widget.
@@ -660,7 +805,7 @@
      and menu tweaks
 
 
-  8.0.8.  Scid vs PC 3.6.26.3
+  9.0.9.  Scid vs PC 3.6.26.3
 
 
   o  Replaced most all of the old colour schemes and tiles.
@@ -680,7 +825,7 @@
      customisation.
 
 
-  8.0.9.  Scid vs PC 3.6.26.2
+  9.0.10.  Scid vs PC 3.6.26.2
 
 
   o  Game info panel restructured ;>
@@ -708,7 +853,7 @@
   o  Gave the show_material canvas a little more space
 
 
-  8.0.10.  Scid vs PC 3.6.26.1
+  9.0.11.  Scid vs PC 3.6.26.1
 
 
   o  Overhauling the tactical game feature.
@@ -730,7 +875,7 @@
   o  Last move displayed in bold.
 
 
-  9.  todo
+  10.  todo
 
 
   o  Fics: prominent "says" from opponent, add time comments to pgn.
@@ -745,7 +890,7 @@
      breaks.
 
 
-  10.  author
+  11.  author
 
   Stevenaaus is a uni graduate in math and computer science, who
   programs as a hobby in tcl/tk, bash and C. I live and work in rural
