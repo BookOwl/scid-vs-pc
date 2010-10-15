@@ -2170,9 +2170,10 @@ proc processAnalysisInput {n} {
 
   if {$comp(playing)} {
     # check for malformed lines
-    if {[string match {* "} $line] || [string match {*\}:*}]} {
+    if {[string match {*\}:*} $line]} {
       return
     }
+    set line [string map {{"} {}} $line]
 
     ### Match "my move is", "My move is:"
     if {[string match "*y move is*" $line]} {

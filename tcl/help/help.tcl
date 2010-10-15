@@ -3013,6 +3013,7 @@ Stockfish 1.6.2<br>
 Stockfish 1.7.1<br>
 Toga 131 (Fruit)<br>
 XChenard<br>
+Zct<br>
 <br>
 Arasan, Spike, Sjeng, Homer and XChenard have issues relating to time control.
 Sjeng and XChenard are issued the "hard" command, and seem to work.
