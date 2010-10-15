@@ -15,7 +15,7 @@ exec `dirname $0`/tkscid "$0" "$@"
 # Alter the version if any patches have been made to the Tcl code only:
 set scidName {Scid vs. PC}
 set scidVersion 4.1
-set scidVersionDate {Octobr 10, 2010}
+set scidVersionDate {October 10, 2010}
 
 # Set to 0 before releasing, so some alpha-state code is not included
 # Set to 1 to have access to all code

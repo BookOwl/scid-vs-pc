@@ -3016,6 +3016,7 @@ XChenard<br>
 <br>
 Arasan, Spike, Sjeng, Homer and XChenard have issues relating to time control.
 Sjeng and XChenard are issued the "hard" command, and seem to work.
+Gaviota-0.74 runs in analysis/xboard mode, but will not play tournaments.
 Pervious versions of Phalanx had no time control, but it now works well.
 Gnu Chess needs the "-xboard" parameter.
 Faile seems not to issue "move" under some circumstances, despite being in xboard mode.
@@ -4316,7 +4317,7 @@ set helpText(Author) "<h1>Scid vs. PC</h1>
   <li>Licenced under the GNU General Public License.</li>
 
 </ul> </ul> </ul> 
-  <p><footer>(Project Updated: $::scidVersion, $::scidVersionDate</footer></p>
+  <p><footer>(Project Updated: $::scidVersion, $::scidVersionDate)</footer></p>
   </p>
 "
 
