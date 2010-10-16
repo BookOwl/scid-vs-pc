@@ -248,7 +248,7 @@ proc compOk {} {
     .comp.buttons.help configure -text Close -command {
        compDestroy
     }
-    focus .comp.buttons.cancel
+    raiseWin .comp
   }
 }
 
