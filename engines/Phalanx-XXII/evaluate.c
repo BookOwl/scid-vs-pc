@@ -108,7 +108,7 @@ if( C==NULL ) { puts("cannot alloc static eval cache!"); exit(0); }
 int psnl[MAXPLY];
 int devi[MAXPLY];
 
-inline int approx_eval(void)
+static inline int approx_eval(void)
 {
 psnl[Ply] = - psnl[Ply-1];
 

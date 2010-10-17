@@ -216,7 +216,7 @@ int addmove(char *move)
 
 void parsegame(void)
 { register int c='*';
-  unsigned char m[128];
+  /*unsigned*/ char m[128];
   int i;
   setfen("rnbqkbnr/pppppppp/////PPPPPPPP/RNBQKBNR/w");
   while( c!='[' && c!=EOF && Counter < MaxBookPly )

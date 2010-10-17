@@ -1,7 +1,7 @@
 #ifndef PHALANX_INCLUDED
 #define PHALANX_INCLUDED
 
-#define VERSION "XXII-pg"
+#define VERSION "XXIII"
 
 #ifdef GNUFUN
 # include <getopt.h>
@@ -33,7 +33,9 @@
 #endif
 
 #ifdef _WIN32
+# ifndef __cplusplus
 # define inline __inline
+# endif
   typedef __int64 int64;
 #else
   typedef long long int64;

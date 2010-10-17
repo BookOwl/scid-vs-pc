@@ -12,11 +12,13 @@
 #define WINDOW 60
 
 
-#define update_PV( move, ply ) \
-{ register int j; \
-  PV[ply][ply] = move; \
-  for(j=ply+1;PV[ply+1][j].from;j++) PV[ply][j] = PV[ply+1][j]; \
-  PV[ply][j].from = 0; /* end of copied line */ \
+#define update_PV(move, ply)				\
+{							\
+    register int __j;					\
+    PV[ply][ply] = move;				\
+    for (__j = ply + 1; PV[ply + 1][__j].from; __j++)	\
+	PV[ply][__j] = PV[ply + 1][__j];		\
+    PV[ply][__j].from = 0; /* end of copied line */	\
 }
 
 

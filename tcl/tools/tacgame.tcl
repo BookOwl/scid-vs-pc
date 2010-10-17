@@ -243,7 +243,7 @@ namespace eval tacgame {
     bind $w <Escape> { .configWin.fbuttons.cancel invoke }
     bind $w <Return> { .configWin.fbuttons.close invoke }
     bind $w <F1> { helpWindow TacticalGame }
-    bind $w <Destroy> ""
+    bind $w <Destroy> {}
     bind $w <Configure> "recordWinSize $w"
     wm minsize $w 45 0
     update
@@ -512,8 +512,6 @@ namespace eval tacgame {
     updateAnalysisText
 
     bind $w <F1> { helpWindow TacticalGame }
-    bind $w <Destroy> "after cancel ::tacgame::phalanxGo ; focus . ; \
-        ::tacgame::closeEngine 1; ::tacgame::closeEngine 2"
     bind $w <Escape> ::tacgame::abortGame
     bind $w <Configure> "recordWinSize $w"
     wm minsize $w 45 0
@@ -549,13 +547,14 @@ namespace eval tacgame {
   ################################################################################
   #
   ################################################################################
-  proc abortGame { { destroyWin 1 } } {
+  proc abortGame {} {
     after cancel ::tacgame::phalanxGo
     stopAnalyze
-    if { $destroyWin } { destroy ".coachWin" }
+    destroy .coachWin
     focus .
     ::tacgame::closeEngine 1
     ::tacgame::closeEngine 2
+    # ::uci::closeUCIengine 2 ?
   }
   # ======================================================================
   #   ::tacgame::launchengine
@@ -608,7 +607,7 @@ namespace eval tacgame {
     fconfigure $analysisCoach(pipe$n) -buffering line -blocking 0
 
     if {$n == 1} {
-      fileevent $analysisCoach(pipe$n) readable "::tacgame::processInput"
+      fileevent $analysisCoach(pipe$n) readable ::tacgame::processInput
       after 1000 "::tacgame::checkAnalysisStarted $n"
     }
 
@@ -703,15 +702,12 @@ namespace eval tacgame {
     set line [gets $analysisCoach(pipe1)]
 
     # check that the engine is really Phalanx
-    if { ! $analysisCoach(seen1) && $line != "Phalanx XXII-pg" } {
-      after cancel ::tacgame::phalanxGo
-      ::tacgame::closeEngine 1
-      # ::tacgame::closeEngine 2
-      ::uci::closeUCIengine 2
-      tk_messageBox -type ok -icon warning -parent . -title "Scid" -message "Please choose the correct Phalanx engine"
+    if { ! $analysisCoach(seen1) && $line != {Phalanx XXII-pg} && $line != {Phalanx XXIII} } {
+      # There's a bug here... Control flow somehow continues, giving an error
+      ::tacgame::abortGame
+      tk_messageBox -type ok -icon warning -parent . -title "Scid" -message \
+        "Phalanx reports version \"$line\", but should be \"Phalanx XXIII\"."
       focus .
-      destroy .coachWin
-      ::tacgame::config
       return
     }
 
@@ -732,7 +728,6 @@ namespace eval tacgame {
     }
 
     ::tacgame::makePhalanxMove $line
-
   }
 
   # ======================================================================

@@ -181,7 +181,7 @@ int parsemove( char *inp, tmove *m, int n )
 /* binary book */
 int sbookmoves( int *moves, int *values, tmove *m, int n )
 {
-	int index, i;
+	int idx, i;
 	int64 first, last=0, middle=0;
 	unsigned fkey, lkey;
 	unsigned pos;
@@ -248,7 +248,7 @@ printf("[%i %i %i %i] [%08X %08X]\n",
 	{ middle ++; pos = G[Counter].hashboard; }
 
 	/*** Position found in book! ***/
-	index=0;
+	idx=0;
 	if( fseek(f,middle*6+4,SEEK_SET)!=0 ) return -1;
 	while( middle<booksize && pos==G[Counter].hashboard )
 	{
@@ -256,12 +256,12 @@ printf("[%i %i %i %i] [%08X %08X]\n",
 
 		myfread( &sm, sizeof(unsigned short), f );
 		for( i=0; i!=n; i++ ) if( sm == smove(m+i) )
-		{ moves[index]=i; values[index]=100; index++; }
+		{ moves[idx]=i; values[idx]=100; idx++; }
 
 		myfread( &pos, sizeof(unsigned), f );
 	}
 
-	return index;
+	return idx;
 }
 
 
@@ -275,7 +275,7 @@ printf("[%i %i %i %i] [%08X %08X]\n",
 int bookmoves( int *moves, int *values, tmove *m, int n )
 {
 	char s[256], p[256];
-	int index, i;
+	int idx, i;
 	long booksize; 	/* filesize in bytes */
 	FILE *f;
 
@@ -288,21 +288,21 @@ int bookmoves( int *moves, int *values, tmove *m, int n )
 	{ return -1; }
 
 	/*** Position found in book! ***/
-	index=0;
+	idx=0;
 	for(i=0; s[i]!='\n'; i++)
 	{
 		int pm;
 		while(s[i]!=' ' && s[i]!='\n')
 		{
-			if(s[i]=='!' && index) values[index-1]+=100;
+			if(s[i]=='!' && idx) values[idx-1]+=100;
 			i++;
 		}
 		if(s[i]=='\n') break; i++; if(s[i]=='\n') break;
 		if( (pm=parsemove(&s[i],m,n)) != -1 )
-		{ moves[index]=pm; values[index]=100; index++; }
+		{ moves[idx]=pm; values[idx]=100; idx++; }
 	}
 
-	return index;
+	return idx;
 }
 
 
@@ -313,17 +313,17 @@ int bookmoves( int *moves, int *values, tmove *m, int n )
  */
 int bookmove( tmove *m, int n )
 {
-	int moves[80], values[80], index;
+	int moves[80], values[80], idx;
 	int foundtxt=0;
 
-	index = bookmoves(moves,values,m,n);
-	if( index <= 0 ) index = sbookmoves(moves,values,m,n);
+	idx = bookmoves(moves,values,m,n);
+	if( idx <= 0 ) idx = sbookmoves(moves,values,m,n);
 	else
 	{
 #ifdef SHOWDUPS
-		int moves2[80]; int values2[80], index2;
-		index2 = sbookmoves(moves2,values,m,n);
-		if( index2>=1 && index>=1 && Counter>8 )
+		int moves2[80]; int values2[80], idx2;
+		idx2 = sbookmoves(moves2,values,m,n);
+		if( idx2>=1 && idx>=1 && Counter>8 )
 		{
 			char p[256]; int i;
 			postr(p);
@@ -331,7 +331,7 @@ int bookmove( tmove *m, int n )
 			printboard(NULL);
 			puts(p);
 			printf("   0      0       0      0  book2 ");
-			for( i=0; i!=index2; i++ )
+			for( i=0; i!=idx2; i++ )
 			if( i==0 || moves2[i-1]!=moves2[i] )
 			{ printm( m[moves2[i]], NULL ); }
 			puts("");
@@ -340,16 +340,16 @@ int bookmove( tmove *m, int n )
 		foundtxt=1;
 	}
 
-	if( index > 0 )
+	if( idx > 0 )
 	{
 		int ii, sumvalues=0, rn;
-		for( ii=0; ii!=index; ii++ )
+		for( ii=0; ii!=idx; ii++ )
 		{ sumvalues += values[ii]; }
 
 		rn = rand()%sumvalues;
 
 		sumvalues = 0;
-		for( ii=0; ii!=index; ii++ )
+		for( ii=0; ii!=idx; ii++ )
 		{ sumvalues += values[ii]; if( sumvalues >= rn ) break; }
 
 		if( Flag.post )
@@ -360,7 +360,7 @@ int bookmove( tmove *m, int n )
 			// sprintf(s,"   0      0       0      0  book");
 			else
 			sprintf(s,"Book moves ");
-			for( i=0; i!=index; i++ )
+			for( i=0; i!=idx; i++ )
 			{ printm( m[moves[i]], s+strlen(s) ); }
 
 			// hacked by S.A. to show bookX at end of line
@@ -474,8 +474,8 @@ if( att != 0 && Eco!=NULL )
 		  fseek(Eco,text,SEEK_SET);
 		  fgets(t,126,Eco);
 		  t[127]='\0';
-		  c=index(t,'['); if(c!=NULL) *c = ' ';
-		  c=rindex(t,']'); if(c!=NULL) *c = '\0';
+		  c=strchr(t,'['); if(c!=NULL) *c = ' ';
+		  c=strrchr(t,']'); if(c!=NULL) *c = '\0';
 		  puts(t);
 		}
 	}
