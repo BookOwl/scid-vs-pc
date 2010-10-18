@@ -2169,25 +2169,22 @@ proc processAnalysisInput {n} {
   }
 
   if {$comp(playing)} {
-    # check for malformed lines
-    if {[string match {*\}:*} $line]} {
-      return
-    }
-    set line [string map {{"} {}} $line]
 
-    ### Match "my move is", "My move is:"
+    ### Should be careful not to use $line as a list as it can contain funny chars
+
+    # match "my move is", "My move is:"
     if {[string match "*y move is*" $line]} {
       set analysis(moves$n) [lrange $line 3 end]
       set analysis(waitForBestMove$n) 0
     }
-    if {[lrange $line 0 0] == {move}} {
+    if {[string match {move *} $line]} {
       set analysis(moves$n) [lrange $line 1 end]
       set analysis(waitForBestMove$n) 0
     }
 
-    if {[lindex $line 0] == {1-0} || \
-	[lindex $line 0] == {0-1} || \
-	[lindex $line 0] == {resign} } {
+    if {[string match {1-0 *} $line] || \
+	[string match {0-1 *} $line] || \
+	[string match {resign *} $line]} {
       puts_ "RESIGNS (engine $n)"
       if {$n == $comp(white)} {
 	sc_game tags set -result 0

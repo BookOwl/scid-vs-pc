@@ -188,9 +188,9 @@ proc compOk {} {
     $w$i configure -state disabled
   }
   $w.buttons.ok configure -text Pause -command compPause
-  $w.buttons.help configure -text "End Game" -command compGameEnd
-  $w.buttons.cancel configure -text Abort -command compAbort
-  wm title $w "Scid Tournament"
+  $w.buttons.help configure -text {End Game} -command compGameEnd
+  $w.buttons.cancel configure -text {End Comp} -command compAbort
+  wm title $w {Scid Tournament}
   focus $w.buttons.ok
   bind $w <Destroy> compAbort
   
