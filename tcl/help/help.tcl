@@ -1651,7 +1651,7 @@ Buttons:
 Other features include:
 <ul>
 <li>Load games by double-clicking.</li>
-<li>Multiple games can be selected by using Shift or Control while single clicking.
+<li>Multiple games can be selected by using Shift or Control while single clicking.</li>
 <li>Resize column widths by dragging the column edge.</li>
 <li>Sort games by single clicking the column title. </li>
 <li><b>Note</b>: <i>Sort resets the game filter, and the current game cannot be replaced</i>.</li>
@@ -2955,9 +2955,7 @@ set helpText(Tourney) {<h1>Computer Tournament</h1>
 </p>
 <p>
   Support for different engines is, afaik, good, but <b>a few old engines won't work</b>.
-  Phalanx has very poor time control, so you'll probably want to download and
-  install some other engines if you haven't already.  For more information about
-  various engines see below.
+  For more information about various engines see below.
   </p>
   <p>
   Make sure you <b>open a database</b> so the results can be saved, then select

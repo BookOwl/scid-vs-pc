@@ -101,6 +101,9 @@ proc compInit {} {
   grid $w.config.verboselabel -row $row -column 0 -sticky w -padx 5 -pady 2
   grid $w.config.verbosevalue -row $row -column 1 -padx 5 -pady 2
 
+  grid $w.config.verboselabel -row $row -column 0 -sticky w -padx 5 -pady 2
+  grid $w.config.verbosevalue -row $row -column 1 -padx 5 -pady 2
+
   incr row
   label $w.config.iconizelabel -text {Analysis starts Iconized}
   checkbutton $w.config.iconizevalue -variable comp(iconize) 
@@ -116,6 +119,30 @@ proc compInit {} {
 
   grid $w.config.animatelabel -row $row -column 0 -sticky w -padx 5 -pady 2
   grid $w.config.animatevalue -row $row -column 1 -padx 5 -pady 2
+
+  incr row
+  label $w.config.start_title -text {Start Position}
+  grid $w.config.start_title -row $row -column 0 -columnspan 2
+
+  set comp(start) 0
+
+  incr row
+  label $w.config.start1label -text {New Games}
+  radiobutton $w.config.start1button -variable comp(start) -value 0
+  grid $w.config.start1label -row $row -column 0 -sticky w -padx 5 -pady 2
+  grid $w.config.start1button -row $row -column 1 -padx 5 -pady 2
+
+  incr row
+  label $w.config.start2label -text {First game from this position}
+  radiobutton $w.config.start2button -variable comp(start) -value 1
+  grid $w.config.start2label -row $row -column 0 -sticky w -padx 5 -pady 2
+  grid $w.config.start2button -row $row -column 1 -padx 5 -pady 2
+
+  incr row
+  label $w.config.start3label -text {All games from this position}
+  radiobutton $w.config.start3button -variable comp(start) -value 2
+  grid $w.config.start3label -row $row -column 0 -sticky w -padx 5 -pady 2
+  grid $w.config.start3button -row $row -column 1 -padx 5 -pady 2
 
   ### OK, Cancel Buttons
 
@@ -138,6 +165,8 @@ proc compOk {} {
   global analysis comp engines
 
   set w .comp
+
+  set comp(start_fen) [sc_pos fen]
 
   if {$comp(count) != $comp(countcombos)} {
     drawCombos
@@ -184,6 +213,8 @@ proc compOk {} {
     .engines.label .engines.top.count .engines.top.update \
     .config.verbosevalue .config.verboselabel .config.iconizevalue .config.iconizelabel \
     .config.timeoutvalue .config.timeoutlabel .config.animatelabel .config.animatevalue \
+    .config.start_title .config.start1label .config.start2label .config.start3label \
+    .config.start1button .config.start2button .config.start3button \
   } {
     $w$i configure -state disabled
   }
@@ -255,7 +286,16 @@ proc compOk {} {
 proc compNM {n m k} {
   global analysis comp
 
-  sc_game new
+
+  if {$comp(start) > 0 && $comp(current) == 1} {
+    # ok!
+  } elseif {$comp(start) == 2} {
+    sc_game new
+    sc_game startBoard $comp(start_fen)
+  } else {
+    sc_game new
+  }
+
   set comp(playing) 1
   set comp(paused) 0
   set comp(white) $n
@@ -334,8 +374,13 @@ proc compNM {n m k} {
     }
   }
 
-  set current_engine $n
-  set other_engine $m
+  if {[sc_pos side] == {white}} {
+    set current_engine $n
+    set other_engine $m
+  } else {
+    set current_engine $m
+    set other_engine $n
+  }
 
   # Thanks to Fulvio for inspiration to rewrite this properly (?!) :>
 
