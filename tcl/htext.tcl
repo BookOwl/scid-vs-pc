@@ -208,7 +208,7 @@ proc ::htext::init {w} {
   $w tag configure maroon -fore $maroon
   $w tag configure gray -fore gray20
 
-  $w tag configure lastmove -fore royalblue2 -font font_Bold
+  $w tag configure gbold -font font_Bold
   # hmmm... salmon4 rosybrown4 royalblue royalblue2 chartreuse4 springgreen4
 
   $w tag configure bgBlack -back black
@@ -223,6 +223,8 @@ proc ::htext::init {w} {
   $w tag configure tab -lmargin2 50
   $w tag configure li -lmargin2 50
   $w tag configure center -justify center
+  $w tag configure left -justify left
+  $w tag configure right -justify right
 
   if {[$w cget -font] == "font_Small"} {
     $w tag configure b -font font_SmallBold
@@ -384,15 +386,13 @@ proc ::htext::display {w helptext {section {}} {fixed 1}} {
         set playerTag $tagName
         set playerName [string range $playerTag 3 end]
         set tagName pi
-        $w tag configure "$playerTag" -fore Blue
+        # $w tag configure "$playerTag" -fore Blue
         $w tag bind $playerTag <ButtonRelease-1> "playerInfo \"$playerName\""
         $w tag bind $playerTag <Any-Enter> \
-            "$w tag configure \"$playerTag\"
-             $w tag configure \"$playerTag\" -back gray85
+            "$w tag configure \"$playerTag\" -back gray85
              $w configure -cursor hand2"
         $w tag bind $playerTag <Any-Leave> \
-            "$w tag configure \"$playerTag\" -fore Blue
-             $w tag configure \"$playerTag\" -back {}
+            "$w tag configure \"$playerTag\" -back {}
              $w configure -cursor {}"
       } elseif {[strIsPrefix g_ $tagName]} {
         # Game-load tag
