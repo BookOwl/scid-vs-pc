@@ -57,11 +57,10 @@ proc ::search::filter::negate {} {
 
 # ::search::addFilterOpFrame
 #
-#   Adds a search filter operation selection frame to the window.
-#   Adds a frame of radiobuttons allowing the filter operation
-#   (AND with current filter, OR with current filter, or RESET filter)
-#   to be chosen.
-#   The default value for the first search is RESET:
+#   Add a frame of radiobuttons to specify which filter operation
+#   Options are: AND with current filter, OR with current filter, or RESET filter
+#   Default value is RESET
+
 proc ::search::addFilterOpFrame {w {small 0}} {
   frame $w.filterop
   set f $w.filterop
@@ -80,7 +79,7 @@ proc ::search::addFilterOpFrame {w {small 0}} {
   radiobutton $f.ignore -textvar ::tr(FilterIgnore) -variable ::search::filter::operation \
     -value 2 -pady 5 -padx 5 -font $regular
   pack $f.title -side top
-  pack $f.and $f.or $f.ignore -side left
+  pack $f.ignore $f.and $f.or -side left
 }
 
 

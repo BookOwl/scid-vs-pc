@@ -415,7 +415,7 @@ translate E White {White}
 translate E Black {Black}
 translate E Player {Player}
 translate E Rating {Rating}
-translate E RatingDiff {Rating difference (White - Black)}
+translate E RatingDiff {Rating difference}
 translate E AverageRating {Average Rating}
 translate E Event {Event}
 translate E Site {Site}
@@ -989,7 +989,7 @@ translate E Diagram {Diagram}
 
 # Board search:
 translate E BoardSearch {Board Search}
-translate E FilterOperation {Operation on current filter}
+translate E FilterOperation {Filter Setting}
 translate E FilterAnd {Restrict filter (AND)}
 translate E FilterOr {Add to filter (OR)}
 translate E FilterIgnore {Reset filter}
