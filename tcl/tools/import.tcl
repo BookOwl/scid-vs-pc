@@ -19,7 +19,7 @@ proc importPgnGame {} {
 
   set edit $w.pane.edit
   text $edit.text -height 12 -width 80 -wrap word  \
-      -yscroll "$edit.ybar set" -xscroll "$edit.xbar set"  -setgrid 1
+      -yscroll "$edit.ybar set" -xscroll "$edit.xbar set"  -setgrid 1 -undo 1
   # Override tab-binding for this widget:
   bind $edit.text <Key-Tab> "[bind all <Key-Tab>]; break"
   scrollbar $edit.ybar -command "$edit.text yview" -takefocus 0
@@ -32,11 +32,12 @@ proc importPgnGame {} {
 
   # Right-mouse button cut/copy/paste menu:
   menu $edit.text.rmenu -tearoff 0
+  $edit.text.rmenu add command -label "Undo" -command "catch {$edit.text edit undo}"
+  $edit.text.rmenu add command -label "Redo" -command "catch {$edit.text edit redo}"
   $edit.text.rmenu add command -label "Cut" -command "tk_textCut $edit.text"
   $edit.text.rmenu add command -label "Copy" -command "tk_textCopy $edit.text"
   $edit.text.rmenu add command -label "Paste" -command "tk_textPaste $edit.text"
-  $edit.text.rmenu add command -label "Select all" -command \
-      "$edit.text tag add sel 1.0 end"
+  $edit.text.rmenu add command -label "Select all" -command "$edit.text tag add sel 0.0 end-1c"
   bind $edit.text <ButtonPress-3> "tk_popup $edit.text.rmenu %X %Y"
 
   text $pane.err.text -height 6 -width 75 -wrap word \
@@ -50,16 +51,16 @@ proc importPgnGame {} {
 
   dialogbutton $w.b.paste -text "$::tr(PasteCurrentGame)" -command {
     .importWin.pane.edit.text insert end [sc_game pgn -width 70]
-    .importWin.pane.err.text delete 1.0 end
+    .importWin.pane.err.text delete 0.0 end
   }
   dialogbutton $w.b.clear -text "$::tr(Clear)" -command {
-    .importWin.pane.edit.text delete 1.0 end
-    .importWin.pane.err.text delete 1.0 end
+    .importWin.pane.edit.text delete 0.0 end
+    .importWin.pane.err.text delete 0.0 end
   }
   dialogbutton $w.b.import -text "$::tr(Import)" -command {
     set err [catch {sc_game import \
-          [.importWin.pane.edit.text get 1.0 end]} result]
-    .importWin.pane.err.text delete 1.0 end
+          [.importWin.pane.edit.text get 0.0 end]} result]
+    .importWin.pane.err.text delete 0.0 end
     .importWin.pane.err.text insert end $result
     if {! $err} {
       updateBoard -pgn
@@ -76,16 +77,17 @@ proc importPgnGame {} {
   if {![catch {set texttopaste [selection get]}]} {
     $w.pane.edit.text insert end $texttopaste
   }
-  # Select all of the pasted text:
-  # $w.pane.edit.text tag add sel 1.0 end
 
   bind $w <F1> { helpWindow Import }
   bind $w <Escape> { .importWin.b.cancel invoke }
-  bind $w <Control-a> { .importWin.pane.edit.text tag add sel 1.0 end }
+  bind $edit.text <Control-a> "$edit.text tag add sel 0.0 end-1c ; break"
+  bind $edit.text <Control-z> "catch {$edit.text edit undo}"
+  bind $edit.text <Control-y> "catch {$edit.text edit redo}"
+  bind $edit.text <Control-r> "catch {$edit.text edit redo}"
 
-  # The usual Control-C Control-X Contorl-P bindings work automatically
-  focus $w.pane.edit.text
+  # The usual Control-c Control-x Control-p bindings work automatically
   # wm minsize $w 50 5
+  focus $w.pane.edit.text
   update
   placeWinOverParent $w .
   wm state $w normal
@@ -93,17 +95,13 @@ proc importPgnGame {} {
 
 
 proc importClipboardGame {} {
-  importPgnGame
-  catch {event generate .importWin.pane.edit.text <<Paste>>}
-}
 
-proc importPgnLine {line} {
   importPgnGame
-  set w .importWin.pane.edit.text
-  $w delete 1.0 end
-  $w insert end $line
-  $w tag add sel 1.0 end
-  focus $w
+
+  ### X paste selection is done in importPgnGame
+  if {$::windowsOS} {
+     catch {event generate .importWin.pane.edit.text <<Paste>>}
+  }
 }
 
 ################################################################################
