@@ -1391,12 +1391,14 @@ proc autoplay {} {
   if { $::isBatch && $annotateMode && $::isBatchOpening && \
         [sc_pos moveNumber] > $::isBatchOpeningMoves } {
     sc_game save [sc_game number]
+    toggleEngineAnalysis $annotateMode 1
     if {[sc_game number] < $::batchEnd} {
       sc_game load [expr [sc_game number] + 1]
       if {$::addAnnotatorTag} {
         appendAnnotator " $analysis(name1)"
       }
       set ::wentOutOfBook 0
+      toggleEngineAnalysis $annotateMode 1
       updateMenuStates
       updateStatusBar
       updateTitle
@@ -1429,12 +1431,14 @@ proc autoplay {} {
       }
       if {$::isBatch && [sc_game number] != 0} {
         sc_game save [sc_game number]
+	toggleEngineAnalysis $annotateMode 1
         if {[sc_game number] < $::batchEnd} {
           sc_game load [expr [sc_game number] + 1]
           if {$::addAnnotatorTag} {
             appendAnnotator " $analysis(name1)"
           }
           set ::wentOutOfBook 0
+	  toggleEngineAnalysis $annotateMode 1
           updateMenuStates
           updateStatusBar
           updateTitle
