@@ -1381,7 +1381,12 @@ proc toggleAutoplay { } {
 proc autoplay {} {
   global autoplayDelay autoplayMode annotateMode analysis
 
-  if {!$autoplayMode} { return }
+  ### autoplay had issues when not using book and moving from one game to the next
+  # Hard to fix because of the (variation) stack
+
+  if {$autoplayMode == 0} { return }
+
+  set n $annotateMode
 
   if {$annotateMode} {
     if { ![sc_pos isAt start] } { addAnnotation }
@@ -1390,64 +1395,69 @@ proc autoplay {} {
   # stop game annotation when out of opening
   if { $::isBatch && $annotateMode && $::isBatchOpening && \
         [sc_pos moveNumber] > $::isBatchOpeningMoves } {
+    toggleEngineAnalysis $n 1
     sc_game save [sc_game number]
-    toggleEngineAnalysis $annotateMode 1
+
     if {[sc_game number] < $::batchEnd} {
       sc_game load [expr [sc_game number] + 1]
       if {$::addAnnotatorTag} {
-        appendAnnotator " $analysis(name1)"
+        appendAnnotator " $analysis(name$n)"
       }
       set ::wentOutOfBook 0
-      toggleEngineAnalysis $annotateMode 1
       updateMenuStates
       updateStatusBar
       updateTitle
       updateBoard -pgn
       addAnnotation
+
+      nextgameAutoplay $n
+      toggleEngineAnalysis $n 1
       after $autoplayDelay autoplay
       return
     } else  {
-      cancelAutoplay 1
+      cancelAutoplay
       return
     }
   }
 
   if { [sc_pos isAt end] } {
-    if {$annotateMode} { 
-      # end of game if not mate, add the thinking line
+    if {$annotateMode} { ; # end of game if not mate, add the thinking line
       set move_done [sc_game info previousMoveNT]
       if { [string index $move_done end] != "#"} {
-        set text [format "%d:%+.2f" $analysis(depth1) $analysis(score1)]
-        set moves $analysis(moves1)
+        set text [format "%d:%+.2f" $analysis(depth$n) $analysis(score$n)]
+        set moves $analysis(moves$n)
         sc_move back
         sc_info preMoveCmd {}
         sc_var create
         sc_move addSan $move_done
         sc_pos setComment "[sc_pos getComment] $text"
-        sc_move_add $moves 1
+        sc_move_add $moves $n
         sc_var exit
         sc_info preMoveCmd preMoveCommand
         updateBoard -pgn
       }
       if {$::isBatch && [sc_game number] != 0} {
+        toggleEngineAnalysis $n 1
         sc_game save [sc_game number]
-	toggleEngineAnalysis $annotateMode 1
+
         if {[sc_game number] < $::batchEnd} {
           sc_game load [expr [sc_game number] + 1]
           if {$::addAnnotatorTag} {
-            appendAnnotator " $analysis(name1)"
+            appendAnnotator " $analysis(name$n)"
           }
           set ::wentOutOfBook 0
-	  toggleEngineAnalysis $annotateMode 1
           updateMenuStates
           updateStatusBar
           updateTitle
           updateBoard -pgn
           addAnnotation
+
+          nextgameAutoplay $annotateMode
+          toggleEngineAnalysis $n 1
           after $autoplayDelay autoplay
           return
         } else  {
-          cancelAutoplay 1
+          cancelAutoplay
           return
         }
       }
@@ -1489,21 +1499,25 @@ proc autoplay {} {
 ################################################################################
 #
 ################################################################################
-proc cancelAutoplay {{kill 0}} {
-  global autoplayMode annotateMode annotateModeButtonValue
 
-  set window .analysisWin$annotateMode
+proc nextgameAutoplay {n} {
+  global analysis
+
+  set ::stack {}
+  set analysis(prevscore$n) 0
+  set analysis(score$n) 0
+  set analysis(prevmoves$n) 0
+  set analysis(prev_depth$n) 0
+}
+
+proc cancelAutoplay {} {
+  global autoplayMode annotateMode annotateModeButtonValue
 
   set autoplayMode 0
   set annotateMode 0
   set annotateModeButtonValue 0
   after cancel autoplay
   .button.autoplay configure -image autoplay_off ; # -relief flat S.A
-
-  # kill analysisWin after batch annotation
-  if {$kill} {
-    destroy $window
-  }
 }
 ################################################################################
 #

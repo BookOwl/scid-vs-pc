@@ -594,7 +594,7 @@ proc ::enginelist::edit {index} {
   $f.lName configure -font font_Bold
   $f.lCmd configure -font font_Bold
   $f.lDir configure -font font_Bold
-  # $f.lUCI configure -font font_Bold
+  $f.lUCI configure -font font_Bold
 
   label $f.lElo -text $::tr(EngineElo)
   entry $f.eElo -textvariable engines(newElo) -width 22
@@ -917,48 +917,49 @@ proc okAnnotation {n} {
 proc bookAnnotation { {n 1} } {
   global analysis
 
-  if {$::annotateMode && $::useAnalysisBook} {
+  if {!($::annotateMode && $::useAnalysisBook)} {
+    return
+  }
 
-    set prevbookmoves {}
-    set bn [ file join $::scidBooksDir $::useAnalysisBookName ]
-    sc_book load $bn $::analysisBookSlot
+  set prevbookmoves {}
+  set bn [ file join $::scidBooksDir $::useAnalysisBookName ]
+  sc_book load $bn $::analysisBookSlot
 
+  set bookmoves [sc_book moves $::analysisBookSlot]
+  while {[string length $bookmoves] != 0 && ![sc_pos isAt vend]} {
+    # we are in book, so move immediately forward
+    ::move::Forward
+    set prevbookmoves $bookmoves
     set bookmoves [sc_book moves $::analysisBookSlot]
-    while {[string length $bookmoves] != 0 && ![sc_pos isAt vend]} {
-      # we are in book, so move immediately forward
-      ::move::Forward
-      set prevbookmoves $bookmoves
-      set bookmoves [sc_book moves $::analysisBookSlot]
-    }
-    sc_book close $::analysisBookSlot
-    set ::wentOutOfBook 1
+  }
+  sc_book close $::analysisBookSlot
+  set ::wentOutOfBook 1
 
-    set verboseMoveOutOfBook {}
-    set verboseLastBookMove {}
-    if {! $::isShortAnnotation } {
-      set verboseMoveOutOfBook " $::tr(MoveOutOfBook)"
-      set verboseLastBookMove " $::tr(LastBookMove)"
-    }
+  set verboseMoveOutOfBook {}
+  set verboseLastBookMove {}
+  if {! $::isShortAnnotation } {
+    set verboseMoveOutOfBook " $::tr(MoveOutOfBook)"
+    set verboseLastBookMove " $::tr(LastBookMove)"
+  }
 
-    if { [ string match -nocase "*[sc_game info previousMoveNT]*" $prevbookmoves ] != 1 } {
-      if {$prevbookmoves != {}} {
-        sc_pos setComment "[sc_pos getComment]$verboseMoveOutOfBook ($prevbookmoves)"
-      } else  {
-        sc_pos setComment "[sc_pos getComment]$verboseMoveOutOfBook"
-      }
+  if { [ string match -nocase "*[sc_game info previousMoveNT]*" $prevbookmoves ] != 1 } {
+    if {$prevbookmoves != {}} {
+      sc_pos setComment "[sc_pos getComment]$verboseMoveOutOfBook ($prevbookmoves)"
     } else  {
-      sc_pos setComment "[sc_pos getComment]$verboseLastBookMove"
+      sc_pos setComment "[sc_pos getComment]$verboseMoveOutOfBook"
     }
+  } else  {
+    sc_pos setComment "[sc_pos getComment]$verboseLastBookMove"
+  }
 
-    # last move was out of book or the last move in book : it needs to be analyzed, so take back
-    if { ![catch { sc_move back 1 } ] } {
-      resetAnalysis $n
-      updateBoard -pgn
-      for {set i 0} {$i<100} {incr i} { update ; after [expr $::autoplayDelay / 100] }
-      set analysis(prevscore$n) $analysis(score$n)
-      set analysis(prevmoves$n) $analysis(moves$n)
-      updateBoard -pgn
-    }
+  # last move was out of book or the last move in book : it needs to be analyzed, so take back
+  if { ![catch { sc_move back 1 } ] } {
+    resetAnalysis $n
+    updateBoard -pgn
+    for {set i 0} {$i<100} {incr i} { update ; after [expr $::autoplayDelay / 100] }
+    set analysis(prevscore$n) $analysis(score$n)
+    set analysis(prevmoves$n) $analysis(moves$n)
+    updateBoard -pgn
   }
 }
 ################################################################################
