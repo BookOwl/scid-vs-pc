@@ -770,6 +770,7 @@ namespace eval tacgame {
     if { $score == {0 {}}} {
       ::gameclock::stop 1
       ::gameclock::stop 2
+      sc_game tags set -result =
       tk_messageBox -type ok -message {Stalemate} -parent .board -icon info -title {Game Over}
       return 1
     }
@@ -921,6 +922,7 @@ namespace eval tacgame {
       && ! $::tacgame::drawShown } {
       ::tacgame::pauseGame
       set ::tacgame::drawShown 1
+      sc_game tags set -result =
       tk_messageBox -type ok -message $::tr(Draw) -parent .board -icon info
       catch {sc_game save [sc_game number]}
       return 1
