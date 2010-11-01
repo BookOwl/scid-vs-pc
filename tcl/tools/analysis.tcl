@@ -1303,7 +1303,7 @@ proc appendAnnotator { s } {
 ################################################################################
 #
 ################################################################################
-proc pushAnalysisData { { lastVar } { n 1 } } {
+proc pushAnalysisData {lastVar n} {
   global analysis
   lappend ::stack [list $analysis(prevscore$n) $analysis(score$n) \
       $analysis(prevmoves$n) $analysis(moves$n) $lastVar ]
@@ -1311,7 +1311,7 @@ proc pushAnalysisData { { lastVar } { n 1 } } {
 ################################################################################
 #
 ################################################################################
-proc popAnalysisData { { n 1 } } {
+proc popAnalysisData {n} {
   global analysis
   # the start of analysis is in the middle of a variation
   if {[llength $::stack] == 0} {

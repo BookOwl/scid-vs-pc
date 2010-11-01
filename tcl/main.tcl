@@ -1470,12 +1470,12 @@ proc autoplay {} {
   if { $annotateMode && $::isAnnotateVar } {
     if { [sc_pos isAt vend] } {
       sc_var exit
-      set lastVar [::popAnalysisData]
+      set lastVar [::popAnalysisData $n]
       if { $lastVar > 0 } {
         incr lastVar -1
         sc_var enter $lastVar
         updateBoard -pgn
-        ::pushAnalysisData $lastVar
+        ::pushAnalysisData $lastVar $n
       } else {
         ::move::Forward
       }
@@ -1484,7 +1484,7 @@ proc autoplay {} {
         set lastVar [expr [sc_var count] -1]
         sc_var enter $lastVar
         updateBoard -pgn
-        ::pushAnalysisData $lastVar
+        ::pushAnalysisData $lastVar $n
       } else  {
         ::move::Forward
       }
