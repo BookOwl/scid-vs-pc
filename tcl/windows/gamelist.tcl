@@ -279,14 +279,9 @@ proc ::windows::gamelist::Open {} {
   # $w.tree tag configure colour -background $::defaultBackground
   # $w.tree tag bind click1 <Button-1> {}
 
-  if {[tk windowingsystem] ne "aqua"} {
-      # ttk::scrollbar $w.vsb -orient vertical -command "$w.tree yview"
-      ttk::scale     $w.vsb -orient vertical -command ::windows::gamelist::SetStart -from 1 -variable glstart
-      ttk::scrollbar $w.hsb -orient horizontal -command "$w.tree xview"
-  } else {
-      scrollbar $w.vsb -orient vertical -command "$w.tree yview"
-      scrollbar $w.hsb -orient horizontal -command "$w.tree xview"
-  }
+  # ttk::scrollbar $w.vsb -orient vertical -command "$w.tree yview"
+  ttk::scale     $w.vsb -orient vertical -command ::windows::gamelist::SetStart -from 1 -variable glstart
+  ttk::scrollbar $w.hsb -orient horizontal -command "$w.tree xview"
 
   pack $w.f -fill both -expand 1
   grid $w.tree $w.vsb -in $w.f -sticky nsew
@@ -432,6 +427,7 @@ proc ::windows::gamelist::Open {} {
   dialogbutton $w.c.delete -text {(Un)Delete} -command {
     ::windows::gamelist::ToggleFlag delete
     configDeleteButtons
+    updateBoard
   }
 
   dialogbutton $w.c.empty -text {Compact} -command "compactGames $w ; configDeleteButtons"
