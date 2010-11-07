@@ -198,23 +198,23 @@ proc reinitFont {name} {
 }
 
 if {$windowsOS} {
-  set fontOptions(Regular) [list Arial           10 normal roman]
-  set fontOptions(Menu)    [list {MS Sans Serif}  9 normal roman]
-  set fontOptions(Small)   [list Arial            9 normal roman]
-  set fontOptions(Tiny)    [list Arial            8 normal roman]
-  set fontOptions(Fixed)   [list Courier          9 normal roman]
+  set fontOptions(Regular) { Arial           10 normal roman}
+  set fontOptions(Menu)    { {MS Sans Serif}  9 normal roman}
+  set fontOptions(Small)   { Arial            9 normal roman}
+  set fontOptions(Tiny)    { Arial            8 normal roman}
+  set fontOptions(Fixed)   { Courier          9 normal roman}
 } elseif {$macOS} {
-  set fontOptions(Regular) [list system    11 normal roman]
-  set fontOptions(Menu)    [list menu      14 normal roman]
-  set fontOptions(Small)   [list system    10 normal roman]
-  set fontOptions(Tiny)    [list system     9 normal roman]
-  set fontOptions(Fixed)   [list Monaco    10 normal roman]
+  set fontOptions(Regular) { {Lucida Grande} 12 normal roman}
+  set fontOptions(Menu)    { {Lucida Grande} 14 normal roman}
+  set fontOptions(Small)   { {Lucida Grande} 11 normal roman}
+  set fontOptions(Tiny)    { {Lucida Grande} 10 normal roman}
+  set fontOptions(Fixed)   { Monaco 10 normal roman}
 } else {
-  set fontOptions(Regular) [list helvetica 11 normal roman]
-  set fontOptions(Menu)    [list helvetica 10 normal roman]
-  set fontOptions(Small)   [list helvetica 10 normal roman]
-  set fontOptions(Tiny)    [list helvetica  9 normal roman]
-  set fontOptions(Fixed)   [list {courier 10 pitch} 12 normal roman]
+  set fontOptions(Regular) { helvetica 11 normal roman}
+  set fontOptions(Menu)    { helvetica 10 normal roman}
+  set fontOptions(Small)   { helvetica 10 normal roman}
+  set fontOptions(Tiny)    { helvetica  9 normal roman}
+  set fontOptions(Fixed)   { {courier 10 pitch} 12 normal roman}
 }
 
 createFont Regular
