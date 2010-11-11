@@ -1339,16 +1339,6 @@ proc ::board::showMarks {w value} {
   set ::board::_showMarks($w) $value
 }
 
-# ::board::recolor
-#   Recolor every square on the board.
-#
-#not needed anymore (?)
-proc ::board::recolor {w} {
-  # for {set i 0} {$i < 64} {incr i} {
-  # ::board::colorSquare $w $i
-  # }
-}
-
 # ::board::colorSquare
 #   Colors the specified square (0-63) of the board.
 #   If the color is the empty string, the appropriate
@@ -1378,6 +1368,9 @@ proc ::board::colorSquare {w i {color {}}} {
   set yc [lindex $midpoint 1]
   $w.bd delete br$i
   $w.bd create image $xc $yc -image $boc -tag br$i
+  # otherwise clicking 3 times on an empty square will prevent the binding to work
+  $w.bd lower br$i p$i
+
   set piece [string index $::board::_data($w) $i]
   if { $piece != "." } {
     set flip $::board::_flip($w)

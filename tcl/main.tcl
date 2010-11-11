@@ -1009,6 +1009,7 @@ proc confirmReplaceMove {} {
   if {$trialMode} { return "replace" }
 
   option add *Dialog.msg.wrapLength 4i interactive
+  # fixme : can't bind <Escape> inside tk_dialog 
   catch {tk_dialog .dialog "Scid: $::tr(ReplaceMove)?" \
         $::tr(ReplaceMoveMessage) {} {} \
         $::tr(ReplaceMove) $::tr(NewMainLine) \
@@ -1198,7 +1199,6 @@ proc enterSquare { square } {
   global highcolor currentSq bestSq bestcolor selectedSq suggestMoves
   set currentSq $square
   if {$selectedSq == -1} {
-    ::board::recolor .board
     set bestSq -1
     if {$suggestMoves} {
       set bestSq [sc_pos bestSquare $square]
@@ -1246,7 +1246,6 @@ proc pressSquare {square confirm} {
 
   if {$selectedSq == -1} {
     set selectedSq $square
-    ::board::recolor .board
     ::board::colorSquare .board $square $highcolor
     # Drag this piece if it is the same color as the side to move:
     set c [string index [sc_pos side] 0]  ;# will be "w" or "b"
@@ -1276,14 +1275,13 @@ proc releaseSquare { x y } {
 
   if { [winfo exists .calvarWin] } { return }
 
-  global selectedSq bestSq currentSq
+  global selectedSq bestSq
 
   set w .board
   ::board::setDragSquare $w -1
   set square [::board::getSquare $w $x $y]
   if {$square < 0} {
     set selectedSq -1
-    ::board::recolor $w
     return
   }
 
@@ -1308,12 +1306,6 @@ proc releaseSquare { x y } {
     ::board::colorSquare $w $square
   }
   set ::addVariationWithoutAsking 0
-
-  # Necessary to keep bindings for this board square
-  # It has to do with bindings and stacking order
-  # Any bugs ???
-
-  .board.bd raise p$square
 }
 
 
