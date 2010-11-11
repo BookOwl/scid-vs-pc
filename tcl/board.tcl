@@ -2137,10 +2137,11 @@ proc ::board::togglematerial {} {
   if {$::gameInfo(showMaterial)} {
     grid configure .board.mat -row 1 -column 12 -rowspan 8
     ::board::material .board
-    # ::board::update .board {} 1
   } else {
     grid remove .board.mat
   }
+  # material info is shown in gameInfo widget, so
+  updateBoard
 }
 
 

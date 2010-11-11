@@ -873,6 +873,7 @@ proc trimEngineName { engine } {
 #   Updates the player photos in the game information area
 #   for the two players of the current game.
 #
+set ::photosMinimized 0
 proc updatePlayerPhotos {{force ""}} {
   global photo
   if {$force == "-force"} {
@@ -911,20 +912,28 @@ proc updatePlayerPhotos {{force ""}} {
       place .photoW -in .gameInfo -x -$distance -relx 1.0 -anchor ne
     }
   }
-  bind .photoW <ButtonPress-1> "togglePhotosSize"
-  bind .photoB <ButtonPress-1> "togglePhotosSize"
+  # Todo: fix this
+  # Minimized photos need to be repacked too
+  # if {$::photosMinimized} {mapPhotos}
   set ::photosMinimized 0
+
+  bind .photoW <ButtonPress-1> togglePhotosSize
+  bind .photoB <ButtonPress-1> togglePhotosSize
 }
 ################################################################################
 # Toggles photo sizes
 ################################################################################
-set photosMinimized 0
+
 proc togglePhotosSize {} {
+  set ::photosMinimized [expr !$::photosMinimized]
+  mapPhotos
+}
+
+proc mapPhotos {} {
   set distance [expr {[image width photoB] + 2}]
   if { $distance < 10 } { set distance 82 }
 
-  if {$::photosMinimized} {
-    set ::photosMinimized 0
+  if {!$::photosMinimized} {
     if { [winfo ismapped .photoW] } {
       place .photoW -in .gameInfo -x -$distance -relx 1.0 -relheight 1 -width [image width photoW] -anchor ne
     }
@@ -932,7 +941,6 @@ proc togglePhotosSize {} {
       place .photoB -in .gameInfo -x -1 -relx 1.0 -relheight 1 -width [image width photoB] -anchor ne
     }
   } else  {
-    set ::photosMinimized 1
     if { [winfo ismapped .photoW] } {
       place .photoW -in .gameInfo -x -17 -relx 1.0 -relheight 0.15 -width 15 -anchor ne
     }

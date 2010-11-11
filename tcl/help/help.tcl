@@ -300,6 +300,7 @@ set helpText(Index) {<h1>Scid Help Index</h1>
   <h3><name G>G</name></h3>
   <ul>
   <li><a Flags>Game flags</a></li>
+  <li><a MainWindow GameInfo>Game Info</a></li>
   <li><a GameList>Game List</a> window</li>
   <li><a Menus Game>Game menu</a></li>
   <li><a Searches Header>General searches</a></li>
@@ -583,27 +584,24 @@ set helpText(MainWindow) {<h1>Scid Main Window</h1>
   <li> <button tb_gameinfo> Show/hide game information</li>
   </ul>
 
-  <h4>Game Information Widget</h4>
+  <h4><name GameInfo>Game Information Widget</name></h4>
   <p>
-  The area below the chessboard shows general information about the current
-  game (if any). The first line has the <b>Event, Site, Date (and ECO code)</b>.
-  The next lines have information about the current game - <b>Players,
-  Titles, Ratings and (Game Result (Game Length))</b>.
+  The area below the chessboard shows general information about the current game. 
+  (Display options for this widget are found in the <b>Options-<gt>Game Information</b> menu).
   </p>
   <p>
-  The fourth line shows the <a ECO>ECO</a> (Encyclopedia of Chess
-  Openings) code for the current position, if the position appears in
-  the ECO file being used.
+  The first line shows the <b>Player Names</b> (and ranks).
+  Then the <b>Moves</b> and any <b>Comments</b>,
+  and the <b>Event</b> and <b>Site</b> fields.
   </p>
   <p>
-  If Scid can find a suitable photo file (either in ~/.scid or Scids
-  share directory within the photos folder) and photos for the players
-  exist, also these photos show up in the information area. (Suitable
-  photo files can be downloaded from the <url
-  http://scid.sourceforge.net/>Scid website</url>; a documentation of
-  their format is contained within these files.) However, the player
-  photos tend to hide some text in the information area.  Therefore,
-  they can be minimised temporarily by clicking on them.
+  Below follows the Game number (and any flags), Result, Material evaluation,
+   and <a ECO>ECO</a> (Encyclopedia of Chess
+  Openings) code for the current position (if appearing in the current ECO file).
+  </p>
+  <p>
+  If Scid can find a suitable FIDE.spf photo file (either in <b>~/.scidvspc</b> or Scid's
+  share directory) these photos will appear. Clicking on the photos minimizes them.
   </p>
 
   <h4>Game Context Menu</h4>
@@ -650,7 +648,7 @@ set helpText(MainWindow) {<h1>Scid Main Window</h1>
   See the <a Analysis>analysis window</a> help page for details.
   </p>
 
-  <p><footer>Updated: Scid vs. PC 4.1 September 2010 </footer></p>
+  <p><footer>Updated: Scid vs. PC 4.2 November 2010 </footer></p>
 }
 
 
