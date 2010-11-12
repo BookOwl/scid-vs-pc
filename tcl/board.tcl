@@ -2131,6 +2131,7 @@ proc ::board::flip {w {newstate -1}} {
 }
 
 proc ::board::togglematerial {} {
+  # Called to display material widget (Doesn't actually toggle anything)
   # gameInfo(showMaterial) is specifically for the .board, 
   # while ::board::_showmat($w) is window specific.
 
@@ -2140,8 +2141,6 @@ proc ::board::togglematerial {} {
   } else {
     grid remove .board.mat
   }
-  # material info is shown in gameInfo widget, so
-  updateBoard
 }
 
 

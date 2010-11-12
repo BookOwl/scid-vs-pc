@@ -367,7 +367,7 @@ menu .gameInfo.menu -tearoff 0 -background gray90
     -variable boardSTM -offvalue 0 -onvalue 1 -command {::board::togglestm .board}
 
 .gameInfo.menu add checkbutton -label GInfoMaterial \
-    -variable gameInfo(showMaterial) -offvalue 0 -onvalue 1 -command {::board::togglematerial }
+    -variable gameInfo(showMaterial) -offvalue 0 -onvalue 1 -command updateBoard
 
 .gameInfo.menu add checkbutton -label {Highlight last move} \
     -variable ::highlightLastMove -offvalue 0 -onvalue 1 -command updateBoard
