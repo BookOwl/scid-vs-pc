@@ -14,7 +14,7 @@ OBJS = attack.o board.o book.o eval.o fen.o hash.o list.o main.o material.o \
 all: $(EXE) .depend
 
 clean:
-	$(RM) *.o .depend gmon.out
+	rm -rf *.o .depend gmon.out
 
 # general
 
@@ -43,6 +43,3 @@ $(EXE): $(OBJS)
 
 .depend:
 	$(CXX) -MM $(OBJS:.o=.cpp) > $@
-
-include .depend
-
