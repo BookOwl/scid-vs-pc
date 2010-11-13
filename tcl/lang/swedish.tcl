@@ -2842,7 +2842,7 @@ betyder att partiet inte har ändrats, <b>%%</b>, slutligen, betyder att database
 <p>
 Om du vill, kan du öppna databasen skrivskyddad. Ãndra rättigheterna till scid-filerna (eller enbart indexfilen) genom att i UNIX(-lika)
 system ge kommandot:
-<b>chmod a-w myfile.si3</b>
+<b>chmod a-w myfile.si4</b>
 vid kommandoraden.I MS-DOS eller Windows ändrar du filattributet Arkiv med Attrib filnamn +A (i MS-DOS) eller Filhanteraren/Utforskaren etc. (i Windows).)
 </p>
 <p>
@@ -4933,7 +4933,7 @@ set helpText(W,Cmdline) {<h1>Kommandorad-alternativ</h1>
 <p>
 När du startar Scid från ett gränsnitt eller consol, 
 finns det kommandorad-alternativ du kan specificera. 
-Scid-format databaser (med eller utan en filändelse som <b>"*.si3"</b>) 
+Scid-format databaser (med eller utan en filändelse som <b>"*.si4"</b>) 
 och PGN-filer att öppna kan anges, till exempel: 
 <b>scid minbas nyapartier.pgn</b> 
 kommer att starta Scid och öppna Scid-databasen <b>mybase</b> och  
@@ -5629,7 +5629,7 @@ bara
 <li> <b>pgnscid partier.pgn</b> </li>
 </ul>
 och Scid-Databasen (bestående av filerna
-<i>partier.si3</i>, <i>partier.sg3</i> och <i>partier.sn3</i>) blir
+<i>partier.si4</i>, <i>partier.sg4</i> och <i>partier.sn4</i>) blir
 skapade.
 Felmeddelanden eller varningar blir skrivna i filen <i>partier.err</i>
 .
@@ -5641,8 +5641,8 @@ i kommandoraden, till exempel skapar
 <ul>
 <li> <b>pgnscid partier.pgn databas</b> </li>
 </ul>
-en databas bestående av filerna <i>databas.si3</i>,
-<i>databas.sg3</i> och <i>datenbas.sn3</i>.
+en databas bestående av filerna <i>databas.si4</i>,
+<i>databas.sg4</i> och <i>datenbas.sn4</i>.
 </p>
 <p>
 Observera att pgnscid (och också Scid) direkt kan läsa gzip-komprimerade
@@ -5972,12 +5972,12 @@ Scid-Databaser består av tre viktiga filer: en
 Indexfil, en Namnfil och en Partidatafil. 
 Alla filer har en trebokstavsändelse, 
 som börjar med "s": 
-<b>".si3"</b> för Indexfiler,
-<b>".sn3"</b> för Namnfiler och 
-<b>".sg3"</b> för Partidatafiler.
+<b>".si4"</b> för Indexfiler,
+<b>".sn4"</b> för Namnfiler och 
+<b>".sg4"</b> för Partidatafiler.
 </p>
 
-<h3>Indexfilen (.si3)</h3>
+<h3>Indexfilen (.si4)</h3>
 <p>
 Denna fil innehåller en beskrivning av databasen där det finns en 
 liten notering med fast längd för varje parti. Den aktuella storleken 
@@ -5993,7 +5993,7 @@ Se avsnittet <a Formats Fast>Söka snabbt</a> för mer
 information.
 </p>
 
-<h3>Namnfilen (.sn3)</h3>
+<h3>Namnfilen (.sn4)</h3>
 <p>
 Denna fil innehåller alla Spelar-, Turnerings-, Orts- och Rundenamn, som
 används i databasen. Varje Namn är bara sparat en gång,
@@ -6001,7 +6001,7 @@ används i databasen. Varje Namn är bara sparat en gång,
 den minsta av de tre viktiga databasfilerna.
 </p>
 
-<h3>Partidatafilen (.sg3)</h3>
+<h3>Partidatafilen (.sg4)</h3>
 <p>
 Denna fil innehåller de aktuella dragen, varianter och kommentarer för varje
 parti. Dragkodningen är mycket kompakt: de flesta dragen behöver bara en 

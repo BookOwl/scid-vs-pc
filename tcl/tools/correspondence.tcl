@@ -1077,7 +1077,7 @@ namespace eval CorrespondenceChess {
 	set isOpen   0
 
 	# default Database
-	set CorrBase        [file nativename [file join $scidDataDir "Correspondence.si3"]]
+	set CorrBase        [file nativename [file join $scidDataDir "Correspondence.si4"]]
 
 	# incoming PGN files
 	set Inbox           [file nativename [file join $scidDataDir "Inbox"]]
@@ -1136,7 +1136,7 @@ namespace eval CorrespondenceChess {
 	proc chooseCorrBase {} {
 		global ::CorrespondenceChess::CorrBase
 
-		set filetype { "Scid databases" {".si3" ".si"} }
+		set filetype { "Scid databases" {".si4" ".si3"} }
 		set CorrBase [chooseFile "default correspondence chess DB..." $filetype]
 	}
 

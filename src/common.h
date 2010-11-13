@@ -59,8 +59,8 @@ typedef unsigned short versionT;
 // Version: div by 100 for major number, modulo 100 for minor number
 // so 109 = 1.9, 110 = 1.10, etc.
 
-const versionT SCID_VERSION = 300;     // Current file format version = 3.0
-const versionT SCID_OLDEST_VERSION = 300; // Oldest compatible format: 3.0
+const versionT SCID_VERSION = 400;     // Current file format version = 3.0
+const versionT SCID_OLDEST_VERSION = 400; // Oldest compatible format: 3.0
 
 const char SCID_VERSION_STRING[] = "4.1";     // Current Scid version
 const char SCID_VERSION_DATE[] = "July 2010";

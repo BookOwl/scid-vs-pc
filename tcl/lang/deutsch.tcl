@@ -2343,7 +2343,7 @@ schreibgeschützt geöffnet wurde.
 Wenn man eine Datenbank immer schreibgeschützt öffen will,
 kann man auch die Rechte für die entsprechenden Scid-Dateien
 setzen, oder zumindestens die der Indexdatei; z.B. (unter Linux) durch
-den Befehl: <b>chmod a-w datenbank1.si3</b>.
+den Befehl: <b>chmod a-w datenbank1.si4</b>.
 Danach öffnet Scid die entsprechende Datenbank immer
 schreibgeschützt.
 </p>
@@ -4638,7 +4638,7 @@ set helpText(D,Cmdline) {<h1>Kommandozeilen-Optionen</h1>
 <p>
 Wenn Sie Scid von der Shell oder Konsole starten, können Sie
 Kommandozeilen-Optionen spezifizieren. Datenbanken im Scid-Format (mit
-oder ohne Dateiendung wie z.B. ".si3") und PGN-Dateien, die geöffnet
+oder ohne Dateiendung wie z.B. ".si4") und PGN-Dateien, die geöffnet
 werden sollen, können angegeben werden. Beispiel:
 <ul>
 <li> <b> scid datenbank partien.pgn</b></li>
@@ -5368,7 +5368,7 @@ einfach
 <li> <b>pgnscid partien.pgn</b> </li>
 </ul>
 ein, und die Scid-Datenbank (bestehend aus den Dateien
-<i>partien.si3</i>, <i>partien.sg3</i> und <i>partien.sn3</i>) wird
+<i>partien.si4</i>, <i>partien.sg4</i> und <i>partien.sn4</i>) wird
 erstellt.
 Fehlermeldungen oder Warnungen werden in die Datei <i>partien.err</i>
 geschrieben.
@@ -5380,8 +5380,8 @@ in der Kommandozeile mit angeben, zum Beispiel erstellt
 <ul>
 <li> <b>pgnscid partien.pgn datenbank</b> </li>
 </ul>
-eine Datenbank bestehend aus den Dateien <i>datenbank.si3</i>,
-<i>datenbank.sg3</i> und <i>datenbank.sn3</i>.
+eine Datenbank bestehend aus den Dateien <i>datenbank.si4</i>,
+<i>datenbank.sg4</i> und <i>datenbank.sn4</i>.
 </p>
 <p>
 Beachten Sie, daß pgnscid (und auch scid) mit gzip komprimierte

@@ -2447,7 +2447,7 @@ ke ètení (nedá se zmìnit).
 Jestli¾e chcete, aby databáze byla otevøena jen ke ètení, nastavte
 adekvátnì pøístupová práva k jejím souborùm, minimálnì aspoò k jejímu indexovému
 souboru, napø. na pøíkazovém øádku zadejte
-<b>chmod a-w myfile.si3</b>
+<b>chmod a-w myfile.si4</b>
 a tato databáze pak bude Scidem otevøena jen ke ètení.
 </p>
 <p>
@@ -4943,7 +4943,7 @@ set helpText(C,Cmdline) {<h1>Volby pøíkazového øádku</h1>
 <p>
 Kdy¾ spou¹títe Scid z shellu nebo z konsole, mù¾ete specifikovat rùzné volby
 pøíkazového øádku. Mù¾ete zadat databázi ve formátu Scidu (s nebo bez pøípony
-souboru jako napø. ".si3") a PGN soubor, které se mají otevøít, napø. pøíkaz:
+souboru jako napø. ".si4") a PGN soubor, které se mají otevøít, napø. pøíkaz:
 <ul>
 <li>scid mybase newgames.pgn</li>
 </ul>
@@ -4979,8 +4979,8 @@ Chcete-li zkonvertovat soubor pojmenovanı <i>myfile.pgn</i>, jednodu¹e zadejte:
 <ul>
 <li> <b>pgnscid myfile.pgn</b> </li>
 </ul>
-a databáze Scidu (skládající se z <i>myfile.si3</i>, <i>myfile.sg3</i>
-a <i>myfile.sn3</i>) bude vytvoøena.
+a databáze Scidu (skládající se z <i>myfile.si4</i>, <i>myfile.sg4</i>
+a <i>myfile.sn4</i>) bude vytvoøena.
 Ve¹keré chyby a varování budou zapsány do souboru <i>myfile.err</i>.
 </p>
 <p>
@@ -4989,8 +4989,8 @@ mù¾ete jméno databáze pøidat do pøíkazového øádku, napø.:
 <ul>
 <li> <b>pgnscid myfile.pgn mybase</b> </li>
 </ul>
-vytvoøí databázi skládající se ze souborù <i>mybase.si3</i>,
-<i>mybase.sg3</i> a <i>mybase.sn3</i>.
+vytvoøí databázi skládající se ze souborù <i>mybase.si4</i>,
+<i>mybase.sg4</i> a <i>mybase.sn4</i>.
 </p>
 <p>
 V¹imnìte si, ¾e pgnscid (a scid) mù¾e èíst PGN soubory komprimované Gzipem

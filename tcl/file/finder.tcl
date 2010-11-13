@@ -317,8 +317,8 @@ proc ::file::finder::backup { f } {
   set r [file rootname $f]
   set d [clock format [clock seconds] -format "-%Y.%m.%d-%H%M" ]
   set ext [string tolower [file extension $f]]
-  if { $ext == ".si3" } {
-    if { [catch { file copy "$r.sg3" "$r$d.sg3" ; file copy "$r.sn3" "$r$d.sn3" } err ] } {
+  if { $ext == ".si4" } {
+    if { [catch { file copy "$r.sg4" "$r$d.sg4" ; file copy "$r.sn4" "$r$d.sn4" } err ] } {
       tk_messageBox -title Scid -icon error -type ok -message "File copy error $err"
       return
     }
@@ -342,8 +342,8 @@ proc ::file::finder::copy { f } {
   }
   set dir [tk_chooseDirectory -initialdir [file dirname $f] -parent .finder]
   if {$dir != ""} {
-    if { [string tolower [file extension $f]] == ".si3" } {
-      if { [catch { file copy "[file rootname $f].sg3" "[file rootname $f].sn3" $dir } err ] } {
+    if { [string tolower [file extension $f]] == ".si4" } {
+      if { [catch { file copy "[file rootname $f].sg4" "[file rootname $f].sn4" $dir } err ] } {
         tk_messageBox -title Scid -icon error -type ok -message "File copy error $err" -parent .finder
         return
       }
@@ -368,9 +368,9 @@ proc ::file::finder::move { f } {
   }
   set dir [tk_chooseDirectory -initialdir [file dirname $f] -parent .finder ]
   if {$dir != ""} {
-    if { [string tolower [file extension $f]] == ".si3" } {
+    if { [string tolower [file extension $f]] == ".si4" } {
       
-      if { [catch { file rename "[file rootname $f].sg3" "[file rootname $f].sn3" $dir } err ] } {
+      if { [catch { file rename "[file rootname $f].sg4" "[file rootname $f].sn4" $dir } err ] } {
         tk_messageBox -title Scid -icon error -type ok -message "File rename error $err" -parent .finder
         return
       }
@@ -396,8 +396,8 @@ proc ::file::finder::delete { f } {
   set answer [tk_messageBox -title Scid -icon warning -type yesno -parent .finder \
                 -message "Do you want to permanently delete $f ?"]
   if {$answer == "yes"} {
-    if { [string tolower [file extension $f]] == ".si3" } {
-      file delete "[file rootname $f].sg3" "[file rootname $f].sn3" "[file rootname $f].stc"
+    if { [string tolower [file extension $f]] == ".si4" } {
+      file delete "[file rootname $f].sg4" "[file rootname $f].sn4" "[file rootname $f].stc"
     }
     file delete $f
   }
@@ -445,10 +445,10 @@ proc ::file::finder::GetFiles {dir {len -1}} {
       set showFile 0
       set rootname [file rootname $f]
       set type PGN
-      if {$ext == ".si3"} {
+      if {$ext == ".si4"} {
         set showFile 1
         set type Scid
-      } elseif {$ext == ".si"} {
+      } elseif {$ext == ".si3"} {
         set showFile 1
         set type Old
       } elseif {$ext == ".sor"} {

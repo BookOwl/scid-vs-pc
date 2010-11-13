@@ -792,17 +792,17 @@ if { $macOS } {
         }
         continue
       }
+      # Scid doesn't handle well .sg4 and .sn4 files.
+      if {([file extension $file] == ".sg4") || \
+            ([file extension $file] == ".sn4")} {
+        set eName ".si4"
+        set fName [file rootname $file]
+        set file "$fName$eName"
+      }
       # Scid doesn't handle well .sg3 and .sn3 files.
       if {([file extension $file] == ".sg3") || \
             ([file extension $file] == ".sn3")} {
         set eName ".si3"
-        set fName [file rootname $file]
-        set file "$fName$eName"
-      }
-      # Scid doesn't handle well .sg and .sn files either.
-      if {([file extension $file] == ".sg") || \
-            ([file extension $file] == ".sn")} {
-        set eName ".si"
         set fName [file rootname $file]
         set file "$fName$eName"
       }

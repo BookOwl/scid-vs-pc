@@ -4,12 +4,14 @@
 //              Index File Class
 //
 //  Part of:    Scid (Shane's Chess Information Database)
-//  Version:    3.3
+//  Version:    4.0
 //
-//  Notice:     Copyright (c) 2000-2002  Shane Hudson.  All rights reserved.
+//  Notice:     Copyright (c) 1999-2002  Shane Hudson.  all rights reserved.
+//  Notice:     Copyright (c) 2006-2009  Pascal Georges.  all rights reserved.
+//  Notice:     Copyright (c) 2010-2010  Steven Atkinson.  all rights reserved.
 //
-//  Author:     Shane Hudson (sgh@users.sourceforge.net)
-//
+//  Authors:     Shane Hudson (sgh@users.sourceforge.net)
+//               Pascal Georges
 //////////////////////////////////////////////////////////////////////
 
 #include "common.h"
@@ -58,7 +60,9 @@ void
 IndexEntry::Init ()
 {
     SetOffset (0);
-    SetLength (0);
+    //SetLength (0);
+    Length_Low = 0;
+    Length_High = 0;
     SetWhite (0);
     SetBlack (0);
     SetEvent (0);
@@ -171,15 +175,13 @@ IndexEntry::Read (MFile * fp, versionT version)
 {
     ASSERT (fp != NULL);
 
-    if (version < 300) {
-        return ReadOld (fp);
-    }
     version = 0; // We dont have any other version-specific code.
 
     // Length of each gamefile record and its offset.
     Offset = fp->ReadFourBytes ();
-    Length = fp->ReadTwoBytes ();
-    Flags = fp->ReadTwoBytes ();
+    Length_Low = fp->ReadTwoBytes ();
+    Length_High = fp->ReadOneByte();
+    Flags = fp->ReadTwoBytes (); 
 
     // White and Black player names:
     WhiteBlack_High = fp->ReadOneByte ();
@@ -233,19 +235,21 @@ IndexEntry::Read (MFile * fp, versionT version)
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // IndexEntry::Write():
 //      Writes a single index entry to an open index file.
-//
+//      INDEX_ENTRY_SIZE must be updated
 errorT
 IndexEntry::Write (MFile * fp, versionT version)
 {
     ASSERT (fp != NULL);
 
     // Cannot write old-version index files:
-    if (version < 300) { return ERROR_FileVersion; }
+    if (version < 400) { return ERROR_FileVersion; }
 
     version = 0;  // We dont have any version-specific code.
-
+    
     fp->WriteFourBytes (Offset);
-    fp->WriteTwoBytes (Length);
+    
+    fp->WriteTwoBytes (Length_Low);
+    fp->WriteOneByte (Length_High);
     fp->WriteTwoBytes (Flags);
 
     fp->WriteOneByte (WhiteBlack_High);
@@ -266,7 +270,7 @@ IndexEntry::Write (MFile * fp, versionT version)
     fp->WriteTwoBytes (BlackElo);
 
     fp->WriteFourBytes (FinalMatSig);
-    fp->WriteOneByte (NumHalfMoves & 255);
+    fp->WriteOneByte (NumHalfMoves & 255); 
 
     // Write the 9-byte homePawnData array:
     byte * pb = HomePawnData;
@@ -276,83 +280,11 @@ IndexEntry::Write (MFile * fp, versionT version)
     pb0 = pb0 | ((NumHalfMoves >> 8) << 6);
     fp->WriteOneByte (pb0);
     pb++;
+    // write 8 bytes
     for (uint i2 = 1; i2 < HPSIG_SIZE; i2++) {
         fp->WriteOneByte (*pb);
         pb++;
     }
-
-    return OK;
-}
-
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// IndexEntry::ReadOld():
-//    Reads an old (version 2.x) Index entry.
-errorT
-IndexEntry::ReadOld (MFile * fp)
-{
-    ASSERT (fp != NULL);
-    uint upperBits;
-
-    // Length of each gamefile record and its offset.
-    Offset = fp->ReadFourBytes ();
-    Length = fp->ReadTwoBytes ();
-
-    NumHalfMoves = fp->ReadOneByte ();
-    byte f = fp->ReadOneByte();
-    Flags = 0;
-    if (f &  1) { SetDeleteFlag (true); }
-    if (f &  2) { SetUserFlag (true); }
-    if (f &  4) { SetPromotionsFlag (true); }
-    if (f &  8) { SetStartFlag (true); }
-    if (f & 16) { SetCommentCount (1); }
-    if (f & 32) { SetVariationCount (1); }
-
-    // White and Black player names:
-    WhiteBlack_High = fp->ReadOneByte ();
-    WhiteID_Low = fp->ReadTwoBytes ();
-    BlackID_Low = fp->ReadTwoBytes ();
-
-    // Event, Site and Round names:
-    EventSiteRnd_High = fp->ReadOneByte ();
-    EventID_Low = fp->ReadTwoBytes ();
-    SiteID_Low = fp->ReadTwoBytes ();
-    RoundID_Low = fp->ReadTwoBytes ();
-
-    EcoCode = fp->ReadTwoBytes ();
-
-    // Date and result are stored in the same value.
-    // Result is in the highest 4 bits, date is in the lowest 20 bits.
-    uint dateResult = fp->ReadThreeBytes ();
-    SetResult ((dateResult >> 20) & 3);
-    SetDate (dateResult & 0xFFFFF);
-    SetEventDate (ZERO_DATE);
-
-    // The two ELO ratings are stored in 3 bytes.
-    upperBits = (uint) fp->ReadOneByte ();
-    WhiteElo = fp->ReadOneByte ();
-    BlackElo = fp->ReadOneByte ();
-    WhiteElo |= ((upperBits >> 4) << 8);
-    BlackElo |= ((upperBits & 15) << 8);
-
-    SetFinalMatSig (fp->ReadThreeBytes());
-    SetStoredLineCode (0);
-
-    // Read the 9-byte homePawnData array:
-    byte * pb = HomePawnData;
-    for (uint i2 = 0; i2 < HPSIG_SIZE; i2++) {
-        *pb = fp->ReadOneByte ();  pb++;
-    }
-
-    // Read the obsolete FirstMoveCode:
-    byte dummy = fp->ReadOneByte();
-
-    // The rating types are stuffed into the spare top 3 bits in the
-    // HomePawnData and FirstMoveCode for now until the on-disk index
-    // format is extended to more than 41 bytes:
-
-    SetWhiteRatingType (HomePawnData[0] >> 5);
-    HomePawnData[0] = HomePawnData[0] & 31;
-    SetBlackRatingType (dummy >> 5);
 
     return OK;
 }
@@ -378,6 +310,12 @@ IndexEntry::CharToFlag (char ch)
         case '!': flag = IDX_FLAG_BRILLIANCY; break;
         case '?': flag = IDX_FLAG_BLUNDER;    break;
         case 'U': flag = IDX_FLAG_USER;       break;
+        case '1': flag = IDX_FLAG_CUSTOM1;    break;
+        case '2': flag = IDX_FLAG_CUSTOM2;    break;
+        case '3': flag = IDX_FLAG_CUSTOM3;    break;
+        case '4': flag = IDX_FLAG_CUSTOM4;    break;
+        case '5': flag = IDX_FLAG_CUSTOM5;    break;
+        case '6': flag = IDX_FLAG_CUSTOM6;    break;
     }
     return flag;
 }
@@ -390,7 +328,7 @@ void
 IndexEntry::SetFlagStr (const char * flags)
 {
     // First, unset all user-settable flags:
-    const char * uflags = "DWBMENPTKQ!?U";
+    const char * uflags = "DWBMENPTKQ!?U123456";
     while (*uflags != 0) {
         SetFlag (1 << CharToFlag (*uflags), false);
         uflags++;
@@ -411,7 +349,7 @@ IndexEntry::SetFlagStr (const char * flags)
 uint
 IndexEntry::GetFlagStr (char * str, const char * flags)
 {
-    if (flags == NULL) { flags = "DWBMENPTKQ!?U"; }
+    if (flags == NULL) { flags = "DWBMENPTKQ!?U123456"; }
     uint count = 0;
     while (*flags != 0) {
         bool flag = false;
@@ -500,7 +438,7 @@ IndexEntry::PrintGameInfo (char * outStr,
                 break;
 
             case 'L':   // Game file record length
-                sprintf (temp, "%*d", width, Length);
+              sprintf (temp, "%*d", width, GetLength() );
                 out = strAppend (out, temp);
                 break;
 
@@ -886,6 +824,9 @@ Index::Init ()
     Header.baseType = 0;
     Header.autoLoad = 2;
     Header.description[0] = 0;
+    for (uint i=0; i<CUSTOM_FLAG_MAX; i++) {
+      strcpy(Header.customFlagDesc[i], "");
+    }
     CalcIndexEntrySize();
 }
 
@@ -972,6 +913,9 @@ Index::WriteHeader ()
     FilePtr->WriteThreeBytes (Header.numGames);
     FilePtr->WriteThreeBytes (Header.autoLoad);
     FilePtr->WriteNBytes (Header.description, SCID_DESC_LENGTH + 1);
+    for (uint i = 0 ; i < CUSTOM_FLAG_MAX ; i++ ) {
+      FilePtr->WriteNBytes (Header.customFlagDesc[i], CUSTOM_FLAG_DESC_LENGTH + 1);
+    }
     FilePos = INDEX_HEADER_SIZE;
     if (FileMode == FMODE_Both) { FilePtr->Flush(); }
     return OK;
@@ -1023,14 +967,18 @@ Index::Open (fileModeT fmode, bool old)
     Header.numGames = FilePtr->ReadThreeBytes ();
     Header.autoLoad = FilePtr->ReadThreeBytes ();
     FilePtr->ReadNBytes (Header.description, SCID_DESC_LENGTH + 1);
-
+    for (uint i = 0 ; i < CUSTOM_FLAG_MAX ; i++ ) {
+      FilePtr->ReadNBytes (Header.customFlagDesc[i], CUSTOM_FLAG_DESC_LENGTH + 1);
+    }
     FilePos = INDEX_HEADER_SIZE;
     Dirty = 0;
 
     // Check that the version of the file is valid: it must be
-    // SCID_OLDEST_VESRION or higher, but not higher than the
+    // SCID_OLDEST_VERSION or higher, but not higher than the
     // current Scid version number.
     errorT result = OK;
+
+    // printf ("Header.version %i, SCID_VERSION %i , SCID_OLDEST_VERSION %i\n",Header.version,SCID_VERSION, SCID_OLDEST_VERSION);
     if (!old) {
         if (Header.version > SCID_VERSION) { result = ERROR_OldScidVersion; }
         if (Header.version < SCID_OLDEST_VERSION) { 
@@ -1089,14 +1037,16 @@ Index::CreateMemoryOnly ()
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Index::CloseIndexFile():
 //      Writes the header and closes an index file.
+//      If param NoHeader is true then don't write it (in case the index was copied
+//      during a migration for example).
 //
 errorT
-Index::CloseIndexFile ()
+Index::CloseIndexFile ( bool NoHeader )
 {
 
     ASSERT (FilePtr != NULL);   // check FilePtr points to an open file
 
-    if (Dirty  &&  FileMode != FMODE_ReadOnly) {
+    if (Dirty  &&  FileMode != FMODE_ReadOnly && !NoHeader) {
         WriteHeader();
     }
     if (InMemory) { FreeEntries(); }
@@ -1197,6 +1147,7 @@ Index::ReadEntireFile (int reportFrequency,
         readCount += gamesToRead;
         progressCounter += INDEX_ENTRY_CHUNKSIZE;
         reportAfter -= INDEX_ENTRY_CHUNKSIZE;
+
         if (reportAfter <= 0) {
             if (progressFn != NULL) {
                 (*progressFn) (progressData, progressCounter, GetNumGames());
@@ -1344,9 +1295,10 @@ Index::SetDescription (const char * str)
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Index::AddGame():
 //      Adds a new Game to this index if possible.
-//
+//      if initIE is false, don't reset index, as it has already been reseted before
+//      and eventually filled by encoding
 errorT
-Index::AddGame (gameNumberT * g, IndexEntry * ie)
+Index::AddGame (gameNumberT * g, IndexEntry * ie, bool initIE)
 {
     // Have we reached the maximum number of games?
     if (Header.numGames >= MAX_GAMES) {  return ERROR_IndexFull; }
@@ -1354,7 +1306,9 @@ Index::AddGame (gameNumberT * g, IndexEntry * ie)
     uint oldNumChunks = NumChunksRequired();
     *g = Header.numGames;
     Header.numGames++;
-    ie->Init();
+
+    if (initIE)
+      ie->Init();
 
     if (InMemory) {
         uint newNumChunks = NumChunksRequired();

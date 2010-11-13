@@ -72,8 +72,8 @@ proc ::file::New {} {
     return
   }
   set ftype {
-    { "Scid databases, EPD files" {".si3" ".epd"} }
-    { "Scid databases" {".si3"} }
+    { "Scid databases, EPD files" {".si4" ".epd"} }
+    { "Scid databases" {".si4"} }
     { "EPD files" {".epd"} }
   }
   set fName [tk_getSaveFile -initialdir $::initialDir(base) -filetypes $ftype -title "Create a Scid database"]
@@ -84,7 +84,7 @@ proc ::file::New {} {
       return
     }
   } else {
-    if {[file extension $fName] == ".si3"} {
+    if {[file extension $fName] == ".si4"} {
       set fName [file rootname $fName]
     } 
     if {[catch {sc_base create $fName} result]} {
@@ -94,7 +94,7 @@ proc ::file::New {} {
     }
     # set default icon
     catch {sc_base type [sc_base current] 1}
-    set fName $fName.si3
+    set fName $fName.si4
   }
   ::recentFiles::add $fName
   refreshWindows
@@ -114,16 +114,16 @@ proc ::file::Open {{fName ""} {parent .}} {
 
   if {[sc_info gzip]} {
     set ftype {
-      { {All Scid files} {.si3 .si .pgn .PGN .pgn.gz .epd .epd.gz .sor} }
-      { {Scid databases} {.si3 .si} }
+      { {All Scid files} {.si4 .si3 .pgn .PGN .pgn.gz .epd .epd.gz .sor} }
+      { {Scid databases} {.si4 .si3} }
       { {PGN files} {.pgn .PGN .pgn.gz} }
       { {EPD files} {.epd .EPD .epd.gz} }
       { {Repertoire files} {.sor} }
     }
   } else {
     set ftype {
-      { {All Scid files} {.si3 .si .pgn .PGN .epd .sor} }
-      { {Scid databases} {.si3 .si} }
+      { {All Scid files} {.si4 .si3 .pgn .PGN .epd .sor} }
+      { {Scid databases} {.si4 .si3} }
       { {PGN files} {.pgn .PGN} }
       { {EPD files} {.epd .EPD} }
       { {Repertoire files} {.sor} }
@@ -140,7 +140,7 @@ proc ::file::Open {{fName ""} {parent .}} {
   }
 
   if {[file extension $fName] == ""} {
-    set fName "$fName.si3"
+    set fName "$fName.si4"
   }
 
   if {[file extension $fName] == ".sor"} {
@@ -151,7 +151,7 @@ proc ::file::Open {{fName ""} {parent .}} {
     return
   }
 
-  if {[file extension $fName] == ".si"} {
+  if {[file extension $fName] == ".si3"} {
     ::file::Upgrade [file rootname $fName]
     return
   }
@@ -161,16 +161,16 @@ proc ::file::Open {{fName ""} {parent .}} {
 
   set err 0
   busyCursor .
-  if {[file extension $fName] == ".si3"} {
+  if {[file extension $fName] == ".si4"} {
     set fName [file rootname $fName]
     if {[catch {openBase $fName} result]} {
       set err 1
       tk_messageBox -icon warning -type ok -parent $parent \
           -title "Scid: Error opening file" -message "$result\nCan't open $fName"
-      ::recentFiles::remove "$fName.si3"
+      ::recentFiles::remove "$fName.si4"
     } else {
       set ::initialDir(base) [file dirname $fName]
-      ::recentFiles::add "$fName.si3"
+      ::recentFiles::add "$fName.si4"
     }
   } elseif {[string match "*.epd" [string tolower $fName]]} {
     # EPD file:
@@ -229,14 +229,14 @@ proc refreshWindows {} {
 
 # ::file::Upgrade
 #
-#   Upgrades an old (version 2) Scid database to version 3.
+#   Upgrades an old (version 3) Scid database to version 4.
 #
 proc ::file::Upgrade {name} {
-  if {[file readable "$name.si3"]} {
+  if {[file readable "$name.si4"]} {
     set msg [string trim $::tr(ConfirmOpenNew)]
     set res [tk_messageBox -title "Scid" -type yesno -icon info -message $msg]
     if {$res == "no"} { return }
-    ::file::Open "$name.si3"
+    ::file::Open "$name.si4"
     return
   }
 
@@ -254,17 +254,22 @@ proc ::file::Upgrade {name} {
     tk_messageBox -title "Scid" -type ok -icon warning \
         -message "Unable to upgrade the database:\n$res"
     return
+  } else  {
+    # rename game and name files, delete old .si3
+    file rename "$name.sg3"  "$name.sg4"
+    file rename "$name.sn3"  "$name.sn4"
+    file delete "$name.si3"
   }
-  ::file::Open "$name.si3"
+  ::file::Open "$name.si4"
 }
 
 # openBase:
 #    Opens a Scid database, showing a progress bar in a separate window
 #    if the database is around 1 Mb or larger in size.
-#
+#   ::file::Open should be used if the base is not already in si4 format
 proc openBase {name} {
   set bsize 0
-  set gfile "[file rootname $name].sg3"
+  set gfile "[file rootname $name].sg4"
   if {! [catch {file size $gfile} err]} { set bsize $err }
   set showProgress 0
   if {$bsize > 1000000} { set showProgress 1 }
@@ -339,14 +344,14 @@ proc ::file::openBaseAsTree { { fName "" } } {
   if {$fName == ""} {
     if {[sc_info gzip]} {
       set ftype {
-        { "Scid databases, PGN files" {".si3" ".si" ".pgn" ".PGN" ".pgn.gz"} }
-        { "Scid databases" {".si3" ".si"} }
+        { "Scid databases, PGN files" {".si4" ".si3" ".pgn" ".PGN" ".pgn.gz"} }
+        { "Scid databases" {".si4" ".si3"} }
         { "PGN files" {".pgn" ".PGN" ".pgn.gz"} }
       }
     } else {
       set ftype {
-        { "Scid databases, PGN files" {".si3" ".si" ".pgn" ".PGN"} }
-        { "Scid databases" {".si3" ".si"} }
+        { "Scid databases, PGN files" {".si4" ".si3" ".pgn" ".PGN"} }
+        { "Scid databases" {".si4" ".si3"} }
         { "PGN files" {".pgn" ".PGN"} }
       }
     }
@@ -357,7 +362,7 @@ proc ::file::openBaseAsTree { { fName "" } } {
   }
 
   if {[file extension $fName] == ""} {
-    set fName "$fName.si3"
+    set fName "$fName.si4"
   }
 
   if {[file extension $fName] == ".sor"} {
@@ -368,14 +373,14 @@ proc ::file::openBaseAsTree { { fName "" } } {
     return
   }
 
-  if {[file extension $fName] == ".si"} {
+  if {[file extension $fName] == ".si3"} {
     ::file::Upgrade [file rootname $fName]
     return
   }
 
   set err 0
   busyCursor .
-  if {[file extension $fName] == ".si3"} {
+  if {[file extension $fName] == ".si4"} {
     set fName [file rootname $fName]
     if {[catch {openBase $fName} result]} {
       set err 1
@@ -384,7 +389,7 @@ proc ::file::openBaseAsTree { { fName "" } } {
     } else {
       set ::initialDir(base) [file dirname $fName]
       set ::initialDir(file) [file tail $fName]
-      ::recentFiles::add "$fName.si3"
+      ::recentFiles::add "$fName.si4"
     }
   } else {
     # PGN file:

@@ -131,7 +131,7 @@ namespace eval tactics {
     # go through all bases and take descriptions
     set baseList {}
     set baseDesc {}
-    set fileList [  lsort -dictionary [ glob -nocomplain -directory $basePath *.si3 ] ]
+    set fileList [  lsort -dictionary [ glob -nocomplain -directory $basePath *.si4 ] ]
     foreach file  $fileList {
       if {[sc_base slot $file] == 0} {
         sc_base open [file rootname $file]
@@ -759,7 +759,7 @@ namespace eval tactics {
     set analysisEngine(analyzeMode) 1
     after cancel ::tactics::stopAnalyze
     ::tactics::sendToEngine "position fen [sc_pos fen]"
-    ::tactics::sendToEngine "go infinite ponder"
+    ::tactics::sendToEngine "go infinite"
     after [expr 1000 * $analysisTime] ::tactics::stopAnalyze
   }
 

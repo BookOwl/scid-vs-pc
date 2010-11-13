@@ -178,7 +178,7 @@ proc ::bookmarks::Go {entry} {
     sc_base switch $slot
   } else {
     busyCursor .
-    if {[catch {openBase [file rootname $fname]} result]} {
+    if {[catch { ::file::Open $fname} result]} {
       unbusyCursor .
       tk_messageBox -icon warning -type ok -parent . \
         -title "Scid" -message "Unable to load the database:\n$fname\n\n$result"
@@ -186,7 +186,7 @@ proc ::bookmarks::Go {entry} {
     }
     unbusyCursor .
     set ::glist 1
-    ::recentFiles::add "[file rootname $fname].si3"
+    ::recentFiles::add "[file rootname $fname].si4"
   }
   # Find and load the best database game matching the bookmark:
   set white [lindex $entry 5]

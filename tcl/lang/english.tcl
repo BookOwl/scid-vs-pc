@@ -1335,11 +1335,9 @@ This is an old-format (Scid 2) database that cannot be opened in Scid 3, but a n
 Do you want to open the new-format version of the database?
 }
 translate E ConfirmUpgrade {
-This is an old-format (Scid 2) database. A new-format version of the database must be created before it can be used in Scid 3.
+This is an "si3" format database. It must be converted to "si4" before it can be used in Scid vs. PC 4.0.
 
-Upgrading will create a new version of the database; it will not edit or remove the original files.
-
-This may take a while, but it only needs to be done one time. You can cancel if it takes too long.
+This process is irreversible and only needs to be done once. You can cancel if it takes too long.
 
 Do you want to upgrade this database now?
 }
