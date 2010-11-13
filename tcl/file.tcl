@@ -151,7 +151,7 @@ proc ::file::Open {{fName ""} {parent .}} {
     return
   }
 
-  if {[file extension $fName] == ".si3"} {
+  if {[file extension $fName] == ".si3" && [file exists $fName]} {
     ::file::Upgrade [file rootname $fName]
     return
   }
@@ -373,7 +373,7 @@ proc ::file::openBaseAsTree { { fName "" } } {
     return
   }
 
-  if {[file extension $fName] == ".si3"} {
+  if {[file extension $fName] == ".si3" && [file exists $fName]} {
     ::file::Upgrade [file rootname $fName]
     return
   }
