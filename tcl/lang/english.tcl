@@ -1330,7 +1330,7 @@ translate E SoundsAnnounceBack {Announce when retracting or moving back one move
 # Upgrading databases:
 translate E Upgrading {Upgrading}
 translate E ConfirmOpenNew {
-This is an old-format (Scid 2) database that cannot be opened in Scid 3, but a new-format (Scid 3) version has already been created.
+This is an old-format (si3) database that cannot be opened in Scid 4.0, but a new-format (si4) version has already been created.
 
 Do you want to open the new-format version of the database?
 }
