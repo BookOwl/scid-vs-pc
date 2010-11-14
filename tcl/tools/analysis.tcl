@@ -1899,7 +1899,7 @@ proc makeAnalysisWin { {n 1} } {
     $w.b.multipv configure -state readonly
     pack forget $w.b.update
     $w.b.update  configure -state disabled
-    text $w.text -height 1 -font font_Regular -wrap word -bg gray95
+    text $w.text -height 1 -font font_Small -wrap word -bg gray95
   } else  {
     # pack forget $w.b.showinfo
     # $w.b.showinfo configure -state disabled
@@ -1908,11 +1908,11 @@ proc makeAnalysisWin { {n 1} } {
     pack forget $w.b.alllines
     $w.b.multipv configure -state disabled
     $w.b.alllines configure -state disabled
-    text $w.text -height 4 -font font_Regular -wrap word -bg gray95
+    text $w.text -height 4 -font font_Small -wrap word -bg gray95
   }
 
   frame $w.hist
-  text $w.hist.text -font font_Fixed \
+  text $w.hist.text -font font_Small \
       -wrap word -setgrid 1 -yscrollcommand "$w.hist.ybar set"
   $w.hist.text tag configure indent -lmargin2 [font measure font_Fixed "xxxxxxxxxxxx"]
   scrollbar $w.hist.ybar -command "$w.hist.text yview" -takefocus 0
