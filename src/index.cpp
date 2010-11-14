@@ -782,7 +782,7 @@ IndexEntry::Compare (IndexEntry * ie, int * fields, NameBase * nb)
         }
 
         if (res != 0) {
-	    // check if sort order is reversed
+	    // Is sort order reversed ?
 	    if (nb->SortOrder)
 	      return -res;
 	    else 
@@ -938,11 +938,11 @@ Index::Open (fileModeT fmode, bool old)
     char * modeStr;
     switch (fmode) {
         case FMODE_ReadOnly:
-            modeStr = "rb"; break;
+            modeStr = (char *) "rb"; break;
         case FMODE_WriteOnly:
-            modeStr = "wb"; break;
+            modeStr = (char *) "wb"; break;
         case FMODE_Both:
-            modeStr = "r+b"; break;
+            modeStr = (char *) "r+b"; break;
         default:
             return ERROR_FileMode;
     }
@@ -977,8 +977,6 @@ Index::Open (fileModeT fmode, bool old)
     // SCID_OLDEST_VERSION or higher, but not higher than the
     // current Scid version number.
     errorT result = OK;
-
-    // printf ("Header.version %i, SCID_VERSION %i , SCID_OLDEST_VERSION %i\n",Header.version,SCID_VERSION, SCID_OLDEST_VERSION);
     if (!old) {
         if (Header.version > SCID_VERSION) { result = ERROR_OldScidVersion; }
         if (Header.version < SCID_OLDEST_VERSION) { 
@@ -1094,7 +1092,6 @@ Index::ReadEntireFile (int reportFrequency,
 
     uint numChunks = NumChunksRequired();
 
-#warning Tweak_Mem_Min_For_PocketPC
 #ifdef POCKET
 // Check if there is enough memory left with a good margin
   #define MARGIN 1000000
