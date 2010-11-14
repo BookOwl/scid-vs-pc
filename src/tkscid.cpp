@@ -6912,7 +6912,7 @@ sc_game_info (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
     // Tcl_AppendResult (ti, "<br>", translate (ti, "Move", "Move"), ":  ", NULL);
 
     // if (san[0] != 0) 
-    Tcl_AppendResult (ti, "<br>\t", temp, "</blue></gbold>",  NULL);
+    Tcl_AppendResult (ti, "<br>Move:  ", temp, "</blue></gbold>",  NULL);
 
     nags = db->game->GetNags();
     if (printNags  &&  *nags != 0  &&  !hideNextMove) {
