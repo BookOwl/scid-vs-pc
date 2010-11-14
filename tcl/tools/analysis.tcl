@@ -2026,11 +2026,19 @@ proc changePVSize { n } {
   if { $analysis(uci$n) } {
     # if the UCI engine was analysing, we have to stop/restart it to take into acount the new multiPV option
     if {$analysis(analyzeMode$n)} {
-      sendToEngine $n stop
-      set analysis(waitForBestMove$n) 1
-      vwait analysis(waitForBestMove$n)
+      # Normally the best move condition should still stand
+      # Meaning that we will stop the engine here and wait for
+      # the bestmove reply (which is handled in uci.tcl)
+      if { $analysis(waitForBestMove$n) } {
+	sendToEngine $n stop
+	vwait analysis(waitForBestMove$n)
+      }
       sendToEngine $n "setoption name MultiPV value $analysis(multiPVCount$n)"
       sendToEngine $n "position fen [sc_pos fen]"
+      # Although we go infinite, some engines do a bestmove announcement
+      # and go idle when they see a forced mate, before we stop them
+      # Let's anticipate this.
+      set analysis(waitForBestMove$n) 1
       sendToEngine $n "go infinite"
     } else  {
       sendToEngine $n "setoption name MultiPV value $analysis(multiPVCount$n)"
@@ -2448,6 +2456,10 @@ proc startAnalyzeMode {{n 1} {force 0}} {
     sendToEngine $n isready
     vwait analysis(waitForReadyOk$n)
     sendToEngine $n "position fen [sc_pos fen]"
+    # Although we go infinite, some engines do a bestmove announcement
+    # and go idle when they see a forced mate, before we stop them
+    # Let's anticipate this.
+    set analysis(waitForBestMove$n) 1
     sendToEngine $n {go infinite}
     set analysis(fen$n) [sc_pos fen]
     set analysis(maxmovenumber$n) 0
@@ -2539,7 +2551,7 @@ proc updateAnalysisText {{n 1}} {
   $t delete 0.0 end
 
   if { $analysis(uci$n) } {
-    if { [expr abs($score)] == 327.0 } {
+    if { [expr abs($score)] >= 327.0 } {
       if { [catch { set tmp [format "M%d " $analysis(scoremate$n)]} ] } {
         set tmp [format "%+.1f " $score]
       }
@@ -2878,10 +2890,18 @@ if {[info exists ::comp(playing)] && $::comp(playing)} {return}
   if { $analysis(lockEngine$n) } { return }
 
   if { $analysis(uci$n) } {
-    sendToEngine $n stop
-    set analysis(waitForBestMove$n) 1
-    vwait analysis(waitForBestMove$n)
+    # Normally the best move condition should still stand
+    # Meaning that we will stop the engine here and wait for
+    # the bestmove reply (which is handled in uci.tcl)
+    if { $analysis(waitForBestMove$n) } {
+      sendToEngine $n stop
+      vwait analysis(waitForBestMove$n)
+    }
     sendToEngine $n "position fen [sc_pos fen]"
+    # Although we go infinite, some engines do a bestmove announcement
+    # and go idle when they see a forced mate, before we stop them
+    # Let's anticipate this.
+    set analysis(waitForBestMove$n) 1
     sendToEngine $n {go infinite}
     set analysis(fen$n) [sc_pos fen]
     set analysis(maxmovenumber$n) 0
