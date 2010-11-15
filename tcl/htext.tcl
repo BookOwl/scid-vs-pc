@@ -257,6 +257,8 @@ proc ::htext::init {w} {
   }
   $w tag configure ip1 -lmargin1 25 -lmargin2 25
   $w tag configure ip2 -lmargin1 50 -lmargin2 50
+  $w tag configure ip3 -lmargin1 75 -lmargin2 75
+  $w tag configure ip4 -lmargin1 100 -lmargin2 100
 }
 
 proc ::htext::isStartTag {tagName} {

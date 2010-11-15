@@ -2334,19 +2334,20 @@ Game::WriteMoveList (TextBuffer *tb, uint plyCount,
                     }
                 }
 
+/* Code commented to remove extra lines
                 if ((PgnStyle & PGN_STYLE_COLUMN)  &&  VarDepth == 0) {
-// Code commented to remove extra lines
-//                     if (! endedColumn) {
-//                         if (CurrentPos->GetToMove() == WHITE) {
-//                             tb->PauseTranslations ();
-//                             tb->PrintString (nextColumn);
-//                             tb->ResumeTranslations ();
-//                         }
-//                         tb->PrintString (endColumn);
-//                         tb->PrintString (endTable);
-//                         endedColumn = true;
-//                     }
+                       if (! endedColumn) {
+                           if (CurrentPos->GetToMove() == WHITE) {
+                               tb->PauseTranslations ();
+                               tb->PrintString (nextColumn);
+                               tb->ResumeTranslations ();
+                           }
+                           tb->PrintString (endColumn);
+                           tb->PrintString (endTable);
+                           endedColumn = true;
+                       }
                 }
+*/
                 if (IsHtmlFormat()  &&  VarDepth == 0) {
                     tb->PrintString ("</b><dl><dd>");
                 }
@@ -2364,8 +2365,10 @@ Game::WriteMoveList (TextBuffer *tb, uint plyCount,
                     if (IsColorFormat()) {
                         tb->PrintString ("</ip1>");
                         // Modification to remove extra lines
-                        if (CurrentPos->GetToMove() == WHITE)
+			if (!(PgnStyle & PGN_STYLE_COLUMN) || (CurrentPos->GetToMove() == WHITE))
                           tb->PrintString ("<br>");
+                        // else if (CurrentPos->GetToMove() == BLACK) tb->PrintString ("<br>");
+
                     } else {
                         tb->SetIndent (tb->GetIndent() - 4); tb->Indent();
                     }
@@ -2413,15 +2416,18 @@ Game::WriteMoveList (TextBuffer *tb, uint plyCount,
                         tb->PrintString (nextColumn);
                         tb->ResumeTranslations ();
                     }
-                    tb->PrintString (endColumn);
+		    // Doesn't seem wanted!! S.A (see a few lines below)
+                    // tb->PrintString (endColumn);
                     tb->PrintString (endTable);
                     endedColumn = true;
                 }
             }
             if (IsColorFormat()  &&  VarDepth == 0) { tb->PrintString ("<var>"); }
-            if ((PgnStyle & PGN_STYLE_INDENT_VARS) && IsColorFormat()) {
+            // Doesn't indent first var in column mode properly 
+            // if including !(PgnStyle & PGN_STYLE_COLUMN) here.
+            // But as-is, depth 3 vars don't indent in COLUMN mode (bug)
+            if ((PgnStyle & PGN_STYLE_INDENT_VARS) && IsColorFormat())
                 tb->PrintString ("<br>");
-            }
             for (uint i=0; i < m->numVariations; i++) {
                 if (PgnStyle & PGN_STYLE_INDENT_VARS) {
                     if (IsColorFormat()) {
@@ -2446,9 +2452,15 @@ Game::WriteMoveList (TextBuffer *tb, uint plyCount,
                     }
                 }
                 if (IsColorFormat()) { tb->PrintString ("<blue>"); }
-                if (!IsLatexFormat()  ||  VarDepth != 0) {
-                    tb->PrintChar ('(');
-                }
+
+                // if (!IsLatexFormat()  ||  VarDepth != 0) tb->PrintChar ('(');
+
+                //// Holy cow , this is a little complicated! S.A.
+                // Partly need to enforce brackets if "VarDepth > 1"
+                // because tabs in column mode don't work after this VarDepth for some reason
+                if (!(IsColorFormat() || IsLatexFormat()) || \
+                   !(PgnStyle & PGN_STYLE_INDENT_VARS) || VarDepth > 0) tb->PrintChar ('(');
+
                 MoveIntoVariation (i);
                 NumMovesPrinted++;
                 tb->PrintSpace();
@@ -2460,9 +2472,10 @@ Game::WriteMoveList (TextBuffer *tb, uint plyCount,
                     return OK;
                 }
                 MoveExitVariation();
-                if (!IsLatexFormat()  ||  VarDepth != 0) {
-                    tb->PrintChar (')');
-                }
+                // if (!IsLatexFormat()  ||  VarDepth != 0) tb->PrintChar (')');
+                if (!(IsColorFormat() || IsLatexFormat()) \
+                   || !(PgnStyle & PGN_STYLE_INDENT_VARS) || VarDepth > 0 ) tb->PrintChar (')');
+
                 if (IsColorFormat()) { tb->PrintString ("<blue>"); }
                 if (IsHtmlFormat()) {
                     if (VarDepth == 0) { tb->PrintString ("</dl><b>"); }
@@ -2477,10 +2490,18 @@ Game::WriteMoveList (TextBuffer *tb, uint plyCount,
                 if (PgnStyle & PGN_STYLE_INDENT_VARS) {
                     if (IsColorFormat()) {
                         switch (VarDepth) {
-                            case 0: tb->PrintString ("</ip1><br>"); break;
-                            case 1: tb->PrintString ("</ip2><br>"); break;
-                            case 2: tb->PrintString ("</ip3><br>"); break;
-                            case 3: tb->PrintString ("</ip4><br>"); break;
+                            case 0: tb->PrintString ("</ip1>");
+                                    if (!(PgnStyle & PGN_STYLE_COLUMN)) tb->PrintString ("<br>");
+                                    break;
+                            case 1: tb->PrintString ("</ip2>");
+                                    if (!(PgnStyle & PGN_STYLE_COLUMN)) tb->PrintString ("<br>");
+                                    break;
+                            case 2: tb->PrintString ("</ip3>");
+                                    if (!(PgnStyle & PGN_STYLE_COLUMN)) tb->PrintString ("<br>");
+                                    break;
+                            case 3: tb->PrintString ("</ip4>");
+                                    if (!(PgnStyle & PGN_STYLE_COLUMN)) tb->PrintString ("<br>");
+                                    break;
                         }
                     } else {
                         tb->SetIndent (tb->GetIndent() - 4); tb->Indent();
