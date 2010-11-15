@@ -9,7 +9,7 @@ namespace eval pgn {
   proc ChooseColor {type name} {
     global pgnColor
     set x [tk_chooseColor -initialcolor $pgnColor($type) \
-        -title "PGN $name color"]
+        -title "PGN $name color"  -parent .pgnWin]
     if {$x != ""} { set pgnColor($type) $x; ::pgn::ResetColors }
   }
   ################################################################################
@@ -25,12 +25,12 @@ namespace eval pgn {
     foreach idx {0 1 3} tag {PgnFilePrint PgnFileCopy PgnFileClose} {
       configMenuText $m.file $idx $tag $lang
     }
-    foreach idx {0 1 2 3 4 5 6 7 8} tag {
+    foreach idx {1 2 3 4 5 6 7 8 9} tag {
       PgnOptColor PgnOptShort PgnOptSymbols PgnOptIndentC PgnOptIndentV PgnOptSpace PgnOptColumn PgnOptStripMarks PgnOptBoldMainLine
     } {
       configMenuText $m.opt $idx $tag $lang
     }
-    foreach idx {0 1 2 3 4} tag {PgnColorHeader PgnColorAnno PgnColorComments PgnColorVars PgnColorBackground} {
+    foreach idx {1 2 3 4 5} tag {PgnColorHeader PgnColorAnno PgnColorComments PgnColorVars PgnColorBackground} {
       configMenuText $m.color $idx $tag $lang
     }
     foreach idx {0 1} tag {PgnHelpPgn PgnHelpIndex} {
@@ -56,10 +56,11 @@ namespace eval pgn {
     menu $w.menu
     $w configure -menu $w.menu
 
-    foreach i {file opt color help} label {PgnFile PgnOpt PgnColor PgnHelp} {
+    foreach i {file opt color help} label {PgnFile PgnOpt PgnColor PgnHelp} tear {0 1 1 0} {
       $w.menu add cascade -label $label -menu $w.menu.$i -underline 0
-      menu $w.menu.$i -tearoff 0
+      menu $w.menu.$i -tearoff $tear
     }
+    # alter ConfigMenus if changing tearoffs S.A
 
     $w.menu.file add command -label PgnFilePrint -command "::pgn::savePgn $w"
 

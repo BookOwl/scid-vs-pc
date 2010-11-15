@@ -2458,8 +2458,10 @@ Game::WriteMoveList (TextBuffer *tb, uint plyCount,
                 //// Holy cow , this is a little complicated! S.A.
                 // Partly need to enforce brackets if "VarDepth > 1"
                 // because tabs in column mode don't work after this VarDepth for some reason
-                if (!(IsColorFormat() || IsLatexFormat()) || \
-                   !(PgnStyle & PGN_STYLE_INDENT_VARS) || VarDepth > 0) tb->PrintChar ('(');
+
+                // if (!(IsColorFormat() || IsLatexFormat()) || !(PgnStyle & PGN_STYLE_INDENT_VARS) || VarDepth > 0) tb->PrintChar ('(');
+                // Not too sure of this, but seems to work S.A.
+                tb->PrintChar ('(');
 
                 MoveIntoVariation (i);
                 NumMovesPrinted++;
@@ -2473,8 +2475,8 @@ Game::WriteMoveList (TextBuffer *tb, uint plyCount,
                 }
                 MoveExitVariation();
                 // if (!IsLatexFormat()  ||  VarDepth != 0) tb->PrintChar (')');
-                if (!(IsColorFormat() || IsLatexFormat()) \
-                   || !(PgnStyle & PGN_STYLE_INDENT_VARS) || VarDepth > 0 ) tb->PrintChar (')');
+                // if (!(IsColorFormat() || IsLatexFormat()) || !(PgnStyle & PGN_STYLE_INDENT_VARS) || VarDepth > 0 ) tb->PrintChar (')');
+                tb->PrintChar (')');
 
                 if (IsColorFormat()) { tb->PrintString ("<blue>"); }
                 if (IsHtmlFormat()) {
