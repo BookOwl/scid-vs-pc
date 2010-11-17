@@ -369,10 +369,6 @@ set winHeight(.playerInfoWin) 20
 set winWidth(.baseWin) 310
 set winHeight(.baseWin) 110
 
-# Default Correspondence Chess window size:
-set winWidth(.ccWindow) 10
-set winHeight(.ccWindow) 20
-
 # Default stats window lines:
 array set ::windows::stats::display {
   r2600 1

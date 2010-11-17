@@ -2,9 +2,9 @@
 ### Correspondence.tcl: part of Scid.
 ### Copyright (C) 2008 Alexander Wagner
 ###
-### $Id: correspondence.tcl,v 1.98 2010/08/02 16:06:14 arwagner Exp $
+### $Id: correspondence.tcl,v 1.21 2008/10/08 18:28:33 arwagner Exp $
 ###
-### Last change: <Sat, 2010/07/31 15:34:10 arwagner ingata>
+### Last change: <Wed, 2008/10/08 20:01:52 arwagner ingata>
 ###
 ### Add correspondence chess via eMail or external protocol to scid
 ###
@@ -53,35 +53,17 @@ namespace eval Xfcc {
 	# To pass on directories on windows with a backslash
 	set xfccrcfile ""
 
-	# Set up a proper user agent
-	# Something like 
-	#    Scid/3.7 (x11; Linux i686; rv:Devel 2009) Tcl/Tk 8.5.2
-	set useragent "Scid/$::scidVersion ([tk windowingsystem]; $::tcl_platform(os) $::tcl_platform(machine); rv:$scidVersionDate) Tcl/Tk [info patchlevel]"
-	
 	#----------------------------------------------------------------------
 	# Replace XML entities by their normal characters
 	#----------------------------------------------------------------------
 	proc xmldecrypt {chdata} {
 
 		foreach from {{\&amp;} {\&lt;} {\&gt;} {\&quot;} {\&apos;}}   \
-			to {{\&} < > {"} {'}} {                                     ;# '"
+			to {{\&} < > {"} {'}} {
 				regsub -all $from $chdata $to chdata
 		 }   
 		 return $chdata
 	}
-
-	#----------------------------------------------------------------------
-	# Replace normal characters by their XML entities
-	#----------------------------------------------------------------------
-	proc xmlencrypt {chdata} {
-
-		foreach from {{\&} < > {"} {'}} \
-				to {{\&amp;} {\&lt;} {\&gt;} {\&quot;} {\&apos;}} {    ;# '"
-				regsub -all $from $chdata $to chdata
-		 }   
-		 return $chdata
-	}
-
 
 	#----------------------------------------------------------------------
 	# Configure Xfcc by means of rewriting the .xfccrc in xml
@@ -90,7 +72,7 @@ namespace eval Xfcc {
 		global ::Xfcc::xfccrc ::Xfcc::xfccrcfile
 		# file delete $xfccrcfile
 		if {[catch {open $xfccrcfile w} optionF]} {
-			puts stderr "$xfccrcfile can not be created"
+			puts stderr "error"
 		} else {
 			# devide by 4 as the size function returns all subarray entries
 			set size [expr [ array size ::Xfcc::xfccsrv ] / 4]
@@ -108,21 +90,14 @@ namespace eval Xfcc {
 						puts $optionF "\t\t<uri>http://</uri>"
 						puts $optionF "\t\t<user>User_Name</user>"
 						puts $optionF "\t\t<pass>Password</pass>"
-						puts $optionF "\t\t<rating>Rating</rating>"
 						puts $optionF "\t</server>"
 					}
 				} else {
-					set ::Xfcc::xfccsrv($i,0) [::Xfcc::xmlencrypt $::Xfcc::xfccsrv($i,0) ]
-					set ::Xfcc::xfccsrv($i,1) [::Xfcc::xmlencrypt $::Xfcc::xfccsrv($i,1) ]
-					set ::Xfcc::xfccsrv($i,2) [::Xfcc::xmlencrypt $::Xfcc::xfccsrv($i,2) ]
-					set ::Xfcc::xfccsrv($i,3) [::Xfcc::xmlencrypt $::Xfcc::xfccsrv($i,3) ]
-					set ::Xfcc::xfccsrv($i,4) [::Xfcc::xmlencrypt $::Xfcc::xfccsrv($i,4) ]
 					puts $optionF "\t<server>"
 					puts $optionF "\t\t<name>$::Xfcc::xfccsrv($i,0)</name>"
 					puts $optionF "\t\t<uri>$::Xfcc::xfccsrv($i,1)</uri>"
 					puts $optionF "\t\t<user>$::Xfcc::xfccsrv($i,2)</user>"
 					puts $optionF "\t\t<pass>$::Xfcc::xfccsrv($i,3)</pass>"
-					puts $optionF "\t\t<rating>$::Xfcc::xfccsrv($i,4)</rating>"
 					puts $optionF "\t</server>"
 				}
 			}
@@ -131,7 +106,7 @@ namespace eval Xfcc {
 			::Xfcc::ReadConfig $xfccrcfile
 		}
 	}
-	
+
 	#----------------------------------------------------------------------
 	# Delete the currently selected server entry
 	#----------------------------------------------------------------------
@@ -141,7 +116,6 @@ namespace eval Xfcc {
 		set ::Xfcc::Server   "# $::Xfcc::xfccsrv($::Xfcc::Oldnum,0)"
 		set ::Xfcc::Username "# $::Xfcc::xfccsrv($::Xfcc::Oldnum,2)"
 		set ::Xfcc::Password "# $::Xfcc::xfccsrv($::Xfcc::Oldnum,3)"
-		set ::Xfcc::Rating   "# $::Xfcc::xfccsrv($::Xfcc::Oldnum,4)"
 		set ::Xfcc::URI      "# $::Xfcc::xfccsrv($::Xfcc::Oldnum,1)"
 		set ::Xfcc::xfccsrv($::Xfcc::Oldnum) $::Xfcc::Server
 		}
@@ -155,7 +129,6 @@ namespace eval Xfcc {
 		set ::Xfcc::xfccsrv($::Xfcc::Oldnum,2) $::Xfcc::Username
 		set ::Xfcc::xfccsrv($::Xfcc::Oldnum,3) $::Xfcc::Password
 		set ::Xfcc::xfccsrv($::Xfcc::Oldnum,1) $::Xfcc::URI
-		set ::Xfcc::xfccsrv($::Xfcc::Oldnum,4) $::Xfcc::Rating
 
  		set size [expr [ array size ::Xfcc::xfccsrv ] / 4]
 
@@ -165,17 +138,15 @@ namespace eval Xfcc {
  		set ::Xfcc::xfccsrv($size,0) "Unique_ServerName"
  		set ::Xfcc::xfccsrv($size,2) "Your_Login"
  		set ::Xfcc::xfccsrv($size,3) "SeCrEt!"
- 		set ::Xfcc::xfccsrv($size,4) "Rating"
  		set ::Xfcc::xfccsrv($size,1) "http://"
- 
+
  		set ::Xfcc::Server    $::Xfcc::xfccsrv($size,0)
  		set ::Xfcc::Username  $::Xfcc::xfccsrv($size,2)
  		set ::Xfcc::Password  $::Xfcc::xfccsrv($size,3)
- 		set ::Xfcc::Rating    $::Xfcc::xfccsrv($size,4)
  		set ::Xfcc::URI       $::Xfcc::xfccsrv($size,1)
- 
+
  		lappend ::Xfcc::lsrvname [list $::Xfcc::xfccsrv($size,0)]
- 
+
  		set ::Xfcc::Oldnum    $size
 	}
 
@@ -191,13 +162,11 @@ namespace eval Xfcc {
 		set ::Xfcc::xfccsrv($::Xfcc::Oldnum,0) $::Xfcc::Server
 		set ::Xfcc::xfccsrv($::Xfcc::Oldnum,2) $::Xfcc::Username
 		set ::Xfcc::xfccsrv($::Xfcc::Oldnum,3) $::Xfcc::Password
-		set ::Xfcc::xfccsrv($::Xfcc::Oldnum,4) $::Xfcc::Rating
 		set ::Xfcc::xfccsrv($::Xfcc::Oldnum,1) $::Xfcc::URI
 
 		set ::Xfcc::Server    $::Xfcc::xfccsrv($number,0)
 		set ::Xfcc::Username  $::Xfcc::xfccsrv($number,2)
 		set ::Xfcc::Password  $::Xfcc::xfccsrv($number,3)
-		set ::Xfcc::Rating    $::Xfcc::xfccsrv($number,4)
 		set ::Xfcc::URI       $::Xfcc::xfccsrv($number,1)
 
 		set ::Xfcc::Oldnum    $number
@@ -226,69 +195,57 @@ namespace eval Xfcc {
 		set ::Xfcc::Server    $::Xfcc::xfccsrv($::Xfcc::Oldnum,0)
 		set ::Xfcc::Username  $::Xfcc::xfccsrv($::Xfcc::Oldnum,2)
 		set ::Xfcc::Password  $::Xfcc::xfccsrv($::Xfcc::Oldnum,3)
-		set ::Xfcc::Rating    $::Xfcc::xfccsrv($::Xfcc::Oldnum,4)
 		set ::Xfcc::URI       $::Xfcc::xfccsrv($::Xfcc::Oldnum,1)
 
 		# create the window and buttons
 		toplevel $w
 		wm title $w "\[$xfccrcfile\]"
-		ttk::button $w.bOk     -text OK -command "::Xfcc::xfccsrvstore; ::Xfcc::SaveXfcc; destroy .configXfccSrv"
-		ttk::button $w.bAdd    -text  [::tr "GlistAddField"] -command {
+		button $w.bOk     -text OK -command "::Xfcc::xfccsrvstore; ::Xfcc::SaveXfcc; destroy .configXfccSrv"
+		button $w.bAdd    -text  [::tr "GlistAddField"] -command {
 			::Xfcc::AddServer
 		}
 
-		ttk::button $w.bDelete -text [::tr "GlistDeleteField"] -command {
+		button $w.bDelete -text [::tr "GlistDeleteField"] -command {
 			::Xfcc::DeleteServer
 		}
-		ttk::button $w.bCancel -text [::tr "Cancel"] -command "destroy $w"
+		button $w.bCancel -text [::tr "Cancel"] -command "destroy $w"
 
 		listbox $w.xfccSrvList -height [expr [ array size ::Xfcc::xfccsrv ] / 4 + 1] -width 60 -selectmode single -list ::Xfcc::lsrvname
 		# select the first entry
 		$w.xfccSrvList selection set $::Xfcc::Oldnum
 
-		ttk::label  $w.lxfccSrv   -text [::tr CCDlgServerName]
-		ttk::label  $w.lxfccUid   -text [::tr CCDlgLoginName]
-		ttk::label  $w.lxfccPas   -text [::tr CCDlgPassword]
-		ttk::label  $w.lxfccURI   -text [::tr CCDlgURL]
-		ttk::label  $w.lxfccrtype -text [::tr CCDlgRatingType]
+		label  $w.lxfccSrv -text "Server name:"
+		label  $w.lxfccUid -text "Login name:"
+		label  $w.lxfccPas -text "Password:"
+		label  $w.lxfccURI -text "URL:"
 
-		ttk::entry  .configXfccSrv.xfccSrv  -width 60 -textvariable ::Xfcc::Server
-		ttk::entry  .configXfccSrv.xfccUid  -width 60 -textvariable ::Xfcc::Username
-		ttk::entry  .configXfccSrv.xfccPas  -width 60 -textvariable ::Xfcc::Password
-		ttk::entry  .configXfccSrv.xfccURI  -width 60 -textvariable ::Xfcc::URI
+		entry  .configXfccSrv.xfccSrv  -width 60 -textvariable ::Xfcc::Server
+		entry  .configXfccSrv.xfccUid  -width 60 -textvariable ::Xfcc::Username
+		entry  .configXfccSrv.xfccPas  -width 60 -textvariable ::Xfcc::Password
+		entry  .configXfccSrv.xfccURI  -width 60 -textvariable ::Xfcc::URI
 
-		if {$::tcl_version >= 8.5} {
-			ttk::combobox .configXfccSrv.xfccrtype -values [sc_info ratings] -width 7 -textvariable ::Xfcc::Rating
-		} else {
-			eval tk_optionMenu .configXfccSrv.xfccrtype ::Xfcc::Rating [sc_info ratings]
-			.configXfccSrv.xfccrtype configure -indicatoron 0 -width 7 -takefocus 1
-		}
-
-		# Bind the change of selection to a proper update of variables
-		# and internal representation
+		# Bind the change of selection to a proper update of variables and internal representatio
 		bind .configXfccSrv.xfccSrvList <<ListboxSelect>> {
 			::Xfcc::xfccsrvstore
 		}
 
-		grid $w.xfccSrvList  -sticky e -columnspan 6 -column  0 -row 0 -rowspan $number
+		grid $w.xfccSrvList  -stick e -columnspan 6 -column  0 -row 0 -rowspan $number
 
-		grid $w.lxfccSrv     -sticky e -columnspan 2 -column  0 -row [expr {$number + 1}]
-		grid $w.lxfccUid     -sticky e -columnspan 2 -column  0 -row [expr {$number + 2}]
-		grid $w.lxfccPas     -sticky e -columnspan 2 -column  0 -row [expr {$number + 3}]
-		grid $w.lxfccURI     -sticky e -columnspan 2 -column  0 -row [expr {$number + 4}]
-		grid $w.lxfccrtype   -sticky e -columnspan 2 -column  0 -row [expr {$number + 5}]
+		grid $w.lxfccSrv     -stick e -columnspan 2 -column  0 -row [expr {$number + 1}]
+		grid $w.lxfccUid     -stick e -columnspan 2 -column  0 -row [expr {$number + 2}]
+		grid $w.lxfccPas     -stick e -columnspan 2 -column  0 -row [expr {$number + 3}]
+		grid $w.lxfccURI     -stick e -columnspan 2 -column  0 -row [expr {$number + 4}]
 
-		grid $w.xfccSrv      -sticky w -columnspan 4 -column  2 -row [expr {$number + 1}]
-		grid $w.xfccUid      -sticky w -columnspan 4 -column  2 -row [expr {$number + 2}]
-		grid $w.xfccPas      -sticky w -columnspan 4 -column  2 -row [expr {$number + 3}]
-		grid $w.xfccURI      -sticky w -columnspan 4 -column  2 -row [expr {$number + 4}]
-		grid $w.xfccrtype    -sticky w -columnspan 4 -column  2 -row [expr {$number + 5}]
+		grid $w.xfccSrv      -stick w -columnspan 4 -column  2 -row [expr {$number + 1}]
+		grid $w.xfccUid      -stick w -columnspan 4 -column  2 -row [expr {$number + 2}]
+		grid $w.xfccPas      -stick w -columnspan 4 -column  2 -row [expr {$number + 3}]
+		grid $w.xfccURI      -stick w -columnspan 4 -column  2 -row [expr {$number + 4}]
 
 		# Add the buttons to the window
-		grid $w.bOk     -column 2 -row [expr {$number + 6}]
-		grid $w.bAdd    -column 3 -row [expr {$number + 6}]
-		grid $w.bDelete -column 4 -row [expr {$number + 6}]
-		grid $w.bCancel -column 5 -row [expr {$number + 6}]
+		grid $w.bOk     -column 2 -row [expr {$number + 5}]
+		grid $w.bAdd    -column 3 -row [expr {$number + 5}]
+		grid $w.bDelete -column 4 -row [expr {$number + 5}]
+		grid $w.bCancel -column 5 -row [expr {$number + 5}]
 
 		bind $w <Escape> "$w.bCancel invoke"
 		bind $w <F1> { helpWindow CCXfccSetupDialog}
@@ -321,13 +278,11 @@ namespace eval Xfcc {
 				set uri      [$srv selectNodes {string(uri)}]
 				set username [$srv selectNodes {string(user)}]
 				set password [$srv selectNodes {string(pass)}]
-				set rating   [$srv selectNodes {string(rating)}]
 
 				set ::Xfcc::xfccsrv($number,0) $name
 				set ::Xfcc::xfccsrv($number,1) $uri
 				set ::Xfcc::xfccsrv($number,2) $username
 				set ::Xfcc::xfccsrv($number,3) $password
-				set ::Xfcc::xfccsrv($number,4) $rating
 
 				lappend ::Xfcc::lsrvname [list $name ]
 
@@ -417,29 +372,21 @@ namespace eval Xfcc {
 	proc ProcessAll {path} {
 		global xfccrc
 
-		# empty the state array
-		set ::Xfcc::xfccstate {}
-
 		set dom [dom parse $xfccrc]
 		set doc [$dom documentElement]
 
 		set aNodes [$doc selectNodes {/xfcc/server}]
 
 		foreach srv $aNodes {
-			set name     [::Xfcc::xmlencrypt [$srv selectNodes {string(name)}]]
-			set uri      [::Xfcc::xmlencrypt [$srv selectNodes {string(uri)} ]]
-			set username [::Xfcc::xmlencrypt [$srv selectNodes {string(user)}]]
-			set password [::Xfcc::xmlencrypt [$srv selectNodes {string(pass)}]]
-			set rating   [$srv selectNodes {string(rating)}]
-
-			if {$rating == ""} {
-				set rating "ICCF"
-			}
+			set name     [$srv selectNodes {string(name)}]
+			set uri      [$srv selectNodes {string(uri)}]
+			set username [$srv selectNodes {string(user)}]
+			set password [$srv selectNodes {string(pass)}]
 
 			::CorrespondenceChess::updateConsole "info Processing $username\@$name..."
 			set xml [::Xfcc::Receive $uri $username $password]
 			::Xfcc::SOAPError $name $xml
-			::Xfcc::WritePGN $path $name $rating $xml
+			::Xfcc::WritePGN $path $name $xml
 			::Xfcc::PrintStatus $path $name $xml
 		}
 	}
@@ -465,17 +412,6 @@ namespace eval Xfcc {
 
 		# retrieve result
 		set xmlresult [::http::data $token]
-		::http::cleanup $token
-
-		###---###
-		# if {[catch {open "/tmp/xfcc.xml" w} dbg]} {
-		# 	::CorrespondenceChess::updateConsole "info ERROR: Unable ot open debug file";
-		# } else {
-		# 	puts $dbg $xmlresult
-		# }
-		# close $dbg
-		###---###
-
 		return $xmlresult
 	}
 
@@ -488,13 +424,6 @@ namespace eval Xfcc {
 	#----------------------------------------------------------------------
 	proc SendMove {uri username password gameid movecount move comment \
 						resign acceptdraw offerdraw claimdraw} {
-
-		# Encrypt textual entities to conform to XML
-		set uri      [::Xfcc::xmlencrypt $uri]
-		set username [::Xfcc::xmlencrypt $username]
-		set password [::Xfcc::xmlencrypt $password]
-		set comment  [::Xfcc::xmlencrypt $comment]
-
 		set xmlmessage $::Xfcc::SOAPstart
 			append xmlmessage {<MakeAMove xmlns="http://www.bennedik.com/webservices/XfccBasic">}
 			append xmlmessage "<username>$username</username>"
@@ -517,7 +446,6 @@ namespace eval Xfcc {
 
 		# retrieve result
 		set xmlresult [::http::data $token]
-		::http::cleanup $token
 		return $xmlresult
 	}
 
@@ -535,10 +463,10 @@ namespace eval Xfcc {
 
 		foreach srv $aNodes {
 			set server   [$srv selectNodes {string(name)}]
-			set uri      [$srv selectNodes {string(uri)}] 
+			set uri      [$srv selectNodes {string(uri)}]
 			set username [$srv selectNodes {string(user)}]
 			set password [$srv selectNodes {string(pass)}]
-			
+
 			if {$name == $server} {
 				::CorrespondenceChess::updateConsole "info Processing $gameid for $username\@$name..."
 				::CorrespondenceChess::updateConsole "info Sending $movecount\. $move \{$comment\}"
@@ -566,14 +494,10 @@ namespace eval Xfcc {
 
 	#----------------------------------------------------------------------
 	# Given the name of the Xfcc-Server and the XML-result from the web
-	# server a PGN file with a single game is written. name is the name
-	# of the server used for generation of the CmailGameID, xml is the
-	# result from the web service. rating contains the string that
-	# should be used to specify the rating system. It could be
-	# something like Rating, Elo, ICCF, USCF, BCF etc. like usual in
-	# Scid
+	# server. name is the name of the server used for generation of the
+	# CmailGameID, xml is the result from the web service
 	#----------------------------------------------------------------------
-	proc WritePGN {path name rating xml} {
+	proc WritePGN {path name xml} {
 
 		# The following removes the SOAP-Envelope. tDOM does not seem to
 		# like it for whatever reason, but it's not needed anyway.
@@ -585,67 +509,35 @@ namespace eval Xfcc {
 
 		set aNodes [$doc selectNodes //XfccGame]
 		foreach game $aNodes {
-
-			set id           [::Xfcc::xmldecrypt [$game selectNodes {string(id)}]]
-			set Event        [::Xfcc::xmldecrypt [$game selectNodes {string(event)}]]
-			set Site         [::Xfcc::xmldecrypt [$game selectNodes {string(site)}]]
-			set Date         [::Xfcc::xmldecrypt [$game selectNodes {string(eventDate)}]]
-			set White        [::Xfcc::xmldecrypt [$game selectNodes {string(white)}]]
-			set Black        [::Xfcc::xmldecrypt [$game selectNodes {string(black)}]]
-			set WhiteElo     [::Xfcc::xmldecrypt [$game selectNodes {string(whiteElo)}]]
-			set BlackElo     [::Xfcc::xmldecrypt [$game selectNodes {string(blackElo)}]]
-			set TimeControl  [::Xfcc::xmldecrypt [$game selectNodes {string(timeControl)}]]
-			set GameId       [::Xfcc::xmldecrypt [$game selectNodes {string(id)}]]
-			set Source       [::Xfcc::xmldecrypt [$game selectNodes {string(gameLink)}]]
-			set Round        [::Xfcc::xmldecrypt [$game selectNodes {string(round)}]]
-			set Result       [::Xfcc::xmldecrypt [$game selectNodes {string(result)}]]
-			set drawOffered  [::Xfcc::xmldecrypt [$game selectNodes {string(drawOffered)}]]
-			set setup        [::Xfcc::xmldecrypt [$game selectNodes {string(setup)}]]
-			set fen          [::Xfcc::xmldecrypt [$game selectNodes {string(fen)}]]
-			set myTurn       [$game selectNodes {string(myTurn)}]
-			set moves        [::Xfcc::xmldecrypt [$game selectNodes {string(moves)}]]
-			set mess         [::Xfcc::xmldecrypt [$game selectNodes {string(message)}]]
+			set id          [::Xfcc::xmldecrypt [$game selectNodes {string(id)}]]
+			set Event       [::Xfcc::xmldecrypt [$game selectNodes {string(event)}]]
+			set Site        [::Xfcc::xmldecrypt [$game selectNodes {string(site)}]]
+			set Date        [::Xfcc::xmldecrypt [$game selectNodes {string(eventDate)}]]
+			set White       [::Xfcc::xmldecrypt [$game selectNodes {string(white)}]]
+			set Black       [::Xfcc::xmldecrypt [$game selectNodes {string(black)}]]
+			set WhiteElo    [::Xfcc::xmldecrypt [$game selectNodes {string(whiteElo)}]]
+			set BlackElo    [::Xfcc::xmldecrypt [$game selectNodes {string(blackElo)}]]
+			set TimeControl [::Xfcc::xmldecrypt [$game selectNodes {string(timeControl)}]]
+			set GameId      [::Xfcc::xmldecrypt [$game selectNodes {string(id)}]]
+			set Source      [::Xfcc::xmldecrypt [$game selectNodes {string(gameLink)}]]
+			set Result      [::Xfcc::xmldecrypt [$game selectNodes {string(result)}]]
 
 			# These values may not be set, they were first introduced by
-			# SchemingMind as extension to Xfcc.  If uppercase settings
-			# (usual default) exist: use them and they should take
-			# precedence. Note that the PNG header should use upper case
-			# by convention
-			set whiteCountry [::Xfcc::xmldecrypt [$game selectNodes {string(WhiteCountry)}]]
-			set blackCountry [::Xfcc::xmldecrypt [$game selectNodes {string(BlackCountry)}]]
-			set whiteIccfID  [::Xfcc::xmldecrypt [$game selectNodes {string(WhiteIccfID)}]]
-			set blackIccfID  [::Xfcc::xmldecrypt [$game selectNodes {string(BlackIccfID)}]]
-			set whiteFideID  [::Xfcc::xmldecrypt [$game selectNodes {string(WhiteFideID)}]]
-			set blackFideID  [::Xfcc::xmldecrypt [$game selectNodes {string(BlackFideID)}]]
-			set WhiteNA      [::Xfcc::xmldecrypt [$game selectNodes {string(WhiteNA)}]]
-			set BlackNA      [::Xfcc::xmldecrypt [$game selectNodes {string(BlackNA)}]]
+			# SchemingMind as extension to Xfcc
+			set whiteCountry [::Xfcc::xmldecrypt [$game selectNodes {string(whiteCountry)}]]
+			set blackCountry [::Xfcc::xmldecrypt [$game selectNodes {string(blackCountry)}]]
+			set whiteIccfID  [::Xfcc::xmldecrypt [$game selectNodes {string(whiteIccfID)}]]
+			set blackIccfID  [::Xfcc::xmldecrypt [$game selectNodes {string(blackIccfID)}]]
+			set whiteFideID  [::Xfcc::xmldecrypt [$game selectNodes {string(whiteFideID)}]]
+			set blackFideID  [::Xfcc::xmldecrypt [$game selectNodes {string(blackFideID)}]]
 
-			if {$whiteCountry == ""} {
-				set whiteCountry [::Xfcc::xmldecrypt [$game selectNodes {string(whiteCountry)}]]
-			}
-			if {$whiteIccfID == ""} {
-				set whiteIccfID  [::Xfcc::xmldecrypt [$game selectNodes {string(whiteIccfID)}]]
-			}
-			if {$whiteFideID == ""} {
-				set whiteFideID  [::Xfcc::xmldecrypt [$game selectNodes {string(whiteFideID)}]]
-			}
-			if {$blackCountry == ""} {
-				set blackCountry [::Xfcc::xmldecrypt [$game selectNodes {string(blackCountry)}]]
-			}
-			if {$blackIccfID == ""} {
-				set blackIccfID  [::Xfcc::xmldecrypt [$game selectNodes {string(blackIccfID)}]]
-			}
-			if {$blackFideID == ""} {
-				set blackFideID  [::Xfcc::xmldecrypt [$game selectNodes {string(blackFideID)}]]
-			}
 			# White/BlackNA are normally left blank but if the user
 			# allwos contain the mail addresses of the player
-			if {$WhiteNA == ""} {
-				set WhiteNA      [::Xfcc::xmldecrypt [$game selectNodes {string(whiteNA)}]]
-			}
-			if {$BlackNA == ""} {
-				set BlackNA      [::Xfcc::xmldecrypt [$game selectNodes {string(blackNA)}]]
-			}
+			set WhiteNA     [::Xfcc::xmldecrypt [$game selectNodes {string(whiteNA)}]]
+			set BlackNA     [::Xfcc::xmldecrypt [$game selectNodes {string(blackNA)}]]
+
+			set myTurn          [$game selectNodes {string(myTurn)}]
+
 			if {$WhiteNA == ""} {
 				set WhiteNA "white@unknown.org"
 			}
@@ -653,6 +545,8 @@ namespace eval Xfcc {
 				set BlackNA "black@unknown.org"
 			}
 
+			set moves       [::Xfcc::xmldecrypt [$game selectNodes {string(moves)}]]
+			set mess        [::Xfcc::xmldecrypt [$game selectNodes {string(message)}]]
 
 			# get the variant as scid can not handle many of them.
 			# a list of all possible tags can be found here:
@@ -667,27 +561,18 @@ namespace eval Xfcc {
 			# handle variants. Note that the ICCF does not set the
 			# variant flag. Additionally, it is enough to drop variant
 			# games from the inbox to get proper playlists.
-			if { ($Result == "Cancelled") } {
-					::CorrespondenceChess::updateConsole "info $name-$id was cancelled...";
-			} elseif {($variant == "chess") || ($variant == "") || ($variant == "randompieces") || ($variant == "upsidedown") || ($variant == "loosers") ||  ($variant == "nocastle")} {
-				### --- Istvan --- ###
-				### Racing Kings is not possible due to unambigious moves
-				### that are ambigious if check is allowed
-				### ($variant == "racingkings") ||
-				### --- Istvan --- ###
-
+			if {($variant == "chess") || ($variant == "")} {
 				if {[catch {open $filename w} pgnF]} {
-					::CorrespondenceChess::updateConsole "info ERROR: Unable to open config file $filename";
+					::CorrespondenceChess::updateConsole "info ERROR: Unable ot open config file $filename";
 				} else {
 					::CorrespondenceChess::updateConsole "info $name-$id..."
 					puts $pgnF "\[Event \"$Event\"\]";
 					puts $pgnF "\[Site \"$Site\"\]";
 					puts $pgnF "\[Date \"$Date\"\]";
-					puts $pgnF "\[Round \"$Round\"\]";
 					puts $pgnF "\[White \"$White\"\]";
 					puts $pgnF "\[Black \"$Black\"\]";
-					puts $pgnF "\[White$rating \"$WhiteElo\"\]";
-					puts $pgnF "\[Black$rating \"$BlackElo\"\]";
+					puts $pgnF "\[WhiteElo \"$WhiteElo\"\]";
+					puts $pgnF "\[BlackElo \"$BlackElo\"\]";
 					puts $pgnF "\[TimeControl \"$TimeControl\"\]";
 					puts $pgnF "\[GameId \"$GameId\"\]";
 					puts $pgnF "\[Source \"$Source\"\]";
@@ -697,25 +582,22 @@ namespace eval Xfcc {
 					puts $pgnF "\[CmailGameName \"$name-$id\"\]";
 
 					if {$whiteCountry != ""} {
-						puts $pgnF "\[WhiteCountry \"$whiteCountry\"\]";
+						puts $pgnF "\[whiteCountry \"$whiteCountry\"\]";
 					}
 					if {$blackCountry != ""} {
-						puts $pgnF "\[BlackCountry \"$blackCountry\"\]";
+						puts $pgnF "\[blackCountry \"$blackCountry\"\]";
 					}
 					if {$whiteIccfID > 0} {
-						puts $pgnF "\[WhiteIccfID \"$whiteIccfID\"\]";
+						puts $pgnF "\[whiteIccfID \"$whiteIccfID\"\]";
 					}
 					if {$blackIccfID > 0} {
-						puts $pgnF "\[BlackIccfID \"$blackIccfID\"\]";
+						puts $pgnF "\[blackIccfID \"$blackIccfID\"\]";
 					}
 					if {$whiteFideID  > 0} {
-						puts $pgnF "\[WhiteFideID \"$whiteFideID\"\]";
+						puts $pgnF "\[whiteFideID \"$whiteFideID\"\]";
 					}
 					if {$blackFideID > 0} {
-						puts $pgnF "\[BlackFideID \"$blackFideID\"\]";
-					}
-					if {$setup == "true"} {
-						puts $pgnF "\[FEN \"$fen\"\]";
+						puts $pgnF "\[blackFideID \"$blackFideID\"\]";
 					}
 
 					# add result to the header
@@ -762,6 +644,7 @@ namespace eval Xfcc {
 					# discard the comment in the movelist.
 					if {[string range $moves end end] != "\}"} {
 						if {($myTurn == "true") && ($mess != "")} {
+							puts "writing comment from mess"
 							puts -nonewline $pgnF "\{"
 							puts -nonewline $pgnF $mess
 							puts $pgnF "\}"
@@ -829,45 +712,13 @@ namespace eval Xfcc {
 			set minutesOpponent [$game selectNodes {string(minutesOpponent)}]
 			set drawOffered     [$game selectNodes {string(drawOffered)}]
 			set setup           [$game selectNodes {string(setup)}]
-			set fen             [$game selectNodes {string(fen)}]
 			set variant         [$game selectNodes {string(variant)}]
 			set noOpeningBooks  [$game selectNodes {string(noOpeningBooks)}]
 			set noDatabases     [$game selectNodes {string(noDatabases)}]
 			set noTablebases    [$game selectNodes {string(noTablebases)}]
 			set noEngines       [$game selectNodes {string(noEngines)}]
 			set Result          [$game selectNodes {string(result)}]
-			set TimeControl     [$game selectNodes {string(timeControl)}]
 			set mess            [::Xfcc::xmldecrypt [$game selectNodes {string(message)}]]
-			set serverinfo      [::Xfcc::xmldecrypt [$game selectNodes {string(serverInfo)}]]
-
-			# Set to official ICCF timing by default
-			# as ICCF does not send TimeControl
-			set TC "10/50d (?)"
-			if { [regexp {\+} $TimeControl] } {
-				set TC [split $TimeControl "+"]
-				set gametime  [ expr {[lindex $TC 0] / 86400} ]
-				set increment [ expr {[lindex $TC 1] / 86400} ]
-
-				set TC $gametime
-				append TC "d + "
-				append TC $increment
-				append TC "d (Fischer)"
-			} elseif { [regexp {\/} $TimeControl] } {
-				set TC [split $TimeControl "/"]
-				set moves   [ expr {[lindex $TC 0]} ]
-				set days    [ expr {[lindex $TC 1] / 86400 }]
-				set TC $moves
-				append TC " / "
-				append TC $days
-				append TC "d"
-				# 10/50 is the official timing for ICCF
-				if { ($moves == 10) && ($days == 50) } {
-					set TC "$TC (ICCF)"
-				}
-			}
-
-			set mytime  [expr $daysPlayer*24*60+$hoursPlayer*60+$minutesPlayer]
-			set opptime [expr $daysOpponent*24*60+$hoursOpponent*60+$minutesOpponent]
 
 			if {[$game selectNodes {string(hasWhite)}] == "true"} {
 				set clockW [format "%2ud %2u:%2u" $daysPlayer $hoursPlayer $minutesPlayer]
@@ -883,18 +734,13 @@ namespace eval Xfcc {
 				[list "clockB" $clockB] \
 				[list "drawOffered"  $drawOffered ]\
 				[list "setup" $setup] \
-				[list "fen" $fen] \
 				[list "variant" $variant] \
 				[list "noOpeningBooks" $noOpeningBooks] \
 				[list "noTablebases" $noTablebases] \
 				[list "noDatabases" $noDatabases] \
 				[list "noEngines" $noEngines] \
 				[list "result" $Result] \
-				[list "TimeControl" $TC] \
-				[list "message" $mess] \
-				[list "mytime" $mytime] \
-				[list "opptime" $opptime] \
-				[list "serverInfo" $serverinfo] ]
+				[list "message" $mess] ]
 		}
 
 		set filename [scidConfigFile xfccstate]
@@ -1068,15 +914,6 @@ image create photo tb_CC_envelope -data {
 	WQQKJB4VuUSRkyoGBiUmCR3Dh5wgJyIiJiEcDhjEkKepEhERExMUGhDbkI6NTuvs7e7v8EVBADs=
 }
 
-image create photo tb_CC_postal -data {
-	R0lGODlhGAAYAIQaAAAAAD4+PkNDQ01NTU9PT1NTU2NjY2pqanNzc3x8fIGBgZWVlaCgoKysrK6u
-	rrm5uby8vMbGxsjIyNTU1OTk5O7u7vX19ff39/r6+vv7+////////////////////////yH+EUNy
-	ZWF0ZWQgd2l0aCBHSU1QACH5BAEKAB8ALAAAAAAYABgAAAWf4CeOZGmeaKqubOu+IyDPdC2bQKHt
-	fO8XgBKgQrBkjJej8oKxEBxBEkBDEViu2KyzIYnGNBZKUYsVMCZdoeZYJTsXE0paCr5SAtqBIkKR
-	e0VTR1cHVlcEBwwUYXNfWAYPD0UECxEIEYt/H4EWBpcUEwQNfBYJfYyAYAgTWX1ZpaeaGglxfbW2
-	fQmwAAgQvb6/wAaZmjbFNDDIycrLzCwhADs=
-}
-
 image create photo tb_CC_book     -data {
 	R0lGODlhGAAYAOewAAAAAAEBAAICAAQDAAcGAQsIARURAxYSAxoVAyggBSoiBiwjBi0lBzAmBjEo
 	BzkuCDswCD0xCDMzM0E0CEM2CUk7Ck0+CkhISF1LDF5MDUtLS2BODWZSDmlVEWxXD1ZWVm5ZD1hY
@@ -1228,23 +1065,6 @@ image create photo tb_CC_offline -data {
 	WdSQbQHRWeTl5udZQQA7
 }
 
-image create photo tb_CC_pluginactive -data {
-	R0lGODlhEAAQAKUmAAAAAAEAABgGAz8RCG4eD6MtFrExGLgzGbozGcY3G845G9Y7HclEKcBLMuFC
-	IuFFJuJIKeRXO+hvV+l3YOp+aeuEcOyHc+6Vg++fkPGrnsXSyPfNxPfOxvnZ0vbb1PXc1vnc1vnf
-	2vrl4fvm4unu6vDz8f//////////////////////////////////////////////////////////
-	/////////////////////////////////////////////yH+FUNyZWF0ZWQgd2l0aCBUaGUgR0lN
-	UAAh+QQBCgA/ACwAAAAAEAAQAAAGYMCfcEgsGo/IIgCQHC4jC2aSYMF0okspEcARTa4AjYbEzAIW
-	3S92Kfx4OvARyBGKFhuMRSJxqSg2CVpCWQEJEBIIGYFZRgKHiYFiJYJCAw8HFAZmSAICEQWUnAJN
-	pKVEQQA7
-}
-
-image create photo tb_CC_relay -data {
-	R0lGODlhFAAUALMAAAAAADMzM2ZmZpmZmczMzP//////////////////////////////////////
-	/wAA/yH5BAkAAAUALAAAAAAUABQAAAhgAAsIHEiwoMGDCAsKWMiwocOGAgEUkEhxosWKEicC2Mix
-	o0eOBQgAIEByZEmSIlGODGky5cmXKVmqnAlzpcubLXMS0PixZ8eIF4NitFjgodGHCZMqXcq0qdOn
-	UKNKNRgQADs=
-}
-
 image create photo tb_CC_spacer -data {
 	R0lGODlhAQAYAIAAAP///////yH5BAEKAAEALAAAAAABABgAAAIEjI+pVwA7
 }
@@ -1255,7 +1075,7 @@ namespace eval CorrespondenceChess {
 
 	# wether the console is already open or not
 	set isOpen   0
-	
+
 	# default Database
 	set CorrBase        [file nativename [file join $scidDataDir "Correspondence.si4"]]
 
@@ -1264,43 +1084,14 @@ namespace eval CorrespondenceChess {
 	# outgoing PGN files
 	set Outbox          [file nativename [file join $scidDataDir "Outbox"]]
 
-	# Connector config for game relay
-	set Connector       [file nativename [file join $scidDataDir "connector.xml"]]
-
 	# use internal xfcc-support
 	set XfccInternal     1
 	set xfccrcfile      [file nativename [file join $scidConfigDir "xfccrc"]]
-
-	# Path for additional functions that should be available in the CC
-	# window only. All files from here are sourced once the CC window
-	# starts up.
-	set PluginPath      [file nativename [file join $scidDataDir "Plugins/Correspondence"]]
 
 	# external fetch  tool (eg. Xfcc)
 	set XfccFetchcmd     "./Xfcc-Receive.pl"
 	# external send tool (eg. Xfcc)
 	set XfccSendcmd      "./Xfcc-Send.pl"
-
-	# confirm before sending moves?
-	set XfccConfirm          1
-
-	# Relay games from ICCF: this list contains all MakeAMove-URLs for
-	# the games to be relayed
-	set RelayGames           {}
-
-	# Show only games where the player has the move?
-	set ListOnlyOwnMove      0
-	# set sortoptlist        [list "Site, Event, Round, Result, White, Black" "My Time" "Time per Move" "Opponent Time"]
-	
-	# Sort criteria to use
-	set CCOrderClassic       0
-	set CCOrderMyTime        1
-	set CCOrderTimePerMove   2
-	set CCOrderStartDate     3
-	set CCOrderOppTime       4
-
-	# Which to use
-	set ListOrder          $CCOrderClassic
 
 	# email-programm capable of SMTP auth and attachements
 	set mailer           "/usr/bin/nail"
@@ -1314,26 +1105,13 @@ namespace eval CorrespondenceChess {
 	set subject          "-s"
 
 	set CorrSlot         -1
+	set LastProcessed    -1
 
 	# current number in game list
 	set num              0
 
-	# Content of CC windows games list
-	set clipboardText    ""
-
 	set glccstart        1
 	set glgames          0
-
-
-	#----------------------------------------------------------------------
-	# Fetch a file via http
-	#----------------------------------------------------------------------
-	proc getPage { url } {
-		set token [::http::geturl $url]
-		set data [::http::data $token]
-		::http::cleanup $token
-		return $data
-	}
 
 	#----------------------------------------------------------------------
 	# Open a File select dialog and returns the file selected
@@ -1345,7 +1123,7 @@ namespace eval CorrespondenceChess {
 
 		set fullname [tk_getOpenFile -initialdir $idir -title "Scid Correspondence Chess: Select $i"]
 		if {$fullname == ""} { return }
-	  
+
 		return $fullname
 	}
 
@@ -1358,7 +1136,7 @@ namespace eval CorrespondenceChess {
 	proc chooseCorrBase {} {
 		global ::CorrespondenceChess::CorrBase
 
-		set filetype { "Scid databases" {".si4" ".si"} }
+		set filetype { "Scid databases" {".si4" ".si3"} }
 		set CorrBase [chooseFile "default correspondence chess DB..." $filetype]
 	}
 
@@ -1436,7 +1214,7 @@ namespace eval CorrespondenceChess {
 			}
 		}
 	}
-	
+
 	#----------------------------------------------------------------------
 	# Check for the default DB, create it if it does not exist.
 	#----------------------------------------------------------------------
@@ -1468,7 +1246,11 @@ namespace eval CorrespondenceChess {
 			}
 		} else {
 			if {[catch { file mkdir "$Inbox" } result]} {
-				set ::CorrespondenceChess::Inbox [file nativename [file join $scidDataDir "Inbox"]]
+				if {$windowsOS} {
+					set ::CorrespondenceChess::Inbox "$scidDataDir\\Inbox"
+				} else {
+					set ::CorrespondenceChess::Inbox "$scidDataDir/Inbox"
+				}
 				file mkdir $Inbox
 			}
 		}
@@ -1480,7 +1262,11 @@ namespace eval CorrespondenceChess {
 			}
 		} else {
 			if {[catch { file mkdir "$Outbox" } result]} {
-				set ::CorrespondenceChess::Inbox [file nativename [file join $scidDataDir "Outbox"]]
+				if {$windowsOS} {
+					set ::CorrespondenceChess::Outbox  "$scidDataDir\\Outbox"
+				} else {
+					set ::CorrespondenceChess::Outbox  "$scidDataDir/Outbox"
+				}
 				file mkdir $Outbox
 			}
 		}
@@ -1503,76 +1289,27 @@ namespace eval CorrespondenceChess {
 			puts $optionF "# Scid options file"
 			puts $optionF "# Version: $::scidVersion, $::scidVersionDate"
 			puts $optionF "# This file contains commands in the Tcl language format."
-			puts $optionF "# If you edit this file, you must preserve valid Tcl"
+			puts $optionF "# If you edit this file, you must preserve valid its Tcl"
 			puts $optionF "# format or it will not set your Scid options properly."
 			puts $optionF ""
 
 			foreach i { ::CorrespondenceChess::CorrBase       \
 							::CorrespondenceChess::Inbox          \
 							::CorrespondenceChess::Outbox         \
+							::CorrespondenceChess::xfccrcfile     \
 							::CorrespondenceChess::XfccFetchcmd   \
 							::CorrespondenceChess::XfccSendcmd    \
 							::CorrespondenceChess::mailer         \
 							::CorrespondenceChess::bccaddr        \
 							::CorrespondenceChess::mailermode     \
 							::CorrespondenceChess::attache        \
-							::CorrespondenceChess::subject        \
-							::CorrespondenceChess::PluginPath     \
-							::CorrespondenceChess::Connector      \
-							::CorrespondenceChess::RelayGames     \
-							::CorrespondenceChess::ListOrder  } {
-				set path [set $i]
-
+							::CorrespondenceChess::subject } {
 				puts $optionF "set $i [list [set $i]]"
-
-				# If possible replace absolute path by a relative one to
-				# $scidDataDir
-
-				# first get rid of windows path separators as they get
-				# interpreted by TCL
-				# regsub -all {\\} $::scidDataDir "/" sdd
-				# regsub -all {\\}  $path "/" pd
-
-				# if { [regexp $sdd $pd] } {
-				#	regsub -all $sdd $pd "scidDataDir" path
-				#	# now convert back to nativename
-				#	set path [file nativename $path]
-				#	puts $optionF "set $i \$$path"
-				#} else {
-				#	puts $optionF "set $i [list [set $i]]"
-				#}
-
-			}
-			foreach i { ::CorrespondenceChess::xfccrcfile     \
-			} {
-				puts $optionF "set $i [list [set $i]]"
-
-				# set path [set $i]
-				# regsub -all {\\} $::scidConfigDir "/" sdd
-				# regsub -all {\\} $path "/" pd
-				# if { [regexp $sdd $pd] } {
-				#	regsub -all $sdd $pd "scidDataDir" path
-				#	set path [file nativename $path]
-				#	puts $optionF "set $i \$$path"
-				#} else {
-				#	puts $optionF "set $i [list [set $i]]"
-				#}
-
 			}
 			if {$::CorrespondenceChess::XfccInternal < 0}  {
 				puts $optionF {set ::CorrespondenceChess::XfccInternal 0}
 			} else {
 				puts $optionF "set ::CorrespondenceChess::XfccInternal $::CorrespondenceChess::XfccInternal"
-			}
-			if {$::CorrespondenceChess::XfccConfirm < 0}  {
-				puts $optionF {set ::CorrespondenceChess::XfccConfirm 0}
-			} else {
-				puts $optionF "set ::CorrespondenceChess::XfccConfirm $::CorrespondenceChess::XfccConfirm"
-			}
-			if {$::CorrespondenceChess::ListOnlyOwnMove < 0}  {
-				puts $optionF {set ::CorrespondenceChess::ListOnlyOwnMove 0}
-			} else {
-				puts $optionF "set ::CorrespondenceChess::ListOnlyOwnMove $::CorrespondenceChess::ListOnlyOwnMove"
 			}
 
 		}
@@ -1606,261 +1343,6 @@ namespace eval CorrespondenceChess {
 	}
 
 	#----------------------------------------------------------------------
-	# Translate the local menu
-	#----------------------------------------------------------------------
-	proc doConfigMenus { } {
-		set lang $::language
-
-		if {! [winfo exists .ccWindow]} { return }
-
-		set m .ccWindow.menu
-
-		foreach idx {0 1} tag {CorrespondenceChess Edit} {
-			configMenuText $m $idx $tag $lang
-		}
-		foreach idx {0 1 3 4 6 7 8 9 10 11 13 14} tag {CCConfigure CCConfigRelay CCRetrieve  CCInbox  CCSend  CCResign  CCClaimDraw CCOfferDraw CCAcceptDraw CCGamePage  CCNewMailGame CCMailMove } {
-			configMenuText $m.correspondence $idx $tag $lang
-		}
-		foreach idx {0 } tag { CCEditCopy } {
-			configMenuText $m.edit $idx $tag $lang
-		}
-	}
-
-	#----------------------------------------------------------------------
-	# Call the web page of the game. The URL is extracted from the
-	# Source tag that is stored with each game.
-	#----------------------------------------------------------------------
-	proc CallWWWGame {} {
-		::CorrespondenceChess::updateConsole "Calling web page..."
-		set Extra  [sc_game tags get Extra]
-		set extraTagsList [split $Extra "\n"]
-		set source ""
-		foreach i $extraTagsList {
-			if { [string equal -nocase [lindex $i 0] "Source" ] } {
-				set source [string range $i 8 end-1]
-				openURL $source
-			}
-		}
-	}
-
-	#----------------------------------------------------------------------
-	# Store the relays list, but only those URLs that match
-	# iccf-webchess' games page.
-	#----------------------------------------------------------------------
-	proc RelaysOK { } {
-		global ::CorrespondenceChess::RelayGames
-
-		set w .editCCRelays
-
-		if {[catch {open $::CorrespondenceChess::Connector r} connectF]} {
-				set Title "Error"
-				append Error "$::CorrespondenceChess::Connector\n"
-				append Error [::tr CCErrDirNotUsable]
-				tk_messageBox -icon warning -type ok -parent . \
-					-title $Title -message $Error
-				return
-		} else {
-			set connectxml [read $connectF]
-
-			set dom [dom parse $connectxml]
-			set doc [$dom documentElement]
-			set aNodes [$doc selectNodes {/connector/server}]
-			set number   0
-			foreach srv $aNodes {
-				set stripforid   [$srv selectNodes {string(stripforid)}]
-
-				set text [string trim [$w.f.text get 1.0 end]]
-				set ::CorrespondenceChess::RelayGames {}
-				foreach game [split $text "\n"] {
-					set game [string trim $game]
-					## if {[string match "*www.iccf-webchess.com/MakeAMove.aspx*" $game]} {}
-					if {[string match "*$stripforid*" $game]} {
-						lappend ::CorrespondenceChess::RelayGames $game
-					}
-				} 
-			}
-			close $connectF
-		}
-
-		::CorrespondenceChess::saveCCoptions
-		destroy .editCCRelays
-	}
-
-	#----------------------------------------------------------------------
-	# Configure the games to be relayed from ICCF Webchess
-	#----------------------------------------------------------------------
-	proc ConfigureRelay { } {
-		global ::CorrespondenceChess::RelayGames
-
-		if {[catch {open $::CorrespondenceChess::Connector r} connectF]} {
-				set Title "Error"
-				append Error "$::CorrespondenceChess::Connector\n"
-				append Error [::tr CCErrDirNotUsable]
-				tk_messageBox -icon warning -type ok -parent . \
-					-title $Title -message $Error
-				return
-		} else {
-			close $connectF
-			set w .editCCRelays
-			set oldRelays $::CorrespondenceChess::RelayGames
-
-			if {[winfo exists $w]} { return }
-			toplevel $w
-			::setTitle $w [::tr "CCDlgConfigRelay"]
-
-			autoscrollframe $w.desc text $w.desc.text \
-					-background gray90 -foreground black \
-					-width 60 -height 7 -wrap word -cursor top_left_arrow
-			$w.desc.text insert end [::tr "CCDlgConfigRelayHelp"]
-			$w.desc.text configure -state disabled
-			pack $w.desc -side top -fill x
-
-			pack [ttk::frame $w.b] -side bottom -fill x
-			autoscrollframe $w.f text $w.f.text -width 60 -height 10 -wrap none
-
-			foreach g $::CorrespondenceChess::RelayGames {
-				$w.f.text insert end "$g\n"
-			}
-			pack $w.f -side top -fill both -expand yes
-
-			ttk::button $w.b.ok -text OK -command {
-					::CorrespondenceChess::RelaysOK
-			}
-			ttk::button $w.b.cancel -text $::tr(Cancel) -command "grab release $w; destroy $w"
-			pack $w.b.cancel $w.b.ok -side right -padx 5 -pady 5
-		}
-	}
-
-	#----------------------------------------------------------------------
-	# Fetch PGN file of games to be relayed and put them with the
-	# proper header tags into Scids inbox for display
-	# As parameter use the MakeAMove-URL from ICCF.
-	# Currently only relaying from ICCF is supported.
-	#----------------------------------------------------------------------
-	proc RelayGames { gameurl } {
-		global ::CorrespondenceChess::Inbox
-
-		if {[catch {open $::CorrespondenceChess::Connector r} connectF]} {
-			::CorrespondenceChess::updateConsole "info ERROR: Unable ot open connector $::CorrespondenceChess::Connector";
-		} else {
-
-			set connectxml [read $connectF]
-
-			set dom [dom parse $connectxml]
-			set doc [$dom documentElement]
-			set aNodes [$doc selectNodes {/connector/server}]
-			set number   0
-			foreach srv $aNodes {
-				set name         [$srv selectNodes {string(name)}]
-				set stripforid   [$srv selectNodes {string(stripforid)}]
-				set pgnbaseurl   [$srv selectNodes {string(pgnbaseurl)}]
-				set cmailprefix  [$srv selectNodes {string(cmailprefix)}]
-
-				if {[regexp "$stripforid" $gameurl]} {
-
-					regsub -all "$stripforid" $gameurl {} gameid
-
-					::CorrespondenceChess::updateConsole "info Fetching $gameid from $name";
-					set cmailgamename   "$cmailprefix$gameid"
-					set pgnurl          "$pgnbaseurl$gameid"
-
-					# convert from latin-1 to utf-8
-					set pgn [encoding convertfrom iso8859-1 [::CorrespondenceChess::getPage $pgnurl ]]
-
-					# split by line endings for insertion of necessary header tags
-					set gamelist [split $pgn {}]
-
-					set filename [file nativename [file join $::CorrespondenceChess::Inbox "$cmailgamename.pgn"]]
-
-					if {[catch {open $filename w} pgnF]} {
-						::CorrespondenceChess::updateConsole "info ERROR: Unable to open $filename";
-					} else {
-						foreach line $gamelist {
-							if {[string match "*Result *" $line]} {
-								puts $pgnF $line
-								puts $pgnF "\[CmailGameName \"$cmailgamename\"\]"
-								puts $pgnF "\[Source \"$gameurl\"\]"
-								puts $pgnF "\[Mode \"Relay\"\]"
-							} else {
-								puts $pgnF $line
-							}
-						}
-						close $pgnF
-					}
-				}
-
-			}
-		}
-		close $connectF
-	}
-
-	#----------------------------------------------------------------------
-	# Resize the console window
-	#----------------------------------------------------------------------
-	proc ConsoleResize {} {
-		set w .ccWindow
-
-		# unbind configure event
-		bind $w <Configure> {}
-
-		# get old window width and height
-		set oldheight $::winHeight($w)
-		set oldwidth  $::winWidth($w)
-
-		# get the new window width and height
-		set temp [wm geometry $w]
-		set n [scan $temp "%dx%d+%d+%d" width height x y]
-
-		if {$height > 0 && $width > 0} {
-			if {$height != $oldheight} {
-				# resize the table of games
-				foreach col {id toMove event site white black clockW clockB var feature} {
-					$w.bottom.$col  configure -height $height
-				}
-				# record the new size
-				recordWinSize $w
-				# set the windows size to this new size explicitly to
-				# avoid flicker
-				setWinSize $w
-			}
-		}
-		recordWinSize $w
-		# rebind the configure event
-		bind $w <Configure> { ::CorrespondenceChess::ConsoleResize }
-	}
-
-	#----------------------------------------------------------------------
-	# Allow to disable engine analysis in case engines are not allowed
-	# for the ongoing game.
-	#----------------------------------------------------------------------
-	proc EnableEngineAnalysis {on} {
-	
-		if {$on == 0} {
-			set m .menu.tools
-			$m entryconfigure 0 -state disabled
-			$m entryconfigure 1 -state disabled
-			$m entryconfigure 2 -state disabled
-			bind . <F2> {}
-			bind . <F3> {}
-			bind . <F4> {}
-		} else {
-			set m .menu.tools
-			$m entryconfigure 0 -state normal
-			$m entryconfigure 1 -state normal
-			$m entryconfigure 2 -state normal
-
-		}
-	}
-
-	#----------------------------------------------------------------------
-	# Copy the games list as CSV (tab separated) to the clipboard
-	#----------------------------------------------------------------------
-	proc List2Clipboard {} {
-		clipboard clear
-		clipboard append $::CorrespondenceChess::clipboardText
-	}
-
-	#----------------------------------------------------------------------
 	# Generate the Correspondence Chess Window. This Window offers a
 	# console displaying whats going on and which game is displayed
 	# plus a gmae list containing current games synced in and their
@@ -1870,8 +1352,6 @@ namespace eval CorrespondenceChess {
 	# and in case of Xfcc the special moves availabe (resign etc.)
 	#----------------------------------------------------------------------
 	proc CCWindow {} {
-		global scidDataDir helpMessage
-
 		set w .ccWindow
 		if {[winfo exists .ccWindow]} {
 			focus .
@@ -1879,137 +1359,94 @@ namespace eval CorrespondenceChess {
 			set ::CorrespondenceChess::isOpen 0
 			return
 		}
+		::CorrespondenceChess::checkInOutbox
+		::CorrespondenceChess::checkXfccrc
+		::CorrespondenceChess::checkCorrBase
+
 		set ::CorrespondenceChess::isOpen 1
 
 		toplevel $w
 		wm title $w [::tr "CorrespondenceChess"]
+		# the window is not resizable
+		wm resizable $w 0 0
 
 		# hook up with scids geometry manager
 		setWinLocation $w
 		setWinSize $w
+		bind $w <Configure> "recordWinSize $w"
 
 		# enable the standard shortcuts
 		standardShortcuts $w
 
-		::CorrespondenceChess::EnableEngineAnalysis 0
+		frame $w.top
+		frame $w.bottom
+		pack $w.top -anchor w -expand 1
+		pack $w.bottom -fill both -expand 1
 
-		# create the menu and add default CC menu items here as well
-		menu $w.menu
-		# ::setMenu $w $w.menu
-		set m $w.menu
-		$w configure -menu $m
-
-		$w.menu add cascade -label CorrespondenceChess -menu $w.menu.correspondence
-		$w.menu add cascade -label Edit                -menu $w.menu.edit
-		foreach i {correspondence edit} {
-			menu $w.menu.$i -tearoff 0
-		}
-
-		$m.correspondence add command -label CCConfigure   -command {::CorrespondenceChess::config}
-		set helpMessage($m.correspondence,0) CCConfigure
-		$m.correspondence add command -label CCConfigRelay -command {::CorrespondenceChess::ConfigureRelay}
-		set helpMessage($m.correspondence,1) CCConfigRelay
-
-		$m.correspondence add separator
-		$m.correspondence add command -label CCRetrieve    -command { ::CorrespondenceChess::FetchGames }
-		set helpMessage($m.correspondence,3) CCRetrieve
-
-		$m.correspondence add command -label CCInbox       -command { ::CorrespondenceChess::ReadInbox }
-		set helpMessage($m.correspondence,4) CCInbox
-
-		$m.correspondence add separator
-		$m.correspondence add command -label CCSend        -command {::CorrespondenceChess::SendMove 0 0 0 0}
-		set helpMessage($m.correspondence,6) CCSend
-		$m.correspondence add command -label CCResign      -command {::CorrespondenceChess::SendMove 1 0 0 0}
-		set helpMessage($m.correspondence,7) CCResign
-		$m.correspondence add command -label CCClaimDraw   -command {::CorrespondenceChess::SendMove 0 1 0 0}
-		set helpMessage($m.correspondence,8) CCClaimDraw
-		$m.correspondence add command -label CCOfferDraw   -command {::CorrespondenceChess::SendMove 0 0 1 0}
-		set helpMessage($m.correspondence,9) CCOfferDraw
-		$m.correspondence add command -label CCAcceptDraw  -command {::CorrespondenceChess::SendMove 0 0 0 1}
-		set helpMessage($m.correspondence,10) CCAcceptDraw
-		$m.correspondence add command -label CCGamePage    -command {::CorrespondenceChess::CallWWWGame}
-		set helpMessage($m.correspondence,11) CCGamePage
-		$m.correspondence add separator
-		$m.correspondence add command -label CCNewMailGame -command {::CorrespondenceChess::newEMailGame}
-		set helpMessage($m.correspondence,13) CCNewMailGame
-		$m.correspondence add command -label CCMailMove    -command {::CorrespondenceChess::eMailMove}
-		set helpMessage($m.correspondence,14) CCMailMove
-
-		$m.edit add command -label CCEditCopy -accelerator "Ctrl+C" -command { ::CorrespondenceChess::List2Clipboard }
-
-		# Translate the menu
-		::CorrespondenceChess::doConfigMenus
-
-		ttk::frame $w.top
-		ttk::frame $w.bottom
-
-		pack $w.top -anchor w -expand no
-		pack $w.bottom -fill both -expand yes
-
-		ttk::scrollbar $w.top.ysc        -command { .ccWindow.top.console yview }
+		scrollbar $w.top.ysc        -command { .ccWindow.top.console yview }
 		text      $w.top.console    -height 3 -width 80 -wrap word -yscrollcommand "$w.top.ysc set"
-		ttk::button    $w.top.retrieveCC -image tb_CC_Retrieve        -command {::CorrespondenceChess::FetchGames}
-		ttk::button    $w.top.sendCC     -image tb_CC_Send            -command {::CorrespondenceChess::SendMove 0 0 0 0}
-		ttk::button    $w.top.delinbox   -image tb_CC_delete          -command {::CorrespondenceChess::EmptyInOutbox}
+		button    $w.top.retrieveCC -image tb_CC_Retrieve        -command {::CorrespondenceChess::FetchGames}
+		button    $w.top.prevCC     -image tb_CC_Prev            -command {::CorrespondenceChess::PrevGame}
+		button    $w.top.nextCC     -image tb_CC_Next            -command {::CorrespondenceChess::NextGame}
+		button    $w.top.sendCC     -image tb_CC_Send            -command {::CorrespondenceChess::SendMove 0 0 0 0}
 
-		ttk::button    $w.top.openDB     -text  [::tr "CCOpenDB"]     -command {::CorrespondenceChess::OpenCorrespondenceDB}
-		ttk::button    $w.top.inbox      -text  [::tr "CCInbox"]      -command {::CorrespondenceChess::ReadInbox}
+		button    $w.top.openDB     -text  [::tr "CCOpenDB"]     -command {::CorrespondenceChess::OpenCorrespondenceDB}
+		button    $w.top.inbox      -text  [::tr "CCInbox"]      -command {::CorrespondenceChess::ReadInbox}
+		button    $w.top.delinbox   -image tb_CC_delete -command {::CorrespondenceChess::EmptyInOutbox}
 
-		ttk::button    $w.top.resign     -text  [::tr "CCResign"]     -state disabled -command {::CorrespondenceChess::SendMove 1 0 0 0}
-		ttk::button    $w.top.claimDraw  -text  [::tr "CCClaimDraw"]  -state disabled -command {::CorrespondenceChess::SendMove 0 1 0 0}
-		ttk::button    $w.top.offerDraw  -text  [::tr "CCOfferDraw"]  -state disabled -command {::CorrespondenceChess::SendMove 0 0 1 0}
-		ttk::button    $w.top.acceptDraw -text  [::tr "CCAcceptDraw"] -state disabled -command {::CorrespondenceChess::SendMove 0 0 0 1}
+		button    $w.top.resign     -text  [::tr "CCResign"]     -state disabled -command {::CorrespondenceChess::SendMove 1 0 0 0}
+		button    $w.top.claimDraw  -text  [::tr "CCClaimDraw"]  -state disabled -command {::CorrespondenceChess::SendMove 0 1 0 0}
+		button    $w.top.offerDraw  -text  [::tr "CCOfferDraw"]  -state disabled -command {::CorrespondenceChess::SendMove 0 0 1 0}
+		button    $w.top.acceptDraw -text  [::tr "CCAcceptDraw"] -state disabled -command {::CorrespondenceChess::SendMove 0 0 0 1}
 
-		ttk::button    $w.top.help       -image tb_help -width 24 -command { helpWindow CCIcons }
+		button    $w.top.help       -image tb_help -height 24 -width 24 -command { helpWindow CCIcons }
 
-		ttk::label $w.top.plugins    -image tb_CC_spacer  -takefocus 0
-		ttk::label $w.top.onoffline  -image tb_CC_offline -takefocus 0
+		button    $w.top.onoffline  -image tb_CC_offline -relief flat -border 0 -highlightthickness 0 -anchor n -takefocus 0
 
 
 		::utils::tooltip::Set $w.top.retrieveCC [::tr "CCFetchBtn"]
+		::utils::tooltip::Set $w.top.prevCC     [::tr "CCPrevBtn"]
+		::utils::tooltip::Set $w.top.nextCC     [::tr "CCNextBtn"]
 		::utils::tooltip::Set $w.top.sendCC     [::tr "CCSendBtn"]
 		::utils::tooltip::Set $w.top.delinbox   [::tr "CCEmptyBtn"]
 		::utils::tooltip::Set $w.top.help       [::tr "CCHelpBtn"]
 		::utils::tooltip::Set $w.top.onoffline  [clock format $::Xfcc::lastupdate]
 
- 		grid $w.top.retrieveCC  -stick ewns  -column  0 -row 0
- 		grid $w.top.openDB      -stick ew    -column  0 -row 1 -columnspan 2
- 		grid $w.top.inbox       -stick ew    -column  0 -row 2 -columnspan 2
- 
- 		grid $w.top.sendCC      -stick ewns  -column  1 -row 0
+		grid $w.top.console                -column  4 -row 0 -columnspan 8
+		grid $w.top.ysc        -stick ns   -column 13 -row 0 
+		grid $w.top.help       -stick nsew -column 14 -row 0 -columnspan 2
 
-		grid $w.top.console                  -column  4 -row 0 -columnspan 8
-		grid $w.top.ysc         -stick ns    -column 13 -row 0 
-		grid $w.top.help        -stick nsew  -column 14 -row 0 -columnspan 2
+		grid $w.top.retrieveCC           -column  0 -row 0
+# Disable the buttons as they do not act as they should. Probably
+# reenable them?
+###		grid $w.top.prevCC     -stick e  -column  1 -row 0
+###		grid $w.top.nextCC     -stick w  -column  2 -row 0
+		grid $w.top.sendCC               -column  2 -row 0
 
-		grid $w.top.delinbox    -stick ewns  -column  5 -row 1 -rowspan 2
-		grid $w.top.onoffline                -column  6 -row 1
-		grid $w.top.plugins                  -column  6 -row 2
+		grid $w.top.openDB               -column  0 -row 1 -columnspan 4
+		grid $w.top.inbox                -column  0 -row 2 -columnspan 3
+		grid $w.top.delinbox             -column  3 -row 2
+		grid $w.top.onoffline            -column  4 -row 2
 
-		grid $w.top.resign      -stick ew    -column  7 -row 1
-
-		grid $w.top.claimDraw   -stick ew    -column  7 -row 2
-		grid $w.top.offerDraw   -stick ew    -column  8 -row 2
-		grid $w.top.acceptDraw  -stick ew    -column  9 -row 2
+		grid $w.top.resign               -column  6 -row 1
+		grid $w.top.claimDraw            -column  5 -row 2
+		grid $w.top.offerDraw            -column  6 -row 2
+		grid $w.top.acceptDraw           -column  7 -row 2
 
 		# build the table in the bottom frame. This table of text widgets has to
 		# scroll syncronously!
-		ttk::scrollbar $w.bottom.ysc      -command ::CorrespondenceChess::yview
+		scrollbar $w.bottom.ysc      -command ::CorrespondenceChess::yview
 
-		set height $::winHeight($w)
-		set width  $::winWidth($w)
-
-		text $w.bottom.id       -cursor top_left_arrow -font font_Small -height $height -width 15 -setgrid 1 -relief flat -wrap none -yscrollcommand ::CorrespondenceChess::yset
-		text $w.bottom.toMove   -cursor top_left_arrow -font font_Small -height $height -width 4  -setgrid 1 -relief flat -wrap none -yscrollcommand ::CorrespondenceChess::yset
-		text $w.bottom.event    -cursor top_left_arrow -font font_Small -height $height -width 10 -setgrid 1 -relief flat -wrap none -yscrollcommand ::CorrespondenceChess::yset
-		text $w.bottom.site     -cursor top_left_arrow -font font_Small -height $height -width 10 -setgrid 1 -relief flat -wrap none -yscrollcommand ::CorrespondenceChess::yset
-		text $w.bottom.white    -cursor top_left_arrow -font font_Small -height $height -width 15 -setgrid 1 -relief flat -wrap none -yscrollcommand ::CorrespondenceChess::yset
-		text $w.bottom.black    -cursor top_left_arrow -font font_Small -height $height -width 15 -setgrid 1 -relief flat -wrap none -yscrollcommand ::CorrespondenceChess::yset
-		text $w.bottom.clockW   -cursor top_left_arrow -font font_Small -height $height -width 10 -setgrid 1 -relief flat -wrap none -yscrollcommand ::CorrespondenceChess::yset
-		text $w.bottom.clockB   -cursor top_left_arrow -font font_Small -height $height -width 10 -setgrid 1 -relief flat -wrap none -yscrollcommand ::CorrespondenceChess::yset
-		text $w.bottom.var      -cursor top_left_arrow -font font_Small -height $height -width 3  -setgrid 1 -relief flat -wrap none -yscrollcommand ::CorrespondenceChess::yset
-		text $w.bottom.feature  -cursor top_left_arrow -font font_Small -height $height -width 16 -setgrid 1 -relief flat -wrap none -yscrollcommand ::CorrespondenceChess::yset
+		text $w.bottom.id       -cursor top_left_arrow -font font_Small -height 25 -width 15 -setgrid 1 -relief flat -wrap none -yscrollcommand ::CorrespondenceChess::yset
+		text $w.bottom.toMove   -cursor top_left_arrow -font font_Small -height 25 -width 4  -setgrid 1 -relief flat -wrap none -yscrollcommand ::CorrespondenceChess::yset
+		text $w.bottom.event    -cursor top_left_arrow -font font_Small -height 25 -width 10 -setgrid 1 -relief flat -wrap none -yscrollcommand ::CorrespondenceChess::yset
+		text $w.bottom.site     -cursor top_left_arrow -font font_Small -height 25 -width 10 -setgrid 1 -relief flat -wrap none -yscrollcommand ::CorrespondenceChess::yset
+		text $w.bottom.white    -cursor top_left_arrow -font font_Small -height 25 -width 15 -setgrid 1 -relief flat -wrap none -yscrollcommand ::CorrespondenceChess::yset
+		text $w.bottom.black    -cursor top_left_arrow -font font_Small -height 25 -width 15 -setgrid 1 -relief flat -wrap none -yscrollcommand ::CorrespondenceChess::yset
+		text $w.bottom.clockW   -cursor top_left_arrow -font font_Small -height 25 -width 10 -setgrid 1 -relief flat -wrap none -yscrollcommand ::CorrespondenceChess::yset
+		text $w.bottom.clockB   -cursor top_left_arrow -font font_Small -height 25 -width 10 -setgrid 1 -relief flat -wrap none -yscrollcommand ::CorrespondenceChess::yset
+		text $w.bottom.var      -cursor top_left_arrow -font font_Small -height 25 -width 3  -setgrid 1 -relief flat -wrap none -yscrollcommand ::CorrespondenceChess::yset
+		text $w.bottom.feature  -cursor top_left_arrow -font font_Small -height 25 -width 16 -setgrid 1 -relief flat -wrap none -yscrollcommand ::CorrespondenceChess::yset
 
 		grid $w.bottom.id       -column  0 -row 1
 		grid $w.bottom.toMove   -column  1 -row 1
@@ -2023,27 +1460,8 @@ namespace eval CorrespondenceChess {
 		grid $w.bottom.feature  -column 18 -row 1
 		grid $w.bottom.ysc      -column 19 -row 1 -stick ns
 
-		# Copy games list to clipboard
-		bind $w <Control-Insert> { ::CorrespondenceChess::List2Clipboard }
-		bind $w <Control-c>      { ::CorrespondenceChess::List2Clipboard }
-
-		# Handle scrolling in the games list by keyboard
-		bind $w <Control-Up>     { ::CorrespondenceChess::PrevGame}
-		bind $w <Control-Down>   { ::CorrespondenceChess::NextGame}
-
-		# Help
-		bind $w <F1>        { helpWindow Correspondence}
-		bind $w "?"         { helpWindow CCIcons}
-
-		bind $w <Configure> { ::CorrespondenceChess::ConsoleResize }
-		bind $w <Destroy>   { ::CorrespondenceChess::EnableEngineAnalysis 1
-			set ::CorrespondenceChess::isOpen 0 }
-
-		foreach f [glob -nocomplain [file join "$CorrespondenceChess::PluginPath" *]] {
-			$w.top.plugins    configure -image tb_CC_pluginactive
-			source $f
-		}
-
+		bind $w <F1>   { helpWindow Correspondence}
+		bind $w "?"    { helpWindow CCIcons}
 	}
 
 	#--------------------------------------------------------------------------
@@ -2051,12 +1469,9 @@ namespace eval CorrespondenceChess {
 	# This just adds another line at the end of the current list, hence
 	# the list has to be emptied if all games are resynced in.
 	#--------------------------------------------------------------------------
-	proc updateGamelist {id toMove event site date white black clockW \
-								clockB var db books tb engines wc bc mess TC \
-								lastmove drawoffer } {
-		global ::CorrespondenceChess::num
-		global ::CorrespondenceChess::clipboardText
-
+	proc updateGamelist {id toMove event site white black clockW \
+								clockB var db books tb engines wc bc mess} {
+		set num $::CorrespondenceChess::num
 		set w .ccWindow
 
 		#----------------------------------------------------------------------
@@ -2074,11 +1489,6 @@ namespace eval CorrespondenceChess {
 			# make each line high enough for the icons to be placed
 			$w.bottom.$tag      image create end -align center -image tb_CC_spacer
 		}
-
-		# Calculate the TimeDiff between the event date and the current
-		# date. This diff is used to mark event that have not yet
-		# started.
-		set TimeDiff [expr [clock seconds] - [clock scan $date -format "%Y.%m.%d"] ]
 
 		if { $::Xfcc::update > 0 } {
 			$w.top.onoffline  configure -image tb_CC_online
@@ -2106,76 +1516,51 @@ namespace eval CorrespondenceChess {
 				$w.bottom.toMove image create end -align center -image tb_CC_outoftime
 		}
 
-		set text ""
 		switch -regexp -- $toMove \
 		"1-0" {
 			set curpos [$w.bottom.toMove index insert]
 			$w.bottom.toMove image create end -align center -image $::board::letterToPiece(K)25
 			$w.bottom.toMove  insert end " $toMove"
 			set endpos [$w.bottom.toMove index insert]
-			set text "$lastmove ($toMove)"
+			$w.bottom.toMove tag add toMove$id $curpos $endpos
+			::utils::tooltip::SetTag $w.bottom.toMove "$toMove" toMove$id
 		} \
 		"0-1" {
 			set curpos [$w.bottom.toMove index insert]
 			$w.bottom.toMove image create end -align center -image $::board::letterToPiece(k)25
 			$w.bottom.toMove  insert end " $toMove"
 			set endpos [$w.bottom.toMove index insert]
-			set text "$lastmove ($toMove)"
+			$w.bottom.toMove tag add toMove$id $curpos $endpos
+			::utils::tooltip::SetTag $w.bottom.toMove "$toMove" toMove$id
 		} \
 		" = " {
 			set curpos [$w.bottom.toMove index insert]
 			$w.bottom.toMove image create end -align center -image tb_CC_draw
 			$w.bottom.toMove  insert end "$toMove"
 			set endpos [$w.bottom.toMove index insert]
-			set text "$lastmove ($toMove)"
+			$w.bottom.toMove tag add toMove$id $curpos $endpos
+			::utils::tooltip::SetTag $w.bottom.toMove "$toMove" toMove$id
 		} \
 		"yes" {
-			set curpos [$w.bottom.toMove index insert]
 			$w.bottom.toMove image create end -align center -image tb_CC_yourmove
-			set endpos [$w.bottom.toMove index insert]
-			set text "$lastmove"
 		} \
 		"no"  {
-			set curpos [$w.bottom.toMove index insert]
 			$w.bottom.toMove image create end -align center -image tb_CC_oppmove
-			set endpos [$w.bottom.toMove index insert]
-			set text "$lastmove"
 		} \
 		" ? " {
-			set curpos [$w.bottom.toMove index insert]
 			$w.bottom.toMove  insert end "$toMove"
-			set endpos [$w.bottom.toMove index insert]
-			set text "$lastmove"
-		} \
-		"POS" {
-			set curpos [$w.bottom.toMove index insert]
-			$w.bottom.toMove image create end -align center -image tb_CC_postal
-			set endpos [$w.bottom.toMove index insert]
-			set text "$lastmove"
 		} \
 		"EML" {
-			set curpos [$w.bottom.toMove index insert]
 			$w.bottom.toMove image create end -align center -image tb_CC_envelope
-			set endpos [$w.bottom.toMove index insert]
-			set text "$lastmove"
-		} \
-		"REL" {
-			set curpos [$w.bottom.toMove index insert]
-			$w.bottom.toMove image create end -align center -image tb_CC_relay
-			set endpos [$w.bottom.toMove index insert]
-			set text "$lastmove"
 		}
-		$w.bottom.toMove tag add toMove$id $curpos $endpos
-		::utils::tooltip::SetTag $w.bottom.toMove "$text" toMove$id
 		$w.bottom.toMove insert end "\n"
-
 
 		# Add textual information to the edit fields
 		set curpos [$w.bottom.event index insert]
 		$w.bottom.event   insert end "$event\n"
 		set endpos [$w.bottom.event index insert]
 		$w.bottom.event tag add event$id $curpos $endpos
-
+		::utils::tooltip::SetTag $w.bottom.event "$event" event$id
 
 		set curpos [$w.bottom.site index insert]
 		$w.bottom.site    insert end "$site\n"
@@ -2193,7 +1578,7 @@ namespace eval CorrespondenceChess {
 		}
 		$w.bottom.white   insert end "$white\n"
 
-		if {$bc != ""} {
+		if {$wc != ""} {
 			if {[lsearch [image names] $bc] > -1} {
 				$w.bottom.black   image create end -align center -image $bc
 				$w.bottom.black   insert end " "
@@ -2208,7 +1593,7 @@ namespace eval CorrespondenceChess {
 		$w.bottom.var     insert end "$var\n"
 
 		# Xfcc defines noDB, noTablebase no etc.pp. Hence check for
-		# false to display the icons for allowed features.
+		# false to dispaly the icons for allowed features.
 		if {$db == "false"} {
 			$w.bottom.feature image create end -align center -image tb_CC_database
 		}
@@ -2218,71 +1603,37 @@ namespace eval CorrespondenceChess {
 		if {$tb == "false"} {
 			$w.bottom.feature image create end -align center -image tb_CC_tablebase
 		}
-		if {!($engines == "true")} {
+		if {$engines == "false"} {
 			$w.bottom.feature image create end -align center -image tb_CC_engine
 		}
-
 		$w.bottom.feature insert end "\n"
 
-		# Link the click on each field to jump to this specific game
-		# easily, then lock the entry field from changes by the user.
-		# SetSelection just sets the global $num to the actual row the
-		# user clicked. This has to be a global variable and it has to
-		# be passed to the ProcessServerResult mascaraded to prevent
+		# Link the double click on each field to jump to this specific
+		# game easily, then lock the entry field from changes by the
+		# user. SetSelection just sets the global $num to the actual row
+		# the user clicked. This has to be a global variable and it has
+		# to be passed to the ProcessServerResult mascaraded to prevent
 		# from interpretation. See also Scids gamelist.
 		foreach tag {id toMove event site white black clockW clockB var feature} {
-			bind $w.bottom.$tag <Button-1> {
-				::CorrespondenceChess::SetSelection %x %y
-				::CorrespondenceChess::ProcessServerResult $::CorrespondenceChess::num
-				break }
+			bind $w.bottom.$tag <Button-1> \
+				"::CorrespondenceChess::SetSelection %x %y; ::CorrespondenceChess::ProcessServerResult \$num; break"
 			# lock the area from changes
 			$w.bottom.$tag configure -state disable
 		}
-
-		if {$TimeDiff < -1} {
-			foreach col {id toMove event site} {
-				$w.bottom.$col tag configure $col$id -foreground DarkGray -font font_Bold
-			}
-			::utils::tooltip::SetTag $w.bottom.event "$event\nTime: $TC\n\nStart: $date" event$id
-		} else {
-			::utils::tooltip::SetTag $w.bottom.event "$event\nTime: $TC" event$id
-		}
-
-		regsub -all "flag_"  $wc "" wc1
-		regsub -all "flag_"  $bc "" bc1
-
-		set wc1 [string toupper $wc1]
-		set bc1 [string toupper $bc1]
-
-		set ::CorrespondenceChess::clipboardText "$::CorrespondenceChess::clipboardText\n$id\t $event\t$site\t$date\t$white\t$black\t$wc1\t$bc1\t$clockW\t$clockB\t$toMove\t$mess\t$lastmove\t$var\t$db\t$books\t$tb\t$engines\t$TC"
-	}
-
-	#----------------------------------------------------------------------
-	# Visually highlight line $::CorrespondenceChess::num
-	#----------------------------------------------------------------------
-	proc SetHighlightedLine {} {
-		global ::CorrespondenceChess::num 
-		set gamecount $::CorrespondenceChess::glgames
-
-		# remove old highlighting
-		foreach col {id toMove event site white black clockW clockB var feature} {
-			.ccWindow.bottom.$col tag remove highlight 1.0 end
-		}
-
-		# highlight current games line
-		foreach col {id toMove event site white black clockW clockB var feature} {
-			.ccWindow.bottom.$col tag add highlight $num.0 [expr {$num+1}].0 
-			.ccWindow.bottom.$col tag configure highlight -background lightYellow2 -font font_Bold
-		}
-		updateConsole "info: switched to game $num/$gamecount"
 	}
 
 	#----------------------------------------------------------------------
 	# Set the global $num to the row the user clicked upon
 	#----------------------------------------------------------------------
 	proc SetSelection {xcoord ycoord} {
-		global ::CorrespondenceChess::num 
+		global num 
+
 		set gamecount $::CorrespondenceChess::glgames
+
+		# remove old highlighting
+		foreach col {id toMove event site white black clockW clockB var feature} {
+			.ccWindow.bottom.$col tag remove highlight 1.0 end
+		}
 
 		set num [expr {int([.ccWindow.bottom.id index @$xcoord,$ycoord]) + $::CorrespondenceChess::glccstart - 1 }]
 
@@ -2291,7 +1642,12 @@ namespace eval CorrespondenceChess {
 				set num $gamecount
 		}
 
-		SetHighlightedLine
+		# highlight current games line
+		foreach col {id toMove event site white black clockW clockB var feature} {
+			.ccWindow.bottom.$col tag add highlight $num.0 [expr {$num+1}].0 
+			.ccWindow.bottom.$col tag configure highlight -background lightYellow2 -font font_Bold
+		}
+		updateConsole "info: switched to game $num/$gamecount"
 	}
 
 	#----------------------------------------------------------------------
@@ -2308,8 +1664,6 @@ namespace eval CorrespondenceChess {
 		}
 		# reset the number of processed games
 		set ::CorrespondenceChess::num 0
-		set ::CorrespondenceChess::clipboardText ""
-
 	}
 
 	#----------------------------------------------------------------------
@@ -2333,63 +1687,40 @@ namespace eval CorrespondenceChess {
 		toplevel $w
 		wm title $w [::tr "CCDlgConfigureWindowTitle"]
 
-		set ::CorrespondenceChess::sortoptlist [list \
-			[::tr "CCOrderClassicTxt"] \
-			[::tr "CCOrderMyTimeTxt"] \
-			[::tr "CCOrderTimePerMoveTxt"] \
-			[::tr "CCOrderStartDate"] \
-			[::tr "CCOrderOppTimeTxt"] \
-		]
-
-
-		ttk::button $w.bOk     -text OK -command {
+		button $w.bOk     -text OK -command {
 				::CorrespondenceChess::saveCCoptions
 				destroy .correspondenceChessConfig
 		}
-		ttk::button $w.bCancel -text [::tr "Cancel"] -command "destroy $w"
+		button $w.bCancel -text [::tr "Cancel"] -command "destroy $w"
 
-		ttk::label  $w.lgeneral -text [::tr "CCDlgCGeneraloptions"]
-		ttk::label  $w.ldb      -text [::tr "CCDlgDefaultDB"]
-		ttk::label  $w.linbox   -text [::tr "CCDlgInbox"]
-		ttk::label  $w.loutbox  -text [::tr "CCDlgOutbox"]
+		label  $w.lgeneral -text [::tr "CCDlgCGeneraloptions"]
+		label  $w.ldb      -text [::tr "CCDlgDefaultDB"]
+		label  $w.linbox   -text [::tr "CCDlgInbox"]
+		label  $w.loutbox  -text [::tr "CCDlgOutbox"]
 
-		ttk::label  $w.lxfccrc  -text [::tr "CCDlgXfcc"]
+		label  $w.lxfccrc  -text [::tr "CCDlgXfcc"]
 
-		ttk::label  $w.lxfcc    -text [::tr "CCDlgExternalProtocol"]
-		ttk::label  $w.lfetch   -text [::tr "CCDlgFetchTool"]
-		ttk::label  $w.lsend    -text [::tr "CCDlgSendTool"]
-		ttk::label  $w.lsortopt -text [::tr "CCDlgSortOption"]
+		label  $w.lxfcc    -text [::tr "CCDlgExternalProtocol"]
+		label  $w.lfetch   -text [::tr "CCDlgFetchTool"]
+		label  $w.lsend    -text [::tr "CCDlgSendTool"]
 
-		ttk::label  $w.lemail   -text [::tr "CCDlgEmailCommunication"]
-		ttk::label  $w.lmailx   -text [::tr "CCDlgMailPrg"]
-		ttk::label  $w.lbccaddr -text [::tr "CCDlgBCCAddr"]
+		label  $w.lemail   -text [::tr "CCDlgEmailCommunication"]
+		label  $w.lmailx   -text [::tr "CCDlgMailPrg"]
+		label  $w.lbccaddr -text [::tr "CCDlgBCCAddr"]
 
-		ttk::label  $w.lmoderb  -text [::tr "CCDlgMailerMode"]
-		ttk::label  $w.lmoderb1 -text [::tr "CCDlgThunderbirdEg"]
-		ttk::label  $w.lmoderb2 -text [::tr "CCDlgMailUrlEg"]
-		ttk::label  $w.lmoderb3 -text [::tr "CCDlgClawsEg"]
-		ttk::label  $w.lmoderb4 -text [::tr "CCDlgmailxEg"]
+		label  $w.lmoderb  -text [::tr "CCDlgMailerMode"]
+		label  $w.lmoderb1 -text [::tr "CCDlgThunderbirdEg"]
+		label  $w.lmoderb2 -text [::tr "CCDlgMailUrlEg"]
+		label  $w.lmoderb3 -text [::tr "CCDlgClawsEg"]
+		label  $w.lmoderb4 -text [::tr "CCDlgmailxEg"]
 
-		ttk::label  $w.lattache -text [::tr "CCDlgAttachementPar"]
-		ttk::label  $w.lsubject -text [::tr "CCDlgSubjectPar"]
+		label  $w.lattache -text [::tr "CCDlgAttachementPar"]
+		label  $w.lsubject -text [::tr "CCDlgSubjectPar"]
 
-		ttk::checkbutton $w.internalXfcc -text [::tr "CCDlgInternalXfcc"] \
+		checkbutton $w.internalXfcc -text [::tr "CCDlgInternalXfcc"] \
 			-variable ::CorrespondenceChess::XfccInternal
 
-		ttk::checkbutton $w.confirmXfcc -text [::tr "CCDlgConfirmXfcc"] \
-			-variable ::CorrespondenceChess::XfccConfirm
-
-		ttk::checkbutton $w.onlyOwnMove -text [::tr "CCDlgListOnlyOwnMove"] \
-			-variable ::CorrespondenceChess::ListOnlyOwnMove
-
-		ttk::scrollbar $w.ysc    -command { .correspondenceChessConfig.sortopt yview }
-		listbox   $w.sortopt -height 3 -width 60 -exportselection 0 -selectmode single -list ::CorrespondenceChess::sortoptlist -yscrollcommand "$w.ysc set"
-		$w.sortopt selection set $::CorrespondenceChess::ListOrder
-		bind .correspondenceChessConfig.sortopt <<ListboxSelect>> {
-			set ::CorrespondenceChess::ListOrder [ .correspondenceChessConfig.sortopt curselection ]
-		}
-
-		ttk::button $w.xfconf  -text [::tr CCConfigure] -command { ::CorrespondenceChess::checkXfccrc
+		button $w.xfconf  -text [::tr CCConfigure] -command { ::CorrespondenceChess::checkXfccrc
 			::Xfcc::config $::CorrespondenceChess::xfccrcfile}
 
 		if {$::CorrespondenceChess::XfccInternal < 0} {
@@ -2397,89 +1728,86 @@ namespace eval CorrespondenceChess {
 			$w.xfconf       configure -state disabled
 		}
 
-		ttk::entry  $w.db      -width 60 -textvariable ::CorrespondenceChess::CorrBase
-		ttk::entry  $w.inbox   -width 60 -textvariable ::CorrespondenceChess::Inbox
-		ttk::entry  $w.outbox  -width 60 -textvariable ::CorrespondenceChess::Outbox
+		entry  $w.db      -width 60 -textvariable ::CorrespondenceChess::CorrBase
+		entry  $w.inbox   -width 60 -textvariable ::CorrespondenceChess::Inbox
+		entry  $w.outbox  -width 60 -textvariable ::CorrespondenceChess::Outbox
 
-		ttk::entry  $w.xfccrc  -width 60 -textvariable ::CorrespondenceChess::xfccrcfile
-		ttk::entry  $w.fetch   -width 60 -textvariable ::CorrespondenceChess::XfccFetchcmd
-		ttk::entry  $w.send    -width 60 -textvariable ::CorrespondenceChess::XfccSendcmd
+		entry  $w.xfccrc  -width 60 -textvariable ::CorrespondenceChess::xfccrcfile
+		entry  $w.fetch   -width 60 -textvariable ::CorrespondenceChess::XfccFetchcmd
+		entry  $w.send    -width 60 -textvariable ::CorrespondenceChess::XfccSendcmd
 
-		ttk::entry  $w.mailx   -width 60 -textvariable ::CorrespondenceChess::mailer
-		ttk::entry  $w.bccaddr -width 60 -textvariable ::CorrespondenceChess::bccaddr
-		ttk::entry  $w.attache -width 30 -textvariable ::CorrespondenceChess::attache
-		ttk::entry  $w.subject -width 30 -textvariable ::CorrespondenceChess::subject
+		entry  $w.mailx   -width 60 -textvariable ::CorrespondenceChess::mailer
+		entry  $w.bccaddr -width 60 -textvariable ::CorrespondenceChess::bccaddr
+		entry  $w.attache -width 30 -textvariable ::CorrespondenceChess::attache
+		entry  $w.subject -width 30 -textvariable ::CorrespondenceChess::subject
 
-		ttk::radiobutton $w.moderb1 -text "Mozilla"  -value "mozilla" -variable ::CorrespondenceChess::mailermode
-		ttk::radiobutton $w.moderb2 -text "Mail-URL" -value "mailurl" -variable ::CorrespondenceChess::mailermode
-		ttk::radiobutton $w.moderb3 -text "Claws"    -value "claws"   -variable ::CorrespondenceChess::mailermode
-		ttk::radiobutton $w.moderb4 -text "mailx"    -value "mailx"   -variable ::CorrespondenceChess::mailermode
+		radiobutton $w.moderb1 -text "Mozilla"  -value "mozilla" -variable ::CorrespondenceChess::mailermode
+		radiobutton $w.moderb2 -text "Mail-URL" -value "mailurl" -variable ::CorrespondenceChess::mailermode
+		radiobutton $w.moderb3 -text "Claws"    -value "claws"   -variable ::CorrespondenceChess::mailermode
+		radiobutton $w.moderb4 -text "mailx"    -value "mailx"   -variable ::CorrespondenceChess::mailermode
 
-		ttk::button $w.bdb     -text "..." -command {::CorrespondenceChess::chooseCorrBase }
-		ttk::button $w.binbox  -text "..." -command {::CorrespondenceChess::chooseInbox    }
-		ttk::button $w.boutbox -text "..." -command {::CorrespondenceChess::chooseOutbox   }
-		ttk::button $w.bfetch  -text "..." -command {::CorrespondenceChess::chooseFetch    }
-		ttk::button $w.bsend   -text "..." -command {::CorrespondenceChess::chooseSend     }
+		button $w.bdb     -text "..." -command {::CorrespondenceChess::chooseCorrBase }
+		button $w.binbox  -text "..." -command {::CorrespondenceChess::chooseInbox    }
+		button $w.boutbox -text "..." -command {::CorrespondenceChess::chooseOutbox   }
+		button $w.bfetch  -text "..." -command {::CorrespondenceChess::chooseFetch    }
+		button $w.bsend   -text "..." -command {::CorrespondenceChess::chooseSend     }
 
-		grid $w.lgeneral                  -column 0 -row  0 -columnspan 3 -pady 10
+		# placing lables
+		grid $w.lgeneral               -column 0 -row  0 -columnspan 3 -pady 10
+		grid $w.ldb          -sticky e -column 0 -row  1
+		grid $w.linbox       -sticky e -column 0 -row  2
+		grid $w.loutbox      -sticky e -column 0 -row  3
 
-		grid $w.ldb          -sticky e    -column 0 -row  1
-		grid $w.db           -sticky w    -column 1 -row  1 -columnspan 2
-		grid $w.bdb          -sticky w    -column 3 -row  1
-		grid $w.linbox       -sticky e    -column 0 -row  2
-		grid $w.inbox        -sticky w    -column 1 -row  2 -columnspan 2
-		grid $w.binbox       -sticky w    -column 3 -row  2
-		grid $w.loutbox      -sticky e    -column 0 -row  3
-		grid $w.outbox       -sticky w    -column 1 -row  3 -columnspan 2
-		grid $w.boutbox      -sticky w    -column 3 -row  3
+		grid $w.lxfccrc      -sticky e -column 0 -row  5
+		grid $w.lxfcc                  -column 0 -row  6 -columnspan 3 -pady 10
+		grid $w.lfetch       -sticky e -column 0 -row  7
+		grid $w.lsend        -sticky e -column 0 -row  8
 
-		grid $w.internalXfcc -sticky w    -column 1 -row  4 -pady 10
-		grid $w.xfconf                    -column 2 -row  4 -columnspan 2
-		grid $w.lxfccrc      -sticky e    -column 0 -row  4
-		grid $w.lxfcc                     -column 0 -row  5 -columnspan 3 -pady 10
-		grid $w.xfccrc       -sticky w    -column 1 -row  5 -columnspan 2
+		grid $w.lemail                 -column 0 -row  9 -columnspan 3 -pady 10
+		grid $w.lmailx       -sticky e -column 0 -row 10
+		grid $w.lbccaddr     -sticky e -column 0 -row 11
+		grid $w.lmoderb      -sticky e -column 0 -row 12
 
-		grid $w.lfetch       -sticky e    -column 0 -row  6
-		grid $w.fetch        -sticky w    -column 1 -row  6 -columnspan 2
-		grid $w.bfetch       -sticky w    -column 3 -row  6
-		grid $w.lsend        -sticky e    -column 0 -row  7
-		grid $w.send         -sticky w    -column 1 -row  7 -columnspan 2
-		grid $w.bsend        -sticky w    -column 3 -row  7
+		grid $w.lmoderb1     -sticky w -column 2 -row 12 -columnspan 2
+		grid $w.lmoderb2     -sticky w -column 2 -row 13 -columnspan 2
+		grid $w.lmoderb3     -sticky w -column 2 -row 14 -columnspan 2
+		grid $w.lmoderb4     -sticky w -column 2 -row 15 -columnspan 2
 
+		grid $w.lattache     -sticky e -column 0 -row 17
+		grid $w.lsubject     -sticky e -column 0 -row 18
 
-		grid $w.confirmXfcc  -sticky w    -column 1 -row  8
-		grid $w.onlyOwnMove  -sticky w    -column 2 -row  8
-		grid $w.lsortopt     -sticky e    -column 0 -row  9
-		grid $w.sortopt      -sticky w    -column 1 -row  9 -columnspan 2
-		grid $w.ysc          -sticky wns  -column 3 -row 9
+		# placing entry fields
+		grid $w.db           -sticky w -column 1 -row  1 -columnspan 2
+		grid $w.inbox        -sticky w -column 1 -row  2 -columnspan 2
+		grid $w.outbox       -sticky w -column 1 -row  3 -columnspan 2
 
-		grid $w.lemail                    -column 0 -row 10 -columnspan 3 -pady 10
+		grid $w.internalXfcc -sticky w -column 1 -row  4 -pady 10
+		grid $w.xfconf                 -column 2 -row  4 -columnspan 2
 
-		grid $w.lmailx       -sticky e    -column 0 -row 11
-		grid $w.mailx        -sticky w    -column 1 -row 11 -columnspan 2
-		grid $w.lbccaddr     -sticky e    -column 0 -row 12
-		grid $w.bccaddr      -sticky w    -column 1 -row 12 -columnspan 2
+		grid $w.xfccrc       -sticky w -column 1 -row  5 -columnspan 2
+		grid $w.fetch        -sticky w -column 1 -row  7 -columnspan 2
+		grid $w.send         -sticky w -column 1 -row  8 -columnspan 2
 
-		grid $w.lmoderb      -sticky e    -column 0 -row 13
-		grid $w.lmoderb1     -sticky w    -column 2 -row 13 -columnspan 2
-		grid $w.lmoderb2     -sticky w    -column 2 -row 14 -columnspan 2
-		grid $w.lmoderb3     -sticky w    -column 2 -row 15 -columnspan 2
-		grid $w.lmoderb4     -sticky w    -column 2 -row 16 -columnspan 2
-		grid $w.moderb1      -sticky w    -column 1 -row 13
-		grid $w.moderb2      -sticky w    -column 1 -row 14
-		grid $w.moderb3      -sticky w    -column 1 -row 15
-		grid $w.moderb4      -sticky w    -column 1 -row 16
+		grid $w.mailx        -sticky w -column 1 -row 10 -columnspan 2
+		grid $w.bccaddr      -sticky w -column 1 -row 11 -columnspan 2
 
-		grid $w.lattache     -sticky e    -column 0 -row 18
-		grid $w.attache      -sticky w    -column 1 -row 18 -columnspan 2
+		grid $w.moderb1      -sticky w -column 1 -row 12
+		grid $w.moderb2      -sticky w -column 1 -row 13
+		grid $w.moderb3      -sticky w -column 1 -row 14
+		grid $w.moderb4      -sticky w -column 1 -row 15
 
-		grid $w.lsubject     -sticky e    -column 0 -row 19
-		grid $w.subject      -sticky w    -column 1 -row 19 -columnspan 2
+		grid $w.attache      -sticky w -column 1 -row 17 -columnspan 2
+		grid $w.subject      -sticky w -column 1 -row 18 -columnspan 2
 
+		grid $w.bdb          -sticky w -column 3 -row  1
+		grid $w.binbox       -sticky w -column 3 -row  2
+		grid $w.boutbox      -sticky w -column 3 -row  3
+		grid $w.bfetch       -sticky w -column 3 -row  7
+		grid $w.bsend        -sticky w -column 3 -row  8
 
 		# Buttons and ESC-key
-		grid $w.bOk          -column 0    -row 20 -pady 10 -columnspan 2
-		grid $w.bCancel      -column 1    -row 20 -pady 10
+		grid $w.bOk          -column 0 -row 19 -pady 10 -columnspan 2
+		grid $w.bCancel      -column 1 -row 19 -pady 10
 		bind $w <Escape> "$w.bCancel invoke"
 
 		bind $w <F1> { helpWindow CCSetupDialog}
@@ -2491,8 +1819,6 @@ namespace eval CorrespondenceChess {
 	# user (own and opponent names and mail addresses and unique id)
 	#----------------------------------------------------------------------
 	proc startEmailGame {ownname ownmail oppname oppmail gameid} {
-		global ::CorrespondenceChess::Inbox
-
 		# the following header tags have to be in this form for cmail to
 		# recognise the mail as an eMail correspondence game.
 		# Additonally scid searched for some of them to retrieve mail
@@ -2504,9 +1830,6 @@ namespace eval CorrespondenceChess {
 		set CmailGameName "CmailGameName \"$gameid\""
 		set WhiteNA       "WhiteNA \"$ownmail\""
 		set BlackNA       "BlackNA \"$oppmail\""
-		set whiteCountry  "WhiteCountry \"EUR\""
-		set blackCountry  "BlackCountry \"EUR\""
-
 		set Mode          "Mode \"EM\""
 
 		set year          [::utils::date::today year]
@@ -2527,7 +1850,7 @@ namespace eval CorrespondenceChess {
 		sc_game tags set -eventdate $today
 
 		# add cmails extra header tags
-		sc_game tags set -extra [list $CmailGameName $WhiteNA $BlackNA $whiteCountry $blackCountry $Mode]
+		sc_game tags set -extra [list $CmailGameName $WhiteNA $BlackNA $Mode]
 
 		updateBoard -pgn
 		updateTitle
@@ -2537,13 +1860,6 @@ namespace eval CorrespondenceChess {
 		# database. This also gives the Save-dialog for additional user
 		# values.
 		gameSave 0
-
-		# construct a PGN in Inbox for CC gamelist to work
-		set pgnfile "[file join $Inbox $gameid].pgn"
-		sc_base export "current" "PGN" $pgnfile -append 0 -comments 0 -variations 0 \
-					-space 1 -symbols 0 -indentC 0 -indentV 0 -column 0 -noMarkCodes 0 -convertNullMoves 1
-
-		::CorrespondenceChess::ReadInbox
 	}
 
 	#----------------------------------------------------------------------
@@ -2571,19 +1887,19 @@ namespace eval CorrespondenceChess {
 			set oppname    ""
 			set gameid     ""
 
-			ttk::label  $w.lownname -text [::tr CCDlgYourName]
-			ttk::label  $w.lownmail -text [::tr CCDlgYourMail]
-			ttk::label  $w.loppname -text [::tr CCDlgOpponentName]
-			ttk::label  $w.loppmail -text [::tr CCDlgOpponentMail]
-			ttk::label  $w.lgameid  -text [::tr CCDlgGameID]
+			label  $w.lownname -text [::tr CCDlgYourName]
+			label  $w.lownmail -text [::tr CCDlgYourMail]
+			label  $w.loppname -text [::tr CCDlgOpponentName]
+			label  $w.loppmail -text [::tr CCDlgOpponentMail]
+			label  $w.lgameid  -text [::tr CCDlgGameID]
 
-			ttk::entry  $w.ownname -width 40 -textvariable ownname
-			ttk::entry  $w.ownmail -width 40 -textvariable $ownemail
-			ttk::entry  $w.oppname -width 40 -textvariable oppname
-			ttk::entry  $w.oppmail -width 40 -textvariable oppemail
-			ttk::entry  $w.gameid  -width 40 -textvariable gameid
+			entry  $w.ownname -width 40 -textvariable ownname
+			entry  $w.ownmail -width 40 -textvariable $ownemail
+			entry  $w.oppname -width 40 -textvariable oppname
+			entry  $w.oppmail -width 40 -textvariable oppemail
+			entry  $w.gameid  -width 40 -textvariable gameid
 
-			ttk::button $w.bOk     -text OK -command {
+			button $w.bOk     -text OK -command {
 				::CorrespondenceChess::startEmailGame \
 						[.wnewEMailGame.ownname get] \
 						[.wnewEMailGame.ownmail get] \
@@ -2592,7 +1908,7 @@ namespace eval CorrespondenceChess {
 						[.wnewEMailGame.gameid  get]
 				destroy .wnewEMailGame
 			}
-			ttk::button $w.bCancel -text [::tr "Cancel"] -command "destroy $w"
+			button $w.bCancel -text [::tr "Cancel"] -command "destroy $w"
 
 			grid $w.lownname   -sticky e -column 0 -row 0
 			grid $w.lownmail   -sticky e -column 0 -row 1
@@ -2615,27 +1931,21 @@ namespace eval CorrespondenceChess {
 	}
 
 	#----------------------------------------------------------------------
-	# Call an external program via a proper shell
-	# open and exec call the external without a shell environment
-	# For Windows make sure that the executable uses its short name
-	#     catch {set mailer [file attributes $mailer -shortname]}
-	# or it resides in a path without spaces
-	# For Windows quoting is not possible as usual, < and > are not allowed
-	# as textual arguments even if quoted properly.
+	# Call the mailer program to send the game by e-mail
 	#----------------------------------------------------------------------
-	proc CallExternal {callstring {param ""}} {
+	proc CallExternal {callstring} {
 		global windowsOS
 
 		if {$windowsOS} {
 			# On Windows, use the "start" command:
 			if {[string match $::tcl_platform(os) "Windows NT"]} {
-				catch {exec $::env(COMSPEC) /c "$callstring $param" &}
+				catch {exec $::env(COMSPEC) /c start "$callstring"}
 			} else {
-				catch {exec start "$callstring $param" &}
+				catch {exec start "$callstring"}
 			}
 		} else {
 			# On Unix just call the shell with the converter tool
-			catch {exec /bin/sh -c "$callstring $param" &}
+			catch {exec /bin/sh -c "$callstring"}
 		}
 	}
 
@@ -2699,19 +2009,12 @@ namespace eval CorrespondenceChess {
 	proc OpenCorrespondenceDB {} {
 		global ::CorrespondenceChess::CorrBase
 
-		## set fName [file rootname $CorrBase]
-		set fName $CorrBase
-
-		if {[catch {::file::Open $fName} result]} {
+		set fName [file rootname $CorrBase]
+		if {[catch {openBase $fName} result]} {
 			set err 1
 			tk_messageBox -icon warning -type ok -parent . \
 				-title "Scid: Error opening file" -message $result
 		} else {
-			if {[file extension $fName] == ".si3"} {
-				# file has been converted to si4
-				set CorrBase "[file rootname $CorrBase].si4"
-				::CorrespondenceChess::saveCCoptions
-			}
 			set ::initialDir(base) [file dirname $fName]
 		}
 		::windows::gamelist::Refresh
@@ -2730,12 +2033,12 @@ namespace eval CorrespondenceChess {
 	# This has to result in only one game matching the criteria. 
 	# No problem with cmail and Xfcc as GameIDs are unique.
 	#----------------------------------------------------------------------
-	proc SearchGame {Event Site White Black CmailGameName result refresh} {
-		global ::CorrespondenceChess::CorrSlot
+	proc SearchGame {Event Site White Black CmailGameName result} {
+		global ::CorrespondenceChess::CorrSlot ::CorrespondenceChess::LastProcessed
+
 
 		# switch to the Correspondence Games DB
 		sc_base switch $CorrSlot
-		set move ""
 
 		set sPgnlist {}
 		lappend sPgnlist [string trim $CmailGameName]
@@ -2743,16 +2046,13 @@ namespace eval CorrespondenceChess {
 		# Search the header for the game retrieved. Use as much info as
 		# possible to get a unique result. In principle $sPgnList should
 		# be enough. However searching indexed fields speeds up things
-		# a lot in case of large DBs. Also: disregard deleted games,
-		# this avoids the necessity to compact a db in case of
-		# accidential duplication of a game.
+		# a lot in case of large DBs.
 		set str [sc_search header \
 					-event $Event    \
 					-site $Site      \
 					-white $White    \
 					-black $Black    \
 					-pgn $sPgnlist   \
-					-fDelete no      \
 					-gameNumber [list 1 -1] \
 					]
 
@@ -2765,26 +2065,12 @@ namespace eval CorrespondenceChess {
 		if {[sc_filter count] == 1} {
 			set filternum [sc_filter first]
 
-			# Refresh windows only if necessary
-			if {$refresh == 1} {
-				# ::game::Load  also checks the dirty flag and asks to
-				# save the game in case necessary.
-				::game::Load $filternum
-			} else {
-				sc_game load $filternum
-			}
-
-			set Mode [::CorrespondenceChess::CheckMode]
+			::game::Load $filternum
 
 			sc_move end
 			# Number of moves in the current DB game
 			set mnCorr [expr {[sc_pos moveNumber]-1}]
 			set side   [sc_pos side]
-
-			# Number of moves in the new game in Clipbase
-			sc_base switch "clipbase"
-			sc_move end
-			set mnClip [sc_pos moveNumber]
 
 			if {$side == "white"} {
 				set plyStart [expr {$mnCorr*2-1}]
@@ -2792,6 +2078,10 @@ namespace eval CorrespondenceChess {
 				set plyStart [expr {$mnCorr*2}]
 			}
 
+			# Number of moves in the new game in Clipbase
+			sc_base switch "clipbase"
+			sc_move end
+			set mnClip [sc_pos moveNumber]
 			set side   [sc_pos side]
 			if {$side == "white"} {
 				set plyEnd [expr {$mnClip*2-1}]
@@ -2799,125 +2089,44 @@ namespace eval CorrespondenceChess {
 				set plyEnd [expr {$mnClip*2}]
 			}
 
-			# Check if the games mainline in DB contains more ply than
-			# the game in the clipbase. If so inform the user.
-			if {($plyEnd-$plyStart < 2) && ($Mode == "XFCC") && ($result == "*")} {
-				set Title [::tr CCDlgDBGameToLong]
-				set Error [::tr CCDlgDBGameToLongError]
-				tk_messageBox -icon warning -type ok -parent . \
-					-title $Title -message "$Error $mnClip (= ply $plyEnd)"
+			# Add moves from clipbase to the DB game. This keeps
+			# comments, but requires that tries are inserted as variants
+			# as it is always appended to the end of the game
+			for {set x $plyStart} {$x < $plyEnd} {incr x} {
+				sc_base switch "clipbase"
+
+				# move to the beginning of the new part
+				sc_move start
+				sc_move forward [expr {$x+1}]
+
+				# Get the move in _untranslated_ form...
+				set move [sc_game info nextMoveNT]
+				# ... move on one ply ...
+				sc_move forward
+				# ... and get the comment
+				set comment [sc_pos getComment]
+				# switch to Correspondence DB and add the move and comment
+				sc_base switch     $CorrSlot
+				sc_move addSan     $move
+				sc_pos  setComment $comment
 			}
-
-			# Add moves from the relayed games if the mode is not Postal.
-			# On mixed ICCF Events also the ICCF server deliveres an
-			# empty game via Xfcc, therefore this check is required
-			if {$Mode != "Postal"} {
-
-				# Add moves from clipbase to the DB game. This keeps
-				# comments, but requires that tries are inserted as variants
-				# as it is always appended to the end of the game
-				for {set x $plyStart} {$x < $plyEnd} {incr x} {
-					set basecomment  ""
-					set comment      ""
-
-					sc_base switch "clipbase"
-
-					# move to the beginning of the new part
-					sc_move start
-					sc_move forward [expr {$x+1}]
-
-					# Get the move in _untranslated_ form...
-					set move [sc_game info nextMoveNT]
-					# ... move on one ply ...
-					sc_move forward
-					# ... and get the comment
-					set comment [sc_pos getComment]
-
-					# switch to Correspondence DB and add the move and comment
-					sc_base switch     $CorrSlot
-					sc_move addSan     $move
-
-					# Get the comment stored in the base for comparison
-					set basecomment [sc_pos getComment]
-
-					# Some servers keep old comments within the game
-					# (SchemingMind) some don't (ICCF). Try to preserve
-					# comments inserted by the user as well as add new
-					# responses properly.
-					set sbasecomment ""
-					set scomment     ""
-
-					# Strip of [%ccsnt...] like comments (SchemingMind time stamps)
-					regsub -all {\[.*\]} $basecomment   "" sbasecomment
-					regsub -all {^\s*}   $sbasecomment  "" sbasecomment
-					# Strip of "Name: " to compare original text entered by
-					# the user only.
-					regsub -all "$White:" $sbasecomment "" sbasecomment
-					regsub -all "$Black:" $sbasecomment "" sbasecomment
-
-					# Same for the game delivered by Xfcc
-					regsub -all {\[.*\]}  $comment      "" scomment
-					regsub -all {^\s*}    $scomment     "" scomment
-					regsub -all "$White:" $scomment     "" scomment
-					regsub -all "$Black:" $scomment     "" scomment
-
-					# Check what to preserve and which comment to set.
-					if { [string length $sbasecomment] == 0} {
-						sc_pos setComment "$comment"
-					} elseif { [string length $scomment] < [string length $sbasecomment ]} {
-						# base contains more text than the one retrieved
-						if { [string first $scomment $sbasecomment] < 0 } {
-							sc_pos  setComment "$basecomment $comment"
-						}
-					} else {
-						# retrieved game contains more text than the stored
-						if { [string first $sbasecomment $scomment] < 0 } {
-							sc_pos setComment "$basecomment $comment"
-						} else {
-							sc_pos setComment "$comment"
-						}
-					}
-				}
-				sc_game tags set -result $result
-				sc_base switch $CorrSlot
-				sc_game save $filternum
-
-				# Only refresh when SearchGame was triggered by the user,
-				# otherwise just reload the game but leave the window in
-				# state to save considerable amount of time
-				if {$refresh == 1} {
-					::game::Load $filternum
-				} else {
-					sc_game load $filternum
-				}
-			} else {
-				# only switch to base for postal games
-				sc_base switch $CorrSlot
-			}
+			sc_game tags set -result $result
+			sc_base switch $CorrSlot
+			sc_game save $filternum
+			::game::Load $filternum
 		} elseif {[sc_filter count] == 0} {
 			# No matching game found, add it as a new one
 			# Clear the current game first, then just paste the clipboard
 			# game as it is. No need to do something as complex as for
 			# already existing games above.
-			game::Clear
+			::game::Clear
 			sc_clipbase paste
-			# append the current game without asking and the header
-			# supplied
-			# gameAdd gets confused here with with an altered game opeing
-			# another dialogue besides the save game
-			sc_game save 0
-
-			CorrespondenceChess::updateConsole "info: new game added"
+			# gameAdd presents scids "Save" dialog
+			gameAdd
+			# reload the game and jump to the end
+			::game::Reload
 		} else {
-			if {[winfo exists .glistWin]} {
-				raise .glistWin
-			} else {
-				::windows::gamelist::Open
-			}
-			set Title [::tr CCDlgDuplicateGame]
-			set Error [::tr CCDlgDuplicateGameError]
-			tk_messageBox -icon warning -type ok -parent . \
-				-title $Title -message $Error
+			::CorrespondenceChess::updateConsole "info Game-ID not unique?"
 		}
 	}
 
@@ -2955,39 +2164,13 @@ namespace eval CorrespondenceChess {
 					set CmailGameName [string range $i 15 end-1]
 				}
 			}
-
-			# set these variables for email games where they get no
-			# values otherwise
-			set noENG     "false"
-			set drawoffer "false"
 			# Search the game in the correspondence DB and display it
-			foreach xfccextra $::Xfcc::xfccstate {
-				if { [string equal -nocase [lindex $xfccextra 0] "$CmailGameName" ] } {
-					foreach i $xfccextra {
-						if { [string equal -nocase [lindex $i 0] "noEngines" ] } {
-							set noENG [string range $i 10 end]
-						}
-						if { [string equal -nocase [lindex $i 0] "drawOffered" ] } {
-							set drawoffer [string range $i 12 end]
-						}
-					}
-				}
-			}
-			if {$noENG == "true"} {
-				::CorrespondenceChess::EnableEngineAnalysis 0
-			} else {
-				::CorrespondenceChess::EnableEngineAnalysis 1
-			}
-
-			# After this search the windows need to be refreshed to show
-			# the current state
-			SearchGame $Event $Site $White $Black $CmailGameName $result 1
-
+			SearchGame $Event $Site $White $Black $CmailGameName $result
 			set Mode [::CorrespondenceChess::CheckMode]
 
 			# hook up with the old email manager: this implements the
 			# manual timestamping required
-			if {($Mode == "EM") || ($Mode == "Relay") || ($Mode == "Postal")} {
+			if {$Mode == "EM"} {
 				set emailData [::tools::email::readOpponentFile]
 				set done 0
 				set idx  0
@@ -3014,25 +2197,14 @@ namespace eval CorrespondenceChess {
 			}
 			# Jump to the end of the game and update the display
 			::move::End
-			if {$drawoffer == "true"} {
-				.ccWindow.top.acceptDraw configure -state normal
-				set comment   [sc_pos getComment]
-				set drwstr    "- [::tr Draw] -"
-				if { [regexp "$drwstr" $comment] } {
-				} else {
-					sc_pos setComment "$comment $drwstr"
-					updateBoard -pgn
-				}
-			} else {
-				.ccWindow.top.acceptDraw configure -state disabled
-			}
-
 
 			# Set some basic info also to the button tooltips
 			::utils::tooltip::Set .ccWindow.top.resign     "$CmailGameName: $Event\n$Site\n\n$White - $Black"
 			::utils::tooltip::Set .ccWindow.top.claimDraw  "$CmailGameName: $Event\n$Site\n\n$White - $Black"
 			::utils::tooltip::Set .ccWindow.top.acceptDraw "$CmailGameName: $Event\n$Site\n\n$White - $Black"
 			::utils::tooltip::Set .ccWindow.top.offerDraw  "$CmailGameName: $Event\n$Site\n\n$White - $Black"
+
+
 		}
 	}
 
@@ -3058,39 +2230,32 @@ namespace eval CorrespondenceChess {
 
 		set m .menu.play.correspondence
 
-		# do not set state of top.acceptDraw as this is set dynamically
-		if {($Mode == "EM") || ($Mode == "Relay") || ($Mode == "Postal")} {
-			if {$Mode == "EM"} {
-				::CorrespondenceChess::updateConsole "info Event: $Event (eMail-based)"
-			} elseif {$Mode == "Relay"} {
-				::CorrespondenceChess::updateConsole "info Event: $Event (observed)"
-			} elseif {$Mode == "Postal"} {
-				::CorrespondenceChess::updateConsole "info Event: $Event (postal)"
-			}
+		if {$Mode == "EM"} {
+			::CorrespondenceChess::updateConsole "info Event: $Event (eMail-based)"
 
-			# eMail/postal games: manual handling for resign and draw is
-			# needed, no standard way/protocol exists => disable the
-			# buttons and menue entries accordingly
+			# eMail games: manual handling for resign and draw is needed,
+			# no standard way/protocol exists => disable the buttons and
+			# menue entries accordingly
 			.ccWindow.top.resign     configure -state disabled
 			.ccWindow.top.claimDraw  configure -state disabled
 			.ccWindow.top.offerDraw  configure -state disabled
-			# .ccWindow.top.acceptDraw configure -state disabled
+			.ccWindow.top.acceptDraw configure -state disabled
 
-			$m entryconfigure 8 -state disabled
-			$m entryconfigure 9 -state disabled
-			$m entryconfigure 10 -state disabled
 			$m entryconfigure 11 -state disabled
+			$m entryconfigure 12 -state disabled
+			$m entryconfigure 13 -state disabled
+			$m entryconfigure 14 -state disabled
 		} else {
 			.ccWindow.top.resign     configure -state normal
 			.ccWindow.top.claimDraw  configure -state normal
 			.ccWindow.top.offerDraw  configure -state normal
-			# .ccWindow.top.acceptDraw configure -state normal
+			.ccWindow.top.acceptDraw configure -state normal
 			::CorrespondenceChess::updateConsole "info Event: $Event (Xfcc-based)"
 
-			$m entryconfigure 8 -state normal
-			$m entryconfigure 9 -state normal
-			$m entryconfigure 10 -state normal
 			$m entryconfigure 11 -state normal
+			$m entryconfigure 12 -state normal
+			$m entryconfigure 13 -state normal
+			$m entryconfigure 14 -state normal
 		}
 		::CorrespondenceChess::updateConsole "info Site: $Site"
 
@@ -3102,17 +2267,24 @@ namespace eval CorrespondenceChess {
 	# If at last game already nothing happens
 	#----------------------------------------------------------------------
 	proc PrevGame {} {
-		global ::CorrespondenceChess::CorrSlot ::CorrespondenceChess::num
-		set gamecount $::CorrespondenceChess::glgames
+		global ::CorrespondenceChess::CorrSlot ::CorrespondenceChess::LastProcessed
 
 		busyCursor .
+
 		# Regardless how the user opend this DB, find it! ;)
 		::CorrespondenceChess::CheckForCorrDB
 		if {$CorrSlot > -1} {
-			if {$num > 1} {
-				set num [expr {$num - 1}]
-				SetHighlightedLine
-				::CorrespondenceChess::ProcessServerResult $::CorrespondenceChess::num
+			sc_base switch "clipbase"
+			if {$LastProcessed < 2} { 
+				.ccWindow.top.prevCC configure -state disabled
+				unbusyCursor .
+				return
+			}
+			.ccWindow.top.nextCC configure -state normal
+			set LastProcessed [expr {$LastProcessed - 1}]
+			ProcessServerResult $LastProcessed
+			if {$LastProcessed < 2} { 
+				.ccWindow.top.prevCC configure -state disabled
 			}
 		}
 		unbusyCursor .
@@ -3123,17 +2295,28 @@ namespace eval CorrespondenceChess {
 	# If at last game already nothing happens
 	#----------------------------------------------------------------------
 	proc NextGame {} {
-		global ::CorrespondenceChess::CorrSlot ::CorrespondenceChess::num
-		set gamecount $::CorrespondenceChess::glgames
+		global ::CorrespondenceChess::CorrSlot ::CorrespondenceChess::LastProcessed
 
 		busyCursor .
 		# Regardless how the user opend this DB, find it! ;)
 		::CorrespondenceChess::CheckForCorrDB
 		if {$CorrSlot > -1} {
-			if {$num < $gamecount} {
-				set num [expr {$num + 1}]
-				SetHighlightedLine
-				::CorrespondenceChess::ProcessServerResult $::CorrespondenceChess::num
+			sc_base switch "clipbase"
+			if {$LastProcessed < 0} {
+				# for initalisation only
+				set LastProcessed 0
+				.ccWindow.top.prevCC configure -state disabled
+			}
+			if {$LastProcessed == [sc_base numGames]} { 
+				.ccWindow.top.nextCC configure -state disabled
+				unbusyCursor .
+				return 
+			}
+			.ccWindow.top.prevCC configure -state normal
+			set LastProcessed [expr {$LastProcessed + 1}]
+			ProcessServerResult $LastProcessed
+			if {$LastProcessed == [sc_base numGames]} { 
+				.ccWindow.top.nextCC configure -state disabled
 			}
 		}
 		unbusyCursor .
@@ -3144,6 +2327,7 @@ namespace eval CorrespondenceChess {
 	#----------------------------------------------------------------------
 	proc FetchGames {} {
 		global ::CorrespondenceChess::Inbox ::CorrespondenceChess::XfccFetchcmd ::CorrespondenceChess::CorrSlot
+
 		busyCursor .
 
 		# Regardless how the user opend this DB, find it! ;)
@@ -3161,14 +2345,10 @@ namespace eval CorrespondenceChess {
 					CallExternal "$XfccFetchcmd $Inbox"
 				}
 			}
-			# Fetch games that should be relayed from the ICCF Server
-			::CorrespondenceChess::updateConsole "info Fetching relayed games from ICCF..."
-			foreach g $::CorrespondenceChess::RelayGames {
-				::CorrespondenceChess::RelayGames $g
-			}
 			# process what was just retrieved
 			::CorrespondenceChess::ReadInbox 
 		}
+
 		unbusyCursor .
 	}
 
@@ -3187,24 +2367,13 @@ namespace eval CorrespondenceChess {
 			set inpath  "$Inbox/"
 			set outpath "$Outbox/"
 		}
-		set result [tk_dialog .roDialog "Scid: [tr CCDlgDeleteBoxes]" \
-				$::tr(CCDlgDeleteBoxesText) "" 1 $::tr(Yes) $::tr(No)]
-		if {$result == 0} {
-			foreach f [glob -nocomplain [file join $inpath *]] {
-				file delete $f
-			}
-			foreach f [glob -nocomplain [file join $outpath *]] {
-				file delete $f
-			}
-			set filename [scidConfigFile xfccstate]
-			file delete $filename
 
-			# clean also status information as they're now invalid!
-			set ::Xfcc::xfccstate {}
-
-			::CorrespondenceChess::emptyGamelist
+		foreach f [glob -nocomplain [file join $inpath *]] {
+			file delete $f
 		}
-
+		foreach f [glob -nocomplain [file join $outpath *]] {
+			file delete $f
+		}
 	}
 
 	#----------------------------------------------------------------------
@@ -3215,8 +2384,6 @@ namespace eval CorrespondenceChess {
 		global ::CorrespondenceChess::Inbox ::CorrespondenceChess::CorrSlot
 		global ::CorrespondenceChess::glccstart ::CorrespondenceChess::glgames windowsOS
 		global ::Xfcc::lastupdate ::Xfcc::xfccstate
-
-		set pgnopen 0
 
 		busyCursor .
 
@@ -3232,201 +2399,49 @@ namespace eval CorrespondenceChess {
 		set games 0
 		if {$CorrSlot > -1} {
 
-			# extract the number of the last move using Scids internal
-			# PGN parser as comments etc. might appear, and this number
-			# is not given via Xfcc. Similar for the event date.
-			sc_clipbase clear
-			sc_base switch "clipbase"
-			set game 0
-			set gamemoves {}
-			foreach f [glob -nocomplain [file join $inpath *]] {
-				catch {sc_base import file $f}
-				set game [expr {$game + 1}]
-				sc_game load $game
-				sc_move end
-				set number [sc_pos moveNumber]
-				set Date   [sc_game tags get Date ]
-				set Extra  [sc_game tags get Extra]
-				set extraTagsList [split $Extra "\n"]
-				foreach i $extraTagsList {
-					if { [string equal -nocase [lindex $i 0] "CmailGameName" ] } {
-						set CmailGameName [string range $i 15 end-1]
-					}
-				}
-				lappend gamemoves [list $CmailGameName $number $Date]
-			}
-
-			# generate a list of games retrieved by Xfcc. Add game-ID and
-			# timing to two lists: one holds all games and one holds
-			# those the user does not have the move (they may be skipped
-			# in display)
-			set xfcclist {}
-			set filelist {}
-			set skiplist {}
-			set sortmode "-ascii"
-
-			foreach xfccextra $::Xfcc::xfccstate {
-				set CmailGameName [lindex $xfccextra 0]
-				set criterion     0
-				set timepermove   0
-				set mytime        0
-				set opptime       0
-				set movestoTC     1
-				set tincrement    0
-				set moves         0
-				set myTurn        "false"
-				set TimeControl   "10/50"
-				set idx           [lsearch -exact -index 0 $gamemoves $CmailGameName]
-				set number        [lindex [lindex $gamemoves $idx] 1]
-				set Date          [lindex [lindex $gamemoves $idx] 2]
-				regsub -all {\.} $Date "" Date
-
-				foreach i $xfccextra {
-					if { [string equal -nocase [lindex $i 0] "myTurn" ] } {
-						set myTurn [string range $i 7 end]
-					}
-					if { [string equal -nocase [lindex $i 0] "mytime" ] } {
-						set mytime [string range $i 7 end]
-					}
-					if { [string equal -nocase [lindex $i 0] "opptime" ] } {
-						set opptime [string range $i 8 end]
-					}
-					if { [string equal -nocase [lindex $i 0] "TimeControl" ] } {
-						set TCstr [string range $i 13 end]
-						# Calculate the moves to the next time control.
-						# Makes sense only if no Fischer Clock is used.
-						if { [regexp {/} $TCstr ]} {
-							set TC [split $TCstr "/"]
-							set moves      [ lindex $TC 0]
-							set tincrement [ lindex $TC 1]
-							regsub -all "d.*" $tincrement "" tincrement
-							set movestoTC [ expr {$moves - ($number % $moves)}]
-						} else {
-							# Fischer Clock
-							set moves 1
-						}
-					}
-				}
-				set mytime  [expr {int($mytime / 60.0 / 24.0)}]
-
-				# Calculate the time per move till next TC: include also
-				# the next time control periode in this calculation
-				set timepermove1 [expr {($mytime+$tincrement) / ($movestoTC+$moves)}]
-				set timepermove2 [expr {$mytime / $movestoTC}]
-
-				# Time per move is the minimum of the two above
-				set timepermove [expr min($timepermove1, $timepermove2)]
-
-				# Define criteria to be added to the list to sort. Classic
-				# mode is handled below by resorting the clipbase
-				switch -regexp -- $::CorrespondenceChess::ListOrder \
-					"$::CorrespondenceChess::CCOrderMyTime" {
-						set criterion $mytime
-						set sortmode "-integer"
-					} \
-					"$::CorrespondenceChess::CCOrderOppTime" {
-						set criterion $opptime
-						set sortmode "-integer"
-					} \
-					"$::CorrespondenceChess::CCOrderTimePerMove" {
-						set criterion $timepermove
-						set sortmode "-real"
-					} \
-					"$::CorrespondenceChess::CCOrderStartDate" {
-						set criterion $Date
-						set sortmode "-integer"
-					}
-
-				if {($myTurn == "false") && ($::CorrespondenceChess::ListOnlyOwnMove == 1) } {
-					lappend skiplist [list $CmailGameName $criterion]
-				} else {
-					lappend filelist [list $CmailGameName $criterion]
-				}
-					lappend xfcclist [list $CmailGameName]
-			}
-
-			# sort file list by mytime, ascending
-			set filelist [lsort -index 1 "$sortmode" $filelist]
-			set skiplist [lsort -index 1 "$sortmode" $skiplist]
-
 			::CorrespondenceChess::emptyGamelist
 			sc_clipbase clear
 			sc_base switch "clipbase"
-
-			# Loop over all files and add all game files that are not
-			# Xfcc (ie. eMail chess)
 			foreach f [glob -nocomplain [file join $inpath *]] {
-				set id [file tail $f]
-				regsub -all ".pgn" $id "" id
-				if { [lsearch $xfcclist "$id"] < 0 } {
-					set filelist [concat $id $filelist]
-				}
-			}
-
-			# import the games on basis of the sorted list created above
-			foreach f $filelist {
-				set filename "[file join $inpath [lindex $f 0]].pgn"
-				if {[catch {sc_base import file $filename} result]} {
-					::CorrespondenceChess::updateConsole "info Error retrieving server response from $filename"
+				if {[catch {sc_base import file $f} result]} {
+					::CorrespondenceChess::updateConsole "info Error retrieving server response from $pgnfile"
 				} else {
 					# count the games processed successfully
 					set games [expr {$games+1}]
 				}
 			}
-
 			set glgames $games
 
-			# For Classic sorting: sort the clipbase, this is easier
-			# to implement than individual sorting upon import.
-			if {$::CorrespondenceChess::ListOrder == $::CorrespondenceChess::CCOrderClassic} {
-				set sortCriteria "Site, Event, Round, Result, White, Black"
-				progressWindow "Scid" "Sorting the database..."
-				set err [catch {sc_base sort $sortCriteria \
-										{changeProgressWindow "Sorting..."} \
-									 } result]
-				closeProgressWindow
-			}
+			sc_base switch "clipbase"
+
+			# Sort the clipbase to get a sorted list of games in CC
+			# window and process them in sorted order by prev/next
+			set sortCriteria "Site, Event, Round, Result, White, Black"
+			progressWindow "Scid" "Sorting the database..."
+			set err [catch {sc_base sort $sortCriteria \
+									{changeProgressWindow "Sorting..."} \
+								 } result]
+			closeProgressWindow
 
 
 			if {$glgames > 0} {
 				# work through all games processed and fill in the gamelist 
 				# in the console window
-
 				for {set game $glccstart} {$game < [expr {$games+1}]} {incr game} {
 
-					set clockW "no update"; set clockB "no update";
-					set var "";             set noDB "";
-					set noBK "";            set noTB ""; 
-					set noENG "";           set mess ""
-					set TC "";              set drawoffer "false";
-					set wc "";              set bc "";
-					set YM " ? ";
+					set wc "";
+					set bc "";
 
 					sc_base switch "clipbase"
 					sc_game load $game
 					# get the header
 					set Event  [sc_game tags get Event]
 					set Site   [sc_game tags get Site ]
-					set Date   [sc_game tags get Date ]
 					set White  [sc_game tags get White]
 					set Black  [sc_game tags get Black]
 					set Result [sc_game tags get Result]
 					set Extra  [sc_game tags get Extra]
 					# CmailGameName is an extra header :(
-					set extraTagsList [split $Extra "\n"]
-					foreach i $extraTagsList {
-						if { [string equal -nocase [lindex $i 0] "CmailGameName" ] } {
-							set CmailGameName [string range $i 15 end-1]
-						}
-					}
-					#
-					# Switch to the real database to retrieve locally
-					# stored additions like addresses, countries etc.
-					# Disable refresh for SearchGame to speed up the list
-					# building considerably
-					SearchGame $Event $Site $White $Black $CmailGameName $result 0
-					sc_base switch $CorrSlot
-					set Extra  [sc_game tags get Extra]
 					set extraTagsList [split $Extra "\n"]
 
 					# ... extract it as it contains the unique ID
@@ -3447,50 +2462,24 @@ namespace eval CorrespondenceChess {
 							set bc [string tolower $bc]
 							set bc "flag_$bc"
 						}
-						if { [string equal -nocase [lindex $i 0] "WhiteCountry" ] } {
-							set wc [string range $i 14 end-1]
-							set wc [string tolower $wc]
-							set wc "flag_$wc"
-						}
-						if { [string equal -nocase [lindex $i 0] "BlackCountry" ] } {
-							set bc [string range $i 14 end-1]
-							set bc [string tolower $bc]
-							set bc "flag_$bc"
-						}
-						if { [string equal -nocase [lindex $i 0] "TimeControl" ] } {
-							set TC [string range $i 13 end-1]
-						}
 					}
-					sc_move end
-					set number [sc_pos moveNumber]
-					set move   [sc_game info previousMoveNT]
-					set side   [sc_pos side]
-
-					if {$side == "white"} {
-						set number [expr {$number-1}]
-						set lastmove "$number...$move"
-					} else {
-						set lastmove "$number. $move"
-					}
-					::CorrespondenceChess::updateConsole "info TC (base): $TC..."
 
 					if {$Mode == "EM"} {
 						::CorrespondenceChess::updateGamelist $CmailGameName "EML" \
-								$Event $Site $Date $White $Black "" "" "" "" $TC "" "" \
-								$wc $bc "" "" $lastmove "false"
-					} elseif {$Mode == "Relay"} {
-						::CorrespondenceChess::updateGamelist $CmailGameName "REL" \
-								$Event $Site $Date $White $Black "" "" "" "" $TC "" "" \
-								$wc $bc "" "" $lastmove "false"
-					} elseif {$Mode == "Postal"} {
-						::CorrespondenceChess::updateGamelist $CmailGameName "POS" \
-								$Event $Site $Date $White $Black "" "" "" "" $TC "" "" \
-								$wc $bc "" "" $lastmove "false"
+								$Event $Site $White $Black "" "" "" "" "" "" "" $wc $bc ""
+
 					} else {
+						# search for extra information from Xfcc server
+						set YM " ? ";  
+						set clockW "no update"; set clockB "no update";
+						set var "";             set noDB "";
+						set noBK "";            set noTB ""; 
+						set noENG "";           set mess ""
+
 						# actually check the $xfccstate list for the current
 						# values. If it is not set (e.g. only inbox processed
 						# buy no current retrieval) set some default values.
-							foreach xfccextra $::Xfcc::xfccstate {
+						foreach xfccextra $::Xfcc::xfccstate {
 							if { [string equal -nocase [lindex $xfccextra 0] "$CmailGameName" ] } {
 								foreach i $xfccextra {
 									if { [string equal -nocase [lindex $i 0] "myTurn" ] } {
@@ -3511,7 +2500,7 @@ namespace eval CorrespondenceChess {
 										regsub -all "\}" $clockB "" clockB
 									}
 									if { [string equal -nocase [lindex $i 0] "drawOffered" ] } {
-										set drawoffer [string range $i 12 end]
+										set drawoffer [string range $i 7 end]
 									}
 									if { [string equal -nocase [lindex $i 0] "variant" ] } {
 										set var [string range $i 8 end]
@@ -3528,9 +2517,6 @@ namespace eval CorrespondenceChess {
 									if { [string equal -nocase [lindex $i 0] "noEngines" ] } {
 										set noENG [string range $i 10 end]
 									}
-									if { [string equal -nocase [lindex $i 0] "TimeControl" ] } {
-										set TC [string range $i 13 end-1]
-									}
 									if { [string equal -nocase [lindex $i 0] "message" ] } {
 										set mess [string range $i 9 end-1]
 									}
@@ -3544,12 +2530,14 @@ namespace eval CorrespondenceChess {
 						} elseif {$Result == "="} {
 							set YM " = "
 						}
-						::CorrespondenceChess::updateConsole "info TC (xfcc): $TC..."
 						::CorrespondenceChess::updateGamelist $CmailGameName $YM \
-								$Event $Site $Date $White $Black $clockW $clockB $var \
-								$noDB $noBK $noTB $noENG $wc $bc $mess $TC $lastmove $drawoffer
+								$Event $Site $White $Black $clockW $clockB $var \
+								$noDB $noBK $noTB $noENG $wc $bc $mess
 					}
 				}
+				.ccWindow.top.nextCC configure -state normal
+				.ccWindow.top.sendCC configure -state normal
+
 				# ::CorrespondenceChess::num is the game currently shown
 				set ::CorrespondenceChess::num 0
 				# current game is game 0 -> go to game 1 in the list
@@ -3585,7 +2573,6 @@ namespace eval CorrespondenceChess {
 			::CorrespondenceChess::attache ::CorrespondenceChess::subject \
 			::CorrespondenceChess::bccaddr ::CorrespondenceChess::CorrSlot
 		global emailData
-		global windowsOS
 
 		busyCursor .
 
@@ -3643,12 +2630,7 @@ namespace eval CorrespondenceChess {
 				set to   $BlackNA
 			}
 
-			# get rid of spaces in names by using Windows internal real names
-			if {$windowsOS} {
-				catch {set mailer [file attributes $mailer -shortname]}
-			}
-
-			set title   "scid mail 1 game ($CmailGameName)"
+			set title   "scid mail 1 game <$CmailGameName>"
 			set body    "Final FEN: "
 			append body [sc_pos fen]
 			append body "\n\n"
@@ -3670,20 +2652,16 @@ namespace eval CorrespondenceChess {
 			#            a parameter for attachements
 			switch -regexp -- $::CorrespondenceChess::mailermode \
 			"mailx" {
-				set callstring "$mailer $subject \"$title\" -b $bccaddr $attache \"$pgnfile\" $to <\"$pgnfile\""
+				set callstring "$mailer $subject \"$title\" -b $bccaddr $attache $pgnfile $to <$pgnfile &"
 			} \
 			"mozilla" {
-				if {$windowsOS} {
-					set callstring "$mailer -compose subject='$title',bcc=$bccaddr,attachment='file:///$pgnfile',to=$to,body=$body"
-				} else {
-					set callstring "$mailer -compose subject='$title',bcc=$bccaddr,attachment='file://$pgnfile',to='$to',body='$body'"
-				}
+				set callstring "$mailer -compose 'subject=$title,bcc=$bccaddr,attachment=file://$pgnfile,to=$to,body=$body' &"
 			} \
 			"mailurl" {
-				set callstring "$mailer \'mailto:\<$to\>?bcc=$bccaddr\&subject=$title\&attach=$pgnfile\&body=$body\'"
+				set callstring "$mailer \'mailto:\<$to\>?bcc=$bccaddr\&subject=$title\&attach=$pgnfile\&body=$body\' &"
 			} \
 			"claws" {
-				set callstring "$mailer --compose \'mailto:$to?subject=$title&cc=$bccaddr&body=$body\' --attach \"$pgnfile\""
+				set callstring "$mailer --compose \'mailto:$to?subject=$title&cc=$bccaddr&body=$body\' --attach $pgnfile &"
 			}
 			::CorrespondenceChess::updateConsole "info Calling eMail program: $mailer..."
 			CallExternal $callstring
@@ -3713,16 +2691,17 @@ namespace eval CorrespondenceChess {
 	# Send the move to the opponent via XFCC or eMail
 	#----------------------------------------------------------------------
 	proc SendMove {resign claimDraw offerDraw acceptDraw } {
-		global ::CorrespondenceChess::Outbox
-		global ::CorrespondenceChess::XfccSendcmd
-		global ::CorrespondenceChess::CorrSlot
-		global ::CorrespondenceChess::XfccConfirm 
-		global ::CorrespondenceChess::num
+		global ::CorrespondenceChess::Outbox   ::CorrespondenceChess::XfccSendcmd \
+				 ::CorrespondenceChess::CorrSlot num
 
 		busyCursor .
 
 		::CorrespondenceChess::CheckForCorrDB
 		if {$CorrSlot > -1} {
+
+			# Go to the last move is important to send the comment for
+			# the last move only not the comment for the current game
+			# position!
 			sc_move end
 
 			set Extra [sc_game tags get Extra]
@@ -3732,14 +2711,6 @@ namespace eval CorrespondenceChess {
 			foreach i $extraTagsList {
 				if { [string equal -nocase [lindex $i 0] "CmailGameName" ] } {
 					set CmailGameName [string range $i 15 end-1]
-				}
-				if { [string equal -nocase [lindex $i 0] "WhiteAddress" ] } {
-					set WhiteAdr [split [string range $i 14 end-1] ";"]
-					set WhiteAdr [split [string range $i 14 end-1] ";"]
-				}
-				if { [string equal -nocase [lindex $i 0] "BlackAddress" ] } {
-					set BlackAdr [string range $i 14 end-1]
-					set BlackAdr [split [string range $i 14 end-1] ";"]
 				}
 			}
 
@@ -3752,10 +2723,6 @@ namespace eval CorrespondenceChess {
 			set move      [sc_game info previousMoveNT]
 			set comment   [sc_pos getComment]
 			set Event     [sc_game tags get Event]
-
-			# Throw away everything in [] as often as it exists
-			# This matches [%ccsnt] as well as scid marker codes
-			regsub -all {\[[^\]]*\]} $comment {} comment
 
 			# moveNumber gives the number of the next full move. This is
 			# one to high in case of playing black. Note that for this
@@ -3771,70 +2738,43 @@ namespace eval CorrespondenceChess {
 			.ccWindow.bottom.id tag add hlsent$CmailGameName $num.0 [expr {$num+1}].0 
 			.ccWindow.bottom.id tag configure hlsent$CmailGameName -background yellow -font font_Bold
 
-			set DlgBoxText "[::tr CCDlgConfirmMoveText]\n\n$name-$gameid:\n\t$movecount. $move\n\t{$comment}"
-			if {$resign == 1} {
-				set DlgBoxText "$DlgBoxText\n\n[::tr CCResign]"
-			} elseif {$acceptDraw == 1} {
-				set DlgBoxText "$DlgBoxText\n\n[::tr CCAcceptDraw]"
-			} elseif {$offerDraw  == 1} {
-				set DlgBoxText "$DlgBoxText\n\n[::tr CCofferDraw]"
-			} elseif {$claimDraw  == 1} {
-				set DlgBoxText "$DlgBoxText\n\n[::tr CCClaimDraw]"
-			}
-
-			set result 0
-			if {$::CorrespondenceChess::XfccConfirm == 1} {
-				set result [tk_dialog .roDialog "Scid: [tr CCDlgConfirmMove]" \
-						$DlgBoxText "" 1 $::tr(Yes) $::tr(No)]
-			}
-			if {$result == 0} {
-				# Go to the last move is important to send the comment for
-				# the last move only not the comment for the current game
-				# position!
-
-				# If Event = "Email correspondence game"
-				# treat it as cmail game that is send by mail, otherwise it is
-				# Xfcc and sent accordingly
-				set Mode [::CorrespondenceChess::CheckMode]
-				if {$Mode == "EM"} {
-					eMailMove
-				} elseif {$Mode == "XFCC"} {
-
-					if {$::CorrespondenceChess::XfccInternal == 1} {
-						# use internal Xfcc-handling
-						::Xfcc::ReadConfig $::CorrespondenceChess::xfccrcfile
-						::Xfcc::Send $name $gameid $movecount $move $comment \
-								$resign $acceptDraw $offerDraw $claimDraw
-					} else {
-						if {[file executable "$XfccSendcmd"]} {
-							set callstring "$XfccSendcmd $Outbox $name $gameid $movecount $move \"$comment\" $resign $claimDraw $offerDraw $acceptDraw &"
-
-							::CorrespondenceChess::updateConsole "info Spawning external send tool $XfccSendcmd..."
-							CallExternal $callstring
-						}
-					}
-				} elseif {$Mode == "Postal"} {
-					# produce a postcard
-				}
-
-				# Save the game once the move is sent
-				sc_game save [sc_game number]
-
-				# setting "noMarkCodes" to 1 would drop the timing comments
-				# inserted e.g. by SchemingMind. Do not overwrite eMail based
-				# games as the mailer might not have sent them and most
-				# mailers load the file right before transmission.
-				if {!(($Mode == "EM") || ($Mode == "Relay"))} {
-					sc_base export "current" "PGN" $pgnfile -append 0 -comments 1 -variations 1 \
-								-space 1 -symbols 1 -indentC 0 -indentV 0 -column 0 -noMarkCodes 0 -convertNullMoves 1
-				}
-
-				# Everything done, set background to green
-				.ccWindow.bottom.id tag configure hlsent$CmailGameName -background green -font font_Bold
+			# If Event = "Email correspondence game"
+			# treat it as cmail game that is send by mail, otherwise it is
+			# Xfcc and sent accordingly
+			set Mode [::CorrespondenceChess::CheckMode]
+			if {$Mode == "EM"} {
+				eMailMove
 			} else {
-				# mark games with unconfirmed moves in gray:
-				.ccWindow.bottom.id tag configure hlsent$CmailGameName -background gray -font font_Small
+				if {$::CorrespondenceChess::XfccInternal == 1} {
+					# use internal Xfcc-handling
+					::Xfcc::ReadConfig $::CorrespondenceChess::xfccrcfile
+					::Xfcc::Send $name $gameid $movecount $move $comment \
+							$resign $acceptDraw $offerDraw $claimDraw
+				} else {
+					if {[file executable "$XfccSendcmd"]} {
+						set callstring "$XfccSendcmd $Outbox $name $gameid $movecount $move \"$comment\" $resign $claimDraw $offerDraw $acceptDraw &"
+
+						::CorrespondenceChess::updateConsole "info Spawning external send tool $XfccSendcmd..."
+						CallExternal $callstring
+					}
+				}
 			}
+
+			# Save the game once the move is sent
+			sc_game save [sc_game number]
+
+			# setting "noMarkCodes" to 1 would drop the timing comments
+			# inserted e.g. by SchemingMind. Do not overwrite eMail based
+			# games as the mailer might not have sent them and most
+			# mailers load the file right before transmission.
+			if {!($Mode == "EM")} {
+				sc_base export "current" "PGN" $pgnfile -append 0 -comments 1 -variations 1 \
+							-space 1 -symbols 1 -indentC 0 -indentV 0 -column 0 -noMarkCodes 0 -convertNullMoves 1
+			}
+
+			# Everything done, set background to green
+			.ccWindow.bottom.id tag configure hlsent$CmailGameName -background green -font font_Bold
+
 		}
 		unbusyCursor .
 	}
@@ -3852,18 +2792,12 @@ namespace eval CorrespondenceChess {
 	if {[catch { package require http }]} {
 	  ::splash::add "http package not found, disabling internal Xfcc support"
 		set XfccInternal -1
-	} else {
-		::http::config -useragent $::Xfcc::useragent
 	}
 
 	if {[catch {package require tdom}]} {
 		::splash::add "tDOM package not found, disabling internal Xfcc support"
 		set XfccInternal -1
 	}
-
-	::CorrespondenceChess::checkInOutbox
-	::CorrespondenceChess::checkXfccrc
-	::CorrespondenceChess::checkCorrBase
 	#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 }
 
