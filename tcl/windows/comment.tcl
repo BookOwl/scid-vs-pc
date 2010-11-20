@@ -57,6 +57,7 @@ proc ::commenteditor::Open {} {
   }
 
   toplevel $w
+  wm resizable $w 0 1
   # wm state $w withdrawn
 
   bind $w <F1> {helpWindow Comment}
@@ -139,8 +140,7 @@ proc ::commenteditor::Open {} {
   ### Comment frame
 
   frame $w.cf
-  frame $w.cf.buttons
-  text $w.cf.text -width 16 -height 2 -wrap word -font font_Regular \
+  text $w.cf.text -width 16 -height 3 -wrap word -font font_Regular \
     -yscrollcommand {.commentWin.cf.scroll set} -setgrid 1
   scrollbar $w.cf.scroll -command ".commentWin.cf.text yview"
   # bindFocusColors $w.cf.text
@@ -152,18 +152,7 @@ proc ::commenteditor::Open {} {
   bind $w.cf.text <Control-y> {catch {.commentWin.cf.text edit redo}}
   bind $w.cf.text <Control-r> {catch {.commentWin.cf.text edit redo}}
 
-  button $w.cf.buttons.clear -textvar ::tr(Clear) \
-      -command [namespace code [list ClearComments .commentWin]]
-  set helpMessage(E,$w.cf.buttons.clear) {Clear this comment}
-  button $w.cf.buttons.revert -textvar ::tr(Revert) \
-      -command ::commenteditor::Refresh
-  set helpMessage(E,$w.cf.buttons.revert) {Revert to the stored comment}
-
   pack $w.cf -side top -padx 5 -expand 1 -fill both
-
-  pack $w.cf.buttons -side right -padx 5
-  pack $w.cf.buttons.clear -side top -pady 2 -fill x
-  pack $w.cf.buttons.revert -side bottom -pady 2 -fill x
 
   pack $w.cf.scroll -side right -fill y
   pack $w.cf.text -side left -expand 1 -fill both
