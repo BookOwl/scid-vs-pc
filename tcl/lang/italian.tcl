@@ -221,11 +221,11 @@ menuText I Play "Gioca" 0
 # --- Correspondence Chess
 menuText I CorrespondenceChess "Gioco per corrispondenza" 0 {Funzioni per il gioco per corrispondenza tramite eMail e Xfcc}
 menuText I CCConfigure "Configura..." 0 {Configurazione generale e degli strumenti esterni}
+# ====== TODO To be translated ======
+menuText I CCConfigRelay "Configure observations..." 10 {Configure games to be observed}
 menuText I CCOpenDB "Apri Database..." 0 {Apri il database di default per il gioco per corrispondenza}
 menuText I CCRetrieve "Trova Partite" 0 {Trova le partite tramite l'aiuto esterno Xfcc}
 menuText I CCInbox "Processa Posta in Arrivo" 0 {Processa tutti i file nella posta in arrivo di Scid}
-menuText I CCPrevious "Partita precedente" 0 {Va alla partita precedente in Posta in Arrivo}
-menuText I CCNext "Partita seguente" 0 {Va alla partita seguente in Posta in Arrivo}
 menuText I CCSend "Spedisci Mossa" 0 {Spedisce la tua mossa tramite eMail o Xfcc}
 menuText I CCResign "Abbandona" 0 {Abbandona la partita (non tramite eMail)}
 menuText I CCClaimDraw "Richiedi Patta" 0 {Spedisce la mossa e richiede la patta (non tramite eMail)}
@@ -233,6 +233,10 @@ menuText I CCOfferDraw "Offri Patta" 0 {Spedisce la mossa e offre la patta (non 
 menuText I CCAcceptDraw "Accetta Patta" 0 {Accetta l'offerta di patta (non tramite eMail)}
 menuText I CCNewMailGame "Nuova Partita con eMail..." 0 {Avvia una nuova partita tramite eMail}
 menuText I CCMailMove "Mossa per eMail..." 0 {Spedisce la mossa all'avversariio tramite eMail}
+# ====== TODO To be translated ======
+menuText I CCGamePage "Game Page..." 0 {Call up the game via the web browser}
+# ====== TODO To be translated ======
+menuText I CCEditCopy "Copy Gamelist to Clipbase" 0 {Copy the games as CSV list to clipbase}
 
 # Options menu:
 menuText I Options "Opzioni" 0

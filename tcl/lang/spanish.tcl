@@ -229,20 +229,34 @@ menuText S ToolsImportFile "Importar un archivo de partidas PGN..." 2 \
 menuText S ToolsStartEngine1 "Empezar motor 1" 0  {Empezar motor 1}
 menuText S ToolsStartEngine2 "Empezar motor 2" 0  {Empezar Motor 2}
 menuText S Play "Jugar" 0
-menuText S CorrespondenceChess "Ajedrez por Correo" 0 {Funciones para Ajedrez por Correo basado en eMail y Xfcc}
-menuText S CCConfigure "Configurar..." 0 {Configurar herramientas externas y Setup general}
-menuText S CCOpenDB "Abrir base de datos..." 0 {Abrir la base de Correo por defecto}
-menuText S CCRetrieve "Reparar partidas" 0 {Reparar partidas via Ayuda externa (Xfcc)}
-menuText S CCInbox "Procesar correo entrante" 0 {Procesar todos los ficheros en Correo entrante de Scid (Inbox)}
-menuText S CCPrevious "Partida previa" 0 {Previa partida en correo entrante (Inbox)}
-menuText S CCNext "Partida siguiente" 0 {Próxima partida en correo entrante (Inbox)}
-menuText S CCSend "Enviar movimiento" 0 {Enviar tu movimiento via eMail o ayuda externa (Xfcc)}
-menuText S CCResign "Abandonar" 0 {Abandonar}
-menuText S CCClaimDraw "Reclamar tablas" 0 {Enviar un movimiento y reclamar tablas}
-menuText S CCOfferDraw "Ofrecer tablas" 0 {Enviar un movimiento y ofrecer tablas}
-menuText S CCAcceptDraw "Aceptar tablas" 0 {Aceptar un ofrecimiento de tablas}
-menuText S CCNewMailGame "Nueva partida email..." 0 {Empezar una nueva partida eMail}
-menuText S CCMailMove "Enviar jugada via email..." 0 {Envía el movimiento via eMail al oponente}
+menuText S CorrespondenceChess "Ajedrez por correo" 0 \
+  {Funciones para ajedrez por correo basado en email y Xfcc}
+menuText S CCConfigure "Configurar..." 0 \
+  {Configura herramientas externas y configuración general}
+menuText S CCConfigRelay "Configurar observaciones..." 10 {Configurar partidas para ser observadas}
+menuText S CCOpenDB "Abrir base de datos..." 0 \
+  {Abrir la base de correo por defecto}
+menuText S CCRetrieve "Reparar partidas" 0 \
+  {Repara partidas vía ayuda externa (Xfcc)}
+menuText S CCInbox "Procesar correo entrante" 0 \
+  {Procesa todos los ficheros en correo entrante de Scid (Inbox)}
+menuText S CCSend "Enviar movimiento" 0 \
+  {Envia tu movimiento via eMail o ayuda externa (Xfcc)}
+menuText S CCResign "Abandonar" 0 {Abandona}
+menuText S CCClaimDraw "Reclamar tablas" 0 \
+  {Envia un movimiento y reclama tablas}
+menuText S CCOfferDraw "Ofrecer tablas" 0 \
+  {Envia un movimiento y ofrecer tablas}
+menuText S CCAcceptDraw "Aceptar tablas" 0 {Acepta un ofrecimiento de tablas}
+menuText S CCNewMailGame "Nueva partida email..." 0 \
+  {Empeza una nueva partida por email}
+menuText S CCMailMove "Enviar jugada via email..." 0 \
+  {Envía el movimiento via email al oponente}
+menuText S CCGamePage "Página de la partida..." 0 \
+  {Abre la partida desde el navegador}
+menuText S CCEditCopy "Copiar lista de partidas a Clipbase" 0 \
+  {Copia las partidas como una lista CSV a Clipbase}
+
 
 # Options menu:
 menuText S Options "Opciones" 0

@@ -247,15 +247,12 @@ menuText E ToolsStartEngine2 "Start engine 2" 0  {Start engine 2}
 menuText E Play "Play" 0
 
 # --- Correspondence Chess
-menuText E CorrespondenceChess "Correspondence Chess" 2 {Functions for eMail and Xfcc based correspondence chess}
+menuText E CorrespondenceChess "Correspondence Chess" 0 {Functions for eMail and Xfcc based correspondence chess}
 menuText E CCConfigure "Configure..." 0 {Configure external tools and general setup}
+menuText E CCConfigRelay "Observe games..." 10 {Configure games to be observed}
 menuText E CCOpenDB "Open Database..." 0 {Open the default Correspondence database}
 menuText E CCRetrieve "Retrieve Games" 0 {Retrieve games via external (Xfcc-)helper}
-
 menuText E CCInbox "Process Inbox" 8 {Process all files in scids Inbox}
-
-menuText E CCPrevious "Previous Game" 0 {Go to previous game in Inbox}
-menuText E CCNext "Next Game" 0 {Go to next game in Inbox}
 menuText E CCSend "Send Move" 0 {Send your move via eMail or external (Xfcc-)helper}
 
 menuText E CCResign "Resign" 1 {Resign (not via eMail)}
@@ -265,6 +262,10 @@ menuText E CCAcceptDraw "Accept Draw" 0 {Accept a draw offer (not via eMail)}
 
 menuText E CCNewMailGame "New eMail Game..." 2 {Start a new eMail game}
 menuText E CCMailMove "Mail Move..." 0 {Send the move via eMail to the opponent}
+menuText E CCGamePage "Game Page..." 0 {Call up the game via the web browser}
+
+# menu in cc window:
+menuText E CCEditCopy "Copy Gamelist to Clipbase" 0 {Copy the games as CSV list to clipbase}
 
 
 #  B    GHiJKL    Q  TUV XYZ

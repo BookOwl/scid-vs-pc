@@ -232,39 +232,26 @@ menuText B ToolsImportOne "Importa PGN texto..." 0 \
 menuText B ToolsImportFile "Importa arquivo de jogos PGN..." 7 \
   {Importa jogos de um arquivo PGN}
 # ====== TODO To be translated ======
-menuText B ToolsStartEngine1 "Start engine 1" 0  {Start engine 1}
+menuText B ToolsStartEngine1 "Iniciar engine 1" 0  {Inicia engine 1}
+menuText B ToolsStartEngine2 "Iniciar engine 2" 0  {Inicia engine 2}
+menuText B Play "Jogar" 0
+menuText B CorrespondenceChess "Xadrez por correspondência" 0 {Funções para jogar xadrez por correspondência usando eMail e Xfcc}
+menuText B CCConfigure "Configurar..." 0 {Configura ferramentas externas e configuração geral}
 # ====== TODO To be translated ======
-menuText B ToolsStartEngine2 "Start engine 2" 0  {Start engine 2}
-# ====== TODO To be translated ======
-menuText B Play "Play" 0
-# ====== TODO To be translated ======
-menuText B CorrespondenceChess "Correspondence Chess" 0 {Functions for eMail and Xfcc based correspondence chess}
-# ====== TODO To be translated ======
-menuText B CCConfigure "Configure..." 0 {Configure external tools and general setup}
-# ====== TODO To be translated ======
-menuText B CCOpenDB "Open Database..." 0 {Open the default Correspondence database}
-# ====== TODO To be translated ======
-menuText B CCRetrieve "Retrieve Games" 0 {Retrieve games via external (Xfcc-)helper}
-# ====== TODO To be translated ======
-menuText B CCInbox "Process Inobx" 0 {Process all files in scids Inbox}
-# ====== TODO To be translated ======
-menuText B CCPrevious "Previous Game" 0 {Go to previous game in Inbox}
-# ====== TODO To be translated ======
-menuText B CCNext "Next Game" 0 {Go to next game in Inbox}
-# ====== TODO To be translated ======
-menuText B CCSend "Send Move" 0 {Send your move via eMail or external (Xfcc-)helper}
-# ====== TODO To be translated ======
-menuText B CCResign "Resign" 0 {Resign (not via eMail)}
-# ====== TODO To be translated ======
-menuText B CCClaimDraw "Claim Draw" 0 {Send move and claim a draw (not via eMail)}
-# ====== TODO To be translated ======
-menuText B CCOfferDraw "Offer Draw" 0 {Send move and offer a draw (not via eMail)}
-# ====== TODO To be translated ======
-menuText B CCAcceptDraw "Accept Draw" 0 {Accept a draw offer (not via eMail)}
-# ====== TODO To be translated ======
-menuText B CCNewMailGame "New eMail Game..." 0 {Start a new eMail game}
-# ====== TODO To be translated ======
-menuText B CCMailMove "Mail Move..." 0 {Send the move via eMail to the opponent}
+menuText B CCConfigRelay "Observe games..." 10 {Configure games to be observed}
+menuText B CCOpenDB "Abrir base..." 0 {Abre a base de correspondência padrão}
+menuText B CCRetrieve "Recupera jogos" 0 {Recupera jogos via (Xfcc-)}
+menuText B CCInbox "Processa caixa de entrada" 0 {Processa todos os arquivos na caixa de entrada do Scid}
+menuText B CCSend "Enviar movimento" 0 {Envia seu movimento via eMail ou (Xfcc-)}
+menuText B CCResign "Resignar" 0 {Aceita a derrota (não via eMail)}
+menuText B CCClaimDraw "Declarar empate" 0 {Envia o movimento e declara empate (não via eMail)}
+menuText B CCOfferDraw "Oferecer empate" 0 {Envia o movimento e oferece empate (não via eMail)}
+menuText B CCAcceptDraw "Aceitar empate" 0 {Aceita uma oferta de empate (não via eMail)}
+menuText B CCNewMailGame "Novo jogo por eMail..." 0 {Inicia um novo jogo por eMail}
+menuText B CCMailMove "Enviar movimento..." 0 {Envia movimento ao oponente via eMaail}
+menuText B CCGamePage "Página do jogo..." 0 {Chama o jogo através do browser}
+menuText B CCEditCopy "Copiar Lista de Jogos para a base de cópia" 0 {Copia os jogos no formato CSV para a base de cópia}
+
 
 # Options menu:
 menuText B Options "Opcoes" 0

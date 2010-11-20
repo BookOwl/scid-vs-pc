@@ -240,20 +240,17 @@ menuText W ToolsStartEngine1 "Starta schackmotor 1" 0  {Starta schackmotor 1}
 menuText W ToolsStartEngine2 "Starta schackmotor 2" 0  {Starta schackmotor 2}
 # ====== TODO To be translated ======
 menuText W Play "Spela" 0
-# ====== TODO To be translated ======
 menuText W CorrespondenceChess "Korrespondensschack" 0 {Funktioner för eMail och Xfcc baserad Korrespondensschack}
 # ====== TODO To be translated ======
 menuText W CCConfigure "Konfigurera..." 0 {Konfigurera externa verktyg och generella inställningar}
+# ====== TODO To be translated ======
+menuText W CCConfigRelay "Konfigurera observationer..." 10 {Konfigurera partier att observera}
 # ====== TODO To be translated ======
 menuText W CCOpenDB "Öppna Databas..." 0 {Öppna standardkorrespondensdatabasen}
 # ====== TODO To be translated ======
 menuText W CCRetrieve "Hämta Partier" 0 {Hämta partier via extern (Xfcc-)hjälpare}
 # ====== TODO To be translated ======
 menuText W CCInbox "Hantera Inkorg" 0 {Hantera alla filer i Scids Inkorg}
-# ====== TODO To be translated ======
-menuText W CCPrevious "Förra partiet" 0 {Gå till förra partiet i Inkorgen}
-# ====== TODO To be translated ======
-menuText W CCNext "Nästa Parti" 0 {Gå till nästa parti i Inkorgen}
 # ====== TODO To be translated ======
 menuText W CCSend "Skicka Drag" 0 {Skicka ditt drag via eMail eller extern (Xfcc-)hjälpare}
 # ====== TODO To be translated ======
@@ -268,6 +265,11 @@ menuText W CCAcceptDraw "Acceptera Remi" 0 {Acceptera en erbjuden Remi (inte via
 menuText W CCNewMailGame "Nytt eMail-parti..." 0 {Starta ett nytt eMail-parti}
 # ====== TODO To be translated ======
 menuText W CCMailMove "Skicka Drag..." 0 {Skicka draget via eMail till motståndaren}
+# ====== TODO To be translated ======
+menuText W CCGamePage "Partisida..." 0 {Starta upp partiet via webläsaren}
+# ====== TODO To be translated ======
+menuText W CCEditCopy "Kopiera partilista till Clipbase" 0 {Kopiera partierna som CSV-lista till Clipbase}
+
 
 # Options menu:
 menuText W Options "Alternativ" 2

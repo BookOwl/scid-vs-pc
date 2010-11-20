@@ -241,40 +241,28 @@ menuText N ToolsImportOne "Een PGN partij importeren..." 4 \
   {Importeer PGN partij}
 menuText N ToolsImportFile "PGN database importeren..." 4 \
   {Importeer PGN bestand}
-# ====== TODO To be translated ======
 menuText N ToolsStartEngine1 "Start engine 1" 0  {Start engine 1}
-# ====== TODO To be translated ======
 menuText N ToolsStartEngine2 "Start engine 2" 0  {Start engine 2}
 # ====== TODO To be translated ======
-menuText N Play "Play" 0
+menuText N Play "Speel" 0
+
+menuText N CorrespondenceChess "Correspondentieschaak" 0 {Functies voor eMail en Xfcc gebaseerde correspondentieschaak}
+menuText N CCConfigure "Configureer..." 0 {Configureer externe gereedschappen en algemene instellingen}
 # ====== TODO To be translated ======
-menuText N CorrespondenceChess "Correspondence Chess" 0 {Functions for eMail and Xfcc based correspondence chess}
-# ====== TODO To be translated ======
-menuText N CCConfigure "Configure..." 0 {Configure external tools and general setup}
-# ====== TODO To be translated ======
-menuText N CCOpenDB "Open Database..." 0 {Open the default Correspondence database}
-# ====== TODO To be translated ======
-menuText N CCRetrieve "Retrieve Games" 0 {Retrieve games via external (Xfcc-)helper}
-# ====== TODO To be translated ======
-menuText N CCInbox "Process Inobx" 0 {Process all files in scids Inbox}
-# ====== TODO To be translated ======
-menuText N CCPrevious "Previous Game" 0 {Go to previous game in Inbox}
-# ====== TODO To be translated ======
-menuText N CCNext "Next Game" 0 {Go to next game in Inbox}
-# ====== TODO To be translated ======
-menuText N CCSend "Send Move" 0 {Send your move via eMail or external (Xfcc-)helper}
-# ====== TODO To be translated ======
-menuText N CCResign "Resign" 0 {Resign (not via eMail)}
-# ====== TODO To be translated ======
-menuText N CCClaimDraw "Claim Draw" 0 {Send move and claim a draw (not via eMail)}
-# ====== TODO To be translated ======
-menuText N CCOfferDraw "Offer Draw" 0 {Send move and offer a draw (not via eMail)}
-# ====== TODO To be translated ======
-menuText N CCAcceptDraw "Accept Draw" 0 {Accept a draw offer (not via eMail)}
-# ====== TODO To be translated ======
-menuText N CCNewMailGame "New eMail Game..." 0 {Start a new eMail game}
-# ====== TODO To be translated ======
-menuText N CCMailMove "Mail Move..." 0 {Send the move via eMail to the opponent}
+menuText N CCConfigRelay "Observe games..." 10 {Configure games to be observed}
+menuText N CCOpenDB "Open Database..." 0 {Open de standaard correspondentieschaak database}
+menuText N CCRetrieve "Haal Partijen op" 0 {Haal partijen op via externe (Xfcc-)helper}
+menuText N CCInbox "Verwerk Inbox" 0 {Verwerk alle bestanden in scids Inbox}
+menuText N CCSend "Stuur de Zet op" 0 {Stuur de zet op via eMail of de externe (Xfcc-)helper}
+menuText N CCResign "Geef op" 0 {Geef op (niet via eMail)}
+menuText N CCClaimDraw "Eis Remise" 0 {Stuur de zet op en eis remise (niet via eMail)}
+menuText N CCOfferDraw "Stel Remise voor" 0 {Stuur de zet op en stel remise voor (niet via eMail)}
+menuText N CCAcceptDraw "Accepteer Remise" 0 {Accepteer een remise voorstel (niet via eMail)}
+menuText N CCNewMailGame "Nieuwe eMail Partij..." 0 {Start een nieuwe eMail partij}
+menuText N CCMailMove "Stuur de zet op..." 0 {Stuur de zet op naar de tegenspeler via eMail}
+menuText N CCGamePage "Partij Pagina..." 0 {Roep de partij op met een web browser}
+menuText N CCEditCopy "Kopieer de Partijlijst naar het Clipbord" 0 {Kopieer de Partijen als CSV lijst naar het clipbord}
+
 
 # Options menu:
 menuText N Options "Opties" 0

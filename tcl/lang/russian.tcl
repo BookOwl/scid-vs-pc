@@ -245,15 +245,13 @@ menuText R CorrespondenceChess "Correspondence Chess" 0 {Functions for eMail and
 # ====== TODO To be translated ======
 menuText R CCConfigure "Configure..." 0 {Configure external tools and general setup}
 # ====== TODO To be translated ======
+menuText R CCConfigRelay "Configure observations..." 10 {Configure games to be observed}
+# ====== TODO To be translated ======
 menuText R CCOpenDB "Open Database..." 0 {Open the default Correspondence database}
 # ====== TODO To be translated ======
 menuText R CCRetrieve "Retrieve Games" 0 {Retrieve games via external (Xfcc-)helper}
 # ====== TODO To be translated ======
 menuText R CCInbox "Process Inobx" 0 {Process all files in scids Inbox}
-# ====== TODO To be translated ======
-menuText R CCPrevious "Previous Game" 0 {Go to previous game in Inbox}
-# ====== TODO To be translated ======
-menuText R CCNext "Next Game" 0 {Go to next game in Inbox}
 # ====== TODO To be translated ======
 menuText R CCSend "Send Move" 0 {Send your move via eMail or external (Xfcc-)helper}
 # ====== TODO To be translated ======
@@ -268,6 +266,11 @@ menuText R CCAcceptDraw "Accept Draw" 0 {Accept a draw offer (not via eMail)}
 menuText R CCNewMailGame "New eMail Game..." 0 {Start a new eMail game}
 # ====== TODO To be translated ======
 menuText R CCMailMove "Mail Move..." 0 {Send the move via eMail to the opponent}
+# ====== TODO To be translated ======
+menuText R CCGamePage "Game Page..." 0 {Call up the game via the web browser}
+# ====== TODO To be translated ======
+menuText R CCEditCopy "Copy Gamelist to Clipbase" 0 {Copy the games as CSV list to clipbase}
+
 
 # Options menu:
 menuText R Options "Установки" 0

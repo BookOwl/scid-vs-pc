@@ -222,11 +222,11 @@ menuText F ToolsStartEngine2 "Démarrer moteur 2" 0  {Démarrer moteur 2}
 menuText F Play "Jouer" 0
 menuText F CorrespondenceChess "Echecs par correspondance" 0 {eMail et Xfcc échecs par correspondance}
 menuText F CCConfigure "Configurer..." 0 {Configurer outils externes et config générale}
+# ====== TODO To be translated ======
+menuText F CCConfigRelay "Configure observations..." 10 {Configure games to be observed}
 menuText F CCOpenDB "Ouvrir base..." 0 {Ouvrir la base de jeu par correspondance par défaut}
 menuText F CCRetrieve "Récupérer parties" 0 {Récupérer les parties via Xfcc}
 menuText F CCInbox "Analyser boîte" 0 {Analyser tous les fichiers dans la boîte de réception de Scid}
-menuText F CCPrevious "Partie précédente" 0 {Aller à la partie précédente dans la boîte de réception}
-menuText F CCNext "Partie suivante" 0 {Aller à la partie suivante dans la boîte de réception}
 menuText F CCSend "Envoyer coup" 0 {Envoyer votre coup via eMail ou outil externe (Xfcc)}
 menuText F CCResign "Abandonner" 0 {Abandonner (pas par eMail)}
 menuText F CCClaimDraw "Réclamer la nulle" 0 {Envoyer coup et réclamer nulle (pas par eMail)}
@@ -234,6 +234,9 @@ menuText F CCOfferDraw "Proposer la nulle" 0 {Envoyer coup et proposer nulle (pa
 menuText F CCAcceptDraw "Accepter la nulle" 0 {Accepter la nulle (pas par eMail)}
 menuText F CCNewMailGame "Nouvelle partie eMail..." 0 {Commencer une nouvelle partie par eMail}
 menuText F CCMailMove "eMailer le coup..." 0 {Envoyer le coup par eMail à l'adversaire}
+menuText F CCGamePage "Page partie..." 0 {Ouvrir la partie dans navigateur web}
+menuText F CCEditCopy "Copier parties dans Clipbase" 0 {Copy the games as CSV list to clipbase}
+
 
 # Options menu:
 menuText F Options "Options" 0

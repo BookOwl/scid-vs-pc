@@ -239,18 +239,19 @@ menuText D ToolsStartEngine2 "Starte Engine2" 0  {Starte Analyse von Analyse-Eng
 menuText D Play "Spielen" 0 {Partien spielen}
 menuText D CorrespondenceChess "Fernschach" 0 {Funktionen für eMail und Xfcc basiertes Fernschach}
 menuText D CCConfigure "Einstellungen..." 0 {Generelle Einstellungen und externe Werkzeuge}
+menuText D CCConfigRelay "Beobachtete Partien..." 10 {Configure games to be observed}
 menuText D CCOpenDB "Datenbank öffnen..." 0 {Öffnet die Standarddatenbank für Fernschachpartien}
 menuText D CCRetrieve "Partien synchronisieren" 0 {Synchronisiert Partien mit dem Posteingang und mittels (Xfcc-)Hilfsprogramm}
-menuText D CCInbox "Posteingang synchronisieren" 0 {Synchronisiert alle Partien im Posteingang}
-menuText D CCPrevious "Vorherige Partie" 0 {Springt zur vorherigen Partie im Posteingang}
-menuText D CCNext "Nächste Partie" 0 {Springt zur nächsten Partie im Posteingang}
+menuText D CCInbox "Posteingang synchronisieren" 12 {Synchronisiert alle Partien im Posteingang}
 menuText D CCSend "Zug senden" 0 {Verschickt den letzten Zug via eMail oder exterem (Xfcc-)Hilfsprogramm}
 menuText D CCResign "Aufgeben" 0 {Partie aufgeben (funktioniert nicht via eMail)}
-menuText D CCClaimDraw "Remis erklären" 0 {Zug senden und Partie Remis erklären (funktioniert nicht via eMail)}
+menuText D CCClaimDraw "Remis erklären" 1 {Zug senden und Partie Remis erklären (funktioniert nicht via eMail)}
 menuText D CCOfferDraw "Remis anbieten" 0 {Zug senden und Remis anbieten (funktioniert nicht via eMail)}
-menuText D CCAcceptDraw "Remis annehmen" 0 {Remis annehmen (funktioniert nicht via eMail)}
+menuText D CCAcceptDraw "Remis annehmen" 10 {Remis annehmen (funktioniert nicht via eMail)}
 menuText D CCNewMailGame "Neue eMail Partie..." 0 {Beginnt eine neue Partie via eMail}
-menuText D CCMailMove "Zug per eMail senden..." 0 {Verschickt den letzten Zug per eMail}
+menuText D CCMailMove "Zug per eMail senden..." 9 {Verschickt den letzten Zug per eMail}
+menuText D CCGamePage "Partieseite (WWW)..." 13 {Ruft die Webseite der Partie auf}
+menuText D CCEditCopy "Partieliste in Ablage" 0 {Kopiert die Parieliste als CSV in die Zwischenablage}
 #-----AW------
 
 # Options menu:
