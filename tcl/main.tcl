@@ -355,6 +355,13 @@ if {$boardSTM} {
 autoscrollframe .gameInfoFrame text .gameInfo
 .gameInfo configure -width 20 -height [expr 4 + $gameInfo(showFEN)] -wrap none \
     -state disabled -cursor top_left_arrow -setgrid 1
+
+if { $macOS } {
+  # OSX seems to refresh button bars very slowly, so to limit occasions this
+  # happens, leave a little extra room down below
+  .gameInfo configure -height 6
+}
+
 ::htext::init .gameInfo
 
 ################################################################################
@@ -374,7 +381,7 @@ menu .gameInfo.menu -tearoff 0 -background gray90
 
 .gameInfo.menu add checkbutton -label GInfoFEN \
     -variable gameInfo(showFEN) -offvalue 0 -onvalue 1 -command {
-       .gameInfo configure -height [expr 4 + $gameInfo(showFEN)]
+       if {!$macOS} {.gameInfo configure -height [expr 4 + $gameInfo(showFEN)]}
        updateBoard
 }
 
