@@ -383,33 +383,28 @@ proc ::tree::select { move baseNumber } {
 set tree(refresh) 0
 
 ################################################################################
-proc ::tree::refresh { { baseNumber "" }} {
 
-  set stack [lsearch -glob -inline -all [ wm stackorder . ] ".treeWin*"]
+proc ::tree::refresh {{ baseNumber {} }} {
 
-  if {$baseNumber == "" } {
-    set topwindow [lindex [lsearch -glob -inline -all [ wm stackorder . ] ".treeWin*"] end ]
-    set topbase -1
-    if { [ catch { scan $topwindow ".treeWin%d" topbase } ] } {
-    } else {
-      ::tree::dorefresh $topbase
-    }
-    for {set i 1 } {$i <= [sc_base count total]} {incr i} {
-      if { $i == $topbase } { continue }
-      ::tree::dorefresh $i
+  # set stack [lsearch -glob -inline -all [ wm stackorder . ] ".treeWin*"]
+
+  if {$baseNumber != {} } {
+    if {[winfo exists .treeWin$baseNumber]} {
+      ::tree::dorefresh $baseNumber
     }
   } else {
-    ::tree::dorefresh $baseNumber
+    for {set i 1} {$i <= [sc_base count total]} {incr i} {
+      if {[winfo exists .treeWin$i]} {
+	::tree::dorefresh $i
+      }
+    }
   }
 }
 
-################################################################################
 proc ::tree::dorefresh { baseNumber } {
 
   global tree treeWin glstart
   set w .treeWin$baseNumber
-
-  if {![winfo exists $w]} { return }
 
   if { ! $tree(autorefresh$baseNumber) } { return }
 
