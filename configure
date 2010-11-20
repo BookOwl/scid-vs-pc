@@ -205,6 +205,7 @@ proc findTclTkPaths {} {
     # x11Path: List of common locations of the X11 library files.
     set x11Path {
         /usr/lib
+        /usr/lib64
         /usr/X11/lib
         /usr/X11R6/lib
         /usr/local/X11/lib
