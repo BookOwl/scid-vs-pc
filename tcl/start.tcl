@@ -477,6 +477,9 @@ set gameInfo(photos) 1
 set gameInfo(hideNextMove) 0
 set gameInfo(showMaterial) 0
 set gameInfo(showFEN) 0
+set gameInfo(showButtons) 1
+set gameInfo(showMenu) 1
+set gameInfo(showTool) 1
 set gameInfo(showMarks) 1
 set gameInfo(wrap) 0
 set gameInfo(fullComment) 0
@@ -639,6 +642,35 @@ proc raiseWin {w} {
 set autoIconify 1
 
 # sets visibility of gameInfo panel at the bottom of main board
+
+proc toggleToolbar {} {
+  if {$::gameInfo(showTool)} {
+    grid .tb -row 0 -column 0 -columnspan 3 -sticky we
+  } else {
+    grid forget .tb
+  }
+}
+
+proc toggleMenubar {} {
+  set ::gameInfo(showMenu) [expr !$::gameInfo(showMenu)]
+  showMenubar
+}
+
+proc showMenubar {} {
+  if {!$::gameInfo(showMenu)} {
+    . configure -menu {}
+  } else {
+    . configure -menu .menu
+  }
+}
+
+proc toggleButtonBar {} {
+  if {!$::gameInfo(showButtons)} {
+    grid remove .button
+  } else {
+    grid configure .button -row 1 -column 0 -pady 5 -padx 5
+  }
+}
 
 proc toggleGameInfo {} {
   set ::gameInfo(show) [expr ! $::gameInfo(show)]

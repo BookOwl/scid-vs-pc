@@ -387,16 +387,19 @@ menu .gameInfo.menu -tearoff 0 -background gray90
 
 .gameInfo.menu add checkbutton -label GInfoHideNext \
     -variable gameInfo(hideNextMove) -offvalue 0 -onvalue 1 -command updateBoard
-
 .gameInfo.menu add command -label {Toggle Coords} -command toggleCoords
+
 
 .gameInfo.menu add separator
 
-.gameInfo.menu add checkbutton -label {Game Info} \
-   -variable gameInfo(show) -command showGameInfo
+.gameInfo.menu add checkbutton -label {Menu Bar} -variable gameInfo(showMenu) -command showMenubar
+.gameInfo.menu add checkbutton -label {Tool Bar} -variable gameInfo(showTool) -command toggleToolbar
+.gameInfo.menu add checkbutton -label {Button Bar} -variable gameInfo(showButtons) -command toggleButtonBar
+.gameInfo.menu add checkbutton -label {Game Info} -variable gameInfo(show) -command showGameInfo
 
-.gameInfo.menu add checkbutton -label {PGN Window} \
-   -variable pgnWin -command ::pgn::OpenClose
+.gameInfo.menu add separator
+
+.gameInfo.menu add checkbutton -label PGN -variable pgnWin -command ::pgn::OpenClose
 
 .gameInfo.menu add checkbutton -label {Game List} \
    -variable ::windows::gamelist::isOpen -command ::windows::gamelist::Open

@@ -95,16 +95,6 @@ bind Menu <<MenuSelect>> {+
 # bind Label <Any-Enter> "+statusBarHelp %W"
 # bind Label <Any-Leave> "+statusBarRestore %W"
 
-proc toggleMenubar {} {
-  if {$::menuVisible} {
-    set ::menuVisible 0
-    . configure -menu {}
-  } else {
-    set ::menuVisible 1
-    . configure -menu .menu
-  }
-}
-
 
 ############################################################
 ### Main window menus:
@@ -144,10 +134,7 @@ if { $macOS } {
 
 }
 
-if {![info exists ::menuVisible]} {
-  set ::menuVisible 1
-}
-if {$::menuVisible} {
+if {$::gameInfo(showMenu)} {
   . configure -menu .menu
 }
 
@@ -993,7 +980,7 @@ $m add command -label OptionsSave -command {
     puts $optionF "# If you edit this file, you must preserve valid its Tcl"
     puts $optionF "# format or it will not set your Scid options properly."
     puts $optionF ""
-    foreach i {menuVisible boardSize boardStyle language ::pgn::showColor \
+    foreach i {boardSize boardStyle language ::pgn::showColor \
           ::pgn::indentVars ::pgn::indentComments ::defaultBackground \
           ::pgn::shortHeader ::pgn::boldMainLine ::pgn::stripMarks \
           ::pgn::symbolicNags ::pgn::moveNumberSpaces ::pgn::columnFormat myPlayerNames \
@@ -1011,8 +998,8 @@ $m add command -label OptionsSave -command {
           email(smtp) email(smproc) email(server) \
           email(from) email(bcc) ::windows::gamelist::widths ::windows::gamelist::findcase \
           gameInfo(show) gameInfo(photos) gameInfo(hideNextMove) gameInfo(wrap) \
-          gameInfo(fullComment) gameInfo(showMarks) \
-          gameInfo(showMaterial) gameInfo(showFEN) gameInfo(showTB) \
+          gameInfo(fullComment) gameInfo(showMarks) gameInfo(showMenu) gameInfo(showTool) \
+          gameInfo(showMaterial) gameInfo(showFEN) gameInfo(showButtons) gameInfo(showTB) \
           engines(F2) engines(F3) engines(F4) engineCoach1 engineCoach2 scidBooksDir scidBasesDir ::book::lastBook \
           crosstab(type) crosstab(ages) crosstab(countries) crosstab(ratings) crosstab(titles) crosstab(breaks) crosstab(deleted) crosstab(colors) crosstab(cnumbers) crosstab(groups) crosstab(sort) \
           ::utils::sound::soundFolder ::utils::sound::announceNew \

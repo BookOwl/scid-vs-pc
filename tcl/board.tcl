@@ -648,8 +648,9 @@ foreach i {new open save close finder bkm cut copy paste gprev gnext \
 
 #pack .tb -side top -fill x -before .button
 
-proc changeToolbar {} {
+proc changeToolbar {{zero 1}} {
     array set ::toolbar [array get ::toolbar_temp]
+    set ::gameInfo(showTool) $zero
     redrawToolbar
 }
 
@@ -721,7 +722,7 @@ proc configToolbar {} {
   }
   dialogbutton $w.off -text "- [::utils::string::Capital $::tr(all)]" -command {
     foreach i [array names toolbar_temp] { set toolbar_temp($i) 0 }
-    changeToolbar
+    changeToolbar 0
   }
   dialogbutton $w.ok -text OK -command {
     array set toolbar [array get toolbar_temp]
@@ -745,11 +746,10 @@ proc configToolbar {} {
 proc redrawToolbar {} {
   global toolbar
   foreach i [winfo children .tb] { pack forget $i }
-  set seenAny 0
   set seen 0
   foreach i {new open save close finder bkm} {
     if {$toolbar($i)} {
-      set seen 1; set seenAny 1
+      set seen 1
       pack .tb.$i -side left -pady 1 -padx 0 -ipadx 0 -pady 0 -ipady 0
     }
   }
@@ -757,7 +757,7 @@ proc redrawToolbar {} {
   set seen 0
   foreach i {gprev gnext} {
     if {$toolbar($i)} {
-      set seen 1; set seenAny 1
+      set seen 1
       pack .tb.$i -side left -pady 1 -padx 0 -ipadx 0 -pady 0 -ipady 0
     }
   }
@@ -765,7 +765,7 @@ proc redrawToolbar {} {
   set seen 0
   foreach i {cut copy paste} {
     if {$toolbar($i)} {
-      set seen 1; set seenAny 1
+      set seen 1
       pack .tb.$i -side left -pady 1 -padx 0 -ipadx 0 -pady 0 -ipady 0
     }
   }
@@ -773,7 +773,7 @@ proc redrawToolbar {} {
   set seen 0
   foreach i {rfilter bsearch hsearch msearch} {
     if {$toolbar($i)} {
-      set seen 1; set seenAny 1
+      set seen 1
       pack .tb.$i -side left -pady 1 -padx 0 -ipadx 0 -pady 0 -ipady 0
     }
   }
@@ -781,23 +781,12 @@ proc redrawToolbar {} {
   set seen 0
   foreach i {switcher glist pgn tmt maint eco tree crosst engine} {
     if {$toolbar($i)} {
-      set seen 1; set seenAny 1
+      set seen 1
       pack .tb.$i -side left -pady 1 -padx 0 -ipadx 0 -pady 0 -ipady 0
     }
   }
-  if {$seenAny} {
-    grid .tb -row 0 -column 0 -columnspan 3 -sticky we
-  } else {
-    grid forget .tb
-  }
-}
 
-proc setToolbar {x} {
-  if {$x} {
-    grid .tb -row 0 -column 0 -columnspan 3 -sticky we
-  } else {
-    grid forget .tb
-  }
+  toggleToolbar
 }
 
 
@@ -903,7 +892,7 @@ AYRDHRMUKmDIkAFDBQoTOgxCcMnBIGkS+v0LOLDgwYSDPoDy8UfHJRWF0q1r
 omgGBw70DlkDBYGRECGKNoACcIISoRhbf3glRODSgrFo06pdy7Yto0AAOw==
 }
 
-# S.A. here it is
+# S.A. here is the Main Button Bar
 # frame .button -border 0
 frame .button -relief raised -border 1
 button .button.start -image tb_start -command ::move::Start

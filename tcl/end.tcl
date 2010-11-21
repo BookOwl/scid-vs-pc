@@ -1440,6 +1440,10 @@ grid rowconfigure . 3 -weight 1
 
 grid .button -row 1 -column 0 -pady 5 -padx 5
 
+if {!$::gameInfo(showButtons)} {
+  grid remove .button
+}
+
 grid .board -row 2 -column 0 -sticky we -padx 5 -pady 5
 
 # grid .gameInfoFrame -row 3 -column 0 -sticky news -padx 2
@@ -1459,14 +1463,13 @@ showGameInfo
 #pack $p.pane.bottom.f -side top -fill both -expand yes
 #::htext::init $p.pane.bottom.f.text
 
-#setToolbar $showToolbar
 redrawToolbar
 
-### Wish 8.5 has a nice fullscreen feature. Just press F11 in KDE
+### Wish 8.5 has a nice fullscreen feature.
+### just press F11 in KDE , or use [wm attribute . -fullscreen 1]
 # wm resizable . 0 1
 # wm minsize . 0 0
-wm iconname . "Scid"
-
+wm iconname . Scid
 
 #################
 # Open files and databases:
