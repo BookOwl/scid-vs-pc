@@ -1552,7 +1552,17 @@ translate E CCDlgClawsEg {e.g Sylpheed Claws}
 translate E CCDlgmailxEg {e.g. mailx, mutt, nail...}
 translate E CCDlgAttachementPar {Attachment parameter:}
 translate E CCDlgInternalXfcc {Use internal Xfcc support}
+translate E CCDlgConfirmXfcc {Confirm moves}
 translate E CCDlgSubjectPar {Subject parameter:}
+translate E CCDlgDeleteBoxes {Empty In-/Outbox}
+translate E CCDlgDeleteBoxesText {Do you really want to empty your In- and Outbox folders for Correspondence Chess?\nThis requires a new sync to show the last state of your games.}
+translate E CCDlgConfirmMove {Confirm move}
+translate E CCDlgConfirmMoveText {If you confirm, the following move and comment will be sent to the server:}
+translate E CCDlgDBGameToLong {Inconsistent Mainline}
+translate E CCDlgDBGameToLongError {The mainline in your database is longer than the game in your Inbox. If the Inbox contains current games, i.e. right after a sync, some moves were added to the mainline in the database erroneously.
+
+In this case please shorten the mainline to (at max) move
+}
 
 translate E CCDlgStartEmail {Start new eMail game}
 translate E CCDlgYourName {Your Name:}
@@ -1578,6 +1588,27 @@ translate E CCNextBtn {Goto next game}
 translate E CCSendBtn {Send move}
 translate E CCEmptyBtn {Empty In- and Outbox}
 translate E CCHelpBtn {Help on icons and status indicators.\nFor general Help press F1!}
+
+translate E CCDlgServerName {Server Name:}
+translate E CCDlgLoginName  {Login Name:}
+translate E CCDlgPassword   {Password:}
+translate E CCDlgURL        {Xfcc-URL:}
+translate E CCDlgRatingType {Rating Type:}
+
+translate E CCDlgDuplicateGame {Non-unique game ID}
+translate E CCDlgDuplicateGameError {This game exists more than once in your database. Please delete all duplicates and compact your game file (File/Maintenance/Compact Database).}
+
+translate E CCDlgSortOption {Sorting:}
+translate E CCDlgListOnlyOwnMove {Only games I have the move}
+translate E CCOrderClassicTxt {Site, Event, Round, Result, White, Black}
+translate E CCOrderMyTimeTxt {My Clock}
+translate E CCOrderTimePerMoveTxt {Time per move till next time control}
+translate E CCOrderStartDate {Start date}
+translate E CCOrderOppTimeTxt {Opponents Clock}
+
+translate E CCDlgConfigRelay {Observe games}
+translate E CCDlgConfigRelayHelp {Go to the games page on http://www.iccf-webchess.com and display the game to be observed.  If you see the chessboard copy the URL from your browser to the list below. One URL per line only!\nExample: http://www.iccf-webchess.com/MakeAMove.aspx?id=266452}
+
 
 # Connect Hardware dialoges
 translate E ExtHWConfigConnection {Configure external hardware}

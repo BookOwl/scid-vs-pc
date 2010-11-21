@@ -1555,7 +1555,14 @@ translate D CCDlgClawsEg {z. B. Sylpheed Claws}
 translate D CCDlgmailxEg {z. B. mailx, mutt, nail...}
 translate D CCDlgAttachementPar {Parameter für Anhang:}
 translate D CCDlgInternalXfcc {Interne Xfcc-Unterstützung verwenden}
+translate D CCDlgConfirmXfcc {Züge bestätigen}
 translate D CCDlgSubjectPar {Parameter für Betreff:}
+translate D CCDlgDeleteBoxes {Leeren des Postein- und Ausgangs}
+translate D CCDlgDeleteBoxesText {Wollen Sie wirklich Ihren Postein- und Ausgang leeren?\nDies erfordert ein erneutes Synchronisieren zum den aktuellen Zustand Ihrer Partien anzuzeigen.}
+translate D CCDlgConfirmMove {Zug bestätigen}
+translate D CCDlgConfirmMoveText {Durch bestätigen wird folgender Zug und Kommentar an den Server übertragen:}
+translate D CCDlgDBGameToLong {Inkonsistente Hauptvariante}
+translate D CCDlgDBGameToLongError {Die Hauptvariante dieser Partie in der Datenbank enthält mehr Züge als in der Partie tatsächlich gespielt. Sofern die Partie im Posteingang vollständig und aktuell ist (z. B. direkt nach einer Synchronisation) muß die Hauptvariante in der Datenbank ensprechend gekürzt werden. Der letzte Zug in der Partie ist Nr. \n}
 translate D CCDlgStartEmail {Neue eMail Partie}
 translate D CCDlgYourName {Ihr Name:}
 translate D CCDlgYourMail {Ihre eMail Adresse:}
@@ -1568,8 +1575,7 @@ translate D CCDlgTitNoGames {Scid: Keine Fernschachpartien}
 translate D CCErrInboxDir {Der Posteingang für Fernschachpartien unter:}
 translate D CCErrOutboxDir {Der Postausgang für Fernschachpartien unter:}
 translate D CCErrDirNotUsable {existiert nicht oder ist nicht benutzbar!\nBitte überprüfen und die Einstellungen korrigieren.}
-translate D CCErrNoGames {Enthält keine Partien!\nBitte sychronisieren Sie zunächst.}
-
+translate D CCErrNoGames {enthält keine Partien!\nBitte sychronisieren Sie zunächst.}
 translate D CCDlgTitNoCCDB {Scid: Keine Fernschach-Datenbank}
 translate D CCErrNoCCDB {Es wurde keine Datenbank vom Typ 'Fernschach' geöffnet. Bitte öffen Sie eine solche bevor Sie Funktionen des Fernschachmoduls benutzen.}
 translate D CCFetchBtn {Partien vom Server abholen\nund Inbox bearbeiten}
@@ -1578,6 +1584,24 @@ translate D CCNextBtn {Nächste Partie}
 translate D CCSendBtn {Zug versenden}
 translate D CCEmptyBtn {Postein- und ausgang leeren}
 translate D CCHelpBtn {Hilfe zu den Icons und Statusindikatoren\nFür allgemeine Hilfe bitte F1!}
+translate D CCDlgServerName {Server Name:}
+translate D CCDlgLoginName  {Login Name:}
+translate D CCDlgPassword   {Paßwort:}
+translate D CCDlgURL        {Xfcc-URL:}
+translate D CCDlgRatingType {Wertungszahl:}
+translate D CCDlgDuplicateGame {Nichteindeutige Partie}
+translate D CCDlgDuplicateGameError {Diese Partie existiert mehr als einmal in der Datenbank. Bitte löschen Sie alle Doubletten und komprimieren Sie die Datenbank (Datei/Wartung/Datenbank komprimieren).}
+translate D CCDlgSortOption {Sortierung:}
+translate D CCDlgListOnlyOwnMove {Partien mit anhängigen Zügen}
+translate D CCOrderClassicTxt {Ort, Turnier, Runde, Ergebnis, Weiß, Schwarz}
+translate D CCOrderMyTimeTxt {Eigene Bedenkzeit}
+translate D CCOrderTimePerMoveTxt {Zeit pro Zug bis zur nächsten Zeitkontrolle}
+translate D CCOrderStartDate {Startdatum}
+translate D CCOrderOppTimeTxt {Gegnerische Bedenkzeit}
+translate D CCDlgConfigRelay {Partien auf iccf-webchess beobachten}
+translate D CCDlgConfigRelayHelp {Besuchen Sie http://www.iccf-webchess.com und lassen Sie die Partie anzeigen, die Sie beobachten wollen. Wenn das Brett sichtbar ist bitte die Adresse aus dem Browser in untenstehende Liste kopieren. Nur eine URL pro Zeile!\nBeispiel: http://www.iccf-webchess.com/MakeAMove.aspx?id=266452}
+
+
 translate D ExtHWConfigConnection {Hardware Konfigurieren}
 translate D ExtHWPort {Schnittstelle}
 translate D ExtHWEngineCmd {Engine Kommando}

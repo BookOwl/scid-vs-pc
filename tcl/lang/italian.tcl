@@ -1548,6 +1548,7 @@ translate I NimzoIndianRubinstein {Nimzo-Indian Rubinstein}
 translate I KingsIndian {Indiana di Re}
 translate I KingsIndianSamisch {Indiana di Re Samisch}
 translate I KingsIndianMainLine {Indiana di Re Liena Principale}
+
 translate I CCDlgConfigureWindowTitle {Configura Scacchi per Corrispondenza}
 translate I CCDlgCGeneraloptions {Opzioni generali}
 translate I CCDlgDefaultDB {Database di Default:}
@@ -1567,7 +1568,21 @@ translate I CCDlgClawsEg {p.e Sylpheed Claws}
 translate I CCDlgmailxEg {p.e. mailx, mutt, nail...}
 translate I CCDlgAttachementPar {Parametro per l'allegato:}
 translate I CCDlgInternalXfcc {Usa il supporto interno per Xfcc}
+# ====== TODO To be translated ======
+translate I CCDlgConfirmXfcc {Confirm moves}
 translate I CCDlgSubjectPar {Parametro per l'oggetto:}
+# ====== TODO To be translated ======
+translate I CCDlgDeleteBoxes {Empty In-/Outbox}
+# ====== TODO To be translated ======
+translate I CCDlgDeleteBoxesText {Do you really want to empty your In- and Outbox folders for Correspondence Chess? This requires a new sync to show the last state of your games}
+# ====== TODO To be translated ======
+translate I CCDlgConfirmMove {Confirm move}
+# ====== TODO To be translated ======
+translate I CCDlgConfirmMoveText {If you confirm, the following move and comment will be sent to the server:}
+# ====== TODO To be translated ======
+translate I CCDlgDBGameToLong {Inconsistent Mainline}
+# ====== TODO To be translated ======
+translate I CCDlgDBGameToLongError {The mainline in your database is longer than the game in your Inbox. If the Inbox contains current games, i.e. right after a sync, some moves were added to the mainline in the database erroneously.\nIn this case please shorten the mainline to (at max) move\n}
 translate I CCDlgStartEmail {Avvia una nuova partita tramite eMail}
 translate I CCDlgYourName {Il tuo nome:}
 translate I CCDlgYourMail {Il tuo indirizzo eMail:}
@@ -1596,6 +1611,38 @@ translate I CCEmptyBtn {Empty In- and Outbox}
 # ====== TODO To be translated ======
 translate I CCHelpBtn {Help on icons and status indicators.\nFor general Help press F1!}
 # ====== TODO To be translated ======
+translate I CCDlgServerName {Server Name:}
+# ====== TODO To be translated ======
+translate I CCDlgLoginName  {Login Name:}
+# ====== TODO To be translated ======
+translate I CCDlgPassword   {Password:}
+# ====== TODO To be translated ======
+translate I CCDlgURL        {Xfcc-URL:}
+# ====== TODO To be translated ======
+translate I CCDlgRatingType {Rating Type:}
+# ====== TODO To be translated ======
+translate I CCDlgDuplicateGame {Non-unique game ID}
+# ====== TODO To be translated ======
+translate I CCDlgDuplicateGameError {This game exists more than once in your database. Please delete all duplicates and compact your game file (File/Maintenance/Compact Database).}
+# ====== TODO To be translated ======
+translate I CCDlgSortOption {Sorting:}
+# ====== TODO To be translated ======
+translate I CCDlgListOnlyOwnMove {Only games I have the move}
+# ====== TODO To be translated ======
+translate I CCOrderClassicTxt {Site, Event, Round, Result, White, Black}
+# ====== TODO To be translated ======
+translate I CCOrderMyTimeTxt {My Clock}
+# ====== TODO To be translated ======
+translate I CCOrderTimePerMoveTxt {Time per move till next time control}
+# ====== TODO To be translated ======
+translate I CCOrderStartDate {Start date}
+# ====== TODO To be translated ======
+translate I CCOrderOppTimeTxt {Opponents Clock}
+# ====== TODO To be translated ======
+translate I CCDlgConfigRelay {Configure ICCF observations}
+# ====== TODO To be translated ======
+translate I CCDlgConfigRelayHelp {Go to the games page on http://www.iccf-webchess.com and display the game to be observed.  If you see the chessboard copy the URL from your browser to the list below. One URL per line only!\nExample: http://www.iccf-webchess.com/MakeAMove.aspx?id=266452}
+
 translate I ExtHWConfigConnection {Configure external hardware}
 # ====== TODO To be translated ======
 translate I ExtHWPort {Port}

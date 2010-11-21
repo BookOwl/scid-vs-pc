@@ -1827,6 +1827,7 @@ translate Y KingsIndianSamisch {King's Indian Sämisch}
 # ====== TODO To be translated ======
 translate Y KingsIndianMainLine {King's Indian Main Line}
 # ====== TODO To be translated ======
+
 translate Y CCDlgConfigureWindowTitle {Configure Correspondence Chess}
 # ====== TODO To be translated ======
 translate Y CCDlgCGeneraloptions {General Options}
@@ -1865,7 +1866,21 @@ translate Y CCDlgAttachementPar {Attachment parameter:}
 # ====== TODO To be translated ======
 translate Y CCDlgInternalXfcc {Use internal Xfcc support}
 # ====== TODO To be translated ======
+translate Y CCDlgConfirmXfcc {Confirm moves}
+# ====== TODO To be translated ======
 translate Y CCDlgSubjectPar {Subject parameter:}
+# ====== TODO To be translated ======
+translate Y CCDlgDeleteBoxes {Empty In-/Outbox}
+# ====== TODO To be translated ======
+translate Y CCDlgDeleteBoxesText {Do you really want to empty your In- and Outbox folders for Correspondence Chess? This requires a new sync to show the last state of your games}
+# ====== TODO To be translated ======
+translate Y CCDlgConfirmMove {Confirm move}
+# ====== TODO To be translated ======
+translate Y CCDlgConfirmMoveText {If you confirm, the following move and comment will be sent to the server:}
+# ====== TODO To be translated ======
+translate Y CCDlgDBGameToLong {Inconsistent Mainline}
+# ====== TODO To be translated ======
+translate Y CCDlgDBGameToLongError {The mainline in your database is longer than the game in your Inbox. If the Inbox contains current games, i.e. right after a sync, some moves were added to the mainline in the database erroneously.\nIn this case please shorten the mainline to (at max) move\n}
 # ====== TODO To be translated ======
 translate Y CCDlgStartEmail {Start new eMail game}
 # ====== TODO To be translated ======
@@ -1906,6 +1921,41 @@ translate Y CCNextBtn {Goto next game}
 translate Y CCSendBtn {Send move}
 # ====== TODO To be translated ======
 translate Y CCEmptyBtn {Empty In- and Outbox}
+# ====== TODO To be translated ======
+translate Y CCHelpBtn {Help on icons and status indicators.\nFor general Help press F1!}
+# ====== TODO To be translated ======
+translate Y CCDlgServerName {Server Name:}
+# ====== TODO To be translated ======
+translate Y CCDlgLoginName  {Login Name:}
+# ====== TODO To be translated ======
+translate Y CCDlgPassword   {Password:}
+# ====== TODO To be translated ======
+translate Y CCDlgURL        {Xfcc-URL:}
+# ====== TODO To be translated ======
+translate Y CCDlgRatingType {Rating Type:}
+# ====== TODO To be translated ======
+translate Y CCDlgDuplicateGame {Non-unique game ID}
+# ====== TODO To be translated ======
+translate Y CCDlgDuplicateGameError {This game exists more than once in your database. Please delete all duplicates and compact your game file (File/Maintenance/Compact Database).}
+# ====== TODO To be translated ======
+translate Y CCDlgSortOption {Sorting:}
+# ====== TODO To be translated ======
+translate Y CCDlgListOnlyOwnMove {Only games I have the move}
+# ====== TODO To be translated ======
+translate Y CCOrderClassicTxt {Site, Event, Round, Result, White, Black}
+# ====== TODO To be translated ======
+translate Y CCOrderMyTimeTxt {My Clock}
+# ====== TODO To be translated ======
+translate Y CCOrderTimePerMoveTxt {Time per move till next time control}
+# ====== TODO To be translated ======
+translate Y CCOrderStartDate {Start date}
+# ====== TODO To be translated ======
+translate Y CCOrderOppTimeTxt {Opponents Clock}
+# ====== TODO To be translated ======
+translate Y CCDlgConfigRelay {Configure ICCF observations}
+# ====== TODO To be translated ======
+translate Y CCDlgConfigRelayHelp {Go to the games page on http://www.iccf-webchess.com and display the game to be observed.  If you see the chessboard copy the URL from your browser to the list below. One URL per line only!\nExample: http://www.iccf-webchess.com/MakeAMove.aspx?id=266452}
+
 # ====== TODO To be translated ======
 translate Y CCHelpBtn {Help on icons and status indicators.\nFor general Help press F1!}
 # ====== TODO To be translated ======

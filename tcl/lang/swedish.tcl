@@ -1830,6 +1830,7 @@ translate W KingsIndianSamisch {Kungsindiskt Sämisch}
 # ====== TODO To be translated ======
 translate W KingsIndianMainLine {Kungsindiskt Huvudvariation}
 # ====== TODO To be translated ======
+
 translate W CCDlgConfigureWindowTitle {Konfigurera Korrespondensschack}
 # ====== TODO To be translated ======
 translate W CCDlgCGeneraloptions {Generella inställningar}
@@ -1868,8 +1869,22 @@ translate W CCDlgAttachementPar {Bilage-parameter:}
 # ====== TODO To be translated ======
 translate W CCDlgInternalXfcc {Använd internt Xfcc-stöd}
 # ====== TODO To be translated ======
+translate W CCDlgConfirmXfcc {Bekräfta drag}
+# ====== TODO To be translated ======
 translate W CCDlgSubjectPar {Ämnes-parameter:}
 # ====== TODO To be translated ======
+translate W CCDlgDeleteBoxes {Töm In-/Utkorg} 
+# ====== TODO To be translated ====== 
+translate W CCDlgDeleteBoxesText {Vill du verkligen tömma dina In- och Utkorgskataloger för Korrespondensschack? Detta kräver en ny synkronisering för att visa den seanaste statusen på dina partier} 
+# ====== TODO To be translated ====== 
+translate W CCDlgConfirmMove {Bekräfta drag} 
+# ====== TODO To be translated ====== 
+translate W CCDlgConfirmMoveText {Om du bekräftar, kommer följande drag och kommentar att skickas till servern:} 
+# ====== TODO To be translated ======
+translate W CCDlgDBGameToLong {Inkonsekvent huvudvariation}
+# ====== TODO To be translated ======
+translate W CCDlgDBGameToLongError {Huvudvariationen i din databas är längre än partiet i din Inkorg. Om Inkorgen innehåller aktuella partier, dvs precis efter en synkronisering, lades några drag felaktigt till i huvudvariationen i databasen.\nI detta fall var god och förkorta huvudvariationen till (maximalt) drag\n}
+# ====== TODO To be translated ====== 
 translate W CCDlgStartEmail {Starta ett nytt eMail-parti}
 # ====== TODO To be translated ======
 translate W CCDlgYourName {Ditt Namn:}
@@ -1911,6 +1926,39 @@ translate W CCSendBtn {Skicka drag}
 translate W CCEmptyBtn {Töm Inkorgen och Utkorgen}
 # ====== TODO To be translated ======
 translate W CCHelpBtn {Hjälp med ikoner och statusindikatorer.\nFör generell Hjälp tryck på F1!}
+# ====== TODO To be translated ======
+translate W CCDlgServerName {Servernamn:}
+# ====== TODO To be translated ======
+translate W CCDlgLoginName  {Inloggningsnamn:}
+# ====== TODO To be translated ======
+translate W CCDlgPassword   {Lösenord:}
+# ====== TODO To be translated ======
+translate W CCDlgURL        {Xfcc-URL:}
+# ====== TODO To be translated ======
+translate W CCDlgRatingType {Ratingtyp:}
+# ====== TODO To be translated ======
+translate W CCDlgDuplicateGame {Icke unikt parti-ID}
+# ====== TODO To be translated ======
+translate W CCDlgDuplicateGameError {Detta parti finns fler än en gång i din databas. Var god och ta bort alla dubbletter och komprimera din partifil (Arkiv/Underhåll/Komprimera Databas).}
+# ====== TODO To be translated ======
+translate W CCDlgSortOption {Sorterar:}
+# ====== TODO To be translated ======
+translate W CCDlgListOnlyOwnMove {Bara partier där jag är vid draget}
+# ====== TODO To be translated ======
+translate W CCOrderClassicTxt {Plats, Evenemang, Runda, Resultat, Vit, Svart}
+# ====== TODO To be translated ======
+translate W CCOrderMyTimeTxt {Min klocka}
+# ====== TODO To be translated ======
+translate W CCOrderTimePerMoveTxt {Tid per drag till nästa tidskontroll}
+# ====== TODO To be translated ======
+translate W CCOrderStartDate {Startdatum}
+# ====== TODO To be translated ======
+translate W CCOrderOppTimeTxt {Motståndarens klocka}
+# ====== TODO To be translated ======
+translate W CCDlgConfigRelay {Konfigurera ICCF-observationer}
+# ====== TODO To be translated ======
+translate W CCDlgConfigRelayHelp {Gå till partisidan på http://www.iccf-webchess.com och visa partiet att observera.  Om du ser schackbräder kopiera webadressen från din webläsare till listan nedanför. Bara en webadress per rad!\nExempel: http://www.iccf-webchess.com/MakeAMove.aspx?id=266452}
+
 # ====== TODO To be translated ======
 translate W ExtHWConfigConnection {Configure external hardware}
 # ====== TODO To be translated ======

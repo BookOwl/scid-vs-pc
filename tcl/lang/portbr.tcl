@@ -1809,87 +1809,75 @@ translate B KingsIndianSamisch {King's Indian Sämisch}
 # ====== TODO To be translated ======
 translate B KingsIndianMainLine {King's Indian Main Line}
 # ====== TODO To be translated ======
-translate B CCDlgConfigureWindowTitle {Configure Correspondence Chess}
+
+translate B CCDlgConfigureWindowTitle {Configurar Xadrez por correspondencia}
+translate B CCDlgCGeneraloptions {Opções Gerais}
+translate B CCDlgDefaultDB {Base default:}
+translate B CCDlgInbox {Caixa de Entrada (caminho):}
+translate B CCDlgOutbox {Caixa de Saida (caminho):}
+translate B CCDlgXfcc {Configuraçãao do Xfcc:}
+translate B CCDlgExternalProtocol {Tratamento de protocolo externo (ex. Xfcc)}
+translate B CCDlgFetchTool {Ferramenta de busca:}
+translate B CCDlgSendTool {Ferramenta de envio:}
+translate B CCDlgEmailCommunication {Comunicação por eMail}
+translate B CCDlgMailPrg {Programa de Mail:}
+translate B CCDlgBCCAddr {Endereço Cópia Oculta:}
+translate B CCDlgMailerMode {Modo:}
+translate B CCDlgThunderbirdEg {ex. Thunderbird, Mozilla Mail, Icedove...}
+translate B CCDlgMailUrlEg {ex. Evolution}
+translate B CCDlgClawsEg {ex. Sylpheed Claws}
+translate B CCDlgmailxEg {ex. mailx, mutt, nail...}
+translate B CCDlgAttachementPar {Parametro de anexos:}
+translate B CCDlgInternalXfcc {Usar suporte internal Xfcc}
+translate B CCDlgConfirmXfcc {Confirmar movimentos}
+translate B CCDlgSubjectPar {Parametro de Assunto:}
+translate B CCDlgDeleteBoxes {Esvaziar caixas de entrada e saída}
+translate B CCDlgDeleteBoxesText {Voce quer realmente esvaziar as caixas de Entrada e Saida usadas para o Xadrez por correspondência? Esta operação exige uma novaa sincronização para mostrar o ultimo estado dos seus jogos}
+translate B CCDlgConfirmMove {Confirmar movimento}
+translate B CCDlgConfirmMoveText {Se voce confirmar, o movimento indicado a seguir e os comentários serão enviados para o servidor:}
+translate B CCDlgDBGameToLong {Linha principal inconsistente}
+translate B CCDlgDBGameToLongError {A linha principal na sua base é maior do que o jogo que está na caixa de entrada. Se a caixa de entrada contem jogos correntes, isto é logo após uma sincronização, alguns movimentos foram adicionados erroneamente à linha principal na base.\nNeste caso, por favor, diminua a linha principal para (no maximo) movimentos\n}
+translate B CCDlgStartEmail {Iniciar novo jogo por eMail}
+translate B CCDlgYourName {Seu nome:}
+translate B CCDlgYourMail {Seu eMail:}
+translate B CCDlgOpponentName {Nome do Oponente:}
+translate B CCDlgOpponentMail {eMail do Oponente:}
+translate B CCDlgGameID {ID do jogo (unico):}
+translate B CCDlgTitNoOutbox {Scid: Caixa de Saida}
+translate B CCDlgTitNoInbox {Scid: Caixa de Entrada}
+translate B CCDlgTitNoGames {Scid: Nenhum jogo por correspondência}
+translate B CCErrInboxDir {Diretorio da Caixa de Entrada:}
+translate B CCErrOutboxDir {Diretorio da Caixa de Saida:}
+translate B CCErrDirNotUsable {não existe ou não está acessivel!\nPor favor, verifique e corrija a configuração.}
+translate B CCErrNoGames {não contem nenhum jogo!\nPor favor, localize-os primeiro.}
+translate B CCDlgTitNoCCDB {Scid: Nenhuma base de correspondência}
+translate B CCErrNoCCDB {Nenhuma base do tipo 'Correspondencia' está aberta. Por favor, abra uma antes de usar as funcoes do xadrez por correspondencia.}
+translate B CCFetchBtn {Busca jogos no servidor e processa a Caixa de Entrada}
+translate B CCPrevBtn {Ir para o jogo anterior}
+translate B CCNextBtn {Ir para o proximo jogo}
+translate B CCSendBtn {Enviar movimento}
+translate B CCEmptyBtn {Esvaziar caixas de entrada e saida}
+translate B CCHelpBtn {Ajuda sobre icones e indicadores de estado.\nPara ajuda geral, use a tecla F1!}
+translate B CCDlgServerName {Nome do Servidor:}
+translate B CCDlgLoginName  {Login Name:}
+translate B CCDlgPassword   {Senha:}
+translate B CCDlgURL        {Xfcc-URL:}
+translate B CCDlgRatingType {Tipo de Rating:}
+translate B CCDlgDuplicateGame {ID de jogo não único}
+translate B CCDlgDuplicateGameError {Este jogo existe mais de uma vez em sua base. Exclua todas as duplicatas e compacte seu arquivo de jogos (Arquivo/Manutenção/Compactar Base).}
+translate B CCDlgSortOption {Ordenando:}
+translate B CCDlgListOnlyOwnMove {Somente jogos nos quais tenho o movimento}
+translate B CCOrderClassicTxt {Local, Evento, Rodada, Resultado, Branca, Preta}
+translate B CCOrderMyTimeTxt {Meu Relógio}
+translate B CCOrderTimePerMoveTxt {Tempo por movimento até o próximo controle de tempo}
+translate B CCOrderStartDate {Data de Inicio}
+translate B CCOrderOppTimeTxt {Relogio do Oponente}
+
 # ====== TODO To be translated ======
-translate B CCDlgCGeneraloptions {General Options}
+translate B CCDlgConfigRelay {Observe games}
 # ====== TODO To be translated ======
-translate B CCDlgDefaultDB {Default Database:}
-# ====== TODO To be translated ======
-translate B CCDlgInbox {Inbox (path):}
-# ====== TODO To be translated ======
-translate B CCDlgOutbox {Outbox (path):}
-# ====== TODO To be translated ======
-translate B CCDlgXfcc {Xfcc Configuration:}
-# ====== TODO To be translated ======
-translate B CCDlgExternalProtocol {External Protocol Handler (e.g. Xfcc)}
-# ====== TODO To be translated ======
-translate B CCDlgFetchTool {Fetch Tool:}
-# ====== TODO To be translated ======
-translate B CCDlgSendTool {Send Tool:}
-# ====== TODO To be translated ======
-translate B CCDlgEmailCommunication {eMail Communication}
-# ====== TODO To be translated ======
-translate B CCDlgMailPrg {Mail program:}
-# ====== TODO To be translated ======
-translate B CCDlgBCCAddr {(B)CC Address:}
-# ====== TODO To be translated ======
-translate B CCDlgMailerMode {Mode:}
-# ====== TODO To be translated ======
-translate B CCDlgThunderbirdEg {e.g. Thunderbird, Mozilla Mail, Icedove...}
-# ====== TODO To be translated ======
-translate B CCDlgMailUrlEg {e.g. Evolution}
-# ====== TODO To be translated ======
-translate B CCDlgClawsEg {e.g Sylpheed Claws}
-# ====== TODO To be translated ======
-translate B CCDlgmailxEg {e.g. mailx, mutt, nail...}
-# ====== TODO To be translated ======
-translate B CCDlgAttachementPar {Attachment parameter:}
-# ====== TODO To be translated ======
-translate B CCDlgInternalXfcc {Use internal Xfcc support}
-# ====== TODO To be translated ======
-translate B CCDlgSubjectPar {Subject parameter:}
-# ====== TODO To be translated ======
-translate B CCDlgStartEmail {Start new eMail game}
-# ====== TODO To be translated ======
-translate B CCDlgYourName {Your Name:}
-# ====== TODO To be translated ======
-translate B CCDlgYourMail {Your eMail Address:}
-# ====== TODO To be translated ======
-translate B CCDlgOpponentName {Opponents Name:}
-# ====== TODO To be translated ======
-translate B CCDlgOpponentMail {Opponents eMail Address:}
-# ====== TODO To be translated ======
-translate B CCDlgGameID {Game ID (unique):}
-# ====== TODO To be translated ======
-translate B CCDlgTitNoOutbox {Scid: Correspondence Chess Outbox}
-# ====== TODO To be translated ======
-translate B CCDlgTitNoInbox {Scid: Correspondence Chess Inbox}
-# ====== TODO To be translated ======
-translate B CCDlgTitNoGames {Scid: No Correspondence Chess Games}
-# ====== TODO To be translated ======
-translate B CCErrInboxDir {Correspondence Chess inbox directory:}
-# ====== TODO To be translated ======
-translate B CCErrOutboxDir {Correspondence Chess outbox directory:}
-# ====== TODO To be translated ======
-translate B CCErrDirNotUsable {does not exist or is not accessible!\nPlease check and correct the settings.}
-# ====== TODO To be translated ======
-translate B CCErrNoGames {does not contain any games!\nPlease fetch them first.}
-# ====== TODO To be translated ======
-translate B CCDlgTitNoCCDB {Scid: No Correspondence Database}
-# ====== TODO To be translated ======
-translate B CCErrNoCCDB {No Database of type 'Correspondence' is opened. Please open one before using correspondence chess functions.}
-# ====== TODO To be translated ======
-translate B CCFetchBtn {Fetch games from the server and process the Inbox}
-# ====== TODO To be translated ======
-translate B CCPrevBtn {Goto previous game}
-# ====== TODO To be translated ======
-translate B CCNextBtn {Goto next game}
-# ====== TODO To be translated ======
-translate B CCSendBtn {Send move}
-# ====== TODO To be translated ======
-translate B CCEmptyBtn {Empty In- and Outbox}
-# ====== TODO To be translated ======
-translate B CCHelpBtn {Help on icons and status indicators.\nFor general Help press F1!}
+translate B CCDlgConfigRelayHelp {Go to the games page on http://www.iccf-webchess.com and display the game to be observed.  If you see the chessboard copy the URL from your browser to the list below. One URL per line only!\nExample: http://www.iccf-webchess.com/MakeAMove.aspx?id=266452}
+
 # ====== TODO To be translated ======
 translate B DoneWithPosition {Done with position}
 # ====== TODO To be translated ======

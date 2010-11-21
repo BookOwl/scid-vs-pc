@@ -1492,6 +1492,7 @@ translate F NimzoIndianRubinstein {Nimzo-Indienne Rubinstein}
 translate F KingsIndian {Est-indienne}
 translate F KingsIndianSamisch {Est-indienne Sämisch}
 translate F KingsIndianMainLine {Est-indienne ligne principale}
+
 translate F CCDlgConfigureWindowTitle {Configurer échecs par correspondance}
 translate F CCDlgCGeneraloptions {Options générales}
 translate F CCDlgDefaultDB {Base par défaut:}
@@ -1511,7 +1512,14 @@ translate F CCDlgClawsEg {p.e Sylpheed Claws}
 translate F CCDlgmailxEg {p.e. mailx, mutt, nail...}
 translate F CCDlgAttachementPar {Attachement:}
 translate F CCDlgInternalXfcc {Utiliser Xfcc interne}
+translate F CCDlgConfirmXfcc {Confirmer coups}
 translate F CCDlgSubjectPar {Objet:}
+translate F CCDlgDeleteBoxes {Vider boîtes}
+translate F CCDlgDeleteBoxesText {Voulez-vous réellement vider les boîtes entrantes et sortantes pour les échecs par correspondance ? Cela nécessite une nouvelle synchronisation pour afficher le dernier état de vos parties}
+translate F CCDlgConfirmMove {Confirmer coup}
+translate F CCDlgConfirmMoveText {Si vous confirmez, le coup ci-dessous et le commentaire sont envoyés au serveur:}
+translate F CCDlgDBGameToLong {Ligne principale incohérente}
+translate F CCDlgDBGameToLongError {La ligne principale dans votre base de données est plus longue que la partie dans votre boîte de réception. Si la boîte de réception contient les parties en cours, c'est-à-dire juste après une synchronisation, certains coups ont été ajoutés à tort à la ligne principale dans la base de données.\nDans ce cas veuillez raccourcir la ligne principale à au plus coup\n}
 translate F CCDlgStartEmail {Commencer nouvelle partie par eMail}
 translate F CCDlgYourName {Votre nom:}
 translate F CCDlgYourMail {Votre adresse mail:}
@@ -1533,6 +1541,25 @@ translate F CCNextBtn {Aller à la partie suivante}
 translate F CCSendBtn {Envoyer coup}
 translate F CCEmptyBtn {Vider les boîtes d'envoi et de réception}
 translate F CCHelpBtn {Aide sur les icônes et indicateurs.\nPour plus d'aide appuyer sur F1!}
+translate F CCDlgServerName {Nom serveur:}
+translate F CCDlgLoginName  {Login:}
+translate F CCDlgPassword   {Mot de passe:}
+translate F CCDlgURL        {Xfcc-URL:}
+translate F CCDlgRatingType {Type classement:}
+translate F CCDlgDuplicateGame {Identifiant de partie non-unique}
+translate F CCDlgDuplicateGameError {Cette partie existe à plusieurs exemplaires dans la base de données. Veuillez effacer tous les doublons et compacter votre fichier de parties (Fichier/Maintenance/Compacter base).}
+translate F CCDlgSortOption {Tri:}
+translate F CCDlgListOnlyOwnMove {Parties où c'est mon tour}
+translate F CCOrderClassicTxt {Site, Evénement, Ronde, Résultat, Blancs, Noirs}
+translate F CCOrderMyTimeTxt {Ma pendule}
+translate F CCOrderTimePerMoveTxt {Temps par coup jusqu'au prochain contrôlede temps}
+translate F CCOrderStartDate {Date de départ}
+translate F CCOrderOppTimeTxt {Pendule adversaire}
+# ====== TODO To be translated ======
+translate F CCDlgConfigRelay {Configure ICCF observations}
+# ====== TODO To be translated ======
+translate F CCDlgConfigRelayHelp {Go to the games page on http://www.iccf-webchess.com and display the game to be observed.  If you see the chessboard copy the URL from your browser to the list below. One URL per line only!\nExample: http://www.iccf-webchess.com/MakeAMove.aspx?id=266452}
+
 # ====== TODO To be translated ======
 translate F ExtHWConfigConnection {Configure external hardware}
 # ====== TODO To be translated ======

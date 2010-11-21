@@ -1807,83 +1807,72 @@ translate C KingsIndianSamisch {King's Indian Sämisch}
 # ====== TODO To be translated ======
 translate C KingsIndianMainLine {King's Indian Main Line}
 # ====== TODO To be translated ======
-translate C CCDlgConfigureWindowTitle {Configure Correspondence Chess}
+translate C CCDlgConfigureWindowTitle {Konfigurovat korespondenèní ¹ach}
+translate C CCDlgCGeneraloptions {Obecná nastavení}
+translate C CCDlgDefaultDB {Výchozí databáze:}
+translate C CCDlgInbox {Pøíchozí schránka (cesta):}
+translate C CCDlgOutbox {Odchozí schránka (cesta):}
+translate C CCDlgXfcc {Konfigurace Xfcc:}
+translate C CCDlgExternalProtocol {Externí nástroj pro protokoly (napø. Xfcc)}
+translate C CCDlgFetchTool {Stahovací nástroj:}
+translate C CCDlgSendTool {Odesílací nástroj:}
+translate C CCDlgEmailCommunication {E-mailová komunikace}
+translate C CCDlgMailPrg {E-mailový program:}
+translate C CCDlgBCCAddr {(B)CC adresa:}
+translate C CCDlgMailerMode {Re¾im:}
+translate C CCDlgThunderbirdEg {napø. Thunderbird, Mozilla Mail, Icedove...}
+translate C CCDlgMailUrlEg {napø. Evolution}
+translate C CCDlgClawsEg {napø. Sylpheed Claws}
+translate C CCDlgmailxEg {napø. mailx, mutt, nail...}
+translate C CCDlgAttachementPar {Parametr pøílohy:}
+translate C CCDlgInternalXfcc {Pou¾ít vystavìnou podporu Xfcc}
+translate C CCDlgConfirmXfcc {Potvrdit tahy}
+translate C CCDlgSubjectPar {Pøedmìt:}
+translate C CCDlgDeleteBoxes {Prázdná pøíchozí/odchozí schránka}
+translate C CCDlgDeleteBoxesText {Opravdu chcete vyprázdnit pøíchozí a odchozí schránky pro korespondeèní ¹ach? To vy¾aduje novou synchronizaci, aby mohl být zobrazen poslední stav va¹ich partií.}
+translate C CCDlgConfirmMove {Potvrdit tah}
+translate C CCDlgConfirmMoveText {Pokud potvrdíte, následující tah a komentáø bude zaslán na server:}
+translate C CCDlgDBGameToLong {Nekonzistentní hlavní varianta}
+translate C CCDlgDBGameToLongError {Hlavní varianta v databázi je del¹í ne¾ partie v pøíchozí schránce. Jestli¾e pøíchozí schránka obsahuje aktuální partie, tj. èerstvì po synchronizaci, nìkteré tahy byly do hlavní varianty v databázi pøidány chybnì.\nV takovém pøípadì prosím zkra»te hlavní variantu do (max.) tahu\n}
+translate C CCDlgStartEmail {Zaèít novou e-mailovou partii}
+translate C CCDlgYourName {Va¹e jména:}
+translate C CCDlgYourMail {Va¹e e-mailová adresa:}
+translate C CCDlgOpponentName {Jméno soupeøe:}
+translate C CCDlgOpponentMail {E-mailová adresa soupeøe:}
+translate C CCDlgGameID {Identifikátor partie (jednoznaèný):}
+translate C CCDlgTitNoOutbox {Scid: Odchozí schránka korespondenèního ¹achu}
+translate C CCDlgTitNoInbox {Scid: Pøíchozí schránka korespondenèního ¹achu}
+translate C CCDlgTitNoGames {Scid: ®ádné korespondenèní partie}
+translate C CCErrInboxDir {Adresáø pøíchozí schránky korespondenèního ¹achu:}
+translate C CCErrOutboxDir {Adresáø odchozí schránky korespondenèního ¹achu:}
+translate C CCErrDirNotUsable {neexistuje nebo není pøístupná!\nProsím zkontrolujte a opravte nastavení.}
+translate C CCErrNoGames {neobsahuje ¾ádné partie!\nNejprve je prosím stáhnìte.}
+translate C CCDlgTitNoCCDB {Scid: ®ádná korespondenèní databáze.}
+translate C CCErrNoCCDB {®ádná korespondenèní databáze není otevøena. Prosím otevøete nìjakou ne¾ budete pou¾ívat funkce korespondenèního ¹achu.}
+translate C CCFetchBtn {Stáhnout partie ze serveru a zpracovat pøíchozí schránku}
+translate C CCPrevBtn {Jít na pøedchozí partii}
+translate C CCNextBtn {Jít na následující partii}
+translate C CCSendBtn {Poslat tah}
+translate C CCEmptyBtn {Vyprázdnit pøíchozí a odchozí schránku}
+translate C CCHelpBtn {Nápovìda k ikonám a stavovým indikátorùm.\nPro obecnou nápovìdu stisknìte F1!}
+translate C CCDlgServerName {Jméno serveru:}
+translate C CCDlgLoginName  {Pøihla¹ovací jméno:}
+translate C CCDlgPassword   {Heslo:}
+translate C CCDlgURL        {URL Xfcc:}
+translate C CCDlgRatingType {Typ ratingu:}
+translate C CCDlgDuplicateGame {Nejednoznaèný identifikátor partie}
+translate C CCDlgDuplicateGameError {Tato partie se v databázi vyskytuje více ne¾ jednou. Prosím sma¾te v¹echny duplikáty a soubor partií zhutnìte (Soubor/Údr¾ba/Zhutnit databázi).}
+translate C CCDlgSortOption {Tøídìní:}
 # ====== TODO To be translated ======
-translate C CCDlgCGeneraloptions {General Options}
-# ====== TODO To be translated ======
-translate C CCDlgDefaultDB {Default Database:}
-# ====== TODO To be translated ======
-translate C CCDlgInbox {Inbox (path):}
-# ====== TODO To be translated ======
-translate C CCDlgOutbox {Outbox (path):}
-# ====== TODO To be translated ======
-translate C CCDlgXfcc {Xfcc Configuration:}
-# ====== TODO To be translated ======
-translate C CCDlgExternalProtocol {External Protocol Handler (e.g. Xfcc)}
-# ====== TODO To be translated ======
-translate C CCDlgFetchTool {Fetch Tool:}
-# ====== TODO To be translated ======
-translate C CCDlgSendTool {Send Tool:}
-# ====== TODO To be translated ======
-translate C CCDlgEmailCommunication {eMail Communication}
-# ====== TODO To be translated ======
-translate C CCDlgMailPrg {Mail program:}
-# ====== TODO To be translated ======
-translate C CCDlgBCCAddr {(B)CC Address:}
-# ====== TODO To be translated ======
-translate C CCDlgMailerMode {Mode:}
-# ====== TODO To be translated ======
-translate C CCDlgThunderbirdEg {e.g. Thunderbird, Mozilla Mail, Icedove...}
-# ====== TODO To be translated ======
-translate C CCDlgMailUrlEg {e.g. Evolution}
-# ====== TODO To be translated ======
-translate C CCDlgClawsEg {e.g Sylpheed Claws}
-# ====== TODO To be translated ======
-translate C CCDlgmailxEg {e.g. mailx, mutt, nail...}
-# ====== TODO To be translated ======
-translate C CCDlgAttachementPar {Attachment parameter:}
-# ====== TODO To be translated ======
-translate C CCDlgInternalXfcc {Use internal Xfcc support}
-# ====== TODO To be translated ======
-translate C CCDlgSubjectPar {Subject parameter:}
-# ====== TODO To be translated ======
-translate C CCDlgStartEmail {Start new eMail game}
-# ====== TODO To be translated ======
-translate C CCDlgYourName {Your Name:}
-# ====== TODO To be translated ======
-translate C CCDlgYourMail {Your eMail Address:}
-# ====== TODO To be translated ======
-translate C CCDlgOpponentName {Opponents Name:}
-# ====== TODO To be translated ======
-translate C CCDlgOpponentMail {Opponents eMail Address:}
-# ====== TODO To be translated ======
-translate C CCDlgGameID {Game ID (unique):}
-# ====== TODO To be translated ======
-translate C CCDlgTitNoOutbox {Scid: Correspondence Chess Outbox}
-# ====== TODO To be translated ======
-translate C CCDlgTitNoInbox {Scid: Correspondence Chess Inbox}
-# ====== TODO To be translated ======
-translate C CCDlgTitNoGames {Scid: No Correspondence Chess Games}
-# ====== TODO To be translated ======
-translate C CCErrInboxDir {Correspondence Chess inbox directory:}
-# ====== TODO To be translated ======
-translate C CCErrOutboxDir {Correspondence Chess outbox directory:}
-# ====== TODO To be translated ======
-translate C CCErrDirNotUsable {does not exist or is not accessible!\nPlease check and correct the settings.}
-# ====== TODO To be translated ======
-translate C CCErrNoGames {does not contain any games!\nPlease fetch them first.}
-# ====== TODO To be translated ======
-translate C CCDlgTitNoCCDB {Scid: No Correspondence Database}
-# ====== TODO To be translated ======
-translate C CCErrNoCCDB {No Database of type 'Correspondence' is opened. Please open one before using correspondence chess functions.}
-# ====== TODO To be translated ======
-translate C CCFetchBtn {Fetch games from the server and process the Inbox}
-# ====== TODO To be translated ======
-translate C CCPrevBtn {Goto previous game}
-# ====== TODO To be translated ======
-translate C CCNextBtn {Goto next game}
-# ====== TODO To be translated ======
-translate C CCSendBtn {Send move}
+translate C CCDlgListOnlyOwnMove {Only games I have the move}
+translate C CCOrderClassicTxt {Místo, událost, kolo, výsledek, bílý, èerný}
+translate C CCOrderMyTimeTxt {Mé hodiny}
+translate C CCOrderTimePerMoveTxt {Èas na ka¾dý tah do pøí¹tí èasové kontroly}
+translate C CCOrderStartDate {Poèáteèní datum}
+translate C CCOrderOppTimeTxt {Soupeøovy hodiny}
+translate C CCDlgConfigRelay {Konfigurovat sledování ICCF}
+translate C CCDlgConfigRelayHelp {Bì¾te na stránku partií na http://www.iccf-webchess.com a zobrazte partii, která má být sledována. Pokud vidíte ¹achovnici, zkopírujte URL z prohlí¾eèe do seznamu ní¾e. Pouze jediné URL na ka¾dém øádku!\nPøíklad: http://www.iccf-webchess.com/MakeAMove.aspx?id=266452}
+
 # ====== TODO To be translated ======
 translate C CCEmptyBtn {Empty In- and Outbox}
 # ====== TODO To be translated ======

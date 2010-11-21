@@ -1805,87 +1805,74 @@ translate N KingsIndianSamisch {Koningsindisch Sämisch}
 
 translate N KingsIndianMainLine {Koningsindisch Hoofdvariant}
 # ====== TODO To be translated ======
-translate N CCDlgConfigureWindowTitle {Configure Correspondence Chess}
-# ====== TODO To be translated ======
-translate N CCDlgCGeneraloptions {General Options}
-# ====== TODO To be translated ======
-translate N CCDlgDefaultDB {Default Database:}
-# ====== TODO To be translated ======
-translate N CCDlgInbox {Inbox (path):}
-# ====== TODO To be translated ======
-translate N CCDlgOutbox {Outbox (path):}
-# ====== TODO To be translated ======
-translate N CCDlgXfcc {Xfcc Configuration:}
-# ====== TODO To be translated ======
-translate N CCDlgExternalProtocol {External Protocol Handler (e.g. Xfcc)}
-# ====== TODO To be translated ======
-translate N CCDlgFetchTool {Fetch Tool:}
-# ====== TODO To be translated ======
-translate N CCDlgSendTool {Send Tool:}
-# ====== TODO To be translated ======
-translate N CCDlgEmailCommunication {eMail Communication}
-# ====== TODO To be translated ======
-translate N CCDlgMailPrg {Mail program:}
-# ====== TODO To be translated ======
+
+translate N CCDlgConfigureWindowTitle {Configureer Correspondentie Schaak}
+translate N CCDlgCGeneraloptions {Algemene Opties}
+translate N CCDlgDefaultDB {Default Databank:}
+translate N CCDlgInbox {Inbox (pad):}
+translate N CCDlgOutbox {Outbox (pad):}
+translate N CCDlgXfcc {Xfcc Configuratie:}
+translate N CCDlgExternalProtocol {Externe Protocol Verwerker (b.v. Xfcc)}
+translate N CCDlgFetchTool {Verwerf Tool:}
+translate N CCDlgSendTool {Zend Tool:}
+translate N CCDlgEmailCommunication {eMail Communicatie}
+translate N CCDlgMailPrg {Mail programma:}
 translate N CCDlgBCCAddr {(B)CC Address:}
-# ====== TODO To be translated ======
 translate N CCDlgMailerMode {Mode:}
+translate N CCDlgThunderbirdEg {b.v. Thunderbird, Mozilla Mail, Icedove...}
+translate N CCDlgMailUrlEg {b.v. Evolution}
+translate N CCDlgClawsEg {b.v Sylpheed Claws}
+translate N CCDlgmailxEg {b.v. mailx, mutt, nail...}
+translate N CCDlgAttachementPar {Aanhangsel parameter:}
+translate N CCDlgInternalXfcc {Gebruik interne Xfcc ondersteuning}
+translate N CCDlgConfirmXfcc {Bevestig de zetten}
+translate N CCDlgSubjectPar {Onderwerp parameter:}
+translate N CCDlgDeleteBoxes {Lege In-/Uitbox}
+translate N CCDlgDeleteBoxesText {Wil je echt de  In- and Uitbox mappen voor Correspondentieschaak ledigen? Dit vereist een nieuwe synchronisatie om de laatste staat van je partijen te tonen.}
+translate N CCDlgConfirmMove {Bevestig zet}
+translate N CCDlgConfirmMoveText {Als je bevestigt zal volgende zet en commentaar naar de server gestuurd worden:}
+translate N CCDlgDBGameToLong {Onverenigbare Hoofdvariant}
+translate N CCDlgDBGameToLongError {De hoofdvariant in jouw database is langer dan de partij in je Inbox. Als de Inbox huidige partijen bevat bvb. vlak na een synchronisatie, dan werden enkele verkeerde zetten toegevoegd aan de hoofdvariant.\nIn dit geval verkort de hoofdvariant tot (max) zetten\n}
+translate N CCDlgStartEmail {Start een nieuwe eMail partij}
+translate N CCDlgYourName {Uw Naam:}
+translate N CCDlgYourMail {Uw eMail Addres:}
+translate N CCDlgOpponentName {Naam van de tegenstander:}
+translate N CCDlgOpponentMail {EMail Addres van de tegenstander:}
+translate N CCDlgGameID {Game ID (uniek):}
+translate N CCDlgTitNoOutbox {Scid: Correspondentie Schaak Outbox}
+translate N CCDlgTitNoInbox {Scid: Correspondentie Schaak Inbox}
+translate N CCDlgTitNoGames {Scid: Geen Correspondentie Schaak partijen}
+translate N CCErrInboxDir {Correspondentie Schaak inbox folder:}
+translate N CCErrOutboxDir {Correspondentie Schaak outbox folder:}
+translate N CCErrDirNotUsable {dit bestaat niet of is niet toegankelijk!\nVerifieer en corrigeer de instellingen.}
+translate N CCErrNoGames {dit bevat geen partijen!\nHaal ze alstublieft eerst op.}
+translate N CCDlgTitNoCCDB {Scid: No Correspondentie Databank}
+translate N CCErrNoCCDB {Er werd geen databank van type 'Correspondentie' geopend. U moet er eerst een openen alvorens de correspondentie schaak functies te gebruiken.}
+translate N CCFetchBtn {Haal de partijen van de server en verwerk de Inbox}
+translate N CCPrevBtn {Ga naar de vorige partij}
+translate N CCNextBtn {Ga naar de volgende}
+translate N CCSendBtn {Stuur de zet op}
+translate N CCEmptyBtn {Ledig In- en Outbox}
+translate N CCHelpBtn {Hulp over iconen en status indicatoren.\nVoor algemen hulp: druk F1!}
+translate N CCDlgServerName {Server Naam:}
+translate N CCDlgLoginName  {Login Naam:}
+translate N CCDlgPassword   {Paswoord:}
+translate N CCDlgURL        {Xfcc-URL:}
+translate N CCDlgRatingType {Klassering Type:}
+translate N CCDlgDuplicateGame {Niet-unieke partij ID}
+translate N CCDlgDuplicateGameError {This game exists more than once in your database. Please delete all duplicates and compact your game file (File/Maintenance/Compact Database).}
+translate N CCDlgSortOption {Rangschikken:}
+translate N CCDlgListOnlyOwnMove {De enige partijen waarvan ik de zet heb}
+translate N CCOrderClassicTxt {Plaats, Wedstrijd, Ronde, Resultaat, Wit, Zwart}
+translate N CCOrderMyTimeTxt {Mijn klok}
+translate N CCOrderTimePerMoveTxt {Tijd per zet tot de volgende tijdscontrole}
+translate N CCOrderStartDate {Start datum}
+translate N CCOrderOppTimeTxt {Tegenstander Klok}
 # ====== TODO To be translated ======
-translate N CCDlgThunderbirdEg {e.g. Thunderbird, Mozilla Mail, Icedove...}
+translate N CCDlgConfigRelay {Observe games}
 # ====== TODO To be translated ======
-translate N CCDlgMailUrlEg {e.g. Evolution}
-# ====== TODO To be translated ======
-translate N CCDlgClawsEg {e.g Sylpheed Claws}
-# ====== TODO To be translated ======
-translate N CCDlgmailxEg {e.g. mailx, mutt, nail...}
-# ====== TODO To be translated ======
-translate N CCDlgAttachementPar {Attachment parameter:}
-# ====== TODO To be translated ======
-translate N CCDlgInternalXfcc {Use internal Xfcc support}
-# ====== TODO To be translated ======
-translate N CCDlgSubjectPar {Subject parameter:}
-# ====== TODO To be translated ======
-translate N CCDlgStartEmail {Start new eMail game}
-# ====== TODO To be translated ======
-translate N CCDlgYourName {Your Name:}
-# ====== TODO To be translated ======
-translate N CCDlgYourMail {Your eMail Address:}
-# ====== TODO To be translated ======
-translate N CCDlgOpponentName {Opponents Name:}
-# ====== TODO To be translated ======
-translate N CCDlgOpponentMail {Opponents eMail Address:}
-# ====== TODO To be translated ======
-translate N CCDlgGameID {Game ID (unique):}
-# ====== TODO To be translated ======
-translate N CCDlgTitNoOutbox {Scid: Correspondence Chess Outbox}
-# ====== TODO To be translated ======
-translate N CCDlgTitNoInbox {Scid: Correspondence Chess Inbox}
-# ====== TODO To be translated ======
-translate N CCDlgTitNoGames {Scid: No Correspondence Chess Games}
-# ====== TODO To be translated ======
-translate N CCErrInboxDir {Correspondence Chess inbox directory:}
-# ====== TODO To be translated ======
-translate N CCErrOutboxDir {Correspondence Chess outbox directory:}
-# ====== TODO To be translated ======
-translate N CCErrDirNotUsable {does not exist or is not accessible!\nPlease check and correct the settings.}
-# ====== TODO To be translated ======
-translate N CCErrNoGames {does not contain any games!\nPlease fetch them first.}
-# ====== TODO To be translated ======
-translate N CCDlgTitNoCCDB {Scid: No Correspondence Database}
-# ====== TODO To be translated ======
-translate N CCErrNoCCDB {No Database of type 'Correspondence' is opened. Please open one before using correspondence chess functions.}
-# ====== TODO To be translated ======
-translate N CCFetchBtn {Fetch games from the server and process the Inbox}
-# ====== TODO To be translated ======
-translate N CCPrevBtn {Goto previous game}
-# ====== TODO To be translated ======
-translate N CCNextBtn {Goto next game}
-# ====== TODO To be translated ======
-translate N CCSendBtn {Send move}
-# ====== TODO To be translated ======
-translate N CCEmptyBtn {Empty In- and Outbox}
-# ====== TODO To be translated ======
-translate N CCHelpBtn {Help on icons and status indicators.\nFor general Help press F1!}
+translate N CCDlgConfigRelayHelp {Go to the games page on http://www.iccf-webchess.com and display the game to be observed.  If you see the chessboard copy the URL from your browser to the list below. One URL per line only!\nExample: http://www.iccf-webchess.com/MakeAMove.aspx?id=266452}
+
 # ====== TODO To be translated ======
 translate N ExtHWConfigConnection {Configure external hardware}
 # ====== TODO To be translated ======
