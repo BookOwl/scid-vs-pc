@@ -304,6 +304,7 @@ proc ::file::finder::contextMenu {win fullPath x y xc yc} {
   $mctxt add command -label [tr FinderCtxBackup ] -command "::file::finder::backup [list $fullPath]"
   $mctxt add command -label [tr FinderCtxCopy ] -command "::file::finder::copy [list $fullPath]"
   $mctxt add command -label [tr FinderCtxMove ] -command "::file::finder::move [list $fullPath]"
+  $mctxt add command -label Rename              -command "::file::finder::rename [list $fullPath]"
   $mctxt add separator
   $mctxt add command -label [tr FinderCtxDelete ] -command "::file::finder::delete $fullPath"
 
@@ -384,6 +385,93 @@ proc ::file::finder::move { f } {
   }
   ::file::finder::Refresh
 }
+
+proc ::file::finder::rename { f } {
+  if {[sc_base slot $f] != 0} {
+    tk_messageBox -title Scid -icon error -type ok -message "Close base first" -parent .finder
+    return
+  }
+
+  set newname [::file::finder::getname]
+  set r [file rootname $f]
+  set ext [string tolower [file extension $f]]
+
+  if {$newname == {}} {
+    return
+  }
+
+
+  # remove leading directories
+  set newname [file tail $newname]
+
+  # remove trailing .extension if the same
+  if {[string tolower [file extension $newname]] == [string tolower [file extension $f]]} {
+    set newname [file rootname $newname]
+  }
+
+  set n "[file dirname $f]/$newname"
+
+  if { [string tolower [file extension $f]] == {.si4} } {
+    if {[file exists "$newname.si4"]} {
+      tk_messageBox -title Scid -icon error -type ok -message "$newname.si4 already exists" -parent .finder
+      return
+    }
+
+    if { [catch {
+	    file rename "$r.sg4" "$n.sg4"
+	    file rename "$r.sn4" "$n.sn4"
+	 } err ] } {
+      tk_messageBox -title Scid -icon error -type ok -message "File copy error $err"
+      return
+    }
+    catch { file rename "$r.stc" "$n.stc" }
+  }
+  if { [catch {
+          file rename "$r[file extension $f]" "$n[file extension $f]"
+       } err ] } {
+    tk_messageBox -title Scid -icon error -type ok -message "File copy error $err"
+    return
+  }
+
+  ::file::finder::Refresh
+}
+
+proc ::file::finder::getname {} {
+  set w .rename
+  toplevel $w
+  wm title $w "Scid: Rename"
+  grab $w
+
+  label $w.label -text {New name}
+  pack $w.label -side top -pady 5 -padx 5
+
+  entry $w.entry -width 16 -borderwidth 0
+  bind $w.entry <Escape> { .rename.buttons.cancel invoke }
+  bind $w.entry <Return> { .rename.buttons.ok invoke }
+  pack $w.entry -side top -pady 5
+
+  set b [frame $w.buttons]
+  pack $b -side top -fill x
+  dialogbutton $b.ok -text OK -command {
+    grab release .rename
+    focus .
+    set ::tmp [.rename.entry get]
+    destroy .rename
+  }
+  dialogbutton $b.cancel -text $::tr(Cancel) -command {
+    focus .
+    grab release .rename
+    set ::tmp {}
+    destroy .rename
+    focus .
+  }
+  packbuttons right $b.cancel $b.ok
+  placeWinOverParent $w .finder
+  focus $w.entry
+  tkwait window $w
+  return "$::tmp"
+}
+
 ################################################################################
 #
 ################################################################################

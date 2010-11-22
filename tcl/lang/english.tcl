@@ -1345,7 +1345,7 @@ Do you want to upgrade this database now?
 
 # Recent files options:
 translate E RecentFilesMenu {Number of files in File menu}
-translate E RecentFilesExtra {Number of files in Sub-menu}
+translate E RecentFilesExtra {Number of files in Sub menu}
 
 # My Player Names options:
 translate E MyPlayerNamesDescription {
