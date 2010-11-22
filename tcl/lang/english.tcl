@@ -515,11 +515,14 @@ menuText E TreeFileClose "Close Tree Window" 0 {Close the tree window}
 menuText E TreeMask "Mask" 0
 menuText E TreeMaskNew "New" 0 {New mask}
 menuText E TreeMaskOpen "Open" 0 {Open mask}
+menuText E TreeMaskOpenRecent "Open recent" 0 {Open recent mask}
 menuText E TreeMaskSave "Save" 0 {Save mask}
 menuText E TreeMaskClose "Close" 0 {Close mask}
 menuText E TreeMaskFillWithGame "Fill with game" 0 {Fill mask with game}
 menuText E TreeMaskFillWithBase "Fill with base" 0 {Fill mask with all games in base}
 menuText E TreeMaskInfo "Info" 0 {Show statistics for current mask}
+menuText E TreeMaskDisplay "Display mask map" 0 {Show mask data in a tree form}
+menuText E TreeMaskSearch "Search" 0 {Search in current mask}
 menuText E TreeSort "Sort" 0
 menuText E TreeSortAlpha "Alphabetical" 0
 menuText E TreeSortECO "ECO Code" 0
@@ -529,6 +532,7 @@ menuText E TreeOpt "Options" 0
 menuText E TreeOptSlowmode "slow mode" 0 {Slow mode for updates (high accuracy)}
 menuText E TreeOptFastmode "Fast mode" 0 {Fast mode for updates (no move transposition)}
 menuText E TreeOptFastAndSlowmode "Fast and slow mode" 0 {Fast mode then slow mode for updates}
+menuText E TreeOptStartStop "Auto refreshing" 0 {Toggles automatic refreshing of the tree window}
 menuText E TreeOptLock "Lock" 0 {Lock/unlock the tree to the current database}
 menuText E TreeOptTraining "Training" 0 {Turn on/off tree training mode}
 menuText E TreeOptAutosave "Auto-Save Cache File" 0 \
