@@ -359,7 +359,7 @@ image create photo htmldiag1 -data {
 
 # exportOptions:
 #   Prompts the user to select exporting options.
-#
+
 proc exportOptions {exportType} {
   global exportFlags
 
@@ -692,7 +692,7 @@ set nameMatchCount 0
 # updateMatchList:
 #    Called from gameSave to update the matching name list as the user
 #    types a player/site/event/round name.
-#
+
 proc updateMatchList { tw nametype maxMatches name el op } {
   global nameMatches nameMatchCount
   global $name editNameType
@@ -1261,7 +1261,8 @@ proc gameReplace {} { gameSave [sc_game number] }
 
 
 ############################################################
-#### Square Bindings:
+#### Square Bindings &&&
+
 # Pascal Georges : allow the drawing of markers directly on the board (not through comment editor)
 set startArrowSquare ""
 
@@ -1403,31 +1404,14 @@ if {$windowsOS} {
 standardShortcuts .
 
 ############################################################
-### Packing the main window:
+### Packing the main window &&&
 
+label .statusbar -textvariable statusBar -relief sunken -anchor w -width 1 -font font_Small
 
-label .statusbar -textvariable statusBar -relief sunken -anchor w -width 1 \
-    -font font_Small
 grid .statusbar -row 4 -column 0 -columnspan 3 -sticky we
 
-### This isn't very handy S.A.
-# The status bar is normally a good place to click to raise a window
-# bind .statusbar <1> gotoNextBase
-
-# Unused
-proc gotoNextBase {} {
-  set n [sc_base current]
-  set cb [sc_info clipbase]
-  while {1} {
-    incr n; if {$n > $cb} { set n 1 }
-    sc_base switch $n
-    if {[sc_base inUse]} { break }
-  }
-  updateBoard -pgn
-  updateTitle
-  updateMenuStates
-  updateStatusBar
-  ::windows::gamelist::Refresh
+if {!$::gameInfo(showStatus)} {
+  grid remove .statusbar
 }
 
 #frame .sep -width 2 -borderwidth 2 -relief groove
@@ -1435,6 +1419,7 @@ proc gotoNextBase {} {
 #grid .boardframe -row 1 -column 0 -columnspan 3 -sticky news
 #grid .sep -row 1 -column 1 -rowspan 3 -sticky ns -padx 4
 #grid .panels -row 1 -column 2 -rowspan 3 -sticky news -pady 2
+
 grid columnconfigure . 0 -weight 1
 grid rowconfigure . 3 -weight 1
 
