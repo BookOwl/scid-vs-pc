@@ -430,7 +430,7 @@ set highlightLastMovePattern {} ; # this option is not saved
 # Ask before replacing existing moves: on by default
 set askToReplaceMoves 1
 
-# Show suggested moves: on by default. Not S.A.
+# Show suggested moves
 set suggestMoves 0
 
 # Show variations popup window
@@ -451,8 +451,7 @@ set blunderThreshold 1.0
 # Geometry of windows:
 array set geometry {}
 
-# startup:
-#   Stores which windows should be opened on startup.
+#   Which windows should be opened on startup
 set startup(pgn) 0
 set startup(switcher) 0
 set startup(tip) 0
@@ -467,17 +466,19 @@ set startup(book) 0
 #   List of player name patterns for which the chessboard should be
 #   flipped each time a game is loaded to show the board from that
 #   players perspective.
-#
+
 set myPlayerNames {}
 
+# These new checkbuttons (showMenu, showButtons etc) don't really have anything
+# to do with gameInfo, but are here anyway S.A
 
-# Game information area options:
 set gameInfo(show) 1
 set gameInfo(photos) 1
 set gameInfo(hideNextMove) 0
 set gameInfo(showMaterial) 0
 set gameInfo(showFEN) 0
 set gameInfo(showButtons) 1
+set gameInfo(showStatus) 1
 set gameInfo(showMenu) 1
 set gameInfo(showTool) 1
 set gameInfo(showMarks) 1
@@ -641,8 +642,6 @@ proc raiseWin {w} {
 
 set autoIconify 1
 
-# sets visibility of gameInfo panel at the bottom of main board
-
 proc toggleToolbar {} {
   if {$::gameInfo(showTool)} {
     grid .tb -row 0 -column 0 -columnspan 3 -sticky we
@@ -669,6 +668,14 @@ proc toggleButtonBar {} {
     grid remove .button
   } else {
     grid configure .button -row 1 -column 0 -pady 5 -padx 5
+  }
+}
+
+proc toggleStatus {} {
+  if {!$::gameInfo(showStatus)} {
+    grid remove .statusbar
+  } else {
+    grid configure .statusbar -row 4 -column 0 -columnspan 3 -sticky we
   }
 }
 

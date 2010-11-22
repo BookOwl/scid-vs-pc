@@ -997,7 +997,7 @@ $m add command -label OptionsSave -command {
           exportFlags(htmldiag) exportFlags(convertNullMoves) \
           email(smtp) email(smproc) email(server) \
           email(from) email(bcc) ::windows::gamelist::widths ::windows::gamelist::findcase \
-          gameInfo(show) gameInfo(photos) gameInfo(hideNextMove) gameInfo(wrap) \
+          gameInfo(show) gameInfo(photos) gameInfo(hideNextMove) gameInfo(wrap) gameInfo(showStatus) \
           gameInfo(fullComment) gameInfo(showMarks) gameInfo(showMenu) gameInfo(showTool) \
           gameInfo(showMaterial) gameInfo(showFEN) gameInfo(showButtons) gameInfo(showTB) \
           engines(F2) engines(F3) engines(F4) engineCoach1 engineCoach2 scidBooksDir scidBasesDir ::book::lastBook \
