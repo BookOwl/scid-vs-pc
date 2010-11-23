@@ -492,14 +492,10 @@ translate C TipAtStartup {Tip pøi spu¹tìní}
 
 # Tree window menus:
 menuText C TreeFile "Soubor" 0
-# ====== TODO To be translated ======
-menuText C TreeFileFillWithBase "Fill Cache with base" 0 {Fill the cache file with all games in current base}
-# ====== TODO To be translated ======
-menuText C TreeFileFillWithGame "Fill Cache with game" 0 {Fill the cache file with current game in current base}
-# ====== TODO To be translated ======
-menuText C TreeFileSetCacheSize "Cache size" 0 {Set the cache size}
-# ====== TODO To be translated ======
-menuText C TreeFileCacheInfo "Cache info" 0 {Get info on cache usage}
+menuText C TreeFileFillWithBase "Naplnit cache z databáze" 0 {Naplnit cachovací soubor v¹emi partiemi z aktuální databáze}
+menuText C TreeFileFillWithGame "Naplnit cache partií" 0 {Naplnit cachovací soubor aktuální partií z aktuální databáze}
+menuText C TreeFileSetCacheSize "Velikost cache" 0 {Nastavit velikost cache}
+menuText C TreeFileCacheInfo "Informace o cache" 0 {Získat informaci o vyu¾ití cache}
 menuText C TreeFileSave "Ulo¾it cache soubor" 0 \
   {Ulo¾it stromový cache (.stc) soubor}
 menuText C TreeFileFill "Naplnit cache soubor" 0 \
@@ -509,34 +505,27 @@ menuText C TreeFileGraph "Okno grafu" 0 {Zobrazit graf pro tuto vìtev stromu}
 menuText C TreeFileCopy "Kopírovat text stromu do clipboardu" 0 \
   {Kopírovat stromové statistiky do textového výbìru}
 menuText C TreeFileClose "Zavøít stromové okno" 0 {Zavøít stromové okno}
-# ====== TODO To be translated ======
-menuText C TreeMask "Mask" 0
-# ====== TODO To be translated ======
-menuText C TreeMaskNew "New" 0 {New mask}
-# ====== TODO To be translated ======
-menuText C TreeMaskOpen "Open" 0 {Open mask}
-# ====== TODO To be translated ======
-menuText C TreeMaskSave "Save" 0 {Save mask}
-# ====== TODO To be translated ======
-menuText C TreeMaskClose "Close" 0 {Close mask}
-# ====== TODO To be translated ======
-menuText C TreeMaskFillWithGame "Fill with game" 0 {Fill mask with game}
-# ====== TODO To be translated ======
-menuText C TreeMaskFillWithBase "Fill with base" 0 {Fill mask with all games in base}
-# ====== TODO To be translated ======
-menuText C TreeMaskInfo "Info" 0 {Show statistics for current mask}
+menuText C TreeMask "Maska" 0
+menuText C TreeMaskNew "New" 0 {Nová maska}
+menuText C TreeMaskOpen "Open" 0 {Otevøít masku}
+menuText C TreeMaskOpenRecent "Open recent" 0 {Otevøít nedávnou masku}
+menuText C TreeMaskSave "Save" 0 {Ulo¾it masku}
+menuText C TreeMaskClose "Close" 0 {Uzavøit masku}
+menuText C TreeMaskFillWithGame "Naplnit partií" 0 {Naplnit masku partií}
+menuText C TreeMaskFillWithBase "Naplnit databází" 0 {Naplnit masku v¹emi partiemi z databáze}
+menuText C TreeMaskInfo "Info" 0 {Ukázat statistiku aktuální masky}
+menuText C TreeMaskDisplay "Display mask map" 0 {Ukázat data masky ve formì stromu}
+menuText C TreeMaskSearch "Search" 0 {Hledat v aktuální masce}
 menuText C TreeSort "Øadit" 2
 menuText C TreeSortAlpha "Abecednì" 0
 menuText C TreeSortECO "ECO kód" 0
 menuText C TreeSortFreq "Frekvence" 0
 menuText C TreeSortScore "Skóre" 0
 menuText C TreeOpt "Volby" 0
-# ====== TODO To be translated ======
-menuText C TreeOptSlowmode "slow mode" 0 {Slow mode for updates (high accuracy)}
-# ====== TODO To be translated ======
-menuText C TreeOptFastmode "Fast mode" 0 {Fast mode for updates (no move transposition)}
-# ====== TODO To be translated ======
-menuText C TreeOptFastAndSlowmode "Fast and slow mode" 0 {Fast mode then slow mode for updates}
+menuText C TreeOptSlowmode "pomalý re¾im" 0 {Pomalý re¾im aktualizace (vysoká pøesnost)}
+menuText C TreeOptFastmode "Rychlý re¾im" 0 {Rychlý re¾im aktualizace (beze zmìny poøadí tahù)}
+menuText C TreeOptFastAndSlowmode "Rychlý a pomalý re¾im" 0 {Rychlý re¾im a potom pomalý re¾im aktualizace}
+menuText C TreeOptStartStop "Automatické aktualizace" 0 {Pøepnout automatické aktualizace stromového okna}
 menuText C TreeOptLock "Zamknout" 0 {Zamknout/Odemknout strom k aktuální databázi}
 menuText C TreeOptTraining "Trénink" 0 {Zapnout/Vypnout stromový tréninkový mód}
 menuText C TreeOptAutosave "Automatické ukládání cache souboru" 0 \
@@ -544,6 +533,7 @@ menuText C TreeOptAutosave "Automatické ukládání cache souboru" 0 \
 menuText C TreeHelp "Nápovìda" 0
 menuText C TreeHelpTree "Nápovìda - Strom" 11
 menuText C TreeHelpIndex "Index nápovìdy" 0
+
 translate C SaveCache {Ulo¾it cache}
 translate C Training {Trénink}
 translate C LockTree {Zamknout}

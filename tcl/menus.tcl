@@ -984,7 +984,7 @@ $m add command -label OptionsSave -command {
           ::pgn::indentVars ::pgn::indentComments ::defaultBackground \
           ::pgn::shortHeader ::pgn::boldMainLine ::pgn::stripMarks \
           ::pgn::symbolicNags ::pgn::moveNumberSpaces ::pgn::columnFormat myPlayerNames \
-          tree(order) tree(autoSave) optionsAutoSave \
+          tree(order) tree(autoSave) optionsAutoSave ::tree::mask::recentMask \
           ecoFile suggestMoves showVarPopup glistSize glexport \
           blunderThreshold autoplayDelay animateDelay boardCoords boardSTM \
           moveEntry(AutoExpand) moveEntry(Coord) \

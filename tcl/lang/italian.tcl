@@ -495,6 +495,8 @@ menuText I TreeMaskNew "New" 0 {New mask}
 # ====== TODO To be translated ======
 menuText I TreeMaskOpen "Open" 0 {Open mask}
 # ====== TODO To be translated ======
+menuText I TreeMaskOpenRecent "Open recent" 0 {Open recent mask}
+# ====== TODO To be translated ======
 menuText I TreeMaskSave "Save" 0 {Save mask}
 # ====== TODO To be translated ======
 menuText I TreeMaskClose "Close" 0 {Close mask}
@@ -504,6 +506,10 @@ menuText I TreeMaskFillWithGame "Fill with game" 0 {Fill mask with game}
 menuText I TreeMaskFillWithBase "Fill with base" 0 {Fill mask with all games in base}
 # ====== TODO To be translated ======
 menuText I TreeMaskInfo "Info" 0 {Show statistics for current mask}
+# ====== TODO To be translated ======
+menuText I TreeMaskDisplay "Display mask map" 0 {Show mask data in a tree form}
+# ====== TODO To be translated ======
+menuText I TreeMaskSearch "Search" 0 {Search in current mask}
 menuText I TreeSort "Ordina" 0
 menuText I TreeSortAlpha "Alfabetico" 0
 menuText I TreeSortECO "codice ECO" 0
@@ -513,6 +519,8 @@ menuText I TreeOpt "Opzioni" 0
 menuText I TreeOptSlowmode "Modalità lenta" 0 {Modalità lenta per l'aggiornamento (più precisa)}
 menuText I TreeOptFastmode "Modalità veloce" 0 {Modalità veloce per l'aggiornamento (nessuna trasposizione di mosse)}
 menuText I TreeOptFastAndSlowmode "Modalità lenta e veloce" 0 {Modalità lenta e veloce per l'aggiornamento}
+# ====== TODO To be translated ======
+menuText I TreeOptStartStop "Auto refreshing" 0 {Toggles automatic refreshing of the tree window}
 menuText I TreeOptLock "Blocca" 0 {Blocca/sblocca l'albero al database corrente}
 menuText I TreeOptTraining "Training" 0 {Attiva/disattiva la modalita' di esercizio dell'albero}
 menuText I TreeOptAutosave "File di cache per Auto-salvare" 0 \
@@ -520,6 +528,8 @@ menuText I TreeOptAutosave "File di cache per Auto-salvare" 0 \
 menuText I TreeHelp "Aiuto" 0
 menuText I TreeHelpTree "Aiuto per l'albero" 0
 menuText I TreeHelpIndex "Indice di aiuto" 0
+
+
 translate I SaveCache {Salva cache}
 translate I Training {Esercizio}
 translate I LockTree {Blocca}
@@ -1907,18 +1917,6 @@ set tips(I) {
 
 
 # end of italian.tcl
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

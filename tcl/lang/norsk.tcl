@@ -537,6 +537,8 @@ menuText O TreeMaskNew "New" 0 {New mask}
 # ====== TODO To be translated ======
 menuText O TreeMaskOpen "Open" 0 {Open mask}
 # ====== TODO To be translated ======
+menuText O TreeMaskOpenRecent "Open recent" 0 {Open recent mask}
+# ====== TODO To be translated ======
 menuText O TreeMaskSave "Save" 0 {Save mask}
 # ====== TODO To be translated ======
 menuText O TreeMaskClose "Close" 0 {Close mask}
@@ -546,6 +548,10 @@ menuText O TreeMaskFillWithGame "Fill with game" 0 {Fill mask with game}
 menuText O TreeMaskFillWithBase "Fill with base" 0 {Fill mask with all games in base}
 # ====== TODO To be translated ======
 menuText O TreeMaskInfo "Info" 0 {Show statistics for current mask}
+# ====== TODO To be translated ======
+menuText O TreeMaskDisplay "Display mask map" 0 {Show mask data in a tree form}
+# ====== TODO To be translated ======
+menuText O TreeMaskSearch "Search" 0 {Search in current mask}
 menuText O TreeSort "Sorter" 0
 menuText O TreeSortAlpha "Alfabetisk" 0
 menuText O TreeSortECO "ECO-kode" 0
@@ -558,6 +564,8 @@ menuText O TreeOptSlowmode "slow mode" 0 {Slow mode for updates (high accuracy)}
 menuText O TreeOptFastmode "Fast mode" 0 {Fast mode for updates (no move transposition)}
 # ====== TODO To be translated ======
 menuText O TreeOptFastAndSlowmode "Fast and slow mode" 0 {Fast mode then slow mode for updates}
+# ====== TODO To be translated ======
+menuText O TreeOptStartStop "Auto refreshing" 0 {Toggles automatic refreshing of the tree window}
 menuText O TreeOptLock "Lås" 0 {Låser treet til nåværende database}
 menuText O TreeOptTraining "Trening" 0 {Slår av/på treningsmodus}
 menuText O TreeOptAutosave "Autolagre hurtigbuffer" 0 \
@@ -565,6 +573,7 @@ menuText O TreeOptAutosave "Autolagre hurtigbuffer" 0 \
 menuText O TreeHelp "Hjelp" 0
 menuText O TreeHelpTree "Tre hjelp" 0
 menuText O TreeHelpIndex "Innholdsfortegnelse" 0
+
 translate O SaveCache {Lagre hurtigbuffer}
 translate O Training {Trening}
 translate O LockTree {Lås}
@@ -1989,18 +1998,6 @@ translate O DoneWithPosition {Done with position}
 
 # Sjekkliste:
 # - Snarveier
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

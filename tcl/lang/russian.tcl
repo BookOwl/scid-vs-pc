@@ -540,6 +540,8 @@ menuText R TreeMaskNew "New" 0 {New mask}
 # ====== TODO To be translated ======
 menuText R TreeMaskOpen "Open" 0 {Open mask}
 # ====== TODO To be translated ======
+menuText R TreeMaskOpenRecent "Open recent" 0 {Open recent mask}
+# ====== TODO To be translated ======
 menuText R TreeMaskSave "Save" 0 {Save mask}
 # ====== TODO To be translated ======
 menuText R TreeMaskClose "Close" 0 {Close mask}
@@ -549,6 +551,10 @@ menuText R TreeMaskFillWithGame "Fill with game" 0 {Fill mask with game}
 menuText R TreeMaskFillWithBase "Fill with base" 0 {Fill mask with all games in base}
 # ====== TODO To be translated ======
 menuText R TreeMaskInfo "Info" 0 {Show statistics for current mask}
+# ====== TODO To be translated ======
+menuText R TreeMaskDisplay "Display mask map" 0 {Show mask data in a tree form}
+# ====== TODO To be translated ======
+menuText R TreeMaskSearch "Search" 0 {Search in current mask}
 menuText R TreeSort "Сортировка" 0
 menuText R TreeSortAlpha "Алфавитная" 0
 menuText R TreeSortECO "По коду ECO" 3
@@ -561,6 +567,8 @@ menuText R TreeOptSlowmode "slow mode" 0 {Slow mode for updates (high accuracy)}
 menuText R TreeOptFastmode "Fast mode" 0 {Fast mode for updates (no move transposition)}
 # ====== TODO To be translated ======
 menuText R TreeOptFastAndSlowmode "Fast and slow mode" 0 {Fast mode then slow mode for updates}
+# ====== TODO To be translated ======
+menuText R TreeOptStartStop "Auto refreshing" 0 {Toggles automatic refreshing of the tree window}
 menuText R TreeOptLock "Блокировать" 0 {(Раз)блокировать дерево для текущей базы}
 menuText R TreeOptTraining "Тренировка" 0 {Включить/выключить режим тренировки}
 menuText R TreeOptAutosave "Автосохранение файла кеша" 0 \
@@ -568,6 +576,7 @@ menuText R TreeOptAutosave "Автосохранение файла кеша" 0 \
 menuText R TreeHelp "Помощь" 0
 menuText R TreeHelpTree "Помощь по дереву" 0
 menuText R TreeHelpIndex "Индекс помощи" 0
+
 translate R SaveCache {Сохранить кэш}
 translate R Training {Тренировка}
 translate R LockTree {Блокировка}
@@ -2020,18 +2029,5 @@ translate R DoneWithPosition {Done with position}
 # ====== TODO To be translated ======
 }
 # end of russian.tcl
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 

@@ -497,14 +497,10 @@ translate H TipAtStartup {Tipp induláskor}
 
 # Tree window menus:
 menuText H TreeFile "Fájl" 0
-# ====== TODO To be translated ======
-menuText H TreeFileFillWithBase "Fill Cache with base" 0 {Fill the cache file with all games in current base}
-# ====== TODO To be translated ======
-menuText H TreeFileFillWithGame "Fill Cache with game" 0 {Fill the cache file with current game in current base}
-# ====== TODO To be translated ======
-menuText H TreeFileSetCacheSize "Cache size" 0 {Set the cache size}
-# ====== TODO To be translated ======
-menuText H TreeFileCacheInfo "Cache info" 0 {Get info on cache usage}
+menuText H TreeFileFillWithBase "Adatbázis betöltése a gyorsítótárba" 0 {Betölti a gyorsítótárba a megnyitott adatbázis összes játszmáját.}
+menuText H TreeFileFillWithGame "Játszma betöltése a gyorsítótárba" 0 {Betölti a gyorsítótárba a megnyitott adatbázis aktuális játszmáját.}
+menuText H TreeFileSetCacheSize "A gyorsítótár mérete" 14 {Beállítja a gyorsítótár méretét.}
+menuText H TreeFileCacheInfo "Gyorsítótár-használat" 12 {Tájékoztató a gyorsítótár használatáról}
 menuText H TreeFileSave "Cache-fájl mentése" 11 {Elmenti a faszerkezet-cache-fájlt (.stc)}
 menuText H TreeFileFill "Cache-fájl feltöltése" 14 \
   {Feltölti a cache-fájlt gyakori megnyitásokkal.}
@@ -513,34 +509,30 @@ menuText H TreeFileGraph "Grafikon" 0 {Megmutatja ennek a faágnak a grafikonját.
 menuText H TreeFileCopy "Szöveg másolása a vágólapra" 0 \
   {A kiírt statisztikai adatokat a vágólapra másolja.}
 menuText H TreeFileClose "Faablak bezárása" 10 {Bezárja a faszerkezet-ablakot.}
+menuText H TreeMask "Maszk" 0
+menuText H TreeMaskNew "Új" 0 {Új maszk}
+menuText H TreeMaskOpen "Megnyitás" 0 {Maszk megnyitása}
 # ====== TODO To be translated ======
-menuText H TreeMask "Mask" 0
+menuText H TreeMaskOpenRecent "Open recent" 0 {Open recent mask}
+menuText H TreeMaskSave "Mentés" 5 {Maszk mentése}
+menuText H TreeMaskClose "Bezárás" 0 {Maszk bezárása}
+menuText H TreeMaskFillWithGame "Feltöltés játszmával" 1 {Maszk feltöltése játszmával}
+menuText H TreeMaskFillWithBase "Feltöltés adatbázissal" 2 {Maszk feltöltése az adatbázis összes játszmájával}
+menuText H TreeMaskInfo "Információ" 0 {Az aktuális maszk fõbb adatai}
 # ====== TODO To be translated ======
-menuText H TreeMaskNew "New" 0 {New mask}
+menuText H TreeMaskDisplay "Display mask map" 0 {Show mask data in a tree form}
 # ====== TODO To be translated ======
-menuText H TreeMaskOpen "Open" 0 {Open mask}
-# ====== TODO To be translated ======
-menuText H TreeMaskSave "Save" 0 {Save mask}
-# ====== TODO To be translated ======
-menuText H TreeMaskClose "Close" 0 {Close mask}
-# ====== TODO To be translated ======
-menuText H TreeMaskFillWithGame "Fill with game" 0 {Fill mask with game}
-# ====== TODO To be translated ======
-menuText H TreeMaskFillWithBase "Fill with base" 0 {Fill mask with all games in base}
-# ====== TODO To be translated ======
-menuText H TreeMaskInfo "Info" 0 {Show statistics for current mask}
+menuText H TreeMaskSearch "Search" 0 {Search in current mask}
 menuText H TreeSort "Rendezés" 0
 menuText H TreeSortAlpha "ABC" 0
 menuText H TreeSortECO "ECO-kód" 0
 menuText H TreeSortFreq "Gyakoriság" 0
 menuText H TreeSortScore "Pontszám" 0
 menuText H TreeOpt "Beállítások" 0
-# ====== TODO To be translated ======
-menuText H TreeOptSlowmode "slow mode" 0 {Slow mode for updates (high accuracy)}
-# ====== TODO To be translated ======
-menuText H TreeOptFastmode "Fast mode" 0 {Fast mode for updates (no move transposition)}
-# ====== TODO To be translated ======
-menuText H TreeOptFastAndSlowmode "Fast and slow mode" 0 {Fast mode then slow mode for updates}
+menuText H TreeOptSlowmode "Lassú üzemmód" 0 {Lassú frissítés (nagy pontosság)}
+menuText H TreeOptFastmode "Gyors üzemmód" 0 {Gyors frissítés (nincsenek lépéscserék)}
+menuText H TreeOptFastAndSlowmode "Gyors és lassú üzemmód" 1 {Gyors majd lassú frissítés}
+menuText H TreeOptStartStop "Automatikus frissítés" 0 {Átváltja a faszerkezet-ablak automatikus frissítését.}
 menuText H TreeOptLock "Rögzítés" 0 {A fát az aktuális adatbázishoz köti ill. a kötést feloldja.}
 menuText H TreeOptTraining "Edzés" 0 {Edzésüzemmód be- vagy kikapcsolása}
 menuText H TreeOptAutosave "Cache-fájl automatikus mentése" 11 \
@@ -548,6 +540,7 @@ menuText H TreeOptAutosave "Cache-fájl automatikus mentése" 11 \
 menuText H TreeHelp "Segítség" 0
 menuText H TreeHelpTree "Segítség a fához" 0
 menuText H TreeHelpIndex "Tartalom" 0
+
 translate H SaveCache {Cache mentése}
 translate H Training {Edzés}
 translate H LockTree {Rögzítés}

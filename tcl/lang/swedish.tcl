@@ -537,6 +537,8 @@ menuText W TreeMaskNew "Ny" 0 {Ny sökmask}
 # ====== TODO To be translated ======
 menuText W TreeMaskOpen "Öppna" 0 {Öppna sökmask}
 # ====== TODO To be translated ======
+menuText W TreeMaskOpenRecent "Öppna senaste" 0 {Öppna senaste sökmasken}
+# ====== TODO To be translated ======
 menuText W TreeMaskSave "Spara" 0 {Spara sökmask}
 # ====== TODO To be translated ======
 menuText W TreeMaskClose "Stäng" 0 {Stäng sökmask}
@@ -545,7 +547,11 @@ menuText W TreeMaskFillWithGame "Fyll med parti" 0 {Fyll sökmask med parti}
 # ====== TODO To be translated ======
 menuText W TreeMaskFillWithBase "Fyll med databas" 0 {Fyll sökmask med alla partier i databasen}
 # ====== TODO To be translated ======
-menuText W TreeMaskInfo "Info" 0 {Visa statistik för aktuell sökmask}
+menuText W TreeMaskInfo "Info om sökmask" 0 {Visa statistik för aktuell sökmask}
+# ====== TODO To be translated ======
+menuText W TreeMaskDisplay "Visa sökmaskkarta" 0 {Visa sökmaskdata i trädform}
+# ====== TODO To be translated ======
+menuText W TreeMaskSearch "Sök" 0 {Sök i aktuell sökmask}
 menuText W TreeSort "Sortera" 0
 menuText W TreeSortAlpha "Alfabetiskt" 0
 menuText W TreeSortECO "ECO kod" 0
@@ -558,6 +564,8 @@ menuText W TreeOptSlowmode "Långsam mod" 0 {Långsam mod för uppdateringar (hög n
 menuText W TreeOptFastmode "Snabb mod" 0 {Snabb mod för uppdateringar (ingen dragtranspositionering)}
 # ====== TODO To be translated ======
 menuText W TreeOptFastAndSlowmode "Snabb och långsam mod" 0 {Snabb mod sedan långsam mod för uppdateringar}
+# ====== TODO To be translated ======
+menuText W TreeOptStartStop "Automatisk uppdatering" 0 {Växlar automatisk uppdatering av trädfönstret}
 menuText W TreeOptLock "Lås" 0 {Lås/ lås upp trädet för den aktuella databasen}
 menuText W TreeOptTraining "Träna" 0 {Starta/ stäng av träningsläge}
 menuText W TreeOptAutosave "Spara cache filen automatiskt" 0 \
@@ -565,6 +573,7 @@ menuText W TreeOptAutosave "Spara cache filen automatiskt" 0 \
 menuText W TreeHelp "Hjälp" 0
 menuText W TreeHelpTree "Trädhjälp" 0
 menuText W TreeHelpIndex "Hjälpindex" 0
+
 translate W SaveCache {Spara cache}
 translate W Training {Träna}
 translate W LockTree {Lås}
@@ -7008,18 +7017,6 @@ set tips(W) {
   }
 }
 #}
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

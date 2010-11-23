@@ -482,11 +482,14 @@ menuText F TreeFileClose "Fermer la fenêtre d'arbre" 0
 menuText F TreeMask "Masque" 0
 menuText F TreeMaskNew "Nouveau" 0 {Nouveau masque}
 menuText F TreeMaskOpen "Ouvrir" 0 {Ouvrir masque}
+menuText F TreeMaskOpenRecent "Ouvrir récent" 0 {Ouvrir un masque récent}
 menuText F TreeMaskSave "Sauver" 0 {Sauver masque}
 menuText F TreeMaskClose "Fermer" 0 {Fermer masque}
 menuText F TreeMaskFillWithGame "Remplir avec partie" 0 {Remplir le masque avec partie}
 menuText F TreeMaskFillWithBase "Remplir avec base" 0 {Remplir le masque avec les parties de la base}
 menuText F TreeMaskInfo "Info" 0 {Statistiques du masque}
+menuText F TreeMaskDisplay "Afficher l'arbre" 0 {Affichage des données du masque sous la forme d'un arbre}
+menuText F TreeMaskSearch "Chercher" 0 {Chercher dans le masque courant}
 menuText F TreeSort "Trier" 0
 menuText F TreeSortAlpha "Alphabétique" 0
 menuText F TreeSortECO "code ECO" 0
@@ -496,12 +499,15 @@ menuText F TreeOpt "Options" 0
 menuText F TreeOptSlowmode "Mode lent" 0 {Mode lent pour rafraichissement (précis)}
 menuText F TreeOptFastmode "Mode rapide" 0 {Mode rapide pour rafraichissement (pas de transpositions)}
 menuText F TreeOptFastAndSlowmode "Mode rapide puis lent" 0 {Mode rapide puis lent pour rafraichissement}
+menuText F TreeOptStartStop "Rafraîchissement auto" 0 {Rafraîchissement automatique de la fenêtre}
 menuText F TreeOptLock "Verrouille" 0 {Dé/verrouiller l'arbre à la base en cours}
 menuText F TreeOptTraining "Entraînement" 0 {Démarrer/Arrêter l'arbre du mode d'entraînement}
 menuText F TreeOptAutosave "Sauver le cache automatiquement" 0
 menuText F TreeHelp "Aide" 0
 menuText F TreeHelpTree "Aide Arbre" 0
 menuText F TreeHelpIndex "Index" 0
+
+
 translate F SaveCache {Sauver le cache}
 translate F Training {Entraînement}
 translate F LockTree {Verrouiller}

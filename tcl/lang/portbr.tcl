@@ -492,53 +492,42 @@ translate B TipAtStartup {Dica ao iniciar}
 
 # Tree window menus: ***
 menuText B TreeFile "Arquivo" 0
-# ====== TODO To be translated ======
-menuText B TreeFileFillWithBase "Fill Cache with base" 0 {Fill the cache file with all games in current base}
-# ====== TODO To be translated ======
-menuText B TreeFileFillWithGame "Fill Cache with game" 0 {Fill the cache file with current game in current base}
-# ====== TODO To be translated ======
-menuText B TreeFileSetCacheSize "Cache size" 0 {Set the cache size}
-# ====== TODO To be translated ======
-menuText B TreeFileCacheInfo "Cache info" 0 {Get info on cache usage}
+menuText B TreeFileFillWithBase "Carregar Cache com base" 0 {Carrega todos os jogos da base corrente no Cache}
+menuText B TreeFileFillWithGame "Carregar Cache com jogo" 0 {Carrega o jogo corrente da base corrente no Cache}
+menuText B TreeFileSetCacheSize "Tamanho do Cache" 0 {Define o tamanho do cache}
+menuText B TreeFileCacheInfo "Informação do Cache" 0 {Informações sobre a utilização do cache}
 menuText B TreeFileSave "Salvar arquivo de cache" 0 \
   {Salvar o arquivo de cache da arvore (.stc)}
 menuText B TreeFileFill "Criar arquivo de cache" 0 \
   {Enche o arquivo de cache com as posicoes comuns na abertura}
-menuText B TreeFileBest "Best games list" 0 \
+menuText B TreeFileBest "Lista dos melhores jogos" 0 \
   {Mostra a lista dos melhores jogos da arvore}
 menuText B TreeFileGraph "Janela de Grafico" 0 \
   {Mostra o grafico para este galho da arvore}
 menuText B TreeFileCopy "Copiar texto da arvore para a area de transferencia" \
   1 {Copiar texto da arvore para a area de transferencia}
 menuText B TreeFileClose "Fechar janela de arvore" 0 {Fechar janela de arvore}
-# ====== TODO To be translated ======
-menuText B TreeMask "Mask" 0
-# ====== TODO To be translated ======
-menuText B TreeMaskNew "New" 0 {New mask}
-# ====== TODO To be translated ======
-menuText B TreeMaskOpen "Open" 0 {Open mask}
-# ====== TODO To be translated ======
-menuText B TreeMaskSave "Save" 0 {Save mask}
-# ====== TODO To be translated ======
-menuText B TreeMaskClose "Close" 0 {Close mask}
-# ====== TODO To be translated ======
-menuText B TreeMaskFillWithGame "Fill with game" 0 {Fill mask with game}
-# ====== TODO To be translated ======
-menuText B TreeMaskFillWithBase "Fill with base" 0 {Fill mask with all games in base}
-# ====== TODO To be translated ======
-menuText B TreeMaskInfo "Info" 0 {Show statistics for current mask}
+menuText B TreeMask "Máscara" 0
+menuText B TreeMaskNew "Nova" 0 {Nova máscara}
+menuText B TreeMaskOpen "Abrir" 0 {Abrir máscara}
+menuText B TreeMaskOpenRecent "Abrir recente" 0 {Abre máscara recente}
+menuText B TreeMaskSave "Salvar" 0 {Salva máscara}
+menuText B TreeMaskClose "Fechar" 0 {Fecha máscara}
+menuText B TreeMaskFillWithGame "Preencher com jogo" 0 {Preenche máscara com jogo}
+menuText B TreeMaskFillWithBase "Preencher com base" 0 {Preenche a máscara com todos os jogos da base}
+menuText B TreeMaskInfo "Info" 0 {Mostrar estatisticas para a máscara corrente}
+menuText B TreeMaskDisplay "Mostrar mapa da máscara" 0 {Mostra os dados da máscara em forma de árvore}
+menuText B TreeMaskSearch "Pesquisar" 0 {Pesquisa na máscara corrente}
 menuText B TreeSort "Ordenar" 0
 menuText B TreeSortAlpha "Alfabetica" 0
 menuText B TreeSortECO "ECO" 0
 menuText B TreeSortFreq "Frequencia" 0
 menuText B TreeSortScore "Pontuacao" 0
 menuText B TreeOpt "Opcoes" 0
-# ====== TODO To be translated ======
-menuText B TreeOptSlowmode "slow mode" 0 {Slow mode for updates (high accuracy)}
-# ====== TODO To be translated ======
-menuText B TreeOptFastmode "Fast mode" 0 {Fast mode for updates (no move transposition)}
-# ====== TODO To be translated ======
-menuText B TreeOptFastAndSlowmode "Fast and slow mode" 0 {Fast mode then slow mode for updates}
+menuText B TreeOptSlowmode "Modo Lento" 0 {Modo lento para atualizações (mais acurado)}
+menuText B TreeOptFastmode "Modo Rápido" 0 {Modo rápido para atualizações (sem transsposições de movimentos)}
+menuText B TreeOptFastAndSlowmode "Modo rápido e lento" 0 {Modo rápido e lento para atualizações}
+menuText B TreeOptStartStop "Atualização automática" 0 {Liga/Desliga a atualização automática da janela de árvore}
 menuText B TreeOptLock "Lock" 0 {Trava/Destrava a arvore para o banco corrente}
 menuText B TreeOptTraining "Treinamento" 0 \
   {Liga/Desliga o modo treinamento na arvore}
@@ -547,6 +536,7 @@ menuText B TreeOptAutosave "Salvar automaticamente arquivo de cache" 0 \
 menuText B TreeHelp "Ajuda" 0
 menuText B TreeHelpTree "Ajuda para arvore" 0
 menuText B TreeHelpIndex "Indice da Ajuda" 0
+
 translate B SaveCache {Salvar Cache}
 translate B Training {Treinamento}
 translate B LockTree {Travamento}
@@ -1884,15 +1874,5 @@ translate B DoneWithPosition {Done with position}
 }
 
 # end of portbr.tcl
-
-
-
-
-
-
-
-
-
-
 
 

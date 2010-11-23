@@ -492,45 +492,63 @@ translate S TipAtStartup {Sugerencia al iniciar}
 
 # Tree window menus:
 menuText S TreeFile "Archivo" 0
-menuText S TreeFileFillWithBase "Rellenar Caché con base" 0 {Rellenar el archivo Caché con todas las partidas de la base actual}
-menuText S TreeFileFillWithGame "Rellenar Caché con partida" 0 {Rellena el fichero Caché con movimientos de la partida actual en la base actual}
-menuText S TreeFileSetCacheSize "Tamaño de Caché" 0 {Fija el tamaño del Caché}
-menuText S TreeFileCacheInfo "Información de Caché" 0 {Información y uso del Caché}
+menuText S TreeFileFillWithBase "Rellenar caché con base" 0 \
+  {Rellena el archivo caché con todas las partidas de la base actual}
+menuText S TreeFileFillWithGame "Rellenar caché con partida" 0 \
+  {Rellena el fichero caché con movimientos de la partida actual en la base actual}
+menuText S TreeFileSetCacheSize "Tamaño de caché" 0 {Fija el tamaño del caché}
+menuText S TreeFileCacheInfo "Información de caché" 0 \
+  {Información y uso del caché}
 menuText S TreeFileSave "Guardar archivo caché" 0 \
   {Guarda el archivo caché del árbol (.stc)}
 menuText S TreeFileFill "Construir archivo caché" 2 \
-  {Construir archivo caché con posiciones de apertura comunes}
-menuText S TreeFileBest "Lista de mejores partidas" 9 {Muestra la lista del árbol de mejores partidas}
+  {Construye archivo caché con posiciones de apertura comunes}
+menuText S TreeFileBest "Lista de mejores partidas" 9 \
+  {Muestra la lista del árbol de mejores partidas}
 menuText S TreeFileGraph "Ventana del gráfico" 0 \
   {Muestra el gráfico para esta rama del árbol}
-menuText S TreeFileCopy "Copiar texto del árbol al clipboard" 1 \
-  {Copiar texto del árbol al clipboard}
+menuText S TreeFileCopy "Copiar texto del árbol al portapapeles" 1 \
+  {Copia texto del árbol al portapapeles}
 menuText S TreeFileClose "Cerrar ventana del árbol" 0 \
-  {Cerrar ventana del árbol}
+  {Cerra ventana del árbol}
 menuText S TreeMask "Máscara" 0
 menuText S TreeMaskNew "Nuevo" 0 {Nueva máscara}
-menuText S TreeMaskOpen "Abrir" 0 {Abrir máscara}
-menuText S TreeMaskSave "Salvar" 0 {Salvar máscara}
-menuText S TreeMaskClose "Cerrar" 0 {Cerrar máscara}
-menuText S TreeMaskFillWithGame "Llenar con partida" 0 {Llenar máscara con partida}
-menuText S TreeMaskFillWithBase "LLenar con base" 0 {Llenar máscar con todas las partidas de la base}
+menuText S TreeMaskOpen "Abrir" 0 {Abre máscara}
+menuText S TreeMaskOpenRecent "Abrir reciente" 0 {Abre máscara reciente}
+menuText S TreeMaskSave "Salvar" 0 {Salva máscara}
+menuText S TreeMaskClose "Cerrar" 0 {Cierra máscara}
+menuText S TreeMaskFillWithGame "Llenar con partida" 0 \
+  {Llena máscara con partida}
+menuText S TreeMaskFillWithBase "Llenar con base" 0 \
+  {Llena máscara con todas las partidas de la base}
 menuText S TreeMaskInfo "Info" 0 {Muestra estadísticas para la máscara actual}
+menuText S TreeMaskDisplay "Mostrar mapa de la máscara" 0 \
+  {Muestra máscara en forma de árbol}
+menuText S TreeMaskSearch "Buscar" 0 {Busca en máscara actual}
 menuText S TreeSort "Ordenar" 0
 menuText S TreeSortAlpha "Alfabéticamente" 0
 menuText S TreeSortECO "Por código ECO" 11
 menuText S TreeSortFreq "Por frecuencia" 4
 menuText S TreeSortScore "Por puntuación" 4
 menuText S TreeOpt "Opciones" 1
-menuText S TreeOptSlowmode "Modo Lento" 0 {Movimiento lento para actualizaciones (Alta calidad)}
-menuText S TreeOptFastmode "Modo Rápido" 0 {Movimiento rápido para actualizaciones (no transpone movimientos)}
-menuText S TreeOptFastAndSlowmode "Modo Rápido y Lento" 0 {Movimiento rápido y modo lento para actualizaciones}
-menuText S TreeOptLock "Bloquear" 1 {Bloquea/desbloquea el árbol de la base de datos actual}
-menuText S TreeOptTraining "Entrenamiento" 2 {Activa/desactiva el modo de entrenamiento de árbol}
+menuText S TreeOptSlowmode "Modo Lento" 0 \
+  {Movimiento lento para actualizaciones (alta calidad)}
+menuText S TreeOptFastmode "Modo Rápido" 0 \
+  {Movimiento rápido para actualizaciones (no transpone movimientos)}
+menuText S TreeOptFastAndSlowmode "Modo rápido y lento" 0 \
+  {Movimiento rápido y modo lento para actualizaciones}
+menuText S TreeOptStartStop "Auto actualizado" 0 \
+  {Actualizado automático de la ventana del árbol}
+menuText S TreeOptLock "Bloquear" 1 \
+  {Bloquea/desbloquea el árbol de la base de datos actual}
+menuText S TreeOptTraining "Entrenamiento" 2 \
+  {Activa/desactiva el modo de entrenamiento de árbol}
 menuText S TreeOptAutosave "Autoguardar archivo caché" 0 \
-  {Guarda automáticamente el archivo caché cuuando se cierra la ventana de árbol}
+  {Guarda automáticamente el archivo caché cuando se cierra la ventana de árbol}
 menuText S TreeHelp "Ayuda" 1
 menuText S TreeHelpTree "Ayuda del árbol" 4
-menuText S TreeHelpIndex "Indice de la ayuda" 0
+menuText S TreeHelpIndex "Índice de la ayuda" 0
+
 translate S SaveCache {Guardar caché}
 translate S Training {Entrenamiento}
 translate S LockTree {Bloquear}
@@ -1613,17 +1631,5 @@ translate S IEUnableToStart {Unable to start Input Engine:}
 translate S DoneWithPosition {Hecho con la posición}
 }
 # end of spanish.tcl
-
-
-
-
-
-
-
-
-
-
-
-
 
 

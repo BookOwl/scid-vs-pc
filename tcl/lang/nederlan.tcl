@@ -509,51 +509,40 @@ translate N TipAtStartup {Tip bij opstarten}
 
 # Tree window menus:
 menuText N TreeFile "BoomDataBestand" 0
-# ====== TODO To be translated ======
-menuText N TreeFileFillWithBase "Fill Cache with base" 0 {Fill the cache file with all games in current base}
-# ====== TODO To be translated ======
-menuText N TreeFileFillWithGame "Fill Cache with game" 0 {Fill the cache file with current game in current base}
-# ====== TODO To be translated ======
-menuText N TreeFileSetCacheSize "Cache size" 0 {Set the cache size}
-# ====== TODO To be translated ======
-menuText N TreeFileCacheInfo "Cache info" 0 {Get info on cache usage}
+menuText N TreeFileFillWithBase "Vul de Cache met DataBestand" 0 {Vul het cache bestand met alle partijen in het huidige databestand}
+menuText N TreeFileFillWithGame "Vul de cache met de partij" 0 {Vul het cache bestand met het huidige speel in het huidige databestand}
+menuText N TreeFileSetCacheSize "Cache grootte" 0 {Stel de grootte van het cache bestand in}
+menuText N TreeFileCacheInfo "Cache info" 0 {Vraag informatie over het gebruik van de cache}
 menuText N TreeFileSave " BoomData Bewaren" 0 {Bewaar de boomdata in een boomcache (.stc) bestand}
 menuText N TreeFileFill "Vullen boomcache bestand" 0 \
-  {Vul het boomcache bestand met algemene openingsposities}
+  {Vul het boomcache bestand met algemene opening stellingen}
 menuText N TreeFileBest "Lijst beste partijen" 0 {Weergeven van de lijst met beste partijen}
 menuText N TreeFileGraph "Grafiek-venster" 0 \
   {Weergeven van de grafiek voor deze tak}
 menuText N TreeFileCopy "Kopieer boom tekst naar klembord" 0 \
   {Kopieren van de boomstatistieken naar het klembord}
 menuText N TreeFileClose "Zoekboom venster sluiten" 0 {Sluiten van het zoekboom venster}
-# ====== TODO To be translated ======
-menuText N TreeMask "Mask" 0
-# ====== TODO To be translated ======
-menuText N TreeMaskNew "New" 0 {New mask}
-# ====== TODO To be translated ======
+menuText N TreeMask "Masker" 0
+menuText N TreeMaskNew "Nieuw" 0 {Nieuw masker}
 menuText N TreeMaskOpen "Open" 0 {Open mask}
-# ====== TODO To be translated ======
-menuText N TreeMaskSave "Save" 0 {Save mask}
-# ====== TODO To be translated ======
-menuText N TreeMaskClose "Close" 0 {Close mask}
-# ====== TODO To be translated ======
-menuText N TreeMaskFillWithGame "Fill with game" 0 {Fill mask with game}
-# ====== TODO To be translated ======
-menuText N TreeMaskFillWithBase "Fill with base" 0 {Fill mask with all games in base}
-# ====== TODO To be translated ======
-menuText N TreeMaskInfo "Info" 0 {Show statistics for current mask}
+menuText N TreeMaskOpenRecent "Open recent" 0 {Open recent masker}
+menuText N TreeMaskSave "Bewaar" 0 {Bewaar het masker}
+menuText N TreeMaskClose "Sluiten" 0 {Sluit het masker}
+menuText N TreeMaskFillWithGame "Vullen met partij" 0 {Vul het masker met de partij}
+menuText N TreeMaskFillWithBase "Vullen met databestand" 0 {Vul het masker met alle partijen in het databestand}
+menuText N TreeMaskInfo "Info" 0 {Toon de statistieken voor het huidige masker}
+menuText N TreeMaskDisplay "Toon masker overzicht" 0 {Toon maskerdata in boomvorm}
+menuText N TreeMaskSearch "Zoek" 0 {Zoek in huidig masker}
 menuText N TreeSort "Sorteren" 0
 menuText N TreeSortAlpha "Alfabetisch" 0
 menuText N TreeSortECO "ECO code" 0
 menuText N TreeSortFreq "Frequentie" 0
 menuText N TreeSortScore "Punten" 0
 menuText N TreeOpt "Opties" 0
-# ====== TODO To be translated ======
-menuText N TreeOptSlowmode "slow mode" 0 {Slow mode for updates (high accuracy)}
-# ====== TODO To be translated ======
-menuText N TreeOptFastmode "Fast mode" 0 {Fast mode for updates (no move transposition)}
-# ====== TODO To be translated ======
-menuText N TreeOptFastAndSlowmode "Fast and slow mode" 0 {Fast mode then slow mode for updates}
+menuText N TreeOptSlowmode "Trage modus" 0 {Trage modus voor updates (hoge nauwkeurigheid)}
+menuText N TreeOptFastmode "Snelle modus" 0 {Snelle modus voor updates (geen omwisselingen van zetten)}
+menuText N TreeOptFastAndSlowmode "Snelle en trage modus" 0 {Eerst snelle modus en daarna trage modus voor updates}
+menuText N TreeOptStartStop "Auto verversing" 0 {Zet automatische verversing van het boomvenster op/af}
 menuText N TreeOptLock "Vergrendelen" 0 {Vergrendelen/Ontgrendelen van de boom bij de huidige database}
 menuText N TreeOptTraining "Training" 0 {Aan/Uit zetten training modus}
 menuText N TreeOptAutosave "Autom.cache-data Bewaren" 4 \
@@ -561,6 +550,7 @@ menuText N TreeOptAutosave "Autom.cache-data Bewaren" 4 \
 menuText N TreeHelp "Help" 0
 menuText N TreeHelpTree "Hulp bij zoekboom" 0
 menuText N TreeHelpIndex "Index" 0
+
 translate N SaveCache {Cache Bewaren}
 translate N Training {Training}
 translate N LockTree {Boom Vergrendelen}
@@ -1906,18 +1896,5 @@ translate N DoneWithPosition {Done with position}
 # ====== TODO To be translated ======
 }
 # End of nederlan.tcl
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 

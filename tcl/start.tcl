@@ -71,7 +71,7 @@ foreach ns {
   ::search
   ::search::filter ::search::board ::search::header ::search::material
   ::windows
-  ::windows::gamelist ::windows::stats ::tree ::windows::tree
+  ::windows::gamelist ::windows::stats ::tree ::tree::mask ::windows::tree
   ::windows::switcher ::windows::eco ::crosstab ::pgn ::book
   ::tools
   ::tools::analysis ::tools::email
@@ -109,6 +109,9 @@ set ::tacgame::openingType new
 set ::commenteditor::showBoard 0
 set ::windows::gamelist::widths {}
 set ::windows::gamelist::findcase 1
+
+### Tree/mask options:
+set ::tree::mask::recentMask {}
 
 #############################################################
 # Customisable variables:

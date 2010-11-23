@@ -504,11 +504,14 @@ menuText D TreeFileClose "Baumfenster schließen" 12 {Schließe Zugbaum}
 menuText D TreeMask "Maskieren" 0
 menuText D TreeMaskNew "Neu" 0 {Neue Maske anlegen}
 menuText D TreeMaskOpen "Öffnen" 0 {Maske öffnen}
+menuText D TreeMaskOpenRecent "Aktuelle Masken" 0 {Zuletzt geöffnete Masken erneut laden}
 menuText D TreeMaskSave "Speichern" 0 {Maske speichern}
 menuText D TreeMaskClose "Schließen" 0 {Maske schließen}
 menuText D TreeMaskFillWithGame "Mit aktueller Partie füllen" 0 {Maske mit der aktuellen Partie füllen}
 menuText D TreeMaskFillWithBase "Mit Datenbank füllen" 0 {Maske mit Datenbankpartien füllen}
 menuText D TreeMaskInfo "Info" 0 {Statistik für die aktuelle Maske anzeigen}
+menuText D TreeMaskDisplay "Maske als Baum" 0 {Zeigt den Inhalt der aktuellen Maske als Zugbaum}
+menuText D TreeMaskSearch "Suchen" 0 {Suchen innerhalb der aktuellen Maske}
 menuText D TreeSort "Sortieren" 0
 menuText D TreeSortAlpha "Alphabetisch" 0
 menuText D TreeSortECO "ECO-Code" 0
@@ -518,6 +521,7 @@ menuText D TreeOpt "Optionen" 0
 menuText D TreeOptSlowmode "Gründliche Suche" 0 {Update mit hoher Genauigkeit, langsamer}
 menuText D TreeOptFastmode "Schneller Modus" 0 {Schnelles Update (ignoriert Zugumstellungen)}
 menuText D TreeOptFastAndSlowmode "Gründlicher und Schneller Modus" 0 {Zunächst schneller Updatemodus, dann nacharbeit im gründlichen Modus}
+menuText D TreeOptStartStop "Automatisch aktualisieren" 0 {Schaltet das automatische aktualisieren ein/aus}
 menuText D TreeOptLock "Anbinden" 0 \
   {Zugbaum an aktive Datenbank anbinden(/lösen)}
 menuText D TreeOptTraining "Training" 0 {Trainingsmodus ein-/ausschalten}
@@ -526,6 +530,8 @@ menuText D TreeOptAutosave "Autom. Cache-Datei sichern" 4 \
 menuText D TreeHelp "Hilfe" 0
 menuText D TreeHelpTree "Zugbaumhilfe" 0
 menuText D TreeHelpIndex "Index" 0
+
+
 translate D SaveCache {Cache sichern}
 translate D Training {Training}
 translate D LockTree {Anbinden}

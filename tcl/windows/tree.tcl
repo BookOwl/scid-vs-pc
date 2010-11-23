@@ -54,7 +54,7 @@ proc ::tree::treeFileSave {base} {
   busyCursor .
   update
   if {[catch {sc_tree write $base} result]} {
-    tk_messageBox -type ok -icon warning -title "Scid: Error writing file" -message $result
+    tk_messageBox -type ok -icon warning -title "Scid: Error writing file" -message $result -parent .treeWin$base
   }
   unbusyCursor .
 }
@@ -130,10 +130,10 @@ proc ::tree::make { { baseNumber -1 } } {
   set helpMessage($w.menu.file,5) TreeFileCacheInfo
 
   $w.menu.file add separator
-  $w.menu.file add command -label TreeFileBest -command "::tree::best $baseNumber 1"
+  $w.menu.file add command -label TreeFileBest -command "::tree::best $baseNumber"
   set helpMessage($w.menu.file,7) TreeFileBest
 
-  $w.menu.file add command -label TreeFileGraph -command "::tree::graph $baseNumber 1"
+  $w.menu.file add command -label TreeFileGraph -command "::tree::graph $baseNumber"
   set helpMessage($w.menu.file,8) TreeFileGraph
   $w.menu.file add separator
   $w.menu.file add command -label TreeFileCopy -command "::tree::menuCopyToSelection $baseNumber"
@@ -240,8 +240,8 @@ proc ::tree::make { { baseNumber -1 } } {
   pack $w.progress -side bottom
   pack $w.f -side top -expand 1 -fill both
 
-  button $w.buttons.best -image b_list -command "::tree::toggleBest $baseNumber 1"
-  button $w.buttons.graph -image b_bargraph -command "::tree::toggleGraph $baseNumber 1"
+  button $w.buttons.best -image b_list -command "::tree::toggleBest $baseNumber"
+  button $w.buttons.graph -image b_bargraph -command "::tree::toggleGraph $baseNumber"
   # add a button to start/stop tree refresh &&&
   # button $w.buttons.bStartStop -image engine_on -command "::tree::toggleRefresh $baseNumber" ;# -relief flat
 
@@ -579,7 +579,7 @@ proc ::tree::displayLines { baseNumber moves } {
     $w.f.tl image create end -image ::tree::mask::emptyImage -align center
     $w.f.tl image create end -image ::tree::mask::emptyImage -align center
     $w.f.tl insert end "    "
-    $w.f.tl tag bind tagclick0 <ButtonPress-$::MB3> "::tree::mask::contextMenu $w.f.tl dummy %x %y %X %Y ; break"
+    $w.f.tl tag bind tagclick0 <ButtonPress-2> "::tree::mask::contextMenu $w.f.tl dummy %x %y %X %Y ; break"
   }
   $w.f.tl insert end "[lindex $moves 0]\n" tagclick0
   
@@ -930,7 +930,7 @@ proc ::tree::prime { baseNumber } {
   set fname [sc_base filename $base]
   if {[string index $fname 0] == "\["  ||  [file extension $fname] == ".pgn"} {
     tk_messageBox -parent .treeWin$baseNumber -icon info -type ok -title "Scid" \
-        -message "Sorry, only Scid-format database files can have a tree cache file."
+        -message "Sorry, only Scid-format database files can have a tree cache file." -parent .treeWin$baseNumber
     return
   }
 
@@ -984,12 +984,12 @@ proc ::tree::prime { baseNumber } {
 #   Updates the window of best (highest-rated) tree games.
 #
 
-proc ::tree::toggleBest { baseNumber {n {}}} {
+proc ::tree::toggleBest { baseNumber } {
   set w .treeBest$baseNumber
   if {[winfo exists $w]} {
     destroy $w
   } else {
-    ::tree::best $baseNumber $n
+    ::tree::best $baseNumber
   }
 }
 
@@ -1135,12 +1135,12 @@ proc ::tree::bestPgn { baseNumber } {
 #   Create / Update the tree graph window
 #
 
-proc ::tree::toggleGraph { baseNumber {n {}}} {
+proc ::tree::toggleGraph { baseNumber } {
   set w .treeGraph$baseNumber
   if {[winfo exists $w]} {
     destroy $w 
   } else {
-    ::tree::graph $baseNumber $n
+    ::tree::graph $baseNumber
   }
 }
 
@@ -1301,7 +1301,7 @@ proc ::tree::setCacheSize { base size } {
 proc ::tree::getCacheInfo { base } {
   set ci [sc_tree cacheinfo $base]
   tk_messageBox -title "Scid" -type ok -icon info \
-      -message "Cache used : [lindex $ci 0] / [lindex $ci 1]"
+      -message "Cache used : [lindex $ci 0] / [lindex $ci 1]" -parent .treeWin$base
 
 }
 ################################################################################
@@ -1489,7 +1489,7 @@ namespace eval ::tree::mask {
 #
 ################################################################################
 proc ::tree::mask::open { {filename ""} } {
-  global ::tree::mask::maskSerialized ::tree::mask::mask
+  global ::tree::mask::maskSerialized ::tree::mask::mask ::tree::mask::recentMask
 
   if {$filename == ""} {
     set types {
