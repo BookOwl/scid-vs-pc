@@ -397,6 +397,7 @@ proc ::windows::gamelist::Open {} {
   # ::utils::history::SetLimit ::windows::gamelist::findtext 5
   # ::utils::history::PruneList ::windows::gamelist::findtext
 
+  bind $w.b.find <Control-Return> "$w.c.load invoke"
   bind $w.b.find <Return> {::windows::gamelist::FindText}
   bind $w.b.find <Home> "$w.b.find icursor 0; break"
   bind $w.b.find <End> "$w.b.find icursor end; break"
@@ -449,6 +450,9 @@ proc ::windows::gamelist::Open {} {
     recordWinSize .glistWin
     ::windows::gamelist::Refresh
   }
+
+  update
+  focus $w.b.find
 }
 proc configDeleteButtons {} {
   set w .glistWin

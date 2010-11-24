@@ -192,9 +192,9 @@ proc ::htext::updateRate {w rate} {
 }
 
 proc ::htext::init {w} {
-  set cyan "\#007000"
-  set maroon "\#990000"
-  set green "springgreen"
+  set cyan {#007000}
+  set maroon {#990000}
+  set green {#008b00}
 
   set ::htext::updates($w) 100
   $w tag configure black -fore black
