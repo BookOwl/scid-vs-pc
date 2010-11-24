@@ -559,7 +559,7 @@ menuText O TreeSortFreq "Hyppighet" 0
 menuText O TreeSortScore "Poeng" 0
 menuText O TreeOpt "Innstillinger" 0
 # ====== TODO To be translated ======
-menuText O TreeOptSlowmode "slow mode" 0 {Slow mode for updates (high accuracy)}
+menuText O TreeOptSlowmode "Slow mode" 0 {Slow mode for updates (high accuracy)}
 # ====== TODO To be translated ======
 menuText O TreeOptFastmode "Fast mode" 0 {Fast mode for updates (no move transposition)}
 # ====== TODO To be translated ======

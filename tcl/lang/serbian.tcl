@@ -557,7 +557,7 @@ menuText Y TreeSortFreq "Uèestalost" 0
 menuText Y TreeSortScore "Skor" 0
 menuText Y TreeOpt "Opcije" 0
 # ====== TODO To be translated ======
-menuText Y TreeOptSlowmode "slow mode" 0 {Slow mode for updates (high accuracy)}
+menuText Y TreeOptSlowmode "Slow mode" 0 {Slow mode for updates (high accuracy)}
 # ====== TODO To be translated ======
 menuText Y TreeOptFastmode "Fast mode" 0 {Fast mode for updates (no move transposition)}
 # ====== TODO To be translated ======

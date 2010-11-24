@@ -24,8 +24,7 @@
 //////////////////////////////////////////////////////////////////////
 //  NameBase:  Constants
 
-// There are three NameBases, one each for player, event and site tags.
-// (There seems to be now four NameBases S.A.)
+// There are four NameBases, one each for PLAYER, EVENT , SITE and ROUND tags.
 
 const nameT
     NAME_PLAYER = 0,  NAME_EVENT = 1,  NAME_SITE = 2, NAME_ROUND = 3,

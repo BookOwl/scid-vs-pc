@@ -579,7 +579,7 @@ proc ::tree::displayLines { baseNumber moves } {
     $w.f.tl image create end -image ::tree::mask::emptyImage -align center
     $w.f.tl image create end -image ::tree::mask::emptyImage -align center
     $w.f.tl insert end "    "
-    $w.f.tl tag bind tagclick0 <ButtonPress-2> "::tree::mask::contextMenu $w.f.tl dummy %x %y %X %Y ; break"
+    $w.f.tl tag bind tagclick0 <Button-2> "::tree::mask::contextMenu $w.f.tl dummy %x %y %X %Y ; break"
   }
   $w.f.tl insert end "[lindex $moves 0]\n" tagclick0
   
@@ -653,10 +653,14 @@ proc ::tree::displayLines { baseNumber moves } {
         ::utils::tooltip::SetTag $w.f.tl $comment tagtooltip$i
         $w.f.tl tag bind tagtooltip$i <Double-Button-1> "::tree::mask::addComment $move"
       }
-      $w.f.tl insert end "\n"
-    } else  {
-      $w.f.tl insert end "\n"
     }
+    if { $maskFile != {} && $move != {[end]} } {
+      # Bind right button to popup a contextual menu:
+      $w.f.tl tag bind tagclick$i <Button-3> "::tree::mask::contextMenu $w.f.tl $move %x %y %X %Y ; break"
+    }
+    $w.f.tl tag add tagclick$i [expr $i +1 + $hasPositionComment].0 [expr $i + 1 + $hasPositionComment].end
+    
+    $w.f.tl insert end "\n"
   } ;# end for loop
  
   # Display the last lines (total)

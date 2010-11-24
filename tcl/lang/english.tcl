@@ -529,7 +529,7 @@ menuText E TreeSortECO "ECO Code" 0
 menuText E TreeSortFreq "Frequency" 0
 menuText E TreeSortScore "Score" 0
 menuText E TreeOpt "Options" 0
-menuText E TreeOptSlowmode "slow mode" 0 {Slow mode for updates (high accuracy)}
+menuText E TreeOptSlowmode "Slow mode" 0 {Slow mode for updates (high accuracy)}
 menuText E TreeOptFastmode "Fast mode" 0 {Fast mode for updates (no move transposition)}
 menuText E TreeOptFastAndSlowmode "Fast and slow mode" 0 {Fast mode then slow mode for updates}
 menuText E TreeOptStartStop "Auto refreshing" 0 {Toggles automatic refreshing of the tree window}

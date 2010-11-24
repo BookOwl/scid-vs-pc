@@ -562,7 +562,7 @@ menuText R TreeSortFreq "По частоте" 3
 menuText R TreeSortScore "По результату" 3
 menuText R TreeOpt "Установки" 0
 # ====== TODO To be translated ======
-menuText R TreeOptSlowmode "slow mode" 0 {Slow mode for updates (high accuracy)}
+menuText R TreeOptSlowmode "Slow mode" 0 {Slow mode for updates (high accuracy)}
 # ====== TODO To be translated ======
 menuText R TreeOptFastmode "Fast mode" 0 {Fast mode for updates (no move transposition)}
 # ====== TODO To be translated ======
