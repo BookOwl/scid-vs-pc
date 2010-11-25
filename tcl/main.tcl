@@ -370,6 +370,20 @@ if { $macOS } {
 
 menu .gameInfo.menu -tearoff 0 -background gray90
 
+.gameInfo.menu add checkbutton -label PGN -variable pgnWin -command ::pgn::OpenClose
+.gameInfo.menu add checkbutton -label {Game List} \
+   -variable ::windows::gamelist::isOpen -command ::windows::gamelist::Open
+
+.gameInfo.menu add separator
+
+.gameInfo.menu add checkbutton -label {Menu Bar} -variable gameInfo(showMenu) -command showMenubar
+.gameInfo.menu add checkbutton -label {Tool Bar} -variable gameInfo(showTool) -command toggleToolbar
+.gameInfo.menu add checkbutton -label {Button Bar} -variable gameInfo(showButtons) -command toggleButtonBar
+.gameInfo.menu add checkbutton -label {Game Info} -variable gameInfo(show) -command showGameInfo
+.gameInfo.menu add checkbutton -label {Status Bar} -variable gameInfo(showStatus) -command toggleStatus
+
+.gameInfo.menu add separator
+
 .gameInfo.menu add checkbutton -label {Side to Move} \
     -variable boardSTM -offvalue 0 -onvalue 1 -command {::board::togglestm .board}
 
@@ -390,21 +404,6 @@ menu .gameInfo.menu -tearoff 0 -background gray90
 
 .gameInfo.menu add command -label {Toggle Coords} -command toggleCoords
 
-
-.gameInfo.menu add separator
-
-.gameInfo.menu add checkbutton -label {Menu Bar} -variable gameInfo(showMenu) -command showMenubar
-.gameInfo.menu add checkbutton -label {Tool Bar} -variable gameInfo(showTool) -command toggleToolbar
-.gameInfo.menu add checkbutton -label {Button Bar} -variable gameInfo(showButtons) -command toggleButtonBar
-.gameInfo.menu add checkbutton -label {Game Info} -variable gameInfo(show) -command showGameInfo
-.gameInfo.menu add checkbutton -label {Status Bar} -variable gameInfo(showStatus) -command toggleStatus
-
-.gameInfo.menu add separator
-
-.gameInfo.menu add checkbutton -label PGN -variable pgnWin -command ::pgn::OpenClose
-
-.gameInfo.menu add checkbutton -label {Game List} \
-   -variable ::windows::gamelist::isOpen -command ::windows::gamelist::Open
 
 proc contextmenu {x y} {
   if {$::board::_drag(.board) < 0} {
