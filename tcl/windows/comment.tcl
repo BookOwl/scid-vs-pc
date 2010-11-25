@@ -170,7 +170,7 @@ proc ::commenteditor::Open {} {
     $w.b.hide configure -text {vv}
   }
 
-  dialogbutton $w.b.ok -textvar Ok \
+  dialogbutton $w.b.ok -text Ok \
       -command "[namespace code {storeComment; ::pgn::Refresh 1; updateBoard}]
                 focus .
                 destroy .commentWin"
