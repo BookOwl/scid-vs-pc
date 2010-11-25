@@ -13228,7 +13228,7 @@ sc_tree_best (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
 #endif
 
     for (uint gnum=0; gnum < base->numGames; gnum++) {
-        if (base->filter->Get(gnum) == 0) { continue; }
+        if (base->treeFilter->Get(gnum) == 0) { continue; }
         IndexEntry * ie = base->idx->FetchEntry (gnum);
         if (! results [ie->GetResult()]) { continue; }
         eloT welo = ie->GetWhiteElo();

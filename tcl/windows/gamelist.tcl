@@ -274,7 +274,7 @@ proc ::windows::gamelist::Open {} {
 
   # Hmm... seems no way to change the deafult blue bg colour for selected items
   # without using (extra) tags. So this colour must look ok with a blue background
-  $w.tree tag configure current -foreground lightgreen
+  $w.tree tag configure current -foreground skyblue2
 
   # $w.tree tag configure colour -background $::defaultBackground
   # $w.tree tag bind click1 <Button-1> {}
@@ -397,7 +397,7 @@ proc ::windows::gamelist::Open {} {
   # ::utils::history::SetLimit ::windows::gamelist::findtext 5
   # ::utils::history::PruneList ::windows::gamelist::findtext
 
-  bind $w.b.find <Control-Return> "$w.c.load invoke"
+  bind $w.b.find <Control-Return> "$w.c.load invoke ; destroy $w "
   bind $w.b.find <Return> {::windows::gamelist::FindText}
   bind $w.b.find <Home> "$w.b.find icursor 0; break"
   bind $w.b.find <End> "$w.b.find icursor end; break"

@@ -541,7 +541,7 @@ proc markTwins {{parent .}} {
   }
   button $w.b.help -text $::tr(Help) -font $small \
       -command "helpWindow Maintenance Twins; focus $w"
-  button $w.b.go -text $::tr(Ok) -font $small -command {
+  button $w.b.go -text Ok -font $small -command {
     if {[twinCriteriaOK .twinSettings]} {
       sc_progressBar .twinSettings.progress bar 301 21 time
       set result [doMarkDups .twinSettings]

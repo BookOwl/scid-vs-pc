@@ -197,7 +197,7 @@ namespace eval tactics {
     pack $w.fconfig.flimit.analysisTime -side bottom
 
     frame $w.fconfig.fbutton
-    dialogbutton $w.fconfig.fbutton.ok -text $::tr(Ok) -command ::tactics::start
+    dialogbutton $w.fconfig.fbutton.ok -text Ok -command ::tactics::start
     dialogbutton $w.fconfig.fbutton.cancel -text $::tr(Cancel) -command "focus .; destroy $w"
     pack $w.fconfig.fbutton.ok $w.fconfig.fbutton.cancel -expand yes -side left -padx 20 -pady 2
     pack $w.fconfig $w.fconfig.flist $w.fconfig.reset -side top
