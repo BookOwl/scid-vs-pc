@@ -444,7 +444,6 @@ proc ::windows::gamelist::Open {} {
 
   ::windows::gamelist::Refresh
   set ::windows::gamelist::goto 1
-  focus $w.tree
   bind $w <Configure> {
     recordWidths
     recordWinSize .glistWin
@@ -452,7 +451,11 @@ proc ::windows::gamelist::Open {} {
   }
 
   update
+
+  # focus $w.tree
   focus $w.b.find
+  # hack to disable the down key for combobox
+  bind  $w.b.find <Down> "focus $w.tree ;::windows::gamelist::Scroll  1; break"
 }
 proc configDeleteButtons {} {
   set w .glistWin
