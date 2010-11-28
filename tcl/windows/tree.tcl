@@ -2139,7 +2139,7 @@ proc ::tree::mask::displayMask {} {
   pack $w.bupdate -fill x
   pack $w.f -fill both -expand 1
   
-  treeview $w.f.tree -yscrollcommand "$w.f.ybar set" -xscrollcommand "$w.f.xbar set" -show tree -selectmode browse
+  ttk::treeview $w.f.tree -yscrollcommand "$w.f.ybar set" -xscrollcommand "$w.f.xbar set" -show tree -selectmode browse
   # workaround for a bug in treeview (xscrollbar does not get view size)
   $w.f.tree column #0 -minwidth 1200
   scrollbar $w.f.xbar -command "$w.f.tree xview" -orient horizontal
@@ -2340,13 +2340,13 @@ proc ::tree::mask::searchMask { baseNumber } {
   wm title $w [::tr SearchMask]
   frame $w.f1
   frame $w.f2
-  pack $w.f1 -side top -fill both -expand 1
-  pack $w.f2 -side top -fill both -expand 1
+  pack $w.f1 -side top -fill both -expand 1 -padx 10 -pady 3
+  pack $w.f2 -side top -fill both -expand 1 -padx 10 -pady 3
   
   # NAG selection
-  checkbutton $w.f1.nagl -text [tr Nag] -variable ::tree::mask::searchMask_usenag
+  ttk::checkbutton $w.f1.nagl -text [tr Nag] -variable ::tree::mask::searchMask_usenag
   menu $w.f1.nagmenu
-  menubutton $w.f1.nag -textvariable ::tree::mask::searchMask_nag -menu $w.f1.nagmenu 
+  ttk::menubutton $w.f1.nag -textvariable ::tree::mask::searchMask_nag -menu $w.f1.nagmenu 
   set ::tree::mask::searchMask_nag  [::tr "None"]
   foreach nag [ list "!!" " !" "!?" "?!" " ?" "??" " ~" [::tr "None"]  ] {
     $w.f1.nagmenu add command -label $nag -command "set ::tree::mask::searchMask_nag $nag"
@@ -2356,9 +2356,9 @@ proc ::tree::mask::searchMask { baseNumber } {
   
   # Markers 1 & 2
   foreach j { 0 1 } {
-    checkbutton $w.f1.ml$j -text "[tr Marker] [expr $j +1]" -variable ::tree::mask::searchMask_usemarker$j
+    ttk::checkbutton $w.f1.ml$j -text "[tr Marker] [expr $j +1]" -variable ::tree::mask::searchMask_usemarker$j
     menu $w.f1.menum$j
-    menubutton $w.f1.m$j -textvariable ::tree::mask::searchMask_trm$j -menu $w.f1.menum$j 
+    ttk::menubutton $w.f1.m$j -textvariable ::tree::mask::searchMask_trm$j -menu $w.f1.menum$j 
     set ::tree::mask::searchMask_trm$j [tr "Include"]
     set ::tree::mask::searchMask_m$j $::tree::mask::marker2image(Include)
     foreach e { Include Exclude MainLine Bookmark White Black NewLine ToBeVerified ToTrain Dubious ToRemove } {
@@ -2371,9 +2371,9 @@ proc ::tree::mask::searchMask { baseNumber } {
   }
   
   # Color
-  checkbutton $w.f1.colorl -text [tr ColorMarker] -variable ::tree::mask::searchMask_usecolor
+  ttk::checkbutton $w.f1.colorl -text [tr ColorMarker] -variable ::tree::mask::searchMask_usecolor
   menu $w.f1.colormenu
-  menubutton $w.f1.color -textvariable ::tree::mask::searchMask_trcolor -menu $w.f1.colormenu 
+  ttk::menubutton $w.f1.color -textvariable ::tree::mask::searchMask_trcolor -menu $w.f1.colormenu 
   set ::tree::mask::searchMask_trcolor  [::tr "White"]
   set ::tree::mask::searchMask_color "White"
   foreach c { "White" "Green" "Yellow" "Blue" "Red"} {
@@ -2384,19 +2384,19 @@ proc ::tree::mask::searchMask { baseNumber } {
   grid $w.f1.color -column 3 -row 1
   
   # Move annotation
-  checkbutton $w.f1.movecommentl -text "Move comment" -variable ::tree::mask::searchMask_usemovecomment
+  ttk::checkbutton $w.f1.movecommentl -text "Move comment" -variable ::tree::mask::searchMask_usemovecomment
   entry $w.f1.movecomment -textvariable ::tree::mask::searchMask_movecomment -width 12
   grid $w.f1.movecommentl -column 4 -row 0
   grid $w.f1.movecomment -column 4 -row 1
   
   # Position annotation
-  checkbutton $w.f1.poscommentl -text "Position comment" -variable ::tree::mask::searchMask_useposcomment
+  ttk::checkbutton $w.f1.poscommentl -text "Position comment" -variable ::tree::mask::searchMask_useposcomment
   entry $w.f1.poscomment -textvariable ::tree::mask::searchMask_poscomment -width 12
   grid $w.f1.poscommentl -column 5 -row 0
   grid $w.f1.poscomment -column 5 -row 1
   
-  button $w.f1.search -text [tr "Search"] -command " ::tree::mask::perfomSearch $baseNumber "
-  grid $w.f1.search -column 6 -row 0 -rowspan 2
+  ttk::button $w.f1.search -text [tr "Search"] -command " ::tree::mask::perfomSearch $baseNumber "
+  grid $w.f1.search -column 6 -row 0 -rowspan 2 -padx 10
   
   # display search result
   text $w.f2.text -yscrollcommand "$w.f2.ybar set" -height 50
@@ -2410,7 +2410,7 @@ proc ::tree::mask::searchMask { baseNumber } {
   bind $w.f2.text <ButtonPress-1> " ::tree::mask::searchClick %x %y %W $baseNumber "
   bind $w <Escape> { destroy  .searchmask }
   bind $w <Configure> "recordWinSize $w"
-  
+  bind $w <F1> {helpWindow TreeMasks}
 }
 ################################################################################
 #

@@ -2218,7 +2218,7 @@ it is best to close the Tree Window first.</i>
   <h3>Tree Masks</h3>
   <p> Tree Masks
   provide additional information beyond pure statistical data, and can be
-  imagined as a transparet layer above the current tree that holds additional
+  imagined as a transparent layer above the current tree that holds additional
   data. For more info see <a TreeMasks>here</a>.
   </p>
   </h3>
@@ -2338,7 +2338,7 @@ set helpText(TreeMasks) {<h1>Masks for Trees</h1>
   <p>
   To add additional informations beyond pure statistical data a
   <term>Mask</term> can be defined. One can imagine a
-  <term>Mask</term> as a transparet layer above the current tree, that
+  <term>Mask</term> as a transparent layer above the current tree, that
   holds additional data e.g. commentaries for moves or positions, own
   evaluations and ones own opening repertoir. <term>Masks</term> are
   stored in a Mask file (.stm) and thus are independent of the
