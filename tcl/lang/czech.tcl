@@ -134,7 +134,6 @@ menuText C WindowsTmt "Vyhledávaè turnajù" 11 {Otevøít/zavøít okno vyhledávaèe t
 menuText C WindowsSwitcher "Výbìr databáze" 0 {Otevøít/zavøít okno pro výbìr databází}
 menuText C WindowsMaint "Okno údr¾by" 6 {Otevøít/zavøít okno údr¾by}
 menuText C WindowsECO "ECO prohlí¾eè" 1 {Otevøít/zavøít okno ECO prohlí¾eèe}
-menuText C WindowsRepertoire "Editor repertoáru" 7 {Otevøít/zavøít editor repertoáru zahájení}
 menuText C WindowsStats "Statistické okno" 0 {Otevøít/zavøít statistické okno filtru}
 menuText C WindowsTree "Stromové okno" 4 {Otevøít/zavøít stromové okno}
 menuText C WindowsTB "Okno tabulky koncovek" 13 {Otevøít/zavøít okno tabulek koncovek}
@@ -169,8 +168,6 @@ menuText E ToolsComp "Computer Tournament" 2 {Chess engine tournament}
 menuText C ToolsTacticalGame "Tactical game"  0 {Play a game with tactics}
 # ====== TODO To be translated ======
 menuText C ToolsSeriousGame "Serious game"  0 {Play a serious game}
-# ====== TODO To be translated ======
-menuText C ToolsTrainOpenings "Openings"  0 {Train with a repertoire}
 # ====== TODO To be translated ======
 menuText C ToolsTrainTactics "Tactics"  0 {Solve tactics}
 # ====== TODO To be translated ======
@@ -845,34 +842,6 @@ menuText C OprepHelp "Nápovìda" 0
 menuText C OprepHelpReport "Nápovìda - Profil zahájení" 11
 menuText C OprepHelpIndex "Index nápovìdy" 11
 
-# Repertoire editor:
-menuText C RepFile "Soubor" 0
-menuText C RepFileNew "Nový" 0
-menuText C RepFileOpen "Otevøít..." 0
-menuText C RepFileSave "Ulo¾it..." 0
-menuText C RepFileSaveAs "Ulo¾it jako..." 7
-menuText C RepFileClose "Zavøít okno" 0
-menuText C RepEdit "Editace" 0
-menuText C RepEditGroup "Pøidat skupinu" 0
-menuText C RepEditInclude "Zahrnout variantu" 0
-menuText C RepEditExclude "Vylouèit variantu" 0
-menuText C RepView "Zobrazit" 0
-menuText C RepViewExpand "Rozbalit v¹echny skupiny" 0
-menuText C RepViewCollapse "Sbalit v¹echny skupiny" 0
-menuText C RepSearch "Hledat" 0
-menuText C RepSearchAll "Ve¹kerý repertoár..." 0
-menuText C RepSearchDisplayed "Pouze zobrazené varianty..." 0
-menuText C RepHelp "Nápovìda" 0
-menuText C RepHelpRep "Nápovìda - Repertoár" 11
-menuText C RepHelpIndex "Index nápovìdy" 0
-translate C RepSearch "Repertoárové vyhledávání"
-translate C RepIncludedLines "zahrnuté varianty"
-translate C RepExcludedLines "vylouèené varianty"
-translate C RepCloseDialog {Tento repertoár obsahuje neulo¾ené zmìny.
-
-Opravdu chcete pokraèovat a zru¹it v¹echny zmìny, které jste uèinili?
-}
-
 # Header search:
 translate C HeaderSearch {Hledat podle hlavièky}
 translate C EndSideToMove {Side to move at end of game} ;# ***
@@ -1532,8 +1501,6 @@ translate C NumberOfGoodMovesPlayed {good moves played}
 # ====== TODO To be translated ======
 translate C NumberOfDubiousMovesPlayed {dubious moves played}
 # ====== TODO To be translated ======
-translate C NumberOfMovesPlayedNotInRepertoire {moves played not in repertoire}
-# ====== TODO To be translated ======
 translate C NumberOfTimesPositionEncountered {times position encountered}
 # ====== TODO To be translated ======
 translate C PlayerBestMove  {Allow only best moves}
@@ -1546,17 +1513,9 @@ translate C resetStats {Reset statistics}
 # ====== TODO To be translated ======
 translate C Repertoiretrainingconfiguration {Repertoire training configuration}
 # ====== TODO To be translated ======
-translate C Loadingrepertoire {Loading repertoire}
-# ====== TODO To be translated ======
 translate C Movesloaded {Moves loaded}
 # ====== TODO To be translated ======
 translate C Repertoirenotfound {Repertoire not found}
-# ====== TODO To be translated ======
-translate C Openfirstrepertoirewithtype {Open first a repertoire database with icon/type set to the right side}
-# ====== TODO To be translated ======
-translate C Movenotinrepertoire {Move not in repertoire}
-# ====== TODO To be translated ======
-translate C PositionsInRepertoire {Positions in repertoire}
 # ====== TODO To be translated ======
 translate C PositionsNotPlayed {Positions not played}
 # ====== TODO To be translated ======
@@ -1940,7 +1899,6 @@ set helpText(C,Contents) {<h1>Obsah nápovìdy Scidu</h1>
 <li><a PTracker><b>Stopaø figur</b></a></li>
 <li><a PList>Okno <b>vyhledávaèe hráèù</b></a></li>
 <li><a PInfo>Okno <b>informací o hráèi</b></a></li>
-<li><a Repertoire>Okno <b>editoru repertoáru</b></a></li>
 <li><a Tmt>Okno <b>vyhledávaèe turnajù</b></a></li>
 <li><a Tree><b>Stromové</b> okno</a></li>
 <li><a Graphs>Okno <b>grafù</b></a></li>
@@ -2142,7 +2100,6 @@ set helpText(C,Index) {<h1>Index nápovìdy Scidu</h1>
 <li><a Moves>Zadávání tahù</a></li>
 <li><a ECO>Zahájení, klasifikace (ECO)</a></li>
 <li><a Reports Opening>Zahájení</a>, okno profilu</a>
-<li><a Repertoire>Zahájení, repertoáry</a></li>
 <li><a Bookmarks>Zálo¾ky</a></li>
 <li><a Maintenance Twins>Zdvojené (duplicitní) partie</a></li>
 <li><a Moves Trial>Zku¹ební mód</a></li>
@@ -2545,8 +2502,6 @@ set helpText(C,Menus) {<h1>Menu Scidu</h1>
 <br>
 <li><menu>ECO prohlí¾eè</menu>: Otevírá/Zavírá okno
     <a ECO browser>ECO prohlí¾eèe</a>.</li>
-<li><menu>Editor repertoáru</menu>: Otevírá/Zavírá
-    <a Repertoire>editor repertoáru</a>.</li>
 <li><menu>Statistické okno</menu>: Otevírá/Zavírá
     <term>Statistické okno filtru</term>, které zobrazuje pøehled výher/proher
     partií ve <a Searches Filter>filtru</a>.</li>

@@ -137,8 +137,6 @@ menuText I WindowsTmt "Trova torneo" 2 {Apre/chiude la finestra per la ricerca d
 menuText I WindowsSwitcher "Selezione di Database" 11 {Apre/chiude la finestra per la selezione di un Database}
 menuText I WindowsMaint "Finestra di gestione" 12 {Apre/chiude la finestra per la gestione di un Database}
 menuText I WindowsECO "Navigazione ECO" 12 {Apre/chiude la finestra di navigazione ECO}
-menuText I WindowsRepertoire "Editor di repertorio" 10 \
-  {Apre/chiude l'editor di repertorio di apertura}
 menuText I WindowsStats "Finestra di statistica" 12 {Apre/chiude la finestra di filtro statistico}
 menuText I WindowsTree "Finestra di albero" 12 {Apre/chiude la finestra di albero}
 menuText I WindowsTB "Finestra di Tablebase di finale" 12 \
@@ -166,7 +164,6 @@ menuText I ToolsTraining "Allenamento"  0 {Strumenti per l'allenamento (tattica,
 menuText E ToolsComp "Computer Tournament" 2 {Chess engine tournament}
 menuText I ToolsTacticalGame "Partita tattica"  0 {Gioca una partita con le tattiche}
 menuText I ToolsSeriousGame "Partita seria"  0 {Gioca una partita seria}
-menuText I ToolsTrainOpenings "Aperture"  0 {Allenati con un repertorio}
 menuText I ToolsTrainTactics "Tattiche"  0 {Risolvi problemi tattici}
 menuText I ToolsTrainCalvar "Calcolo delle varianti"  0 {Allenati sul calcolo delle varianti}
 menuText I ToolsTrainFindBestMove "Trova la mossa migliore"  0 {Trova la mossa migliore}
@@ -611,7 +608,6 @@ menuText I FinderTypesScid "Database Scid" 0
 menuText I FinderTypesOld "Vecchio formato database Scid" 0
 menuText I FinderTypesPGN "File PGN" 0
 menuText I FinderTypesEPD "EPD (book) files" 0
-menuText I FinderTypesRep "File di Repertorio" 0
 menuText I FinderHelp "Aiuto" 0
 menuText I FinderHelpFinder "Aiuto su File Finder" 0
 menuText I FinderHelpIndex "Indice di aiuto" 0
@@ -812,34 +808,6 @@ menuText I OprepFavoritesGenerate "Genera Reports..." 0
 menuText I OprepHelp "Aiuto" 0
 menuText I OprepHelpReport "Aiuto sul rapporto di apertura" 0
 menuText I OprepHelpIndex "Indice di Aiuto" 0
-
-# Repertoire editor:
-menuText I RepFile "File" 0
-menuText I RepFileNew "Nuovo" 0
-menuText I RepFileOpen "Apri..." 0
-menuText I RepFileSave "Salva..." 0
-menuText I RepFileSaveAs "Salva con nome..." 3
-menuText I RepFileClose "Close window" 0
-menuText I RepEdit "Edita" 0
-menuText I RepEditGroup "Aggiunge il gruppo" 12
-menuText I RepEditInclude "Aggiunge la variante inclusa" 21
-menuText I RepEditExclude "Aggiunge la variante esclusa" 21
-menuText I RepView "Visualizza" 0
-menuText I RepViewExpand "Espande tutti i gruppi" 0
-menuText I RepViewCollapse "Collassa tutti i gruppi" 0
-menuText I RepSearch "Cerca" 0
-menuText I RepSearchAll "Tutto del repertorio..." 0
-menuText I RepSearchDisplayed "Visualizza solo varianti..." 0
-menuText I RepHelp "Aiuto" 0
-menuText I RepHelpRep "Aiuto del repertorio" 0
-menuText I RepHelpIndex "Indice di Aiuto" 0
-translate I RepSearch "Ricerca nel repertorio"
-translate I RepIncludedLines "varianti incluse"
-translate I RepExcludedLines "varianti escluse"
-translate I RepCloseDialog {Questo repertorio non e' stato salvato.
-
-Vuoi veramente continuare ed eliminare le modifiche effettuate?
-}
 
 # Header search:
 translate I HeaderSearch {Ricerca per Intestazione}
@@ -1419,25 +1387,16 @@ translate I NumberOfGoodMovesPlayed {good moves played}
 # ====== TODO To be translated ======
 translate I NumberOfDubiousMovesPlayed {dubious moves played}
 # ====== TODO To be translated ======
-translate I NumberOfMovesPlayedNotInRepertoire {moves played not in repertoire}
-# ====== TODO To be translated ======
 translate I NumberOfTimesPositionEncountered {times position encountered}
 translate I PlayerBestMove  {Permetti solo le mosse migliori}
 translate I OpponentBestMove {L'avversario gioca le mosse migliori}
 translate I OnlyFlaggedLines {Solo linee tracciate}
 translate I resetStats {Azzera le statistiche}
-translate I Repertoiretrainingconfiguration {Configuarazione dell'allenatore del repertorio}
-translate I Loadingrepertoire {Leggo il repertorio}
 translate I Movesloaded {Mosse lette}
-translate I Repertoirenotfound {Repertorio non trovato}
-translate I Openfirstrepertoirewithtype {Apri prima un database come repertorio con tipo/icona a destra}
-translate I Movenotinrepertoire {Mossa non presente nel repertorio}
-translate I PositionsInRepertoire {Posizioni nel repertorio}
 translate I PositionsNotPlayed {Posizioni non giocate}
 translate I PositionsPlayed {Posizioni giocate}
 translate I Success {Successo}
 translate I DubiousMoves {Mossa dubbia}
-translate I OutOfRepertoire {Fuori dal repertorio}
 translate I ConfigureTactics {Configura le tattiche}
 translate I ResetScores {Azzara i punteggi}
 translate I LoadingBase {Leggo il database}
@@ -1874,14 +1833,6 @@ set tips(I) {
     Se vuoi verificare le dimensioni di un file o la sua data di ultima
     modifica prima di aprirlo, utilizza <a Finder>file finder</a> per
     aprirlo.
-  }
-  {
-    Un file di <a Repertoire>repertorio</a> e' un grande strumento per
-    monitorare le tue aperture preferite e per trovare le partite nelle
-    quali queste linee sono state giocate. Dopo aver memorizzato le tue
-    aperture in un file di repertorio puoi effettuare ricerche tutte le
-    volte che acquisisci nuovi file di partite e visualizzare le partite
-    che ti interessano.
   }
   {
     Un <a OpReport>rapporto di apertura</a> e' molto utile per apprendere

@@ -138,8 +138,6 @@ menuText B WindowsSwitcher "Intercambio de bases de dados" 0 \
 menuText B WindowsMaint "Manutencao" 0 \
   {Abre/fecha a janela de manutencao}
 menuText B WindowsECO "Listagem ECO" 0 {Abre/fecha a janela de listagem de codigo ECO}
-menuText B WindowsRepertoire "Editor de Repertorio" 0 \
-  {Abre/fecha a janela do editor de repertorio}
 menuText B WindowsStats "Estatisticas" 0 \
   {Abre/fecha a janela de estatisticas}
 menuText B WindowsTree "Arvore" 0 {Abre/fecha a janela da Arvore de pesquisa}
@@ -176,8 +174,6 @@ menuText E ToolsComp "Computer Tournament" 2 {Chess engine tournament}
 menuText B ToolsTacticalGame "Tactical game"  0 {Play a game with tactics}
 # ====== TODO To be translated ======
 menuText B ToolsSeriousGame "Serious game"  0 {Play a serious game}
-# ====== TODO To be translated ======
-menuText B ToolsTrainOpenings "Openings"  0 {Train with a repertoire}
 # ====== TODO To be translated ======
 menuText B ToolsTrainTactics "Tactics"  0 {Solve tactics}
 # ====== TODO To be translated ======
@@ -618,7 +614,6 @@ menuText B FinderTypesScid "Bases Scid" 0
 menuText B FinderTypesOld "Bases Scid antigas" 0
 menuText B FinderTypesPGN "Arquivos PGN" 0
 menuText B FinderTypesEPD "Arquivos EPD (book)" 0
-menuText B FinderTypesRep "Arquivos de Repertorio" 0
 menuText B FinderHelp "Ajuda" 0
 menuText B FinderHelpFinder "Ajuda do Buscador" 0
 menuText B FinderHelpIndex "Indice da Ajuda" 0
@@ -846,34 +841,6 @@ menuText B OprepFavoritesGenerate "Generate Reports..." 0 ;# ***
 menuText B OprepHelp "Ajuda" 0
 menuText B OprepHelpReport "Ajuda para Relatorio de abertura" 0
 menuText B OprepHelpIndex "Indice da Ajuda" 0
-
-# Repertoire editor:
-menuText B RepFile "Arquivo" 0
-menuText B RepFileNew "Novo" 0
-menuText B RepFileOpen "Abrir..." 0
-menuText B RepFileSave "Salvar..." 0
-menuText B RepFileSaveAs "Salvar como..." 5
-menuText B RepFileClose "Fechar janela" 0
-menuText B RepEdit "Editar" 0
-menuText B RepEditGroup "Adicionar grupo" 4
-menuText B RepEditInclude "Adicionar linha incluida" 4
-menuText B RepEditExclude "Adicionar linha excluida" 4
-menuText B RepView "Visao" 0
-menuText B RepViewExpand "Expandir todos os grupos" 0
-menuText B RepViewCollapse "Contrair todos os grupos" 0
-menuText B RepSearch "Pesquisa" 0
-menuText B RepSearchAll "Tudo do repertorio..." 0
-menuText B RepSearchDisplayed "Apenas linhas exibidas..." 0
-menuText B RepHelp "Ajuda" 0
-menuText B RepHelpRep "Ajuda de Repertorio" 0
-menuText B RepHelpIndex "Indice da Ajuda" 0
-translate B RepSearch "Pesquisa no repertorio"
-translate B RepIncludedLines "linhas incluidas"
-translate B RepExcludedLines "linhas excluidas"
-translate B RepCloseDialog {Este repertorio sofreu alteracoes.
-
-Voce realmente quer continuar e descartar as alteracoes que foram feitas?
-}
 
 # Header search:
 translate B HeaderSearch {Busca por cabecalho}
@@ -1534,8 +1501,6 @@ translate B NumberOfGoodMovesPlayed {good moves played}
 # ====== TODO To be translated ======
 translate B NumberOfDubiousMovesPlayed {dubious moves played}
 # ====== TODO To be translated ======
-translate B NumberOfMovesPlayedNotInRepertoire {moves played not in repertoire}
-# ====== TODO To be translated ======
 translate B NumberOfTimesPositionEncountered {times position encountered}
 # ====== TODO To be translated ======
 translate B PlayerBestMove  {Allow only best moves}
@@ -1546,19 +1511,7 @@ translate B OnlyFlaggedLines {Only flagged lines}
 # ====== TODO To be translated ======
 translate B resetStats {Reset statistics}
 # ====== TODO To be translated ======
-translate B Repertoiretrainingconfiguration {Repertoire training configuration}
-# ====== TODO To be translated ======
-translate B Loadingrepertoire {Loading repertoire}
-# ====== TODO To be translated ======
 translate B Movesloaded {Moves loaded}
-# ====== TODO To be translated ======
-translate B Repertoirenotfound {Repertoire not found}
-# ====== TODO To be translated ======
-translate B Openfirstrepertoirewithtype {Open first a repertoire database with icon/type set to the right side}
-# ====== TODO To be translated ======
-translate B Movenotinrepertoire {Move not in repertoire}
-# ====== TODO To be translated ======
-translate B PositionsInRepertoire {Positions in repertoire}
 # ====== TODO To be translated ======
 translate B PositionsNotPlayed {Positions not played}
 # ====== TODO To be translated ======
@@ -1567,11 +1520,6 @@ translate B PositionsPlayed {Positions played}
 translate B Success {Success}
 # ====== TODO To be translated ======
 translate B DubiousMoves {Dubious moves}
-# ====== TODO To be translated ======
-translate B OutOfRepertoire {OutOfRepertoire}
-# ====== TODO To be translated ======
-# ====== TODO To be translated ======
-# ====== TODO To be translated ======
 # ====== TODO To be translated ======
 translate B ConfigureTactics {Configure tactics}
 # ====== TODO To be translated ======

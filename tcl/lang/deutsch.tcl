@@ -162,7 +162,6 @@ menuText D WindowsSwitcher "Datenbank-Umschalter" 0 \
   {Datenbank-Umschalter öffnen/schließen}
 menuText D WindowsMaint "Wartungsfenster" 0 {(Datenbank-)Wartungsfenster öffnen/schließen}
 menuText D WindowsECO "ECO-Auswertung" 0 {ECO-Auswertung öffnen/schließen}
-menuText D WindowsRepertoire "Repertoire-Editor" 0 {Eröffnungsrepertoire-Editor öffnen/schließen}
 menuText D WindowsStats "Statistik" 4 {Filterstatistik öffnen/schließen}
 menuText D WindowsTree "Zugbaum" 0 {Zugbaum öffnen/schließen}
 menuText D WindowsTB "Endspieltabellen..." 1 {Endspieltabellen öffnen/schließen}
@@ -191,7 +190,6 @@ menuText D ToolsTraining "Training"  0 {Trainingswerkzeuge (Taktik, Eröffnungen,
 menuText E ToolsComp "Computer Tournament" 2 {Chess engine tournament}
 menuText D ToolsTacticalGame "Trainingspartie"  0 {Trainingspartie spielen}
 menuText D ToolsSeriousGame "Ernste Partie"  0 {Ernste Partie spielen}
-menuText D ToolsTrainOpenings "Eröffnungen"  0 {Eröffnungsrepertoire trainieren}
 menuText D ToolsTrainTactics "Taktik"  0 {Taktische Stellungen lösen}
 menuText D ToolsTrainCalvar "Varianten berechnen"  0 {Training zum Berechnen von Varianten}
 menuText D ToolsTrainFindBestMove "Besten Zug finden"  0 {Find best move}
@@ -586,7 +584,6 @@ menuText D FinderTypesScid "Scid-Datenbanken" 0
 menuText D FinderTypesOld "Datenbanken im alten Format" 0
 menuText D FinderTypesPGN "PGN-Dateien" 0
 menuText D FinderTypesEPD "EPD-Dateien" 0
-menuText D FinderTypesRep "Repertoiredateien" 0
 menuText D FinderHelp "Hilfe" 0
 menuText D FinderHelpFinder "Dateifinderhilfe" 0
 menuText D FinderHelpIndex "Index" 0
@@ -782,34 +779,6 @@ menuText D OprepFavoritesGenerate "Berichte erzeugen..." 9
 menuText D OprepHelp "Hilfe" 0
 menuText D OprepHelpReport "Eröffnungsbericht-Hilfe" 0
 menuText D OprepHelpIndex "Index" 0
-
-# Repertoire editor:
-menuText D RepFile "Datei" 0
-menuText D RepFileNew "Neu" 0
-menuText D RepFileOpen "Öffnen..." 0
-menuText D RepFileSave "Speichern..." 0
-menuText D RepFileSaveAs "Speichern unter..." 10
-menuText D RepFileClose "Schließen" 1
-menuText D RepEdit "Bearbeiten" 0
-menuText D RepEditGroup "Gruppe hinzufügen" 0
-menuText D RepEditInclude "Variante einschließen" 9
-menuText D RepEditExclude "Variante ausschließen" 9
-menuText D RepView "Ansicht" 0
-menuText D RepViewExpand "Alle Gruppen aufklappen" 13
-menuText D RepViewCollapse "Alle Gruppen zuklappen" 13
-menuText D RepSearch "Suchen" 0
-menuText D RepSearchAll "Im gesamten Repertoire..." 0
-menuText D RepSearchDisplayed "Nur in der aktuellen Variante..." 0
-menuText D RepHelp "Hilfe" 0
-menuText D RepHelpRep "Repertoire Hilfe" 0
-menuText D RepHelpIndex "Index" 0
-translate D RepSearch "Repertoire Suche"
-translate D RepIncludedLines "Eingeschlossene Varianten"
-translate D RepExcludedLines "Ausgeschlossene Varianten"
-translate D RepCloseDialog {Dieses Repertoire hat ungesicherte Änderungen.
-
-Wollen Sie wirklich fortfahren und die Änderungen verwerfen?
-}
 
 # Header search:
 translate D HeaderSearch {Partiedatensuche}
@@ -1411,24 +1380,16 @@ translate D DisplayOpeningStats {Statistik anzeigen}
 translate D ShowReport {Bericht anzeigen}
 translate D NumberOfGoodMovesPlayed {gute Züge gespielt}
 translate D NumberOfDubiousMovesPlayed {zweischneidige Züge gespielt}
-translate D NumberOfMovesPlayedNotInRepertoire {Züge außerhalb des Repertoirs gespielt}
 translate D NumberOfTimesPositionEncountered {Wiederholungen der Position}
 translate D PlayerBestMove  {Nur beste Züge erlauben}
 translate D OpponentBestMove {Gegner spielt besten Zug}
 translate D OnlyFlaggedLines {Nur markierte Linien}
 translate D resetStats {Statistik zurücksetzen}
-translate D Repertoiretrainingconfiguration {Konfiguration Trainingsrepertoire}
-translate D Loadingrepertoire {Lade Repertoire}
 translate D Movesloaded {Züge geladen}
-translate D Repertoirenotfound {Repertoire nicht gefunden}
-translate D Openfirstrepertoirewithtype {Zuerst eine Eröffnungsdatenbank mit entsprechendem Type/Icon öffnen.}
-translate D Movenotinrepertoire {Zug nicht im Repertoire}
-translate D PositionsInRepertoire {Positionen im Repertoire}
 translate D PositionsNotPlayed {nicht gespielte Positionen}
 translate D PositionsPlayed {gespielte Positionen}
 translate D Success {Erfolgreich}
 translate D DubiousMoves {Zweifelhafte Züge}
-translate D OutOfRepertoire {Nicht im Repertoire}
 translate D ConfigureTactics {Taktik konfigurieren}
 translate D ResetScores {Punkte zurücksetzten}
 translate D LoadingBase {Lade Datenbank}
@@ -1868,7 +1829,6 @@ set helpText(D,Contents) {<h1>Inhaltsverzeichnis Scid-Hilfe</h1>
 <li><a GameList><b>Partieliste</b>-Fenster</a></li>
 <li><a Import><b>Partie-Import</b>-Fenster</a></li>
 <li><a PGN><b>PGN</b> (Partietext)-Fenster</a></li>
-<li><a Repertoire><b>Repertoire-Editor</b></a></li>
 <li><a PList><b>Spielerfinder</b></a></li>
 <li><a PInfo><b>Spieler-Information</b></a></li>
 <li><a TacticalGame><b>Trainingspartie</b>-Fenster</a><red>(Neu!)</red></li>
@@ -1951,7 +1911,6 @@ set helpText(D,Index) {<h1>Scid: Hilfe-Index</h1>
 <li><a EPD>EPD-Dateien</a></li>
 <li><a Reports Opening>Eröffnungsbericht</a></li>
 <li><a ECO>Eröffnungsklassifizierung (ECO)</a></li>
-<li><a Repertoire>Eröffnungsrepertoire</a></li>
 <li><a Export>Exportieren, Partien in Textdateien</a></li>
 </ul>
 

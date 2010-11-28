@@ -138,8 +138,6 @@ menuText O WindowsSwitcher "Databasebytter" 0 \
 menuText O WindowsMaint "Vedlikeholdsvindu" 0 \
   {Åpne/lukk vedlikeholdsvinduet}
 menuText O WindowsECO "ECO-oversikt" 0 {Åpne/lukk ECO-oversikten}
-menuText O WindowsRepertoire "Repertoirvindu" 0 \
-  {Åpne/lukk åpningsreportoiret}
 menuText O WindowsStats "Statistikkvindu" 0 \
   {Åpne/lukk statistikk for filteret}
 menuText O WindowsTree "Trevindu" 0 {Åpne/lukk trevinduet}
@@ -176,8 +174,6 @@ menuText E ToolsComp "Computer Tournament" 2 {Chess engine tournament}
 menuText O ToolsTacticalGame "Tactical game"  0 {Play a game with tactics}
 # ====== TODO To be translated ======
 menuText O ToolsSeriousGame "Serious game"  0 {Play a serious game}
-# ====== TODO To be translated ======
-menuText O ToolsTrainOpenings "Openings"  0 {Train with a repertoire}
 # ====== TODO To be translated ======
 menuText O ToolsTrainTactics "Tactics"  0 {Solve tactics}
 # ====== TODO To be translated ======
@@ -655,7 +651,6 @@ menuText O FinderTypesScid "Scid-databaser" 0
 menuText O FinderTypesOld "Scid-databaser i gammelt format" 0
 menuText O FinderTypesPGN "PGN-filer" 0
 menuText O FinderTypesEPD "EPD-filer" 0
-menuText O FinderTypesRep "Repertoire-filer" 0
 menuText O FinderHelp "Hjelp" 0
 menuText O FinderHelpFinder "Søkehjelp" 0
 menuText O FinderHelpIndex "Innholdsfortegnelse" 0
@@ -883,34 +878,6 @@ menuText O OprepFavoritesGenerate "Generate Reports..." 0 ;# ***
 menuText O OprepHelp "Hjelp" 0
 menuText O OprepHelpReport "Åpningsrapport hjelp" 0
 menuText O OprepHelpIndex "Innholdsfortegnelse" 0
-
-# Repertoire editor:
-menuText O RepFile "Fil" 0
-menuText O RepFileNew "Ny" 0
-menuText O RepFileOpen "Åpne..." 0
-menuText O RepFileSave "Lagre..." 0
-menuText O RepFileSaveAs "Lagre som..." 0
-menuText O RepFileClose "Lukk vindu" 0
-menuText O RepEdit "Rediger" 0
-menuText O RepEditGroup "Legg til gruppe" 0
-menuText O RepEditInclude "Inkluder" 0
-menuText O RepEditExclude "Ekskluder" 0
-menuText O RepView "Vis" 0
-menuText O RepViewExpand "Utvid alle grupper" 0
-menuText O RepViewCollapse "Trekk sammen alle grupper" 0
-menuText O RepSearch "Søk" 0
-menuText O RepSearchAll "Alle i reportoir..." 0
-menuText O RepSearchDisplayed "Kun viste linjer..." 0
-menuText O RepHelp "Hjelp" 0
-menuText O RepHelpRep "Repertoir hjelp" 0
-menuText O RepHelpIndex "Innholdsfortegnelse" 0
-translate O RepSearch "Repertoirsøk"
-translate O RepIncludedLines "inkluderte linjer"
-translate O RepExcludedLines "ekskluderte linjer"
-translate O RepCloseDialog {Gjeldende reportoir har ulagrede endringer.
-
-Vil du virkelig fortsette og miste disse endringene?
-}
 
 # Header search:
 translate O HeaderSearch {Headersøk}
@@ -1567,8 +1534,6 @@ translate O NumberOfGoodMovesPlayed {good moves played}
 # ====== TODO To be translated ======
 translate O NumberOfDubiousMovesPlayed {dubious moves played}
 # ====== TODO To be translated ======
-translate O NumberOfMovesPlayedNotInRepertoire {moves played not in repertoire}
-# ====== TODO To be translated ======
 translate O NumberOfTimesPositionEncountered {times position encountered}
 # ====== TODO To be translated ======
 translate O PlayerBestMove  {Allow only best moves}
@@ -1579,19 +1544,7 @@ translate O OnlyFlaggedLines {Only flagged lines}
 # ====== TODO To be translated ======
 translate O resetStats {Reset statistics}
 # ====== TODO To be translated ======
-translate O Repertoiretrainingconfiguration {Repertoire training configuration}
-# ====== TODO To be translated ======
-translate O Loadingrepertoire {Loading repertoire}
-# ====== TODO To be translated ======
 translate O Movesloaded {Moves loaded}
-# ====== TODO To be translated ======
-translate O Repertoirenotfound {Repertoire not found}
-# ====== TODO To be translated ======
-translate O Openfirstrepertoirewithtype {Open first a repertoire database with icon/type set to the right side}
-# ====== TODO To be translated ======
-translate O Movenotinrepertoire {Move not in repertoire}
-# ====== TODO To be translated ======
-translate O PositionsInRepertoire {Positions in repertoire}
 # ====== TODO To be translated ======
 translate O PositionsNotPlayed {Positions not played}
 # ====== TODO To be translated ======
@@ -1600,10 +1553,6 @@ translate O PositionsPlayed {Positions played}
 translate O Success {Success}
 # ====== TODO To be translated ======
 translate O DubiousMoves {Dubious moves}
-# ====== TODO To be translated ======
-translate O OutOfRepertoire {OutOfRepertoire}
-# ====== TODO To be translated ======
-# ====== TODO To be translated ======
 # ====== TODO To be translated ======
 # ====== TODO To be translated ======
 translate O ConfigureTactics {Configure tactics}

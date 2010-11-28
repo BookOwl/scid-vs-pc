@@ -136,8 +136,6 @@ menuText Y WindowsSwitcher "Biraè baza" 0 \
 menuText Y WindowsMaint "Prozor odr¾avanja" 0 \
   {Otvori/zatvori prozor odr¾avanja}
 menuText Y WindowsECO "E©O prikazivaè" 0 {Otvori/zatvori E©O prikazivaè}
-menuText Y WindowsRepertoire "Editor repertoara otvaranja" 0 \
-  {Otvori/zatvori editor repertoara otvaranja}
 menuText Y WindowsStats "Statistièki prozor" 0 \
   {Otvori/zatvori prozor statistika filtera}
 menuText Y WindowsTree "Stablo varijanata" 0 {Otvori/zatvori stablo varijanata}
@@ -174,8 +172,6 @@ menuText E ToolsComp "Computer Tournament" 2 {Chess engine tournament}
 menuText Y ToolsTacticalGame "Tactical game"  0 {Play a game with tactics}
 # ====== TODO To be translated ======
 menuText Y ToolsSeriousGame "Serious game"  0 {Play a serious game}
-# ====== TODO To be translated ======
-menuText Y ToolsTrainOpenings "Openings"  0 {Train with a repertoire}
 # ====== TODO To be translated ======
 menuText Y ToolsTrainTactics "Tactics"  0 {Solve tactics}
 # ====== TODO To be translated ======
@@ -653,7 +649,6 @@ menuText Y FinderTypesScid "Scid baze" 0
 menuText Y FinderTypesOld "Scid baze u starom formatu" 0
 menuText Y FinderTypesPGN "PGN fajlovi" 0
 menuText Y FinderTypesEPD "EPD (book) fajlovi" 0
-menuText Y FinderTypesRep "Repertoar fajlovi" 0
 menuText Y FinderHelp "Pomoæ" 0
 menuText Y FinderHelpFinder "Pomoæ - Fajl tragaè" 0
 menuText Y FinderHelpIndex "Sadr¾aj pomoæi" 0
@@ -881,34 +876,6 @@ menuText Y OprepFavoritesGenerate "Generate Reports..." 0 ;# ***
 menuText Y OprepHelp "Pomoæ" 0
 menuText Y OprepHelpReport "Pomoæ - Izve¹taj o otvaranjima" 0
 menuText Y OprepHelpIndex "Sadr¾aj pomoæi" 0
-
-# Repertoire editor:
-menuText Y RepFile "File" 0
-menuText Y RepFileNew "Novi" 0
-menuText Y RepFileOpen "Otvori..." 0
-menuText Y RepFileSave "Saèuvaj..." 0
-menuText Y RepFileSaveAs "Saèuvaj kao..." 9
-menuText Y RepFileClose "Zatvori prozor" 0
-menuText Y RepEdit "Izmena" 0
-menuText Y RepEditGroup "Dodaj grupu" 6
-menuText Y RepEditInclude "Dodaj ukljuèenu liniju" 6
-menuText Y RepEditExclude "Dodaj iskljuèenu liniju" 6
-menuText Y RepView "Prikaz" 0
-menuText Y RepViewExpand "Razgranaj sve grupe" 0
-menuText Y RepViewCollapse "Sa¾mi sve grupe" 0
-menuText Y RepSearch "Pretra¾i" 3
-menuText Y RepSearchAll "Ceo repertoar..." 0
-menuText Y RepSearchDisplayed "Samo prikazane linije..." 0
-menuText Y RepHelp "Pomoæ" 1
-menuText Y RepHelpRep "Pomoæ - repertoar" 0
-menuText Y RepHelpIndex "Sadr¾aj pomoæi" 0
-translate Y RepSearch "Pretraga repertoara"
-translate Y RepIncludedLines "ukljuèene linije"
-translate Y RepExcludedLines "iskljuèene linije"
-translate Y RepCloseDialog {Ovaj repertoar ima nesaèuvane izmene.
-
-Da li zaista ¾elite da nastavite i odbacite izmene koje ste napravili?
-}
 
 # Header search:
 translate Y HeaderSearch {Pretraga zaglavlja}
@@ -1571,8 +1538,6 @@ translate Y NumberOfGoodMovesPlayed {good moves played}
 # ====== TODO To be translated ======
 translate Y NumberOfDubiousMovesPlayed {dubious moves played}
 # ====== TODO To be translated ======
-translate Y NumberOfMovesPlayedNotInRepertoire {moves played not in repertoire}
-# ====== TODO To be translated ======
 translate Y NumberOfTimesPositionEncountered {times position encountered}
 # ====== TODO To be translated ======
 translate Y PlayerBestMove  {Allow only best moves}
@@ -1583,19 +1548,7 @@ translate Y OnlyFlaggedLines {Only flagged lines}
 # ====== TODO To be translated ======
 translate Y resetStats {Reset statistics}
 # ====== TODO To be translated ======
-translate Y Repertoiretrainingconfiguration {Repertoire training configuration}
-# ====== TODO To be translated ======
-translate Y Loadingrepertoire {Loading repertoire}
-# ====== TODO To be translated ======
 translate Y Movesloaded {Moves loaded}
-# ====== TODO To be translated ======
-translate Y Repertoirenotfound {Repertoire not found}
-# ====== TODO To be translated ======
-translate Y Openfirstrepertoirewithtype {Open first a repertoire database with icon/type set to the right side}
-# ====== TODO To be translated ======
-translate Y Movenotinrepertoire {Move not in repertoire}
-# ====== TODO To be translated ======
-translate Y PositionsInRepertoire {Positions in repertoire}
 # ====== TODO To be translated ======
 translate Y PositionsNotPlayed {Positions not played}
 # ====== TODO To be translated ======
@@ -1604,11 +1557,6 @@ translate Y PositionsPlayed {Positions played}
 translate Y Success {Success}
 # ====== TODO To be translated ======
 translate Y DubiousMoves {Dubious moves}
-# ====== TODO To be translated ======
-translate Y OutOfRepertoire {OutOfRepertoire}
-# ====== TODO To be translated ======
-# ====== TODO To be translated ======
-# ====== TODO To be translated ======
 # ====== TODO To be translated ======
 translate Y ConfigureTactics {Configure tactics}
 # ====== TODO To be translated ======

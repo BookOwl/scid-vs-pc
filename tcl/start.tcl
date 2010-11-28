@@ -79,7 +79,7 @@ foreach ns {
   ::tools::graphs::filter ::tools::graphs::absfilter ::tools::graphs::rating ::tools::graphs::score
   ::tb ::optable
   ::board ::move
-  ::tacgame ::sergame ::opening ::tactics ::calvar ::uci ::fics
+  ::tacgame ::sergame ::tactics ::calvar ::uci ::fics
   ::config
   ::commenteditor
 } {

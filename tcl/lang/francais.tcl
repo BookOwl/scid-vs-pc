@@ -143,7 +143,6 @@ menuText F WindowsSwitcher "Changer de base" 0 \
 menuText F WindowsMaint "Fenêtre de Maintenance" 0 \
   {Ouvrir/Fermer la fenêtre de maintenance}
 menuText F WindowsECO "Navigateur ECO" 0 {Ouvrir/fermer le navigateur ECO}
-menuText F WindowsRepertoire "Éditeur de répertoire" 0 {Ouvrir/Fermer l'éditeur de répertoire}
 menuText F WindowsStats "Fenêtre de statistique" 11 \
   {Ouvrir/Fermer le filtre de statistiques}
 menuText F WindowsTree "Fenêtre d'arbre" 10 \
@@ -760,34 +759,6 @@ menuText F OprepHelp "Aide" 0
 menuText F OprepHelpReport "Aide du rapport" 0
 menuText F OprepHelpIndex "Index" 0
 
-# Repertoire editor:
-menuText F RepFile "Fichier" 0
-menuText F RepFileNew "Nouvelle" 0
-menuText F RepFileOpen "Ouvrir..." 0
-menuText F RepFileSave "Sauver..." 0
-menuText F RepFileSaveAs "Sauver sous..." 5
-menuText F RepFileClose "Fermer" 0
-menuText F RepEdit "Éditer" 0
-menuText F RepEditGroup "Ajouter Groupe" 4
-menuText F RepEditInclude "Ajouter Inclure ligne" 4
-menuText F RepEditExclude "Ajouter Exclure ligne" 4
-menuText F RepView "Voir" 0
-menuText F RepViewExpand "Étends tous les groupes" 0
-menuText F RepViewCollapse "Fermer tous les groupes" 0
-menuText F RepSearch "Rechercher" 0
-menuText F RepSearchAll "Tout le répertoire..." 0
-menuText F RepSearchDisplayed "Afficher seulement les lignes..." 0
-menuText F RepHelp "Aide" 0
-menuText F RepHelpRep "Aide sur le répertoire" 0
-menuText F RepHelpIndex "Index" 0
-translate F RepSearch "Rechercher dans le répertoire"
-translate F RepIncludedLines "lignes inclues"
-translate F RepExcludedLines "lignes exclues"
-translate F RepCloseDialog {Ce répertoire a des modifications non enregistrées.
-
-Voulez vous réellement continuer et ne pas tenir compte des changements que vous avez effectué?
-}
-
 # Header search:
 translate F HeaderSearch {Rechercher Entête}
 translate F EndSideToMove {Côté devant jouer à la fin de la partie}
@@ -1368,24 +1339,16 @@ translate F DisplayOpeningStats {Montrer statistiques}
 translate F ShowReport {Montrer rapport}
 translate F NumberOfGoodMovesPlayed {bons coups joués}
 translate F NumberOfDubiousMovesPlayed {coups douteux joués}
-translate F NumberOfMovesPlayedNotInRepertoire {coups joués absents du répertoire}
 translate F NumberOfTimesPositionEncountered {nombre de fois position rencontrée}
 translate F PlayerBestMove  {N'autoriser que les meilleurs coups}
 translate F OpponentBestMove {Ne jouer que les meilleurs coups}
 translate F OnlyFlaggedLines {Seulement les lignes marquées}
 translate F resetStats {Remettre à zéro les scores}
-translate F Repertoiretrainingconfiguration {Configuration entrainement répertoire}
-translate F Loadingrepertoire {Chargement du répertoire}
 translate F Movesloaded {Coups lus}
-translate F Repertoirenotfound {Répertoire introuvable}
-translate F Openfirstrepertoirewithtype {Ouvrez d'abord une base avec le bon type/icône sur le côté droit}
-translate F Movenotinrepertoire {Coup absent du répertoire}
-translate F PositionsInRepertoire {Positions dans le répertoire}
 translate F PositionsNotPlayed {Positions non jouées}
 translate F PositionsPlayed {Positions jouées}
 translate F Success {Succès}
 translate F DubiousMoves {Coups douteux}
-translate F OutOfRepertoire {Hors du répertoire}
 translate F ConfigureTactics {Configurer exercices tactiques}
 translate F ResetScores {Remise à zéro des scores}
 translate F LoadingBase {Chargement de la base}

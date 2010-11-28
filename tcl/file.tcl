@@ -118,7 +118,6 @@ proc ::file::Open {{fName ""} {parent .}} {
       { {Scid databases} {.si4 .si3} }
       { {PGN files} {.pgn .PGN .pgn.gz} }
       { {EPD files} {.epd .EPD .epd.gz} }
-      { {Repertoire files} {.sor} }
     }
   } else {
     set ftype {
@@ -126,7 +125,6 @@ proc ::file::Open {{fName ""} {parent .}} {
       { {Scid databases} {.si4 .si3} }
       { {PGN files} {.pgn .PGN} }
       { {EPD files} {.epd .EPD} }
-      { {Repertoire files} {.sor} }
     }
   }
   if {$fName == ""} {

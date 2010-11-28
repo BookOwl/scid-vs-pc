@@ -139,8 +139,6 @@ menuText R WindowsSwitcher "Переключатель баз данных" 1 \
 menuText R WindowsMaint "Окно поддержки" 1 \
   {Открыть/закрыть окно поддержки}
 menuText R WindowsECO "Просмотр ECO" 4 {Открыть/закрыть окно просмотра ECO}
-menuText R WindowsRepertoire "Редактор репертуара" 2 \
-  {Открыть/закрыть окно редактора репертуара дебютов}
 menuText R WindowsStats "Окно статистики" 2 \
   {Открыть/закрыть окно фильтрованной статистики}
 menuText R WindowsTree "Окно дерева" 10 {Открыть/закрыть окно дерева}
@@ -177,8 +175,6 @@ menuText E ToolsComp "Computer Tournament" 2 {Chess engine tournament}
 menuText R ToolsTacticalGame "Tactical game"  0 {Play a game with tactics}
 # ====== TODO To be translated ======
 menuText R ToolsSeriousGame "Serious game"  0 {Play a serious game}
-# ====== TODO To be translated ======
-menuText R ToolsTrainOpenings "Openings"  0 {Train with a repertoire}
 # ====== TODO To be translated ======
 menuText R ToolsTrainTactics "Tactics"  0 {Solve tactics}
 # ====== TODO To be translated ======
@@ -887,34 +883,6 @@ menuText R OprepHelp "Помощь" 0
 menuText R OprepHelpReport "Помощь по дебютным отчетам" 0
 menuText R OprepHelpIndex "Индекс помощи" 0
 
-# Repertoire editor:
-menuText R RepFile "Файл" 0
-menuText R RepFileNew "Новый" 0
-menuText R RepFileOpen "Открыть..." 0
-menuText R RepFileSave "Сохранить.." 0
-menuText R RepFileSaveAs "Сохранить как..." 2
-menuText R RepFileClose "Закрыть окно" 0
-menuText R RepEdit "Редактор" 0
-menuText R RepEditGroup "Добавить группу" 9
-menuText R RepEditInclude "Добавить включенные строки" 9
-menuText R RepEditExclude "Добавить исключенные строки" 9
-menuText R RepView "Вид" 0
-menuText R RepViewExpand "Развернуть все группы" 0
-menuText R RepViewCollapse "Сжать все группы" 0
-menuText R RepSearch "Поиск" 0
-menuText R RepSearchAll "Все репертуары..." 0
-menuText R RepSearchDisplayed "Показанные строки только..." 0
-menuText R RepHelp "Помощь" 4
-menuText R RepHelpRep "Помощь по репертуару" 0
-menuText R RepHelpIndex "Индекс помощи" 0
-translate R RepSearch "Поиск репертуара"
-translate R RepIncludedLines "включенные строки"
-translate R RepExcludedLines "исключенный строки"
-translate R RepCloseDialog {В этом репертуаре не сохранены изменения.
-
-Вы действительно хотите продолжить не сохранив все изменения, которые вы сделали?
-}
-
 # Header search:
 translate R HeaderSearch {Поиск по заголовку}
 # ====== TODO To be translated ======
@@ -1601,8 +1569,6 @@ translate R NumberOfGoodMovesPlayed {good moves played}
 # ====== TODO To be translated ======
 translate R NumberOfDubiousMovesPlayed {dubious moves played}
 # ====== TODO To be translated ======
-translate R NumberOfMovesPlayedNotInRepertoire {moves played not in repertoire}
-# ====== TODO To be translated ======
 translate R NumberOfTimesPositionEncountered {times position encountered}
 # ====== TODO To be translated ======
 translate R PlayerBestMove  {Allow only best moves}
@@ -1613,19 +1579,7 @@ translate R OnlyFlaggedLines {Only flagged lines}
 # ====== TODO To be translated ======
 translate R resetStats {Reset statistics}
 # ====== TODO To be translated ======
-translate R Repertoiretrainingconfiguration {Repertoire training configuration}
-# ====== TODO To be translated ======
-translate R Loadingrepertoire {Loading repertoire}
-# ====== TODO To be translated ======
 translate R Movesloaded {Moves loaded}
-# ====== TODO To be translated ======
-translate R Repertoirenotfound {Repertoire not found}
-# ====== TODO To be translated ======
-translate R Openfirstrepertoirewithtype {Open first a repertoire database with icon/type set to the right side}
-# ====== TODO To be translated ======
-translate R Movenotinrepertoire {Move not in repertoire}
-# ====== TODO To be translated ======
-translate R PositionsInRepertoire {Positions in repertoire}
 # ====== TODO To be translated ======
 translate R PositionsNotPlayed {Positions not played}
 # ====== TODO To be translated ======
@@ -1634,11 +1588,6 @@ translate R PositionsPlayed {Positions played}
 translate R Success {Success}
 # ====== TODO To be translated ======
 translate R DubiousMoves {Dubious moves}
-# ====== TODO To be translated ======
-translate R OutOfRepertoire {OutOfRepertoire}
-# ====== TODO To be translated ======
-# ====== TODO To be translated ======
-# ====== TODO To be translated ======
 # ====== TODO To be translated ======
 translate R ConfigureTactics {Configure tactics}
 # ====== TODO To be translated ======

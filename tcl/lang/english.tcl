@@ -173,8 +173,6 @@ menuText E WindowsSwitcher "Databases" 0 \
 menuText E WindowsMaint "Maintenance Window" 0 \
   {Open/close the Maintenance window}
 menuText E WindowsECO "ECO Browser" 0 {Open/close the ECO Browser window}
-menuText E WindowsRepertoire "Repertoire Editor" 0 \
-  {Open/close the opening repertoire editor}
 menuText E WindowsStats "Statistics Window" 0 \
   {Open/close the filter statistics window}
 menuText E WindowsTree "Tree Window" 0 {Open/close the Tree window}
@@ -196,7 +194,6 @@ menuText E ToolsTraining "Training"  0 {Training tools (tactics, openings,...) }
 menuText E ToolsComp "Computer Tournament" 0 {Chess engine tournament}
 menuText E ToolsTacticalGame "Tactical game"  0 {Play a game with tactics}
 menuText E ToolsSeriousGame "Serious game"  0 {Play a serious game}
-menuText E ToolsTrainOpenings "Openings"  0 {Train with a repertoire}
 menuText E ToolsTrainTactics "Puzzle"  0 {Solve "Mate in" puzzles}
 menuText E ToolsTrainCalvar "Calculation of variations"  0 {Calculation of variations training}
 menuText E ToolsTrainFindBestMove "Find best move"  0 {Find best move}
@@ -594,7 +591,6 @@ menuText E FinderTypesScid "Scid Databases" 0
 menuText E FinderTypesOld "Old-Format Scid Databases" 0
 menuText E FinderTypesPGN "PGN Files" 0
 menuText E FinderTypesEPD "EPD Files" 0
-menuText E FinderTypesRep "Repertoire Files" 0
 menuText E FinderHelp "Help" 0
 menuText E FinderHelpFinder "File Finder Help" 0
 menuText E FinderHelpIndex "Help Index" 0
@@ -791,34 +787,6 @@ menuText E OprepFavoritesGenerate "Generate Reports..." 0
 menuText E OprepHelp "Help" 0
 menuText E OprepHelpReport "Opening Report Help" 0
 menuText E OprepHelpIndex "Help Index" 0
-
-# Repertoire editor:
-menuText E RepFile "File" 0
-menuText E RepFileNew "New" 0
-menuText E RepFileOpen "Open..." 0
-menuText E RepFileSave "Save..." 0
-menuText E RepFileSaveAs "Save As..." 5
-menuText E RepFileClose "Close Window" 0
-menuText E RepEdit "Edit" 0
-menuText E RepEditGroup "Add Group" 4
-menuText E RepEditInclude "Add Include Line" 4
-menuText E RepEditExclude "Add Exclude Line" 4
-menuText E RepView "View" 0
-menuText E RepViewExpand "Expand All Groups" 0
-menuText E RepViewCollapse "Collapse All Groups" 0
-menuText E RepSearch "Search" 0
-menuText E RepSearchAll "All of Repertoire..." 0
-menuText E RepSearchDisplayed "Displayed Lines Only..." 0
-menuText E RepHelp "Help" 0
-menuText E RepHelpRep "Repertoire Help" 0
-menuText E RepHelpIndex "Help Index" 0
-translate E RepSearch "Repertoire Search"
-translate E RepIncludedLines "included lines"
-translate E RepExcludedLines "excluded lines"
-translate E RepCloseDialog {This repertoire has unsaved changes.
-
-Do you really want to continue and discard the changes you have made?
-}
 
 # Header search:
 translate E HeaderSearch {General Search}
@@ -1404,24 +1372,16 @@ translate E DisplayOpeningStats {Show statistics}
 translate E ShowReport {Show report}
 translate E NumberOfGoodMovesPlayed {good moves played}
 translate E NumberOfDubiousMovesPlayed {dubious moves played}
-translate E NumberOfMovesPlayedNotInRepertoire {moves played not in repertoire}
 translate E NumberOfTimesPositionEncountered {times position encountered}
 translate E PlayerBestMove  {Allow only best moves}
 translate E OpponentBestMove {Opponent plays best moves}
 translate E OnlyFlaggedLines {Only flagged lines}
 translate E resetStats {Reset statistics}
-translate E Repertoiretrainingconfiguration {Repertoire training configuration}
-translate E Loadingrepertoire {Loading repertoire}
 translate E Movesloaded {Moves loaded}
-translate E Repertoirenotfound {Repertoire not found}
-translate E Openfirstrepertoirewithtype {Open first a repertoire database with icon/type set to the right side}
-translate E Movenotinrepertoire {Move not in repertoire}
-translate E PositionsInRepertoire {Positions in repertoire}
 translate E PositionsNotPlayed {Positions not played}
 translate E PositionsPlayed {Positions played}
 translate E Success {Success}
 translate E DubiousMoves {Dubious moves}
-translate E OutOfRepertoire {OutOfRepertoire}
 translate E ConfigureTactics {Select Puzzle}
 translate E ResetScores {Reset scores}
 translate E LoadingBase {Loading base}

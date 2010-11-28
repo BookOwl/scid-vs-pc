@@ -136,8 +136,6 @@ menuText H WindowsSwitcher "Adatbázisváltó" 0 \
 menuText H WindowsMaint "Adatbázisgondozó" 9 \
   {Kinyitja/becsukja az adatbázisgondozó ablakot.}
 menuText H WindowsECO "ECO-böngészõ" 0 {Kinyitja/becsukja az ECO-böngészõ ablakot.}
-menuText H WindowsRepertoire "Repertoárszerkesztõ" 0 \
-  {Megnyitja/bezárja a megnyitási repertoárszerkesztõt.}
 menuText H WindowsStats "Statisztika" 0 \
   {Kinyitja/becsukja a szûrési statisztika ablakát.}
 menuText H WindowsTree "Faszerkezet" 0 {Kinyitja/becsukja a faszerkezet-ablakot.}
@@ -174,8 +172,6 @@ menuText E ToolsComp "Computer Tournament" 2 {Chess engine tournament}
 menuText H ToolsTacticalGame "Tactical game"  0 {Play a game with tactics}
 # ====== TODO To be translated ======
 menuText H ToolsSeriousGame "Serious game"  0 {Play a serious game}
-# ====== TODO To be translated ======
-menuText H ToolsTrainOpenings "Openings"  0 {Train with a repertoire}
 # ====== TODO To be translated ======
 menuText H ToolsTrainTactics "Tactics"  0 {Solve tactics}
 # ====== TODO To be translated ======
@@ -620,7 +616,6 @@ menuText H FinderTypesScid "SCID-adatbázisok" 0
 menuText H FinderTypesOld "Régi formátumú SCID-adatbázisok" 5
 menuText H FinderTypesPGN "PGN-fájlok" 0
 menuText H FinderTypesEPD "EPD-fájlok" 0
-menuText H FinderTypesRep "Repertoárfájlok" 0
 menuText H FinderHelp "Segítség" 0
 menuText H FinderHelpFinder "Segítség a fájlkeresõhöz" 0
 menuText H FinderHelpIndex "Tartalom" 0
@@ -848,35 +843,6 @@ menuText H OprepFavoritesGenerate "Összefoglaló készítése..." 0
 menuText H OprepHelp "Segítség" 0
 menuText H OprepHelpReport "Segítség a megnyitási összefoglalóhoz" 0
 menuText H OprepHelpIndex "Tárgymutató" 0
-
-# Repertoire editor:
-menuText H RepFile "Fájl" 0
-menuText H RepFileNew "Új" 0
-menuText H RepFileOpen "Megnyitás..." 3
-menuText H RepFileSave "Mentés..." 0
-menuText H RepFileSaveAs "Mentés másként..." 5
-menuText H RepFileClose "Ablak bezárása" 8
-menuText H RepEdit "Szerkesztés" 1
-menuText H RepEditGroup "Csoport hozzáadása" 0
-menuText H RepEditInclude "Beveendõ elágazás" 0
-menuText H RepEditExclude "Kizárandó elágazás" 0
-menuText H RepView "Nézet" 0
-menuText H RepViewExpand "Az összes csoportot kibontja" 20
-menuText H RepViewCollapse "Az összes csoportot összehúzza" 20
-menuText H RepSearch "Keresés" 0
-menuText H RepSearchAll "Az egész repertoárban..." 3
-menuText H RepSearchDisplayed "Csak a megjelenített elágazásokban..." 0
-#Ez igen gyanús!
-menuText H RepHelp "Segítség" 0
-menuText H RepHelpRep "Segítség a repertoárhoz" 0
-menuText H RepHelpIndex "Tartalom" 0
-translate H RepSearch "Keresés a repertoárban"
-translate H RepIncludedLines "beveendõ elágazások"
-translate H RepExcludedLines "kizárandó elágazások"
-translate H RepCloseDialog {Ebben a repertoárban elmentetlen változtatások vannak.
-
-Tényleg folytatni akarod, és elvetni a létrehozott változtatásokat?
-}
 
 # Header search:
 translate H HeaderSearch {Keresés fejléc alapján}
@@ -1537,8 +1503,6 @@ translate H NumberOfGoodMovesPlayed {good moves played}
 # ====== TODO To be translated ======
 translate H NumberOfDubiousMovesPlayed {dubious moves played}
 # ====== TODO To be translated ======
-translate H NumberOfMovesPlayedNotInRepertoire {moves played not in repertoire}
-# ====== TODO To be translated ======
 translate H NumberOfTimesPositionEncountered {times position encountered}
 # ====== TODO To be translated ======
 translate H PlayerBestMove  {Allow only best moves}
@@ -1549,19 +1513,7 @@ translate H OnlyFlaggedLines {Only flagged lines}
 # ====== TODO To be translated ======
 translate H resetStats {Reset statistics}
 # ====== TODO To be translated ======
-translate H Repertoiretrainingconfiguration {Repertoire training configuration}
-# ====== TODO To be translated ======
-translate H Loadingrepertoire {Loading repertoire}
-# ====== TODO To be translated ======
 translate H Movesloaded {Moves loaded}
-# ====== TODO To be translated ======
-translate H Repertoirenotfound {Repertoire not found}
-# ====== TODO To be translated ======
-translate H Openfirstrepertoirewithtype {Open first a repertoire database with icon/type set to the right side}
-# ====== TODO To be translated ======
-translate H Movenotinrepertoire {Move not in repertoire}
-# ====== TODO To be translated ======
-translate H PositionsInRepertoire {Positions in repertoire}
 # ====== TODO To be translated ======
 translate H PositionsNotPlayed {Positions not played}
 # ====== TODO To be translated ======
@@ -1570,11 +1522,6 @@ translate H PositionsPlayed {Positions played}
 translate H Success {Success}
 # ====== TODO To be translated ======
 translate H DubiousMoves {Dubious moves}
-# ====== TODO To be translated ======
-translate H OutOfRepertoire {OutOfRepertoire}
-# ====== TODO To be translated ======
-# ====== TODO To be translated ======
-# ====== TODO To be translated ======
 # ====== TODO To be translated ======
 translate H ConfigureTactics {Configure tactics}
 # ====== TODO To be translated ======
@@ -2103,14 +2050,6 @@ set tips(H) {
     Ha meg akarod nézni egy fájl méretét vagy utolsó módosításának
     idõpontját, mielõtt megnyitnád, használd megnyitására a
     <a Finder>fájlkeresõ</a>t.
-  }
-  {
-    A <a Repertoire>repertoár</a>fájl remek mód kedvelt megnyitásaid
-    nyilvántartására, emellett meg lehet vele keresni azokat a játszmákat,
-    amelyekben e megnyitások elõfordultak. Ha megnyitásaidat repertoárfájlban
-    tartod, minden új játszmagyûjteményt átszûrhetsz vele,
-    és végignézheted azokat a játszmákat, amelyekben kedvelt megnyitásaid
-    elõfordulnak.
   }
   {
     A <a OpReport>megnyitási összefoglaló</a> nagyszerû lehetõséget nyújt

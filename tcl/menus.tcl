@@ -515,7 +515,6 @@ set helpMessage($m,[incr menuindex]) ToolsSeriousGame
 menu $m.training
 $m add cascade -label ToolsTraining -menu $m.training
 set helpMessage($m,[incr menuindex]) ToolsTraining
-$m.training add command -label ToolsTrainOpenings -command ::opening::config
 $m.training add command -label ToolsTrainCalvar -command ::calvar::config
 $m.training add command -label ToolsTrainFindBestMove -command ::tactics::findBestMove
 
@@ -622,11 +621,6 @@ $m add checkbutton -label WindowsECO -accelerator "Ctrl+Y" \
     -variable ::windows::eco::isOpen -command {::windows::eco::OpenClose}
 bind . <Control-y> ::windows::eco::OpenClose
 set helpMessage($m,[incr menuindex]) WindowsECO
-
-$m add checkbutton -label WindowsRepertoire -variable ::rep::Win \
-    -accelerator "Ctrl+Shift+R" -command ::rep::OpenCloseWindow
-bind . <Control-R> ::rep::OpenCloseWindow
-set helpMessage($m,[incr menuindex]) WindowsRepertoire
 
 $m add checkbutton -label WindowsStats -variable ::windows::stats::isOpen \
     -accelerator "Ctrl+I" -command ::windows::stats::Open
@@ -1489,7 +1483,7 @@ proc setLanguageMenus {{lang ""}} {
     configMenuText .menu.play [tr $tag $oldLang] $tag $lang
   }
 
-  foreach tag {TrainOpenings TrainCalvar TrainFindBestMove} {
+  foreach tag {TrainCalvar TrainFindBestMove} {
     configMenuText .menu.play.training [tr Tools$tag $oldLang] Tools$tag $lang
   }
 
@@ -1540,7 +1534,7 @@ proc setLanguageMenus {{lang ""}} {
     configMenuText .menu.game [tr Game$tag $oldLang] Game$tag $lang
   }
 
-  foreach tag {Gameinfo Comment GList PGN Cross PList Tmt Switcher Maint ECO Repertoire Stats Tree TB Book CorrChess } {
+  foreach tag {Gameinfo Comment GList PGN Cross PList Tmt Switcher Maint ECO Stats Tree TB Book CorrChess } {
     configMenuText .menu.windows [tr Windows$tag $oldLang] Windows$tag $lang
   }
 

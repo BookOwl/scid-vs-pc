@@ -139,8 +139,6 @@ menuText W WindowsSwitcher "Databasväxlaren" 0 \
 menuText W WindowsMaint "Verktygsfönster" 0 \
   {Öppna/ stäng verktygsfönstret}
 menuText W WindowsECO "ECO fönster" 0 {Öppna/ stäng ECO bläddraren}
-menuText W WindowsRepertoire "Repetoareditor" 0 \
-  {Öppna/ stäng spelöppningsfönstret}
 menuText W WindowsStats "Statistikfönster" 0 \
   {Öppna/ stäng statistikfönstret}
 menuText W WindowsTree "Trädfönster" 2 {Öppna/ stäng variantträdets fönster}
@@ -884,34 +882,6 @@ menuText W OprepHelp "Hjälp" 0
 menuText W OprepHelpReport "Hjälp för öppningsrapporter" 0
 menuText W OprepHelpIndex "Hjälpindex" 0
 
-# Repertoire editor:
-menuText W RepFile "Fil" 0
-menuText W RepFileNew "Ny" 0
-menuText W RepFileOpen "Öppna..." 0
-menuText W RepFileSave "Spara..." 0
-menuText W RepFileSaveAs "Spara som..." 5
-menuText W RepFileClose "Stäng fönster" 0
-menuText W RepEdit "Redigera" 0
-menuText W RepEditGroup "Lägg till grupp" 4
-menuText W RepEditInclude "Lägg till inkluderad variation" 4
-menuText W RepEditExclude "Lägg till exkluderad variation" 4
-menuText W RepView "Visa" 0
-menuText W RepViewExpand "Expandera alla grupper" 0
-menuText W RepViewCollapse "Implodera alla grupper" 0
-menuText W RepSearch "Sök" 0
-menuText W RepSearchAll "Hela öppningsrepetoaren..." 0
-menuText W RepSearchDisplayed "Endast visade variationer..." 0
-menuText W RepHelp "Hjälp" 0
-menuText W RepHelpRep "Hjälp för spelöppningsrepetoar" 0
-menuText W RepHelpIndex "Hjälpindex" 0
-translate W RepSearch "Sök i spelöppningsrepetoar"
-translate W RepIncludedLines "inkluderade variationer"
-translate W RepExcludedLines "exkluderade variationer"
-translate W RepCloseDialog {Du har osparade ändringar i repetoaren.
-
-Vill du verkligen fortsätta och förlora dina förändringar?
-}
-
 # Header search:
 translate W HeaderSearch {Sök i partihuvud}
 translate W EndSideToMove {Sida vid draget vid slutet av partiet}
@@ -1574,8 +1544,6 @@ translate W NumberOfGoodMovesPlayed {bra drag spelade}
 # ====== TODO To be translated ======
 translate W NumberOfDubiousMovesPlayed {tveksamma drag spelade}
 # ====== TODO To be translated ======
-translate W NumberOfMovesPlayedNotInRepertoire {drag spelade som inte finns i repetoar}
-# ====== TODO To be translated ======
 translate W NumberOfTimesPositionEncountered {gånger positionen påträffats}
 # ====== TODO To be translated ======
 translate W PlayerBestMove  {Tillåt bara bästa dragen}
@@ -1586,19 +1554,7 @@ translate W OnlyFlaggedLines {Bara markerade variationer}
 # ====== TODO To be translated ======
 translate W resetStats {Nollställ statistik}
 # ====== TODO To be translated ======
-translate W Repertoiretrainingconfiguration {Repetoartränings-konfiguration}
-# ====== TODO To be translated ======
-translate W Loadingrepertoire {Öppnar repetoar}
-# ====== TODO To be translated ======
 translate W Movesloaded {Öppnat drag}
-# ====== TODO To be translated ======
-translate W Repertoirenotfound {Repetoar hittades inte}
-# ====== TODO To be translated ======
-translate W Openfirstrepertoirewithtype {Öppna först en repetoardatabas med ikon/typ angivet på höger sida}
-# ====== TODO To be translated ======
-translate W Movenotinrepertoire {Drag finns inte i repetoar}
-# ====== TODO To be translated ======
-translate W PositionsInRepertoire {Positioner i repetoar}
 # ====== TODO To be translated ======
 translate W PositionsNotPlayed {Positioner inte spelade}
 # ====== TODO To be translated ======
@@ -1607,11 +1563,6 @@ translate W PositionsPlayed {Positioner spelade}
 translate W Success {Framgång}
 # ====== TODO To be translated ======
 translate W DubiousMoves {Tveksamma drag}
-# ====== TODO To be translated ======
-translate W OutOfRepertoire {Utanför repetoar}
-# ====== TODO To be translated ======
-# ====== TODO To be translated ======
-# ====== TODO To be translated ======
 # ====== TODO To be translated ======
 translate W ConfigureTactics {Konfigurera taktik}
 # ====== TODO To be translated ======
@@ -2441,7 +2392,6 @@ från rubriktexterna är förmodligen inte det. /Martin S.</p>
 <li><a PTracker><b>Pjässpåraren</b></a></li>
 <li><a PList><b>Spelarlistan</b></a></li>
 <li><a PInfo><b>Spelarinfo</b> </a></li>
-<li><a Repertoire><b>Repetoar-Editor</a></li>
 <li><a TacticalGame><b>Taktiskt partifönstret</b> </a></li>
 <li><a Tmt><b>Sök turneringar</a></li>
 <li><a Tree><b>Trädfönstret</a></li>
@@ -2584,7 +2534,6 @@ set helpText(W,Index) {<h1>Scid: Hjälp-index</h1>
 <ul>
 <li><a Reports Opening>Rapporter</a></li>
 <li><a Graphs Rating>Ratinggraf</a></li>
-<li><a Repertoire>Repetoar-Editor</a></li>
 </ul>
 
 <h3>S</h3>
@@ -2636,7 +2585,6 @@ set helpText(W,Index) {<h1>Scid: Hjälp-index</h1>
 <h3>Ö</h3>
 <ul>
 <li><a ECO>Öppningsklassificering (ECO)</a></li>
-<li><a Repertoire>Öppningsrepetoar</a></li>
 <li><a Reports Opening>Öppningsrapport</a></li>
 <li><a OpeningTrainer>Öppningstränarfönstret</a></li>
 </ul>

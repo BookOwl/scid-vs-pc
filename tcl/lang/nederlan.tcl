@@ -153,7 +153,6 @@ menuText N WindowsSwitcher  "Database wisselen" 0 \
 menuText N WindowsMaint "Onderhoudsvenster" 5 \
   {Open/sluit het onderhoudsvenster}
 menuText N WindowsECO "ECO Browser" 0 {Open/sluit het ECO browser venster}
-menuText N WindowsRepertoire "Repertoire editor" 0 {Open/sluit de openingsrepertoir editor}
 menuText N WindowsStats "Statistiek" 0 \
   {Open/sluit het filter statieken-venster}
 menuText N WindowsTree "Openingoverzicht" 0 {Open/sluit het Openingsoverzichtvenster}
@@ -186,7 +185,6 @@ menuText E ToolsComp "Computer Tournament" 2 {Chess engine tournament}
 menuText N ToolsTacticalGame "Taktische partij"  0 {Speel en taktische partij}
 # ====== TODO To be translated ======
 menuText N ToolsSeriousGame "Serious game"  0 {Play a serious game}
-menuText N ToolsTrainOpenings "Openingen "  0 {Repertoriumtraining}
 menuText N ToolsTrainTactics "Tactiek "  0 {Los taktische stellingen op }
 # ====== TODO To be translated ======
 menuText N ToolsTrainCalvar "Calculation of variations"  0 {Calculation of variations training}
@@ -632,7 +630,6 @@ menuText N FinderTypesScid "Scid databases" 0
 menuText N FinderTypesOld "Oud formaat Scid databases" 0
 menuText N FinderTypesPGN "PGN bestanden" 0
 menuText N FinderTypesEPD "EPD (boek) bestanden" 0
-menuText N FinderTypesRep "Repertorium bestanden" 0
 menuText N FinderHelp "Help" 0
 menuText N FinderHelpFinder "Bestandszoeker Help" 0
 menuText N FinderHelpIndex " Bestandszoeker Help Inhoud" 0
@@ -856,34 +853,6 @@ menuText N OprepFavoritesGenerate "Genereer Rapporten..." 0 ;
 menuText N OprepHelp "Help" 0
 menuText N OprepHelpReport "Help (openingsrapport)" 0
 menuText N OprepHelpIndex "Inhoud" 0
-
-# Repertoire editor:
-menuText N RepFile "Bestand" 0
-menuText N RepFileNew "Nieuw" 0
-menuText N RepFileOpen "Openen..." 0
-menuText N RepFileSave "Bewaren..." 0
-menuText N RepFileSaveAs "Bewaren als..." 5
-menuText N RepFileClose "Sluit venster" 2
-menuText N RepEdit "Bewerken" 0
-menuText N RepEditGroup "Toevoegen Groep" 4
-menuText N RepEditInclude "Toevoegen inclusief variant" 4
-menuText N RepEditExclude "Toevoegen exclusief variant" 4
-menuText N RepView "Bekijken" 0
-menuText N RepViewExpand "Uitklappen alle groepen" 0
-menuText N RepViewCollapse "Inklappen alle groepen" 0
-menuText N RepSearch "Selecteren" 0
-menuText N RepSearchAll "Alles van repertorium..." 0
-menuText N RepSearchDisplayed "Alleen weergegeven varianten..." 0
-menuText N RepHelp "Help" 0
-menuText N RepHelpRep "Repertorium help" 0
-menuText N RepHelpIndex "Inhoud" 0
-translate N RepSearch "Zoeken repertorium"
-translate N RepIncludedLines "inclusief varianten"
-translate N RepExcludedLines "exclusief varianten"
-translate N RepCloseDialog {Dit repetorium heeft onopgeslagen wijzigingen.
-
-Wilt u echt doorgaan en de wijzigingen niet Bewaren?
-}
 
 # Header search:
 translate N HeaderSearch {Zoek naar kop}
@@ -1533,8 +1502,6 @@ translate N NumberOfGoodMovesPlayed {good moves played}
 # ====== TODO To be translated ======
 translate N NumberOfDubiousMovesPlayed {dubious moves played}
 # ====== TODO To be translated ======
-translate N NumberOfMovesPlayedNotInRepertoire {moves played not in repertoire}
-# ====== TODO To be translated ======
 translate N NumberOfTimesPositionEncountered {times position encountered}
 
 translate N PlayerBestMove  {Laat alleen beste zetten toe}
@@ -1545,20 +1512,7 @@ translate N OnlyFlaggedLines {Enkel gemarkeerde varianten}
 # ====== TODO To be translated ======
 translate N resetStats {Reset statistics}
 
-translate N Repertoiretrainingconfiguration {Repertorium training configuratie}
-
-translate N Loadingrepertoire {Repertorium Laden}
-
 translate N Movesloaded {Zetten geladen}
-
-translate N Repertoirenotfound {Repertorium niet gevonden}
-
-translate N Openfirstrepertoirewithtype {Open eerste repertorium database met ikoon/type aanr rechterzijde gezet}
-
-translate N Movenotinrepertoire {Zet niet in Repertorium}
-# ====== TODO To be translated ======
-translate N PositionsInRepertoire {Positions in repertoire}
-# ====== TODO To be translated ======
 translate N PositionsNotPlayed {Positions not played}
 # ====== TODO To be translated ======
 translate N PositionsPlayed {Positions played}
@@ -1567,7 +1521,6 @@ translate N Success {Success}
 # ====== TODO To be translated ======
 translate N DubiousMoves {Dubious moves}
 # ====== TODO To be translated ======
-translate N OutOfRepertoire {OutOfRepertoire}
 
 translate N ConfigureTactics {Configureer takiek}
 

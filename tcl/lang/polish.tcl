@@ -143,8 +143,6 @@ menuText P WindowsMaint "Zarz±dzanie baz±" 0 \
   {Otwórz/zamknij okno zarz±dzania baz±}
 menuText P WindowsECO "Przegl±darka kodów debiutowych" 0 \
   {Otwórz/zamknij przegl±darkê kodów debiutowych}
-menuText P WindowsRepertoire "Repertuar debiutowy" 0 \
-  {Otwórz/zamknij okno repertuaru debiutowego}
 menuText P WindowsStats "Statystyka" 0 \
   {Otwórz/zamknij statystykê}
 menuText P WindowsTree "Drzewo wariantów" 0 {Otwórz/zamknij drzewo wariantów}
@@ -180,8 +178,6 @@ menuText E ToolsComp "Computer Tournament" 2 {Chess engine tournament}
 menuText P ToolsTacticalGame "Tactical game"  0 {Play a game with tactics}
 # ====== TODO To be translated ======
 menuText P ToolsSeriousGame "Serious game"  0 {Play a serious game}
-# ====== TODO To be translated ======
-menuText P ToolsTrainOpenings "Openings"  0 {Train with a repertoire}
 # ====== TODO To be translated ======
 menuText P ToolsTrainTactics "Tactics"  0 {Solve tactics}
 # ====== TODO To be translated ======
@@ -888,34 +884,6 @@ menuText P OprepHelp "Pomoc" 2
 menuText P OprepHelpReport "Pomoc raportu debiutowego" 0
 menuText P OprepHelpIndex "Spis tre¶ci" 0
 
-# Repertoire editor:
-menuText P RepFile "Plik" 0
-menuText P RepFileNew "Nowy" 0
-menuText P RepFileOpen "Otwórz..." 0
-menuText P RepFileSave "Zapisz" 0
-menuText P RepFileSaveAs "Zapisz jako..." 7
-menuText P RepFileClose "Zamknij" 3
-menuText P RepEdit "Edytuj" 0
-menuText P RepEditGroup "Dodaj grupê" 6
-menuText P RepEditInclude "W³±cz wariant" 0
-menuText P RepEditExclude "Wy³±cz wariant" 1
-menuText P RepView "Widok" 0
-menuText P RepViewExpand "Rozwiñ wszystkie grupy" 0
-menuText P RepViewCollapse "Zwiñ wszystkie grupy" 0
-menuText P RepSearch "Szukaj" 0
-menuText P RepSearchAll "Wszystkie warianty..." 0
-menuText P RepSearchDisplayed "Tylko widoczne warianty..." 0
-menuText P RepHelp "Pomoc" 2
-menuText P RepHelpRep "Repertuar debiutowy" 0
-menuText P RepHelpIndex "Spis tre¶ci" 0
-translate P RepSearch "Poszukiwanie wariantów"
-translate P RepIncludedLines "w³±czone warianty"
-translate P RepExcludedLines "wy³±czone warianty"
-translate P RepCloseDialog {Ten repertuar ma niezapisane zmiany.
-
-Na pewno zamkn±æ repertuar, rezygnuj±c z wszelkich zmian?
-}
-
 # Header search:
 translate P HeaderSearch {Wyszukiwanie wg nag³ówka}
 translate P EndSideToMove {Side to move at end of game} ;# ***
@@ -1579,8 +1547,6 @@ translate P NumberOfGoodMovesPlayed {good moves played}
 # ====== TODO To be translated ======
 translate P NumberOfDubiousMovesPlayed {dubious moves played}
 # ====== TODO To be translated ======
-translate P NumberOfMovesPlayedNotInRepertoire {moves played not in repertoire}
-# ====== TODO To be translated ======
 translate P NumberOfTimesPositionEncountered {times position encountered}
 # ====== TODO To be translated ======
 translate P PlayerBestMove  {Allow only best moves}
@@ -1591,19 +1557,7 @@ translate P OnlyFlaggedLines {Only flagged lines}
 # ====== TODO To be translated ======
 translate P resetStats {Reset statistics}
 # ====== TODO To be translated ======
-translate P Repertoiretrainingconfiguration {Repertoire training configuration}
-# ====== TODO To be translated ======
-translate P Loadingrepertoire {Loading repertoire}
-# ====== TODO To be translated ======
 translate P Movesloaded {Moves loaded}
-# ====== TODO To be translated ======
-translate P Repertoirenotfound {Repertoire not found}
-# ====== TODO To be translated ======
-translate P Openfirstrepertoirewithtype {Open first a repertoire database with icon/type set to the right side}
-# ====== TODO To be translated ======
-translate P Movenotinrepertoire {Move not in repertoire}
-# ====== TODO To be translated ======
-translate P PositionsInRepertoire {Positions in repertoire}
 # ====== TODO To be translated ======
 translate P PositionsNotPlayed {Positions not played}
 # ====== TODO To be translated ======
@@ -1612,11 +1566,6 @@ translate P PositionsPlayed {Positions played}
 translate P Success {Success}
 # ====== TODO To be translated ======
 translate P DubiousMoves {Dubious moves}
-# ====== TODO To be translated ======
-translate P OutOfRepertoire {OutOfRepertoire}
-# ====== TODO To be translated ======
-# ====== TODO To be translated ======
-# ====== TODO To be translated ======
 # ====== TODO To be translated ======
 translate P ConfigureTactics {Configure tactics}
 # ====== TODO To be translated ======
@@ -2185,12 +2134,6 @@ set tips(P) {
   {
     Je¶li chcesz sprawdziæ wielko¶æ lub datê modyfikacji pliku
     przed jego otwarciem, u¿yj okna <a Finder>Poszukiwacza plików</a>.
-  }
-  {
-    Plik<a Repertoire>repertuaru debiutowego</a> pozwala na ¶ledzenie
-    partii w ulubionych wariantach. Kiedy dodasz grane przez siebie
-    debiuty do pliku repertuaru debiutowego, bêdziesz móg³ ³atwo
-    znajdowaæ je w nowych partiach.
   }
   {
     <a OpReport>Raport debiutowy</a> pozwala dowiedzieæ siê wiêcej
