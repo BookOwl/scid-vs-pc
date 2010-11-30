@@ -140,19 +140,18 @@ namespace eval pgn {
     set pgnWin 1
     bind $w <Destroy> { set pgnWin 0 }
 
-    # Bind left button to close ctxt menu:
+    # Left button closes context menu
     bind $w <ButtonPress-1> {
       if {[winfo exists .pgnWin.text.ctxtMenu]} { destroy .pgnWin.text.ctxtMenu; focus .pgnWin }
     }
 
-    # Bind middle button to popup a PGN board:
+    # Middle button popups a PGN board
     bind $w <ButtonPress-2> "::pgn::ShowBoard .pgnWin.text 5 %x %y %X %Y"
     bind $w <ButtonRelease-2> ::pgn::HideBoard
 
-    # Bind right button to popup a contextual menu:
+    # Right button draws context menu
     bind $w <ButtonPress-3> "::pgn::contextMenu .pgnWin.text 5 %x %y %X %Y"
 
-    standardShortcuts $w
     bind $w <F1> { helpWindow PGN }
     bind $w <Escape> {
       if {[winfo exists .pgnWin.text.ctxtMenu]} {
@@ -172,7 +171,8 @@ namespace eval pgn {
     bind $w <KeyPress-z> [bind . <KeyPress-z>]
 
     $w.text tag add Current 0.0 0.0
-    # populate text widget
+
+    # Populate text widget &&&
     ::pgn::ResetColors
   }
 
@@ -381,7 +381,6 @@ namespace eval pgn {
   proc ResetColors {} {
     global pgnColor
     if {![winfo exists .pgnWin]} { return }
-    # .pgnWin.text configure -background $pgnColor(Background)
     .pgnWin.text tag configure Current -background $pgnColor(Current)
     ::htext::init .pgnWin.text
     ::htext::updateRate .pgnWin.text 60

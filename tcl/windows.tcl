@@ -12,6 +12,8 @@ namespace eval ::windows {
 ########################################################################
 ###  Optional windows: all off initially.
 
+# Where do these belong ? S.A
+
 set treeWin 0
 set pgnWin 0
 set commentWin 0
@@ -48,8 +50,6 @@ proc recordWinSize {win} {
     set winHeight($win) $height
     set winX($win) [expr $x - $mainx]
     set winY($win) [expr $y - $mainy]
-# puts "$win savegeom x $x y $y mainx $mainx mainy $mainy"
-# puts "$win savegeom winWidth $winWidth($win) winHeight $winHeight($win)"
   }
 }
 

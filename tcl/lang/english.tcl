@@ -935,7 +935,7 @@ translate E AddedRatings {Scid added $r Elo ratings in $g games.}
 translate E NewSubmenu "New submenu"
 
 # Comment editor:
-translate E AnnotationSymbols  {Annotations (Nags)}
+translate E AnnotationSymbols  {Annotations}
 translate E Comment {Comments}
 translate E InsertMark {Marks}
 translate E InsertMarkHelp {

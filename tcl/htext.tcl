@@ -1,9 +1,12 @@
 ###################
-# htext.tcl: Online help/hypertext display module for Scid
+# htext.tcl
 #
-# The htext module implements html-like display in a text widget.
-# It is used in Scid for the help and crosstable windows, and for
-# the game information area.
+# Hypertext display module for Scid
+#
+# Implements html-like display in a text widget.
+# It is used in Scid for the help, crosstable, game information area and 
+# *importantly*, the PGN window. Slowdown occurs with large PGN files,
+# and is probably due to the rendering of Tk::text widget with 4000+ char lines.
 
 namespace eval ::htext {}
 
@@ -261,14 +264,6 @@ proc ::htext::init {w} {
   $w tag configure ip4 -lmargin1 100 -lmargin2 100
 }
 
-proc ::htext::isStartTag {tagName} {
-  return [expr {![strIsPrefix {/} $tagName]} ]
-}
-
-proc ::htext::isEndTag {tagName} {
-  return [strIsPrefix {/} $tagName]
-}
-
 proc ::htext::isLinkTag {tagName} {
   return [strIsPrefix {a } $tagName]
 }
@@ -317,7 +312,7 @@ proc ::htext::display {w helptext {section {}} {fixed 1}} {
     set ::htext::updates($w) 100
   }
 
-  # Loop through the text finding the next formatting tag:
+  # Loop through the text finding the next formatting tag
 
   while {1} {
     set startPos [string first < $str]
@@ -332,7 +327,7 @@ proc ::htext::display {w helptext {section {}} {fixed 1}} {
     if {![strIsPrefix {/} $tagName]} {
       
       if {[strIsPrefix m_ $tagName]} {
-        # Move tag
+        # Move tag &&&
         set moveTag $tagName
         set tagName m
         # Too many bindings! 
@@ -444,14 +439,12 @@ proc ::htext::display {w helptext {section {}} {fixed 1}} {
       # Get rid of initial "/" character
       set tagName [string range $tagName 1 end]
       switch -- $tagName {
-        h1 - h2 - h3 - h4 - ht  {$w insert end \n}
-      }
-      if {$tagName == {p}} {$w insert end \n}
-      #if {$tagName == {h1}} {$w insert end \n}
-      if {$tagName == {menu}} {$w insert end \]}
-      if {$tagName == {ul}} {
-        incr helpWin(Indent) -4
-        $w insert end \n
+        h1 - h2 - h3 - h4 - ht - p  { $w insert end \n }
+        menu { $w insert end \] }
+        ul   {
+	      incr helpWin(Indent) -4
+	      $w insert end \n
+             }
       }
       if {[info exists startIndex($tagName)]} {
         switch -- $tagName {
@@ -476,12 +469,10 @@ proc ::htext::display {w helptext {section {}} {fixed 1}} {
             $w insert end { }
           }
         }
-        p  {$w insert end \n}
-        br {$w insert end \n}
         q  {$w insert end \"}
         lt {$w insert end <}
         gt {$w insert end >}
-        h2 - h3 - h4 - ht  {$w insert end \n}
+        h2 - h3 - h4 - ht - p - br  {$w insert end \n}
       }
       #Set the start index for this type of tag
       set startIndex($tagName) [$w index insert]
@@ -508,17 +499,24 @@ proc ::htext::display {w helptext {section {}} {fixed 1}} {
       $w window create end -window $winName
     }
 
-    # Now eliminate the processed text from the string
+    # Eliminate the processed text from the string
     set str [string replace $str 0 $endPos]
     incr count
-    if {$count == $::htext::updates($w)} { update idletasks; set count 1 }
+
+    # This seems a little broke. It is alwyas set to 60 in pgn.tcl
+    if {$count == $::htext::updates($w)} {
+      update idletasks
+      set count 1
+    }
+
     if {$::htext::interrupt} {
+      # wtf... Only used by the crosstable ?
       $w configure -state disabled
       return
     }
   }
 
-  # Now add any remaining text:
+  # Add any remaining text
   if {! $::htext::interrupt} { $w insert end $str }
 
   if {$seePoint != {}} { $w yview $seePoint }
@@ -526,7 +524,7 @@ proc ::htext::display {w helptext {section {}} {fixed 1}} {
   # set elapsed [expr {[clock clicks -milli] - $start}]
 }
 
-# Get some speed from optimising these into procs ? S.A
+# Get some speed from optimising these into procs (?) S.A
 # u - underline
 # uh - underline+hand
 # bh - background+hand

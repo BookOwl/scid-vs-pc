@@ -91,6 +91,7 @@ proc ::commenteditor::Open {} {
   set i 0
   set row 0
   set column 0
+  set width [expr {$::windowsOS ? 2 : 1}]
   foreach {nag description} {
     ! GoodMove
     ? PoorMove
@@ -109,7 +110,7 @@ proc ::commenteditor::Open {} {
     N Novelty
     D Diagram
   } {
-    button $nagbuttons.b$i -takefocus 0 -text "$nag" -width 1 -height 1 \
+    button $nagbuttons.b$i -takefocus 0 -text "$nag" -width $width -height 1 \
         -command ".commentWin.nf.tf.text insert end \"$nag  \"" -pady 1
     # set helpMessage(E,$nagbuttons.b$i) $description
     ::utils::tooltip::Set $nagbuttons.b$i $description
