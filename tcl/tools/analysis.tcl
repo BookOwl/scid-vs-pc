@@ -630,6 +630,9 @@ proc ::enginelist::edit {index} {
   radiobutton $w.radio.f4	-text F4 -variable hotkey -value F4
   radiobutton $w.radio.none	-text none -variable hotkey -value none
   # have to use "none" instead of "" to stop radio button ghosting bug
+  bind $w <F2> {set hotkey F2}
+  bind $w <F3> {set hotkey F3}
+  bind $w <F4> {set hotkey F4}
 
   $w.radio.none select
   if {$engines(F2) == [expr $engines(newIndex) + 1]} {$w.radio.f2 select} 

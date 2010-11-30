@@ -2044,7 +2044,7 @@ Game::WriteComment (TextBuffer * tb, const char * preStr,
 // Game::WriteMoveList():
 //      Write the moves, variations and comments in PGN notation.
 //      Recursive; calls itself to write variations.
-//
+// &&&
 errorT
 Game::WriteMoveList (TextBuffer *tb, uint plyCount,
                      moveT * oldCurrentMove, bool printMoveNum, bool inComment)
