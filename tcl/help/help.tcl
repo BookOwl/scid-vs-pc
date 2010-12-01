@@ -3844,9 +3844,9 @@ set helpText(Formats) {<h1>Scid File Formats</h1>
   <p>
   The Index File contains a description for the database and a small fixed-size
   entry for each game. Each game entry includes essential information such as the result,
-  date, player/event/site name ID numbers (the actual names are in the
-  Name File), as well as some redundant but useful information 
-  that is used to speed up searches. (See <a Formats Fast>fast searches</a> for more information).
+  date, player/event/site name IDs (the actual names are in the
+  Name File), and some redundant but useful information 
+  that is used to speed up searches (see <a Formats Fast>fast searches</a> for more information).
   </p>
 
   <h3>The Name File (.sn4)</h3>
@@ -3868,12 +3868,11 @@ set helpText(Formats) {<h1>Scid File Formats</h1>
   <h3>The Game File (.sg4)</h3>
   <p>
   This file contains the actual moves, variations and comments of each game.
-  The move encoding format is very compact: most moves take only one byte
-  of storage!
+  The move encoding format is very compact: most moves take only a single byte!
   </p>
   <p>
-  When a game is *replaced* a new version is in fact created,
-  , so wasted space does accumulate over time. The database may
+  When a game is *replaced* a new version is - in fact - created,
+  so wasted space does accumulate over time. The database may
   be restored to its minimal size by <a Compact>compaction</a>.
   </p>
 
