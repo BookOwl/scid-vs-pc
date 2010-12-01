@@ -1330,7 +1330,7 @@ proc releaseSquare { x y } {
 
 # backSquare:
 
-# removed by S.A. Use ::move::back instead
+# removed by S.A. Use ::move::Back instead
 
 ##
 ## Auto-playing of moves:

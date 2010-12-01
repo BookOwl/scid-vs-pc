@@ -9,9 +9,9 @@ set helpText(Contents) {<h1>Scid vs. PC</h1>
   <ht><a Intro>Introduction</a></ht>
   <ht><a TacticalGame>Playing against the Computer</a></ht>
   <ht><a FICS>Playing on the Internet (FICS)</a></ht>
-  <ht><a TacticsTrainer>Puzzles</a></ht>
   <ht><a Tourney>Computer Tournaments</a></ht>
   <ht><a BrowsingPGN>Browsing Games and Tournaments</a></ht>
+  <ht><a TacticsTrainer>Mate in .... Puzzles</a></ht>
   <ht><a Scid>Databases and Advanced Use</a></ht>
   <br>
   <br>
@@ -40,28 +40,32 @@ Scid vs. PC</p>
 
 <h3>Features</h3>
 <ul>
-<li>Many rewritten interfaces and help files</li>
 <li>A Computer Tournament feature</li>
-<li>Compatibility with SCID's si3 databases</li>
-<li>The Gamelist widget looks and works much betters; deleted items are greyed out, and there's a "Compact" button</li>
-<li>Improved Tactical Game program</li>
-<li>Redone Button bar, Toolbar and Icons</li>
-<li>The Fics interface is fairly different, with a nice accept/decline widget for multiple offers</li>
-<li>Improvements to "Mate in ..." puzzles</li>
-<li>The Chessboard/Pieces config widget has been totally overhauled. There are some nice colour and tile theme, and great piece set available if the optional TkImg package is installed</li>
-<li>The Setup Start Board has many fixes and improvements. Annoyingly, if Scid uses a tiled theme, it's setup board is displayed a different colour</li>
-<li>The main board has a handy right-click menu, and the side-to-move indicator is now on the left</li>
-<li>The Help index is now meaningful to new users, with links to the game's main features</li>
-<li>The Comment editor has been overhauled, and is much more stream-lined</li>
+<li>Compatibility with SCID's si4 databases.</li>
+<li>A rewritten Gamelist Widget using the new Ttk Treeview feature. Deleted items are greyed out, and there's a handy "Compact" button.</li>
+<li>Improved Tactical Game program.</li>
+<li>Redone Button bar, Toolbar and Icons.</li>
+<li>The Fics interface is fairly different, with a nice accept/decline widget for multiple offers.</li>
+<li>Improvements to "Mate in ..." puzzles.</li>
+<li>The Chessboard/Pieces config widget has been totally overhauled. There are some nice colour and tile theme, and great piece set available if the optional TkImg package is installed.</li>
+<li>The Setup Start Board has many fixes and improvements. Annoyingly, if Scid uses a tiled theme, it's setup board is displayed a different colour.</li>
+<li>The main board has a handy right-click menu, and the side-to-move indicator is now on the left.</li>
+<li>The Help index is now meaningful to new users, with links to the game's main features.</li>
+<li>The Comment editor has been overhauled, and is much more stream-lined.</li>
 <li>Restructured workings of the Analysis Engines widget. The F2 and F3 key bindings can now be set explicitly.</li>
+<li>Many other improved interfaces and help files.</li>
 </ul>
+<h3>Note</h3>
 <ul>
-<li>The over ambitious adhoc Windowing System is not included</li>
+<li>The over ambitious Tiled Windowing System is not included. It has very many
+unresolved issues, and is not very usable.</li>
 <li>Wish 8.5 includes a basic implementation of themes, and there has been
 widespread changes to Scid to use them. Unfortunately, the changes are not
-justified for some dubious eye candy</li>
+justified for some dubious eye candy.</li>
+<li>The use of si4 custom flags is not included (but this does not affect
+the database, or SCID's use of them).</li>
 </ul>
-<p><footer>Updated: Scid vs. PC 3.6.26.8, December 2009</footer></p>
+  <p><footer>Updated: Scid vs. PC 4.2 November 2010 </footer></p>
 }
 
 set helpTitle(FICS) "Fics"
@@ -129,11 +133,11 @@ databases.</p></ul>
 <h3>Saving Changes</h3>
 
 <ul>
-<p>Beware, PGN is not the native format of Scid databases. In general , any
+<p>Beware, PGN is not the native format of Scid Databases. In general , any
 changes or variations you make to a PGN file must be saved via the
 <run ::pgn::savePgn .><green>File--<gt>Save PGN</green></run> menu,
 and only as single games. If you open a PGN file with multiple games, Scid does not support saving any changes or comments you may add. In this case you should import the file into a 
-<a Formats>Scid database</a>, or save the individual game and manually insert it into the PGN archive.</p>
+<a Formats>Scid Database</a>, or save the individual game and manually insert it into the PGN archive.</p>
 </ul>
 
 <h3>More Information</h3>
@@ -148,9 +152,8 @@ set helpTitle(Scid) {Advanced Use}
 set helpText(Scid) {<h1>Databases and Advanced Use</h1>
   <p>
   Scid is a chess database application; with it you can browse databases of
-  chess games, perform <a Searches>searches</a> , view best lines, and other
-  statistics. Databases are implemented via a fast, three-file <a
-  Formats>format</a>, and created by importing <a PGN>PGN</a> file archives.
+  chess games, perform searches, view best lines, and other
+  statistics. Databases are implemented via a fast <a Formats>three file format</a> and populated by importing PGN archives or other databases.
   </p>
 
   <h4>Starting out and general help</h4>
@@ -205,7 +208,7 @@ set helpText(Scid) {<h1>Databases and Advanced Use</h1>
   <li><a Sorting><b>Sorting</b> a database</a></li>
   <li><a Pgnscid><b>Pgnscid</b>: converting PGN files</a></li>
   <li><a NAGs>Standard <b>NAG</b> annotation values</a></li>
-  <li><a Formats>Scid database <b>file formats</b></a></li>
+  <li><a Formats>Scid Database <b>file formats</b></a></li>
   <li><a Author>Contact information</a></li>
   </ul>
 
@@ -276,7 +279,7 @@ set helpText(Index) {<h1>Scid Help Index</h1>
   <li><a Email>Email manager</a> window</li>
   <li><a CCeMailChess>Email Chess</a></li>
   <li><a Analysis List>Engines list</a></li>
-  <li><a Moves>Entering chess moves</a></li>
+  <li><a Moves>Entering moves</a></li>
   <li><a EPD>EPD files</a></li>
   <li><a Export>Exporting games to text files</a></li>
   </ul>
@@ -455,7 +458,7 @@ set helpText(Hints) {<h1>Scid Hints</h1>
   <ul>
   <li> <b>scid  mybase  games.pgn.gz</b> </li>
   </ul>
-  will load the Scid database <b>mybase</b> and also load the
+  will load the Scid Database <b>mybase</b> and also load the
   Gzip-compressed PGN file <b>games.pgn.gz</b>.
   </p>
 
@@ -655,13 +658,13 @@ set helpText(MainWindow) {<h1>Scid Main Window</h1>
 ### Menus help screen:
 
 set helpTitle(Menus) "Menus"
-set helpText(Menus) {<h1>Scid menus</h1>
+set helpText(Menus) {<h1>Scid Menus</h1>
 
   <h3><name File>File</name></h3>
   <ul>
-  <li><menu>New</menu>: Creates a new empty Scid database.</li>
-  <li><menu>Open</menu>: Opens an existing Scid database.</li>
-  <li><menu>Close</menu>: Closes the current Scid database.</li>
+  <li><menu>New</menu>: Creates a new empty Scid Database.</li>
+  <li><menu>Open</menu>: Opens an existing Scid Database.</li>
+  <li><menu>Close</menu>: Closes the current Scid Database.</li>
   <li><menu>Finder</menu>: Opens the <a Finder>File Finder</a>.</li>
   <li><menu>Bookmarks</menu>: <a Bookmarks>Bookmarks</a> and bookmark
   functions.</li>
@@ -846,54 +849,38 @@ set helpText(Menus) {<h1>Scid menus</h1>
 ### Entering moves help:
 
 set helpTitle(Moves) "Entering moves"
-set helpText(Moves) {<h1>Entering chess moves</h1>
+set helpText(Moves) {<h1>Entering Chess Moves</h1>
   <p>
-  In Scid, you can enter the moves for a game using the
-  mouse or the keyboard. As you move the mouse over a square,
-  it and one other square will change color if there is a legal
-  move to or from that square. This is the <term>suggested move</term>.
-  To make this move simply click the <term>left</term> mouse button.
-  You can turn off move suggestion using the Options menu if it annoys you.
+  Scid allow moves to be made using either the mouse or keyboard.
+  Use the mouse to click on a piece, and then on the
+destination square. Alternatively you may drag the piece. There exists a
+<b>suggested move</b> feature which, if enabled, will highlight all squares
+to which there is a legal move.
   </p>
-  <p>
-  To make any move other than the suggested move, you can use
-  the <term>left</term> mouse button: just press the button over one square,
-  and release it over the other square.
-  </p>
-  <p>
+  <p><i>
   If you want to enter a variation without being asked for a
   confirmation, use the middle mouse button of the mouse to enter the
   move.
+  </i></p>
+  <p>
+  Keyboard moves are made using the standard notation, with the exception of castling.
+  To castle kingside enter <b>OK</b>, or queen-side use <b>OQ</b>. See below for more info.
   </p>
 
   <h4>Retracting a move</h4>
   <p>
-  To take back a move, press the right mouse button, Control + Delete
-  or Control + Backspace. This goes back one move, and deletes the
-  move if it is the last in the game or variation.
+  To take back a move, press the Left-Arrow, Control+Delete
+  or Control+Backspace keys.
   </p>
 
   <h4>Replacing old moves</h4>
   <p>
-  When you enter a move at a point in the game where a move already exists,
-  Scid will present a dialog box asking if you really want to replace the
-  old move (the old move and all moves after it will be lost), or want
-  to add the new move as a variation instead. Some people may find this
-  dialog box annoying and always want to replace old moves, so it can be
-  turned off with the <menu>Options: Moves</menu> menu option
-  "<i>Ask before replacing moves</i>".
-  </p>
-
-  <h4>Marking fields and directions</h4>
-  <p>
-  Coloured squares and arrows can be entered directly on the board
-  without the use of the <a Comment>Comment editor</a> by using the mouse
-  buttons. For coloured squares one can Shift-click on the square in
-  question. Shift-Left button markes the square in green, the middle
-  button in yellow, the right button in red. To draw arrows one can
-  Ctrl-click on the source and target squares. The left mouse button
-  again results in a green, the middle in a yellow and the right mouse
-  button in a red arrow.
+  When you enter a move where a move already exists,
+  Scid will ask if you want to replace the
+  move (when the old move and all after it will be lost), or
+  add the new move as a variation. If one finds this annoying, 
+  it is possible to skip this dialog
+  via the <green>Options--<gt>Moves</green> menu option
   </p>
 
   <h4><name Trial>Trial mode</name></h4>
@@ -985,7 +972,7 @@ set helpText(Moves) {<h1>Entering chess moves</h1>
   with a certain pawn value. These pawn values can be set via Options
   / Game information / Configure Informant values.
 
-  <p><footer>Updated: Scid 3.6.26, October 2008</footer></p>
+  <p><footer>Updated: Scid vs. PC 4.2 November 2010 </footer></p>
 }
 
 
@@ -1140,7 +1127,7 @@ set helpText(Searches) {<h1>Searches in Scid</h1>
   The Material/Pattern and Header search windows provide a
   <term>Save settings</term> button. This lets you save the current
   search settings for later use, to a <term>SearchOptions</term> file
-  (suffix .sso).
+  (<b>.sso</b>).
   To search using a previously saved SearchOptions (.sso) file, select
   <menu>Open</menu> from the <menu>Search</menu> menu.
   </p>
@@ -1203,7 +1190,7 @@ set helpText(Clipbase) {<h1>The Default Database</h1>
 ### Variations and comments help:
 
 set helpTitle(Annotating) "Annotating games"
-set helpText(Annotating) {<h1>Annotating games</h1>
+set helpText(Annotating) {<h1>Annotating Games</h1>
   <p>
   Scid lets you add notes to games. There are three types of
   annotation you can add after a move: symbols, a comment, and
@@ -1265,7 +1252,7 @@ set helpText(Annotating) {<h1>Annotating games</h1>
   keyboard by typing "<b>--</b>" (two minus signs).
   </p>
   <p>
-  Note that null moves are not a part of the PGN standard, so if you
+  Note that null moves are not a part of the PGN Standard, so if you
   export games with null moves to a PGN file, Scid will provide (among
   other export options) an option to preserve null moves or convert them
   to comments for compatibility with other software.
@@ -1284,7 +1271,7 @@ set helpText(Annotating) {<h1>Annotating games</h1>
 ### Comment editor window help:
 
 set helpTitle(Comment) "Comment Editor window"
-set helpText(Comment) {<h1>The Comment Editor window</h1>
+set helpText(Comment) {<h1>The Comment Editor Window</h1>
   <p>
   The Comment Editor window lets you add or edit comments and symbolic
   annotation symbols for moves in the active chess game.
@@ -1292,7 +1279,7 @@ set helpText(Comment) {<h1>The Comment Editor window</h1>
 
   <h3>Annotation symbols</h3>
   <p>
-  Scid uses the <a Related>PGN standard</a>
+  Scid uses the <a Related>PGN Standard</a>
   for annotation symbols, accepting
   <a NAGs>NAG (numeric annotation glyph)</a> values for annotations.
   Some of the most common symbols (such as "!" or "+-") are displayed
@@ -1304,7 +1291,7 @@ set helpText(Comment) {<h1>The Comment Editor window</h1>
   </p>
   <p>
   See the help page of <a NAGs>NAG values</a> for NAG values defined
-  by the PGN standard.
+  by the PGN Standard.
   </p>
   <p>
   <b>Hint:</b> You can add the common move evaluation symbols (!, ?, !!,
@@ -1400,7 +1387,7 @@ set helpText(Comment) {<h1>The Comment Editor window</h1>
 ### Crosstable window help:
 
 set helpTitle(Crosstable) "Crosstable window"
-set helpText(Crosstable) {<h1>The Crosstable window</h1>
+set helpText(Crosstable) {<h1>The Crosstable Window</h1>
   <p>
   The crosstable window shows the tournament crosstable for the
   current game. Each time you refresh the crosstable window (by
@@ -1482,7 +1469,7 @@ set helpText(Crosstable) {<h1>The Crosstable window</h1>
 ### Database switcher help:
 
 set helpTitle(Switcher) "Database Switcher"
-set helpText(Switcher) {<h1>The Database Switcher window</h1>
+set helpText(Switcher) {<h1>The Database Switcher Window</h1>
   <p>
   The 
   <run ::windows::switcher::Open><green>Database Switcher</green></run>
@@ -1566,7 +1553,7 @@ databases, which consist of several files.
   (include or exclude) lines.
   </p>
   <p>
-  For all file types except Scid databases, the file size is
+  For all file types except Scid Databases, the file size is
   an <b>estimate</b> taken by examining only the first 64 kilobytes
   of the file, and is represented by a tilde (~).
   </p>
@@ -1620,7 +1607,7 @@ set helpText(Tmt) {<h1>The Tournament Finder window</h1>
 ### GameList window help:
 
 set helpTitle(GameList) "Game List window"
-set helpText(GameList) {<h1>The Game List window</h1>
+set helpText(GameList) {<h1>The Game List Window</h1>
 
   <p> The <run ::windows::gamelist::Open><green>Game List</green></run>
 widget allows easy perusal of all (filtered) games in the
@@ -1689,7 +1676,7 @@ This can be done by the <b>Compact</b> button, or
 ### Import window help:
 
 set helpTitle(Import) "Import window"
-set helpText(Import) {<h1>The Import window</h1>
+set helpText(Import) {<h1>The Import Window</h1>
   <p>
   Scids Import window provides an easy way for you to paste a game
   in <a PGN>PGN format</a> into Scid from some other application or window.
@@ -1734,7 +1721,7 @@ set helpText(Import) {<h1>The Import window</h1>
   <p>
   The alternative is to open the PGN file directly in Scid. However, PGN
   format files are opened read-only and consume more memory than a
-  comparable Scid database, so this is only recommended for relatively
+  comparable Scid Database, so this is only recommended for relatively
   small PGN files.
   </p>
 
@@ -1745,7 +1732,7 @@ set helpText(Import) {<h1>The Import window</h1>
 ### Exporting help:
 
 set helpTitle(Export) "Exporting games"
-set helpText(Export) {<h1>Exporting games</h1>
+set helpText(Export) {<h1>Exporting Games</h1>
   <p>
   You can use commands under the <menu>Tools</menu> menu to export the
   current game or all games in the current filter to a text file.
@@ -1772,7 +1759,7 @@ set helpText(Export) {<h1>Exporting games</h1>
   <p>
   Scid allows <a Annotating Null>null (empty) moves</a> to be stored
   in games, as they can be helpful when annotating games using
-  variations.  However, the PGN standard has no null move concept. So
+  variations.  However, the PGN Standard has no null move concept. So
   if you export Scid games with null moves to a PGN file, other
   PGN-reading software will not be able to read the null moves.
   </p>
@@ -1853,7 +1840,7 @@ set helpText(LaTeX) {<h1>Using LaTeX with Scid</h1>
 ### PGN window help:
 
 set helpTitle(PGN) "PGN window"
-set helpText(PGN) {<h1>The PGN window</h1>
+set helpText(PGN) {<h1>The PGN Window</h1>
 
   <p>
   PGN (Portable Game Notation) is a common standard for representing
@@ -1952,7 +1939,7 @@ set helpText(PGN) {<h1>The PGN window</h1>
 ### Piece Tracker help:
 
 set helpTitle(PTracker) "Piece tracker"
-set helpText(PTracker) {<h1>The Piece Tracker window</h1>
+set helpText(PTracker) {<h1>The Piece Tracker Window</h1>
   <p>
   The <term>Piece Tracker</term> is a tool that tracks the movements
   of a particular piece in all games in the current filter, and
@@ -2370,21 +2357,21 @@ set helpText(TreeMasks) {<h1>Masks for Trees</h1>
   <p>
   Setting up a mask can be a tendious taks especially for complex
   opening repertoirs. However, if such a repertoir is available as a
-  Scid database or a number of PGN games, or lines stored in usual
+  Scid Database or a number of PGN games, or lines stored in usual
   chess games, Scid can use that information to set up suitable
   <term>Masks</term> automatically.
   </p>
   <p>
-  First of all one has to load the information into a Scid database.
-  In case the information is already available as a Scid database this
+  First of all one has to load the information into a Scid Database.
+  In case the information is already available as a Scid Database this
   is as easy as opening it. In case a PGN file is use it should be
-  either imported into a Scid database or one can use the
+  either imported into a Scid Database or one can use the
   <term>Clipbase</term> to import it temporarily. In that case one
   should make sure that the <term>Clipbase</term> is empty before
   importing. (<menu>Edit / Empty Clipbase</menu>).
   </p>
   <p>
-  The next step is to open the tree for the just opened Scid database.
+  The next step is to open the tree for the just opened Scid Database.
   Then a new <term>Mask</term> should be created or an existing one
   opened. <b>Note</b> that this function may be used to consolidate
   serveral bases into a single <term>Mask</term>.
@@ -2419,7 +2406,7 @@ set helpText(TreeMasks) {<h1>Masks for Trees</h1>
 ### Compaction help:
 
 set helpTitle(Compact) "Database compaction"
-set helpText(Compact) {<h1>Database compaction</h1>
+set helpText(Compact) {<h1>Database Compaction</h1>
   <p>
   Database <term>compaction</term> is a specific type of
   <a Maintenance>maintenance</a> that keeps a database as small and
@@ -2428,27 +2415,27 @@ set helpText(Compact) {<h1>Database compaction</h1>
   There are two types: name file and game file compaction.
   </p>
 
-  <h3>Name file compaction</h3>
+  <h3>Name File compaction</h3>
   <p>
   Over time, you may find a database starts to contain a number of player,
   event, site or round names that are no longer used in any game. This will
   often happen after you spellcheck names. The unused names waste space in
   the name file, and can slow down name searches.
-  Name file compaction removes all names that are not used in any games.
+  Name File compaction removes all names that are not used in any games.
   </p>
 
-  <h3>Game file compaction</h3>
+  <h3>Game File compaction</h3>
   <p>
   Whenever a game is replaced or deleted, wasted space is left in the game
-  file (the largest of the three files in a Scid database). Game file
+  file (the largest of the three files in a Scid Database). Game File
   compaction removes all wasted space, leaving no deleted games in the
   database. Note that this operation is irreversible: after compaction,
   the deleted games are gone forever!
   </p>
   <p>
-  Game file compaction is also recommended after <a Sorting>sorting</a> a
+  Game File compaction is also recommended after <a Sorting>sorting</a> a
   database, to keep the order of the game file consistent with the sorted
-  index file.
+  Index File.
   </p>
 
   <p><footer>Updated: Scid 3.6.2, December 2006</footer></p>
@@ -2528,7 +2515,7 @@ set helpText(Maintenance) {<h1>Database Maintenance</h1>
   </p>
   <p>
   Once the spellcheck file is loaded, you can use it on a
-  a Scid database using the spellcheck commands in the
+  a Scid Database using the spellcheck commands in the
   <menu>File: Maintenance</menu> menu, or from the maintenance window.
   </p>
   <p>
@@ -2592,7 +2579,7 @@ set helpText(Maintenance) {<h1>Database Maintenance</h1>
 
   <h3>Repair a base</h3>
   <p>
-  In the rare cases that a Scid database is corrupted one might try to
+  In the rare cases that a Scid Database is corrupted one might try to
   repair it using File / Maintanance / Repair base. For this to work,
   the base in question must not be opened (which is not possible in
   most cases anyway). Scid will then try its best to get the database
@@ -2606,7 +2593,7 @@ set helpText(Maintenance) {<h1>Database Maintenance</h1>
 ### Sorting help:
 
 set helpTitle(Sorting) "Sorting a database"
-set helpText(Sorting) {<h1>Sorting a database</h1>
+set helpText(Sorting) {<h1>Sorting a Database</h1>
   <p>
   The <term>sorting</term> function sorts all games in a database.
   You can select a number of sort criteria.
@@ -2635,7 +2622,7 @@ set helpText(Sorting) {<h1>Sorting a database</h1>
 
   <h3>Sort results</h3>
   <p>
-  When you sort a Scid database that is not read-only, the sort
+  When you sort a Scid Database that is not read-only, the sort
   results are saved so the order of games in the database is
   permanently changed.  If you want to the sort results to be
   temporary, make the database read-only first using the <b>File:
@@ -2653,9 +2640,9 @@ set helpText(Sorting) {<h1>Sorting a database</h1>
 
   <h3>Important note about sorting databases:</h3>
   <p>
-  When a database is sorted, the index file is altered but the game file
+  When a database is sorted, the Index File is altered but the game file
   is not changed. This means sorting a database will leave the game file
-  records in a scrambled order relative to the index file. This can
+  records in a scrambled order relative to the Index File. This can
   really <b>slow down</b> <a Tree>tree</a>, position and material/pattern
   <a Searches>searches</a>, so you should reorder the game file by
   <a Compact>compacting</a> it after sorting the database to maintain
@@ -2760,28 +2747,33 @@ Engines</a> widget, or by using the F2 , F3 or F4 hotkeys.
   <p>
   At the top you'll find many cryptic buttons...
   <ul>
-  <li> <button tb_addmove><b>Add Move</b> 
-  adds the engine's best move to the current game.</li>
-  <li> <button tb_addvar><b>Add Variation</b>  adds the
-  whole main line.</li>
-  <li> <button tb_addallvars><b>Multi-PV</b>  if the engine supports multi-pv, add all principal variations.</li>
+
   <li> <button tb_pause><b>Pause</b>  temporarily interrupt engine analysis.</li>
   <li> <button tb_play><b>Play</b>  restarts the engine.
   <i>Note: This will cause most engines 
   to restart their analysis, forgetting previous lines.
   Only few engines are able to reuse the
   results they have calculated till the analysis was stopped.</i> </li>
-
   <li> <button tb_lockengine> <b>Lock Analysis</b> lock analysis to a certain position.
   <i>This also sets <a Moves Trial>Trial mode</a>.
   Then, to add the this analysis as a variation, first press the <b>Pause</b>
   button, then <b>Add Varation</b></i>.</li>
-  <li><button finish_off><b>Shoot out</b>, or "demo", mode allows the engine to play out the game. </li>
-  <li><button tb_coords><b>Show Board</b> displays a small working board.</li>
+
+  <li> <button tb_addmove><b>Add Move</b> 
+  adds the engine's best move to the current game.</li>
+  <li> <button tb_addvar><b>Add Variation</b>  adds the
+  whole main line.</li>
+  <li> <button tb_addallvars><b>Multi-PV</b>  if the engine supports multi-pv, add all principal variations.</li>
+
+  <li><button tb_engine><b>Show Info</b> show additional information.</li>
   <li><button tb_cpu><b>Low CPU priority</b> 
   give the engine a low priority for CPU
   scheduling. On Windows, engines are run on low priority by default.
   On Unix systems the engines priority can not be set back to normal.  </li>
+  <li><button tb_coords><b>Show Board</b> displays a small working board.</li>
+  <li><button finish_off><b>Shoot out</b>, or "demo", mode allows the engine to play out the game. </li>
+  <li><button tb_annotate><b>Annotate</b> game (see below).</li>
+  <li><button tb_training><b>Training</b> feature (see below).</li>
   </ul>
   </p>
 
@@ -3064,7 +3056,7 @@ the number of engines available, unforseen issues will probably arise.  </p>
 ### Calvar window help:
 
 set helpTitle(CalVar) "Calculation of variation"
-set helpText(CalVar) {<h1>The calculation of variation window</h1>
+set helpText(CalVar) {<h1>The Calculation of Variation Window</h1>
   <p>
    This training exercise is also known as the Stoyko exercise.  Its
    purpose is to analyse a complex position and evaluate as many sound
@@ -3109,7 +3101,7 @@ set helpText(CalVar) {<h1>The calculation of variation window</h1>
 ### EPD files help:
 
 set helpTitle(EPD) "EPD files"
-set helpText(EPD) {<h1>EPD files</h1>
+set helpText(EPD) {<h1>EPD Files</h1>
   <p>
   An EPD (extended position description) file is a collection of positions,
   where each position has some associated text. Like <a PGN>PGN</a>, it
@@ -3218,7 +3210,7 @@ set helpText(EPD) {<h1>EPD files</h1>
 ### Email window help:
 
 set helpTitle(Email) "Email window"
-set helpText(Email) {<h1>The Email window</h1>
+set helpText(Email) {<h1>The Email Window</h1>
   <p>
   Scids email manager window provides a way for you to manage correspondence
   chess games played by email.
@@ -3273,7 +3265,7 @@ set helpText(Email) {<h1>The Email window</h1>
   </p>
   <p>
   Scid stores the opponent details for a database in a file
-  with the same name as the database and the suffix "<b>.sem</b>".
+  with the same name as the database and the suffix <b>.sem</b>.
   </p>
 
   <p><footer>Updated: Scid 3.6.2, December 2006</footer></p>
@@ -3393,7 +3385,7 @@ set helpText(Reports) {<h1>Reports</h1>
 ### Player List help:
 
 set helpTitle(PList) "Player Finder window"
-set helpText(PList) {<h1>The Player Finder window</h1>
+set helpText(PList) {<h1>The Player Finder Window</h1>
   <p>
   The <term>Player Finder</term> window displays a list of names of
   players in the current database. Selecting a player will open the
@@ -3421,7 +3413,7 @@ set helpText(PList) {<h1>The Player Finder window</h1>
 ### Player Info help:
 
 set helpTitle(PInfo) "Player Info window"
-set helpText(PInfo) {<h1>The Player Info window</h1>
+set helpText(PInfo) {<h1>The Player Info Window</h1>
   <p>
 
   The <term>Player Information</term> window shows information from the Spellcheck
@@ -3454,7 +3446,7 @@ set helpText(PInfo) {<h1>The Player Info window</h1>
 ### Graphs help:
 
 set helpTitle(Graphs) "Graph windows"
-set helpText(Graphs) {<h1>Graph windows</h1>
+set helpText(Graphs) {<h1>Graph Windows</h1>
   <p>
   Scid has a number of windows which display information graphically.
   They are explained below.
@@ -3732,16 +3724,16 @@ set helpText(Bookmarks) {<h1>Bookmarks</h1>
 ### Command-line options help:
 
 set helpTitle(Cmdline) "Command-line options"
-set helpText(Cmdline) {<h1>Command-line options</h1>
+set helpText(Cmdline) {<h1>Command-line Options</h1>
   <p>
   When you start Scid from a shell or console, there are command-line
   options you can specify. Scid-format databases (with or without a
-  file suffix such as ".si3") and PGN files to be opened can be given,
+  file suffix such as ".si4") and PGN files to be opened can be given,
   for example:
   <ul>
   <li>scid mybase newgames.pgn</li>
   </ul>
-  will start Scid and open the Scid database called mybase and the
+  will start Scid and open the Scid Database called mybase and the
   PGN file named newgames.pgn.
   </p>
   <p>
@@ -3776,15 +3768,15 @@ set helpTitle(Pgnscid) "Pgnscid"
 set helpText(Pgnscid) {<h1>Pgnscid</h1>
   <p>
   <term>Pgnscid</term> is the separate program that you need to use to
-  convert PGN (portable game notation) files into Scid databases.
+  convert PGN (portable game notation) files into Scid Databases.
   </p>
   <p>
   To convert a file named <i>myfile.pgn</i>, simply type:
   <ul>
   <li> <b>pgnscid myfile.pgn</b> </li>
   </ul>
-  and the scid database (consisting of <i>myfile.si3</i>, <i>myfile.sg3</i>
-  and <i>myfile.sn3</i>) will be created.
+  and the scid database (consisting of <i>myfile.si4</i>, <i>myfile.sg4</i>
+  and <i>myfile.sn4</i>) will be created.
   Any errors or warnings will be written to the file <i>myfile.err</i>.
   </p>
   <p>
@@ -3794,8 +3786,8 @@ set helpText(Pgnscid) {<h1>Pgnscid</h1>
   <ul>
   <li> <b>pgnscid myfile.pgn mybase</b> </li>
   </ul>
-  will create a database consisting of the files <i>mybase.si3</i>,
-  <i>mybase.sg3</i> and <i>mybase.sn3</i>.
+  will create a database consisting of the files <i>mybase.si4</i>,
+  <i>mybase.sg4</i> and <i>mybase.sn4</i>.
   </p>
   <p>
   Note that pgnscid (and scid) can read Gzipped PGN files
@@ -3845,64 +3837,65 @@ set helpText(Pgnscid) {<h1>Pgnscid</h1>
 set helpTitle(Formats) "File Formats"
 set helpText(Formats) {<h1>Scid File Formats</h1>
   <p>
-  Scid databases consist of three essential files: an Index file, a Name
-  file and a Game file. All have a three-letter suffix starting with "s":
-  ".si3" for index files, ".sn3" for name files, and ".sg3" for game files.
-  </p>
+  Scid Databases consist of three files - an index file (file suffix .si4), a name file (.sn4) and a game file (.sg4).
+</p>
 
-  <h3>The Index (.si3) file</h3>
+  <h3>The Index File (.si4)</h3>
   <p>
-  This file contains a description for the database and a small fixed-size
-  entry for each game. The current size is 41 bytes per game.
-  Of this, about 28 bytes is essential information such as the result,
+  The Index File contains a description for the database and a small fixed-size
+  entry for each game. Each game entry includes essential information such as the result,
   date, player/event/site name ID numbers (the actual names are in the
-  Name file), etc.
-  </p>
-  <p>
-  The remaining 13 bytes contain redundant but useful information about the
-  game that is used to speed up position, material and pattern searches.
-  See the section <a Formats Fast>Fast searches</a> below for more information.
+  Name File), as well as some redundant but useful information 
+  that is used to speed up searches. (See <a Formats Fast>fast searches</a> for more information).
   </p>
 
-  <h3>The Name (.sn3) file</h3>
+  <h3>The Name File (.sn4)</h3>
   <p>
-  This file contains all player, event, site and round names used in the
-  database. Each name is stored only once even if it occurs in many games.
-  The name file is usually the smallest of the three essential files in a
-  database.
+  Contains all Player, Event, Site and Round names used in the
+  database. Each name is stored only once even if it occurs in many games, and there is
+  a database restriction on the number of unique names. The limits are - 
+</p>
+<ul><ul>
+    <li>Player names:	2^20 - 1</li>
+    <li>Event  names:	2^19 - 1</li>
+    <li>Site   names:	2^19 - 1</li>
+    <li>Round  names:	2^18 - 1</li>
+</ul></ul>
+  and are defined in <b>namebase.h</b>
+  The name file is usually the smallest of the three database files.
   </p>
 
-  <h3>The Game (.sg3) file</h3>
+  <h3>The Game File (.sg4)</h3>
   <p>
   This file contains the actual moves, variations and comments of each game.
   The move encoding format is very compact: most moves take only one byte
-  of storage.
+  of storage!
   </p>
   <p>
-  When a game is replaced, its new version is saved to the <i>end</i> of
-  the game file, so wasted space can accumulate over time. You can restore
-  a database to its minimal size by <a Compact>compacting</a> it.
+  When a game is *replaced* a new version is in fact created,
+  , so wasted space does accumulate over time. The database may
+  be restored to its minimal size by <a Compact>compaction</a>.
   </p>
 
-  <h3>Other Scid files</h3>
+  <h3>Other file formats</h3>
   <p>
-  An <a EPD>EPD</a> file (suffix: ".epd")
+  An <a EPD>EPD</a> file (<b>.epd</b>)
   contains a number of chess positions, each with a text comment.
-  The EPD file format is described in the <a Related>PGN standard</a>.
+  The EPD file format is described in the <a Related>PGN Standard</a>.
   </p>
   <p>
-  An email (suffix: ".sem") file for a database stores details of the opponents
+  An email (<b>.sems</b>) file for a database stores details of the opponents
   you send email messages to.
   </p>
   <p>
-  A SearchOptions (suffix: ".sso") file contains Scid
+  A SearchOptions (<b>.sso</b>) file contains Scid
   <a Searches Header>header</a> or
   <a Searches Material>material/pattern</a> search settings.
   </p>
 
   <h3><name Fast>Fast searches in Scid</name></h3>
   <p>
-  As mentioned above, the index file stores some redundant but useful
+  The Index File stores some redundant but useful
   information about each game to speed up position or material searches.
   </p>
   <p>
@@ -3916,18 +3909,18 @@ set helpText(Formats) {<h1>Scid File Formats</h1>
   leave their home squares (by moving, or by being captured). This is used
   to speed up tree or exact position searches, especially for opening
   positions. For example, when searching for the starting position of the
-  French defence (1.e4 e6), every game starts with 1.e4 c5, or 1.d4, etc, will
+  French Defence (1.e4 e6), every game starts with 1.e4 c5, or 1.d4, etc, will
   be skipped, but games starting with 1.e4 e5 will still need to be searched.
   </p>
 
-  <p><footer>Updated: Scid 3.6.2, December 2006</footer></p>
+  <p><footer>Updated: Scid vs. PC 4.2 November 2010 </footer></p>
 }
 
 ####################
 ### Options and Fonts help:
 
 set helpTitle(Options) "Options"
-set helpText(Options) {<h1>Options and preferences</h1>
+set helpText(Options) {<h1>Options and Preferences</h1>
   <p>
   Many Scid options and preferences (such as the board size, colors, fonts,
   and default settings) are adjustable from the <menu>Options</menu> menu.
@@ -3972,10 +3965,10 @@ set helpText(Options) {<h1>Options and preferences</h1>
 ### NAG values help:
 
 set helpTitle(NAGs) "NAG values"
-set helpText(NAGs) {<h1>Standard NAG values</h1>
+set helpText(NAGs) {<h1>Standard NAG Values</h1>
   <p>
   Standard NAG (Numeric Annotation Symbol) values defined in the
-  <a Related>PGN standard</a> are:
+  <a Related>PGN Standard</a> are:
   </p>
   <cyan>
   <ul>
@@ -4172,7 +4165,7 @@ set helpText(NAGs) {<h1>Standard NAG values</h1>
 
 
 set helpTitle(ECO) "ECO guide"
-set helpText(ECO) {<h1>ECO openings classification</h1>
+set helpText(ECO) {<h1>ECO Openings Classification</h1>
   <p>
   Scid can classify chess games according to the <b>ECO</b>
   (Encyclopedia of Chess Openings) chess openings classification.
@@ -4333,19 +4326,21 @@ set helpText(Author) "<h1>Scid vs. PC</h1>
   <ht><img splash></ht>
   <p>
   <ul> <ul> <ul> <ul> <ul> <ul> <ul>
-  <li>Scid vs. PC  version $::scidVersion
+  <li>Scid vs. PC  version $::scidVersion</li>
   <br>
   <li>(C) Steven Atkinson, stevenaaus@yahoo.com</li>
   <br>
   <li><url http://scidvspc.sourceforge.net/>http://scidvspc.sourceforge.net/</url></li>
   <br>
-  <li>Based on: Shane's Chess Information Database $::scidVersion</li>
+  <li>Based on: Shane's Chess Information Database 3.6.26</li>
+  <li>, including many updates from mainline Scid.</li>
   <br>
-  <li>Author: Shane Hudson</li>
-  <li>Contribution: Pascal Georges</li>
-  <li>(C) Shane Hudson and others.</li>
+  <li>Authors: Shane Hudson and Pascal Georges.</li>
+  <li>(C) Shane Hudson, Pascal Georges and others.</li>
   <br>
   <li>Licenced under the GNU General Public License.</li>
+  <br>
+  <li>Using Tcl/Tk version [info patchlevel]</li>
 
 </ul> </ul> </ul> 
   <p><footer>(Project Updated: $::scidVersion, $::scidVersionDate)</footer></p>
@@ -4386,7 +4381,7 @@ set helpText(Related) {<h1>Related Links</h1>
 
 # Book window help
 set helpTitle(Book) "Book Window"
-set helpText(Book) {<h1>Book window</h1>
+set helpText(Book) {<h1>Book Window</h1>
   <p>
   A list of all book files present in Scid's books directory is
   presented in the drop down list on top of the window. To specify the
@@ -4466,7 +4461,7 @@ our game.</li>
 set helpTitle(OpeningTrainer) "Opening Trainer"
 set helpText(OpeningTrainer) {<h1>Opening Trainer</h1>
   <p>
-  A Scid database can be used as a repertoire, each game representing
+  A Scid Database can be used as a repertoire, each game representing
   an opening line. The games can contain variations and may also
   contain NAG values to specify values for each line, and thus
   allowing to mark preferred or dubious lines. To be a valid database
@@ -5171,7 +5166,7 @@ treated as new game and appended to the database.
 <p>
 For the synchronisation process to work the PGN files must contain
 some additional header information that are in perfect agreement with
-the PGN standard. Please have a look at <a CCeMailChess>Correspondence
+the PGN Standard. Please have a look at <a CCeMailChess>Correspondence
 Chess via eMail</a> if you want to create your own tool or if you are
 migrating data from some other system.
 </p>
@@ -5575,7 +5570,7 @@ set helpText(TacticsTrainer) {<h1>Mate in ... Puzzles</h1>
 
 # Find best move 
 set helpTitle(FindBestMove) "Training: Find best move"
-set helpText(FindBestMove) {<h1>Training: Find best move</h1>
+set helpText(FindBestMove) {<h1>Training: Find Best Move</h1>
   <p>
   When annotating games with a chess engine, the engine can search for
   tactical opportunities within a game. This can be achieve by setting
@@ -5875,7 +5870,7 @@ set helpText(FICStraining) {<h1>Other Fics Features</h1>
 
 # Book tuning
 set helpTitle(BookTuning) "Book tuning"
-set helpText(BookTuning) {<h1>Book tuning</h1>
+set helpText(BookTuning) {<h1>Book Tuning</h1>
    <p>
    For each book move a percentage is given stating the probability
    that Scid will use this move. Using <term>Book tuning</term> one
@@ -5915,7 +5910,7 @@ set helpText(BookTuning) {<h1>Book tuning</h1>
 
 # Novag Citrine
 set helpTitle(Novag) "Connecting the Novag Citrine Chess board"
-set helpText(Novag) {<h1>Connecting the Novag Citrine Chess board</h1>
+set helpText(Novag) {<h1>Connecting the Novag Citrine Chess Board</h1>
    <p>
    The Novag Citrine is a wooden chess board that can be interfaced
    from a PC by means of a serial connection. It can be used with Scid

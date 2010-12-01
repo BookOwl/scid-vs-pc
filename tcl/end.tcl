@@ -1319,7 +1319,7 @@ for {set i 0} { $i < 64 } { incr i } {
   ::board::bind .board $i <ButtonRelease-1> "releaseSquare %X %Y"
   ::board::bind .board $i <ButtonRelease-2> "releaseSquare %X %Y"
 
-  ### Too dangerous. (backSquare deprecated for ::move::back) S.A.
+  ### Too dangerous. (backSquare deprecated for ::move::Back) S.A.
   # ::board::bind .board $i <ButtonPress-3> backSquare
 }
 
@@ -1330,8 +1330,8 @@ foreach i {a b c d e f g h 1 2 3 4 5 6 7 8} {
   bind . <Key-$i> "moveEntry_Char $i"
 }
 
-bind . <Control-BackSpace> ::move::back
-bind . <Control-Delete> ::move::back
+bind . <Control-BackSpace> ::move::Back
+bind . <Control-Delete> ::move::Back
 bind . <BackSpace> moveEntry_Backspace
 bind . <Delete> moveEntry_Backspace
 bind . <space> moveEntry_Complete
