@@ -434,25 +434,36 @@ namespace eval pgn {
       .pgnWin.text tag remove Current 1.0 end
 
       set offset [sc_pos pgnOffset]
-      set moveRange [.pgnWin.text tag nextrange "m_$offset" 1.0]
+      set moveRange [.pgnWin.text tag nextrange m_$offset 1.0]
       if {[llength $moveRange] == 2} {
        .pgnWin.text tag add Current [lindex $moveRange 0] [lindex $moveRange 1]
 
        ### There's a bottleneck here when large pgn files are shown on one line
        # time {.pgnWin.text see 4.1577} -> 17049 microseconds per iteration
        # (compared to 2000 microseconds for the beginning of the pgn)
-       # SCID does things differently, but i couldnt get it going here
+       # SCID does things differently, but it doesn't seem to make any diff
+       ### It doesnt really make any diff. Slowdown is internal to Tk
+       ### Fixing it means breaking up the line length and word wrapping text widget
+       ### manually, which is not feasible imho. S.A &&&
 
        .pgnWin.text see [lindex $moveRange 0]
        .pgnWin.text see [lindex $moveRange 1]
       }
-      
       .pgnWin.text configure -state disabled
+    } else {
+      # Highlight current move in text only widget
+
+      # This is not going to work because generally [sc_pos pgnOffset] returns
+      # 2 * (move number), but when we have variations this is not the case!
+      # Needs some magic somehow.
+
+      set move [sc_pos pgnOffset].
+      # seek to after first blank line
+      set offset [expr [string first \n\n $pgnStr] + 2]
+      #.pgnWin.text tag add Current UMMMM....
     }
     return
   }
-  ################################################################################
-  #
-  ################################################################################
-
 }
+
+### End of pgn.tcl

@@ -709,8 +709,8 @@ menuText E StatsOpt "Options" 0
 menuText E PgnFile "Pgn" 0
 menuText E PgnFilePrint "Save Game as..." 0
 menuText E PgnFileCopy "Copy to Clipboard" 0
-menuText E PgnFileClose "Close PGN Window" 10
-menuText E PgnOpt "Display" 0
+menuText E PgnFileClose "Close" 10
+menuText E PgnOpt "Options" 0
 menuText E PgnOptColor "Color Display" 0
 menuText E PgnOptShort "Short (3-line) Header" 0
 menuText E PgnOptSymbols "Symbolic Annotations" 1
