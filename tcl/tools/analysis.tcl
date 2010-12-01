@@ -6,17 +6,17 @@
 
 # Rewritten stevenaaus July 2009
 # String optimisations Dec  2009
-# Overhauled again     May  2010
+# Overhauled again     May,November  2010
 #
-# Parts of this widget had a
-# very bad procedural flow, which hopefully makes some sense
-# now. Anyway, i have removed all sorting functionality, and
-# added a configurable "Hot Key" feature Also swapped around
-# the finish_{on,off} graphics, which were erroneous.
+# Parts of this widget had a very bad procedural flow, which
+# hopefully makes some sense now. Anyway, i have removed all
+# sorting functionality, and added a configurable "Hot Key"
+# feature Also swapped around the finish_{on,off} graphics,
+# which were erroneous.
 #
-# I'm not sure about the status of annotateModeButton..
-# but the auto finish mode now exists on all engines, instead of just #1
-# Number of engines running at one time is now not limited
+# The auto finish mode now exists on all engines, instead of
+# just #1. Number of engines running at one time is now not
+# limited
 
 # analysis(logMax):
 #   The maximum number of log message lines to be saved in a log file.
@@ -27,6 +27,9 @@ set analysis(logMax) 5000
 #   to be echoed to stdout.
 #
 set analysis(log_stdout) 0
+
+# Below seems to be init ok when checkbutton is init
+# set analysis(showEngineInfo$i) 0
 
 set useAnalysisBook 1
 set analysisBookSlot 1
@@ -1827,19 +1830,15 @@ proc makeAnalysisWin { {n 1} } {
   $w.bd configure -relief solid -borderwidth 1
   set analysis(showBoard$n) 0
 
-  # This is no longer configurable, except here. (Used to be associated with b1.showinfo)
-  # If set, it show heaps of hash info in the second line of text widget
-  set analysis(showEngineInfo$n) 0 
-
   frame $w.b
   pack  $w.b -side top -fill x
   set relief flat	; # -width 24 -height 24
 
-  checkbutton $w.b.automove -image tb_training  -indicatoron false  \
+  checkbutton $w.b.automove -image tb_training  -indicatoron false -width 24 -height 24 \
     -command "toggleAutomove $n" -variable analysis(automove$n) -relief $relief
   ::utils::tooltip::Set $w.b.automove $::tr(Training)
 
-  checkbutton $w.b.lockengine -image tb_lockengine -indicatoron false \
+  checkbutton $w.b.lockengine -image tb_lockengine -indicatoron false -width 24 -height 24 \
     -variable analysis(lockEngine$n) -command "toggleLockEngine $n" -relief $relief
   ::utils::tooltip::Set $w.b.lockengine $::tr(LockEngine)
 
@@ -1867,12 +1866,8 @@ proc makeAnalysisWin { {n 1} } {
   button $w.b.showboard -image tb_coords -command "toggleAnalysisBoard $n" -relief $relief
   ::utils::tooltip::Set $w.b.showboard $::tr(ShowAnalysisBoard)
 
-  # checkbutton $w.b.showinfo -image tb_engineinfo -indicatoron false \
-  #  -variable analysis(showEngineInfo$n) -command "toggleEngineInfo $n" -relief $relief
-  # ::utils::tooltip::Set $w.b.showinfo $::tr(ShowInfo)
-
   if {!$annotateModeButtonValue && !$annotateMode} {
-    checkbutton $w.b.annotate -image tb_annotate -indicatoron false \
+    checkbutton $w.b.annotate -image tb_annotate -indicatoron false -width 24 -height 24 \
       -variable annotateModeButtonValue -command "initAnnotation $n" -relief $relief
     ::utils::tooltip::Set $w.b.annotate $::tr(Annotate...)
   } else {
@@ -1880,7 +1875,7 @@ proc makeAnalysisWin { {n 1} } {
   }
 
   checkbutton $w.b.priority -image tb_cpu -indicatoron false -variable analysis(priority$n) \
-    -onvalue idle -offvalue normal -command "setAnalysisPriority $n" -relief $relief
+    -onvalue idle -offvalue normal -command "setAnalysisPriority $n" -relief $relief -width 24 -height 24
   ::utils::tooltip::Set $w.b.priority $::tr(LowPriority)
 
   # UCI does not support . command (Is this correct ? S.A)
@@ -1888,13 +1883,17 @@ proc makeAnalysisWin { {n 1} } {
     -command "if {$analysis(uci$n)} {sendToEngine $n .}"  -relief $relief
   ::utils::tooltip::Set $w.b.update $::tr(Update)
 
+  checkbutton $w.b.showinfo -image tb_engine -indicatoron false -width 24 -height 24 \
+    -variable analysis(showEngineInfo$n) -command "toggleEngineInfo $n" -relief $relief
+  ::utils::tooltip::Set $w.b.showinfo $::tr(ShowInfo)
+
   button $w.b.help -image tb_help  -command {helpWindow Analysis} -relief $relief
   ::utils::tooltip::Set $w.b.help $::tr(Help)
 
 
   pack $w.b.startStop $w.b.lockengine $w.b.move $w.b.line $w.b.alllines \
-       $w.b.multipv $w.b.annotate $w.b.automove $w.b.finishGame $w.b.showboard \
-       $w.b.update $w.b.priority -side left -pady 2 -padx 1
+       $w.b.multipv $w.b.showinfo $w.b.priority $w.b.showboard \
+       $w.b.update $w.b.finishGame $w.b.annotate $w.b.automove -side left -pady 2 -padx 1
   pack $w.b.help -side right -pady 2 -padx 1
 
   # pack  $w.b.showinfo 
@@ -1902,7 +1901,7 @@ proc makeAnalysisWin { {n 1} } {
     $w.b.multipv configure -state readonly
     pack forget $w.b.update
     $w.b.update  configure -state disabled
-    text $w.text -height 1 -font font_Small -wrap word -bg gray95
+    text $w.text -height 2 -font font_Small -wrap word -bg gray95
   } else  {
     # pack forget $w.b.showinfo
     # $w.b.showinfo configure -state disabled
@@ -1915,11 +1914,15 @@ proc makeAnalysisWin { {n 1} } {
   }
 
   frame $w.hist
-  text $w.hist.text -font font_Small \
+  # This "-height 5" is here to facilitate pack/forgeting of $w.text widget
+  # and for initial size
+  text $w.hist.text -font font_Small -height 5 \
       -wrap word -setgrid 1 -yscrollcommand "$w.hist.ybar set"
   $w.hist.text tag configure indent -lmargin2 [font measure font_Fixed "xxxxxxxxxxxx"]
   scrollbar $w.hist.ybar -command "$w.hist.text yview" -takefocus 0
-  pack $w.text -side bottom -fill both
+  if { $analysis(showEngineInfo$n) } {
+    pack $w.text -side bottom -fill both 
+  }
   pack $w.hist -side top -expand 1 -fill both
   pack $w.hist.ybar -side right -fill y
   pack $w.hist.text -side left -expand 1 -fill both
@@ -2581,10 +2584,10 @@ proc updateAnalysisText {{n 1}} {
       $t insert end [ format "%u " $analysis(tbhits$n)]
       $t insert end {Nps: }
       $t insert end [ format "%u n/s " $analysis(nps$n)]
-      $t insert end {Hash Full: }
+      $t insert end {Hash: }
       set hashfull [expr {round($analysis(hashfull$n) / 10)}]
       $t insert end [ format "%u%% " $hashfull ]
-      $t insert end {CPU Load: }
+      $t insert end {Load: }
       set cpuload [expr {round($analysis(cpuload$n) / 10)}]
       $t insert end [ format "%u%% " $cpuload ]
       
@@ -2796,27 +2799,22 @@ proc toggleAnalysisBoard {n} {
     .analysisWin$n.text configure -setgrid 1
   }
 }
-################################################################################
-# toggleEngineInfo
-#   Toggle whether engine info are shown.
-################################################################################
+
 proc toggleEngineInfo {n} {
   global analysis
+
+  # Note - CPUload and Hashfull don't seem to work for many engines
+
   if { $analysis(showEngineInfo$n) } {
-    .analysisWin$n.text configure -height 2
+    pack .analysisWin$n.text -side bottom -fill both
   } else {
-    .analysisWin$n.text configure -height 1
+    pack forget .analysisWin$n.text
   }
   updateAnalysisText $n
 }
-################################################################################
-#
-################################################################################
-# updateAnalysisBoard
+
 #   Update the small analysis board in the analysis window,
-#   showing the position after making the specified moves
-#   from the current main board position.
-#
+
 proc updateAnalysisBoard {n moves} {
   global analysis
   # PG : this should not be commented
@@ -3035,11 +3033,12 @@ proc setAutomoveTime {{n 1}} {
   set w .apdialog
   toplevel $w
   #wm transient $w .analysisWin
+  wm state $w withdrawn
   wm title $w "Scid: Engine thinking time"
   wm resizable $w 0 0
-  label $w.label -text "Set the engine thinking time per move in seconds:"
+  label $w.label -text "Time per move (seconds)"
   pack $w.label -side top -pady 5 -padx 5
-  entry $w.entry -width 10 -textvariable temptime
+  entry $w.entry -width 10 -textvariable temptime -justify center -relief flat
   pack $w.entry -side top -pady 5
   bind $w.entry <Escape> { .apdialog.buttons.cancel invoke }
   bind $w.entry <Return> { .apdialog.buttons.ok invoke }
@@ -3049,14 +3048,14 @@ proc setAutomoveTime {{n 1}} {
   set dialogResult {}
   set b [frame $w.buttons]
   pack $b -side top -fill x
-  button $b.cancel -text $::tr(Cancel) -command {
+  dialogbutton $b.cancel -text $::tr(Cancel) -command {
     focus .
     catch {grab release .apdialog}
     destroy .apdialog
     focus .
     set dialogResult Cancel
   }
-  button $b.ok -text OK -command {
+  dialogbutton $b.ok -text OK -command {
     catch {grab release .apdialog}
     if {$temptime < 0.1} { set temptime 0.1 }
     set analysis(automoveTime$tempn) [expr {int($temptime * 1000)} ]
@@ -3068,6 +3067,8 @@ proc setAutomoveTime {{n 1}} {
   }
 
   pack $b.cancel $b.ok -side right -padx 5 -pady 5
+  placeWinOverParent $w .analysisWin$n
+  wm state $w normal
   focus $w.entry
   update
   catch {grab .apdialog}
@@ -3172,30 +3173,21 @@ fvrosWNnS9AlNhiEYLJDRooSIkCAoC2oT546deZwQAnakMEHDx04aLAw4cKGfwi62wH/BsnJ
 GySCYQUMBlIkkUP/DGAFEj7A0IIKI6S40IoNLaTjjjsGBAA7
 }
 image create photo tb_training -data {
-R0lGODlhGAAYAOedAAICAggICAkJCQoJCAoKCgsLCw0NDQ4ODhISEhQUFB0d
-HR4eHh8eHSAeHiIfHCQgHigjHiUlJSokICYmJiwlHi0lHycnJicnJygoKCkp
-KSoqKjIoICsrKywsLC0tLUApFi4uLi8vLzAwMDExMTMzMz8/P0BAQEJCQkND
-Q0REREVFRcRkFs5rG8hwKNBvIdRuHKF+YttyHqt/XMN6P9J2LNd1JoyMjMR+
-RuR4IeR4Io+Pj+R5IuV5IsuARJKSkpOTk6eQfZWVlZaWluaCMJeXl8yKVJiY
-mPGBJpmZmfKCJvOCJ5qampubm5ycnNGOWb6Ucp2dnZ+fn6CgoKGhoaKioqSk
-pOuSSqWlpaampqenp9+ZYaioqKmpqdidbqqqquyZVriom6ysrK6urtakfK+v
-r7mtpLCwsLKysrOzs7S0tLa2tre3t7i4uLm5ubq6uru7u9a0mcC8usDAwMTE
-xMfHx8jIyMnJycrKyt7GssvLy8zMzM/MyM3Nzc7Ozs/Pz9DQ0NHR0dLS0tTU
-1NXV1dbW1tfX19jY2NzX1NnZ2dra2tvb29zc3N3d3d7e3t/f3+Dg4OHh4eLi
-4uTk5OXl5ebm5ufn5+jo6Onp6erq6uvr6+zs7O3t7e7u7v//////////////
+R0lGODlhGAAYAMZcADs7Ozw8PD09PUBAQEFBQUJCQkNDQ0REREVFRXc7C0hI
+SHg8C09IQ3o9DXs+DYBCEIVFEodHE4hIFG9vb3Jwb3Jxb3Z0c85rG4CAgMhw
+KNBvIdRuHNtyHtd1JoyMjOR4IeR4Io+Pj+V5IpKSkpOTk+p8I+d9J5WVle1+
+JJaWlsyIUeaCMJeXl5iYmPGBJsSOY/OCJ5qampubm5ycnNGOWZ2dneKLRcaT
+asqTZp+fn9OSX6CgoMmVbKGhodKUY6KioqSkpOuSSqWlpdKZa6ampqenp9+Z
+YaioqKmpqaqqquyZVqysrK6urq+vr7mtpLCwsLKysrOzs7S0tLa2tre3t7i4
+uLm5ubq6uru7u8C8usDAwM/Pz///////////////////////////////////
 ////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////
-/////////////////////yH5BAEKAP8ALAAAAAAYABgAAAj+AP8JHEiwoMGD
-BoUsWACBgRCEEP81MPLFihYJEQ+C2DBEiRIeOR5kLAjCCY4jR3LUqDCSIIgi
-MXDgiOGCQsuBIGDQePGCRQ8HNwWCACGjxYobFkAEFarCTxkVSpcKvODHTwip
-AyNUVYH13wIjVYV4GKkChYqzKqpU3ZoCBYoTJrgWHLG2qo4ma3/UjUKCZNO6
-UJYYEfLDR10/KhQQ5HC4KhMbQX4QaTyWqZ8xXfA03oy4hFA/cHYkmcF584XP
-fsAAiVO68dV/IFqXnpNBoAc5b9ywUZMGzRkzYsJ44bIFSxUqU6JEwSCwAxI3
-bdbw/k0muJctWa4clxJFymmhIDwUiO9AnoOG8xkyYFh/4cIEuV0HBgQAOw==
+/////////////////////////////////////////////////yH5BAEKAH8A
+LAAAAAAYABgAAAf9gH+Cg4SFhoeGNxINCQk4iJBBEEFKQUYJQZCHDjYrMDAi
+IA+ahg80KC4uJh0JpIUPJiUfHxwara6DCSYmGxsXF7e4f5gmGb/AwoJBjVtO
+CxGZyYIGW1sM0dJ/1FsG2dMV1RTdpBMGCOcIFtXVCAcGBgUDCoVEBFn39yEz
+6yT49wUTCCEg4i9LjRgtUpAYUZBIgUFEBhS8J8PDCRIsJgIUdICgDx0TQ95z
+KEhAliGoVIgM+fCPySw8XqxkWXLmzJYCtGC5UmWKlChQnjBZkgTJESJAfvTI
+kaNlAClXrFDxGbTJ0CRHighJuiPHjpYYBIgVG6CsWbMA0qrF4M1QIAA7
 }
 
 image create photo tb_addmove -data {
@@ -3296,11 +3288,6 @@ moNBCQBI+BdwYMGDCRfCwwDKxx8dl1QUYucOnjx69uThu2TiD4lLQQ6F6/Zt
 prcUBy49+PMAQIRE0JwJCipIGoAVl1IkmsGBwy9BTJ0KqgGqwCUgioQIKaSV
 kDVQECgR2gAKwAmxg2KU/YF2EIFLDAvayp1Lt67du4UCAQA7
 }
-
-# image create photo tb_engineinfo -data {
-# R0lGODdhFAAUAMIFAAAAAAAA/7i4uMDAwO7v8v///////////ywAAAAAFAAU
-# AAADUEgarP6QsNkipIXaR/t2mPeF2jhl5UY2AtG+rXRqQl27sSx+XMVHgKBw
-# SAQ8ikihQ2irDZtGRXK6nCKXUEDWNngIgltbsFsFf5nnIERdPRoTADs=}
 
 image create photo tb_lockengine -data {
 R0lGODlhGAAYAOd6AAAAAAwFABUJAg8PDxUQDBMTExQUFB0XEBwcHCUdFSEh
