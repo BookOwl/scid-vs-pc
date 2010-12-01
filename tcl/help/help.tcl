@@ -5937,6 +5937,10 @@ set helpText(Changelog) {<h1>Scid vs. PC</h1>
 <h4>4.1 (October 10, 2010)</h4>
 <ul>
 <li> Quite a few FICs tweaks, including new help pages and D.O.S. attack fixes</li>
+
+<h4>4.1 (October 10, 2010)</h4>
+<ul>
+<li> Quite a few FICs tweaks, including new help pages and D.O.S. attack fixes</li>
 <li> Numerous Gamelist improvements (see below)</li>
 <li> Tree widget improvements: next move is highlighted, main filter is now independant of Tree filter, wheel mouse bindings.</li>
 <li> Tactics feature fixed up: Renamed "Puzzle" , and Problem Solutions can now be browsed in-game</li>
