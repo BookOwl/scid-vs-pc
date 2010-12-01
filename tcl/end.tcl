@@ -1014,8 +1014,12 @@ proc gameSave {gnum} {
   if {$emonth == 0} { set emonth "??" }
   if {$eday == 0} { set eday "??" }
 
-  addGameSaveEntry event 0 ::tr(Event:)
-  addGameSaveEntry site 1 ::tr(Site:)
+
+  addGameSaveEntry white 0 ::tr(White:)
+  addGameSaveEntry black 1 ::tr(Black:)
+  addGameSaveEntry event 2 ::tr(Event:)
+  addGameSaveEntry site  3 ::tr(Site:)
+  addGameSaveEntry round 4 ::tr(Round:)
 
   frame $f.dateframe
   label $f.datelabel -textvar ::tr(Date:)
@@ -1027,8 +1031,8 @@ proc gameSave {gnum} {
   label $f.datedot2 -text "."
   entry $f.dateday -width 3  -relief sunken \
       -textvariable day -justify right
-  grid $f.datelabel -row 2 -column 0 -sticky w
-  grid $f.dateframe -row 2 -column 1 -columnspan 5 -sticky w
+  grid $f.datelabel -row 5 -column 0 -sticky w
+  grid $f.dateframe -row 5 -column 1 -columnspan 5 -sticky w
   button $f.datechoose -image ::utils::date::calendar -command {
     set newdate [::utils::date::chooser "$year-$month-$day" .save]
     if {[llength $newdate] == 3} {
@@ -1057,8 +1061,8 @@ proc gameSave {gnum} {
   label $f.edatedot2 -text "."
   entry $f.edateday -width 3  -relief sunken \
       -textvariable eday -justify right
-  grid $f.edatelabel -row 3 -column 0 -sticky w
-  grid $f.edateframe -row 3 -column 1 -columnspan 5 -sticky w
+  grid $f.edatelabel -row 6 -column 0 -sticky w
+  grid $f.edateframe -row 6 -column 1 -columnspan 5 -sticky w
   button $f.edatechoose -image ::utils::date::calendar -command {
     set newdate [::utils::date::chooser "$eyear-$emonth-$eday" .save]
     if {[llength $newdate] == 3} {
@@ -1077,10 +1081,6 @@ proc gameSave {gnum} {
   pack $f.edatechoose -in $f.edateframe -side left -padx 3
   pack $f.esame -in $f.edateframe -side left
 
-  addGameSaveEntry round 4 ::tr(Round:)
-  addGameSaveEntry white 5 ::tr(White:)
-  addGameSaveEntry black 6 ::tr(Black:)
-
   # Game result
 
   ttk::label $f.reslabel -textvar ::tr(Result:)
@@ -1091,12 +1091,12 @@ proc gameSave {gnum} {
 
   # White/Black Elo
 
-  ttk::label $f.welolabel -text "$::tr(White) "
+  ttk::label $f.welolabel -text "$::tr(White:) "
   ttk::combobox $f.wrtype -values [sc_info ratings] -width 7 \
     -textvariable whiteRType -state readonly
   ttk::entry $f.weloentry -width 6 -textvariable whiteElo -justify right
   
-  ttk::label $f.belolabel -text "$::tr(Black) "
+  ttk::label $f.belolabel -text "$::tr(Black:) "
   ttk::combobox $f.brtype -values [sc_info ratings] -width 7 \
     -textvariable blackRType -state readonly
   ttk::entry $f.beloentry -width 6 -textvariable blackElo -justify right
