@@ -5934,9 +5934,26 @@ set helpText(Novag) {<h1>Connecting the Novag Citrine Chess Board</h1>
 set helpTitle(Changelog) "Scid vs PC Changelog"
 set helpText(Changelog) {<h1>Scid vs. PC</h1>
 
-<h4>4.1 (October 10, 2010)</h4>
+<h4>4.2 (December 10, 2010)</h4>
 <ul>
-<li> Quite a few FICs tweaks, including new help pages and D.O.S. attack fixes</li>
+<li> New si4 database support</li>
+<li> Include tree and mask improvements from Scid (excepting Fulvio's delayed tree code, which has issues)</li>
+<li> Overhaul right-click menu and allow toolbar / menubar / statusbar to be hidden</li>
+<li> Allow tournament games to start from current position
+<li> Easier 64 bit compilation</li>
+<li> Include Scid's correspondence feature</li>
+<li> Make analysis widget info properly hideable, and tweak buttons</li>
+<li> Tweak game save forms
+<li> A couple of Mac fixes, including the broken gamelist widget (bad!)</li>
+<li> Restructure game info widget - Player names are more prominent, Length field added, Colors made consistent</li>
+<li> Reincluded Merida2 pieces</li>
+<li> Remove Repertoire editor (same functionality via Tree Masks)</li>
+<li> New Finder rename fucntion</li>
+<li> PGN indentation fix (especially for comments)</li>
+<li> Work around for batch annotation bug (still under dev by Joost)</li>
+<li> Header search widget tidy</li>
+<li> New icon</li>
+</ul>
 
 <h4>4.1 (October 10, 2010)</h4>
 <ul>
