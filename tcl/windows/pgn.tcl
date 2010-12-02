@@ -439,12 +439,9 @@ namespace eval pgn {
        .pgnWin.text tag add Current [lindex $moveRange 0] [lindex $moveRange 1]
 
        ### There's a bottleneck here when large pgn files are shown on one line
-       # time {.pgnWin.text see 4.1577} -> 17049 microseconds per iteration
-       # (compared to 2000 microseconds for the beginning of the pgn)
-       # SCID does things differently, but it doesn't seem to make any diff
-       ### It doesnt really make any diff. Slowdown is internal to Tk
-       ### Fixing it means breaking up the line length and word wrapping text widget
-       ### manually, which is not feasible imho. S.A &&&
+       ### Slowdown is internal to Tk. (from the text manpage)
+       # <q> Very  long  text  lines  can be expensive, especially if they have
+       # many marks and tags within them. </q>
 
        .pgnWin.text see [lindex $moveRange 0]
        .pgnWin.text see [lindex $moveRange 1]

@@ -148,6 +148,7 @@ proc ::commenteditor::Open {} {
   bind $w.cf.text <Alt-KeyRelease-c> { .commentWin.b.cancel invoke }
   bind $w.cf.text <Alt-KeyRelease-s> { .commentWin.b.apply invoke }
   # "break" stops subsequent built-in bindings from executing
+  bind $w.cf.text <FocusOut> ::commenteditor::storeComment
   bind $w.cf.text <Control-a> {.commentWin.cf.text tag add sel 0.0 end-1c ; break}
   bind $w.cf.text <Control-z> {catch {.commentWin.cf.text edit undo} ; break}; # seems automatic anyway
   bind $w.cf.text <Control-y> {catch {.commentWin.cf.text edit redo} ; break}
