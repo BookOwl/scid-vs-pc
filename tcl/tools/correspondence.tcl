@@ -1856,8 +1856,7 @@ namespace eval CorrespondenceChess {
 	# Copy the games list as CSV (tab separated) to the clipboard
 	#----------------------------------------------------------------------
 	proc List2Clipboard {} {
-		clipboard clear
-		clipboard append $::CorrespondenceChess::clipboardText
+		setClipboard $::CorrespondenceChess::clipboardText
 	}
 
 	#----------------------------------------------------------------------

@@ -380,6 +380,22 @@ proc closeProgressWindow {} {
   grab release $w
   destroy $w
 }
+
+proc setClipboard {string} {
+
+  if {$string == {}} {return}
+
+  # Create a text widget to hold the string so it can be the owner of the current text selection
+  set w .clipboard
+  if {! [winfo exists $w]} { text $w }
+  $w delete 1.0 end
+  $w insert end $string sel
+  clipboard clear
+  clipboard append $string
+  selection own $w
+  selection get
+}
+
 ################################################################################
 # clock widget
 ################################################################################

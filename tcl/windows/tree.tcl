@@ -46,8 +46,7 @@ proc ::tree::ConfigMenus { { lang "" } } {
 }
 ################################################################################
 proc ::tree::menuCopyToSelection { baseNumber } {
-  clipboard clear
-  clipboard append [ .treeWin$baseNumber.f.tl get 1.0 end ]
+  setClipboard [.treeWin$baseNumber.f.tl get 1.0 end]
 }
 ################################################################################
 proc ::tree::treeFileSave {base} {

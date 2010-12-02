@@ -13,17 +13,7 @@ proc fenErrorDialog {{msg {}}} {
 #   Copies the FEN of the current position to the text clipboard.
 #
 proc copyFEN {} {
-  set fen [sc_pos fen]
-  # Create a text widget to hold the fen so it can be the owner
-  # of the current text selection:
-  set w .tempFEN
-  if {! [winfo exists $w]} { text $w }
-  $w delete 1.0 end
-  $w insert end $fen sel
-  clipboard clear
-  clipboard append $fen
-  selection own $w
-  selection get
+  setClipboard [sc_pos fen]
 }
 
 # pasteFEN

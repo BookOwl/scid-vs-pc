@@ -65,21 +65,12 @@ namespace eval pgn {
     $w.menu.file add command -label PgnFilePrint -command "::pgn::savePgn $w"
 
     $w.menu.file add command -label PgnFileCopy -command {
-      
       setLanguageTemp E
       set pgnStr [sc_game pgn -width 75 -indentComments $::pgn::indentComments \
           -indentVariations $::pgn::indentVars -space $::pgn::moveNumberSpaces]
       setLanguageTemp $::language
       
-      set wt .tempFEN
-      
-      if {! [winfo exists $wt]} { text $wt }
-      $wt delete 1.0 end
-      $wt insert end $pgnStr sel
-      clipboard clear
-      clipboard append $pgnStr
-      selection own $wt
-      selection get
+      setClipboard $pgnStr
     }
 
     $w.menu.file add separator
