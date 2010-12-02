@@ -2665,7 +2665,7 @@ proc updateAnalysisText {{n 1}} {
         if {$lineNumber == 1} { incr lineNumber ; continue }
         $h insert end "$lineNumber " gray
         set score [scoreToMate [lindex $pv 1] [lindex $pv 2] $n]
-        append line [format "%2d %s %s\n" [lindex $pv 0] $score [addMoveNumbers $n [::trans [lindex $pv 2]]] ] 
+        $h insert end [format "%2d %s %s\n" [lindex $pv 0] $score [addMoveNumbers $n [::trans [lindex $pv 2]]] ] indent
         incr lineNumber
       }
     }
