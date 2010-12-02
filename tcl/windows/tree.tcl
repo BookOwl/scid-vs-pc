@@ -65,9 +65,9 @@ proc ::tree::make { { baseNumber -1 } } {
   if {$baseNumber == -1} {set baseNumber [sc_base current]}
 
   if {[winfo exists .treeWin$baseNumber]} {
-    # focus .
-    # destroy .treeWin$baseNumber
-    # set treeWin$baseNumber 0
+    focus .
+    destroy .treeWin$baseNumber
+    set treeWin$baseNumber 0
     return
   }
 
