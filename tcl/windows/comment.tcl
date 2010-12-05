@@ -178,7 +178,7 @@ proc ::commenteditor::Open {} {
                 destroy .commentWin"
   set helpMessage(E,$w.b.ok) {Apply changes and exit}
 
-  dialogbutton $w.b.apply -textvar ::tr(Apply) \
+  dialogbutton $w.b.apply -text Apply \
       -command [namespace code {storeComment; ::pgn::Refresh 1; updateBoard}]
   set helpMessage(E,$w.b.apply) {Apply Changes}
 
