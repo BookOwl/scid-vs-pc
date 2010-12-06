@@ -57,7 +57,7 @@ proc ::commenteditor::Open {} {
   }
 
   toplevel $w
-  wm resizable $w 0 1
+  # wm resizable $w 0 1
   # wm state $w withdrawn
 
   bind $w <F1> {helpWindow Comment}
@@ -119,7 +119,7 @@ proc ::commenteditor::Open {} {
   }
 
   label $w.nf.label -font font_Regular -textvar ::tr(AnnotationSymbols)
-  pack $w.nf -side top -pady 2 -padx 5 -fill x -expand 1
+  pack $w.nf -side top -pady 2 -padx 5 -fill x 
   #addHorizontalRule $w
 
   button $w.nf.tf.clear -textvar ::tr(Clear) -command {
@@ -132,7 +132,7 @@ proc ::commenteditor::Open {} {
   pack $w.nf.label -side top -expand 0
   pack $w.nf.tf -side top -fill x -expand 1
   pack $w.nf.tf.text -side left -fill x -expand 1
-  pack $w.nf.tf.clear -side right -padx 20 -pady 5
+  pack $w.nf.tf.clear -side right
   pack $w.nf.b -side top
 
   label $w.cflabel -font font_Regular -textvar ::tr(Comment)
@@ -150,6 +150,9 @@ proc ::commenteditor::Open {} {
   # "break" stops subsequent built-in bindings from executing
   bind $w.cf.text <FocusOut> ::commenteditor::storeComment
   bind $w.cf.text <Control-a> {.commentWin.cf.text tag add sel 0.0 end-1c ; break}
+  bind $w.cf.text <Control-Left>  {::commenteditor::storeComment; ::move::Back}
+  bind $w.cf.text <Control-Right> {::commenteditor::storeComment; ::move::Forward}
+
   bind $w.cf.text <Control-z> {catch {.commentWin.cf.text edit undo} ; break}; # seems automatic anyway
   bind $w.cf.text <Control-y> {catch {.commentWin.cf.text edit redo} ; break}
   bind $w.cf.text <Control-r> {catch {.commentWin.cf.text edit redo} ; break}
@@ -162,7 +165,7 @@ proc ::commenteditor::Open {} {
   ### Main buttons
 
   frame $w.b
-  pack $w.b -side top -ipady 4 -padx 2 -pady 4 -expand 1 -fill x
+  pack $w.b -side top -ipady 4 -padx 2 -pady 4 -fill x
 
   button $w.b.hide -width 3 -pady 1 \
       -command "::commenteditor::toggleBoard $mark"
@@ -278,6 +281,7 @@ proc ::commenteditor::Open {} {
   setWinLocation $w
   # Cant set size as it messes with hiding the board widget
   # setWinSize $w
+  # wm state $w normal
 
   wm title $w "Scid: [tr {Comment editor}]"
   wm iconname $w "Scid: [tr {Comment editor}]"
