@@ -86,7 +86,7 @@ OPTIMIZE = -O2 -fno-rtti -fno-exceptions
 #       helps to track bugs after modifications, but the programs will run 
 #       a little faster with assertions turned off.
 #
-DEBUG = #-DASSERTIONS
+DEBUG = -DASSERTIONS
 
 ### WARNINGS: I always compile with all warnings on (-Wall), and all the
 #       files should compile warning-free using g++.
@@ -365,8 +365,8 @@ pgnscid: src/pgnscid.o $(OBJS)
 	$(LINK) $(PROFILE) -o pgnscid src/pgnscid.o $(OBJS) $(ZLIB)
 
 scidlet: src/scidlet.o src/engine.o src/recog.o src/misc.o src/position.o \
-          src/dstring.o src/movelist.o
-	$(LINK) -o scidlet src/scidlet.o src/engine.o src/recog.o src/misc.o src/position.o src/movelist.o src/dstring.o
+          src/dstring.o src/movelist.o src/myassert.o
+	$(LINK) -o scidlet src/scidlet.o src/engine.o src/recog.o src/misc.o src/position.o src/movelist.o src/dstring.o src/myassert.o
 
 scidt: src/scidt.o $(OBJS)
 	$(LINK) -o scidt src/scidt.o $(OBJS) $(ZLIB)

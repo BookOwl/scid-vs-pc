@@ -290,8 +290,8 @@ pgnscid.exe: src/pgnscid.o $(OBJS)
 	$(LINK) $(PROFILE) -o $@ src/pgnscid.o $(OBJS) $(ZLIB)
 
 scidlet.exe: src/scidlet.o src/engine.o src/recog.o src/misc.o src/position.o \
-          src/dstring.o src/movelist.o
-	$(LINK) -o $@ src/scidlet.o src/engine.o src/recog.o src/misc.o src/position.o src/movelist.o src/dstring.o
+          src/dstring.o src/movelist.o src/myassert.o
+	$(LINK) -o $@ src/scidlet.o src/engine.o src/recog.o src/misc.o src/position.o src/movelist.o src/dstring.o src/myassert.o
 
 
 scidt.exe: src/scidt.o $(OBJS)

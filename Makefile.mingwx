@@ -155,7 +155,7 @@ scidt.exe: src/scidt.o $(OBJS)
 
 scidlet.exe: src/scidlet.o src/engine.o src/recog.o $(OBJS)
 	$(LINK) $(LFLAGS) -o scidlet.exe src/scidlet.o src/engine.o src/recog.o \
-          src/misc.o src/position.o src/movelist.o src/dstring.o
+          src/misc.o src/position.o src/movelist.o src/dstring.o src/myassert.o
 
 scid.exe: src/scid.o $(OBJS) src/tree.o src/filter.o \
             src/pbook.o src/crosstab.o src/spellchk.o src/probe.o \

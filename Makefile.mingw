@@ -162,7 +162,7 @@ scidt.exe: src\scidt.obj $(OBJS)
 
 scidlet.exe: src\scidlet.obj src\engine.obj src\recog.obj $(OBJS)
 	$(LINK) $(LFLAGS) -o scidlet.exe src\scidlet.obj src\engine.obj src\recog.obj \
-          src/misc.obj src/position.obj src/movelist.obj src/dstring.obj
+          src/misc.obj src/position.obj src/movelist.obj src/dstring.obj src/myassert.obj
 
 scid.exe: src\scid.obj $(OBJS) src\tree.obj src\filter.obj \
             src\pbook.obj src\crosstab.obj src\spellchk.obj src\probe.obj \
