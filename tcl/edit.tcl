@@ -30,11 +30,10 @@ proc pasteFEN {} {
   set fenStr [string trim $fenStr]
 
   set fenExplanation {FEN is the standard representation of a chess position, for example:
-
 "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"}
 
   if {$fenStr == ""} {
-    set msg "The current clipboard is empty. To paste the start board, select some text that contains a position in FEN notation.\n\n$fenExplanation"
+    set msg "The clipboard is empty.\n\n$fenExplanation"
     fenErrorDialog $msg
     return
   }
@@ -46,7 +45,7 @@ proc pasteFEN {} {
     }
     set fenStr [string map {\n { }} $fenStr]
 
-    set msg "The current clipboard, \"$fenStr\" is not a valid FEN.\n\n $fenExplanation"
+    set msg "\"$fenStr\" is not a valid FEN.\n\n $fenExplanation"
 
     fenErrorDialog $msg
     return

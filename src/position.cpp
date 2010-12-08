@@ -814,8 +814,9 @@ Position::GenerateMoves (MoveList * mlist, pieceT pieceType,
     if (mlist == NULL) {
         ClearLegalMoves();
         mlist = LegalMoves;
+    } else {
+	mlist->Clear();
     }
-    mlist->Clear();
 
     // Compute which pieces of the side to move are pinned to the king:
     CalcPins();
@@ -991,8 +992,9 @@ Position::MatchLegalMove (MoveList * mlist, pieceT mask, squareT target)
     if (mlist == NULL) {
         ClearLegalMoves();
         mlist = LegalMoves;
+    } else {
+	mlist->Clear();
     }
-    mlist->Clear();
 
     uint count = 0;
     uint total = Material[piece_Make(ToMove, mask)];

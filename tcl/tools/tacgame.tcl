@@ -766,7 +766,9 @@ namespace eval tacgame {
     # sc_pos analyze -time 50 (50 milliseconds) returns two args, a score and the best move.
     # Score 32000 represents Inifity , {} represents "no move"
 
+    # Hmmmm... can cause core dumps! &&&
     set score [sc_pos analyze -time 50]
+
     if { $score == {0 {}}} {
       ::gameclock::stop 1
       ::gameclock::stop 2
