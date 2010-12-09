@@ -1474,8 +1474,8 @@ Engine::Think (MoveList * mlist)
         bestScore = score;
         PrintPV (depth, bestScore, ">>>");
 
-        // Stop if Size()==1 || checkmate has been found, but not too soon:
-        if (mlist->Size() == 1 || depth >= 5  &&  IsMatingScore (bestScore)) { break; }
+        // Stop if Only a few moves OR checkmate has been found - but not too soon:
+        if (mlist->Size() <= depth || depth >= 5  &&  IsMatingScore (bestScore)) { break; }
 
         // Make sure the first move in the list remains there by
         // giving it a huge node count for its move ordering score:
