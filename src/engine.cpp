@@ -1442,7 +1442,6 @@ Engine::Think (MoveList * mlist)
             beta = bestScore + AspirationWindow;
         }
 
-        // can cause core dump from here when mlist->Size() == 1 &&&
         int score = SearchRoot (depth, alpha, beta, mlist);
         if (OutOfTime()) { break; }
         if (score >= beta) {
@@ -1475,8 +1474,8 @@ Engine::Think (MoveList * mlist)
         bestScore = score;
         PrintPV (depth, bestScore, ">>>");
 
-        // Stop if checkmate has been found, but not too soon:
-        if (depth >= 5  &&  IsMatingScore (bestScore)) { break; }
+        // Stop if Size()==1 || checkmate has been found, but not too soon:
+        if (mlist->Size() == 1 || depth >= 5  &&  IsMatingScore (bestScore)) { break; }
 
         // Make sure the first move in the list remains there by
         // giving it a huge node count for its move ordering score:
@@ -1500,7 +1499,6 @@ Engine::Think (MoveList * mlist)
     return bestScore;
 }
 
-// got a core dump from here! S.A
 int
 Engine::SearchRoot (int depth, int alpha, int beta, MoveList * mlist)
 {
