@@ -86,7 +86,7 @@ OPTIMIZE = -O2 -fno-rtti -fno-exceptions
 #       helps to track bugs after modifications, but the programs will run 
 #       a little faster with assertions turned off.
 #
-DEBUG = -DASSERTIONS
+DEBUG = #-DASSERTIONS
 
 ### WARNINGS: I always compile with all warnings on (-Wall), and all the
 #       files should compile warning-free using g++.
