@@ -1022,26 +1022,27 @@ set addVariationWithoutAsking 0
 proc confirmReplaceMove {} {
   global askToReplaceMoves trialMode
 
-  if {$::addVariationWithoutAsking} { return "var" }
+  if {$::addVariationWithoutAsking} { return var }
 
-  if {! $askToReplaceMoves} { return "replace" }
-  if {$trialMode} { return "replace" }
+  if {! $askToReplaceMoves} { return replace }
+  if {$trialMode} { return replace }
 
+  # wtf
   option add *Dialog.msg.wrapLength 4i interactive
-  # fixme : can't bind <Escape> inside tk_dialog 
+  # &&& Can't bind <Escape> inside tk_dialog , and wtf does the #3 button have two outlines
   catch {tk_dialog .dialog "Scid: $::tr(ReplaceMove)?" \
-        $::tr(ReplaceMoveMessage) {} {} \
+        $::tr(ReplaceMoveMessage) {} 2 \
         $::tr(ReplaceMove) $::tr(NewMainLine) \
         $::tr(AddNewVar) [tr EditTrial] \
         $::tr(Cancel)} answer
   option add *Dialog.msg.wrapLength 3i interactive
-  if {$answer == 0} { return "replace" }
-  if {$answer == 1} { return "mainline" }
-  if {$answer == 2} { return "var" }
-  if {$answer == 3} { setTrialMode 1; return "replace" }
+  if {$answer == 0} { return replace }
+  if {$answer == 1} { return mainline }
+  if {$answer == 2} { return var }
+  if {$answer == 3} { setTrialMode 1; return replace }
 
   set ::pause 1
-  return "cancel"
+  return cancel
 }
 
 proc addNullMove {} {

@@ -57,6 +57,8 @@ proc ::game::ConfirmDiscard2 {} {
   pack $w.bottom.b1 $w.bottom.b2 $w.bottom.b3 -side left -padx 10 -pady 5
 
   bind $w <Destroy> {set ::game::answer 2}
+  bind $w <Right> "event generate $w <Tab>"
+  bind $w <Left> "event generate $w <Shift-Tab>"
 
   update
   placeWinOverParent $w .
@@ -64,7 +66,7 @@ proc ::game::ConfirmDiscard2 {} {
 
   catch { grab $w }
 
-  focus $w.bottom.b3
+  focus $w.bottom.b2
   vwait ::game::answer
   return $::game::answer
 }
