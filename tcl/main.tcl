@@ -1027,9 +1027,11 @@ proc confirmReplaceMove {} {
   if {! $askToReplaceMoves} { return replace }
   if {$trialMode} { return replace }
 
-  # wtf
-  option add *Dialog.msg.wrapLength 4i interactive
-  # &&& Can't bind <Escape> inside tk_dialog , and wtf does the #3 button have two outlines
+  # http://wiki.tcl.tk/1062
+  option add *Dialog.msg.wrapLength 5i interactive
+  # option add *Dialog.msg.font {Helvetica 10}
+  # Can't bind <Escape> inside tk_dialog.
+  # WTF does the #3 button have two outlines &&&
   catch {tk_dialog .dialog "Scid: $::tr(ReplaceMove)?" \
         $::tr(ReplaceMoveMessage) {} 2 \
         $::tr(ReplaceMove) $::tr(NewMainLine) \
