@@ -1918,7 +1918,7 @@ proc makeAnalysisWin { {n 1} } {
   # and for initial size
   text $w.hist.text -font font_Small -height 5 \
       -wrap word -setgrid 1 -yscrollcommand "$w.hist.ybar set"
-  $w.hist.text tag configure indent -lmargin2 [font measure font_Fixed "xxxxxxxxxxxx"]
+  $w.hist.text tag configure indent -lmargin2 [font measure font_Small xxxxxxxxxxxxxxxxxx]
   scrollbar $w.hist.ybar -command "$w.hist.text yview" -takefocus 0
   if { $analysis(showEngineInfo$n) } {
     pack $w.text -side bottom -fill both 
@@ -2642,7 +2642,7 @@ proc updateAnalysisText {{n 1}} {
   if { $analysis(uci$n) } {
     if {$cleared} { set analysis(multiPV$n) {} ; set analysis(multiPVraw$n) {} }
     if {$analysis(multiPVCount$n) == 1} {
-      set newhst [format "%2d %s %s" \
+      set newhst [format "%2d \[%s\]  %s" \
 		$analysis(depth$n)   \
 		[scoreToMate $score $moves $n]  \
 		[addMoveNumbers $n [::trans $moves]]]
@@ -2654,7 +2654,7 @@ proc updateAnalysisText {{n 1}} {
       $h delete 1.0 end
       # First line
       set pv [lindex $analysis(multiPV$n) 0]
-      catch { set newStr [format "%2d %s " [lindex $pv 0] [scoreToMate $score [lindex $pv 2] $n] ] }
+      catch { set newStr [format "%2d \[%s\]  " [lindex $pv 0] [scoreToMate $score [lindex $pv 2] $n] ] }
       
       $h insert end {1 } gray
       append newStr "[addMoveNumbers $n [::trans [lindex $pv 2]]]\n"
@@ -2665,13 +2665,13 @@ proc updateAnalysisText {{n 1}} {
         if {$lineNumber == 1} { incr lineNumber ; continue }
         $h insert end "$lineNumber " gray
         set score [scoreToMate [lindex $pv 1] [lindex $pv 2] $n]
-        $h insert end [format "%2d %s %s\n" [lindex $pv 0] $score [addMoveNumbers $n [::trans [lindex $pv 2]]] ] indent
+        $h insert end [format "%2d \[%s\]  %s\n" [lindex $pv 0] $score [addMoveNumbers $n [::trans [lindex $pv 2]]] ] indent
         incr lineNumber
       }
     }
   } else  {
     # original Scid analysis display
-    append line [format "%2d %+5.2f %s (%.2f)\n" $analysis(depth$n) $score [::trans $moves] $analysis(time$n)] 
+    append line [format "%2d \[%+5.2f\]  %s (%.2f)\n" $analysis(depth$n) $score [::trans $moves] $analysis(time$n)] 
   }
 
   ### Should we truncate line so it only takes up one line ? S.A.
