@@ -655,7 +655,6 @@ menuText P FinderTypesScid "Bazy Scid-a" 0
 menuText P FinderTypesOld "Bazy Scid-a (stary format)" 1
 menuText P FinderTypesPGN "Pliki PGN" 0
 menuText P FinderTypesEPD "Ksi±¿ki debiutowe EPD" 0
-menuText P FinderTypesRep "Pliki repertuaru debiutowego" 0
 menuText P FinderHelp "Pomoc" 2
 menuText P FinderHelpFinder "Pomoc poszukiwacza plików" 1
 menuText P FinderHelpIndex "Spis tre¶ci" 0

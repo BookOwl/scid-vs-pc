@@ -612,7 +612,6 @@ menuText C FinderTypesScid "Databáze Scidu" 0
 menuText C FinderTypesOld "Databáze Scidu starého formátu" 15
 menuText C FinderTypesPGN "PGN soubory" 0
 menuText C FinderTypesEPD "EPD soubory" 0
-menuText C FinderTypesRep "Repertoárové soubory" 0
 menuText C FinderHelp "Nápovìda" 0
 menuText C FinderHelpFinder "Nápovìda - Vyhledávaè souborù" 11
 menuText C FinderHelpIndex "Index nápovìdy" 0

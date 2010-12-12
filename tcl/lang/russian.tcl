@@ -654,7 +654,6 @@ menuText R FinderTypesScid "База данных Scid" 0
 menuText R FinderTypesOld "Старый формат базы данных Scid" 0
 menuText R FinderTypesPGN "Файлы PGN" 0
 menuText R FinderTypesEPD "Файлы EPD" 1
-menuText R FinderTypesRep "Файлы репертуара" 6
 menuText R FinderHelp "Помощь" 0
 menuText R FinderHelpFinder "Помощь по поиску файлов" 0
 menuText R FinderHelpIndex "Индекс помощи" 0

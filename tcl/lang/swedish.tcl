@@ -653,7 +653,6 @@ menuText W FinderTypesScid "Sciddatabaser" 0
 menuText W FinderTypesOld "Sciddatabaser i äldre format" 0
 menuText W FinderTypesPGN "PGN-filer" 0
 menuText W FinderTypesEPD "EPD-filer" 0
-menuText W FinderTypesRep "Öppningsfiler" 0
 menuText W FinderHelp "Hjälp" 0
 menuText W FinderHelpFinder "Hjälp för Filsökaren" 0
 menuText W FinderHelpIndex "Hjälpindex" 0

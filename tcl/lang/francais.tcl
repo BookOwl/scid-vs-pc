@@ -561,7 +561,6 @@ menuText F FinderTypesScid "Bases Scid" 0
 menuText F FinderTypesOld "Bases Scid à l'ancien format" 0
 menuText F FinderTypesPGN "fichiers PGN" 0
 menuText F FinderTypesEPD "fichiers EPD (théorie)" 0
-menuText F FinderTypesRep "fichiers des répertoires" 0
 menuText F FinderHelp "Aide" 0
 menuText F FinderHelpFinder "Aide de l'explorateur de fichiers" 0
 menuText F FinderHelpIndex "Index" 0

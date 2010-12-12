@@ -51,7 +51,7 @@ proc ::file::finder::Open {} {
 
   $w.menu add cascade -label FinderTypes -menu $w.menu.types
   menu $w.menu.types -tearoff 1
-  foreach type {Scid Old PGN Rep EPD} {
+  foreach type {Scid Old PGN EPD} {
     $w.menu.types add checkbutton -label FinderTypes$type \
         -variable ::file::finder::data($type) -onvalue 1 -offvalue 0 \
         -command ::file::finder::Refresh
@@ -78,7 +78,6 @@ proc ::file::finder::Open {} {
   $w.t.text tag configure PGN -foreground blue
   $w.t.text tag configure Scid -foreground skyblue
   $w.t.text tag configure Old -foreground black
-  $w.t.text tag configure Rep -foreground darkGreen
   $w.t.text tag configure EPD -foreground orange
   $w.t.text tag configure bold -font font_SmallBold
   $w.t.text tag configure center -justify center
@@ -508,7 +507,7 @@ proc ::file::finder::ConfigMenus {{lang ""}} {
   foreach idx {0 1 2 3 4} tag {Type Size Mod Name Path} {
     configMenuText $m.sort $idx FinderSort$tag $lang
   }
-  foreach idx {1 2 3 4 5} tag {Scid Old PGN Rep EPD} {
+  foreach idx {1 2 3 4 5} tag {Scid Old PGN EPD} {
     configMenuText $m.types $idx FinderTypes$tag $lang
   }
   foreach idx {0 1} tag {Finder Index} {
