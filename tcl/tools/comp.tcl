@@ -330,8 +330,7 @@ proc compNM {n m k} {
   } else {
     sc_game tags set -event "$comp(name)"
   }
-  sc_game tags set -date [::utils::date::today]
-  sc_game tags set -round $k
+  sc_game tags set -date [::utils::date::today] -round $k -extra "{Movetime \"$comp(seconds)\"}"
   update idletasks
   updateBoard -pgn
 
