@@ -6007,7 +6007,7 @@ sc_game_crosstable (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv
         // Ensure we have two different players:
         if (whiteId == blackId) { continue; }
 
-        // If option is OPT_FILTER, adjust the filter and continue:
+        // If option is OPT_FILTER, adjust the filter and continue &&&
         if (option == OPT_FILTER) {
             db->filter->Set (i, 1);
             continue;

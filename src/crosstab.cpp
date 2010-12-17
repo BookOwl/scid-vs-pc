@@ -1070,6 +1070,8 @@ Crosstable::PrintKnockout (DString * dstr, uint playerLimit)
             clashT * clash = pdata->roundClash[round];
             if (clash == NULL) { continue; }
             if (pdata->printed) { continue; }
+            // if black first, skip this game till white is first
+            if (clash->color == 1) { continue; }
             uint opponent = clash->opponent;
             uint score = 0;
             uint nGames = 0;
@@ -1081,7 +1083,8 @@ Crosstable::PrintKnockout (DString * dstr, uint playerLimit)
                 }
                 clash = clash->next;
             }
-            if (score < nGames) { continue; }
+            // Skip this to allow white to be shown first
+            // if (score < nGames) { continue; }
             dstr->Append (StartRow);
             PrintPlayer (dstr, pdata);
 
