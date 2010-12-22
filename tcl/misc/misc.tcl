@@ -106,7 +106,7 @@ proc dialogbutton {w args} {
 #   not needed.
 #   The frame and widget may already exist; they are created if needed.
 #   Usage:
-#      autoscrolltext [-bars none|x|y|both] frame type w args
+#      autoscrollframe [-bars none|x|y|both] frame type w args
 #      autoscrollframe                .gameInfoFrame text .gameInfo
 
 proc autoscrollframe {args} {

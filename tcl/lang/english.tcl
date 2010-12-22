@@ -1257,10 +1257,8 @@ translate E GotoMoveNumber {Goto move number:}
 # Copy games dialog:
 translate E CopyGames {Copy games}
 translate E CopyConfirm {
- Do you really want to copy
- the [::utils::thousands $nGamesToCopy] filtered games
- in the database "$fromName"
- to the database "$targetName"?
+Copy [::utils::thousands $nGamesToCopy] game(s)
+from "$fromName" to "$targetName"?
 }
 translate E CopyErr {Cannot copy games}
 translate E CopyErrSource {The source database}

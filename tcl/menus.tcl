@@ -260,7 +260,7 @@ set helpMessage($m,[incr menuindex]) FileReadOnly
 $m add cascade -label FileSwitch -menu $m.switch
 set helpMessage($m,[incr menuindex]) FileSwitch
 
-# .menu.file.swicth menu items added in updateMenuStates
+# .menu.file.switch menu items added in updateMenuStates
 menu $m.switch -tearoff 1
 
 set totalBaseSlots [sc_base count total]

@@ -628,7 +628,7 @@ proc copyFilter {frombaseNum tobaseNum} {
   set w [toplevel .fcopyWin]
   wm withdraw $w
   wm title $w "Scid: $::tr(CopyGames)"
-  label $w.text -text [subst $::tr(CopyConfirm)]
+  label $w.text -text [subst $::tr(CopyConfirm)] -justify left
   frame $w.b
   dialogbutton $w.b.go -text $::tr(CopyGames) -command "
     busyCursor .
@@ -650,7 +650,7 @@ proc copyFilter {frombaseNum tobaseNum} {
   $w.bar create text 295 10 -anchor e -font font_Regular -tags time \
       -fill black -text "0:00 / 0:00"
 
-  pack $w.text $w.b -side top -pady 5
+  pack $w.text $w.b -side top -pady 2
   pack $w.bar -side bottom
   pack $w.b.go $w.b.cancel -side left -padx 10 -pady 10
   placeWinOverParent $w .baseWin
