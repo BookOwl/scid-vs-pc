@@ -42,9 +42,6 @@ proc importPgnGame {} {
 
   text $pane.err.text -height 6 -width 75 -wrap word \
       -yscroll "$pane.err.scroll set"
-  $pane.err.text insert end $::tr(ImportHelp1)
-  $pane.err.text insert end "\n"
-  $pane.err.text insert end $::tr(ImportHelp2)
   scrollbar $pane.err.scroll -command "$pane.err.text yview" -takefocus 0
   pack $pane.err.scroll -side right -fill y
   pack $pane.err.text -side left -expand true -fill both
@@ -76,6 +73,11 @@ proc importPgnGame {} {
   # Paste the current selected text automatically:
   if {![catch {set texttopaste [selection get]}]} {
     $w.pane.edit.text insert end $texttopaste
+  } 
+  if {![info exists texttopaste] || $texttopaste == {}} {
+    $w.pane.err.text insert end $::tr(ImportHelp1)
+    $w.pane.err.text insert end "\n"
+    $w.pane.err.text insert end $::tr(ImportHelp2)
   }
 
   bind $w <F1> { helpWindow Import }
@@ -230,7 +232,7 @@ proc doPgnFileImport {fname text {multiple 0} } {
     set str "Imported $nImported "
     if {$nImported == 1} { append str "game" } else { append str "games" }
     if {$warnings == ""} {
-      append str " with no PGN errors or warnings."
+      append str " successfully."
     } else {
       append str ".\nPGN errors/warnings:\n$warnings"
     }

@@ -332,6 +332,7 @@ proc ::enginelist::listEngines {{focus 0}} {
     $f insert end $text
   }
   $f selection set $focus
+  $f see $focus
 
   $w.title configure -state normal
   foreach i {Name Elo Time} {
@@ -408,6 +409,12 @@ proc ::enginelist::choose {} {
     ::enginelist::edit [lindex [.enginelist.list.list curselection] 0]
   }
 
+  frame $w.buttons.move -padx 0 -pady 0
+  # arrow images defined in gamelist.tcl
+  button $w.buttons.move.up   -image arrow_up   -command {::enginelist::move -1} -width 15
+  button $w.buttons.move.down -image arrow_down -command {::enginelist::move 1} -width 15
+  pack $w.buttons.move.up $w.buttons.move.down -side top
+
   dialogbutton $w.buttons.delete -text $::tr(Delete) -command {
     ::enginelist::delete [lindex [.enginelist.list.list curselection] 0]
   }
@@ -422,7 +429,7 @@ proc ::enginelist::choose {} {
     destroy .enginelist
   }
 
-  pack $w.buttons.add $w.buttons.edit $w.buttons.delete $w.buttons.start -side left -expand yes
+  pack $w.buttons.move $w.buttons.add $w.buttons.edit $w.buttons.delete $w.buttons.start -side left -expand yes
   pack $w.buttons -side top -pady 12 -padx 2 -fill x
   pack $w.close -side bottom -pady 8
   focus $w.buttons.start
@@ -704,6 +711,50 @@ proc ::enginelist::edit {index} {
   # bind $w <Configure> "recordWinSize $w"
   # wm resizable $w 1 0
   # catch {grab $w}
+}
+
+proc ::enginelist::move {dir} {
+  global engines
+
+  set current [lindex [.enginelist.list.list curselection] 0]
+  set max [llength $engines(list)]
+
+  for {set i 1} {$i <= $max} {incr i} {
+    if {[winfo exists .analysisWin$i]} {
+      tk_messageBox -title Scid \
+	  -icon warning -type ok -parent .enginelist \
+	  -message "Please close all Engines first"
+      return
+    }
+  }
+  if {($dir == -1 && $current == 0) || ($dir == 1 && $current == $max-1)} {
+    return
+  }
+  if {$dir == -1} {
+    set lead  [lrange $engines(list) 0 [expr $current - 2]]
+    set item  [lindex $engines(list) $current]
+    set swap  [lindex $engines(list) [expr $current - 1]]
+    set trail [lrange $engines(list) [expr $current + 1] end]
+    set engines(list) [concat $lead [list $item] [list $swap] $trail]
+  } else {
+    set lead  [lrange $engines(list) 0 [expr $current - 1]]
+    set item  [lindex $engines(list) $current]
+    set swap  [lindex $engines(list) [expr $current + 1]]
+    set trail [lrange $engines(list) [expr $current + 2] end]
+    set engines(list) [concat $lead [list $swap] [list $item] $trail]
+  }
+  # Update the F2 key bindings
+  foreach f {F2 F3 F4} {
+    if {$engines($f) == $current+1} {
+     set engines($f) [expr $current +1 +$dir]
+    } else {
+      if {$engines($f) == $current+1+$dir} {
+       set engines($f) [expr $current+1]
+      }
+    }
+  }
+  ::enginelist::listEngines [expr $current + $dir]
+  ::enginelist::write
 }
 
 proc  checkState {arg widget} {
