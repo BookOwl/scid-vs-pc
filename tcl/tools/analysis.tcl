@@ -470,6 +470,13 @@ Confirm delete engine\n"
       -message $msg -parent .enginelist]
   if {$answer == "ok"} {
     set engines(list) [lreplace $engines(list) $index $index]
+    foreach f {F2 F3 F4} {
+      if {$engines($f) == $index+1} {
+        set engines($f) {}
+      } elseif {$engines($f) > $index} {
+        incr engines($f) -1
+      }
+    }
     ::enginelist::listEngines
     ::enginelist::write
   }
@@ -685,6 +692,9 @@ proc ::enginelist::edit {index} {
 
       if {$engines(newIndex) < 0} {
         lappend engines(list) $newEntry
+	if { $hotkey == "F2" || $hotkey == "F3" || $hotkey == "F4" } {
+	  set engines($hotkey) [llength $engines(list)]
+        }
       } else {
         set engines(list) [lreplace $engines(list) \
             $engines(newIndex) $engines(newIndex) $newEntry]
