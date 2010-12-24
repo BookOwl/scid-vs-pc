@@ -270,7 +270,7 @@ proc ::windows::gamelist::Open {} {
   $w.tree tag configure treefont -font font_Regular
 
   $w.tree tag bind click2 <Double-Button-1> {::windows::gamelist::Load [%W set [%W focus] Number]}
-  $w.tree tag configure deleted -foreground gray70
+  $w.tree tag configure deleted -foreground gray80
 
   # Hmm... seems no way to change the deafult blue bg colour for selected items
   # without using (extra) tags. So this colour must look ok with a blue background
@@ -630,7 +630,7 @@ proc ::windows::gamelist::Refresh {{see {}}} {
     set values [sc_game list $line 1 $glistCodes]
     if {[lindex $values 0] == "$current "} {
       set current_item [$w.tree insert {} end -values $values -tag [list click2 current]]
-    } elseif {[lindex $values 13] == {D }} {
+    } elseif {[lindex $values 12] == {D }} {
       $w.tree insert {} end -values $values -tag [list click2 deleted] ;#treefont
     } else {
       $w.tree insert {} end -values $values -tag click2
