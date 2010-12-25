@@ -1390,7 +1390,7 @@ set helpText(Comment) {<h1>The Comment Editor Window</h1>
 set helpTitle(Crosstable) "Crosstable window"
 set helpText(Crosstable) {<h1>The Crosstable Window</h1>
   <p>
-  The crosstable window shows the tournament crosstable for the
+  The crosstable shows the tournament results for the
   current game. Each time you refresh the crosstable window (by
   pressing its Refresh button, by pressing the <b>Return</b> key in the
   crosstable window, or by typing <b>Control+Shift+X</b> in the
@@ -1403,8 +1403,7 @@ set helpText(Crosstable) {<h1>The Crosstable Window</h1>
   the tournament.
   </p>
   <p>
-  A single left-mouse button click on any result in the crosstable
-  loads the corresponding game.
+  Clicking on a result in the crosstable loads the corresponding game.
   You can add all the games in the tournament to the
   <a Searches Filter>filter</a>
   with the <b>Add to filter</b> button in the crosstable window.

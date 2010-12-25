@@ -2,9 +2,9 @@
 ### Correspondence.tcl: part of Scid.
 ### Copyright (C) 2008 Alexander Wagner
 ###
-### $Id: correspondence.tcl,v 1.98 2010/08/02 16:06:14 arwagner Exp $
+### $Id: correspondence.tcl,v 1.101 2010/12/23 14:08:18 arwagner Exp $
 ###
-### Last change: <Sat, 2010/07/31 15:34:10 arwagner ingata>
+### Last change: <Thu, 2010/12/23 14:55:12 arwagner agamemnon>
 ###
 ### Add correspondence chess via eMail or external protocol to scid
 ###
@@ -1673,7 +1673,6 @@ namespace eval CorrespondenceChess {
 				set ::CorrespondenceChess::RelayGames {}
 				foreach game [split $text "\n"] {
 					set game [string trim $game]
-					## if {[string match "*www.iccf-webchess.com/MakeAMove.aspx*" $game]} {}
 					if {[string match "*$stripforid*" $game]} {
 						lappend ::CorrespondenceChess::RelayGames $game
 					}
@@ -2745,6 +2744,7 @@ namespace eval CorrespondenceChess {
 		# a lot in case of large DBs. Also: disregard deleted games,
 		# this avoids the necessity to compact a db in case of
 		# accidential duplication of a game.
+		# -filter 2: Ignore previous searches
 		set str [sc_search header \
 					-event $Event    \
 					-site $Site      \
@@ -2752,8 +2752,11 @@ namespace eval CorrespondenceChess {
 					-black $Black    \
 					-pgn $sPgnlist   \
 					-fDelete no      \
+					-filter 2        \
 					-gameNumber [list 1 -1] \
 					]
+
+		CorrespondenceChess::updateConsole "info: search [sc_filter count]"
 
 		::windows::gamelist::Refresh
 		::windows::stats::Refresh

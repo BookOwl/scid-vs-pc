@@ -526,8 +526,8 @@ scid_InitTclTk (Tcl_Interp * ti)
         db->fileMode = FMODE_Both;
         db->inUse = false;
         db->filter = new Filter(0);
-		db->dbFilter = db->filter;
-		db->treeFilter = NULL;
+        db->dbFilter = db->filter;
+        db->treeFilter = NULL;
         db->numGames = 0;
         db->memoryOnly = false;
         db->duplicates = NULL;
@@ -1455,10 +1455,10 @@ sc_base_close (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
     basePtr->idx->SetDescription (errMsgNotOpen(ti));
 
     if (basePtr->dbFilter && basePtr->dbFilter != basePtr->filter) { delete basePtr->dbFilter; }
-	if (basePtr->filter) { delete basePtr->filter; }
+    if (basePtr->filter) { delete basePtr->filter; }
     if (basePtr->treeFilter) { delete basePtr->treeFilter; }
     basePtr->filter = new Filter(0);
-	basePtr->dbFilter = basePtr->filter;
+    basePtr->dbFilter = basePtr->filter;
     basePtr->treeFilter = NULL;
 
     if (basePtr->duplicates != NULL) {
@@ -4032,7 +4032,7 @@ sc_clipbase_clear (Tcl_Interp * ti)
     if (clipbase->filter != NULL) { delete clipbase->filter; }
     if (clipbase->treeFilter != NULL) { delete clipbase->treeFilter; }
     clipbase->filter = new Filter (clipbase->numGames);
-	clipbase->dbFilter = clipbase->filter;
+    clipbase->dbFilter = clipbase->filter;
     clipbase->treeFilter = NULL;
 
     clipbase->inUse = true;
@@ -4330,12 +4330,14 @@ sc_compact_games (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
     db->idx->ReadEntireFile ();
     db->gfile->Open (db->fileName, db->fileMode);
 
-    if (db->dbFilter && db->dbFilter != db->filter) { delete db->dbFilter; }
-	delete db->filter;
-	if(db->treeFilter) delete db->treeFilter;
+    if (db->dbFilter && db->dbFilter != db->filter)
+       delete db->dbFilter;
+    delete db->filter;
+    if(db->treeFilter)
+       delete db->treeFilter;
     db->filter = newFilter;
-	db->dbFilter = newFilter;
-	db->treeFilter = NULL;
+    db->dbFilter = newFilter;
+    db->treeFilter = NULL;
 
     db->gameNumber = -1;
     db->numGames = db->idx->GetNumGames();
@@ -8179,10 +8181,10 @@ sc_savegame (Tcl_Interp * ti, Game * game, gameNumberT gnum, scidBaseT * base)
     // We need to increase the filter size if a game was added:
     if (! replaceMode) {
         base->filter->Append (1);  // Added game is in filter by default.
-		if(base->filter != base->dbFilter)
-			base->dbFilter->Append (1); 
-		if(base->treeFilter)
-			base->treeFilter->Append (1);
+        if(base->filter != base->dbFilter)
+           base->dbFilter->Append (1); 
+        if(base->treeFilter)
+           base->treeFilter->Append (1);
 
         if (base->duplicates != NULL) {
 #ifdef WINCE
@@ -13593,6 +13595,7 @@ sc_tree_search (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
     {
 	    base->treeFilter = new Filter( base->numGames);
 	    base->dbFilter = new Filter( base->numGames);
+	    // can we do a memcpy &&&
 	    for (uint i=0; i < base->numGames; i++)
 		    base->dbFilter->Set( i, base->filter->Get(i));
     }

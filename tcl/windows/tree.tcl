@@ -3,8 +3,9 @@
 ### TREE window
 ### (C) 2007 Pascal Georges : multiple Tree windows support
 
-# Originally authored by Shane Hudson.
-# All Mask features by Pascal Georges [S.A.]
+### tree.tcl
+### Originally authored by Shane Hudson.
+### All Mask features by Pascal Georges [S.A.]
 
 namespace eval ::tree {
   set trainingBase 0
@@ -1326,7 +1327,6 @@ proc ::tree::primeWithBase {{ fillMask 0 }} {
 proc ::tree::primeWithGame { { fillMask 0 } } {
   set ::tree::totalMoves [countBaseMoves "singleGame" ]
   sc_move start
-  #----# updateBoard -pgn
   if {$fillMask} { ::tree::mask::feedMask [ sc_pos fen ] }
 
   set ::tree::parsedMoves 0
@@ -1359,10 +1359,8 @@ proc ::tree::parseGame {{ fillMask 0 }} {
       # enter each var (beware the first move is played)
       set fen [ sc_pos fen ]
       sc_var enter $v
-      #----# updateBoard -pgn
       if {$fillMask} { ::tree::mask::feedMask $fen }
       if {$::tree::cancelPrime } { return }
-      #----# ::tree::refresh
       if {$::tree::cancelPrime } { return }
       ::tree::parseVar $fillMask
       if {$::tree::cancelPrime } { return }
@@ -1370,11 +1368,9 @@ proc ::tree::parseGame {{ fillMask 0 }} {
     # now treat the main line
     set fen [ sc_pos fen ]
     sc_move forward
-    #----# updateBoard -pgn
     if {$fillMask} { ::tree::mask::feedMask $fen }
     incr ::tree::parsedMoves
     if {$::tree::cancelPrime } { return }
-    #----# ::tree::refresh
     if {$::tree::cancelPrime } { return }
   }
 }
@@ -1387,10 +1383,8 @@ proc ::tree::parseVar {{ fillMask 0 }} {
     for {set v 0} {$v<[sc_var count]} {incr v} {
       set fen [ sc_pos fen ]
       sc_var enter $v
-      #----# updateBoard -pgn
       if {$fillMask} { ::tree::mask::feedMask $fen }
       if {$::tree::cancelPrime } { return }
-      #----# ::tree::refresh
       if {$::tree::cancelPrime } { return }
       # we are at the start of a var, before the first move : start recursive calls
       parseVar $fillMask
@@ -1399,12 +1393,10 @@ proc ::tree::parseVar {{ fillMask 0 }} {
 
     set fen [ sc_pos fen ]
     sc_move forward
-    #----# updateBoard -pgn
     if {$fillMask} { ::tree::mask::feedMask $fen }
     incr ::tree::parsedMoves
     updateProgressWindow $::tree::parsedMoves $::tree::totalMoves
     if {$::tree::cancelPrime } { return }
-    #----# ::tree::refresh
     if {$::tree::cancelPrime } { return }
   }
 
@@ -2576,7 +2568,6 @@ image create photo ::tree::mask::imageMainLine -data {
   vm7BEsI3SRgvXbZgsWIlC5QlRDKAVchdYUAAOw==
 }
 
-#----------------------------------------------------------------------
 if {$png_image_support} {
 	image create photo ::tree::mask::imageMainLine -data {
 		iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABmJLR0QA/wD/AP+gvaeTAAAACXBI
@@ -2592,4 +2583,5 @@ if {$png_image_support} {
 		AAAAAElFTkSuQmCC
 	}
 }
-#----------------------------------------------------------------------
+
+### end of tree.tcl
