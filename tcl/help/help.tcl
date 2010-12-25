@@ -373,6 +373,7 @@ set helpText(Index) {<h1>Scid Help Index</h1>
   <li><a PTracker>Piece Tracker</a> window</li>
   <li><a PList>Player Finder</a> window</li>
   <li><a PInfo>Player Info</a> window</li>
+  <li><a Maintenance Spellcheck>Player</a> names</li>
   <li><a Reports Player>Player report</a> window</li>
   <li><a TacticalGame>Play tactical game</a></li>
   <li><a SeriousGame>Play serious game</a></li>
@@ -395,7 +396,7 @@ set helpText(Index) {<h1>Scid Help Index</h1>
   <li><a Menus Search>Search menu</a></li>
   <li><a SeriousGame>Play serious game</a></li>
   <li><a Sorting>Sorting a database</a></li>
-  <li><a Maintenance Spellcheck>Spellchecking names</a></li>
+  <li><a Maintenance Spellcheck>Spellchecking</a> names</li>
   <li><a Switcher>Switcher</a> window</li>
   </ul>
 
@@ -2448,37 +2449,32 @@ set helpText(Compact) {<h1>Database Compaction</h1>
 set helpTitle(Maintenance) "Database Maintenance"
 set helpText(Maintenance) {<h1>Database Maintenance</h1>
   <p>
-  Scid provides a number of tools for maintaining databases,
-  available from the Scid <a Menus File>File</a> menu. The
-  database <a Compact>compaction</a> and <a Sorting>sorting</a>
-  functions are explained in separate help pages.
-  </p>
-
-  <h3>Maintenance window</h3>
-  <p>
-  Most Scid database maintenance can be done from the Maintenance
-  window, which can be opened from the <menu>File: Maintenance</menu>
-  or <menu>Windows</menu> menus or the shortcut key <b>Ctrl+M</b>.
-  </p>
-  <p>
+  Most Scid Database maintenance can be done from the
+<green><run ::maint::OpenClose>Maintenance Window</b></run></green>
+  (control+m).
   You can use this window to maintain <a Flags>game flags</a>,
-  spellcheck names, <a Compact>compact</a> or <a Sorting>sort</a>
-  a database. Note that any operations that are not available
-  for the current database (for example, because it may be read-only
-  or a PGN file) will be grayed out.
+  <a Maintenance Spellcheck>spellcheck</a> names,
+  compact, and sort databases.
+  </p><p>
+  <i>Note - operations that are not available
+  for the current database (for eg, because it may be read-only,
+  or a PGN file) will be grayed out</i>.
   </p>
 
-  <h3><name Twins>Deleting twin games</name></h3>
+  <h3>Compaction and Sorting</h3>
   <p>
-  The Delete twin games feature (accesible from the
-  <b>Maintenance</b> menu) enables deleting extra
-  copies, or twins, in the database.  It finds all pairs
+<a Compact>Compaction</a> and <a Sorting>Sorting</a> features are documented separately.
+  </p>
+  <h3><name Twins>Deleting Twin Games</name></h3>
+  <p>
+  The Delete twin games feature enables removal of extra
+  copies - or twins - from the database.  It finds all pairs
   that are twins and flags one as deleted.
   </p>
   <p>
-  Two games are considered to be twins if their players, and
+  Two games are considered twins if their players, and
   any other tags that you can optionally specify, exactly
-  match.  If you specify the "<b>same moves</b>" option (which
+  match.  If you specify the <b>same moves</b> option (which
   is strongly recommended), each pair of games must have the
   same actual moves up to the length of the shorter game (or
   move 60, whichever comes first) to be twins.
@@ -2494,99 +2490,86 @@ set helpText(Maintenance) {<h1>Database Maintenance</h1>
   toggle the delete fields of one or both games.
   </p>
 
-  <h3><name Editing>Editing player, event, site and round names</name></h3>
+  <h3><name Editing>Editing Names</name></h3>
   <p>
-  You may find mis-spelt names in your databases and want to correct them.
-  You can do this in Scid with the <term>Name editor</term> window
-  (shortcut key: <b>Control+Shift+N</b>),
-  available from the <menu>File: Maintenance</menu> submenu.
+  The 
+  <run nameEditor><green>Name Editor</green></run>
+  (Control+Shift+N),
+  is a tool to selectively edit entity names.
   </p>
   <p>
-  Each unique name is only stored once in the name file, so changing a name
+  Each unique name is only stored once in the <a Formats>name file</a>, so changing a name
   actually changes all occurrences of it.
   </p>
 
-  <h3><name Spellcheck>Spellchecking names</name></h3>
+  <h3><name Spellcheck>Spell Checking Names</name></h3>
   <p>
-  Scid comes with a <term>spellcheck</term> file named <b>spelling.ssp</b>,
-  for correction of player, event, site and round names.
-  Scid will try to load the spellcheck file whenever it starts up; if it
-  does not load, you can load it from the <menu>Options</menu> menu.
+  Scid has the ability to correct mis-spelt Player, Event, Site and Round names.
+  This is especially useful for standardizing player names throughout a database.
+  For example, the names "Kramnik,V.", "Vladimir Kramnik", and "V. Kramnik"
+  would all be corrected to "Kramnik, Vladimir".
   </p>
   <p>
-  Once the spellcheck file is loaded, you can use it on a
-  a Scid Database using the spellcheck commands in the
-  <menu>File: Maintenance</menu> menu, or from the maintenance window.
+  To do so, the "spelling.ssp" file should be installed into Scid's data directory
+  (or it can be loaded manually via
+  <run readSpellCheckFile><green>Options--<gt>Load Spellcheck File</green></run>.
+  When spellcheck is run, a list of corrections is produced. This list
+  can then be selectively edited before making any actual changes.
   </p>
   <p>
-  When you spellcheck a database, Scid produces a list of corrections that you
-  can edit before actually making any corrections, so you can remove any
-  corrections you do not want to make.
+  The spellcheck file has one additional use. When it is loaded, its player data is
+  used to enhance the <a PInfo>player information</a> and <a Crosstable>crosstable</a> windows.
+  You will see FIDE master titles
+  (eg International Grandmaster)
+  and country information, for any player that is
+  listed in the spellcheck file. Over a 100,000 strong players of the past and
+  present are included.
   </p>
-  <p>
-  Spellchecking is especially useful for standardizing a database so all
-  instances of a particular player are spelt the same way.
-  For example, with the standard spellcheck file, the names "Kramnik,V.",
-  "Vladimir Kramnik", and "V. Kramnik" would all be corrected
-  to "Kramnik, Vladimir".
-  </p>
-  <p>
-  The spellcheck file has one
-  additional use: when it is loaded, its player data is
-  used to enhance the <a PInfo>player information</a> window and the
-  <a Crosstable>crosstable</a> window:
-  you will see FIDE master title
-  (<b>gm</b> = International Grandmaster, <b>im</b> = International Master, etc)
-  and country information for any player that is
-  listed in the spellcheck file. Over 6500 strong players of the past and
-  present are listed in the <b>spelling.ssp</b> file that comes with Scid.
-  </p>
+  <p><i>
+  Updated versions of the spellcheck resource files
+  are available at <url http://linweb.ris.at/~nagl/index.html>http://linweb.ris.at/~nagl/index.html</url>.
+  </i></p>
 
-  <h3><name Ratings>Adding Elo ratings to games</name></h3>
+  <h3><name Ratings>Adding Elo Ratings to Games</name></h3>
   <p>
-  The "Add Elo ratings..." button in the Maintenance window causes Scid
-  to search the current database for games where a player does not have
-  a rating, but the spellcheck file has an Elo rating listed for that
-  player at the date of the game. Scid will add all such ratings
-  automatically. This is very useful for a database of master-level games
-  which has few ratings.
+  The "Add Elo ratings..." button 
+  searches for games with null player ratings.
+  If the spellcheck file has an ELO rating for the
+  player - at the date of the game - Scid will add such ratings
+  to the database.
   </p>
   <p>
-  The spellcheck file "spelling.ssp" that comes with Scid does not contain
-  the Elo rating information needed for this function, but a larger version
-  of it called "ratings.ssp" is available from the <url
-  http://scid.sourceforge.net/>Scid website</url>.
+  The spellcheck file "spelling.ssp" provided with Scid does not contain
+  the Elo rating information needed for this function. Instead,
+  the larger "ratings.ssp" file should be used.
   </p>
 
   <h3><name Cleaner>The Cleaner</name></h3>
   <p>
-  The Scid <term>Cleaner</term> (available from the Maintenance window) is
-  a tool for doing a number of maintenance tasks on a database in one
-  action. You can choose which tasks you want to do, and Scid will
+  The <run cleanerWin><green>Cleaner</green></run> window
+  is a tool for doing a number of maintenance tasks at one time.
+  You can choose which tasks you want to do, and Scid will
   perform them on the current database without requiring user interaction.
   This is especially useful for maintenance of large databases.
   </p>
 
-  <h3>Setting the database autoload game</h3>
+  <h3>Autoloading a Game</h3>
   <p>
-  The <term>autoload</term> game of a database is the game automatically
-  loaded whenever that database is opened. To change the autoload game of
-  a database, use the "Autoload game number..." button. If you always want
-  the last game of a database to be opened (regardless of the actual number
-  of games in the database), just set it to a very high number such as
-  9999999.
+  When a database is opened, it is possible to automatically load a particular game
+  using <b>Autoload game number...</b>. To automatically load the
+  last game of a database, just select a very high number (eg 9999999).
   </p>
 
-  <h3>Repair a base</h3>
+  <h3>Repair a Base</h3>
   <p>
   In the rare cases that a Scid Database is corrupted one might try to
-  repair it using File / Maintanance / Repair base. For this to work,
+  repair it using File--<gt>Maintanance--<gt>Repair base. For this to work,
   the base in question must not be opened (which is not possible in
   most cases anyway). Scid will then try its best to get the database
   back in a consistent and usable state.
   </p>
 
-  <p><footer>Updated: Scid vs. PC 4.1, August 2010</footer></p>
+  <p><footer>Updated: Scid vs. PC 4.3, December 2010</footer></p>
 }
 
 ####################
@@ -4350,32 +4333,28 @@ set helpTitle(Related) "Links"
 set helpText(Related) {<h1>Related Links</h1>
   <p>
   <ul>
-  <li><url http://scidvspc.sourceforge.net/>http://scidvspc.sourceforge.net/</url> --
-  Scid vs. PC</li>
+  <li>Scid vs. PC  <url http://scidvspc.sourceforge.net/>http://scidvspc.sourceforge.net/</url></li>
+  <li>Project page  <url http://sourceforge.net/projects/scidvspc>http://sourceforge.net/projects/scidvspc</url></li>
   <br>
-  <li><url http://scid.sourceforge.net/>http://scid.sourceforge.net/</url> --
-  Scid Web Page</li>
-  <li><url http://sourceforge.net/mailarchive/forum.php?forum_name=scid-users>http://sourceforge.net/mailarchive/forum.php...</url>-- Scid Mailing List</url> 
-  <li><url http://www.freechess.org>www.freechess.org</url> -- Fics homepage</li>
+  <li>Scid <url http://scid.sourceforge.net/>http://scid.sourceforge.net/</url></li>
+  <li>Scid mailing list  <url http://sourceforge.net/mailarchive/forum.php?forum_name=scid-users>http://sourceforge.net/mailarchive/forum.php...</url></li>
+  <li>Fics homepage  <url http://www.freechess.org>www.freechess.org</url></li>
+  <li>Player Information resources  <url http://linweb.ris.at/~nagl/index.html>http://linweb.ris.at/~nagl</url></li>
+  <li>Professional quality chess icons, providing this project's new logo.  <url www.virtualpieces.net>www.virtualpieces.net</url></li>
+  <li>The PGN Standard, created by Steven J. Edwards in 1994, explains the PGN
+  and EPD formats in detail. <url www.saremba.de/chessgml/standards/pgn/pgn-complete.htm>www.saremba.de/chessgml/standards/pgn...</url></li>
   <br>
-  <li><url www.saremba.de/chessgml/standards/pgn/pgn-complete.htm>www.saremba.de/chessgml/standards/pgn...</url> -- The PGN Standard,
-  created by Steven J. Edwards in 1994, explains the PGN and EPD formats in detail.</li>
-  <br>
-  <li> <url www.chessvibes.com>www.chessvibes.com </url></li>
-  <li> <url www.chessbase.com/index.asp>www.chessbase.com/index.asp </url></li>
-  <li> <url www.chesscenter.com/twic/>www.chesscenter.com/twic/</url> 
--- A few popular chess portals. </li>
+  <li>A few popular chess portals.</li>
+  <li>  <url www.chessvibes.com>www.chessvibes.com </url></li>
+  <li>  <url www.chessbase.com/index.asp>www.chessbase.com/index.asp </url></li>
+  <li>  <url www.chesscenter.com/twic/>www.chesscenter.com/twic/</url></li>
 <br>
 
-  <li><url www.pgnmentor.com/files.html#players>www.pgnmentor.com/files.html#players</url> --
-  Pgn archive of famous players.</li>
-  <li><url www.pgnmentor.com/files.html#events>www.pgnmentor.com/files.html#events</url> --
-  Pgn archive of events.</li>
+  <li>Pgn of famous players  <url www.pgnmentor.com/files.html#players>www.pgnmentor.com/files.html#players</url></li>
+  <li>Pgn of events  <url www.pgnmentor.com/files.html#events>www.pgnmentor.com/files.html#events</url></li>
 
-  <li><url www.virtualpieces.net>www.virtualpieces.net</url> --
-  Professional quality chess icons, providing this project's new logo.</li>
   </ul>
-<p><footer>Updated: Scid vs PC 4.0, June 2010</footer></p>
+<p><footer>Updated: Scid vs PC 4.3, December 2010</footer></p>
 }
 
 # Book window help
