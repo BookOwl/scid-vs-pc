@@ -305,6 +305,7 @@ proc ::windows::gamelist::Open {} {
   bind $w <Up>    {::windows::gamelist::Scroll -1}
   bind $w <Down>  {::windows::gamelist::Scroll  1}
   bind $w <Prior> {::windows::gamelist::Scroll -$glistSize}
+  bind $w <Control-a> {.glistWin.tree selection set [.glistWin.tree children {}]}
   bind $w <Home> {
     set glstart 1
     ::windows::gamelist::Refresh first
@@ -355,7 +356,6 @@ proc ::windows::gamelist::Open {} {
     ::windows::gamelist::Refresh
   }
 
-  button $w.b.reset -text Reset -relief flat -command ::search::filter::reset
 
   ### Filter items. (Delete items is different)
   button $w.b.remove -textvar ::tr(GlistDeleteField) -relief flat -command {
@@ -363,12 +363,12 @@ proc ::windows::gamelist::Open {} {
     foreach i $items {
       sc_filter remove [.glistWin.tree set $i Number]
     }
-    set new_focus [.glistWin.tree set [.glistWin.tree next [lindex $items end]] Number]
+    set gl_num [.glistWin.tree set [.glistWin.tree next [lindex $items end]] Number]
     .glistWin.tree delete $items
 
     ::windows::stats::Refresh
     ::windows::gamelist::Refresh
-    ::windows::gamelist::showNum $new_focus
+    ::windows::gamelist::showNum $gl_num
 
     set ::windows::gamelist::finditems {}
     setGamelistTitle
@@ -377,6 +377,7 @@ proc ::windows::gamelist::Open {} {
 
   button $w.b.removeabove -text Rem -image arrow_up -compound right -relief flat -command {removeFromFilter up}
   button $w.b.removebelow -text Rem -image arrow_down -compound right -relief flat -command {removeFromFilter down}
+  button $w.b.reset -text Reset -relief flat -command ::search::filter::reset
 
   ### Filter items against the find entry widget
    button $w.b.filter -relief flat -text "Filter" \
@@ -404,8 +405,8 @@ proc ::windows::gamelist::Open {} {
     -variable ::windows::gamelist::findcase -onvalue 1 -offvalue 0
 
   pack $w.b.current -side left -padx 0
-  pack $w.b.findcase $w.b.find $w.b.findlabel $w.b.filter $w.b.reset -side right
-  pack $w.b.negate $w.b.remove $w.b.removeabove $w.b.removebelow -side left
+  pack $w.b.findcase $w.b.find $w.b.findlabel $w.b.filter -side right
+  pack $w.b.negate $w.b.remove $w.b.removeabove $w.b.removebelow $w.b.reset -side left
 
   ### Bottom row of buttons , etc
 
@@ -690,8 +691,9 @@ proc ::windows::gamelist::ToggleFlag {flag} {
   }
 }
 
+### Remove rom filter all games above or below the selected item(s)
+
 proc removeFromFilter {dir} {
-  global glNumber glstart
 
   set items [.glistWin.tree selection]
 
@@ -702,25 +704,19 @@ proc removeFromFilter {dir} {
     set i [lindex $items end]
   }
 
-  set glNumber [.glistWin.tree set $i Number]
+  set gl_num [.glistWin.tree set $i Number]
 
-  if {$glNumber < 1} { return }
-  if {$glNumber > [sc_base numGames]} { return }
-  if {$dir == "up"} {
-    incr glNumber -1
-    sc_filter remove 1 $glNumber
-    set glstart 1
+  if {$gl_num < 1} { return }
+  if {$gl_num > [sc_base numGames]} { return }
+  if {$dir == {up}} {
+    sc_filter remove 1 [expr $gl_num - 1]
   } else {
-    incr glNumber 
-    sc_filter remove $glNumber 9999999
+    sc_filter remove [expr $gl_num + 1] 9999999
   }
-
-  # set new_focus [.glistWin.tree set [.glistWin.tree next [lindex $items end]] Number]
-  # .glistWin.tree delete $items
 
   ::windows::stats::Refresh
   ::windows::gamelist::Refresh
-  # ::windows::gamelist::showNum $new_focus
+  ::windows::gamelist::showNum $gl_num
 
   set ::windows::gamelist::finditems {}
   setGamelistTitle

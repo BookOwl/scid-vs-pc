@@ -1635,7 +1635,7 @@ Buttons:
 Other features include:
 <ul>
 <li>Load games by double-clicking.</li>
-<li>Multiple games can be selected by using Shift or Control while single clicking.</li>
+<li>Multiple games can be selected by using Shift or Control while single clicking. <lt>Control+A<gt> selects all games visible in widget.</li>
 <li>Resize column widths by dragging the column edge.</li>
 <li>Sort games by single clicking the column title. </li>
 <li><b>Note</b>: <i>Sort resets the game filter, and the current game cannot be replaced</i>.</li>
