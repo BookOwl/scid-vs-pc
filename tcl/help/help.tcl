@@ -1623,6 +1623,8 @@ Buttons:
 <ul>
 <li><b>Reset</b> - resets game filter</li>
 <li><b>Remove</b> - removes highlighted game(s) from filter</li>
+<li><b>Rem <img arrow_up></b> - remove all games above</li>
+<li><b>Rem <img arrow_down></b> - remove all games below</li>
 <li><b>Browse</b> - shows highlighted game in a pop-up window (resizable using Control+Wheel or Control+Shift+Left/Right). From here it is possible to <a GameList Browsing>merge</a> games.</li>
 <li><b>Current</b> - highlights the current game, <i>if it has not been filtered.</i></li>
 <li><b>Delete</b> - toggles the delete flag for highlighted games.</li>

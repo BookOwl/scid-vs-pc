@@ -348,10 +348,6 @@ proc ::windows::gamelist::Open {} {
   button $w.b.current -relief flat -textvar ::tr(Current) \
     -command ::windows::gamelist::showCurrent
   set ::windows::gamelist::goto {}
-  entry $w.b.goto -width 8 -justify right -textvariable ::windows::gamelist::goto
-  bind $w.b.goto <Return> {
-    ::windows::gamelist::showNum $::windows::gamelist::goto
-  }
 
   button $w.b.negate -text Negate -relief flat -command {
     # .glistWin.tree selection toggle [.glistWin.tree children {}]
@@ -379,6 +375,8 @@ proc ::windows::gamelist::Open {} {
   }
   bind $w.tree <Delete> "$w.b.remove invoke"
 
+  button $w.b.removeabove -text Rem -image arrow_up -compound right -relief flat -command {removeFromFilter up}
+  button $w.b.removebelow -text Rem -image arrow_down -compound right -relief flat -command {removeFromFilter down}
 
   ### Filter items against the find entry widget
    button $w.b.filter -relief flat -text "Filter" \
@@ -405,12 +403,16 @@ proc ::windows::gamelist::Open {} {
   checkbutton $w.b.findcase -text "Ignore Case" \
     -variable ::windows::gamelist::findcase -onvalue 1 -offvalue 0
 
-  pack $w.b.current $w.b.goto -side left -padx 0
+  pack $w.b.current -side left -padx 0
   pack $w.b.findcase $w.b.find $w.b.findlabel $w.b.filter $w.b.reset -side right
-  pack $w.b.negate $w.b.remove -side left 
+  pack $w.b.negate $w.b.remove $w.b.removeabove $w.b.removebelow -side left
 
   ### Bottom row of buttons , etc
 
+  entry $w.c.goto -width 8 -justify right -textvariable ::windows::gamelist::goto
+  bind $w.c.goto <Return> {
+    ::windows::gamelist::showNum $::windows::gamelist::goto
+  }
   dialogbutton $w.c.browse -text $::tr(Browse) -command {
     set selection [.glistWin.tree selection]
     if { $selection != {} } {
@@ -439,7 +441,7 @@ proc ::windows::gamelist::Open {} {
   dialogbutton $w.c.help  -textvar ::tr(Help) -command { helpWindow GameList }
   dialogbutton $w.c.close -textvar ::tr(Close) -command { focus .; destroy .glistWin }
 
-  pack $w.c.browse $w.c.load $w.c.delete $w.c.empty -side left -padx 3
+  pack $w.c.goto $w.c.browse $w.c.load $w.c.delete $w.c.empty -side left -padx 3
   pack $w.c.close $w.c.help $w.c.export -side right -padx 3
 
   ::windows::gamelist::Refresh
@@ -457,6 +459,7 @@ proc ::windows::gamelist::Open {} {
   # hack to disable the down key for combobox
   bind  $w.b.find <Down> "focus $w.tree ;::windows::gamelist::Scroll  1; break"
 }
+
 proc configDeleteButtons {} {
   set w .glistWin
   if {[sc_base current] == [sc_info clipbase]} {
@@ -515,12 +518,6 @@ proc ::windows::gamelist::SetSize {} {
   }
 
   set glistSize [expr {[winfo height $w] / $glFontHeight}]
-}
-
-proc ::windows::gamelist::SetSelection {code xcoord ycoord} {
-  global glSelection glNumber
-  set glSelection [expr {int([.glistWin.c$code.text index @$xcoord,$ycoord])}]
-  set glNumber [.glistWin.cg.text get $glSelection.0 $glSelection.end]
 }
 
 image create photo arrow_up -format gif -data {
@@ -693,21 +690,40 @@ proc ::windows::gamelist::ToggleFlag {flag} {
   }
 }
 
-# unused
-proc removeFromFilter {{dir none}} {
+proc removeFromFilter {dir} {
   global glNumber glstart
+
+  set items [.glistWin.tree selection]
+
+  # in case of multiple items selected
+  if {$dir == {up}} {
+    set i [lindex $items 0]
+  } else {
+    set i [lindex $items end]
+  }
+
+  set glNumber [.glistWin.tree set $i Number]
+
   if {$glNumber < 1} { return }
   if {$glNumber > [sc_base numGames]} { return }
-  if {$dir == "none"} {
-    sc_filter remove $glNumber
-  } elseif {$dir == "up"} {
+  if {$dir == "up"} {
+    incr glNumber -1
     sc_filter remove 1 $glNumber
     set glstart 1
   } else {
+    incr glNumber 
     sc_filter remove $glNumber 9999999
   }
+
+  # set new_focus [.glistWin.tree set [.glistWin.tree next [lindex $items end]] Number]
+  # .glistWin.tree delete $items
+
   ::windows::stats::Refresh
   ::windows::gamelist::Refresh
+  # ::windows::gamelist::showNum $new_focus
+
+  set ::windows::gamelist::finditems {}
+  setGamelistTitle
 }
 
 trace variable glexport w updateExportGList
