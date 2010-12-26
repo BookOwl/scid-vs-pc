@@ -278,8 +278,51 @@ set helpMessage($m,[incr menuindex]) FileExit
 ### Edit menu:
 set menuindex -1
 set m .menu.edit
-$m add command -label EditAdd \
-    -accel "Ctrl+A" -command {sc_var create; updateBoard -pgn}
+
+$m add command -label EditSetup -accelerator "Ctrl+Shift+S" -command setupBoard
+bind . <Control-S> setupBoard
+set helpMessage($m,[incr menuindex]) EditSetup
+
+$m add command -label EditCopyBoard -accelerator "Ctrl+Shift+C" -command copyFEN
+bind . <Control-C> copyFEN
+set helpMessage($m,[incr menuindex]) EditCopyBoard
+
+$m add command -label EditPasteBoard -accelerator "Ctrl+Shift+V" -command pasteFEN
+bind . <Control-V> pasteFEN
+set helpMessage($m,[incr menuindex]) EditPasteBoard
+
+$m add command -label EditPastePGN -command importClipboardGame
+set helpMessage($m,[incr menuindex]) EditPastePGN
+
+$m add separator
+incr menuindex
+
+$m add command -label EditReset -command {
+  sc_clipbase clear
+  updateBoard -pgn
+  ::windows::gamelist::Refresh
+  updateTitle
+}
+set helpMessage($m,[incr menuindex]) EditReset
+
+$m add command -label EditCopy -accelerator "Ctrl+C" -command {
+  catch {sc_clipbase copy}
+  updateBoard
+}
+bind . <Control-c> {catch {sc_clipbase copy}; updateBoard}
+set helpMessage($m,[incr menuindex]) EditCopy
+
+$m add command -label EditPaste -accelerator "Ctrl+V" -command {
+  sc_clipbase paste
+  updateBoard -pgn
+}
+bind . <Control-v> {catch {sc_clipbase paste}; updateBoard -pgn}
+set helpMessage($m,[incr menuindex]) EditPaste
+
+$m add separator
+incr menuindex
+
+$m add command -label EditAdd -accel "Ctrl+A" -command {sc_var create; updateBoard -pgn}
 set helpMessage($m,[incr menuindex]) EditAdd
 
 menu $m.del
@@ -311,51 +354,6 @@ $m.strip add command -label EditStripBegin -command {::game::TruncateBegin}
 set helpMessage($m.strip,2) EditStripBegin
 $m.strip add command -label EditStripEnd -command {::game::Truncate}
 set helpMessage($m.strip,3) EditStripEnd
-
-$m add separator
-incr menuindex
-
-$m add command -label EditReset -command {
-  sc_clipbase clear
-  updateBoard -pgn
-  ::windows::gamelist::Refresh
-  updateTitle
-}
-set helpMessage($m,[incr menuindex]) EditReset
-
-$m add command -label EditCopy -accelerator "Ctrl+C" -command {
-  catch {sc_clipbase copy}
-  updateBoard
-}
-bind . <Control-c> {catch {sc_clipbase copy}; updateBoard}
-set helpMessage($m,[incr menuindex]) EditCopy
-
-$m add command -label EditPaste -accelerator "Ctrl+V" -command {
-  sc_clipbase paste
-  updateBoard -pgn
-}
-bind . <Control-v> {catch {sc_clipbase paste}; updateBoard -pgn}
-set helpMessage($m,[incr menuindex]) EditPaste
-
-$m add separator
-incr menuindex
-
-$m add command -label EditSetup -accelerator "Ctrl+Shift+S" -command setupBoard
-bind . <Control-S> setupBoard
-set helpMessage($m,[incr menuindex]) EditSetup
-
-$m add command -label EditCopyBoard -accelerator "Ctrl+Shift+C" \
-    -command copyFEN
-bind . <Control-C> copyFEN
-set helpMessage($m,[incr menuindex]) EditCopyBoard
-
-$m add command -label EditPasteBoard -accelerator "Ctrl+Shift+V" \
-    -command pasteFEN
-bind . <Control-V> pasteFEN
-set helpMessage($m,[incr menuindex]) EditPasteBoard
-
-$m add command -label EditPastePGN -command importClipboardGame
-set helpMessage($m,[incr menuindex]) EditPastePGN
 
 
 ### Game menu:
@@ -1514,8 +1512,7 @@ proc setLanguageMenus {{lang ""}} {
     configMenuText .menu.file.utils.name [tr FileMaintName$tag $oldLang] \
         FileMaintName$tag $lang
   }
-  foreach tag {Add Delete First Main Trial Strip Reset Copy Paste PastePGN Setup
-    CopyBoard PasteBoard} {
+  foreach tag {PastePGN Setup CopyBoard PasteBoard Reset Copy Paste Add Delete First Main Trial Strip } {
     configMenuText .menu.edit [tr Edit$tag $oldLang] Edit$tag $lang
   }
   foreach tag {Comments Vars Begin End} {

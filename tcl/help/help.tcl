@@ -12,7 +12,7 @@ set helpText(Contents) {<h1>Scid vs. PC</h1>
   <ht><a Tourney>Computer Tournaments</a></ht>
   <ht><a BrowsingPGN>Browsing Games and Tournaments</a></ht>
   <ht><a TacticsTrainer>Mate in .... Puzzles</a></ht>
-  <ht><a Scid>Databases and Advanced Use</a></ht>
+  <ht><a Scid>Databases and General Use</a></ht>
   <br>
   <br>
   <ht><a Related>Links</a></ht>
@@ -148,26 +148,26 @@ and only as single games. If you open a PGN file with multiple games, Scid does 
 <p><footer>Updated: Scid vs. PC 3.6.26.8, December 2009</footer></p>
 }
 
-set helpTitle(Scid) {Advanced Use}
-set helpText(Scid) {<h1>Databases and Advanced Use</h1>
+set helpTitle(Scid) {General Use}
+set helpText(Scid) {<h1>Databases and General Use</h1>
   <p>
   Scid is a chess database application; with it you can browse databases of
   chess games, perform searches, view best lines, and other
   statistics. Databases are implemented via a fast <a Formats>three file format</a> and populated by importing PGN archives or other databases.
   </p>
 
-  <h4>Starting out and general help</h4>
+  <h4>Starting Out</h4>
   <ul>
   <li><a MainWindow>The <b>Main Window</b></a></li>
-  <li><a Menus>Scid <b>Menus</b></a></li>
+  <li><a Menus><b>Menus</b></a></li>
   <li><a Moves>Entering <b>Moves</b></a></li>
-  <li><a Clipbase>Using the default database (<b>Clipbase</b>)</a></li>
-  <li><a Searches><b>Searches</b> in Scid</a></li>
-  <li><a Annotating><b>Annotating games</b></a></li>
+  <li><a TacticalGame><b>Playing</b> a Game</a></li>
+  <li><a Clipbase>Using the Default Database (<b>Clipbase</b>)</a></li>
+  <li><a Searches><b>Searches</b></a></li>
   <li><a Hints><b>Hints</b></a></li>
   </ul>
 
-  <h4>Other Scid windows</h4>
+  <h4>Scid Windows</h4>
   <ul>
   <li><a Analysis><b>Analysis</b> window</a></li>
   <li><a Book><b>Book</b> window</a></li>
@@ -185,17 +185,17 @@ set helpText(Scid) {<h1>Databases and Advanced Use</h1>
   <li><a PTracker><b>Piece Tracker</b></a></li>
   <li><a PList><b>Player Finder</b> window</a></li>
   <li><a PInfo><b>Player Info</b> window</a></li>
-  <li><a TacticalGame><b>Tactical game</b> window</a></li>
   <li><a Tmt><b>Tournament Finder</b> window</a></li>
   <li><a Tree><b>Tree</b> window</a></li>
   <li><a Graphs><b>Graph</b> windows</a></li>
   <li><a TB>Using <b>Tablebases</b> in Scid</a></li>
   </ul>
 
-  <h4>Other utilities and information</h4>
+  <h4>Other Utilities and Information</h4>
   <ul>
+  <li><a Annotating><b>Annotating</b> Games</a></li>
   <li><a Bookmarks><b>Bookmarks</b></a></li>
-  <li><a Cmdline>Command-line options</a></li>
+  <li><a Cmdline><b>Command-line</b> options</a></li>
   <li><a Compact><b>Compacting</b> a database</a></li>
   <li><a Correspondence>Correspondence Chess</a></li>
   <li><a Maintenance><b>Database maintenance</b> tools</a></li>
@@ -452,31 +452,25 @@ set helpText(Index) {<h1>Scid Help Index</h1>
 set helpTitle(Hints) "Scid Hints"
 set helpText(Hints) {<h1>Scid Hints</h1>
 
-  <h4>Can I get Scid to load a database when it starts?</h4>
+  <h4>Can I load automatically load a databases</h4>
   <p>
-  Yes, you can add databases, PGN files or <a EPD>EPD files</a>
+  Only by adding databases, PGN files or <a EPD>EPD files</a>
   to the command line. For example:
   <ul>
   <li> <b>scid  mybase  games.pgn.gz</b> </li>
   </ul>
-  will load the Scid Database <b>mybase</b> and also load the
-  Gzip-compressed PGN file <b>games.pgn.gz</b>.
+  will load the database <b>mybase</b> and the gziped PGN file <b>games.pgn.gz</b>.
   </p>
 
-  <h4>Is there an easier way to change the board size than using the
-  options menu?</h4>
+  <h4>How can i change the board size?</h4>
   <p>
-  Yes, you can use the shortcut keys <b>Control+Shift+LeftArrow</b> and
-  <b>Control+Shift+RightArrow</b> to decrease or increase the board size.
+  Use the shortcut keys <b>Control+Shift+LeftArrow</b> and
+  <b>Control+Shift+RightArrow</b>, or <b>Control+Wheelmouse</b>.
   </p>
 
-  <h4>I am training by playing through a game, so I do not want Scid to
-  print the next move in the game information area below the chessboard.
-  Can I hide it?</h4>
+  <h4>Can I hide the next move?</h4>
   <p>
-  You can hide the next move by pressing the <b>right</b> mouse button in the
-  game information area, and selecting <b>Hide next move</b> from the
-  menu that appears.
+  You can hide the next move via the main context (right-click) menu, <b>Hide next move</b>.
   </p>
 
   <h4>How can I see the ECO opening code for the current position?</h4>
@@ -488,37 +482,27 @@ set helpText(Hints) {<h1>Scid Hints</h1>
   file and save options so it will be loaded every time you start Scid.
   </p>
 
-  <h4>I am entering a game, and I am up to move 30, but just saw that move
-  10 was wrong. How can I correct it and keep all the moves after it?</h4>
+  <h4>While entering a game, I realise i have entered an incorrect move half-way though. Can I easily correct it?</h4>
   <p>
-  You can use the <a Import>Import</a> window; see the
-  <a Moves Mistakes>entering moves</a> help page for more information.
+  You must use the <a Import>Import</a> window. See <a Moves Mistakes>entering moves</a> for more information.
   </p>
 
   <h4>How do I copy games from one database to another?</h4>
   <p>
-  Use the <a Switcher>database switcher window</a>: drag from the source
-  database to the target database to copy all games in the source database
-  <a Searches Filter>filter</a>.
+  Use the <a Switcher>Database Switcher</a> to drag and drop (<a Searches Filter>filter</a>)
+  games between databases.
   </p>
 
-  <h4>Every time I enter a move where one already exists, I get a
-  "Replace move?" dialog box. How do I avoid that?</h4>
+  <h4>Every time I enter a move to replace another, I get a
+  "Replace Move?" dialog. Can I avoid this?</h4>
   <p>
-  Turn it off with the <b>Ask before replacing moves</b> option in the
-  <menu>Options: Moves</menu> menu.
-  Or, get into the habit of taking back moves using the right-mouse button,
-  which actually removes the move from the game if you are at the last move of
-  the game.
+  De-select the <b>Ask before replacing moves</b> option in the <menu>Options: Moves</menu> menu.
   </p>
 
-  <h4>How can I use the tree window on a selection of games, not my whole
-  database?</h4>
+  <h4>How can I use the tree window on a selection of games, not my whole database?</h4>
   <p>
-  Use the <a Clipbase>clipbase</a>. Set your database filter to contain the
-  games you want to use the tree on, then copy them to the clipbase using the
-  <a Switcher>database switcher</a>. Then, just open the tree window in the
-  clipbase.
+  Using the Filter and <a Switcher>Database Switcher</a>, copy the relevant games to <a Clipbase>clipbase</a>.
+  Then open the tree window in the clipbase.
   </p>
 
   <h4>The Tree is slow for large databases. How do I speed it up?</h4>
@@ -527,16 +511,15 @@ set helpText(Hints) {<h1>Scid Hints</h1>
   See the caching section of the <a Tree>Tree</a> help page for details.
   </p>
 
-  <h4>How can I edit the PGN representation of the game directly?</h4>
+  <h4>Can I edit the PGN representation of the game directly?</h4>
   <p>
-  You cannot use the <a PGN>PGN</a> window to edit the current game, but you can
-  still edit its PGN representation using the <a Import>Import game</a> window.
-  Just open it (shortcut key: <b>Control+Shift+I</b>) and then press the
-  <b>Paste current game</b> button, then edit the game, then press <b>Import</b>.
+  No. Yo must edit its PGN representation using the <a Import>Import game</a> window.
+  Just open it (shortcut key: <b>Control+Shift+I</b>) , select
+  <b>Paste current game</b>, edit the game and then <b>Import</b>.
   </p>
 
   <h4>My database has several spellings for some player names. How do I
-  correct them all?</h4>
+  correct them?</h4>
   <p>
   You can edit individual names or spellcheck all the names in a database
   with the commands in the <menu>File: Maintenance</menu> menu.
@@ -553,7 +536,7 @@ set helpText(Hints) {<h1>Scid Hints</h1>
   the <term>File</term> menu.
   </p>
 
-  <p><footer>Updated: Scid 3.6.28, December 2008</footer></p>
+  <p><footer>Updated: Scid vs. PC 4.3, December 2010</footer></p>
 }
 
 
@@ -609,7 +592,7 @@ set helpText(MainWindow) {<h1>Scid Main Window</h1>
 
   <h4>Game Context Menu</h4>
   <p>
-  Right clicking the main board draws with commonly used options.
+  Right clicking the main board shows a menu with commonly used options.
   </p>
   <h4>Material Values</h4>
   <p>
@@ -665,31 +648,41 @@ set helpText(Menus) {<h1>Scid Menus</h1>
   <ul>
   <li><menu>New</menu>: Creates a new empty Scid Database.</li>
   <li><menu>Open</menu>: Opens an existing Scid Database.</li>
+  <li><menu>Save Pgn</menu>: Save this game as a PGN file.</li>
   <li><menu>Close</menu>: Closes the current Scid Database.</li>
   <li><menu>Finder</menu>: Opens the <a Finder>File Finder</a>.</li>
   <li><menu>Bookmarks</menu>: <a Bookmarks>Bookmarks</a> and bookmark
-  functions.</li>
-  <li><menu>Maintenance</menu>: Database <a Maintenance>maintenance</a>
-  functions.</li>
+  <br>
+  <li><menu>Open Base as Tree</menu></li>
+  <li><menu>Open Base as Tree</menu>: Open database in a <a Tree>tree window</a> only.</li>
+  <br>
+  <li><menu>Maintenance</menu>: Database <a Maintenance>maintenance</a> functions.</li>
   <ul>
-  <li><menu>Maintenance window</menu>: Opens/closes the database maintenance
-  window.</li>
-  <li><menu>Delete twin games</menu>: Finds <a Maintenance Twins>twin</a>
-  games in the database.</li>
-  <li><menu>ECO-Classify games</menu>: Recomputes the
-  <a ECO>ECO code</a> for all games in the database. </li>
+  <li><menu>Maintenance window</menu>: Opens/closes the database maintenance window.</li>
+  <li><menu>Compact Database</menu>: Perform database compaction.</li>
+  <li><menu>ECO-Classify games</menu>: Recomputes the <a ECO>ECO code</a> for all games in the database. </li>
+  <li><menu>Sort</menu>: Sort base by name, rating, etc.</li>
+  <li><menu>Delete twin games</menu>: Finds <a Maintenance Twins>twin</a> games in the database.</li>
   <li><menu>Name editor</menu>: Replaces all occurrences of a player,
   event site or round name.</li>
+  <li><menu>Repair Base</menu>: Repair broken database.</li>
   </ul>
   <li><menu>Read-Only</menu>: Makes the current database read-only.</li>
-  <li><menu>Base 1/2/3/4/5</menu>: These commands let you switch between
-  the four available database slots and the <a Clipbase>clipbase</a>
-  database.</li>
-  <li><menu>Exit</menu>: Exits Scid. </li>
+  <li><menu>Switch to Database</menu>: Switch between the nine available database slots and the <a Clipbase>clipbase</a> database.</li>
+  <li><menu>Exit</menu>: Exit Scid. </li>
   </ul>
 
   <h3><name Edit>Edit</name></h3>
   <ul>
+  <li><menu>Setup Board</menu>: Set a (non-standard) start position for the current game.</li>
+  <li><menu>Copy FEN</menu>: Set the clipboard to the FEN representing current position.</li>
+  <li><menu>Paste FEN</menu>: Set-up board according to FEN in clipboard.</li>
+  <li><menu>Paste PGN</menu>: Import a game from PGN in clipboard.</li>
+  <br>
+  <li><menu>Empty Clipbase</menu>: Clear the temporary database (<a Clipbase>clipbase</a>).</li>
+  <li><menu>Copy to Clipbase</menu>: Copies the current game to the <a Clipbase>clipbase</a> database.</li>
+  <li><menu>Paste from Clipbase</menu>: Pastes the active game of the <a Clipbase>clipbase</a> to be the active game of the current database.</li>
+  <br>
   <li><menu>Add Variation</menu>: Adds a new empty variation for the
   next move, or for the previous move if there is no next move yet.</li>
   <li><menu>Delete Variation</menu>: Provides a submenu of variations for
@@ -702,19 +695,6 @@ set helpText(Menus) {<h1>Scid Menus</h1>
   testing a temporary variation without altering the current game.</li>
   <li><menu>Strip</menu>: Strips all comments or variations from the current
   game.</li>
-  <br>
-  <li><menu>Empty Clipbase</menu>: Empties the <a Clipbase>clipbase</a>
-  so it contains no games.</li>
-  <li><menu>Copy this game to clipbase</menu>: Copies the current game
-  to the <a Clipbase>clipbase</a> database.</li>
-  <li><menu>Paste last clipbase game</menu>: Pastes the active game of
-  the <a Clipbase>clipbase</a> to be the active game of the current
-  database.</li>
-  <br>
-  <li><menu>Setup start board</menu>: Sets the starting position for the
-  current game.</li>
-  <li><menu>Paste start board</menu>: Sets the start board from the current
-  text selection (clipboard).</li>
   </ul>
 
   <h3><name Game>Game</name></h3>
@@ -727,6 +707,9 @@ set helpText(Menus) {<h1>Scid Menus</h1>
   any changes made.</li>
   <li><menu>Load Game Number</menu>: Loads the game given its game number
   in the current database.</li>
+  <br>
+  <li><menu>Set Game Info</menu>: Set various detials about the current game.</li>
+  <li><menu>Browse Games</menu>: Show a list of games in this database.</li>
   <br>
   <li><menu>Save: Replace game</menu>: Saves the current game, replacing
   its original version in the database.</li>
@@ -748,12 +731,15 @@ set helpText(Menus) {<h1>Scid Menus</h1>
   <li><menu>Negate filter</menu>: Inverts the filter to only include
   games that were excluded.</li>
   <br>
+  <li><menu>General</menu>: Searches by <a Searches Header>header</a>
+  information such as player names.</li>
   <li><menu>Current board</menu>: Searches for the
   <a Searches Board>current board</a> position.</li>
-  <li><menu>Header</menu>: Searches by <a Searches Header>header</a>
-  information such as player names.</li>
   <li><menu>Material/Pattern</menu>: Searches by
   <a Searches Material>material</a> or chessboard patterns</a>.</li>
+  <br>
+  <li><menu>Player Finder</menu>: Search for a player name.</li>
+  <li><menu>Tournament Finder</menu>: Search for a tournament by date or name.</li>
   <br>
   <li><menu>Using search file</menu>: Searches using
   <a Searches Settings>settings</a> from a SearchOptions file.</li>
@@ -761,40 +747,36 @@ set helpText(Menus) {<h1>Scid Menus</h1>
 
   <h3><name Windows>Windows</name></h3>
   <ul>
-  <li><menu>Comment Editor</menu>: Opens/closes the
-  <a Comment>Comment Editor</a> window.</li>
-  <li><menu>Game List window</menu>: Opens/closes the
-  <a GameList>Game List window</a>.</li>
-  <li><menu>PGN window</menu>: Opens/closes the
-  <a PGN>PGN window</a>.</li>
-  <li><menu>Crosstable</menu>: Constructs a tournament
-  <a Crosstable>crosstable</a> for the current game. </li>
-  <li><menu>Tournament Finder</menu>: Opens/closes the
-  <a Tmt>Tournament Finder</a> window.</li>
+  <li><menu>Game Info</menu>: Show/Hide the Game information window.</li>
+  <li><menu>Comment Editor</menu>: Opens/closes the <a Comment>Comment Editor</a>.</li>
+  <li><menu>Game List window</menu>: Opens/closes the <a GameList>Game List</a>.</li>
+  <li><menu>PGN window</menu>: Opens/closes the <a PGN>PGN window</a>.</li>
+  <li><menu>Crosstable</menu>: Constructs a tournament <a Crosstable>crosstable</a> for the current game. </li>
+  <li><menu>Player Finder</menu>: Opens/closes the <a PList>Player Finder</a> window.</li>
+  <li><menu>Tournament Finder</menu>: Opens/closes the <a Tmt>Tournament Finder</a> window.</li>
   <br>
-  <li><menu>Database switcher</menu>: Opens/closes the
-  <a Switcher>Database Switcher</a> window, which lets you switch to
-  another database or copy games between databases easily.</li>
-  <li><menu>Maintenance window</menu>: Opens/closes the database
-  <a Maintenance>maintenance</a> window.</li>
+  <li><menu>Database</menu>: Opens/closes the <a Switcher>Database Switcher</a>, for switching
+  between databases, or copying games.</li>
+  <li><menu>Maintenance window</menu>: Opens/closes the <a Maintenance>Maintenance</a> Window.</li>
   <br>
-  <li><menu>ECO Browser</menu>: Opens/closes the
-  <a ECO browser>ECO Browser</a> window.</li>
+  <li><menu>ECO Browser</menu>: Opens/closes the <a ECO browser>ECO Browser</a> window.</li>
   <li><menu>Statistics window</menu>: Opens/closes the
   <term>Filter statistics window</term> which gives a win/loss summary
   of the games in the <a Searches Filter>filter.</a></li>
   <li><menu>Tree window</menu>: Opens/closes the <a Tree>tree window</a>.</li>
   <li><menu>Endgame Tablebase window</menu>: Opens/closes the window that
   displays <a TB>tablebase</a> information.</li>
+  <li><menu>Book Window</menu>: Opens/closes the Book window.</li>
+  <li><menu>Correspondence Window</menu>: Opens/closes the Correspondence window.</li>
   </ul>
 
   <h3><name Tools>Tools</name></h3>
   <ul>
-  <li><menu>Analysis engine</menu>: Starts/stops the chess analysis
-  engine, displaying the evaluation of the current position
-  in the <a Analysis>analysis window</a>.</li>
-  <li><menu>Analysis engine #2</menu>: Starts/stops a second analysis
-  engine.</li>
+  <li><menu>Analysis Engines</menu>: Configure Analysis Engines.</li>
+  <li><menu>Analysis engine #1</menu>
+  <li><menu>Analysis engine #2</menu>: Start/stops <a Analysis>analysis engines</a>,
+ displaying the evaluation of the current position.</li>
+  <br>
   <li><menu>Email manager</menu>: Opens/closes the <a Email>email manager</a>
   window, for managing email correspondence games.</li>
   <br>
@@ -817,32 +799,25 @@ set helpText(Menus) {<h1>Scid Menus</h1>
   search <a Searches Filter>filter</a> to a text file in PGN, HTML or
   LaTeX format. See the <a Export>export</a> help page.</li>
   <br>
-  <li><menu>Import PGN game</menu>: Opens the <a Import>Import window</a>
+  <li><menu>Import PGN text</menu>: Opens the <a Import>Import window</a>
   for entering a game by typing or pasting its text in
   <a PGN>PGN format</a>.</li>
-  <li><menu>Import file of PGN games</menu>: Imports a whole file containing
+  <li><menu>Import PGN file</menu>: Imports a whole file containing
   games in PGN format to the current database. Note, that several PGN
   files can be selected in this dialogue at once.</li>
+  <br>
+  <li><menu>Board Screenshot</menu>: Save a screenshot of the board to a file.</li>
   </ul>
 
   <h3><name Options>Options</name></h3>
   <p>
-  This menu provides entries for setting most of Scid's configurable
-  options.
-  The <menu>Save options</menu> entry saves the current options to the
-  file "<b>~/.scid/scidrc</b>" (or <b>scid.opt</b> in the
-  directory of the Scid executable programs for Windows users);
+  This menu provides entries for setting most of Scid's configurable options.
+  The <menu>Save Options</menu> entry saves the current options to the
+  file "<b>~/.scidvspc/config/options.dat</b>" ;
   this file is loaded each time you start up Scid.
   </p>
 
-  <h3><name Help>Help</name></h3>
-  <p>
-  This menu contains help functions, and access to the tip of the day
-  window or the startup window which provides information about the
-  files Scid loaded when it started.
-  </p>
-
-  <p><footer>Updated: Scid 3.6.26, October 2008</footer></p>
+  <p><footer>Updated: Scid vs. PC 4.3, December 2010</footer></p>
 }
 
 
@@ -868,13 +843,13 @@ to which there is a legal move.
   To castle kingside enter <b>OK</b>, or queen-side use <b>OQ</b>. See below for more info.
   </p>
 
-  <h4>Retracting a move</h4>
+  <h4>Retracting Moves</h4>
   <p>
   To take back a move, press the Left-Arrow, Control+Delete
   or Control+Backspace keys.
   </p>
 
-  <h4>Replacing old moves</h4>
+  <h4>Replacing Old Moves</h4>
   <p>
   When you enter a move where a move already exists,
   Scid will ask if you want to replace the
@@ -884,16 +859,16 @@ to which there is a legal move.
   via the <green>Options--<gt>Moves</green> menu option
   </p>
 
-  <h4><name Trial>Trial mode</name></h4>
+  <h4><name Trial>Trial Mode</name></h4>
   <p>
   If you are studying a game and reach a position where you want to try
-  an alternative variation on the board without altering the game, select
-  <b>Try variation</b> from the <menu>Edit</menu> menu to enter trial
-  mode. In this mode, you can make temporary moves and changes to the
-  game, then return to the original position when you exit trial mode.
+  an alternative variation without altering the game, select
+  <green>Edit--<gt>Try variation</green> to enter trial
+  mode. You can then make temporary moves and changes to the
+  game, and return to the original position when you exit trial mode.
   </p>
 
-  <h3><name Mistakes>Correcting mistakes</name></h3>
+  <h3><name Mistakes>Correcting Mistakes</name></h3>
   <p>
   If you are entering a game and suddenly see an incorrect move several
   moves earlier, it is possible to correct it without losing the extra
@@ -902,19 +877,19 @@ to which there is a legal move.
   game", correct the incorrect move, then select "Import".
   </p>
 
-  <h3>Keyboard move entry</h3>
+  <h3>Keyboard Move Entry</h3>
   <p>
-  To enter moves at the keyboard, simply press letter and digit
-  keys. Note that accepted moves should be in <term>SAN notation</term>,
+  To enter moves from the keyboard, simply press letter and digit
+  keys. Accepted moves should be in <term>SAN notation</term>,
   <i>without</i> the capture symbol (x) or the promotion symbol (=).
   Moves are matched case-insensitively, so you can type
-  [n][f][3] instead of Nf3, for example -- but see the note below
-  about conflicts with pawn moves.
+  [n][f][3] instead of Nf3, for example (see below about Bishop/Pawn conflicts).
   </p>
   <p>
   To ensure that no move is a prefix of any other move, the notation
   for kingside and queenside castling is [O][K] and
   [O][Q] respectively, instead of the usual O-O and O-O-O.
+  [This is a bug!]
   </p>
   <p>
   As you enter a move, the status bar will show the list of matching moves.
@@ -923,7 +898,7 @@ to which there is a legal move.
   To delete a character, press [Backspace] or [Delete].
   </p>
   <p>
-  <b>Note</b> that a lower-case letter matches to a pawn first, so a
+  <b>Note</b> Lower-case letter matches to a pawn first, so a
   [b] can match to a pawn or Bishop, but if there is a conflict
   you must use a capital [B] for the Bishop move.
   </p>
@@ -938,7 +913,7 @@ to which there is a legal move.
   of [n][f][3] for <b>Nf3</b> in the starting position.
   </p>
 
-  <h3><name Null>Entering null moves</name></h3>
+  <h3><name Null>Entering Null Moves</name></h3>
   <p>
   <a Annotating Null>Null</a> (empty) moves can be useful in variations, where
   you want to skip a move for one side. You can enter a null move with the
@@ -946,30 +921,30 @@ to which there is a legal move.
   typing "<b>--</b>" (that is, pressing the minus key twice).
   </p>
 
-  <h3><name Informant>Entering common annotation symbols</h3>
+  <h3><name Informant>Entering Common Annotation Symbols</h3>
   <p>
   You can also add common <a NAGs>annotation symbols</a> using the keyboard
   in the main window, without needing to use the <a Comment>comment editor</a>
   window. The following list shows which symbols you can add, and their
   keyboard shortcuts:
   <ul>
-  <li> !  : [!][Return] </li>
-  <li> ?  : [?][Return] </li>
-  <li> !? : [!][?][Return] </li>
-  <li> ?! : [?][!][Return] </li>
-  <li> !! : [!][!][Return] </li>
-  <li> ?? : [?][?][Return] </li>
-  <li> </li>
-  <li> +- : [+][-] </li>
-  <li> +/-: [+][/] </li>
-  <li> += : [+][=] </li>
-  <li> =  : [=][Return] </li>
-  <li> -+ : [-][+] </li>
-  <li> -/+: [-][/] </li>
-  <li> =+ : [=][+] </li>
+  <li> !	[!][Return]</li>
+  <li> ?	[?][Return]</li>
+  <li> !?	[!][?][Return]</li>
+  <li> ?!	[?][!][Return]</li>
+  <li> !!	[!][!][Return]</li>
+  <li> ??	[?][?][Return]</li>
+  <li></li>
+  <li> +-	[+][-]</li>
+  <li> +/-	[+][/]</li>
+  <li> +=	[+][=]</li>
+  <li> =	[=][Return]</li>
+  <li> -+	[-][+]</li>
+  <li> -/+	[-][/]</li>
+  <li> =+	[=][+]</li>
   </ul>
-  <b>Note</b> Scid uses some of these symbols for automatic
-  annotations, also. To this end, these symbols have to be associated
+  <b>Note</b> Scid also uses some of these symbols for automatic
+  annotations. To this end, these symbols have to be associated
   with a certain pawn value. These pawn values can be set via Options
   / Game information / Configure Informant values.
 
@@ -1278,7 +1253,7 @@ set helpText(Comment) {<h1>The Comment Editor Window</h1>
   annotation symbols for moves in the active chess game.
   </p>
 
-  <h3>Annotation symbols</h3>
+  <h3>Annotation Symbols</h3>
   <p>
   Scid uses the <a Related>PGN Standard</a>
   for annotation symbols, accepting
@@ -1316,7 +1291,7 @@ set helpText(Comment) {<h1>The Comment Editor Window</h1>
   the comment.
   </p>
 
-  <h3>Coloring squares</h3>
+  <h3>Coloring Squares</h3>
   <p>
   You can color any square with any color using a special embedded command
   which can appear anywhere in a comment. The command format is:
@@ -1335,15 +1310,15 @@ set helpText(Comment) {<h1>The Comment Editor Window</h1>
   in its own <b>[%mark ...]</b> tag.
   For example, the comment text</p>
   <p>
-  Now d6 [%mark d6] is weak and the knight can attack it
-  from b5. [%mark b5 #000070]
+  <i>Now d6 [%mark d6] is weak and the knight can attack it
+  from b5. [%mark b5 #000070]</i>
   </p>
   <p>
   will color d6 <red>red</red> and b5 with the dark-blue color
   <darkblue>#000070</darkblue>.
   </p>
 
-  <h3>Drawing arrows</h3>
+  <h3>Drawing Arrows</h3>
   <p>
   You can draw an arrow from one square to another using a special
   comment command similar to the for coloring squares described above.
@@ -1353,35 +1328,21 @@ set helpText(Comment) {<h1>The Comment Editor Window</h1>
   <li><b>[%arrow fromSquare toSquare color]</b><li>
   </ul>
   <p>
-  where <b>fromSquare</b> and <b>toSquare</b> are square names like d4
+  where <b>fromSquare</b> and <b>toSquare</b> are square names like d4,
   and <b>color</b> is any recognized color name (such as red, blue4, etc)
-  or RGB code (like #a0b0c0).
+  or RGB code, like #A0B0C0.
   If the color is omitted, it defaults to <red>red</red>.
   </p>
   <p>
-  For example, the comment text
-  </p>
+  For example, the comment text:
   <p>
-  The c3-knight and c4-bishop control the weak d5 square.
-  [%arrow c3 d5 red] [%arrow c4 d5 blue]
-  </p>
+  <i>The c3-knight and c4-bishop control the weak d5 square.
+  [%arrow c3 d5 red] [%arrow c4 d5 blue]</i>
   <p>
   will draw a red arrow from c3 to d5 and a blue one from c4 to d5.
   </p>
 
-  <p>
-  <b>Note</b>
-  Coloured squares and arrows can be entered directly on the board
-  without the use of the Comment editor by using the mouse
-  buttons. For coloured squares one can Shift-click on the square in
-  question. Shift-Left button markes the square in green, the middle
-  button in yellow, the right button in red. To draw arrows one can
-  Ctrl-click on the source and target squares. The left mouse button
-  again results in a green, the middle in a yellow and the right mouse
-  button in a red arrow.
-  </p>
-
-  <p><footer>Updated: Scid 3.6.26, October 2008</footer></p>
+  <p><footer>Updated: Scid vs. PC 4.3, December 2010</footer></p>
 }
 
 ####################
@@ -1659,18 +1620,25 @@ This can be done by the <b>Compact</b> button, or
   from the <a Maintenance>maintenance</a> window.</p>
 <p><i>Note - the default database (Clipbase) cannot be compacted</i>.</p>
   
-  <h3><name Browsing>Merging Games</name></h3>
+  <h3><name Browsing>Browsing and Merging Games</name></h3>
   <p>
-  The Merge Game feature provides a way to include the
-  selected game as a variation of the current game. Scid finds the
-  deepest point where the selected game differs from the current
-  game (taking transpositions into account) and adds a variation
-  for the selected game at that position. You can change the number
-  of moves of the selected game to be shown, depending on whether you
-  are interested in adding the whole game or just its opening phase.
+  The <b>Browse Game</b> widget shows the moves of a selected game (without comments
+  or variations), displayed in a separate window. This is a useful way of
+  previewing another game without affecting the currently loaded game. 
+  </p>
+  <p>
+  From here, one may use <b>Merge Game</b>, providing a
+  way to include the selected game as a variation of the
+  current game. Scid finds the deepest point where the
+  selected game differs from the current game (taking
+  transpositions into account) and adds a variation for the
+  selected game at that position. You can change the number of
+  moves of the selected game to be shown, depending on whether
+  you are interested in adding the whole game or just its
+  opening phase.
   </p>
 
-  <p><footer>Updated: Scid vs. PC 4.1, September 2010</footer></p>
+  <p><footer>Updated: Scid vs. PC 4.3, December 2010</footer></p>
 }
 
 
@@ -1990,7 +1958,7 @@ set helpText(PTracker) {<h1>The Piece Tracker Window</h1>
 
   <h3>Hints</h3>
   <p>
-  There are (at least) three good uses for the Piece Tracker: opening
+  There are at least three good uses for the Piece Tracker: opening
   preparation, middlegame themes, and player preparation.
   </p>
   <p>
@@ -2413,11 +2381,11 @@ set helpText(Compact) {<h1>Database Compaction</h1>
   Database <term>compaction</term> is a specific type of
   <a Maintenance>maintenance</a> that keeps a database as small and
   efficient as possible.
-  Compacting a database means removing any unused space in its files.
-  There are two types: name file and game file compaction.
+  It involves removing any unused space in its files.
+  There are two types: Name File and Game File compaction.
   </p>
 
-  <h3>Name File compaction</h3>
+  <h3>Name File Compaction</h3>
   <p>
   Over time, you may find a database starts to contain a number of player,
   event, site or round names that are no longer used in any game. This will
@@ -2426,7 +2394,7 @@ set helpText(Compact) {<h1>Database Compaction</h1>
   Name File compaction removes all names that are not used in any games.
   </p>
 
-  <h3>Game File compaction</h3>
+  <h3>Game File Compaction</h3>
   <p>
   Whenever a game is replaced or deleted, wasted space is left in the game
   file (the largest of the three files in a Scid Database). Game File
@@ -2440,7 +2408,7 @@ set helpText(Compact) {<h1>Database Compaction</h1>
   Index File.
   </p>
 
-  <p><footer>Updated: Scid 3.6.2, December 2006</footer></p>
+  <p><footer>Updated: Scid vs. PC 4.3, December 2010</footer></p>
 }
 
 
@@ -3543,7 +3511,7 @@ set helpText(TB) {<h1>Tablebases</h1>
   used in Scid.
   </p>
 
-  <h3>Using tablebases in Scid</h3>
+  <h3>Using Tablebases in Scid</h3>
   <p>
   To use tablebase files in Scid, simply set their directories by
   selecting <b>Tablebase directory...</b> from the <menu>Options</menu> menu.
@@ -3712,13 +3680,13 @@ set helpText(Cmdline) {<h1>Command-line Options</h1>
   <p>
   When you start Scid from a shell or console, there are command-line
   options you can specify. Scid-format databases (with or without a
-  file suffix such as ".si4") and PGN files to be opened can be given,
-  for example:
+  file suffix such as ".si4") and PGN files to be opened can be given
+  (for example)
   <ul>
-  <li>scid mybase newgames.pgn</li>
+  <li><b>scid mybase newgames.pgn</b></li>
   </ul>
-  will start Scid and open the Scid Database called mybase and the
-  PGN file named newgames.pgn.
+  will immediately open the Scid Database "mybase" and the
+  PGN file "newgames.pgn".
   </p>
   <p>
   There are also optional arguments to control which files Scid should
