@@ -1378,7 +1378,7 @@ proc ::board::colorSquare {w i {color {}}} {
         if {$type == "DEL"}  { set color "" }
       }
     }
-    if {![string equal $color ""]} {
+    if {$color != {}} {
       catch {$w.bd itemconfigure sq$i -outline "" -fill $color } ; # -outline $color
     }
   }
@@ -1492,13 +1492,16 @@ proc ::board::mark::getEmbeddedCmds {comment} {
         continue
       }
       # Settings of (default) type and arguments:
-      if {[string equal $color ""]} { set color "red" }
+      if {$color == {}} { set color red }
       switch -glob -- $type {
         ""   {set type [expr {[string length $arg2] ? "arrow" : "full"}]}
-        mark {set type "full"	;# new syntax}
-        ?    {if {[string length $arg2]} break else {
-            set arg2 $type; set type "text"}
-        }
+        mark {set type full	;# new syntax}
+        ?    {if {[string length $arg2]} {
+                break 
+              } else {
+		set arg2 $type; set type text
+              }
+	     }
       }
       # Construct result list:
       lappend result [list $type $arg1 $arg2 $color]
@@ -1593,15 +1596,26 @@ proc ::board::mark::add {win args} {
     set args [linsert $args 1 "text"]
     set args [linsert [lrange $args 1 end] 2 [lindex $args 0]]
   }
-  # Add default arguments:
-  if {![regexp true|false|1|0 [lindex $args end]]} {
-    lappend args "true"
+
+  ### What a f-ing mess. Seemed to have fixed it, S.A
+  # This loose regexp was causing problems
+
+  # Add default arguments
+
+  set argN [lindex $args end]
+  if {![regexp {^true$|^false$|^1$|^0$} $argN] } {
+    lappend args true
   }
-  if {[llength $args] == 4} { set args [linsert $args 2 ""]}
+
+  if {[llength $args] == 4} {
+      set args [linsert $args 2 {}]
+  }
 
   # Here we (should) have: args == <type> <square> ?<arg>? <color> <new>
-  foreach {type square dest color new} $args {break}	;# assign
-  if {[llength $args] != 5 } { return }
+  foreach {type square dest color new} $args {break}
+  if {[llength $args] != 5 } {
+    return
+  }
 
   set board $win.bd
   set type  [lindex $args 0]
@@ -1612,7 +1626,7 @@ proc ::board::mark::add {win args} {
     if {[string equal $color "nocolor"]} { set type DEL }
   } else {
     $board delete "mark${square}"
-    #not needed anymore
+    # not needed anymore
     #    ::board::colorSquare $win $square [::board::defaultColor $square]
   }
 

@@ -712,7 +712,7 @@ proc updateBoard {args} {
     set dest   [expr {[string match {[a-h][1-8]} [lindex $cmd 2]] \
           ? [::board::sq [lindex $cmd 2]] : [lindex $cmd 2]}]
     # add mark to board
-    eval ::board::mark::add .board $type $square $dest $color
+    ::board::mark::add .board $type $square $dest $color
   }
 
   # Update the status of each navigation button:
