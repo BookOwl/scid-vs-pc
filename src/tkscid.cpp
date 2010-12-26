@@ -12450,6 +12450,10 @@ sc_name_read (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
         temp_spellChecker->SetNameType (nt);
 
         // ReadSpellCheckFile gets called four times for some reason S.A &&&
+        // But it doesn't seem too bad, as the OS caches the file after the first open.
+        //
+        // src/spellchk.cpp(sc_name_read): if (fp.Open (filename, FMODE_ReadOnly)
+        // src/mfile.cpp: Handle = fopen (name, modeStr);
 
         if (temp_spellChecker->ReadSpellCheckFile (filename, checkPlayerOrder) != OK) {
             delete temp_spellChecker;

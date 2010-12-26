@@ -100,11 +100,9 @@ proc ::windows::gamelist::FilterText {} {
 
   busyCursor .glistWin 0
 
-  if {$temp == {0}} {
-    puts "$temp matches"
+  if {$temp == 0} {
     set glstart 1
     ::windows::gamelist::Refresh first
-    bell
   } else {
     set glstart 1
     ::windows::gamelist::Refresh first
@@ -154,7 +152,7 @@ proc ::windows::gamelist::showCurrent {} {
   ::windows::gamelist::showNum $index
 }
 
-proc ::windows::gamelist::showNum {index} {
+proc ::windows::gamelist::showNum {index {bell 1}} {
   global glstart glistSize
   set result [sc_filter locate $index]
 
@@ -162,7 +160,9 @@ proc ::windows::gamelist::showNum {index} {
   if  { [sc_filter index $result] != $index \
      || $result < 1 \
      || $result > [sc_filter count]} {
-    bell
+    if {$bell=={1}} {
+      bell
+    }
   } else {
     # See if it's already on the screen
     set found 0
@@ -191,8 +191,8 @@ proc ::windows::gamelist::showNum {index} {
 
       set current_item [::windows::gamelist::Refresh last]
       if {$current_item == {}} {
-	# Nasty recursive call... "found" above will now trigger and highlight this game
-	::windows::gamelist::showNum $result
+	# Nasty, nasty recursive call... "found" above will now trigger and highlight this game
+	::windows::gamelist::showNum $result $bell
       } else {
 	.glistWin.tree selection set $current_item
       }
@@ -368,7 +368,7 @@ proc ::windows::gamelist::Open {} {
 
     ::windows::stats::Refresh
     ::windows::gamelist::Refresh
-    ::windows::gamelist::showNum $gl_num
+    ::windows::gamelist::showNum $gl_num nobell
 
     set ::windows::gamelist::finditems {}
     setGamelistTitle
@@ -716,7 +716,7 @@ proc removeFromFilter {dir} {
 
   ::windows::stats::Refresh
   ::windows::gamelist::Refresh
-  ::windows::gamelist::showNum $gl_num
+  ::windows::gamelist::showNum $gl_num nobell
 
   set ::windows::gamelist::finditems {}
   setGamelistTitle
