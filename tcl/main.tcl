@@ -27,7 +27,11 @@ proc moveEntry_Clear {} {
   global moveEntry
   set moveEntry(Text) {}
   set moveEntry(List) {}
+  updateStatusBar
 }
+
+### Changing the keyboard bindings for castling (O-O) needs to be done
+### in sc_pos_matchMoves and a redesign of sorts is nesessary S.A.
 
 proc moveEntry_Complete {} {
   global moveEntry

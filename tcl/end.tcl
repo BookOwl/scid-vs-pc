@@ -1330,12 +1330,12 @@ foreach i {a b c d e f g h 1 2 3 4 5 6 7 8} {
   bind . <Key-$i> "moveEntry_Char $i"
 }
 
-bind . <Control-BackSpace> ::move::Back
-bind . <Control-Delete> ::move::Back
-bind . <BackSpace> moveEntry_Backspace
-bind . <Delete> moveEntry_Backspace
-bind . <space> moveEntry_Complete
+bind . <BackSpace> ::move::Back
+bind . <space>  moveEntry_Complete
+bind . <Escape> moveEntry_Clear
 
+# bind . <BackSpace> moveEntry_Backspace
+# bind . <Delete> moveEntry_Backspace
 
 ###  Other Key bindings:
 

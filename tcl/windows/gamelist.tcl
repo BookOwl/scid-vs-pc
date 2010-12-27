@@ -457,8 +457,9 @@ proc ::windows::gamelist::Open {} {
 
   # focus $w.tree
   focus $w.b.find
-  # hack to disable the down key for combobox
-  bind  $w.b.find <Down> "focus $w.tree ;::windows::gamelist::Scroll  1; break"
+  # hacks to disable the down/page-down keys for combobox
+  bind  $w.b.find <Down> "focus $w.tree ; event generate $w.tree <Down> ; break"
+  bind  $w.b.find <End>  "focus $w.tree ; event generate $w.tree <End> ; break"
 }
 
 proc configDeleteButtons {} {

@@ -10357,7 +10357,7 @@ sc_pos_isLegal (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
 //     or "#" is removed from the move text of each move, and the
 //     castling moves are "OK" and "OQ" for king and queen-side
 //     castling respectively, so that no move is a prefix of
-//     any other move.
+//     any other move. (Bollocks! Castling should be OO - S.A.)
 int
 sc_pos_matchMoves (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
 {
