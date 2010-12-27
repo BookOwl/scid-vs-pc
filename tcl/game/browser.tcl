@@ -70,21 +70,25 @@ proc ::gbrowser::new {base gnum {ply -1}} {
   # todo - windows wheelmouse
   bind $w <Button-4> "::gbrowser::update $n -1"
   bind $w <Button-5> "::gbrowser::update $n +1"
+  # unbind pgn wheelmouse from the board
+  bind $w.t.text <Button-4> "$w.t.text yview scroll -1 units ; break"
+  bind $w.t.text <Button-5> "$w.t.text yview scroll +1 units ; break"
   bind $w <Control-Button-4> "::board::resize $w.bd +1"
   bind $w <Control-Button-5> "::board::resize $w.bd -1"
 
-  button $w.b.start -image tb_start -command "::gbrowser::update $n start"
-  button $w.b.back -image tb_prev -command "::gbrowser::update $n -1"
-  button $w.b.forward -image tb_next -command "::gbrowser::update $n +1"
-  button $w.b.end -image tb_end -command "::gbrowser::update $n end"
-  frame $w.b.gap -width 3
-  button $w.b.autoplay -image autoplay_off -command "::gbrowser::autoplay $n"
-  frame $w.b.gap2 -width 3
+  button $w.b.start -image tb_start -command "::gbrowser::update $n start" -relief flat
+  button $w.b.back -image tb_prev -command "::gbrowser::update $n -1" -relief flat
+  button $w.b.forward -image tb_next -command "::gbrowser::update $n +1" -relief flat
+  button $w.b.end -image tb_end -command "::gbrowser::update $n end" -relief flat
+  button $w.b.autoplay -image autoplay_off -command "::gbrowser::autoplay $n" -relief flat
   set ::gbrowser::flip($n) [::board::isFlipped .board]
-  button $w.b.flip -image tb_flip -command "::gbrowser::flip $n"
+  button $w.b.flip -image tb_flip -command "::gbrowser::flip $n" -relief flat
 
-  pack $w.b.start $w.b.back $w.b.forward $w.b.end $w.b.gap \
-    $w.b.autoplay $w.b.gap2 $w.b.flip -side left -padx 3 -pady 1
+  # hack to center the lower button bar
+  # set width [expr [winfo reqwidth $w.bd] - [winfo reqwidth $w.b.start]*6]
+
+  pack [frame $w.b.gap -width 20] $w.b.start $w.b.back $w.b.forward $w.b.end \
+    $w.b.autoplay $w.b.flip -side left -padx 3 -pady 1
 
   set ::gbrowser::autoplay($n) 0
 
