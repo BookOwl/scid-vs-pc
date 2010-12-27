@@ -307,13 +307,15 @@ proc compNM {n m k} {
   makeAnalysisWin $n
   if {![winfo exists .analysisWin$n]} {
     puts_ ".analysisWin$n dead, exitting Tournament"
+    set comp(games) {}
     return
   }
   toggleMovesDisplay $n
 
   makeAnalysisWin $m
-  if {![winfo exists .analysisWin$n]} {
-    puts_ ".analysisWin$n dead, exitting Tournament"
+  if {![winfo exists .analysisWin$m]} {
+    puts_ ".analysisWin$m dead, exitting Tournament"
+    set comp(games) {}
     return
   }
   toggleMovesDisplay $m
