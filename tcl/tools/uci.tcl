@@ -98,6 +98,12 @@ namespace eval uci {
     if {[string match "bestmove*" $line]} {
       set data [split $line]
       set uciInfo(bestmove$n) [lindex $data 1]
+
+      # Sometimes Umko issues a bad bestmove, and then good ones, but not always a "pv" line
+      if {[winfo exists .comp]} {
+	set analysis(moves$n) [lindex $data 1]
+      }
+
       # get ponder move
       if {[lindex $data 2] == "ponder"} {
         set uciInfo(ponder$n) [lindex $data 3]

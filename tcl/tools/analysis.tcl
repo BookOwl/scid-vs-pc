@@ -1604,6 +1604,7 @@ proc makeAnalysisMove {n} {
     ### Move fail
     set res 0
     puts "Error adding move $move" ; # &&&
+    set analysis(waitForBestMove$n) 1
   } else {
     puts_ "MOVE $n moves $move"
   }
@@ -1732,7 +1733,7 @@ proc logEngine {n text} {
 
   # Print the log message to stdout if applicable:
   if {$::analysis(log_stdout)} {
-    puts stdout $text
+    puts stdout "$n $text"
   }
 
   if { [ info exists ::analysis(log$n)] && $::analysis(log$n) != {}} {
@@ -1759,7 +1760,7 @@ proc logEngineNote {n text} {
 
 # What a fucking mess this is. S.A.
 # Horrible hopeless design decisions meaning this code hasnt been touched since
-# - Sorry Shane ;>
+# - Sorry Shane ;> (mostly fixed now)
 
 proc startAnalysisWin { FunctionKey } {
   global engines

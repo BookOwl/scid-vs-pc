@@ -2976,6 +2976,7 @@ Glaurung<br>
 Gnu Chess 5<br>
 Hoi Chess<br>
 Homer<br>
+Komodo<br>
 Phalanx<br>
 RobboLito<br>
 Scidlet<br>
@@ -2983,14 +2984,16 @@ Scorpio<br>
 Shredder Classic 4<br>
 Sjeng<br>
 Spike<br>
-Stockfish 1.6.2<br>
-Stockfish 1.7.1<br>
-Toga 131 (Fruit)<br>
+Stockfish<br>
+Toga (Fruit)<br>
 XChenard<br>
+Umko 1.1<br>
 Zct<br>
 <br>
+Komodo performs well, but frequently abuses it's time slice.
 Arasan, Spike, Sjeng, Homer and XChenard have issues relating to time control.
 Sjeng and XChenard are issued the "hard" command, and seem to work.
+Umko 1.1 seems to have occasional end-of-game fails, which have been worked around.
 Gaviota-0.74 runs in analysis/xboard mode, but will not play tournaments.
 Pervious versions of Phalanx had no time control, but it now works well.
 Gnu Chess needs the "-xboard" parameter.
