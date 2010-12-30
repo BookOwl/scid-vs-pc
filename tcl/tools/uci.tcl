@@ -100,6 +100,7 @@ namespace eval uci {
       set uciInfo(bestmove$n) [lindex $data 1]
 
       # Sometimes Umko issues a bad bestmove, and then good ones, but not always a "pv" line
+      # We rely on "pv" lines (and uciInfo(pv$n)) for getting the best UCI move, so this hack addresses this
       if {[winfo exists .comp]} {
 	set analysis(moves$n) [lindex $data 1]
       }

@@ -285,6 +285,7 @@ menuText D OptionsShowVarPopup "Variantenfenster zeigen" 0 { Anzeige des Variant
 menuText D OptionsMovesSpace "Leerzeichen nach Zugnummer einfügen" 0 {Leerzeichen nach Zugnummer einfügen}  
 menuText D OptionsMovesKey "Autom. Zugergänzung" 10 \
   {Automatische Zugergänzung ein-/ausschalten}
+menuText D OptionsMovesShowVarArrows "Pfeile für Varianten anzeigen" 0 {Zeige Pfeile in Varianten an: ja/nein}
 menuText D OptionsNumbers "Zahlenformat" 5 {Zahlenformat wählen}
 menuText D OptionsStartup "Autostart" 1 {Fenster zum Öffnen bei Start auswählen}
 menuText D OptionsWindows "Fenster" 6 {Fenster-Optionen}

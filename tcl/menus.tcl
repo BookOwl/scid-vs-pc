@@ -977,7 +977,7 @@ $m add command -label OptionsSave -command {
           ::pgn::shortHeader ::pgn::boldMainLine ::pgn::stripMarks \
           ::pgn::symbolicNags ::pgn::moveNumberSpaces ::pgn::columnFormat myPlayerNames \
           tree(order) tree(autoSave) optionsAutoSave ::tree::mask::recentMask \
-          ecoFile suggestMoves showVarPopup glistSize glexport \
+          ecoFile suggestMoves showVarPopup showVarArrows glistSize glexport \
           blunderThreshold autoplayDelay animateDelay boardCoords boardSTM \
           moveEntry(AutoExpand) moveEntry(Coord) \
           translatePieces highlightLastMove highlightLastMoveWidth highlightLastMoveColor \
@@ -1117,6 +1117,14 @@ $m.entry add checkbutton -label OptionsMovesAsk \
     -variable askToReplaceMoves -offvalue 0 -onvalue 1
 set helpMessage($m.entry,0) OptionsMovesAsk \
 
+$m.entry add checkbutton -label OptionsMovesShowVarArrows \
+    -variable showVarArrows -offvalue 0 -onvalue 1
+set helpMessage($m.entry,10) OptionsMovesShowVarArrows
+
+$m.entry add checkbutton -label OptionsShowVarPopup \
+    -variable showVarPopup -offvalue 0 -onvalue 1
+set helpMessage($m.entry,6) OptionsShowVarPopup
+
 $m.entry add cascade -label OptionsMovesAnimate -menu $m.entry.animate
 menu $m.entry.animate -tearoff 1
 foreach i {0 100 150 200 250 300 400 500 600 800 1000} {
@@ -1140,9 +1148,6 @@ $m.entry add checkbutton -label OptionsMovesSuggest \
     -variable suggestMoves -offvalue 0 -onvalue 1
 set helpMessage($m.entry,5) OptionsMovesSuggest
 
-$m.entry add checkbutton -label OptionsShowVarPopup \
-    -variable showVarPopup -offvalue 0 -onvalue 1
-set helpMessage($m.entry,6) OptionsShowVarPopup
 
 $m.entry add checkbutton -label OptionsMovesSpace \
     -variable ::pgn::moveNumberSpaces -offvalue 0 -onvalue 1
@@ -1570,7 +1575,7 @@ proc setLanguageMenus {{lang ""}} {
   }
   configMenuText .menu.options.entry [tr OptionsShowVarPopup $oldLang] OptionsShowVarPopup $lang
   # S.A. here's how to fix these f-ing menus.
-  foreach tag {Ask Animate Delay Suggest Key Coord Space TranslatePieces HighlightLastMove } {
+  foreach tag {Ask Animate Delay Suggest Key Coord Space TranslatePieces HighlightLastMove ShowVarArrows} {
     configMenuText .menu.options.entry [tr OptionsMoves$tag $oldLang] \
         OptionsMoves$tag $lang
   }

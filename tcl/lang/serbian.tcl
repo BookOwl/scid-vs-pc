@@ -300,11 +300,13 @@ menuText Y OptionsMovesCoord "Uno¹enje koordinata poteza" 0 \
 menuText Y OptionsMovesSuggest "Poka¾i preporuèene poteze" 0 \
   {Ukljuèi/iskljuèi preporuèene poteze}
 # ====== TODO To be translated ======
-menuText Y OptionsShowVarPopup "Show variations window" 0 {Turn on/off the display of a variations window}  
+menuText Y OptionsShowVarPopup "Show Variation Window" 0 {Turn on/off the display of a variations window}  
 # ====== TODO To be translated ======
 menuText Y OptionsMovesSpace "Add spaces after move number" 0 {Add spaces after move number}  
 menuText Y OptionsMovesKey "Dopunjavanje poteza" 0 \
   {Ukljuèi/iskljuèi dopunjavanje poteza zadatih tastaturom}
+# ====== TODO To be translated ======
+menuText Y OptionsMovesShowVarArrows "Show Variation Arrows" 0 {Turn on/off arrows showing moves in variations}
 menuText Y OptionsNumbers "Format brojeva" 0 {Izaberi format brojeva}
 menuText Y OptionsStartup "Startup" 3 {Select windows to open at startup} ;# ***
 menuText Y OptionsWindows "Prozori" 0 {Opcije prozora}

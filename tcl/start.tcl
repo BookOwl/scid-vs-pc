@@ -436,8 +436,9 @@ set askToReplaceMoves 1
 # Show suggested moves
 set suggestMoves 0
 
-# Show variations popup window
+# Show variations popup window, arrows
 set showVarPopup 1
+set showVarArrows 1
 
 # Keyboard Move entry options:
 set moveEntry(On) 1

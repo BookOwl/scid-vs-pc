@@ -287,8 +287,8 @@ menuText S OptionsMovesSuggest "Mostrar movimientos sugeridos" 20 \
 menuText S OptionsShowVarPopup "Mostrar ventana de variaciones" 0 {Activar/Desactivar La ventana de variaciones}
 menuText S OptionsMovesSpace "Añadir espacios detrás de número de movimiento" 0 {Añadir espacios detrás del número de movimiento}  
 menuText S OptionsMovesKey "Teclado Inteligente" 0 \
-{Activa/desactiva la función de autocompletado inteligente de movimientos
-con teclado}
+{Activa/desactiva la función de autocompletado inteligente de movimientos con teclado}
+menuText S OptionsMovesShowVarArrows "Mostrar flechas para las variaciones" 0 \
 menuText S OptionsNumbers "Formato de números" 11 {Selecciona el formato de números}
 menuText S OptionsStartup "Inicio" 3 {Seleccionar ventanas a abrir al inicio}
 menuText S OptionsWindows "Ventanas" 0 {Opciones de ventana}

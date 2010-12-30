@@ -297,12 +297,13 @@ menuText N OptionsMovesCoord "Zet-ingave" 0 \
 menuText N OptionsMovesSuggest "Toon hint" 0 \
   {Schakel hints aan of uit}
 # ====== TODO To be translated ======
-menuText N OptionsShowVarPopup "Show variations window" 0 {Turn on/off the display of a variations window} 
+menuText N OptionsShowVarPopup "Show Variation Window" 0 {Turn on/off the display of a variations window} 
 # ====== TODO To be translated ======
 menuText N OptionsMovesSpace "Add spaces after move number" 0 {Add spaces after move number}  
 menuText E OptionsMovesSpace "Add spaces after move number" 0 {Add spaces after move number}   
 menuText N OptionsMovesKey "Auto-aanvullen" 0 \
   {Aan/uitschakelen van toetsenbordzet auto-aanvullen}
+menuText N OptionsMovesShowVarArrows "Toon Pijlen voor Varianten" 0 {Zet aan/af pijlen om variantenzetten te tonen}
 menuText N OptionsNumbers "Getalformaat" 5 \
   {Kies de manier waarop getallen te zien zijn}
 menuText N OptionsStartup "Opstarten" 3 {Selecteer de vensters die tijdens starten geopend worden}

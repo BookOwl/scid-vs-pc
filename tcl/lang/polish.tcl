@@ -304,11 +304,13 @@ menuText P OptionsMovesCoord "Posuniêcia w formacie \"g1f3\"" 0 \
 menuText P OptionsMovesSuggest "Poka¿ proponowane posuniêcia" 1 \
   {W³±cz/wy³±cz proponowanie posuniêæ}
 # ====== TODO To be translated ======
-menuText P OptionsShowVarPopup "Show variations window" 0 {Turn on/off the display of a variations window}  
+menuText P OptionsShowVarPopup "Show Variation Window" 0 {Turn on/off the display of a variations window}  
 # ====== TODO To be translated ======
 menuText P OptionsMovesSpace "Add spaces after move number" 0 {Add spaces after move number}  
 menuText P OptionsMovesKey "Automatyczne dope³nianie posuniêæ" 1 \
   {W³±cz/wy³±cz automatyczne dope³nianie posuniêæ wprowadzanych z klawiatury}
+# ====== TODO To be translated ======
+menuText P OptionsMovesShowVarArrows "Show Variation Arrows" 0 {Turn on/off arrows showing moves in variations}
 menuText P OptionsNumbers "Format zapisu liczb" 0 {Wybierz format zapisu liczb}
 menuText P OptionsStartup "Start" 0 {Wybierz okna, które maj± byæ widoczne po uruchomieniu programu}
 menuText P OptionsWindows "Okna" 0 {Opcje okien}

@@ -281,11 +281,12 @@ menuText C OptionsMovesCoord "Souøadnicové zadávání tahù" 0 \
 menuText C OptionsMovesSuggest "Ukázat navrhované tahy" 0 \
   {Zapnout/vypnout zobrazování navrhovaných tahù}
 # ====== TODO To be translated ======
-menuText C OptionsShowVarPopup "Show variations window" 0 {Turn on/off the display of a variations window}  
+menuText C OptionsShowVarPopup "Show Variation Window" 0 {Turn on/off the display of a variations window}  
 # ====== TODO To be translated ======
 menuText C OptionsMovesSpace "Add spaces after move number" 0 {Add spaces after move number}  
 menuText C OptionsMovesKey "Klávesnicové doplòování" 13 \
   {Zapnout/vypnout automatické doplòování tahù zadávaných klávesnicí}
+menuText C OptionsMovesShowVarArrows "Zobrazit ¹ipky pro varianty" 0 {Zapnout/vypnout zobrazování ¹ipek ukazujících tahy variant}
 menuText C OptionsNumbers "Formát èísel" 0 {Zvolit formát èísel}
 menuText C OptionsStartup "Pøi spu¹tìní" 4 {Zvolit okna, která se otevøou pøi spu¹tìní}
 menuText C OptionsWindows "Okna" 0 {Volby oken}

@@ -296,10 +296,11 @@ menuText E OptionsMovesCoord "Coordinate Move Entry" 0 \
   {Accept coordinate-style move entry (e.g. "g1f3")}
 menuText E OptionsMovesSuggest "Show Suggested Moves" 0 \
   {Turn on/off move suggestion}
-menuText E OptionsShowVarPopup "Show variations window" 0 {Turn on/off the display of a variations window}  
+menuText E OptionsShowVarPopup "Show Variation Window" 0 {Turn on/off the display of a variations window}  
 menuText E OptionsMovesSpace "Add spaces after move number" 0 {Add spaces after move number}  
 menuText E OptionsMovesKey "Keyboard Completion" 0 \
   {Turn on/off keyboard move auto-completion}
+menuText E OptionsMovesShowVarArrows "Show Variation Arrows" 0 {Turn on/off arrows showing moves in variations}
 menuText E OptionsNumbers "Number Format" 0 {Select the number format}
 menuText E OptionsStartup "Startup" 3 {Select windows to open at startup}
 menuText E OptionsWindows "Windows" 0 {Window options}

@@ -280,11 +280,12 @@ menuText B OptionsMovesCoord "Entrada de movimentos por coordenadas" 0 \
 menuText B OptionsMovesSuggest "Mostrar movimentos sugeridos" 0 \
   {Liga/desliga sugestao de movimentos}
 # ====== TODO To be translated ======
-menuText B OptionsShowVarPopup "Show variations window" 0 {Turn on/off the display of a variations window}  
+menuText B OptionsShowVarPopup "Show Variation Window" 0 {Turn on/off the display of a variations window}  
 # ====== TODO To be translated ======
 menuText B OptionsMovesSpace "Add spaces after move number" 0 {Add spaces after move number}  
 menuText B OptionsMovesKey "Auto completar" 0 \
   {Liga/desliga auto completar a partir do que for digitado}
+menuText B OptionsMovesShowVarArrows "Mostrar Setas para variantes" 0 {Liga/Desliga as setas que mostram movimentos em variantes}
 menuText B OptionsNumbers "Formato de Numeros" 0 {Selecione o formato usado para numeros}
 menuText B OptionsStartup "Iniciar" 1 \
   {Seleciona janelas que serao abertas ao iniciar o programa}

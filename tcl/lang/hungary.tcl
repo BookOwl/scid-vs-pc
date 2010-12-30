@@ -286,11 +286,12 @@ menuText H OptionsMovesCoord "Lépés megadása koordinátákkal" 15 \
 menuText H OptionsMovesSuggest "Javaslat" 0 \
   {Be/kikapcsolja a lépésjavaslatot.}
 # ====== TODO To be translated ======
-menuText H OptionsShowVarPopup "Show variations window" 0 {Turn on/off the display of a variations window}  
+menuText H OptionsShowVarPopup "Show Variation Window" 0 {Turn on/off the display of a variations window}  
 # ====== TODO To be translated ======
 menuText H OptionsMovesSpace "Add spaces after move number" 0 {Add spaces after move number}  
 menuText H OptionsMovesKey "Billentyû-kiegészítés" 0 \
   {Be/kikapcsolja a billentyûzettel részlegesen bevitt lépések automatikus kiegészítését.}
+menuText H OptionsMovesShowVarArrows "Show Variation Arrows" 0 {Turn on/off arrows showing moves in variations}
 menuText H OptionsNumbers "Számformátum" 1 {Számformátum kiválasztása}
 menuText H OptionsStartup "Indítás" 0 {Az indításkor kinyitandó ablakok kiválasztása}
 menuText H OptionsWindows "Ablakok" 0 {Ablakbeállítások}

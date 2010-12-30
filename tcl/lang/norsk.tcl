@@ -302,11 +302,13 @@ menuText O OptionsMovesCoord "Koordinater" 0 \
 menuText O OptionsMovesSuggest "Vis foreslåtte trekk" 0 \
   {Slå av/på forslag til trekk}
 # ====== TODO To be translated ======
-menuText O OptionsShowVarPopup "Show variations window" 0 {Turn on/off the display of a variations window}  
+menuText O OptionsShowVarPopup "Show Variation Window" 0 {Turn on/off the display of a variations window}  
 # ====== TODO To be translated ======
 menuText O OptionsMovesSpace "Add spaces after move number" 0 {Add spaces after move number}  
 menuText O OptionsMovesKey "Autofullfør" 0 \
   {Slå av/på autofullføriring av tastaturtrekk}
+# ====== TODO To be translated ======
+menuText O OptionsMovesShowVarArrows "Show Variation Arrows" 0 {Turn on/off arrows showing moves in variations}
 menuText O OptionsNumbers "Tallformat" 0 {Angi tallformat}
 menuText O OptionsStartup "Oppstart" 0 {Angi vinduer som skal åpne ved oppstart}
 menuText O OptionsWindows "Vinduer" 0 {Vindusinnstillinger}

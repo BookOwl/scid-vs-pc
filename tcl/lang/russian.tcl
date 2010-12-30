@@ -303,11 +303,13 @@ menuText R OptionsMovesCoord "Координаты ходов" 1 \
 menuText R OptionsMovesSuggest "Показать советуемые ходы" 0 \
   {Включить/выключить советы о ходе}
 # ====== TODO To be translated ======
-menuText R OptionsShowVarPopup "Show variations window" 0 {Turn on/off the display of a variations window}  
+menuText R OptionsShowVarPopup "Show Variation Window" 0 {Turn on/off the display of a variations window}  
 # ====== TODO To be translated ======
 menuText R OptionsMovesSpace "Add spaces after move number" 0 {Add spaces after move number}  
 menuText R OptionsMovesKey "Клавиатурное завершение" 0 \
   {Включить/выключить автозавершение клавиатурных ходов}
+# ====== TODO To be translated ======
+menuText R OptionsMovesShowVarArrows "Show Variation Arrows" 0 {Turn on/off arrows showing moves in variations}
 menuText R OptionsNumbers "Числовой формат" 0 {Выбрать числовой формат}
 menuText R OptionsStartup "Запуск" 0 {Выбрать окна, открывающиеся при запуске}
 menuText R OptionsWindows "Окна" 0 {Установки окон}
