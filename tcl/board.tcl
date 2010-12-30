@@ -1621,7 +1621,7 @@ proc ::board::mark::add {win args} {
   set type  [lindex $args 0]
 
   # Remove existing marks:
-  if {$type == "arrow"} {
+  if {$type == "arrow" || $type == "var"} {
     $board delete "mark${square}:${dest}" "mark${dest}:${square}"
     if {[string equal $color "nocolor"]} { set type DEL }
   } else {
@@ -1736,6 +1736,21 @@ proc ::board::mark::DrawArrow {pathName from to color} {
       {create line $coord} \
       -fill $color -arrow last -width 2 \
       {-tag [list mark arrows "mark${from}:${to}"]}
+}
+
+proc ::board::mark::DrawVar {pathName from to color} {
+  if {$from < 0  ||  $from > 63} { return }
+  if {$to   < 0  ||  $to   > 63} { return }
+  set coord [GetArrowCoords $pathName $from $to]
+  set item [$pathName create line $coord -fill $color -arrow last -width 5 -arrowshape {15 18 5} \
+    -activewidth 8 -tag [list mark var "mark${from}:${to}" ]]
+  # $w.bd bind p$i $event $action
+  if {$::move::var <= $::move::maxvar} {
+puts "item is $item"
+  $pathName itemconfig $item -tag [list mark var "mark${from}:${to}" var$::move::var ]
+puts  "$pathName bind var$::move::var - enterVar $::move::var"
+  $pathName bind var$::move::var <Button-1> "enterVar $::move::var"
+  }
 }
 
 # ::board::mark::DrawRectangle --

@@ -576,7 +576,7 @@ proc enterVar {{n {}}} {
   if {$n == {}} {
     set n [.variations.lbVar curselection]
   }
-  destroy .variations
+  catch {destroy .variations}
   # need to use "-force" to keep keyboared bindings after wheelmouse
   focus -force .board 
   if {$n == 0} {
