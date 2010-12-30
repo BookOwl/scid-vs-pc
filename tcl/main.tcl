@@ -566,7 +566,10 @@ proc showVars {} {
   catch {
     focus $w
     placeWinOverParent $w .
-    grab $w
+    # Disable grab if drawing arrows, as it pinches the arrows binding
+    if {! $::showVarArrows} {
+      grab $w
+    }
   }
   update
 }

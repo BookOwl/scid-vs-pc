@@ -19,7 +19,7 @@ proc ::move::drawVarArrows {} {
       set sq_start [ ::board::sq [ string range $move 0 1 ] ]
       set sq_end [ ::board::sq [ string range $move 2 3 ] ]
         foreach mark $::board::_mark(.board) {
-          if { [lindex $mark 0] == "arrow" ||[lindex $mark 0] == "var" } {
+          if { [lindex $mark 0] == "arrow" ||[string match {var*} [lindex $mark 0]] } {
 	    if {[lindex $mark 1] == $sq_start && [lindex $mark 2] == $sq_end} { 
 	      set bDrawn 1
 	      break
@@ -37,24 +37,20 @@ proc ::move::showVarArrows {} {
   set move [sc_game info nextMoveUCI]
   set varList [sc_var list UCI]  
 
-  # It's a little hard to pass this arg to DrawVar through the overloaded
-  # ::board::mark::add, so use a global, and a max check because of an isseu somewhere :<
-
-  set ::move::var 0
-  set ::move::maxvar [llength $varList]
+  set var 0
 
   if {$move != ""} {
     set sq_start [ ::board::sq [ string range $move 0 1 ] ]
     set sq_end [ ::board::sq [ string range $move 2 3 ] ]
-    ::board::mark::add .board var $sq_start $sq_end black
-    incr ::move::var
+    ::board::mark::add .board var$var $sq_start $sq_end black
+    incr var
   }
 
   foreach { move } $varList {
     set sq_start [ ::board::sq [ string range $move 0 1 ] ]
     set sq_end [ ::board::sq [ string range $move 2 3 ] ]
-    ::board::mark::add .board var $sq_start $sq_end grey
-    incr ::move::var
+    ::board::mark::add .board var$var $sq_start $sq_end grey80
+    incr var
   }
 }
 
@@ -78,7 +74,6 @@ proc ::move::ExitVar {} {
   sc_var exit; 
   updateBoard -animate; 
   # Do comments work properly ?
-puts fuck1
   if {[::move::drawVarArrows]} { ::move::showVarArrows }
 }
 
@@ -102,7 +97,6 @@ proc ::move::Back {{count 1}} {
   } else {
     updateBoard
   }
-puts fuck2
   if {[::move::drawVarArrows]} { ::move::showVarArrows }
 }
 
@@ -131,7 +125,7 @@ proc ::move::Forward {{count 1}} {
     if {! $bArrows} { sc_move forward $count }
     updateBoard
   }
-  if {$bArrows} {puts fuck3; ::move::showVarArrows }
+  if {$bArrows} { ::move::showVarArrows }
 }
 
 

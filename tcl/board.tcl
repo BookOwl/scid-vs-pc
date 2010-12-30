@@ -1621,7 +1621,7 @@ proc ::board::mark::add {win args} {
   set type  [lindex $args 0]
 
   # Remove existing marks:
-  if {$type == "arrow" || $type == "var"} {
+  if {$type == "arrow" || [string match {var*} $type]} {
     $board delete "mark${square}:${dest}" "mark${dest}:${square}"
     if {[string equal $color "nocolor"]} { set type DEL }
   } else {
@@ -1630,19 +1630,23 @@ proc ::board::mark::add {win args} {
     #    ::board::colorSquare $win $square [::board::defaultColor $square]
   }
 
-  switch -- $type {
+  switch -glob -- $type {
     full    { ::board::colorSquare $win $square $color }
     DEL     { set new 1 }
+    var*    {
+	      scan $type var%s varnum
+	      if {[catch {DrawVar $board $square $dest $color $varnum}]} {
+		return
+	      }
+	    }
     default {
-      # Find a subroutine to draw the canvas object:
-      set drawingScript "Draw[string totitle $type]"
-      if {![llength [info procs $drawingScript]]} { return }
-      
-      # ... and try it:
-      if {[catch {eval $drawingScript $board $square $dest $color}]} {
-        return
-      }
-    }
+	      # Find a subroutine to draw the canvas object:
+	      set drawingScript "Draw[string totitle $type]"
+	      if {![llength [info procs $drawingScript]]} { return }
+	      if {[catch {eval $drawingScript $board $square $dest $color}]} {
+		return
+	      }
+	    }
   }
   if {$new} { lappend ::board::_mark($win) [lrange $args 0 end-1] }
 }
@@ -1738,19 +1742,15 @@ proc ::board::mark::DrawArrow {pathName from to color} {
       {-tag [list mark arrows "mark${from}:${to}"]}
 }
 
-proc ::board::mark::DrawVar {pathName from to color} {
+proc ::board::mark::DrawVar {pathName from to color varnum} {
   if {$from < 0  ||  $from > 63} { return }
   if {$to   < 0  ||  $to   > 63} { return }
   set coord [GetArrowCoords $pathName $from $to]
-  set item [$pathName create line $coord -fill $color -arrow last -width 5 -arrowshape {15 18 5} \
-    -activewidth 8 -tag [list mark var "mark${from}:${to}" ]]
-  # $w.bd bind p$i $event $action
-  if {$::move::var <= $::move::maxvar} {
-puts "item is $item"
-  $pathName itemconfig $item -tag [list mark var "mark${from}:${to}" var$::move::var ]
-puts  "$pathName bind var$::move::var - enterVar $::move::var"
-  $pathName bind var$::move::var <Button-1> "enterVar $::move::var"
-  }
+  $pathName create line $coord -fill $color -arrow last -width 5 -arrowshape {15 18 5} \
+    -activewidth 8 -tag [list mark var "mark${from}:${to}" var$varnum]
+
+  # Create arrow binding
+  $pathName bind var$varnum <Button-1> "enterVar $varnum"
 }
 
 # ::board::mark::DrawRectangle --
