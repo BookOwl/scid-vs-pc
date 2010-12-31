@@ -1262,8 +1262,7 @@ proc makeSortWin {{parent .}} {
   button $w.b.clear -textvar ::tr(Clear) -command clearSortCriteria
   button $w.b.help -textvar ::tr(Help) -command {helpWindow Sorting}
   button $w.b.sort -textvar ::tr(Sort) -command sortDatabase
-  button $w.b.close -textvar ::tr(Close) \
-      -command "focus .; destroy $w"
+  button $w.b.close -textvar ::tr(Close) -command "focus .; destroy $w"
   pack $w.b.close $w.b.sort -side right -padx 5 -pady 2
   pack $w.b.clear $w.b.help -side left -padx 5 -pady 2
   bind $w <F1> {helpWindow Sorting}

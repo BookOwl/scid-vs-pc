@@ -5,11 +5,6 @@
 # 27/06/2009
 # Rewritten to use the ttk::treeview widget (man ttk_treeview) by Steven Atkinson
 
-# 24/05/2010
-# To make this widget work _fast_ with huge databases isnt impossible
-# We have to make use of Scid's in built DB sorting instead of using text
-# sorting.
-
 set ::windows::gamelist::isOpen 0
 set glstart 1
 set ::windows::gamelist::findtext {}
@@ -532,8 +527,18 @@ R0lGODlhCgAKAIABAAAAAP///yH5BAEKAAEALAAAAAAKAAoAAAIPjI+pa+D/
 GnRoqrgA26wAADs=
 }
 
+### Array recording which databases have been sorted, and which field and order
+
+array set glistSortHist {}
+
+# There is no other mechanism to remember last database sort, but there should
+# probably be one in "tkscid.h::struct scidBaseT".
+# "glistSortHist" is currently not persistent.  It could be done, but isn't
+# trivial as a problem with having a history is that it gets complicated when
+# handling read-only PGNs
+
 proc SortBy {tree col} {
-    global glistCodes glistSortedBy glstart glSortReversed
+    global glistCodes glistSortedBy glstart glSortReversed glistSortHist
 
     set w .glistWin
 
@@ -544,22 +549,23 @@ proc SortBy {tree col} {
     if {$col == $glistSortedBy} {
       set glSortReversed [expr !$glSortReversed]
     } else {
+      set glSortReversed 0
+
+      # clear previous arrows
       if {$glistSortedBy != {} } {
 	$w.tree heading $glistSortedBy -image {}
       }
-      set glSortReversed 0
+
       set glistSortedBy $col
     }
 
+    set glistSortHist([file tail [sc_base filename]]) [list $col $glSortReversed ]
 
     if {$glSortReversed} {
-      $w.tree heading $col -image arrow_down
       sc_base sortdown
     } else {
-      $w.tree heading $col -image arrow_up
       sc_base sortup
     }
-
     catch {sc_base sort $col {}}
 
     set glstart 1
@@ -568,7 +574,12 @@ proc SortBy {tree col} {
 
 
 proc setGamelistTitle {} {
-  setTitle "[sc_filter count]/[sc_base numGames] $::tr(games)" 
+  set fname [file tail [sc_base filename]]
+  if {![string match {\[*\]} $fname]} {
+    set fname "\[$fname\]"
+  }
+
+  setTitle "$fname [sc_filter count]/[sc_base numGames] $::tr(games)" 
 }
 
 proc setTitle {message} {
@@ -593,11 +604,29 @@ proc ::windows::gamelist::Reload {} {
 }
 
 # Returns the treeview item for current game (if it is shown in widget)
+
 proc ::windows::gamelist::Refresh {{see {}}} {
-  global glistCodes glstart glistSize 
+  global glistCodes glstart glistSize glistSortHist glistSortedBy
 
   set w .glistWin
   if {![winfo exists $w]} {return}
+
+  set b [file tail [sc_base filename]]
+  if {[info exists glistSortHist($b)]} {
+
+    foreach {col glSortReversed} $glistSortHist($b) {}
+    set glistSortedBy $col
+    if {$glSortReversed} {
+	$w.tree heading $col -image arrow_down
+    } else {
+	$w.tree heading $col -image arrow_up
+    }
+  } else {
+    # clear previous arrows
+    if {$glistSortedBy != {} } {
+      $w.tree heading $glistSortedBy -image {}
+    }
+  }
 
   ::windows::gamelist::SetSize
 
