@@ -287,6 +287,9 @@ $m add command -label EditCopyBoard -accelerator "Ctrl+Shift+C" -command copyFEN
 bind . <Control-C> copyFEN
 set helpMessage($m,[incr menuindex]) EditCopyBoard
 
+$m add command -label {Copy PGN} -command ::pgn::copyPgn
+incr menuindex
+
 $m add command -label EditPasteBoard -accelerator "Ctrl+Shift+V" -command pasteFEN
 bind . <Control-V> pasteFEN
 set helpMessage($m,[incr menuindex]) EditPasteBoard

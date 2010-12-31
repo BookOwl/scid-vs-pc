@@ -50,23 +50,31 @@ proc importPgnGame {} {
     .importWin.pane.edit.text insert end [sc_game pgn -width 70]
     .importWin.pane.err.text delete 0.0 end
   }
+
   dialogbutton $w.b.clear -text "$::tr(Clear)" -command {
     .importWin.pane.edit.text delete 0.0 end
     .importWin.pane.err.text delete 0.0 end
   }
+
   dialogbutton $w.b.import -text "$::tr(Import)" -command {
-    set err [catch {sc_game import \
-          [.importWin.pane.edit.text get 0.0 end]} result]
-    .importWin.pane.err.text delete 0.0 end
-    .importWin.pane.err.text insert end $result
+    set err \
+      [catch {sc_game import [.importWin.pane.edit.text get 0.0 end]} result]
     if {! $err} {
       updateBoard -pgn
       updateTitle
     }
+    if {$result == {PGN text imported with no errors or warnings.}} {
+      destroy .importWin; focus .
+    } else {
+      .importWin.pane.err.text delete 0.0 end
+      .importWin.pane.err.text insert end $result
+    }
   }
+
   dialogbutton $w.b.cancel -textvar ::tr(Close) -command {
     destroy .importWin; focus .
   }
+
   frame $w.b.space -width 20
   pack $w.b.paste $w.b.space -side left -padx 10 -pady 2
   pack $w.b.cancel $w.b.import $w.b.clear -side right -padx 10 -pady 2

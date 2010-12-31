@@ -64,14 +64,7 @@ namespace eval pgn {
 
     $w.menu.file add command -label PgnFilePrint -command "::pgn::savePgn $w"
 
-    $w.menu.file add command -label PgnFileCopy -command {
-      setLanguageTemp E
-      set pgnStr [sc_game pgn -width 75 -indentComments $::pgn::indentComments \
-          -indentVariations $::pgn::indentVars -space $::pgn::moveNumberSpaces]
-      setLanguageTemp $::language
-      
-      setClipboard $pgnStr
-    }
+    $w.menu.file add command -label PgnFileCopy -command ::pgn::copyPgn
 
     $w.menu.file add separator
 
@@ -212,6 +205,15 @@ namespace eval pgn {
       }
       set initialDir(base) [file dirname $fname]
     }
+  }
+
+  proc copyPgn {} {
+    setLanguageTemp E
+    set pgnStr [sc_game pgn -width 75 -indentComments $::pgn::indentComments \
+	-indentVariations $::pgn::indentVars -space $::pgn::moveNumberSpaces]
+    setLanguageTemp $::language
+    
+    setClipboard $pgnStr
   }
 
   # These two bindings are done in a bad way in htext.tcl.
