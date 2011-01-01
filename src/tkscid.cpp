@@ -13670,37 +13670,7 @@ sc_tree_search (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
         // OK, not in the cache so do the search:
 
         // First, set up the stored line code matches:
-        uint numStoredLines = StoredLine::Count();
-        byte storedLineMatches [MAX_STORED_LINES];
-        simpleMoveT storedLineMoves [MAX_STORED_LINES];
-        bool storedLineNeverMatches [MAX_STORED_LINES];
-        pieceT * bd = pos->GetBoard();
-        bool isStartPos =
-            (bd[A1]==WR  &&  bd[B1]==WN  &&  bd[C1]==WB  &&  bd[D1]==WQ  &&
-             bd[E1]==WK  &&  bd[F1]==WB  &&  bd[G1]==WN  &&  bd[H1]==WR  &&
-             bd[A2]==WP  &&  bd[B2]==WP  &&  bd[C2]==WP  &&  bd[D2]==WP  &&
-             bd[E2]==WP  &&  bd[F2]==WP  &&  bd[G2]==WP  &&  bd[H2]==WP  &&
-             bd[A7]==BP  &&  bd[B7]==BP  &&  bd[C7]==BP  &&  bd[D7]==BP  &&
-             bd[E7]==BP  &&  bd[F7]==BP  &&  bd[G7]==BP  &&  bd[H7]==BP  &&
-             bd[A8]==BR  &&  bd[B8]==BN  &&  bd[C8]==BB  &&  bd[D8]==BQ  &&
-             bd[E8]==BK  &&  bd[F8]==BB  &&  bd[G8]==BN  &&  bd[H8]==BR);
-
-        for (uint line = 1; line <= numStoredLines; line++) {
-            Game * lineGame = StoredLine::GetGame (line);
-            lineGame->MoveToPly (0);
-            storedLineMatches[line] = 0;
-            storedLineNeverMatches[line] = false;
-            bool b = false;
-            if (lineGame->ExactMatch (pos, NULL, &sm, &b)) {
-                if (sm.from != NULL_SQUARE) {
-                    storedLineMatches[line] = lineGame->GetCurrentPly() + 1;
-                    storedLineMoves[line] = sm;
-                }
-            } else {
-                if (b) { storedLineNeverMatches[line] = true; }
-            }
-        }
-        // Finished setting up stored line results.
+        StoredLine stored_line(pos);
 
 #ifndef WINCE
         const byte * oldFilterData = base->filter->GetOldDataTree();
@@ -13732,17 +13702,23 @@ sc_tree_search (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
             uint ply = 0;
 
             // Check the stored line result for this game:
-            uint storedLine = ie->GetStoredLineCode();
-            if (storedLine > 0  && storedLine < numStoredLines) {
-                if (storedLineMatches[storedLine] != 0) {
-                    foundMatch = true;
-                    ply = storedLineMatches[storedLine];
-                    sm = storedLineMoves[storedLine];
-                } else if (storedLineNeverMatches[storedLine]) {
-                    skipcount++;
-                    continue;
-                }
+            if (! stored_line.CanMatch(ie->GetStoredLineCode(), &ply, &sm)) {
+              skipcount++;
+              continue;
             }
+            if (ply > 0) foundMatch = true;
+
+            pieceT * bd = pos->GetBoard();
+            bool isStartPos =
+               (bd[A1]==WR  &&  bd[B1]==WN  &&  bd[C1]==WB  &&  bd[D1]==WQ  &&
+                                bd[E1]==WK  &&  bd[F1]==WB  &&  bd[G1]==WN  &&  bd[H1]==WR  &&
+                                bd[A2]==WP  &&  bd[B2]==WP  &&  bd[C2]==WP  &&  bd[D2]==WP  &&
+                                bd[E2]==WP  &&  bd[F2]==WP  &&  bd[G2]==WP  &&  bd[H2]==WP  &&
+                                bd[A7]==BP  &&  bd[B7]==BP  &&  bd[C7]==BP  &&  bd[D7]==BP  &&
+                                bd[E7]==BP  &&  bd[F7]==BP  &&  bd[G7]==BP  &&  bd[H7]==BP  &&
+                                bd[A8]==BR  &&  bd[B8]==BN  &&  bd[C8]==BB  &&  bd[D8]==BQ  &&
+                                bd[E8]==BK  &&  bd[F8]==BB  &&  bd[G8]==BN  &&  bd[H8]==BR);
+
 
             if (!isStartPos  &&  ie->GetNumHalfMoves() == 0) {
                 skipcount++;
