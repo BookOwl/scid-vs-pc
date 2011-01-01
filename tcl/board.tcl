@@ -1334,54 +1334,19 @@ proc ::board::showMarks {w value} {
 #   color for the square (light or dark) is used.
 #
 proc ::board::colorSquare {w i {color {}}} {
-  # if {$i < 0 || $i > 63} return
-  if {$i < 0} return
+  if {$i < 0 || $i > 63} return
   if {$color != {}} {
-    $w.bd delete br$i
-    $w.bd itemconfigure sq$i -fill $color -outline {} ;# -outline $color
-    return
-  }
-
-  set psize $::board::_size($w)
-  if {$::sqcol($i)} {
-    set color $::lite
-    set boc bgl$psize
+    # hide texture
+    $w.bd itemconfigure br$i -state hidden
   } else {
-    set color $::dark
-    set boc bgd$psize
-  }
-  $w.bd itemconfigure sq$i -fill $color -outline "" ; #-outline $color
-  #this inserts a textures on a square and restore piece
-  set midpoint [::board::midSquare $w $i]
-  set xc [lindex $midpoint 0]
-  set yc [lindex $midpoint 1]
-  $w.bd delete br$i
-  $w.bd create image $xc $yc -image $boc -tag br$i
-  # otherwise clicking 3 times on an empty square will prevent the binding to work
-  $w.bd lower br$i p$i
-
-  set piece [string index $::board::_data($w) $i]
-  if { $piece != "." } {
-    set flip $::board::_flip($w)
-    $w.bd delete p$i
-    $w.bd create image $xc $yc -image $::board::letterToPiece($piece)$psize -tag p$i
-  }
-
-  #if {$::board::_showMarks($w) && [info exists ::board::_mark($w)]} {}
-  if {[info exists ::board::_mark($w)]} {
-    set color ""
-    foreach mark $::board::_mark($w) {
-      set type   [lindex $mark 0]
-      set square [lindex $mark 1]
-      if {$square == $i} {
-        if {$type == "full"} { set color [lindex $mark 3] }
-        if {$type == "DEL"}  { set color "" }
-      }
+    if {$::sqcol($i)} {
+      set color $::lite
+    } else {
+      set color $::dark
     }
-    if {$color != {}} {
-      catch {$w.bd itemconfigure sq$i -outline "" -fill $color } ; # -outline $color
-    }
+    $w.bd itemconfigure br$i -state normal
   }
+  $w.bd itemconfigure sq$i -fill $color -outline ""
 }
 
 # ::board::midSquare
@@ -1746,6 +1711,7 @@ proc ::board::mark::DrawVar {pathName from to color varnum} {
   if {$from < 0  ||  $from > 63} { return }
   if {$to   < 0  ||  $to   > 63} { return }
   set coord [GetArrowCoords $pathName $from $to]
+  # It'd be nice to have transparency, but there is not even an "-outline" option
   $pathName create line $coord -fill $color -arrow last -width 5 -arrowshape {15 18 5} \
     -activewidth 8 -tag [list mark var "mark${from}:${to}" var$varnum]
 
@@ -2023,7 +1989,7 @@ proc  ::board::lastMoveHighlight {w} {
 #   N.B. resize (and update) is also called when changing background tiles
 
 proc ::board::update {w {board ""} {animate 0} {resize 0}} {
-  global highcolor currentSq bestSq bestcolor bgcolor
+  global highcolor bestcolor bgcolor
 
   set oldboard $::board::_data($w)
   if {$board == {}} {
