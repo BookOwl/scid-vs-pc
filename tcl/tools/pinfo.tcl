@@ -66,7 +66,9 @@ proc playerInfo {{player ""}} {
     bind $w <Configure> "recordWinSize $w"
 
   } else {
-    raiseWin $w
+    # Generating a player report refreshs stats, which refreshes this proc
+    # So util this mess is sorted out, don't raise this window.
+    # raiseWin $w
   }
   set player [trimEngineName $player]
   if {[info exists ::photo($player)]} {
