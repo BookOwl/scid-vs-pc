@@ -1144,7 +1144,7 @@ inline void tte_SetFlags (transTableEntryT * tte, scoreFlagT sflag,
 { tte->flags = (castling << 4) | (stm << 3) | (isOnlyMove ? 4 : 0) | sflag; }
 
 inline scoreFlagT tte_ScoreFlag (transTableEntryT * tte)
-{  return (tte->flags & 7);  }
+{  return (tte->flags & 3);  }
 
 inline colorT tte_SideToMove (transTableEntryT * tte)
 {  return ((tte->flags >> 3) & 1);  }
