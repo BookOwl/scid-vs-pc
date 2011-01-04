@@ -157,8 +157,7 @@ proc updateTitle {} {
   # set white [sc_game tag get White]
   # set black [sc_game tag get Black]
 
-  set fname [sc_base filename]
-  set fname [file tail $fname]
+  set fname [file tail [sc_base filename]]
   if {![string match {\[*\]} $fname]} {
     set fname "\[$fname\]"
   }
@@ -532,7 +531,9 @@ proc showVars {} {
     set j [expr $i + 1]
     set str "$j: $move"
     $w.lbVar insert end $str
-    bind $w <KeyPress-$j> "enterVar $j"
+    if {$j <= 9 } {
+      bind $w <KeyPress-$j> "enterVar $j"
+    }
   }
   $w.lbVar selection set 0
 
