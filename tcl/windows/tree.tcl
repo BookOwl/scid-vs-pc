@@ -65,14 +65,12 @@ proc ::tree::make { { baseNumber -1 } } {
   if {$baseNumber == -1} {set baseNumber [sc_base current]}
 
   if {[winfo exists .treeWin$baseNumber]} {
-    focus .
-    destroy .treeWin$baseNumber
-    set treeWin$baseNumber 0
+    ::tree::closeTree $baseNumber
     return
   }
 
-  toplevel .treeWin$baseNumber
   set w .treeWin$baseNumber
+  toplevel $w
   setWinLocation $w
   setWinSize $w
 
@@ -89,7 +87,10 @@ proc ::tree::make { { baseNumber -1 } } {
   set tree(bestRes$baseNumber) "1-0 0-1 1/2 *"
   trace variable tree(bestRes$baseNumber) w "::tree::doTrace bestRes"
 
-  bind $w <Destroy> " set ::treeWin$baseNumber 0; set tree(locked$baseNumber) 0 "
+  bind $w <Destroy> "
+    bind $w <Destroy> {}
+    set ::treeWin$baseNumber 0
+    set tree(locked$baseNumber) 0 "
   bind $w <F1> { helpWindow Tree }
   bind $w <Escape> "::tree::hideCtxtMenu $baseNumber ; .treeWin$baseNumber.buttons.stop invoke "
 
@@ -303,6 +304,7 @@ proc ::tree::selectCallback { baseNumber move } {
 proc ::tree::closeTree {baseNumber} {
   global tree
 
+  wm protocol .treeWin$baseNumber WM_DELETE_WINDOW {}
   ::tree::mask::close
 
   ::tree::hideCtxtMenu $baseNumber
@@ -333,6 +335,9 @@ proc ::tree::closeTree {baseNumber} {
     }
     destroy .treeWin$baseNumber
   }
+  sc_tree clean $baseNumber
+  ::windows::gamelist::Refresh
+  ::windows::stats::Refresh; 
 }
 ################################################################################
 proc ::tree::doTrace { prefix name1 name2 op} {

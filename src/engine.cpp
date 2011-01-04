@@ -1081,15 +1081,18 @@ Engine::SetHashTableKilobytes (uint size)
 {
     // Compute the number of entries, which must be even:
     uint bytes = size * 1024;
-    TranTableSize = bytes / sizeof(transTableEntryT);
-    if ((TranTableSize % 2) == 1) { TranTableSize--; }
+	if(TranTableSize != bytes / sizeof(transTableEntryT))
+	{
+      TranTableSize = bytes / sizeof(transTableEntryT);
+      if ((TranTableSize % 2) == 1) { TranTableSize--; }
 #ifdef WINCE
-    if (TranTable != NULL) { my_Tcl_Free((char *) TranTable); }
-    TranTable = (transTableEntryT*)my_Tcl_Alloc(sizeof ( transTableEntryT [TranTableSize]));
+      if (TranTable != NULL) { my_Tcl_Free((char *) TranTable); }
+      TranTable = (transTableEntryT*)my_Tcl_Alloc(sizeof ( transTableEntryT [TranTableSize]));
 #else
-    if (TranTable != NULL) { delete[] TranTable; }
-    TranTable = new transTableEntryT [TranTableSize];
+      if (TranTable != NULL) { delete[] TranTable; }
+      TranTable = new transTableEntryT [TranTableSize];
 #endif
+    }
     ClearHashTable();
 }
 
@@ -1101,14 +1104,17 @@ Engine::SetPawnTableKilobytes (uint size)
 {
     // Compute the number of entries:
     uint bytes = size * 1024;
-    PawnTableSize = bytes / sizeof(pawnTableEntryT);
+	if(PawnTableSize != bytes / sizeof(pawnTableEntryT))
+	{
+      PawnTableSize = bytes / sizeof(pawnTableEntryT);
 #ifdef WINCE
-    if (PawnTable != NULL) { my_Tcl_Free((char *) PawnTable); }
-    PawnTable = (pawnTableEntryT*)my_Tcl_Alloc(sizeof (pawnTableEntryT [PawnTableSize]) );
+      if (PawnTable != NULL) { my_Tcl_Free((char *) PawnTable); }
+      PawnTable = (pawnTableEntryT*)my_Tcl_Alloc(sizeof (pawnTableEntryT [PawnTableSize]) );
 #else
-    if (PawnTable != NULL) { delete[] PawnTable; }
-    PawnTable = new pawnTableEntryT [PawnTableSize];
+      if (PawnTable != NULL) { delete[] PawnTable; }
+      PawnTable = new pawnTableEntryT [PawnTableSize];
 #endif
+    }
     ClearPawnTable();
 }
 
@@ -1144,7 +1150,7 @@ inline void tte_SetFlags (transTableEntryT * tte, scoreFlagT sflag,
 { tte->flags = (castling << 4) | (stm << 3) | (isOnlyMove ? 4 : 0) | sflag; }
 
 inline scoreFlagT tte_ScoreFlag (transTableEntryT * tte)
-{  return (tte->flags & 3);  }
+{  return (tte->flags & 7);  }
 
 inline colorT tte_SideToMove (transTableEntryT * tte)
 {  return ((tte->flags >> 3) & 1);  }
@@ -1171,8 +1177,6 @@ inline void tte_GetBestMove (transTableEntryT * tte, simpleMoveT * bestMove)
     bestMove->to = bm & 63; bm >>= 6;
     bestMove->from = bm & 63;
 }
-
-static uint ProbeCounts[4] = {0};
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Engine::StoreHash
@@ -1485,17 +1489,6 @@ Engine::Think (MoveList * mlist)
         mlist->Sort();
     }
 
-    // Statistics for debugging:
-//    Output ("Hash probes: Exact:%u Upper:%u Lower:%u None:%u\n",
-//            ProbeCounts[SCORE_EXACT], ProbeCounts[SCORE_UPPER],
-//            ProbeCounts[SCORE_LOWER], ProbeCounts[SCORE_NONE]);
-//    Output ("Fail-High first move: %u / %u = %f\n", nFailHighFirstMove, nFailHigh,
-//            (double)nFailHighFirstMove * 100.0 / (double)nFailHigh);
-//    Output ("Pawn hash hits: %u / %u = %f\n", nPawnHashHits, nPawnHashProbes,
-//            (double)nPawnHashHits * 100.0 / (double)nPawnHashProbes);
-//    Output ("Full scores: %u / %u = %f\n", nScoreFull, nScoreCalls,
-//            (double)nScoreFull * 100.0 / (double) nScoreCalls);
-
     return bestScore;
 }
 
@@ -1617,7 +1610,6 @@ Engine::Search (int depth, int alpha, int beta, bool tryNullMove)
     simpleMoveT hashmove;
     bool isOnlyMove = 0;
     scoreFlagT hashflag = ProbeHash (depth, &hashscore, &hashmove, &isOnlyMove);
-    ProbeCounts[hashflag]++;
 
     switch (hashflag) {
         case SCORE_NONE:

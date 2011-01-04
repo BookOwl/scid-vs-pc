@@ -1215,6 +1215,10 @@ translate D NameEditSelect {Welche Spiele sollen geändert werden?}
 translate D NameEditReplace {Ersetze}
 translate D NameEditWith {durch}
 translate D NameEditMatches {Entsprechungen: Drücke Strg+1 bis Strg+9 zum Auswählen}
+translate D CheckGames {Konsistenzprüfung}
+translate D CheckGamesWhich {Konsistenzprüfung}
+translate D CheckAll {Alle Partien}
+translate D CheckSelectFilterGames {Partien im Filter}
 
 # Classify window:
 translate D Classify {Klassifiziere}

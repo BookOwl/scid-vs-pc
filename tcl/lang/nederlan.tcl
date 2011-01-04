@@ -964,6 +964,8 @@ translate N AddEloRatings {Toevoegen Elo classificatie}
 translate N AutoloadGame {Auto-laden partij nummer}
 translate N StripTags {Verwijder PGN labels}
 translate N StripTag {Verwijder label}
+# ====== TODO To be translated ======
+translate N CheckGames {Check games}
 translate N Cleaner {Reiniger}
 translate N CleanerHelp {
 De Scid Reiniger zal alle onderhoudsactiviteiten die u selecteert uit onderstaande lijst, uitvoeren op de huidige database. 
@@ -1304,6 +1306,14 @@ translate N NameEditSelect {Partijen om te wijzigen}
 translate N NameEditReplace {Vervangen}
 translate N NameEditWith {met}
 translate N NameEditMatches {Gelijken: Druk Ctrl+1 tot Ctrl+9 om te selecteren}
+# ====== TODO To be translated ======
+translate N CheckGames {Check games}
+# ====== TODO To be translated ======
+translate N CheckGamesWhich {Check games}
+# ====== TODO To be translated ======
+translate N CheckAll {All games}
+# ====== TODO To be translated ======
+translate N CheckSelectFilterGames {Only games in filter}
 
 # Classify window:
 translate N Classify {Classificeren}
@@ -1850,5 +1860,6 @@ translate N DoneWithPosition {Done with position}
 # ====== TODO To be translated ======
 }
 # End of nederlan.tcl
+
 
 

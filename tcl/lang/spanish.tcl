@@ -289,6 +289,7 @@ menuText S OptionsMovesSpace "Añadir espacios detrás de número de movimiento" 0 
 menuText S OptionsMovesKey "Teclado Inteligente" 0 \
 {Activa/desactiva la función de autocompletado inteligente de movimientos con teclado}
 menuText S OptionsMovesShowVarArrows "Mostrar flechas para las variaciones" 0 \
+  {Activa/desactiva mostrar flechas para las variaciones}
 menuText S OptionsNumbers "Formato de números" 11 {Selecciona el formato de números}
 menuText S OptionsStartup "Inicio" 3 {Seleccionar ventanas a abrir al inicio}
 menuText S OptionsWindows "Ventanas" 0 {Opciones de ventana}
@@ -897,6 +898,8 @@ translate S AddEloRatings {Añadir clasificación Elo}
 translate S AutoloadGame {Autocargar número de partida}
 translate S StripTags {Quitar etiquetas PGN}
 translate S StripTag {Quitar etiquetas}
+# ====== TODO To be translated ======
+translate S CheckGames {Check games}
 translate S Cleaner {MultiHerramienta}
 translate S CleanerHelp {
 Scid ejecutará, en la actual base de datos, todas las acciones de mantenimiento
@@ -1212,6 +1215,14 @@ translate S NameEditSelect {Partidas a editar}
 translate S NameEditReplace {Reemplazar}
 translate S NameEditWith {con}
 translate S NameEditMatches {Encuentros: Presionar Ctrl+1 a Ctrl+9 para seleccionarlo}
+# ====== TODO To be translated ======
+translate S CheckGames {Check games}
+# ====== TODO To be translated ======
+translate S CheckGamesWhich {Check games}
+# ====== TODO To be translated ======
+translate S CheckAll {All games}
+# ====== TODO To be translated ======
+translate S CheckSelectFilterGames {Only games in filter}
 
 # Classify window:
 translate S Classify {Clasificar}
@@ -1591,5 +1602,6 @@ translate S IEUnableToStart {Unable to start Input Engine:}
 translate S DoneWithPosition {Hecho con la posición}
 }
 # end of spanish.tcl
+
 
 

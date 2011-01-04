@@ -894,6 +894,7 @@ translate E AddEloRatings {Add Elo ratings}
 translate E AutoloadGame {Autoload game number}
 translate E StripTags {Strip PGN tags}
 translate E StripTag {Strip tag}
+translate E CheckGames {Check games}
 translate E Cleaner {Cleaner}
 translate E CleanerHelp {
 The Scid Cleaner will perform all the maintenance actions you select from the list below, on the current database.
@@ -1208,6 +1209,12 @@ translate E NameEditSelect {Games to edit}
 translate E NameEditReplace {Replace}
 translate E NameEditWith {with}
 translate E NameEditMatches {Matches: Press Ctrl+1 to Ctrl+9 to select}
+
+# Check games window:
+translate E CheckGames {Check games}
+translate E CheckGamesWhich {Check Games}
+translate E CheckAll {All games}
+translate E CheckSelectFilterGames {Filter games}
 
 # Classify window:
 translate E Classify {Classify}

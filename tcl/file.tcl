@@ -215,7 +215,8 @@ proc ::file::Open {{fName ""} {parent .}} {
 
 proc refreshWindows {} {
   ::windows::gamelist::Reload
-  ::tree::refresh
+  # done in updateBoard
+  # ::tree::refresh
   ::windows::stats::Refresh
   ::crosstab::Refresh
   ::plist::refresh

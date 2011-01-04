@@ -990,6 +990,8 @@ translate O AddEloRatings {Legg til ELO-ratinger}
 translate O AutoloadGame {Start med parti nummer}
 translate O StripTags {Fjern PGN-merker}
 translate O StripTag {Fjern merke}
+# ====== TODO To be translated ======
+translate O CheckGames {Check games}
 translate O Cleaner {Opprydding}
 translate O CleanerHelp {
 Scid-opprydding vil utføre alle handlinger du velger fra listen under på gjeldende database.
@@ -1327,6 +1329,14 @@ translate O NameEditSelect {Partier som skal redigeres}
 translate O NameEditReplace {Erstatt}
 translate O NameEditWith {med}
 translate O NameEditMatches {Treff: Trykk Ctrl+1 til Ctrl+9 for å velge}
+# ====== TODO To be translated ======
+translate O CheckGames {Check games}
+# ====== TODO To be translated ======
+translate O CheckGamesWhich {Check games}
+# ====== TODO To be translated ======
+translate O CheckAll {All games}
+# ====== TODO To be translated ======
+translate O CheckSelectFilterGames {Only games in filter}
 
 # Classify window:
 translate O Classify {Klassifiser}
@@ -1949,6 +1959,7 @@ translate O DoneWithPosition {Done with position}
 
 # Sjekkliste:
 # - Snarveier
+
 
 
 

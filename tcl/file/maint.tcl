@@ -220,6 +220,7 @@ proc ::maint::OpenClose {} {
   label $w.db.title -textvar ::tr(DatabaseOps) -font $bold
   grid $w.db.title -columnspan 3 -row 0 -column 0 -sticky n
 
+  button $w.db.check   -textvar ::tr(CheckGames...)      -command checkAllGames
   button $w.db.eco     -textvar ::tr(ReclassifyGames...) -command "classifyAllGames $w"
   button $w.db.compact -textvar ::tr(CompactDatabase...) -command "makeCompactWin $w"
   button $w.db.sort    -textvar ::tr(SortDatabase...)    -command "makeSortWin $w"
@@ -229,7 +230,7 @@ proc ::maint::OpenClose {} {
   button $w.db.autoload -textvar ::tr(AutoloadGame...)   -command "::maint::SetAutoloadGame $w"
   button $w.db.strip -textvar ::tr(StripTags...)         -command "stripTags $w"
 
-  foreach i {eco compact sort elo dups cleaner autoload strip} {
+  foreach i {check eco compact sort elo dups cleaner autoload strip} {
     $w.db.$i configure -font $font
   }
   bind $w <Alt-d> "$w.db.dups invoke"
@@ -242,6 +243,8 @@ proc ::maint::OpenClose {} {
   grid $w.db.cleaner -row 2 -column 2 -sticky we -padx 1 -pady 1
   grid $w.db.autoload -row 3 -column 0 -sticky we -padx 1 -pady 1
   grid $w.db.strip -row 3 -column 1 -sticky we -padx 1 -pady 1
+  grid $w.db.check -row 3 -column 2 -sticky we -padx 1 -pady 1
+
 
   ### Buttons
 
@@ -651,6 +654,70 @@ proc doMarkDups {{parent .}} {
   }
   ::maint::Refresh
   return $result
+}
+
+
+set checkOption(AllGames) all
+
+# CheckAllGames
+#  Decodes all games and tries to find errors
+proc checkAllGames {} {
+  set w .checkGames
+  if {[winfo exists $w]} {
+    raiseWin $w
+    return
+  }
+  toplevel $w
+  wm withdraw $w
+  wm title $w "Scid: [tr FileMaintClass]"
+  
+  pack [frame $w.f] -expand 1
+  
+  label $w.f.label -font font_Bold -textvar ::tr(CheckGamesWhich)
+  frame $w.f.g
+  radiobutton $w.f.g.all -textvar ::tr(CheckAll) -variable checkOption(AllGames) -value all
+  radiobutton $w.f.g.filter -textvar ::tr(CheckSelectFilterGames) -variable checkOption(AllGames) -value filter
+  set row 0
+  foreach f {all filter} {
+    grid $w.f.g.$f -row $row -column 0 -sticky w
+    incr row
+  }
+  
+  frame $w.f.b
+  dialogbutton $w.f.b.go -textvar ::tr(CheckGames) -command {
+    busyCursor .
+    .checkGames.f.b.cancel configure -command "sc_progressBar"
+    .checkGames.f.b.cancel configure -textvar ::tr(Stop)
+    sc_progressBar .checkGames.f.progress bar 301 21 time
+    grab .checkGames.f.b.cancel
+    if {[catch  {sc_base check $checkOption(AllGames)} result]} {
+      grab release .checkGames.f.b.cancel
+      unbusyCursor .
+      tk_messageBox -parent .checkGames -type ok -icon info -title "Scid" -message $result
+    } else {
+      grab release .checkGames.f.b.cancel
+      unbusyCursor .
+    }
+    .checkGames.f.b.cancel configure -command {focus .; destroy .checkGames}
+    .checkGames.f.b.cancel configure -textvar ::tr(Close)
+    ::windows::gamelist::Refresh
+  }
+  dialogbutton $w.f.b.cancel -textvar ::tr(Close) -command "focus .; destroy $w"
+  canvas $w.f.progress -width 300 -height 20 -bg white -relief solid -border 1
+  $w.f.progress create rectangle 0 0 0 0 -fill blue -outline blue -tags bar
+  $w.f.progress create text 295 10 -anchor e -font font_Regular -tags time \
+      -fill black -text "0:00 / 0:00"
+  
+  pack $w.f.label $w.f.g -side top -pady 5
+  pack $w.f.progress -side top -padx 2 -pady 2
+  pack $w.f.b -side top -pady 5 -fill x
+  pack $w.f.b.cancel $w.f.b.go -side right -pady 10 -padx 10
+  wm resizable $w 0 0
+  bind $w <F1> {helpWindow ECO}
+  bind $w <Escape> "$w.b.cancel invoke"
+  placeWinOverParent $w .maintWin
+  wm state $w normal
+  updateClassifyWin
 }
 
 
