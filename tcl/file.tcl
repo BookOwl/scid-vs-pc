@@ -321,8 +321,8 @@ proc ::file::Close {{base -1}} {
 proc ::file::SwitchToBase {b} {
   sc_base switch $b
 
-  # Close Tree and Email windows whenever a base is closed/switched:
-  if {[winfo exists .treeWin$b]} { destroy .treeWin$b }
+  # Close Email windows whenever a base is closed/switched:
+  # if {[winfo exists .treeWin$b]} { destroy .treeWin$b }
   if {[winfo exists .emailWin]} { destroy .emailWin }
 
   updateBoard -pgn
