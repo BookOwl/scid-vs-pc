@@ -669,7 +669,7 @@ proc checkAllGames {} {
   }
   toplevel $w
   wm withdraw $w
-  wm title $w "Scid: [tr FileMaintClass]"
+  wm title $w "Scid: [tr CheckGamesWhich]"
   
   pack [frame $w.f] -expand 1
   

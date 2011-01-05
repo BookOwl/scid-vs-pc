@@ -359,6 +359,13 @@ translate (Tcl_Interp * ti, const char * name)
 #endif
 }
 
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// filter help functions
+//
+void updateMainFilter( scidBaseT * dbase);
+void clearFilter( scidBaseT * dbase, uint size);
+void filter_reset (scidBaseT * base, byte value);
+
 
 //////////////////////////////////////////////////////////////////////
 // Declarations for Scid application-specific Tcl commands
@@ -452,6 +459,7 @@ int sc_filter_stats   (TCL_ARGS);
 int sc_filter_textfind (TCL_ARGS);
 int sc_filter_textfilter (TCL_ARGS);
 int sc_filter_value   (TCL_ARGS);
+int sc_filter_clear   (TCL_ARGS);
 
 int sc_game           (TCL_ARGS);
 int sc_game_crosstable (TCL_ARGS);

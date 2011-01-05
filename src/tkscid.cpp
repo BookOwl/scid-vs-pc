@@ -158,20 +158,6 @@ updateProgressBar (Tcl_Interp * ti, uint done, uint total)
     Tcl_Eval (ti, "update");
 }
 
-int updateMainFilter( scidBaseT * dbase)
-{
-	if( dbase->dbFilter != dbase->filter)
-	{
-   		for (uint i=0; i < dbase->numGames; i++)
-		{
-			if( dbase->dbFilter->Get(i) != 0 && dbase->treeFilter->Get(i) != 0)
-				dbase->filter->Set(i,dbase->treeFilter->Get(i));
-			else
-				dbase->filter->Set(i,0);
-		}
-	}
-	return TCL_OK;
-}
 
 static bool
 startProgressBar (void)
@@ -1260,12 +1246,8 @@ sc_base_open (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
       db->nb->Clear();
       db->gfile->Close();
       db->idx->SetDescription (errMsgNotOpen(ti));
-      if (db->dbFilter && db->dbFilter != db->filter) { delete db->dbFilter; }
-      if (db->filter) { delete db->filter; }
-      if (db->treeFilter) { delete db->treeFilter; }
-      db->filter = new Filter(0);
-      db->dbFilter = db->filter;
-      db->treeFilter = NULL;
+      clearFilter (db, 0);
+
       if (db->duplicates != NULL) {
         my_Tcl_Free((char*) db->duplicates);
         db->duplicates = NULL;
@@ -1303,12 +1285,7 @@ sc_base_open (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
     }
 
     // Initialise the filter: all games match at move 1 by default.
-    if (db->dbFilter && db->dbFilter != db->filter) { delete db->dbFilter; }
-    if (db->filter) { delete db->filter; }
-    if (db->treeFilter) { delete db->treeFilter; }
-    db->filter = new Filter (db->numGames);
-    db->dbFilter = db->filter;
-    db->treeFilter = NULL;
+    clearFilter (db, db->numGames);
 
     strCopy (db->fileName, filename);
     strCopy (db->realFileName, realFileName);
@@ -1367,12 +1344,7 @@ sc_createbase (Tcl_Interp * ti, const char * filename, scidBaseT * base,
 
     // Initialise the filter:
     base->numGames = base->idx->GetNumGames();
-    if (base->dbFilter && base->dbFilter != base->filter) { delete base->dbFilter; }
-    if (base->filter != NULL) { delete base->filter; }
-    if (base->treeFilter) { delete base->treeFilter; }
-    base->filter = new Filter (base->numGames);
-    base->dbFilter = base->filter;
-    base->treeFilter = NULL;
+    clearFilter (base, base->numGames);
 
     strCopy (base->fileName, filename);
     base->inUse = true;
@@ -1457,12 +1429,7 @@ sc_base_close (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
     basePtr->gfile->Close();
     basePtr->idx->SetDescription (errMsgNotOpen(ti));
 
-    if (basePtr->dbFilter && basePtr->dbFilter != basePtr->filter) { delete basePtr->dbFilter; }
-    if (basePtr->filter) { delete basePtr->filter; }
-    if (basePtr->treeFilter) { delete basePtr->treeFilter; }
-    basePtr->filter = new Filter(0);
-    basePtr->dbFilter = basePtr->filter;
-    basePtr->treeFilter = NULL;
+    clearFilter (basePtr, 0);
 
     if (basePtr->duplicates != NULL) {
 #ifdef WINCE
@@ -4100,12 +4067,7 @@ sc_clipbase_clear (Tcl_Interp * ti)
     clipbase->idx->SetType (2);
 
     clipbase->numGames = 0;
-    if (clipbase->dbFilter && clipbase->dbFilter != clipbase->filter) { delete clipbase->dbFilter; }
-    if (clipbase->filter != NULL) { delete clipbase->filter; }
-    if (clipbase->treeFilter != NULL) { delete clipbase->treeFilter; }
-    clipbase->filter = new Filter (clipbase->numGames);
-    clipbase->dbFilter = clipbase->filter;
-    clipbase->treeFilter = NULL;
+    clearFilter (clipbase, clipbase->numGames);
 
     clipbase->inUse = true;
     clipbase->gameNumber = -1;
@@ -4402,14 +4364,14 @@ sc_compact_games (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
     db->idx->ReadEntireFile ();
     db->gfile->Open (db->fileName, db->fileMode);
 
-    if (db->dbFilter && db->dbFilter != db->filter)
-       delete db->dbFilter;
-    delete db->filter;
-    if(db->treeFilter)
-       delete db->treeFilter;
-    db->filter = newFilter;
-    db->dbFilter = newFilter;
-    db->treeFilter = NULL;
+    clearFilter (db, db->idx->GetNumGames());
+    // clearFilter (db, 0); ???
+    // in SCID this went from
+    //     delete db->filter;
+    //     db->filter = newFilter;
+    // to
+    //     clearFilter (db, db->idx->GetNumGames());
+    // which seems incongruous S.A &&&
 
     db->gameNumber = -1;
     db->numGames = db->idx->GetNumGames();
@@ -5054,13 +5016,14 @@ sc_filter (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
         "copy", "count", "first", "frequency",
         "index", "last", "locate", "negate",
 	"next", "previous", "remove", "reset",
-	"size", "stats", "textfind", "textfilter", "value", NULL
+	"size", "stats", "textfind", "textfilter", "value", "clear", NULL
     };
     enum {
         FILTER_COPY, FILTER_COUNT, FILTER_FIRST, FILTER_FREQ,
         FILTER_INDEX, FILTER_LAST, FILTER_LOCATE, FILTER_NEGATE,
         FILTER_NEXT, FILTER_PREV, FILTER_REMOVE, FILTER_RESET,
-        FILTER_SIZE, FILTER_STATS, FILTER_TEXTFIND, FILTER_TEXTFILTER, FILTER_VALUE
+        FILTER_SIZE, FILTER_STATS, FILTER_TEXTFIND, FILTER_TEXTFILTER, FILTER_VALUE,
+        FILTER_CLEAR
     };
 
     if (argc > 1) { index = strUniqueMatch (argv[1], options); }
@@ -5116,6 +5079,10 @@ sc_filter (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
 
     case FILTER_VALUE:
         return sc_filter_value (cd, ti, argc, argv);
+
+    // --- clear filter
+    case FILTER_CLEAR:
+        return sc_filter_clear (cd, ti, argc, argv);
 
     default:
         return InvalidCommand (ti, "sc_filter", options);
@@ -5527,6 +5494,26 @@ sc_filter_reset (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// sc_filter_clear:
+//    Takes an optional base number (defaults to current base) and 
+//    clears all filters ie. db filter as well as tree filter
+//    To clear only the tree filter use sc_tree clean
+int
+sc_filter_clear (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
+{
+    scidBaseT * basePtr = db;
+    if (argc > 2) {
+        int baseNum = strGetInteger (argv[2]);
+        if (baseNum < 1 || baseNum > MAX_BASES) {
+            return errorResult (ti, "Invalid database number.");
+        }
+        basePtr = &(dbList[baseNum - 1]);
+    }
+    clearFilter(db, db->numGames);
+    return TCL_OK;
+}
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // sc_filter_stats:
 //    Returns statistics about the filter.
 int
@@ -5735,6 +5722,50 @@ sc_filter_value (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
     gnum--;
 
     return setUintResult (ti, base->filter->Get (gnum));
+}
+
+// Gerd contributed treeFilter code, but then rewrote it (differently) for Scid
+// Our implementation seems robust and simpler, but in't maintained by Gerd :<
+//
+// Allow for a second filter when the tree window is open
+// When tree is closed, things look like this:
+//     db->filter = new Filter(0);
+//     db->dbFilter = db->filter;
+//     db->treeFilter = NULL;
+// When the tree is open && "Adjust Filter" is selected, it performs a filter
+// AND with the tree position... Quite handy ;>
+
+void
+updateMainFilter( scidBaseT * dbase)
+{
+    if( dbase->dbFilter != dbase->filter)
+    {
+        for (uint i=0; i < dbase->numGames; i++)
+        {
+            if( dbase->dbFilter->Get(i) != 0 && dbase->treeFilter->Get(i) != 0)
+                dbase->filter->Set(i,dbase->treeFilter->Get(i));
+            else
+                dbase->filter->Set(i,0);
+        }
+    }
+    // &&& Should this be
+    // int updateMainFilter( scidBaseT * dbase)
+    // ....
+    // return TCL_OK;
+}
+
+void 
+clearFilter( scidBaseT * dbase, uint size)
+{
+    if(db->dbFilter && dbase->dbFilter != dbase->filter)
+        delete dbase->dbFilter;
+    if(dbase->filter)
+        delete dbase->filter;
+    if(dbase->treeFilter)
+        delete dbase->treeFilter;
+    dbase->filter = new Filter (size);
+    dbase->dbFilter = dbase->filter;
+    dbase->treeFilter = NULL;
 }
 
 
@@ -13795,14 +13826,6 @@ sc_tree_search (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
         return setResult (ti, errMsgNotOpen(ti));
     }
 
-    // Gerd contributed treeFilter code, but then rewrote it (differently) for Scid
-    // Our implementation seems robust and simpler, but it is maintained by Gerd :<
-    //
-    // When tree is closed, things look like this:
-    //     db->filter = new Filter(0);
-    //     db->dbFilter = db->filter;
-    //     db->treeFilter = NULL;
-
     if( base->treeFilter == NULL)
     {
 	    base->treeFilter = new Filter( base->numGames);
@@ -14026,7 +14049,8 @@ sc_tree_search (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
     }
 
     // Update the normal filter (if desired) S.A.
-    if (maskMode) updateMainFilter(base);
+    if (maskMode)
+      updateMainFilter(base);
 
     // Now we generate the score of each move: it is the expected score per
     // 1000 games. Also generate the ECO code of each move.
