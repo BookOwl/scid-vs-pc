@@ -440,13 +440,8 @@ proc ::windows::gamelist::Open {} {
   pack $w.c.goto $w.c.browse $w.c.load $w.c.delete $w.c.empty -side left -padx 3
   pack $w.c.close $w.c.help $w.c.export -side right -padx 3
 
-  ::windows::gamelist::Refresh
   set ::windows::gamelist::goto 1
-  bind $w <Configure> {
-    recordWidths
-    recordWinSize .glistWin
-    ::windows::gamelist::Refresh
-  }
+  bind $w <Configure> {::windows::gamelist::Configure %W }
 
   update
 
@@ -455,6 +450,17 @@ proc ::windows::gamelist::Open {} {
   # hacks to disable the down/page-down keys for combobox
   bind  $w.b.find <Down> "focus $w.tree ; event generate $w.tree <Down> ; break"
   bind  $w.b.find <End>  "focus $w.tree ; event generate $w.tree <End> ; break"
+
+  ::windows::gamelist::Refresh
+}
+
+proc ::windows::gamelist::Configure {window} {
+  recordWidths
+  recordWinSize .glistWin
+
+  if {$window == {.glistWin.tree}} {
+    ::windows::gamelist::Refresh
+  }
 }
 
 proc configDeleteButtons {} {
