@@ -32,6 +32,26 @@ static uint stdStartPawnHash = 0;
 #define HASH(h,p,sq)    (h) ^= hashVal[(p)][(sq)]
 #define UNHASH(h,p,sq)  (h) ^= hashVal[(p)][(sq)]
 
+Position::Position(const Position& p)
+: EPTarget(p.EPTarget), ToMove(p.ToMove), HalfMoveClock(p.HalfMoveClock),
+  PlyCounter (p.PlyCounter), Castling(p.Castling), StrictCastling(p.StrictCastling),
+  Hash(p.Hash), PawnHash(p.PawnHash), LegalMoves(0), SANStrings(0)
+{
+	memcpy(Board, p.Board, sizeof(Board));
+	memcpy(Count, p.Count, sizeof(Count));
+	memcpy(Material, p.Material, sizeof(Material));
+	memcpy(ListPos, p.ListPos, sizeof(ListPos));
+	memcpy(List, p.List, sizeof(List));
+	memcpy(NumOnRank, p.NumOnRank, sizeof(NumOnRank));
+	memcpy(NumOnFyle, p.NumOnFyle, sizeof(NumOnFyle));
+	memcpy(NumOnLeftDiag, p.NumOnLeftDiag, sizeof(NumOnLeftDiag));
+	memcpy(NumOnRightDiag, p.NumOnRightDiag, sizeof(NumOnRightDiag));
+	memcpy(NumOnSquareColor, p.NumOnSquareColor, sizeof(NumOnSquareColor));
+	memcpy(Pinned, p.Pinned, sizeof(Pinned));
+	if (p.LegalMoves) LegalMoves = new MoveList(*p.LegalMoves);
+	if (p.SANStrings) SANStrings = new sanListT(*p.SANStrings);
+}
+
 inline void
 Position::AddHash (pieceT p, squareT sq)
 {
@@ -143,7 +163,7 @@ Position::AssertPos ()
         for (uint i=0; i < Count[c]; i++) {
             if (ListPos[List[c][i]] != i
                   ||  piece_Color(Board[List[c][i]]) != c) {
-#ifndef WINCE
+#if !defined (WINCE) && !defined (POCKET)
                 DumpBoard (stderr);
                 DumpLists (stderr);
 #endif
@@ -154,7 +174,7 @@ Position::AssertPos ()
     }
     for (uint i=WK; i < BP; i++) {
         if (mat[i] != Material[i]) {
-#ifndef WINCE
+#if !defined (WINCE) && !defined (POCKET)
             DumpBoard (stderr);
             DumpLists (stderr);
 #endif
@@ -831,9 +851,8 @@ Position::GenerateMoves (MoveList * mlist, pieceT pieceType,
     if (mlist == NULL) {
         ClearLegalMoves();
         mlist = LegalMoves;
-    } else {
-	mlist->Clear();
     }
+    mlist->Clear();
 
     // Compute which pieces of the side to move are pinned to the king:
     CalcPins();
@@ -1009,9 +1028,8 @@ Position::MatchLegalMove (MoveList * mlist, pieceT mask, squareT target)
     if (mlist == NULL) {
         ClearLegalMoves();
         mlist = LegalMoves;
-    } else {
-	mlist->Clear();
     }
+    mlist->Clear();
 
     uint count = 0;
     uint total = Material[piece_Make(ToMove, mask)];
@@ -2378,7 +2396,7 @@ Position::ReadMove (simpleMoveT * m, const char * str, tokenT token)
     }
 
     if (slen < 2) return ERROR_InvalidMove;
-
+    
     *s2 = '\0';
     s = mStr;
 
@@ -2695,27 +2713,27 @@ Position::MakeLongStr (char * str)
     *s = 0;
 }
 
-#ifdef WINCE
+#if defined (WINCE) || defined (POCKET)
 void
 Position::DumpBoard (/*FILE * */Tcl_Channel fp)
 {
-    ASSERT (fp != NULL);
-    squareT s;
-    char space = ' ';
-    char cr = '\n';
-    char c;
-    for (int i=7; i>=0; i--) {
+//     ASSERT (fp != NULL);
+//     squareT s;
+//     char space = ' ';
+//     char cr = '\n';
+//     char c;
+//     for (int i=7; i>=0; i--) {
 //        fputs ("   ", fp);
-        for (int j=0; j<8; j++) {
-            s = (i*8) + j;
-            c = PIECE_CHAR[Board[s]]; my_Tcl_Write(fp, &c, 1);
-            //putc (PIECE_CHAR[Board[s]], fp);
-            my_Tcl_Write(fp, &space,1);
+//         for (int j=0; j<8; j++) {
+//             s = (i*8) + j;
+//             c = PIECE_CHAR[Board[s]]; my_Tcl_Write(fp, &c, 1);
+//             putc (PIECE_CHAR[Board[s]], fp);
+//             my_Tcl_Write(fp, &space,1);
 //            putc (' ', fp);
-        }
-         my_Tcl_Write(fp, &cr,1);
-        //putc ('\n', fp);
-    }
+//         }
+//          my_Tcl_Write(fp, &cr,1);
+//         putc ('\n', fp);
+//     }
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -2725,28 +2743,28 @@ Position::DumpBoard (/*FILE * */Tcl_Channel fp)
 void
 Position::DumpLists (/*FILE * */Tcl_Channel fp)
 {
-    ASSERT (fp != NULL);
-     uint i;
+//     ASSERT (fp != NULL);
+//      uint i;
 //     char c;
 //     char buf[64];
-    for (colorT c = WHITE; c <= BLACK; c++) {
-        for (i=0; i < Count[c]; i++) {
+//     for (colorT c = WHITE; c <= BLACK; c++) {
+//         for (i=0; i < Count[c]; i++) {
 //             pieceT p = Board[List[c][i]];
-            //fprintf (fp, "%2d:", ListPos[List[c][i]]);
-            //sprintf(buf, "%2d:", ListPos[List[c][i]]);
-            //my_Tcl_Write(fp, buf, -1);
-            //putc (PIECE_CHAR[p], fp);
-            //c = PIECE_CHAR[p]; my_Tcl_Write(fp, &c, 1);
-            //putc (square_FyleChar (List[c][i]), fp);
-            //c = square_FyleChar (List[c][i]); my_Tcl_Write(fp, &c, 1);
-            //putc (square_RankChar (List[c][i]), fp);
-            //c = square_RankChar (List[c][i]); my_Tcl_Write(fp, &c, 1);
-            //putc (' ', fp);
-            //c = ' '; my_Tcl_Write(fp, &c, 1);
-        }
-        //putc ('\n', fp);
-          //c = '\n'; my_Tcl_Write(fp, &c, 1);
-    }
+//             fprintf (fp, "%2d:", ListPos[List[c][i]]);
+//             sprintf(buf, "%2d:", ListPos[List[c][i]]);
+//             my_Tcl_Write(fp, buf, -1);
+//             putc (PIECE_CHAR[p], fp);
+//             c = PIECE_CHAR[p]; my_Tcl_Write(fp, &c, 1);
+//             putc (square_FyleChar (List[c][i]), fp);
+//             c = square_FyleChar (List[c][i]); my_Tcl_Write(fp, &c, 1);
+//             putc (square_RankChar (List[c][i]), fp);
+//             c = square_RankChar (List[c][i]); my_Tcl_Write(fp, &c, 1);
+//             putc (' ', fp);
+//             c = ' '; my_Tcl_Write(fp, &c, 1);
+//         }
+//         putc ('\n', fp);
+//           c = '\n'; my_Tcl_Write(fp, &c, 1);
+//     }
 }
 
 #else
@@ -3112,7 +3130,6 @@ Position::PrintFEN (char * str, uint flags)
     return;
 }
 
-#ifndef POCKETENGINE
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Position::DumpHtmlBoard():
 //      Prints the board in a format for use in HTML documents.
@@ -3231,7 +3248,6 @@ Position::DumpLatexBoard (DString * dstr, bool flip)
         } else { dstr->AddChar ('}'); }
     }
 }
-#endif
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Position::Compare():
