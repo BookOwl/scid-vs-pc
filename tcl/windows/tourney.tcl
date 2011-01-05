@@ -361,8 +361,8 @@ proc ::tourney::refresh {{option ""}} {
     set best "$one $white, $two $black, ..."
     if {$np == 2} { set best "$one $white, $two $black" }
 
-    $t tag bind g$count <ButtonPress-3> [list ::tourney::select $g $event]
-    $t tag bind g$count <ButtonPress-1> [list ::tourney::select $g $event 1]
+    $t tag bind g$count <ButtonPress-3> [list ::tourney::select $g $event 1]
+    $t tag bind g$count <ButtonPress-1> [list ::tourney::select $g $event]
     $t tag bind g$count <Any-Enter> "$t tag configure g$count -background $hc"
     $t tag bind g$count <Any-Leave> "$t tag configure g$count -background {}"
     $t insert end "\n"
@@ -418,10 +418,10 @@ proc ::tourney::select {gnum event {openCrosstable 0}} {
   }
 
   # Filter this event... Could we catch this ? S.A.
-  ::search::filter::reset
-  ::search::filter::negate
-  sc_game crosstable filter
-  ::windows::gamelist::Refresh
+  # ::search::filter::reset
+  # ::search::filter::negate
+  # sc_game crosstable filter
+  # ::windows::gamelist::Refresh
 
   flipBoardForPlayerNames $::myPlayerNames
   updateBoard -pgn

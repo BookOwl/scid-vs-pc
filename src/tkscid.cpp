@@ -5405,12 +5405,10 @@ sc_filter_negate (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
     if (db->inUse) {
         Filter * filter = db->dbFilter;
         for (uint i=0; i < db->numGames; i++) {
-            uint newValue = 0;
-            if (filter->Get(i) == 0) { newValue = 1; }
-            filter->Set (i, newValue);
+	  filter->Set (i, filter->Get(i) == 0 ? 1 : 0);
         }
+	updateMainFilter( db);
     }
-    updateMainFilter( db);
     return TCL_OK;
 }
 
@@ -5488,6 +5486,7 @@ sc_filter_reset (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
         }
         basePtr = &(dbList[baseNum - 1]);
     }
+    // SCID has something a little too complicated here. Bad :<
     filter_reset (basePtr, 1);
     updateMainFilter( basePtr);
     return TCL_OK;

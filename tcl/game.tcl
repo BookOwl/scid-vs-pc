@@ -357,7 +357,7 @@ proc ::game::SetInfo {{default White}} {
   set ::game::infoVar {}
 
   toplevel $w
-  setWinLocation $w
+  wm state $w withdrawn
   wm title $w "Scid: Set Game Information"
   bind $w <F1> {helpWindow}
   bind $w <Escape> "destroy $w"
@@ -414,6 +414,9 @@ proc ::game::SetInfo {{default White}} {
   focus $w.dialogs.entry$default
   $w.dialogs.entry$default selection range 0 end
   $w.dialogs.entry$default icursor end
+
+  placeWinOverParent $w .
+  wm state $w normal
 }
 
 proc gameUpdateInfo {} {
