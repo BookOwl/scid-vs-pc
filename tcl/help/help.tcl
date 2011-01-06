@@ -2695,6 +2695,9 @@ Engines</a> widget, or by using the F2 , F3 or F4 hotkeys.
   running different engines!
   </p>
 
+  <p><i>Hint: the F4 hotkey (if configured) will run an Engine in the status bar.
+  Right-clicking the bar will restore the engine.</i></p>
+
   <h3>Buttons</h3>
   <p>
   At the top you'll find many cryptic buttons...

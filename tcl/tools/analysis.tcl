@@ -1778,16 +1778,49 @@ proc startAnalysisWin { FunctionKey } {
 #
 ################################################################################
 
+set analysis(mini) 0
+
 proc makeAnalysisWin { {n 1} } {
   global analysisWin$n font_Analysis analysisCommand analysis annotateModeButtonValue annotateMode
   set w .analysisWin$n
 
+  set analysis(mini$n) 0
+
+  ### Handle F4 (engine runs in statusbar)  first
+  if {$::engines(F4) == $n && ![winfo exists .enginelist]} {
+
+    # Run engine in status bar. It is "niced" at procedure end.
+    set analysis(mini) 1
+    set analysis(mini$n) $n
+
+    bind .statusbar <Button-3> "
+      # Restore engine and priority
+      set analysis(mini) 0
+      set analysis(mini$n) 0
+      set analysis(priority$n) normal 
+      setAnalysisPriority $n
+      bind .statusbar <Button-3> {}
+      wm state .analysisWin$n normal
+      updateStatusBar
+      update
+      .analysisWin$n.hist.text yview moveto 1
+      break
+    "
+  }
+
   if {[winfo exists $w]} {
-    ### then reset engine and return
+    ### Stop engine and exit
     focus .
     destroy $w
     set analysisWin$n 0
     resetEngine $n
+    if {$::engines(F4) == $n && $analysis(mini)} {
+      # Remove engine from statusbar
+      set analysis(mini) 0
+      set analysis(mini$n) 0
+      bind .statusbar <Button-3> {}
+    }
+    updateStatusBar
     return
   }
 
@@ -1880,6 +1913,12 @@ proc makeAnalysisWin { {n 1} } {
   #
   toplevel $w
   wm title $w "Scid: $analysisName"
+
+  if {$analysis(mini$n)} {
+    # Run in Status Bar !
+    wm state $w withdrawn
+  }
+
   bind $w <F1> { helpWindow Analysis }
   if {$::comp(iconize) && ![winfo exists .enginelist]} {
     wm iconify $w
@@ -2057,12 +2096,12 @@ proc makeAnalysisWin { {n 1} } {
     initialAnalysisStart $n
   }
   # necessary on windows because the UI sometimes starves, also keep latest priority setting
-  if {$::windowsOS || $analysis(priority$n) == "idle"} {
+  if {$::windowsOS || $analysis(priority$n) == {idle} || $analysis(mini$n) > 0 } {
     set analysis(priority$n) idle
     setAnalysisPriority $n
   }
-
 }
+
 ################################################################################
 #
 ################################################################################
@@ -2735,6 +2774,17 @@ proc updateAnalysisText {{n 1}} {
     # original Scid analysis display
     append line [format "%2d \[%+5.2f\]  %s (%.2f)\n" $analysis(depth$n) $score [::trans $moves] $analysis(time$n)] 
   }
+
+  if { $analysis(mini$n) > 0 } {
+    # show in status bar
+    if {[string is ascii -strict %s]} {
+    set s [string range $line [string first {[} $line] 50]
+    if {$s != {}} {
+      set ::statusBar "   [lindex $analysis(name$n) 0]: [string map {\n {}} $s]"
+    }
+   }
+    # wm state $w withdrawn
+  } 
 
   ### Should we truncate line so it only takes up one line ? S.A.
   $h insert end $line indent

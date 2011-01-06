@@ -176,6 +176,11 @@ proc updateTitle {} {
 #
 proc updateStatusBar {} {
   global statusBar moveEntry
+
+  # Exit if engine is running in status bar
+  if {$::analysis(mini)} {return}
+
+  # Why are these things refreshed here ???
   ::windows::switcher::Refresh
   ::maint::Refresh
   set statusBar "  "
@@ -191,21 +196,16 @@ proc updateStatusBar {} {
   # Check if translations have not been set up yet:
   if {! [info exists ::tr(Database)]} { return }
 
-  # Show "%%" if base is read-only, "XX" if game altered, "--" otherwise:
-  if {[sc_base isReadOnly]} {
-    append statusBar "%%"
-  } elseif {[sc_game altered]} {
-    append statusBar "XX"
-  } else {
-    append statusBar "--"
-  }
-
-  append statusBar "  $::tr(Database)"
-  append statusBar ": "
+  append statusBar "  $::tr(Database): "
   set fname [sc_base filename]
   set fname [file tail $fname]
   if {$fname == ""} { set fname "<none>" }
   append statusBar $fname
+
+  if {[sc_base isReadOnly]} {
+    append statusBar { (read-only) }
+  } 
+  # if {[sc_game altered]} { append statusBar "XX" }
 
   # Show filter count:
   append statusBar "   $::tr(Filter)"
