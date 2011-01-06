@@ -6528,13 +6528,13 @@ probe_tablebase (Tcl_Interp * ti, int mode, DString * dstr)
     uint lossCount = 0;
     uint unknownCount = 0;
 
-	MoveList moveList;
+    MoveList moveList;
     sanListT sanList;
+    gamePos = db->game->GetCurrentPos();
     gamePos->GenerateMoves (&moveList);
     gamePos->CalcSANStrings (&sanList, SAN_CHECKTEST);
 
     if (showSummary  ||  fullReport  ||  optimalMoves) {
-        gamePos = db->game->GetCurrentPos();
         scratchPos->CopyFrom (gamePos);
 
         for (uint i=0; i < moveList.Size(); i++) {

@@ -2251,6 +2251,7 @@ Position::MakeSANString (simpleMoveT * m, char * s, sanFlagT flag)
     // Now do the check or mate symbol:
     if (flag != SAN_NO_CHECKTEST) {
         // Now we make the move to test for check:
+		MoveList backup = LegalMoves;
         DoSimpleMove (m);
         if (CalcNumChecks (GetKingSquare()) > 0) {
             char ch = '+';
@@ -2262,6 +2263,7 @@ Position::MakeSANString (simpleMoveT * m, char * s, sanFlagT flag)
             *c++ = ch;
         }
         UndoSimpleMove (m);
+		LegalMoves = backup;
     }
     *c = 0;
 }
@@ -2639,7 +2641,6 @@ Position::ReadLine (const char * line)
 void
 Position::CalcSANStrings (sanListT *sanList, sanFlagT flag)
 {
-    GenerateMoves (NULL);
     for (ushort i=0; i < LegalMoves.Size(); i++) {
         MakeSANString (LegalMoves.Get(i), sanList->list[i], flag);
     }
