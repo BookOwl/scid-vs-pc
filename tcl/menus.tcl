@@ -803,8 +803,8 @@ set helpMessage($m,[incr menuindex]) {Board Screenshot}
 ### Options menu:
 
 set m .menu.options
-set optMenus {fonts ginfo entry startup language numbers windows export}
-set optLabels {Fonts GInfo Moves Startup Language Numbers Windows Export}
+set optMenus {entry fonts ginfo startup language numbers windows export}
+set optLabels {Moves Fonts GInfo Startup Language Numbers Windows Export}
 set menuindex 0
 
 $m add command -label OptionsBoard -command chooseBoardColors
@@ -1128,38 +1128,6 @@ $m.entry add checkbutton -label OptionsShowVarPopup \
     -variable showVarPopup -offvalue 0 -onvalue 1
 set helpMessage($m.entry,6) OptionsShowVarPopup
 
-$m.entry add cascade -label OptionsMovesAnimate -menu $m.entry.animate
-menu $m.entry.animate -tearoff 1
-foreach i {0 100 150 200 250 300 400 500 600 800 1000} {
-  $m.entry.animate add radiobutton -label "$i ms" \
-      -variable animateDelay -value $i
-}
-set helpMessage($m.entry,1) OptionsMovesAnimate
-
-$m.entry add command -label OptionsMovesDelay -command setAutoplayDelay
-set helpMessage($m.entry,2) OptionsMovesDelay
-
-$m.entry add checkbutton -label OptionsMovesCoord \
-    -variable moveEntry(Coord) -offvalue 0 -onvalue 1
-set helpMessage($m.entry,3) OptionsMovesCoord
-
-$m.entry add checkbutton -label OptionsMovesKey \
-    -variable moveEntry(AutoExpand) -offvalue 0 -onvalue 1
-set helpMessage($m.entry,4) OptionsMovesKey
-
-$m.entry add checkbutton -label OptionsMovesSuggest \
-    -variable suggestMoves -offvalue 0 -onvalue 1
-set helpMessage($m.entry,5) OptionsMovesSuggest
-
-
-$m.entry add checkbutton -label OptionsMovesSpace \
-    -variable ::pgn::moveNumberSpaces -offvalue 0 -onvalue 1
-set helpMessage($m.entry,7) OptionsMovesSpace
-
-$m.entry add checkbutton -label OptionsMovesTranslatePieces \
-    -variable ::translatePieces -offvalue 0 -onvalue 1 -command setLanguage
-set helpMessage($m.entry,8) OptionsMovesTranslatePieces
-
 menu $m.entry.highlightlastmove -tearoff 1
 $m.entry add cascade -label OptionsMovesHighlightLastMove -menu  $m.entry.highlightlastmove
 $m.entry.highlightlastmove add checkbutton -label OptionsMovesHighlightLastMoveDisplay -variable ::highlightLastMove -command updateBoard
@@ -1181,6 +1149,39 @@ $m.entry.highlightlastmove add command -label OptionsMovesHighlightLastMoveColor
   }
 }
 set helpMessage($m.entry,9) OptionsMovesHighlightLast
+
+$m.entry add cascade -label OptionsMovesAnimate -menu $m.entry.animate
+menu $m.entry.animate -tearoff 1
+foreach i {0 100 150 200 250 300 400 500 600 800 1000} {
+  $m.entry.animate add radiobutton -label "$i ms" \
+      -variable animateDelay -value $i
+}
+set helpMessage($m.entry,1) OptionsMovesAnimate
+
+$m.entry add separator
+
+$m.entry add command -label OptionsMovesDelay -command setAutoplayDelay
+set helpMessage($m.entry,2) OptionsMovesDelay
+
+$m.entry add checkbutton -label OptionsMovesCoord \
+    -variable moveEntry(Coord) -offvalue 0 -onvalue 1
+set helpMessage($m.entry,3) OptionsMovesCoord
+
+$m.entry add checkbutton -label OptionsMovesKey \
+    -variable moveEntry(AutoExpand) -offvalue 0 -onvalue 1
+set helpMessage($m.entry,4) OptionsMovesKey
+
+$m.entry add checkbutton -label OptionsMovesSuggest \
+    -variable suggestMoves -offvalue 0 -onvalue 1
+set helpMessage($m.entry,5) OptionsMovesSuggest
+
+$m.entry add checkbutton -label OptionsMovesSpace \
+    -variable ::pgn::moveNumberSpaces -offvalue 0 -onvalue 1
+set helpMessage($m.entry,7) OptionsMovesSpace
+
+$m.entry add checkbutton -label OptionsMovesTranslatePieces \
+    -variable ::translatePieces -offvalue 0 -onvalue 1 -command setLanguage
+set helpMessage($m.entry,8) OptionsMovesTranslatePieces
 
 proc updateLocale {} {
   global locale
