@@ -1390,8 +1390,7 @@ Engine::Think (MoveList * mlist)
 
     // If no legal move list was specified, generate and search all moves:
     if (mlist == NULL) {
-        Pos.GenerateMoves();
-        mlist = Pos.GetLegalMoves();
+        Pos.GenerateMoves(mlist);
     }
 
     // No legal moves? Return 0 for stalemate, -Infinity for checkmate.
@@ -1499,8 +1498,7 @@ Engine::SearchRoot (int depth, int alpha, int beta, MoveList * mlist)
 
     // If no legal move list was specified, generate and search all moves:
     if (mlist == NULL) {
-        Pos.GenerateMoves();
-        mlist = Pos.GetLegalMoves();
+        Pos.GenerateMoves(mlist);
     }
 
     // No legal moves to search? Just return an equal score for

@@ -3890,17 +3890,16 @@ sc_epd_moves (Tcl_Interp * ti, int epdID)
     Position * gamePos = db->game->GetCurrentPos();
 
     scratchPos->CopyFrom (gamePos);
-    gamePos->ClearSANStrings();
-    gamePos->CalcSANStrings (SAN_CHECKTEST);
-    sanListT * sanList = gamePos->GetSANStrings();
-    gamePos->GenerateMoves ();
-    MoveList * moveList = gamePos->GetLegalMoves();
+	MoveList moveList;
+    gamePos->GenerateMoves (&moveList);
+    sanListT sanList;
+    gamePos->CalcSANStrings(&sanList, SAN_CHECKTEST);
 
-    for (uint i=0; i < moveList->Size(); i++) {
-        simpleMoveT * smPtr = moveList->Get(i);
+    for (uint i=0; i < moveList.Size(); i++) {
+        simpleMoveT * smPtr = moveList.Get(i);
         scratchPos->DoSimpleMove (smPtr);
         if (pb->Find (scratchPos, &text) == OK) {
-            Tcl_AppendElement (ti, sanList->list[i]);
+            Tcl_AppendElement (ti, sanList.list[i]);
         }
         scratchPos->UndoSimpleMove (smPtr);
     }
@@ -6521,8 +6520,6 @@ probe_tablebase (Tcl_Interp * ti, int mode, DString * dstr)
     }
 
     Position * gamePos = NULL;
-    sanListT * sanList = NULL;
-    MoveList * moveList = NULL;
     bool moveFound [MAX_LEGAL_MOVES];
     int moveScore [MAX_LEGAL_MOVES];
     bool movePrinted [MAX_LEGAL_MOVES];
@@ -6530,17 +6527,18 @@ probe_tablebase (Tcl_Interp * ti, int mode, DString * dstr)
     uint drawCount = 0;
     uint lossCount = 0;
     uint unknownCount = 0;
+
+	MoveList moveList;
+    sanListT sanList;
+    gamePos->GenerateMoves (&moveList);
+    gamePos->CalcSANStrings (&sanList, SAN_CHECKTEST);
+
     if (showSummary  ||  fullReport  ||  optimalMoves) {
         gamePos = db->game->GetCurrentPos();
         scratchPos->CopyFrom (gamePos);
-        gamePos->ClearSANStrings();
-        gamePos->CalcSANStrings (SAN_CHECKTEST);
-        sanList = gamePos->GetSANStrings();
-        gamePos->GenerateMoves ();
-        moveList = gamePos->GetLegalMoves();
 
-        for (uint i=0; i < moveList->Size(); i++) {
-            simpleMoveT * smPtr = moveList->Get(i);
+        for (uint i=0; i < moveList.Size(); i++) {
+            simpleMoveT * smPtr = moveList.Get(i);
             scratchPos->DoSimpleMove (smPtr);
             moveFound[i] = false;
             movePrinted[i] = false;
@@ -6565,11 +6563,11 @@ probe_tablebase (Tcl_Interp * ti, int mode, DString * dstr)
     // Optimal moves mode: return only the optimal moves, nothing else.
     if (optimalMoves) {
         uint count = 0;
-        for (uint i=0; i < moveList->Size(); i++) {
+        for (uint i=0; i < moveList.Size(); i++) {
             if ((score >= 0  &&  moveScore[i] == -score)  ||
                 (score < 0  &&  moveScore[i] == -score - 1)) {
                 if (count > 0) { dstr->Append (" "); }
-                dstr->Append (sanList->list[i]);
+                dstr->Append (sanList.list[i]);
                 count++;
             }
         }
@@ -6589,7 +6587,7 @@ probe_tablebase (Tcl_Interp * ti, int mode, DString * dstr)
             uint index = 0;
             int bestScore = 0;
             const char * bestMove = "";
-            for (uint i=0; i < moveList->Size(); i++) {
+            for (uint i=0; i < moveList.Size(); i++) {
                 if (movePrinted[i]) { continue; }
                 if (! moveFound[i]) { continue; }
                 int newScore = - moveScore[i];
@@ -6599,11 +6597,11 @@ probe_tablebase (Tcl_Interp * ti, int mode, DString * dstr)
                     (newScore == 0 && bestScore < 0)  ||
                     (newScore < 0 && bestScore < 0 && newScore < bestScore)  ||
                     (newScore == bestScore &&
-                     strCompare (bestMove, sanList->list[i]) > 0) ) {
+                     strCompare (bestMove, sanList.list[i]) > 0) ) {
                     found = true;
                     index = i;
                     bestScore = newScore;
-                    bestMove = sanList->list[i];
+                    bestMove = sanList.list[i];
                 }
             }
             if (!found) { break; }
@@ -6649,12 +6647,12 @@ probe_tablebase (Tcl_Interp * ti, int mode, DString * dstr)
                 bool found = false;
                 const char * bestMove = "";
                 uint index = 0;
-                for (uint i=0; i < moveList->Size(); i++) {
+                for (uint i=0; i < moveList.Size(); i++) {
                     if (!moveFound[i]  && !movePrinted[i]) {
                         if (!found  ||
-                            strCompare (bestMove, sanList->list[i]) > 0) {
+                            strCompare (bestMove, sanList.list[i]) > 0) {
                             found = true;
-                            bestMove = sanList->list[i];
+                            bestMove = sanList.list[i];
                             index = i;
                         }
                     }
@@ -6683,25 +6681,25 @@ probe_tablebase (Tcl_Interp * ti, int mode, DString * dstr)
             const char * drawlist [MAX_LEGAL_MOVES];
             const char * losslist [MAX_LEGAL_MOVES];
 
-            for (uint i=0; i < moveList->Size(); i++) {
+            for (uint i=0; i < moveList.Size(); i++) {
                 if (moveFound[i]) {
                     if (moveScore[i] == 0) {
-                        drawlist[drawcount] = sanList->list[i];
+                        drawlist[drawcount] = sanList.list[i];
                         drawcount++;
                     } else {
-                        losslist[losscount] = sanList->list[i];
+                        losslist[losscount] = sanList.list[i];
                         losscount++;
                     }
                 }
             }
-            if (moveList->Size() == 0) {
+            if (moveList.Size() == 0) {
                 dstr->Append (" (", translate (ti, "stalemate"), ")");
-            } else if (drawcount == moveList->Size()) {
+            } else if (drawcount == moveList.Size()) {
                 dstr->Append (" ", translate (ti, "withAllMoves"));
             } else if (drawcount == 1) {
                 dstr->Append (" ", translate (ti, "with"));
                 dstr->Append (" ", drawlist[0]);
-            } else if (drawcount+1 == moveList->Size() && losscount==1) {
+            } else if (drawcount+1 == moveList.Size() && losscount==1) {
                 dstr->Append (" ", translate (ti, "withAllButOneMove"));
             } else if (drawcount > 0) {
                 dstr->Append (" ", translate (ti, "with"), " ");
@@ -6724,12 +6722,12 @@ probe_tablebase (Tcl_Interp * ti, int mode, DString * dstr)
             if (losscount > 0) {
                 dstr->Append (" (");
                 if (losscount == 1) {
-                    if (losscount+drawcount == moveList->Size()) {
+                    if (losscount+drawcount == moveList.Size()) {
                         dstr->Append (translate (ti, "only"), " ");
                     }
                     dstr->Append (losslist[0], " ", translate (ti, "loses"));
                 } else if (drawcount < 4  &&
-                           drawcount+losscount == moveList->Size()) {
+                           drawcount+losscount == moveList.Size()) {
                     dstr->Append (translate (ti, "allOthersLose"));
                 } else {
                     dstr->Append (losscount);
@@ -6766,7 +6764,7 @@ probe_tablebase (Tcl_Interp * ti, int mode, DString * dstr)
         if (showSummary) {
             uint count = 0;
 
-            for (uint i=0; i < moveList->Size(); i++) {
+            for (uint i=0; i < moveList.Size(); i++) {
                 if (moveFound[i]  &&  moveScore[i] == -score) {
                     count++;
                     if (count == 1) {
@@ -6774,7 +6772,7 @@ probe_tablebase (Tcl_Interp * ti, int mode, DString * dstr)
                     } else {
                         dstr->Append (", ");
                     }
-                    dstr->Append (sanList->list[i]);
+                    dstr->Append (sanList.list[i]);
                 }
             }
         }
@@ -6806,14 +6804,14 @@ probe_tablebase (Tcl_Interp * ti, int mode, DString * dstr)
 
         if (showSummary) {
             uint count = 0;
-            for (uint i=0; i < moveList->Size(); i++) {
+            for (uint i=0; i < moveList.Size(); i++) {
                 if (moveFound[i]  &&  moveScore[i] == (-score - 1)) {
                     count++;
                     dstr->Append (", ");
                     if (count == 1) {
                         dstr->Append (translate (ti, "longest"), ": ");
                     }
-                    dstr->Append (sanList->list[i]);
+                    dstr->Append (sanList.list[i]);
                 }
             }
         }
@@ -10599,12 +10597,11 @@ sc_pos_matchMoves (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
     if (argc == 4) { coordMoves = strGetBoolean (argv[3]); }
     char str[20];
     Position * p = db->game->GetCurrentPos();
-    p->ClearSANStrings();
-    p->CalcSANStrings (SAN_NO_CHECKTEST);
-    sanListT * sanList = p->GetSANStrings();
+    sanListT sanList;
+    p->CalcSANStrings (&sanList, SAN_NO_CHECKTEST);
 
-    for (uint i=0; i < sanList->num; i++) {
-        strCopyExclude (str, sanList->list[i], "x=+#");
+    for (uint i=0; i < sanList.num; i++) {
+        strCopyExclude (str, sanList.list[i], "x=+#");
         if (strEqual (str, "O-O")) { strCopy (str, "OK"); }
         if (strEqual (str, "O-O-O")) { strCopy (str, "OQ"); }
         if (strIsPrefix (prefix, str)) {
@@ -10618,8 +10615,8 @@ sc_pos_matchMoves (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
     if (prefix[0] >= 'a'  &&  prefix[0] <= 'h') {
         char * newPrefix = strDuplicate (prefix);
         newPrefix[0] = toupper(newPrefix[0]);
-        for (uint i=0; i < sanList->num; i++) {
-            strCopyExclude (str, sanList->list[i], "x=+#");
+        for (uint i=0; i < sanList.num; i++) {
+            strCopyExclude (str, sanList.list[i], "x=+#");
             if (strIsPrefix (newPrefix, str)) {
                 Tcl_AppendElement (ti, str);
             }
@@ -10634,10 +10631,10 @@ sc_pos_matchMoves (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
     // If the prefix string starts with a file (a-h), also add coordinate
     // moves if coordMoves is true:
     if (coordMoves  &&  prefix[0] >= 'a'  &&  prefix[0] <= 'h') {
-        p->GenerateMoves();
-        MoveList * mList = p->GetLegalMoves();
-        for (uint i=0; i < mList->Size(); i++) {
-            simpleMoveT * sm = mList->Get(i);
+        MoveList mList;
+		p->GenerateMoves(&mList);
+        for (uint i=0; i < mList.Size(); i++) {
+            simpleMoveT * sm = mList.Get(i);
             str[0] = square_FyleChar (sm->from);
             str[1] = square_RankChar (sm->from);
             str[2] = square_FyleChar (sm->to);
@@ -10667,12 +10664,11 @@ sc_pos_moves (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
         return errorResult (ti, "Usage: sc_pos moves");
     }
     Position * p = db->game->GetCurrentPos();
-    p->ClearSANStrings();
-    p->CalcSANStrings (SAN_NO_CHECKTEST);
-    sanListT * sanList = p->GetSANStrings();
+    sanListT sanList; 
+    p->CalcSANStrings (&sanList, SAN_NO_CHECKTEST);
 
-    for (uint i=0; i < sanList->num; i++) {
-            Tcl_AppendElement (ti, sanList->list[i]);
+    for (uint i=0; i < sanList.num; i++) {
+        Tcl_AppendElement (ti, sanList.list[i]);
     }
     return TCL_OK;
 }
