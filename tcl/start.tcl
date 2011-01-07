@@ -1050,7 +1050,7 @@ proc ::splash::make {} {
   wm geom $w +$x+$y
   wm deiconify $w
 
-  bind $w <F1> {helpWindow Index}
+  bind $w <F1> {helpWindow Contents}
   bind $w <Escape> {.splash.dismiss invoke}
 
   $w.t tag configure indent -lmargin2 20

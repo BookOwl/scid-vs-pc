@@ -2691,7 +2691,8 @@ set helpText(Analysis) {<h1>Analysis Windows</h1>
 
   <h3>Getting Started</h3>
   <p>Engines can be started in various way.
-  By pressing F2, F3 or F4, from the Configuration Widget, or the Tools menu.
+  By <run ::startAnalysisWin F2><green>pressing F2</green></run>
+  , F3 or F4, from the Configuration Widget, or the Tools menu.
   Additionally, <b>Engine 1</b> can be start/stopped by <b>clicking the statusbar</b>.
   Right-clicking the Statusbar will dock/undock the engine,
   which, when running docked, will run at low CPU priority.<p>
