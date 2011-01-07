@@ -9,9 +9,10 @@ set helpText(Contents) {<h1>Scid vs. PC</h1>
   <ht><a Intro>Introduction</a></ht>
   <ht><a TacticalGame>Playing against the Computer</a></ht>
   <ht><a FICS>Playing on the Internet (FICS)</a></ht>
+  <ht><a Analysis>Running Chess Engines</a></ht>
   <ht><a Tourney>Computer Tournaments</a></ht>
   <ht><a BrowsingPGN>Browsing Games and Tournaments</a></ht>
-  <ht><a TacticsTrainer>Mate in .... Puzzles</a></ht>
+  <ht><a TacticsTrainer>Mate in ..N.. Puzzles</a></ht>
   <ht><a Scid>Databases and General Use</a></ht>
   <br>
   <br>
@@ -228,6 +229,7 @@ set helpText(Index) {<h1>Scid Help Index</h1>
   <ul>
   <li><a Analysis>Analysis</a> window</li>
   <li><a Annotating>Annotating games</a></li>
+  <li><a Analysis Annotating>Annotating games</a> automatically</li>
   <li><a NAGs>Annotation symbols</a></li>
   <li><a Author>Author, contacting</a></li>
   <li><a MainWindow Autoplay>Autoplay mode</a></li>
@@ -1172,7 +1174,7 @@ set helpText(Annotating) {<h1>Annotating Games</h1>
   Scid lets you add notes to games. There are three types of
   annotation you can add after a move: symbols, a comment, and
   variations. This section describes manual annotations, see the <a
-  Analysis Annotating>Analyis</a> for engine supported analysis.
+  Analysis Annotating>Analysis</a> for engine supported analysis.
   </p>
 
   <h3>Symbols and comments</h3>
@@ -2180,7 +2182,7 @@ it is best to close the Tree Window first.</i>
 set helpTitle(TreeMasks) "Masks for Trees"
 set helpText(TreeMasks) {<h1>Masks for Trees</h1>
   <p>
-  The <a Tree>The Tree window</a> displays information on all the moves
+  The <a Tree>Tree window</a> displays information on all the moves
   made from the current position in games in the database.
   </p>
   <p>
@@ -2680,27 +2682,24 @@ set helpText(Flags) {<h1>Game Flags</h1>
 
 set helpTitle(Analysis) "Analysis window"
 set helpText(Analysis) {<h1>Analysis Windows</h1>
-  <p> 
-  The Analysis Window shows a <b>Chess Engine studying the current position</b>.
-  A few engines come preinstalled with Scid, and others may be added via
-  the <a Analysis List>Engine Configuration</a> window.
-  </p>
+
   <p>
-  At the top are some useful <a Analysis Buttons>Buttons</a>.
-  <a Analysis Moves>Move Predictions</a> occupy most of the space,
-  and at the bottom is some <a Analysis Info>Extra Information</a> (which may be hidden).
+  Scid vs. PC allows for one (or many) <b>Chess Engines</b> to run at any time.
+  A few engines come preinstalled, and others can be added via
+  the <a Analysis List>Engine Configuration</a> window.
   </p>
 
   <h3>Getting Started</h3>
   <p>Engines can be started in various way.
   By pressing F2, F3 or F4, from the Configuration Widget, or the Tools menu.
-  Additionally, <b>Engine 1 can be start/stopped by clicking the main Statusbar</b>.
+  Additionally, <b>Engine 1</b> can be start/stopped by <b>clicking the statusbar</b>.
   Right-clicking the Statusbar will dock/undock the engine,
   which, when running docked, will run at low CPU priority.<p>
 
   <p>
-  It is possible to have multiple Analysis Windows open simultaneously, each
-  running different engines!
+  At the top of the window are some useful Buttons.
+  <a Analysis Moves>Move Predictions</a> occupy most of the space,
+  and at the bottom is some <a Analysis Info>Extra Information</a> (which may be hidden).
   </p>
 
   <h3><name Buttons>Buttons</h3>
@@ -2737,15 +2736,9 @@ set helpText(Analysis) {<h1>Analysis Windows</h1>
   </ul>
   </p>
 
+  <h3><name Moves>Moves</h3>
   <p>
-  <i>The output of the current analysis can be hidden/shown
-  by clicking with the right mouse button into the analysis window. In
-  this mode only the current evaluation is shown in the status line.</i>
-  </p>
-
-  <h3><name Moves>Move Details</h3>
-  <p>
-  In the main text widget is all sorts of move information.
+  Each line of the main text widget contains a move prediction.
   The first number is the current <b>Search Depth</b>. The next (prefixed with
   a +/-), is a <b>Move Score</b>.  It is measured in pawn units from the
   perspective of white - a positive score means white is ahead, a negative score
@@ -2760,12 +2753,18 @@ set helpText(Analysis) {<h1>Analysis Windows</h1>
   shown. The spin box is disabled if an engine does offer this feature.
   </p>
 
+  <p>
+  <i>The output of the current analysis can be hidden/shown
+  by clicking with the right mouse button into the analysis window. In
+  this mode only the current evaluation is shown in the status line.</i>
+  </p>
+
   <h3><name Info>Extra Information</h3>
   <p>
   At the bottom is some additional technical info. If this is hidden, it
   can been seen by pressing the <b>Engine Info</b> button.
-  </p>
-  <p>
+  <br>
+  <br>
   <b>Depth</b>: the search depth already reached by
   the engines calculations (in half moves).
   <br><b>Nodes</b>: the number of positions analysed for the current
@@ -2777,61 +2776,7 @@ set helpText(Analysis) {<h1>Analysis Windows</h1>
   engines hash and the current CPU load.
   </p>
 
-  <h1><name List>Configuring Engines</name></h1>
-  <p>
-  The <run ::enginelist::choose><green>Tools--<gt>Analysis Engines</green></run>
-  widget is where you can <b>Configure</b>, <b>Add</b>, and <b>Start</b> Chess Engines.
-  </p>
-
-<p>
-  Scid vs. PC installs a few engines by default but it is also possible to install new ones
-  To do so you'll need to know the program's <b>Command</b>, any <b>Parameters</b> it takes,
-  whether it is uses the <b>UCI or Xboard</b> protocol, and also the
-  <b>Directory</b> it should be run in.
-  This sounds complicated, but is not too hard :-)
-  Sticking points are likely to be the choice of
-  which directory to use, and whether it's UCI or not.</p>
-
-  <h3>Details</h3>
-<p> Many engines require an
-  initialization or opening book file in their start directory to run
-  properly.  Other engines, like Crafty and Phalanx, write log files to the
-  directory they start in, so write access will be required.
-  If the directory setting for an engine
-  is ".", Scid will just start the engine in the current directory.
-  </p>
-
-  <p>
-  If an engine fails to start, try
-  changing its directory setting. To avoid engines creating log files
-  in many different directories, I recommend trying the <b>~/.scdivspc</b>
-  button. Engines necessitating opening books and/or .ini files, will need
-  a directory of their own however.
-  </p>
-  <p>
-  UCI and Xboard (also known as Winboard) are two protocols
-  for communicating with engines, and it is necessary to set this flag accordingly.
-  If you're not sure, try one then the other, as nothing will break. Some chess
-engines support both formats.
-  </p>
-  <p>
-  If an engine needs additional parameters for startup (e.g. a
-  specific opening book) they can be specified in the
-  <b>Parameters</b> field. ... Please refer to the engines documentation.
-  </p>
-  <p><b>Webpage</b> allows you to set the engines homepage. This
-  comes in handy to check for updates e.g. or to have a look at recent
-  developments. Pressing the <term>Open...</term> button will open
-  this page in the web browser.
-  </p>
-
-  <p>
-  Finally, If the engine uses the <b>UCI</b> protocol 
-  , it can be configured by pressing the <b>Configure</b> button.
-  A dialog will be shown where all engine parameters can be tuned to the users
-  liking.
-  </p>
-
+  <h1>Features</h1>
 
   <h3>Training</h3>
   <p>
@@ -2846,11 +2791,11 @@ engines support both formats.
   current score and best line of play as a new variation in
   the game.  This can also be done automatically using
   the <b>Annotate</b> <button tb_annotate> feature.
-  It automatically add comments , <a Moves Informant>Informants
-  </a> and best-lines to a game, and can be performed
+  It add comments , <a Moves Informant>Informants</a>,
+  and best-lines to a game, and can be performed
   on  <b>multiple games</b>.</p>
 
-  <p>After configuring options and pressing OK, <b>autoplay
+  <p>After configuring the options and pressing OK, <b>autoplay
   mode is enabled</b> and the engine starts its analysis.
   A variation containing the score and best line of play is
   automatically added for each position as autoplay mode moves
@@ -2911,6 +2856,62 @@ storing the annotations into the database.
      engines.
      </li>
   </ul>
+
+  <h1><name List>Configuring Engines</name></h1>
+  <p>
+  The <run ::enginelist::choose><green>Tools--<gt>Analysis Engines</green></run>
+  widget is where you can <b>Configure</b>, <b>Add</b>, and <b>Start</b> Chess Engines.
+  </p>
+
+<p>
+  Scid vs. PC installs a few engines by default but it is also possible to install new ones
+  To do so you'll need to know the program's <b>Command</b>, any <b>Parameters</b> it takes,
+  whether it is uses the <b>UCI or Xboard</b> protocol, and also the
+  <b>Directory</b> it should be run in.
+  This sounds complicated, but is not too hard :-)
+  Sticking points are likely to be the choice of
+  which directory to use, and whether it's UCI or not.</p>
+
+  <h3>Details</h3>
+<p> Many engines require an
+  initialization or opening book file in their start directory to run
+  properly.  Other engines, like Crafty and Phalanx, write log files to the
+  directory they start in, so write access will be required.
+  If the directory setting for an engine
+  is ".", Scid will just start the engine in the current directory.
+  </p>
+
+  <p>
+  If an engine fails to start, try
+  changing its directory setting. To avoid engines creating log files
+  in many different directories, I recommend trying the <b>~/.scdivspc</b>
+  button. Engines necessitating opening books and/or .ini files, will need
+  a directory of their own however.
+  </p>
+  <p>
+  UCI and Xboard (also known as Winboard) are two protocols
+  for communicating with engines, and it is necessary to set this flag accordingly.
+  If you're not sure, try one then the other, as nothing will break. Some chess
+engines support both formats.
+  </p>
+  <p>
+  If an engine needs additional parameters for startup (e.g. a
+  specific opening book) they can be specified in the
+  <b>Parameters</b> field. ... Please refer to the engines documentation.
+  </p>
+  <p><b>Webpage</b> allows you to set the engines homepage. This
+  comes in handy to check for updates e.g. or to have a look at recent
+  developments. Pressing the <term>Open...</term> button will open
+  this page in the web browser.
+  </p>
+
+  <p>
+  Finally, If the engine uses the <b>UCI</b> protocol 
+  , it can be configured by pressing the <b>Configure</b> button.
+  A dialog will be shown where all engine parameters can be tuned to the users
+  liking.
+  </p>
+
 
   <p><footer>Updated: Scid vs. PC 4.3, January 2011</footer></p>
 }
@@ -5447,8 +5448,8 @@ set helpText(SeriousGame) {<h1>Serious Game</h1>
 
 # Tactics Trainer
 # Renamed to Puzzles S.A
-set helpTitle(TacticsTrainer) "Mate in ... Puzzles"
-set helpText(TacticsTrainer) {<h1>Mate in ... Puzzles</h1>
+set helpTitle(TacticsTrainer) "Mate in ..N.. Puzzles"
+set helpText(TacticsTrainer) {<h1>Mate in ..N.. Puzzles</h1>
   <p>
   Scid's
 <run ::tactics::config><green>Mate in ...</green></run> widget
