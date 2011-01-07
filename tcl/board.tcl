@@ -445,6 +445,19 @@ image create photo tb_gnext -data {
   V4l2C0gAADs=
 }
 
+image create photo tb_glast -data {
+R0lGODlhEwATAMIEAAAAABwygqmpqdnZ2f///////////////yH+FUNyZWF0
+ZWQgd2l0aCBUaGUgR0lNUAAsAAAAABMAEwAAA0U4utz+MMpJR1gg692uAkQo
+hkCHEVuGCow3gKMIsIsLpjcd7PsbyzRLz4dbtU4/o5BHhAFrQ2dsdvzgNMGH
+YMvlVr7gcAIAOw==
+}
+
+image create photo tb_gfirst -data {
+R0lGODdhEwATAMIEAAAAABwygqmpqdnZ2f///////////////ywAAAAAEwAT
+AAADRji63P4wyimqtSwswLsXSyAqAGGeJgAOYjuUHkeo2YaitOK+czyvrVHp
+llrpbDGYkWUj/mqk3i13jDoBDQ0p2Zl4v+DwNwEAOw==
+}
+
 image create photo tb_rfilter -data {
 R0lGODlhEAAQAMIFAAAAAIsAAJkiIr6+vrDE3v///////////yH+FUNyZWF0
 ZWQgd2l0aCBUaGUgR0lNUAAh+QQBCgAHACwAAAAAEAAQAAADOxh6fBotPjaj
@@ -602,8 +615,10 @@ button .tb.copy -image tb_copy \
 button .tb.paste -image tb_paste \
     -command {catch {sc_clipbase paste}; updateBoard -pgn}
 frame .tb.space2 -width 12
+button .tb.gfirst -image tb_gfirst -command {::game::LoadNextPrev first}
 button .tb.gprev -image tb_gprev -command {::game::LoadNextPrev previous}
 button .tb.gnext -image tb_gnext -command {::game::LoadNextPrev next}
+button .tb.glast -image tb_glast -command {::game::LoadNextPrev last}
 frame .tb.space3 -width 12
 button .tb.rfilter -image tb_rfilter -command ::search::filter::reset
 button .tb.bsearch -image tb_bsearch -command ::search::board
@@ -618,14 +633,14 @@ button .tb.maint -image tb_maint -command ::maint::OpenClose
 button .tb.eco -image tb_eco -command ::windows::eco::OpenClose
 button .tb.tree -image tb_tree -command ::tree::make
 button .tb.crosst -image tb_crosst -command ::crosstab::OpenClose
-button .tb.engine -image tb_engine -command makeAnalysisWin
+button .tb.engine -image tb_engine -command {makeAnalysisWin 2}
 # button .tb.help -image tb_help -command {helpWindow Index} ; # seems unused
 
 # Set toolbar help status messages:
 foreach {b m} {
   new FileNew open FileOpen finder FileFinder
   save GameReplace close FileClose bkm FileBookmarks
-  gprev GamePrev gnext GameNext
+  gfirst GameFirst gprev GamePrev gnext GameNext glast GameLast
   cut GameNew copy EditCopy paste EditPaste
   rfilter SearchReset bsearch SearchCurrent
   hsearch SearchHeader msearch SearchMaterial
@@ -639,7 +654,7 @@ foreach {b m} {
 set helpMessage(.button.addVar) EditAdd
 set helpMessage(.button.trial) EditTrial
 
-foreach i {new open save close finder bkm cut copy paste gprev gnext \
+foreach i {new open save close finder bkm cut copy paste gprev gnext gfirst glast \
       rfilter bsearch hsearch msearch switcher glist pgn tmt maint \
       eco tree crosst engine} {
   .tb.$i configure -relief flat -border 1 -highlightthickness 0 -anchor n -takefocus 0
@@ -687,7 +702,7 @@ proc configToolbar {} {
   }
 
   pack [frame $w.f2] -side top -fill x
-  foreach i {gprev gnext} {
+  foreach i {gfirst gprev gnext glast} {
     eval checkbutton $w.f2.$i -image tb_$i -variable toolbar_temp($i) $button_options
     eval pack $w.f2.$i $pack_options
     bindToolbarRadio f2 $i
@@ -755,7 +770,7 @@ proc redrawToolbar {} {
   }
   if {$seen} { pack .tb.space1 -side left }
   set seen 0
-  foreach i {gprev gnext} {
+  foreach i {gfirst gprev gnext glast} {
     if {$toolbar($i)} {
       set seen 1
       pack .tb.$i -side left -pady 1 -padx 0 -ipadx 0 -pady 0 -ipady 0

@@ -166,7 +166,7 @@ set oldLang X
 # Toolbar configuration:
 foreach {tbicon status}  {
   new 1 open 1 save 1 close 1
-  finder 1 bkm 1 gprev 1 gnext 1
+  finder 1 bkm 1 gfirst 1 gprev 1 gnext 1 glast 1
   cut 0 copy 0 paste 0
   rfilter 1 bsearch 1 hsearch 1 msearch 1
   switcher 1 glist 1 pgn 1 tmt 1 maint 1 eco 1 tree 1 crosst 1 engine 1
