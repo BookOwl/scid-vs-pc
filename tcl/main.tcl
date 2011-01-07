@@ -171,14 +171,13 @@ proc updateTitle {} {
   }
 }
 
-# updateStatusBar:
-#   Updates the main Scid window status bar.
-#
+### Update the main status bar
+
 proc updateStatusBar {} {
   global statusBar moveEntry
 
-  # Exit if engine is running in status bar
-  if {$::analysis(mini)} {return}
+  # Exit if engine 1 is running in status bar
+  if {$::analysis(mini) && [winfo exists .analysisWin1]} {return}
 
   # Why are these things refreshed here ???
   ::windows::switcher::Refresh

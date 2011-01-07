@@ -1400,13 +1400,33 @@ if {$windowsOS} {
   bind . <Control-Button-5> {::board::resize .board -1}
 }
 
-# Apply standard shortcuts to main window
 standardShortcuts .
 
-############################################################
-### Packing the main window &&&
+### Status Bar
 
 label .statusbar -textvariable statusBar -relief sunken -anchor w -width 1 -font font_Small
+
+# Left-click starts/stops engine 1
+bind .statusbar <Button-1> {
+  makeAnalysisWin 1
+  if {[winfo exists .analysisWin1] && $::analysis(mini)} {
+    set ::statusBar "   [lindex $::analysis(name1) 0]:"
+    update
+  }
+}
+
+# Right-click toggles window size
+bind .statusbar <Button-3>  {
+  toggleMini
+  if {[winfo exists .analysisWin1] && $::analysis(mini)} {
+    set ::statusBar "   [lindex $::analysis(name1) 0]:"
+    update
+  }
+  break
+}
+
+############################################################
+### Grid the main window &&&
 
 grid .statusbar -row 4 -column 0 -columnspan 3 -sticky we
 

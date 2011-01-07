@@ -1778,35 +1778,35 @@ proc startAnalysisWin { FunctionKey } {
 #
 ################################################################################
 
-set analysis(mini) 0
+# toggle engine 1 between big or small (right-click)
+proc toggleMini {} {
+
+  global analysisWin1 analysis
+
+  if {!$analysisWin1} { return }
+
+  set analysis(mini) [expr !$analysis(mini)]
+
+  if {$analysis(mini)} {
+    # make window small
+    wm state .analysisWin1 withdrawn
+    update
+    set analysis(priority1) idle ; # nice priority
+  } else {
+    # make window big
+    wm state .analysisWin1 normal
+    updateStatusBar
+    update
+    .analysisWin1.hist.text yview moveto 1
+    set analysis(priority1) normal ; # normal priority
+  }
+  setAnalysisPriority 1
+}
 
 proc makeAnalysisWin { {n 1} } {
   global analysisWin$n font_Analysis analysisCommand analysis annotateModeButtonValue annotateMode
+
   set w .analysisWin$n
-
-  set analysis(mini$n) 0
-
-  ### Handle F4 (engine runs in statusbar)  first
-  if {$::engines(F4) == $n && ![winfo exists .enginelist]} {
-
-    # Run engine in status bar. It is "niced" at procedure end.
-    set analysis(mini) 1
-    set analysis(mini$n) $n
-
-    bind .statusbar <Button-3> "
-      # Restore engine and priority
-      set analysis(mini) 0
-      set analysis(mini$n) 0
-      set analysis(priority$n) normal 
-      setAnalysisPriority $n
-      bind .statusbar <Button-3> {}
-      wm state .analysisWin$n normal
-      updateStatusBar
-      update
-      .analysisWin$n.hist.text yview moveto 1
-      break
-    "
-  }
 
   if {[winfo exists $w]} {
     ### Stop engine and exit
@@ -1814,13 +1814,8 @@ proc makeAnalysisWin { {n 1} } {
     destroy $w
     set analysisWin$n 0
     resetEngine $n
-    if {$::engines(F4) == $n && $analysis(mini)} {
-      # Remove engine from statusbar
-      set analysis(mini) 0
-      set analysis(mini$n) 0
-      bind .statusbar <Button-3> {}
-    }
     updateStatusBar
+    update
     return
   }
 
@@ -1914,8 +1909,8 @@ proc makeAnalysisWin { {n 1} } {
   toplevel $w
   wm title $w "Scid: $analysisName"
 
-  if {$analysis(mini$n)} {
-    # Run in Status Bar !
+  if {$n == 1 && $analysis(mini)} {
+    # Run engine in status bar. It is "niced" at procedure end.
     wm state $w withdrawn
   }
 
@@ -2096,7 +2091,7 @@ proc makeAnalysisWin { {n 1} } {
     initialAnalysisStart $n
   }
   # necessary on windows because the UI sometimes starves, also keep latest priority setting
-  if {$::windowsOS || $analysis(priority$n) == {idle} || $analysis(mini$n) > 0 } {
+  if {$::windowsOS || $analysis(priority$n) == {idle} || ($n==1 && $analysis(mini)) } {
     set analysis(priority$n) idle
     setAnalysisPriority $n
   }
@@ -2775,15 +2770,14 @@ proc updateAnalysisText {{n 1}} {
     append line [format "%2d \[%+5.2f\]  %s (%.2f)\n" $analysis(depth$n) $score [::trans $moves] $analysis(time$n)] 
   }
 
-  if { $analysis(mini$n) > 0 } {
+  if { $n == 1 && $analysis(mini) } {
     # show in status bar
     if {[string is ascii -strict %s]} {
-    set s [string range $line [string first {[} $line] 50]
-    if {$s != {}} {
-      set ::statusBar "   [lindex $analysis(name$n) 0]: [string map {\n {}} $s]"
+      set s [string range $line [string first {[} $line] 50]
+      if {$s != {}} {
+	set ::statusBar "   [lindex $analysis(name1) 0]: [string map {\n {}} $s]"
+      }
     }
-   }
-    # wm state $w withdrawn
   } 
 
   ### Should we truncate line so it only takes up one line ? S.A.

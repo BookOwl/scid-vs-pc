@@ -249,6 +249,7 @@ set helpText(Index) {<h1>Scid Help Index</h1>
   <li><a Maintenance Cleaner>Cleaner</a></li>
   <li><a Clipbase>Clipbase</a></li>
   <li><a Changelog>Changelog</a></li>
+  <li><a Analysis>Chess Engines</a></li>
   <li><a Cmdline>Command-line options</a></li>
   <li><a Comment>Comment editor</a></li>
   <li><a Tourney>Computer Tournament</a></li>
@@ -278,7 +279,7 @@ set helpText(Index) {<h1>Scid Help Index</h1>
   <li><a Menus Edit>Edit menu</a></li>
   <li><a Email>Email manager</a> window</li>
   <li><a CCeMailChess>Email Chess</a></li>
-  <li><a Analysis List>Engines list</a></li>
+  <li><a Analysis>Engines, Chess</a></li>
   <li><a Moves>Entering moves</a></li>
   <li><a EPD>EPD files</a></li>
   <li><a Export>Exporting games to text files</a></li>
@@ -2680,25 +2681,29 @@ set helpText(Flags) {<h1>Game Flags</h1>
 set helpTitle(Analysis) "Analysis window"
 set helpText(Analysis) {<h1>Analysis Windows</h1>
   <p> 
-  The Analysis window shows study of the current position by a
-chess engine.  It is accessed and configured from the <a Analysis List>Analysis
-Engines</a> widget, or by using the F2 , F3 or F4 hotkeys.
+  The Analysis Window shows a <b>Chess Engine studying the current position</b>.
+  A few engines come preinstalled with Scid, and others may be added via
+  the <a Analysis List>Engine Configuration</a> window.
+  </p>
+  <p>
+  At the top are some useful <a Analysis Buttons>Buttons</a>.
+  <a Analysis Moves>Move Predictions</a> occupy most of the space,
+  and at the bottom is some <a Analysis Info>Extra Information</a> (which may be hidden).
   </p>
 
-  <p>
-  At the bottom of the window is found some general info,
-  and move predictions occupy the main text window.
-  </p>
+  <h3>Getting Started</h3>
+  <p>Engines can be started in various way.
+  By pressing F2, F3 or F4, from the Configuration Widget, or the Tools menu.
+  Additionally, <b>Engine 1 can be start/stopped by clicking the main Statusbar</b>.
+  Right-clicking the Statusbar will dock/undock the engine,
+  which, when running docked, will run at low CPU priority.<p>
 
   <p>
-  It is possible to have multiple analysis windows open simultaneously, each
+  It is possible to have multiple Analysis Windows open simultaneously, each
   running different engines!
   </p>
 
-  <p><i>Hint: the F4 hotkey (if configured) will run an Engine in the status bar.
-  Right-clicking the bar will restore the engine.</i></p>
-
-  <h3>Buttons</h3>
+  <h3><name Buttons>Buttons</h3>
   <p>
   At the top you'll find many cryptic buttons...
   <ul>
@@ -2738,50 +2743,39 @@ Engines</a> widget, or by using the F2 , F3 or F4 hotkeys.
   this mode only the current evaluation is shown in the status line.</i>
   </p>
 
-  <h3>Move details</h3>
+  <h3><name Moves>Move Details</h3>
   <p>
-   In the main text widget is all sorts of move information.
-   The first number prefixed with a <b>+/-</b> is a move score.
-  It is measured in pawn units
-  from the perspective of White - a positive score means White is ahead, a negative score means Black.
-  <br><b>Depth:</b> shows the search depth already reached by
-  the engines calculations in half moves.
-  <br><b>Nodes:</b> gives the number of positions analysed for the current
-  result while the number of positions per second (kn/s) is shown in
-  brackets.
-  <br><b>Time:</b> finally shows the amount of time spent for
-  the current analysis.
+  In the main text widget is all sorts of move information.
+  The first number is the current <b>Search Depth</b>. The next (prefixed with
+  a +/-), is a <b>Move Score</b>.  It is measured in pawn units from the
+  perspective of white - a positive score means white is ahead, a negative score
+  means black. Then follows the move predictions.  </p>
+  <p>
+  Many recent <term>UCI</term> engines also allow to analyse several lines at
+  once. Using this <term>Multi-PV</term> feature, the user can see the second or
+  third (etcetera) best continuations.  The best line is always on top and
+  highlighted.  If an engine allows for <term>Multi-PV analysis</term>, the spin
+  box can be used to set the number of principal variations shown.  In this case,
+  instead of the calculation history, only the resulting principal lines are
+  shown. The spin box is disabled if an engine does offer this feature.
   </p>
 
+  <h3><name Info>Extra Information</h3>
   <p>
-  <i>Additional information used be accessed using the 
-  engineinfo button, but has been removed for space reasons.
-  Info shown includes the number of tablebase hits, a
+  At the bottom is some additional technical info. If this is hidden, it
+  can been seen by pressing the <b>Engine Info</b> button.
+  </p>
+  <p>
+  <b>Depth</b>: the search depth already reached by
+  the engines calculations (in half moves).
+  <br><b>Nodes</b>: the number of positions analysed for the current
+  result (and the number of positions per second).
+  <br><b>Time</b>: the amount of time spent for the current analysis.
+  </p><p>
+  Additional information includes the number of tablebase hits, a
   more exact number of nodes analysed per second, the watermark of the
-  engines hash and the current cpu load. This option can be enabled by
-  editting the scid gui and setting showEngineInfo 1</i>
+  engines hash and the current CPU load.
   </p>
-  <p>
-  If the engine only analyses the line it considers the main
-  continuation, the lower frame in the window (with the scrollbar)
-  shows the history of evaluations produced by the engine for the
-  current position, so you can see how the assessment has changed.
-  </p>
-  <p>
-  Many recent <term>UCI</term> engines however allow to analyse
-  several lines at once. Using this <term>Multi-PV</term> feature, the
-  user can also see what the engine thinks is the second or third best
-  continuation.  The best line is always on top and highlighted to
-  ease reading.  If an engine allows for <term>Multi-PV
-  analysis</term>, the spin box below the analysis lines can be used
-  to set the number of principal variations that should be calculated
-  and shown. In this case, instead of the calculation history, only
-  the resulting principal lines are shown. However, if the number of
-  principal lines is set to 1, one can again observe the evaluation
-  history. The spin box is disabled, if an engine does offer this
-  feature.
-  </p>
-  <p>
 
   <h1><name List>Configuring Engines</name></h1>
   <p>
@@ -2846,15 +2840,14 @@ engines support both formats.
   not shown when training mode is on.
   </p>
 
-  <h3><name Annotating>Annotating a game</name></h3>
+  <h3><name Annotating>Annotating Games</name></h3>
   <p>
   The "variation" and "add all variation" buttons add the
   current score and best line of play as a new variation in
-  the game.  This can also be <b>done automatically</b> using
-  the <b>Annotate</b> <button tb_annotate> feature.</p>
-
-  <p>It will automatically add comments , <a Moves Informant>Informants
-  </a> and best-lines to a game, and can also be performed
+  the game.  This can also be done automatically using
+  the <b>Annotate</b> <button tb_annotate> feature.
+  It automatically add comments , <a Moves Informant>Informants
+  </a> and best-lines to a game, and can be performed
   on  <b>multiple games</b>.</p>
 
   <p>After configuring options and pressing OK, <b>autoplay
@@ -2919,7 +2912,7 @@ storing the annotations into the database.
      </li>
   </ul>
 
-  <p><footer>Updated: Scid vs. PC 4.1, July 2010</footer></p>
+  <p><footer>Updated: Scid vs. PC 4.3, January 2011</footer></p>
 }
 
 ####################
