@@ -1304,6 +1304,8 @@ proc drawArrow {sq color} {
   }
 }
 
+##### Bindings for main board. Moves/Drags/etc ######
+
 for {set i 0} { $i < 64 } { incr i } {
   ::board::bind .board $i <Enter> "enterSquare $i"
   ::board::bind .board $i <Leave> "leaveSquare $i"
@@ -1315,13 +1317,17 @@ for {set i 0} { $i < 64 } { incr i } {
   # ::board::bind .board $i <Shift-ButtonPress-1> "addMarker $i green"
   # ::board::bind .board $i <Shift-ButtonPress-2> "addMarker $i yellow"
   # ::board::bind .board $i <Shift-ButtonPress-3> "addMarker $i red"
-  ::board::bind .board $i <B1-Motion> "::board::dragPiece %X %Y"
-  ::board::bind .board $i <ButtonRelease-1> "releaseSquare %X %Y"
-  ::board::bind .board $i <ButtonRelease-2> "releaseSquare %X %Y"
 
   ### Too dangerous. (backSquare deprecated for ::move::Back) S.A.
+  # Pascal Georges : this should be removed because I find it too dangerous for people with cats ??
   # ::board::bind .board $i <ButtonPress-3> backSquare
 }
+
+# These binds must be moved back into for loop
+# if we want to use the above "addMarker" bindings
+bind .board.bd <B1-Motion> {::board::dragPiece %X %Y}
+bind .board.bd <ButtonRelease-1> {releaseSquare %X %Y}
+bind .board.bd <ButtonRelease-2> {releaseSquare %X %Y}
 
 foreach i {o q r n k O Q R B N K} {
   bind . <$i> "moveEntry_Char [string toupper $i]"
@@ -1399,6 +1405,10 @@ if {$windowsOS} {
   bind . <Control-Button-4> {::board::resize .board +1}
   bind . <Control-Button-5> {::board::resize .board -1}
 }
+
+# Very annoying for blitz Fics , so is unused
+# Bind double-click in main Scid window to raise all Scid windows:
+# bind . <Double-Button-1> raiseAllWindows
 
 standardShortcuts .
 
@@ -1802,21 +1812,26 @@ setWinLocation .
 wm deiconify .
 wm protocol . WM_DELETE_WINDOW { ::file::Exit }
 
-if {$startup(switcher)} { ::windows::switcher::Open }
-if {$startup(pgn)} { ::pgn::OpenClose }
-if {$startup(gamelist)} { ::windows::gamelist::Open }
-if {$startup(tree)} { ::tree::make }
-if {$startup(stats)} { ::windows::stats::Open }
-if {$startup(crosstable)} { ::crosstab::Open }
-if {$startup(finder)} { ::file::finder::Open }
-if {$startup(book)} { ::book::open }
+# Init start-up windows
+foreach {type action} {
+  switcher	::windows::switcher::Open
+  pgn		::pgn::OpenClose
+  gamelist	::windows::gamelist::Open
+  tree		::tree::make
+  stats		::windows::stats::Open
+  crosstable	::crosstab::Open
+  finder	::file::finder::Open
+  book		::book::open
+} {
+  if {$startup($type)} { $action }
+}
 
 updateBoard
 updateStatusBar
 updateTitle
 updateLocale
 update
-bind . <Configure> "recordWinSize ."
+bind . <Configure> {recordWinSize .}
 
 # Bindings to map/unmap all windows when main window is mapped:
 bind .statusbar <Map> { showHideAllWindows deiconify}
@@ -1856,15 +1871,17 @@ proc showHideAllWindows {type} {
   if {($type == "iconify")  && ([winfo ismapped .] == 1)} { return }
 
   # Now iconify/deiconify all the major Scid windows that exist:
+  # , which are below, but we use [getTopLevel] instead.
+  #
+  # .baseWin .glistWin .pgnWin .tourney .maintWin \
+  # .ecograph .crosstabWin .treeWin .analysisWin1 .anslysisWin2 \
+  # .playerInfoWin .commentWin .repWin .statsWin .tbWin \
+  # .sb .sh .sm .noveltyWin .emailWin .oprepWin .plist \
+  # .rgraph .sgraph .importWin .helpWin .tipsWin
+
   foreach w [getTopLevel] {
-    # .baseWin .glistWin .pgnWin .tourney .maintWin \
-    # .ecograph .crosstabWin .treeWin .analysisWin1 .anslysisWin2 \
-    # .playerInfoWin .commentWin .repWin .statsWin .tbWin \
-    # .sb .sh .sm .noveltyWin .emailWin .oprepWin .plist \
-    # .rgraph .sgraph .importWin .helpWin .tipsWin
     if {[winfo exists $w]} { catch {wm $type $w} }
   }
-
 }
 
 proc raiseAllWindows {} {
@@ -1874,44 +1891,35 @@ proc raiseAllWindows {} {
   showHideAllWindows deiconify
 
   foreach w [getTopLevel] {
-    # .baseWin .glistWin .pgnWin .tourney .maintWin \
-    # .ecograph .crosstabWin .treeWin .analysisWin1 .anslysisWin2 \
-    # .playerInfoWin .commentWin .repWin .statsWin .tbWin \
-    # .sb .sh .sm .noveltyWin .emailWin .oprepWin .plist \
-    # .rgraph .sgraph .importWin .helpWin .tipsWin
     if {[winfo exists $w]} { catch { raise $w } }
   }
 }
 
-### Very annoying for blitz Fics S.A.
-# Bind double-click in main Scid window to raise all Scid windows:
-# bind . <Double-Button-1> raiseAllWindows
-
 # Hack to extract gif images out of Scid:
 
-  proc dumpGifImages {dir} {
-    package require base64
-    file mkdir $dir
-    set images [image names]
-    foreach i $images {
-      set data [string trim [$i cget -data]]
-      if {$data == ""} { continue }
-      if {[catch {set d [::base64::decode $data]}]} { continue }
-      regsub -all {:} $i {_} i
-      set fname [file join $dir $i.gif]
-      set f [open $fname w]
-      fconfigure $f -translation binary -encoding binary
-      puts -nonewline $f $d
-      close $f
-    }
+proc dumpGifImages {dir} {
+  package require base64
+  file mkdir $dir
+  set images [image names]
+  foreach i $images {
+    set data [string trim [$i cget -data]]
+    if {$data == ""} { continue }
+    if {[catch {set d [::base64::decode $data]}]} { continue }
+    regsub -all {:} $i {_} i
+    set fname [file join $dir $i.gif]
+    set f [open $fname w]
+    fconfigure $f -translation binary -encoding binary
+    puts -nonewline $f $d
+    close $f
   }
+}
 
-  # hmm... Control-Shift-F7 doesn;t work for me ???
-  bind . <Control-F7> {
-	puts "Dumping images to /tmp/ScidImages"
-	dumpGifImages /tmp/ScidImages
-	exit
-  }
+# hmm... Control-Shift-F7 doesn't work for me ???
+bind . <Control-F7> {
+      puts "Dumping images to /tmp/ScidImages"
+      dumpGifImages /tmp/ScidImages
+      exit
+}
 
 if {$startup(tip)} { ::tip::show }
 
@@ -1924,6 +1932,8 @@ if {$::splash::keepopen} {
 }
 
 # Opening files by drag & drop on Scid icon on Mac
+# Todo: implement for Windows and Linux (haha!)
+
 if {![catch {tk windowingsystem} wsystem] && $wsystem == "aqua"} {
   # We opened for a drag & drop request, process it now:
   set isopenBaseready 1

@@ -3,13 +3,11 @@
 
 # letterToPiece
 #    Array that maps piece letters to their two-character value.
-#
-array set ::board::letterToPiece [list \
-    "R" wr "r" br "N" wn "n" bn "B" wb "b" bb \
-    "Q" wq "q" bq "K" wk "k" bk "P" wp "p" bp "." e \
-    ]
 
-#   name (unused), lite, dark, highcolor, bestcolor, bgcolor
+array set ::board::letterToPiece \
+  {R wr r br N wn n bn B wb b bb Q wq q bq K wk k bk P wp p bp . e}
+
+# { name(unused), lite, dark, highcolor, bestcolor, bgcolor }
 
 set colorSchemes1 {
   { Blue-white	#f3f3f3 #7389b6 #f3f484 #b8cbf8 steelblue4}
@@ -19,11 +17,11 @@ set colorSchemes1 {
   { Brown	#d0c0a0 #a08050 #b0d0e0 #bebebe tan4}
 }
 set colorSchemes2 {
-  { Tan	#fbdbc4 #cc9c83 #b0d0e0 #bebebe rosybrown4}
-  { Grey #dfdfdf #808080 #b0d0e0 #bebebe black }
-  { Rosy #f8dbcc rosybrown #b0d0e0 #bebebe rosybrown4}
-  { SteelBlue lightsteelblue steelblue #51a068 #e0d873 #002958}
-  { Red rosybrown1 indianred3 #ffa07a lightsalmon #780000}
+  { Tan		#fbdbc4 #cc9c83 #b0d0e0 #bebebe rosybrown4}
+  { Grey	#dfdfdf #808080 #b0d0e0 #bebebe black }
+  { Rosy	#f8dbcc rosybrown #b0d0e0 #bebebe rosybrown4}
+  { SteelBlue	lightsteelblue steelblue #51a068 #e0d873 #002958}
+  { Red		rosybrown1 indianred3 #ffa07a lightsalmon #780000}
 }
 array set newColors {}
 
@@ -45,7 +43,10 @@ proc SetBoardTextures {} {
   # handle cases of old configuration files
   image create photo bgl20 -height 20 -width 20
   image create photo bgd20 -height 20 -width 20
-  if { [ catch { bgl20 copy $boardfile_lite -from 0 0 20 20 ; bgd20 copy $boardfile_dark -from 0 0 20 20 } ] } {
+  if { [ catch {
+    bgl20 copy $boardfile_lite -from 0 0 20 20
+    bgd20 copy $boardfile_dark -from 0 0 20 20
+  } ] } {
     set boardfile_dark emptySquare
     set boardfile_lite emptySquare
     bgl20 copy $boardfile_lite -from 0 0 20 20
@@ -907,7 +908,8 @@ AYRDHRMUKmDIkAFDBQoTOgxCcMnBIGkS+v0LOLDgwYSDPoDy8UfHJRWF0q1r
 omgGBw70DlkDBYGRECGKNoACcIISoRhbf3glRODSgrFo06pdy7Yto0AAOw==
 }
 
-# S.A. here is the Main Button Bar
+###### Main Button Bar ########
+
 # frame .button -border 0
 frame .button -relief raised -border 1
 button .button.start -image tb_start -command ::move::Start
@@ -922,11 +924,12 @@ menubutton .button.intoVar -image tb_invar -menu .button.intoVar.menu \
     -relief raised
 menu .button.intoVar.menu -tearoff 0 -font font_Regular
 
-button .button.exitVar -image tb_outvar \
-    -command {
-       set ::pause 1
-       sc_var exit; updateBoard -animate
-    }
+button .button.exitVar -image tb_outvar -command {
+   set ::pause 1
+   sc_var exit
+   updateBoard -animate
+}
+
 button .button.addVar -image tb_addvar \
     -command {sc_var create; updateBoard -pgn -animate}
 frame .button.space2 -width 15
@@ -1066,23 +1069,28 @@ MRIkyiwsUKaIHk16ChQsaHsFAgA7}
 
 namespace eval ::board {
 
-  namespace export sq san recolor colorSquare isFlipped
-
   # List of square names in order; used by sq procedure.
-  variable squareIndex [list a1 b1 c1 d1 e1 f1 g1 h1 a2 b2 c2 d2 e2 f2 g2 h2 \
+  variable squareIndex [list \
+      a1 b1 c1 d1 e1 f1 g1 h1 a2 b2 c2 d2 e2 f2 g2 h2 \
       a3 b3 c3 d3 e3 f3 g3 h3 a4 b4 c4 d4 e4 f4 g4 h4 \
       a5 b5 c5 d5 e5 f5 g5 h5 a6 b6 c6 d6 e6 f6 g6 h6 \
       a7 b7 c7 d7 e7 f7 g7 h7 a8 b8 c8 d8 e8 f8 g8 h8]
-}
 
-# ::board::sq:
-#    Given a square name, returns its index as used in board
-#    representations, or -1 if the square name is invalid.
-#    Examples: [sq h8] == 63; [sq a1] = 0; [sq notASquare] = -1.
-#
-proc ::board::sq {sqname} {
-  variable squareIndex
-  return [lsearch -exact $squareIndex $sqname]
+  # ::board::sq:
+  #    Given a square name, returns its index as used in board
+  #    representations, or -1 if the square name is invalid.
+  #    Examples: [sq h8] == 63; [sq a1] = 0; [sq notASquare] = -1.
+
+  proc sq {sqname} {
+    variable squareIndex
+    return [lsearch -exact $squareIndex $sqname]
+  }
+
+  set castlingList [list \
+      [sq e1] [sq g1] [sq h1] [sq f1] \
+      [sq e8] [sq g8] [sq h8] [sq f8] \
+      [sq e1] [sq c1] [sq a1] [sq d1] \
+      [sq e8] [sq c8] [sq a8] [sq d8]]
 }
 
 # ::board::san --
@@ -1094,12 +1102,16 @@ proc ::board::sq {sqname} {
 #	sqno	square number 0-63.
 # Results:
 #	Returns square name "a1"-"h8".
-#
+
 proc ::board::san {sqno} {
-  if {($sqno < 0) || ($sqno > 63)} { return }
-  return [format %c%c \
-      [expr {($sqno % 8) + [scan a %c]}] \
-      [expr {($sqno / 8) + [scan 1 %c]}]]
+  variable squareIndex
+
+  if {($sqno < 0) || ($sqno > 63)} {
+    return
+  }
+  return [lindex $squareIndex $sqno]
+
+  # return [format %c%c [expr {($sqno % 8) + [scan a %c]}] [expr {($sqno / 8) + [scan 1 %c]}]]
 
 }
 
@@ -1177,10 +1189,11 @@ proc ::board::new {w {psize 40} {showmat "nomat"} } {
   # Material canvas init
   set ::materialwidth [boardSize_plus_n -7]
   if {$::board::_showmat($w)} {
-    canvas $w.mat -width $::materialwidth -height [expr $::board::_size($w) * 8] -insertborderwidth 0 -borderwidth 0 -highlightthickness 0
+    canvas $w.mat -width $::materialwidth -height [expr $::board::_size($w) * 8] \
+      -insertborderwidth 0 -borderwidth 0 -highlightthickness 0
   }
 
-  if {"$w" == ".board"} {
+  if {$w == {.board}} {
     set ::board::_showmat($w) $::gameInfo(showMaterial)
   }
 
@@ -1196,15 +1209,16 @@ proc ::board::new {w {psize 40} {showmat "nomat"} } {
   return $w
 }
 
+### Remove this proc and use a 64 element truth table instead S.A
+#
+#  ::board::defaultColor
+#
 #   Returns the color (the value of the global
 #   variable "lite" or "dark") depending on whether the
 #   specified square number (0=a1, 1=b1, ..., 63=h8) is
 #   a light or dark square.
-
-# ::board::defaultColor
+#
 # return [expr {($sq + ($sq / 8)) % 2 ? "$::lite" : "$::dark"}]
-
-### Remove this proc and use a 64 element truth table instead S.A
 
 for {set i 0} {$i <= 63} {incr i} {
   set sqcol($i) [expr {($i + ($i / 8)) % 2}]
@@ -1415,15 +1429,7 @@ proc ::board::midSquare {w sq} {
   return [list $x $y]
 }
 
-### Namespace ::board::mark
-
 namespace eval ::board::mark {
-
-  namespace export getEmbeddedCmds
-  namespace export add drawAll clear remove
-
-  namespace import [namespace parent]::sq
-  #namespace import [namespace parent]::isFlipped
 
   # Regular expression constants for
   # matching Scid's embedded commands in PGN files.
@@ -1481,7 +1487,7 @@ namespace eval ::board::mark {
 #		e.g. '{circle f7 red}' or '{arrow c4 f7 green}',
 #	and 'indices' is a list containing start and end position
 #	of the command string within the comment.
-#
+
 proc ::board::mark::getEmbeddedCmds {comment} {
   if {$comment == ""} {return}
   variable ScidCmdRegex
@@ -1710,11 +1716,8 @@ proc ::board::mark::DrawDisk {pathName square color} {
   # Size of the inner (enclosing) box within the square:
   set size 0.6	;# 0.0 <  $size < 1.0 = size of rectangle
 
-  set box [GetBox $pathName $square $size]
-  eval $pathName \
-      {create oval [lrange $box 0 3]} \
-      -fill $color -outline $color \
-      {-tag [list mark disk mark$square p$square]}
+  set box [GetBox $pathName $square $size 1]
+  $pathName create oval $box -fill $color -outline $color -tag [list mark disk mark$square p$square]
 }
 
 # ::board::mark::DrawText --
@@ -1772,8 +1775,8 @@ proc ::board::mark::DrawVar {pathName from to color varnum} {
 # Draws a rectangle surrounding the square
 proc ::board::mark::DrawRectangle { pathName square color pattern } {
   if {$square < 0  ||  $square > 63} { puts "error square = $square" ; return }
-  set box [::board::mark::GetBox $pathName $square]
-  $pathName create rectangle [lindex $box 0] [lindex $box 1] [lindex $box 2] [lindex $box 3] \
+  set box [::board::mark::GetBox $pathName $square 1.0 1]
+  $pathName create rectangle $box \
       -outline $color -width $::highlightLastMoveWidth -dash $pattern -tag highlightLastMove
 }
 # ::board::mark::DrawTux --
@@ -1822,10 +1825,13 @@ image create photo tux32x32 -data \
     }
 set ::board::mark::tux32x32 tux32x32
 
+# Poor tux has his head but off ! %(
+# rename this proc ::board::mark::DrawCircle to see him in comment editor
+
 proc ::board::mark::DrawTux {pathName square discard} {
   variable tux16x16
   variable tux32x32
-  set box [::board::mark::GetBox $pathName $square]
+  set box [::board::mark::GetBox $pathName $square 1.0]
   for {set len [expr {int([lindex $box 4])}]} {$len > 0} {incr len -1} {
     if {[info exists tux${len}x${len}]} break
   }
@@ -1857,8 +1863,8 @@ proc ::board::mark::GetArrowCoords {board from to {shrink 0.6}} {
   if {$shrink > 1.0} {set shrink 1.0}
 
   # Get left, top, right, bottom, length, midpoint_x, midpoint_y:
-  set fromXY [GetBox $board $from]
-  set toXY   [GetBox $board $to]
+  set fromXY [GetBox $board $from 1.0]
+  set toXY   [GetBox $board $to 1.0]
   # Get vector (dX,dY) = to(x,y) - from(x,y)
   # (yes, misusing the foreach multiple features)
   foreach {x0 y0} [lrange $fromXY 5 6] {x1 y1} [lrange $toXY 5 6] {break}
@@ -1906,23 +1912,29 @@ proc ::board::mark::GetArrowCoords {board from to {shrink 0.6}} {
 #	square		Square number (0..63).
 #	portion		Portion (length inner box) / (length square)
 #			(1.0 means: box == square).
+#	short		Boolean
 # Results:
-#	Returns a list whose elements are upper left and lower right
-#	corners, length, and midpoint (x,y) of the inner box.
 #
-proc ::board::mark::GetBox {pathName square {portion 1.0}} {
+# if  {$short)
+#      return upper left and lower right corners (4 element list)
+# else
+#      return upper left and lower right corners, length and midpoint (x,y) of the box. (7 elements)
+
+proc ::board::mark::GetBox {pathName square portion {short 0}} {
   set coord [$pathName coords sq$square]
-  set len [expr {[lindex $coord 2] - [lindex $coord 0]}]
   if {$portion < 1.0} {
+    set len [expr {[lindex $coord 2] - [lindex $coord 0]}]
     set dif [expr {$len * (1.0 -$portion) * 0.5}]
     foreach i {0 1} { lappend box [expr {[lindex $coord $i] + $dif}] }
     foreach i {2 3} { lappend box [expr {[lindex $coord $i] - $dif}] }
   } else {
     set box $coord
   }
-  lappend box [expr { [lindex $box 2] - [lindex $box 0]     }]
-  lappend box [expr {([lindex $box 0] + [lindex $box 2]) / 2}]
-  lappend box [expr {([lindex $box 1] + [lindex $box 3]) / 2}]
+  if {!$short} {
+    lappend box [expr { [lindex $box 2] - [lindex $box 0]     }]
+    lappend box [expr {([lindex $box 0] + [lindex $box 2]) / 2}]
+    lappend box [expr {([lindex $box 1] + [lindex $box 3]) / 2}]
+  }
   return $box
 }
 
@@ -1966,17 +1978,10 @@ proc ::board::dragPiece {x y} {
 }
 
 # ::board::bind
-#   Binds the given event on the given square number to
-#   the specified action.
-#
+#   Binds the given event on the given square number to the specified action.
+
 proc ::board::bind {w sq event action} {
-  if {$sq == "all"} {
-    for {set i 0} {$i < 64} {incr i} {
-      $w.bd bind p$i $event $action
-    }
-  } else {
-    $w.bd bind p$sq $event $action
-  }
+  $w.bd bind p$sq $event $action
 }
 
 # ::board::drawPiece
@@ -2343,6 +2348,8 @@ proc ::board::coords {w} {
 #
 proc ::board::animate {w oldboard newboard} {
   global animateDelay
+  variable castlingList
+
   if {$animateDelay <= 0} { return }
 
   # Find which squares differ between the old and new boards:
@@ -2368,31 +2375,30 @@ proc ::board::animate {w oldboard newboard} {
   set from -1
   set to -1
   set captured -1
-  set capturedPiece "."
+  set capturedPiece {.}
 
   if {$diffcount == 4} {
-    # Check for making/unmaking a castling move:
-    set castlingList [list [sq e1] [sq g1] [sq h1] [sq f1] \
-        [sq e8] [sq g8] [sq h8] [sq f8] \
-        [sq e1] [sq c1] [sq a1] [sq d1] \
-        [sq e8] [sq c8] [sq a8] [sq d8]]
+    # Check for making/unmaking a castling move
+
+    set oldlower [string tolower $oldboard]
+    set newlower [string tolower $newboard]
 
     foreach {kfrom kto rfrom rto} $castlingList {
       if {[lsort $difflist] == [lsort [list $kfrom $kto $rfrom $rto]]} {
-        if {[string tolower [string index $oldboard $kfrom]] == "k"  &&
-          [string tolower [string index $oldboard $rfrom]] == "r"  &&
-          [string tolower [string index $newboard $kto]] == "k"  &&
-          [string tolower [string index $newboard $rto]] == "r"} {
+        if {[string index $oldlower $kfrom] == {k}  &&
+	    [string index $oldlower $rfrom] == {r}  &&
+	    [string index $newlower $kto] == {k}  &&
+	    [string index $newlower $rto] == {r}} {
           # A castling move animation.
           # Move the rook back to initial square until animation is complete:
           # TODO: It may look nicer if the rook was animated as well...
           eval $w.bd coords p$rto [::board::midSquare $w $rfrom]
           set from $kfrom
           set to $kto
-        } elseif {[string tolower [string index $newboard $kfrom]] == "k"  &&
-          [string tolower [string index $newboard $rfrom]] == "r"  &&
-          [string tolower [string index $oldboard $kto]] == "k"  &&
-          [string tolower [string index $oldboard $rto]] == "r"} {
+        } elseif {[string index $newlower $kfrom] == {k}  &&
+	    [string index $newlower $rfrom] == {r}  &&
+	    [string index $oldlower $kto] == {k}  &&
+	    [string index $oldlower $rto] == {r}} {
           # An undo-castling animation. No need to move the rook.
           set from $kto
           set to $kfrom
