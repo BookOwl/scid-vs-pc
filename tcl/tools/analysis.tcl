@@ -1778,12 +1778,12 @@ proc startAnalysisWin { FunctionKey } {
 #
 ################################################################################
 
-# toggle engine 1 between big or small (right-click)
+# Dock/undock Engine1 in statusbar
 proc toggleMini {} {
 
   global analysisWin1 analysis
 
-  if {!$analysisWin1} { return }
+  if {![winfo exists .analysisWin1]} { return }
 
   set analysis(mini) [expr !$analysis(mini)]
 

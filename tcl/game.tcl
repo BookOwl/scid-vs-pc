@@ -132,7 +132,7 @@ proc ::game::Truncate {} {
 # game::LoadNextPrev
 #
 #   Loads the next or previous filtered game in the database.
-#   The parameter <action> should be "previous" or "next".
+#   The parameter <action> should be "previous" , "next", "first" or "last"
 #
 proc ::game::LoadNextPrev {action} {
   global pgnWin statusBar
