@@ -3671,7 +3671,7 @@ set helpText(Bookmarks) {<h1>Bookmarks</h1>
 
   <h3>Editing Bookmarks</h3>
   <p>
-  With the bookmark editor you can change the menu displayed for
+  With the bookmark editor you can change the label for
   each bookmark, and add folders for better organization.
   Double clicking entries will load the game.
   </p>

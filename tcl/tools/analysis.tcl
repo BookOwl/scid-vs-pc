@@ -409,11 +409,9 @@ proc ::enginelist::choose {} {
     ::enginelist::edit [lindex [.enginelist.list.list curselection] 0]
   }
 
-  frame $w.buttons.move -padx 0 -pady 0
-  # arrow images defined in gamelist.tcl
-  button $w.buttons.move.up   -image arrow_up   -command {::enginelist::move -1} -width 15
-  button $w.buttons.move.down -image arrow_down -command {::enginelist::move 1} -width 15
-  pack $w.buttons.move.up $w.buttons.move.down -side top
+  # arrow images defined in bookmark.tcl
+  button $w.buttons.up   -image bookmark_up   -command {::enginelist::move -1} 
+  button $w.buttons.down -image bookmark_down -command {::enginelist::move 1} 
 
   dialogbutton $w.buttons.delete -text $::tr(Delete) -command {
     ::enginelist::delete [lindex [.enginelist.list.list curselection] 0]
@@ -429,7 +427,7 @@ proc ::enginelist::choose {} {
     destroy .enginelist
   }
 
-  pack $w.buttons.move $w.buttons.add $w.buttons.edit $w.buttons.delete $w.buttons.start -side left -expand yes
+  pack $w.buttons.up $w.buttons.down $w.buttons.add $w.buttons.edit $w.buttons.delete $w.buttons.start -side left -expand yes
   pack $w.buttons -side top -pady 12 -padx 2 -fill x
   pack $w.close -side bottom -pady 8
   focus $w.buttons.start
