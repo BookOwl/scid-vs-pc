@@ -42,16 +42,17 @@ namespace eval pgn {
   ################################################################################
   proc OpenClose {} {
     global pgnWin pgnHeight pgnWidth pgnColor
-    if {[winfo exists .pgnWin]} {
+    set w .pgnWin
+
+    if {[winfo exists $w]} {
       focus .
-      destroy .pgnWin
+      destroy $w
       set pgnWin 0
       return
     }
-    set w [toplevel .pgnWin]
+    toplevel $w
     setWinLocation $w
     setWinSize $w
-    bind $w <Configure> "recordWinSize $w"
 
     menu $w.menu
     $w configure -menu $w.menu
@@ -153,6 +154,7 @@ namespace eval pgn {
     # Add variation navigation bindings:
     bind $w <KeyPress-v> [bind . <KeyPress-v>]
     bind $w <KeyPress-z> [bind . <KeyPress-z>]
+    bind $w <Configure> "recordWinSize $w"
 
     $w.text tag add Current 0.0 0.0
 

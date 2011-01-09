@@ -7,18 +7,17 @@ set bookmarks(subMenus) 0
 # Read the bookmarks file if it exists:
 catch {source [scidConfigFile bookmarks]}
 
-
 namespace eval ::bookmarks {}
 
 # ::bookmarks::PostMenu:
 #   Posts the bookmarks toolbar menu.
-#
+# Currently unused. It's just too clumsy to post menus in the main board
+# without an easy way to cancel them
+
 proc ::bookmarks::PostMenu {} {
   .tb.bkm.menu post [winfo pointerx .] [winfo pointery .]
   if {[::bookmarks::CanAdd]} {
     .tb.bkm.menu activate 0
-  } else {
-    .tb.bkm.menu activate 2
   }
 }
 
@@ -38,28 +37,17 @@ proc ::bookmarks::RefreshMenu {menu} {
   $menu delete 0 end
   # $menu configure -disabledforeground [$menu cget -foreground]
   set numBookmarkEntries [llength $bookmarks(data)]
-  $menu add command -label FileBookmarksAdd -command ::bookmarks::AddCurrent
-  set helpMessage($menu,0) FileBookmarksAdd
-  $menu add cascade -label FileBookmarksFile -menu $menu.file
-  menu $menu.file
-  set helpMessage($menu,1) FileBookmarksFile
-  if {! [::bookmarks::CanAdd]} {
-    $menu entryconfigure 0 -state disabled
-    $menu entryconfigure 1 -state disabled
-  }
-  $menu add command -label FileBookmarksEdit -command ::bookmarks::Edit
-  set helpMessage($menu,2) FileBookmarksEdit
-  if {$bookmarks(subMenus)} {
-    set display List
-    set newval 0
+
+  if {[::bookmarks::CanAdd]} {
+    $menu add command -label FileBookmarksAdd -command ::bookmarks::AddCurrent
   } else {
-    set display Sub
-    set newval 1
+    $menu add command -label FileBookmarksAdd -command ::bookmarks::AddCurrent -state disabled
   }
-  $menu add command -label FileBookmarks$display \
-    -command "set bookmarks(subMenus) $newval; ::bookmarks::Refresh"
-  set helpMessage($menu,3) FileBookmarks$display
-  foreach tag [list Add File Edit $display] {
+  set helpMessage($menu,0) FileBookmarksAdd
+
+  $menu add command -label FileBookmarksEdit -command ::bookmarks::Edit
+  set helpMessage($menu,1) FileBookmarksEdit
+  foreach tag {Add Edit} {
     configMenuText $menu FileBookmarks$tag FileBookmarks$tag $::language
   }
   if {$numBookmarkEntries == 0} { return }
@@ -68,16 +56,9 @@ proc ::bookmarks::RefreshMenu {menu} {
   # Add each bookmark entry:
   set current $menu
   set inSubMenu 0
-  set nfolders 0
   foreach entry $bookmarks(data) {
     if {$entry == ""} { continue }
     set isfolder [::bookmarks::isfolder $entry]
-
-    if {$isfolder} {
-      incr nfolders
-      $menu.file add command -label [::bookmarks::Text $entry] \
-        -command "::bookmarks::AddCurrent $nfolders"
-    }
 
     if {! $bookmarks(subMenus)} {
       if {$isfolder} {
@@ -261,29 +242,38 @@ ykmrvRiHzbcWw0AQRfCFY0l1ATiSLGQINCiSRZ4b0UyjOB1PMgvddIXhxABEKinM1C5jkD4v
 #
 proc ::bookmarks::Edit {} {
   global bookmarks
+
   set w .bmedit
   if {[winfo exists $w]} { return }
   set bookmarks(old) $bookmarks(data)
+
   toplevel $w
   wm title $w "Scid: [tr FileBookmarksEdit]"
-  wm transient $w .
+  setWinSize $w
+  wm withdraw $w
+  # wm transient $w .
+
   bind $w <F1> {helpWindow Bookmarks}
-  entry $w.e -width 40 -foreground black  \
+  entry $w.e -width 60 -foreground black  \
     -textvariable bookmarks(edit) -font font_Small -exportselection 0
-  bind $w.e <FocusIn>  {.bmedit.e configure -background lightYellow}
-  bind $w.e <FocusOut> {.bmedit.e configure -background white}
+  # bind $w.e <FocusIn>  {.bmedit.e configure -background lightYellow}
+  # bind $w.e <FocusOut> {.bmedit.e configure -background white}
 
   trace variable bookmarks(edit) w ::bookmarks::EditRefresh
-  pack $w.e -side top -fill x
-  pack [frame $w.b2] -side bottom -fill x
-  pack [frame $w.b1] -side bottom -fill x
+  pack [frame $w.b2] -side bottom -fill x -pady 2
+  pack [frame $w.b1] -side bottom -fill x -pady 2
+  pack $w.e -side bottom -fill x
   pack [frame $w.f] -side top -fill both -expand 1
-  listbox $w.f.list -width 50 -height 10 -yscrollcommand "$w.f.ybar set" \
-    -fg black  -exportselection 0 -font font_Small -setgrid 1 ;# -bg text_bg_color
+  listbox $w.f.list -height 10 -yscrollcommand "$w.f.ybar set" \
+    -exportselection 0 -font font_Small -setgrid 1
   scrollbar $w.f.ybar -takefocus 0 -command "$w.f.list yview"
   bind $w.f.list <<ListboxSelect>>  ::bookmarks::EditSelect
+  bind $w.f.list <Double-Button-1>  {
+    ::bookmarks::Go [lindex $bookmarks(data) [lindex [.bmedit.f.list curselection] 0]]
+    if {[::bookmarks::CanAdd]} { .bmedit.b1.newGame configure -state normal }
+  }
   pack $w.f.ybar -side right -fill y
-  pack $w.f.list -side left -fill x -expand 1
+  pack $w.f.list -side left -fill both -expand yes
   foreach entry $bookmarks(data) {
     $w.f.list insert end [::bookmarks::IndexText $entry]
   }
@@ -292,33 +282,32 @@ proc ::bookmarks::Edit {} {
   dialogbutton $w.b1.newGame -text [tr FileBookmarksAdd] \
     -command {::bookmarks::EditNew game}
   if {! [::bookmarks::CanAdd]} { $w.b1.newGame configure -state disabled }
+
   dialogbutton $w.b1.delete -text $::tr(Delete)  -command ::bookmarks::EditDelete
-  button $w.b2.up -image bookmark_up -command {::bookmarks::EditMove up}
-  button $w.b2.down -image bookmark_down -command {::bookmarks::EditMove down}
-  foreach i [list $w.b2.up $w.b2.down] {
-    $i configure -padx 0 -pady 0 -borderwidth 1
-  }
-  dialogbutton $w.b2.ok -text "OK" -command ::bookmarks::EditDone
+  button $w.b1.up -image bookmark_up -command {::bookmarks::EditMove up} -borderwidth 1
+  button $w.b1.down -image bookmark_down -command {::bookmarks::EditMove down}
+
+  checkbutton $w.b2.displaytype -text {Nest Folders} -var bookmarks(subMenus) -command ::bookmarks::Refresh
+
+  dialogbutton $w.b2.ok     -text OK -command ::bookmarks::EditDone
+  dialogbutton $w.b2.help   -text $::tr(Help) -command {helpWindow Bookmarks}
   dialogbutton $w.b2.cancel -text $::tr(Cancel) -command {
     set bookmarks(data) $bookmarks(old)
     catch {grab release .bmedit}
     destroy .bmedit
   }
-  pack $w.b1.newFolder $w.b1.newGame $w.b1.delete -side left -padx 2 -pady 2
-  pack $w.b2.up $w.b2.down -side left -padx 2 -pady 2
-  pack $w.b2.cancel $w.b2.ok -side right -padx 2 -pady 2
+
+  pack $w.b1.up $w.b1.down $w.b1.newFolder $w.b1.newGame $w.b1.delete -side left -padx 2 -pady 2
+  # pack $w.b1.up $w.b1.down -side left -padx 2 -pady 2
+  pack $w.b2.displaytype -side left
+  pack $w.b2.cancel $w.b2.help $w.b2.ok -side right -padx 2 -pady 2
   set bookmarks(edit) ""
 
-  wm withdraw $w
   update idletasks
-  set x [expr {[winfo screenwidth $w]/2 - [winfo reqwidth $w]/2 \
-                 - [winfo vrootx .]}]
-  set y [expr {[winfo screenheight $w]/2 - [winfo reqheight $w]/2 \
-                 - [winfo vrooty .]}]
-  wm geom $w +$x+$y
+  placeWinOverParent $w .
+  bind $w <Configure> "recordWinSize $w"
   wm deiconify $w
   update
-  catch {grab .bmedit}
 }
 
 # ::bookmarks::EditDone
@@ -326,7 +315,7 @@ proc ::bookmarks::Edit {} {
 #    Updates the bookmarks and closes the bookmark editing window.
 #
 proc ::bookmarks::EditDone {} {
-  catch {grab release .bmedit}
+  # catch {grab release .bmedit}
   destroy .bmedit
   ::bookmarks::Save
   ::bookmarks::Refresh
@@ -359,6 +348,7 @@ proc ::bookmarks::EditRefresh {args} {
 #
 proc ::bookmarks::EditSelect {{sel ""}} {
   global bookmarks
+
   set list .bmedit.f.list
   set sel [lindex [$list curselection] 0]
   if {$sel == ""} {
@@ -446,6 +436,7 @@ proc ::bookmarks::EditDelete {} {
   $list selection clear 0 end
   $list delete $sel
   set bookmarks(edit) ""
+  focus .bmedit.f.list
 }
 
 # ::bookmarks::EditNew
@@ -457,9 +448,7 @@ proc ::bookmarks::EditNew {{type "folder"}} {
   global bookmarks
   set w .bmedit
   set list $w.f.list
-  set folder 0
   if {[string index $type 0] == "f"} {
-    set folder 1
     set entry [::bookmarks::New folder]
   } else {
     set entry [::bookmarks::New game]
@@ -481,6 +470,7 @@ proc ::bookmarks::EditNew {{type "folder"}} {
   $list selection clear 0 end
   $list selection set $sel
   $list see $sel
+  focus .bmedit.e
   ::bookmarks::EditSelect
 }
 

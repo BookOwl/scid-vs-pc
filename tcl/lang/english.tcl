@@ -934,7 +934,7 @@ translate E AddRatings "Add ratings to:"
 translate E AddedRatings {Scid added $r Elo ratings in $g games.}
 
 #Bookmark editor
-translate E NewSubmenu "New submenu"
+translate E NewSubmenu "Add Menu"
 
 # Comment editor:
 translate E AnnotationSymbols  {Annotations}

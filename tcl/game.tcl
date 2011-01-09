@@ -258,6 +258,7 @@ proc ::game::Load { selection } {
       ![winfo exists .twinchecker] && \
       ![winfo exists .sb] && \
       ![winfo exists .sh] && \
+      ![winfo exists .bmedit] && \
       ![winfo exists .sm] } {
     raiseWin .
   }

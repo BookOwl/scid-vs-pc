@@ -1896,7 +1896,7 @@ set helpText(PGN) {<h1>The PGN Window</h1>
   menu of the main window.
   </p>
 
-  <h3>Editting PGN directly</h3>
+  <h3>Editing PGN directly</h3>
   <p>
   You cannot use the PGN window to edit the current game, but you can
   still edit its PGN representation using the <a Import>Import game</a> window.
@@ -3622,55 +3622,55 @@ set helpText(TB) {<h1>Tablebases</h1>
 }
 
 ####################
-### Bookmarks help:
+### Bookmarks help
 
 set helpTitle(Bookmarks) "Bookmarks"
 set helpText(Bookmarks) {<h1>Bookmarks</h1>
   <p>
-  Scid allows you to <term>bookmark</term> important games for easy
-  future reference. The bookmarks menu is available from the
-  <menu>File</menu> menu, the toolbar, or the <B>Ctrl+B</b> shortcut key.
+  Scid allows you to <term>Bookmark</term> important games for easy
+  future reference. The bookmarks menu is available from
+  <green>File-<gt>Bookmarks</green> or the toolbar.
   </p>
   <p>
-  When you select a bookmarked game from the Bookmarks menu, Scid will
-  open its database if necessary, find that game, and move to the game
+  When you select a bookmarked game , Scid will automatically
+  open the appropriate database and game, and move to the
   position at which it was bookmarked.
   </p>
-  <p>
-  Only games in a Scid format database (not a PGN file or the clipbase)
-  can be bookmarked.
+  <p><i>
+  Games in a PGN file or the clipbase can not be bookmarked.
   </p>
   <p>
-  If the database of a bookmarked game is sorted or compacted, the bookmark
-  details may become out of date. When that happens, Scid will search the
-  database for the best matching game (comparing player names, site, etc)
-  when the bookmark is selected, so the bookmarked game should still be
-  loaded. However, if details of the bookmarked game change, it is possible
-  that a different game will match the bookmark details better and be
-  loaded instead. So it is a good idea to re-bookmark a game if you edit
-  its players, site, result, round or year.
+  If the database is sorted or compacted, the bookmark
+  details may become out of date. In this case, Scid will search the
+  database for the best matching game (comparing player names, site, etc).
+  If details of the bookmarked game have changed, it is possible
+  that a different game will match the criteria better and be
+  loaded instead.</p>
+  <p><i>It is a good idea to re-bookmark a game if you edit
+  its Players, Site, Result, Round or Year.</i>
   </p>
 
-  <h3>Editing bookmarks</h3>
+  <h3>Editing Bookmarks</h3>
   <p>
-  With the bookmark editor, you can change the menu text displayed for
-  each bookmarked game and add folders to categorize bookmarks.
+  With the bookmark editor you can change the menu displayed for
+  each bookmark, and add folders for better organization.
+  Double clicking entries will load the game.
   </p>
 
   <h3>Hints</h3>
   <p>
-  You can use bookmarks for fast access to databases you use often
+  You can use bookmarks for fast access to common databases
   by bookmarking a game from each database. Another good use for
   bookmarks is to add important games you find when studying a
   particular chess opening.
   </p>
   <p>
-  The bookmarks menu contains an entry for controlling the display of
+  The bookmark editor contains a checkbox for controlling the display of
   bookmark folders: they can be shown as submenus (useful when there are
-  many bookmarks), or as a single list.
+  many games), or as a single list.
   </p>
 
-  <p><footer>Updated: Scid 3.6.2, December 2006</footer></p>
+  <p><footer>Updated: Scid vs. PC 4.3, January 2010</footer></p>
 }
 
 ####################
