@@ -375,11 +375,12 @@ set helpText(Index) {<h1>Scid Help Index</h1>
   <li><a FICS>Play on the Internet (FICS)</a></li>
   <li><a PTracker>Piece Tracker</a> window</li>
   <li><a PList>Player Finder</a> window</li>
-  <li><a PInfo>Player Info</a> window</li>
-  <li><a Maintenance Spellcheck>Player</a> names</li>
-  <li><a Reports Player>Player report</a> window</li>
-  <li><a TacticalGame>Play tactical game</a></li>
-  <li><a SeriousGame>Play serious game</a></li>
+  <li><a PInfo>Player Information</a> </li>
+  <li><a PInfo Photos>Player Photos</a></li>
+  <li><a Maintenance Spellcheck>Spell Checking</a> player names</li>
+  <li><a Reports Player>Player Report</a> window</li>
+  <li><a TacticalGame>Play Tactical game</a></li>
+  <li><a SeriousGame>Play Serious game</a></li>
   <li><a TacticsTrainer>Puzzles</a> - Mate in ... </li>
   </ul>
 
@@ -3365,18 +3366,22 @@ set helpText(PList) {<h1>The Player Finder Window</h1>
 ####################
 ### Player Info help:
 
-set helpTitle(PInfo) "Player Info window"
-set helpText(PInfo) {<h1>The Player Info Window</h1>
+set helpTitle(PInfo) "Player Information"
+set helpText(PInfo) {<h1>Player Information</h1>
   <p>
 
-  The <term>Player Information</term> window shows information from the Spellcheck
-  file. It includes ratings, country of origin and official titles.</p>
+  The Player Information window shows basic information when available.
+  It draws upon the data file <b>spelling.ssp</b>,
+  which is also used by the <a Maintenance Spellcheck>Spell Check</a> feature,
+  and includes Ratings, Country of Origin and Official Titles.</p>
 
-  <p><b>Please use with caution. The names it contains may not be unique, and player initials may be
-  incorrectly identified.</b></p>
+  <p><b>Please use with caution</b>. <i>The names it contains may not be
+  unique, and player initials may be incorrectly identified. Mainline SCID uses a
+  more specific name match algorithm - which is less useful - but also less likely
+  to make erroneous matches.</i></p>
 
   <p>Also displayed are statistics about
-  success with White and Black, favorite openings (by <a ECO>ECO code</a>),
+  success with white and black, favorite openings (by <a ECO>ECO code</a>),
   and rating history.
   All percentages displayed are an expected score (success rate), from the
   player's perspective -- so higher is always better for the player, whether they
@@ -3386,13 +3391,27 @@ set helpText(PInfo) {<h1>The Player Info Window</h1>
   <p>
   You can see the player's rating history in a graph by pressing the
   <a Graphs Rating>Rating graph</a> button.
-  </p>
-  <p>
-  Any number printed in red can be clicked with the left mouse button to set
-  the <a Searches Filter>filter</a> to the games it represents.
+  Numbers displayed in red are links that set the <a Searches Filter>filter</a>
+  to the games it represents.
   </p>
 
-  <p><footer>Updated: Scid 3.6.26.9, April 2010</footer></p>
+<h3><name Photos>Player Photos</name></h3>
+<p>This feature also requires an extra file, which, because of its size, is not included.
+To enable player photos, download <b>FIDE.spf</b> from the Scid
+<url http://scid.sourceforge.net/download.html>download page</url>,
+and install it into the Scid User Directory.
+</p>
+<p><i>
+This directory is <b>$HOME/.scidvspc</b> on unix systems, or the application directory for Windows.
+The <green>Help--<gt>Startup Window</green> will help you find it's location, and
+will also indicate if the photo file has been loaded correctly.
+</i></p>
+<p>Once installed, if player photos are available they will appear in the main game information panel.
+To disable them, unselect <green>Options--<gt>Game Information--<gt>Show Photos</green>.
+
+</p>
+
+  <p><footer>Updated: Scid vs. PC 4.3 January 2011</footer></p>
 }
 
 ####################
