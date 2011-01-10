@@ -68,10 +68,8 @@ set tips(E) {
     window.
   }
   {
-    Some Scid windows (e.g. the game information area, database
-    <a Switcher>switcher</a>) have a right-mouse button menu. Try
-    pressing the right mouse button in each window to see if it has
-    one and what functions are available.
+    The main board has a handy right-click menu that allows
+    one to select which widgets are visible.
   }
   {
     Scid offers you more than one way to enter chess moves, letting
@@ -89,12 +87,12 @@ set tips(E) {
     You can see all the moves of the current game
     (with any variations and comments) using the <a PGN>PGN window</a>.
     In the PGN window, you can go to any move by clicking
-    the left mouse button on it, or use the middle or right mouse button
+    the left mouse button on it, or use the middle button
     to see a preview of that position.
   }
   {
     You can copy games from one database to another using drag and drop
-    with the left mouse button in the <a Switcher>database switcher</a> window.
+    in the <a Switcher>database switcher</a> window.
   }
   {
     Scid can open PGN files, even if they are compressed with Gzip
@@ -116,8 +114,8 @@ set tips(E) {
     an <a OpReport>opening report</a>.
   }
   {
-    In the <a GameList>game list</a> window, press the left or right mouse
-    button on the heading of each column to adjust its width.
+    In the main window, clicking on the status bar will start the (first)
+    chess engine. Right-clicking will dock/undock the engine.
   }
   {
     With the <a PInfo>player information</a> window (just click on either
@@ -251,7 +249,7 @@ set tips(E) {
     current move or position with keyboard shortcuts without needing to
     use the <a Comment>comment editor<a> -- for example, type "!" then
     the Return key to add a "!" annotation symbol. See the
-    <a Moves>Entering chess moves</a> help page for details.
+    <a Moves>Entering Chess Moves</a> help page for details.
   }
   {
     If you are browsing openings in a database with the <a Tree>tree</a>,
@@ -262,13 +260,17 @@ set tips(E) {
   {
     You can change the main window board size by holding down the <b>Ctrl</b>
     and <b>Shift</b> keys, and pressing the <b>Left</b> or <b>Right</b>
-    arrow key.
+    arrow key, or <b>Ctrl</b>+<b>Wheelmouse</b>.
   }
   {
     After a <a Searches>search</a>, you can easily browse through all
     the matching games by holding down <b>Ctrl</b> and pressing the
     <b>Up</b> or <b>Down</b> key to load the previous or next
     <a Searches Filter>filter</a> game.
+  }
+  {
+    <a Tourney>Computer Tournaments</a> between numerous opponents are possible.
+    To select extra opponents, change the "Number of Engines", then press "Update".
   }
 }
 

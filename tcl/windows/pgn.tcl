@@ -26,7 +26,7 @@ namespace eval pgn {
       configMenuText $m.file $idx $tag $lang
     }
     foreach idx {1 2 3 4 5 6 7 8 9} tag {
-      PgnOptColor PgnOptShort PgnOptSymbols PgnOptIndentC PgnOptIndentV PgnOptSpace PgnOptColumn PgnOptStripMarks PgnOptBoldMainLine
+      PgnOptShort PgnOptColumn PgnOptColor PgnOptIndentC PgnOptIndentV PgnOptBoldMainLine PgnOptSpace PgnOptSymbols PgnOptStripMarks
     } {
       configMenuText $m.opt $idx $tag $lang
     }
@@ -72,24 +72,24 @@ namespace eval pgn {
     $w.menu.file add command -label PgnFileClose -accelerator Esc \
         -command "focus .; destroy $w"
 
-    $w.menu.opt add checkbutton -label PgnOptColor \
-        -variable ::pgn::showColor -command {updateBoard -pgn}
     $w.menu.opt add checkbutton -label PgnOptShort \
         -variable ::pgn::shortHeader -command {updateBoard -pgn}
-    $w.menu.opt add checkbutton -label PgnOptSymbols \
-        -variable ::pgn::symbolicNags -command {updateBoard -pgn}
+    $w.menu.opt add checkbutton -label PgnOptColumn \
+        -variable ::pgn::columnFormat -command {updateBoard -pgn}
+    $w.menu.opt add checkbutton -label PgnOptColor \
+        -variable ::pgn::showColor -command {updateBoard -pgn}
     $w.menu.opt add checkbutton -label PgnOptIndentC \
         -variable ::pgn::indentComments -command {updateBoard -pgn}
     $w.menu.opt add checkbutton -label PgnOptIndentV \
         -variable ::pgn::indentVars -command {updateBoard -pgn}
-    $w.menu.opt add checkbutton -label PgnOptSpace \
-        -variable ::pgn::moveNumberSpaces -command {updateBoard -pgn}
-    $w.menu.opt add checkbutton -label PgnOptColumn \
-        -variable ::pgn::columnFormat -command {updateBoard -pgn}
-    $w.menu.opt add checkbutton -label PgnOptStripMarks \
-        -variable ::pgn::stripMarks -command {updateBoard -pgn}
     $w.menu.opt add checkbutton -label PgnOptBoldMainLine \
         -variable ::pgn::boldMainLine -command {updateBoard -pgn}
+    $w.menu.opt add checkbutton -label PgnOptSpace \
+        -variable ::pgn::moveNumberSpaces -command {updateBoard -pgn}
+    $w.menu.opt add checkbutton -label PgnOptSymbols \
+        -variable ::pgn::symbolicNags -command {updateBoard -pgn}
+    $w.menu.opt add checkbutton -label PgnOptStripMarks \
+        -variable ::pgn::stripMarks -command {updateBoard -pgn}
 
     $w.menu.color add command -label PgnColorHeader \
         -command {::pgn::ChooseColor Header "header text"}

@@ -713,14 +713,14 @@ menuText E PgnFileCopy "Copy to Clipboard" 0
 menuText E PgnFileClose "Close" 10
 menuText E PgnOpt "Options" 0
 menuText E PgnOptColor "Color Display" 0
-menuText E PgnOptShort "Short (3-line) Header" 0
+menuText E PgnOptShort "3-line Header" 0
 menuText E PgnOptSymbols "Symbolic Annotations" 1
 menuText E PgnOptIndentC "Indent Comments" 0
 menuText E PgnOptIndentV "Indent Variations" 7
-menuText E PgnOptColumn "Column Style (one move per line)" 1
+menuText E PgnOptColumn "Column Style" 1
 menuText E PgnOptSpace "Space after Move Numbers" 1
-menuText E PgnOptStripMarks "Strip out Colored Square/Arrow Codes" 1
-menuText E PgnOptBoldMainLine "Use Bold Text for Main Line Moves" 4
+menuText E PgnOptStripMarks "Hide Square/Arrow Codes" 1
+menuText E PgnOptBoldMainLine "Bold Text for Main Line" 4
 menuText E PgnColor "Colors" 0
 menuText E PgnColorHeader "Header..." 0
 menuText E PgnColorAnno "Annotations..." 0
