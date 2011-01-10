@@ -1299,6 +1299,8 @@ translate I LightSquares {Case chiare}
 translate I DarkSquares {Case scure}
 translate I SelectedSquares {Case selezionate}
 translate I SuggestedSquares {Case delle mosse suggerite}
+# todo
+translate I Grid {Grid}
 translate I WhitePieces {Pezzi Bianchi}
 translate I BlackPieces {Pezzi Neri}
 translate I WhiteBorder {Bordi del Bianco}

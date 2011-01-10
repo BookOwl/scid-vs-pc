@@ -1438,6 +1438,8 @@ translate R LightSquares {Светлые поля}
 translate R DarkSquares {Темные поля}
 translate R SelectedSquares {Выбранные поля}
 translate R SuggestedSquares {Поля подсказанных ходов}
+# todo
+translate R Grid {Grid}
 translate R WhitePieces {Белые фигуры}
 translate R BlackPieces {Черные фигуры}
 translate R WhiteBorder {Белые границы}

@@ -270,7 +270,7 @@ set ::pgn::stripMarks 0
 set pgnColor(Header) "\#00008b"
 set pgnColor(Main) "\#000000"
 set pgnColor(Var) "\#0000ee"
-set pgnColor(Nag) "\#ee0000"
+set pgnColor(Nag) "\##aa2c2c" ;# ee0000
 set pgnColor(Comment) "\#008b00"
 set pgnColor(Current) lightSteelBlue
 set pgnColor(NextMove) "\#fefe80"

@@ -1288,6 +1288,8 @@ translate D LightSquares {Helle Felder}
 translate D DarkSquares {Dunkle Felder}
 translate D SelectedSquares {Ausgew‰hlte Felder}
 translate D SuggestedSquares {Zugvorschlagsfelder}
+# todo
+translate D Grid {Grid}
 translate D WhitePieces {Weiﬂe Steine}
 translate D BlackPieces {Schwarze Steine}
 translate D WhiteBorder {Weiﬂe Umrandung}

@@ -1255,6 +1255,8 @@ translate F LightSquares {Cases blanches}
 translate F DarkSquares {Cases noires}
 translate F SelectedSquares {Cases sélectionnées}
 translate F SuggestedSquares {Cases des coups suggérés}
+# todo
+translate F Grid {Grid}
 translate F WhitePieces {Pièces blanches}
 translate F BlackPieces {Pièces noires}
 translate F WhiteBorder {Bordure des pièces blanches}

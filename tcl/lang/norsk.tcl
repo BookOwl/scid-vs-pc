@@ -1407,6 +1407,8 @@ translate O LightSquares {Lyse felt}
 translate O DarkSquares {Mørke felt}
 translate O SelectedSquares {Merkede felt}
 translate O SuggestedSquares {Foreslåtte trekkfelt}
+# todo
+translate O Grid {Grid}
 translate O WhitePieces {Hvite brikker}
 translate O BlackPieces {Sorte brikker}
 translate O WhiteBorder {Hvit ramme}

@@ -1417,6 +1417,8 @@ translate P LightSquares {Jasne pola}
 translate P DarkSquares {Ciemne pola}
 translate P SelectedSquares {Wybrane pola}
 translate P SuggestedSquares {Wybrane posuniêcie}
+# todo
+translate P Grid {Grid}
 translate P WhitePieces {Bia³e figury}
 translate P BlackPieces {Czarne figury}
 translate P WhiteBorder {Kontur bia³ych figur}

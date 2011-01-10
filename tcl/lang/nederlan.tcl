@@ -1385,6 +1385,8 @@ translate N LightSquares {Lichte velden}
 translate N DarkSquares {Donkere velden}
 translate N SelectedSquares {Geselecteerde velden}
 translate N SuggestedSquares {Zetsuggestie velden}
+# todo
+translate N Grid {Grid}
 translate N WhitePieces {Witte stukken}
 translate N BlackPieces {Zwarte stukken}
 translate N WhiteBorder {Witte rand}

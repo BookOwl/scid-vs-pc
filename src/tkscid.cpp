@@ -7011,7 +7011,7 @@ sc_game_info (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
         strAppend (temp, "");
         printNags = false;
     } else {
-        sprintf (temp, "<run ::commenteditor::Open>%u.   <blue>%s%s</run>",
+        sprintf (temp, "<run ::commenteditor::Open>%u.   <blue>%s%s",
                  prevMoveCount, toMove==WHITE ? "...  " : "", tempTrans);
         printNags = true;
     }
@@ -7019,19 +7019,20 @@ sc_game_info (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
     // Tcl_AppendResult (ti, "<br>", translate (ti, "Move", "Move"), ":  ", NULL);
 
     // if (san[0] != 0) 
-    Tcl_AppendResult (ti, "<br>Move:  ", temp, "</blue>",  NULL);
+    Tcl_AppendResult (ti, "<br>Move:  ", temp, NULL);
 
     nags = db->game->GetNags();
-    if (printNags  &&  *nags != 0  &&  !hideNextMove) {
+    if (printNags  &&  *nags != 0 ) {
         for (uint nagCount = 0 ; nags[nagCount] != 0; nagCount++) {
 	  char nagstr[20];
 	  game_printNag (nags[nagCount], nagstr, true, PGN_FORMAT_Plain);
 	  // if (nagCount > 0  ||  (nagstr[0] != '!' && nagstr[0] != '?')) {
 	  //     Tcl_AppendResult (ti, " ", NULL);
 	  // }
-	  Tcl_AppendResult (ti, " ", nagstr, NULL);
+	  Tcl_AppendResult (ti, nagstr, NULL);
         }
-    }
+    }  
+    Tcl_AppendResult (ti, "</blue></run>",  NULL);
 
 
     /*** Comment ***/
@@ -7110,26 +7111,26 @@ sc_game_info (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
 	  strAppend (temp, ")");
 	  printNags = false;
       } else {
-	  sprintf (temp, "<blue><run ::move::Forward>%u.%s%s</run></blue>",
+	  sprintf (temp, "<run ::move::Forward>%u.<blue>%s%s",
 		moveCount, toMove==WHITE ? "" : "..", tempTrans);//san);
 	  printNags = true;
       }
     }
     if (!hideNextMove) {
       Tcl_AppendResult (ti, "\t", translate (ti, "NextMove", "Next"), NULL);
-      Tcl_AppendResult (ti, ":  ", temp, "</blue>", NULL);
+      Tcl_AppendResult (ti, ":  ", temp, NULL);
+
+      nags = db->game->GetNextNags();
+      if (printNags  &&  *nags != 0) {
+	  for (uint nagCount = 0 ; nags[nagCount] != 0; nagCount++) {
+	      char nagstr[20];
+
+	      game_printNag (nags[nagCount], nagstr, true, PGN_FORMAT_Plain);
+	      Tcl_AppendResult (ti, nagstr, NULL);
+	  }
+      }
+      Tcl_AppendResult (ti, "</run></blue>", NULL);
     }
-
-    nags = db->game->GetNextNags();
-    if (printNags  &&  !hideNextMove  &&  *nags != 0) {
-        for (uint nagCount = 0 ; nags[nagCount] != 0; nagCount++) {
-            char nagstr[20];
-
-            game_printNag (nags[nagCount], nagstr, true, PGN_FORMAT_Plain);
-            Tcl_AppendResult (ti, " ", nagstr, NULL);
-        }
-    }
-
 
     /*** Event line ****/
 

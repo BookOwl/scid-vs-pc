@@ -1416,6 +1416,8 @@ translate W LightSquares {Ljusa fält}
 translate W DarkSquares {Mörka fält}
 translate W SelectedSquares {Valda fält}
 translate W SuggestedSquares {Föreslagna fält}
+# todo
+translate W Grid {Grid}
 translate W WhitePieces {Vita pjäser}
 translate W BlackPieces {Svarta pjäser}
 translate W WhiteBorder {Vit kantlinje}
