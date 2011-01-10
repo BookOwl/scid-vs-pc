@@ -4370,7 +4370,7 @@ sc_compact_games (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
     //     db->filter = newFilter;
     // to
     //     clearFilter (db, db->idx->GetNumGames());
-    // which seems incongruous S.A &&&
+    // but it got Gerds ok
 
     db->gameNumber = -1;
     db->numGames = db->idx->GetNumGames();
@@ -7110,8 +7110,8 @@ sc_game_info (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
 	  strAppend (temp, ")");
 	  printNags = false;
       } else {
-	  sprintf (temp, "<run ::commenteditor::Open>%u.   <blue>%s%s</run>",
-	    moveCount, toMove==WHITE ? "" : "...  ", tempTrans);//san);
+	  sprintf (temp, "<blue><run ::move::Forward>%u.%s%s</run></blue>",
+		moveCount, toMove==WHITE ? "" : "..", tempTrans);//san);
 	  printNags = true;
       }
     }
@@ -7281,6 +7281,7 @@ sc_game_info (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
     uint varCount = db->game->GetNumVariations();
     if (!hideNextMove  &&  varCount > 0) {
         Tcl_AppendResult (ti, "<br>", translate (ti, "Variations"), ":", NULL);
+        // Only show the first 5 variations
         for (uint vnum = 0; vnum < varCount && vnum < 5; vnum++) {
             char s[20];
             db->game->MoveIntoVariation (vnum);

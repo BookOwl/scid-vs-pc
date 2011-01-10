@@ -81,7 +81,7 @@ proc ::commenteditor::Open {} {
 
   frame $w.nf
   frame $w.nf.tf
-  entry $w.nf.tf.text -width 20 
+  entry $w.nf.tf.text -width 20
   bindFocusColors $w.nf.tf.text
   bind $w.nf.tf.text <Alt-KeyRelease-c> { .commentWin.b.cancel invoke }
 
@@ -111,7 +111,8 @@ proc ::commenteditor::Open {} {
     D Diagram
   } {
     button $nagbuttons.b$i -takefocus 0 -text "$nag" -width $width -height 1 \
-        -command ".commentWin.nf.tf.text insert end \"$nag  \"" -pady 1
+        -command "$w.nf.tf.text insert end \"$nag  \"
+                  focus $w.nf.tf.text" -pady 1
     # set helpMessage(E,$nagbuttons.b$i) $description
     ::utils::tooltip::Set $nagbuttons.b$i $description
     grid $nagbuttons.b$i -row [expr {$i % 2}] -column [expr {int($i / 2)}] -padx 2 -pady 2
@@ -122,16 +123,13 @@ proc ::commenteditor::Open {} {
   pack $w.nf -side top -pady 2 -padx 5 -fill x 
   #addHorizontalRule $w
 
-  button $w.nf.tf.clear -textvar ::tr(Clear) -command {
-    .commentWin.nf.tf.text delete 0 end
-    ::commenteditor::storeComment
-    ::pgn::Refresh 1
-    updateBoard
-  }
+  button $w.nf.tf.clear -textvar ::tr(Clear) -pady 1 -command "
+    $w.nf.tf.text delete 0 end
+    focus $w.nf.tf.text"
   set helpMessage(E,$w.nf.tf.clear) {Clear all symbols for this move}
   pack $w.nf.label -side top -expand 0
   pack $w.nf.tf -side top -fill x -expand 1
-  pack $w.nf.tf.text -side left -fill x -expand 1
+  pack $w.nf.tf.text -side left -fill x -expand 1 -padx 8
   pack $w.nf.tf.clear -side right
   pack $w.nf.b -side top
 
@@ -149,9 +147,12 @@ proc ::commenteditor::Open {} {
   bind $w.cf.text <Alt-KeyRelease-s> { .commentWin.b.apply invoke }
   # "break" stops subsequent built-in bindings from executing
   bind $w.cf.text <FocusOut> ::commenteditor::storeComment
+  bind $w.nf.tf.text <FocusOut> ::commenteditor::storeComment
   bind $w.cf.text <Control-a> {.commentWin.cf.text tag add sel 0.0 end-1c ; break}
-  bind $w.cf.text <Control-Left>  {::commenteditor::storeComment; ::move::Back}
-  bind $w.cf.text <Control-Right> {::commenteditor::storeComment; ::move::Forward}
+  bind $w <Control-Left>  {::commenteditor::storeComment; ::move::Back}
+  bind $w <Control-Right> {::commenteditor::storeComment; ::move::Forward}
+  bind $w <Button-4>  {::commenteditor::storeComment; ::move::Back}
+  bind $w <Button-5> {::commenteditor::storeComment; ::move::Forward}
 
   bind $w.cf.text <Control-z> {catch {.commentWin.cf.text edit undo} ; break}; # seems automatic anyway
   bind $w.cf.text <Control-y> {catch {.commentWin.cf.text edit redo} ; break}
@@ -167,12 +168,12 @@ proc ::commenteditor::Open {} {
   frame $w.b
   pack $w.b -side top -ipady 4 -padx 2 -pady 4 -fill x
 
-  button $w.b.hide -width 3 -pady 1 \
+  button $w.b.hide  \
       -command "::commenteditor::toggleBoard $mark"
   if { $::commenteditor::showBoard } {
-    $w.b.hide configure -text {^^}
+    $w.b.hide configure -image bookmark_up
   } else {
-    $w.b.hide configure -text {vv}
+    $w.b.hide configure -image bookmark_down
   }
 
   dialogbutton $w.b.ok -text Ok \
@@ -181,8 +182,9 @@ proc ::commenteditor::Open {} {
                 destroy .commentWin"
   set helpMessage(E,$w.b.ok) {Apply changes and exit}
 
-  dialogbutton $w.b.apply -text Apply \
-      -command [namespace code {storeComment; ::pgn::Refresh 1; updateBoard}]
+  button $w.b.clear -textvar ::tr(Clear) -pady 1 -command "
+      $w.cf.text delete 0.0 end
+      focus $w.cf.text"
   set helpMessage(E,$w.b.apply) {Apply Changes}
 
   frame $w.b.space -width 20
@@ -191,7 +193,9 @@ proc ::commenteditor::Open {} {
                 destroy .commentWin"
   set helpMessage(E,$w.b.cancel) {Close comment editor window}
 
-  pack $w.b.hide $w.b.space $w.b.ok $w.b.apply $w.b.cancel -side left -fill x -expand 1 -padx 2
+  pack $w.b.hide -side left -padx 14
+  pack $w.b.ok $w.b.cancel -side left -padx 5
+  pack $w.b.clear  -side right
 
   ### Insert-mark frame
 
@@ -295,10 +299,10 @@ proc ::commenteditor::toggleBoard {w} {
   set ::commenteditor::showBoard [ expr ! $::commenteditor::showBoard ]
 
   if { $::commenteditor::showBoard } {
-    .commentWin.b.hide configure -text {^^}
-    pack $w -side bottom -padx 10
+    .commentWin.b.hide configure -image bookmark_up
+    pack $w -side bottom
   } else {
-    .commentWin.b.hide configure -text {vv}
+    .commentWin.b.hide configure -image bookmark_down
     pack forget $w
   }
 
@@ -470,7 +474,7 @@ proc ::commenteditor::appendComment {arg} {
 #
 #	Set the comment of the current position to
 #	the text of the commenteditor.
-#
+
 proc ::commenteditor::storeComment {} {
   if {![winfo exists .commentWin]} { return }
   set nag [sc_pos getNags]
@@ -480,6 +484,7 @@ proc ::commenteditor::storeComment {} {
     foreach i [split [.commentWin.nf.tf.text get] " "] {
       sc_pos addNag $i
     }
+    updateBoard  -pgn
   }
 
   # The "end-1c" below is because Tk adds a newline to text contents:
@@ -488,8 +493,7 @@ proc ::commenteditor::storeComment {} {
   if {[string compare $oldComment $newComment]} {
     sc_pos setComment $newComment
     updateStatusBar
-    ::pgn::Refresh 1
-    updateBoard
+    updateBoard -pgn
   }
 }
 

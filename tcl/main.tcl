@@ -354,7 +354,7 @@ if {$boardSTM} {
 # .gameInfo is the game information widget:
 
 autoscrollframe .gameInfoFrame text .gameInfo
-.gameInfo configure -width 20 -height [expr 4 + $gameInfo(showFEN)] -wrap none \
+.gameInfo configure -width 20 -height [expr 5 + $gameInfo(showFEN)] -wrap none \
     -state disabled -cursor top_left_arrow -setgrid 1
 
 if { $macOS } {
@@ -396,7 +396,7 @@ menu .gameInfo.menu -tearoff 0 -background gray90
 
 .gameInfo.menu add checkbutton -label GInfoFEN \
     -variable gameInfo(showFEN) -offvalue 0 -onvalue 1 -command {
-       if {!$macOS} {.gameInfo configure -height [expr 4 + $gameInfo(showFEN)]}
+       if {!$macOS} {.gameInfo configure -height [expr 5 + $gameInfo(showFEN)]}
        updateBoard
 }
 

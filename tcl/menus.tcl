@@ -1093,7 +1093,7 @@ $m.ginfo add checkbutton -label {Show Side to Move} \
     -variable boardSTM -offvalue 0 -onvalue 1 -command {::board::togglestm .board}
 $m.ginfo add checkbutton -label GInfoFEN \
     -variable gameInfo(showFEN) -offvalue 0 -onvalue 1 -command {
-	if {!$::macOS} {.gameInfo configure -height [expr 4 + $gameInfo(showFEN)]}
+	if {!$::macOS} {.gameInfo configure -height [expr 5 + $gameInfo(showFEN)]}
 	updateBoard
 }
 $m.ginfo add checkbutton -label GInfoMarks \

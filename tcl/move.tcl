@@ -5,7 +5,7 @@ namespace eval ::move {}
 
 proc ::move::drawVarArrows {} {
   if {! $::showVarArrows || $::autoplayMode} { return 0 }
-  if {[winfo exists .coachWin]} { return 0 }
+  # if {[winfo exists .coachWin]} { return 0 }
   if {[winfo exists .serGameWin]} { return 0 }
   
   set bDrawArrow 0
