@@ -244,7 +244,10 @@ proc ::bookmarks::Edit {} {
   global bookmarks
 
   set w .bmedit
-  if {[winfo exists $w]} { return }
+  if {[winfo exists $w]} {
+    raiseWin $w
+    return
+  }
   set bookmarks(old) $bookmarks(data)
 
   toplevel $w

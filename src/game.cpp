@@ -2020,6 +2020,8 @@ Game::WriteComment (TextBuffer * tb, const char * preStr,
         // Translate "<", ">" in comments:
         tb->AddTranslation ('<', "<lt>");
         tb->AddTranslation ('>', "<gt>");
+        // S.A any issues ?
+        tb->NewlinesToSpaces (0);
         tb->PrintString (s);
         tb->ClearTranslation ('<');
         tb->ClearTranslation ('>');

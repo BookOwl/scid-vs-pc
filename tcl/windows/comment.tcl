@@ -151,8 +151,6 @@ proc ::commenteditor::Open {} {
   bind $w.cf.text <Control-a> {.commentWin.cf.text tag add sel 0.0 end-1c ; break}
   bind $w <Control-Left>  {::commenteditor::storeComment; ::move::Back}
   bind $w <Control-Right> {::commenteditor::storeComment; ::move::Forward}
-  bind $w <Button-4>  {::commenteditor::storeComment; ::move::Back}
-  bind $w <Button-5> {::commenteditor::storeComment; ::move::Forward}
 
   bind $w.cf.text <Control-z> {catch {.commentWin.cf.text edit undo} ; break}; # seems automatic anyway
   bind $w.cf.text <Control-y> {catch {.commentWin.cf.text edit redo} ; break}
@@ -465,8 +463,10 @@ proc ::commenteditor::appendComment {arg} {
   if {$comment == {}} {
     sc_pos setComment "$arg"
   } else {
-    sc_pos setComment "$comment, $arg"
+    sc_pos setComment "$comment\n$arg"
   }
+  updateStatusBar
+  updateBoard -pgn
 }
 
 
@@ -553,6 +553,7 @@ proc ::commenteditor::Refresh {} {
     addMark $board $type $square $arg $color 1
   }
   $text insert insert [string range $comment $offset end]
+  $text mark set insert 1.0 ; # Set cursor to the top
   ::board::update $board [sc_pos board]
 
   .commentWin.cf.text configure -undo 1

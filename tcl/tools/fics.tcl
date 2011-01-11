@@ -983,7 +983,7 @@ namespace eval fics {
 	{* tells you:*}	{ $t insert end "$line\n" tells 
 			  catch {
 			    regexp {(.*) tells you:(.*$)} $line t1 t2 t3
-			    ::commenteditor::appendComment "$t2: $t3"
+			    ::commenteditor::appendComment "\[$t2\] $t3"
 			  }
 			}
 	{* seeking *}	{ $t insert end "$line\n" seeking }
@@ -992,13 +992,13 @@ namespace eval fics {
 			  # I'll have to sort out ::fics::playing
 			  catch {
                             regexp -- {->>say (.*$)} $line t1 t2
-			    ::commenteditor::appendComment "$::fics::reallogin: $t2"
+			    ::commenteditor::appendComment "\[$::fics::reallogin\] $t2"
                           }
 			}
 	{* says: *}	{ $t insert end "$line\n" tells 
 			  catch {
                             regexp {(.*) says: (.*$)} $line t1 t2 t3
-			    ::commenteditor::appendComment "$t2: $t3"
+			    ::commenteditor::appendComment "\[$t2\] $t3"
                           }
 			}
 	{->>tell *}	{ $t insert end "$line\n" tells }

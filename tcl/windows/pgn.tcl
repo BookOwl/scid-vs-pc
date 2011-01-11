@@ -411,7 +411,11 @@ namespace eval pgn {
       .pgnWin.text configure -state normal
       .pgnWin.text delete 1.0 end
       if {$::pgn::showColor} {
-        ::htext::display .pgnWin.text $pgnStr
+        if {$::pgn::indentComments} {
+	  ::htext::display .pgnWin.text $pgnStr {} 2
+        } else {
+	  ::htext::display .pgnWin.text $pgnStr
+        }
       } else {
         .pgnWin.text insert 1.0 $pgnStr
       }

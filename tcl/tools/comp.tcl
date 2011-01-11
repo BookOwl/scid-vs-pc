@@ -353,6 +353,13 @@ proc compNM {n m k} {
 	# if {!$comp(playing)} {break}
     } else {
 	sendToEngine $current_engine xboard
+
+	# Should this be ponder off ?
+	# If you have one computer and you want to use all cores of the
+	# computer and you start to test with ponder on then it is possible
+	# that one program may steal time from the second program(because you
+	# have no way to force both engines to use 50% of the cpu time)
+
 	sendToEngine $current_engine "ponder on"
 	sendToEngine $current_engine "bk off"
 	sendToEngine $current_engine "st $comp(seconds)"

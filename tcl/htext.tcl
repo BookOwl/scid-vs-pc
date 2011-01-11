@@ -297,14 +297,17 @@ proc ::htext::display {w helptext {section {}} {fixed 1}} {
 
   set count 0
   set str $helptext
-  if {$fixed} {
+  # Conflict here between pgn and help markup.
+  # In pgn we don't want to do this regsub
+  if {$fixed == 1} {
     regsub -all \n\n $str <p> str
     regsub -all \n $str { } str
-  } else {
+  } elseif {$fixed == 0} {
     regsub -all "\[ \n\]+" $str { } str
     regsub -all ">\[ \n\]+" $str {> } str
     regsub -all "\[ \n\]+<" $str { <} str
-  }
+  } ; # else fixed == 2 (pgn.tcl), don't convert newlines
+
   set tagType {}
   set seePoint {}
 
