@@ -977,21 +977,33 @@ namespace eval fics {
     }
 
     switch -glob $line {
+	{\{Game *\}}	{ $t insert end "$line\n" game }
+	{\{Game *\} *}	{ $t insert end "$line\n" gameresult }
+	{Auto-flagging*} { ::commenteditor::appendComment "Loses on time" }
+	{* tells you:*}	{ $t insert end "$line\n" tells 
+			  catch {
+			    regexp {(.*) tells you:(.*$)} $line t1 t2 t3
+			    ::commenteditor::appendComment "$t2: $t3"
+			  }
+			}
 	{* seeking *}	{ $t insert end "$line\n" seeking }
 	{->>say *}	{ $t insert end "$line\n" tells 
 			  # How best to check we're playing a game ?
 			  # I'll have to sort out ::fics::playing
-			  catch {::commenteditor::appendComment "$::fics::reallogin: [lrange $line 1 end]"}
+			  catch {
+                            regexp -- {->>say (.*$)} $line t1 t2
+			    ::commenteditor::appendComment "$::fics::reallogin: $t2"
+                          }
+			}
+	{* says: *}	{ $t insert end "$line\n" tells 
+			  catch {
+                            regexp {(.*) says: (.*$)} $line t1 t2 t3
+			    ::commenteditor::appendComment "$t2: $t3"
+                          }
 			}
 	{->>tell *}	{ $t insert end "$line\n" tells }
     	{->>*}		{ $t insert end "$line\n" command }
 
-	{\{Game *\}}	{ $t insert end "$line\n" game }
-	{\{Game *\} *}	{ $t insert end "$line\n" gameresult }
-	{* tells you:*}	{ $t insert end "$line\n" tells 
-      			  ::commenteditor::appendComment "[lindex $line 0]: [lrange $line 3 end]"
-			}
-	{Auto-flagging*} { ::commenteditor::appendComment "Loses on time" }
 	{*[A-Za-z]\(*\): *} { $t insert end "$line\n" channel }
 	{Width set *}	{}
 	{Height set *}	{}
