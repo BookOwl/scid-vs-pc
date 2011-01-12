@@ -104,7 +104,7 @@ namespace eval fics {
       ::fics::connect guest
     } -state disabled
 
-    button $w.button.help -text Help -command {helpWindow FICSlogin}
+    button $w.button.help -text Help -command {helpWindow FICS}
 
     button $w.button.cancel -text Cancel -command {destroy .ficsConfig}
 
@@ -155,7 +155,7 @@ namespace eval fics {
     }
 
     bind $w <Escape> "$w.button.cancel invoke"
-    bind $w <F1> {helpWindow FICSlogin}
+    bind $w <F1> {helpWindow FICS}
 
     update
     placeWinOverParent $w .
@@ -364,8 +364,15 @@ namespace eval fics {
     grid $w.bottom.buttons.abort  -column 2 -row $row -sticky ew -padx 3 -pady 2
 
     incr row
-    button $w.bottom.buttons.takeback  -text {Take Back}   -command { ::fics::writechan takeback}
-    button $w.bottom.buttons.takeback2 -text {Take Back 2} -command { ::fics::writechan {takeback 2}}
+    button $w.bottom.buttons.takeback  -text {Take Back}   -command {
+      ::fics::writechan takeback
+      # these two comments gets zero-ed. See "Game out of sync"
+      catch { ::commenteditor::appendComment "$::fics::reallogin requests takeback $::fics::playerslastmove" }
+    }
+    button $w.bottom.buttons.takeback2 -text {Take Back 2} -command {
+      ::fics::writechan {takeback 2}
+      catch { ::commenteditor::appendComment "$::fics::reallogin requests takeback $::fics::playerslastmove" }
+    }
     button $w.bottom.buttons.help    -text Help -command {helpWindow FICS}
     grid $w.bottom.buttons.takeback  -column 0 -row $row -sticky ew -padx 3 -pady 2
     grid $w.bottom.buttons.takeback2 -column 1 -row $row -sticky ew -padx 3 -pady 2
@@ -748,6 +755,8 @@ namespace eval fics {
 
     if {[string match "Creating: *" $line]} {
       catch {destroy .ficsOffers}
+      # Setting this, stops automatically accepting rematches. (But algorythm needs fixing a little)
+      set ::fics::findopponent(manual) manual
 
       # hide offers graph
       if { $::fics::graphon } {
@@ -796,6 +805,8 @@ namespace eval fics {
       set ::fics::ignore_takeback 0
       set ::fics::ignore_draw 0
       set ::fics::ignore_adjourn 0
+      set ::fics::lastmove {no move}
+      set ::fics::playerslastmove {no move}
       return
     }
 
@@ -806,6 +817,10 @@ namespace eval fics {
         if {[string match "1/2*" $res]} {
           tk_messageBox -title "Game result" -icon info -type ok -message "Draw"
         } else {
+          if {[regexp {.* ([^ ]*) resigns.*} $line t1 t2]} {
+	    ::commenteditor::appendComment "$t2 resigns"
+          }
+
           tk_messageBox -title "Game result" -icon info -type ok -message "$res"
         }
         sc_game tags set -result $res
@@ -923,7 +938,13 @@ namespace eval fics {
      && ! $::fics::ignore_takeback && ! [winfo exists .fics_dialog]} {
       set ans [tk_dialog .fics_dialog {Take Back} "$line\nDo you accept ?" question {} Yes No Ignore]
       switch -- $ans {
-        0 {writechan accept}
+        0 {
+            writechan accept
+            catch {
+	      regexp {(.*) would like to take back} $line t1 t2
+	      ::commenteditor::appendComment "$t2 takes back move $::fics::lastmove"
+            }
+          }
         1 {writechan decline}
         2 {set ::fics::ignore_takeback 1}
       }
@@ -932,6 +953,10 @@ namespace eval fics {
     # draw
     if {[string match "*offers you a draw*" $line]
      && ! $::fics::ignore_draw && ! [winfo exists .fics_dialog]} {
+      catch {
+	regexp {(.*) offers you a draw} $line t1 t2
+	::commenteditor::appendComment "$t2 offers draw"
+      }
       set ans [tk_dialog .fics_dialog {Draw Offered} "$line\nDo you accept ?" question {} Yes No Ignore]
       switch -- $ans {
         0 {writechan accept}
@@ -1249,7 +1274,9 @@ namespace eval fics {
 
     set fen "$fen $castle $enpassant [lindex $line 15] $moveNumber"
 
-    puts $verbose_move
+    # puts $verbose_move
+    puts $moveSan
+
     # try to play the move and check if fen corresponds. If not this means the position needs to be set up.
     if {$moveSan != "none" && $::fics::playing != -1} {
       # first check side's coherency
@@ -1257,6 +1284,7 @@ namespace eval fics {
         # puts "sc_move addSan $moveSan"
         ::utils::sound::PlaySound sound_move
         ::utils::sound::AnnounceNewMove $moveSan
+        set ::fics::lastmove $moveSan ; # remember last opponenets move for takeback comment
         if { [catch { sc_move addSan $moveSan } err ] } {
           puts "error $err"
         } else {
@@ -1269,11 +1297,19 @@ namespace eval fics {
           updateBoard -pgn -animate
         }
       }
+    } else {
+      set ::fics::playerslastmove $moveSan
     }
 
     if {$fen != [sc_pos fen]} {
+      ### Game out of sync, probably due to player  takeback request.
+      # After player takeback, game gets reconstructed, comments are zeroed. Opponents takeback is handled better elsewhere.
+      # Fics doesn't give much warning that take back was succesful, only the uncertain "Takeback request sent."
+      # So just save previous (unfinished) game.  # Todo: Before starting new game, try to move back moves
+
       puts "Debug fen \n$fen\n[sc_pos fen]"
       
+      catch {sc_game save [sc_game number]}
       sc_game new
       
       set ::fics::waitForRating "wait"
