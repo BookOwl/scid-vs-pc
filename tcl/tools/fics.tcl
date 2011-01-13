@@ -36,6 +36,7 @@ namespace eval fics {
   set ignore_adjourn 0
   set ignore_draw 0
   set ignore_takeback 0
+  set findopponent(manual) manual
 
   ################################################################################
   #
@@ -790,6 +791,7 @@ namespace eval fics {
       sc_game tags set -whiteElo $whiteElo
       sc_game tags set -black $black
       sc_game tags set -blackElo $blackElo
+      sc_game tags set -date [::utils::date::today]
       
       sc_game tags set -event "Fics [lrange $line 5 end]"
       if { [::board::isFlipped .board] } {
@@ -1023,7 +1025,12 @@ namespace eval fics {
 	{* says: *}	{ $t insert end "$line\n" tells 
 			  catch {
                             regexp {(.*) says: (.*$)} $line t1 t2 t3
-			    ::commenteditor::appendComment "\[$t2\] $t3"
+                            # remove trailing [342] (eg) from player name
+                            if {[regexp {(^.*)\[.*\]} $t2 t3 t4]} {
+			      ::commenteditor::appendComment "\[$t4\] $t3"
+                            } else {
+			      ::commenteditor::appendComment "\[$t2\] $t3"
+                            } 
                           }
 			}
 	{->>tell *}	{ $t insert end "$line\n" tells }

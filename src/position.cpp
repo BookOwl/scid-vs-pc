@@ -664,6 +664,7 @@ Position::StdStart (void)
         Board [NULL_SQUARE] = END_OF_BOARD;
         Hash = stdStartHash;
         PawnHash = stdStartPawnHash;
+        GenerateMoves();
     }
     else {
         if (startPositionTemplate == NULL){
