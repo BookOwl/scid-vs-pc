@@ -36,7 +36,6 @@ namespace eval fics {
   set ignore_adjourn 0
   set ignore_draw 0
   set ignore_takeback 0
-  set findopponent(manual) manual
 
   ################################################################################
   #
@@ -279,7 +278,7 @@ namespace eval fics {
     pack $w.console.scroll -side right -fill y 
     pack $w.console.text -side left -fill both -expand 1
 
-    #define colors for console
+    # define colors for console
     $w.console.text tag configure seeking -foreground grey
     $w.console.text tag configure tells -foreground coral
     $w.console.text tag configure command -foreground skyblue
@@ -905,7 +904,7 @@ namespace eval fics {
     }
 
     if {[string match "Challenge:*" $line]} {
-	if {$::fics::findopponent(manual) == {auto}} {
+	if {[winfo exists .ficsOffers] && $::fics::findopponent(manual) == {auto}} {
             writechan accept
 	} else {
 	    ::fics::addOffer $line
@@ -997,7 +996,7 @@ namespace eval fics {
 
     set t .fics.console.text
 
-    # colors defined line 265
+    # colors defined line 281
 
     if {[string match {fics% *} $line]} {
 	set line [string range $line 6 end]
@@ -1006,7 +1005,8 @@ namespace eval fics {
     switch -glob $line {
 	{\{Game *\}}	{ $t insert end "$line\n" game }
 	{\{Game *\} *}	{ $t insert end "$line\n" gameresult }
-	{Auto-flagging*} { ::commenteditor::appendComment "Loses on time" }
+	{Auto-flagging*} {$t insert end "$line\n"
+                          ::commenteditor::appendComment "Loses on time" }
 	{* tells you:*}	{ $t insert end "$line\n" tells 
 			  catch {
 			    regexp {(.*) tells you:(.*$)} $line t1 t2 t3

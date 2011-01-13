@@ -290,7 +290,6 @@ set ::fics::findopponent(color) ""
 set ::fics::findopponent(limitrating) 1
 set ::fics::findopponent(rating1) 1000
 set ::fics::findopponent(rating2) 1500
-# This is now reset to manual in fics.tcl, to stop automatically accepting rematches
 set ::fics::findopponent(manual) "manual"
 set ::fics::findopponent(formula) ""
 set ::fics::consolebg	grey35
