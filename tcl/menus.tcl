@@ -366,6 +366,25 @@ $m add command -label GameNew -accelerator "Ctrl+X" -command ::game::Clear
 bind . <Control-x> ::game::Clear
 set helpMessage($m,[incr menuindex]) GameNew
 
+$m add command -label GameReplace -command gameReplace -accelerator "Ctrl+R"
+bind . <Control-r> { .menu.game invoke [tr GameReplace] }
+set helpMessage($m,[incr menuindex]) GameReplace
+
+$m  add command -label GameAdd -command gameAdd  -accelerator "Ctrl+S"
+bind . <Control-s> gameAdd
+set helpMessage($m,[incr menuindex]) GameAdd
+
+$m add separator
+incr menuindex
+
+$m add command -label "Set Game Information" -command ::game::SetInfo
+set helpMessage($m,[incr menuindex]) {Set game information}
+$m add command -label "Browse Games" -command ::windows::gamelist::Open
+set helpMessage($m,[incr menuindex]) {See available games}
+
+$m add separator
+incr menuindex
+
 $m add command -label GameFirst -accelerator "Ctrl+Home" \
     -command {::game::LoadNextPrev first}
 bind . <Control-Home> {::game::LoadNextPrev first}
@@ -398,25 +417,6 @@ set helpMessage($m,[incr menuindex]) GameRandom
 $m add command -label GameNumber -command ::game::LoadNumber -accelerator "Ctrl+U"
 bind . <Control-u> ::game::LoadNumber
 set helpMessage($m,[incr menuindex]) GameNumber
-
-$m add separator
-incr menuindex
-
-$m add command -label "Set Game Information" -command ::game::SetInfo
-set helpMessage($m,[incr menuindex]) {Set game information}
-$m add command -label "Browse Games" -command ::windows::gamelist::Open
-set helpMessage($m,[incr menuindex]) {See available games}
-
-$m add separator
-incr menuindex
-
-$m add command -label GameReplace -command gameReplace -accelerator "Ctrl+R"
-bind . <Control-r> { .menu.game invoke [tr GameReplace] }
-set helpMessage($m,[incr menuindex]) GameReplace
-
-$m  add command -label GameAdd -command gameAdd  -accelerator "Ctrl+S"
-bind . <Control-s> gameAdd
-set helpMessage($m,[incr menuindex]) GameAdd
 
 $m add separator
 incr menuindex
@@ -1429,7 +1429,7 @@ proc updateMenuStates {} {
     # Base is not in use:
     $m.file entryconfig [tr FileClose] -state disabled
 
-    foreach i {First Prev Reload Next Last Random Number Replace Add} {
+    foreach i {Replace Add First Prev Reload Next Last Random Number} {
       $m.game entryconfig [tr Game$i] -state disabled
     }
     # .tb.gprev configure -state disabled
@@ -1536,8 +1536,8 @@ proc setLanguageMenus {{lang ""}} {
   configMenuText .menu.search [tr WindowsPList $oldLang] WindowsPList $lang
   configMenuText .menu.search [tr WindowsTmt $oldLang] WindowsTmt $lang
 
-  foreach tag {New First Prev Reload Next Last Random Number
-    Replace Add Deepest GotoMove Novelty} {
+  foreach tag {Replace Add New First Prev Reload Next Last Random Number
+    Deepest GotoMove Novelty} {
     configMenuText .menu.game [tr Game$tag $oldLang] Game$tag $lang
   }
 
