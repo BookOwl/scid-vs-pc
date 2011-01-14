@@ -1768,13 +1768,6 @@ proc startAnalysisWin { FunctionKey } {
   }
 }
 
-################################################################################
-#
-# makeAnalysisWin:
-#
-# Runs Engine n if not already running 
-#
-################################################################################
 
 # Dock/undock Engine1 in statusbar
 proc toggleMini {} {
@@ -1800,6 +1793,8 @@ proc toggleMini {} {
   }
   setAnalysisPriority 1
 }
+
+### makeAnalysisWin: toggle analysis engine n
 
 proc makeAnalysisWin { {n 1} } {
   global analysisWin$n font_Analysis analysisCommand analysis annotateModeButtonValue annotateMode

@@ -203,17 +203,12 @@ namespace eval fics {
     unbusyCursor .
   }
 
-  trace add variable ::pause write ::fics::pauseGame
-
   proc pauseGame {args} {
     if {[winfo exists .fics]} {
-      # tcl/end.tcl:label .statusbar -textvariable statusBar -relief sunken -anchor w -width 1 
       after 200 {
-	if {![sc_pos isAt end] } { 
-	  set ::statusBar "Fics: Warning, board doesn't show current game position"
-	  .statusbar configure -foreground red3
+	if {![sc_pos isAt end] && $::fics::playing} { 
+          warnStatusBar "Fics: Warning, board doesn't show current game position"
 	}
-        # Will be restored by updateStatusBar in main.tcl
       }
     }
   }
@@ -315,6 +310,7 @@ namespace eval fics {
     # clock 1 is white
     ::gameclock::new $w.bottom.clocks 1 100 0
     ::gameclock::new $w.bottom.clocks 2 100 0
+    set ::fics::playing 0
 
     set row 0
     # silence button actually only affects tells now
@@ -388,8 +384,8 @@ namespace eval fics {
     grid $w.bottom.buttons.findopp -column 0 -row $row -sticky ew -padx 3 -pady 2
     grid $w.bottom.buttons.cancel -column 2 -row $row -sticky ew -padx 3 -pady 2
 
-    bind $w <Control-q> "catch ::fics::close"
-    bind $w <Destroy>   "catch ::fics::close"
+    bind $w <Control-q> "::fics::close"
+    bind $w <Destroy>   "::fics::close"
     bind $w <Configure> "::fics::recordFicsSize $w"
 
     bind $w <F1> {helpWindow FICS}
@@ -764,6 +760,8 @@ namespace eval fics {
       }
       ::utils::sound::PlaySound sound_move
       sc_game new
+      # fics::playing : 1==game_start/my move, 0==not playing, -1==opponents move
+      set ::fics::playing 1
 
       set idx1 [string first "(" $line]
       set white [string trim [string range $line 10 [expr $idx1 -1]] ]
@@ -829,6 +827,7 @@ namespace eval fics {
         updateBoard -pgn
         set ::fics::playing 0
         set ::fics::observedGame -1
+        set ::pause 0
         ::gameclock::stop 1
         ::gameclock::stop 2
         updateBoard -pgn
@@ -1015,8 +1014,7 @@ namespace eval fics {
 			}
 	{* seeking *}	{ $t insert end "$line\n" seeking }
 	{->>say *}	{ $t insert end "$line\n" tells 
-			  # How best to check we're playing a game ?
-			  # I'll have to sort out ::fics::playing
+                          # if {$::fics::playing} 
 			  catch {
                             regexp -- {->>say (.*$)} $line t1 t2
 			    ::commenteditor::appendComment "\[$::fics::reallogin\] $t2"
@@ -1215,8 +1213,7 @@ namespace eval fics {
     set verbose_move [lindex $line 27]
     set moveTime [lindex $line 28]
     set moveSan [lindex $line 29]
-
-    set ::fics::playing $relation
+    set ::fics::playing $relation ; # 1 is players move -1 is opponents move
     set ::fics::observedGame $gameNumber
 
     ::gameclock::setSec 1 [ expr 0 - $whiteRemainingTime ]
@@ -1318,6 +1315,7 @@ namespace eval fics {
       
       catch {sc_game save [sc_game number]}
       sc_game new
+      set ::fics::playing 1
       
       set ::fics::waitForRating "wait"
       writechan "finger $white /s"
@@ -1563,6 +1561,14 @@ namespace eval fics {
     variable logged
     # stop recursive call
     bind .fics <Destroy> {}
+
+    if {$mode == "safe"} {
+      set ans [tk_dialog .fics_dialog Abort "You are playing a game\nDo you want to exit ?" question {} Exit Cancel ]
+      if {$ans == 1} {
+	bind .fics <Destroy> ::fics::close
+        return
+      }
+    }
 
     set ::fics::sought 0
     after cancel ::fics::updateOffers

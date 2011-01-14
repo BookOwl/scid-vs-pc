@@ -171,6 +171,22 @@ proc updateTitle {} {
   }
 }
 
+
+proc warnStatusBar {warning} {
+
+   # Show statusbar if hidden
+   if {!$::gameInfo(showStatus)} {
+     set ::gameInfo(showStatus) 1
+     toggleStatus
+   }
+   # Stop engine in status bar if neccessary
+   if {[winfo exists .analysisWin1] && $::analysis(mini)} { makeAnalysisWin 1 }
+
+   set ::statusBar $warning
+   .statusbar configure -foreground red3
+   # Will be restored by updateStatusBar in main.tcl
+}
+
 ### Update the main status bar
 
 proc updateStatusBar {} {
@@ -794,12 +810,12 @@ proc updateBoard {args} {
   moveEntry_Clear
 
   # Don't update if fics and not at end 
-  if {![winfo exists .fics] || [sc_pos isAt end]} {
-    .statusbar configure -foreground black
-    updateStatusBar 
-  } else {
+  if {[winfo exists .fics] && ![sc_pos isAt end] && $::fics::playing} {
     set ::statusBar "Fics: warning, board doesn't show current game position"
     .statusbar configure -foreground red3
+  } else {
+    .statusbar configure -foreground black
+    updateStatusBar 
   }
   update idletasks
 

@@ -5732,6 +5732,7 @@ for info about specific commands and variables.
     <li><term>finger</term> PLAYER - Get info about a specific person</li>
     <li><term>play</term> GAMENUMBER - Respond to a game request from another player</li>
     <li><term>resume</term>   Issue challenges to users with whom you have a stored or interupted game</li>
+    <li><term>abort</term> Request game abort, with result set to "no result"</li>
     <li><term>tell</term> CHANNEL MESSAGE - Send a message to chat channel</li>
     <li><term>tell</term> PLAYER  MESSAGE - Send a message to a specific person</li>
     <li><term>say</term> MESSAGE - Send a message to opponent</li>
