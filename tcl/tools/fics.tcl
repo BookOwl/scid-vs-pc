@@ -283,6 +283,10 @@ namespace eval fics {
 
     entry $w.command.entry -insertofftime 0 -bg grey75 -font font_Large
     button $w.command.send -text Send -command ::fics::cmd
+    button $w.command.clear -text Clear -command "
+      $w.console.text delete 0.0 end
+      $w.console.text insert 0.0 \"FICs ($::scidName $::scidVersion)\n\"
+    "
     button $w.command.next -text Next -command {::fics::writechan next echo}
     bind $w.command.entry <Return> { ::fics::cmd }
     bind $w.command.entry <Up> { ::fics::cmdHistory up }
@@ -304,7 +308,7 @@ namespace eval fics {
     # steer focus into the command entry, as typing into the text widget is pointless
     bind $w.console.text <FocusIn> "focus $w.command.entry"
     pack $w.command.entry -side left -fill x -expand 1 -padx 3 -pady 2
-    pack $w.command.next $w.command.send -side right -padx 3 -pady 2
+    pack $w.command.next $w.command.clear $w.command.send -side right -padx 3 -pady 2
     focus $w.command.entry
 
     # clock 1 is white
@@ -332,10 +336,15 @@ namespace eval fics {
     grid $w.bottom.buttons.offers       -column 2 -row $row -sticky w -padx 2 -pady 2
 
     incr row
-    button $w.bottom.buttons.clear -text Clear -command "
-      $w.console.text delete 0.0 end
-      $w.console.text insert 0.0 \"FICs ($::scidName $::scidVersion)\n\"
-    "
+    button $w.bottom.buttons.info2 -text "Opponent Info" -command {
+      set t1 [sc_game tags get Black]
+      if {$::fics::reallogin ==  $t1} {
+	set t1 [sc_game tags get White]
+      }
+      if {$t1 != {} && $t1 != {?}} {
+	::fics::writechan "finger $t1"
+      }
+    }
     button $w.bottom.buttons.info  -text Info -command {
       ::fics::writechan finger
       ::fics::writechan "inchannel $::fics::reallogin"
@@ -348,7 +357,7 @@ namespace eval fics {
     set ::fics::graphon 0
 
     grid $w.bottom.buttons.info  -column 0 -row $row -sticky ew -padx 3 -pady 2
-    grid $w.bottom.buttons.clear -column 1 -row $row -sticky ew -padx 3 -pady 2
+    grid $w.bottom.buttons.info2 -column 1 -row $row -sticky ew -padx 3 -pady 2
     grid $w.bottom.buttons.font  -column 2 -row $row -sticky ew -padx 3 -pady 2
 
     incr row
@@ -379,7 +388,7 @@ namespace eval fics {
     grid  $w.bottom.buttons.space -column 0 -row $row -columnspan 3 -sticky ew -pady 3
 
     incr row
-    button $w.bottom.buttons.findopp -text {Find Opponent} -command { ::fics::findOpponent }
+    button $w.bottom.buttons.findopp -text {Start Game} -command { ::fics::findOpponent }
     button $w.bottom.buttons.cancel -text {Quit FICs} -command { ::fics::close }
     grid $w.bottom.buttons.findopp -column 0 -row $row -sticky ew -padx 3 -pady 2
     grid $w.bottom.buttons.cancel -column 2 -row $row -sticky ew -padx 3 -pady 2
@@ -822,14 +831,19 @@ namespace eval fics {
 
           tk_messageBox -title "Game result" -icon info -type ok -message "$res"
         }
+        # Game is over. Set result and save game
+        ::gameclock::stop 1
+        ::gameclock::stop 2
+        set t1 [::gameclock::getSec 1]
+        set t2 [::gameclock::getSec 2]
+	::commenteditor::appendComment "White time [expr $t1 / 60]:[expr $t1 % 60]"
+	::commenteditor::appendComment "Black time [expr $t2 / 60]:[expr $t2 % 60]"
         sc_game tags set -result $res
         catch {sc_game save [sc_game number]}
         updateBoard -pgn
         set ::fics::playing 0
         set ::fics::observedGame -1
         set ::pause 0
-        ::gameclock::stop 1
-        ::gameclock::stop 2
         updateBoard -pgn
       }
       return
@@ -1035,6 +1049,8 @@ namespace eval fics {
     	{->>*}		{ $t insert end "$line\n" command }
 
 	{*[A-Za-z]\(*\): *} { $t insert end "$line\n" channel }
+        {Finger of *}   { $t insert end "$line\n" seeking }
+        {History of *}  { $t insert end "$line\n" seeking }
 	{Width set *}	{}
 	{Height set *}	{}
 	default		{ $t insert end "$line\n" }
@@ -1113,6 +1129,7 @@ namespace eval fics {
     pack [button $f.accept -text "accept" \
 	-command "::fics::writechan \"accept $PLAYER\"  ; destroy $f ; ::fics::checkZeroOffers -1" ] -side right -padx 5
     update
+    raiseWin .ficsOffers
 
   }
 
@@ -1306,10 +1323,12 @@ namespace eval fics {
     }
 
     if {$fen != [sc_pos fen]} {
-      ### Game out of sync, probably due to player  takeback request.
+      ### Game out of sync, probably due to player takeback request (or opponent take back 2).
       # After player takeback, game gets reconstructed, comments are zeroed. Opponents takeback is handled better elsewhere.
       # Fics doesn't give much warning that take back was succesful, only the uncertain "Takeback request sent."
-      # So just save previous (unfinished) game.  # Todo: Before starting new game, try to move back moves
+      # So just save previous (unfinished) game.
+
+      # Todo: Before starting new game, try to move backwards in game.
 
       puts "Debug fen \n$fen\n[sc_pos fen]"
       
