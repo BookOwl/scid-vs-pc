@@ -659,7 +659,7 @@ proc ::windows::switcher::Open {} {
   bind $w <F1> { helpWindow Switcher }
   standardShortcuts $w
 
-  canvas $w.c -width 300 -height 100 -yscrollcommand [list $w.ybar set] -bg $::defaultBackground
+  canvas $w.c -width 300 -height 100 -yscrollcommand [list $w.ybar set] ; # -bg $::defaultBackground
   scrollbar $w.ybar -takefocus 0 -command [list $w.c yview]
   label $w.status -width 1 -anchor w -relief sunken -borderwidth 1
 
@@ -754,7 +754,7 @@ proc ::windows::switcher::Refresh {} {
 
       # Highlight current database
       if {$i == $current} {
-        set color lightSteelBlue ;# lemonchiffon # rosybrown2
+        set color gainsboro ;# lemonchiffon # rosybrown2
         # $w.c.f$i.name configure -font font_Bold
         set status $filename
         if {[sc_base isReadOnly]} { append status " ($::tr(readonly))" }

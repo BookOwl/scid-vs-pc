@@ -34,7 +34,7 @@ proc SetBackgroundColour {} {
     .gameInfo configure -bg $temp
     if {[winfo exists .pgnWin.text]} { .pgnWin.text configure -bg $temp }
     if {[winfo exists .helpWin.text]} { .helpWin.text configure -bg $temp }
-    if {[winfo exists .baseWin.c]} { .baseWin.c configure -bg $temp }
+    # if {[winfo exists .baseWin.c]} { .baseWin.c configure -bg $temp }
   }
 }
 
