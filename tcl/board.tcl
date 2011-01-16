@@ -489,12 +489,6 @@ AiAIAhmAHpC8FBwbJSIVACSGJHxCCyZfAyRPh4kWXy2FLYeIQpNfhZiZP5tX
 nY+GiREREKkQGKOIIypyewAjenJKe7ZJekEAOw==
 }
 
-image create photo tb_switcher -data {
-  R0lGODdhFAAUAMIAANnZ2QAngf///wAAAP/tuMvFxosAAAAAACwAAAAAFAAUAAADWQi63B0w
-  ykmrvZiKzbvn0DaMZPmFwkCsLDGkHqqWs9jJLVsWYCC6pdaAt8HlhEQBjjZaDXu/I6uQlDFH
-  BYOh6ttQv2CtAdoRm8/KLufMHqM+ZS0Zvh73MpYEADs=
-}
-
 image create photo tb_pgn -data {
 R0lGODlhFAAUAMZGAAAAAAUFBQYGBgcHBwsLCwwMDA0NDRUVFQAdYhwcHB8f
 HwAicSEhIQAngScnJyoqKjIyMjU1NTo6Ojs7Oz8/P0NDQ0RERFdXV1paWlxc
@@ -626,7 +620,6 @@ button .tb.bsearch -image tb_bsearch -command ::search::board
 button .tb.hsearch -image tb_hsearch -command ::search::header
 button .tb.msearch -image tb_msearch -command ::search::material
 frame .tb.space4 -width 12
-button .tb.switcher -image tb_switcher -command ::windows::switcher::Open
 button .tb.glist -image tb_glist -command ::windows::gamelist::Open
 button .tb.pgn -image tb_pgn -command ::pgn::OpenClose
 button .tb.tmt -image tb_tmt -command ::tourney::toggle
@@ -645,7 +638,7 @@ foreach {b m} {
   cut GameNew copy EditCopy paste EditPaste
   rfilter SearchReset bsearch SearchCurrent
   hsearch SearchHeader msearch SearchMaterial
-  switcher WindowsSwitcher glist WindowsGList pgn WindowsPGN tmt WindowsTmt
+  glist WindowsGList pgn WindowsPGN tmt WindowsTmt
   maint WindowsMaint eco WindowsECO tree WindowsTree crosst WindowsCross
   engine ToolsAnalysis
 } {
@@ -656,7 +649,7 @@ set helpMessage(.button.addVar) EditAdd
 set helpMessage(.button.trial) EditTrial
 
 foreach i {new open save close finder bkm cut copy paste gprev gnext gfirst glast \
-      rfilter bsearch hsearch msearch switcher glist pgn tmt maint \
+      rfilter bsearch hsearch msearch glist pgn tmt maint \
       eco tree crosst engine} {
   .tb.$i configure -relief flat -border 1 -highlightthickness 0 -anchor n -takefocus 0
   ::utils::tooltip::Set .tb.$i [tr $::helpMessage(.tb.$i)]
@@ -724,7 +717,7 @@ proc configToolbar {} {
   }
 
   pack [frame $w.f5] -side top -fill x
-  foreach i {switcher glist pgn tmt maint eco tree crosst engine} {
+  foreach i {glist pgn tmt maint eco tree crosst engine} {
     eval checkbutton $w.f5.$i -image tb_$i -variable toolbar_temp($i) $button_options
     eval pack $w.f5.$i $pack_options
     bindToolbarRadio f5 $i
@@ -795,7 +788,7 @@ proc redrawToolbar {} {
   }
   if {$seen} { pack .tb.space4 -side left }
   set seen 0
-  foreach i {switcher glist pgn tmt maint eco tree crosst engine} {
+  foreach i {glist pgn tmt maint eco tree crosst engine} {
     if {$toolbar($i)} {
       set seen 1
       pack .tb.$i -side left -pady 1 -padx 0 -ipadx 0 -pady 0 -ipady 0

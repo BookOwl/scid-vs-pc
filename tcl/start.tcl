@@ -109,6 +109,7 @@ set ::tacgame::openingType new
 set ::commenteditor::showBoard 0
 set ::windows::gamelist::widths {}
 set ::windows::gamelist::findcase 1
+set ::windows::switcher::icons 1
 
 ### Tree/mask options:
 set ::tree::mask::recentMask {}
@@ -270,7 +271,7 @@ set ::pgn::stripMarks 0
 set pgnColor(Header) "\#00008b"
 set pgnColor(Main) "\#000000"
 set pgnColor(Var) "\#0000ee"
-set pgnColor(Nag) "\##aa2c2c" ;# ee0000
+set pgnColor(Nag) "\#aa2c2c" ;# ee0000
 set pgnColor(Comment) "\#008b00"
 set pgnColor(Current) lightSteelBlue
 set pgnColor(NextMove) "\#fefe80"
@@ -606,13 +607,6 @@ foreach type {PGN HTML LaTeX} {
   set exportEndFile($type) $default_exportEndFile($type)
 }
 
-
-# ::windows::switcher::vertical
-#
-#   If 1, Switcher frames are arranged vertically.
-#
-set ::windows::switcher::vertical 0
-set ::windows::switcher::icons 1
 
 # autoRaise: defines whether the "raise" command should be used to raise
 # certain windows (like progress bars) when they become obscured.

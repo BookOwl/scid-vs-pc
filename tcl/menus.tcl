@@ -252,8 +252,6 @@ $m.utils add separator
 $m.utils add command -label FileMaintFixBase -command ::maint::fixCorruptedBase
 set helpMessage($m.utils,10) FileMaintFixBase
 
-bind . <Control-d> ::windows::switcher::Open
-
 $m add command -label FileReadOnly -command makeBaseReadOnly
 set helpMessage($m,[incr menuindex]) FileReadOnly
 
@@ -602,13 +600,6 @@ $m add checkbutton -label WindowsTmt \
     -variable tourneyWin -command ::tourney::toggle -accelerator "Ctrl+Shift+T"
 bind . <Control-T> ::tourney::toggle
 set helpMessage($m,[incr menuindex]) WindowsTmt
-
-$m add separator
-incr menuindex
-
-$m add checkbutton -label WindowsSwitcher \
-    -variable baseWin -accelerator "Ctrl+D" -command ::windows::switcher::Open
-set helpMessage($m,[incr menuindex]) WindowsSwitcher
 
 $m add checkbutton -label WindowsMaint \
     -accelerator "Ctrl+M" -variable maintWin -command ::maint::OpenClose
@@ -984,7 +975,7 @@ $m add command -label OptionsSave -command {
           blunderThreshold autoplayDelay animateDelay boardCoords boardSTM \
           moveEntry(AutoExpand) moveEntry(Coord) \
           translatePieces highlightLastMove highlightLastMoveWidth highlightLastMoveColor \
-          askToReplaceMoves ::windows::switcher::vertical locale(numeric) \
+          askToReplaceMoves ::windows::switcher::icons locale(numeric) \
           spellCheckFile ::splash::keepopen autoRaise autoIconify \
           exportFlags(comments) exportFlags(vars) \
           exportFlags(indentc) exportFlags(indentv) \
@@ -1255,7 +1246,6 @@ menu $m -tearoff -1
 $m add checkbutton -label HelpTip -variable startup(tip)
 $m add checkbutton -label HelpStartup -variable ::splash::keepopen
 $m add checkbutton -label WindowsCross -variable startup(crosstable)
-$m add checkbutton -label WindowsSwitcher -variable startup(switcher)
 $m add checkbutton -label FileFinder -variable startup(finder)
 $m add checkbutton -label WindowsGList -variable startup(gamelist)
 $m add checkbutton -label WindowsPGN -variable startup(pgn)
@@ -1458,7 +1448,6 @@ proc updateMenuStates {} {
   $m.file.utils entryconfig [tr FileMaintCompact] -state $state
 
   ::search::Config
-  ::windows::switcher::Refresh
   ::maint::Refresh
   ::bookmarks::Refresh
 }
@@ -1541,7 +1530,7 @@ proc setLanguageMenus {{lang ""}} {
     configMenuText .menu.game [tr Game$tag $oldLang] Game$tag $lang
   }
 
-  foreach tag {Gameinfo Comment GList PGN Cross PList Tmt Switcher Maint ECO Stats Tree TB Book CorrChess } {
+  foreach tag {Gameinfo Comment GList PGN Cross PList Tmt Maint ECO Stats Tree TB Book CorrChess } {
     configMenuText .menu.windows [tr Windows$tag $oldLang] Windows$tag $lang
   }
 
@@ -1587,7 +1576,7 @@ proc setLanguageMenus {{lang ""}} {
   foreach tag { Color Width Display } {
     configMenuText .menu.options.entry.highlightlastmove [tr OptionsMovesHighlightLastMove$tag $oldLang] OptionsMovesHighlightLastMove$tag $lang
   }
-  foreach tag {HelpTip HelpStartup WindowsSwitcher WindowsPGN WindowsTree FileFinder \
+  foreach tag {HelpTip HelpStartup WindowsPGN WindowsTree FileFinder \
         WindowsCross WindowsGList WindowsStats WindowsBook} {
     configMenuText .menu.options.startup [tr $tag $oldLang] $tag $lang
   }
@@ -1663,7 +1652,6 @@ proc standardShortcuts {w} {
   bind $w <Control-w> ::file::Close
   bind $w <Control-slash> ::file::finder::Open
   bind $w <Control-m> ::maint::OpenClose
-  bind $w <Control-d> ::windows::switcher::Open
   bind $w <Control-q> ::file::Exit
   bind $w <Control-L> ::game::Reload
   bind $w <Control-Shift-Up> {::game::LoadNextPrev first}

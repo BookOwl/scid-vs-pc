@@ -196,7 +196,7 @@ proc updateStatusBar {} {
   if {$::analysis(mini) && [winfo exists .analysisWin1]} {return}
 
   # Why are these things refreshed here ???
-  ::windows::switcher::Refresh
+  # ::windows::switcher::Refresh
   ::maint::Refresh
   set statusBar "  "
 

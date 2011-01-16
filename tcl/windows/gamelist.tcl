@@ -452,6 +452,7 @@ proc ::windows::gamelist::Open {} {
   bind  $w.b.find <End>  "focus $w.tree ; event generate $w.tree <End> ; break"
 
   ::windows::gamelist::Refresh
+  ::windows::switcher::Open
 }
 
 proc ::windows::gamelist::Configure {window} {
@@ -684,6 +685,7 @@ proc ::windows::gamelist::Refresh {{see {}}} {
   $w.vsb configure -to [expr $totalSize - $glistSize]
 
   configDeleteButtons
+  ::windows::switcher::Refresh
 
   return $current_item
 }

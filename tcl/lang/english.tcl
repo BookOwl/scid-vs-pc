@@ -438,8 +438,8 @@ translate E SearchResults {Search Results}
 translate E OpeningTheDatabase {Opening database}
 translate E Database {Database}
 translate E Filter {Filter}
-translate E noGames {no games}
-translate E allGames {all games}
+translate E noGames {empty}
+translate E allGames {all}
 translate E empty {empty}
 translate E clipbase {clipbase}
 translate E score {score}

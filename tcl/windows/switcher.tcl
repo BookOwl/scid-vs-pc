@@ -613,20 +613,24 @@ proc changeBaseType {baseNum {parent .}} {
 }
 
 proc ::windows::switcher::pressMouseEvent {i} {
-  if {! [winfo exists .baseWin]} {return}
-  foreach win {"" .img .name .ngames} {
-    .baseWin.c.f$i$win configure -cursor exchange
+  if {! [winfo exists .glistWin]} {return}
+  foreach win {"" .img .name } {
+    .glistWin.baseWin.c.f$i$win configure -cursor exchange
   }
 }
 
 proc ::windows::switcher::releaseMouseEvent {fromBase x y} {
-  if {! [winfo exists .baseWin]} {return}
-  foreach win {"" .img .name .ngames} {
-    .baseWin.c.f$fromBase$win configure -cursor {}
+
+  if {! [winfo exists .glistWin.baseWin]} {return}
+  foreach win {"" .img .name } {
+    .glistWin.baseWin.c.f$fromBase$win configure -cursor {}
   }
   set dropPoint [winfo containing $x $y]
-  if {! [string match ".baseWin.c.f*" $dropPoint]} {return}
-  set toBase [string range $dropPoint 12 12]
+  if {! [string match ".glistWin.baseWin.c.f*" $dropPoint]} {return}
+
+  # .glistWin.baseWin.c.f.*.name
+  set toBase [string range $dropPoint 21 21]
+
   if {$toBase == $fromBase} {
     ::file::SwitchToBase $toBase
   } else {
@@ -639,84 +643,78 @@ set baseWin 0
 
 proc ::windows::switcher::Open {} {
   global baseWin
-  if {[winfo exists .baseWin]} {
-    focus .
-    destroy .baseWin
-    set baseWin 0
+
+  if {![winfo exists .glistWin] || [winfo exists .glistWin.baseWin]} {
     return
   }
-  set baseWin 1
-  set w [toplevel .baseWin]
-  bind $w <Configure> "+recordWinSize $w"
-  bind $w <Configure> "+::windows::switcher::Refresh"
-  setWinLocation $w
 
-  #wm resizable $w false false
-  wm title $w "Scid: [tr WindowsSwitcher]"
+  set baseWin 1
+  set w .glistWin.baseWin
+
+  # Database Switcher is not a toplevel anymore.
+  # It packs into the bottom of game list widget
+
+  frame $w
+  pack $w -side bottom -before .glistWin.c -fill x
 
   bind $w <Escape> ::windows::switcher::Open
   bind $w <Destroy> { set baseWin 0 }
   bind $w <F1> { helpWindow Switcher }
   standardShortcuts $w
 
-  canvas $w.c -width 300 -height 100 -yscrollcommand [list $w.ybar set] ; # -bg $::defaultBackground
-  scrollbar $w.ybar -takefocus 0 -command [list $w.c yview]
-  label $w.status -width 1 -anchor w -relief sunken -borderwidth 1
+  canvas $w.c -width 300 -height 36 ; # -bg $::defaultBackground
 
   grid $w.c -row 0 -column 0 -sticky news
-  grid $w.ybar -row 0 -column 1 -sticky ns
-  # Superfluous S.A.
-  # grid $w.status -row 1 -column 0 -sticky we
   grid rowconfigure $w 0 -weight 1
   grid columnconfigure $w 0 -weight 1
 
   set numBases [sc_base count total]
 
   for {set i 1} {$i <= $numBases} {incr i} {
-    set f [frame $w.c.f$i  -borderwidth 1 -relief raised] ;# -borderwidth 2 -relief ridge
+    set f [frame $w.c.f$i  -relief raised]
     $w.c create window 0 0 -window $w.c.f$i -anchor nw -tag tag$i
 
     set f $w.c.f$i
-    label $f.img -image dbt0 ;# -relief solid  -borderwidth 1
-    label $f.name -width 15 -anchor w -font font_Small
-    label $f.ngames -text "0" -width 11 -anchor e -font font_Tiny
-    grid $f.img -row 0 -column 0 -rowspan 2 -padx 2 -pady 2 ; # grid item refreshed below
-    grid $f.name -row 0 -column 1 -padx 2 -pady 0 -sticky we
-    grid $f.ngames -row 1 -column 1 -padx 2 -pady 0 -sticky we
+    label $f.img -image dbt0 ;# -relief solid  -borderwidth 0
+    label $f.name -width 20 -anchor w -font font_Tiny
+    grid $f.img -row 0 -column 0 ; # grid item refreshed below
+    grid $f.name -row 0 -column 1 -sticky we
 
-    foreach win {"" .img .name .ngames} {
+    foreach win {"" .img .name} {
       bind $f$win <ButtonPress-1> [list ::windows::switcher::pressMouseEvent $i]
       bind $f$win <ButtonRelease-1> [list ::windows::switcher::releaseMouseEvent $i %X %Y]
     }
 
     menu $f.menu -tearoff 0
-    $f.menu add command -label [tr SearchReset] \
-      -command "sc_filter reset $i; ::windows::stats::Refresh"
+    $f.menu add command -label [tr SearchReset] -command "sc_filter reset $i; ::windows::stats::Refresh"
+
     set closeLabel "[tr FileClose] [tr Database]"
     if {$i == [sc_info clipbase]} { set closeLabel [tr EditReset] }
-    $f.menu add command -label $closeLabel \
-      -command [list ::file::Close $i]
-    foreach win {"" .img .name .ngames} {
-      bind $f$win <ButtonPress-3> "tk_popup $f.menu %X %Y"
-    }
+    $f.menu add command -label $closeLabel -command [list ::file::Close $i]
+
     $f.menu add separator
-    $f.menu add command -label "Change icon" -command "changeBaseType $i .baseWin"
-    # $f.menu add command -label [tr FileOpen] -command {::file::Open {} .baseWin}
+
+    $f.menu add command -label "Change icon" -command "changeBaseType $i .glistWin.baseWin"
+
     $f.menu add checkbutton -label {Show icons} -variable ::windows::switcher::icons \
       -command ::windows::switcher::Refresh
+
+    foreach win {"" .img .name} {
+      bind $f$win <ButtonPress-3> "tk_popup $f.menu %X %Y"
+    }
   }
-  setWinSize $w
+
   ::windows::switcher::Refresh
 }
 
 proc ::windows::switcher::Refresh {} {
   global numBaseTypeIcons
   variable icons
-  set w .baseWin
-
+  set w .glistWin.baseWin
   if {! [winfo exists $w]} { return }
+
   set numBases [sc_base count total]
-  set current [sc_base current]
+  set current  [sc_base current]
   set clipbase [sc_info clipbase]
 
   # Get the canvas width and icon dimensions, to compute the correct
@@ -724,45 +722,37 @@ proc ::windows::switcher::Refresh {} {
 
   for {set i 1} {$i <= $numBases} {incr i} {
     if {$icons} {
-      grid $w.c.f$i.img -row 0 -column 0 -rowspan 2 -padx 2 -pady 2
+      grid $w.c.f$i.img -row 0 -column 0 -rowspan 2
+      $w.c configure -height 36
     } else {
       grid forget $w.c.f$i.img
+      $w.c configure -height 24
     }
   }
+  update
 
-  set canvasWidth [winfo width $w.c]
   set iconWidth [winfo width $w.c.f$clipbase]
   incr iconWidth 5
   set iconHeight [winfo height $w.c.f$clipbase]
   incr iconHeight 5
 
-  # Compute the number of columns that can fit in the canvas
-  set numColumns [expr {int($canvasWidth / $iconWidth)}]
-  if {$numColumns < 1} { set numColumns 1 }
-  set numDisplayed 0
-
-  set row 0
   set column 0
   set x 0
-  set y 0
-  set status ""
 
   for {set i 1} {$i <= $numBases} {incr i} {
     if {[sc_base inUse $i]} {
       set filename [file nativename [sc_base filename $i]]
-      set n $i
 
       # Highlight current database
       if {$i == $current} {
-        set color gainsboro ;# lemonchiffon # rosybrown2
-        # $w.c.f$i.name configure -font font_Bold
-        set status $filename
-        if {[sc_base isReadOnly]} { append status " ($::tr(readonly))" }
+        set color white
       } else {
-	set color grey95
+	set color gainsboro
       }
 
       $w.c.f$i configure -background $color
+
+      # this should only be done once in DB open
       set dbtype [sc_base type $i]
       if {$dbtype >= $numBaseTypeIcons} { set dbtype 0 }
       if {$icons} {
@@ -770,43 +760,105 @@ proc ::windows::switcher::Refresh {} {
       } else {
         $w.c.f$i.img configure -image ""
       }
+
       if {$i == $clipbase} {
         set name [sc_base filename $i]
         $w.c.f$i.name configure -background $color 
       } else {
         set name "[file tail [sc_base filename $i]]"
       }
-      $w.c.f$i.name configure -background $color -text $name
-      $w.c.f$i.ngames configure -background $color \
-        -text "[filterText $i 100000]"
+      $w.c.f$i.name configure -background $color -text "$name ([filterText $i 100000])"
       $w.c itemconfigure tag$i -state normal
-      $w.c coords tag$i [expr $x + 2] [expr $y + 2]
+      $w.c coords tag$i [expr $x + 2] 2
       incr column
-      if {$column == $numColumns} {
-        set column 0
-        set x 0
-        incr y $iconHeight
-        incr row
-      } else {
-        incr x $iconWidth
-      }
+      incr x $iconWidth
       incr numDisplayed
     } else {
       $w.c itemconfigure tag$i -state hidden
     }
   }
 
-  set numRows [expr {int( ($numDisplayed + $numColumns - 1) / $numColumns)}]
-  if {$numRows < 1} { set numRows 1 }
-  set top 0
-  set left 0
-  set right [expr {$numColumns * $iconWidth}]
-  set bottom [expr {$numRows * $iconHeight}]
-  $w.c configure -scrollregion [list $left $top $right $bottom]
-  if {[winfo height $w.c] >= $bottom} {
-    grid forget $w.ybar
-  } else {
-    grid $w.ybar -row 0 -column 1 -sticky ns
+}
+
+proc copyFilter {frombaseNum tobaseNum} {
+
+  # Check status of source and target bases
+  set currentBaseNum [sc_base current]
+  sc_base switch $frombaseNum
+  set nGamesToCopy [sc_filter count]
+  set fromInUse [sc_base inUse]
+  set fromName [file tail [sc_base filename]]
+  sc_base switch $tobaseNum
+  set targetInUse [sc_base inUse]
+  set targetName [file tail [sc_base filename]]
+  set targetReadOnly [sc_base isReadOnly]
+  sc_base switch $currentBaseNum
+  set err ""
+  if {$nGamesToCopy == 0} {
+    set err "$::tr(CopyErrSource) $::tr(CopyErrNoGames)."
   }
-  $w.status configure -text $status
+  if {$targetReadOnly} {
+    set err "$::tr(CopyErrTarget) $::tr(CopyErrReadOnly)."
+  }
+  if {! $targetInUse} {set err "$::tr(CopyErrTarget) $::tr(CopyErrNotOpen)."}
+  if {! $fromInUse} {set err "$::tr(CopyErrSource) $::tr(CopyErrNotOpen)."}
+  if {$frombaseNum == $tobaseNum} {
+    set err "$::tr(CopyErrSource) == $::tr(CopyErrTarget)."
+  }
+
+  if {$err != ""} {
+    tk_messageBox -type ok -icon info -title "Scid" \
+        -message "$::tr(CopyErr) \nfrom \"$fromName\" to \"$targetName\".\n$err" -parent .glistWin.baseWin
+    return
+  }
+
+  # If copying to the clipbase, do not bother asking for confirmation:
+  if {$tobaseNum == [sc_info clipbase]} {
+    progressWindow "Scid" "$::tr(CopyGames)..." $::tr(Cancel) "sc_progressBar"
+    busyCursor .
+    set copyErr [catch {sc_filter copy $frombaseNum $tobaseNum} result]
+    unbusyCursor .
+    closeProgressWindow
+    ::windows::gamelist::Refresh
+    if {$copyErr} {
+      tk_messageBox -type ok -icon info -title "Scid" -message $result -parent .glistWin.baseWin
+    }
+    return
+  }
+
+  set w [toplevel .fcopyWin]
+  wm withdraw $w
+  wm title $w "Scid: $::tr(CopyGames)"
+  label $w.text -text [subst $::tr(CopyConfirm)] -justify left
+  frame $w.b
+  dialogbutton $w.b.go -text $::tr(CopyGames) -command "
+    busyCursor .
+    $w.b.cancel configure -command \"sc_progressBar\"
+    $w.b.cancel configure -text $::tr(Stop)
+    sc_progressBar $w.bar bar 301 21 time
+    grab $w.b.cancel
+    if {\[catch {sc_filter copy $frombaseNum $tobaseNum} result\]} {
+      tk_messageBox -type ok -icon info \
+	  -title \"Scid\" -message \$result -parent .glistWin.baseWin
+    }
+    unbusyCursor .
+    focus .
+    destroy $w
+    updateStatusBar
+    ::windows::gamelist::Refresh"
+  dialogbutton $w.b.cancel -text $::tr(Cancel) -command "focus .; destroy $w"
+  canvas $w.bar -width 300 -height 20 -bg white -relief solid -border 1
+  $w.bar create rectangle 0 0 0 0 -fill $::progcolor -outline $::progcolor -tags bar
+  $w.bar create text 295 10 -anchor e -font font_Regular -tags time \
+      -fill black -text "0:00 / 0:00"
+
+  pack $w.text $w.b -side top -pady 2
+  pack $w.bar -side bottom
+  pack $w.b.go $w.b.cancel -side left -padx 10 -pady 10
+  placeWinOverParent $w .glistWin.baseWin
+  wm state $w normal
+  grab $w
+  bind $w <Return> "$w.b.go invoke"
+  bind $w <Escape> "$w.b.cancel invoke"
+  focus $w.b.go
 }
