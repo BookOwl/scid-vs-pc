@@ -664,7 +664,6 @@ Position::StdStart (void)
         Board [NULL_SQUARE] = END_OF_BOARD;
         Hash = stdStartHash;
         PawnHash = stdStartPawnHash;
-        GenerateMoves();
     }
     else {
         if (startPositionTemplate == NULL){
@@ -2642,6 +2641,9 @@ Position::ReadLine (const char * line)
 void
 Position::CalcSANStrings (sanListT *sanList, sanFlagT flag)
 {
+	if( LegalMoves.Size() == 0) {
+        GenerateMoves();
+	}
     for (ushort i=0; i < LegalMoves.Size(); i++) {
         MakeSANString (LegalMoves.Get(i), sanList->list[i], flag);
     }

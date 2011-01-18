@@ -2007,28 +2007,29 @@ Game::WriteComment (TextBuffer * tb, const char * preStr,
       s = (char *) comment;
     }
 
-    if (s[0] == '\0')
-      return;
+    if (s[0] != '\0') {
 
-    if (IsColorFormat()) {
-        tb->PrintString ("<c_");
-        tb->PrintInt (NumMovesPrinted);
-        tb->PrintChar ('>');
-    }
+      if (IsColorFormat()) {
+	  tb->PrintString ("<c_");
+	  tb->PrintInt (NumMovesPrinted);
+	  tb->PrintChar ('>');
+      }
 
-    if (IsColorFormat()) {
-        // Translate "<", ">" in comments:
-        tb->AddTranslation ('<', "<lt>");
-        tb->AddTranslation ('>', "<gt>");
-        // S.A any issues ?
-        tb->NewlinesToSpaces (0);
-        tb->PrintString (s);
-        tb->ClearTranslation ('<');
-        tb->ClearTranslation ('>');
-    } else {
-        tb->PrintString (preStr);
-        tb->PrintString (s);
-        tb->PrintString (postStr);
+      if (IsColorFormat()) {
+	  // Translate "<", ">" in comments:
+	  tb->AddTranslation ('<', "<lt>");
+	  tb->AddTranslation ('>', "<gt>");
+	  // S.A any issues ?
+	  tb->NewlinesToSpaces (0);
+	  tb->PrintString (s);
+	  tb->ClearTranslation ('<');
+	  tb->ClearTranslation ('>');
+      } else {
+	  tb->PrintString (preStr);
+	  tb->PrintString (s);
+	  tb->PrintString (postStr);
+      }
+      if (IsColorFormat()) { tb->PrintString ("</c>"); }
     }
 
     if (PgnStyle & PGN_STYLE_STRIP_MARKS) {
@@ -2039,7 +2040,6 @@ Game::WriteComment (TextBuffer * tb, const char * preStr,
 #endif
     }
 
-    if (IsColorFormat()) { tb->PrintString ("</c>"); }
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
