@@ -242,8 +242,8 @@ proc ::windows::gamelist::Open {} {
 
   ### Frames
 
-  pack [frame $w.c] -side bottom -fill x -ipady 5 -padx 10 
-  pack [frame $w.b] -side bottom -fill x -ipady 5 -padx 10
+  pack [frame $w.c] -side bottom -fill x -ipady 5 -padx 5 
+  pack [frame $w.b] -side bottom -fill x -ipady 5 -padx 5
 
   ttk::frame $w.f
   ttk::treeview $w.tree -columns $glistNames -show headings -xscroll "$w.hsb set"
@@ -341,11 +341,11 @@ proc ::windows::gamelist::Open {} {
 
   ### Top row of buttons, etc
 
-  button $w.b.current -relief flat -textvar ::tr(Current) \
+  button $w.b.current -font font_Small -relief flat -textvar ::tr(Current) \
     -command ::windows::gamelist::showCurrent
   set ::windows::gamelist::goto {}
 
-  button $w.b.negate -text Negate -relief flat -command {
+  button $w.b.negate -text Negate -font font_Small -relief flat -command {
     # .glistWin.tree selection toggle [.glistWin.tree children {}]
     sc_filter negate
     ::windows::gamelist::Refresh
@@ -353,7 +353,7 @@ proc ::windows::gamelist::Open {} {
 
 
   ### Filter items. (Delete items is different)
-  button $w.b.remove -textvar ::tr(GlistDeleteField) -relief flat -command {
+  button $w.b.remove -textvar ::tr(GlistDeleteField) -font font_Small -relief flat -command {
     set items [.glistWin.tree selection]
     foreach i $items {
       sc_filter remove [.glistWin.tree set $i Number]
@@ -370,24 +370,24 @@ proc ::windows::gamelist::Open {} {
   }
   bind $w.tree <Delete> "$w.b.remove invoke"
 
-  button $w.b.removeabove -text Rem -image arrow_up -compound right -relief flat -command {removeFromFilter up}
-  button $w.b.removebelow -text Rem -image arrow_down -compound right -relief flat -command {removeFromFilter down}
-  button $w.b.reset -text Reset -relief flat -command ::search::filter::reset
+  button $w.b.removeabove -text Rem -image arrow_up -compound right -font font_Small -relief flat -command {removeFromFilter up}
+  button $w.b.removebelow -text Rem -image arrow_down -compound right -font font_Small -relief flat -command {removeFromFilter down}
+  button $w.b.reset -text Reset -font font_Small -relief flat -command ::search::filter::reset
 
   ### Filter items against the find entry widget
-   button $w.b.filter -relief flat -text "Filter" \
+   button $w.b.filter -font font_Small -relief flat -text "Filter" \
     -command {::windows::gamelist::FilterText}
 
-  button $w.b.findlabel -relief flat -textvar ::tr(GlistFindText) \
+  button $w.b.findlabel -font font_Small -relief flat -textvar ::tr(GlistFindText) \
     -command {::windows::gamelist::FindText}
 
-  # button $w.b.findall -relief flat -text "Find All" \
+  # button $w.b.findall -font font_Small -relief flat -text "Find All" \
   #   -command {::windows::gamelist::FindText}
 
-  ttk::combobox $w.b.find -width 12 -textvariable ::windows::gamelist::findtext
+  ttk::combobox $w.b.find -width 12 -font font_Small -textvariable ::windows::gamelist::findtext
   ::utils::history::SetCombobox ::windows::gamelist::findtext $w.b.find
 
-  ### doesn't work
+  # didn't use to work
   # ::utils::history::SetLimit ::windows::gamelist::findtext 5
   # ::utils::history::PruneList ::windows::gamelist::findtext
 
@@ -396,49 +396,48 @@ proc ::windows::gamelist::Open {} {
   bind $w.b.find <Home> "$w.b.find icursor 0; break"
   bind $w.b.find <End> "$w.b.find icursor end; break"
 
-  checkbutton $w.b.findcase -text "Ignore Case" \
+  checkbutton $w.b.findcase -text "Ignore Case" -font font_Small \
     -variable ::windows::gamelist::findcase -onvalue 1 -offvalue 0
 
-  pack $w.b.current -side left -padx 0
-  pack $w.b.findcase $w.b.find $w.b.findlabel $w.b.filter -side right
-  pack $w.b.negate $w.b.remove $w.b.removeabove $w.b.removebelow $w.b.reset -side left
+  pack $w.b.findcase $w.b.find $w.b.findlabel $w.b.filter $w.b.reset -side right
+  pack $w.b.current $w.b.negate $w.b.remove $w.b.removeabove $w.b.removebelow -side left
 
   ### Bottom row of buttons , etc
 
-  entry $w.c.goto -width 8 -justify right -textvariable ::windows::gamelist::goto
+  entry $w.c.goto -width 8 -justify right -textvariable ::windows::gamelist::goto -font font_Small
   bind $w.c.goto <Return> {
     ::windows::gamelist::showNum $::windows::gamelist::goto
   }
-  dialogbutton $w.c.browse -text $::tr(Browse) -command {
+  button $w.c.browse -text $::tr(Browse) -font font_Small -command {
     set selection [.glistWin.tree selection]
     if { $selection != {} } {
       ::gbrowser::new 0 [.glistWin.tree set [lindex $selection 0] Number]
     }
   }
 
-  dialogbutton $w.c.load -text Load -command {
+  button $w.c.load -text Load -font font_Small -command {
     set selection [.glistWin.tree selection]
     if { $selection != {} } {
       ::windows::gamelist::Load [.glistWin.tree set [lindex $selection 0] Number]
     }
   }
 
-  dialogbutton $w.c.delete -text {(Un)Delete} -command {
+  button $w.c.delete -text {(Un)Delete} -font font_Small -command {
     ::windows::gamelist::ToggleFlag delete
     configDeleteButtons
     updateBoard
   }
 
-  dialogbutton $w.c.empty -text {Compact} -command "compactGames $w ; configDeleteButtons"
+  button $w.c.empty -text {Compact} -font font_Small -command "compactGames $w ; configDeleteButtons"
 
   configDeleteButtons
 
-  dialogbutton $w.c.export -textvar ::tr(Save...) -command openExportGList
-  dialogbutton $w.c.help  -textvar ::tr(Help) -command { helpWindow GameList }
-  dialogbutton $w.c.close -textvar ::tr(Close) -command { focus .; destroy .glistWin }
+  button $w.c.export -textvar ::tr(Save...) -font font_Small -command openExportGList
+  button $w.c.help  -textvar ::tr(Help) -width 5 -font font_Small -command { helpWindow GameList }
+  button $w.c.close -textvar ::tr(Close) -font font_Small -command { focus .; destroy .glistWin }
 
-  pack $w.c.goto $w.c.browse $w.c.load $w.c.delete $w.c.empty -side left -padx 3
   pack $w.c.close $w.c.help $w.c.export -side right -padx 3
+  pack $w.c.goto $w.c.browse $w.c.load $w.c.delete $w.c.empty -side left -padx 3
 
   set ::windows::gamelist::goto 1
   bind $w <Configure> {::windows::gamelist::Configure %W }
@@ -466,6 +465,7 @@ proc ::windows::gamelist::Configure {window} {
 
 proc configDeleteButtons {} {
   set w .glistWin
+  # debug puts [sc_base current] &&&
   if {[sc_base current] == [sc_info clipbase]} {
     ### clipbase open
     $w.c.delete configure -state disabled
@@ -785,7 +785,7 @@ proc openExportGList {} {
   entry $w.fmt -textvar glexport  -fg black -font font_Fixed
   pack $w.fmt -side top -fill x
   text $w.tfmt -width 1 -height 5 -font font_Fixed -fg black \
-    -wrap none -relief flat
+    -wrap none -font font_Small -relief flat
   pack $w.tfmt -side top -fill x
   $w.tfmt insert end "w: White            b: Black            "
   $w.tfmt insert end "W: White Elo        B: Black Elo        \n"

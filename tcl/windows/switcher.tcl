@@ -762,8 +762,8 @@ proc ::windows::switcher::Refresh {} {
       }
 
       if {$i == $clipbase} {
-        set name [sc_base filename $i]
         $w.c.f$i.name configure -background $color 
+        set name clipbase
       } else {
         set name "[file tail [sc_base filename $i]]"
       }
