@@ -403,6 +403,7 @@ namespace eval pgn {
         -indentVar $::pgn::indentVars -indentCom $::pgn::indentComments \
         -space $::pgn::moveNumberSpaces -format $format -column $::pgn::columnFormat \
         -short $::pgn::shortHeader -markCodes $::pgn::stripMarks]
+    # debug puts $pgnStr
 
     if {$pgnNeedsUpdate} {
       busyCursor .

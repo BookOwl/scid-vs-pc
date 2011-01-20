@@ -27,7 +27,7 @@ proc pasteFEN {} {
   if {[catch {set fenStr [selection get -selection PRIMARY]} ]} {
     catch {set fenStr [selection get -selection CLIPBOARD]}
   }
-  set fenStr [string trim $fenStr]
+  set fenStr [validateFEN [string trim $fenStr]]
 
   set fenExplanation {FEN is the standard representation of a chess position, for example:
 "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"}
@@ -233,22 +233,7 @@ proc exitSetupBoard {} {
 
   bind .setup <Destroy> {}
 
-  #### Do a sanity check on castling
-  #    .. helpful because illegal FENs crash engines
-  #    and we could also have one for enpassant
-
-  set c [lindex $setupFen 2]
-
-  if {![validatePiece r 1 1]} {set c [string map {q {}} $c]}
-  if {![validatePiece k 5 1]} {set c [string map {k {} q {}} $c]}
-  if {![validatePiece r 8 1]} {set c [string map {k {}} $c]}
-
-  if {![validatePiece R 1 8]} {set c [string map {Q {}} $c]}
-  if {![validatePiece K 5 8]} {set c [string map {K {} Q {}} $c]}
-  if {![validatePiece R 8 8]} {set c [string map {K {}} $c]}
-
-  if {$c == {}} {set c {-}}
-  set setupFen [lreplace $setupFen 2 2 $c]
+  set setupFen [validateFEN $setupFen]
 
   if {[catch {sc_game startBoard $setupFen} err]} {
     fenErrorDialog $err
@@ -262,6 +247,28 @@ proc exitSetupBoard {} {
     updateBoard -pgn
   }
 }
+
+
+
+proc validateFEN {fen} {
+  #### Do a sanity check on castling
+  #    .. helpful because illegal FENs crash engines
+  #    and we could also have one for enpassant
+
+  set c [lindex $fen 2]
+
+  if {![validatePiece r 1 1]} {set c [string map {q {}} $c]}
+  if {![validatePiece k 5 1]} {set c [string map {k {} q {}} $c]}
+  if {![validatePiece r 8 1]} {set c [string map {k {}} $c]}
+
+  if {![validatePiece R 1 8]} {set c [string map {Q {}} $c]}
+  if {![validatePiece K 5 8]} {set c [string map {K {} Q {}} $c]}
+  if {![validatePiece R 8 8]} {set c [string map {K {}} $c]}
+
+  if {$c == {}} {set c {-}}
+  return "[lreplace $fen 2 2 $c]"
+}
+
 
 proc validatePiece {piece x y} {
   global setupFen
