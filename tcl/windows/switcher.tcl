@@ -70,10 +70,37 @@ t+DyJIQBBAUwQE3opquuSQMAINK7IgUEADs=
 
 {PGN file}
 {
-R0lGODlhIAAgAMIEAAAA/zw8PMhpaevu6a6urq6urq6urq6uriH5BAEKAAMA
-LAAAAAAgAB8AAANlOLrc/jDKSasVGLMslB6fEoyjx3XgmZrTp2UsHA5kua6z
-ybWq+6qLWkDn0+FyjhzsmEKJaqzGqVOUIJu/6JNk6XotwrB4bPt+yWiy2Zxu
-C9dntxzulc/pYHsbn9ej+RV+aYCEXwkAOw==
+R0lGODlhIAAgAOeiADMzM0tLS0xMTE5OTk9PT1BQUFFRUVJSUlNTU1RUVFVV
+VVZWVldXV1hYWFlZWVpaWltbW1xcXH5YHV1dXX9ZH4BaIGBgYIFbIoJdJINe
+JWNjY4RfJ2RkZIRgKGZmZoZiK4ZjLGhoaIhlL2pqamtra21tbW9vb41rN3Bw
+cI1sOHJyco9uPHNzc5BvPI9wP5FwPpFxP3Z2dnd3d5R0Q5J1R3p6epV2RpZ4
+SX19fZh6S5l8TYCAgJp9T4GBgZt+UYODg4SEhJ2BVJ6CVoaGhqCEWYiIiImJ
+iYuLi6OIXoyMjKOJX6SKYY6Ojo+Pj6aNZJCQkKeNZZKSkpOTk6qQapaWlpmZ
+mZycnLGadp6enrijg7qlhrunibGxscW0mse3nsm6ob6+vr+/v8DAwM2+qMHB
+wc7AqcLCws/Bq8PDw8TExMbGxsfHx8jIyNXItd3TxN/Vx9/WyODXydva19va
+2Nzc3N/f3+Dg4OHh4eLi4uji2OPj4+Tk5OXl5ebm5ufn5+jo6Ovo5Onp6erq
+6u/q4+vr6+zs7PDs5e3t7e7u7vLu6O/v7/Dw8PPw6/Hx8fLy8vPy8PPz8/T0
+9PX19ff18vb29vj39Pf39/n39fj4+Pn5+fr59/r6+vv6+Pv7+/z7+vz8/P39
+/f7+/v//////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////
+/////////////////////yH5BAEKAP8ALAAAAAAgACAAAAj+AP8JHEiwoMGD
+CBMqXDiwShUrWKxUoSKlSZIiQHrgqBFDhQkSIThwSEgFFKhQm0KZNPmpZaeX
+m2JmmolJA0IpoOiI2smzp0+eeDBNQBglFA0JEjCIKBPqy4oLLVZ4EZUD6Rsk
+Em4MPfgk1BwJLSqB+DBGwhVOg6DwEKUpqZC2jyIgZAKqjoQXhjqI8CEh0U5P
+bnZKyCIhjgRMcg8eqYtUQoo2MyR4EhUEqQ5REhhlIHIYAkIjoOxIgMFzioQ8
+oiaJ6ItZlBakmB4gHAJKjuNQO99IWHIJDgUJbCVoArThsAOEP0C5QNqF55kT
+FWw4AV5Viagthxsg3PEJz8/vPAv+iSKEiQFCHJ/0gF8vqhAmBQhrpN9zh5Af
+MmDAhNm/X4x/MWgccggmCSAkQyd78HFHIX8EEogghBRSiICIVGghIpgcgBAL
+CCrIIBn8/ScGGSSSkYYiimBSAEIodMJHH3gc8mCEFKK4yI04LmLJAAiV4CKM
+MkI4ISKK3NjIkUjqKABCI2zShx96HCKIGWH4V6IZWJqBhhqONGJJAAh54CQX
+fEhJI5GLNOIIJJBEEgmbjnyJkAZOChIlIWhYSQaWaPTZ5xpvynmQBZk8uQci
+ZxapZpuSUEKJJJJEIqhBExT6x6F4Wslnn2l0ykakkxbkQCZ+XIrohIquGUmj
+lmBiyaNQoRK0ACalYponiZuu0aqrsIJ5EAKY9GHqmWmqyuqroPpqEAHBDjtk
+kcY26miyCBnwKiWQuGrJttx2660lBiS0wLjklmvuuQwAwNC67LbLbkAAOw==
 }
 
 {Index of games}
