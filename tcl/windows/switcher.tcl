@@ -921,15 +921,13 @@ proc ::windows::switcher::Open {} {
   grid $w.bookmarks -row 0 -column 0 -padx 5
 
 
-  canvas $w.c -width 300 -height 36 ; # -bg $::defaultBackground
+  # how do i get this thing *flat* ? &&&
+  canvas $w.c 
 
-  grid $w.c -row 0 -column 1 -sticky news
-  grid rowconfigure $w 0 -weight 1
+  grid $w.c -row 0 -column 1 -sticky ew
   grid columnconfigure $w 1 -weight 1
 
-  set numBases [sc_base count total]
-
-  for {set i 1} {$i <= $numBases} {incr i} {
+  foreach i {9 1 2 3 4 5 6 7 8} {
     set f [frame $w.c.f$i  -relief raised]
     $w.c create window 0 0 -window $w.c.f$i -anchor nw -tag tag$i
 
@@ -979,7 +977,7 @@ proc ::windows::switcher::Refresh {} {
   # Get the canvas width and icon dimensions, to compute the correct
   # scroll region.
 
-  for {set i 1} {$i <= $numBases} {incr i} {
+  foreach i {9 1 2 3 4 5 6 7 8} {
     if {$icons} {
       grid $w.c.f$i.img -row 0 -column 0 -rowspan 2
       $w.bookmarks configure -image bookmark_file 
@@ -1000,20 +998,24 @@ proc ::windows::switcher::Refresh {} {
   set column 0
   set x 0
 
-  for {set i 1} {$i <= $numBases} {incr i} {
+  ### Pack the clipbase (slot 9) on the left most
+  # set numBases [sc_base count total]
+  # for {set i 1} {$i <= $numBases} {incr i} {}
+
+  foreach i {9 1 2 3 4 5 6 7 8} {
     if {[sc_base inUse $i]} {
       set filename [file nativename [sc_base filename $i]]
 
       # Highlight current database
       if {$i == $current} {
-        set color white
+        set color khaki ; #lightgoldenrodyellow
       } else {
 	set color gainsboro
       }
 
       $w.c.f$i configure -background $color
 
-      # this should only be done once in DB open
+      # this should only be done once in DB open &&&
       set dbtype [sc_base type $i]
       if {$dbtype >= $numBaseTypeIcons} { set dbtype 0 }
       if {$icons} {
