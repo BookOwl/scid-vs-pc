@@ -759,8 +759,6 @@ set helpText(Menus) {<h1>Scid Menus</h1>
   <li><menu>Player Finder</menu>: Opens/closes the <a PList>Player Finder</a> window.</li>
   <li><menu>Tournament Finder</menu>: Opens/closes the <a Tmt>Tournament Finder</a> window.</li>
   <br>
-  <li><menu>Database</menu>: Opens/closes the <a Switcher>Database Switcher</a>, for switching
-  between databases, or copying games.</li>
   <li><menu>Maintenance window</menu>: Opens/closes the <a Maintenance>Maintenance</a> Window.</li>
   <br>
   <li><menu>ECO Browser</menu>: Opens/closes the <a ECO browser>ECO Browser</a> window.</li>
@@ -1436,35 +1434,23 @@ set helpText(Crosstable) {<h1>The Crosstable Window</h1>
 set helpTitle(Switcher) "Database Switcher"
 set helpText(Switcher) {<h1>The Database Switcher Window</h1>
   <p>
-  The 
-  <run ::windows::switcher::Open><green>Database Switcher</green></run>
-provides a view which makes it easy to
-  switch between databases or copy games between databases.
-  The name, <a Searches Filter>filter</a> state and graphic type icon
+  The Database Switcher, located at the bottom of the <a GameList>Game List</a> widget,
+  gives visual feedback on open databases. 
+  The name, <a Searches Filter>filter</a> state and icon
   of each database is displayed, and the active database is highlighted
-  with a yellow background.
+  with a white background. At the left most is a <a Bookmarks>bookmark</a> button.
   </p>
   <p>
-  You can open the database switcher window from the <menu>Windows</menu> menu,
-  or by its shortcut key: <b>Control+D</b>.
+  Using "Drag and Drop", it is easy to copy the filtered games from one database to another.
   </p>
   <p>
-  To copy all the filtered games in one database to another, drag with the
-  left mouse button from the source base to the target base. You will then
-  see a confirmation dialog (if the target database is not the
-  <a Clipbase>clipbase</a>) if the games can be copied, or an error message
-  if the games cannot be copied (for example, if a selected database is not
-  open).
-  </p>
-  <p>
-  Pressing right mouse button over a database produces a popup menu applying
-  to that database, from which you can change the database type icon or
-  reset its <a Searches Filter>filter</a>. You can also use this menu to
-  change the orientation of the window (to arrange the database slots
-  vertically or horizontally) which is useful for smaller screens.
+  Pressing right mouse button over a database produces a popup menu
+  from which you can change the icon, reset its <a Searches Filter>filter</a>, or
+close the database. It is also possible to
+  show or hide database icons.
   </p>
 
-  <p><footer>Updated: Scid 3.6.2, December 2006</footer></p>
+  <p><footer>Updated: Scid 4.3 January 2011</footer></p>
 }
 
 
@@ -1576,7 +1562,8 @@ set helpText(GameList) {<h1>The Game List Window</h1>
 
   <p> The <run ::windows::gamelist::Open><green>Game List</green></run>
 widget allows easy perusal of all (filtered) games in the
-currently open Database / PGN archive.
+currently open Database / PGN archive. At the bottom of the widget you'll also find
+the <a Switcher>Switcher</a> window.
 </p>
 <p>A common use of the widget is to search for games by entering
 text in the <b>Find</b> entry box. Clicking <b>Filter</b>
@@ -1592,6 +1579,7 @@ Buttons:
 <li><b>Rem <img arrow_down></b> - remove all games below</li>
 <li><b>Browse</b> - shows highlighted game in a pop-up window (resizable using Control+Wheel or Control+Shift+Left/Right). From here it is possible to <a GameList Browsing>merge</a> games.</li>
 <li><b>Current</b> - highlights the current game, <i>if it has not been filtered.</i></li>
+<li><b>Negate </b> - toggle the current filter.
 <li><b>Delete</b> - toggles the delete flag for highlighted games.</li>
 <li><b>Compact</b> - perform database compaction.</li>
 </ul>

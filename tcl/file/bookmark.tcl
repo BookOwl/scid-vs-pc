@@ -129,10 +129,15 @@ proc ::bookmarks::AddCurrent {{folder 0}} {
 #
 proc ::bookmarks::New {type} {
   if {$type == "folder"} { return [list "f" ""] }
-  set text "[file tail [sc_base filename]]: [sc_game info result], "
+
+  ### Bookmark format
+  # database: white, black, result, site , ....
+
+  # I changed this text formatting around. Is'ok ? &&& S.A
+  set text "[file tail [sc_base filename]]:  "
   append text "[::utils::string::Surname [sc_game info white]] - "
   append text "[::utils::string::Surname [sc_game info black]], "
-  append text "[::utils::string::CityName [sc_game info site]] "
+  append text "[sc_game info result],  [::utils::string::CityName [sc_game info site]] "
   set round [sc_game info round]
   if {$round != ""  &&  $round != "?"} { append text "($round) " }
   append text "[sc_game info year]"
