@@ -753,7 +753,7 @@ proc changeBaseType {baseNum {parent .}} {
 proc ::windows::switcher::pressMouseEvent {i} {
   if {! [winfo exists .glistWin]} {return}
   foreach win {"" .img .name } {
-    .glistWin.baseWin.c.f$i$win configure -cursor exchange
+    .glistWin.baseWin.c.f$i$win configure -cursor exchange ;# fleur , pencil
   }
 }
 
@@ -800,11 +800,16 @@ proc ::windows::switcher::Open {} {
   bind $w <F1> { helpWindow Switcher }
   standardShortcuts $w
 
+  button $w.bookmarks -relief flat
+  bind   $w.bookmarks <ButtonPress-1> "tk_popup .tb.bkm.menu %X %Y ; break"
+  grid $w.bookmarks -row 0 -column 0 -padx 5
+
+
   canvas $w.c -width 300 -height 36 ; # -bg $::defaultBackground
 
-  grid $w.c -row 0 -column 0 -sticky news
+  grid $w.c -row 0 -column 1 -sticky news
   grid rowconfigure $w 0 -weight 1
-  grid columnconfigure $w 0 -weight 1
+  grid columnconfigure $w 1 -weight 1
 
   set numBases [sc_base count total]
 
@@ -830,9 +835,9 @@ proc ::windows::switcher::Open {} {
     if {$i == [sc_info clipbase]} { set closeLabel [tr EditReset] }
     $f.menu add command -label $closeLabel -command [list ::file::Close $i]
 
-    $f.menu add separator
-
     $f.menu add command -label "Change icon" -command "changeBaseType $i .glistWin.baseWin"
+
+    $f.menu add separator
 
     $f.menu add checkbutton -label {Show icons} -variable ::windows::switcher::icons \
       -command ::windows::switcher::Refresh
@@ -861,9 +866,11 @@ proc ::windows::switcher::Refresh {} {
   for {set i 1} {$i <= $numBases} {incr i} {
     if {$icons} {
       grid $w.c.f$i.img -row 0 -column 0 -rowspan 2
+      $w.bookmarks configure -image bookmark_file 
       $w.c configure -height 36
     } else {
       grid forget $w.c.f$i.img
+      $w.bookmarks configure -image tb_bkm
       $w.c configure -height 24
     }
   }
