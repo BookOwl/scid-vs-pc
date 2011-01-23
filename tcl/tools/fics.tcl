@@ -799,7 +799,11 @@ namespace eval fics {
       sc_game tags set -blackElo $blackElo
       sc_game tags set -date [::utils::date::today]
       
-      sc_game tags set -event "Fics [lrange $line 5 end]"
+      # line: "Creating: hruvulum (1079) stevenaaus (1148) rated blitz 2 18"
+      # resumed game line is different though
+      if {[regexp {.*\) ([^\)]*$)} $line t1 t2]} {
+	sc_game tags set -event "Fics $t2"
+      }
       if { [::board::isFlipped .board] } {
         if { [ string match -nocase $white $::fics::reallogin ] } { ::board::flip .board }
       } else {
@@ -954,10 +958,9 @@ namespace eval fics {
       switch -- $ans {
         0 {
             writechan accept
-            catch {
-	      regexp {(.*) would like to take back} $line t1 t2
+	    if {[regexp {(.*) would like to take back} $line t1 t2]} {
 	      ::commenteditor::appendComment "$t2 takes back move $::fics::lastmove"
-            }
+	    }
           }
         1 {writechan decline}
         2 {set ::fics::ignore_takeback 1}
@@ -967,8 +970,7 @@ namespace eval fics {
     # draw
     if {[string match "*offers you a draw*" $line]
      && ! $::fics::ignore_draw && ! [winfo exists .fics_dialog]} {
-      catch {
-	regexp {(.*) offers you a draw} $line t1 t2
+      if {[regexp {(.*) offers you a draw} $line t1 t2]} {
 	::commenteditor::appendComment "$t2 offers draw"
       }
       set ans [tk_dialog .fics_dialog {Draw Offered} "$line\nDo you accept ?" question {} Yes No Ignore]
@@ -1017,20 +1019,23 @@ namespace eval fics {
 
     switch -glob $line {
 	{\{Game *\}}	{ $t insert end "$line\n" game }
-	{\{Game *\} *}	{ $t insert end "$line\n" gameresult }
+	{\{Game *\} *}	{ $t insert end "$line\n" gameresult
+                          if {[regexp {.* ([^ ]*) forfeits on time*} $line t1 t2]} {
+                              ::commenteditor::appendComment "$t2 forfeits on time"
+                          } 
+                        }
 	{Auto-flagging*} {$t insert end "$line\n"
-                          ::commenteditor::appendComment "Loses on time" }
+                          # ::commenteditor::appendComment "Loses on time" ; # recorded above
+                        }
 	{* tells you:*}	{ $t insert end "$line\n" tells 
-			  catch {
-			    regexp {(.*) tells you:(.*$)} $line t1 t2 t3
+			  if {[regexp {(.*) tells you:(.*$)} $line t1 t2 t3]} {
 			    ::commenteditor::appendComment "\[$t2\] $t3"
 			  }
 			}
 	{* seeking *}	{ $t insert end "$line\n" seeking }
 	{->>say *}	{ $t insert end "$line\n" tells 
                           # if {$::fics::playing} 
-			  catch {
-                            regexp -- {->>say (.*$)} $line t1 t2
+			  if {[regexp -- {->>say (.*$)} $line t1 t2]} {
 			    ::commenteditor::appendComment "\[$::fics::reallogin\] $t2"
                           }
 			}
@@ -1038,13 +1043,16 @@ namespace eval fics {
 			  catch {
                             regexp {(.*) says: (.*$)} $line t1 t2 t3
                             # remove trailing [342] (eg) from player name
-                            if {[regexp {(^.*)\[.*\]} $t2 t3 t4]} {
+                            if {[regexp {(^.*)\[.*\]} $t2 t0 t4]} {
 			      ::commenteditor::appendComment "\[$t4\] $t3"
                             } else {
 			      ::commenteditor::appendComment "\[$t2\] $t3"
                             } 
                           }
 			}
+        {Draw request sent*} { ::commenteditor::appendComment "$::fics::reallogin offers draw"
+                          $t insert end "$line\n"
+                        }
 	{->>tell *}	{ $t insert end "$line\n" tells }
     	{->>*}		{ $t insert end "$line\n" command }
 

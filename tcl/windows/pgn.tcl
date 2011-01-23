@@ -406,11 +406,10 @@ namespace eval pgn {
     # debug puts $pgnStr
 
     if {$pgnNeedsUpdate} {
-      busyCursor .
       set windowTitle [format $::tr(PgnWindowTitle) [sc_game number]]
       wm title .pgnWin "Scid: $windowTitle"
       .pgnWin.text configure -state normal
-      .pgnWin.text delete 1.0 end
+      .pgnWin.text delete 0.0 end
       if {$::pgn::showColor} {
         if {$::pgn::indentComments} {
 	  ::htext::display .pgnWin.text $pgnStr {} 2
@@ -420,7 +419,6 @@ namespace eval pgn {
       } else {
         .pgnWin.text insert 1.0 $pgnStr
       }
-      unbusyCursor .
     }
 
     if {$::pgn::showColor} {
