@@ -2012,9 +2012,9 @@ set helpText(Tree) {<h1>Tree Window</h1>
   can be disabled deselecting the <b>Refresh</b> check-box.
   </p>
   <p>
-  The <a Searches Filter>filter</a> will also be changed 
-  if <b>Adjust Filter</b> is checked. In this event, only games containing the
-  current position will be shown in the filter.
+  The <a Searches Filter>filter</a> behaviour is changed by the <b>Adjust Filter</b> check-box.
+  If checked, only games containing the current position will be shown in the filter,
+  and the <a Tree Best>Best Games</a> window will browse and load games <i>from the current position</i>.
 </p>
   <p>
   Clicking the left mouse button on a move in the tree window adds

@@ -5485,7 +5485,10 @@ sc_filter_reset (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
         }
         basePtr = &(dbList[baseNum - 1]);
     }
-    // SCID has something a little too complicated here. Bad :<
+    // This probably needs some more work -
+    // * If tree is open and Update Filter is not selected, the main gamelist "Reset" doesn't work
+    // * SCID has something complicated here....
+
     filter_reset (basePtr, 1);
     updateMainFilter( basePtr);
     return TCL_OK;

@@ -252,8 +252,7 @@ proc ::tree::make { { baseNumber -1 } } {
       -variable tree(locked$baseNumber) -command "::tree::toggleLock $baseNumber"
   checkbutton $w.buttons.training -textvar ::tr(Training) \
       -variable tree(training$baseNumber) -command "::tree::toggleTraining $baseNumber"
-  checkbutton $w.buttons.mask -text {Adjust Filter} \
-      -variable tree(maskfilter$baseNumber)
+  checkbutton $w.buttons.mask -text {Adjust Filter} -variable tree(maskfilter$baseNumber) -command "::tree::dorefresh $baseNumber"
 
   # bStartStop TreeOptStartStop
   foreach {b t} {
@@ -306,6 +305,10 @@ proc ::tree::closeTree {baseNumber} {
 
   wm protocol .treeWin$baseNumber WM_DELETE_WINDOW {}
   ::tree::mask::close
+  # needs closing explicitly if based open as tree and bestgames is open
+  if {[winfo exists .treeBest$baseNumber]} {
+    destroy .treeBest$baseNumber
+  }
 
   ::tree::hideCtxtMenu $baseNumber
   .treeWin$baseNumber.buttons.stop invoke
@@ -494,7 +497,8 @@ proc ::tree::dorefresh { baseNumber } {
     set fastmode 1
   }
 
-  set moves [sc_tree search -hide $tree(training$baseNumber) -sort $tree(order$baseNumber) -base $base -fastmode $fastmode -mask $tree(maskfilter$baseNumber) ] ; ### compare with CVS
+  set moves [sc_tree search -hide $tree(training$baseNumber) -sort $tree(order$baseNumber) -base $base \
+                            -fastmode $fastmode -mask $tree(maskfilter$baseNumber) ] ; ### compare with CVS
   displayLines $baseNumber $moves
 
   if {[winfo exists .treeBest$baseNumber]} { ::tree::best $baseNumber}
@@ -527,13 +531,13 @@ proc ::tree::dorefresh { baseNumber } {
   ::windows::gamelist::Refresh
   updateTitle
 
-  # if the Tree base is not the current one, updates the Tree base to the first game in filter : that way it is possible to
-  # directly generate an opening report for example
+  # If the Tree base is not the current one, updates the Tree base to the first game in filter 
+  # This enables one to browse/load best games, continuing on from current position *if filter is being adjusted*
   if {$baseNumber != [sc_base current] } {
     set current [sc_base current]
     sc_base switch $baseNumber
-    if { [sc_filter first] != 0 } {
-      sc_game load [sc_filter first]
+    if {[sc_filter first] != 0 &&  [sc_game number] != 0 && ![sc_game altered]} {
+          sc_game load [sc_filter first]
     }
     sc_base switch $current
   }
