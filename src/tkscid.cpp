@@ -13831,6 +13831,7 @@ sc_tree_search (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
 	    base->treeFilter = new Filter( base->numGames);
 	    base->dbFilter = new Filter( base->numGames);
 	    // can we do a memcpy &&&
+	    // base->treeFilter->oldDataTreePly=0;
 	    for (uint i=0; i < base->numGames; i++)
 		    base->dbFilter->Set( i, base->filter->Get(i));
     }
@@ -13904,7 +13905,7 @@ sc_tree_search (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
         StoredLine stored_line(pos);
 
 #ifndef WINCE
-        const byte * oldFilterData = base->filter->GetOldDataTree();
+        const byte * oldFilterData = base->treeFilter->GetOldDataTree();
 #endif
         // Search through each game:
         for (uint i=0; i < base->numGames; i++) {
