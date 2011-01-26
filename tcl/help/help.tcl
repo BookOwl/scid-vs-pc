@@ -2002,17 +2002,16 @@ set helpTitle(Tree) "Tree Window"
 set helpText(Tree) {<h1>Tree Window</h1>
   <p>
   The <run ::tree::make><green>Tree Window</green></run>
-  is an advanced Scid feature. The idea is to
-  show the most successful moves continuing from the current position.
+  is an powerful Scid feature. It shows the most successful moves continuing from the current position.
   </p>
   <p>
   The Tree is updated whenever the
-  main board changes. This can require lots of CPU time,
+  main board changes. This can stress the CPU
   and be slow for large databases, but dynamic updates
-  can be disabled deselecting the <b>Refresh</b> check-box.
+  can be disabled by de-selecting the <b>Refresh</b> check-box.
   </p>
   <p>
-  The <a Searches Filter>filter</a> behaviour is changed by the <b>Adjust Filter</b> check-box.
+  The <a Searches Filter>Filter</a> behaviour is changed by the <b>Adjust Filter</b> check-box.
   If checked, only games containing the current position will be shown in the filter,
   and the <a Tree Best>Best Games</a> window will browse and load games <i>from the current position</i>.
 </p>
@@ -2026,8 +2025,7 @@ set helpText(Tree) {<h1>Tree Window</h1>
 it is best to close the Tree Window first.</i>
   </p>
   <h3>Opening a Tree</h3>
-  <p>To open the Tree Window one can either first open a
-  database and then choose <b>Windows--<gt>Tree Window</b> menu,
+  <p>To open the Tree Window one can open a database and then choose <b>Windows--<gt>Tree Window</b> menu,
   use the <b>Control-t</b> short-cut, or <b>Open Base as Tree</b> right from the file menu.
   This last method means games in Database A can be examined with the tree from a different database.</p>
 
@@ -2063,18 +2061,25 @@ it is best to close the Tree Window first.</i>
   </h3>
   <h3><name Best>Best Games Window</name></h3>
   <p>
-  This button <button b_list> will show the <term>Best games</term> widget.
-  This is a list of the highest-rated games in the current tree.  The games
-  are listed in order of average rating, and you can restrict the list
-  to show games with a particular result and also limit the number of
-  games shown in this list.
+  This button <button b_list> will show a list of
+  highest-rated games for the current tree (shown in order of average rating).
+  </p>
+  <p>
+  You can restrict the list to show games with a particular result, or limit the number of
+  games shown.
+  </p>
+  <p>
+  <i>Note: the Browse and Load game features will automatically start at the corresponding
+  move, if the tree </i><b>Adjust Filter</b><i> checkbox is selected</i>.
   </p>
 
   <h3><name Graph>Tree Graph Window</name></h3>
   <p>
   The <b>Tree Graph</b> <button b_bargraph> presents a graphical display of the
-  <b>performance</b> of each move in the current tree.  Only
-  moves that have been played at least 1% of the time, and on 5 occasions
+  performance of each move in the current tree.
+  </p>
+  <p>
+  Only moves that have been played at least 1% of the time, and on 5 occasions,
   are displayed.  Percentage scores are always from White's
   perspective even when it is Black to move. The graphs can be saved
   in PostScript format via the file menu.
@@ -2115,7 +2120,7 @@ it is best to close the Tree Window first.</i>
   opening offers <a OpeningTrainer>Training / Openings</a>.
   </p>
 
-  <h3>Caching for faster results</h3>
+  <h3>Caching for Faster Results</h3>
   <p>
   Scid maintains a cache of tree search results for the positions with the
   most matching games. If you move forward and back in a game in tree mode,
@@ -2161,11 +2166,11 @@ it is best to close the Tree Window first.</i>
   <p>
   Note that a tree cache (.stc) file is completely redundant; you can remove
   it without affecting the database, and in fact it is removed by Scid
-  whenever an action occurs that could leave it out of date -- for example,
+  whenever an action occurs that could leave it out of date; for example,
   adding or replacing a game, or sorting the database.
   </p>
 
-  <p><footer>Updated: Scid vs. PC 4.2, November 2010</footer></p>
+  <p><footer>Updated: Scid vs. PC 4.3, January 2011</footer></p>
 }
 
 set helpTitle(TreeMasks) "Masks for Trees"

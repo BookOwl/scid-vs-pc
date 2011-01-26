@@ -81,10 +81,10 @@ proc ::tree::make { { baseNumber -1 } } {
   set tree(locked$baseNumber) 0
   set tree(base$baseNumber) $baseNumber
   set tree(status$baseNumber) ""
-  set tree(bestMax$baseNumber) 50
+  set tree(bestMax$baseNumber) 20
   set tree(order$baseNumber) "frequency"
   trace variable tree(bestMax$baseNumber) w "::tree::doTrace bestMax"
-  set tree(bestRes$baseNumber) "1-0 0-1 1/2 *"
+  set tree(bestRes$baseNumber) All
   trace variable tree(bestRes$baseNumber) w "::tree::doTrace bestRes"
 
   bind $w <Destroy> "
@@ -532,7 +532,12 @@ proc ::tree::dorefresh { baseNumber } {
   updateTitle
 
   # If the Tree base is not the current one, updates the Tree base to the first game in filter 
-  # This enables one to browse/load best games, continuing on from current position *if filter is being adjusted*
+  # This enables one to browse/load best games, continuing on from current position
+  # *IF FILTER IS BEING ADJUSTED*
+
+  # Fulvio's (unused) SCID patch incorporates ply into the bestgames widget, removing the need for this "sc_game load"
+  # but it also necessitates some tkscid changes.. so won't implement at the moment
+
   if {$baseNumber != [sc_base current] } {
     set current [sc_base current]
     sc_base switch $baseNumber
@@ -1012,59 +1017,43 @@ proc ::tree::best { baseNumber } {
   if {! [winfo exists .treeWin$baseNumber]} { return }
   if {! [winfo exists $w]} {
     toplevel $w
-    wm title $w "Scid: $::tr(TreeBestGames) $baseNumber: [file tail [sc_base filename $baseNumber]]"
+    wm title $w "Scid: $::tr(TreeBestGames) [file tail [sc_base filename $baseNumber]]"
     setWinLocation $w
+    setWinSize $w
     bind $w <Escape> "destroy $w"
     bind $w <F1> {helpWindow Tree Best}
     pack [frame $w.b] -side bottom -fill x
     pack [frame $w.opt] -side bottom -fill x
-    set pane [::utils::pane::Create $w.pane blist bpgn 520 320 0.6]
-    ::utils::pane::SetRange $w.pane 0.3 0.8
-    pack $pane -side top -expand true -fill both
-    scrollbar $pane.blist.ybar -command "$pane.blist.list yview" -takefocus 0
-    listbox $pane.blist.list  -yscrollcommand "$pane.blist.ybar set" -font font_Small
-    pack $pane.blist.ybar -side right -fill y
-    pack $pane.blist.list -side left -fill both -expand yes
-    bind $pane.blist.list <<ListboxSelect>> "::tree::bestPgn $baseNumber"
-    bind $pane.blist.list <Double-Button-1> "::tree::bestBrowse $baseNumber"
+    listbox $w.blist
+    pack $w.blist -side top -expand true -fill both
+    scrollbar $w.blist.ybar -command "$w.blist.list yview" -takefocus 0
+    listbox $w.blist.list  -yscrollcommand "$w.blist.ybar set" -font font_Small
+    pack $w.blist.ybar -side right -fill y
+    pack $w.blist.list -side left -fill both -expand yes
+    bind $w.blist.list <<ListboxSelect>> "::tree::bestPgn $baseNumber"
+    bind $w.blist.list <Double-Button-1> "::tree::bestBrowse $baseNumber"
 
-    scrollbar $pane.bpgn.ybar -command "$pane.bpgn.text yview" -takefocus 0
-    text $pane.bpgn.text -width 50 -height 20 -background gray90 \
-        -cursor top_left_arrow -yscrollcommand "$pane.bpgn.ybar set" -wrap word \
-        -state disabled -font font_Small
-    pack $pane.bpgn.ybar -side right -fill y
-    pack $pane.bpgn.text -side left -fill both -expand yes
-    set t $pane.bpgn.text
-    bind $t <ButtonPress-1> "::pgn::ShowBoard $pane.bpgn.text 4 %x %y %X %Y"
-    bind $t <ButtonRelease-1> ::pgn::HideBoard
-    bind $t <ButtonPress-2> "::pgn::ShowBoard $pane.bpgn.text 4 %x %y %X %Y"
-    bind $t <ButtonRelease-2> ::pgn::HideBoard
-    bind $t <ButtonPress-3> "::pgn::ShowBoard $pane.bpgn.text 4 %x %y %X %Y"
-    bind $t <ButtonRelease-3> :::pgn::HideBoard
+    label $w.opt.lmax -text "Number of Games:" -font font_Small
+    tk_optionMenu $w.opt.max tree(bestMax$baseNumber) 10 20 50 100 200 500
+    $w.opt.max configure -font font_Small -relief ridge -borderwidth 0 -direction right
 
-    label $w.opt.lmax -text $::tr(TreeBest:) -font font_Small
-    set m [tk_optionMenu $w.opt.max tree(bestMax$baseNumber) 10 20 50 100 200 500]
-    $m configure -font font_Small
-    $w.opt.max configure -font font_Small
-    label $w.opt.lres -text " $::tr(Result):" -font font_Small
-    set m [tk_optionMenu $w.opt.res tree(bestRes$baseNumber) \
-        "1-0 0-1 1/2 *" 1-0 0-1 "1-0 0-1" 1/2-1/2]
-    $m configure -font font_Small
-    $w.opt.res configure -font font_Small
+    label $w.opt.lres -text " $::tr(Result:)" -font font_Small
+    tk_optionMenu $w.opt.res tree(bestRes$baseNumber) All 1-0 0-1 {1-0 0-1} 1/2
+    $w.opt.res configure -font font_Small -relief ridge -borderwidth 0 -direction right
 
     button $w.b.browse -text $::tr(BrowseGame) -command "::tree::bestBrowse $baseNumber"
     button $w.b.load -text $::tr(LoadGame) -command "::tree::bestLoad $baseNumber"
     button $w.b.merge -text $::tr(MergeGame) -command "::tree::bestMerge $baseNumber"
-    button $w.b.close -text $::tr(Close) -command "destroy $w"
+    button $w.b.close -text $::tr(Close) -command "destroy $w" -width 9
     foreach i {browse load merge close} { $w.b.$i configure -font font_Small }
-    pack $w.b.close $w.b.merge $w.b.load $w.b.browse \
-        -side right -padx 1 -pady 2
-    pack $w.opt.lmax $w.opt.max -side left -padx 0 -pady 2
-    pack $w.opt.lres $w.opt.res -side left -padx 0 -pady 2
+    pack $w.b.browse $w.b.load $w.b.merge -side left -padx 5 -pady 5
+    pack $w.b.close -side right -padx 5 -pady 5
+    pack $w.opt.lmax $w.opt.max -side left -padx 5 -pady 5
+    pack $w.opt.lres $w.opt.res -side left -padx 5 -pady 5
     bind $w <Configure> "recordWinSize $w"
-    focus $w.pane.blist.list
+    focus $w.blist.list
   }
-  $w.pane.blist.list delete 0 end
+  $w.blist.list delete 0 end
   set tree(bestList$baseNumber) {}
   set count 0
 
@@ -1073,17 +1062,17 @@ proc ::tree::best { baseNumber } {
     incr count
     # listbox widget does not like ' character
     set line [ string map { "'" "\'" } $line ]
-    $w.pane.blist.list insert end "[format %02d $count]:  $line"
+    $w.blist.list insert end "  $line"
     lappend tree(bestList$baseNumber) $idx
   }
-  catch {$w.pane.blist.list selection set 0}
+  catch {$w.blist.list selection set 0}
   ::tree::bestPgn $baseNumber
 }
 
 ################################################################################
 proc ::tree::bestLoad { baseNumber } {
   global tree
-  if {[catch {set sel [.treeBest$baseNumber.pane.blist.list curselection]}]} { return }
+  if {[catch {set sel [.treeBest$baseNumber.blist.list curselection]}]} { return }
   if {[catch {set g [lindex $tree(bestList$baseNumber) $sel]}]} { return }
   # if {$tree(locked$baseNumber)} { sc_base switch $tree(base$baseNumber) }
   sc_base switch $tree(base$baseNumber)
@@ -1093,7 +1082,7 @@ proc ::tree::bestLoad { baseNumber } {
 ################################################################################
 proc ::tree::bestMerge { baseNumber } {
   global tree
-  if {[catch {set sel [.treeBest$baseNumber.pane.blist.list curselection]}]} { return }
+  if {[catch {set sel [.treeBest$baseNumber.blist.list curselection]}]} { return }
   if {[catch {set gnum [lindex $tree(bestList$baseNumber) $sel]}]} { return }
   set base $baseNumber
   if {$tree(locked$baseNumber)} { set base $tree(base$baseNumber) }
@@ -1103,7 +1092,7 @@ proc ::tree::bestMerge { baseNumber } {
 ################################################################################
 proc ::tree::bestBrowse { baseNumber } {
   global tree
-  if {[catch {set sel [.treeBest$baseNumber.pane.blist.list curselection]}]} { return }
+  if {[catch {set sel [.treeBest$baseNumber.blist.list curselection]}]} { return }
   if {[catch {set gnum [lindex $tree(bestList$baseNumber) $sel]}]} { return }
   set base $baseNumber
   if {$tree(locked$baseNumber)} { set base $tree(base$baseNumber) }
@@ -1113,10 +1102,7 @@ proc ::tree::bestBrowse { baseNumber } {
 ################################################################################
 proc ::tree::bestPgn { baseNumber } {
   global tree
-  set t .treeBest$baseNumber.pane.bpgn.text
-  $t configure -state normal
-  $t delete 1.0 end
-  if {[catch {set sel [.treeBest$baseNumber.pane.blist.list curselection]}]} { return }
+  if {[catch {set sel [.treeBest$baseNumber.blist.list curselection]}]} { return }
   if {[catch {set g [lindex $tree(bestList$baseNumber) $sel]}]} { return }
 
   set base $baseNumber
@@ -1124,23 +1110,6 @@ proc ::tree::bestPgn { baseNumber } {
   if {[catch {sc_game summary -base $base -game $g header} header]} { return }
   if {[catch {sc_game summary -base $base -game $g moves} moves]} { return }
   if {[catch {sc_filter value $base $g} ply]} { return }
-  $t tag configure header -foreground darkBlue
-  $t tag configure start -foreground darkRed
-  $t insert end $header header
-  $t insert end "\n\n"
-  set m 0
-  set moves [::trans $moves]
-  foreach move $moves {
-    incr m
-    if {$m < $ply} {
-      $t insert end $move start
-    } else {
-      $t insert end $move
-    }
-    $t insert end " "
-  }
-
-  $t configure -state disabled
 }
 
 ################################################################################
@@ -1165,6 +1134,7 @@ proc ::tree::graph { baseNumber } {
   if {! [winfo exists $w]} {
     toplevel $w
     setWinLocation $w
+    setWinSize $w
     bind $w <Escape> "destroy $w"
     bind $w <F1> {helpWindow Tree Graph}
 
@@ -1183,7 +1153,7 @@ proc ::tree::graph { baseNumber } {
     $w.c create text 25 10 -tag text -justify center -width 1 -font font_Regular -anchor n
     update
     bind $w.c <Button-1> "::tree::graph $baseNumber"
-    wm title $w "Scid: Tree Graph $baseNumber: [file tail [sc_base filename $baseNumber]]"
+    wm title $w "Scid: Tree Graph [file tail [sc_base filename $baseNumber]]"
 
     standardShortcuts $w
     ::tree::configGraphMenus {} $baseNumber
