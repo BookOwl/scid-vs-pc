@@ -1443,6 +1443,8 @@ namespace eval CorrespondenceChess {
 	proc checkCorrBase {} {
 		global ::CorrespondenceChess::CorrBase
 
+		### This gets called at start-up.... bad.
+
 		if {![file exists $CorrBase]} {
 			set fName [file rootname $CorrBase]
 			if {[catch {sc_base create $fName} result]} {
@@ -1451,7 +1453,11 @@ namespace eval CorrespondenceChess {
 			}
 			# Type 6 == Correspondence chess
 			sc_base type [sc_base current] 6
+
 			sc_base close
+
+			### Seems to be some init bug - Hack to keep clipbase open
+			sc_base switch clipbase
 		}
 	}
 

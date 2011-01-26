@@ -945,11 +945,11 @@ proc ::windows::switcher::Open {} {
     menu $f.menu -tearoff 0
     $f.menu add command -label [tr SearchReset] -command "sc_filter reset $i; ::windows::stats::Refresh"
 
+    $f.menu add command -label "Change icon" -command "changeBaseType $i .glistWin.baseWin"
+
     set closeLabel "[tr FileClose] [tr Database]"
     if {$i == [sc_info clipbase]} { set closeLabel [tr EditReset] }
     $f.menu add command -label $closeLabel -command [list ::file::Close $i]
-
-    $f.menu add command -label "Change icon" -command "changeBaseType $i .glistWin.baseWin"
 
     $f.menu add separator
 
