@@ -271,6 +271,7 @@ proc ::windows::gamelist::Open {} {
   set w .glistWin
   toplevel $w
   wm iconname $w "Scid: [tr WindowsGList]"
+  wm withdraw $w
   setWinLocation $w
   setWinSize $w
   ::windows::gamelist::SetSize
@@ -496,6 +497,7 @@ proc ::windows::gamelist::Open {} {
 
   ::windows::gamelist::Refresh
   ::windows::switcher::Open
+  wm state $w normal
 }
 
 proc ::windows::gamelist::Configure {window} {

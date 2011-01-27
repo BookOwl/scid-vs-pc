@@ -1015,7 +1015,7 @@ proc ::windows::switcher::Refresh {} {
 
       $w.c.f$i configure -background $color
 
-      # this should only be done once in DB open &&&
+      # this should only be done once in DB open, not here &&&
       set dbtype [sc_base type $i]
       if {$dbtype >= $numBaseTypeIcons} { set dbtype 0 }
       if {$icons} {
