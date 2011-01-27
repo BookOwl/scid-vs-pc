@@ -5621,6 +5621,8 @@ sc_filter_textfind (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv
 	stringcompare = strCaseContains;
 
     const char * text = argv[4];
+    char datestring[100];
+    datestring[0]=0;
     if (db->inUse) {
         NameBase * nb = db->nb;
         uint filteredCount = strGetUnsigned (argv[3]);
@@ -5630,9 +5632,11 @@ sc_filter_textfind (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv
             if (db->filter->Get(start) > 0) {
                 filteredCount++;
                 IndexEntry * ie = db->idx->FetchEntry (start);
+		date_DecodeToString(ie->GetDate(), datestring);
                 if ((stringcompare (ie->GetWhiteName (nb), text))  ||
                     (stringcompare (ie->GetBlackName (nb), text))  ||
                     (stringcompare (ie->GetEventName (nb), text))  ||
+                    (stringcompare (datestring, text))  ||
                     (stringcompare (ie->GetSiteName (nb), text)))
                 {
 			return setUintResult (ti, filteredCount);
@@ -5667,6 +5671,8 @@ sc_filter_textfilter (ClientData cd, Tcl_Interp * ti, int argc, const char ** ar
 	stringcompare = strCaseContains;
 
     const char * text = argv[3];
+    char datestring[100];
+    datestring[0]=0;
 
     if (db->inUse) {
         NameBase * nb = db->nb;
@@ -5678,9 +5684,12 @@ sc_filter_textfilter (ClientData cd, Tcl_Interp * ti, int argc, const char ** ar
             if (db->filter->Get(start) > 0) {
                 filteredCount++;
                 IndexEntry * ie = db->idx->FetchEntry (start);
+		date_DecodeToString(ie->GetDate(), datestring);
+
                 if ((stringcompare (ie->GetWhiteName (nb), text))  ||
                     (stringcompare (ie->GetBlackName (nb), text))  ||
                     (stringcompare (ie->GetEventName (nb), text))  ||
+                    (stringcompare (datestring, text))  ||
                     (stringcompare (ie->GetSiteName (nb), text)))
                 {
 			// return setUintResult (ti, filteredCount);
