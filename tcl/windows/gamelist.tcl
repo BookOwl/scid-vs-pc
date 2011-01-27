@@ -88,21 +88,23 @@ proc ::windows::gamelist::FilterText {} {
   variable findtext
 
   ::utils::history::AddEntry ::windows::gamelist::findtext $findtext
+  # clear highlighted text in widget
   .glistWin.b.find selection range end end
 
-  set temp [sc_filter textfilter $::windows::gamelist::findcase $findtext]
-  #         sc_filter textfilter  CASE_FLAG  TEXT
+  busyCursor .glistWin
+  update
 
-  busyCursor .glistWin 0
-
-  if {$temp == 0} {
-    set glstart 1
-    ::windows::gamelist::Refresh first
-  } else {
-    set glstart 1
-    ::windows::gamelist::Refresh first
-    .glistWin.tree selection set [lindex [.glistWin.tree children {}] 0]
+  foreach needle [split $findtext +] {
+    # temp is number of items removed - currently unused
+    #         sc_filter textfilter CASE_FLAG                      TEXT
+    set temp [sc_filter textfilter $::windows::gamelist::findcase [string trim $needle]]
   }
+
+  set glstart 1
+  ::windows::gamelist::Refresh first
+  .glistWin.tree selection set [lindex [.glistWin.tree children {}] 0]
+
+  unbusyCursor .glistWin
 }
 
 ### Rewrote this ... again. S.A
@@ -116,17 +118,57 @@ proc ::windows::gamelist::FindText {} {
   ::utils::history::AddEntry ::windows::gamelist::findtext $findtext
   .glistWin.b.find selection range end end
 
-  set temp [sc_filter textfind $::windows::gamelist::findcase $glstart $findtext]
-  busyCursor .glistWin 0
-  if {$temp < 1} {
-    set glstart 1
-    ::windows::gamelist::Refresh first
+  set matches_needed [llength [split $findtext +]]
+  set needles [split $findtext +]
+  busyCursor .glistWin
+  update
+
+  # Step through glist, looking for an entry that matches all needles
+  while {1} {
+    set matches 0
+    set firstmatch 0
+    set minmatch 0
+    foreach needle $needles {
+      set temp [sc_filter textfind $::windows::gamelist::findcase $glstart [string trim $needle]]
+      set glstart [expr $temp - 1]
+      if {$temp < 1} {
+	break
+      }
+      if {$firstmatch == 0} {
+	incr matches
+        set firstmatch $temp
+	set minmatch $temp
+        continue
+      }
+      if {$temp == $firstmatch} {
+        incr matches
+        if {$temp < $minmatch} {
+          set minmatch $temp
+        }
+      } else {
+        break
+      }
+    }
+    incr glstart
+    if {$matches >= $matches_needed} {
+      # success
+      break
+    }
+    if {$matches == 0 || $minmatch == 0} {
+      # give up
+      set glstart 1
+      break
+    }
+    set glstart $minmatch
+  }
+
+  ::windows::gamelist::Refresh first
+  if {$glstart == 1} {
     bell
   } else {
-    set glstart $temp
-    ::windows::gamelist::Refresh first
     .glistWin.tree selection set [lindex [.glistWin.tree children {}] 0]
   }
+  unbusyCursor .glistWin
 }
 
 proc ::windows::gamelist::Load {number} {
@@ -384,7 +426,7 @@ proc ::windows::gamelist::Open {} {
   # button $w.b.findall -font font_Small -relief flat -text "Find All" \
   #   -command {::windows::gamelist::FindText}
 
-  ttk::combobox $w.b.find -width 12 -font font_Small -textvariable ::windows::gamelist::findtext
+  ttk::combobox $w.b.find -width 15 -font font_Small -textvariable ::windows::gamelist::findtext
   ::utils::history::SetCombobox ::windows::gamelist::findtext $w.b.find
 
   # didn't use to work
@@ -399,7 +441,9 @@ proc ::windows::gamelist::Open {} {
   checkbutton $w.b.findcase -text "Ignore Case" -font font_Small \
     -variable ::windows::gamelist::findcase -onvalue 1 -offvalue 0
 
-  pack $w.b.findcase $w.b.find $w.b.findlabel $w.b.filter $w.b.reset -side right
+  pack $w.b.findcase -side right
+  pack $w.b.find -side right ; # -expand 1 -fill x
+  pack $w.b.findlabel $w.b.filter $w.b.reset -side right
   pack $w.b.current $w.b.negate $w.b.remove $w.b.removeabove $w.b.removebelow -side left
 
   ### Bottom row of buttons , etc
@@ -680,7 +724,6 @@ proc ::windows::gamelist::Refresh {{see {}}} {
   } 
 
   setGamelistTitle
-  # unbusyCursor .glistWin
 
   $w.vsb configure -to [expr $totalSize - $glistSize]
 
