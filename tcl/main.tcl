@@ -1567,7 +1567,6 @@ bind . <Return> {
 }
 
 bind . <Control-z> {toggleAutoplay; break}
-bind . <Escape> cancelAutoplay
 
 set trialMode 0
 

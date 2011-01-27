@@ -1257,6 +1257,7 @@ foreach i {a b c d e f g h 1 2 3 4 5 6 7 8} {
 bind . <BackSpace> ::move::Back
 bind . <space>  moveEntry_Complete
 bind . <Escape> moveEntry_Clear
+bind . <Tab> raiseAllWindows
 
 # bind . <BackSpace> moveEntry_Backspace
 # bind . <Delete> moveEntry_Backspace
@@ -1767,6 +1768,16 @@ proc getTopLevel {} {
     # Tk report .__tk_filedialog as toplevel window even if the window has been closed
     if { [ lsearch $topl $c ] == -1 && [ lsearch $exclude $c ] == -1 && ![string match "\.__tk*" $c] } {
       lappend topl $c
+    }
+  }
+
+  # Place .glistWin, .pgnWin last so raiseAllWindows places them on top. Side effects ?
+
+  foreach win {.pgnWin .glistWin}  {
+    set pos [lsearch $topl $win]
+    if {$pos >=0} {
+      set topl [lreplace $topl $pos $pos]
+      lappend topl $win
     }
   }
   return $topl
