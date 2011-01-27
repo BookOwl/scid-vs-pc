@@ -1017,14 +1017,14 @@ proc ::tree::best { baseNumber } {
   if {! [winfo exists .treeWin$baseNumber]} { return }
   if {! [winfo exists $w]} {
     toplevel $w
-    wm title $w "Scid: $::tr(TreeBestGames) [file tail [sc_base filename $baseNumber]]"
+    wm title $w "Scid: $::tr(TreeBestGames) \[[file tail [sc_base filename $baseNumber]]\]"
     setWinLocation $w
     setWinSize $w
     bind $w <Escape> "destroy $w"
     bind $w <F1> {helpWindow Tree Best}
     pack [frame $w.b] -side bottom -fill x
     pack [frame $w.opt] -side bottom -fill x
-    listbox $w.blist
+    frame $w.blist
     pack $w.blist -side top -expand true -fill both
     scrollbar $w.blist.ybar -command "$w.blist.list yview" -takefocus 0
     listbox $w.blist.list  -yscrollcommand "$w.blist.ybar set" -font font_Small

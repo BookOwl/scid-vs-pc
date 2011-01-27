@@ -543,7 +543,7 @@ translate E Training {Training}
 translate E LockTree {Lock}
 translate E TreeLocked {locked}
 translate E TreeBest {Best}
-translate E TreeBestGames {Best Tree Games}
+translate E TreeBestGames {Best Games}
 # Note: the next message is the tree window title row. After editing it,
 # check the tree window to make sure it lines up with the actual columns.
 translate E TreeTitleRow \
