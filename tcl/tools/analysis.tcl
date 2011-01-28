@@ -1923,13 +1923,12 @@ proc makeAnalysisWin { {n 1} } {
   pack  $w.b -side top -fill x
   set relief flat	; # -width 24 -height 24
 
-  checkbutton $w.b.automove -image tb_training  -indicatoron false -width 24 -height 24 \
-    -command "toggleAutomove $n" -variable analysis(automove$n) -relief $relief
-  ::utils::tooltip::Set $w.b.automove $::tr(Training)
+  # start/stop engine analysis
+  button $w.b.startStop -image tb_pause -command "toggleEngineAnalysis $n" -relief $relief
+  ::utils::tooltip::Set $w.b.startStop "$::tr(StopEngine)"
 
-  checkbutton $w.b.lockengine -image tb_lockengine -indicatoron false -width 24 -height 24 \
-    -variable analysis(lockEngine$n) -command "toggleLockEngine $n" -relief $relief
-  ::utils::tooltip::Set $w.b.lockengine $::tr(LockEngine)
+  button $w.b.move -image tb_addmove -command "makeAnalysisMove $n" -relief $relief
+  ::utils::tooltip::Set $w.b.move $::tr(AddMove)
 
   button $w.b.line -image tb_addvar -command "addAnalysisVariation $n" -relief $relief
   ::utils::tooltip::Set $w.b.line $::tr(AddVariation)
@@ -1937,16 +1936,13 @@ proc makeAnalysisWin { {n 1} } {
   button $w.b.alllines -image tb_addallvars -command "addAllVariations $n" -relief $relief
   ::utils::tooltip::Set $w.b.alllines $::tr(AddAllVariations)
 
-  button $w.b.move -image tb_addmove -command "makeAnalysisMove $n" -relief $relief
-  ::utils::tooltip::Set $w.b.move $::tr(AddMove)
-
   spinbox $w.b.multipv -from 1 -to 8 -increment 1 -textvariable analysis(multiPVCount$n) -width 2 \
       -command "changePVSize $n" 
   ::utils::tooltip::Set $w.b.multipv $::tr(Lines)
 
-  # start/stop engine analysis
-  button $w.b.startStop -image tb_pause -command "toggleEngineAnalysis $n" -relief $relief
-  ::utils::tooltip::Set $w.b.startStop "$::tr(StopEngine)(a)"
+  checkbutton $w.b.lockengine -image tb_lockengine -indicatoron false -width 24 -height 24 \
+    -variable analysis(lockEngine$n) -command "toggleLockEngine $n" -relief $relief
+  ::utils::tooltip::Set $w.b.lockengine $::tr(LockEngine)
 
   set ::finishGameMode 0
   button $w.b.finishGame -image finish_off -command "toggleFinishGame $n"  -relief $relief
@@ -1954,6 +1950,10 @@ proc makeAnalysisWin { {n 1} } {
 
   button $w.b.showboard -image tb_coords -command "toggleAnalysisBoard $n" -relief $relief
   ::utils::tooltip::Set $w.b.showboard $::tr(ShowAnalysisBoard)
+
+  checkbutton $w.b.automove -image tb_training  -indicatoron false -width 24 -height 24 \
+    -command "toggleAutomove $n" -variable analysis(automove$n) -relief $relief
+  ::utils::tooltip::Set $w.b.automove $::tr(Training)
 
   if {!$annotateModeButtonValue && !$annotateMode} {
     checkbutton $w.b.annotate -image tb_annotate -indicatoron false -width 24 -height 24 \
@@ -1980,8 +1980,8 @@ proc makeAnalysisWin { {n 1} } {
   ::utils::tooltip::Set $w.b.help $::tr(Help)
 
 
-  pack $w.b.startStop $w.b.lockengine $w.b.move $w.b.line $w.b.alllines \
-       $w.b.multipv $w.b.showinfo $w.b.priority $w.b.showboard \
+  pack $w.b.startStop $w.b.move $w.b.line $w.b.alllines \
+       $w.b.multipv $w.b.lockengine $w.b.showinfo $w.b.priority $w.b.showboard \
        $w.b.update $w.b.finishGame $w.b.annotate $w.b.automove -side left -pady 2 -padx 1
   pack $w.b.help -side right -pady 2 -padx 1
 
@@ -2523,7 +2523,7 @@ proc toggleEngineAnalysis {n {force 0}} {
   if {$analysis(analyzeMode$n)} {
     stopAnalyzeMode $n
     $b configure -image tb_play
-    ::utils::tooltip::Set $b "$::tr(StartEngine)(a)"
+    ::utils::tooltip::Set $b "$::tr(StartEngine)"
     # reset lock mode and disable lock button
     set analysis(lockEngine$n) 0
     toggleLockEngine $n
@@ -2531,7 +2531,7 @@ proc toggleEngineAnalysis {n {force 0}} {
   } else  {
     startAnalyzeMode $n
     $b configure -image tb_pause
-    ::utils::tooltip::Set $b "$::tr(StopEngine)(a)"
+    ::utils::tooltip::Set $b "$::tr(StopEngine)"
     # enable lock button
     .analysisWin$n.b.lockengine configure -state normal
   }
