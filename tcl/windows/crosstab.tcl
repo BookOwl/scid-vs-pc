@@ -374,8 +374,5 @@ proc ::crosstab::Refresh {} {
     $w.b.$button configure -state normal
   }
   $w.f.text configure -state disabled
-  if {![winfo exists .tourney]} {
-    raiseWin $w
-  }
 }
 
