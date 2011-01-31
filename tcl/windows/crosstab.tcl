@@ -296,6 +296,8 @@ proc ::crosstab::Open {} {
   pack $w.b.cancel $w.b.update -side right -pady 3 -padx 5
   pack $w.b.setfilter $w.b.addfilter $w.b.space $w.b.label $w.b.type $w.b.font -side left -pady 3 -padx 5
 
+  standardShortcuts $w
+
   bind $w <F1> { helpWindow Crosstable }
   bind $w <Return> { .crosstabWin.b.update invoke }
   bind $w <Escape> { .crosstabWin.b.cancel invoke }
@@ -306,12 +308,11 @@ proc ::crosstab::Open {} {
   bind $w <Left> { .crosstabWin.f.text xview scroll -1 units }
   bind $w <Right> { .crosstabWin.f.text xview scroll 1 units }
   bind $w <Key-Home> {
-    .crosstabWin.f.text xview moveto 0
+    .crosstabWin.f.text yview moveto 0
   }
   bind $w <Key-End> {
-    .crosstabWin.f.text xview moveto 0.99
+    .crosstabWin.f.text yview moveto 0.99
   }
-  standardShortcuts $w
 
   # MouseWheel Bindings:
   bind $w <MouseWheel> { .crosstabWin.f.text yview scroll [expr {- (%D / 120)}] units}

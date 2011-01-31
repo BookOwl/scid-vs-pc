@@ -1038,7 +1038,7 @@ proc ::tree::best { baseNumber } {
     $w.opt.max configure -font font_Small -relief ridge -borderwidth 0 -direction right
 
     label $w.opt.lres -text " $::tr(Result:)" -font font_Small
-    tk_optionMenu $w.opt.res tree(bestRes$baseNumber) All 1-0 0-1 {1-0 0-1} 1/2
+    tk_optionMenu $w.opt.res tree(bestRes$baseNumber) All 1-0 0-1 {1-0 0-1} {1/2-1/2}
     $w.opt.res configure -font font_Small -relief ridge -borderwidth 0 -direction right
 
     button $w.b.browse -text $::tr(BrowseGame) -command "::tree::bestBrowse $baseNumber"
