@@ -1921,7 +1921,7 @@ proc makeAnalysisWin { {n 1} } {
 
   frame $w.b
   pack  $w.b -side top -fill x
-  set relief flat	; # -width 24 -height 24
+  set relief flat	; # -width 32 -height 32
 
   # start/stop engine analysis
   button $w.b.startStop -image tb_pause -command "toggleEngineAnalysis $n" -relief $relief
@@ -1940,7 +1940,7 @@ proc makeAnalysisWin { {n 1} } {
       -command "changePVSize $n" 
   ::utils::tooltip::Set $w.b.multipv $::tr(Lines)
 
-  checkbutton $w.b.lockengine -image tb_lockengine -indicatoron false -width 24 -height 24 \
+  checkbutton $w.b.lockengine -image tb_lockengine -indicatoron false -width 32 -height 32 \
     -variable analysis(lockEngine$n) -command "toggleLockEngine $n" -relief $relief
   ::utils::tooltip::Set $w.b.lockengine $::tr(LockEngine)
 
@@ -1951,12 +1951,12 @@ proc makeAnalysisWin { {n 1} } {
   button $w.b.showboard -image tb_coords -command "toggleAnalysisBoard $n" -relief $relief
   ::utils::tooltip::Set $w.b.showboard $::tr(ShowAnalysisBoard)
 
-  checkbutton $w.b.automove -image tb_training  -indicatoron false -width 24 -height 24 \
+  checkbutton $w.b.automove -image tb_training  -indicatoron false -width 32 -height 32 \
     -command "toggleAutomove $n" -variable analysis(automove$n) -relief $relief
   ::utils::tooltip::Set $w.b.automove $::tr(Training)
 
   if {!$annotateModeButtonValue && !$annotateMode} {
-    checkbutton $w.b.annotate -image tb_annotate -indicatoron false -width 24 -height 24 \
+    checkbutton $w.b.annotate -image tb_annotate -indicatoron false -width 32 -height 32 \
       -variable annotateModeButtonValue -command "initAnnotation $n" -relief $relief
     ::utils::tooltip::Set $w.b.annotate $::tr(Annotate...)
   } else {
@@ -1964,7 +1964,7 @@ proc makeAnalysisWin { {n 1} } {
   }
 
   checkbutton $w.b.priority -image tb_cpu -indicatoron false -variable analysis(priority$n) \
-    -onvalue idle -offvalue normal -command "setAnalysisPriority $n" -relief $relief -width 24 -height 24
+    -onvalue idle -offvalue normal -command "setAnalysisPriority $n" -relief $relief -width 32 -height 32
   ::utils::tooltip::Set $w.b.priority $::tr(LowPriority)
 
   # UCI does not support . command (Is this correct ? S.A)
@@ -1972,11 +1972,11 @@ proc makeAnalysisWin { {n 1} } {
     -command "if {$analysis(uci$n)} {sendToEngine $n .}"  -relief $relief
   ::utils::tooltip::Set $w.b.update $::tr(Update)
 
-  checkbutton $w.b.showinfo -image tb_engine -indicatoron false -width 24 -height 24 \
+  checkbutton $w.b.showinfo -image tb_engine -indicatoron false -width 32 -height 32 \
     -variable analysis(showEngineInfo$n) -command "toggleEngineInfo $n" -relief $relief
   ::utils::tooltip::Set $w.b.showinfo $::tr(ShowInfo)
 
-  button $w.b.help -image tb_help  -command {helpWindow Analysis} -relief $relief
+  button $w.b.help -image tb_help  -command {helpWindow Analysis} -relief $relief -width 32 -height 32
   ::utils::tooltip::Set $w.b.help $::tr(Help)
 
 
@@ -3271,22 +3271,17 @@ fvrosWNnS9AlNhiEYLJDRooSIkCAoC2oT546deZwQAnakMEHDx04aLAw4cKGfwi62wH/BsnJ
 8gsS5Few/98BQHiAVwcbNJwkEAAyROICJC84gkIj/wjwR4BzvDFGDgEUBEAQn3Do4Sf/EMAH
 GySCYQUMBlIkkUP/DGAFEj7A0IIKI6S40IoNLaTjjjsGBAA7
 }
+
 image create photo tb_training -data {
-R0lGODlhGAAYAMZcADs7Ozw8PD09PUBAQEFBQUJCQkNDQ0REREVFRXc7C0hI
-SHg8C09IQ3o9DXs+DYBCEIVFEodHE4hIFG9vb3Jwb3Jxb3Z0c85rG4CAgMhw
-KNBvIdRuHNtyHtd1JoyMjOR4IeR4Io+Pj+V5IpKSkpOTk+p8I+d9J5WVle1+
-JJaWlsyIUeaCMJeXl5iYmPGBJsSOY/OCJ5qampubm5ycnNGOWZ2dneKLRcaT
-asqTZp+fn9OSX6CgoMmVbKGhodKUY6KioqSkpOuSSqWlpdKZa6ampqenp9+Z
-YaioqKmpqaqqquyZVqysrK6urq+vr7mtpLCwsLKysrOzs7S0tLa2tre3t7i4
-uLm5ubq6uru7u8C8usDAwM/Pz///////////////////////////////////
-////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////yH5BAEKAH8A
-LAAAAAAYABgAAAf9gH+Cg4SFhoeGNxINCQk4iJBBEEFKQUYJQZCHDjYrMDAi
-IA+ahg80KC4uJh0JpIUPJiUfHxwara6DCSYmGxsXF7e4f5gmGb/AwoJBjVtO
-CxGZyYIGW1sM0dJ/1FsG2dMV1RTdpBMGCOcIFtXVCAcGBgUDCoVEBFn39yEz
-6yT49wUTCCEg4i9LjRgtUpAYUZBIgUFEBhS8J8PDCRIsJgIUdICgDx0TQ95z
-KEhAliGoVIgM+fCPySw8XqxkWXLmzJYCtGC5UmWKlChQnjBZkgTJESJAfvTI
-kaNlAClXrFDxGbTJ0CRHighJuiPHjpYYBIgVG6CsWbMA0qrF4M1QIAA7
+R0lGODlhGAAYAKUnAAAAAHJwb3Jxb3Z0c85rG8hwKNBvIdtyHtd1JoyMjOR4
+IeR4Io+Pj+V5IpKSkpOTk+p8I+d9J5WVle1+JJaWlsyIUeaCMJiYmPGBJsSO
+Y/OCJ5qampubm5ycnJ2dndOSX6CgoMmVbNKUY+uSStKZa9+ZYeyZVsC8us/P
+z8C8usC8usC8usC8usC8usC8usC8usC8usC8usC8usC8usC8usC8usC8usC8
+usC8usC8usC8usC8usC8usC8usC8usC8uiH5BAEKAD8ALAAAAAAYABgAAAad
+wJ9wSCwaj0eAEoBsCgEj06jEdBqhFo2msahahwDLBIOJILzfHyACUSgOBvR3
+HXETCHLrWlG449NESigoSoBFAIN5gIiEhoECgwGKV0sAA4ODA5WKACeengwd
+mA+fnnKdpSceGxcUDw6pJ16osRwJEqSxsk+eIh+6wLtqJyRjFcGxVaghGcjJ
+vM7AyiDU1dbX19PY29izm9/gk44/QQA7
 }
 
 image create photo tb_addmove -data {

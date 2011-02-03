@@ -178,13 +178,15 @@ proc ::file::Open {{fName ""} {parent .}} {
       ::recentFiles::remove $fName
     }
   } else {
-    # PGN file:
     if {![file exists $fName]} {
       set err 1
       ::recentFiles::remove $fName
       tk_messageBox -icon warning -type ok -parent $parent \
           -title "Scid: Error opening file" -message "File $fName doesn't exist."
     } else {
+      puts {Unknown file type, assuming PGN.}
+      ## todo : check why .zip doesn't work
+
       set result "File $fName is not readable."
       if {(![file readable $fName])  || \
 	    [catch {sc_base create $fName true} result]} {
