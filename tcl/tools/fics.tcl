@@ -164,10 +164,12 @@ namespace eval fics {
     update
 
     # First handle the case of a network down
-    if { [catch {set sockChan [socket -async $::fics::server $::fics::port_fics]} err]} {
-      ::fics::unbusy_config
-      tk_messageBox -icon error -type ok -title "Unable to contact $::fics::server" -message $err -parent .ficsConfig
-      return
+    if {[catch {
+          set sockChan [socket -async $::fics::server $::fics::port_fics]
+       } err ]} {
+	  ::fics::unbusy_config
+          tk_messageBox -icon error -type ok -title "Unable to contact $::fics::server" -message $err -parent .ficsConfig
+          return
     }
 
     # Then the case of a proxy
@@ -317,7 +319,7 @@ namespace eval fics {
     set ::fics::playing 0
 
     set row 0
-    # silence button actually only affects tells now
+    # silence button actually only affects tells now, so should be renamed chanoff.. but for compatibility has been left as-is
     checkbutton $w.bottom.buttons.silence -text "Tells" -state disabled \
     -variable ::fics::silence -command {
       ::fics::writechan "set chanoff [expr !$::fics::silence]" noecho
@@ -871,6 +873,8 @@ namespace eval fics {
       writechan "set gin  0"
       writechan "set silence 1"
       writechan "set echo 1"
+      # pychess sets this bloody thing
+      writechan "set availinfo off"
       writechan "set chanoff [expr !$::fics::silence]"
       writechan "set cshout $::fics::shouts"
       writechan "set shout $::fics::shouts"

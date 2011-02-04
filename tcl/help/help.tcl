@@ -5773,9 +5773,9 @@ for info about specific commands and variables.
 
 <p>
 Visit Freechess.org for info about
-<url http://www.freechess.org/Help/HelpFiles/variables.html/>Variables</url>
+<url http://www.freechess.org/Help/HelpFiles/variables.html>Variables</url>
 or 
-<url http://www.freechess.org/Help/HelpFiles/commands.html/>Commands</url>
+<url http://www.freechess.org/Help/HelpFiles/commands.html>Commands</url>
 <br>
   <p><footer>Updated: Scid vs. PC 3.4.1, September 2010</footer></p>
 }

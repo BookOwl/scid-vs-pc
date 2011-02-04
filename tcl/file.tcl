@@ -184,8 +184,10 @@ proc ::file::Open {{fName ""} {parent .}} {
       tk_messageBox -icon warning -type ok -parent $parent \
           -title "Scid: Error opening file" -message "File $fName doesn't exist."
     } else {
-      puts {Unknown file type, assuming PGN.}
-      ## todo : check why .zip doesn't work
+      if {[file extension $fName] != ".pgn" && [file extension $fName] != ".PGN"} {
+	puts {Unknown file type, assuming PGN.}
+      }
+      ## note : .zip isn't supported by zlib. Only .pgn.gz is supported.
 
       set result "File $fName is not readable."
       if {(![file readable $fName])  || \
