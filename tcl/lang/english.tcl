@@ -197,7 +197,7 @@ menuText E ToolsSeriousGame "Serious game"  0 {Play a serious game}
 menuText E ToolsTrainTactics "Puzzle"  0 {Solve "Mate in" puzzles}
 menuText E ToolsTrainCalvar "Calculation of variations"  0 {Calculation of variations training}
 menuText E ToolsTrainFindBestMove "Find best move"  0 {Find best move}
-menuText E ToolsTrainFics "Internet"  0 {Play on freechess.org}
+menuText E ToolsTrainFics "FICS (Internet)"  0 {Play on freechess.org}
 menuText E ToolsBookTuning "Book tuning" 0 {Book tuning}
 
 ### menuText E ToolsNovagCitrine "Novag Citrine" 0 {Novag Citrine}

@@ -37,6 +37,8 @@ namespace eval fics {
   set ignore_draw 0
   set ignore_takeback 0
 
+  set ping {}
+
   ################################################################################
   #
   ################################################################################
@@ -58,7 +60,7 @@ namespace eval fics {
 
     toplevel $w
     wm state $w withdrawn
-    wm title $w "ConfigureFics"
+    wm title $w "Configure Fics"
 
     label $w.lLogin -text "Username"
     entry $w.login -width 20 -textvariable ::fics::login
@@ -253,7 +255,12 @@ namespace eval fics {
     frame $w.bottom.buttons
     frame $w.bottom.clocks
     frame $w.bottom.graph 
+
     pack $w.bottom.clocks -side left -padx 10 -pady 5
+
+    label $w.bottom.clocks.ping -textvar ::fics::ping
+    pack $w.bottom.clocks.ping -side bottom
+
     pack $w.bottom.buttons -side right -padx 10 -pady 20 -anchor center
     # Pack graph when "Offers graph" clicked
 
@@ -283,7 +290,7 @@ namespace eval fics {
     $w.console.text tag configure gameresult -foreground SlateBlue1
     $w.console.text tag configure channel -foreground rosybrown
 
-    entry $w.command.entry -insertofftime 0 -bg grey75 -font font_Large
+    entry $w.command.entry -insertofftime 0 -bg grey75 -font font_Large -state disabled
     button $w.command.send -text Send -command ::fics::cmd
     button $w.command.clear -text Clear -command "
       $w.console.text delete 0.0 end
@@ -451,6 +458,8 @@ namespace eval fics {
     fileevent $sockchan readable ::fics::readchan
 
     unbusyCursor .
+
+    initPing
   }
 
   proc recordFicsSize {w} {
@@ -884,6 +893,7 @@ namespace eval fics {
       .fics.bottom.buttons.offers       configure -state normal
       .fics.bottom.buttons.silence      configure -state normal
       .fics.bottom.buttons.shouts	configure -state normal
+      .fics.command.entry		configure -state normal
       return
     }
 
@@ -1452,7 +1462,7 @@ namespace eval fics {
     after cancel ::fics::updateOffers
 
     set w .fics.bottom.graph
-    set size 5
+    set size 7
     set idx 0
 
     #first erase the canvas
@@ -1494,20 +1504,21 @@ namespace eval fics {
 
     foreach g $::fics::soughtlist {
       array set l $g
-      set fillcolor green
+      set fillcolor skyblue ; set outline blue
+
       # if the time is too large, put it in red
       set tt [expr $l(time_init) + $l(time_inc) * 2 / 3 ]
       if { $tt > $offers_maxtime } {
         set tt $offers_maxtime
-        set fillcolor red
+        set fillcolor red ; set outline darkred
       }
-      # if a computer, put it in blue
+      # Computer opponent
       if { [string match "*(C)" $l(name)] } {
-        set fillcolor blue
+        set fillcolor green ; set outline darkgreen
       }
-      # if player without ELO, in gray
+      # Player without ELO
       if { [string match "Guest*" $l(name)] } {
-        set fillcolor gray
+        set fillcolor gray ; set outline darkgray
       }
       
       set x [ expr $xoff + $tt * ($width - $xoff) / ($offers_maxtime - $offers_mintime)]
@@ -1517,10 +1528,10 @@ namespace eval fics {
       } else {
         set object "rectangle"
       }
-      $w.c create $object [expr $x - $size ] [expr $y - $size ] [expr $x + $size ] [expr $y + $size ] -tag game_$idx -fill $fillcolor
+      $w.c create $object [expr $x - $size ] [expr $y - $size ] [expr $x + $size ] [expr $y + $size ] -tag game_$idx -fill $fillcolor -outline $outline
       
       $w.c bind game_$idx <Enter> "::fics::setOfferStatus $idx %x %y"
-      $w.c bind game_$idx <Leave> "::fics::setOfferStatus -1 %x %y"
+      $w.c bind game_$idx <Leave> "::fics::delOfferStatus $idx"
       $w.c bind game_$idx <ButtonPress> "::fics::getOffersGame $idx"
       incr idx
     }
@@ -1531,25 +1542,34 @@ namespace eval fics {
   ################################################################################
   proc getOffersGame { idx } {
     array set ga [lindex $::fics::soughtlist $idx]
-    catch { writechan "play $ga(game)" echo }
+    catch {
+      writechan "play $ga(game)" echo
+    }
   }
   ################################################################################
   #
   ################################################################################
-  proc setOfferStatus { idx x y } {
+
+  proc delOfferStatus { idx } {
+    set w .fics.bottom.graph
+
+    $w.c itemconfig game_$idx -width 1
+    $w.c delete status
+  }
+
+  proc setOfferStatus { idx x y {exit 0}} {
 
     set w .fics.bottom.graph
-    if { $idx != -1 } {
-      set gl [lindex $::fics::soughtlist $idx]
-      if { $gl == "" } { return }
-      array set l [lindex $::fics::soughtlist $idx]
-      set m "$l(game) $l(name)($l(elo)) $l(time_init)/$l(time_inc) $l(rated) $l(type) $l(color) $l(start)"
-      
-      $w.c create text 35 0 -tags status -text "$m" -font font_Regular -anchor nw
-      $w.c raise game_$idx
-    } else {
-      $w.c delete status
-    }
+
+    $w.c itemconfig game_$idx -width 2
+    set gl [lindex $::fics::soughtlist $idx]
+    if { $gl == "" } { return }
+    array set l [lindex $::fics::soughtlist $idx]
+    set m "$l(game) $l(name)($l(elo)) $l(time_init)/$l(time_inc) $l(rated) $l(type) $l(color) $l(start)"
+    
+    $w.c create text 35 0 -tags status -text "$m" -font font_Regular -anchor nw
+    $w.c raise game_$idx
+
   }
   ################################################################################
   # hmmm.. not very  unique procname S.A.
@@ -1613,14 +1633,43 @@ namespace eval fics {
     }
     set ::fics::playing 0
     set ::fics::observedGame -1
-    catch {
-      ::close $::fics::sockchan
-    }
+    # Hmmm... why do we need to catch these ?
+    catch { ::close $::fics::sockchan }
+    catch { ::close $::fics::sockping }
     if { ! $::windowsOS } { catch { exec -- kill -s INT [ $::fics::timeseal_pid ] }  }
 
     catch {destroy .ficsOffers}
     destroy .fics
   }
+
+
+  proc initPing {} {
+    # get ping to report in every 10 seconds
+    set ::fics::sockping [open "|ping -i 10 $::fics::server" r]
+    fconfigure $::fics::sockping -blocking 0 -buffering line -translation auto 
+    fileevent $::fics::sockping readable ::fics::readPing
+    updateConsole "Starting Ping"
+  }
+
+  proc readPing {} {
+    variable logged
+    if {[eof $::fics::sockping]} {
+      fileevent $::fics::sockping readable {}
+      puts "Ping exitted"
+      return
+    }
+    set line [gets $::fics::sockping]
+    
+    if {[regexp {.* time=(.*) } $line t1 t2]} {
+      set ::fics::ping "ping: $t2 ms"
+    } else {
+      set ::fics::ping {ping ....}
+    }
+    ### Windows/ FreeBSD ?
+    ### ping: 64 bytes from fics.freechess.org (69.36.243.188): icmp_seq=24 ttl=55 time=265 ms
+  }
+
+
 }
 
 ###

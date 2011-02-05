@@ -5647,8 +5647,8 @@ timing (5 min., no increment) while the second red line marks the standard
 <p>
 Additionally, the offers use the following coding:
     <ul>
-       <li><green>Green</green>: offers from human opponents</li>
-       <li><blue>Blue</blue>: offers from computer opponents</li>
+       <li><green>Green</green>: offers from computer opponents</li>
+       <li><blue>Blue</blue>: offers from human opponents</li>
        <li><red>Red</red>: games with a total time of more than 1 hour</li>
        <li><gray>Gray</gray>: anonymous offers, i.e. offers from guest logins</li>
        <li>Boxes: unrated games</li>
