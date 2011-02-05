@@ -80,9 +80,11 @@ games.</p>
 
 <p>
 To create a user account, visit <url http://www.freechess.org>www.freechess.org</url>;
-though it is also possible to play anonymously.
-Using Fics with Scid vs. PC is done via the
-<run ::fics::config><green>Play--<gt>Internet</green></run> menu item.
+though it is also possible to play anonymously. Existing players may peruse their games
+at <url http://ficsgames.com>http://ficsgames.com</url>.
+</p>
+<p>
+To start FICS use <run ::fics::config><green>Play--<gt>FICS (Internet)</green></run>.
 </p>
 
 <li><a FICSlogin>Logging In</a>
@@ -4321,6 +4323,7 @@ set helpText(Related) {<h1>Related Links</h1>
   <li>Scid <url http://scid.sourceforge.net/>http://scid.sourceforge.net/</url></li>
   <li>Scid mailing list  <url http://sourceforge.net/mailarchive/forum.php?forum_name=scid-users>http://sourceforge.net/mailarchive/forum.php...</url></li>
   <li>Fics homepage  <url http://www.freechess.org>www.freechess.org</url></li>
+  <li>Fics games <url http://ficsgames.com>http://ficsgames.com</url></li>
   <li>Player Information resources  <url http://linweb.ris.at/~nagl/index.html>http://linweb.ris.at/~nagl</url></li>
   <li>Professional quality chess icons, providing this project's new logo.  <url www.virtualpieces.net>www.virtualpieces.net</url></li>
   <li>The PGN Standard, created by Steven J. Edwards in 1994, explains the PGN

@@ -171,19 +171,22 @@ namespace eval fics {
        } err ]} {
 	  ::fics::unbusy_config
           tk_messageBox -icon error -type ok -title "Unable to contact $::fics::server" -message $err -parent .ficsConfig
+	  destroy $w
           return
     }
 
     # Then the case of a proxy
     set timeOut 5
     set i 0
+    # this needs work to enable "Cancel"
     while { $i <= $timeOut } {
       after 1000
 
       if { [catch {set peer [ fconfigure $sockChan -peername ]} err]} {
         if {$i == $timeOut} {
 	  ::fics::unbusy_config
-          tk_messageBox -icon error -type ok -title "Unable to contact $::fics::server" -message $err -parent .ficsConfig
+          tk_messageBox -icon error -type ok -title "Unable to connect $::fics::server" -message $err -parent .ficsConfig
+	  destroy $w
           return
         }
       } else  {
@@ -1636,6 +1639,7 @@ namespace eval fics {
     # Hmmm... why do we need to catch these ?
     catch { ::close $::fics::sockchan }
     catch { ::close $::fics::sockping }
+    after cancel ::fics::clearPing
     if { ! $::windowsOS } { catch { exec -- kill -s INT [ $::fics::timeseal_pid ] }  }
 
     catch {destroy .ficsOffers}
@@ -1652,7 +1656,11 @@ namespace eval fics {
   }
 
   proc readPing {} {
-    variable logged
+
+    # ping should report every ten seconds (see above), so if it doesn't, zero ping label
+    after cancel ::fics::clearPing
+    after 18000  ::fics::clearPing 
+    
     if {[eof $::fics::sockping]} {
       fileevent $::fics::sockping readable {}
       puts "Ping exitted"
@@ -1667,6 +1675,10 @@ namespace eval fics {
     }
     ### Windows/ FreeBSD ?
     ### ping: 64 bytes from fics.freechess.org (69.36.243.188): icmp_seq=24 ttl=55 time=265 ms
+  }
+
+  proc clearPing {} {
+    set ::fics::ping {ping ....}
   }
 
 
