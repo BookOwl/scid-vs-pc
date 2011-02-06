@@ -17,6 +17,8 @@
 # Grid fatality head shot too. Actually, it's nice now that it resizes properly.
 
 ### Default fonts are defined in start.tcl
+# There's still a minor bug:
+# Set Regular font to italic -> quit Scid & restart -> bold font no longer italic
 
 proc FontDialog {name {parent .}} {
   global fd_family fd_style fd_size fd_close
@@ -182,6 +184,10 @@ proc FontDialog {name {parent .}} {
 
   button $w.buttons.default -text Default -command "
     reinitFont $name
+    if {\"$name\" == {Regular}} {
+      # reset bold italic to straight
+      font configure font_Bold -family {$fd_family} -size {$fd_size} -slant roman
+    }
     FontDialogFamily $w.buttons.list $font_name $w.family_entry
     FontDialogStyle $w.buttons.list $font_name $w.style_entry
     FontDialogSize $w.buttons.list $font_name $w.size_entry
@@ -211,7 +217,7 @@ proc FontDialog {name {parent .}} {
   bind $w <Escape> "$w.buttons.cancel invoke"
   bind $w <Configure> "recordWinSize $w"
   update
-  # placeWinOverParent $w $parent
+  placeWinOverParent $w $parent
   wm state $w normal
 
   ### Tried to change this thing... but gave up.
@@ -362,8 +368,10 @@ proc FontDialogRegen { font_name } {
   }
 
   # Change font to have new characteristics.
-  font configure $font_name -family $fd_family \
-    -size $fd_size -slant $slant -weight $weight
+  font configure $font_name -family $fd_family -size $fd_size -slant $slant -weight $weight
+  if {$font_name == "font_Regular" } {
+      font configure font_Bold -family $fd_family -size $fd_size -slant $slant
+  }
 }
 
 ### End of file: font.tcl

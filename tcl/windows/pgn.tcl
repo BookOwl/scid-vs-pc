@@ -91,6 +91,10 @@ namespace eval pgn {
     $w.menu.opt add checkbutton -label PgnOptStripMarks \
         -variable ::pgn::stripMarks -command {updateBoard -pgn}
 
+    $w.menu.opt add separator
+
+    $w.menu.opt add command -label [tr OptionsFonts] -command "FontDialogRegular $w"
+
     $w.menu.color add command -label PgnColorHeader \
         -command {::pgn::ChooseColor Header "header text"}
     $w.menu.color add command -label PgnColorAnno \
