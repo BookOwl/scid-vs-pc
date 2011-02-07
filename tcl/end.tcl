@@ -1752,9 +1752,10 @@ updateLocale
 update
 bind . <Configure> {recordWinSize .}
 
-# Bindings to map/unmap all windows when main window is mapped:
-bind .statusbar <Map> { showHideAllWindows deiconify}
-bind .statusbar <Unmap> { showHideAllWindows iconify}
+### bind this to the main canvas as statusbar can now be hidden
+# Bindings to map/unmap all windows when main window is mapped
+bind .board.bd <Map> {puts map; raiseAllWindows }
+bind .board.bd <Unmap> { showHideAllWindows iconify}
 
 ################################################################################
 # returns a list of all toplevel windows, except some that are utilities
@@ -1788,25 +1789,22 @@ proc getTopLevel {} {
 # showHideAllWindows:
 #   Arranges for all major Scid windows to be shown/hidden
 #   Should be called type = "iconify" or "deiconify"
-#
-proc showHideAllWindows {type} {
 
-  # Don't do this if user option is off:
+# Scid main windows are
+#   .baseWin .glistWin .pgnWin .tourney .maintWin \
+#   .ecograph .crosstabWin .treeWin .analysisWin1 .anslysisWin2 \
+#   .playerInfoWin .commentWin .repWin .statsWin .tbWin \
+#   .sb .sh .sm .noveltyWin .emailWin .oprepWin .plist \
+#   .rgraph .sgraph .importWin .helpWin .tipsWin
+
+proc showHideAllWindows {type} {
   if {! $::autoIconify} { return }
 
   # Some window managers like KDE generate Unmap events for other
   # situations like switching to another desktop, etc.
   # So if the main window is still mapped, do not iconify others:
-  if {($type == "iconify")  && ([winfo ismapped .] == 1)} { return }
 
-  # Now iconify/deiconify all the major Scid windows that exist:
-  # , which are below, but we use [getTopLevel] instead.
-  #
-  # .baseWin .glistWin .pgnWin .tourney .maintWin \
-  # .ecograph .crosstabWin .treeWin .analysisWin1 .anslysisWin2 \
-  # .playerInfoWin .commentWin .repWin .statsWin .tbWin \
-  # .sb .sh .sm .noveltyWin .emailWin .oprepWin .plist \
-  # .rgraph .sgraph .importWin .helpWin .tipsWin
+  if {($type == "iconify")  && ([winfo ismapped .] == 1)} { return }
 
   foreach w [getTopLevel] {
     if {[winfo exists $w]} { catch {wm $type $w} }
@@ -1814,14 +1812,17 @@ proc showHideAllWindows {type} {
 }
 
 proc raiseAllWindows {} {
-  # Don't do this if auto-raise option is turned off:
   if {! $::autoRaise} { return }
 
-  showHideAllWindows deiconify
-
   foreach w [getTopLevel] {
-    if {[winfo exists $w]} { catch { raise $w } }
+    if {[winfo exists $w]} {
+      catch {
+	wm deiconify $w
+	raise $w
+      }
+    }
   }
+  raise .
 }
 
 # Hack to extract gif images out of Scid:
