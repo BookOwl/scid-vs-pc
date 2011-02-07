@@ -338,7 +338,7 @@ proc ::bookmarks::Edit {} {
     destroy .bmedit
   }
 
-  pack $w.b1.up $w.b1.down $w.b1.newFolder $w.b1.newGame $w.b1.delete -side left -padx 2 -pady 2
+  pack $w.b1.up $w.b1.down $w.b1.newGame $w.b1.newFolder $w.b1.delete -side left -padx 2 -pady 2
   # pack $w.b1.up $w.b1.down -side left -padx 2 -pady 2
   pack $w.b2.displaytype -side left
   pack $w.b2.cancel $w.b2.help $w.b2.ok -side right -padx 2 -pady 2
