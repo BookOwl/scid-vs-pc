@@ -125,6 +125,8 @@ proc ::tourney::Open {} {
   bindFocusColors $f.event
   pack $f.event $f.eventlab -side right
 
+  focus $f.event
+
   # Country
 
   label $f.cn -text "  $::tr(Country)" -font $fbold
@@ -189,7 +191,6 @@ proc ::tourney::Open {} {
   ::utils::history::SetCombobox ::tourney::player $f.player
   bindFocusColors $f.player
   pack $f.player $f.playerlab -side right
-  # focus $f.site
 
   # Button bar
 

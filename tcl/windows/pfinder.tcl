@@ -121,10 +121,9 @@ proc ::plist::Open {} {
   ttk::combobox $f.name -textvariable ::plist::name -width 20
   ::utils::history::SetCombobox ::plist::name $f.name
   bindFocusColors $f.name
-
-  # focus $f.name
-
   pack $f.name $f.nlabel -side right
+
+  focus $f.name
 
   set f $w.o2
 
