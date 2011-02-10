@@ -140,6 +140,8 @@ proc updateHelpWindow {name {heading {}}} {
       } 
 
       selection clear .helpWin.text
+      # todo fix this for windows &&&
+
       set result [.helpWin.text search -nocase $::helpWin(find) $::helpWin(findindex)]
       if {$result == {}} {
 	set ::helpWin(findindex) 1.0

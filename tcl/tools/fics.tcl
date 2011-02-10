@@ -462,7 +462,10 @@ namespace eval fics {
 
     unbusyCursor .
 
-    initPing
+    # todo: fix this for windows &&&
+    if { ! $::windowsOS } {
+      initPing
+    }
   }
 
   proc recordFicsSize {w} {
