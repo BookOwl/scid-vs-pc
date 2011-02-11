@@ -8114,10 +8114,10 @@ sc_game_push (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
 {
     bool copy = false;
     bool copyfast = false;
-    if (argc > 2  &&  strIsPrefix (argv[2], "copy")) {
+    if ( argc > 2 && !strcmp( argv[2], "copy" ) ) {
         copy = true;
     }
-    if (argc > 2  &&  strIsPrefix (argv[2], "copyfast")) {
+    else if ( argc > 2 && !strcmp( argv[2], "copyfast" ) ) {
         copy = true;
         copyfast = true;
     }
