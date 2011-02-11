@@ -2129,6 +2129,7 @@ Game::WriteMoveList (TextBuffer *tb, uint plyCount,
 
     while (CurrentMove->marker != END_MARKER) {
         moveT *m = CurrentMove;
+        bool commentLine = false;
 
         // If the move being printed is the game's "current move" then
         // set the current PGN position accordingly:
@@ -2365,10 +2366,8 @@ Game::WriteMoveList (TextBuffer *tb, uint plyCount,
 
                 if ((PgnStyle & PGN_STYLE_INDENT_COMMENTS) && VarDepth == 0) {
                     if (IsColorFormat()) {
-                        tb->PrintString ("</ip1>");
-                        // Modification to remove extra lines
-			if (!(PgnStyle & PGN_STYLE_COLUMN) || (CurrentPos->GetToMove() == WHITE))
-                          tb->PrintString ("<br>");
+                        tb->PrintString ("</ip1><br>");
+                        commentLine = true;
                     } else {
                         tb->SetIndent (tb->GetIndent() - 4); tb->Indent();
                     }
@@ -2426,8 +2425,11 @@ Game::WriteMoveList (TextBuffer *tb, uint plyCount,
             // Doesn't indent first var in column mode properly 
             // if including !(PgnStyle & PGN_STYLE_COLUMN) here.
             // But as-is, depth 3 vars don't indent in COLUMN mode (bug)
-            if ((PgnStyle & PGN_STYLE_INDENT_VARS) && IsColorFormat())
-                tb->PrintString ("<br>");
+            if ((PgnStyle & PGN_STYLE_INDENT_VARS) && IsColorFormat()) {
+                if ( !commentLine ) {
+		  tb->PrintString ("<br>");
+                }
+            }
             for (uint i=0; i < m->numVariations; i++) {
                 if (PgnStyle & PGN_STYLE_INDENT_VARS) {
                     if (IsColorFormat()) {
