@@ -581,7 +581,7 @@ translate E Moves {Moves}
 menuText E FinderFile "Finder" 0
 menuText E FinderFileSubdirs "Look in Subdirectories" 0
 menuText E FinderFileClose "Close" 0
-menuText E FinderSort "Sort" 0
+menuText E FinderSort "Sort By" 0
 menuText E FinderSortType "Type" 0
 menuText E FinderSortSize "Games" 0
 menuText E FinderSortMod "Modified" 0
@@ -593,8 +593,8 @@ menuText E FinderTypesOld "Old-Format Scid Databases" 0
 menuText E FinderTypesPGN "PGN Files" 0
 menuText E FinderTypesEPD "EPD Files" 0
 menuText E FinderHelp "Help" 0
-menuText E FinderHelpFinder "File Finder Help" 0
-menuText E FinderHelpIndex "Help Index" 0
+menuText E FinderHelpFinder "Finder Help" 0
+menuText E FinderHelpIndex "Index" 0
 translate E FileFinder {File Finder}
 translate E FileSavePgn {Save PGN}
 translate E FinderDir {Directory}

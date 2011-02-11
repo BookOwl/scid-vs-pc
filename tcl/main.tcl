@@ -685,20 +685,30 @@ proc getMyPlayerName {{n 0}} {
 #   Check if either player in the current game has a name that matches
 #   a pattern in the specified list and if so, flip the board if
 #   necessary to show from that players perspective.
-#
+
+set ::flippedForPlayer 0
+
 proc flipBoardForPlayerNames {namelist {board .board}} {
   set white [sc_game info white]
   set black [sc_game info black]
   foreach pattern $namelist {
     if {[string match $pattern $white]} {
       ::board::flip $board 0
+      set ::flippedForPlayer 0
       return
     }
     if {[string match $pattern $black]} {
       ::board::flip $board 1
+      set ::flippedForPlayer 1
       return
     }
   }
+  # This is a little tricky... but not too important
+  # If previously we flipped, revert back
+  if {$::flippedForPlayer} {
+    ::board::flip $board 0
+  }
+  set ::flippedForPlayer 0
 }
 
 # updateBoard:

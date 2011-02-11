@@ -2,15 +2,7 @@
 ####################
 # File finder window
 
-set ::file::finder::data(dir) [pwd]
-set ::file::finder::data(sort) name
-set ::file::finder::data(recurse) 0
 set ::file::finder::data(stop) 0
-set ::file::finder::data(Scid) 1
-set ::file::finder::data(PGN) 1
-set ::file::finder::data(Rep) 1
-set ::file::finder::data(EPD) 1
-set ::file::finder::data(Old) 1
 
 image create photo ::file::finder::updir -data {
   R0lGODdhGQAUAKEAANnZ2QAAAPD/gAAngSwAAAAAGQAUAAACToSPqcvtEGJ8LIh7A00WY71B
@@ -63,11 +55,11 @@ proc ::file::finder::Open {} {
       -accelerator F1 -command {helpWindow Finder}
   $w.menu.help add command -label FinderHelpIndex -command {helpWindow Index}
 
-  pack [frame $w.d] -side top -fill x
+  pack [frame $w.d -relief flat] -side top -fill x
   label $w.d.label -font font_Bold ;# given a text value below
   pack $w.d.label 
 
-  frame $w.t
+  frame $w.t -relief flat
   frame $w.b
   text $w.t.text -width 70 -height 25 -font font_Small -wrap none \
       -fg black  -yscrollcommand "$w.t.ybar set" -setgrid 1 \
@@ -94,6 +86,7 @@ proc ::file::finder::Open {} {
   checkbutton $w.b.sub -text [tr FinderFileSubdirs] \
       -variable ::file::finder::data(recurse) -onvalue 1 -offvalue 0 \
       -command ::file::finder::Refresh
+  # the stop button seems broke S.A.
   dialogbutton $w.b.stop -textvar ::tr(Stop) -command {set finder(stop) 1 }
   dialogbutton $w.b.help -textvar ::tr(Help) -command {helpWindow Finder}
   dialogbutton $w.b.close -textvar ::tr(Close) -command "destroy $w"
@@ -159,7 +152,7 @@ proc ::file::finder::Refresh {{newdir ""}} {
   set hc lemonchiffon
   $t delete 1.0 end
   set dcount 0
-  $t insert end "$::tr(FinderDirs)\n" {center bold}
+  # $t insert end [string toupper "$::tr(FinderDirs)\n"] {center bold}
   set dlist {}
 
   # Insert drive letters, on Windows:
@@ -215,11 +208,10 @@ proc ::file::finder::Refresh {{newdir ""}} {
     foreach i {Name Size Type Mod Path} v {name size type mod path} {
       $t tag configure s$i -font font_SmallBold
       $t tag bind s$i <1> "set ::file::finder::data(sort) $v; ::file::finder::Refresh -fast"
-      $t tag bind s$i <Any-Enter> "$t tag config s$i -foreground red"
-      $t tag bind s$i <Any-Leave> "$t tag config s$i -foreground {}"
+      $t tag bind s$i <Any-Enter> "$t tag config s$i -underline 1"
+      $t tag bind s$i <Any-Leave> "$t tag config s$i -underline 0"
     }
-    $t insert end "$::tr(FinderFiles)\n" {center bold}
-    $t insert end " "
+    # $t insert end [string toupper "$::tr(FinderFiles)\n"] {center bold}
     $t insert end "[tr FinderSortName]" sName
     $t insert end "\t"
     $t insert end "[tr FinderSortSize]" sSize
@@ -507,7 +499,7 @@ proc ::file::finder::ConfigMenus {{lang ""}} {
   foreach idx {0 1 2 3 4} tag {Type Size Mod Name Path} {
     configMenuText $m.sort $idx FinderSort$tag $lang
   }
-  foreach idx {1 2 3 4 5} tag {Scid Old PGN EPD} {
+  foreach idx {1 2 3 4} tag {Scid Old PGN EPD} {
     configMenuText $m.types $idx FinderTypes$tag $lang
   }
   foreach idx {0 1} tag {Finder Index} {

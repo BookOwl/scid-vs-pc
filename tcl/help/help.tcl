@@ -1463,8 +1463,7 @@ set helpTitle(Finder) "File Finder Window"
 set helpText(Finder) {<h1>File Finder Window</h1>
   <p>
   With the <run ::file::finder::Open><green>File--<gt>Finder</green></run>
-  you can browse the
-filesystem for Scid files, perform backups and other file
+  you can browse the filesystem for Scid files, perform backups and other file
 operations.
   </p>
 
@@ -1489,7 +1488,7 @@ operations.
 databases, which consist of several files.
   </p>
 
-  <h3>Looking in subdirectories</h3>
+  <h3>Looking in Subdirectories</h3>
   <p>
   This checkbox makes Scid recursively examine subdirectories for compatible
   files.  This, however, can take a long time, so you may not
@@ -1497,7 +1496,7 @@ databases, which consist of several files.
   interrupted by pressing the <b>Stop</b> button.
   </p>
 
-  <h3>Games field</h3>
+  <h3>Games Field</h3>
   <p>
   The meaning of this field depends on the file type;
   For Databases and PGN files it is
