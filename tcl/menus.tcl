@@ -285,8 +285,8 @@ $m add command -label EditCopyBoard -accelerator "Ctrl+Shift+C" -command copyFEN
 bind . <Control-C> copyFEN
 set helpMessage($m,[incr menuindex]) EditCopyBoard
 
-$m add command -label {Copy PGN} -command ::pgn::copyPgn
-incr menuindex
+$m add command -label EditCopyPGN -command ::pgn::copyPgn
+set helpMessage($m,[incr menuindex]) EditCopyPGN
 
 $m add command -label EditPasteBoard -accelerator "Ctrl+Shift+V" -command pasteFEN
 bind . <Control-V> pasteFEN
@@ -1517,7 +1517,7 @@ proc setLanguageMenus {{lang ""}} {
     configMenuText .menu.file.utils.name [tr FileMaintName$tag $oldLang] \
         FileMaintName$tag $lang
   }
-  foreach tag {PastePGN Setup CopyBoard PasteBoard Reset Copy Paste Add Delete First Main Trial Strip } {
+  foreach tag {PastePGN Setup CopyBoard CopyPGN PasteBoard Reset Copy Paste Add Delete First Main Trial Strip } {
     configMenuText .menu.edit [tr Edit$tag $oldLang] Edit$tag $lang
   }
   foreach tag {Comments Vars Begin End} {

@@ -88,6 +88,7 @@ menuText O EditSetup "Still opp stilling..." 0 \
   {Lag en startstilling for dette partiet}
 menuText O EditCopyBoard "Copy position" 6 \
   {Copy the current board in FEN notation to the text selection (clipboard)} ;# ***
+menuText O EditCopyPGN "Copy PGN" 0 {}
 menuText O EditPasteBoard "Lim inn stilling" 0 \
   {Lag en startstilling fra gjeldende utvalg (utklippstavle)}
 

@@ -89,6 +89,7 @@ menuText I EditSetup "Posizione definita..." 10 \
   {Definisce una posizione per la partita corrente}
 menuText I EditCopyBoard "Copia posizione" 6 \
   {Copia la posizione della scacchiera corrente in notazione FEN come testo (clipboard)}
+menuText I EditCopyPGN "Copia PGN" 0 {}
 menuText I EditPasteBoard "Incolla come posizione di partenza" 12 \
   {Imposta la posizione di partenza dalla selezione del testo corrente (clipboard)}
 

@@ -105,6 +105,7 @@ menuText D EditSetup "Stellungseingabe..." 0 \
   {Neue Stellung eingeben (FEN oder manuell)}
 menuText D EditCopyBoard "Stellung kopieren" 10 \
   {Aktuelle Brettposition in die Zwischenablage kopieren (im FEN-Format)}
+menuText D EditCopyPGN "Stellung PGN" 10 {}
 menuText D EditPasteBoard "Stellung einfügen" 12 \
   {Stellung aus der Zwischenablage (im FEN-Format) einfügen}
 

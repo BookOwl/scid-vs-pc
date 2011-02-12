@@ -6,15 +6,21 @@
 ### Import game window
 
 proc importPgnGame {} {
-  if {[winfo exists .importWin]} { return }
-  set w [toplevel .importWin]
+  set w .importWin
+
+  if {[winfo exists $w]} {
+    raiseWin $w
+    return
+  }
+
+  toplevel $w
   wm state $w withdrawn
   wm title $w "Scid: Import PGN game"
 
   frame $w.b
   pack $w.b -side bottom -pady 6 
 
-  set pane [::utils::pane::Create $w.pane edit err 650 350 0.7]
+  set pane [::utils::pane::Create $w.pane edit err 500 300 0.75]
   pack $pane -side top -expand true -fill both
 
   set edit $w.pane.edit
@@ -82,11 +88,10 @@ proc importPgnGame {} {
   if {![catch {set texttopaste [selection get]}]} {
     $w.pane.edit.text insert end $texttopaste
   } 
-  if {![info exists texttopaste] || $texttopaste == {}} {
+  # if {![info exists texttopaste] || $texttopaste == {}} 
     $w.pane.err.text insert end $::tr(ImportHelp1)
-    $w.pane.err.text insert end "\n"
-    $w.pane.err.text insert end $::tr(ImportHelp2)
-  }
+    # $w.pane.err.text insert end "\n"
+    # $w.pane.err.text insert end $::tr(ImportHelp2)
 
   bind $w <F1> { helpWindow Import }
   bind $w <Escape> { .importWin.b.cancel invoke }
@@ -101,6 +106,8 @@ proc importPgnGame {} {
   update
   placeWinOverParent $w .
   wm state $w normal
+  bind $w.pane.err.text <FocusIn> "focus $w.pane.edit.text"
+  bind $w.pane.err.text <Control-z> "catch {$w.pane.edit.text edit undo}"
 }
 
 

@@ -117,13 +117,15 @@ menuText E EditCopy "Copy to Clipbase" 1 \
   {Copy this game to the Clipbase database}
 menuText E EditPaste "Paste from Clipbase" 1 \
   {Paste the active Clipbase game here}
-menuText E EditPastePGN "Paste PGN" 18 \
+menuText E EditPastePGN "Paste PGN" 0 \
   {Interpret the clipboard text as PGN and paste it here}
 menuText E EditSetup "Setup Board" 0 \
   {Set the start position for this game}
-menuText E EditCopyBoard "Copy FEN" 0 \
+menuText E EditCopyBoard "Copy FEN" 5 \
   {Copy the current board in FEN notation to the text selection (clipboard)}
-menuText E EditPasteBoard "Paste FEN" 0 \
+menuText E EditCopyPGN "Copy PGN" 0 \
+  {Copy the current PGN to the text selection (clipboard)}
+menuText E EditPasteBoard "Paste FEN" 6 \
   {Set the start board from the current text selection (clipboard)}
 
 # Game menu:
@@ -1066,8 +1068,8 @@ translate E ExitDialog {Do you really want to exit Scid?}
 translate E ExitUnsaved {The following databases have unsaved games. If you exit now, these changes will be lost.}
 
 # Import window:
-translate E PasteCurrentGame {Paste current game}
-translate E ImportHelp1 {Enter or paste a PGN-format game in the frame above.}
+translate E PasteCurrentGame {Paste Current Game}
+translate E ImportHelp1 {Enter or Paste PGN in the above frame.}
 translate E ImportHelp2 {Any errors importing the game will be displayed here.}
 translate E OverwriteExistingMoves {Overwrite existing moves ?}
 

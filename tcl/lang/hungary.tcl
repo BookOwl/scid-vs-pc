@@ -86,6 +86,7 @@ menuText H EditSetup "Kezdõállás felállítása..." 14 \
   {Felállítja a kezdõállást ehhez a játszmához.}
 menuText H EditCopyBoard "Állás másolása FEN-ként" 17 \
   {Az aktuális állást FEN-jelöléssel a vágólapra másolja.}
+menuText H EditCopyPGN "Állás másolása PGN" 0 {}
 menuText H EditPasteBoard "Kezdõállás beillesztése" 13 \
   {Felállítja a kezdõállást kijelölt szöveg (vágólap) alapján.}
 

@@ -86,6 +86,7 @@ menuText Y EditSetup "Namesti poèetnu poziciju..." 0 \
   {Namesti poèetnu poziciju za ovu partiju}
 menuText Y EditCopyBoard "Copy position" 6 \
   {Copy the current board in FEN notation to the text selection (klipbord)} ;# ***
+menuText Y EditCopyPGN "Copy PGN" 0 {}
 menuText Y EditPasteBoard "Prenesi poèetnu poziciju" 9 \
   {Postavi poèetnu poziciju na osnovu trenutno izabranog teksta (klipbord)}
 

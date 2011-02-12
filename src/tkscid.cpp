@@ -6485,7 +6485,7 @@ sc_game_import (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
     if (err == OK  &&  parser.ErrorCount() == 0) {
         return setResult (ti, "PGN text imported with no errors or warnings.");
     }
-    Tcl_AppendResult (ti, "Errors/warnings importing PGN text:\n\n",
+    Tcl_AppendResult (ti, "Errors/warnings importing PGN text:\n",
                           parser.ErrorMessages(), NULL);
     if (err == ERROR_NotFound) {
         Tcl_AppendResult (ti, "ERROR: No PGN header tag (e.g. ",

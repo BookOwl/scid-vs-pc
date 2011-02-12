@@ -93,6 +93,7 @@ menuText N EditSetup "Stelling opzetten..." 0 \
   {Kies een start-stelling voor de partij}
 menuText N EditCopyBoard "Copieer stelling " 6 \
   {Copieer de huidige stelling in FEN notatie naar de tekst het tekst clibbord } ;
+menuText N EditCopyPGN "Copieer PGN " 0 {}
 menuText N EditPasteBoard "Invoegen start stelling" 12 \
   {Maak de start stelling van de huidige tekst selectie (klembord)}
 

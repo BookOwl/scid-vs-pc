@@ -91,6 +91,7 @@ menuText S EditSetup "Iniciar tablero de posición..." 26 \
   {Inicia el tablero de posición con la posición de la partida}
 menuText S EditCopyBoard "Copiar posición" 8 \
   {Copia el tablero actual en notación FEN a la selección de texto (clipboard)}
+menuText S EditCopyPGN "Copiar PGN" 0 {}
 menuText S EditPasteBoard "Pegar tablero inicial" 6 \
   {Coloca el tablero inicial de la selección de texto actual (clipboard)}
 

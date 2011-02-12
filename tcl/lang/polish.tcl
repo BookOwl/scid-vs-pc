@@ -86,6 +86,7 @@ menuText P EditSetup "Ustaw pozycjê pocz±tkow±..." 6 \
   {Ustaw pozycjê pocz±tkow± partii}
 menuText P EditCopyBoard "Kopiuj pozycjê" 7 \
   {Kopiuj aktualn± pozycjê w notacji FEN do schowka}
+menuText P EditCopyPGN "Kopiuj PGN" 0 {}
 menuText P EditPasteBoard "Ustaw pozycjê ze schowka" 3 \
   {Ustaw pozycjê ze schowka}
 

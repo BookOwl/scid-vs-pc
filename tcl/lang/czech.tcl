@@ -86,6 +86,7 @@ menuText C EditSetup "Nastavit výchozí pozici..." 0 \
   {Nastavit výchozí pozici pro tuto partii}
 menuText C EditCopyBoard "Kopírovat pozici" 4 \
   {Kopírovat aktuální pozici ve FEN notaci do textového výbìru (do clipboardu)}
+menuText C EditCopyPGN "Kopírovat PGN" 0 {} 
 menuText C EditPasteBoard "Vlo¾it poèáteèní pozici" 1 \
   {Nastavit poèáteèní pozici z aktuálního textového výbìru (z clipboardu)}
 

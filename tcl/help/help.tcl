@@ -113,7 +113,7 @@ or many games pasted back to back.</p></ul>
 <h3>Opening a Game</h3>
 
 <ul><p>Once you have loaded a game from the command line or the 
-<run ::file::Open><green>File--<gt>Open</green></run> dialog,
+<run ::file::Open><green>File-<gt>Open</green></run> dialog,
 open the <run ::pgn::OpenClose><green>PGN Window</green></run>
 to browse the game. Clicking on moves will move the game forward. (You can also
 use the buttons or the wheel mouse in the main window). Clicking on comments
@@ -1641,54 +1641,43 @@ This can be done by the <b>Compact</b> button, or
 set helpTitle(Import) "Import window"
 set helpText(Import) {<h1>The Import Window</h1>
   <p>
-  Scids Import window provides an easy way for you to paste a game
-  in <a PGN>PGN format</a> into Scid from some other application or window.
+  The <run importPgnGame><green>Import Window</green></run> provides an easy way for you to paste a game
+  into Scid from some other application or window.
   </p>
   <p>
-  The large white frame in the window is where you type or paste
-  the text of the game in PGN format, and the gray frame below it
+  The top-most frame is where to enter or paste
+  the game in PGN format, and the lower frame 
   provides feedback of any errors or warnings.
   </p>
 
-  <h3>Editing the current game with the Import window</h3>
   <p>
-  The Import window also doubles as a convenient way to make a few changes
-  to the current game: you can paste the current game into the
-  Import window (with the <b>Paste current game</b> button), edit the
-  text, and click <b>Import</b> when done.
+  <i>Scid provides several ways to access games in PGN. As well as the Import
+  Window, games can be opened via <run ::file::Open><green>File-<gt>Open</green></run>,
+  or converted directly to a database via the <a Pgnscid>Pgnscid</a> utility</i>
   </p>
 
-  <h3>PGN tags in the Import window</h3>
+  <h3>Editing the Current Game</h3>
+  <p>
+  The Import window also doubles as a way to make changes or corrections
+  to a game. First paste the current game
+  with <b>Paste Current Game</b>, then edit the moves
+  , and click <b>Import</b> when done.
+  </p>
+
+  <h3>Note</h3>
   <p>
   Scid expects to see PGN header tags such as
   <ul>
   <li> <b>[Result "*"]</b> </li>
   </ul>
-  before any moves, but you can just paste in a game fragment like
+  before any moves, but pasting a game fragment such as
   <ul>
   <li> <b>1.e4 e5 2.Bc4 Bc5 3.Qh5?! Nf6?? 4.Qxf7# 1-0</b> </li>
   </ul>
-  without any header tags and Scid will import it.
+  (without any header tags) is generally ok.
   </p>
 
-  <h3>Using PGN files in Scid</h3>
-  <p>
-  If you want to use a PGN format file in Scid but do not
-  want to convert it with <a Pgnscid>pgnscid</a> first, there are two
-  possible ways.
-  </p>
-  <p>
-  First, you can import the games in the file to an existing database
-  with the <menu>Tools: Import file of PGN games...</menu> menu command.
-  </p>
-  <p>
-  The alternative is to open the PGN file directly in Scid. However, PGN
-  format files are opened read-only and consume more memory than a
-  comparable Scid Database, so this is only recommended for relatively
-  small PGN files.
-  </p>
-
-  <p><footer>Updated: Scid 3.6.2, December 2006</footer></p>
+  <p><footer>Updated: Scid vs. PC 4.3, February 2011</footer></p>
 }
 
 ####################
@@ -1808,93 +1797,60 @@ set helpText(PGN) {<h1>The PGN Window</h1>
   <p>
   PGN (Portable Game Notation) is a common standard for representing
   chess games.  A PGN file consists of two
-  sections; a header containing tags such as
-  <b>[White "Kasparov, Gary"]</b>
-  and
-  <b>[Result "1/2-1/2"]</b>, and a body containing the actual moves in standard
+  sections; a <b>Header</b> containing tags such as
+  [White "Kasparov, Gary"] and
+  [Result "1/2-1/2"], and a <b>Body</b> containing the actual moves in standard
   algebraic notation (SAN) along with any variations, <a NAGs>annotation
   symbols</a> and <a Comment>comments</a>.
   </p>
 
   <p>
-  Scids PGN window displays the contents of the current game in
-  standard PGN representation. In the move text, comments appear {in
-     braces} and variations appear (in parentheses).
+  Scid's <run ::pgn::OpenClose><green>PGN Window</green></run> shows the current game in standard PGN representation.
+  In the move text, comments appear in braces <b>{}</b> and variations in parentheses <b>()</b>.
   </p>
 
-  <h3>Actions in the PGN window</h3>
+  <h3>General Use</h3>
   <p>
-  You can use the PGN window to navigate around the game: clicking the
-  left mouse button on a move will jump to that move. Click the left
-  mouse button on a comment will edit it.  The arrow keys and
-  (<b>v</b> and <b>z</b> keys for entering or leaving variations) work
-  for game navigation just as in the main window.  As in the main
-  window, hitting v will cause the <term>Variation</term> window to
-  pop up allowing to select a variation using the cursor keys. Setting
-  Options / Moves / Show variation window will pop up this window
-  automatically every time a move with a variation is found while
-  navigating through the game using the cursor keys. In the variation
-  window one can enter the variation by selecting it with the up/down
-  cursor keys and hitting enter or clicking on it with the mouse. This
-  allows for navigation through the game with the cursor keys only.
-  Clicking on a move with middle mouse button will display a small
-  board. Clicking on right mouse button will popup a contextual menu.
+  The PGN Window allows one to navigate around the game. Clicking 
+  on moves will jump to them, clicking on comments edits them.
+  (And just like the main window, the <b>arrow keys</b>, <b>v</b> and <b>z</b> allow for
+  game navigation).  Using the middle button displays a small
+  board. Right-clicking displays a context menu.
   </p>
-  <p>
-  From the context menu the following functions are available
+  <h3>Context Menu</h3>
   <ul>
-     <li><term>Delete Variation:</term>
-     Deletes the current variation
-     </li>
+     <li><term>Delete Variation:</term> Deletes the current variation </li>
      <li><term>Make First Variation:</term>
-     Moves the current variation to the first position of all
-     variations on that level
-     </li>
+     Moves the current variation to the first position of all variations on that level </li>
      <li><term>Promote Variation to Mainline</term>
      Promotes the current variation to the mainline and demotes the
-     current mainline to a variation.
-     </li>
-     <li><term>Strip:Moves from the beginning</term>
-     </li>
-     <li><term>Strip:Moves to the End</term>
-     </li>
-     <li><term>Strip:Comments</term>
-     Removes all comments
-     </li>
-     <li><term>Strip:Variations</term>
-     Removes all variations
-     </li>
+     current mainline to a variation.  </li>
+     <li><term>Strip:Comments</term> Removes all comments </li>
+     <li><term>Strip:Variations</term> Removes all variations </li>
+     <li><term>Strip:Moves from the beginning</term> </li>
+     <li><term>Strip:Moves to the End</term> </li>
   </ul>
-  </p>
 
-  <h3>PGN display options</h3>
+  <h3>Options</h3>
   <p>
-  The PGN window menus contain options that affect the PGN window display.
-  Scid can display the game in color or plain text -- see the
-  <menu>Display</menu> menu in the PGN window.
-  The color display is easier to read, and allows you to select moves and
-  comments using the mouse, but it is much slower to update. For very long
-  games, you may want to select plain text display.
+  The PGN menu-bar contains options about how the game is displayed.
+  Some of them include: Color or Plain text, 3-line Header
+and Column Style. 
+  The Color Display is easier to read, and allows you click on moves
+  , but it is much slower and can cause lag.
   </p>
   <p>
   You can also alter the format of comments and variations, choosing
   to display them indented on a separate line for greater visibility.
   </p>
+
+  <h3>Editing PGN</h3>
   <p>
-  The PGN display options, and the size of the PGN window, are saved to the
-  options file whenever you <b>Save Options</b> from the <menu>Options</menu>
-  menu of the main window.
+  You cannot use the PGN window to edit a game. Correcting moves
+  is done in the <a Import>Import game</a> window.
   </p>
 
-  <h3>Editing PGN directly</h3>
-  <p>
-  You cannot use the PGN window to edit the current game, but you can
-  still edit its PGN representation using the <a Import>Import game</a> window.
-  Just open it (shortcut key: <b>Control+Shift+I</b>) and then press the
-  <b>Paste current game</b> button, then edit the game, then press <b>Import</b>.
-  </p>
-
-  <p><footer>Updated: Scid 3.6.26, October 2008</footer></p>
+  <p><footer>Updated: Scid vs. PC 4.3, February 2011</footer></p>
 }
 
 

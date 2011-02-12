@@ -88,6 +88,7 @@ menuText W EditSetup "Skapa ställning..." 0 \
   {Skapa en utgångsställning för aktuellt parti}
 menuText W EditCopyBoard "Kopiera ställning" 0 \
   {Kopiera den aktuella ställningen i FEN kod till urklippshanteraren} 
+menuText W EditCopyPGN "Kopiera PGN" 0 {}
 menuText W EditPasteBoard "Klistra in utgångsställning" 10 \
   {Klistra in ställningen från aktuellt parti i den temporära databasen}
 

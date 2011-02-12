@@ -84,6 +84,7 @@ menuText F EditSetup "Position de départ" 0 \
   {Choisir une position de départ pour cette partie}
 menuText F EditCopyBoard "Copier la position" 6 \
   {Copier la position en cours en notation FEN vers la sélection de texte (presse-papier)}
+menuText F EditCopyPGN "Copier PGN" 0 {}
 menuText F EditPasteBoard "Coller la position de départ" 12 \
   {Initialiser la position de départ à partir de la sélection de texte courante(presse-papier)}
 

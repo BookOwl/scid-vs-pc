@@ -88,6 +88,7 @@ menuText B EditSetup "Configura posicao inicial..." 12 \
   {Configura a posicao inicial para o jogo}
 menuText B EditCopyBoard "Copy position" 6 \
   {Copy the current board in FEN notation to the text selection (clipboard)} ;# ***
+menuText B EditCopyPGN "Copy PGN" 0 {}
 menuText B EditPasteBoard "Colar Posicao" 12 \
   {Configura a posicao inicial a partir da area de transferencia}
 
