@@ -1336,7 +1336,7 @@ standardShortcuts .
 label .statusbar -textvariable statusBar -relief sunken -anchor w -width 1 -font font_Small
 
 # Left-click starts/stops engine 1
-bind .statusbar <Button-1> {
+bind .statusbar <Double-Button-1> {
   makeAnalysisWin 1
   if {[winfo exists .analysisWin1] && $::analysis(mini)} {
     set ::statusBar "   [lindex $::analysis(name1) 0]:"
