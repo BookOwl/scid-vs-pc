@@ -15,6 +15,7 @@ namespace eval uci {
   set oldOptions ""
   array set check ""
 
+  # autoSaveOptions is only used by sergame.tcl
   set autoSaveOptions 0 ; # UCI options are saved as soon as the options dialog is closed
   set autoSaveOptionsIndex -1
 
@@ -56,7 +57,7 @@ namespace eval uci {
   # if analyze = 0 -> engine mode
   # if analyze = 1 -> analysis mode
   ################################################################################
-  proc  processAnalysisInput { { n 1 } { analyze 1 } } {
+  proc processAnalysisInput { { n 1 } { analyze 1 } } {
     global analysis ::uci::uciInfo ::uci::infoToken ::uci::optionToken
 
     if {$analyze} {
@@ -408,6 +409,18 @@ namespace eval uci {
         -fill both -width 1000 -height 600
     scrollbar .uciConfigWin.vs -command {.uciConfigWin.sf yview}
     scrollbar .uciConfigWin.hs -command {.uciConfigWin.sf xview} -orient horizontal
+
+    if {$::windowsOS} {
+      # needs testing
+      bind .uciConfigWin <MouseWheel> {
+	if {[expr -%D] < 0} {.uciConfigWin.sf yview scroll -1 units}
+	if {[expr -%D] > 0} {.uciConfigWin.sf yview scroll +1 units}
+      }
+    } else {
+	bind .uciConfigWin <Button-4> {.uciConfigWin.sf yview scroll -1 units}
+	bind .uciConfigWin <Button-5> {.uciConfigWin.sf yview scroll +1 units}
+    }
+
     grid .uciConfigWin.sf -row 0 -column 0 -sticky nsew
     grid .uciConfigWin.vs -row 0 -column 1 -sticky ns
     grid .uciConfigWin.hs -row 1 -column 0 -sticky ew
@@ -549,6 +562,7 @@ namespace eval uci {
       }
       if { $elt(type) == "spin"} {
         label $w.fopt.label$optnbr -text "$name$default"
+        ### validation needs some work done ^%$!
         if { $elt(name) == "UCI_Elo" } {
           spinbox $w.fopt.opt$optnbr -from $elt(min) -to $elt(max) -width 5 -increment 50 -validate all -vcmd { regexp {^[0-9]+$} %P }
         } else  {
@@ -610,6 +624,7 @@ namespace eval uci {
   ################################################################################
   proc saveConfig {} {
     global ::uci::optList ::uci::newOptions
+
     set newOptions {}
     set w .uciConfigWin.sf.scrolled
     set optnbr 0
@@ -628,6 +643,11 @@ namespace eval uci {
       lappend newOptions [ list $elt(name)  $value ]
       incr optnbr
     }
+
+    # Make engine config widget remember these options
+    set ::engines(newUCIoptions) $::uci::newOptions
+
+    # Only used by sergame.tcl
     if { $::uci::autoSaveOptions } {
       writeOptions
       set ::uci::autoSaveOptions 0

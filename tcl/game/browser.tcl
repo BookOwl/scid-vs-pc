@@ -67,14 +67,26 @@ proc ::gbrowser::new {base gnum {ply -1}} {
   bind $w <Down> "::gbrowser::update $n +10"
   bind $w <Control-Shift-Left> "::board::resize $w.bd -1"
   bind $w <Control-Shift-Right> "::board::resize $w.bd +1"
-  # todo - windows wheelmouse
-  bind $w <Button-4> "::gbrowser::update $n -1"
-  bind $w <Button-5> "::gbrowser::update $n +1"
-  # unbind pgn wheelmouse from the board
-  bind $w.t.text <Button-4> "$w.t.text yview scroll -1 units ; break"
-  bind $w.t.text <Button-5> "$w.t.text yview scroll +1 units ; break"
-  bind $w <Control-Button-4> "::board::resize $w.bd +1"
-  bind $w <Control-Button-5> "::board::resize $w.bd -1"
+
+  if {$::windowsOS} {
+    # needs testing
+    bind $w <MouseWheel> {
+      if {[expr -%D] < 0} "::gbrowser::update $n -1"
+      if {[expr -%D] > 0} "::gbrowser::update $n +1"
+    }
+    bind $w <Control-MouseWheel> {
+      if {[expr -%D] < 0} "::board::resize $w.bd +1"
+      if {[expr -%D] > 0} "::board::resize $w.bd -1"
+    }
+  } else {
+    bind $w <Button-4> "::gbrowser::update $n -1"
+    bind $w <Button-5> "::gbrowser::update $n +1"
+    # unbind pgn wheelmouse from the board
+    bind $w.t.text <Button-4> "$w.t.text yview scroll -1 units ; break"
+    bind $w.t.text <Button-5> "$w.t.text yview scroll +1 units ; break"
+    bind $w <Control-Button-4> "::board::resize $w.bd +1"
+    bind $w <Control-Button-5> "::board::resize $w.bd -1"
+  }
 
   button $w.b.start -image tb_start -command "::gbrowser::update $n start" -relief flat
   button $w.b.back -image tb_prev -command "::gbrowser::update $n -1" -relief flat

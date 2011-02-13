@@ -217,7 +217,7 @@ proc ::enginelist::read {} {
 #   Writes the user Engine list file.
 
 proc ::enginelist::write {} {
-  global engines ::uci::newOptions scidUserDir scidShareDir
+  global engines scidUserDir scidShareDir
 
   set enginesFile [scidConfigFile engines]
   set enginesBackupFile [scidConfigFile engines.bak]
