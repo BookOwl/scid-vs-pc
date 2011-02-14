@@ -719,13 +719,15 @@ proc flipBoardForPlayerNames {namelist {board .board}} {
 #    If a parameter "-animate" is specified, board changes are animated.
 #
 proc updateBoard {args} {
-  global boardSize gameInfo
+  global boardSize
   set pgnNeedsUpdate 0
   set animate 0
   foreach arg $args {
     if {! [string compare $arg "-pgn"]} { set pgnNeedsUpdate 1 }
     if {! [string compare $arg "-animate"]} { set animate 1 }
   }
+
+  if {$pgnNeedsUpdate} { ::pgn::Refresh $pgnNeedsUpdate }
 
   # Remove marked squares informations.
   # (This must be done _before_ updating the board!)
@@ -734,6 +736,17 @@ proc updateBoard {args} {
   ::board::resize .board $boardSize
   ::board::update .board [sc_pos board] $animate
   ::board::material .board
+
+  after cancel updateBoard2
+  after cancel updateBoard3
+
+  update idletasks
+
+  after idle updateBoard2
+  after idle updateBoard3
+}
+
+proc updateBoard2 {} {
 
   # Draw arrows and marks, color squares:
 
@@ -789,6 +802,11 @@ proc updateBoard {args} {
     .button.exitVar configure -state normal
   }
 
+}
+
+proc updateBoard3 {} {
+  global gameInfo
+
   if {![sc_base inUse]  ||  $::trialMode  ||  [sc_base isReadOnly]} {
     .tb.save configure -state disabled
   } else {
@@ -808,13 +826,17 @@ proc updateBoard {args} {
     .gameInfo configure -wrap none
   }
   .gameInfo configure -state disabled
+
+  #TODO
+  #Each function should be safe and check the appropriate "winfo exists" at the start
+  #Change the order of refreshs: for example ::pgn::Refresh should be done before UpdatePlayerPhotos 
+
   updatePlayerPhotos
   updateEpdWins
   updateAnalysisWindows
 
-  # if {[winfo exists .treeWin]} { ::tree::refresh }
   ::tree::refresh
-  if {[winfo exists .commentWin]} { ::commenteditor::Refresh }
+  ::commenteditor::Refresh
   if {[::tb::isopen]} { ::tb::results }
   updateMenuStates
   moveEntry_Clear
@@ -827,10 +849,10 @@ proc updateBoard {args} {
     .statusbar configure -foreground black
     updateStatusBar 
   }
-  update idletasks
 
   if {[winfo exists .twinchecker]} { updateTwinChecker }
-  if {[winfo exists .pgnWin]} { ::pgn::Refresh $pgnNeedsUpdate }
+  # ::pgn::Refresh $pgnNeedsUpdate 
+  ::pgn::Refresh
   if {[winfo exists .bookWin]} { ::book::refresh }
   if {[winfo exists .bookTuningWin]} { ::book::refreshTuning }
   if {[winfo exists .noveltyWin]} { updateNoveltyWin }
