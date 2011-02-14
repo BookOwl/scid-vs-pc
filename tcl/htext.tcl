@@ -117,7 +117,7 @@ proc updateHelpWindow {name {heading {}}} {
     setWinSize $w
     text $w.text -setgrid yes -wrap word -width $::winWidth($w) \
         -height $::winHeight($w) -relief sunken -border 2 \
-        -yscroll "$w.scroll set" -inactiveselectbackground palegreen
+        -yscroll "$w.scroll set"
     scrollbar $w.scroll -relief sunken -command "$w.text yview"
 
     frame $w.b -relief raised -border 2
@@ -130,6 +130,8 @@ proc updateHelpWindow {name {heading {}}} {
 
     ### Help Widget Find
 
+    $w.text tag configure Highlight -background lightsteelblue3
+
     entry $w.b.find -width 10 -textvariable ::helpWin(find)
     set ::helpWin(findprev) {}
     set ::helpWin(findindex) 1.0
@@ -139,8 +141,7 @@ proc updateHelpWindow {name {heading {}}} {
 	set ::helpWin(findprev) $::helpWin(find)
       } 
 
-      selection clear .helpWin.text
-      # todo fix this for windows &&&
+      .helpWin.text tag remove Highlight 1.0 end
 
       set result [.helpWin.text search -nocase $::helpWin(find) $::helpWin(findindex)]
       if {$result == {}} {
@@ -149,7 +150,7 @@ proc updateHelpWindow {name {heading {}}} {
       } else {
         if {[ regexp {(.*)\.(.*)} $result t1 line char]} {
 	  .helpWin.text see $result
-	  .helpWin.text tag add sel $result $line.[expr $char + [string length $::helpWin(find)]]
+	  .helpWin.text tag add Highlight $result $line.[expr $char + [string length $::helpWin(find)]]
 	  set ::helpWin(findindex) $line.[expr $char + 1]
         } ;# should always succeed ?
       }
