@@ -291,12 +291,11 @@ namespace eval tactics {
   ################################################################################
   proc endTraining {} {
     set w .tacticsWin
+    bind $w <Destroy> {}
     ::tactics::stopAnalyze
     after cancel ::tactics::mainLoop
-    catch { sc_base close }
-    updateMenuStates
-    updateStatusBar
-    updateTitle
+    ::file::Close
+
     set ::askToReplaceMoves $::tactics::askToReplaceMoves_old
     focus .
     destroy $w
