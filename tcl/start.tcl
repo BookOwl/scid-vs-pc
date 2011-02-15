@@ -14,8 +14,8 @@ exec `dirname $0`/tkscid "$0" "$@"
 
 # Alter the version if any patches have been made to the Tcl code only:
 set scidName {Scid vs. PC}
-set scidVersion 4.2
-set scidVersionDate {December 10, 2010}
+set scidVersion 4.3
+set scidVersionDate {March 1, 2011}
 
 # Set to 0 before releasing, so some alpha-state code is not included
 # Set to 1 to have access to all code
@@ -1158,7 +1158,7 @@ proc ::splash::add {text {tag {indent}}} {
 ::splash::add "$::scidName $::scidVersion ($::scidVersionDate)."
 ::splash::add "http://scidvspc.sourceforge.net"
 ::splash::add ""
-::splash::add "(C) 2008-2010 Steven Atkinson (stevenaaus@yahoo.com)"
+::splash::add "(C) 2008-2011 Steven Atkinson (stevenaaus@yahoo.com)"
 ::splash::add "(C) 2006-2008 Pascal Georges"
 ::splash::add "(C) 1999-2004 Shane Hudson"
 ::splash::add ""
