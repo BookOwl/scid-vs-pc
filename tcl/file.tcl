@@ -103,8 +103,12 @@ proc ::file::New {} {
 # ::file::Open
 #
 #    Opens file-open dialog and opens the selected Scid database.
-#
+
+# This proc should return an error status...
+# But it is used everywhere, and will take some time to fix
+
 proc ::file::Open {{fName ""} {parent .}} {
+
   global glstart
   if {[sc_base count free] == 0} {
     tk_messageBox -type ok -icon info -title "Scid" \
@@ -159,12 +163,16 @@ proc ::file::Open {{fName ""} {parent .}} {
 
   set err 0
   busyCursor .
+
   if {[file extension $fName] == ".si4"} {
     set fName [file rootname $fName]
     if {[catch {openBase $fName} result]} {
       set err 1
+      if {![string match {*doesn't exist*} $result]} {
+        set result "$result\nCan't open $fName."
+      }
       tk_messageBox -icon warning -type ok -parent $parent \
-          -title "Scid: Error opening file" -message "$result\nCan't open $fName"
+          -title "Scid: Error opening file" -message "$result"
       ::recentFiles::remove "$fName.si4"
     } else {
       set ::initialDir(base) [file dirname $fName]
@@ -270,7 +278,15 @@ proc ::file::Upgrade {name} {
 #    Opens a Scid database, showing a progress bar in a separate window
 #    if the database is around 1 Mb or larger in size.
 #   ::file::Open should be used if the base is not already in si4 format
+
 proc openBase {name} {
+
+  # This check should probably be done somewhere else
+  # But fixing issue/all scenarios is very painful , so leave it here steven!
+  if {![file exists $name.si4]} {
+    return -code error "File \"$name.si4\" doesn't exist."
+  }
+
   set bsize 0
   set gfile "[file rootname $name].sg4"
   if {! [catch {file size $gfile} err]} { set bsize $err }
