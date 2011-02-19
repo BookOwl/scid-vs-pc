@@ -5854,6 +5854,35 @@ set helpText(Novag) {<h1>Connecting the Novag Citrine Chess Board</h1>
 set helpTitle(Changelog) "Scid vs PC Changelog"
 set helpText(Changelog) {<h1>Scid vs. PC</h1>
 
+<h4>4.3 (March 10, 2011)</h4>
+<ul>
+<li> Database Switcher has been moved to the gamelist widget, has some great new icons from the KDE Tango project</li>
+<li> Bookmark widget has been overhauled</li>
+<li> Clickable variation arrows</li>
+<li> Gamelist can now perform logical ANDs in the search widget using "+", and include the date</li>
+<li> Gamelist now has remove-above and remove-below buttons.</li>
+<li> FICs improvements, including a ping feature to indicate network health (*nix only), and player
+communications are saved as PGN comments.</li>
+<li> Double clicking statusbar will start a minimized engine there</li>
+<li> Allow engines to be reordered</li>
+<li> Simplify the Bestgames widget : Remove the PGN pane, nice-ify the widget, and enable graph and best widgets to remember size.</li>
+<li> Interface speed-ups from Fulvio</li>
+<li> Other SCID C++ changes from Gerd and Fulvio, including "Don't decode games when copying games"</li>
+<li> Control+Wheelmouse resizes help widget font
+<li> Help widget has a search entrybox</li>
+<li> FICs bugfix: don't automatically accept rematches</li>
+<li> FICs "Opponent Info" button</li>
+<li> When pasting FEN directly, do a castling sanity check.</li>
+<li> bugfix: When user starts scidvspc for the first time, clipbase is left closed</li>
+<li> Browser widget has a nicer button bar, and windows wheel-mouse bindings</li>
+<li> Some tree search optimisations from SCID</li>
+<li> Overhaul the Edit Menus</li>
+<li> New toolbar buttons: "Load First Game" , "Load Last Game"</li>
+<li> Numerous GUI fixes</li>
+<li> Revert PlayerInfo to old format, but add a "Won Drawn Lost" header.</li>
+<li> Tweak crosstable knock-out format</li>
+</ul>
+
 <h4>4.2 (December 10, 2010)</h4>
 <ul>
 <li> si4 database support</li>

@@ -374,4 +374,16 @@ proc FontDialogRegen { font_name } {
   }
 }
 
+proc FontBigger {} {
+  set fontsize [font configure font_Regular -size]
+  font configure font_Bold -size [incr fontsize]
+  font configure font_Regular -size [incr fontsize]
+}
+
+proc FontSmaller {} {
+  set fontsize [font configure font_Regular -size]
+  font configure font_Bold -size [incr fontsize -1]
+  font configure font_Regular -size [incr fontsize -1]
+}
+
 ### End of file: font.tcl

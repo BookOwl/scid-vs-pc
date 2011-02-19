@@ -215,6 +215,16 @@ proc updateHelpWindow {name {heading {}}} {
   bind $w <Alt-Right> "$w.b.forward invoke"
   # bind $w <Key-i> "$w.b.index invoke"
 
+  if {$::windowsOS} {
+    bind $w <Control-MouseWheel> {
+      if {[expr -%D] < 0} {FontBigger ; break}
+      if {[expr -%D] > 0} {FontSmaller ; break}
+    }
+  } else {
+    bind $w <Control-Button-4> {FontBigger ; break}
+    bind $w <Control-Button-5> {FontSmaller ; break}
+  }
+
   ::htext::display $w.text $helptext $heading 0
   focus $w
 }
