@@ -945,7 +945,7 @@ proc ::windows::switcher::Open {} {
     menu $f.menu -tearoff 0
     $f.menu add command -label [tr SearchReset] -command "sc_filter reset $i; ::windows::stats::Refresh"
 
-    $f.menu add command -label "Change icon" -command "changeBaseType $i .glistWin.baseWin"
+    $f.menu add command -label "Change icon" -command "changeBaseType $i .glistWin"
 
     set closeLabel "[tr FileClose] [tr Database]"
     if {$i == [sc_info clipbase]} { set closeLabel [tr EditReset] }
@@ -1118,7 +1118,7 @@ proc copyFilter {frombaseNum tobaseNum} {
   pack $w.text $w.b -side top -pady 2
   pack $w.bar -side bottom
   pack $w.b.go $w.b.cancel -side left -padx 10 -pady 10
-  placeWinOverParent $w .glistWin.baseWin
+  placeWinOverParent $w .glistWin
   wm state $w normal
   grab $w
   bind $w <Return> "$w.b.go invoke"

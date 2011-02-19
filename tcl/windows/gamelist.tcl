@@ -226,7 +226,7 @@ proc ::windows::gamelist::showNum {index {bell 1}} {
       # Highlights CURRENT game if on screen, otherwise game "index"
       # Even when we'd prefer just to highlight "index" :<
 
-      set current_item [::windows::gamelist::Refresh last]
+      set current_item [::windows::gamelist::Refresh first]
       if {$current_item == {}} {
 	# Nasty, nasty recursive call... "found" above will now trigger and highlight this game
 	::windows::gamelist::showNum $result $bell
