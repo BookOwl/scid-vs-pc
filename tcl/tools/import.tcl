@@ -136,7 +136,9 @@ proc importVar {} {
   # (eg 6.Qg4+ Qg6 7.Qd4+ Kg8 8.Qd8+ Kh7+)
   # set text [regsub -all -- {[[:digit:]]+\.} [selection get] { }]
 
-  set ::tmp [selection get]
+   if {[catch {set ::tmp [selection get -selection PRIMARY]} ]} {
+    catch {set ::tmp [selection get -selection CLIPBOARD]}
+  }
 
   sc_var create
 
