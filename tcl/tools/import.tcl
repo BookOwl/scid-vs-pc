@@ -140,6 +140,12 @@ proc importVar {} {
     catch {set ::tmp [selection get -selection CLIPBOARD]}
   }
 
+  if {![info exists ::tmp] || $::tmp == {}} {
+    tk_messageBox -type ok -icon error -title "Scid: Oops" \
+      -message "No text in clipboard."
+    return
+  }
+
   sc_var create
 
   if {[catch {sc_move addSan $::tmp}]} {
