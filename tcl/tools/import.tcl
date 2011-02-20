@@ -129,6 +129,29 @@ proc importMoveList {line} {
   sc_move addSan $line
   updateBoard -pgn
 }
+
+
+proc importVar {} {
+  # Move formatting doesn't seem to cause any problems
+  # (eg 6.Qg4+ Qg6 7.Qd4+ Kg8 8.Qd8+ Kh7+)
+  # set text [regsub -all -- {[[:digit:]]+\.} [selection get] { }]
+
+  set ::tmp [selection get]
+
+  sc_var create
+
+  if {[catch {sc_move addSan $::tmp}]} {
+    sc_var exit
+    catch {sc_var delete [sc_var number]}
+    updateBoard -pgn
+    tk_messageBox -type ok -icon error -title "Scid: Oops" \
+      -message "Error adding variation \"$::tmp\""
+  } else {
+    sc_var exit
+    updateBoard -pgn
+  }
+}
+
 ################################################################################
 #
 ################################################################################

@@ -5857,8 +5857,9 @@ set helpText(Changelog) {<h1>Scid vs. PC</h1>
 <h4>4.3 (March 10, 2011)</h4>
 <ul>
 <li> Database Switcher has been moved to the gamelist widget, has some great new icons from the KDE Tango project</li>
-<li> Bookmark widget has been overhauled</li>
+<li> Paste Variation feature</li>
 <li> Clickable variation arrows</li>
+<li> Bookmark widget has been overhauled</li>
 <li> Gamelist can now perform logical ANDs in the search widget using "+", and include the date</li>
 <li> Gamelist now has remove-above and remove-below buttons.</li>
 <li> FICs improvements, including a ping feature to indicate network health (*nix only), and player

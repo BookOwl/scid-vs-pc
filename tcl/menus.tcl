@@ -326,6 +326,9 @@ incr menuindex
 $m add command -label EditAdd -accel "Ctrl+A" -command {sc_var create; updateBoard -pgn}
 set helpMessage($m,[incr menuindex]) EditAdd
 
+$m add command -label "Paste Variation" -command importVar
+incr menuindex
+
 menu $m.del
 $m add cascade -label EditDelete -menu $m.del
 set helpMessage($m,[incr menuindex]) EditDelete
