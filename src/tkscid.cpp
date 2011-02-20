@@ -8659,6 +8659,11 @@ sc_game_strip (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
     const char * options[] = { "comments", "variations", NULL };
     enum { OPT_COMS, OPT_VARS };
 
+    // we need to switch off short header style or PGN parsing will not work
+    uint  old_style = db->game->GetPgnStyle ();
+    if (old_style & PGN_STYLE_SHORT_HEADER)
+      db->game->SetPgnStyle (PGN_STYLE_SHORT_HEADER, false);
+
     db->game->AddPgnStyle (PGN_STYLE_TAGS);
     db->game->AddPgnStyle (PGN_STYLE_COMMENTS);
     db->game->AddPgnStyle (PGN_STYLE_VARS);
@@ -8687,6 +8692,11 @@ sc_game_strip (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
     parser.Reset ((const char *) db->tbuf->GetBuffer());
     db->game->Clear();
     parser.ParseGame (db->game);
+
+    // Restore PGN style (Short header)
+    if (old_style & PGN_STYLE_SHORT_HEADER) 
+      db->game->SetPgnStyle (PGN_STYLE_SHORT_HEADER, true);
+
     db->gameAltered = true;
     language = old_lang;
     return TCL_OK;

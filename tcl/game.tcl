@@ -96,13 +96,10 @@ proc ::game::Clear {} {
 #   Strips all comments or variations from a game
 #
 proc ::game::Strip {type {parent .}} {
-  set bugfix $::pgn::shortHeader
-  if {$bugfix} {set ::pgn::shortHeader 0; updateBoard -pgn}
   if {[catch {sc_game strip $type} result]} {
     tk_messageBox -parent $parent -type ok -icon info -title "Scid" -message $result
     return
   }
-  if {$bugfix} {set ::pgn::shortHeader 1}
   updateBoard -pgn
   updateTitle
 }
