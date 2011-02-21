@@ -229,6 +229,10 @@ proc doPgnFileImport {fname text {multiple 0} } {
       error "File $fname doesn't exist."
       puts "NOT HERE!"
     } 
+
+    # This should be centered over Scid main window,
+    # but there are issues with focus and grabs
+
     toplevel $w
     wm title $w "Scid: Importing PGN file"
 

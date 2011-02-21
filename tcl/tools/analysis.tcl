@@ -2521,6 +2521,8 @@ proc toggleEngineAnalysis {n {force 0}} {
     return
   }
 
+  set analysis(lastHistory$n) hmmm
+
   if {$analysis(analyzeMode$n)} {
     stopAnalyzeMode $n
     $b configure -image tb_play
@@ -2724,15 +2726,21 @@ proc updateAnalysisText {{n 1}} {
   if { $analysis(uci$n) } {
     if {$cleared} { set analysis(multiPV$n) {} ; set analysis(multiPVraw$n) {} }
     if {$analysis(multiPVCount$n) == 1} {
-      set newhst [format "%2d \[%s\]  %s" \
-		$analysis(depth$n)   \
+      set newdep [format %2d $analysis(depth$n)]
+      set newhst [format {[%s]  %s} \
 		[scoreToMate $score $moves $n]  \
 		[addMoveNumbers $n [::trans $moves]]]
-      if {$newhst != $analysis(lastHistory$n) && $moves != ""} {
-        append line [format "%s (%.2f)\n" $newhst $analysis(time$n)]
-        set analysis(lastHistory$n) $newhst
+
+      ### Exit if no change since last analysis line
+      # if {$newhst == $analysis(lastHistory$n) || $moves == ""}       Hmmmm
+      if {$newhst == $analysis(lastHistory$n) } {
+        return
       }
+      append line [format "%s %s (%.2f)\n" $newdep $newhst $analysis(time$n)]
+      set analysis(lastHistory$n) $newhst
     } else {
+      # MultiPV
+
       $h delete 1.0 end
       # First line
       set pv [lindex $analysis(multiPV$n) 0]
@@ -2752,7 +2760,7 @@ proc updateAnalysisText {{n 1}} {
       }
     }
   } else  {
-    # original Scid analysis display
+    # Original Scid analysis display
     append line [format "%2d \[%+5.2f\]  %s (%.2f)\n" $analysis(depth$n) $score [::trans $moves] $analysis(time$n)] 
   }
 
@@ -2791,34 +2799,37 @@ proc updateAnalysisText {{n 1}} {
 ################################################################################
 proc scoreToMate { score pv n } {
 
+  # S.A. rewrote this a little, but it can be replaced by SCID's proc if desired
+
   if {$::analysis(lockEngine$n)} {
     return [format "%+5.2f" $score]
   }
 
-  if { [string index $pv end] == {#} || [string index $pv end] == {+} && [string index $pv end-1] == {+}} {
+  # Mate found if pv ends in # or ++
+  if { [regexp {#$|\+\+$} $pv] } {
+
     set plies [llength $pv]
+    set mate [expr {$plies/2+1} ]
+    set side [sc_pos side]
 
-    set mate [expr $plies / 2 + 1 ]
-
-    set sign {}
-    if {[expr $plies % 2] == 0 && [sc_pos side] == {white} || [expr $plies % 2] == 1 && [sc_pos side] == {black}} {
-      set sign -
-    }
-    if {[sc_pos side] == {white} } {
-      if { $sign == {} } {
-        set mate [expr $plies / 2 + 1 ]
+    if {!($plies % 2) && $side == {white} || $plies % 2 && $side == {black}} {
+      if {$side == {white} } {
+	set mate [expr $plies / 2 ]
       } else  {
-        set mate [expr $plies / 2 ]
+	set mate [expr $plies / 2 + 1 ]
       }
-    } else  {
-      if { $sign == {} } {
-        set mate [expr $plies / 2 ]
+      ### I cant think of a reason why M-2 should be shown. S.A.
+      # set ret M-$mate
+      set ret M$mate
+    } else {
+      if {$side == {white} } {
+	set mate [expr $plies / 2 + 1 ]
       } else  {
-        set mate [expr $plies / 2 + 1 ]
+	set mate [expr $plies / 2 ]
       }
+      set ret M$mate
     }
 
-    set ret M$sign$mate
   } else  {
     set ret [format "%+5.2f" $score]
   }
