@@ -5856,23 +5856,24 @@ set helpText(Changelog) {<h1>Scid vs. PC</h1>
 
 <h4>4.3 (March 10, 2011)</h4>
 <ul>
-<li> Database Switcher has been moved to the gamelist widget, has some great new icons from the KDE Tango project</li>
+<li> Database Switcher has been moved to the gamelist widget, and has some great new icons from the KDE Tango project</li>
 <li> Paste Variation feature</li>
-<li> Clickable variation arrows</li>
+<li> Clickable Variation arrows</li>
 <li> Bookmark widget has been overhauled</li>
 <li> Gamelist can now perform logical ANDs in the search widget using "+", and include the date</li>
 <li> Gamelist now has remove-above and remove-below buttons.</li>
 <li> FICs improvements, including a ping feature to indicate network health (*nix only), and player
 communications are saved as PGN comments.</li>
+<li> FICs bugfix: don't automatically accept rematches</li>
+<li> FICs "Opponent Info" button</li>
+<li> Analysis widget move history doesn't get spammed by "Mate in 1" (for eg) messages</li>
 <li> Double clicking statusbar will start a minimized engine there</li>
 <li> Allow engines to be reordered</li>
 <li> Simplify the Bestgames widget : Remove the PGN pane, nice-ify the widget, and enable graph and best widgets to remember size.</li>
-<li> Interface speed-ups from Fulvio</li>
+<li> Several interface speed-ups from Fulvio</li>
 <li> Other SCID C++ changes from Gerd and Fulvio, including "Don't decode games when copying games"</li>
-<li> Control+Wheelmouse (in help widget/pgn window) resizes font_Regular
+<li> Control+Wheelmouse (in help widget/pgn window) resizes font_Regular</li>
 <li> Help widget has a search entrybox</li>
-<li> FICs bugfix: don't automatically accept rematches</li>
-<li> FICs "Opponent Info" button</li>
 <li> When pasting FEN directly, do a castling sanity check.</li>
 <li> bugfix: When user starts scidvspc for the first time, clipbase is left closed</li>
 <li> Browser widget has a nicer button bar, and windows wheel-mouse bindings</li>

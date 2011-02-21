@@ -2718,26 +2718,27 @@ proc updateAnalysisText {{n 1}} {
   set cleared 0
   if { $analysis(depth$n) < $analysis(prev_depth$n)  || $analysis(prev_depth$n) == 0 } {
     $h delete 1.0 end
+    set analysis(lastHistory$n) hmmm
     set cleared 1
   }
+
+  # Return if no change in movelist since last analysis (and no MultiPV)
+  if {$analysis(lastHistory$n) == $moves && $analysis(multiPVCount$n) == 1} {
+    return
+  }
+  set analysis(lastHistory$n) $moves
 
   set line {}
 
   if { $analysis(uci$n) } {
     if {$cleared} { set analysis(multiPV$n) {} ; set analysis(multiPVraw$n) {} }
     if {$analysis(multiPVCount$n) == 1} {
-      set newdep [format %2d $analysis(depth$n)]
-      set newhst [format {[%s]  %s} \
+      set newhst [format {%2d [%s]  %s} \
+		$analysis(depth$n) \
 		[scoreToMate $score $moves $n]  \
 		[addMoveNumbers $n [::trans $moves]]]
 
-      ### Exit if no change since last analysis line
-      # if {$newhst == $analysis(lastHistory$n) || $moves == ""}       Hmmmm
-      if {$newhst == $analysis(lastHistory$n) } {
-        return
-      }
-      append line [format "%s %s (%.2f)\n" $newdep $newhst $analysis(time$n)]
-      set analysis(lastHistory$n) $newhst
+      append line [format "%s (%.2f)\n" $newhst $analysis(time$n)]
     } else {
       # MultiPV
 
@@ -2809,7 +2810,6 @@ proc scoreToMate { score pv n } {
   if { [regexp {#$|\+\+$} $pv] } {
 
     set plies [llength $pv]
-    set mate [expr {$plies/2+1} ]
     set side [sc_pos side]
 
     if {!($plies % 2) && $side == {white} || $plies % 2 && $side == {black}} {
