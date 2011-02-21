@@ -2722,67 +2722,67 @@ proc updateAnalysisText {{n 1}} {
     set cleared 1
   }
 
-  # Return if no change in movelist since last analysis (and no MultiPV)
-  if {$analysis(lastHistory$n) == $moves && $analysis(multiPVCount$n) == 1} {
-    return
-  }
-  set analysis(lastHistory$n) $moves
+  # Skip update if no change in movelist since last analysis (and no MultiPV)
 
-  set line {}
+  if {($analysis(lastHistory$n) != $moves || $analysis(multiPVCount$n) != 1)} {
 
-  if { $analysis(uci$n) } {
-    if {$cleared} { set analysis(multiPV$n) {} ; set analysis(multiPVraw$n) {} }
-    if {$analysis(multiPVCount$n) == 1} {
-      set newhst [format {%2d [%s]  %s} \
-		$analysis(depth$n) \
-		[scoreToMate $score $moves $n]  \
-		[addMoveNumbers $n [::trans $moves]]]
+    set analysis(lastHistory$n) $moves
+    set line {}
 
-      append line [format "%s (%.2f)\n" $newhst $analysis(time$n)]
-    } else {
-      # MultiPV
+    if { $analysis(uci$n) } {
+      if {$cleared} { set analysis(multiPV$n) {} ; set analysis(multiPVraw$n) {} }
+      if {$analysis(multiPVCount$n) == 1} {
+	set newhst [format {%2d [%s]  %s} \
+		  $analysis(depth$n) \
+		  [scoreToMate $score $moves $n]  \
+		  [addMoveNumbers $n [::trans $moves]]]
 
-      $h delete 1.0 end
-      # First line
-      set pv [lindex $analysis(multiPV$n) 0]
-      catch { set newStr [format "%2d \[%s\]  " [lindex $pv 0] [scoreToMate $score [lindex $pv 2] $n] ] }
-      
-      $h insert end {1 } gray
-      append newStr "[addMoveNumbers $n [::trans [lindex $pv 2]]]\n"
-      $h insert end $newStr blue
-      
-      set lineNumber 1
-      foreach pv $analysis(multiPV$n) {
-        if {$lineNumber == 1} { incr lineNumber ; continue }
-        $h insert end "$lineNumber " gray
-        set score [scoreToMate [lindex $pv 1] [lindex $pv 2] $n]
-        $h insert end [format "%2d \[%s\]  %s\n" [lindex $pv 0] $score [addMoveNumbers $n [::trans [lindex $pv 2]]] ] indent
-        incr lineNumber
+	append line [format "%s (%.2f)\n" $newhst $analysis(time$n)]
+      } else {
+	# MultiPV
+
+	$h delete 1.0 end
+	# First line
+	set pv [lindex $analysis(multiPV$n) 0]
+	catch { set newStr [format "%2d \[%s\]  " [lindex $pv 0] [scoreToMate $score [lindex $pv 2] $n] ] }
+	
+	$h insert end {1 } gray
+	append newStr "[addMoveNumbers $n [::trans [lindex $pv 2]]]\n"
+	$h insert end $newStr blue
+	
+	set lineNumber 1
+	foreach pv $analysis(multiPV$n) {
+	  if {$lineNumber == 1} { incr lineNumber ; continue }
+	  $h insert end "$lineNumber " gray
+	  set score [scoreToMate [lindex $pv 1] [lindex $pv 2] $n]
+	  $h insert end [format "%2d \[%s\]  %s\n" [lindex $pv 0] $score [addMoveNumbers $n [::trans [lindex $pv 2]]] ] indent
+	  incr lineNumber
+	}
       }
+    } else  {
+      # Original Scid analysis display
+      append line [format "%2d \[%+5.2f\]  %s (%.2f)\n" $analysis(depth$n) $score [::trans $moves] $analysis(time$n)] 
     }
-  } else  {
-    # Original Scid analysis display
-    append line [format "%2d \[%+5.2f\]  %s (%.2f)\n" $analysis(depth$n) $score [::trans $moves] $analysis(time$n)] 
-  }
 
-  if { $n == 1 && $analysis(mini) } {
-    # show in status bar
-    if {[string is ascii -strict %s]} {
-      set s [string range $line [string first {[} $line] 50]
-      if {$s != {}} {
-	set ::statusBar "   [lindex $analysis(name1) 0]: [string map {\n {}} $s]"
+    if { $n == 1 && $analysis(mini) } {
+      # show in status bar
+      if {[string is ascii -strict %s]} {
+	set s [string range $line [string first {[} $line] 50]
+	if {$s != {}} {
+	  set ::statusBar "   [lindex $analysis(name1) 0]: [string map {\n {}} $s]"
+	}
       }
+    } 
+
+    ### Should we truncate line so it only takes up one line ? S.A.
+    $h insert end $line indent
+    # $h see end-1c
+    set pos [lindex [ .analysisWin$n.hist.ybar get ] 1]
+    if {$pos == 1.0} {
+      $h yview moveto 1
     }
-  } 
 
-  ### Should we truncate line so it only takes up one line ? S.A.
-  $h insert end $line indent
-  # $h see end-1c
-  set pos [lindex [ .analysisWin$n.hist.ybar get ] 1]
-  if {$pos == 1.0} {
-    $h yview moveto 1
-  }
-
+  } ; # end skip
 
   $h configure -state disabled
   set analysis(prev_depth$n) $analysis(depth$n)
