@@ -112,10 +112,8 @@ namespace eval uci {
       } else {
         set uciInfo(ponder$n) ""
       }
-      if { $analysis(waitForBestMove$n) } {
-        set analysis(waitForBestMove$n) 0
-        return
-      }
+      set analysis(waitForBestMove$n) 0
+      return
     }
 
     if {[string match "id *name *" $line]} {

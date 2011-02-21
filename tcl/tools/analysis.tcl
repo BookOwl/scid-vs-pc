@@ -1652,6 +1652,11 @@ proc destroyAnalysisWin {n} {
     toggleAutoplay
   }
 
+  # Cancel scheduled commands
+  if {$analysis(after$n) != ""} {
+      after cancel $analysis(after$n)
+  }
+
   # Check the pipe is not already closed:
   if {$analysis(pipe$n) == {}} {
     set ::analysisWin$n 0
@@ -2119,22 +2124,17 @@ proc changePVSize { n } {
     set analysis(lastHistory$n) {}
   }
   if { $analysis(uci$n) } {
-    # if the UCI engine was analysing, we have to stop/restart it to take into acount the new multiPV option
+    # if the UCI engine was analysing, stop and restart
     if {$analysis(analyzeMode$n)} {
-      # Normally the best move condition should still stand
-      # Meaning that we will stop the engine here and wait for
-      # the bestmove reply (which is handled in uci.tcl)
-      if { $analysis(waitForBestMove$n) } {
-	sendToEngine $n stop
-	vwait analysis(waitForBestMove$n)
-      }
+      # Fulvio's analysis rewrite
+      stopAnalyzeMode $n
+      set analysis(waitForReadyOk$n) 1
+      sendToEngine $n "isready"
+      set dont_stuck [ after 60000 "set ::analysis(waitForReadyOk$n) 0" ]
+      vwait analysis(waitForReadyOk$n)
+      after cancel $dont_stuck
       sendToEngine $n "setoption name MultiPV value $analysis(multiPVCount$n)"
-      sendToEngine $n "position fen [sc_pos fen]"
-      # Although we go infinite, some engines do a bestmove announcement
-      # and go idle when they see a forced mate, before we stop them
-      # Let's anticipate this.
-      set analysis(waitForBestMove$n) 1
-      sendToEngine $n "go infinite"
+      startAnalyzeMode $n
     } else  {
       sendToEngine $n "setoption name MultiPV value $analysis(multiPVCount$n)"
     }
@@ -2334,6 +2334,7 @@ proc processAnalysisInput {n} {
     sendToEngine $n {log off}
     # Set a fairly low noise value so Crafty is responsive to board changes,
     # but not so low that we get lots of short-ply search data:
+    # "noise 0" "will produce output starting with iteration 1"
     sendToEngine $n {noise 1000}
     sendToEngine $n {egtb off} ; # turn off end game table book
     sendToEngine $n {resign 0} ; # turn off alarm (resigning ?)
@@ -2547,17 +2548,7 @@ proc startAnalyzeMode {{n 1} {force 0}} {
   if {$analysis(analyzeMode$n) && ! $force } { return }
   set analysis(analyzeMode$n) 1
   if { $analysis(uci$n) } {
-    set analysis(waitForReadyOk$n) 1
-    sendToEngine $n isready
-    vwait analysis(waitForReadyOk$n)
-    sendToEngine $n "position fen [sc_pos fen]"
-    # Although we go infinite, some engines do a bestmove announcement
-    # and go idle when they see a forced mate, before we stop them
-    # Let's anticipate this.
-    set analysis(waitForBestMove$n) 1
-    sendToEngine $n {go infinite}
-    set analysis(fen$n) [sc_pos fen]
-    set analysis(maxmovenumber$n) 0
+    updateAnalysis $n
   } else  {
     if {$analysis(has_setboard$n)} {
       sendToEngine $n "setboard [sc_pos fen]"
@@ -2579,10 +2570,15 @@ proc stopAnalyzeMode { {n 1} } {
   if {! $analysis(analyzeMode$n)} { return }
   set analysis(analyzeMode$n) 0
   if { $analysis(uci$n) } {
+    if {$analysis(after$n) != ""} {
+      after cancel $analysis(after$n)
+      set analysis(after$n) ""
+    }
     sendToEngine $n stop
   } else  {
     sendToEngine $n exit
   }
+  set analysis(fen$n) {}
 }
 ################################################################################
 # toggleLockEngine
@@ -2606,10 +2602,6 @@ proc toggleLockEngine {n} {
     }
   } else {
     setTrialMode 0
-    if {$analysis(analyzeMode$n)} {
-      stopAnalyzeMode $n
-      startAnalyzeMode $n
-    }
     set state normal
   }
   set w .analysisWin$n
@@ -2622,6 +2614,7 @@ proc toggleLockEngine {n} {
   $w.b.automove configure -state $state
   $w.b.annotate configure -state $state
   $w.b.finishGame configure -state $state
+  updateAnalysis $n
 }
 ################################################################################
 # updateAnalysisText
@@ -2935,6 +2928,34 @@ proc updateAnalysisBoard {n moves} {
   sc_info preMoveCmd preMoveCommand
 }
 
+# Fulvio's analysis rewrite
+
+################################################################################
+# sendFENtoEngineUCI
+#   Wait for the engine to be ready then send position and go infinite
+#   engine_n: number of the engine that will receive the commands
+#   delay: delay the commands - INTERNAL - DON'T USE OUTSIDE sendFENtoEngineUCI
+################################################################################
+
+proc sendFENtoEngineUCI {engine_n  {delay 0}} {
+    global analysis
+    set analysis(after$engine_n) ""
+
+    if {$analysis(waitForReadyOk$engine_n) } {
+        #If too slow something is wrong: give up
+        if {$delay > 250} { return }
+
+        # Engine is not ready: process events, idle tasks and then call me back
+        incr delay
+        set cmd "set ::analysis(after$engine_n) "
+        append cmd { [ } " after $delay sendFENtoEngineUCI $engine_n $delay " { ] }
+        set analysis(after$engine_n) [eval [list after idle $cmd]]
+    } else {
+        sendToEngine $engine_n "position fen $analysis(fen$engine_n)"
+        sendToEngine $engine_n "go infinite"
+    }
+}
+
 ################################################################################
 # updateAnalysis
 #   Update an analysis window by sending the current board
@@ -2953,7 +2974,7 @@ proc updateAnalysis {{n 1}} {
 
 if {[info exists ::comp(playing)] && $::comp(playing)} {return}
 
-  global analysisWin analysis windowsOS
+  global analysis analysisWin windowsOS
   if {$analysis(pipe$n) == {}} { return }
 
   # Just return if no output has been seen from the analysis program yet:
@@ -2961,6 +2982,22 @@ if {[info exists ::comp(playing)] && $::comp(playing)} {return}
 
   # No need to update if no analysis is running
   if { ! $analysis(analyzeMode$n) } { return }
+    # No need to send current board if engine is locked
+    if { $analysis(lockEngine$n) } { return }
+
+    if { $analysis(uci$n) } {
+        if {$analysis(after$n) == "" } {
+            if { $analysis(fen$n) != "" } { sendToEngine $n "stop" }
+            set analysis(waitForReadyOk$n) 1
+            sendToEngine $n "isready"
+            set analysis(after$n) [after idle "sendFENtoEngineUCI $n"]
+        }
+        set analysis(fen$n) [sc_pos fen]
+        set analysis(maxmovenumber$n) 0
+        set analysis(movelist$n) [sc_game moves coord list]
+        set analysis(nonStdStart$n) [sc_game startBoard]
+    } else {
+        #TODO: remove 0.3s delay even for other engines
 
   # If too close to the previous update, and no other future update is
   # pending, reschedule this update to occur in another 0.3 seconds:
@@ -2985,28 +3022,6 @@ if {[info exists ::comp(playing)] && $::comp(playing)} {return}
   set nonStdStart [sc_game startBoard]
   set old_nonStdStart $analysis(nonStdStart$n)
   set analysis(nonStdStart$n) $nonStdStart
-
-  # No need to send current board if engine is locked
-  if { $analysis(lockEngine$n) } { return }
-
-  if { $analysis(uci$n) } {
-    # Normally the best move condition should still stand
-    # Meaning that we will stop the engine here and wait for
-    # the bestmove reply (which is handled in uci.tcl)
-    if { $analysis(waitForBestMove$n) } {
-      sendToEngine $n stop
-      vwait analysis(waitForBestMove$n)
-    }
-    sendToEngine $n "position fen [sc_pos fen]"
-    # Although we go infinite, some engines do a bestmove announcement
-    # and go idle when they see a forced mate, before we stop them
-    # Let's anticipate this.
-    set analysis(waitForBestMove$n) 1
-    sendToEngine $n {go infinite}
-    set analysis(fen$n) [sc_pos fen]
-    set analysis(maxmovenumber$n) 0
-  } else {
-    ### what a fucking mess
 
     # This section is for engines that support "analyze":
     if {$analysis(has_analyze$n)} {
