@@ -1279,7 +1279,7 @@ proc makeSortWin {{parent .}} {
   pack $w.tadd -side top
   pack [frame $w.add] -side top -fill x
   foreach b {Date Year Month Event Site Country Round Result Length
-    White Black Rating ECO Deleted EventDate} {
+    White Black Rating ECO Deleted EventDate Variations Comments} {
     set n [string tolower $b]
     button $w.add.$n -textvar ::tr($b) -command "addSortCriteria $b"
   }
@@ -1298,6 +1298,9 @@ proc makeSortWin {{parent .}} {
   grid $w.add.eco -row 4 -column 0 -sticky we
   grid $w.add.deleted -row 4 -column 1 -sticky we
   grid $w.add.eventdate -row 4 -column 2 -sticky we
+  grid $w.add.variations -row 5 -column 0 -sticky we
+  grid $w.add.comments -row 5 -column 1 -sticky we
+
 
   for {set i 0} {$i < 3} {incr i} {
     grid columnconfigure $w.add $i -weight 1

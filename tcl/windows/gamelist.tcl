@@ -54,8 +54,8 @@ set glistFields {
   D Deleted	e 2
   O Opening	w 6
   U Flags	e 2
-  V Vars	e 2
-  C Comments	w 2
+  V Variations	e 2
+  C Comments	e 2
   A Annos	e 2
   S Start	e 1
 }
@@ -79,9 +79,9 @@ foreach {code title anchor null} $glistFields {
 
 ### not sure about these missing fields at all &&&
 
-# set glistNames { Number White WElo Black BElo Event Site Round Date Result Length ECO Opening Deleted Flags Vars Comments Annos Start }
-# Number Filtered White WElo Black BElo Event Site Round Date Year EDate Result Length Country ECO Opening EndMaterial Deleted Flags Vars Comments Annos Start
-#  Number White WElo Black BElo Event Site Round Date Result Length ECO Opening Deleted Flags Vars Comments Annos Start
+# set glistNames { Number White WElo Black BElo Event Site Round Date Result Length ECO Opening Deleted Flags Variations Comments Annos Start }
+# Number Filtered White WElo Black BElo Event Site Round Date Year EDate Result Length Country ECO Opening EndMaterial Deleted Flags Variations Comments Annos Start
+#  Number White WElo Black BElo Event Site Round Date Result Length ECO Opening Deleted Flags Variations Comments Annos Start
 
 proc ::windows::gamelist::FilterText {} {
   global glstart
