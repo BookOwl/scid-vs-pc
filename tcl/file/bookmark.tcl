@@ -194,7 +194,7 @@ proc ::bookmarks::Go {entry} {
   ::tree::refresh
   ::windows::stats::Refresh
   updateMenuStates
-  updateBoard -pgn
+  updateBoard
   updateTitle
   updateStatusBar
 }

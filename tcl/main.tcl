@@ -718,6 +718,8 @@ proc flipBoardForPlayerNames {namelist {board .board}} {
 #    If a parameter "-pgn" is specified, the PGN text is also regenerated.
 #    If a parameter "-animate" is specified, board changes are animated.
 #
+#    It is now broken into a few parts, with the later two delayed till we're idle
+
 proc updateBoard {args} {
   global boardSize
   set pgnNeedsUpdate 0
@@ -738,13 +740,15 @@ proc updateBoard {args} {
   ::board::material .board
 
   after cancel updateBoard2
-  after cancel updateBoard3
+  after cancel $::updateBoard3_id
 
   update idletasks
 
   after idle updateBoard2
-  after idle updateBoard3
+  set ::updateBoard3_id [after idle updateBoard3 $pgnNeedsUpdate]
 }
+
+set updateBoard3_id {}
 
 proc updateBoard2 {} {
 
@@ -806,7 +810,7 @@ proc updateBoard2 {} {
 
 }
 
-proc updateBoard3 {} {
+proc updateBoard3 {pgnNeedsUpdate} {
   global gameInfo
 
   if {![sc_base inUse]  ||  $::trialMode  ||  [sc_base isReadOnly]} {
@@ -853,8 +857,7 @@ proc updateBoard3 {} {
   }
 
   if {[winfo exists .twinchecker]} { updateTwinChecker }
-  # ::pgn::Refresh $pgnNeedsUpdate 
-  ::pgn::Refresh
+  ::pgn::Refresh $pgnNeedsUpdate
   if {[winfo exists .bookWin]} { ::book::refresh }
   if {[winfo exists .bookTuningWin]} { ::book::refreshTuning }
   if {[winfo exists .noveltyWin]} { updateNoveltyWin }
