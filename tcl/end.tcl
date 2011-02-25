@@ -1421,6 +1421,10 @@ proc getCommandLineOptions {} {
     # Remove Process Serial Number from argument list:
     set argv [lrange $argv 1 end]
     incr argc -1
+  } elseif { $windowsOS && [string match "*scid.gui" [lindex $argv 0]]} {
+    # Remove "$PATH/scid.gui" from argument list
+    set argv [lrange $argv 1 end]
+    incr argc -1
   }
 
   while {$argc > 0} {

@@ -383,14 +383,15 @@ main (int argc, char * argv[])
 {
     scid_Init();
 
-    // If SOURCE_TCL_FILE is provided, we need to insert it (with the
-    // directory of the executable file prepended) as the first argument:
-
     int newArgc = argc;
     char ** newArgv = argv;
 
 #ifdef WIN32
 #  ifdef SOURCE_TCL_FILE
+
+    // Load scid.gui (SOURCE_TCL_FILE) by inserting it into argv[1]
+    // - but i can't get is to play nice with Windows "open with" feature S.A
+
     newArgc++;
 #ifdef WINCE
     newArgv = (char **) my_Tcl_Alloc (sizeof (char *) * newArgc);
@@ -398,7 +399,9 @@ main (int argc, char * argv[])
     newArgv = (char **) malloc (sizeof (char *) * newArgc);
 #endif
     newArgv[0] = argv[0];
-    for (int i = 1; i < argc; i++) { newArgv[i+1] = argv[i]; }
+    for (int i = 1; i <= argc; i++) { newArgv[i+1] = argv[i]; }
+
+    // insert into newArgv[1] "PATH_TO_TKSCID.EXE\scid.gui"
     char sourceFileName [MAX_PATH];
     sourceFileName[0] = 0;
     HMODULE hModule = GetModuleHandle (NULL);

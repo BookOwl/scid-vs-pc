@@ -984,10 +984,13 @@ makeScidDir $scidLogDir
 
 set optionsFile [scidConfigFile options]
 
+::splash::add "Command line is \"$::argv0 $::argv\""
+::splash::add "User directory is \"$scidUserDir\""
+
 if {[catch {source $optionsFile} ]} {
-  ::splash::add "Unable to find the options file: [file tail $optionsFile]" error
+  ::splash::add "Error loading options file \"$optionsFile\"" error
 } else {
-  ::splash::add "Using options file \"[file tail $optionsFile]\"."
+  ::splash::add "Loaded options from \"$optionsFile\"."
 }
 
 # Reconfigure fonts if necessary
@@ -1175,8 +1178,6 @@ foreach line $::splash::cache {
 if {(! $windowsOS)  &&  (! $unixOS)} {
   ::splash::add "Operating System may not be supported"
 }
-
-::splash::add "User directory is \"$scidUserDir\""
 
 # Check board size is valid:
 set newSize [lindex $boardSizes 0]

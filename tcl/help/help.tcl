@@ -5872,6 +5872,7 @@ communications are saved as PGN comments.</li>
 <li> Simplify the Bestgames widget : Remove the PGN pane, nice-ify the widget, and enable graph and best widgets to remember size.</li>
 <li> Several interface speed-ups from Fulvio</li>
 <li> Other SCID C++ changes from Gerd and Fulvio, including "Don't decode games when copying games"</li>
+<li> Enable sorting by (number of) Variations and Comments from Gerd</li>
 <li> Control+Wheelmouse (in help widget/pgn window) resizes font_Regular</li>
 <li> Help widget has a search entrybox</li>
 <li> When pasting FEN directly, do a castling sanity check.</li>
