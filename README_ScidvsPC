@@ -73,21 +73,20 @@
 
   o  Powerful Computer Tournament feature.
 
-  o  A rewritten Gamelist widget. Deleted items are greyed, a Compact
-     button, and other improvements.
+  o  Rewritten Gamelist widget: deleted items are greyed, a Compact
+     button, and the Database Switcher resides here.
 
-  o  Improved Tactical Game program.
+  o  Improved Tactical Game and FICs features.
+
+  o  Clickable Variation Arrows, and Paste Variation feature.
 
   o  Separate board sections are hideable via right-click.
 
   o  A re-done Button Bar with nicer look and feel.
 
-  o  The Fics interface is fairly different, with an accept/decline
-     widget for multiple offers.
-
   o  Restructured Analysis Engines widget. The F2 hotkeys can be set
      explicitly, Engine 1 can be docked into the Status Bar, and any
-     number of Engines may run at one time.
+     number of engines may run at one time.
 
   o  The Chessboard/Pieces config widget has been totally overhauled.
      There are some new colour and tile theme, and great piece set
@@ -103,8 +102,7 @@
   o  The Comment editor has been overhauled, and is much more stream-
      lined.
 
-  o  The over-ambitious, adhoc Windowing System, and Theme features of
-     Scid are not included.
+  o  The Docked Mode and Theme features of Scid are not included.
 
 
   2.0.2.  Features not currently implemented
@@ -183,6 +181,7 @@
 
   Mac users may have Tcl/Tk already installed. If not, I recommend
   trying <http://www.categorifiedcoder.info/tcltk/>.
+
   Then, one may compile from source, or install the App from the
   ``downloads'' section.  Note: Users upgrading may have to remove (or
   edit) $HOME/.scidvspc/config/engines.dat to properly configure the
@@ -508,7 +507,6 @@
 
   o  Restructure game info widget - Player names are more prominent,
      Length field added, Colors made consistent
-
   o  Reincluded Merida2 pieces
 
   o  Remove Repertoire editor (same functionality via Tree Masks)
@@ -574,6 +572,7 @@
 
   o  Gamelist improvements -
 
+
      o  Field order rearranged
 
      o  Columns now sort in both directions, with arrow depicting
@@ -637,11 +636,9 @@
 
   o  Computer Chess tournament feature
 
-
   o  The Gamelist widget has been rewritten to work with huge databases.
      Other new features include a case insensitive search, deleted items
      are greyed out, and there's a "Compact" button to empty trash with.
-
   o  Add a background colour option that applies to many text widgets,
      including gameinfo, pgn window and help window
 
@@ -835,7 +832,6 @@
 
      o  A hack to fix wayward comments (Scid)
 
-
      o  Don't let fischer chess (try to) castle
 
      o  Don't raise all windows with double click... (Very bad for Fics
@@ -905,6 +901,7 @@
 
   o  Fix up Paste Clipboard widget a little
 
+
   o  Reorder the Options->Chessboard menus a little, giving
      MyPlayerNames its own entry
 
@@ -964,6 +961,7 @@
 
   o  Other minor changes to fics, -O2, "exec tkscid" correctness, font
      and menu tweaks
+
 
   6.5.11.  Scid vs PC 3.6.26.3
 

@@ -175,7 +175,7 @@ proc ::commenteditor::Open {} {
   }
 
   dialogbutton $w.b.ok -text Ok \
-      -command "[namespace code {storeComment; ::pgn::Refresh 1; updateBoard}]
+      -command "::commenteditor::storeComment
                 focus .
                 destroy .commentWin"
   set helpMessage(E,$w.b.ok) {Apply changes and exit}

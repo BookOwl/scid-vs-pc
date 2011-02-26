@@ -43,10 +43,10 @@ Scid vs. PC</p>
 <ul>
 <li>A Computer Tournament feature</li>
 <li>Compatibility with SCID's si4 databases.</li>
-<li>A rewritten Gamelist Widget using the new Ttk Treeview feature. Deleted items are greyed out, and there's a handy "Compact" button.</li>
-<li>Improved Tactical Game program.</li>
+<li>Rewritten Gamelist Widget using the new Ttk Treeview feature. Deleted items are greyed out, a Compact button, and the Database Switcher resides here.</li>
+<li>Improved Tactical Game and FICs features.</li>
+<li>Clickable Variation Arrows, and Paste Variation feature.</li>
 <li>Redone Button bar, Toolbar and Icons.</li>
-<li>The Fics interface is fairly different, with a nice accept/decline widget for multiple offers.</li>
 <li>Improvements to "Mate in ..." puzzles.</li>
 <li>The Chessboard/Pieces config widget has been totally overhauled. There are some nice colour and tile theme, and great piece set available if the optional TkImg package is installed.</li>
 <li>The Setup Start Board has many fixes and improvements. Annoyingly, if Scid uses a tiled theme, it's setup board is displayed a different colour.</li>
@@ -58,8 +58,7 @@ Scid vs. PC</p>
 </ul>
 <h3>Note</h3>
 <ul>
-<li>The over ambitious Tiled Windowing System is not included. It has very many
-unresolved issues, and is not very usable.</li>
+<li>The Docked Mode and Theme features of Scid are not included.</li>
 <li>Wish 8.5 includes a basic implementation of themes, and there has been
 widespread changes to Scid to use them. Unfortunately, the changes are not
 justified for some dubious eye candy.</li>
@@ -2644,7 +2643,7 @@ set helpText(Analysis) {<h1>Analysis Windows</h1>
   <p>Engines can be started in various way.
   By <run ::startAnalysisWin F2><green>pressing F2</green></run>
   , F3 or F4, from the Configuration Widget, or the Tools menu.
-  Additionally, <b>Engine 1</b> can be start/stopped by <b>clicking the statusbar</b>.
+  Additionally, <b>Engine 1</b> can be start/stopped by <b>double-clicking the statusbar</b>.
   Right-clicking the Statusbar will dock/undock the engine,
   which, when running docked, will run at low CPU priority.<p>
 
