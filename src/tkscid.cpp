@@ -11451,6 +11451,17 @@ sc_name_retrievename (ClientData cd, Tcl_Interp * ti, int argc, const char ** ar
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// Returns the difference in length between strlen and Utf length
+// (for printf formatting purposes)
+
+int Utf_offset (const char *str) {
+    int i;
+    i = strlen(str) - Tcl_NumUtfChars(str,-1);
+    if (i<0)
+      i = 0;
+
+    return i;
+}
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // sc_name_info:
@@ -11732,15 +11743,29 @@ sc_name_info (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
 #ifndef WINCE
     SpellChecker * spChecker = spellChecker[NAME_PLAYER];
 #endif
-    uint wWidth = strLength (translate (ti, "White:"));
-    uint bWidth = strLength (translate (ti, "Black:"));
-    uint tWidth = strLength (translate (ti, "Total:"));
+
+    char trWhite[128];
+    char trBlack[128];
+    char trTotal[128];
+    strcpy (trWhite , translate (ti, "White"));
+    strcpy (trBlack , translate (ti, "Black"));
+    strcpy (trTotal , translate (ti, "Total"));
+
+    uint wWidth = strLength (trWhite);
+    uint bWidth = strLength (trBlack);
+    uint tWidth = strLength (trTotal);
+
     uint wbtWidth = wWidth;
     if (bWidth > wbtWidth) { wbtWidth = bWidth; }
     if (tWidth > wbtWidth) { wbtWidth = tWidth; }
 
-    //// sprintf format to display won, drawn, lost statistics S.A 
     // German "Weiß", and Polish "Bia³e" are actually length 5 and 6, and breaks the printf :<
+    // , so adjust formatting widths to allow for unicode
+    wWidth = wbtWidth + Utf_offset(trWhite);
+    bWidth = wbtWidth + Utf_offset(trBlack);
+    tWidth = wbtWidth + Utf_offset(trTotal);
+
+    //// sprintf format to display won, drawn, lost statistics S.A 
 
     const char * fmt = "%s  %-*s %3u%c%02u%%   +%s%4u%s  =%s%4u%s  -%s%4u%s  %4u%c%c /%s%4u%s";
 
@@ -11945,8 +11970,8 @@ sc_name_info (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
 
     sprintf (temp, fmt,
              htextOutput ? "<tt>" : "",
-             wbtWidth,
-             translate (ti, "White"),
+             wWidth,
+             trWhite,
              percent / 100, decimalPointChar, percent % 100,
              htextOutput ? "<red><run sc_name info -fw {}; ::windows::stats::Refresh>" : "",
              whitescore[STATS_ALL][RESULT_White],
@@ -11972,8 +11997,8 @@ sc_name_info (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
     }
     sprintf (temp, fmt,
              htextOutput ? "<tt>" : "",
-             wbtWidth,
-             translate (ti, "Black"),
+             bWidth,
+             trBlack,
              percent / 100, decimalPointChar, percent % 100,
              htextOutput ? "<red><run sc_name info -fW {}; ::windows::stats::Refresh>" : "",
              blackscore[STATS_ALL][RESULT_White],
@@ -11999,8 +12024,8 @@ sc_name_info (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
     }
     sprintf (temp, fmt,
              htextOutput ? "<tt>" : "",
-             wbtWidth,
-             translate (ti, "Total"),
+             tWidth,
+             trTotal,
              percent / 100, decimalPointChar, percent % 100,
              htextOutput ? "<red><run sc_name info -fwW {}; ::windows::stats::Refresh>" : "",
              bothscore[STATS_ALL][RESULT_White],
@@ -12032,8 +12057,8 @@ sc_name_info (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
     }
     sprintf (temp, fmt,
              htextOutput ? "<tt>" : "",
-             wbtWidth,
-             translate (ti, "White"),
+             wWidth,
+             trWhite,
              percent / 100, decimalPointChar, percent % 100,
              "", whitescore[STATS_FILTER][RESULT_White], "",
              "", whitescore[STATS_FILTER][RESULT_Draw], "",
@@ -12052,8 +12077,8 @@ sc_name_info (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
     }
     sprintf (temp, fmt,
              htextOutput ? "<tt>" : "",
-             wbtWidth,
-             translate (ti, "Black"),
+             bWidth,
+             trBlack,
              percent / 100, decimalPointChar, percent % 100,
              "", blackscore[STATS_FILTER][RESULT_White], "",
              "", blackscore[STATS_FILTER][RESULT_Draw], "",
@@ -12072,8 +12097,8 @@ sc_name_info (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
     }
     sprintf (temp, fmt,
              htextOutput ? "<tt>" : "",
-             wbtWidth,
-             translate (ti, "Total"),
+             tWidth,
+             trTotal,
              percent / 100, decimalPointChar, percent % 100,
              "", bothscore[STATS_FILTER][RESULT_White], "",
              "", bothscore[STATS_FILTER][RESULT_Draw], "",
@@ -12100,8 +12125,8 @@ sc_name_info (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
         }
         sprintf (temp, fmt,
                  htextOutput ? "<tt>" : "",
-                 wbtWidth,
-                 translate (ti, "White"),
+                 wWidth,
+                 trWhite,
                  percent / 100, decimalPointChar, percent % 100,
                  htextOutput ? "<red><run sc_name info -ow {}; ::windows::stats::Refresh>" : "",
                  whitescore[STATS_OPP][RESULT_White],
@@ -12127,8 +12152,8 @@ sc_name_info (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
         }
         sprintf (temp, fmt,
                  htextOutput ? "<tt>" : "",
-                 wbtWidth,
-                 translate (ti, "Black"),
+                 bWidth,
+                 trBlack,
                  percent / 100, decimalPointChar, percent % 100,
                  htextOutput ? "<red><run sc_name info -oW {}; ::windows::stats::Refresh>" : "",
                  blackscore[STATS_OPP][RESULT_White],
@@ -12154,8 +12179,8 @@ sc_name_info (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
     }
         sprintf (temp, fmt,
                  htextOutput ? "<tt>" : "",
-                 wbtWidth,
-                 translate (ti, "Total"),
+                 tWidth,
+                 trTotal,
                  percent / 100, decimalPointChar, percent % 100,
                  htextOutput ? "<red><run sc_name info -owW {}; ::windows::stats::Refresh>" : "",
                  bothscore[STATS_OPP][RESULT_White],
