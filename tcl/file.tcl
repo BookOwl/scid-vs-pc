@@ -107,7 +107,7 @@ proc ::file::New {} {
 # This proc should return an error status...
 # But it is used everywhere, and will take some time to fix
 
-proc ::file::Open {{fName ""} {parent .}} {
+proc ::file::Open {{fName ""} {parent .} {update 1}} {
 
   global glstart
   if {[sc_base count free] == 0} {
@@ -222,7 +222,9 @@ proc ::file::Open {{fName ""} {parent .}} {
 
   refreshWindows
 
-  updateBoard -pgn
+  if {$update} {
+    updateBoard -pgn
+  }
 }
 
 proc refreshWindows {} {

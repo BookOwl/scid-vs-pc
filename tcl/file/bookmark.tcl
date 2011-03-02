@@ -164,7 +164,9 @@ proc ::bookmarks::Go {entry} {
     sc_base switch $slot
   } else {
     busyCursor .
-    if {[catch { ::file::Open $fname} result]} {
+    ### updateBoard -pgn gets called three times, so try passing "update = 0" to the first two.
+    # ::file::Open, ::game::Load, updateBoard -pgn
+    if {[catch { ::file::Open $fname . 0} result]} {
       unbusyCursor .
       tk_messageBox -icon warning -type ok -parent . \
         -title "Scid" -message "Unable to load the database:\n$fname\n\n$result"
@@ -183,7 +185,7 @@ proc ::bookmarks::Go {entry} {
   set result [lindex $entry 10]
 
   set best [sc_game find $gnum $white $black $site $round $year $result]
-  if {[catch {::game::Load $best}]} {
+  if {[catch {::game::Load $best 0}]} {
     tk_messageBox -icon warning -type ok -parent . \
       -title "Scid" -message "Unable to load game number: $best"
   } else {
@@ -194,7 +196,7 @@ proc ::bookmarks::Go {entry} {
   ::tree::refresh
   ::windows::stats::Refresh
   updateMenuStates
-  updateBoard
+  updateBoard -pgn
   updateTitle
   updateStatusBar
 }
