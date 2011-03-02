@@ -240,7 +240,7 @@ proc toggleCoords {} {
   ::board::coords .board
 }
 
-frame .button.space3 -width 15
+frame .button.space3 -width 10
 button .button.flip -image tb_flip -takefocus 0 \
     -command "::board::flip .board"
 
@@ -350,9 +350,9 @@ foreach i {start back forward end intoVar exitVar addVar autoplay \
 
 pack .button.start .button.back .button.forward .button.end \
     .button.space .button.exitVar .button.intoVar .button.addVar .button.space2 \
-    .button.autoplay .button.trial .button.space3 .button.flip .button.showmenu \
-    .button.gameinfo -side left -pady 1 -padx 0 -ipadx 2 -ipady 2
-
+    .button.autoplay .button.trial .button.space3 .button.flip \
+    -side left -pady 1 -padx 0 -ipadx 2 -ipady 2
+    # .button.space3 [flip] .button.showmenu .button.gameinfo 
 
 ############################################################
 ### The board:
