@@ -30,7 +30,7 @@ namespace eval pgn {
     } {
       configMenuText $m.opt $idx $tag $lang
     }
-    foreach idx {1 2 3 4 5} tag {PgnColorHeader PgnColorAnno PgnColorComments PgnColorVars PgnColorBackground} {
+    foreach idx {1 2 3 4 5 6} tag {PgnColorHeader PgnColorAnno PgnColorComments PgnColorVars PgnColorBackground PgnColorCurrent} {
       configMenuText $m.color $idx $tag $lang
     }
     foreach idx {0 1} tag {PgnHelpPgn PgnHelpIndex} {
@@ -105,6 +105,9 @@ namespace eval pgn {
         -command {::pgn::ChooseColor Var variation}
     $w.menu.color add command -label PgnColorBackground \
         -command {::pgn::ChooseColor Background background}
+    $w.menu.color add command -label PgnColorCurrent \
+        -command {::pgn::ChooseColor Current current}
+
 
     $w.menu.help add command -label PgnHelpPgn \
         -accelerator F1 -command {helpWindow PGN}

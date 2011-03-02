@@ -156,9 +156,9 @@ menuText E GameNovelty "Find Novelty..." 7 \
 menuText E Search "Search" 0
 menuText E SearchReset "Reset Filter" 0 {Reset the filter so all games are included}
 menuText E SearchNegate "Negate Filter" 0 {Negate the filter to only include excluded games}
-menuText E SearchHeader "General..." 0 {Search by Header (player, event, etc) information}
-menuText E SearchCurrent "Current Board..." 0 {Search for the current board position}
-menuText E SearchMaterial "Material/Pattern..." 0 {Search for material or board patterns}
+menuText E SearchHeader "General" 0 {Search by Header (player, event, etc) information}
+menuText E SearchCurrent "Current Board" 0 {Search for the current board position}
+menuText E SearchMaterial "Material/Pattern" 0 {Search for material or board patterns}
 menuText E SearchUsing "Using Search File..." 0 {Search using a SearchOptions file}
 
 # Windows menu:
@@ -236,9 +236,9 @@ menuText E ToolsExpFilterHTML "Export Filter to HTML File..." 17 \
 menuText E ToolsExpFilterHTMLJS "Export Filter to HTML and JavaScript File..." 17 {Write all filtered games to a HTML and JavaScript file}  
 menuText E ToolsExpFilterLaTeX "Export Filter to LaTeX File..." 17 \
   {Write all filtered games to a LaTeX file}
-menuText E ToolsImportOne "Import PGN Text..." 0 \
+menuText E ToolsImportOne "Import PGN Text" 0 \
   {Import a game from PGN text}
-menuText E ToolsImportFile "Import PGN File..." 7 {Import games from a PGN file}
+menuText E ToolsImportFile "Import PGN File" 7 {Import games from a PGN file}
 menuText E ToolsStartEngine1 "Start engine 1" 0  {Start engine 1}
 menuText E ToolsStartEngine2 "Start engine 2" 0  {Start engine 2}
 
@@ -724,14 +724,14 @@ menuText E PgnOptSpace "Space after Move Numbers" 1
 menuText E PgnOptStripMarks "Hide Square/Arrow Codes" 1
 menuText E PgnOptBoldMainLine "Bold Text for Main Line" 4
 menuText E PgnColor "Colors" 0
-menuText E PgnColorHeader "Header..." 0
-menuText E PgnColorAnno "Annotations..." 0
-menuText E PgnColorComments "Comments..." 0
-menuText E PgnColorVars "Variations..." 0
-menuText E PgnColorBackground "Background..." 0
-menuText E PgnColorMain "Main line..." 0
-menuText E PgnColorCurrent "Current move background..." 1
-menuText E PgnColorNextMove "Next move background..." 0
+menuText E PgnColorHeader "Header" 0
+menuText E PgnColorAnno "Annotations" 0
+menuText E PgnColorComments "Comments" 0
+menuText E PgnColorVars "Variations" 0
+menuText E PgnColorBackground "Background" 0
+menuText E PgnColorMain "Main line" 0
+menuText E PgnColorCurrent "Current move" 1
+menuText E PgnColorNextMove "Next move" 0
 menuText E PgnHelp "Help" 0
 menuText E PgnHelpPgn "PGN Help" 0
 menuText E PgnHelpIndex "Index" 0
