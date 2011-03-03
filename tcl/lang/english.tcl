@@ -730,7 +730,7 @@ menuText E PgnColorComments "Comments" 0
 menuText E PgnColorVars "Variations" 0
 menuText E PgnColorBackground "Background" 0
 menuText E PgnColorMain "Main line" 0
-menuText E PgnColorCurrent "Current move" 1
+menuText E PgnColorCurrent "Current Move" 1
 menuText E PgnColorNextMove "Next move" 0
 menuText E PgnHelp "Help" 0
 menuText E PgnHelpPgn "PGN Help" 0

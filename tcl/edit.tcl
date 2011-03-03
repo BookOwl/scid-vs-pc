@@ -27,7 +27,7 @@ proc pasteFEN {} {
   if {[catch {set fenStr [selection get -selection PRIMARY]} ]} {
     catch {set fenStr [selection get -selection CLIPBOARD]}
   }
-  set fenStr [validateFEN [string trim $fenStr]]
+  catch {set fenStr [validateFEN [string trim $fenStr]]}
 
   set fenExplanation {FEN is the standard representation of a chess position, for example:
 "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"}

@@ -1063,7 +1063,8 @@ proc getPromoPiece {} {
   bind $w <Return> "set ::result 2 ; destroy $w"
 
   placeWinOverPointer $w
-  update
+  ### hmmm... this update can cause the window to get dismissed before grab
+  # update 
   grab $w
   tkwait window $w
   return $::result
