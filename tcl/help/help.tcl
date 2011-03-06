@@ -1572,7 +1572,7 @@ shows all matching games.
 <i>For more info about Searches and Filters, see <a Searches>here</a>, or below</i>.
 </p>
 <p>
-Buttons:
+<b>Buttons</b>
 <ul>
 <li><b>Reset</b> - resets game filter</li>
 <li><b>Remove</b> - removes highlighted game(s) from filter</li>
@@ -1586,15 +1586,18 @@ Buttons:
 </ul>
 </p>
 <p>
-Other features include:
+<b>Other Features</b>
 <ul>
+<li>Sort games by clicking column titles.</li>
 <li>Load games by double-clicking.</li>
 <li>Multiple games can be selected by using Shift or Control while single clicking. <lt>Control+A<gt> selects all games visible in widget.</li>
 <li>Resize column widths by dragging the column edge.</li>
-<li>Sort games by single clicking the column title. </li>
-<li><b>Note</b>: <i>Sort resets the game filter, and the current game cannot be replaced</i>.</li>
 </ul>
-
+<h3>Sorting the Gamelist</h3>
+<p>The Gamelist can be sorted by clicking column titles. But doing so is not trivial.
+<b>Sorts reset the game filter</b> (meaning the current game cannot be replaced), and
+also <b>affect search and tree performance</b>. For more details see <a Sorting>Sorting Database</a>.
+</p>
 
   <h3>Deleted and Filtered Games</h3>
   <p>
@@ -1631,7 +1634,7 @@ This can be done by the <b>Compact</b> button, or
   opening phase.
   </p>
 
-  <p><footer>Updated: Scid vs. PC 4.3, December 2010</footer></p>
+  <p><footer>Updated: Scid vs. PC 4.4, Markch 2011</footer></p>
 }
 
 
@@ -2499,17 +2502,18 @@ set helpText(Maintenance) {<h1>Database Maintenance</h1>
 ### Sorting help:
 
 set helpTitle(Sorting) "Sorting a database"
-set helpText(Sorting) {<h1>Sorting a Database</h1>
+set helpText(Sorting) {<h1>Sorting Databases</h1>
   <p>
-  The <term>sorting</term> function sorts all games in a database.
-  You can select a number of sort criteria.
-  When two games are equal according to the the first criteria, they
-  are sorted using the second criteria, and so on.
+  Scid has a fast and powerful <run makeSortWin><green>Sort Database</green></run>
+  feature. Sorts can be performed on single fields (eg: Dates, Names and ECO codes),
+  or multiple fields, with the frist field having priority, and so-on.
+  </p>
+  <p>
+  <b>Note</b>: <i>Sorting a database resets the <a Searches Filter>search filter</a></i>.
   </p>
 
-  <h3>Sort criteria</h3>
   <p>
-  The available sorting criteria are:
+  The available criteria/fields are
   </p>
   <ul>
   <li> Date (oldest games first)
@@ -2519,48 +2523,43 @@ set helpText(Sorting) {<h1>Sorting a Database</h1>
   <li> Country (last 3 letters of Site name)
   <li> Round name
   <li> White name
-  <li> Rating (average of White and Black ratings, highest first)
   <li> Black name
-  <li> Result (White wins, then draws, then Black wins)
+  <li> Rating (average of White and Black ratings, highest first)
+  <li> Result
   <li> Length (number of full moves in the game)
-  <li> ECO (the <a ECO>Encyclopedia of Chess Openings code</a>)
+  <li> ECO (<a ECO>Encyclopedia of Chess Openings code</a>)
+  <li> Variations (number of variations in game)
+  <li> Comments (number of comments in game)
   </ul>
 
-  <h3>Sort results</h3>
+  <h3>Sorting is Permanent</h3>
   <p>
-  When you sort a Scid Database that is not read-only, the sort
-  results are saved so the order of games in the database is
-  permanently changed.  If you want to the sort results to be
-  temporary, make the database read-only first using the <b>File:
-  Read-only</b> menu command.
+  When you sort a database (which is not read-only) the
+  results are saved immediately and the <b>order of games is
+  permanently changed</b>.  If this is not desired,
+  one may first make the database <b>read-only<b> from the
+  <a Maintenance>maintenance</a> window.
   </p>
   <p>
-  When you sort a database that is read-only or is actually a PGN
-  file, the sort results cannot be saved so the sorted order of games
-  will be lost when the file is closed.
-  </p>
-  <p>
-  Note that sorting a database resets the <a Searches Filter>search
-  filter</a> to contain all games.
+  When sorting a read-only database (or PGN archive)
+  , the results cannot be saved and the order of games
+  is lost when the file is closed.
   </p>
 
-  <h3>Important note about sorting databases:</h3>
+  <h3>Database Performance</h3>
   <p>
-  When a database is sorted, the Index File is altered but the game file
-  is not changed. This means sorting a database will leave the game file
-  records in a scrambled order relative to the Index File. This can
-  really <b>slow down</b> <a Tree>tree</a>, position and material/pattern
-  <a Searches>searches</a>, so you should reorder the game file by
-  <a Compact>compacting</a> it after sorting the database to maintain
-  good search performance.
+  When a database is sorted the Index File is altered but the Game File
+  is not (leaving the game file records out of order relative to the Index File).
+  This can result in slow <a Tree>tree</a>, position and material/pattern
+  <a Searches>searches</a>. After sorting, one should reorder the game file by
+  <a Compact>compacting</a> it to maintain good search performance.
   </p>
   <p>
-  Note that only a database sorted by <a ECO>ECO</a> codes can use the fast
-  tree search modes. This however, also requires to compact the
-  database after the sort procedure!
+  Additionaly, only databases sorted by <a ECO>ECO</a> codes (and subsequently
+compacted) can use <b>fast tree searches<b>. 
   </p>
 
-  <p><footer>Updated: Scid 3.6.26, October 2008</footer></p>
+  <p><footer>Updated: Scid vs. PC 4.4 March 2011</footer></p>
 }
 
 ####################

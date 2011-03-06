@@ -127,19 +127,30 @@ proc ::maint::OpenClose {} {
   label $w.title.ratings -textvar ::tr(RatingRange) -font $font
   button $w.title.vicon -command {changeBaseType [sc_base current] .maintWin}
 
-  # description
+  # Status
+  
+  frame $w.title.status
+  label $w.title.status.lab -text [tr Status]: -font $font
+  label $w.title.status.text -width 1 -font $font
+  dialogbutton $w.title.status.edit -text [tr Change] -font $font \
+      -command "makeBaseReadOnly $w" -padx 3
+  pack $w.title.status.lab -side left -padx 3
+  pack $w.title.status.text -side left -fill x -expand yes 
+  pack $w.title.status.edit -side right -padx 3
+
+  # Description
 
   frame $w.title.desc
   label $w.title.desc.lab -text $::tr(Description): -font $font
   label $w.title.desc.text -width 1 -font $font
-  dialogbutton $w.title.desc.edit -text "[tr Edit]..." -font $font \
+  dialogbutton $w.title.desc.edit -text [tr Edit] -font $font \
       -command ::maint::ChangeBaseDescription -padx 3
   pack $w.title.desc.lab -side left -padx 3
-  pack $w.title.desc.text -side left -fill x -expand yes -padx 8
+  pack $w.title.desc.text -side left -fill x -expand yes 
   pack $w.title.desc.edit -side right -padx 3
 
   foreach name {name games delete mark filter dates ratings} {
-    label $w.title.v$name -text "0" -font $font
+    label $w.title.v$name -font $font
   }
 
   ### Make the top row a little different.
@@ -161,7 +172,11 @@ proc ::maint::OpenClose {} {
 
   $w.title.vname configure -font font_Bold
   $w.title.vgames configure -font $font
-  grid $w.title.desc -row $row -column 0 -columnspan 5 -sticky we -pady 4
+
+  incr row
+  grid $w.title.status -row $row -column 0 -columnspan 5 -sticky we -pady 12
+  incr row
+  grid $w.title.desc -row $row -column 0 -columnspan 5 -sticky we 
 
   foreach grid {title delete mark spell db} cols {5 3 3 4 3} {
     for {set i 0} {$i < $cols} {incr i} {
@@ -199,13 +214,13 @@ proc ::maint::OpenClose {} {
 
   label $w.spell.title -textvar ::tr(Spellchecking) -font $bold
   grid $w.spell.title -columnspan 4 -row 0 -column 0 -sticky n
-  button $w.spell.player -textvar ::tr(Players...) -font $font \
+  button $w.spell.player -textvar ::tr(Players) -font $font \
       -command "openSpellCheckWin Player $w"
-  button $w.spell.event -textvar ::tr(Events...) -font $font \
+  button $w.spell.event -textvar ::tr(Events) -font $font \
       -command "openSpellCheckWin Event $w"
-  button $w.spell.site -textvar ::tr(Sites...) -font $font \
+  button $w.spell.site -textvar ::tr(Sites) -font $font \
       -command "openSpellCheckWin Site $w"
-  button $w.spell.round -textvar ::tr(Rounds...) -font $font \
+  button $w.spell.round -textvar ::tr(Rounds) -font $font \
       -command "openSpellCheckWin Round $w"
   grid $w.spell.player -row 1 -column 0 -sticky we -padx 1 -pady 1
   grid $w.spell.event -row 1 -column 1 -sticky we -padx 1 -pady 1
@@ -220,15 +235,15 @@ proc ::maint::OpenClose {} {
   label $w.db.title -textvar ::tr(DatabaseOps) -font $bold
   grid $w.db.title -columnspan 3 -row 0 -column 0 -sticky n
 
-  button $w.db.check   -textvar ::tr(CheckGames...)      -command checkAllGames
-  button $w.db.eco     -textvar ::tr(ReclassifyGames...) -command "classifyAllGames $w"
-  button $w.db.compact -textvar ::tr(CompactDatabase...) -command "makeCompactWin $w"
-  button $w.db.sort    -textvar ::tr(SortDatabase...)    -command "makeSortWin $w"
-  button $w.db.elo     -textvar ::tr(AddEloRatings...)   -command "allocateRatings $w"
-  button $w.db.dups    -textvar ::tr(DeleteTwins...)     -command "markTwins $w"
-  button $w.db.cleaner -textvar ::tr(Cleaner...)         -command cleanerWin
-  button $w.db.autoload -textvar ::tr(AutoloadGame...)   -command "::maint::SetAutoloadGame $w"
-  button $w.db.strip -textvar ::tr(StripTags...)         -command "stripTags $w"
+  button $w.db.check   -textvar ::tr(CheckGames)      -command checkAllGames
+  button $w.db.eco     -textvar ::tr(ReclassifyGames) -command "classifyAllGames $w"
+  button $w.db.compact -textvar ::tr(CompactDatabase) -command "makeCompactWin $w"
+  button $w.db.sort    -textvar ::tr(SortDatabase)    -command "makeSortWin $w"
+  button $w.db.elo     -textvar ::tr(AddEloRatings)   -command "allocateRatings $w"
+  button $w.db.dups    -textvar ::tr(DeleteTwins)     -command "markTwins $w"
+  button $w.db.cleaner -textvar ::tr(Cleaner)         -command cleanerWin
+  button $w.db.autoload -textvar ::tr(AutoloadGame)   -command "::maint::SetAutoloadGame $w"
+  button $w.db.strip -textvar ::tr(StripTags)         -command "stripTags $w"
 
   foreach i {check eco compact sort elo dups cleaner autoload strip} {
     $w.db.$i configure -font $font
@@ -323,10 +338,13 @@ proc ::maint::Refresh {} {
   $w.title.mark configure -text $flagname
   $w.title.desc.text configure -text [sc_base description]
 
-  # Disable buttons if current base is closed or read-only:
-  set state disabled
+  # Disable buttons if current base is closed or read-only
   if {[sc_base inUse]  &&  ![sc_base isReadOnly]} {
     set state normal
+    $w.title.status.text configure -text {Read/Write}
+  } else {
+    set state disabled
+    $w.title.status.text configure -text {Read Only}
   }
   foreach spell {player event site round} {
     $w.spell.$spell configure -state $state
@@ -339,18 +357,23 @@ proc ::maint::Refresh {} {
   # Looks nicer enabled
   # $w.title.vicon configure -state $state
   $w.title.desc.edit configure -state $state
+  $w.title.status.edit configure -state $state
   $w.db.elo configure -state $state
   $w.db.autoload configure -state $state
 
-  set state disabled
-  if {[sc_base inUse]} { set state normal }
+  if {[sc_base inUse]} {
+    set state normal
+  } else {
+    set state disabled
+  }
   $w.db.eco configure -state $state
   $w.db.sort configure -state $state
   $w.db.strip configure -state $state
 
-  set state disabled
   if {[baseIsCompactable]} {
     set state normal
+  } else {
+    set state disabled
   }
   $w.db.compact configure -state $state
   $w.db.cleaner configure -state $state
@@ -1380,11 +1403,11 @@ proc sortDatabase {} {
   }
 }
 
-proc makeBaseReadOnly {} {
+proc makeBaseReadOnly {{parent .}} {
   if {! [sc_base inUse]} { return }
   if {[sc_base isReadOnly]} { return }
 
-  set result [tk_messageBox -title "Scid: [tr FileReadOnly]" -parent . \
+  set result [tk_messageBox -title "Scid: [tr FileReadOnly]" -parent $parent \
       -icon question -type yesno -message $::tr(ReadOnlyDialog)]
 
   if {$result == "yes"} {
