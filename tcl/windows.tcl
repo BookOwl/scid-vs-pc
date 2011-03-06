@@ -90,13 +90,19 @@ proc setWinSize {win} {
 # These procs only work ~properly~ if window is updated first
 # (preferably in a withdrawn state) S.A
 
-proc placeWinOverParent {w parent} {
+proc placeWinOverParent {w parent {where 0}} {
 
   set reqwidth [winfo reqwidth $w]
   set reqheight [winfo reqheight $w]
 
   if {[scan [winfo geometry $parent] "%dx%d+%d+%d" width height x y] == 4} {
-    wm geometry $w "+[expr $x+($width-$reqwidth)/2]+[expr $y+($height-$reqheight)/3]"
+    if {$where == "bottom"} {
+      wm geometry $w "+[expr $x+($width-$reqwidth)/2]+[expr $y+$height]"
+    } elseif {$where == "top"} {
+      wm geometry $w "+[expr $x+($width-$reqwidth)/2]+$y"
+    } else {
+      wm geometry $w "+[expr $x+($width-$reqwidth)/2]+[expr $y+($height-$reqheight)/3]"
+    }
   } else {
     puts {placeWinOverParent: scan != 4}
   }

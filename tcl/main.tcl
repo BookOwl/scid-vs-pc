@@ -580,7 +580,7 @@ proc showVars {} {
 
   catch {
     focus $w
-    placeWinOverParent $w .
+    placeWinOverParent $w . top
     # Disable grab if drawing arrows, as it pinches the arrows binding
     # ... Hmmm, but we need the grab to back out of variation window by using wheel-up! :<
     # So we have to compromise here. 

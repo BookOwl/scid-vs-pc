@@ -211,7 +211,8 @@ proc ::tree::make { { baseNumber -1 } } {
   $w.f.tl tag configure bluefg -foreground blue
   $w.f.tl tag configure greenfg -foreground SeaGreen
   $w.f.tl tag configure redfg -foreground red
-  $w.f.tl tag configure nextmove -foreground seagreen3
+  $w.f.tl tag configure nextmove -background lemonchiffon
+  #   $w.f.tl tag configure nextmove -foreground seagreen3
 
   canvas $w.progress -width 250 -height 15  -relief solid -border 1
   $w.progress create rectangle 0 0 0 0 -fill $::progcolor -outline $::progcolor -tags bar
