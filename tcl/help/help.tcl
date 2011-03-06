@@ -690,6 +690,7 @@ set helpText(Menus) {<h1>Scid Menus</h1>
   <br>
   <li><menu>Add Variation</menu>: Adds a new empty variation for the
   next move, or for the previous move if there is no next move yet.</li>
+  <li><menu>Paste Variation</menu>: Pastes the current text selection as a variation.</li>
   <li><menu>Delete Variation</menu>: Provides a submenu of variations for
   the current move, so one can be deleted.</li>
   <li><menu>Make First Variation</menu>: Promotes a variation to be the

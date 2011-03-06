@@ -172,8 +172,14 @@
   4.0.2.  Windows
 
   First you must install Wish8.5. I recommend the excellent Active State
-  Tcl <http://www.activestate.com/Products/ActiveTcl/>.  Then unzip
-  ``Scid vs PC'', browse to the bin directory and double click Scid.exe.
+  Tcl <http://www.activestate.com/Products/ActiveTcl/>.
+
+  Then unzip ``Scid vs PC'', browse to the Scid-vs-PC/bin directory and
+  double click Scid.exe.
+
+  The configuration files, including the chess engine list, are stored
+  in the Scid-vs-PC/bin/config directory, and may be copied over from
+  old versions to make upgrading easier.
 
 
   4.0.3.  Mac OSX
@@ -429,6 +435,7 @@
 
   o  Gamelist now has remove-above and remove-below buttons.
 
+
   o  FICs improvements, including a ping feature to indicate network
      health (*nix only), and player communications are saved as PGN
      comments.
@@ -507,6 +514,7 @@
 
   o  Restructure game info widget - Player names are more prominent,
      Length field added, Colors made consistent
+
   o  Reincluded Merida2 pieces
 
   o  Remove Repertoire editor (same functionality via Tree Masks)
@@ -559,6 +567,7 @@
 
   o  Remove Control+V game paste binding .... too dangerous
 
+
   o  Further refinements of Switcher widget and Icons
 
   o  ttk comboboxes are no longer grey
@@ -571,7 +580,6 @@
   o  Rewritten Help items
 
   o  Gamelist improvements -
-
 
      o  Field order rearranged
 
@@ -639,6 +647,7 @@
   o  The Gamelist widget has been rewritten to work with huge databases.
      Other new features include a case insensitive search, deleted items
      are greyed out, and there's a "Compact" button to empty trash with.
+
   o  Add a background colour option that applies to many text widgets,
      including gameinfo, pgn window and help window
 
@@ -757,7 +766,6 @@
 
   o  Reorganise Scid start-up (includes reading font info before drawing
      splash widget, removing unused old logo and start-up checks)
-
   o  Remove quite a few "-background white" statements from all over (to
      allow for custom coloured backgrounds in future)
 
@@ -823,6 +831,7 @@
   o  The pause mechanism for tacgame has be restructured to allow for
      use with Fics too
 
+
   o  Some optimisations to the oft used tcl in htext.tcl
 
   o  The piece and size menus in the Options widget have been replaced
@@ -887,6 +896,7 @@
   o  Tacgame show a modest checkmate widget when game is over (for the
      first time)
 
+
   o  A few menu/hint fixes in menu.tcl, and a new tile theme
 
   o  Help window maintenance, including proper positioning, and removing
@@ -900,7 +910,6 @@
   o  De-stupidify Save Game dialog (::game::ConfirmDiscard2)
 
   o  Fix up Paste Clipboard widget a little
-
 
   o  Reorder the Options->Chessboard menus a little, giving
      MyPlayerNames its own entry
@@ -950,6 +959,7 @@
   o  The Options->Chessboard menu now also includes the pieces menus
 
   o  The 3 line PGN header is now colour
+
 
   o  Home directory is now $HOME/.scidvspc (instead of $HOME/.scid).
 

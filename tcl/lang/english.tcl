@@ -46,9 +46,9 @@ proc setLanguage_E {} {
 
 # File menu:
 menuText E File "File" 0
-menuText E FileNew "New..." 0 {Create a new Scid database}
-menuText E FileOpen "Open..." 0 {Open an existing Scid database}
-menuText E FileSavePgn "Save Pgn..." 0 {Save this game to file}
+menuText E FileNew "New" 0 {Create a new Scid database}
+menuText E FileOpen "Open" 0 {Open an existing Scid database}
+menuText E FileSavePgn "Save Pgn" 0 {Save this game to file}
 menuText E FileClose "Close" 0 {Close the active Scid database}
 menuText E FileFinder "Finder" 0 {Open the File Finder window}
 menuText E FileBookmarks "Bookmarks" 0 {Bookmarks menu (shortcut: Ctrl+B)}
@@ -56,7 +56,7 @@ menuText E FileBookmarksAdd "Add Bookmark" 0 \
   {Bookmark the current database game and position}
 menuText E FileBookmarksFile "File Bookmark" 0 \
   {File a bookmark for the current game and position}
-menuText E FileBookmarksEdit "Edit Bookmarks..." 0 \
+menuText E FileBookmarksEdit "Edit Bookmarks" 0 \
   {Edit the bookmarks menus}
 menuText E FileBookmarksList "Display Folders as Single List" 0 \
   {Display bookmark folders as a single list, not submenus}
@@ -65,13 +65,13 @@ menuText E FileBookmarksSub "Display Folders as Submenus" 0 \
 menuText E FileMaint "Maintenance" 0 {Scid database maintenance tools}
 menuText E FileMaintWin "Maintenance Window" 0 \
   {Open/close the Scid database maintenance window}
-menuText E FileMaintCompact "Compact Database..." 0 \
+menuText E FileMaintCompact "Compact Database" 0 \
   {Compact database files, removing deleted games and unused names}
-menuText E FileMaintClass "ECO-Classify Games..." 2 \
+menuText E FileMaintClass "ECO-Classify Games" 2 \
   {Recompute the ECO code of all games}
-menuText E FileMaintSort "Sort Database..." 0 \
+menuText E FileMaintSort "Sort Database" 0 \
   {Sort all games in the database}
-menuText E FileMaintDelete "Delete Twin Games..." 0 \
+menuText E FileMaintDelete "Delete Twin Games" 0 \
   {Find twin games and set them to be deleted}
 menuText E FileMaintTwin "Twin Checker Window" 0 \
   {Open/update the Twin checker window}
@@ -189,7 +189,7 @@ menuText E ToolsEmail "Email Manager" 0 {Open/close the email chess manager wind
 menuText E ToolsFilterGraph "Rel. Filter Graph" 12 {Open/close the filter graph window for relative values}
 menuText E ToolsAbsFilterGraph "Abs. Filter Graph" 7 {Open/close the filter graph window for absolute values}
 menuText E ToolsOpReport "Opening Report" 0 {Generate an opening report for the current position}
-menuText E ToolsOpenBaseAsTree "Open base as tree..." 0   {Open a base and use it in Tree window}
+menuText E ToolsOpenBaseAsTree "Open base as tree" 0   {Open a base and use it in Tree window}
 menuText E ToolsOpenRecentBaseAsTree "Open recent base as tree" 0   {Open a recent base and use it in Tree window}
 menuText E ToolsTracker "Piece Tracker"  6 {Open the Piece Tracker window}
 menuText E ToolsTraining "Training"  0 {Training tools (tactics, openings,...) }

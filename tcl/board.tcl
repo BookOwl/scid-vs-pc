@@ -421,6 +421,12 @@ nI+pkBB6HJLQMPsq3toO2n0BGJIdgGbamJlTaqGQw2LCNQl3G+yNTnH4GrRI
 MRFIIpKqEKQAADs=
 }
 
+image create photo tb_newgame -data {
+R0lGODlhEQARAMIDAAAAAKmpqdnZ2f///////////////////yH5BAEKAAQA
+LAAAAAARABEAAANFSLo6QcERyZgDA7/K8PhAsHGK930LoK5sJqZnnGEVxqpu
+1MlnCA2wm20zMsl8tVkLueO5ODbjM+lkKgRC1qgi6npJ4EoCADs=
+}
+
 image create photo tb_copy -data {
 R0lGODlhEQARAMIDAAAAAKmpqdnZ2f///////////////////yH5BAEKAAQA
 LAAAAAARABEAAANASLrcCzBKR8C4+ILgrPxTlVkZBiheNIArR2ql6a4qu4lm
@@ -435,28 +441,27 @@ b9+dBAA7
 }
 
 image create photo tb_gprev -data {
-  R0lGODlhEQARAMIAANnZ2RwyggAAAP///6mpqampqampqampqSwAAAAAEQARAAADQgi63P4w
-  wrCEvViFrcT44CcAWwl4mDUIRMl5Ichq1ZquBN3Fck7WKZSPsuPhdCdbbPYr8pjEU/DicxCu
-  WKxkywUkAAA7
+R0lGODlhEgASAMIDAAAAABwygqmpqf///////////////////yH5BAEKAAQA
+LAAAAAASABIAAANCSLrc/jDKJ6q1KyzAuxdKICrAYJ4mAIosUXrcoGYbis5h
+Db9gTtonHEHz28l6wxrwSCuWbkiiayljSHeeiXbLdSQAADs=
 }
 
 image create photo tb_gnext -data {
-  R0lGODlhEQARAMIAANnZ2RwyggAAAP///6mpqampqampqampqSwAAAAAEQARAAADQQi63P4w
-  wrCEvXhRJYb/nqBVA2aVhLIBHfgJKbB2Jh3P7nuTNRr8P1YuRAAGaS2dLCgcwlSV2iXmIFiv
-  V4l2C0gAADs=
+R0lGODlhEgASAMIDAAAAABwygqmpqf///////////////////yH5BAEKAAQA
+LAAAAAASABIAAANDSLrc/jBKEha4OLOqwPjgB2zWkF2msHCEF4KAqrDeWctU
++Yo4bZ6plW4XowSOlZoLJkN2djxhx4bBPQTYLHbC7XobCQA7
 }
 
 image create photo tb_glast -data {
-R0lGODlhEwATAMIEAAAAABwygqmpqdnZ2f///////////////yH+FUNyZWF0
-ZWQgd2l0aCBUaGUgR0lNUAAsAAAAABMAEwAAA0U4utz+MMpJR1gg692uAkQo
-hkCHEVuGCow3gKMIsIsLpjcd7PsbyzRLz4dbtU4/o5BHhAFrQ2dsdvzgNMGH
-YMvlVr7gcAIAOw==
+R0lGODlhEwATAMIEAAAAABwygqmpqdnZ2f///////////////yH5BAEKAAcA
+LAAAAAATABMAAANFeLrc/jDKSU9YIOvdrgJEKIZAhxFbhgqMd4CjCLCLC6Y3
+Hez7G8s0S8+HW7VOP6OQR4QBa0NnbHb84DRBiGDL3Va+4HACADs=
 }
 
 image create photo tb_gfirst -data {
-R0lGODdhEwATAMIEAAAAABwygqmpqdnZ2f///////////////ywAAAAAEwAT
-AAADRji63P4wyimqtSwswLsXSyAqAGGeJgAOYjuUHkeo2YaitOK+czyvrVHp
-llrpbDGYkWUj/mqk3i13jDoBDQ0p2Zl4v+DwNwEAOw==
+R0lGODlhEwATAMIEAAAAABwygqmpqdnZ2f///////////////yH5BAEKAAcA
+LAAAAAATABMAAANGeLrc/jDKKaq1LCzAuxdLICoAYZ4mAB5ie5QeR6jZhqK0
+4r5zPK+tUemWWulsMZiRZSP+aqTeLXeMOgENDSnZmXi/4PA3AQA7
 }
 
 image create photo tb_rfilter -data {
@@ -614,7 +619,7 @@ bind .tb.bkm <ButtonPress-1> "+.tb.bkm configure -relief flat"
 
 
 frame .tb.space1 -width 12
-button .tb.cut -image tb_cut -command ::game::Clear
+button .tb.newgame -image tb_newgame -command ::game::Clear
 button .tb.copy -image tb_copy \
     -command {catch {sc_clipbase copy}; updateBoard}
 button .tb.paste -image tb_paste \
@@ -645,7 +650,7 @@ foreach {b m} {
   new FileNew open FileOpen finder FileFinder
   save GameReplace close FileClose bkm FileBookmarks
   gfirst GameFirst gprev GamePrev gnext GameNext glast GameLast
-  cut GameNew copy EditCopy paste EditPaste
+  newgame GameNew copy EditCopy paste EditPaste
   rfilter SearchReset bsearch SearchCurrent
   hsearch SearchHeader msearch SearchMaterial
   glist WindowsGList pgn WindowsPGN tmt WindowsTmt
@@ -658,7 +663,7 @@ foreach {b m} {
 set helpMessage(.button.addVar) EditAdd
 set helpMessage(.button.trial) EditTrial
 
-foreach i {new open save close finder bkm cut copy paste gprev gnext gfirst glast \
+foreach i {new open save close finder bkm newgame copy paste gprev gnext gfirst glast \
       rfilter bsearch hsearch msearch glist pgn tmt maint \
       eco tree crosst engine} {
   .tb.$i configure -relief flat -border 1 -highlightthickness 0 -anchor n -takefocus 0
@@ -713,7 +718,7 @@ proc configToolbar {} {
   }
 
   pack [frame $w.f3] -side top -fill x
-  foreach i {cut copy paste} {
+  foreach i {newgame copy paste} {
     eval checkbutton $w.f3.$i -image tb_$i -variable toolbar_temp($i) $button_options
     eval pack $w.f3.$i $pack_options
     bindToolbarRadio f3 $i
@@ -782,7 +787,7 @@ proc redrawToolbar {} {
   }
   if {$seen} { pack .tb.space2 -side left }
   set seen 0
-  foreach i {cut copy paste} {
+  foreach i {newgame copy paste} {
     if {$toolbar($i)} {
       set seen 1
       pack .tb.$i -side left -pady 1 -padx 0 -ipadx 0 -pady 0 -ipady 0
