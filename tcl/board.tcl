@@ -381,9 +381,9 @@ proc initBoardColors {} {
 ### Toolbar and game movement buttons:
 
 image create photo tb_open -data {
-  R0lGODdhEQARAMIAANnZ2QAAAKmpqf///76+vgAAAAAAAAAAACwAAAAAEQARAAADSQi63B0w
-  RuFAGDjfQF/WGOd9g9RZEPlFSkC4RCwTpYVKuMtxqgoJu8FsSAAaL8ThjoJMxoCipvMlsgwE
-  2KzW2Mp5T9twtkJWJAAAOw==
+R0lGODlhEQARAMIEAAAAAKmpqb6+vtnZ2f///////////////yH5BAEKAAcA
+LAAAAAARABEAAANLeLrc/vCASWl4gOidwW3ZpoUeKI7WQp0ipQACLMy0QAAD
+IFX8FAceFmsCBBJqSEHRk0kimZemcwYsSaexkoQQ6Hq/xVdv/DmAz94EADs=
 }
 
 image create photo tb_new -data {
@@ -393,8 +393,9 @@ image create photo tb_new -data {
 }
 
 image create photo tb_save -data {
-  R0lGODdhEQARAKEAANnZ2QAAAJmZAP///ywAAAAAEQARAAACPISPecHtvkQYtNIAsAnS2hZN
-  3iWFI6ll3cml7Tm0kfQwQrnd+q67d93AqWgQlY8IMs5quVQG+FBIp1RFAQA7
+R0lGODlhEQARAMIDAAAAAJmZANnZ2f///////////////////yH5BAEKAAQA
+LAAAAAARABEAAANBSLrc/g/ISekCAYzNNxDAlXXdJGqkl52pGioYmsZsS8NB
+Vkn5S2C5oLAn0u1uv15FAFrhjBMmEriTOmHHCmSrSAAAOw==
 }
 
 image create photo tb_close -data {
@@ -410,9 +411,10 @@ NwiQBAA7
 }
 
 image create photo tb_bkm -data {
-R0lGODlhEAARAMIEAAAAAIsAAKmpqbDE3v///////////////yH5BAEKAAcA
-LAAAAAAQABEAAANMeKrR+w+AFqQFkRCqOxDKRV3EFw4ohQ5ACR7AqqKtCQ9U
-zrpnrtavGE63swmHgRXwJFsVg87o8hZV8g6Co/Tzwl6+gq4iTC6LIehHAgA7
+R0lGODlhEAARAMIFAAAAAIsAAHiJoKmpqbDE3v///////////yH5BAEKAAcA
+LAAAAAAQABEAAANOeLrcHtA1AGCgGDBQiu0gMCiZlRUiSazWSnDpAbjtCo8y
+Ye0vis+71k2l4/ViMxbENczRXMcfdNoECKZMn2Jgxb5EuAM3kxmEt+a0epEA
+ADs=
 }
 
 image create photo tb_cut -data {
