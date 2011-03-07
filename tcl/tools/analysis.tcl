@@ -2034,6 +2034,7 @@ proc makeAnalysisWin { {n 1} } {
   bind $w <Configure> "recordWinSize $w"
   bind $w <Escape> "focus .; destroy $w"
   bind $w <Key-a> "$w.b.startStop invoke"
+  bind $w <Return> "addAnalysisMove $n"
   wm minsize $w 25 0
   bindMouseWheel $w $w.hist.text
 
@@ -2092,6 +2093,20 @@ proc makeAnalysisWin { {n 1} } {
   if {$::windowsOS || $analysis(priority$n) == {idle} || ($n==1 && $analysis(mini)) } {
     set analysis(priority$n) idle
     setAnalysisPriority $n
+  }
+}
+
+proc addAnalysisMove {{n 0}} {
+  ### Add move from first analysis n (or first analysis window, if any)
+
+  if {!$n} {
+    set w [lsearch -glob -inline [ wm stackorder . ] {.analysisWin*}]
+    if {[scan $w ".analysisWin\%d" n] != 1} {return}
+  }
+
+  if {$::analysis(analyzeMode$n)} {
+    makeAnalysisMove $n
+    # .analysisWin$n.b.move invoke
   }
 }
 

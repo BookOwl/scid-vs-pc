@@ -1598,11 +1598,7 @@ proc cancelAutoplay {} {
 #
 ################################################################################
 
-bind . <Return> {
-  if {[winfo exists .analysisWin1] && $analysis(analyzeMode1)} {
-    .analysisWin1.b1.move invoke
-  }
-}
+bind . <Return> addAnalysisMove
 
 bind . <Control-z> {toggleAutoplay; break}
 
