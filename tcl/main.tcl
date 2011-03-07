@@ -517,6 +517,7 @@ proc showVars {} {
 
   # Present a menu of the possible variations
   toplevel $w
+  wm state $w withdrawn
   wm title $w $::tr(Variations)
   set h [expr $numVars + 1]
   if { $h> 19} { set h 19 }
@@ -578,9 +579,13 @@ proc showVars {} {
 
   sc_info preMoveCmd preMoveCommand
 
+  bind $w <Configure> "recordWinSize $w"
+  setWinLocation $w
+  wm state $w normal
+
   catch {
     focus $w
-    placeWinOverParent $w . top
+
     # Disable grab if drawing arrows, as it pinches the arrows binding
     # ... Hmmm, but we need the grab to back out of variation window by using wheel-up! :<
     # So we have to compromise here. 
