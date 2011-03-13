@@ -271,6 +271,7 @@ set helpText(Index) {<h1>Scid Help Index</h1>
   <li><a Sorting>Database sorting</a></li>
   <li><a Switcher>Database switcher</a> window</li>
   <li><a Maintenance Twins>Deleting twin games</a></li>
+  <li><a Comment Diagrams>Diagrams</a></li>
   </ul>
 
   <h3><name E>E</name></h3>
@@ -1269,7 +1270,7 @@ set helpText(Comment) {<h1>The Comment Editor</h1>
   using the keyboard.
   </p>
 
-  <h3>Diagrams</h3>
+  <h3><name Diagrams>Diagrams</name></h3>
   <p>
   In addition to text comments, Scid supports an array of colour symbols and arrows.
   Press then <img bookmark_down> button to see a small board and diagrams.

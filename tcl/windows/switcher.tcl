@@ -988,11 +988,14 @@ proc ::windows::switcher::Refresh {} {
       $w.c configure -height 24
     }
   }
-  update
 
-  set iconWidth [winfo width $w.c.f$clipbase]
+  ### When update is issued, this update steals focus from the main window ! &&&
+  ### So we'll remove it, and use "reqwidth","reqheight" just below
+  # update
+
+  set iconWidth [winfo reqwidth $w.c.f$clipbase]
   incr iconWidth 5
-  set iconHeight [winfo height $w.c.f$clipbase]
+  set iconHeight [winfo reqheight $w.c.f$clipbase]
   incr iconHeight 5
 
   set column 0
