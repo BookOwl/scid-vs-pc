@@ -180,6 +180,9 @@ proc ::commenteditor::Open {} {
                 destroy .commentWin"
   set helpMessage(E,$w.b.ok) {Apply changes and exit}
 
+  dialogbutton $w.b.apply -text Apply -command ::commenteditor::storeComment
+  set helpMessage(E,$w.b.apply) {Apply changes}
+
   button $w.b.clear -textvar ::tr(Clear) -pady 1 -command "
       $w.cf.text delete 0.0 end
       focus $w.cf.text"
@@ -191,8 +194,8 @@ proc ::commenteditor::Open {} {
                 destroy .commentWin"
   set helpMessage(E,$w.b.cancel) {Close comment editor window}
 
-  pack $w.b.hide -side left -padx 14
-  pack $w.b.ok $w.b.cancel -side left -padx 5
+  pack $w.b.hide -side left -padx 10
+  pack $w.b.ok $w.b.apply $w.b.cancel -side left -padx 5
   pack $w.b.clear  -side right
 
   ### Insert-mark frame

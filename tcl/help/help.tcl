@@ -174,7 +174,7 @@ set helpText(Scid) {<h1>Databases and General Use</h1>
   <li><a Analysis><b>Analysis</b> window</a></li>
   <li><a Book><b>Book</b> window</a></li>
   <li><a CalVar><b>Calculation of variations</b> window</a></li>
-  <li><a Comment><b>Comment editor</b> window</a></li>
+  <li><a Comment><b>Comment Editor</b> window</a></li>
   <li><a Crosstable><b>Crosstable</b> window</a></li>
   <li><a Switcher><b>Database Switcher</b> window</a></li>
   <li><a Email><b>Email</b> chess manager window</a></li>
@@ -195,7 +195,7 @@ set helpText(Scid) {<h1>Databases and General Use</h1>
 
   <h4>Other Utilities and Information</h4>
   <ul>
-  <li><a Annotating><b>Annotating</b> Games</a></li>
+  <li><a Analysis Annotating>Annotating games</a> automatically</li>
   <li><a Bookmarks><b>Bookmarks</b></a></li>
   <li><a Cmdline><b>Command-line</b> options</a></li>
   <li><a Compact><b>Compacting</b> a database</a></li>
@@ -229,7 +229,6 @@ set helpText(Index) {<h1>Scid Help Index</h1>
   <h4><name A>A </name></h4>
   <ul>
   <li><a Analysis>Analysis</a> window</li>
-  <li><a Annotating>Annotating games</a></li>
   <li><a Analysis Annotating>Annotating games</a> automatically</li>
   <li><a NAGs>Annotation symbols</a></li>
   <li><a Author>Author, contacting</a></li>
@@ -254,7 +253,7 @@ set helpText(Index) {<h1>Scid Help Index</h1>
   <li><a Changelog>Changelog</a></li>
   <li><a Analysis>Chess Engines</a></li>
   <li><a Cmdline>Command-line options</a></li>
-  <li><a Comment>Comment editor</a></li>
+  <li><a Comment>Comment Editor</a></li>
   <li><a Tourney>Computer Tournament</a></li>
   <li><a Compact>Compacting a database</a></li>
   <li><a Correspondence>Correspondence Chess</a></li>
@@ -358,7 +357,7 @@ set helpText(Index) {<h1>Scid Help Index</h1>
   <li><a Maintenance Editing>Names, editing</a></li>
   <li><a Maintenance Spellcheck>Names, spellchecking</a></li>
   <li><a NAGs>NAG annotation values</a></li>
-  <li><a Annotating Null>Null moves</a></li>
+  <li><a Variations Null>Null moves</a></li>
   </ul>
 
   <h3><name O>O</name></h3>
@@ -426,7 +425,7 @@ set helpText(Index) {<h1>Scid Help Index</h1>
 
   <h3><name V>V</name></h3>
   <ul>
-  <li><a Annotating Vars>Variations</a></li>
+  <li><a Variations>Variations</a></li>
   </ul>
 
   <h3><name W>W</name></h3>
@@ -565,7 +564,7 @@ set helpText(MainWindow) {<h1>Scid Main Window</h1>
   <li> <button tb_prev> Move back one move  [Left] </li>
   <li> <button tb_next> Move forward one move  [Right] </li>
   <li> <button tb_end> Move to the end of the game  [End] </li>
-  <li> <button tb_invar> Move into a <a Annotating Vars>variation</a>  [v] </li>
+  <li> <button tb_invar> Move into a <a Variations>variation</a>  [v] </li>
   <li> <button tb_outvar> Move out of the current variation  [z] </li>
   <li> <button tb_addvar> Add a new variation  [control+a]</li>
   <li> <button autoplay_off> Start/stop <a MainWindow Autoplay>autoplay mode</a> [control+z] </li>
@@ -919,7 +918,7 @@ to which there is a legal move.
 
   <h3><name Null>Entering Null Moves</name></h3>
   <p>
-  <a Annotating Null>Null</a> (empty) moves can be useful in variations, where
+  <a Variations Null>Null</a> (empty) moves can be useful in variations, where
   you want to skip a move for one side. You can enter a null move with the
   mouse by capturing one king with the other king, or with the keyboard by
   typing "<b>--</b>" (that is, pressing the minus key twice).
@@ -1169,28 +1168,8 @@ set helpText(Clipbase) {<h1>The Default Database</h1>
 #################################
 ### Variations and comments help:
 
-set helpTitle(Annotating) "Annotating games"
-set helpText(Annotating) {<h1>Annotating Games</h1>
-  <p>
-  Scid lets you add notes to games. There are three types of
-  annotation you can add after a move: symbols, a comment, and
-  variations. This section describes manual annotations, see the <a
-  Analysis Annotating>Analysis</a> for engine supported analysis.
-  </p>
-
-  <h3>Symbols and comments</h3>
-  <p>
-  Symbols are used to indicate an evaluation of the position (such as
-  "+-" or "=") or point out good ("!") and bad ("?") moves, while
-  comments can be any text. To add symbols and comments to a game, use
-  the <a Comment>Comment editor</a> window.
-  There is also a help page listing <a NAGs>standard symbol values</a>.
-  </p>
-  <p>
-  Note that each move can have more than one annotation symbol, but only
-  one comment. A comment before the first move of the game is printed as text
-  before the start of the game.
-  </p>
+set helpTitle(Variations) "Variations"
+set helpText(Variations) {<h1>Variations</h1>
 
   <h3><name Vars>Variations</name></h3>
   <p>
@@ -1250,64 +1229,71 @@ set helpText(Annotating) {<h1>Annotating Games</h1>
 ###############################
 ### Comment editor window help:
 
-set helpTitle(Comment) "Comment Editor window"
-set helpText(Comment) {<h1>The Comment Editor Window</h1>
+set helpTitle(Comment) "Comment Editor"
+set helpText(Comment) {<h1>The Comment Editor</h1>
   <p>
-  The Comment Editor window lets you add or edit comments and symbolic
-  annotation symbols for moves in the active chess game.
-  </p>
-
-  <h3>Annotation Symbols</h3>
-  <p>
-  Scid uses the <a Related>PGN Standard</a>
-  for annotation symbols, accepting
-  <a NAGs>NAG (numeric annotation glyph)</a> values for annotations.
-  Some of the most common symbols (such as "!" or "+-") are displayed
-  as symbols, and have a button in the comment editor window for fast
-  entry. For other symbols, you can enter the appropriate
-  numeric NAG value which is a number from 1 to 255.
-  For example, the NAG value 36 means "White has the initiative" and will
-  be displayed as "$36" in the <a PGN>PGN text</a> of the game.
-  </p>
-  <p>
-  See the help page of <a NAGs>NAG values</a> for NAG values defined
-  by the PGN Standard.
-  </p>
-  <p>
-  <b>Hint:</b> You can add the common move evaluation symbols (!, ?, !!,
-  ??, !? and ?!) while in the main window, without needing
-  to use the comment editor window, by typing the symbol followed by
-  the [Return] key.
-  This is especially useful if you are <a Moves>entering chess moves</a>
-  using the keyboard.
+  The <run makeCommentWin><green>Comment Editor</green></run> lets you annotate games
+  with comments and <a NAGs>annotations</a>.
   </p>
 
   <h3>Comments</h3>
   <p>
-  You can edit comments by typing in the text area provided and using
-  the Clear, Revert and Store buttons.  You do not need to press the
-  Store button to update a comment; it is automatically updated
-  whenever you move to another position in the game.
+  Comments are text strings associated with individual moves.
+  You can add comments by typing them in the main text box (where
+  the Control-A, Control-Z and Control-Y shortcuts can be used to
+  manipulate text and undo changes).
+  Comments are <b>automatically stored</b> whenever you move to another position in the game.
   </p>
+
   <p>
-  <b>Hint:</b> To add a comment before the first move in a variation,
-  go to the first move and hit the left arrow key once and then insert
+  Comments may also exist at the start of a game or variation.
+  To add a comment <b>prefixing a variation</b>,
+  go to the first var move and hit the left arrow key before adding 
   the comment.
   </p>
 
-  <h3>Coloring Squares</h3>
+  <h3>Annotation Symbols</h3>
   <p>
-  You can color any square with any color using a special embedded command
+  Scid uses the <a PGN>PGN Standard</a>
+  and <a NAGs>NAGs</a> for annotation symbols.
+  While the most common symbols  are displayed
+  as Ascii characters (such as "!" or "+-"), others must be entered as the appropriate
+  numeric value (ie - a number from 1 to 255).
+  For example, the NAG value 36 means "White has the initiative" and will
+  be displayed as "$36" in the PGN window.
+  </p>
+  <p>
+  The most common move evaluation symbols (!, ?, !!,
+  ??, !? and ?!) can be added firectly from the main window by typing the symbol followed by
+  the [Return] key.  This is especially useful if you are <a Moves>entering chess moves</a>
+  using the keyboard.
+  </p>
+
+  <h3>Diagrams</h3>
+  <p>
+  In addition to text comments, Scid supports an array of colour symbols and arrows.
+  Press then <img bookmark_down> button to see a small board and diagrams.
+  Arrows can be drawn (and erased) by dragging between two squares on this board.
+  </p>
+  <p> Normally, the comments associated with these diagrams are hidden in the PGN
+window, but can be viewed by deselecting "Hide Square/Arrow Codes" in the PGN window
+options.</p>
+  <p><i>Specific information about these diagrams are below, but it is not necessary to 
+know these details.</i></p>
+  </p>
+  <h4>Colouring Squares</h4>
+  <p>
+  You can color any square using a special embedded command
   which can appear anywhere in a comment. The command format is:
   </p>
-  <ul>
-  <li><b>[%mark square color]</b><li>
-  </ul>
+  <p>
+  <b>[%mark square color]</b>
+  </p>
   <p>
   where <b>square</b> is a square name like d4 and <b>color</b> is any
-  recognized color name (such as red, blue4, darkGreen, lightSteelBlue, etc)
-  or RGB code (a <b>#</b> followed by six hexadecimal digits, such as #a0b0c8).
-  If the color is omitted, it defaults to <red>red</red>.
+  recognized color name (such as red, blue4, darkGreen, lightSteelBlue)
+  or RGB code (six hexadecimal digits such as #a0b0c8).
+  If the color is omitted, it defaults to red.
   </p>
   <p>
   A comment may contain any number of color commands, but each must have
@@ -1318,24 +1304,20 @@ set helpText(Comment) {<h1>The Comment Editor Window</h1>
   from b5. [%mark b5 #000070]</i>
   </p>
   <p>
-  will color d6 <red>red</red> and b5 with the dark-blue color
-  <darkblue>#000070</darkblue>.
+  will color d6 red and b5 with the dark-blue color #000070.
   </p>
 
-  <h3>Drawing Arrows</h3>
+  <h4>Drawing Arrows</h4>
   <p>
   You can draw an arrow from one square to another using a special
   comment command similar to the for coloring squares described above.
   The format is:
   </p>
-  <ul>
-  <li><b>[%arrow fromSquare toSquare color]</b><li>
-  </ul>
   <p>
-  where <b>fromSquare</b> and <b>toSquare</b> are square names like d4,
-  and <b>color</b> is any recognized color name (such as red, blue4, etc)
-  or RGB code, like #A0B0C0.
-  If the color is omitted, it defaults to <red>red</red>.
+  <b>[%arrow fromSquare toSquare color]</b>
+  </p>
+  <p>
+  where <b>fromSquare</b> and <b>toSquare</b> are square names like d4.
   </p>
   <p>
   For example, the comment text:
@@ -1346,7 +1328,7 @@ set helpText(Comment) {<h1>The Comment Editor Window</h1>
   will draw a red arrow from c3 to d5 and a blue one from c4 to d5.
   </p>
 
-  <p><footer>Updated: Scid vs. PC 4.3, December 2010</footer></p>
+  <p><footer>Updated: Scid vs. PC 4.4, March 2010</footer></p>
 }
 
 ####################
@@ -1712,7 +1694,7 @@ set helpText(Export) {<h1>Exporting Games</h1>
 
   <h3><name Null>Null moves in PGN Export</name></h3>
   <p>
-  Scid allows <a Annotating Null>null (empty) moves</a> to be stored
+  Scid allows <a Variations Null>null (empty) moves</a> to be stored
   in games, as they can be helpful when annotating games using
   variations.  However, the PGN Standard has no null move concept. So
   if you export Scid games with null moves to a PGN file, other
@@ -1794,13 +1776,13 @@ set helpText(LaTeX) {<h1>Using LaTeX with Scid</h1>
 ####################
 ### PGN window help:
 
-set helpTitle(PGN) "PGN window"
-set helpText(PGN) {<h1>The PGN Window</h1>
+set helpTitle(PGN) "PGN"
+set helpText(PGN) {<h1>PGN</h1>
 
   <p>
-  PGN (Portable Game Notation) is a common standard for representing
+  <b>Portable Game Notation</b> is a common standard for representing
   chess games.  A PGN file consists of two
-  sections; a <b>Header</b> containing tags such as
+  sections - a <b>Header</b> containing tags such as
   [White "Kasparov, Gary"] and
   [Result "1/2-1/2"], and a <b>Body</b> containing the actual moves in standard
   algebraic notation (SAN) along with any variations, <a NAGs>annotation
@@ -2738,13 +2720,11 @@ set helpText(Analysis) {<h1>Analysis Windows</h1>
 
   <h3><name Annotating>Annotating Games</name></h3>
   <p>
-  The "variation" and "add all variation" buttons add the
-  current score and best line of play as a new variation in
-  the game.  This can also be done automatically using
-  the <b>Annotate</b> <button tb_annotate> feature.
-  It add comments , <a Moves Informant>Informants</a>,
+  Games can be annotated automatically using
+  the <b>Annotate</b> button <button tb_annotate> in the engine toolbar.
+  This feature adds <a Comment>comments</a>, <a NAGs>Informants</a>,
   and best-lines to a game, and can be performed
-  on  <b>multiple games</b>.</p>
+  on  multiple games.</p>
 
   <p>After configuring the options and pressing OK, <b>autoplay
   mode is enabled</b> and the engine starts its analysis.
@@ -3887,7 +3867,7 @@ set helpText(Options) {<h1>Options and Preferences</h1>
 set helpTitle(NAGs) "NAG values"
 set helpText(NAGs) {<h1>Standard NAG Values</h1>
   <p>
-  Standard NAG (Numeric Annotation Symbol) values defined in the
+  Standard NAG (Numeric Annotation Glyph) values defined in the
   <a Related>PGN Standard</a> are:
   </p>
   <cyan>
