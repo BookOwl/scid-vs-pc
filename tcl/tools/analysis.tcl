@@ -1466,6 +1466,7 @@ proc addAnalysisVariation {n} {
     sc_move start
   } elseif {$isAt_vend && $create_var} {
     ### Automatically goto variation S.A.
+    # todo : sould only do this if only a single var exists
     sc_var enter 0
   }
 

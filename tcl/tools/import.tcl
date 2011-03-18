@@ -134,7 +134,6 @@ proc importMoveList {line} {
 proc importVar {} {
   # Move formatting doesn't seem to cause any problems
   # (eg 6.Qg4+ Qg6 7.Qd4+ Kg8 8.Qd8+ Kh7+)
-  # set text [regsub -all -- {[[:digit:]]+\.} [selection get] { }]
 
    if {[catch {set ::tmp [selection get -selection PRIMARY]} ]} {
     catch {set ::tmp [selection get -selection CLIPBOARD]}
@@ -146,18 +145,66 @@ proc importVar {} {
     return
   }
 
-  sc_var create
+  # Code reused from addAnalysisVariation
+
+  set addAtStart [expr [sc_pos isAt vstart]  &&  [sc_pos isAt vend]]
+  set isAt_end [sc_pos isAt end]
+  set isAt_vend [sc_pos isAt vend]
+
+  # Temporarily clear the pre-move command since we want to add a
+  # whole line without Scid updating stuff
+  sc_info preMoveCmd {}
+
+  if { $isAt_vend} {
+    # get the last move of the game
+    set lastMove [sc_game info previousMoveUCI]
+    # back one move
+    sc_move back
+  }
+
+  if {!$isAt_vend || $isAt_end} {
+    # Add a variation if not already at end of a variation
+    # (in which case we append moves to this var)
+    sc_var create
+    set create_var 1
+  } else {
+    set create_var 0
+  }
+  
+  if {$isAt_vend} {
+    # Add the last move of the game
+    sc_move addSan $lastMove
+  }
 
   if {[catch {sc_move addSan $::tmp}]} {
-    sc_var exit
-    catch {sc_var delete [sc_var number]}
+    if {$create_var} {
+      sc_var exit
+      catch {sc_var delete [sc_var number]}
+    }
     updateBoard -pgn
     tk_messageBox -type ok -icon error -title "Scid: Oops" \
       -message "Error adding variation \"$::tmp\""
   } else {
-    sc_var exit
+    # Now go back to the previous place
+    if {$create_var} {
+      sc_var exit
+    } else {
+      ### this is wrong! todo
+      # sc_move back [llength $::tmp]
+    }
+
+  if {$addAtStart} {
+    sc_move start
+  } elseif {$isAt_vend && $create_var} {
+    ### Automatically goto variation S.A.
+    # todo : sould only do this if only a single var exists
+    sc_var enter 0
+  }
     updateBoard -pgn
   }
+  # Restore the pre-move command:
+  # todo: wtf does this (from analysis.tcl) do
+  sc_info preMoveCmd preMoveCommand
 }
 
 ################################################################################
