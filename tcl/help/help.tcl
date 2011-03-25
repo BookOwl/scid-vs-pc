@@ -2664,7 +2664,7 @@ set helpText(Analysis) {<h1>Analysis Windows</h1>
   scheduling. On Windows, engines are run on low priority by default.
   On Unix systems the engines priority can not be set back to normal.  </li>
   <li><button tb_coords><b>Show Board</b> displays a small working board.</li>
-  <li><button finish_off><b>Shoot out</b>, or "demo", mode allows the engine to play out the game. </li>
+  <li><button autoplay_off><b>Shoot out</b>, or "demo", mode allows the engine to play out the game. </li>
   <li><button tb_annotate><b>Annotate</b> game (see below).</li>
   <li><button tb_training><b>Training</b> feature (see below).</li>
   </ul>

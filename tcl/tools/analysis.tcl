@@ -1951,7 +1951,7 @@ proc makeAnalysisWin { {n 1} } {
   ::utils::tooltip::Set $w.b.lockengine $::tr(LockEngine)
 
   set ::finishGameMode 0
-  button $w.b.finishGame -image finish_off -command "toggleFinishGame $n"  -relief $relief
+  button $w.b.finishGame -image autoplay_off -command "toggleFinishGame $n"  -relief $relief
   ::utils::tooltip::Set $w.b.finishGame $::tr(FinishGame)
 
   button $w.b.showboard -image tb_coords -command "toggleAnalysisBoard $n" -relief $relief
@@ -2506,11 +2506,11 @@ proc toggleFinishGame {n} {
 
   set ::finishGameMode [expr ! $::finishGameMode]
   if {$::finishGameMode} {
-    $b configure -image finish_on
+    $b configure -image autoplay_on
     after $::autoplayDelay autoplayFinishGame $n
   } else  {
     set ::finishGameMode 0
-    $b configure -image finish_off
+    $b configure -image autoplay_off
     after cancel autoplayFinishGame
   }
 }
@@ -3315,15 +3315,15 @@ GySCYQUMBlIkkUP/DGAFEj7A0IIKI6S40IoNLaTjjjsGBAA7
 }
 
 image create photo tb_training -data {
-R0lGODlhGAAYAKUnAAAAAHJwb3Jxb3Z0c85rG8hwKNBvIdtyHtd1JoyMjOR4
+R0lGODlhGAAYAKUpADIhEIA+CHJwb3Jxb85rG8hwKNBvIdtyHtd1JoyMjOR4
 IeR4Io+Pj+V5IpKSkpOTk+p8I+d9J5WVle1+JJaWlsyIUeaCMJiYmPGBJsSO
 Y/OCJ5qampubm5ycnJ2dndOSX6CgoMmVbNKUY+uSStKZa9+ZYeyZVsC8us/P
-z8C8usC8usC8usC8usC8usC8usC8usC8usC8usC8usC8usC8usC8usC8usC8
-usC8usC8usC8usC8usC8usC8usC8usC8uiH5BAEKAD8ALAAAAAAYABgAAAad
-wJ9wSCwaj0eAEoBsCgEj06jEdBqhFo2msahahwDLBIOJILzfHyACUSgOBvR3
-HXETCHLrWlG449NESigoSoBFAIN5gIiEhoECgwGKV0sAA4ODA5WKACeengwd
-mA+fnnKdpSceGxcUDw6pJ16osRwJEqSxsk+eIh+6wLtqJyRjFcGxVaghGcjJ
-vM7AyiDU1dbX19PY29izm9/gk44/QQA7
+z/ftrPftrPftrPftrPftrPftrPftrPftrPftrPftrPftrPftrPftrPftrPft
+rPftrPftrPftrPftrPftrPftrPftrPftrCH5BAEKAD8ALAAAAAAYABgAAAam
+wJ9wSCwaj8eAMoBsCgMj06jEdBqhFo2msahahwHLBIOJILzfXyACUSgOBvR3
+HXETCHLrWlG449NESigoSoBFA4MDhoeJi0MJiCgCCV8DAJeXkYmYmYcAJ6Cg
+DB2DKA+hoACKQpaooB4bFxQPDq4nqkKfticcCRKnuwC5oCIfu8e3wyRjFci2
+wj+6IRnOz8PVx9AAINzd3t/f2uDj49DRnOjpnI5IQQA7
 }
 
 image create photo tb_addmove -data {
@@ -3426,29 +3426,30 @@ kDVQECgR2gAKwAmxg2KU/YF2EIFLDAvayp1Lt67du4UCAQA7
 }
 
 image create photo tb_lockengine -data {
-R0lGODlhGAAYAOd6AAAAAAwFABUJAg8PDxUQDBMTExQUFB0XEBwcHCUdFSEh
-ISkhGjIhEC4kGS8lGycnJykpKTkrHTU1NTw8PEo5K0VFRW1CFUxMTFZTUl5a
-Vl9fX2FhYGVjYZdcGpddGpheGppeG2pqaptgHqNrL6ZxN7B1MKl3PKt4P7J3
-M7N4NLR4NLN5NLJ6PLJ7O7Z8NrZ9OLZ9Ord9ObR/Q7SBRbmAPbSCQLSBRraC
-QbmBP7qBPrSDSbeDQrqDP7WETLqEQriFRLmFSLaGTLWITbyGRbeHTrqHSryH
-RryHSLqISbmITruJSayMZbyKS76KTLqLUrqMVLqMVZSUlLuNVbuOVryOVsCN
-Ub2OVryPWL2QWMCRVcCSVr+SWsCTWMSSVsGVXMKVXMKWXMOWX56ensaYVsOY
-YMaYWMeYWMSZYMSZYcaYYaCgoKGhocabZMacZMibZ8ecZcmdYcidZcidZsqd
-YcieZsifaMqfY8mfaMqebcqfaMuja8yka8ykbMykbc2kbc6ka8ylbc6kbsym
-bc6mb9ClcM+mcM+ncM+ncs+nfNKndtCpcdGodNOqetOqe7KystKtdtOse9Su
-d9auf9KvhdSwfNavgLa2tre2ttewgNizf9m0hNW2jtq2hde7ldm+mdq+mcPD
-w+G9lNzAnd/AluDAmeDBmeLCm+PCnMjIyOPDnOTEneTGoM/Pz9DQ0OXQs9XV
-1efSudbW1tjY2OnVvtnZ2e7Vt+3WuO7Yuu7Yu+7YvO/Yu+3ZwN3d3e/avvDa
-v+/bv97e3uHh4eLi4ubm5ufn5+np6e3t7e/v78uja8uja8uja8uja8uja8uj
-a8uja8uja8uja8uja8uja8uja8uja8uja8uja8uja8uja8uja8uja8uja8uj
-a8uja8uja8uja8uja8uja8uja8uja8uja8uja8uja8uja8uja8uja8uja8uj
-a8uja8uja8uja8uja8uja8uja8uja8uja8uja8uja8uja8uja8uja8uja8uj
-a8uja8uja8uja8uja8ujayH5BAEKAP8ALAAAAAAYABgAAAj+AP8JHEiwoMGD
-CBMqHAigYcOFBgEoEDOMGCo1BSAy1GBsWKxXvGStmQBAo4RjrC40NBCilaMK
-EAEIkwWhpMABIVBFsZmwQDFQPAUiCCYm6MEHwCwZBUDsklGCAhok2JBhAQEH
-CQ4koMABQwQGAQ4C+LVrFixXojx5+uSp06ZJiEA8/QfA16pKkAjdYdNGzhsy
-Woa4+DAXQK5UlRoVytOGTh06aLgYiSFXLC5TkvCk2TLFCpYrSWb4UNGhcC9V
-mDhRUvTHj6A9dszgSOGhsK5SjNyEoeLkiRQoQWTwWCGicK5TkjRFMrRHDx89
-c8bkQDGisK1Qi9JgIaKjh5AgNlhKwChBovAtUo0yPRq0pw8gPnDK0HhxonCt
-UYkCxTnj5QsYMFkw4UMTJhS2xCFdVIHEDjXc8IMSRxQBRAsWzEWXQxhm+JBG
-HHaYUEAAOw==}
+R0lGODlhGAAYAOe+ADIhEC4kGTgvKW1CFV5QSV1YV2hhX2lkZJdcGmtlZJdd
+GmxkbJheGmxlbW1lbGxmbJpeG5tgHnBsanFtbG9xbXFzb3FzcXZycHN2cqNr
+L3Z3dnZ4daZxN3t9enx+fLB1MKl3PH+Cf6t4P7J3M7N4NLR4NLN5NLJ6PLJ7
+O7Z8NrZ9OLZ9Ord9ObR/Q7SBRbmAPbSCQLSBRraCQbmBP7qBPpCJiLSDSbeD
+QoqNirqDP7WETLqEQpKLi7iFRIyOjLmFSLaGTLWITbyGRbeHTrqHSryHRryH
+SLqISbmITruJSayMZbyKS76KTLqLUrqMVLqMVZOVkruNVbuOVryOVsCNUb2O
+VpiWkbyPWL2QWMCRVcCSVr+SWsCTWMSSVsGVXMKVXMKWXMOWX6GemsaYVsOY
+YMaYWMeYWMSZYMSZYcaYYaOgnaGim6SgnsabZMacZMibZ8ecZcmdYcidZcid
+ZsqdYcieZsifaMqfY8mfaKilo8qebcqfaKmmo6qnpMuja6qppsyka8ykbMyk
+bc2kbc6ka8ylbc6kbsymbc6mb9ClcM+mcM+ncM+ncrGsq8+nfNKndtCpcdGo
+dLKurbOurdOqetOqe9KtdtOse7OzsNSud7W1stauf9KvhdSwfNavgNewgNiz
+f9m0hNW2jtq2hde7ldm+mdq+meG9lNzAnd/AluDAmeDBmeLCm+PCnOPDnOTE
+neTGoOXQs+fSuenVvu7Vt+3WuO7Yuu7Yu+7YvO/Yu+3ZwO/avvDav+/bv/ft
+rPftrPftrPftrPftrPftrPftrPftrPftrPftrPftrPftrPftrPftrPftrPft
+rPftrPftrPftrPftrPftrPftrPftrPftrPftrPftrPftrPftrPftrPftrPft
+rPftrPftrPftrPftrPftrPftrPftrPftrPftrPftrPftrPftrPftrPftrPft
+rPftrPftrPftrPftrPftrPftrPftrPftrPftrPftrPftrPftrPftrPftrPft
+rPftrPftrPftrPftrPftrCH5BAEKAP8ALAAAAAAYABgAAAj+AP8JHEiwoMGD
+CBMqFHihocMLCws2VJOHDx82DSMyvIAJiocOHXz8ybiwoaYNBTWsIZnwwiQc
+B0NYgajwgiQMBy2IodmyUYWDFPrwRHihxoQGDpI6WPBAAo+hBQMEEHDAgNSr
+UgkkKAAgwMEAvXTNkhULValSpkqREsXJEQSvBgPwguXpUiI8bdzMgUNGi5AU
+DOBGxeXKUyVFe9zUsVMHDZciLN5+vcVqk540W6RUwXIFiYsdJRAIJhhg16tP
+ozpBIjToEKA7ZmaQUDB6YIBcqyi9CTOliZMoT4C0yGEiQm2BAXC12hQq0yJA
+fgL5oTOGxogMx/8FqHUqUhosQ2xP6AgCJMaJFR84ZA9gS1UlUJYQARJUKFCc
+Mi9UiFhPK9UjQ3Kc4cUXYICRxRI7MAHCekow0gUVR9wAgww9JGEEET+gMEB2
+2mHloYcahfhPQAA7
+}

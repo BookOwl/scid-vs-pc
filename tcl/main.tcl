@@ -240,7 +240,7 @@ proc toggleCoords {} {
   ::board::coords .board
 }
 
-frame .button.space3 -width 10
+frame .button.space3 -width 4
 button .button.flip -image tb_flip -takefocus 0 \
     -command "::board::flip .board"
 
@@ -273,57 +273,9 @@ mKMbhkaiowoUGZqmQqipmZumsLGkhrW2qqycobq/mr1Iub+ppUnExZjHw8qx
 q63IzsZNyanBUtYUj7jFzN2xGSDjrj+oFOjCrqjf5UIfjhsg7vRJQQA7
 }
 
-image create photo finish_off -data {
-  R0lGODlhGAAYAOfwAJbK/np6dkJCOh4qQo62+mZmXsrKyoaGgi5Cbtra2qKinhIWSmJiWkpq
-  nlp+utri8p6amiI2UjI+rkJajmJiXiY6VqaiokJiyjpSfuru+iImbl6GxnKe8ra2shIeMiYq
-  eprG/mqS5iYufmqG/j5OugoODioyhkpmzkJWsvL2/jpaxsLK6jpKtkpGRlJyrl6C3mJ6/mKG
-  znqq/jo2Ni4yqhYSCrrC5jpGsgoOMk5qzl6G3vb6/lJSTlp6xjI6lm6a6sbGwjI6mmKK4mJy
-  ylp+2lJuzhoeGjZKdnKC0kpexjY+uuLm9m5uapKOjgYOIk5i3lJm5kpa1tLS0sbS8jI2pnqm
-  +jJCttba8m6G1prK/hISDhIaKr6+viYmHgYGBmaK7qLO/kZawurq9oKy/i42qlpyzmqO8lp2
-  0maO4kJSvnqi7vr6/jY+ss7O6lpWUlJy0lZ61jY6rjpCshYWDoKCfgoWJtLW8nKa8goKDnae
-  9l5+1h4aGm6W6maK4lp61lJiwu7y+io6skJWvm5qaoKq8jI6qoJ+fjo+rg4OFmaG3iIeHlZy
-  2rq6tkpiwv7+/j5Gvnai9gYKDt7e3n5+es7Oyubq9tbW1qLS/s7S7jZCslZyzmqK3i5GcmqK
-  /jZOdhIWEl561nai/k5m0kZWxvb2+j5KtnKe+gYOFhYWFh4uRoq6/qamoj46NnJyapKSjmqO
-  7l5aVjY+qmJ+2mKC2mKG3mqO4nqi9jJCdjY6sgoKEm6W8k5iylZy1kJOuk5mylJqynKa6lZu
-  zjo+vtbS0p7K/vLy+kZWvjY+tk5exsK+vg4KCi46rgoOFmKC3mqS6l5+2jY+rjpGtmaK5jZC
-  tl6Gyurq+lp21nKa9jI6rnai+s7OzlZy0mqO5kJCPmZmYhIWTra2tkpa2jI2qnqm/hISEiYm
-  Ilpy0jpCtrq6ugYKEvb2/j5KulJqznKa7kZWwgICCv//////////////////////////////
-  /////////////////////////////////yH5BAEKAP8ALAAAAAAYABgAAAj+AP8JHEiwoMGD
-  BbUdgNWthTcFkhAaTDbjFCcX1DY0iOBlUAKJAidFcgAADBhbHCDJqOIJFReJFDyoApMFBIgQ
-  OPm0G0etBLqDTeqMuUSMGAEhOmj1QcPNGaQYWoYVTKDsxx1CamoR2ZRhExFaifqEyDbBTUEm
-  nvL0efHsmZ8pjnbIgvOsGa0QMvBQIogKGLdZevxY4/UmhSNSoN74qXsNg6GBUt6FmmWtyIkL
-  F1RocuQoRZkc5kBJi8FqILhU186wwwJoiesH6jgXC+Zr2zNTewauqvCqSBIknIMLtxOmtqka
-  AxkN+ILM3ZArmKKvKMa5mqA0YX7pUjTQEjMzxta1RZtmxUqgP5zFkGBBoteuHgIIlpuVBpqc
-  GyyilVrjqFK0TJlAE4soRxxA0CQIjFJIHNBAI4ENjoiRyTJxiBMFFIsgIkVBnzSCSxwgknFI
-  G9DQEAcVT4wAwy0UGGTBFo+wAWIcZNQIYiGdjICCER8ZFIAT5xzz4YwgYhNOEOQAIZEruYgg
-  jBLHsMHGMcIc800XBoD0jzY8pLPABz6YoAEOc9ChJUEJQNAKAwVM0sGZcMYpp0ABAQA7
-}
-
-image create photo finish_on -data {
-  R0lGODlhGAAYAOeVAAMDAwYGBgkJCQoKCgsLCwwMDA4ODg8PDxERERISEhQUFBUVFRYWFhkZ
-  GRsbGx0dHR8fHyUlJSYmJikpKSwsLC0tLTIyMjMzMzQ0NDc3Nzk5OTs7Oz4+PkBAQEFBQUJC
-  QkNDQ0REREZGRkdHR0hISElJSUpKSktLS0xMTE5OTk9PT1BQUFFRUVJSUlNTU1VVVecQOVZW
-  VldXV1lZWVtbW1xcXF1dXV5eXl9fX2FhYWJiYmNjY2VlZWZmZmdnZ2hoaGlpaWpqamtra21t
-  bW5ubm9vb3BwcHFxcXNzc3R0dHV1dXd3d3h4eHl5eXp6ent7e3x8fH19fX5+fn9/f4CAgIGB
-  gYKCgoODg4SEhIWFhYaGhoiIiImJiYqKiouLi4yMjI2NjY6Ojo+Pj5CQkJOTk5SUlJeXl5iY
-  mJqampubm5ycnJ6enp+fn6KioqOjo6WlpaampqysrLGxsbOzs7a2trq6ur6+vr+/v8DAwMHB
-  wcPDw8TExMbGxsjIyMrKys7OztHR0dLS0tPT09TU1NbW1tjY2Nra2tvb297e3uHh4efn5+rq
-  6uvr6+zs7O7u7vLy8vPz8/b29vn5+fr6+v7+/v//////////////////////////////////
-  ////////////////////////////////////////////////////////////////////////
-  ////////////////////////////////////////////////////////////////////////
-  ////////////////////////////////////////////////////////////////////////
-  ////////////////////////////////////////////////////////////////////////
-  ////////////////////////////////////////////////////////////////////////
-  /////////////////////////////////yH5BAEKAP8ALAAAAAAYABgAAAj+AP8JHEiwoMGD
-  Bf9oofFhRI82iBAavJOhQIgiVar0uBBAiCGDMGAMlCLACR4+fNigWfOmzQkGdkISDAlDx4M5
-  fPLcuSOmJxkzbarIBKkgTh89euRswZKFixcwY0ImEFTQEIGQcNZ8idLFUZcoWbSEXDNDRkEi
-  J9SEnDLlSSBKkqg0CZlFzJsBfwgyMAPGCk0lSCJRigQFxpMpV86smDIwEAA2VpgYARKyRhJK
-  IZUMUQKFy5UNA+lQOMOEyJZHikImCkkJ0pEgSaakcTAQToYwRnZoocQbM4zehXDATpNgYJ0J
-  XXjYWHJokHOalBrRmIFjSBkIAwkZCGPDhYoTJkypwPjh+wWLFzF8NPFAUIKVGSRQpGABo8Uk
-  SotCniAxQkgJLQRJ4cENIYhAQkh7UMLICSCEtAMRShwQSEEK8CCCCDCI0EEJgJDAgQgeBBES
-  CDoY5EYD9GWoYQcdXBgCGF6E9JFBToRUwoU4urjDBwnQdBAMBGBwQgklkEBCCUM6EIEfAg01
-  UEh/tDCAAxZ8oEEFCCxghUT/OGlIGkfkwIMUdHDZpJlopnlQQAA7
-}
+# image create photo finish_off -data ....
+# image create photo finish_on -data ....
+### Replaced by autoplay_
 
 # Double size the toolbar buttons
 image create photo tempimage
