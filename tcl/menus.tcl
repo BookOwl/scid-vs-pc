@@ -232,8 +232,7 @@ $m.utils add cascade -label FileMaintName -menu .menu.file.utils.name
 set helpMessage($m.utils,8) FileMaintName
 
 $m.utils.name add checkbutton -label FileMaintNameEditor \
-    -command nameEditor -variable nameEditorWin -accelerator "Ctrl+Shift+N"
-bind . <Control-N> nameEditor
+    -command nameEditor -variable nameEditorWin
 set helpMessage($m.utils.name,0) FileMaintNameEditor
 
 $m.utils.name add command -label FileMaintNamePlayer -command {openSpellCheckWin Player}
@@ -443,13 +442,14 @@ set helpMessage($m,[incr menuindex]) GameNovelty
 ### Search menu:
 set menuindex -1
 set m .menu.search
-$m  add command -label SearchReset -acc "Ctrl+F" \
+$m  add command -label SearchReset -acc "Ctrl+Shift+F" \
     -command ::search::filter::reset
+bind . <Control-F> ::search::filter::reset
 set helpMessage($m,[incr menuindex]) SearchReset
 
-$m  add command -label SearchNegate -acc "Ctrl+Shift+F" \
+$m  add command -label SearchNegate -acc "Ctrl+Shift+N" \
     -command ::search::filter::negate
-bind . <Control-F> ::search::filter::negate
+bind . <Control-N> ::search::filter::negate
 set helpMessage($m,[incr menuindex]) SearchNegate
 
 $m  add separator
@@ -1654,7 +1654,7 @@ proc checkMenuUnderline {menu} {
 
 # standardShortcuts:
 #    Sets up a number of standard shortcut keys for the specified window.
-#
+
 proc standardShortcuts {w} {
   if {! [winfo exists $w]} { return }
   bind $w <Control-o> ::file::Open

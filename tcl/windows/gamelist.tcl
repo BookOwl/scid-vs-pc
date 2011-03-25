@@ -379,6 +379,9 @@ proc ::windows::gamelist::Open {} {
     bind $w <Button-5> {::windows::gamelist::Scroll 1}
   }
 
+  bind $w <Control-F> ::search::filter::reset
+  bind $w <Control-N> ::search::filter::negate
+
   set ::windows::gamelist::findtextprev {}
   set ::windows::gamelist::finditems {}
 
