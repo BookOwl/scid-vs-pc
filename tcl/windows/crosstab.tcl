@@ -69,6 +69,7 @@ proc ::crosstab::Open {} {
   set w .crosstabWin
   if {[winfo exists $w]} {
     ::crosstab::Refresh
+    raiseWin $w
     return
   }
 
