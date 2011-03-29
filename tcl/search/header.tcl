@@ -132,7 +132,7 @@ proc search::header {} {
   set bold font_SmallBold
 
   foreach color {White Black} {
-    pack $w.c$color -side top -fill x
+    pack $w.c$color -side top -fill x -pady 3
     label $w.c$color.lab -textvar ::tr($color) -font $bold -width 9 -anchor w
     ttk::combobox $w.c$color.e -textvariable "s$color" -width 40
     ::utils::history::SetCombobox HeaderSearch$color $w.c$color.e
@@ -152,7 +152,7 @@ proc search::header {} {
         -side right
   }
 
-  pack $w.ignore -side top -fill x
+  pack $w.ignore -side top -fill x  -pady 2
   label $w.ignore.l -textvar ::tr(IgnoreColors) -font $bold
   radiobutton $w.ignore.yes -variable sIgnoreCol -value Yes -textvar ::tr(Yes) -font $regular
   radiobutton $w.ignore.no  -variable sIgnoreCol -value No -textvar ::tr(No) -font $regular

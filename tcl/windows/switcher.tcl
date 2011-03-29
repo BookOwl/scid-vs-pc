@@ -4,6 +4,14 @@
 
 # Order of ~some~ icons (such as tactics, clipbase and pgn) is important
 
+### todo verify if this matters at all 
+# Leave Tactics as number 16 icon
+# This is the database type for mate in N puzzles
+# 10decimal is not related to 16decimal
+# index.cpp:    case 'T': flag = IDX_FLAG_TACTICS;    break;
+# index.h:      define  IDX_FLAG_TACTICS      10   // Tactics flag.
+# tactics.tcl:  if {[sc_game flag T [sc_game number]]}
+
 set icons {
 {Unknown}
 {
@@ -465,16 +473,6 @@ nUu3rl0GEwStIMLXIYQEgAMLHkw4giAYWBIbWMy4sePHjR8IenGlMoHLmDNr
 3py5gSARNEIPGE26tOnTpRUIWiCgtevXsGPLPiAIQYDbuHPr3s27gCAFAIIL
 H068uHHfgihUWM68ufPnzzNJn069uvVGgQAAOw==
 }
-
-### todo verify all this / if it matters at all S.A
-
-# Leave this as number 16.
-# This is the database type for mate in N puzzles
-# 10decimal is not related to 16decimal
-
-### index.cpp:    case 'T': flag = IDX_FLAG_TACTICS;    break;
-### index.h:      define  IDX_FLAG_TACTICS      10   // Tactics flag.
-### tactics.tcl:  if {[sc_game flag T [sc_game number]]} {
 
 Tactics
 {
