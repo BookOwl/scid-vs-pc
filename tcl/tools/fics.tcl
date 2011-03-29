@@ -178,7 +178,7 @@ namespace eval fics {
     # Then the case of a proxy
     set timeOut 5
     set i 0
-    # this needs work to enable "Cancel"
+    # this needs work to enable "Cancel" &&&
     while { $i <= $timeOut } {
       after 1000
 

@@ -466,39 +466,15 @@ nUu3rl0GEwStIMLXIYQEgAMLHkw4giAYWBIbWMy4sePHjR8IenGlMoHLmDNr
 H068uHHfgihUWM68ufPnzzNJn069uvVGgQAAOw==
 }
 
-{GM games}
-{
-R0lGODlhIAAgAOevACAgICUlJSoqKi4uLjEwMDMzMzY2Njg4ODo6Ojw8PD09
-PT49PT8+Pj8/P0BAQEREREZEREVFRUlHR0lISEpKSk1KSk1LS0xMTE5OTlFR
-UVVSUlNTU1ZWVllVVVhYWFtYWFxaWltbW1xcXF1cXF5cXF9cXF5dXWJfX2Bg
-YGFhYWViYmVjY2RkZGZmZmllZWplZWhoaGtnZ2xoaGxpaWpqam1qam9ra3Ft
-bW9vb3FxcXR0dHhzc3Z2dnd3d3p2dnh4eH13d3x4eHp6en15eX55eXt7e4B6
-enx8fIB8fIN9fX9/f4CAgIR/f4GBgYZ/f4KCgomCgomDg4WFhYaGhoqFhYyG
-ho6Hh4qKio+IiIuLi5CJiZCLi5KMjJCQkJaOjpGRkZKSkpeQkJeRkZSUlJWV
-lZqTk5uUlJ6Xl5qampycnKGamqKamp2dnaKbm6Sbm56enqScnKWdnaCgoKef
-n6KioqmgoKqhoaWlpayjo62kpKioqK+lpbCmpqurq6ysrLOpqbOqqrasrLet
-rbeurrGxsbKysrmvr7Ozs7S0tLyysra2tr2zs76zs7+1tbq6usK4uMO4uLy8
-vMO5ucS5ub68vL29vcS6usW6usW7u8a7u8e8vMDAwMe9vci9vcfExMfHx8nJ
-yczMzM7OztLNzc/Pz9LS0tTU1NbW1tra2t3d3eLi4uTk5Ojo6Orq6uzs7P//
-////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////
-/////////////////////yH5BAEKAP8ALAAAAAAgACAAAAj+AP8JHEiwoMGD
-CBMqXMiwocOHECMm3ESxosWKEgm92cixI0dFER1VGimnZKGRikrSiRQxkquX
-P2Juekkq5g85ERW12qmjZ6WdoXrqIPOlqNGjR+8IRMSqKY6njpqCeoojC5ur
-WLNmVfpvipCvp8Ky+Qom7KkfNNKqXbt2icAjLeKumksm7pS5q3jE3cu3rw6B
-P1IIVkUYjOAnhFXlEMy4sWMcArN4nLyRhYnLmDNnpiFQTqrPHkL7+ZwIkyRA
-W0yE7sSaSmgPK1h3aiGQzedUG3Lr0dQJj5g4mToNGrFB9pzcG5DITiEQzKfn
-KKJz6uQDg/UawblgYL1IUgbrZxr+sTYhMAWF82Y7wTnPfsiNCxRYt+k04zwj
-OKw9CBQRoX9YQZ0E0d+ABLKWRCdVREBCJ0ywtoFAHDggoSmmTNJJDBJmqCFr
-LiTChwNEdAICaxm85ceJgkHSiQsJtCgbawmwpoIXnUywBiMKsEaBQFOQ4uMB
-B/zRyQ5AHhBFFGawdgBrJ8RwISRhLNmJBAI9IcqVBRRgRSduZOllCawVwFoJ
-DGhSRycyiNmJAwLB0MWbAwwgwSWd2BDnAAQc2MkArH0wgB2sLcBnJwwI5IAA
-iCb6Am9wOKGFIax5IQBrHQgARCd5IKqkQAgE4OmnAUCARSCWPLIHFBV4ypoG
-AVjQiREiqnZigEAMAGDrrbjmquuuswqUAXLABivssLlJZOyxyB4bEAA7
-}
+### todo verify all this / if it matters at all S.A
+
+# Leave this as number 16.
+# This is the database type for mate in N puzzles
+# 10decimal is not related to 16decimal
+
+### index.cpp:    case 'T': flag = IDX_FLAG_TACTICS;    break;
+### index.h:      define  IDX_FLAG_TACTICS      10   // Tactics flag.
+### tactics.tcl:  if {[sc_game flag T [sc_game number]]} {
 
 Tactics
 {
@@ -531,6 +507,40 @@ dsAAoQUCGXHGiNOdl8CJKJ64GgootoBHHB2gOIFXftR4wI045njjaiPgaIYe
 POQogUBL9GEkAUgmqSSSOugAQZI36MCAkg4I9MJRA2Sp5ZZcdrmlAgItIMCY
 ZJZp5mobkIlmmQcIhEAAcMYp55yrXRBnnXIWINAEAPTp55+ABiqoAQM9YOCh
 iCYaQUaMNuooRAEBADs=
+}
+
+{GM games}
+{
+R0lGODlhIAAgAOevACAgICUlJSoqKi4uLjEwMDMzMzY2Njg4ODo6Ojw8PD09
+PT49PT8+Pj8/P0BAQEREREZEREVFRUlHR0lISEpKSk1KSk1LS0xMTE5OTlFR
+UVVSUlNTU1ZWVllVVVhYWFtYWFxaWltbW1xcXF1cXF5cXF9cXF5dXWJfX2Bg
+YGFhYWViYmVjY2RkZGZmZmllZWplZWhoaGtnZ2xoaGxpaWpqam1qam9ra3Ft
+bW9vb3FxcXR0dHhzc3Z2dnd3d3p2dnh4eH13d3x4eHp6en15eX55eXt7e4B6
+enx8fIB8fIN9fX9/f4CAgIR/f4GBgYZ/f4KCgomCgomDg4WFhYaGhoqFhYyG
+ho6Hh4qKio+IiIuLi5CJiZCLi5KMjJCQkJaOjpGRkZKSkpeQkJeRkZSUlJWV
+lZqTk5uUlJ6Xl5qampycnKGamqKamp2dnaKbm6Sbm56enqScnKWdnaCgoKef
+n6KioqmgoKqhoaWlpayjo62kpKioqK+lpbCmpqurq6ysrLOpqbOqqrasrLet
+rbeurrGxsbKysrmvr7Ozs7S0tLyysra2tr2zs76zs7+1tbq6usK4uMO4uLy8
+vMO5ucS5ub68vL29vcS6usW6usW7u8a7u8e8vMDAwMe9vci9vcfExMfHx8nJ
+yczMzM7OztLNzc/Pz9LS0tTU1NbW1tra2t3d3eLi4uTk5Ojo6Orq6uzs7P//
+////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////
+/////////////////////yH5BAEKAP8ALAAAAAAgACAAAAj+AP8JHEiwoMGD
+CBMqXMiwocOHECMm3ESxosWKEgm92cixI0dFER1VGimnZKGRikrSiRQxkquX
+P2Juekkq5g85ERW12qmjZ6WdoXrqIPOlqNGjR+8IRMSqKY6njpqCeoojC5ur
+WLNmVfpvipCvp8Ky+Qom7KkfNNKqXbt2icAjLeKumksm7pS5q3jE3cu3rw6B
+P1IIVkUYjOAnhFXlEMy4sWMcArN4nLyRhYnLmDNnpiFQTqrPHkL7+ZwIkyRA
+W0yE7sSaSmgPK1h3aiGQzedUG3Lr0dQJj5g4mToNGrFB9pzcG5DITiEQzKfn
+KKJz6uQDg/UawblgYL1IUgbrZxr+sTYhMAWF82Y7wTnPfsiNCxRYt+k04zwj
+OKw9CBQRoX9YQZ0E0d+ABLKWRCdVREBCJ0ywtoFAHDggoSmmTNJJDBJmqCFr
+LiTChwNEdAICaxm85ceJgkHSiQsJtCgbawmwpoIXnUywBiMKsEaBQFOQ4uMB
+B/zRyQ5AHhBFFGawdgBrJ8RwISRhLNmJBAI9IcqVBRRgRSduZOllCawVwFoJ
+DGhSRycyiNmJAwLB0MWbAwwgwSWd2BDnAAQc2MkArH0wgB2sLcBnJwwI5IAA
+iCb6Am9wOKGFIax5IQBrHQgARCd5IKqkQAgE4OmnAUCARSCWPLIHFBV4ypoG
+AVjQiREiqnZigEAMAGDrrbjmquuuswqUAXLABivssLlJZOyxyB4bEAA7
 }
 
 {IM games}
