@@ -571,8 +571,6 @@ set helpText(MainWindow) {<h1>Scid Main Window</h1>
   <li> <button autoplay_off> Start/stop <a MainWindow Autoplay>autoplay mode</a> [control+z] </li>
   <li> <button tb_trial> Start/stop <a Moves Trial>trial mode</a> [control+space] </li>
   <li> <button tb_flip> Flip the board [control+f]</li>
-  <li> <button tb_showmenu> Show/hide menus</li>
-  <li> <button tb_gameinfo> Show/hide game information</li>
   </ul>
 
   <h4><name GameInfo>Game Information Widget</name></h4>
@@ -2639,34 +2637,34 @@ set helpText(Analysis) {<h1>Analysis Windows</h1>
   <h3><name Buttons>Buttons</h3>
   <p>
   At the top you'll find many cryptic buttons...
+  <p>
   <ul>
-
-  <li> <button tb_pause><b>Pause</b>  temporarily interrupt engine analysis.</li>
-  <li> <button tb_play><b>Play</b>  restarts the engine.
+  <li> <button tb_pause 32> <b>Pause</b>  temporarily interrupt engine analysis.</li>
+  <li> <button tb_play 32> <b>Play</b>  restarts the engine.
   <i>Note: This will cause most engines 
   to restart their analysis, forgetting previous lines.
   Only few engines are able to reuse the
   results they have calculated till the analysis was stopped.</i> </li>
-  <li> <button tb_lockengine> <b>Lock Analysis</b> lock analysis to a certain position.
+  <li> <button tb_lockengine 32> <b>Lock Analysis</b> lock analysis to a certain position.
   <i>This also sets <a Moves Trial>Trial mode</a>.
   Then, to add the this analysis as a variation, first press the <b>Pause</b>
   button, then <b>Add Varation</b></i>.</li>
 
-  <li> <button tb_addmove><b>Add Move</b> 
+  <li> <button tb_addmove 32> <b>Add Move</b> 
   adds the engine's best move to the current game.</li>
-  <li> <button tb_addvar><b>Add Variation</b>  adds the
+  <li> <button tb_addvar 32> <b>Add Variation</b>  adds the
   whole main line.</li>
-  <li> <button tb_addallvars><b>Multi-PV</b>  if the engine supports multi-pv, add all principal variations.</li>
+  <li> <button tb_addallvars 32> <b>Multi-PV</b>  if the engine supports multi-pv, add all principal variations.</li>
 
-  <li><button tb_engine><b>Show Info</b> show additional information.</li>
-  <li><button tb_cpu><b>Low CPU priority</b> 
+  <li> <button tb_engine 32> <b>Show Info</b> show additional information.</li>
+  <li> <button tb_cpu 32> <b>Low CPU priority</b> 
   give the engine a low priority for CPU
   scheduling. On Windows, engines are run on low priority by default.
   On Unix systems the engines priority can not be set back to normal.  </li>
-  <li><button tb_coords><b>Show Board</b> displays a small working board.</li>
-  <li><button autoplay_off><b>Shoot out</b>, or "demo", mode allows the engine to play out the game. </li>
-  <li><button tb_annotate><b>Annotate</b> game (see below).</li>
-  <li><button tb_training><b>Training</b> feature (see below).</li>
+  <li> <button tb_coords 32> <b>Show Board</b> displays a small working board.</li>
+  <li> <button autoplay_off 32> <b>Shoot out</b>, or "demo", mode allows the engine to play out the game. </li>
+  <li> <button tb_annotate 32> <b>Annotate</b> game (see below).</li>
+  <li> <button tb_training 32> <b>Training</b> feature (see below).</li>
   </ul>
   </p>
 
@@ -2714,7 +2712,7 @@ set helpText(Analysis) {<h1>Analysis Windows</h1>
 
   <h3>Training</h3>
   <p>
-  With the <b>Training</b> button <button tb_training>, you can play moves against the analysis
+  With the <b>Training</b> button <button tb_training 32>, you can play moves against the analysis
   engine. The time for each move is fixed, and the analysis results are
   not shown when training mode is on.
   </p>
@@ -2722,7 +2720,7 @@ set helpText(Analysis) {<h1>Analysis Windows</h1>
   <h3><name Annotating>Annotating Games</name></h3>
   <p>
   Games can be annotated automatically using
-  the <b>Annotate</b> button <button tb_annotate> in the engine toolbar.
+  the <b>Annotate</b> button <button tb_annotate 32> in the engine toolbar.
   This feature adds <a Comment>comments</a>, <a NAGs>Informants</a>,
   and best-lines to a game, and can be performed
   on  multiple games.</p>

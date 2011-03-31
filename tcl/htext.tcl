@@ -530,10 +530,14 @@ proc ::htext::display {w helptext {section {}} {fixed 1}} {
       $w window create end -window $winName
     }
     if {[strIsPrefix {button } $tagName]} {
-      set imgName [string range $tagName 7 end]
+      set imgName [lindex $tagName 1]
+      set imgSize [lindex $tagName 2]
       set winName $w.$imgName
       while {[winfo exists $winName]} { append winName a }
       button $winName -image $imgName
+      if {[string is integer -strict $imgSize]} {
+        $winName configure -width $imgSize -height $imgSize
+      }
       $w window create end -window $winName
     }
     if {[strIsPrefix {window } $tagName]} {
