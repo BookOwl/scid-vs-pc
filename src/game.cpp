@@ -2178,63 +2178,64 @@ Game::WriteMoveList (TextBuffer *tb, uint plyCount,
         NumMovesPrinted++;
 
         if (printThisMove) {
-        // Print the move number and following dots if necessary:
-        if (IsColorFormat()) {
-            tb->PrintString ("<m_");
-            tb->PrintInt (NumMovesPrinted);
-            tb->PrintChar ('>');
-        }
-        if (printMoveNum  ||  (CurrentPos->GetToMove() == WHITE)) {
-            if ((PgnStyle & PGN_STYLE_COLUMN)  &&  VarDepth == 0) {
-                tb->PrintString (startColumn);
-                char temp [10];
-                sprintf (temp, "%4u.", CurrentPos->GetFullMoveCount());
-                tb->PrintString (temp);
-                if (CurrentPos->GetToMove() == BLACK) {
-                    tb->PauseTranslations();
-                    tb->PrintString (nextColumn);
-                    tb->PrintString ("...");
-                    if (IsPlainFormat()  ||  IsColorFormat()) {
-                        tb->PrintString ("        ");
-                    }
-                    tb->ResumeTranslations();
-                }
-            } else {
-            if (PgnStyle & PGN_STYLE_MOVENUM_SPACE) {
-                tb->PrintInt(CurrentPos->GetFullMoveCount(), (CurrentPos->GetToMove() == WHITE ? "." : ". ..."));
-                } else {
-	                tb->PrintInt(CurrentPos->GetFullMoveCount(), (CurrentPos->GetToMove() == WHITE ? "." : "..."));
-                }
-                if (PgnStyle & PGN_STYLE_MOVENUM_SPACE) {
-                    if (IsLatexFormat()) {
-                        tb->PrintChar ('~');
-                    } else {
-                        tb->PrintChar (' ');
-                    }
-                }
-            }
-            printMoveNum = false;
-        }
+	    // Print the move number and following dots if necessary:
+	    if (IsColorFormat()) {
+		tb->PrintString ("<m_");
+		tb->PrintInt (NumMovesPrinted);
+		tb->PrintChar ('>');
+	    }
+	    if (printMoveNum  ||  (CurrentPos->GetToMove() == WHITE)) {
+		if ((PgnStyle & PGN_STYLE_COLUMN)  &&  VarDepth == 0) {
+		    tb->PrintString (startColumn);
+		    char temp [10];
+		    sprintf (temp, "%4u.", CurrentPos->GetFullMoveCount());
+		    tb->PrintString (temp);
+		    if (CurrentPos->GetToMove() == BLACK) {
+			tb->PauseTranslations();
+			tb->PrintString (nextColumn);
+			tb->PrintString ("...");
+			if (IsPlainFormat()  ||  IsColorFormat()) {
+			    tb->PrintString ("        ");
+			}
+			tb->ResumeTranslations();
+		    }
+		} else {
+		    if (PgnStyle & PGN_STYLE_MOVENUM_SPACE) {
+			tb->PrintInt(CurrentPos->GetFullMoveCount(), (CurrentPos->GetToMove() == WHITE ? "." : ". ..."));
+		    } else {
+			tb->PrintInt(CurrentPos->GetFullMoveCount(), (CurrentPos->GetToMove() == WHITE ? "." : "..."));
+		    }
 
-        if (m == oldCurrentMove->prev) { PgnLastMovePos = NumMovesPrinted; }
-        if (m == oldCurrentMove) { PgnNextMovePos = NumMovesPrinted; }
+		    if (PgnStyle & PGN_STYLE_MOVENUM_SPACE) {
+			if (IsLatexFormat()) {
+			    tb->PrintChar ('~');
+			} else {
+			    tb->PrintChar (' ');
+			}
+		    }
+		}
+		printMoveNum = false;
+	    }
 
-        // Now print the move: only regenerate the SAN string if necessary.
+	    if (m == oldCurrentMove->prev) { PgnLastMovePos = NumMovesPrinted; }
+	    if (m == oldCurrentMove) { PgnNextMovePos = NumMovesPrinted; }
 
-        if ((PgnStyle & PGN_STYLE_COLUMN)  &&  VarDepth == 0) {
-            tb->PauseTranslations();
-            tb->PrintString (nextColumn);
-            tb->ResumeTranslations();
-        }
-        // translate pieces
-        strcpy(tempTrans, m->san);
-        transPieces(tempTrans);
-        //tb->PrintWord (m->san);
-        tb->PrintWord (tempTrans);
-        colWidth -= strLength (m->san);
-        if (IsColorFormat()) {
-            tb->PrintString ("</m>");
-        }
+	    // Now print the move: only regenerate the SAN string if necessary.
+
+	    if ((PgnStyle & PGN_STYLE_COLUMN)  &&  VarDepth == 0) {
+		tb->PauseTranslations();
+		tb->PrintString (nextColumn);
+		tb->ResumeTranslations();
+	    }
+	    // translate pieces
+	    strcpy(tempTrans, m->san);
+	    transPieces(tempTrans);
+	    //tb->PrintWord (m->san);
+	    tb->PrintWord (tempTrans);
+	    colWidth -= strLength (m->san);
+	    if (IsColorFormat()) {
+		tb->PrintString ("</m>");
+	    }
         }
 
         bool endedColumn = false;
@@ -2503,6 +2504,7 @@ Game::WriteMoveList (TextBuffer *tb, uint plyCount,
                 tb->PrintString ("</var>");
             }
         }
+
         if ((PgnStyle & PGN_STYLE_COLUMN)  &&  VarDepth == 0) {
             if (endedColumn) { tb->PrintString(startTable); }
             if (!endedColumn  &&  CurrentPos->GetToMove() == BLACK) {
@@ -2510,6 +2512,8 @@ Game::WriteMoveList (TextBuffer *tb, uint plyCount,
                 endedColumn = true;
             }
         }
+
+
         MoveForward();
         plyCount++;
         if (CurrentMove == oldCurrentMove->prev) {
