@@ -5,6 +5,9 @@
 ### Uses the free Tcl/Tk sound package "Snack", which comes with
 ### most Tcl distributions. See http://www.speech.kth.se/snack/
 
+### when an other application uses the audio device, no sound can be played. Forces a reset of pending sounds after 5 seconds
+### which limits the maximum length of a playable sound
+
 namespace eval ::utils::sound {}
 
 set ::utils::sound::hasSnackPackage 0
@@ -12,7 +15,7 @@ set ::utils::sound::isPlayingSound 0
 set ::utils::sound::soundQueue {}
 set ::utils::sound::soundFiles [list \
     King Queen Rook Bishop Knight CastleQ CastleK Back Mate Promote Check \
-    a b c d e f g h x 1 2 3 4 5 6 7 8 move]
+    a b c d e f g h x 1 2 3 4 5 6 7 8 move alert]
 
 # soundMap
 #
@@ -22,10 +25,10 @@ set ::utils::sound::soundFiles [list \
 #
 array set ::utils::sound::soundMap {
   K King Q Queen R Rook B Bishop N Knight k CastleK q CastleQ
-  x x U Back # Mate = Promote + Check
+  x x U Back # Mate = Promote  + Check alert alert
   a a b b c c d d e e f f g g h h
   1 1 2 2 3 3 4 4 5 5 6 6 7 7 8 8
-}
+} 
 
 
 # ::utils::sound::Setup
@@ -91,6 +94,7 @@ proc ::utils::sound::AnnounceMove {move} {
 
   if {[string range $move 0 4] == "O-O-O"} { set move q }
   if {[string range $move 0 2] == "O-O"} { set move k }
+  set move [::untrans $move]
   set parts [split $move ""]
   set soundList {}
   foreach part $parts {
@@ -100,7 +104,9 @@ proc ::utils::sound::AnnounceMove {move} {
   }
   if {[llength $soundList] > 0} {
     CancelSounds
-    foreach s $soundList { PlaySound $s }
+    foreach s $soundList {
+      PlaySound $s
+    }
   }
 }
 
@@ -121,6 +127,7 @@ proc ::utils::sound::AnnounceBack {} {
 
 
 proc ::utils::sound::SoundFinished {} {
+  after cancel ::utils::sound::CancelSounds
   set ::utils::sound::isPlayingSound 0
   CheckSoundQueue
 }
@@ -152,15 +159,14 @@ proc ::utils::sound::PlaySound {sound} {
 proc ::utils::sound::CheckSoundQueue {} {
   variable soundQueue
   variable isPlayingSound
-
   if {$isPlayingSound} { return }
   if {[llength $soundQueue] == 0} { return }
 
   set next [lindex $soundQueue 0]
   set soundQueue [lrange $soundQueue 1 end]
   set isPlayingSound 1
-
   catch { $next play -blocking 0 -command ::utils::sound::SoundFinished }
+  after 5000 ::utils::sound::CancelSounds
 }
 
 
@@ -179,7 +185,7 @@ proc ::utils::sound::OptionsDialog {} {
 
   toplevel $w
   wm title $w "Scid: Sound Options"
-  wm transient $w .
+  # wm transient $w .
 
 
   label $w.status -text ""
