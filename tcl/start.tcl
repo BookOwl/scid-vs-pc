@@ -1012,9 +1012,10 @@ foreach i {Regular Menu Small Tiny Fixed} {
 # font_Regular is the default font for widgets:
 option add *Font font_Regular
 option add *Text*background $defaultBackground widgetDefault
-# Use font_Menu for menu entries:
-option add *Menu*Font font_Menu
-# option add *Menubutton*Font font_Menu
+if {!$windowsOS} {
+  option add *Menu*Font font_Menu
+  # option add *Menubutton*Font font_Menu
+}
 if {$unixOS} {
   option add Scrollbar*borderWidth 1
 }

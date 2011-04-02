@@ -334,6 +334,8 @@ set helpText(Index) {<h1>Scid Help Index</h1>
 
   <h3><name K>K</name></h3>
   <ul>
+  <li><a ShortCuts>Keyboard shortcuts</a></li>
+  <li><a ShortCuts alpha>Keyboard shortcuts (alphabetical)</a></li>
   </ul>
 
   <h3><name L>L</name></h3>
@@ -400,6 +402,8 @@ set helpText(Index) {<h1>Scid Help Index</h1>
   <li><a Searches>Searches</a></li>
   <li><a Menus Search>Search menu</a></li>
   <li><a SeriousGame>Play serious game</a></li>
+  <li><a ShortCuts>Shortcuts</a></li>
+  <li><a ShortCuts alpha>Shortcuts (alphabetical)</a></li>
   <li><a Sorting>Sorting a database</a></li>
   <li><a Maintenance Spellcheck>Spellchecking</a> names</li>
   <li><a Switcher>Switcher</a> window</li>
@@ -6154,4 +6158,180 @@ tiles) and has improved functionality.  It also properly inits the
 <li> Remember fics widget size.  </li>
 <li> Last move displayed in bold. </li>
 </ul>
+}
+
+set helpTitle(ShortCuts) "Shortcuts"
+set helpText(ShortCuts) {<h1>Keyboard Shortcuts</h1>
+<p>
+Shortcuts are <b>case sensitive</b>.
+<br>
+The window manager may interfere with some shortcuts.
+<br>
+<br>
+<a ShortCuts alpha>Sorted Alphabetically</a>
+</p>
+
+<h4>General</h4>
+<ul>
+<li><i>Use standard notation to input moves with the keyboard (eg <b>e4</b>).</i></li>
+<li></li>
+<li><b>left</b> - Back one move</li>
+<li><b>right</b> - Forward one move</li>
+<li><b>up</b> - Back five moves</li>
+<li><b>down</b> - Forward five moves</li>
+<li><b>home</b> - Goto start</li>
+<li><b>end</b> - Goto end</li>
+<li><b>control-g</b> - Goto move number</li>
+<li></li>
+<li><b>control-f</b> - Flip Board</li>
+<li><b>escape</b> - Clear move entry</li>
+<li><b>enter</b> - Add move from chess engine</li>
+<li></li>
+<li><b>F1</b> - Help</li>
+<li><b>control-F12</b> - Screenshot</li>
+<li><b>alt-KEY</b> - Menu shortcut (*nix only)</li>
+</ul>
+
+<h4>Scid Windows</h4>
+<ul>
+<li><b>control-p</b> - PGN window</li>
+<li><b>control-l</b> - Gamelist window</li>
+<li><b>control-e</b> - Comment editor</li>
+<li><b>control-m</b> - Maintenance window</li>
+<li><b>control-i</b> - Statistics window</li>
+<li><b>control-t</b> - Tree window</li>
+<li><b>control-y</b> - ECO browser</li>
+<li><b>control-X</b> - Crosstable</li>
+<li><b>control-S</b> - Setup board</li>
+<li><b>control-b</b> - Board options</li>
+<li><b>escape</b> - Close window</li>
+</ul>
+
+<h4>Engines</h4>
+<ul>
+<li><b>control-A</b> - Configure analysis engines</li>
+<li><b>F2</b> - Toggle engine 1</li>
+<li><b>F3</b> - Toggle engine 2</li>
+<li><b>F4</b> - Toggle engine 3</li>
+<li><b>enter</b> - Add move from chess engine</li>
+</ul>
+
+<h4>Copy / Paste</h4>
+<ul>
+<li><b>control-c</b> - Copy game to clipbase</li>
+<li><b>control-v</b> - Paste game from clipbase</li>
+<li><b>control-C</b> - Copy FEN</li>
+<li><b>control-V</b> - Paste FEN</li>
+<li><b>control-I</b> - Import PGN</li>
+</ul>
+
+<h4>Games and Databases</h4>
+<ul>
+<li><b>control-r</b> - Replace game</li>
+<li><b>control-s</b> - Save (new) game</li>
+<li></li>
+<li><b>control-up</b> - Previous game</li>
+<li><b>control-down</b> - Next game</li>
+<li><b>control-home</b> - First game</li>
+<li><b>control-end</b> - Last game</li>
+<li><b>control-x</b> - New game</li>
+<li><b>control-G</b> - Load game number</li>
+<li><b>control-?</b> - Load random game</li>
+<li></li>
+<li><b>control-n</b> - New database</li>
+<li><b>control-o</b> - Open database</li>
+<li><b>control-w</b> - Close database</li>
+<li><b>control-/</b> - Finder</li>
+<li></li>
+<li><b>control-1</b> - Switch to first open base</li>
+<li><b>control-2</b> - Switch to second open base</li>
+<li>....</li>
+<li><b>control-9</b> - Switch to clipbase</li>
+</ul>
+
+<h4>Search / Filter</h4>
+<ul>
+<li><b>control-H</b> - General (header) search</li>
+<li><b>control-B</b> - Board search</li>
+<li><b>control-M</b> - Material search</li>
+<li></li>
+<li><b>control-F</b> - Reset filter</li>
+<li><b>control-N</b> - Negate Filter</li>
+<li></li>
+<li><b>control-P</b> - Player finder</li>
+<li><b>control-T</b> - Tournament finder</li>
+<li><b>control-Y</b> - Find novelty</li>
+</ul>
+
+-------------------------------------------------------------------------
+
+<h2><name alpha>Alphabetical</name></h2>
+<ul>
+
+<li><b>control-A</b> - Analysis engines</li>
+<li><b>control-b</b> - Board options</li>
+<li><b>control-B</b> - Board search</li>
+<li><b>control-c</b> - Copy game to clipbase</li>
+<li><b>control-C</b> - Copy FEN</li>
+<li><b>control-e</b> - Comment editor</li>
+<li><b>control-f</b> - Flip Board</li>
+<li><b>control-F</b> - Reset filter</li>
+<li><b>control-g</b> - Goto move number</li>
+<li><b>control-G</b> - Load game number</li>
+<li><b>control-H</b> - General (header) search</li>
+<li><b>control-i</b> - Statistics window</li>
+<li><b>control-I</b> - Import PGN</li>
+<li><b>control-l</b> - Gamelist window</li>
+<li><b>control-m</b> - Maintenance window</li>
+<li><b>control-M</b> - Material search</li>
+<li><b>control-n</b> - New database</li>
+<li><b>control-N</b> - Negate Filter</li>
+<li><b>control-o</b> - Open database</li>
+<li><b>control-p</b> - PGN window</li>
+<li><b>control-P</b> - Player finder</li>
+<li><b>control-r</b> - Replace game</li>
+<li><b>control-s</b> - Save (new) game</li>
+<li><b>control-S</b> - Setup board</li>
+<li><b>control-t</b> - Tree window</li>
+<li><b>control-T</b> - Tournament finder</li>
+<li><b>control-v</b> - Paste game from clipbase</li>
+<li><b>control-V</b> - Paste FEN</li>
+<li><b>control-y</b> - ECO browser</li>
+<li><b>control-w</b> - Close database</li>
+<li><b>control-x</b> - New game</li>
+<li><b>control-X</b> - Crosstable</li>
+<li><b>control-Y</b> - Find novelty</li>
+<li></li>
+
+<li><b>control-/</b> - Finder</li>
+<li><b>control-?</b> - Load random game</li>
+<li><b>enter</b> - Add move from chess engine</li>
+<li></li>
+
+<li><b>control-1</b> - Switch to first open base</li>
+<li><b>control-2</b> - Switch to second open base</li>
+<li>....</li>
+<li><b>control-9</b> - Switch to clipbase</li>
+<li></li>
+
+<li><b>left</b> - Back one move</li>
+<li><b>right</b> - Forward one move</li>
+<li><b>up</b> - Back five moves</li>
+<li><b>down</b> - Forward five moves</li>
+<li><b>home</b> - Goto start</li>
+<li><b>end</b> - Goto end</li>
+<li><b>control-up</b> - Load previous game</li>
+<li><b>control-down</b> - Load next game</li>
+<li><b>control-home</b> - Load First game</li>
+<li><b>control-end</b> - Load last game</li>
+<li></li>
+
+<li><b>F1</b> - Help</li>
+<li><b>F2</b> - Toggle engine 1</li>
+<li><b>F3</b> - Toggle engine 2</li>
+<li><b>F4</b> - Toggle engine 3</li>
+<li><b>control-F12</b> - Screenshot</li>
+
+</ul>
+<p><footer>Updated:</b> - Scid vs. PC 4.4 April 2011</footer></p>
 }

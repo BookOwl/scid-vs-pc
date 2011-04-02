@@ -103,6 +103,12 @@ option add *Menu*TearOff 0
 
 menu .menu
 
+if {$windowsOS} {
+  # todo &&&
+  # How do we disable windows broken menu short-cuts &&&
+  # bind . <Alt> {}
+}
+
 ## Mac Application menu has to be before any call to configure.
 # (from SCID. untested S.A.)
 if { $macOS } {
@@ -670,8 +676,7 @@ bind . <Control-E> ::tools::email
 set helpMessage($m,[incr menuindex]) ToolsEmail
 
 $m add checkbutton -label ToolsFilterGraph \
-    -accelerator "Ctrl+Shift+G" -variable filterGraph -command tools::graphs::filter::Open
-bind . <Control-G> tools::graphs::filter::Open
+    -variable filterGraph -command tools::graphs::filter::Open
 set helpMessage($m,[incr menuindex]) ToolsFilterGraph
 
 $m add checkbutton -label ToolsAbsFilterGraph \
@@ -1668,8 +1673,8 @@ proc standardShortcuts {w} {
   bind $w <Control-Up> {::game::LoadNextPrev previous}
   bind $w <Control-Down> {::game::LoadNextPrev next}
   bind $w <Control-question> ::game::LoadRandom
-  bind $w <Control-u> ::game::LoadNumber
   bind $w <Control-g> ::game::GotoMoveNumber
+  bind $w <Control-G> ::game::LoadNumber
   bind $w <Control-f> {if {!$tree(refresh)} {toggleRotateBoard}}
   bind $w <Control-B> ::search::board
   bind $w <Control-H> ::search::header
@@ -1688,12 +1693,9 @@ proc standardShortcuts {w} {
   bind $w <Control-E> ::tools::email
   bind $w <Control-O> ::optable::makeReportWin
   # bind $w <Control-R> {::tools::graphs::rating::Refresh both}
-  bind $w <Control-R> ::rep::OpenCloseWindow
   bind $w <Control-Z> ::tools::graphs::score::Refresh
   bind $w <Control-I> importPgnGame
-  for {set i 1} { $i <= $::totalBaseSlots} {incr i} {
-    bind $w "<Control-Key-$i>" "::file::SwitchToBase $i"
-  }
+
   # extra generic bindings added for Scid 3.6.24 : hope there is no conflict
   bind $w <Home>  ::move::Start
   bind $w <Up> {

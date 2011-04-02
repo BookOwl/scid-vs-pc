@@ -320,6 +320,8 @@ proc ::file::Close {{base -1}} {
     }
     sc_base close
 
+    bind . <Control-Key-$base> {}
+
     # If closing current base - reset current game and switch to clipbase
     if { $current == $base } {
       setTrialMode 0

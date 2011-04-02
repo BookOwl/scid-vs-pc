@@ -1261,8 +1261,8 @@ translate E ExportSymbolStyle {Symbolic annotation style:}
 translate E ExportStripMarks {Strip square/arrow mark codes from comments?}
 
 # Goto game/move dialogs:
-translate E LoadGameNumber {Enter the game number to load:}
-translate E GotoMoveNumber {Goto move number:}
+translate E LoadGameNumber {Load Game number}
+translate E GotoMoveNumber {Goto Move number}
 
 # Copy games dialog:
 translate E CopyGames {Copy games}
