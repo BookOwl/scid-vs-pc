@@ -143,7 +143,7 @@ proc updateHelpWindow {name {heading {}}} {
 
       .helpWin.text tag remove Highlight 1.0 end
 
-      set result [.helpWin.text search -nocase $::helpWin(find) $::helpWin(findindex)]
+      set result [.helpWin.text search -nocase -- $::helpWin(find) $::helpWin(findindex)]
       if {$result == {}} {
 	set ::helpWin(findindex) 1.0
 	bell
