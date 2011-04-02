@@ -108,7 +108,10 @@ namespace eval fics {
 
     button $w.button.help -text Help -command {helpWindow FICS}
 
-    button $w.button.cancel -text Cancel -command {destroy .ficsConfig}
+    button $w.button.cancel -text Cancel -command {
+      after cancel $::fics::after
+      destroy .ficsConfig
+    }
 
     ### Pack .ficsConfig widget in grid
 
@@ -175,31 +178,36 @@ namespace eval fics {
           return
     }
 
-    # Then the case of a proxy
-    set timeOut 5
-    set i 0
-    # this needs work to enable "Cancel" &&&
-    while { $i <= $timeOut } {
-      after 1000
+    ### Try to delay this procedure and maintain UI responsiveness
+    ###   The latency problem seems to come from [socket] and [fconfigure] though
 
-      if { [catch {set peer [ fconfigure $sockChan -peername ]} err]} {
-        if {$i == $timeOut} {
+    # Give it 5 tries before giving up
+    # Then the case of a proxy
+    set ::fics::after [after 500 {::fics::init_config 5}]
+  }
+    
+  proc init_config {attempt} {
+    set w .ficsConfig
+    update
+      if { [catch {set peer [ fconfigure $::fics::sockChan -peername ]} err]} {
+        # this attempt fails
+	incr attempt -1
+        if {$attempt} {
+	  # try again
+	  set ::fics::after [after 500 "::fics::init_config $attempt"]
+        } else {
 	  ::fics::unbusy_config
           tk_messageBox -icon error -type ok -title "Unable to connect $::fics::server" -message $err -parent .ficsConfig
 	  destroy $w
-          return
         }
-      } else  {
-        break
+      } else {
+	# success
+	set ::fics::server_ip [lindex $peer 0]
+	::close $::fics::sockChan
+
+	::fics::unbusy_config
+	update
       }
-      incr i
-    }
-
-    set ::fics::server_ip [lindex $peer 0]
-    ::close $sockChan
-
-    ::fics::unbusy_config
-    update
   }
 
   proc unbusy_config {} {
