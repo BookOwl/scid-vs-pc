@@ -128,7 +128,7 @@ proc ::bookmarks::AddCurrent {{folder 0}} {
 #   Returns a bookmarks list entry for the current game or a new folder.
 #
 proc ::bookmarks::New {type} {
-  if {$type == "folder"} { return [list "f" ""] }
+  if {$type == "folder"} { return [list "f" "new folder"] }
 
   ### Bookmark format
   # database: white, black, result, site , ....
