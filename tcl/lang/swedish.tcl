@@ -135,6 +135,8 @@ menuText W WindowsPGN "PGN fönster" 0 {Öppna/ stäng PGN fönstret}
 menuText W WindowsCross "Resultattabell" 0 {Visa en resultattabell för den aktuella turneringen}
 menuText W WindowsPList "Spelarförteckning" 7 {Öppna/ stäng en förteckning över spelarna i den aktiva databasen} 
 menuText W WindowsTmt "Turneringar" 0 {Lista turneringar}
+# todo
+menuText E WindowsComment "Comment Editor" 9 {Open/close the comment editor}
 menuText W WindowsSwitcher "Databasväxlaren" 0 \
   {Öppna/ stäng databasväxlaren}
 menuText W WindowsMaint "Verktygsfönster" 0 \

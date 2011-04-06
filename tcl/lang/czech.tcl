@@ -132,6 +132,8 @@ menuText C WindowsPGN "Okno PGN" 5 {Otevøít/zavøít okno PGN}
 menuText C WindowsCross "Turnajová tabulka" 0 {Ukázat turnajovou tabulku pro tuto partii}
 menuText C WindowsPList "Vyhledávaè hráèù" 11 {Otevøít/zavøít okno vyhledávaèe hráèù}
 menuText C WindowsTmt "Vyhledávaè turnajù" 11 {Otevøít/zavøít okno vyhledávaèe turnajù}
+# todo
+menuText E WindowsComment "Comment Editor" 9 {Open/close the comment editor}
 menuText C WindowsSwitcher "Vıbìr databáze" 0 {Otevøít/zavøít okno pro vıbìr databází}
 menuText C WindowsMaint "Okno údr¾by" 6 {Otevøít/zavøít okno údr¾by}
 menuText C WindowsECO "ECO prohlí¾eè" 1 {Otevøít/zavøít okno ECO prohlí¾eèe}

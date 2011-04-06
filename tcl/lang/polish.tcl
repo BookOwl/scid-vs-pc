@@ -138,6 +138,8 @@ menuText P WindowsPGN "Okno PGN" 0 {Otwórz/zamknij (zapis partii) PGN }
 menuText P WindowsCross "Tabela turniejowa" 0 {Poka¿ tabelê turniejow± dla aktualnej partii}
 menuText P WindowsPList "Zawodnicy" 2 {Otwórz/zamknij przegl±darkê zawodników}
 menuText P WindowsTmt "Turnieje" 0 {Otwórz/zamknij przegl±darkê turniejów}
+# todo
+menuText E WindowsComment "Comment Editor" 9 {Open/close the comment editor}
 menuText P WindowsSwitcher "Prze³±cznik baz" 12 \
   {Otwórz/zamknij prze³±cznik baz}
 menuText P WindowsMaint "Zarz±dzanie baz±" 0 \

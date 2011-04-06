@@ -135,6 +135,8 @@ menuText R WindowsPGN "Окно PGN" 0 {Открыть/закрыть окно PGN (нотация партии)}
 menuText R WindowsCross "Турнирная таблица" 0 {Показать турнирную таблицу для этой партии}
 menuText R WindowsPList "Поиск игрока" 2 {Открыть/закрыть окно поиска игрока}
 menuText R WindowsTmt "Поиск турниров" 0 {Открыть/закрыть окно поиска турниров}
+# todo
+menuText E WindowsComment "Comment Editor" 9 {Open/close the comment editor}
 menuText R WindowsSwitcher "Переключатель баз данных" 1 \
   {Открыть/закрыть окно переключателя баз данных}
 menuText R WindowsMaint "Окно поддержки" 1 \

@@ -134,6 +134,8 @@ menuText O WindowsPGN "PGN-vindu" 0 {Åpne/lukk PGN-vinduet}
 menuText O WindowsCross "Krysstabell" 0 {Vis turnerigskrystabellen for dette partiet}
 menuText O WindowsPList "Player Finder" 2 {Open/close the player finder} ;# ***
 menuText O WindowsTmt "Turneringsøker" 0 {Åpne/lukk turneringssøkeren}
+# todo
+menuText E WindowsComment "Comment Editor" 9 {Open/close the comment editor}
 menuText O WindowsSwitcher "Databasebytter" 0 \
   {Åpne/lukk databasebytteren}
 menuText O WindowsMaint "Vedlikeholdsvindu" 0 \

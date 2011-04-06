@@ -178,7 +178,7 @@ foreach {tbicon status}  {
   finder 1 bkm 1 gfirst 1 gprev 1 gnext 1 glast 1
   newgame 0 copy 0 paste 0
   rfilter 1 bsearch 1 hsearch 1 msearch 1
-  switcher 1 glist 1 pgn 1 tmt 1 maint 1 eco 1 tree 1 crosst 1 engine 1
+  switcher 1 glist 1 pgn 1 tmt 1 comment 1 maint 1 eco 1 tree 1 crosst 1 engine 1
 } {
   set toolbar($tbicon) $status
 }

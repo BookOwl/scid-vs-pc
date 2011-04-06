@@ -480,20 +480,20 @@ image create photo tb_bsearch -data {
 }
 
 image create photo tb_hsearch -data {
-  R0lGODlhEQARACIAACH5BAkAAAAALAAAAAARABEAotnZ2QAngbDE3gAAAP//
-  /76+vgAAAAAAAAM+CLrcvuFJECetFwcMVY0ftHkkR5HnGXrgNbzDOA1CLQwW
-  TRA2Lum22yxY8z1oNZ5w2CtYALBB4fVkwKqLVwIAOw==
+R0lGODlhEAAQAMIFAAAAAIsAAJkiIr6+vrDE3v///////////yH5BAEKAAcA
+LAAAAAAQABAAAAMmeLrc/jDKSWsFGExAOtEQVxQe6IjeF6ad2XAdqa7lIGXA
+gFkZDyQAOw==
 }
 
 image create photo tb_msearch -data {
-R0lGODlhEAAQAKUtAAAAAAUFBAcHBwgICAkJCRsZFR4dHCEfGywpIi0tLDEv
-KzU1NElDOEpEOUZGRk9JPVZWVldXV2tjUmxkU25mVYtubnt7e4d8aIeHh5aN
-e46OjpmZmaaZgJ2dnaqdg5+fn6+vr7S0tL29vb6+vrDE3sHBwcrKytXV1djY
-2ODg4Ozs7Pn5+fz8/P//////////////////////////////////////////
-/////////////////////////////////yH5BAEKAD8ALAAAAAAQABAAAAZ0
-wJ8wIZEkhMjkj5NItVonhTLJAD2fGslUiEBdW6HH9tf4fC2UsccQYq06h7Fw
-AiAIAhmAHpC8FBwbJSIVACSGJHxCCyZfAyRPh4kWXy2FLYeIQpNfhZiZP5tX
-nY+GiREREKkQGKOIIypyewAjenJKe7ZJekEAOw==
+R0lGODlhEAARAKUpAAAAAAgICDg1Ljo3MUE9NkJAPENBO0ZBN0pFO0pHQkxJ
+Qk1KQ09KQU9OS11YUFtZVl1bV15dWmNiYG1sa3NycYGAfoeHh46Ojp6enqSk
+pKmpqLKysbq6urDE3srKytXV1ePj4+fn5+rq6uzs7O7u7vv7+/z8/P39/f7+
+/v//////////////////////////////////////////////////////////
+/////////////////////////////////yH5BAEKAD8ALAAAAAAQABEAAAZu
+wJ/wd5A0hsjkD3ICDZTKhIiDgCYNngvBOlyMUKaPgvujpM4pCvmBLj3Igk/K
+NAHYAdDMZg7o+Dt4SBEkZwEdZ3+BPwUhaH0pf4BDFWgpfZGSQhqVl4d+ihgl
+oiUWnZlCDA6qq3d4dmRId7BDdkEAOw==
 }
 
 image create photo tb_pgn -data {
@@ -582,9 +582,15 @@ image create photo tb_crosst -data {
   0Jk0GW1edUmtFJS5JAAAOw==
 }
 
-image create photo tb_help -data {
-R0lGODlhGAAYAIABACA9bf///yH5BAEKAAEALAAAAAAYABgAAAIujI+py+0G
-onxJ2kmvBhlD64CVR41RuYjooa5Bu8KoXNI16eb6rtvdufPxhkRHAQA7
+image create photo tb_comment -data {
+R0lGODlhFAAUAKUMAAAAAAMDAwQEBAUFBQsLCw4ODhAQEBERERYWFhkZGSAg
+ICEhIQAngSkpKSoqKjIyMlFRUVtbW2JiYmNjY3R0dIKCgomJiYqKioyMjJKS
+kpSUlJeXl5mZmZqamqWlpaurq66urrGxsdPT09XV1djY2NnZ2d7e3t/f3+Hh
+4eLi4uXl5erq6uzs7Pz8/P39/f7+/v///wAngQAngQAngQAngQAngQAngQAn
+gQAngQAngQAngQAngQAngQAngQAngQAngSH5BAEKAD8ALAAAAAAUABQAAAZ6
+wJJwSCwWGcikcslsOp9QJmxKrVqpyKvWmt16u15tNwOCvTQWWAoRgY0OkmkW
+w5lOLC6YqSCAiQgDcgwwCyswJAAoVCcKUyaNMFkBDTAhAAaKLxYbMC0VHYIw
+EA8wLA4JKjAXHlMUH1iDYWKxsly0tbC4trpVYLxRUEEAOw==
 }
 
 image create photo b_bargraph -data {
@@ -640,12 +646,12 @@ frame .tb.space4 -width 12
 button .tb.glist -image tb_glist -command ::windows::gamelist::Open
 button .tb.pgn -image tb_pgn -command ::pgn::OpenClose
 button .tb.tmt -image tb_tmt -command ::tourney::toggle
+button .tb.comment -image tb_comment -command makeCommentWin
 button .tb.maint -image tb_maint -command ::maint::OpenClose
 button .tb.eco -image tb_eco -command ::windows::eco::OpenClose
 button .tb.tree -image tb_tree -command ::tree::make
 button .tb.crosst -image tb_crosst -command ::crosstab::OpenClose
 button .tb.engine -image tb_engine -command {startAnalysisWin F2}
-# button .tb.help -image tb_help -command {helpWindow Index} ; # seems unused
 
 # Set toolbar help status messages:
 foreach {b m} {
@@ -653,10 +659,9 @@ foreach {b m} {
   save GameReplace close FileClose bkm FileBookmarks
   gfirst GameFirst gprev GamePrev gnext GameNext glast GameLast
   newgame GameNew copy EditCopy paste EditPaste
-  rfilter SearchReset bsearch SearchCurrent
-  hsearch SearchHeader msearch SearchMaterial
-  glist WindowsGList pgn WindowsPGN tmt WindowsTmt
-  maint WindowsMaint eco WindowsECO tree WindowsTree crosst WindowsCross
+  hsearch SearchHeader bsearch SearchCurrent msearch SearchMaterial rfilter SearchReset 
+  glist WindowsGList pgn WindowsPGN comment WindowsComment
+  maint WindowsMaint eco WindowsECO tree WindowsTree crosst WindowsCross tmt WindowsTmt 
   engine ToolsAnalysis
 } {
   set helpMessage(.tb.$b) $m
@@ -666,8 +671,7 @@ set helpMessage(.button.addVar) EditAdd
 set helpMessage(.button.trial) EditTrial
 
 foreach i {new open save close finder bkm newgame copy paste gprev gnext gfirst glast \
-      rfilter bsearch hsearch msearch glist pgn tmt maint \
-      eco tree crosst engine} {
+      rfilter hsearch bsearch msearch glist pgn comment maint eco tree crosst tmt engine} {
   .tb.$i configure -relief flat -border 1 -highlightthickness 0 -anchor n -takefocus 0
   ::utils::tooltip::Set .tb.$i [tr $::helpMessage(.tb.$i)]
 }
@@ -727,14 +731,14 @@ proc configToolbar {} {
   }
 
   pack [frame $w.f4] -side top -fill x
-  foreach i {rfilter bsearch hsearch msearch} {
+  foreach i {hsearch bsearch msearch rfilter} {
     eval checkbutton $w.f4.$i -image tb_$i -variable toolbar_temp($i) $button_options
     eval pack $w.f4.$i $pack_options
     bindToolbarRadio f4 $i
   }
 
   pack [frame $w.f5] -side top -fill x
-  foreach i {glist pgn tmt maint eco tree crosst engine} {
+  foreach i {glist pgn comment maint eco tree crosst tmt engine} {
     eval checkbutton $w.f5.$i -image tb_$i -variable toolbar_temp($i) $button_options
     eval pack $w.f5.$i $pack_options
     bindToolbarRadio f5 $i
@@ -797,7 +801,7 @@ proc redrawToolbar {} {
   }
   if {$seen} { pack .tb.space3 -side left }
   set seen 0
-  foreach i {rfilter bsearch hsearch msearch} {
+  foreach i {hsearch bsearch msearch rfilter } {
     if {$toolbar($i)} {
       set seen 1
       pack .tb.$i -side left -pady 1 -padx 0 -ipadx 0 -pady 0 -ipady 0
@@ -805,7 +809,7 @@ proc redrawToolbar {} {
   }
   if {$seen} { pack .tb.space4 -side left }
   set seen 0
-  foreach i {glist pgn tmt maint eco tree crosst engine} {
+  foreach i {glist pgn comment maint eco tree crosst tmt engine} {
     if {$toolbar($i)} {
       set seen 1
       pack .tb.$i -side left -pady 1 -padx 0 -ipadx 0 -pady 0 -ipady 0
