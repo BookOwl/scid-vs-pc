@@ -593,6 +593,11 @@ w5lOLC6YqSCAiQgDcgwwCyswJAAoVCcKUyaNMFkBDTAhAAaKLxYbMC0VHYIw
 EA8wLA4JKjAXHlMUH1iDYWKxsly0tbC4trpVYLxRUEEAOw==
 }
 
+image create photo tb_help -data {
+R0lGODlhGAAYAIABACA9bf///yH5BAEKAAEALAAAAAAYABgAAAIujI+py+0G
+onxJ2kmvBhlD64CVR41RuYjooa5Bu8KoXNI16eb6rtvdufPxhkRHAQA7
+}
+
 image create photo b_bargraph -data {
   R0lGODdhGAAYAMIAANnZ2QAngf///wAAAIsAAAAAAAAAAAAAACwAAAAAGAAYAAADYwi63P4w
   ygmDvThnpnvnXmhxQmmeqBmQaXuuS+DOAqzIwkCjNoDrlhfuxQIOa8dS70ewEJ7NAJSgLCKF
