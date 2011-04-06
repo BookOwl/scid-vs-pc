@@ -99,7 +99,7 @@ menuText E EditAdd "Add Variation" 0 {Add a variation at this move in the game}
 menuText E EditDelete "Delete Variation" 0 {Delete a variation for this move}
 menuText E EditFirst "Make First Variation" 5 \
   {Promote a variation to be first in the list}
-menuText E EditMain "Promote Variation to Main" 21 \
+menuText E EditMain "Promote Variation" 21 \
   {Promote a variation to be the main line}
 menuText E EditTrial "Try Variation" 0 \
   {Start/stop trial mode, for testing an idea on the board}
@@ -107,9 +107,9 @@ menuText E EditStrip "Strip" 2 {Strip comments or variations from this game}
 menuText E EditStripComments "Comments" 0 \
   {Strip all comments and annotations from this game}
 menuText E EditStripVars "Variations" 0 {Strip all variations from this game}
-menuText E EditStripBegin "Moves from beginning" 1 \
+menuText E EditStripBegin "Moves from Start" 1 \
   {Strip moves from the beginning of the game}
-menuText E EditStripEnd "Moves to the end" 0 \
+menuText E EditStripEnd "Moves to End" 0 \
   {Strip moves to the end of the game}
 menuText E EditReset "Empty Clipbase" 0 \
   {Reset the clipbase to be completely empty}
