@@ -159,8 +159,6 @@ menuText D WindowsPGN "PGN-Fenster" 0 {PGN-Fenster (Partienotation) öffnen/schli
 menuText D WindowsCross "Kreuztabelle" 0 {Kreuztabelle für diese Partie anzeigen}
 menuText D WindowsPList "Spielersuche" 0 {Spielerfinder öffnen/schließen}
 menuText D WindowsTmt "Turniersuche" 0 {Turnierfinder öffnen/schließen}
-# todo
-menuText E WindowsComment "Comment Editor" 9 {Open/close the comment editor}
 menuText D WindowsSwitcher "Datenbank-Umschalter" 0 \
   {Datenbank-Umschalter öffnen/schließen}
 menuText D WindowsMaint "Wartungsfenster" 0 {(Datenbank-)Wartungsfenster öffnen/schließen}

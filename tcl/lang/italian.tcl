@@ -135,8 +135,6 @@ menuText I WindowsPGN "Finestra PGN" 9 {Apre/chiude la finestra PGN (notazione d
 menuText I WindowsCross "Tabella" 0 {Mostra la tabella di torneo per questa partita}
 menuText I WindowsPList "Trova giocatore" 2 {Apre/chiude la finestra per la ricerca di un giocatore}
 menuText I WindowsTmt "Trova torneo" 2 {Apre/chiude la finestra per la ricerca di un torneo}
-# todo
-menuText E WindowsComment "Comment Editor" 9 {Open/close the comment editor}
 menuText I WindowsSwitcher "Selezione di Database" 11 {Apre/chiude la finestra per la selezione di un Database}
 menuText I WindowsMaint "Finestra di gestione" 12 {Apre/chiude la finestra per la gestione di un Database}
 menuText I WindowsECO "Navigazione ECO" 12 {Apre/chiude la finestra di navigazione ECO}

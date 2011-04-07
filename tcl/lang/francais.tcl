@@ -139,8 +139,6 @@ menuText F WindowsPGN "Fenêtre PGN" 8 {Ouvrir/fermer la fenêtre PGN}
 menuText F WindowsCross "Classement du tournoi" 0 {Montrer le classement du tournoi}
 menuText F WindowsPList "Chercher un joueur" 2 {Ouvrir/fermer la recherche de joueur}
 menuText F WindowsTmt "Recherche de tournois" 0 {Ouvrir/fermer la recherche de tournois}
-# todo
-menuText E WindowsComment "Comment Editor" 9 {Open/close the comment editor}
 menuText F WindowsSwitcher "Changer de base" 0 \
   {Ouvrir/Fermer l'outil de changement de base}
 menuText F WindowsMaint "Fenêtre de Maintenance" 0 \

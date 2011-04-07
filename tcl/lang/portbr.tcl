@@ -134,8 +134,6 @@ menuText B WindowsPGN "Notacao PGN" 0 {Abre/fecha a janela com a notacao PGN do 
 menuText B WindowsCross "Tabela de Cruzamento" 0 {Mostra a tabela de cruzamentos do torneio para o jogo corrente}
 menuText B WindowsPList "Player Finder" 2 {Open/close the player finder} ;# ***
 menuText B WindowsTmt "Buscador de Torneio" 2 {Abre/Fecha o buscador de torneio}
-# todo
-menuText E WindowsComment "Comment Editor" 9 {Open/close the comment editor}
 menuText B WindowsSwitcher "Intercambio de bases de dados" 0 \
   {Abre/fecha a janela de intercambio de bases de dados}
 menuText B WindowsMaint "Manutencao" 0 \

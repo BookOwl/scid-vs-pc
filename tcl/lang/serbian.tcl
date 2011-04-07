@@ -132,8 +132,6 @@ menuText Y WindowsPGN "PGN prozor" 0 {Otvori/zatvori PGN prozor (sa podacima o p
 menuText Y WindowsCross "Tabela turnira" 0 {Poka¾i tabelu turnira za ovu partiju}
 menuText Y WindowsPList "Player Finder" 2 {Open/close the player finder} ;# ***
 menuText Y WindowsTmt "Turnir tragaè" 2 {Otvori/zatvori turnir tragaè}
-# todo
-menuText E WindowsComment "Comment Editor" 9 {Open/close the comment editor}
 menuText Y WindowsSwitcher "Biraè baza" 0 \
   {Otvori/zatvori biraè baza}
 menuText Y WindowsMaint "Prozor odr¾avanja" 0 \

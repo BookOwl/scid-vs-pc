@@ -132,8 +132,6 @@ menuText H WindowsPGN "PGN" 0 {Kinyitja/becsukja a PGN-(játszmajegyzés)-ablakot.
 menuText H WindowsCross "Versenytáblázat" 0 {Megmutatja az ehhez a játszmához tartozó verseny táblázatát.}
 menuText H WindowsPList "Játékoskeresõ" 0 {Kinyitja/becsukja a játékoskeresõt.}
 menuText H WindowsTmt "Versenykeresõ" 0 {Kinyitja/becsukja a versenykeresõt.}
-# todo
-menuText E WindowsComment "Comment Editor" 9 {Open/close the comment editor}
 menuText H WindowsSwitcher "Adatbázisváltó" 0 \
   {Kinyitja/becsukja az adatbázisváltó ablakot.}
 menuText H WindowsMaint "Adatbázisgondozó" 9 \

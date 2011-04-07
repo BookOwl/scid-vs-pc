@@ -149,8 +149,6 @@ menuText N WindowsPGN "PGN-venster" 0 {Open/sluit het PGN-notatie venster}
 menuText N WindowsCross "Kruistabel" 0 {Toon toernooi-kruistabel voor huidige partij}
 menuText N WindowsPList "Spelervinder" 2 {Open/sluit de spelervinder} ;
 menuText N WindowsTmt "Toernooi Zoeker" 2 {Open/sluit het toernooi zoekvenster}
-# todo
-menuText E WindowsComment "Comment Editor" 9 {Open/close the comment editor}
 menuText N WindowsSwitcher  "Database wisselen" 0 \
   {Open/sluit het database-wisselen venster}
 menuText N WindowsMaint "Onderhoudsvenster" 5 \

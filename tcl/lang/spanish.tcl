@@ -145,8 +145,6 @@ menuText S WindowsPGN "Ventana PGN" 8 {Abre/cierra la ventana de PGN (notación d
 menuText S WindowsCross "Tabla cruzada" 0 {Muestra la tabla cruzada para esta partida}
 menuText S WindowsPList "Buscador de jugadores" 2 {Abre/cierra el buscador de jugadores}
 menuText S WindowsTmt "Visor de Torneos" 9 {Abre/cierra el visor de torneos}
-# todo
-menuText E WindowsComment "Comment Editor" 9 {Open/close the comment editor}
 menuText S WindowsSwitcher "Intercambiador de bases de datos" 0 \
   {Abre/cierra la ventana del intercambiador de bases de datos}
 menuText S WindowsMaint "Ventana de mantenimiento" 11 \

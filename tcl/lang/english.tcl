@@ -164,14 +164,12 @@ menuText E SearchUsing "Using Search File..." 0 {Search using a SearchOptions fi
 # Windows menu:
 menuText E Windows "Windows" 0
 menuText E WindowsGameinfo "Game Info" 0 {Show/hide the game info panel}
-menuText E WindowsComment "Comment Editor" 0 {Open/close the comment editor}
+menuText E WindowsComment "Comment Editor" 9 {Open/close the comment editor}
 menuText E WindowsGList "Game List" 0 {Open/close the game list window}
 menuText E WindowsPGN "PGN Window" 0 {Open/close the PGN (game notation) window}
 menuText E WindowsCross "Crosstable" 0 {Open/close the Tournament Crosstable}
 menuText E WindowsPList "Player Finder" 2 {Open/close the player finder}
 menuText E WindowsTmt "Tournament Finder" 2 {Open/close the tournament finder}
-# todo
-menuText E WindowsComment "Comment Editor" 9 {Open/close the comment editor}
 menuText E WindowsSwitcher "Databases" 0 \
   {Open/close the Database Switcher window}
 menuText E WindowsMaint "Maintenance Window" 0 \
@@ -182,7 +180,7 @@ menuText E WindowsStats "Statistics Window" 0 \
 menuText E WindowsTree "Tree Window" 0 {Open/close the Tree window}
 menuText E WindowsTB "Endgame Tablebase Window" 1 {Open/close the Tablebase window}
 menuText E WindowsBook "Book Window" 0 {Open/close the Book window}
-menuText E WindowsCorrChess "Correspondence Window" 0 {Open/close the Correspondence window}
+menuText E WindowsCorrChess "Correspondence Window" 1 {Open/close the Correspondence window}
 
 # Tools menu:
 menuText E Tools "Tools" 0
