@@ -32,7 +32,7 @@ proc recordWinSize {win} {
   # This procedure gets called way too often S.A.
   # It shouldnt really be bound to <Configure> , but only called on exit.
 
-  global winWidth winHeight winX winY
+  global winWidth winHeight winX winY macOS
 
   if {![winfo exists $win]} { return }
   set geom [wm geometry $win]
@@ -43,8 +43,14 @@ proc recordWinSize {win} {
   if {$n == 4} {
     if {$win == "."} {
       # trick to handle main window
-      set mainx 0
-      set mainy 0
+      if {$macOS} {
+        # If it goes to 0 0, the whole top bar is under the MacOS menubar and you can't move it
+        set mainx 96
+        set mainy 22
+      } else {
+        set mainx 0
+        set mainy 0
+      }
     }
     set winWidth($win) $width
     set winHeight($win) $height
@@ -54,7 +60,7 @@ proc recordWinSize {win} {
 }
 
 proc setWinLocation {win} {
-  global winX winY
+  global winX winY macOS
 
   if {[info exists winX($win)]  &&  [info exists winY($win)] } {
 
@@ -63,8 +69,14 @@ proc setWinLocation {win} {
 
     if {$win == "."} {
       # trick to handle main window
-      set mainx 0
-      set mainy 0
+      if {$macOS} {
+        # If it goes to 0 0, the whole top bar is under the MacOS menubar and you can't move it
+        set mainx 96
+        set mainy 22
+      } else {
+        set mainx 0
+        set mainy 0
+      }
     }
 
     set x [expr $mainx + $winX($win)]
