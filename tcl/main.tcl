@@ -385,6 +385,12 @@ proc contextmenu {x y} {
 bind . <ButtonPress-3> {contextmenu %X %Y}
 bind . <F9> {contextmenu %X %Y}
 
+if { $macOS } {
+  # Macs with one button need (shooting)
+  # todo: find a way to seemlessly swap button-2 with button-3 as macs have them reversed
+  bind . <Control-Button-1> {event generate . <Button-3> -x %x -y %y -button 3}
+}
+
 # updateVarMenus:
 #   Updates the menus for moving into or deleting an existing variation.
 #   Calls sc_var list and sc_var count to get the list of variations.

@@ -144,6 +144,10 @@ namespace eval pgn {
     # Right button draws context menu
     bind $w <ButtonPress-3> "::pgn::contextMenu .pgnWin.text 5 %x %y %X %Y"
 
+    if {$::macOS} {
+      bind .pgnWin <Control-Button-1> {event generate .pgnWin <Button-3> -x %x -y %y -button 3}
+    }
+
     bind $w <F1> { helpWindow PGN }
     bind $w <Escape> {
       if {[winfo exists .pgnWin.text.ctxtMenu]} {
