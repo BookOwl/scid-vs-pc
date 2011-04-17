@@ -189,8 +189,9 @@ proc importVar {} {
     if {$create_var} {
       sc_var exit
     } else {
-      ### this is wrong! todo
-      # sc_move back [llength $::tmp]
+      # don't cound the movenumbers (which have a trailing ".") or "..."
+      # (eg) Kb4 61. g8=Q Rd2 62. Qe6 Rd1 63. Qe3 Rd7 64. Qe1+ Kc5 65. b4+ Kc6
+      sc_move back [expr [llength $::tmp] - [regexp -all {[0-9.]+\.} $::tmp]]
     }
 
   if {$addAtStart} {
