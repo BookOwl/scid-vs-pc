@@ -755,6 +755,7 @@ menuText D CrosstabSort "Sortieren" 0
 menuText D CrosstabSortName "Name" 0
 menuText D CrosstabSortRating "Elo" 0
 menuText D CrosstabSortScore "Punkte" 0
+menuText D CrosstabSortCountry "Land" 0
 menuText D CrosstabColor "Farben" 0
 menuText D CrosstabColorPlain "Text" 0
 menuText D CrosstabColorHyper "Hypertext" 0

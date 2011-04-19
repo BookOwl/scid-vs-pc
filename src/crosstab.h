@@ -39,7 +39,7 @@ struct clashT
 
 enum crosstableSortT
 {
-    CROSSTABLE_SortName, CROSSTABLE_SortElo, CROSSTABLE_SortScore
+    CROSSTABLE_SortName, CROSSTABLE_SortElo, CROSSTABLE_SortScore, CROSSTABLE_SortCountry
 };
 
 enum crosstableOutputT
@@ -174,6 +174,7 @@ class Crosstable
     void   SortByName()  { SortOption = CROSSTABLE_SortName; }
     void   SortByElo()   { SortOption = CROSSTABLE_SortElo; }
     void   SortByScore() { SortOption = CROSSTABLE_SortScore; }
+    void   SortByCountry() { SortOption = CROSSTABLE_SortCountry; }
 
     void   SetAges (bool b) {ShowAges = b; }
     void   SetTitles (bool b) { ShowTitles = b; }

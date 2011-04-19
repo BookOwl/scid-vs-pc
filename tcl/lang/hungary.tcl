@@ -820,6 +820,7 @@ menuText H CrosstabSort "Rendezés" 0
 menuText H CrosstabSortName "Név" 0
 menuText H CrosstabSortRating "Értékszám" 0
 menuText H CrosstabSortScore "Pontszám" 0
+menuText H CrosstabSortCountry "Ország" 0
 menuText H CrosstabColor "Szín" 2
 menuText H CrosstabColorPlain "Közönséges szöveg" 0
 menuText H CrosstabColorHyper "Hypertext" 0

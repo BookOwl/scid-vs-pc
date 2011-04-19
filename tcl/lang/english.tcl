@@ -765,6 +765,7 @@ menuText E CrosstabSort "Order by" 0
 menuText E CrosstabSortName "Name" 0
 menuText E CrosstabSortRating "Rating" 0
 menuText E CrosstabSortScore "Score" 0
+menuText E CrosstabSortCountry "Country" 0
 menuText E CrosstabColor "Text/Html" 0
 menuText E CrosstabColorPlain "Plain Text" 0
 menuText E CrosstabColorHyper "Hypertext" 0

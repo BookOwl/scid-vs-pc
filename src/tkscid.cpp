@@ -5955,11 +5955,11 @@ sc_game_crosstable (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv
     int option = -1;
 
     const char * usageMsg =
-        "Usage: sc_game crosstable plain|html|hypertext|filter|count [name|rating|score] [allplay|swiss] [(+|-)(colors|countries|ratings|titles|groups|breaks|numcolumns)]";
+        "Usage: sc_game crosstable plain|html|hypertext|filter|count [name|rating|score|country] [allplay|swiss] [(+|-)(colors|countries|ratings|titles|groups|breaks|numcolumns)]";
 
     static const char * extraOptions [] = {
         "allplay", "knockout", "swiss", "auto",
-        "name", "rating", "score",
+        "name", "rating", "score", "country",
         "-ages", "+ages",               // Show player ages
         "-breaks", "+breaks",           // Show tiebreak scores
         "-colors", "+colors",           // Show game colors in Swiss table
@@ -5974,7 +5974,7 @@ sc_game_crosstable (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv
     };
     enum {
         EOPT_ALLPLAY, EOPT_KNOCKOUT, EOPT_SWISS, EOPT_AUTO,
-        EOPT_SORT_NAME, EOPT_SORT_RATING, EOPT_SORT_SCORE,
+        EOPT_SORT_NAME, EOPT_SORT_RATING, EOPT_SORT_SCORE, EOPT_SORT_COUNTRY,
         EOPT_AGES_OFF, EOPT_AGES_ON,
         EOPT_BREAKS_OFF, EOPT_BREAKS_ON,
         EOPT_COLORS_OFF, EOPT_COLORS_ON,
@@ -6014,6 +6014,7 @@ sc_game_crosstable (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv
             case EOPT_SORT_NAME:      sort = EOPT_SORT_NAME;   break;
             case EOPT_SORT_RATING:    sort = EOPT_SORT_RATING; break;
             case EOPT_SORT_SCORE:     sort = EOPT_SORT_SCORE;  break;
+            case EOPT_SORT_COUNTRY:   sort = EOPT_SORT_COUNTRY;  break;
             case EOPT_AGES_OFF:       showAges = false;        break;
             case EOPT_AGES_ON:        showAges = true;         break;
             case EOPT_BREAKS_OFF:     showBreaks = false;      break;
@@ -6096,6 +6097,7 @@ sc_game_crosstable (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv
     }
     if (sort == EOPT_SORT_NAME) { ctable->SortByName(); }
     if (sort == EOPT_SORT_RATING) { ctable->SortByElo(); }
+    if (sort == EOPT_SORT_COUNTRY) { ctable->SortByCountry(); }
     ctable->SetSwissColors (showColors);
     ctable->SetAges (showAges);
     ctable->SetCountries (showCountries);

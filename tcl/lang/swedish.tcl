@@ -858,6 +858,7 @@ menuText W CrosstabSort "Sortera" 0
 menuText W CrosstabSortName "Namn" 0
 menuText W CrosstabSortRating "Rating" 0
 menuText W CrosstabSortScore "Resultat" 0
+menuText W CrosstabSortCountry "Land" 0
 menuText W CrosstabColor "Färg" 0
 menuText W CrosstabColorPlain "Ren text" 0
 menuText W CrosstabColorHyper "Hypertext" 0

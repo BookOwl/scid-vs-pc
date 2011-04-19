@@ -860,6 +860,7 @@ menuText P CrosstabSort "Sortowanie" 0
 menuText P CrosstabSortName "Nazwisko" 0
 menuText P CrosstabSortRating "Ranking" 0
 menuText P CrosstabSortScore "Punkty" 0
+menuText P CrosstabSortCountry "Kraj" 0
 menuText P CrosstabColor "Kolor" 0
 menuText P CrosstabColorPlain "Zwyk³y tekst" 0
 menuText P CrosstabColorHyper "Hipertekst" 0

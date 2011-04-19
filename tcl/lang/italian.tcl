@@ -784,6 +784,7 @@ menuText I CrosstabSort "Ordina" 0
 menuText I CrosstabSortName "Nome" 0
 menuText I CrosstabSortRating "Punteggio" 0
 menuText I CrosstabSortScore "Punti" 0
+menuText I CrosstabSortCountry "Paese" 0
 menuText I CrosstabColor "Colore" 0
 menuText I CrosstabColorPlain "Testo normale" 0
 menuText I CrosstabColorHyper "Ipertesto" 0

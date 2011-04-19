@@ -118,6 +118,10 @@ comparePlayerData (playerDataT * p1, playerDataT * p2, crosstableSortT option)
     case CROSSTABLE_SortElo:
         result = p2->elo - p1->elo;
         break;
+
+    case CROSSTABLE_SortCountry:
+        result = strCompare(p1->country, p2->country);
+        break;
     }
     return result;
 }

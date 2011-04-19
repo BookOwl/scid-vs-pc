@@ -854,6 +854,7 @@ menuText Y CrosstabSort "Sortiraj" 0
 menuText Y CrosstabSortName "Ime" 0
 menuText Y CrosstabSortRating "Rejting" 0
 menuText Y CrosstabSortScore "Rezultat" 0
+menuText Y CrosstabSortCountry "Zemlja" 0
 menuText Y CrosstabColor "Boja" 0
 menuText Y CrosstabColorPlain "Obièan tekst" 0
 menuText Y CrosstabColorHyper "Hipertekst" 0

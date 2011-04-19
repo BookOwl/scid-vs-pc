@@ -859,6 +859,7 @@ menuText R CrosstabSort "Сортировка" 0
 menuText R CrosstabSortName "Имя" 0
 menuText R CrosstabSortRating "Рейтинг" 0
 menuText R CrosstabSortScore "Счет" 0
+menuText R CrosstabSortCountry "Страна" 0
 menuText R CrosstabColor "Цвет" 0
 menuText R CrosstabColorPlain "Обычный текст" 0
 menuText R CrosstabColorHyper "Гипертекст" 0

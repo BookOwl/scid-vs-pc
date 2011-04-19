@@ -818,6 +818,7 @@ menuText B CrosstabSort "Ordenar" 0
 menuText B CrosstabSortName "Nome" 0
 menuText B CrosstabSortRating "Rating" 0
 menuText B CrosstabSortScore "Pontuacao" 0
+menuText B CrosstabSortCountry "Pais" 0
 menuText B CrosstabColor "Cor" 0
 menuText B CrosstabColorPlain "Texto puro" 0
 menuText B CrosstabColorHyper "Hipertexto" 0

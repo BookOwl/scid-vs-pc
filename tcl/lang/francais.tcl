@@ -733,6 +733,7 @@ menuText F CrosstabSort "Trier" 0
 menuText F CrosstabSortName "Nom" 0
 menuText F CrosstabSortRating "Elo" 0
 menuText F CrosstabSortScore "Score" 0
+menuText F CrosstabSortCountry "Pays" 0
 menuText F CrosstabColor "Couleur" 0
 menuText F CrosstabColorPlain "Texte normal" 0
 menuText F CrosstabColorHyper "Hypertexte" 0

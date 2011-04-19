@@ -817,6 +817,7 @@ menuText C CrosstabSort "Øadit" 2
 menuText C CrosstabSortName "Jméno" 0
 menuText C CrosstabSortRating "Rating" 0
 menuText C CrosstabSortScore "Skóre" 0
+menuText C CrosstabSortCountry "Zemì" 0
 menuText C CrosstabColor "Barvy" 0
 menuText C CrosstabColorPlain "Prostý text" 0
 menuText C CrosstabColorHyper "Hypertext" 0

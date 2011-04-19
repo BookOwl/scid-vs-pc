@@ -40,7 +40,7 @@ proc ::crosstab::ConfigMenus {{lang ""}} {
     $m.opt entryconfig 9 -state disabled -variable {}
   }
 
-  foreach idx {0 1 2} tag {Name Rating Score} {
+  foreach idx {0 1 2 3} tag {Name Rating Score Country} {
     configMenuText $m.sort $idx CrosstabSort$tag $lang
   }
   foreach idx {0 1} tag {Plain Hyper} {
@@ -227,6 +227,8 @@ proc ::crosstab::Open {} {
     -variable crosstab(sort) -value rating -command ::crosstab::Refresh
   $w.menu.sort add radiobutton -label CrosstabSortScore \
     -variable crosstab(sort) -value score -command ::crosstab::Refresh
+  $w.menu.sort add radiobutton -label CrosstabSortCountry \
+    -variable crosstab(sort) -value country -command ::crosstab::Refresh
 
   $w.menu.color add radiobutton -label CrosstabColorPlain \
     -variable crosstab(text) -value plain -command ::crosstab::Refresh

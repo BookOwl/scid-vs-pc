@@ -856,6 +856,7 @@ menuText O CrosstabSort "Sorter" 0
 menuText O CrosstabSortName "Navn" 0
 menuText O CrosstabSortRating "Rating" 0
 menuText O CrosstabSortScore "Poeng" 0
+menuText O CrosstabSortCountry "Land" 0
 menuText O CrosstabColor "Farge" 0
 menuText O CrosstabColorPlain "Ren tekst" 0
 menuText O CrosstabColorHyper "Hypertekst" 0

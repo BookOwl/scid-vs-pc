@@ -770,6 +770,7 @@ menuText S CrosstabSort "Ordenar" 0
 menuText S CrosstabSortName "Por nombre" 4
 menuText S CrosstabSortRating "Por Elo" 4
 menuText S CrosstabSortScore "Por puntuación" 4
+menuText S CrosstabSortCountry "País" 4
 menuText S CrosstabColor "Color" 2
 menuText S CrosstabColorPlain "Texto simple" 0
 menuText S CrosstabColorHyper "Hipertexto" 0

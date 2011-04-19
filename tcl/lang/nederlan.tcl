@@ -830,6 +830,7 @@ menuText N CrosstabSort "Sorteren" 0
 menuText N CrosstabSortName "Naam" 0
 menuText N CrosstabSortRating "Elo" 0
 menuText N CrosstabSortScore "Score" 0
+menuText N CrosstabSortCountry "Land" 0
 menuText N CrosstabColor "Kleuren" 0
 menuText N CrosstabColorPlain "Tekst" 0
 menuText N CrosstabColorHyper "Hypertekst" 1
