@@ -121,13 +121,16 @@ proc ::tb::isopen {} {
   return [winfo exists .tbWin]
 }
 
-# ::tb::Open
+# ::tb::OpenClose
 #   Open the tablebase window.
 #
-proc ::tb::Open {} {
+proc ::tb::OpenClose {} {
   global tbInfo
   set w .tbWin
-  if {[winfo exists $w]} { return }
+  if {[winfo exists $w]} {
+    destroy $w
+    return
+  }
   toplevel $w
   setWinLocation $w
   wm title $w "Scid: [tr WindowsTB]"
@@ -198,6 +201,7 @@ proc ::tb::Open {} {
   bind $w <Destroy> { set ::tb::isOpen 0; set tbTraining 0 }
   bind $w <F1> { helpWindow TB }
   bind $w <Configure> "recordWinSize $w"
+  bind $w <Control-equal> ::tb::OpenClose
   wm minsize $w 15 20
   set ::tbTraining 0
   ::tb::section

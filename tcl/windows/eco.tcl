@@ -30,9 +30,11 @@ proc ::windows::eco::Refresh {{code "x"}} {
     toplevel $w
     wm minsize $w 200 100
     setWinLocation $w
+    setWinSize $w
     bind $w <Escape> "destroy $w"
     bind $w <F1> {helpWindow ECO}
     bind $w <Destroy> {set ::windows::eco::isOpen 0}
+    bind $w <Control-y> ::windows::eco::OpenClose
     text $w.title -relief flat -height 1 -width 1 -wrap word -font font_Bold
     $w.title tag configure center -justify center
     $w.title configure -cursor top_left_arrow
@@ -96,6 +98,7 @@ proc ::windows::eco::Refresh {{code "x"}} {
       ::utils::graph::configure eco -height [expr {[winfo height .ecograph.pane.graph.c] - 50} ]
       ::utils::graph::configure eco -width [expr {[winfo width .ecograph.pane.graph.c] - 60} ]
       ::utils::graph::redraw eco
+      recordWinSize .ecograph
     }
     wm title $w "Scid: [tr WindowsECO]"
     ::utils::graph::create eco -width 1 -height 1 -xtop 50 -ytop 20 \

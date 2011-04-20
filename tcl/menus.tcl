@@ -633,15 +633,15 @@ $m add checkbutton -label WindowsTree \
 bind . <Control-t> { .menu.windows invoke [tr WindowsTree] }
 set helpMessage($m,[incr menuindex]) WindowsTree
 
-$m add checkbutton -label WindowsTB -variable ::tb::isOpen -command ::tb::Open \
+$m add checkbutton -label WindowsTB -variable ::tb::isOpen -command ::tb::OpenClose \
     -accelerator "Ctrl+="
-bind . <Control-equal> ::tb::Open
+bind . <Control-equal> ::tb::OpenClose
 set helpMessage($m,[incr menuindex]) WindowsTB
 
-$m add checkbutton -label WindowsBook -variable ::book::isOpen -command ::book::open \
+$m add checkbutton -label WindowsBook -variable ::book::isOpen -command ::book::OpenClose \
     -accelerator "F11"
 set helpMessage($m,[incr menuindex]) WindowsBook
-bind . <F11>  ::book::open
+bind . <F11>  ::book::OpenClose
 
 $m add checkbutton -label WindowsCorrChess -variable ::CorrespondenceChess::isOpen \
     -command ::CorrespondenceChess::CCWindow -accelerator "F12"
@@ -1714,7 +1714,6 @@ proc standardShortcuts {w} {
   bind $w <F2> {::startAnalysisWin F2}
   bind $w <F3> {::startAnalysisWin F3}
   bind $w <F4> {::startAnalysisWin F4}
-  bind $w <F11>  ::book::open
   # bind $w <Control-c> {catch {sc_clipbase copy}; ::updateBoard}
   # bind $w <Control-v> {catch {sc_clipbase paste}; ::updateBoard -pgn}
   bind $w <Control-S> ::setupBoard

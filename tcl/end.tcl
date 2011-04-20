@@ -1744,7 +1744,7 @@ foreach {type action} {
   stats		::windows::stats::Open
   crosstable	::crosstab::Open
   finder	::file::finder::Open
-  book		::book::open
+  book		::book::OpenClose
 } {
   if {$startup($type)} { $action }
 }
