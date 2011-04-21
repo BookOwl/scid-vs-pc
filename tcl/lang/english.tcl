@@ -890,7 +890,7 @@ translate E Events {Events}
 translate E Sites {Sites}
 translate E Rounds {Rounds}
 translate E DatabaseOps {Database operations}
-translate E ReclassifyGames {ECO-classify games}
+translate E ReclassifyGames {ECO classify games}
 translate E CompactDatabase {Compact database}
 translate E SortDatabase {Sort database}
 translate E AddEloRatings {Add Elo ratings}
@@ -1075,7 +1075,7 @@ translate E ImportHelp2 {Any errors importing the game will be displayed here.}
 translate E OverwriteExistingMoves {Overwrite existing moves ?}
 
 # ECO Browser:
-translate E ECOAllSections {all ECO sections}
+translate E ECOAllSections {All ECO sections}
 translate E ECOSection {ECO section}
 translate E ECOSummary {Summary for}
 translate E ECOFrequency {Frequency of subcodes for}
@@ -1221,7 +1221,7 @@ translate E CheckSelectFilterGames {Filter games}
 
 # Classify window:
 translate E Classify {Classify}
-translate E ClassifyWhich {ECO-Classify which games}
+translate E ClassifyWhich {ECO Classify}
 translate E ClassifyAll {All games (overwrite old ECO codes)}
 translate E ClassifyYear {All games played in the last year}
 translate E ClassifyMonth {All games played in the last month}

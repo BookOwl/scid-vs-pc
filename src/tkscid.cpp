@@ -7284,6 +7284,9 @@ sc_game_info (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
             ecoStringT estr;
             eco_ToExtendedString (eco, estr);
             uint len = strLength (estr);
+            // make init position show no ecocode
+            if (!strCompare(estr,"A00a"))
+              estr[0] = 0;
             if (len >= 4) { estr[3] = 0; }
             DString * tempDStr = new DString;
             translateECO (ti, ecoComment.Data(), tempDStr);

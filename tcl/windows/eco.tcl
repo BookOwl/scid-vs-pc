@@ -32,7 +32,7 @@ proc ::windows::eco::Refresh {{code "x"}} {
     setWinLocation $w
     setWinSize $w
     bind $w <Escape> "destroy $w"
-    bind $w <F1> {helpWindow ECO}
+    bind $w <F1> {helpWindow ECO Browser}
     bind $w <Destroy> {set ::windows::eco::isOpen 0}
     bind $w <Control-y> ::windows::eco::OpenClose
     text $w.title -relief flat -height 1 -width 1 -wrap word -font font_Bold
@@ -42,10 +42,12 @@ proc ::windows::eco::Refresh {{code "x"}} {
     frame $w.b
     pack $w.b -side bottom -fill x
     button $w.b.classify -textvar ::tr(ReclassifyGames) -command classifyAllGames
-    dialogbutton $w.b.help -textvar ::tr(Help) -command {helpWindow ECO}
+    button $w.b.up -image bookmark_up -command { ::windows::eco::KeyPress "<" }
+    dialogbutton $w.b.refresh -textvar ::tr(Update) -command "::windows::eco::Refresh"
+    dialogbutton $w.b.help -textvar ::tr(Help) -command {helpWindow ECO Browser}
     dialogbutton $w.b.close -textvar ::tr(Close) -command "destroy $w"
     pack $w.b.classify -side left -padx 5 -pady 5
-    packbuttons right $w.b.close $w.b.help
+    packbuttons right $w.b.close $w.b.help $w.b.refresh $w.b.up
     set pane [::utils::pane::Create $w.pane graph text 500 400 0.5]
     ::utils::pane::SetRange $w.pane 0.3 0.7
     ::utils::pane::SetDrag $w.pane 0
@@ -73,6 +75,8 @@ proc ::windows::eco::Refresh {{code "x"}} {
       bind $w <KeyPress-$i> "::windows::eco::KeyPress $i"
     }
 
+    standardShortcuts $w
+
     foreach i {Left Delete less BackSpace} {
       bind $w <KeyPress-$i> {::windows::eco::KeyPress "<"}
     }
@@ -83,7 +87,6 @@ proc ::windows::eco::Refresh {{code "x"}} {
     bind $w <Down>  {.ecograph.pane.text.text yview scroll 1 units}
     bind $w <Prior> {.ecograph.pane.text.text yview scroll -1 pages}
     bind $w <Next>  {.ecograph.pane.text.text yview scroll 1 pages}
-    standardShortcuts $w
     bindMouseWheel $w $w.pane.text.text
 
     bind $graph.c <1> { ::windows::eco::Select %x }
@@ -169,7 +172,7 @@ proc ::windows::eco::Refresh {{code "x"}} {
     -barwidth 0.8 -outline black -coords $wins
   ::utils::graph::data eco bounds -points 0 -lines 0 -bars 0 -coords {1 0 1 1}
   ::utils::graph::configure eco -ymin 0 -xmin 0.4 -xmax [expr {$count + 0.6} ] \
-    -xlabels $xlabels -hline [list [list gray80 1 each $hline]]
+    -xlabels $xlabels -hline [list [list gray80 1 each $hline]] -highx DodgerBlue
   ::utils::graph::redraw eco
   $text.text configure -state normal
   $text.text delete 1.0 end
@@ -177,17 +180,23 @@ proc ::windows::eco::Refresh {{code "x"}} {
   if {$len == 0} {
     set section $::tr(ECOAllSections)
   } elseif {$len < 3} {
-    set section "$::tr(ECOSection) \"$code\""
+    set section "$::tr(ECOSection) <b>$code</b>"
   } else {
-    set section "$::tr(ECOCode) \"$code\""
+    set section "$::tr(ECOCode) <b>$code</b>"
   }
-  set header "<center><b>$::tr(ECOSummary) $section</b><br>"
-  append header "[lindex $stats 0] $::tr(games): +[lindex $stats 1] =[lindex $stats 2] -[lindex $stats 3]  ([lindex $stats 5]%)</center>\n\n"
+
+  set header "<center>$section<br>"
+  append header "<b>[lindex $stats 0] $::tr(games)</b>: +[lindex $stats 1] =[lindex $stats 2] -[lindex $stats 3]  ([lindex $stats 5]%)</center>\n\n"
   ::htext::display $text.text "$header[sc_eco summary $code 1]"
   $text.text configure -state disabled
   $w.title configure -state normal
   $w.title delete 1.0 end
-  $w.title insert end "$::tr(ECOFrequency) $section" center
+
+  set fname [sc_base filename]
+  set fname [file tail $fname]
+  # if {$fname == ""} { set fname "<none>" }
+
+  $w.title insert end "$::tr(ECOCode)s for $fname ([sc_base numGames [sc_base current]] games)" center
   $w.title configure -state disabled
   set ::windows::eco::count $count
 }
@@ -265,6 +274,24 @@ proc ::windows::eco::KeyPress {key} {
   if {$key != ""} {
     set ::windows::eco::code "$code$key"
     ::windows::eco::Refresh
+  }
+}
+
+proc ::windows::eco::LoadFile {} {
+  set ftype { { "Scid ECO files" {".eco"} } }
+  if {[sc_info gzip]} {
+    set ftype { { "Scid ECO files" {".eco" ".eco.gz"} } }
+  }
+  set fullname [tk_getOpenFile -initialdir [pwd] -filetypes $ftype -title "Load ECO file"]
+  if {[string compare $fullname ""]} {
+    if {[catch {sc_eco read $fullname} result]} {
+      tk_messageBox -title "Scid" -type ok \
+          -icon warning -message $result
+    } else {
+      set ecoFile $fullname
+      tk_messageBox -title "Scid: ECO file loaded." -type ok -icon info \
+          -message "ECO file $fullname loaded: $result positions.\n\nTo have this file automatically loaded when you start Scid, select \"Save Options\" from the Options menu before exiting."
+    }
   }
 }
 

@@ -201,7 +201,7 @@ set helpText(Scid) {<h1>Databases and General Use</h1>
   <li><a Compact><b>Compacting</b> a database</a></li>
   <li><a Correspondence>Correspondence Chess</a></li>
   <li><a Maintenance><b>Database maintenance</b> tools</a></li>
-  <li><a ECO><b>ECO</b> openings classification</a></li>
+  <li><a ECO><b>ECO</b> codes</a></li>
   <li><a EPD><b>EPD</b> files</a></li>
   <li><a Export><b>Exporting</b> games to text files</a></li>
   <li><a Flags>Game <b>Flags</b></a></li>
@@ -276,9 +276,9 @@ set helpText(Index) {<h1>Scid Help Index</h1>
 
   <h3><name E>E</name></h3>
   <ul>
+  <li><a ECO>ECO codes</a></li>
   <li><a ECO Browser>ECO Browser</a> window</li>
-  <li><a ECO Codes>ECO code system</a></li>
-  <li><a ECO>ECO openings classification</a></li>
+  <li><a ECO Codes>ECO codes specification</a></li>
   <li><a Menus Edit>Edit menu</a></li>
   <li><a Email>Email manager</a> window</li>
   <li><a CCeMailChess>Email Chess</a></li>
@@ -4067,70 +4067,61 @@ set helpText(NAGs) {<h1>Standard NAG Values</h1>
 }
 
 
-set helpTitle(ECO) "ECO guide"
-set helpText(ECO) {<h1>ECO Openings Classification</h1>
+set helpTitle(ECO) "ECO Guide"
+set helpText(ECO) {<h1>ECO Codes</h1>
   <p>
-  Scid can classify chess games according to the <b>ECO</b>
-  (Encyclopedia of Chess Openings) chess openings classification.
-  An standard ECO code consists of a letter (A..E) followed by two
-  digits, so there are 500 distinct standard ECO codes.
+  An <b>Encyclopedia of Chess Openings</b> classification
+  is a code used to identify chess openings.
+  It consists of a letter from A to E, followed by two
+  digits. For example,
+  <b>C33</b> represents the <b>King's Gambit Accepted</b>.
+  There are five hundred distinct ECO codes.
   </p>
 
-  <h3>Scid extensions to the ECO system</h3>
+  <h3>Scid Extensions to ECO</h3>
   <p>
-  The ECO system is very limited and not sufficient for modern games:
-  some of the 500 codes are almost never seen any more, while some
-  are seen very often. To improve this situation, Scid allows an optional
-  extension to the basic ECO codes: each code can be extended with a
-  letter (a..z), with a further extension (another digit, 1..4) being
-  possible but not used in the standard Scid ECO file yet.
-  So an extended Scid ECO code looks like "<b>A41e</b>" or "<b>E99b2</b>".
-  Many of the most common ECO codes found in modern master-level games have
+  However, the ECO system is very limited and insufficient for modern games.
+  Some codes are never used, while others are very frequent.
+  To improve this, Scid allows an optional
+  extension to the basic ECO codes. Codes may be extended with a
+  letter from a to z, with a further extension - a digit from 1 to 4 - being
+  possible but not yet used.
+  So an extended code may look like <b>A41e</b> or <b>E99b2</b>.
+  Many of the codes common in modern master-level games have
   extensions defined in the Scid ECO file.
   </p>
 
-  <h3><name Browser>The ECO Browser window</name></h3>
+  <h3><name Browser>The ECO Browser Window</name></h3>
   <p>
-  The <term>ECO Browser</term> window shows you the positions that are
-  used to classify each ECO code, and the frequency and performance of
-  ECO codes in the current database.
+  Scid's
+  <run ::windows::eco::Refresh><green>ECO Browser Window</green></run> shows positions associated
+  with each ECO code, and their frequency and performance 
+  (<b>in ECO classified games</b>) in the current database. 
   </p>
   <p>
-  The upper pane shows the frequency of each ECO code in the current
-  database. The bars in the graph have three sections: the lowest
-  (lightest color) is the number of White wins, the middle is the
-  number of draws, and the highest (darkest) is the number of Black wins.
-  This lets you see at a glance the characteristics of an opening: for
-  example, if White is scoring very well, or if draws are very common.
+  The upper pane shows a bar graph with three sections: the lowest
+  (light blue) represents White wins, the middle represents draws, and the top (dark blue), the number of Black wins.
+  The graph illustrates at a glance an openings characteristics - whether
+  draws are common or White or Black is winning.
+  To go to a deeper ECO level click on a bar in the graph, or to go higher
+  right-click, press the <button bookmark_up> button, or left-arrow.
   </p>
   <p>
-  To go to a deeper ECO level, click the left mouse button
-  on a bar in the graph (or type the
-  letter or digit it corresponds to). To go back to the higher level,
-  click the right mouse button anywhere in the graph, or press the left
-  arrow (or delete or backspace) key.
+  The nottom pane shows the positions for a particular ECO code according to the ECO file loaded.
   </p>
   <p>
-  The lower pane shows the positions that comprise a particular ECO code,
-  according to the ECO file you have loaded.
+  The <b>ECO classify games</b> button will permanently add ECO classifications to selected games in the current database.
   </p>
 
-  <h3>Loading the Scid ECO file</h3>
+  <h3>Loading an ECO File</h3>
   <p>
-  The ECO file that comes with Scid is called <b>scid.eco</b>,
-  and Scid tries to load this when it starts up.
-  If Scid cannot find it, you will need to do the following to enable ECO
-  classification:
-  <ul>
-  <li>(a) In Scid, use the menu command
-  <menu>Options: Load ECO file</menu>
-  and select the file <b>scid.eco</b>. </li>
-  <li>(b) Save options (from the <menu>Options</menu> menu). </li>
-  </ul>
-  After you do this, the ECO file will be loaded every time you start Scid.
+  Scid will attempt to load the default <b>scid.eco</b> at start up.
+  If it cannot, or you wish to use another file, one may be loaded manually via the
+  <run ::windows::eco::LoadFile><green>Load ECO File</green></run> feature,
+  after which this will be loaded automatically.
   </p>
 
-  <h3><name Codes>ECO code system</name></h3>
+  <h3><name Codes>ECO Code System</name></h3>
   <p>
   The basic structure of the ECO system is:
   </p>
@@ -4220,7 +4211,7 @@ set helpText(ECO) {<h1>ECO Openings Classification</h1>
   <li>  <b>E9</b>  E7 + 4...d6 5.Nf3: <i>King's Indian, main lines</i> </li>
   </ul>
 
-  <p><footer>Updated: Scid 3.6.2, December 2006</footer></p>
+  <p><footer>Updated: Scid vs. PC 4.4, April 2011</footer></p>
 }
 
 

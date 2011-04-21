@@ -829,23 +829,7 @@ foreach menu $optMenus label $optLabels {
   set helpMessage($m,[incr menuindex]) Options$label
 }
 
-$m add command -label OptionsECO -command {
-  set ftype { { "Scid ECO files" {".eco"} } }
-  if {[sc_info gzip]} {
-    set ftype { { "Scid ECO files" {".eco" ".eco.gz"} } }
-  }
-  set fullname [tk_getOpenFile -initialdir [pwd] -filetypes $ftype -title "Load ECO file"]
-  if {[string compare $fullname ""]} {
-    if {[catch {sc_eco read $fullname} result]} {
-      tk_messageBox -title "Scid" -type ok \
-          -icon warning -message $result
-    } else {
-      set ecoFile $fullname
-      tk_messageBox -title "Scid: ECO file loaded." -type ok -icon info \
-          -message "ECO file $fullname loaded: $result positions.\n\nTo have this file automatically loaded when you start Scid, select \"Save Options\" from the Options menu before exiting."
-    }
-  }
-}
+$m add command -label OptionsECO -command ::windows::eco::LoadFile
 set helpMessage($m,[incr menuindex]) OptionsECO
 
 $m add command -label OptionsSpell -command readSpellCheckFile

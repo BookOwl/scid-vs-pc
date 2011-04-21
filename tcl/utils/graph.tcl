@@ -27,17 +27,18 @@ namespace eval ::utils::graph {}
 #              pixels, type is "each" or "at", and value is the value.
 #  -brect: list of background rectangles. Each element is a list of 5 items:
 #              the graph coordinates of a rectangle, and its color.
+#  -highx: color of highlighted X axis labels
 #
 set ::utils::graph::_options(graph) {
   width height xtop ytop background font ticksize textgap xtick ytick
   xmin xmax ymin ymax canvas vline hline textcolor tickcolor
-  xlabels ylabels brect
+  xlabels ylabels brect highx
 }
 set ::utils::graph::_defaults(graph) \
   { -width 400 -height 300 -xtop 50 -ytop 30 -ticksize 5 -textgap 2 \
     -xtick 5 -ytick 5 -tickcolor black -font fixed -background white \
       -canvas {} -hline {} -vline {} -textcolor black \
-      -xlabels {} -ylabels {} -brect {} }
+      -xlabels {} -ylabels {} -brect {} -highx {}}
 
 # Data options, specific to each data set within a graph:
 #
@@ -345,8 +346,13 @@ proc ::utils::graph::plot_axes {graph} {
     set x [lindex $label 0]
     set text [lindex $label 1]
     set xc [xmap $graph $x]
-    $canvas create text $xc [expr {$yminc + $textgap}] -font $font \
-      -text $text -anchor n -tag $tag -fill $textcolor -justify center
+    set citem [$canvas create text $xc [expr {$yminc + $textgap}] -font $font \
+      -text $text -anchor n -tag $tag -fill $textcolor -justify center]
+
+    if {$_data($graph,highx) != {}} {
+      $canvas bind $citem <Enter> "$canvas itemconfigure $citem -fill $_data($graph,highx) -font font_Bold"
+      $canvas bind $citem <Leave> "$canvas itemconfigure $citem -fill $textcolor -font $font"
+    }
   }
 
   if {$ytick > 0} {
