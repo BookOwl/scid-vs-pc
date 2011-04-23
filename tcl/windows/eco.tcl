@@ -196,7 +196,7 @@ proc ::windows::eco::Refresh {{code "x"}} {
   set fname [file tail $fname]
   # if {$fname == ""} { set fname "<none>" }
 
-  $w.title insert end "$::tr(ECOCode)s for $fname ([sc_base numGames [sc_base current]] games)" center
+  $w.title insert end "$::tr(Database) $fname ([lindex [sc_base eco {}] 0] / [sc_base numGames [sc_base current]] games classified)" center
   $w.title configure -state disabled
   set ::windows::eco::count $count
 }
