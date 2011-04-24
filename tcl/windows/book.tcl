@@ -80,8 +80,8 @@ namespace eval book {
   proc togglePositionsDisplay {} {
     global ::book::oppMovesVisible
     if { $::book::oppMovesVisible} {
-      pack .bookWin.1.opptext ; # -expand yes -fill both
-      pack .bookWin.2.opptext ; # -expand yes -fill both
+      pack .bookWin.1.opptext  ;# -expand yes -fill both
+      pack .bookWin.2.opptext  ;# -expand yes -fill both
     } else {
       pack forget .bookWin.1.opptext
       pack forget .bookWin.2.opptext
@@ -208,8 +208,13 @@ wm minsize $w 50 200
 
     # The width of "12" is not enough for larger fonts ?!
 
+    label $w.1.label -font font_Fixed -width 10
+    label $w.2.label -font font_Fixed -width 10
     text $w.1.booktext -wrap none -state disabled -width 10 -cursor top_left_arrow -font font_Fixed
     text $w.2.booktext -wrap none -state disabled -width 10 -cursor top_left_arrow -font font_Fixed
+
+    pack $w.1.label -side top
+    pack $w.2.label -side top
 
     pack $w.1.booktext -expand yes -fill both
     pack $w.2.booktext -expand yes -fill both
@@ -270,6 +275,33 @@ focus .
       set games 1
     }
 
+    set moves1 [sc_book moves $::book::bookSlot1]
+    set moves2 [sc_book moves $::book::bookSlot2]
+    if {$::book::sortAlpha} {
+      ### Parse the moves to insert empty lines and make the moves line up
+      # should be doing this in C
+      set m1 {}
+      set m2 {}
+      array set a1 $moves1
+      array set a2 $moves2
+      set ids [lsort -unique [concat [array names a1] [array names a2]]]
+      foreach id $ids {
+	if {[info exists a1($id)]} {
+	  lappend m1 $id $a1($id)
+	  if {[info exists a2($id)]} {
+	    lappend m2 $id $a2($id)
+	  } else {
+	    lappend m2 {} {}
+	  }
+	} else {
+	  lappend m1 {} {}
+	  lappend m2 $id $a2($id)
+	}
+      }
+      set moves1 $m1
+      set moves2 $m2
+    }
+
     foreach z $games {
       foreach t [.bookWin.$z.booktext tag names] {
 	  .bookWin.$z.booktext tag delete $t
@@ -277,28 +309,25 @@ focus .
       foreach t [.bookWin.$z.opptext tag names] {
 	  .bookWin.$z.opptext tag delete $t
       }
-      set bookMoves [sc_book moves [set ::book::bookSlot$z]]
-	if {$::book::sortAlpha} {
-	set bookMoves [lrange [split $bookMoves {%}] 0 end-1]
-	# do a regsub to format output ???
-	set bookMoves [lsort $bookMoves]
-	set bookMoves [join $bookMoves]
-      }
 
-      ### try to allign the percent score... but can't &&&
-      # set  bookMoves [regsub -all {[::digit::]%} $bookMoves _&]
+      set bookMoves [set moves$z]
 
       .bookWin.$z.booktext configure -state normal
       .bookWin.$z.booktext delete 1.0 end
       set line 1
       foreach {x y} $bookMoves {
+        if {$x == {}} {
+	  .bookWin.$z.booktext insert end [format "%5s %3s\n" $x $y]
+          incr line
+          continue
+        }
         if {[string length $y] < 3} {set y " $y"}
 	if {$x == $nextmove} {
 	  ### (why do i have to configure this here and not above ?)
 	  .bookWin.$z.booktext tag configure nextmove -background lemonchiffon
-	  .bookWin.$z.booktext insert end [format "%5s %3s%%\n" [::trans $x] $y] nextmove
+	  .bookWin.$z.booktext insert end [format "%5s %3s\n" [::trans $x] $y] nextmove
 	} else {
-	  .bookWin.$z.booktext insert end [format "%5s %3s%%\n" [::trans $x] $y]
+	  .bookWin.$z.booktext insert end [format "%5s %3s\n" [::trans $x] $y]
 	  # .bookWin.$z.booktext insert end "[::trans $x]\t$y\n"
 	}
 	.bookWin.$z.booktext tag add bookMove$line $line.0 $line.end
@@ -328,7 +357,7 @@ focus .
 	incr line
       }
 
-      # .bookWin.$z.opptext configure -state disabled -height [llength $oppBookMoves]
+      .bookWin.$z.opptext configure -state disabled
 togglePositionsDisplay
     }
     set height [expr $height / 4]
@@ -362,10 +391,13 @@ togglePositionsDisplay
   #
   ################################################################################
   proc bookSelect {} {
-    set ::book::lastBook1 [.bookWin.main.combo1 get]
-    set ::book::lastBook2 [.bookWin.main.combo2 get]
-    scBookOpen 1 [.bookWin.main.combo1 get] $::book::bookSlot1
-    scBookOpen 2 [.bookWin.main.combo2 get] $::book::bookSlot2
+    set w .bookWin
+    set ::book::lastBook1 [$w.main.combo1 get]
+    set ::book::lastBook2 [$w.main.combo2 get]
+    $w.1.label configure -text [file rootname $::book::lastBook1]
+    $w.2.label configure -text [file rootname $::book::lastBook2]
+    scBookOpen 1 [$w.main.combo1 get] $::book::bookSlot1
+    scBookOpen 2 [$w.main.combo2 get] $::book::bookSlot2
     refresh
   }
 
@@ -449,9 +481,11 @@ togglePositionsDisplay
   ################################################################################
   #
   ################################################################################
-  proc bookTuningSelect { { n "" }  { v  0} } {
+  proc bookTuningSelect {} {
     set w .bookTuningWin
-    scBookOpen [.bookTuningWin.fcombo.combo get] $::book::bookTuningSlot
+
+    scBookOpen 1 [.bookTuningWin.fcombo.combo get] $::book::bookTuningSlot
+
     if { $::book::isReadonly > 0 } {
       $w.fbutton.bSave configure -state disabled
     } else {

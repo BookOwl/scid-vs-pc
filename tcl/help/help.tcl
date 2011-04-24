@@ -229,6 +229,7 @@ set helpText(Index) {<h1>Scid Help Index</h1>
   <h4><name A>A </name></h4>
   <ul>
   <li><a Analysis>Analysis</a> window</li>
+  <li><a Comment>Annotating games</a></li>
   <li><a Analysis Annotating>Annotating games</a> automatically</li>
   <li><a NAGs>Annotation symbols</a></li>
   <li><a Author>Author, contacting</a></li>
@@ -241,7 +242,7 @@ set helpText(Index) {<h1>Scid Help Index</h1>
   <li><a Tree Best>Best games</a> window</li>
   <li><a Searches Board>Board searches</a></li>
   <li><a Book>Book</a> window</li>
-  <li><a BookTuning>Book</a> tuning</li>
+  <li><a BookTuning>Book tuning</a></li>
   <li><a Bookmarks>Bookmarks</a></li>
   <li><a GameList Browsing>Browsing games</a></li>
   </ul>
@@ -365,6 +366,7 @@ set helpText(Index) {<h1>Scid Help Index</h1>
 
   <h3><name O>O</name></h3>
   <ul>
+  <li><a Book>Opening books</a></li>
   <li><a ECO>Opening classification (ECO)</a></li>
   <li><a Reports Opening>Opening report</a> window</li>
   <li><a OpeningTrainer>Training: Openings</a></li>
@@ -4274,29 +4276,27 @@ set helpText(Related) {<h1>Related Links</h1>
 set helpTitle(Book) "Book Window"
 set helpText(Book) {<h1>Book Window</h1>
   <p>
-  A list of all book files present in Scid's books directory is
-  presented in the drop down list on top of the window. To specify the
-  directory where Scid shoul search for opening books select Options /
-  Books directory from the menu. The active book can be selected
-  easily from that list.
-  </p>
+  Opening Books are small databases recording moves at the start of a game
+  and how often each move occurs. Scid's <run
+  ::book::OpenClose><green>Book Window</green></run> allows perusal of opening
+  books, and a few nifty features besides.
+  </p><p>
+  <i>Scid uses the popular <b>Polyglot</b> book format, and comes with a few
+  databases  already installed, including gm2600.bin and Elo2400.bin</i>.  </p>
+<h2>Features</h2>
   <p>
-  The format of books is the one used by Polyglot and the engines like
-  Fruit and Toga, their usual extension is .bin. Currently, to build
-  new books one has to use <term>polyglot</term> on the command line.
-  Please refer to polyglots documentation about how to create a book.
+  In Scid vs. PC, two books can be viewed at once. Normally, moves are listed in order
+  of frequency, but selecting the <b>Alphabetical</b> box will sort them, placing
+  like moves side-by-side.
   </p>
-  <p>
-  For each position, the book window displays all possible moves it
-  contains and their relative weights in percent. When a move is
-  entered, the book window is updated. Clicking on a move in the book
-  window will play that move in current position.
+<p>Scid also has an Opponent's Book. [todo ???] and <a BookTuning>Book Tuning</a> feature.</p>
+<h2>Other</h2>
+<p>
+  To build new opening books, and find put more about chess opening books,
+visit the <url http://wbec-ridderkerk.nl/html/details1/PolyGlot.html>Polyglot
+web page</url>.
   </p>
-  <p>
-  The book in use can be selected from the drop down list in the
-  book window.
-  </p>
-  <p><footer>Updated: Scid 3.6.26, October 2008</footer></p>
+  <p><footer>Updated: Scid vs. PC 4.4 April 2011</footer></p>
 }
 
 # Tactical game window help
@@ -5763,17 +5763,14 @@ set helpText(FICStraining) {<h1>Other Fics Features</h1>
 # Book tuning
 set helpTitle(BookTuning) "Book tuning"
 set helpText(BookTuning) {<h1>Book Tuning</h1>
+   <p><i>
+   Opening Books are small databases recording moves at the start of a game and how often each move occurs. For more information, see 
+<a Book>Book Window</a>.</i></p>
+
    <p>
-   For each book move a percentage is given stating the probability
-   that Scid will use this move. Using <term>Book tuning</term> one
-   can adjust these values. First, the position where the lines should
-   be adopted has to be set up. After calling Tools / Book tuning one
-   gets a small window stating the moves in book and their percentage
-   in a spin box. Note, that only integer values are shown, therefore
-   a 0 may appear signifying that this move has a probability of "less
-   than 1%". (Most likely this happens in automatically generated
-   books from game collections.) All numbers add up to 100% of course.
-   </p>
+   Using Scid's <run ::book::tuning><green>Book Tuning</green></run> feature, one
+   can adjust the value associated with any move in an opening book.
+</p>
    <p>
    To navigate through the branches of the book one can just click on
    the line in the book tuning window or move around the game as usual
@@ -5782,11 +5779,18 @@ set helpText(BookTuning) {<h1>Book Tuning</h1>
    <p>
    To adjust the probability, e.g. rise the probability of a certain
    variation, one can just increase its value. Though the other values
-   stay the same, Scid will recalculate once <term>Save</term> is
+   stay the same, Scid will recalculate once <b>Save</b> is
    pressed.
    </p>
+<h2>Note</h2>
+<p>
+   Only integer values are shown; a zero may signify that this move has a probability of less
+   than 1%, and most likely happens with books automatically generated
+   from game collections. One should also note that all values should add up to 100%.
+   </p>
+<h2>Exporting Books</h2>
    <p>
-   Choosing <term>Export</term> will export a branch of the book from
+   Choosing <b>Export</b> will export a branch of the book from
    the current position onwards into a single game. The continuation
    with the highest probability will make up the main line while all
    others are stored in variations. This allows for semi manually
@@ -5797,7 +5801,7 @@ set helpText(BookTuning) {<h1>Book Tuning</h1>
    can be done incrementally. That is, new lines are added to already
    existing ones. This also allows to merge several books.
    </p>
-  <p><footer>Updated: Scid 3.6.26, October 2008</footer></p>
+  <p><footer>Updated: Scid vs. PC 4.4 April, 2011 </footer></p>
 }
 
 # Novag Citrine
