@@ -463,6 +463,7 @@ proc ::bookmarks::EditMove {{dir "up"}} {
   $list delete $sel
   $list insert $newsel $text
   $list selection set $newsel
+  $list see $newsel
 }
 
 # ::bookmarks::EditDelete
