@@ -898,6 +898,7 @@ proc gameSave {gnum} {
   set w .save
 
   toplevel $w
+  wm withdraw $w
   # bad !; catch {grab $w}
 
   if {$gnum == 0} {
@@ -909,7 +910,7 @@ proc gameSave {gnum} {
 
   # frame $f holds everything except save/cancel buttons 
   set f [frame $w.g]
-  pack $f -side top
+  pack $f -side top -expand 1 -fill both
 
   # Get current values of tags:
   set year [sc_game tag get Year];    set eyear [sc_game tag get EYear]
@@ -1019,9 +1020,9 @@ proc gameSave {gnum} {
     -textvariable blackRType -state readonly
   ttk::entry $f.beloentry -width 6 -textvariable blackElo -justify right
 
-  grid $f.welolabel -row 8 -column 0 -sticky w
-  grid $f.wrtype -row 8 -column 1 -sticky w
-  grid $f.weloentry -row 8 -column 2 -sticky w
+  grid $f.welolabel -row 8 -column 0 -sticky sw
+  grid $f.wrtype -row 8 -column 1 -sticky sw
+  grid $f.weloentry -row 8 -column 2 -sticky sw
   grid $f.belolabel -row 9 -column 0 -sticky w
   grid $f.brtype -row 9 -column 1 -sticky w
   grid $f.beloentry -row 9 -column 2 -sticky w
@@ -1050,7 +1051,9 @@ proc gameSave {gnum} {
   # Extra tags text widget+scrollbar (in frame)
 
   frame $f.extra
-  grid $f.extra -row 8 -rowspan 2 -column 8 -columnspan 2 -padx 10
+  grid $f.extra -row 8 -rowspan 2 -column 8 -columnspan 2 -padx 10 -sticky nsew
+  grid rowconfigure $f 8 -weight 1
+  grid columnconfigure $f 8 -weight 1
 
   text $f.extratext -height 2 -width 40 -wrap none -yscrollcommand "$f.extrascroll set"
   # Override tab-binding for this text widget
@@ -1136,7 +1139,10 @@ proc gameSave {gnum} {
     destroy .save
   }
 
+
+  update
   placeWinOverParent $w .
+  wm deiconify $w
 
   if {$gnum > 0} { focus .save.buttons.save }
 }
