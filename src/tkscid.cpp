@@ -16581,12 +16581,12 @@ sc_book_load (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
     int bookstate = polyglot_open(argv[2], slot);
 
     if (bookstate == -1 ) {
-			return errorResult (ti, "Unable to load book");
-		}
+       return errorResult (ti, "Unable to load book");
+    }
     if (bookstate  >  0 ) {
-		   // state == 1: book is read only
-			return setIntResult (ti, bookstate);
-	 }
+       // state == 1: book is read only
+       return setIntResult (ti, bookstate);
+    }
     return TCL_OK;
 
 //--//    if (polyglot_open(argv[2], slot) == -1 ) {
@@ -16606,44 +16606,49 @@ sc_book_close (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
     }
     uint slot = strGetUnsigned (argv[2]);
     if (polyglot_close(slot) == -1 ) {
-			return errorResult (ti, "Error closing book");
-		}
+        return errorResult (ti, "Error closing book");
+    }
     return TCL_OK;
 }
+
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // sc_book_moves:
 //    returns a list of all moves contained in opened book and their probability in a TCL list
 int
 sc_book_moves (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
 {
-		char moves[200] = "";
-		char boardStr[100];
+    char moves[200] = "";
+    char boardStr[100];
+
     if (argc != 3) {
         return errorResult (ti, "Usage: sc_book moves slot");
     }
     uint slot = strGetUnsigned (argv[2]);
-		db->game->GetCurrentPos()->PrintFEN (boardStr, FEN_ALL_FIELDS);
-		polyglot_moves(moves, (const char *) boardStr, slot);
+    db->game->GetCurrentPos()->PrintFEN (boardStr, FEN_ALL_FIELDS);
+    polyglot_moves(moves, (const char *) boardStr, slot);
     Tcl_AppendResult (ti, moves, NULL);
     return TCL_OK;
 }
+
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // sc_positions:
 //    returns a TCL list of moves to a position in the book
 int
 sc_book_positions (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
 {
-		char moves[200] = "";
-		char boardStr[100];
+    char moves[200] = "";
+    char boardStr[100];
+
     if (argc != 3) {
         return errorResult (ti, "Usage: sc_book oppmoves slot");
     }
     uint slot = strGetUnsigned (argv[2]);
-		db->game->GetCurrentPos()->PrintFEN (boardStr, FEN_ALL_FIELDS);
-		polyglot_positions(moves, (const char *) boardStr, slot);
+    db->game->GetCurrentPos()->PrintFEN (boardStr, FEN_ALL_FIELDS);
+    polyglot_positions(moves, (const char *) boardStr, slot);
     Tcl_AppendResult (ti, moves, NULL);
     return TCL_OK;
 }
+
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // sc_book_update:
 //    updates the opened book with probability values
@@ -16654,9 +16659,10 @@ sc_book_update (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
         return errorResult (ti, "Usage: sc_book update <probs> slot");
     }
     uint slot = strGetUnsigned (argv[3]);
-		scid_book_update( (char*) argv[2], slot );
+    scid_book_update( (char*) argv[2], slot );
     return TCL_OK;
 }
+
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // sc_book_movesupdate:
 //    updates the opened book with moves and probability values
@@ -16670,6 +16676,7 @@ sc_book_movesupdate (ClientData cd, Tcl_Interp * ti, int argc, const char ** arg
     scid_book_movesupdate( (char*) argv[2], (char*) argv[3], slot, (char*) argv[5] );
     return TCL_OK;
 }
+
 //////////////////////////////////////////////////////////////////////
 /// END of tkscid.cpp
 //////////////////////////////////////////////////////////////////////

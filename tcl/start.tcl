@@ -716,7 +716,11 @@ set ::utils::sound::announceNew 0
 set ::utils::sound::announceForward 0
 set ::utils::sound::announceBack 0
 
-set ::book::lastBook "" ; # book name without extension (.bin)
+set ::book::lastBook1 "" ; # book name without extension (.bin)
+set ::book::lastBook2 ""
+set ::book::sortAlpha 0
+set ::book::sortTwo 0
+set ::book::oppMovesVisible 0
 
 # Engines list file: -- OLD NAMES, NO LONGER USED
 #set engines(file) [file join $scidUserDir "engines.lis"]

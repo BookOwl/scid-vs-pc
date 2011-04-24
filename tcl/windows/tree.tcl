@@ -559,6 +559,7 @@ proc ::tree::displayLines { baseNumber moves } {
 
   set lMoves {}
   set w .treeWin$baseNumber
+  set nextmove [sc_game info nextMove]
 
   $w.f.tl configure -state normal
 
@@ -637,7 +638,7 @@ proc ::tree::displayLines { baseNumber moves } {
     set tags [list $tagfg tagclick$i tagtooltip$i]
 
     # Should we add a tag for the Next Move ???
-    if {$move == [sc_game info nextMove]} {
+    if {$move == $nextmove} {
       lappend tags nextmove
     }
     if {$i % 2 && $i < $len - 3} {

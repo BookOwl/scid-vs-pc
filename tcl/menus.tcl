@@ -979,7 +979,8 @@ $m add command -label OptionsSave -command {
 	gameInfo(fullComment) gameInfo(showMarks) gameInfo(showMenu) gameInfo(showTool) \
 	gameInfo(showMaterial) gameInfo(showFEN) gameInfo(showButtons) gameInfo(showTB) \
 	analysis(mini) engines(F2) engines(F3) engines(F4) \
-	engineCoach1 engineCoach2 scidBooksDir scidBasesDir ::book::lastBook \
+	engineCoach1 engineCoach2 scidBooksDir scidBasesDir \
+        ::book::lastBook1 ::book::lastBook2 ::book::sortAlpha ::book::showTwo ::book::oppMovesVisible \
 	crosstab(type) crosstab(ages) crosstab(countries) crosstab(ratings) crosstab(titles) crosstab(breaks) \
 	crosstab(deleted) crosstab(colors) crosstab(cnumbers) crosstab(groups) crosstab(sort) \
 	::utils::sound::soundFolder ::utils::sound::announceNew \
@@ -1667,6 +1668,7 @@ proc standardShortcuts {w} {
   bind $w <Control-e> makeCommentWin
   bind $w <Control-b> chooseBoardColors
   bind $w <Control-l> ::windows::gamelist::Open
+  bind $w <Control-d> ::windows::gamelist::Open
   bind $w <Control-p> ::pgn::OpenClose
   bind $w <Control-T> ::tourney::toggle
   bind $w <Control-P> ::plist::toggle
@@ -1706,6 +1708,7 @@ proc standardShortcuts {w} {
   bind $w <Control-r> ::gameReplace
   bind $w <Control-s> ::gameAdd
 }
+
 ################################################################################
 #
 ################################################################################

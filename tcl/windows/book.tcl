@@ -10,27 +10,35 @@ namespace eval book {
   set isReadonly 0
   set bookList ""
   set bookPath ""
-  set currentBook "" ; # book in form abc.bin
+  set currentBook1 "" ; # book in form abc.bin
+  set currentBook2 ""
   set currentTuningBook ""
   set bookMoves ""
   set cancelBookExport 0
   set exportCount 0
   set exportMax 3000
   set hashList ""
-  set bookSlot 0
+  set bookSlot1 0
+  set bookSlot2 1
+  # Whats the significance of "bookTuningSlot 2"
   set bookTuningSlot 2
-  set oppMovesVisible 0
 
   ################################################################################
   # open a book, closing any previously opened one (called by annotation analysis)
   # arg name : gm2600.bin for example
   ################################################################################
-  proc scBookOpen { name slot } {
-    if {$slot == $::book::bookSlot} {
-      if {$::book::currentBook != ""} {
-        sc_book close $::book::bookSlot
+  proc scBookOpen {n name slot} {
+    if {$slot == [set ::book::bookSlot1]} {
+      if {$::book::currentBook1 != ""} {
+        sc_book close $::book::bookSlot1
       }
-      set ::book::currentBook $name
+      set ::book::currentBook1 $name
+    }
+    if {$slot == [set ::book::bookSlot2]} {
+      if {$::book::currentBook2 != ""} {
+        sc_book close $::book::bookSlot2
+      }
+      set ::book::currentBook2 $name
     }
     if {$slot == $::book::bookTuningSlot} {
       if {$::book::currentTuningBook != ""} {
@@ -47,9 +55,9 @@ namespace eval book {
   # Return a move in book for position fen. If there is no move in book, returns ""
   # Is used by engines, not book windows
   ################################################################################
-  proc getMove { book fen slot} {
+  proc getMove {book fen slot {n 1}} {
     set tprob 0
-    ::book::scBookOpen $book $slot
+    ::book::scBookOpen $n $book $slot
     set bookmoves [sc_book moves $slot]
     if {[llength $bookmoves] == 0} {
       return ""
@@ -71,12 +79,12 @@ namespace eval book {
   ################################################################################
   proc togglePositionsDisplay {} {
     global ::book::oppMovesVisible
-    if { $::book::oppMovesVisible == 0} {
-      set ::book::oppMovesVisible 1
-      pack .bookWin.f.text1 -expand yes -fill both
+    if { $::book::oppMovesVisible} {
+      pack .bookWin.1.opptext ; # -expand yes -fill both
+      pack .bookWin.2.opptext ; # -expand yes -fill both
     } else {
-      set ::book::oppMovesVisible 0
-      pack forget .bookWin.f.text1
+      pack forget .bookWin.1.opptext
+      pack forget .bookWin.2.opptext
     }
   }
 
@@ -84,8 +92,8 @@ namespace eval book {
   #  Open a window to select book and display book moves
   # arg name : gm2600.bin for example
   ################################################################################
-  proc OpenClose { {name ""} } {
-    global ::book::bookList ::book::bookPath ::book::currentBook ::book::isOpen ::book::lastBook
+  proc OpenClose {} {
+    global ::book::bookList ::book::bookPath ::book::currentBook1 ::book::currentBook2 ::book::isOpen ::book::lastBook1 ::book::lastBook2
 
     set w .bookWin
 
@@ -99,78 +107,152 @@ namespace eval book {
 
     toplevel $w
     wm title $w $::tr(Book)
+wm minsize $w 50 200
     wm resizable $w 0 1
 
     setWinLocation $w
-    bind $w <F1> { helpWindow Book }
+    # setWinSize $w
+    bind $w <F1> {helpWindow Book}
+    bind $w <F11>  ::book::OpenClose
 
-    frame $w.f
-    # load book names
-    if { $name == "" && $lastBook != "" } {
-      set name $lastBook
-    }
+    frame $w.main 
+    bind $w.main <Button-4> ::move::Back
+    bind $w.main <Button-5> ::move::Forward
+    pack $w.main -fill both -side left
+
+    set name1 $lastBook1
+    set name2 $lastBook2
+
     set bookPath $::scidBooksDir
     set bookList [ lsort -dictionary [ glob -nocomplain -directory $bookPath *.bin ] ]
-    # No book found
+
     if { [llength $bookList] == 0 } {
-      tk_messageBox -title "Scid" -type ok -icon error -message "No books found. Check books directory"
-      set ::book::isOpen 0
-      set ::book::currentBook ""
+      # No book found
       destroy $w
+      set ::book::isOpen 0
+      set ::book::currentBook1 {}
+      set ::book::currentBook2 {}
+      tk_messageBox -title "Scid" -type ok -icon error -message "No books found in books directory \"$bookPath\""
       return
     }
+
     set i 0
-    set idx 0
+    set idx1 0
+    set idx2 0
     set tmp {}
     foreach file  $bookList {
       set f [ file tail $file ]
       lappend tmp $f
-      if {$name == $f} {
-        set idx $i
-      }
+      if {$name1 == $f} { set idx1 $i }
+      if {$name2 == $f} { set idx2 $i }
       incr i
     }
-    ttk::combobox $w.f.combo -width 12 -values $tmp
+    ttk::combobox $w.main.combo1 -width 12 -values $tmp
+    ttk::combobox $w.main.combo2 -width 12 -values $tmp
 
-    catch { $w.f.combo current $idx }
-    pack $w.f.combo
+    catch { $w.main.combo1 current $idx1 }
+    catch { $w.main.combo2 current $idx2 }
 
-    # text displaying book moves
-   frame $w.f.fscroll
-    autoscrollframe -bars y $w.f.fscroll text $w.f.text -wrap word -state disabled -width 12
-    
-    button $w.f.b -text {Opponent's book}  -command { ::book::togglePositionsDisplay }
-    ::utils::tooltip::Set $w.f.b {Moves to which the opponent has a reply}
-    
-    text $w.f.text1 -wrap word -state disabled -width 12
-    
-    pack $w.f.fscroll -expand yes -fill both
-    pack $w.f.b
-    pack $w.f.text1 -expand yes -fill both
-    
-    pack $w.f -expand 1 -fill both
+    pack $w.main.combo1 -side top -pady 5
+    pack $w.main.combo2 -side top -pady 5
 
-    bind $w.f.combo <<ComboboxSelected>> ::book::bookSelect
+    if {!$::book::showTwo} {
+      $w.main.combo2 configure -state disabled
+    }
+    
+    checkbutton $w.main.alpha -text {Alphabetical} -variable ::book::sortAlpha  -command ::book::refresh
+
+    checkbutton $w.main.showtwo -text {Two Books} -variable ::book::showTwo  -command {
+      if {$::book::showTwo} {
+        .bookWin.main.combo2 configure -state normal
+	pack .bookWin.2 -fill both -side right
+      } else {
+        .bookWin.main.combo2 configure -state disabled
+        pack forget .bookWin.2
+      }
+      ::book::refresh
+    }
+
+    checkbutton $w.main.showopp -text {Opponent's Book} -variable ::book::oppMovesVisible \
+       -command { ::book::togglePositionsDisplay }
+    ::utils::tooltip::Set $w.main.showopp {Moves to which the opponent has a reply}
+
+    pack $w.main.alpha   -side top -anchor w -pady 5
+    pack $w.main.showtwo     -side top -anchor w -pady 5
+    pack $w.main.showopp -side top -anchor w -pady 5
+
+    frame $w.main.buttons
+    pack $w.main.buttons -side bottom -pady 10
+
+    button $w.main.buttons.back -image tb_prev -command ::move::Back -relief flat
+    button $w.main.buttons.next -image tb_next -command ::move::Forward -relief flat
+
+    pack $w.main.buttons.back -side left  -padx 3
+    pack $w.main.buttons.next -side right -padx 3
+
+    dialogbutton $w.main.help -textvariable ::tr(Help) -command {helpWindow Book}
+    dialogbutton $w.main.close -textvariable ::tr(Close) -command "destroy $w"
+
+    pack $w.main.close -side bottom -pady 5
+    pack $w.main.help -side bottom -pady 5
+
+    frame $w.1
+    frame $w.2
+    
+    pack $w.1 -fill both -side left
+    pack $w.2 -fill both -side right
+
+    if {!$::book::showTwo} {
+      pack forget $w.2
+    }
+
+    # The width of "12" is not enough for larger fonts ?!
+
+    text $w.1.booktext -wrap none -state disabled -width 10 -cursor top_left_arrow -font font_Fixed
+    text $w.2.booktext -wrap none -state disabled -width 10 -cursor top_left_arrow -font font_Fixed
+
+    pack $w.1.booktext -expand yes -fill both
+    pack $w.2.booktext -expand yes -fill both
+    
+    text $w.1.opptext -wrap none -state disabled -height 6 -width 10 -cursor top_left_arrow -font font_Fixed
+    text $w.2.opptext -wrap none -state disabled -height 6 -width 10 -cursor top_left_arrow -font font_Fixed
+
+    bind $w.main.combo1 <<ComboboxSelected>> {::book::bookSelect}
+    bind $w.main.combo2 <<ComboboxSelected>> {::book::bookSelect}
     bind $w <Destroy> "::book::closeMainBook"
-    bind $w <Escape> { destroy  .bookWin }
+    bind $w <Escape> {destroy .bookWin}
+    bind $w <Left> ::move::Back 
+    bind $w <Right> ::move::Forward
+
+# Why
+if {0} {
     # we make a redundant check here, another one is done a few line above
     if { [catch {bookSelect} ] } {
       tk_messageBox -title "Scid" -type ok -icon error -message "No books found. Check books directory"
       set ::book::isOpen 0
-      set ::book::currentBook ""
+      set ::book::currentBook1 ""
+      set ::book::currentBook2 ""
       destroy  .bookWin
     }
+}
     bind $w <Configure> "recordWinSize $w"
+    ::book::bookSelect
   }
+
   ################################################################################
   #
   ################################################################################
   proc closeMainBook {} {
-    if { $::book::currentBook == "" } { return }
-    focus .
-    sc_book close $::book::bookSlot
+focus .
+    if { $::book::currentBook1 != "" } {
+      sc_book close $::book::bookSlot1
+      set ::book::currentBook1 ""
+    }
+    if { $::book::currentBook2 != "" } {
+      sc_book close $::book::bookSlot2
+      set ::book::currentBook2 ""
+    }
     set ::book::isOpen 0
-    set ::book::currentBook ""
   }
   ################################################################################
   #   updates book display when board changes
@@ -178,44 +260,81 @@ namespace eval book {
   proc refresh {} {
     global ::book::bookMoves
 
-    foreach t [.bookWin.f.text tag names] {
-      if { [string match "bookMove*" $t] } {
-        .bookWin.f.text tag delete $t
-      }
-    }
-    foreach t [.bookWin.f.text1 tag names] {
-      if { [string match "bookMove*" $t] } {
-        .bookWin.f.text1 tag delete $t
-      }
-    }
-    set bookMoves [sc_book moves $::book::bookSlot]
-    .bookWin.f.text configure -state normal
-    .bookWin.f.text delete 1.0 end
-    for {set i 0} {$i<[llength $bookMoves]} {incr i 2} {
-      set line [expr $i /2 +1]
-      set m ""
-      append m [::trans [lindex $bookMoves $i]] "\t" [lindex $bookMoves [expr $i + 1] ] "\n"
-      .bookWin.f.text insert end $m
-      .bookWin.f.text tag add bookMove$line $line.0 $line.end
-      .bookWin.f.text tag bind bookMove$line <ButtonPress-1> "::book::makeBookMove [lindex $bookMoves $i]"
-    }
-    .bookWin.f.text configure -state disabled -height [expr [llength $bookMoves] / 2 ]
+    set height 0
+    set nextmove [sc_game info nextMove]
 
-    set oppBookMoves [sc_book positions $::book::bookSlot]
-    .bookWin.f.text1 configure -state normal
-    .bookWin.f.text1 delete 1.0 end
-    for {set i 0} {$i<[llength $oppBookMoves]} {incr i 1} {
-      set line [expr $i +1]
-      set m ""
-      append m [::trans [lindex $oppBookMoves $i]]  "\n"
-      .bookWin.f.text1 insert end $m
-      .bookWin.f.text1 tag add bookMove$line $line.0 $line.end
-      .bookWin.f.text1 tag bind bookMove$line <ButtonPress-1> "::book::makeBookMove [lindex $oppBookMoves $i]"
+    if {$::book::showTwo} {
+      # Two books !
+      set games {1 2}
+    } else {
+      set games 1
     }
-    .bookWin.f.text1 configure -state disabled -height [llength $oppBookMoves]
-    if { $::book::oppMovesVisible == 0 } {
-      pack forget .bookWin.f.text1
+
+    foreach z $games {
+      foreach t [.bookWin.$z.booktext tag names] {
+	  .bookWin.$z.booktext tag delete $t
+      }
+      foreach t [.bookWin.$z.opptext tag names] {
+	  .bookWin.$z.opptext tag delete $t
+      }
+      set bookMoves [sc_book moves [set ::book::bookSlot$z]]
+	if {$::book::sortAlpha} {
+	set bookMoves [lrange [split $bookMoves {%}] 0 end-1]
+	# do a regsub to format output ???
+	set bookMoves [lsort $bookMoves]
+	set bookMoves [join $bookMoves]
+      }
+
+      ### try to allign the percent score... but can't &&&
+      # set  bookMoves [regsub -all {[::digit::]%} $bookMoves _&]
+
+      .bookWin.$z.booktext configure -state normal
+      .bookWin.$z.booktext delete 1.0 end
+      set line 1
+      foreach {x y} $bookMoves {
+        if {[string length $y] < 3} {set y " $y"}
+	if {$x == $nextmove} {
+	  ### (why do i have to configure this here and not above ?)
+	  .bookWin.$z.booktext tag configure nextmove -background lemonchiffon
+	  .bookWin.$z.booktext insert end [format "%5s %3s%%\n" [::trans $x] $y] nextmove
+	} else {
+	  .bookWin.$z.booktext insert end [format "%5s %3s%%\n" [::trans $x] $y]
+	  # .bookWin.$z.booktext insert end "[::trans $x]\t$y\n"
+	}
+	.bookWin.$z.booktext tag add bookMove$line $line.0 $line.end
+	.bookWin.$z.booktext tag add $x            $line.0 $line.end
+	.bookWin.$z.booktext tag bind bookMove$line <ButtonPress-1> "::book::makeBookMove $x"
+	.bookWin.$z.booktext tag bind bookMove$line <Any-Enter> "
+	  .bookWin.$z.booktext tag configure bookMove$line -background grey
+	  .bookWin.1.booktext tag configure $x -background grey
+	  .bookWin.2.booktext tag configure $x -background grey"
+	.bookWin.$z.booktext tag bind bookMove$line <Any-Leave> "
+	  .bookWin.$z.booktext tag configure bookMove$line -background {}
+	  .bookWin.1.booktext tag configure $x -background {}
+	  .bookWin.2.booktext tag configure $x -background {}"
+	incr line
+      }
+      incr height [llength $bookMoves]
+
+      set oppBookMoves [sc_book positions [set ::book::bookSlot$z]]
+      .bookWin.$z.opptext configure -state normal
+      .bookWin.$z.opptext delete 1.0 end
+
+      set line 1
+      foreach x $oppBookMoves {
+	.bookWin.$z.opptext insert end [format "%5s\n" [::trans $x]]
+	.bookWin.$z.opptext tag add bookMove$line $line.0 $line.end
+	.bookWin.$z.opptext tag bind bookMove$line <ButtonPress-1> "::book::makeBookMove $x"
+	incr line
+      }
+
+      # .bookWin.$z.opptext configure -state disabled -height [llength $oppBookMoves]
+togglePositionsDisplay
     }
+    set height [expr $height / 4]
+    .bookWin.1.booktext configure -state disabled -height $height
+    .bookWin.2.booktext configure -state disabled -height $height
+
   }
   ################################################################################
   #
@@ -242,11 +361,14 @@ namespace eval book {
   ################################################################################
   #
   ################################################################################
-  proc bookSelect { { n "" }  { v  0} } {
-    set ::book::lastBook [.bookWin.f.combo get]
-    scBookOpen [.bookWin.f.combo get] $::book::bookSlot
+  proc bookSelect {} {
+    set ::book::lastBook1 [.bookWin.main.combo1 get]
+    set ::book::lastBook2 [.bookWin.main.combo2 get]
+    scBookOpen 1 [.bookWin.main.combo1 get] $::book::bookSlot1
+    scBookOpen 2 [.bookWin.main.combo2 get] $::book::bookSlot2
     refresh
   }
+
   ################################################################################
   #
   ################################################################################
