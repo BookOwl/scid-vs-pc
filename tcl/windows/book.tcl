@@ -27,19 +27,21 @@ namespace eval book {
   # open a book, closing any previously opened one (called by annotation analysis)
   # arg name : gm2600.bin for example
   ################################################################################
-  proc scBookOpen {n name slot} {
-    if {$slot == [set ::book::bookSlot1]} {
+  proc scBookOpen {name slot} {
+    if {$slot == $::book::bookSlot1} {
       if {$::book::currentBook1 != ""} {
         sc_book close $::book::bookSlot1
       }
       set ::book::currentBook1 $name
     }
-    if {$slot == [set ::book::bookSlot2]} {
+
+    if {$slot == $::book::bookSlot2} {
       if {$::book::currentBook2 != ""} {
         sc_book close $::book::bookSlot2
       }
       set ::book::currentBook2 $name
     }
+
     if {$slot == $::book::bookTuningSlot} {
       if {$::book::currentTuningBook != ""} {
         sc_book close $::book::bookTuningSlot
@@ -57,7 +59,7 @@ namespace eval book {
   ################################################################################
   proc getMove {book fen slot {n 1}} {
     set tprob 0
-    ::book::scBookOpen $n $book $slot
+    ::book::scBookOpen $book $slot
     set bookmoves [sc_book moves $slot]
     if {[llength $bookmoves] == 0} {
       return ""
@@ -396,8 +398,8 @@ togglePositionsDisplay
     set ::book::lastBook2 [$w.main.combo2 get]
     $w.1.label configure -text [file rootname $::book::lastBook1]
     $w.2.label configure -text [file rootname $::book::lastBook2]
-    scBookOpen 1 [$w.main.combo1 get] $::book::bookSlot1
-    scBookOpen 2 [$w.main.combo2 get] $::book::bookSlot2
+    scBookOpen [$w.main.combo1 get] $::book::bookSlot1
+    scBookOpen [$w.main.combo2 get] $::book::bookSlot2
     refresh
   }
 
@@ -484,7 +486,7 @@ togglePositionsDisplay
   proc bookTuningSelect {} {
     set w .bookTuningWin
 
-    scBookOpen 1 [.bookTuningWin.fcombo.combo get] $::book::bookTuningSlot
+    scBookOpen [.bookTuningWin.fcombo.combo get] $::book::bookTuningSlot
 
     if { $::book::isReadonly > 0 } {
       $w.fbutton.bSave configure -state disabled

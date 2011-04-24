@@ -719,7 +719,7 @@ set ::utils::sound::announceBack 0
 set ::book::lastBook1 "" ; # book name without extension (.bin)
 set ::book::lastBook2 ""
 set ::book::sortAlpha 0
-set ::book::sortTwo 0
+set ::book::showTwo 0
 set ::book::oppMovesVisible 0
 
 # Engines list file: -- OLD NAMES, NO LONGER USED
