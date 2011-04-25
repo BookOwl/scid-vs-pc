@@ -280,28 +280,38 @@ focus .
     set moves1 [sc_book moves $::book::bookSlot1]
     set moves2 [sc_book moves $::book::bookSlot2]
     if {$::book::sortAlpha} {
-      ### Parse the moves to insert empty lines and make the moves line up
-      # should be doing this in C
-      set m1 {}
-      set m2 {}
-      array set a1 $moves1
-      array set a2 $moves2
-      set ids [lsort -unique [concat [array names a1] [array names a2]]]
-      foreach id $ids {
-	if {[info exists a1($id)]} {
-	  lappend m1 $id $a1($id)
-	  if {[info exists a2($id)]} {
-	    lappend m2 $id $a2($id)
+      if {$::book::showTwo} {
+	### Parse the moves to insert empty lines and make the moves line up
+	# should be doing this in C
+	set m1 {}
+	set m2 {}
+	array set a1 $moves1
+	array set a2 $moves2
+	set ids [lsort -unique [concat [array names a1] [array names a2]]]
+	foreach id $ids {
+	  if {[info exists a1($id)]} {
+	    lappend m1 $id $a1($id)
+	    if {[info exists a2($id)]} {
+	      lappend m2 $id $a2($id)
+	    } else {
+	      lappend m2 {} {}
+	    }
 	  } else {
-	    lappend m2 {} {}
+	    lappend m1 {} {}
+	    lappend m2 $id $a2($id)
 	  }
-	} else {
-	  lappend m1 {} {}
-	  lappend m2 $id $a2($id)
 	}
+	set moves1 $m1
+	set moves2 $m2
+      } else {
+	set m1 {}
+	array set a1 $moves1
+	set ids [lsort -unique [array names a1]]
+	foreach id $ids {
+	    lappend m1 $id $a1($id)
+	}
+	set moves1 $m1
       }
-      set moves1 $m1
-      set moves2 $m2
     }
 
     foreach z $games {
@@ -406,7 +416,7 @@ togglePositionsDisplay
   ################################################################################
   #
   ################################################################################
-  proc tuning { {name ""} } {
+  proc tuning {} {
     global ::book::bookList ::book::bookPath ::book::currentBook ::book::isOpen
 
     set w .bookTuningWin
@@ -416,14 +426,18 @@ togglePositionsDisplay
     }
 
     toplevel $w
-    wm title $w $::tr(Book)
+    wm title $w {Book Tuning}
     # wm resizable $w 0 0
 
     bind $w <F1> { helpWindow BookTuningWindow }
     setWinLocation $w
 
-    frame $w.fcombo
+    frame $w.left
     frame $w.f
+
+    pack $w.left -side left -pady 10 -expand 1 -fill both
+    pack $w.f -side right -padx 5 -pady 10 -anchor n
+
     # load book names
     set bookPath $::scidBooksDir
     set bookList [  lsort -dictionary [ glob -nocomplain -directory $bookPath *.bin ] ]
@@ -435,37 +449,41 @@ togglePositionsDisplay
       destroy $w
       return
     }
+
     set i 0
     set idx 0
     set tmp {}
     foreach file  $bookList {
       set f [ file tail $file ]
       lappend tmp $f
-      if {$name == $f} {
+      if {$::book::lastTuning == $f} {
         set idx $i
       }
       incr i
     }
 
-    ttk::combobox $w.fcombo.combo -width 12 -values $tmp
-    catch { $w.fcombo.combo current $idx }
-    pack $w.fcombo.combo -expand yes -fill x
+    ttk::combobox $w.left.combo -width 12 -values $tmp
+    catch { $w.left.combo current $idx }
 
-    frame $w.fbutton
-   menubutton $w.fbutton.mbAdd -text $::tr(AddMove) -menu $w.fbutton.mbAdd.otherMoves
-    menu $w.fbutton.mbAdd.otherMoves
+    menubutton $w.left.add -text $::tr(AddMove) -menu $w.left.add.otherMoves 
+    menu $w.left.add.otherMoves
     
-    button $w.fbutton.bExport -text $::tr(Export) -command ::book::export
-    button $w.fbutton.bSave -text $::tr(Save) -command ::book::save
+    frame $w.left.space1 -height 60
+    dialogbutton $w.left.export -text $::tr(Export) -command ::book::export
+    dialogbutton $w.left.save -text $::tr(Save) -command ::book::save
+    frame $w.left.space2 -height 10
+    dialogbutton $w.left.help -text $::tr(Help) -command {helpWindow BookTuning}
+    dialogbutton $w.left.close -text $::tr(Close) -command "destroy $w"
     
-    pack $w.fbutton.mbAdd $w.fbutton.bExport $w.fbutton.bSave -side top -fill x -expand yes
+    pack $w.left.combo $w.left.add $w.left.space1 -side top -padx 5 -pady 3
 
-    pack $w.fcombo $w.f $w.fbutton -side top
+    # pack $w.left.export $w.left.save $w.left.space $w.left.help $w.left.close -side bottom -padx 5 -pady 3
+    pack $w.left.close $w.left.help $w.left.space2 $w.left.save $w.left.export -side bottom -padx 5 -pady 3
 
-    bind $w.fcombo.combo <<ComboboxSelected>> ::book::bookTuningSelect
+    bind $w.left.combo <<ComboboxSelected>> ::book::bookTuningSelect
     bind $w <Destroy> "::book::closeTuningBook"
     bind $w <Escape> { destroy  .bookTuningWin }
-    bind $w <F1> { helpWindow BookTuning }
+    bind $w <F1> {helpWindow BookTuning}
     bind $w <Configure> "recordWinSize $w"
 
     bookTuningSelect
@@ -486,12 +504,14 @@ togglePositionsDisplay
   proc bookTuningSelect {} {
     set w .bookTuningWin
 
-    scBookOpen [.bookTuningWin.fcombo.combo get] $::book::bookTuningSlot
+    set ::book::lastTuning [$w.left.combo get]
+
+    scBookOpen $::book::lastTuning $::book::bookTuningSlot
 
     if { $::book::isReadonly > 0 } {
-      $w.fbutton.bSave configure -state disabled
+      $w.left.save configure -state disabled
     } else {
-      $w.fbutton.bSave configure -state normal
+      $w.left.save configure -state normal
     }
     refreshTuning
   }
@@ -508,11 +528,11 @@ togglePositionsDisplay
     set count [expr [llength $children] / 2]
     label $w.f.m$count -text [::trans $move]
     bind $w.f.m$count <ButtonPress-1> " ::book::makeBookMove $move"
-    spinbox $w.f.sp$count -from 0 -to 100 -width 3
+    spinbox $w.f.sp$count -from 0 -to 100 -width 3 -font font_Fixed
     $w.f.sp$count set 0
     grid $w.f.m$count -row $count -column 0 -sticky w
     grid $w.f.sp$count -row $count -column 1 -sticky w
-    $w.fbutton.mbAdd.otherMoves delete [::trans $move]
+    $w.left.add.otherMoves delete [::trans $move]
     lappend ::book::bookTuningMoves $move
   }
 
@@ -537,30 +557,31 @@ togglePositionsDisplay
     }
 
     set row 0
-    for {set i 0} {$i<[llength $moves]} {incr i 2} {
-      lappend ::book::bookTuningMoves [lindex $moves $i]
-      label $w.f.m$row -text [::trans [lindex $moves $i]]
-      bind $w.f.m$row <ButtonPress-1> " ::book::makeBookMove [lindex $moves $i] "
-      spinbox $w.f.sp$row -from 0 -to 100 -width 3
-      set pct [lindex $moves [expr $i+1] ]
-      set value [string replace $pct end end ""]
+    foreach {x y} $moves {
+      lappend ::book::bookTuningMoves $x
+      label $w.f.m$row -text [::trans $x] -justify right -anchor e -width 5 -font font_Fixed -padx 3
+      bind $w.f.m$row <ButtonPress-1> "::book::makeBookMove $x"
+      spinbox $w.f.sp$row -from 0 -to 100 -width 3 -font font_Fixed
+      set pct $y
+      set value [string map {% {}} $pct]
       $w.f.sp$row set $value
-      grid $w.f.m$row -row $row -column 0 -sticky w
-      grid $w.f.sp$row -row $row -column 1 -sticky w
+      grid $w.f.m$row  -row $row -column 0 -sticky w -pady 2
+      grid $w.f.sp$row -row $row -column 1 -sticky w -pady 2
       incr row
     }
 
     # load legal moves
-    $w.fbutton.mbAdd.otherMoves delete 0 end
-    $w.fbutton.mbAdd.otherMoves add command -label $::tr(None)
+    $w.left.add.otherMoves delete 0 end
+    $w.left.add.otherMoves add command -label $::tr(None)
     set moveList [ sc_pos moves ]
     foreach move $moveList {
       if { [ lsearch  $moves $move ] == -1 } {
-        $w.fbutton.mbAdd.otherMoves add command -label [::trans $move] -command "::book::addBookMove $move"
+        $w.left.add.otherMoves add command -label [::trans $move] -command "::book::addBookMove $move"
       }
     }
-    bind $w <Destroy> "::book::closeTuningBook"
+    bind $w <Destroy> ::book::closeTuningBook
   }
+
   ################################################################################
   # sends to book the list of moves and probabilities.
   ################################################################################
