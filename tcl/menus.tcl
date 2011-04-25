@@ -639,9 +639,9 @@ bind . <Control-equal> ::tb::OpenClose
 set helpMessage($m,[incr menuindex]) WindowsTB
 
 $m add checkbutton -label WindowsBook -variable ::book::isOpen -command ::book::OpenClose \
-    -accelerator "F11"
+    -accelerator "Ctrl+b"
 set helpMessage($m,[incr menuindex]) WindowsBook
-bind . <F11>  ::book::OpenClose
+bind . <Control-b>  ::book::OpenClose
 
 $m add checkbutton -label WindowsCorrChess -variable ::CorrespondenceChess::isOpen \
     -command ::CorrespondenceChess::CCWindow -accelerator "F12"
@@ -958,44 +958,46 @@ $m add command -label OptionsSave -command {
     puts $optionF "# If you edit this file, you must preserve valid its Tcl"
     puts $optionF "# format or it will not set your Scid options properly."
     puts $optionF ""
-    foreach i {boardSize boardStyle language ::pgn::showColor \
-	::pgn::indentVars ::pgn::indentComments ::defaultBackground \
-	::pgn::shortHeader ::pgn::boldMainLine ::pgn::stripMarks \
-	::pgn::symbolicNags ::pgn::moveNumberSpaces ::pgn::columnFormat myPlayerNames \
-	tree(order) tree(autoSave) optionsAutoSave ::tree::mask::recentMask \
-	ecoFile suggestMoves showVarPopup showVarArrows glistSize glexport \
-	blunderThreshold autoplayDelay animateDelay boardCoords boardSTM \
-	moveEntry(AutoExpand) moveEntry(Coord) \
-	translatePieces highlightLastMove highlightLastMoveWidth highlightLastMoveColor \
-	askToReplaceMoves ::windows::switcher::icons locale(numeric) \
-	spellCheckFile ::splash::keepopen autoRaise autoIconify \
-	exportFlags(comments) exportFlags(vars) \
-	exportFlags(indentc) exportFlags(indentv) \
-	exportFlags(column) exportFlags(symbols) \
-	exportFlags(htmldiag) exportFlags(convertNullMoves) \
-	email(smtp) email(smproc) email(server) \
-	email(from) email(bcc) ::windows::gamelist::widths ::windows::gamelist::findcase \
-	gameInfo(show) gameInfo(photos) gameInfo(hideNextMove) gameInfo(wrap) gameInfo(showStatus) \
-	gameInfo(fullComment) gameInfo(showMarks) gameInfo(showMenu) gameInfo(showTool) \
-	gameInfo(showMaterial) gameInfo(showFEN) gameInfo(showButtons) gameInfo(showTB) \
-	analysis(mini) engines(F2) engines(F3) engines(F4) \
-	engineCoach1 engineCoach2 scidBooksDir scidBasesDir \
-        ::book::lastBook1 ::book::lastBook2 ::book::sortAlpha ::book::showTwo ::book::oppMovesVisible \
-	crosstab(type) crosstab(ages) crosstab(countries) crosstab(ratings) crosstab(titles) crosstab(breaks) \
-	crosstab(deleted) crosstab(colors) crosstab(cnumbers) crosstab(groups) crosstab(sort) \
-	::utils::sound::soundFolder ::utils::sound::announceNew \
-	::utils::sound::announceForward ::utils::sound::announceBack \
-	::tacgame::threshold ::tacgame::blunderwarning ::tacgame::blunderwarningvalue \
-	::tacgame::levelMin  ::tacgame::levelMax  ::tacgame::levelFixed ::tacgame::randomLevel \
-	::tacgame::isLimitedAnalysisTime ::tacgame::showblunder ::tacgame::showblundervalue \
-	::tacgame::showblunderfound ::tacgame::showmovevalue ::tacgame::showevaluation \
-	::tacgame::isLimitedAnalysisTime ::tacgame::analysisTime ::tacgame::openingType \
-	::commenteditor::showBoard boardfile_lite boardfile_dark \
-	::file::finder::data(dir) ::file::finder::data(sort) ::file::finder::data(recurse) \
-	::file::finder::data(Scid) ::file::finder::data(PGN) ::file::finder::data(Rep) \
-	::file::finder::data(EPD) ::file::finder::data(Old) \
-	FilterMaxMoves FilterMinMoves FilterStepMoves FilterMaxElo FilterMinElo FilterStepElo \
-	FilterMaxYear FilterMinYear FilterStepYear FilterGuessELO } {
+
+  foreach i {boardSize boardStyle language ::pgn::showColor 
+    ::pgn::indentVars ::pgn::indentComments ::defaultBackground 
+    ::pgn::shortHeader ::pgn::boldMainLine ::pgn::stripMarks 
+    ::pgn::symbolicNags ::pgn::moveNumberSpaces ::pgn::columnFormat myPlayerNames 
+    tree(order) tree(autoSave) optionsAutoSave ::tree::mask::recentMask 
+    ecoFile suggestMoves showVarPopup showVarArrows glistSize glexport 
+    blunderThreshold autoplayDelay animateDelay boardCoords boardSTM 
+    moveEntry(AutoExpand) moveEntry(Coord) 
+    translatePieces highlightLastMove highlightLastMoveWidth highlightLastMoveColor 
+    askToReplaceMoves ::windows::switcher::icons locale(numeric) 
+    spellCheckFile ::splash::keepopen autoRaise autoIconify 
+    exportFlags(comments) exportFlags(vars) 
+    exportFlags(indentc) exportFlags(indentv) 
+    exportFlags(column) exportFlags(symbols) 
+    exportFlags(htmldiag) exportFlags(convertNullMoves) 
+    email(smtp) email(smproc) email(server) 
+    email(from) email(bcc) ::windows::gamelist::widths ::windows::gamelist::findcase 
+    gameInfo(show) gameInfo(photos) gameInfo(hideNextMove) gameInfo(wrap) gameInfo(showStatus) 
+    gameInfo(fullComment) gameInfo(showMarks) gameInfo(showMenu) gameInfo(showTool) 
+    gameInfo(showMaterial) gameInfo(showFEN) gameInfo(showButtons) gameInfo(showTB) 
+    analysis(mini) engines(F2) engines(F3) engines(F4) 
+    engineCoach1 engineCoach2 scidBooksDir scidBasesDir 
+    ::book::lastBook1 ::book::lastBook2 ::book::lastTuning ::book::sortAlpha 
+    ::book::showTwo ::book::oppMovesVisible 
+    crosstab(type) crosstab(ages) crosstab(countries) crosstab(ratings) crosstab(titles) crosstab(breaks) 
+    crosstab(deleted) crosstab(colors) crosstab(cnumbers) crosstab(groups) crosstab(sort) 
+    ::utils::sound::soundFolder ::utils::sound::announceNew 
+    ::utils::sound::announceForward ::utils::sound::announceBack 
+    ::tacgame::threshold ::tacgame::blunderwarning ::tacgame::blunderwarningvalue 
+    ::tacgame::levelMin  ::tacgame::levelMax  ::tacgame::levelFixed ::tacgame::randomLevel 
+    ::tacgame::isLimitedAnalysisTime ::tacgame::showblunder ::tacgame::showblundervalue 
+    ::tacgame::showblunderfound ::tacgame::showmovevalue ::tacgame::showevaluation 
+    ::tacgame::isLimitedAnalysisTime ::tacgame::analysisTime ::tacgame::openingType 
+    ::commenteditor::showBoard boardfile_lite boardfile_dark 
+    ::file::finder::data(dir) ::file::finder::data(sort) ::file::finder::data(recurse) 
+    ::file::finder::data(Scid) ::file::finder::data(PGN) ::file::finder::data(Rep) 
+    ::file::finder::data(EPD) ::file::finder::data(Old) 
+    FilterMaxMoves FilterMinMoves FilterStepMoves FilterMaxElo FilterMinElo FilterStepElo 
+    FilterMaxYear FilterMinYear FilterStepYear FilterGuessELO } {
 
       puts $optionF "set $i [list [set $i]]"
 
@@ -1666,7 +1668,7 @@ proc standardShortcuts {w} {
   bind $w <Control-M> ::search::material
   bind $w <Control-KeyPress-U> ::search:::usefile
   bind $w <Control-e> makeCommentWin
-  bind $w <Control-b> chooseBoardColors
+  bind $w <Control-b> ::book::OpenClose
   bind $w <Control-l> ::windows::gamelist::Open
   bind $w <Control-d> ::windows::gamelist::Open
   bind $w <Control-p> ::pgn::OpenClose

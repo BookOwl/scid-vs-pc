@@ -716,8 +716,9 @@ set ::utils::sound::announceNew 0
 set ::utils::sound::announceForward 0
 set ::utils::sound::announceBack 0
 
-set ::book::lastBook1 "" ; # book name without extension (.bin)
-set ::book::lastBook2 ""
+set ::book::lastBook1 {} ; # book name without extension (.bin)
+set ::book::lastBook2 {}
+set ::book::lastTuning {}
 set ::book::sortAlpha 0
 set ::book::showTwo 0
 set ::book::oppMovesVisible 0

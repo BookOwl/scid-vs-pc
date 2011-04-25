@@ -115,7 +115,7 @@ wm minsize $w 50 200
     setWinLocation $w
     # setWinSize $w
     bind $w <F1> {helpWindow Book}
-    bind $w <F11>  ::book::OpenClose
+    standardShortcuts $w
 
     frame $w.main 
     bind $w.main <Button-4> ::move::Back
