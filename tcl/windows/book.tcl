@@ -210,8 +210,8 @@ wm minsize $w 50 200
 
     # The width of "12" is not enough for larger fonts ?!
 
-    label $w.1.label -font font_Fixed -width 10
-    label $w.2.label -font font_Fixed -width 10
+    label $w.1.label -font font_Fixed
+    label $w.2.label -font font_Fixed 
     text $w.1.booktext -wrap none -state disabled -width 10 -cursor top_left_arrow -font font_Fixed
     text $w.2.booktext -wrap none -state disabled -width 10 -cursor top_left_arrow -font font_Fixed
 

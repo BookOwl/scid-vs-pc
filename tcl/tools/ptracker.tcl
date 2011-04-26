@@ -165,9 +165,15 @@ proc ::ptrack::make {} {
 
   grid [frame $w.bd.gap1 -height 5] -row 9 -column 0
 
+  ### Initialise the 4 rows of pieces at bottom of screen
+  ### The widgets of interest are .ptracker.bd.p[abcdefgh][1278]
+  ### and the labels need to be changed to canvas widgets to allow for image backgrounds
+  # &&& S.A
+
   foreach file {a b c d e f g h} c {1 2 3 4 5 6 7 8} p {r n b q k b n r} {
     set sq ${file}8
     set b $w.bd.p$sq
+    # canvas $b -height $::ptrack::psize -width $::ptrack::psize -bg lemonchiffon
     label $b -image b$p$::ptrack::psize -border 1 -relief raised
     grid $b -row 10 -column $c
     bind $b <1> "::ptrack::select $sq"
