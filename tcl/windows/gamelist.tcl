@@ -261,7 +261,7 @@ proc ::windows::gamelist::Open {} {
   # default classic alt clam
 
   global highcolor helpMessage
-  global glistNames glistFields glistSortedBy glSortReversed
+  global glistNames glistFields glistSortedBy glSortReversed glistSize
   if {[winfo exists .glistWin]} {
     focus .
     destroy .glistWin
@@ -318,8 +318,13 @@ proc ::windows::gamelist::Open {} {
   # $w.tree tag bind click1 <Button-1> {}
 
   # ttk::scrollbar $w.vsb -orient vertical -command "$w.tree yview"
-  ttk::scale     $w.vsb -orient vertical -command ::windows::gamelist::SetStart -from 1 -variable glstart
+  scale  $w.vsb -from 1 -orient vertical -variable glstart -showvalue 0 -command ::windows::gamelist::SetStart -bigincrement $glistSize -relief flat 
+  # -borderwidth 0
   ttk::scrollbar $w.hsb -orient horizontal -command "$w.tree xview"
+
+  # SCID:
+  #  scale $w.scale -from 1 -length 250 -orient horiz -variable glstart -showvalue 0 -command ::windows::gamelist::SetStart \ -bigincrement $glistSize -takefocus 0 -width 10 -troughcolor $buttoncolor
+
 
   pack $w.f -fill both -expand 1
   grid $w.tree $w.vsb -in $w.f -sticky nsew
