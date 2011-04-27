@@ -11925,11 +11925,11 @@ sc_name_info (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
 #endif
 
     sprintf (temp, "%s%u %s%s",
-             htextOutput ? "<red><run sc_name info -faA {}; ::windows::stats::Refresh>" : "",
+             htextOutput ? "<green><run sc_name info -faA {}; ::windows::stats::Refresh>" : "",
              totalcount[STATS_ALL],
              (totalcount[STATS_ALL] == 1 ?
               translate (ti, "game") : translate (ti, "games")),
-             htextOutput ? "</run></red>" : "");
+             htextOutput ? "</run></green>" : "");
     Tcl_AppendResult (ti, temp, NULL);
 
     if (firstGameDate != ZERO_DATE) {
@@ -11978,19 +11978,19 @@ sc_name_info (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
              wWidth,
              trWhite,
              percent / 100, decimalPointChar, percent % 100,
-             htextOutput ? "<red><run sc_name info -fw {}; ::windows::stats::Refresh>" : "",
+             htextOutput ? "<green><run sc_name info -fw {}; ::windows::stats::Refresh>" : "",
              whitescore[STATS_ALL][RESULT_White],
-             htextOutput ? "</run></red>" : "",
-             htextOutput ? "<red><run sc_name info -fd {}; ::windows::stats::Refresh>" : "",
+             htextOutput ? "</run></green>" : "",
+             htextOutput ? "<green><run sc_name info -fd {}; ::windows::stats::Refresh>" : "",
              whitescore[STATS_ALL][RESULT_Draw],
-             htextOutput ? "</run></red>" : "",
-             htextOutput ? "<red><run sc_name info -fl {}; ::windows::stats::Refresh>" : "",
+             htextOutput ? "</run></green>" : "",
+             htextOutput ? "<green><run sc_name info -fl {}; ::windows::stats::Refresh>" : "",
              whitescore[STATS_ALL][RESULT_Black],
-             htextOutput ? "</run></red>" : "",
+             htextOutput ? "</run></green>" : "",
              score / 2, decimalPointChar, score % 2 ? '5' : '0',
-             htextOutput ? "<red><run sc_name info -fa {}; ::windows::stats::Refresh>" : "",
+             htextOutput ? "<green><run sc_name info -fa {}; ::windows::stats::Refresh>" : "",
              whitecount[STATS_ALL],
-             htextOutput ? "</run></red></tt>" : "");
+             htextOutput ? "</run></green></tt>" : "");
     Tcl_AppendResult (ti, temp, newline, NULL);
 
     score = percent = 0;
@@ -12005,19 +12005,19 @@ sc_name_info (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
              bWidth,
              trBlack,
              percent / 100, decimalPointChar, percent % 100,
-             htextOutput ? "<red><run sc_name info -fW {}; ::windows::stats::Refresh>" : "",
+             htextOutput ? "<green><run sc_name info -fW {}; ::windows::stats::Refresh>" : "",
              blackscore[STATS_ALL][RESULT_White],
-             htextOutput ? "</run></red>" : "",
-             htextOutput ? "<red><run sc_name info -fD {}; ::windows::stats::Refresh>" : "",
+             htextOutput ? "</run></green>" : "",
+             htextOutput ? "<green><run sc_name info -fD {}; ::windows::stats::Refresh>" : "",
              blackscore[STATS_ALL][RESULT_Draw],
-             htextOutput ? "</run></red>" : "",
-             htextOutput ? "<red><run sc_name info -fL {}; ::windows::stats::Refresh>" : "",
+             htextOutput ? "</run></green>" : "",
+             htextOutput ? "<green><run sc_name info -fL {}; ::windows::stats::Refresh>" : "",
              blackscore[STATS_ALL][RESULT_Black],
-             htextOutput ? "</run></red>" : "",
+             htextOutput ? "</run></green>" : "",
              score / 2, decimalPointChar, score % 2 ? '5' : '0',
-             htextOutput ? "<red><run sc_name info -fA {}; ::windows::stats::Refresh>" : "",
+             htextOutput ? "<green><run sc_name info -fA {}; ::windows::stats::Refresh>" : "",
              blackcount[STATS_ALL],
-             htextOutput ? "</run></red></tt>" : "");
+             htextOutput ? "</run></green></tt>" : "");
     Tcl_AppendResult (ti, temp, newline, NULL);
 
     score = percent = 0;
@@ -12032,19 +12032,19 @@ sc_name_info (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
              tWidth,
              trTotal,
              percent / 100, decimalPointChar, percent % 100,
-             htextOutput ? "<red><run sc_name info -fwW {}; ::windows::stats::Refresh>" : "",
+             htextOutput ? "<green><run sc_name info -fwW {}; ::windows::stats::Refresh>" : "",
              bothscore[STATS_ALL][RESULT_White],
-             htextOutput ? "</run></red>" : "",
-             htextOutput ? "<red><run sc_name info -fdD {}; ::windows::stats::Refresh>" : "",
+             htextOutput ? "</run></green>" : "",
+             htextOutput ? "<green><run sc_name info -fdD {}; ::windows::stats::Refresh>" : "",
              bothscore[STATS_ALL][RESULT_Draw],
-             htextOutput ? "</run></red>" : "",
-             htextOutput ? "<red><run sc_name info -flL {}; ::windows::stats::Refresh>" : "",
+             htextOutput ? "</run></green>" : "",
+             htextOutput ? "<green><run sc_name info -flL {}; ::windows::stats::Refresh>" : "",
              bothscore[STATS_ALL][RESULT_Black],
-             htextOutput ? "</run></red>" : "",
+             htextOutput ? "</run></green>" : "",
              score / 2, decimalPointChar, score % 2 ? '5' : '0',
-             htextOutput ? "<red><run sc_name info -faA {}; ::windows::stats::Refresh>" : "",
+             htextOutput ? "<green><run sc_name info -faA {}; ::windows::stats::Refresh>" : "",
              totalcount[STATS_ALL],
-             htextOutput ? "</run></red></tt>" : "");
+             htextOutput ? "</run></green></tt>" : "");
     Tcl_AppendResult (ti, temp, newline, NULL);
 
     // Now print stats for games in the filter:
@@ -12133,19 +12133,19 @@ sc_name_info (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
                  wWidth,
                  trWhite,
                  percent / 100, decimalPointChar, percent % 100,
-                 htextOutput ? "<red><run sc_name info -ow {}; ::windows::stats::Refresh>" : "",
+                 htextOutput ? "<green><run sc_name info -ow {}; ::windows::stats::Refresh>" : "",
                  whitescore[STATS_OPP][RESULT_White],
-                 htextOutput ? "</run></red>" : "",
-                 htextOutput ? "<red><run sc_name info -od {}; ::windows::stats::Refresh>" : "",
+                 htextOutput ? "</run></green>" : "",
+                 htextOutput ? "<green><run sc_name info -od {}; ::windows::stats::Refresh>" : "",
                  whitescore[STATS_OPP][RESULT_Draw],
-                 htextOutput ? "</run></red>" : "",
-                 htextOutput ? "<red><run sc_name info -ol {}; ::windows::stats::Refresh>" : "",
+                 htextOutput ? "</run></green>" : "",
+                 htextOutput ? "<green><run sc_name info -ol {}; ::windows::stats::Refresh>" : "",
                  whitescore[STATS_OPP][RESULT_Black],
-                 htextOutput ? "</run></red>" : "",
+                 htextOutput ? "</run></green>" : "",
                  score / 2, decimalPointChar, score % 2 ? '5' : '0',
-                 htextOutput ? "<red><run sc_name info -oa {}; ::windows::stats::Refresh>" : "",
+                 htextOutput ? "<green><run sc_name info -oa {}; ::windows::stats::Refresh>" : "",
                  whitecount[STATS_OPP],
-                 htextOutput ? "</run></red></tt>" : "");
+                 htextOutput ? "</run></green></tt>" : "");
         Tcl_AppendResult (ti, temp, newline, NULL);
 
         score = percent = 0;
@@ -12160,19 +12160,19 @@ sc_name_info (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
                  bWidth,
                  trBlack,
                  percent / 100, decimalPointChar, percent % 100,
-                 htextOutput ? "<red><run sc_name info -oW {}; ::windows::stats::Refresh>" : "",
+                 htextOutput ? "<green><run sc_name info -oW {}; ::windows::stats::Refresh>" : "",
                  blackscore[STATS_OPP][RESULT_White],
-                 htextOutput ? "</run></red>" : "",
-                 htextOutput ? "<red><run sc_name info -oD {}; ::windows::stats::Refresh>" : "",
+                 htextOutput ? "</run></green>" : "",
+                 htextOutput ? "<green><run sc_name info -oD {}; ::windows::stats::Refresh>" : "",
                  blackscore[STATS_OPP][RESULT_Draw],
-                 htextOutput ? "</run></red>" : "",
-                 htextOutput ? "<red><run sc_name info -oL {}; ::windows::stats::Refresh>" : "",
+                 htextOutput ? "</run></green>" : "",
+                 htextOutput ? "<green><run sc_name info -oL {}; ::windows::stats::Refresh>" : "",
                  blackscore[STATS_OPP][RESULT_Black],
-                 htextOutput ? "</run></red>" : "",
+                 htextOutput ? "</run></green>" : "",
                  score / 2, decimalPointChar, score % 2 ? '5' : '0',
-                 htextOutput ? "<red><run sc_name info -oA {}; ::windows::stats::Refresh>" : "",
+                 htextOutput ? "<green><run sc_name info -oA {}; ::windows::stats::Refresh>" : "",
                  blackcount[STATS_OPP],
-                 htextOutput ? "</run></red></tt>" : "");
+                 htextOutput ? "</run></green></tt>" : "");
         Tcl_AppendResult (ti, temp, newline, NULL);
 
         score = percent = 0;
@@ -12187,19 +12187,19 @@ sc_name_info (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
                  tWidth,
                  trTotal,
                  percent / 100, decimalPointChar, percent % 100,
-                 htextOutput ? "<red><run sc_name info -owW {}; ::windows::stats::Refresh>" : "",
+                 htextOutput ? "<green><run sc_name info -owW {}; ::windows::stats::Refresh>" : "",
                  bothscore[STATS_OPP][RESULT_White],
-                 htextOutput ? "</run></red>" : "",
-                 htextOutput ? "<red><run sc_name info -odD {}; ::windows::stats::Refresh>" : "",
+                 htextOutput ? "</run></green>" : "",
+                 htextOutput ? "<green><run sc_name info -odD {}; ::windows::stats::Refresh>" : "",
                  bothscore[STATS_OPP][RESULT_Draw],
-                 htextOutput ? "</run></red>" : "",
-                 htextOutput ? "<red><run sc_name info -olL {}; ::windows::stats::Refresh>" : "",
+                 htextOutput ? "</run></green>" : "",
+                 htextOutput ? "<green><run sc_name info -olL {}; ::windows::stats::Refresh>" : "",
                  bothscore[STATS_OPP][RESULT_Black],
-                 htextOutput ? "</run></red>" : "",
+                 htextOutput ? "</run></green>" : "",
                  score / 2, decimalPointChar, score % 2 ? '5' : '0',
-                 htextOutput ? "<red><run sc_name info -oaA {}; ::windows::stats::Refresh>" : "",
+                 htextOutput ? "<green><run sc_name info -oaA {}; ::windows::stats::Refresh>" : "",
                  totalcount[STATS_OPP],
-                 htextOutput ? "</run></red></tt>" : "");
+                 htextOutput ? "</run></green></tt>" : "");
         Tcl_AppendResult (ti, temp, newline, NULL);
     }
 

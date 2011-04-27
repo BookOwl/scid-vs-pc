@@ -485,7 +485,7 @@ set ::tools::graphs::rating::player ""
 proc ::tools::graphs::rating::Refresh {{type ""} {player ""}} {
   set white [sc_game info white]
   set black [sc_game info black]
-  set whiteColor red
+  set whiteColor royalblue
   set blackColor blue
   set lwidth 2
   set psize 2
