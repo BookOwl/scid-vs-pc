@@ -752,7 +752,8 @@ proc ::windows::gamelist::SetStart {unit} {
 
   set glstart [expr {int($unit)}]
 
-  ::windows::gamelist::Refresh first
+  after cancel {::windows::gamelist::Refresh first}
+  after idle {::windows::gamelist::Refresh first}
 }
 
 proc ::windows::gamelist::ToggleFlag {flag} {

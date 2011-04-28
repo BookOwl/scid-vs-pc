@@ -328,6 +328,9 @@ proc progressWindow {args} {
   } else {
     grab $w
   }
+  # This raises above whole desktop on KDE. Bad!
+  # but not sure of best way to do it.
+  # Perhaps on other WMs, the problems not so bad
   bind $w <Visibility> "raiseWin $w"
   set ::progressWin_time [clock seconds]
 }
