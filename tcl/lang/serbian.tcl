@@ -1414,6 +1414,7 @@ translate Y SelectedSquares {Izabrana polja}
 translate Y SuggestedSquares {Polja preporuèenog poteza}
 # todo
 translate Y Grid {Grid}
+translate Y Previous {Prethodni}
 translate Y WhitePieces {Bele figure}
 translate Y BlackPieces {Crne figure}
 translate Y WhiteBorder {Ivica belih figura}

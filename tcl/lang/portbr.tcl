@@ -1376,6 +1376,7 @@ translate B SelectedSquares {Casas selecionadas}
 translate B SuggestedSquares {Casas Sugeridas}
 # todo
 translate B Grid {Grid}
+translate B Previous {Escolhas}
 translate B WhitePieces {Pecas Brancas}
 translate B BlackPieces {Pecas Pretas}
 translate B WhiteBorder {Borda Branca}

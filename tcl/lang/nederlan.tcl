@@ -1389,6 +1389,7 @@ translate N SelectedSquares {Geselecteerde velden}
 translate N SuggestedSquares {Zetsuggestie velden}
 # todo
 translate N Grid {Grid}
+translate N Previous {Voorgaande}
 translate N WhitePieces {Witte stukken}
 translate N BlackPieces {Zwarte stukken}
 translate N WhiteBorder {Witte rand}

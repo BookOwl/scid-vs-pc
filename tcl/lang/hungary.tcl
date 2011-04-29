@@ -1378,6 +1378,7 @@ translate H SelectedSquares {Kiválasztott mezõk}
 translate H SuggestedSquares {Javasolt lépések mezõi}
 # todo
 translate H Grid {Grid}
+translate H Previous {Korábbi}
 translate H WhitePieces {Világos figurák}
 translate H BlackPieces {Sötét figurák}
 translate H WhiteBorder {Világos körvonal}

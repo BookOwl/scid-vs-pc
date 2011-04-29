@@ -1420,6 +1420,7 @@ translate W SelectedSquares {Valda fält}
 translate W SuggestedSquares {Föreslagna fält}
 # todo
 translate W Grid {Grid}
+translate W Previous {Föregående}
 translate W WhitePieces {Vita pjäser}
 translate W BlackPieces {Svarta pjäser}
 translate W WhiteBorder {Vit kantlinje}

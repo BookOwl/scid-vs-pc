@@ -7,7 +7,7 @@
 array set ::board::letterToPiece \
   {R wr r br N wn n bn B wb b bb Q wq q bq K wk k bk P wp p bp . e}
 
-# { name(unused), lite, dark, highcolor, bestcolor, bgcolor }
+# { name(unused), lite, dark, highcolor, bestcolor, bgcolor, highlightLastMoveColor }
 
 set colorSchemes1 {
   { Blue-white	#f3f3f3 #7389b6 #f3f484 #b8cbf8 steelblue4}
@@ -86,14 +86,16 @@ proc setBoardColor {row choice} {
   set newColors(highcolor) [lindex $list 3]
   set newColors(bestcolor) [lindex $list 4]
   set newColors(bgcolor)   [lindex $list 5]
+  # highlightLastMoveColor needs to be added to colorSchemes1 , colorSchemes2 above 
+  set newColors(highlightLastMoveColor)   $::highlightLastMoveColor
 }
 
 proc applyBoardColors {} {
 
-  global newColors lite dark highcolor bestcolor bgcolor borderwidth
+  global newColors lite dark highcolor bestcolor bgcolor highlightLastMoveColor borderwidth
 
   set w .boardOptions
-  set colors {lite dark highcolor bestcolor bgcolor}
+  set colors {lite dark highcolor bestcolor bgcolor highlightLastMoveColor}
 
   foreach i $colors {
     set $i $newColors($i)
@@ -165,10 +167,10 @@ proc initBoardColors {} {
 
   # These procedures re-written by S.A.
 
-  global lite dark highcolor bestcolor bgcolor png_image_support
+  global lite dark highcolor bestcolor bgcolor highlightLastMoveColor png_image_support
   global newColors boardStyles boardStyle boardSizes
 
-  set colors {lite dark highcolor bestcolor bgcolor}
+  set colors {lite dark highcolor bestcolor bgcolor highlightLastMoveColor}
   set w .boardOptions
 
   if { [winfo exists $w] } {
@@ -279,10 +281,10 @@ proc initBoardColors {} {
   }
 
   set f $w.select
-  foreach row {0 1 0 1 0} column {0 0 2 2 4} c {
-    lite dark highcolor bestcolor bgcolor
+  foreach row {0 1 0 1 0 1} column {0 0 2 2 4 4} c {
+    lite dark highcolor bestcolor bgcolor highlightLastMoveColor
   } n {
-    LightSquares DarkSquares SelectedSquares SuggestedSquares Grid
+    LightSquares DarkSquares SelectedSquares SuggestedSquares Grid Previous
   } {
     button $f.b$c -image e20 -background [set $c] -command "chooseAColor $w $c"
 
@@ -2061,7 +2063,7 @@ proc  ::board::lastMoveHighlight {w} {
 #   N.B. resize (and update) is also called when changing background tiles
 
 proc ::board::update {w {board ""} {animate 0} {resize 0}} {
-  global highcolor currentSq bestSq bestcolor bgcolor
+  global highcolor currentSq bestSq bestcolor bgcolor highlightLastMoveColor
 
   set oldboard $::board::_data($w)
   if {$board == {}} {

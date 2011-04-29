@@ -1411,6 +1411,7 @@ translate O SelectedSquares {Merkede felt}
 translate O SuggestedSquares {Foreslåtte trekkfelt}
 # todo
 translate O Grid {Grid}
+translate O Previous {Tidligere}
 translate O WhitePieces {Hvite brikker}
 translate O BlackPieces {Sorte brikker}
 translate O WhiteBorder {Hvit ramme}

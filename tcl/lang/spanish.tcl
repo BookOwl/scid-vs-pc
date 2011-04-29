@@ -1293,6 +1293,7 @@ translate S SelectedSquares {Casillas seleccionadas}
 translate S SuggestedSquares {Casillas de movimiento sugerido}
 # todo
 translate S Grid {Grid}
+translate S Previous {Elección}
 translate S WhitePieces {Piezas blancas}
 translate S BlackPieces {Piezas negras}
 translate S WhiteBorder {Borde blancas}

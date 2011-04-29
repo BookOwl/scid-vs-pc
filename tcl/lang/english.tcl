@@ -1281,9 +1281,10 @@ translate E CopyErrNotOpen {is not open}
 # Colors:
 translate E LightSquares {Light squares}
 translate E DarkSquares {Dark squares}
-translate E SelectedSquares {Selected squares}
-translate E SuggestedSquares {Suggested moves}
+translate E SelectedSquares {Selected}
+translate E SuggestedSquares {Suggested}
 translate E Grid {Grid}
+translate E Previous {Previous}
 translate E WhitePieces {White pieces}
 translate E BlackPieces {Black pieces}
 translate E WhiteBorder {White border}

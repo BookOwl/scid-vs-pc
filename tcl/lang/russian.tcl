@@ -1442,6 +1442,7 @@ translate R SelectedSquares {Выбранные поля}
 translate R SuggestedSquares {Поля подсказанных ходов}
 # todo
 translate R Grid {Grid}
+translate R Previous {Предыдущие}
 translate R WhitePieces {Белые фигуры}
 translate R BlackPieces {Черные фигуры}
 translate R WhiteBorder {Белые границы}

@@ -1375,6 +1375,7 @@ translate C SelectedSquares {Vybraná pole}
 translate C SuggestedSquares {Pole navrhovaných tahù}
 # todo
 translate C Grid {Grid}
+translate C Previous {Pøedchozí}
 translate C WhitePieces {Bílé figury}
 translate C BlackPieces {Èerné figury}
 translate C WhiteBorder {Obrys bílých figur}

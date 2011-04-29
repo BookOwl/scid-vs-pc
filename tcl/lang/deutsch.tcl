@@ -1292,6 +1292,7 @@ translate D SelectedSquares {Ausgew‰hlte Felder}
 translate D SuggestedSquares {Zugvorschlagsfelder}
 # todo
 translate D Grid {Grid}
+translate D Previous {Vorherige}
 translate D WhitePieces {Weiﬂe Steine}
 translate D BlackPieces {Schwarze Steine}
 translate D WhiteBorder {Weiﬂe Umrandung}
