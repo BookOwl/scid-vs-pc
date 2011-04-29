@@ -58,7 +58,7 @@ proc setSetupBoardToFen {} {
 
   # Called from ".setup.fencombo" FEN combo S.A
 
-  # Once the FEN combo box in the Setup board widget is accessed, the original
+  # BUG: Once the FEN combo box in the Setup board widget is accessed, the original
   # game position can still be had, but game history is lost
 
   global setupboardSize setupBd
@@ -86,7 +86,7 @@ set setupFen {}
 #
 
 proc makeSetupFen {args} {
-  global setupFen setupBd moveNum toMove castling epFile
+  global setupFen setupBd moveNum pawnNum toMove castling epFile
   set fenStr ""
   set errorStr [validateSetup]
   if {$errorStr != ""} {
@@ -128,7 +128,14 @@ proc makeSetupFen {args} {
     }
   }
   # We assume a halfmove clock of zero:
-  append fenStr " 0 " $moveNum
+  # append fenStr " 0 " $moveNum
+
+  if {[string is integer -strict $pawnNum]} {
+      append fenStr " $pawnNum " $moveNum
+  } else {
+      append fenStr " 0 " $moveNum
+  }
+
   set setupFen $fenStr
 }
 
@@ -318,6 +325,7 @@ proc cancelSetupBoard {} {
 # Global variables for entry of the start position:
 set epFile {}          ;# legal values are empty, or "a"-"h".
 set moveNum 1          ;# legal values are 1-999.
+set pawnNum 0
 set castling KQkq      ;# will be empty or some combination of KQkq letters.
 set toMove White       ;# side to move, "White" or "Black".
 set pastePiece K       ;# Piece being pasted, "K", "k", "Q", "q", etc.
@@ -337,6 +345,7 @@ proc check_castling {a b c} {
   makeSetupFen
 }
 trace variable moveNum w check_moveNum
+trace variable pawnNum w check_moveNum
 trace variable epFile w check_epFile
 trace variable castling w check_castling
 
@@ -351,7 +360,7 @@ trace variable castling w check_castling
 proc setupBoard {} {
 
   global boardSizes boardSize setupboardSize setupBd pastePiece \
-         toMove epFile moveNum castling setupFen highcolor origFen borderwidth
+         toMove epFile moveNum pawnNum castling setupFen highcolor origFen borderwidth
 
   if {[winfo exists .setup]} { return }
 
@@ -467,14 +476,14 @@ proc setupBoard {} {
   ### Side to move frame.
 
   frame $sr.tomove
-  label $sr.tomove.label -textvar ::tr(SideToMove:)
+  label $sr.tomove.label -textvar ::tr(SideToMove)
   frame $sr.tomove.buttons
   radiobutton $sr.tomove.buttons.w -text $::tr(White) -variable toMove -value White \
     -command makeSetupFen
   radiobutton $sr.tomove.buttons.b -text $::tr(Black) -variable toMove -value Black \
     -command makeSetupFen
 
-  pack $sr.tomove -pady 7
+  pack $sr.tomove -pady 5
   pack $sr.tomove.label -side top -pady 2
   pack $sr.tomove.buttons -side top
   pack $sr.tomove.buttons.w $sr.tomove.buttons.b -side left
@@ -486,49 +495,66 @@ proc setupBoard {} {
     set toMove White
   }
 
+  set pawnNum [lindex $origFen end-1]
+  if {![string is integer -strict $pawnNum]} {
+    set pawnNum 0
+  }
+
   set moveNum [lindex $origFen end]
-  if {![string is integer $moveNum]} {
+  if {![string is integer -strict $moveNum]} {
     set moveNum 1
   }
 
-  ### Move number
-
   pack [frame $sr.mid] -padx 5 -pady 5
 
+  ### Move number
+
   frame $sr.mid.movenum
-  label $sr.mid.movenum.label -textvar ::tr(MoveNumber:)
+  label $sr.mid.movenum.label -textvar ::tr(MoveNumber)
   entry $sr.mid.movenum.e -width 3 -textvariable moveNum
 
-  pack $sr.mid.movenum -pady 10 -expand yes -fill x
-  pack $sr.mid.movenum.label $sr.mid.movenum.e -side left -anchor w -expand yes -fill x
+  pack $sr.mid.movenum -pady 5 -expand yes -fill x
+  pack $sr.mid.movenum.label -side left -anchor w
+  pack $sr.mid.movenum.e -side right
+
+  ### Moves since capture/pawn move
+
+  frame $sr.mid.pawnnum
+  label $sr.mid.pawnnum.label -textvar ::tr(HalfMoves)
+  entry $sr.mid.pawnnum.e -width 3 -textvariable pawnNum
+
+  pack $sr.mid.pawnnum -pady 5 -expand yes -fill x
+  pack $sr.mid.pawnnum.label -side left -anchor w
+  pack $sr.mid.pawnnum.e -side right
 
   ### Castling 
 
   frame $sr.mid.castle
-  label $sr.mid.castle.label -textvar ::tr(Castling:)
+  label $sr.mid.castle.label -textvar ::tr(Castling)
   ttk::combobox $sr.mid.castle.e -width 5 -textvariable castling -values {KQkq KQ kq K Q k q -}
 
   set castling [lindex $origFen 2]
 
-  pack $sr.mid.castle -pady 10 -expand yes -fill x
-  pack $sr.mid.castle.label $sr.mid.castle.e -side left -anchor w -expand yes -fill x
+  pack $sr.mid.castle -pady 5 -expand yes -fill x
+  pack $sr.mid.castle.label -side left -anchor w
+  pack $sr.mid.castle.e -side right
 
   ### En Passant file
 
   frame $sr.mid.ep
-  label $sr.mid.ep.label -textvar ::tr(EnPassantFile:)
+  label $sr.mid.ep.label -textvar ::tr(EnPassantFile)
   ttk::combobox $sr.mid.ep.e -width 2 -textvariable epFile -values {- a b c d e f g h}
 
   set epFile [string index [lindex $origFen 3] 0]
 
-  pack $sr.mid.ep -pady 10 -expand yes -fill x
+  pack $sr.mid.ep -pady 5 -expand yes -fill x
   pack $sr.mid.ep.label $sr.mid.ep.e -side left -anchor w -expand yes -fill x
 
   # Set bindings so the Fen string is updated at any change. The "after idle"
   # is needed to ensure any keypress which causes a text edit is processed
   # before we regenerate the FEN text.
 
-  foreach i "$sr.mid.ep.e $sr.mid.castle.e $sr.mid.movenum.e" {
+  foreach i "$sr.mid.ep.e $sr.mid.castle.e $sr.mid.movenum.e $sr.mid.pawnnum.e" {
     bind $i <Any-KeyPress> {after idle makeSetupFen}
     bind $i <FocusOut> {after idle makeSetupFen}
   }
@@ -607,7 +633,7 @@ proc setupBoard {} {
     makeSetupFen
   } -width 10
 
-  pack $sr.b		-side top -pady 15
+  pack $sr.b		-side top -pady 10
   pack $sr.b.clear	-side top -padx 5 -pady 2
   pack $sr.b.initial	-side top -padx 5 -pady 2
   pack [frame $sr.b.space -height 10] -side top
@@ -621,7 +647,7 @@ proc setupBoard {} {
   button $sr.b2.ok -text "OK" -width 7 -command exitSetupBoard
   button $sr.b2.cancel -textvar ::tr(Cancel) -width 7 -command cancelSetupBoard
 
-  pack $sr.b2 -side bottom -pady 20 -anchor s
+  pack $sr.b2 -side bottom -pady 10 -anchor s
   pack $sr.b2.ok -side left -padx 5
   pack $sr.b2.cancel -side right -padx 5
 

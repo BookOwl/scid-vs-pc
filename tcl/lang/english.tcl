@@ -994,7 +994,7 @@ translate E OppColor {Opposite color}
 translate E Either {Either}
 translate E MoveNumberRange {Move number range}
 translate E MatchForAtLeast {Match for at least}
-translate E HalfMoves {half-moves}
+translate E HalfMoves {Half moves}
 
 # Common endings in material search:
 translate E EndingPawns {Pawn endings}
