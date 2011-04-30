@@ -1551,12 +1551,11 @@ set helpText(GameList) {<h1>The Game List Window</h1>
   <p> The <run ::windows::gamelist::Open><green>Game List</green></run>
 widget allows easy perusal of all (filtered) games in the
 currently open Database / PGN archive. At the bottom of the widget you'll also find
-the <a Switcher>Switcher</a> window.
+the <a Switcher>Database Switcher</a>.
 </p>
-<p>A common use of the widget is to search for games by entering
-text in the <b>Find</b> entry box. Clicking <b>Filter</b>
-shows all matching games.
-<i>For more info about Searches and Filters, see <a Searches>here</a>, or below</i>.
+<p>A common use is to search for games by entering text in the <b>Find</b> entry box. Clicking <b>Filter</b>
+shows all matching games. Use "<b>+</b>" as a logical AND. For example: "Kasparov+Karpov".</p>
+<p><i>For more info about Searches and Filters, see <a Searches>here</a>, or below</i>.
 </p>
 <p>
 <b>Buttons</b>
