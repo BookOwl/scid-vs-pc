@@ -189,6 +189,7 @@ proc tools::graphs::filter::Open {} {
   }
   bind $w.c <1> tools::graphs::filter::Switch
   bind $w.c <3> ::tools::graphs::filter::Refresh
+  bind $w <Escape> "destroy $w"
 
   foreach {name text} {decade Decade year Year elo Rating move moves} {
     radiobutton $w.b.$name -padx 4 -pady 3 -text $::tr($text) \
@@ -499,6 +500,8 @@ proc ::tools::graphs::rating::Refresh {{type ""} {player ""}} {
 
   if {! [winfo exists $w]} {
     toplevel $w
+    wm withdraw $w
+
     menu $w.menu
     $w configure -menu $w.menu
     $w.menu add cascade -label GraphFile -menu $w.menu.file
@@ -535,11 +538,18 @@ proc ::tools::graphs::rating::Refresh {{type ""} {player ""}} {
       ::utils::graph::configure ratings -width [expr {[winfo width .rgraph.c] - 100} ]
       ::utils::graph::configure ratings -logy 10
       ::utils::graph::redraw ratings
+      update
+      recordWinSize .rgraph
     }
     bind $w.c <Button-1> "::tools::graphs::rating::Refresh"
     bind $w.c <Button-3> "::tools::graphs::rating::Refresh"
+    bind $w <Escape> "destroy $w"
     wm title $w "Scid: [tr ToolsRating]"
     ::tools::graphs::rating::ConfigMenus
+
+    setWinLocation $w
+    setWinSize $w
+    wm deiconify $w
   }
 
   $w.c itemconfigure text -width [expr {[winfo width $w.c] - 50} ]
@@ -548,8 +558,8 @@ proc ::tools::graphs::rating::Refresh {{type ""} {player ""}} {
   set width [expr {[winfo width $w.c] - 100} ]
   ::utils::graph::create ratings -width $width -height $height -xtop 50 -ytop 35 \
     -ytick 50 -xtick 1 -font font_Small -canvas $w.c -textcolor black \
-    -hline {{gray80 1 each 25} {steelBlue 1 each 100}} \
-    -vline {{gray80 1 each 1} {steelBlue 1 each 5}}
+    -hline {{gray90 1 each 25} {steelBlue 1 each 100}} \
+    -vline {{gray90 1 each 1} {steelBlue 1 each 5}}
   ::utils::graph::redraw ratings
   busyCursor $w
   update
@@ -561,6 +571,7 @@ proc ::tools::graphs::rating::Refresh {{type ""} {player ""}} {
     catch {::utils::graph::data ratings d -color $whiteColor -points 1 -lines 1 \
              -linewidth $lwidth -radius $psize -outline $whiteColor \
              -coords [sc_name info -ratings:$year $player]}
+    # Player ratings ... "-points 0" ? S.A.
   }
   if {$type == "white"  ||  $type == "both"} {
     set key ""
@@ -653,6 +664,7 @@ proc tools::graphs::absfilter::Open {} {
   }
   bind $w.c <1> tools::graphs::absfilter::Switch
   bind $w.c <3> ::tools::graphs::absfilter::Refresh
+  bind $w <Escape> "destroy $w"
   foreach {name text} {decade Decade year Year elo Rating move moves} {
     radiobutton $w.b.$name -padx 4 -pady 3 -text $::tr($text) \
       -variable ::tools::graphs::absfilter::type -value $name \

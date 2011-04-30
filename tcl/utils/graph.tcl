@@ -285,8 +285,12 @@ proc ::utils::graph::plot_axes {graph} {
       set x [expr {int($xmin/$inc) * $inc + $inc}]
       while {$x < $xmax} {
         set xvalue [xmap $graph $x]
+
+        # offset by one if gray to stop overwriting black axis
+	set ymaxc2 $ymaxc ; if {[string match {gray*} $color]} { incr ymaxc2 }
+
         if {$xvalue != $xminvalue  &&  $xvalue != $xmaxvalue} {
-          $canvas create line $xvalue $yminc $xvalue $ymaxc -width $width \
+          $canvas create line $xvalue $yminc $xvalue $ymaxc2 -width $width \
             -fill $color -tag $tag
         }
         set x [expr {$x + $inc}]
@@ -312,8 +316,12 @@ proc ::utils::graph::plot_axes {graph} {
       set y [expr {int($ymin/$inc) * $inc + $inc}]
       while {$y < $ymax} {
         set yvalue [ymap $graph $y]
+
+        # offset by one if gray to stop overwriting black axis
+	set xminc2 $xminc ; if {[string match {gray*} $color]} { incr xminc2 }
+
         if {$yvalue != $yminvalue  &&  $yvalue != $ymaxvalue} {
-          $canvas create line $xminc $yvalue $xmaxc $yvalue -width $width \
+          $canvas create line $xminc2 $yvalue $xmaxc $yvalue -width $width \
             -fill $color -tag $tag
         }
         set y [expr {$y + $inc}]
