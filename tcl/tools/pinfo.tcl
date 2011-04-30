@@ -20,8 +20,8 @@ proc playerInfo {{player ""}} {
     # this is a little broke S.A... might be due to autoscroll ?
     wm minsize $w 400 550
 
-    pack [frame $w.b2] -side bottom -fill x
-    pack [frame $w.b] -side bottom
+    pack [frame $w.b2] -side bottom -anchor e
+    pack [frame $w.b] -side bottom -pady 5
     button $w.b.graph -text [tr ToolsRating] \
       -command {::tools::graphs::rating::Refresh player $playerInfoName} -width 10
     button $w.b.edit -text $::tr(PInfoEditRatings) -command {
