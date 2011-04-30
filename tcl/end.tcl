@@ -1832,7 +1832,7 @@ proc raiseAllWindows {} {
       }
     }
   }
-  raise .
+  # raise .
 }
 
 # Hack to extract gif images out of Scid:
