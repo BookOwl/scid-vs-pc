@@ -6,7 +6,10 @@
 #   color or greyscale Postscript file.
 #
 #   The mode should be "color" or "gray".
-#
+
+set maxyear [clock format [clock seconds] -format "%Y"]
+set FilterMaxYear $maxyear
+
 proc ::tools::graphs::Save {mode w} {
   if {! [winfo exists $w]} { return }
   set ftypes {{"PostScript files" {.eps .ps}} {"All files" *}}
@@ -27,7 +30,6 @@ if { ! [info exists FilterMinElo] } {
     set FilterStepElo 100
     set FilterGuessELO 1
     set FilterMinYear 1995
-    set FilterMaxYear 2007
     set FilterStepYear 1
     set FilterMinMoves 5
     set FilterMaxMoves 80
@@ -74,10 +76,10 @@ proc checkConfigFilterGraph {} {
       if { $FilterMinYear < 1 } { set FilterMinYear 1995 }
       if { $FilterMaxMoves < 1 } { set FilterMaxMoves 80 }
       if { $FilterMaxElo < 1 } { set FilterMaxElo 2800 }
-      if { $FilterMaxYear < 1 } { set FilterMaxYear 2007 }
+      if { $FilterMaxYear < 1 } { set FilterMaxYear $::maxyear }
 }
 
-proc configureFilterGraph {} {
+proc configureFilterGraph {parent} {
   global FilterMaxMoves FilterMinMoves FilterStepMoves FilterMaxElo FilterMinElo FilterStepElo FilterMaxYear FilterMinYear FilterStepYear FilterGuessELO
 
   set w .configFilterGraph
@@ -87,7 +89,8 @@ proc configureFilterGraph {} {
 
   toplevel $w
   wm title $w $::tr(ConfigureFilter)
-  setWinLocation $w
+  wm withdraw $w
+
   bind $w <F1> {helpWindow Graphs Filter}
   frame $w.filter
   set col 0
@@ -122,7 +125,7 @@ proc configureFilterGraph {} {
       set FilterMaxElo 2800
       set FilterStepElo 100
       set FilterMinYear 1995
-      set FilterMaxYear 2007
+      set FilterMaxYear $::maxyear
       set FilterStepYear 1
       set FilterMinMoves 5
       set FilterMaxMoves 80
@@ -137,7 +140,9 @@ proc configureFilterGraph {} {
   pack $w.filter
   pack $w.close $w.update $w.standard -side right -padx 2 -pady 2
   focus $w.filter.iFilterMinYear
-  bind $w <Configure> "recordWinSize $w"
+  
+  placeWinOverParent $w $parent
+  wm deiconify $w
 }
 
 #####################
@@ -159,6 +164,8 @@ proc tools::graphs::filter::Open {} {
   }
   toplevel $w
   wm title $w $::tr(TitleFilterGraph)
+  wm withdraw $w
+
   set filterGraph 1
   bind $w <Destroy> {set filterGraph 0}
 
@@ -186,6 +193,7 @@ proc tools::graphs::filter::Open {} {
     ::utils::graph::configure filter -height [expr {[winfo height .fgraph.c] - 80}]
     ::utils::graph::configure filter -width [expr {[winfo width .fgraph.c] - 60}]
     ::utils::graph::redraw filter
+    recordWinSize .fgraph
   }
   bind $w.c <1> tools::graphs::filter::Switch
   bind $w.c <3> ::tools::graphs::filter::Refresh
@@ -197,13 +205,16 @@ proc tools::graphs::filter::Open {} {
       -command ::tools::graphs::filter::Refresh
     pack $w.b.$name -side left -padx 1 -pady 2
   }
-  button $w.b.setup -image icongraphic -command configureFilterGraph
+  button $w.b.setup -image icongraphic -command "configureFilterGraph $w"
   dialogbutton $w.b.close -text $::tr(Close) -command "destroy $w"
   pack $w.b.decade $w.b.elo -side left -padx 1 -pady 2
   pack $w.b.close $w.b.setup -side right -padx 2 -pady 2
   pack $w.b.status -side left -padx 2 -pady 2 -fill x -expand yes
 
   ::tools::graphs::filter::Refresh
+  setWinLocation $w
+  setWinSize $w
+  wm deiconify $w
 }
 
 proc tools::graphs::filter::Switch {} {
@@ -253,7 +264,7 @@ proc ::tools::graphs::filter::Refresh {} {
 
   ::utils::graph::create filter -width $width -height $height -xtop 40 -ytop 35 \
     -ytick 1 -xtick 1 -font font_Small -canvas $w.c -textcolor black \
-    -vline $vlines -background lightYellow -tickcolor black -xmin 0 -xmax 1
+    -vline $vlines -tickcolor black -xmin 0 -xmax 1
   ::utils::graph::redraw filter
   busyCursor .
   update
@@ -270,7 +281,7 @@ proc ::tools::graphs::filter::Refresh {} {
     set rlist [list 0000 1919 -1919  1920 1929 20-29 \
                  1930 1939 30-39  1940 1949 40-49  1950 1959 50-59 \
                  1960 1969 60-69  1970 1979 70-79  1980 1989 80-89 \
-                 1990 1999 90-99  2000 2009 2000+]
+                 1990 1999 90-99  2000 2009 00-09  2010 2019 2010+]
   } elseif {$::tools::graphs::filter::type == "year"} {
     set ftype date
     set typeName $::tr(Year)
@@ -352,14 +363,14 @@ proc ::tools::graphs::filter::Refresh {} {
   if {$all > 0} {
     set mean [expr {double($filter) * 1000.0 / double($all)}]
     if {$mean >= 1000.0} { set mean 999.9 }
-    lappend hlines [list red 1 at $mean]
+    lappend hlines [list rosybrown 2 at $mean]
   }
 
   # Create fake dataset with bounds so we see 0.0::
   #::utils::graph::data decade bounds -points 0 -lines 0 -bars 0 -coords {1 0.0 1 0.0}
 
-  ::utils::graph::data filter data -color darkBlue -points 1 -lines 1 -bars 0 \
-    -linewidth 2 -radius 4 -outline darkBlue -coords $dlist
+  ::utils::graph::data filter data -color steelblue -points 1 -lines 1 -bars 0 \
+    -linewidth 2 -radius 2 -outline steelblue -coords $dlist
   ::utils::graph::configure filter -xlabels $xlabels -ytick $ytick \
     -hline $hlines -ymin 0 -xmin 0.5 -xmax [expr {$count + 0.5}]
   ::utils::graph::redraw filter
@@ -633,9 +644,12 @@ proc tools::graphs::absfilter::Open {} {
     return
   }
   toplevel $w
+  wm withdraw $w
+
   wm title $w $::tr(TitleFilterGraph)
   set absfilterGraph 1
   bind $w <Destroy> {set absfilterGraph 0}
+  bind $w <Control-J> tools::graphs::absfilter::Open
 
   frame $w.b
   pack $w.b -side bottom -fill x
@@ -661,6 +675,7 @@ proc tools::graphs::absfilter::Open {} {
     ::utils::graph::configure absfilter -height [expr {[winfo height .afgraph.c] - 80}]
     ::utils::graph::configure absfilter -width [expr {[winfo width .afgraph.c] - 60}]
     ::utils::graph::redraw absfilter
+    recordWinSize .afgraph
   }
   bind $w.c <1> tools::graphs::absfilter::Switch
   bind $w.c <3> ::tools::graphs::absfilter::Refresh
@@ -671,13 +686,16 @@ proc tools::graphs::absfilter::Open {} {
       -command ::tools::graphs::absfilter::Refresh
     pack $w.b.$name -side left -padx 1 -pady 2
   }
-  button $w.b.setup -image icongraphic -command configureFilterGraph
+  button $w.b.setup -image icongraphic -command "configureFilterGraph $w"
   dialogbutton $w.b.close -text $::tr(Close) -command "destroy $w"
   pack $w.b.decade $w.b.elo -side left -padx 1 -pady 2
   pack $w.b.close $w.b.setup -side right -padx 2 -pady 2
   pack $w.b.status -side left -padx 2 -pady 2 -fill x -expand yes
 
   ::tools::graphs::absfilter::Refresh
+  setWinLocation $w
+  setWinSize $w
+  wm deiconify $w
 }
 
 proc tools::graphs::absfilter::Switch {} {
@@ -727,7 +745,7 @@ proc ::tools::graphs::absfilter::Refresh {} {
 
   ::utils::graph::create absfilter -width $width -height $height -xtop 40 -ytop 35 \
     -ytick 1 -xtick 1 -font font_Small -canvas $w.c -textcolor black \
-    -vline $vlines -background lightYellow -tickcolor black -xmin 0 -xmax 1
+    -vline $vlines -tickcolor black -xmin 0 -xmax 1
   ::utils::graph::redraw absfilter
   busyCursor .
   update
@@ -744,7 +762,7 @@ proc ::tools::graphs::absfilter::Refresh {} {
     set rlist [list 0000 1919 -1919  1920 1929 20-29 \
                  1930 1939 30-39  1940 1949 40-49  1950 1959 50-59 \
                  1960 1969 60-69  1970 1979 70-79  1980 1989 80-89 \
-                 1990 1999 90-99  2000 2009 2000+]
+                 1990 1999 90-99  2000 2009 00-09  2010 2019 2010+]
   } elseif {$::tools::graphs::absfilter::type == "year"} {
     set ftype date
     set typeName $::tr(Year)
@@ -830,14 +848,14 @@ proc ::tools::graphs::absfilter::Refresh {} {
   if { $count != 0 } {set mean [expr { $mean / $count }] }
   if {$all > 0} {
     if {$mean > $max} { set max $mean }
-    lappend hlines [list red 1 at $mean]
+    lappend hlines [list rosybrown 2 at $mean]
   }
 
   # Create fake dataset with bounds so we see 0.0::
   #::utils::graph::data decade bounds -points 0 -lines 0 -bars 0 -coords {1 0.0 1 0.0}
 
-  ::utils::graph::data absfilter data -color darkBlue -points 1 -lines 1 -bars 0 \
-    -linewidth 2 -radius 4 -outline darkBlue -coords $dlist
+  ::utils::graph::data absfilter data -color steelblue -points 1 -lines 1 -bars 0 \
+    -linewidth 2 -radius 2 -outline steelblue -coords $dlist
   ::utils::graph::configure absfilter -xlabels $xlabels -ytick $ytick \
     -hline $hlines -ymin 0 -xmin 0.5 -xmax [expr {$count + 0.5}]
   ::utils::graph::redraw absfilter
