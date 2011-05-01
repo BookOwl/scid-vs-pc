@@ -118,6 +118,9 @@ set ::file::finder::data(PGN) 1
 set ::file::finder::data(Rep) 1
 set ::file::finder::data(EPD) 1
 set ::file::finder::data(Old) 1
+set ::tools::graphs::absfilter::type year
+set ::tools::graphs::filter::type year
+
 
 ### Tree/mask options:
 set ::tree::mask::recentMask {}

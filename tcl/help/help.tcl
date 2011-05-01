@@ -3353,42 +3353,42 @@ To disable them, unselect <green>Options--<gt>Game Information--<gt>Show Photos<
 set helpTitle(Graphs) "Graph windows"
 set helpText(Graphs) {<h1>Graph Windows</h1>
   <p>
-  Scid has a number of windows which display information graphically.
-  They are explained below.
+  Scid has a number of graph features, displaying information about player ratings, the tree, and game frequencies.
   </p>
 
-  <h3><name Filter>Relative and absolute Filter Graph windows</name></h3>
+  <h3><name Filter>Filter Graph Windows</name></h3>
+<p>
+  <b>Relative Filter Graph</b>
   <p>
-  The <term>relative Filter Graph</term> window shows trends by date or by
-  Elo rating for the games in the current filter, compared to the
-  entire database. For example, it is useful when the <a Tree>tree</a>
-  is open as a tool showing how the current opening position has changed
-  in popularity in recent years or decades, or whether it is especially
-  popular among higher-rated players such as grandmasters.
+  The <green><run ::tools::graphs::filter::Open>Relative Filter Graph</run></green> shows trends by Date,
+  Elo Rating or Moves for games in the current filter compared to the
+  entire database. For example, when the <a Tree>tree</a>
+  is open it shows how the current opening has changed
+  in popularity in recent years, or whether it is especially
+  popular among higher-rated players.
   Each point on the graph represents the number of games in the filter
   per 1000 games in the entire database, for a particular date or Elo
   rating range.
-  </p>
+  </p><p>
+  <b>Absolute Filter Graph</b>
   <p>
-  The second Filter graph window is the <term>absolute Filter
-  Graph</term> window. This graph shows the absolute quantity of games
-  in the filter according the selecte criteria. It is possible to select
-  the criteria: Decade, Year, Rating and Moves.<br>
-  The small button near the Close-Button opens the dialog to configure
-  the graph. You can select the range (from, to) and the size of
-  intervall for the x-axes. The "decade"-criteria can't be configured,
-  use Year insteed. If "Estimate" selected a missing rating will be
-  estimate like described below. In other case no estimation is done
+  The <green><run ::tools::graphs::absfilter::Open>Absolute Filter Graph</run></green> 
+  shows the quantity of games in the filter according to the selected criteria.
+</p><p>
+<b>Usage</b>
+  <p>
+  The iconic button near the bottom opens a dialog to configure
+  the graph. You can select the range and interval for the X axis. The "Decade" criteria can't be configured,
+  use "Year" instead. If "Estimate" is selected, a missing rating will be
+  estimates as described below. Otherwise no estimation is done
   and missing ratings are count as zero. This matches the Min. Elo
-  evaluation in the statistic-window. Use "Update" to start a new
-  evaluation with the actual value without closing the dialog.
+  evaluation in the statistic-window.</p>
+  <p>
+  <i>Note: the calculation can take some time on large ranges and
+  small intervals</i>.
   </p>
   <p>
-  Please note: The calculation can be need some time on large ranges and
-  small intervalls, in addition the readability degreases. 
-  </p>
-  <p>
-  When plotting the Filter graph by rating, Scid uses the average (mean)
+  When plotting the Filter graph by rating, Scid uses the average
   rating for each game. Estimate ratings (such as those in the spelling file)
   are not used. If one player in a game has a rating but the opponent
   does not, the opponent is presumed to have the same up to a limit of 2200.
@@ -3396,19 +3396,17 @@ set helpText(Graphs) {<h1>Graph Windows</h1>
   the mean rating is (2500+2200)/2=2350.
   </p>
 
-  <h3><name Rating>Rating Graph window</name></h3>
+  <h3><name Rating>Player Rating Graph</name></h3>
   <p>
-  The <term>Rating Graph</term> window shows the rating history of one
-  player or the two players of the current game.
-  You can produce the graph for a single player by pressing the
-  <b>Rating graph</b> button in the <a PInfo>player information</a>
-  window, or produce it for the two players of the current game by
-  selecting <b>Rating graph</b> from the <menu>Tools</menu> menu.
+  The <green><run ::tools::graphs::rating::Refresh both>Rating Graph</run></green> shows the ELO history of one, or
+  both, players from the current game.  You can access the graph by pressing the
+  "Rating Graph" button in the <a PInfo>Player Information</a>
+  window, or by selecting "Rating Graph" from the Tools menu.
   </p>
 
-  <h3><name Score>Score Graph window</name></h3>
+  <h3><name Score>Score Graph</name></h3>
   <p>
-  The <term>Score Graph</term> window shows the numeric evaluations (scores)
+  The <b>Score Graph</b> window shows the numeric evaluations (scores)
   stored in the comments of the current game as a graph.
   You can click the left mouse button anywhere in the score graph to go to the
   corresponding position in the game.
@@ -3435,13 +3433,13 @@ set helpText(Graphs) {<h1>Graph Windows</h1>
 
   <h3><name Tree>Tree Graph window</name></h3>
   <p>
-  The <term>Tree Graph</term> window is available from the tree
+  The <term>Tree Graph</b> window is available from the tree
   window. It shows the performance of the most popular moves from the
   current position. More information is available from the
   <a Tree Graph>Tree</a> help page.
   </p>
 
-  <p><footer>Updated: Scid 3.6.26, October 2008</footer></p>
+  <p><footer>Updated: Scid vs. PC 4.4 April 2011</footer></p>
 }
 
 ####################

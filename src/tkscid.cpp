@@ -5220,15 +5220,14 @@ sc_filter_first (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // sc_filter_freq:
 //    Returns a two-integer list showing how many filter games,
-//    and how many total database games, meet the specified
-//    date or mean rating range criteria.
+//    and how many total database games, meet the specified criteria.
 //    Usage:
 //        sc_filter freq date <startdate> [<endDate>]
-//    or  sc_filter freq elo <lowerMeanElo> [<upperMeanElo>]
-//Klimmek: or sc_filter freq moves <lowerhalfMove> <higherhalfMove>
-//         add mode to count games with spezified movenumber
+//        sc_filter freq elo <lowerMeanElo> [<upperMeanElo>]
+//     or sc_filter freq move <lowerhalfMove> <higherhalfMove>
+//         add mode to count games with specified movenumber
 //    where the final parameter defaults to the maximum allowed
-//    date or Elo rating.
+//    date , Elo rating or moves.
 //    Note for rating queries: only the rating values in the game
 //    are used; estimates from other games or the spelling file
 //    will be ignored. Also, if one player has an Elo rating but

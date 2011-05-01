@@ -71,7 +71,7 @@ proc checkConfigFilterGraph {} {
       if { $FilterStepMoves < 1 } { set FilterStepMoves 1 }
       if { $FilterStepElo < 1 } { set FilterStepElo 100 }
       if { $FilterStepYear < 1 } { set FilterStepYear 1 }
-      if { $FilterMinMoves < 1 } { set FilterMinMoves 5 }
+      if { $FilterMinMoves < 1 } { set FilterMinMoves 1 }
       if { $FilterMinElo < 0 } { set FilterMinElo 2100 }
       if { $FilterMinYear < 1 } { set FilterMinYear 1995 }
       if { $FilterMaxMoves < 1 } { set FilterMaxMoves 80 }
@@ -97,15 +97,15 @@ proc configureFilterGraph {parent} {
   set row 0
     #Create input for each configurationvalue
     foreach { i n } { Year Year Elo Rating Moves moves} {
-      label $w.filter.label$i -text $::tr($n): -font font_Bold
+      label $w.filter.label$i -text $::tr($n) -font font_Bold
       grid $w.filter.label$i -row $row -column $col -sticky w
       incr col
-      foreach {j k} { FilterMin "  " FilterMax " - " FilterStep "  Intervall:"} {
+      foreach {j k} { FilterMin "  " FilterMax " - " FilterStep "  Interval"} {
 	  label $w.filter.label$j$i -text $k
 	  entry $w.filter.i$j$i -textvariable $j$i -justify right -width 5 -validate all -vcmd { regexp {^[0-9]{0,4}$} %P }
-	  grid $w.filter.label$j$i -row $row -column $col -sticky w
+	  grid $w.filter.label$j$i -row $row -column $col -sticky w -padx 3 -pady 3
 	  incr col
-	  grid $w.filter.i$j$i -row $row -column $col -sticky w
+	  grid $w.filter.i$j$i -row $row -column $col -sticky w -padx 3 -pady 3
 	  incr col
       }
       if { $i == "Elo" } {
@@ -139,7 +139,7 @@ proc configureFilterGraph {parent} {
 
   pack $w.filter
   pack $w.close $w.update $w.standard -side right -padx 2 -pady 2
-  focus $w.filter.iFilterMinYear
+  # focus $w.filter.iFilterMinYear
   
   placeWinOverParent $w $parent
   wm deiconify $w
@@ -151,7 +151,6 @@ proc configureFilterGraph {parent} {
 # ::tools::graphs::filter::type
 #   can be "decade", "year" or "elo" , "move"
 #
-set ::tools::graphs::filter::type year
 
 proc tools::graphs::filter::Open {} {
   global filterGraph
@@ -195,12 +194,12 @@ proc tools::graphs::filter::Open {} {
     ::utils::graph::redraw filter
     recordWinSize .fgraph
   }
-  bind $w.c <1> tools::graphs::filter::Switch
+  # bind $w.c <1> tools::graphs::filter::Switch
   bind $w.c <3> ::tools::graphs::filter::Refresh
   bind $w <Escape> "destroy $w"
 
   foreach {name text} {decade Decade year Year elo Rating move moves} {
-    radiobutton $w.b.$name -padx 4 -pady 3 -text $::tr($text) \
+    radiobutton $w.b.$name -padx 4 -pady 3 -text [string totitle $::tr($text)] \
       -variable ::tools::graphs::filter::type -value $name \
       -command ::tools::graphs::filter::Refresh
     pack $w.b.$name -side left -padx 1 -pady 2
@@ -245,18 +244,18 @@ proc ::tools::graphs::filter::Refresh {} {
   if {$::tools::graphs::filter::type == "elo"} {
     # Vertical lines for Elo-range graph:
     for {set i 1} {$i <=  $FilterMaxElo- $FilterMinElo} { incr i } {
-      lappend vlines [list gray80 1 at $i.5]
+      lappend vlines [list gray90 1 at $i.5]
     }
   } elseif {$::tools::graphs::filter::type == "year"} {
     # Vertical lines for Year-range graph:
     for {set i 1} {$i <= $FilterMaxYear- $FilterMinYear} {incr i } {
-      lappend vlines [list gray80 1 at $i.5]
+      lappend vlines [list gray90 1 at $i.5]
     }
   } elseif {$::tools::graphs::filter::type == "decade"} {
     # Vertical lines for Decade graph: most are gray, but those
     # just before 1950s and 2000s are blue to make them stand out.
     for {set i 1} {$i < 10} {incr i} {
-      set vlineColor gray80
+      set vlineColor gray90
       if {$i == 4  ||  $i == 9} { set vlineColor steelBlue }
       lappend vlines [list $vlineColor 1 at $i.5]
     }
@@ -356,7 +355,7 @@ proc ::tools::graphs::filter::Refresh {} {
   if {$max > 100} { set ytick  20 }
   if {$max > 250} { set ytick  50 }
   if {$max > 500} { set ytick 100 }
-  set hlines [list [list gray80 1 each $ytick]]
+  set hlines [list [list gray90 1 each $ytick]]
   # Add mean horizontal line:
   set filter [sc_filter count]
   set all [sc_base numGames]
@@ -440,8 +439,8 @@ proc ::tools::graphs::score::Refresh {} {
   set width [expr {[winfo width $w.c] - 100} ]
   ::utils::graph::create score -width $width -height $height -xtop 50 -ytop 45 \
     -ytick 1 -xtick 5 -font font_Small -canvas $w.c -textcolor black \
-    -hline {{gray80 1 each 1} {black 1 at 0}} \
-    -vline {{gray80 1 each 1} {steelBlue 1 each 5}}
+    -hline {{gray90 1 each 1} {black 1 at 0}} \
+    -vline {{gray90 1 each 1} {steelBlue 1 each 5}}
 
   # Create fake dataset with bounds so we see at least -1.0 to 1.0:
   ::utils::graph::data score bounds -points 0 -lines 0 -bars 0 -coords {1 -0.9 1 0.9}
@@ -632,7 +631,6 @@ proc ::tools::graphs::rating::ConfigMenus {{lang ""}} {
 # ::tools::graphs::absfilter::type
 #   can be "decade", "year" or "elo", "move"
 #
-set ::tools::graphs::absfilter::type year
 
 proc tools::graphs::absfilter::Open {} {
   global absfilterGraph
@@ -677,11 +675,11 @@ proc tools::graphs::absfilter::Open {} {
     ::utils::graph::redraw absfilter
     recordWinSize .afgraph
   }
-  bind $w.c <1> tools::graphs::absfilter::Switch
+  # bind $w.c <1> tools::graphs::absfilter::Switch
   bind $w.c <3> ::tools::graphs::absfilter::Refresh
   bind $w <Escape> "destroy $w"
   foreach {name text} {decade Decade year Year elo Rating move moves} {
-    radiobutton $w.b.$name -padx 4 -pady 3 -text $::tr($text) \
+    radiobutton $w.b.$name -padx 4 -pady 3 -text [string totitle $::tr($text)] \
       -variable ::tools::graphs::absfilter::type -value $name \
       -command ::tools::graphs::absfilter::Refresh
     pack $w.b.$name -side left -padx 1 -pady 2
@@ -726,22 +724,30 @@ proc ::tools::graphs::absfilter::Refresh {} {
   if {$::tools::graphs::absfilter::type == "elo"} {
     # Vertical lines for Elo-range graph:
     for {set i 1} {$i <=  $FilterMaxElo- $FilterMinElo} { incr i } {
-      lappend vlines [list gray80 1 at $i.5]
+      lappend vlines [list gray90 1 at $i.5]
     }
   } elseif {$::tools::graphs::absfilter::type == "year"} {
     # Vertical lines for Year-range graph:
     for {set i 1} {$i <= $FilterMaxYear- $FilterMinYear} {incr i } {
-      lappend vlines [list gray80 1 at $i.5]
+      lappend vlines [list gray90 1 at $i.5]
     }
   } elseif {$::tools::graphs::absfilter::type == "decade"} {
     # Vertical lines for Decade graph: most are gray, but those
     # just before 1950s and 2000s are blue to make them stand out.
     for {set i 1} {$i < 10} {incr i} {
-      set vlineColor gray80
-      if {$i == 4  ||  $i == 9} { set vlineColor steelBlue }
+      set vlineColor gray90
+      # if {$i == 4  ||  $i == 9} { set vlineColor steelBlue }
       lappend vlines [list $vlineColor 1 at $i.5]
     }
-  }
+  } else {
+    ### moves
+    for {set i 1} {$i <= $FilterMaxMoves - $FilterMinMoves} {incr i} {
+      # this is a son of a bitch thing, and is broken S.A.
+      # FilterMinMoves is fucked around somewhere else too.
+      # if {[expr $i % 5] == [expr $FilterMinMoves % 5]}
+      lappend vlines [list gray90 1 at $i]
+    }
+  } 
 
   ::utils::graph::create absfilter -width $width -height $height -xtop 40 -ytop 35 \
     -ytick 1 -xtick 1 -font font_Small -canvas $w.c -textcolor black \
@@ -797,9 +803,9 @@ proc ::tools::graphs::absfilter::Refresh {} {
       set startMove $FilterMinMoves
       set endMove  $FilterMaxMoves
       set rlist {}
-      for {set i $startMove} {$i <= $endMove} {set i [expr {$i + $FilterStepMoves}]} {
-	  lappend rlist [expr {2*$i}]
-	  lappend rlist [expr {2*($i+$FilterStepMoves)-1}]
+      for {set i $startMove} {$i <= $endMove} {incr i $FilterStepMoves} {
+	  lappend rlist [expr {2*$i-1}]
+	  lappend rlist [expr {2*($i+$FilterStepMoves)-2}]
 	  if { $i % 5 == 0 } {
 	      lappend rlist $i
 	  } else {
@@ -841,7 +847,7 @@ proc ::tools::graphs::absfilter::Refresh {} {
   if {$max >= 250000} { set ytick 25000 }
   if {$max >= 500000} { set ytick 50000 }
   if {$max >= 1000000} { set ytick 100000 }
-  set hlines [list [list gray80 1 each $ytick]]
+  set hlines [list [list gray90 1 each $ytick]]
   # Add mean horizontal line:
   set absfilter [sc_filter count]
   set all [sc_base numGames]

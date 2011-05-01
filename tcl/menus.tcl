@@ -997,7 +997,7 @@ $m add command -label OptionsSave -command {
     ::file::finder::data(Scid) ::file::finder::data(PGN) ::file::finder::data(Rep) 
     ::file::finder::data(EPD) ::file::finder::data(Old) 
     FilterMaxMoves FilterMinMoves FilterStepMoves FilterMaxElo FilterMinElo FilterStepElo 
-    FilterMinYear FilterStepYear FilterGuessELO } {
+    FilterMinYear FilterStepYear FilterGuessELO ::tools::graphs::filter::type  ::tools::graphs::absfilter::type} {
 
       puts $optionF "set $i [list [set $i]]"
 
