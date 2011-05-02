@@ -152,6 +152,7 @@ proc autoscrollframe {args} {
     $w configure -yscrollcommand [list _autoscroll $frame.ybar]
     grid $frame.ybar -row 0 -column 1 -sticky ns
     set _autoscroll($frame.ybar) 1
+    # set _autoscroll(time:$frame.ybar) [clock clicks -milli] &&&
     set _autoscroll(time:$frame.ybar) 0
     if {! $setgrid} {
       # bind $frame.ybar <Map> [list _autoscrollMap $frame]
@@ -164,6 +165,7 @@ proc autoscrollframe {args} {
     grid $frame.xbar -row 1 -column 0 -sticky we
     set _autoscroll($frame.xbar) 1
     set _autoscroll(time:$frame.xbar) 0
+    # set _autoscroll(time:$frame.xbar) [clock clicks -milli] &&&
     if {! $setgrid} {
       # bind $frame.xbar <Map> [list _autoscrollMap $frame]
     }
@@ -188,11 +190,16 @@ array set _autoscroll {}
 #   the stupid Tcl/Tk text widget doesn't handle scrollbars well.
 #
 proc _autoscroll {bar args} {
+
   global _autoscroll
   if {[llength $args] == 2} {
     set min [lindex $args 0]
     set max [lindex $args 1]
-    if {$min > 0.0  ||  $max < 1.0} {
+    ### 0.95 should really be 1.0 but because of font size variation (or something !?)
+    ### we're using 0.95 to stop shuffling in/and of y scrollbar S.A.
+    # eg: _autoscroll .gameInfoFrame.ybar 0.0 1.0
+    #     _autoscroll .gameInfoFrame.ybar 0.0 0.9882352941176471
+    if {$min > 0.0  ||  $max < 0.97} {
       if {! $_autoscroll($bar)} {
         grid configure $bar
         set _autoscroll($bar) 1

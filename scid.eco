@@ -19,7 +19,7 @@
 # Scid website: http://scid.sourceforge.net/
 
 
-A00a "Start position"  *
+A00a "Start"  *
 A00b "Barnes Opening"  1.f3 *
 A00b "Fried fox"  1.f3 e5 2.Kf2 *
 A00c "Kadas Opening"  1.h4 *
