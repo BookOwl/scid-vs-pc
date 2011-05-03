@@ -12,7 +12,6 @@ namespace eval fics {
   set playing 0
   set waitForRating ""
   set waitForMoves ""
-  # This variable is misnamed S.A. 1=noise 0=quiet
   set sought 0
   set soughtlist {}
   set graphwidth 300
@@ -85,9 +84,11 @@ namespace eval fics {
       $w.timeseal_entry configure -state disabled
       $w.timeseal_browse configure -state disabled
     }
+    # label IP address, Refresh button
+    label $w.lFICS_ip -text {IP Address} 
+    entry $w.ipserver -textvariable ::fics::server_ip -state readonly
+    button $w.bRefresh -text {Refresh} -command ::fics::getIP -pady 0.8
 
-    # label $w.lFICS_IP -text "Server IP"
-    # entry $w.ip -width 16 -textvariable ::fics::server_ip
     label $w.lFICS_port -text "Server port"
     entry $w.portserver -width 6 -textvariable ::fics::port_fics
     label $w.ltsport -text "Timeseal port"
@@ -99,17 +100,16 @@ namespace eval fics {
       set ::fics::reallogin $::fics::login
       set ::fics::password  [.ficsConfig.passwd get]
       ::fics::connect
-    } -state disabled
+    }
 
     button $w.button.connectguest -text {Login as Guest} -command {
       set ::fics::reallogin guest
       ::fics::connect guest
-    } -state disabled
+    }
 
     button $w.button.help -text Help -command {helpWindow FICS}
 
     button $w.button.cancel -text Cancel -command {
-      after cancel $::fics::after
       destroy .ficsConfig
     }
 
@@ -135,12 +135,14 @@ namespace eval fics {
     grid $w.timeseal -column 0 -row $row -sticky w
 
     grid $w.timeseal_entry -column 1 -row $row -sticky ew -padx 2
-    grid $w.timeseal_browse -column 2 -row $row -sticky w -padx 2
+    grid $w.timeseal_browse -column 2 -row $row -sticky ew -padx 2
 
     incr row
-    # grid $w.lFICS_IP -column 0 -row $row
-    # grid $w.ip -column 1 -row $row
-    # incr row
+    grid $w.lFICS_ip -column 0 -row $row
+    grid $w.ipserver -column 1 -row $row -sticky ew
+    grid $w.bRefresh -column 2 -row $row
+
+    incr row
     grid $w.lFICS_port -column 0 -row $row
     grid $w.portserver -column 1 -row $row -sticky w -padx 2
 
@@ -162,9 +164,20 @@ namespace eval fics {
     bind $w <Escape> "$w.button.cancel invoke"
     bind $w <F1> {helpWindow FICS}
 
+    # Get IP adress of server (as Timeseal needs IP adress)
+    if { $::fics::server_ip == "0.0.0.0" } {
+      getIP
+    }
+
     update
     placeWinOverParent $w .
     wm state $w normal
+    update
+  }
+
+  proc getIP {} {
+    set b .ficsConfig.bRefresh
+    $b configure -state disabled
     busyCursor .
     update
 
@@ -174,46 +187,40 @@ namespace eval fics {
        } err ]} {
 	  ::fics::unbusy_config
           tk_messageBox -icon error -type ok -title "Unable to contact $::fics::server" -message $err -parent .ficsConfig
-	  destroy $w
           return
     }
 
-    ### Try to delay this procedure and maintain UI responsiveness
-    ###   The latency problem seems to come from [socket] and [fconfigure] though
-
     # Give it 5 tries before giving up
     # Then the case of a proxy
-    set ::fics::after [after 500 {::fics::init_config 5}]
+    set timeOut 5
+    set i 0
+
+    while { $i <= $timeOut } {
+      after 1000
+
+      if { [catch {set peer [ fconfigure $sockChan -peername ]} err]} {
+        if {$i == $timeOut} {
+          tk_messageBox -icon error -type ok -title "Unable to contact $::fics::server" -message $err -parent .ficsConfig
+	  $b configure -state normal
+	  unbusyCursor .
+          return
+        }
+      } else  {
+        break
+      }
+      incr i
+    }
+
+    set ::fics::server_ip [lindex $peer 0]
+    ::close $sockChan
+    $b configure -state normal
+    unbusyCursor .
   }
     
-  proc init_config {attempt} {
-    set w .ficsConfig
-    update
-      if { [catch {set peer [ fconfigure $::fics::sockChan -peername ]} err]} {
-        # this attempt fails
-	incr attempt -1
-        if {$attempt} {
-	  # try again
-	  set ::fics::after [after 500 "::fics::init_config $attempt"]
-        } else {
-	  ::fics::unbusy_config
-          tk_messageBox -icon error -type ok -title "Unable to connect $::fics::server" -message $err -parent .ficsConfig
-	  destroy $w
-        }
-      } else {
-	# success
-	set ::fics::server_ip [lindex $peer 0]
-	::close $::fics::sockChan
-
-	::fics::unbusy_config
-	update
-      }
-  }
-
   proc unbusy_config {} {
     set w .ficsConfig
-    $w.button.connect configure -state normal
-    $w.button.connectguest configure -state normal
+    # $w.button.connect configure -state normal
+    # $w.button.connectguest configure -state normal
     focus $w.button.connect
     unbusyCursor .
   }
@@ -896,6 +903,7 @@ namespace eval fics {
       writechan "set gin  0"
       writechan "set silence 1"
       writechan "set echo 1"
+      writechan "set seek 0"
       # pychess sets this bloody thing
       writechan "set availinfo off"
       writechan "set chanoff [expr !$::fics::silence]"

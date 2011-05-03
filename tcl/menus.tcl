@@ -1060,7 +1060,7 @@ $m add command -label OptionsSave -command {
     puts $optionF ""
 
     # save FICS config
-    foreach i { use_timeseal timeseal_exec port_fics port_timeseal login password consolebg consolefg silence shouts } {
+    foreach i { use_timeseal timeseal_exec port_fics port_timeseal login password consolebg consolefg silence shouts server_ip} {
       puts $optionF "set ::fics::$i [list [set ::fics::$i]]"
     }
     foreach i [lsort [array names ::fics::findopponent]] {

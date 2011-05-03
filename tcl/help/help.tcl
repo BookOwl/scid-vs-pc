@@ -5673,6 +5673,7 @@ for info about specific commands and variables.
 <li><term>silence</term>	Turn off shouts, cshouts and channel tells while you play, examine or observe a game</li>
 <li><term>gin</term>	Notify when games begin or end</li>
 <li><term>autoflag</term>	Automatically flag opponent as losing when his time runs out</li>
+<li><term>availinfo</term>	Show all available information</li>
 
 <li><term>1</term>	Footnote 1 to player's personal information</li>
 <li><term>2</term>	Footnote 2 to player's personal information ....</li>

@@ -308,6 +308,7 @@ set ::fics::consolebg	grey35
 set ::fics::consolefg	LimeGreen
 set ::fics::silence	1
 set ::fics::shouts	1
+set ::fics::server_ip   0.0.0.0
 
 # Defaults for initial directories:
 set initialDir(base) "."
