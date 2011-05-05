@@ -1028,6 +1028,7 @@ proc getPromoPiece {} {
   placeWinOverPointer $w
   ### hmmm... this update can cause the window to get dismissed before grab
   # update 
+  tkwait visibility $w
   grab $w
   tkwait window $w
   return $::result

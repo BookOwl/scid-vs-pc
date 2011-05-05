@@ -1116,11 +1116,10 @@ proc copyFilter {frombaseNum tobaseNum} {
 	  -title \"Scid\" -message \$result -parent .glistWin.baseWin
     }
     unbusyCursor .
-    focus .
     destroy $w
     updateStatusBar
     ::windows::gamelist::Refresh"
-  dialogbutton $w.b.cancel -text $::tr(Cancel) -command "focus .; destroy $w"
+  dialogbutton $w.b.cancel -text $::tr(Cancel) -command "destroy $w"
   canvas $w.bar -width 300 -height 20 -bg white -relief solid -border 1
   $w.bar create rectangle 0 0 0 0 -fill $::progcolor -outline $::progcolor -tags bar
   $w.bar create text 295 10 -anchor e -font font_Regular -tags time \
