@@ -687,6 +687,7 @@ proc updateBoard {args} {
   global boardSize
   set pgnNeedsUpdate 0
   set animate 0
+  # set ::selectedSq -1 # necessary for bugfix ?
   foreach arg $args {
     if {! [string compare $arg "-pgn"]} { set pgnNeedsUpdate 1 }
     if {! [string compare $arg "-animate"]} { set animate 1 }
@@ -1009,6 +1010,7 @@ proc getPromoPiece {} {
 
   set w .promoWin
   set ::result 2
+  set ::selectedSq -1
   toplevel $w
   wm transient $w .
   wm title $w "Scid: Promotion"
@@ -1046,6 +1048,8 @@ set addVariationWithoutAsking 0
 
 proc confirmReplaceMove {} {
   global askToReplaceMoves trialMode
+
+  set ::selectedSq -1 ;# may fix a rare bug about move clicking S.A.
 
   if {$::addVariationWithoutAsking} { return var }
 
@@ -1279,6 +1283,7 @@ proc leaveSquare { square } {
 #    that square to be the selected square.
 #
 proc pressSquare {square confirm} {
+
   global selectedSq highcolor
 
   set ::addVariationWithoutAsking $confirm
