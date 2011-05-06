@@ -229,6 +229,7 @@ proc updateHelpWindow {name {heading {}}} {
   focus $w
 }
 
+### Now unused... big slowdown for what purpose ?
 proc ::htext::updateRate {w rate} {
   set ::htext::updates($w) $rate
 }
@@ -238,7 +239,7 @@ proc ::htext::init {w} {
   set maroon {#990000}
   set green {#008b00}
 
-  set ::htext::updates($w) 100
+  # set ::htext::updates($w) 100
   $w tag configure black -fore black
   $w tag configure white -fore white
   $w tag configure red -fore red
@@ -345,14 +346,10 @@ proc ::htext::display {w helptext {section {}} {fixed 1}} {
     regsub -all "\[ \n\]+" $str { } str
     regsub -all ">\[ \n\]+" $str {> } str
     regsub -all "\[ \n\]+<" $str { <} str
-  } ; # else fixed == 2 (pgn.tcl), don't convert newlines
+  } ; # else fixed == 2 (pgn.tcl), don't convert newlines in comments
 
   set tagType {}
   set seePoint {}
-
-  if {! [info exists ::htext::updates($w)]} {
-    set ::htext::updates($w) 100
-  }
 
   # Loop through the text finding the next formatting tag
 
@@ -481,6 +478,7 @@ proc ::htext::display {w helptext {section {}} {fixed 1}} {
       # Get rid of initial "/" character
       set tagName [string range $tagName 1 end]
       switch -- $tagName {
+        m {}
         h1 - h2 - h3 - h4 - ht - p  { $w insert end \n }
         menu { $w insert end \] }
         ul   {
@@ -490,20 +488,21 @@ proc ::htext::display {w helptext {section {}} {fixed 1}} {
       }
       if {[info exists startIndex($tagName)]} {
         switch -- $tagName {
-          a  {$w tag add $linkTag $startIndex($tagName) [$w index insert]}
-          g  {$w tag add $gameTag $startIndex($tagName) [$w index insert]}
-          c  {$w tag add $commentTag $startIndex($tagName) [$w index insert]}
-          m  {$w tag add $moveTag $startIndex($tagName) [$w index insert]}
-          pi {$w tag add $playerTag $startIndex($tagName) [$w index insert]}
-          url {$w tag add $urlTag $startIndex($tagName) [$w index insert]}
-          run {$w tag add $runTag $startIndex($tagName) [$w index insert]}
-          go {$w tag add $goTag $startIndex($tagName) [$w index insert]}
+          m  {$w tag add $moveTag $startIndex(m) [$w index insert]}
+          a  {$w tag add $linkTag $startIndex(a) [$w index insert]}
+          g  {$w tag add $gameTag $startIndex(g) [$w index insert]}
+          c  {$w tag add $commentTag $startIndex(c) [$w index insert]}
+          pi {$w tag add $playerTag $startIndex(pi) [$w index insert]}
+          url {$w tag add $urlTag $startIndex(url) [$w index insert]}
+          run {$w tag add $runTag $startIndex(run) [$w index insert]}
+          go {$w tag add $goTag $startIndex(go) [$w index insert]}
           default {$w tag add $tagName $startIndex($tagName) [$w index insert]}
         }
         unset startIndex($tagName)
       }
     } else {
       switch -- $tagName {
+        m {}
         ul {incr helpWin(Indent) 4}
         li {
           $w insert end \n
@@ -521,39 +520,43 @@ proc ::htext::display {w helptext {section {}} {fixed 1}} {
       if {$tagName == {menu}} {$w insert end \[}
     }
 
-    # Image or button tag
-    if {[strIsPrefix {img } $tagName]} {
-      set imgName [string range $tagName 4 end]
-      set winName $w.$imgName
-      while {[winfo exists $winName]} { append winName a }
-      label $winName -image $imgName -relief flat -borderwidth 0
-      $w window create end -window $winName
-    }
-    if {[strIsPrefix {button } $tagName]} {
-      set imgName [lindex $tagName 1]
-      set imgSize [lindex $tagName 2]
-      set winName $w.$imgName
-      while {[winfo exists $winName]} { append winName a }
-      button $winName -image $imgName
-      if {[string is integer -strict $imgSize]} {
-        $winName configure -width $imgSize -height $imgSize
+    if {$tagName != {m}} {
+      if {[strIsPrefix {img } $tagName]} {
+	set imgName [string range $tagName 4 end]
+	set winName $w.$imgName
+	while {[winfo exists $winName]} { append winName a }
+	label $winName -image $imgName -relief flat -borderwidth 0
+	$w window create end -window $winName
       }
-      $w window create end -window $winName
-    }
-    if {[strIsPrefix {window } $tagName]} {
-      set winName [string range $tagName 7 end]
-      $w window create end -window $winName
+
+      if {[strIsPrefix {button } $tagName]} {
+	set imgName [lindex $tagName 1]
+	set imgSize [lindex $tagName 2]
+	set winName $w.$imgName
+	while {[winfo exists $winName]} { append winName a }
+	button $winName -image $imgName
+	if {[string is integer -strict $imgSize]} {
+	  $winName configure -width $imgSize -height $imgSize
+	}
+	$w window create end -window $winName
+      }
+
+      if {[strIsPrefix {window } $tagName]} {
+	set winName [string range $tagName 7 end]
+	$w window create end -window $winName
+      }
     }
 
     # Eliminate the processed text from the string
-    set str [string replace $str 0 $endPos]
+    set str [string range $str $endPos+1 end] 
     incr count
 
-    # This seems a little broke. It is alwyas set to 60 in pgn.tcl
-    if {$count == $::htext::updates($w)} {
-      update idletasks
-      set count 1
-    }
+    ### What purpose this ? It (was) always set to 60 in pgn.tcl
+    ### but is very bad for performance with big pgn files
+    # if {$count == $::htext::updates($w)} {
+    #   update idletasks
+    #   set count 1
+    # }
 
     if {$::htext::interrupt} {
       # wtf... Only used by the crosstable ?

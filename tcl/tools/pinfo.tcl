@@ -55,7 +55,6 @@ proc playerInfo {{player ""}} {
     label $w.photo 
     pack $w.frame -side top -fill both -expand yes
     ::htext::init $w.text
-    ::htext::updateRate $w.text 0
     bind $w <Escape> "focus .; destroy $w"
     bind $w <F1> {helpWindow PInfo}
     standardShortcuts $w

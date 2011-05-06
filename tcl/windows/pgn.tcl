@@ -398,7 +398,6 @@ namespace eval pgn {
     if {![winfo exists .pgnWin]} { return }
     .pgnWin.text tag configure Current -background $pgnColor(Current)
     ::htext::init .pgnWin.text
-    ::htext::updateRate .pgnWin.text 60
     ::pgn::Refresh 1
     if {$pgnColor(Background) != {white} && $pgnColor(Background) != {#ffffff}} {
 	.pgnWin.text configure -background $pgnColor(Background)
@@ -413,7 +412,6 @@ namespace eval pgn {
   #    tags will be updated.
   ################################################################################
   proc Refresh {{pgnNeedsUpdate 0}} {
-
     if {![winfo exists .pgnWin]} { return }
 
     set format plain
