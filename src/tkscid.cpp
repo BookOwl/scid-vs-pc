@@ -5496,7 +5496,7 @@ sc_filter_reset (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
     // * SCID has something complicated here....
 
     filter_reset (basePtr, 1);
-    updateMainFilter( basePtr);
+    updateMainFilter(basePtr);
     return TCL_OK;
 }
 
@@ -5754,6 +5754,9 @@ sc_filter_value (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
 void
 updateMainFilter( scidBaseT * dbase)
 {
+    // if (!maskMode)
+    //   return;
+
     if( dbase->dbFilter != dbase->filter)
     {
         for (uint i=0; i < dbase->numGames; i++)
@@ -13654,7 +13657,7 @@ sc_tree_clean (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
 	}
 	// else
         //   base->filter->Fill (1);
-	// S.A. &&& should decipher what this does
+	// Hmmm... breaks the db filter &&&
 
 	return TCL_OK;
 }

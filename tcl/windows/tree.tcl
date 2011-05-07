@@ -343,6 +343,7 @@ proc ::tree::closeTree {baseNumber} {
   ::windows::gamelist::Refresh
   ::windows::stats::Refresh; 
 }
+
 ################################################################################
 proc ::tree::doTrace { prefix name1 name2 op} {
   if {[scan $name2 "$prefix%d" baseNumber] !=1 } {
@@ -519,8 +520,8 @@ proc ::tree::dorefresh { baseNumber } {
   ::tree::status "" $baseNumber
   set glstart 1
   ::windows::stats::Refresh
-  if {[winfo exists .treeGraph$baseNumber]} { ::tree::graph $baseNumber }
-  ::windows::gamelist::Refresh
+  if {[winfo exists .treeGraph$baseNumber]} {::tree::graph $baseNumber}
+  if {$::tree(maskfilter$baseNumber)} {::windows::gamelist::Refresh}
   updateTitle
 
   if { $moves == "canceled" } { return "canceled"}
@@ -547,7 +548,8 @@ proc ::tree::dorefresh { baseNumber } {
   if {$baseNumber != [sc_base current] } {
     set current [sc_base current]
     sc_base switch $baseNumber
-    # if {[sc_filter first] != 0 &&  [sc_game number] != 0 && ![sc_game altered]}
+    ### stops game 0 getting nixed
+    ### if {[sc_filter first] != 0 &&  [sc_game number] != 0 && ![sc_game altered]}
     if { [sc_filter first] != 0 } {
           sc_game load [sc_filter first]
     }
