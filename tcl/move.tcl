@@ -55,7 +55,6 @@ proc ::move::showVarArrows {} {
 }
 
 proc ::move::Start {} {
-  if {$::tree(refresh)} { return }
   set ::pause 1
   sc_move start
   updateBoard  -pgn
@@ -63,7 +62,6 @@ proc ::move::Start {} {
 }
 
 proc ::move::End {} {
-  if {$::tree(refresh)} { return }
   set ::pause 1
   sc_move end
   updateBoard
@@ -78,7 +76,6 @@ proc ::move::ExitVar {} {
 }
 
 proc ::move::Back {{count 1}} {
-  if {$::tree(refresh)} { return }
   if {[sc_pos isAt start]} { return }
   if {[sc_pos isAt vstart]} { ::move::ExitVar; return }
 
@@ -103,7 +100,6 @@ proc ::move::Back {{count 1}} {
 proc ::move::Forward {{count 1}} {
   global autoplayMode
 
-  if {$::tree(refresh)} { return }
   if {[sc_pos isAt end]  ||  [sc_pos isAt vend]} { return }
   set ::pause 1
   set bArrows [::move::drawVarArrows]

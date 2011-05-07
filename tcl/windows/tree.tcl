@@ -268,7 +268,7 @@ proc ::tree::make { { baseNumber -1 } } {
 
   pack $w.buttons.best $w.buttons.graph $w.buttons.refresh $w.buttons.mask \
       -side left -padx 3 -pady 2
-  # $w.buttons.lock , $w.buttons.training  not packed..... to crowded
+  # $w.buttons.lock , $w.buttons.training  not packed..... too crowded
 
   packbuttons right $w.buttons.close $w.buttons.stop
   $w.buttons.stop configure -state disabled
@@ -320,7 +320,7 @@ proc ::tree::closeTree {baseNumber} {
   set ::geometry(treeWin$baseNumber) [wm geometry .treeWin$baseNumber]
   focus .
 
-  sc_tree clean $tree(base$baseNumber)
+  # sc_tree clean $tree(base$baseNumber)
 
   if {$tree(autoSave$baseNumber)} {
     busyCursor .
@@ -465,9 +465,11 @@ proc ::tree::refresh {{ baseNumber {} }} {
       ::tree::dorefresh $baseNumber
     }
   } else {
+    sc_tree search -cancel all
     for {set i 1} {$i <= [sc_base count total]} {incr i} {
       if {[winfo exists .treeWin$i]} {
-	::tree::dorefresh $i
+	# ::tree::dorefresh $i
+	if { [::tree::dorefresh $i] == "canceled" } { break }
       }
     }
   }
@@ -480,7 +482,7 @@ proc ::tree::dorefresh { baseNumber } {
 
   if { ! $tree(autorefresh$baseNumber) } { return }
 
-  busyCursor .
+  # busyCursor .
   sc_progressBar $w.progress bar 251 16
   foreach button {best graph training lock close} {
     $w.buttons.$button configure -state disabled
@@ -499,7 +501,29 @@ proc ::tree::dorefresh { baseNumber } {
   }
 
   set moves [sc_tree search -hide $tree(training$baseNumber) -sort $tree(order$baseNumber) -base $base \
-                            -fastmode $fastmode -mask $tree(maskfilter$baseNumber) ] ; ### compare with CVS
+                            -fastmode $fastmode -mask $tree(maskfilter$baseNumber) ]
+  # CVS: set moves [sc_tree search -hide $tree(training$baseNumber) -sort $tree(order$baseNumber) -base $base -fastmode $fastmode]
+
+  catch {$w.f.tl itemconfigure 0 -foreground darkBlue}
+
+  foreach button {best graph training lock close} {
+    $w.buttons.$button configure -state normal
+  }
+  $w.buttons.stop configure -state disabled -relief raised
+
+  # unbusyCursor .
+  set tree(refresh) 0
+
+  $w.f.tl configure -cursor {}
+
+  ::tree::status "" $baseNumber
+  set glstart 1
+  ::windows::stats::Refresh
+  if {[winfo exists .treeGraph$baseNumber]} { ::tree::graph $baseNumber }
+  ::windows::gamelist::Refresh
+  updateTitle
+
+  if { $moves == "canceled" } { return "canceled"}
   displayLines $baseNumber $moves
 
   if {[winfo exists .treeBest$baseNumber]} { ::tree::best $baseNumber}
@@ -513,25 +537,6 @@ proc ::tree::dorefresh { baseNumber } {
   }
   # ========================================
 
-  catch {$w.f.tl itemconfigure 0 -foreground darkBlue}
-
-  foreach button {best graph training lock close} {
-    $w.buttons.$button configure -state normal
-  }
-  $w.buttons.stop configure -state disabled -relief raised
-
-  unbusyCursor .
-  set tree(refresh) 0
-
-  $w.f.tl configure -cursor {}
-
-  ::tree::status "" $baseNumber
-  set glstart 1
-  ::windows::stats::Refresh
-  if {[winfo exists .treeGraph$baseNumber]} { ::tree::graph $baseNumber }
-  ::windows::gamelist::Refresh
-  updateTitle
-
   # If the Tree base is not the current one, updates the Tree base to the first game in filter 
   # This enables one to browse/load best games, continuing on from current position
   # *IF FILTER IS BEING ADJUSTED*
@@ -542,7 +547,8 @@ proc ::tree::dorefresh { baseNumber } {
   if {$baseNumber != [sc_base current] } {
     set current [sc_base current]
     sc_base switch $baseNumber
-    if {[sc_filter first] != 0 &&  [sc_game number] != 0 && ![sc_game altered]} {
+    # if {[sc_filter first] != 0 &&  [sc_game number] != 0 && ![sc_game altered]}
+    if { [sc_filter first] != 0 } {
           sc_game load [sc_filter first]
     }
     sc_base switch $current
