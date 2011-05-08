@@ -526,7 +526,8 @@ proc ::tree::dorefresh { baseNumber } {
   if { $moves == "canceled" } { return "canceled"}
   displayLines $baseNumber $moves
 
-  if {[winfo exists .treeBest$baseNumber]} { ::tree::best $baseNumber}
+  if {[winfo exists .treeBest$baseNumber]} {::tree::best $baseNumber}
+  if {[winfo exists .treeGraph$baseNumber]} {::tree::graph $baseNumber}
 
   # ========================================
   if { $tree(fastmode$baseNumber) == 2 } {
@@ -537,7 +538,6 @@ proc ::tree::dorefresh { baseNumber } {
   }
   # ========================================
 
-  if {[winfo exists .treeGraph$baseNumber]} {::tree::graph $baseNumber}
 
   # If the Tree base is not the current one, updates the Tree base to the first game in filter 
   # This enables one to browse/load best games, continuing on from current position

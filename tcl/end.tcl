@@ -1708,7 +1708,6 @@ while {$argc > 0} {
       }
     } else {
       set err [catch { ::file::Open $startbase} errMessage]
-      if {! $err} { ::recentFiles::add "[file rootname $startbase].si4" }
     }
     if {$err} {
       ### Above err and errMessage should be shown as dialog messages S.A.
