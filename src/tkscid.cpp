@@ -5757,11 +5757,12 @@ updateMainFilter( scidBaseT * dbase)
     // if (!maskMode)
     //   return;
 
+    // Clone
     if( dbase->dbFilter != dbase->filter)
     {
         for (uint i=0; i < dbase->numGames; i++)
         {
-            if( dbase->dbFilter->Get(i) != 0 && dbase->treeFilter->Get(i) != 0)
+            if( dbase->dbFilter->Get(i) > 0 && dbase->treeFilter->Get(i) > 0)
                 dbase->filter->Set(i,dbase->treeFilter->Get(i));
             else
                 dbase->filter->Set(i,0);
@@ -13648,10 +13649,12 @@ sc_tree_clean (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
 		delete base->treeFilter;
 		base->treeFilter = NULL;
 	}
-	if( base->dbFilter != base->filter)
+	// Clone
+	if( base->dbFilter && base->dbFilter != base->filter)
 	{
 	   	for (uint i=0; i < base->numGames; i++)
 			base->filter->Set( i, base->dbFilter->Get(i));
+
 		delete base->dbFilter;
 		base->dbFilter = base->filter;
 	}
@@ -13901,12 +13904,9 @@ sc_tree_search (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
 
     if( base->treeFilter == NULL)
     {
+	    base->dbFilter = base->filter->Clone();
 	    base->treeFilter = new Filter( base->numGames);
-	    base->dbFilter = new Filter( base->numGames);
-	    // can we do a memcpy &&&
-	    // base->treeFilter->oldDataTreePly=0;
-	    for (uint i=0; i < base->numGames; i++)
-		    base->dbFilter->Set( i, base->filter->Get(i));
+	    // Clone
     }
 
     bool showProgress = startProgressBar();
@@ -13977,9 +13977,6 @@ sc_tree_search (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
     	StoredLine stored_line(pos);
 
     	// 4. Search through each game:
-
-
-
     	for (uint i=0; i < base->numGames; i++) {
     		if (showProgress) {  // Update the percentage done slider:
     			update--;
@@ -14030,7 +14027,6 @@ sc_tree_search (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
     						bd[E7]==BP  &&  bd[F7]==BP  &&  bd[G7]==BP  &&  bd[H7]==BP  &&
     						bd[A8]==BR  &&  bd[B8]==BN  &&  bd[C8]==BB  &&  bd[D8]==BQ  &&
     						bd[E8]==BK  &&  bd[F8]==BB  &&  bd[G8]==BN  &&  bd[H8]==BR);
-
 
     		if (!isStartPos  &&  ie->GetNumHalfMoves() == 0) {
     			skipcount++;
@@ -14328,7 +14324,7 @@ sc_tree_search (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
             nDraws += node->freq[RESULT_Draw];
         }
         totalScore = totalScore * 500 / tree->totalCount;
-        uint avgElo = 0;
+        unsigned long long avgElo = 0;
         if (eloCount >= 10) {
             avgElo = eloSum / eloCount;
         }
@@ -14362,7 +14358,7 @@ sc_tree_search (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
         if (avgElo == 0) {
             output->Append (listMode ? " {}" : "      ");
         } else {
-            sprintf (temp, "  %4u", avgElo);
+            sprintf (temp, "  %4llu", avgElo);
             output->Append (temp);
         }
         if (perf == 0) {
@@ -14544,6 +14540,7 @@ sc_search_board (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
     if (!db->inUse) {
         return errorResult (ti, errMsgNotOpen(ti));
     }
+
     if (argc < 6  ||  argc > 7) { return errorResult (ti, usageStr); }
     
     filterOpT filterOp = strGetFilterOp (argv[2]);

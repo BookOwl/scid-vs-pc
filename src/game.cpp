@@ -3718,11 +3718,6 @@ Game::Encode (ByteBuffer * buf, IndexEntry * ie)
         buf->PutTerminatedString (tempStr);
     }
     
-    // as each game entry length is coded on 17 bits, and game must fit in a block
-    // return an error if there is an overflow
-    if (buf->GetByteCount() > MAX_GAME_LENGTH || buf->GetByteCount() > GF_BLOCKSIZE) {
-      err = ERROR_GameFull;
-    }
 
     // Now the movelist:
     uint varCount = 0;
@@ -3790,6 +3785,13 @@ Game::Encode (ByteBuffer * buf, IndexEntry * ie)
         }
         ie->SetStoredLineCode (storedLineCode);
     }
+
+    // as each game entry length is coded on 17 bits, and game must fit in a block
+    // return an error if there is an overflow
+    if (buf->GetByteCount() > MAX_GAME_LENGTH || buf->GetByteCount() > GF_BLOCKSIZE) {
+      err = ERROR_GameFull;
+    }
+
     return err;
 }
 
