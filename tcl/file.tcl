@@ -141,7 +141,7 @@ proc ::file::Open {{fName ""} {parent .} {update 1}} {
     if {$fName == ""} { return }
   }
 
-  if {[file extension $fName] == ""} {
+  if {[file extension $fName] == "" || [file readable "$fName.si4"]} {
     set fName "$fName.si4"
   }
 
