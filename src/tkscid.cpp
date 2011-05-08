@@ -1563,7 +1563,7 @@ sc_base_check (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
             ErrorBuffer->Append ("Game ", gameNumber, ": Unable to read game buffer.\n");
             continue;
         }
-        uint ply = 0;
+        // uint ply = 0;
 
 		errorT ret = g->Decode (db->bbuf, GAME_DECODE_ALL);
 		if( ret != OK){

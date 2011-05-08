@@ -154,7 +154,7 @@ proc ::windows::gamelist::FindText {} {
       # success
       break
     }
-    if {$matches == 0 || $minmatch == 0} {
+    if { $temp ==0 || $minmatch == 0} {
       # give up
       set glstart 1
       break

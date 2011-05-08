@@ -200,6 +200,14 @@
   5.  news
 
 
+   April 19, 2011
+
+  Hopefully in the next few months i'll find some time to mess around
+  with my G4 iBook, and implement some new features...
+
+  A belated thanks to Lee from Sourceforge for this article
+  <http://sourceforge.net/blog/after-scid-row-a-new-chess-app-is-born/>.
+
    December 10, 2010
 
   Finally implemented Scid's si4 db format.
@@ -240,7 +248,6 @@
 
   o  Some work with the crosstable and player info widgets (which is
      only evident with the inclusion of spelling.ssp)
-
   o  and some work with font configuration, including a more streamlined
      start-up procedure.
 
@@ -353,6 +360,10 @@
   6.3.  bugs
 
 
+  o  Using the '+' operator and clicking on 'Find' in the gamelist
+     widget can be very slow. The code needs to be moved from
+     gamelist.tcl to tkscid.cpp.
+
   o  Windows only:
 
      o  Using "ALT+F"... etc key bindings to access the menus is badly
@@ -434,7 +445,6 @@
      "+", and include the date
 
   o  Gamelist now has remove-above and remove-below buttons.
-
 
   o  FICs improvements, including a ping feature to indicate network
      health (*nix only), and player communications are saved as PGN
@@ -559,6 +569,7 @@
 
   o  Kill analysis window after batch annotations
 
+
   o  New marble tile theme and colour themes
 
   o  Some menu re-ordering
@@ -566,7 +577,6 @@
   o  Recent Files menu is basename only
 
   o  Remove Control+V game paste binding .... too dangerous
-
 
   o  Further refinements of Switcher widget and Icons
 
@@ -691,6 +701,7 @@
 
   o  F1 *toggles* help window
 
+
   o  Remove space-only lines from project - they mess up vim's paragraph
      traversal feature
 
@@ -766,6 +777,7 @@
 
   o  Reorganise Scid start-up (includes reading font info before drawing
      splash widget, removing unused old logo and start-up checks)
+
   o  Remove quite a few "-background white" statements from all over (to
      allow for custom coloured backgrounds in future)
 
@@ -821,6 +833,7 @@
   o  A few fixes from Scid; not duplicating variations unnecessarily;
      Fics socket fixes; Uci responsiveness at game end
 
+
   o  The analysis engines now support RobboLito, and an unlimited number
      of engines
 
@@ -830,7 +843,6 @@
 
   o  The pause mechanism for tacgame has be restructured to allow for
      use with Fics too
-
 
   o  Some optimisations to the oft used tcl in htext.tcl
 
@@ -886,6 +898,7 @@
 
   o  Added a changelog (help) widget
 
+
   o  Allow up to five analysis engines to run simultaneously
 
   o  Fix the MyPlayerNames widget. (No autoscrollframe, no grab
@@ -895,7 +908,6 @@
 
   o  Tacgame show a modest checkmate widget when game is over (for the
      first time)
-
 
   o  A few menu/hint fixes in menu.tcl, and a new tile theme
 
@@ -959,7 +971,6 @@
   o  The Options->Chessboard menu now also includes the pieces menus
 
   o  The 3 line PGN header is now colour
-
 
   o  Home directory is now $HOME/.scidvspc (instead of $HOME/.scid).
 
