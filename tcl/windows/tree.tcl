@@ -520,7 +520,6 @@ proc ::tree::dorefresh { baseNumber } {
   ::tree::status "" $baseNumber
   set glstart 1
   ::windows::stats::Refresh
-  if {[winfo exists .treeGraph$baseNumber]} {::tree::graph $baseNumber}
   if {$::tree(maskfilter$baseNumber)} {::windows::gamelist::Refresh}
   updateTitle
 
@@ -537,6 +536,8 @@ proc ::tree::dorefresh { baseNumber } {
     displayLines $baseNumber $moves
   }
   # ========================================
+
+  if {[winfo exists .treeGraph$baseNumber]} {::tree::graph $baseNumber}
 
   # If the Tree base is not the current one, updates the Tree base to the first game in filter 
   # This enables one to browse/load best games, continuing on from current position
