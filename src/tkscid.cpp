@@ -13857,6 +13857,7 @@ sc_tree_search (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
 
     scidBaseT * base = db;
     static std::set<scidBaseT**> search_pool;
+db->bbuf->Empty();
 
     // Check that there is an even number of optional arguments and
     // parse them as option-value pairs:
@@ -13938,7 +13939,7 @@ sc_tree_search (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
     if (! foundInCache) {
         pct = base->backupCache->Lookup (db->game->GetCurrentPos());
         if (pct != NULL) {
-    		// It was in the backup cache! Use it to save time:
+            // It was in the backup cache! Use it to save time:
             if (pct->cfilter->Size() == base->numGames) {
                 if (pct->cfilter->UncompressTo (base->treeFilter) == OK) {
                     base->tree = pct->tree;
@@ -13995,7 +13996,8 @@ sc_tree_search (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
     		}
 
 #ifndef WINCE
-    		const byte * oldFilterData = base->filter->GetOldDataTree();
+            const byte * oldFilterData = base->treeFilter->GetOldDataTree();
+
             // if the game is not already in the filter, continue
             if (fastMode && base->treeFilter->isValidOldDataTree )
                if ( oldFilterData[i] == 0)
