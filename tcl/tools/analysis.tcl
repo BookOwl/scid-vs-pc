@@ -868,7 +868,7 @@ proc initAnnotation {n} {
   set i 0
   foreach file  $bookList {
       lappend tmp [ file tail $file ]
-      if {$::book::lastBook == [ file tail $file ] } {
+      if {$::book::lastBook1 == [ file tail $file ] } {
 	  set idx $i
       }
       incr i
@@ -951,7 +951,7 @@ proc okAnnotation {n} {
   }
   set ::useAnalysisBookName [.configAnnotation.usebook.comboBooks get]
   set ::wentOutOfBook 0
-  set ::book::lastBook $::useAnalysisBookName
+  set ::book::lastBook1 $::useAnalysisBookName
 
   # tactical positions is selected, must be in multipv mode
   if {$::markTacticalExercises} {
