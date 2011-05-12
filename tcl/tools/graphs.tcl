@@ -388,7 +388,7 @@ set ::tools::graphs::score::Black 0
 # Game score graph
 
 proc ::tools::graphs::score::Refresh {} {
-  set linecolor red
+  set linecolor steelblue
   set linewidth 2
   set psize 2
 
@@ -396,6 +396,10 @@ proc ::tools::graphs::score::Refresh {} {
 
   if {! [winfo exists $w]} {
     toplevel $w
+    wm withdraw $w
+    setWinLocation $w
+    setWinSize $w
+
     menu $w.menu
     $w configure -menu $w.menu
     $w.menu add cascade -label GraphFile -menu $w.menu.file
@@ -415,29 +419,39 @@ proc ::tools::graphs::score::Refresh {} {
         -command "::tools::graphs::score::Refresh"
     }
 
+    $w.menu add cascade -label $::tr(Help) -menu $w.menu.help -underline 0
+    menu $w.menu.help
+    $w.menu.help add command -label $::tr(Help)  -accelerator F1 -command {helpWindow Graphs Score}
+
     canvas $w.c -width 500 -height 300
-    $w.c create text 25 5 -tag text -justify center -width 1 \
-      -font font_Regular -anchor n
+    $w.c create text 25 5 -tag text -justify center -width 1 -font font_Regular -anchor n
+    # $w.c create text 25 340 -tag text2 -text {Move Number} -justify center -font font_Regular
     pack $w.c -side top -expand yes -fill both
     bind $w <F1> {helpWindow Graphs Score}
     bind $w <Configure> {
       .sgraph.c itemconfigure text -width [expr {[winfo width .sgraph.c] - 50}]
-      .sgraph.c coords text [expr {[winfo width .sgraph.c] / 2}] 10
+      # .sgraph.c itemconfigure text2 -width [expr {[winfo width .sgraph.c] - 50}]
+      .sgraph.c coords text [expr {[winfo width .sgraph.c] / 2}] 2
       ::utils::graph::configure score -height [expr {[winfo height .sgraph.c] - 90}]
-      ::utils::graph::configure score -width [expr {[winfo width .sgraph.c] - 100}]
+      ::utils::graph::configure score -width [expr {[winfo width .sgraph.c] - 50}]
       ::utils::graph::redraw score
+      recordWinSize .sgraph
     }
     bind $w.c <3> ::tools::graphs::score::Refresh
     bind $w.c <1> {::tools::graphs::score::Move %x}
+    bind $w <Escape> "destroy $w"
+    bind $w <Control-Z> "destroy $w"
+
     wm title $w "Scid: [tr ToolsScore]"
     ::tools::graphs::score::ConfigMenus
+    wm deiconify $w
   }
 
   $w.c itemconfigure text -width [expr {[winfo width $w.c] - 50}]
-  $w.c coords text [expr {[winfo width $w.c] / 2}] 10
+  $w.c coords text [expr {[winfo width $w.c] / 2}] 2
   set height [expr {[winfo height $w.c] - 90} ]
-  set width [expr {[winfo width $w.c] - 100} ]
-  ::utils::graph::create score -width $width -height $height -xtop 50 -ytop 45 \
+  set width [expr {[winfo width $w.c] - 50} ]
+  ::utils::graph::create score -width $width -height $height -xtop 25 -ytop 50 \
     -ytick 1 -xtick 5 -font font_Small -canvas $w.c -textcolor black \
     -hline {{gray90 1 each 1} {black 1 at 0}} \
     -vline {{gray90 1 each 1} {steelBlue 1 each 5}}
