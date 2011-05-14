@@ -789,7 +789,8 @@ proc  checkBlunderState {} {
 # These various global vars should really be made into an annotate() array
 
 # SCID has rewritten Annotation and Autoplay widgets,
-# but they are too confusing and too hard to use, for little functionality gain.
+# but they are too confusing and too hard to use, for little functionality gain
+# (though they *do* have a nice mate-in-N feature for annotation).
 
 
 proc initAnnotation {n} {
@@ -811,17 +812,30 @@ proc initAnnotation {n} {
   wm state $w withdrawn
   wm title $w "Configure Annotation"
 
-  ### Move delay frame
+  ### Seconds per move
 
   frame $w.delay
-  pack $w.delay -side top -padx 15 -pady 5 -fill x
+  pack $w.delay -side top -pady 3 
 
   label $w.delay.label -text $::tr(SecondsPerMove)
   spinbox $w.delay.spDelay -width 4 -textvariable tempdelay -from 1 -to 300 -increment 1
-  pack $w.delay.label -side left -padx 2 -pady 5
-  pack $w.delay.spDelay -side left -padx 2 -pady 5
-  bind $w <Escape> { .configAnnotation.buttons.cancel invoke }
-  bind $w <Return> { .configAnnotation.buttons.ok invoke }
+
+  pack $w.delay.label -side left -padx 5 
+  pack $w.delay.spDelay -side right -padx 5 
+
+  addHorizontalRule $w
+
+  ### Annotate type
+
+  label $w.typelabel -text {Annotate With}
+  frame $w.type
+  radiobutton $w.type.score -text [string totitle $::tr(score)] -variable annotateType -value score -anchor w
+  radiobutton $w.type.var -text $::tr(GlistVars) -variable annotateType -value var -anchor w
+  radiobutton $w.type.both -text $::tr(Both) -variable annotateType -value both -anchor w
+
+  pack $w.typelabel -side top
+  pack $w.type -side top
+  pack $w.type.score $w.type.var $w.type.both -side left -fill x
 
   ### Which side
 
@@ -855,19 +869,20 @@ proc initAnnotation {n} {
 
   pack $w.anlabel -side top
   pack $w.allmoves $w.notbest $w.blundersonly -side top -fill x
-  pack $w.blunderbox -side top -padx 10 -fill x
+  pack $w.blunderbox -side top -padx 10 
   pack $w.blunderbox.label -side left -padx 5
-  pack $w.blunderbox.spBlunder -side right
+  pack $w.blunderbox.spBlunder -side right -padx 5
+
   addHorizontalRule $w
+
   ### General options frame
 
   checkbutton $w.cbAnnotateVar  -text $::tr(AnnotateVariations) -variable ::isAnnotateVar -anchor w
-  checkbutton $w.cbShortAnnotation  -text $::tr(ShortAnnotations) -variable ::isShortAnnotation -anchor w
-  checkbutton $w.cbAddScore  -text $::tr(AddScoreToShortAnnotations) -variable ::addScoreToShortAnnotations -anchor w
+  checkbutton $w.cbAddAnnotatorComment  -text {Add annotator to comment} -variable ::addAnnotatorComment -anchor w
   checkbutton $w.cbAddAnnotatorTag  -text $::tr(addAnnotatorTag) -variable ::addAnnotatorTag -anchor w
-  pack $w.cbAnnotateVar $w.cbShortAnnotation $w.cbAddScore $w.cbAddAnnotatorTag -anchor w
+  pack $w.cbAnnotateVar $w.cbAddAnnotatorComment $w.cbAddAnnotatorTag -anchor w
 
-  # choose a book for analysis
+  # Book
 
   frame $w.usebook
   pack  $w.usebook -side top -fill x
@@ -901,7 +916,8 @@ proc initAnnotation {n} {
   pack $w.usebook.cbBook -side left 
   pack $w.usebook.comboBooks -side right
 
-  # batch annotation of consecutive games, and optional opening errors finder
+  # Batch annotation 
+
   frame $w.batch
   pack $w.batch -side top -fill x
   set to [sc_base numGames]
@@ -931,9 +947,9 @@ proc initAnnotation {n} {
   # pack $w.batch.cbBatch $w.batch.spBatchEnd -side top -fill x
   # pack $w.batch.cbBatchOpening $w.batch.spBatchOpening $w.batch.lBatchOpening  -side left -fill x
   grid $w.batch.cbBatch -column 0 -row 0 -sticky w
-  grid $w.batch.spBatchEnd -column 1 -row 0 -columnspan 2
+  grid $w.batch.spBatchEnd -column 1 -row 0 -columnspan 2 -sticky e
   grid $w.batch.cbBatchOpening -column 0 -row 1 -sticky w
-  grid $w.batch.spBatchOpening -column 1 -row 1 -sticky e 
+  grid $w.batch.spBatchOpening -column 1 -row 1 -padx 5
   grid $w.batch.lBatchOpening -column 2 -row 1 -sticky e
   set ::batchEnd $to
 
@@ -956,13 +972,16 @@ proc initAnnotation {n} {
   dialogbutton $w.buttons.help -text $::tr(Help) -command {helpWindow Analysis Annotating}
   dialogbutton $w.buttons.ok -text "OK" -command "okAnnotation $n"
 
-    pack $w.buttons.cancel $w.buttons.help $w.buttons.ok -side right -padx 5 -pady 5
-    # focus $w.delay.spDelay
+  pack $w.buttons.cancel $w.buttons.help $w.buttons.ok -side right -padx 5 -pady 5
+  # focus $w.delay.spDelay
 
-    bind $w <Destroy> "$w.buttons.cancel invoke"
-    placeWinOverParent $w .analysisWin$n
-    wm state $w normal
-    update
+
+  bind $w <Escape> { .configAnnotation.buttons.cancel invoke }
+  bind $w <Return> { .configAnnotation.buttons.ok invoke }
+  bind $w <Destroy> "$w.buttons.cancel invoke"
+  placeWinOverParent $w .analysisWin$n
+  wm state $w normal
+  update
 }
 
 ################################################################################
@@ -1014,6 +1033,10 @@ proc bookAnnotation { {n 1} } {
 
   set prevbookmoves {}
   set bn [ file join $::scidBooksDir $::useAnalysisBookName ]
+
+  ### This is getting opened for every game in batch S.A. &&&
+  # but is getting closed just below... so should be ok ?
+
   sc_book load $bn $::analysisBookSlot
 
   set bookmoves [sc_book moves $::analysisBookSlot]
@@ -1026,21 +1049,18 @@ proc bookAnnotation { {n 1} } {
   sc_book close $::analysisBookSlot
   set ::wentOutOfBook 1
 
-  set verboseMoveOutOfBook {}
-  set verboseLastBookMove {}
-  if {! $::isShortAnnotation } {
-    set verboseMoveOutOfBook " $::tr(MoveOutOfBook)"
-    set verboseLastBookMove " $::tr(LastBookMove)"
-  }
+  set bookName [file rootname $::useAnalysisBookName]
+  set verboseMoveOutOfBook " $::tr(MoveOutOfBook)"
+  set verboseLastBookMove " $::tr(LastBookMove)"
 
   if { [ string match -nocase "*[sc_game info previousMoveNT]*" $prevbookmoves ] != 1 } {
     if {$prevbookmoves != {}} {
-      sc_pos setComment "[sc_pos getComment]$verboseMoveOutOfBook ($prevbookmoves)"
+      sc_pos setComment "[sc_pos getComment]$verboseMoveOutOfBook ($bookName: $prevbookmoves)"
     } else  {
-      sc_pos setComment "[sc_pos getComment]$verboseMoveOutOfBook"
+      sc_pos setComment "[sc_pos getComment]$verboseMoveOutOfBook ($bookName)"
     }
   } else  {
-    sc_pos setComment "[sc_pos getComment]$verboseLastBookMove"
+    sc_pos setComment "[sc_pos getComment]$verboseLastBookMove ($bookName)"
   }
 
   # last move was out of book or the last move in book : it needs to be analyzed, so take back
@@ -1135,14 +1155,17 @@ proc markExercise { prevscore score } {
   updateBoard
 }
 
-proc storeAnnotation {name text} {
-puts storeAnnotation\ \isShortAnnotation\ \$::isShortAnnotation
-    if {! $::isShortAnnotation } {
+proc storeScore {name text} {
+    # annotateType var, both , score
+
+    if {$::annotateType == "var" || [sc_pos isAt vstart]} {
+      return
+    }
+
+    if {$::addAnnotatorComment } {
       sc_pos setComment "[sc_pos getComment] $name: $text"
     } else {
-      if {$::addScoreToShortAnnotations} {
-        sc_pos setComment "[sc_pos getComment] $text"
-      }
+      sc_pos setComment "[sc_pos getComment] $text"
     }
 }
 
@@ -1245,7 +1268,7 @@ proc addAnnotation {} {
       }
     }
 
-    storeAnnotation $engine_name $text
+    storeScore $engine_name $text
 
     if {$::isBatchOpening} {
       if { [sc_pos moveNumber] < $::isBatchOpeningMoves} {
@@ -1253,22 +1276,25 @@ proc addAnnotation {} {
         updateBoard -pgn
       }
     }
+
     set nag [ scoreToNag $score ]
     if {$nag != {}} {
       sc_pos addNag $nag
     }
 
-    sc_move back
-    if { $analysis(prevmoves$n) != {}} {
-      sc_var create
-      set moves $analysis(prevmoves$n)
-      sc_move_add $moves $n
-      set nag [ scoreToNag $prevscore ]
-      if {$nag != {}} {
-        sc_pos addNag $nag
+    if {$::annotateType != "score" } {
+      sc_move back
+      if { $analysis(prevmoves$n) != {}} {
+	sc_var create
+	set moves $analysis(prevmoves$n)
+	sc_move_add $moves $n
+	set nag [ scoreToNag $prevscore ]
+	if {$nag != {}} {
+	  sc_pos addNag $nag
+	}
+	sc_var exit
+	sc_move forward
       }
-      sc_var exit
-      sc_move forward
     }
   } elseif { $isBlunder } {
     # Add the comment to highlight the blunder
@@ -1278,7 +1304,7 @@ proc addAnnotation {} {
     if { $score > $::informant("++-") && $tomove == {black} || \
           $score < [expr 0.0 - $::informant("++-") ] && $tomove == {white} } {
       set text [format "%+.2f (%+.2f)" $prevscore $score]
-      storeAnnotation $engine_name $text
+      storeScore $engine_name $text
     } else  {
       if {$absdeltamove > $::informant("?!") && $absdeltamove <= $::informant("?")} {
         sc_pos addNag "?!"
@@ -1290,15 +1316,9 @@ proc addAnnotation {} {
         markExercise $prevscore $score
       }
       
-      set text [format "%s %+.2f / %+.2f" $::tr(Blunder) $prevscore $score]
-      # storeAnnotation $engine_name $text
-      if {! $::isShortAnnotation } {
-        sc_pos setComment "[sc_pos getComment] $engine_name: $text"
-      } else {
-        if {$::addScoreToShortAnnotations} {
-          sc_pos setComment "[sc_pos getComment] [format %+.2f $score]"
-        }
-      }
+      # set text [format "%s %+.2f / %+.2f" $::tr(Blunder) $prevscore $score]
+      set text [format "%+.2f / %+.2f" $prevscore $score]
+      storeScore $engine_name $text
     }
 
     if {$::isBatchOpening} {
@@ -1311,22 +1331,25 @@ proc addAnnotation {} {
     if {$nag != {}} {
       sc_pos addNag $nag
     }
-    # Rewind, request a diagram
-    sc_move back
-    sc_pos addNag D
 
-    # Add the variation:
-    if { $analysis(prevmoves$n) != {}} {
-      sc_var create
-      set moves $analysis(prevmoves$n)
-      # Add as many moves as possible from the engine analysis:
-      sc_move_add $moves $n
-      set nag [ scoreToNag $prevscore ]
-      if {$nag != {}} {
-        sc_pos addNag $nag
+    if {$::annotateType != "score" } {
+      # Rewind, request a diagram
+      sc_move back
+      sc_pos addNag D
+
+      # Add the variation:
+      if { $analysis(prevmoves$n) != {}} {
+	sc_var create
+	set moves $analysis(prevmoves$n)
+	# Add as many moves as possible from the engine analysis:
+	sc_move_add $moves $n
+	set nag [ scoreToNag $prevscore ]
+	if {$nag != {}} {
+	  sc_pos addNag $nag
+	}
+	sc_var exit
+	sc_move forward
       }
-      sc_var exit
-      sc_move forward
     }
   }
 
@@ -1368,7 +1391,8 @@ proc scoreToNag {score} {
 ################################################################################
 # will append arg to current game Annotator tag
 ################################################################################
-proc appendAnnotator { s } {
+proc appendAnnotator {s} {
+  set s [string trim $s]
   set extra [sc_game tags get Extra]
   # find Annotator tag
   set oldAnn {}
@@ -1566,7 +1590,6 @@ proc addAllVariations {{n 1}} {
 ################################################################################
 #
 ################################################################################
-# TODO fonction obsolète à virer ??
 proc addAnalysisToComment {line {n 1}} {
   global analysis
   if {! [winfo exists .analysisWin$n]} { return }

@@ -1467,7 +1467,7 @@ proc autoplay {} {
   if { [sc_pos isAt end] } {
     if {$annotateMode} { ; # end of game if not mate, add the thinking line
       set move_done [sc_game info previousMoveNT]
-      if { [string index $move_done end] != "#"} {
+      if { [string index $move_done end] != "#" && $::annotateType != "score"} {
         set text [format "%d:%+.2f" $analysis(depth$n) $analysis(score$n)]
         set moves $analysis(moves$n)
         sc_move back
@@ -1483,6 +1483,7 @@ proc autoplay {} {
       if {$::isBatch && [sc_game number] != 0} {
         toggleEngineAnalysis $n 1
         sc_game save [sc_game number]
+	set analysis(prevscore$n) 0
 
         if {[sc_game number] < $::batchEnd} {
           sc_game load [expr [sc_game number] + 1]
