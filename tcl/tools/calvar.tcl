@@ -11,7 +11,8 @@ namespace eval calvar {
   set ::uci::uciInfo(log_stdout4) 1
 
   array set engineListBox {}
-  set blunderThreshold 0.2
+  ### This seems unused, and for some reason interferes with annotation S.A
+  # set blunderThreshold 0.2
   set thinkingTimePerLine 10
   set thinkingTimePosition 30
   set currentLine 1

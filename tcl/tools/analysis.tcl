@@ -41,8 +41,7 @@ set batchEnd 1
 set isBatchOpening 0
 set isBatchOpeningMoves 12
 set stack ""
-
-set markTacticalExercises 1
+set markTacticalExercises 0
 
 ################################################################################
 # The different threshold values for !? ?? += etc
@@ -134,9 +133,6 @@ resetEngines
 
 set annotateMode 0		; # $n of engine annotating
 set annotateModeButtonValue 0	; # annotate checkbutton value
-
-set annotateMoves all
-set annotateBlunders blundersonly
 
 ################################################################################
 # calculateNodes:
@@ -766,19 +762,40 @@ proc ::enginelist::move {dir} {
 }
 
 proc  checkState {arg widget} {
-     if {[set $arg]} {
-       set state normal
-     } else {
-       set state disabled
-     }
-     $widget configure -state $state
+  if {[set $arg]} {
+    set state normal
+  } else {
+    set state disabled
+  }
+  $widget configure -state $state
+ }
+
+proc  checkBlunderState {} {
+  if {$::annotateBlunders == {blundersonly}} {
+    set state normal
+  } else {
+    set state disabled
+  }
+
+ .configAnnotation.blunderbox.label configure -state $state
+ .configAnnotation.blunderbox.spBlunder configure -state $state
 }
 
 ################################################################################
 # Annotation configuration widget
+# Most of the Annotation logic is in main.tcl::autoplay
 ################################################################################
+
+# These various global vars should really be made into an annotate() array
+
+# SCID has rewritten Annotation and Autoplay widgets,
+# but they are too confusing and too hard to use, for little functionality gain.
+
+
 proc initAnnotation {n} {
-  global autoplayDelay tempdelay blunderThreshold annotateModeButtonValue annotateMode analysis
+  global autoplayDelay tempdelay blunderThreshold annotateModeButtonValue annotateMode analysis annotateType
+
+  set analysis(prevscore$n) 0
 
   set w .configAnnotation
   if { [winfo exists $w] } { destroy $w }
@@ -799,17 +816,17 @@ proc initAnnotation {n} {
   frame $w.delay
   pack $w.delay -side top -padx 15 -pady 5 -fill x
 
-  label $w.delay.label -text $::tr(AnnotateTime)
+  label $w.delay.label -text $::tr(SecondsPerMove)
   spinbox $w.delay.spDelay -width 4 -textvariable tempdelay -from 1 -to 300 -increment 1
   pack $w.delay.label -side left -padx 2 -pady 5
   pack $w.delay.spDelay -side left -padx 2 -pady 5
   bind $w <Escape> { .configAnnotation.buttons.cancel invoke }
   bind $w <Return> { .configAnnotation.buttons.ok invoke }
 
-  ### Add variations frame
+  ### Which side
 
   addHorizontalRule $w
-  label $w.avlabel -text $::tr(AnnotateWhich...)
+  label $w.avlabel -text $::tr(AnnotateWhich)
   radiobutton $w.all -text $::tr(AnnotateAll) -variable annotateMoves -value all -anchor w
   radiobutton $w.white -text $::tr(AnnotateWhite) -variable annotateMoves -value white -anchor w
   radiobutton $w.black -text $::tr(AnnotateBlack) -variable annotateMoves -value black -anchor w
@@ -818,13 +835,15 @@ proc initAnnotation {n} {
   pack $w.all $w.white $w.black -side top -fill x
   addHorizontalRule $w
 
-  ### Annotate frame
+  ### Which Moves
 
-  label $w.anlabel -text $::tr(Annotate...)
-  radiobutton $w.allmoves -text $::tr(AnnotateAllMoves) -variable annotateBlunders -value allmoves -anchor w 
-  radiobutton $w.notbest -text $::tr(AnnotateNotBest) -variable annotateBlunders -value notbest -anchor w
-  radiobutton $w.blundersonly -text $::tr(AnnotateBlundersOnly) \
-    -variable annotateBlunders -value blundersonly -anchor w
+  label $w.anlabel -text {Which Moves} ; #$::tr(Annotate)
+  radiobutton $w.allmoves -text $::tr(AnnotateAllMoves) -variable annotateBlunders \
+    -value allmoves -anchor w -command checkBlunderState
+  radiobutton $w.notbest -text $::tr(AnnotateNotBest) -variable annotateBlunders \
+    -value notbest -anchor w -command checkBlunderState
+  radiobutton $w.blundersonly -text $::tr(AnnotateBlundersOnly) -variable annotateBlunders \
+    -value blundersonly -anchor w -command checkBlunderState
 
   frame $w.blunderbox
 
@@ -832,12 +851,14 @@ proc initAnnotation {n} {
   spinbox $w.blunderbox.spBlunder -width 4 -textvariable blunderThreshold \
       -from 0.1 -to 3.0 -increment 0.1
 
+  checkBlunderState
+
   pack $w.anlabel -side top
   pack $w.allmoves $w.notbest $w.blundersonly -side top -fill x
   pack $w.blunderbox -side top -padx 10 -fill x
-  pack $w.blunderbox.label $w.blunderbox.spBlunder -side left -padx 5
+  pack $w.blunderbox.label -side left -padx 5
+  pack $w.blunderbox.spBlunder -side right
   addHorizontalRule $w
-
   ### General options frame
 
   checkbutton $w.cbAnnotateVar  -text $::tr(AnnotateVariations) -variable ::isAnnotateVar -anchor w
@@ -877,8 +898,8 @@ proc initAnnotation {n} {
   ttk::combobox $w.usebook.comboBooks -width 12 -values $tmp
   catch { $w.usebook.comboBooks current $idx }
   checkState ::useAnalysisBook $w.usebook.comboBooks
-  pack $w.usebook.cbBook -side left -padx 4
-  pack $w.usebook.comboBooks -side left -padx 4
+  pack $w.usebook.cbBook -side left 
+  pack $w.usebook.comboBooks -side right
 
   # batch annotation of consecutive games, and optional opening errors finder
   frame $w.batch
@@ -893,6 +914,8 @@ proc initAnnotation {n} {
 
   checkState ::isBatch $w.batch.spBatchEnd
 
+  # Find Opening Errors
+
   checkbutton $w.batch.cbBatchOpening -text $::tr(FindOpeningErrors) -variable ::isBatchOpening \
      -command "checkState ::isBatchOpening $w.batch.spBatchOpening"
 
@@ -902,13 +925,16 @@ proc initAnnotation {n} {
   checkState ::isBatchOpening $w.batch.spBatchOpening
 
   label $w.batch.lBatchOpening -text $::tr(moves)
+
+  # Pack
+
   # pack $w.batch.cbBatch $w.batch.spBatchEnd -side top -fill x
   # pack $w.batch.cbBatchOpening $w.batch.spBatchOpening $w.batch.lBatchOpening  -side left -fill x
   grid $w.batch.cbBatch -column 0 -row 0 -sticky w
   grid $w.batch.spBatchEnd -column 1 -row 0 -columnspan 2
   grid $w.batch.cbBatchOpening -column 0 -row 1 -sticky w
-  grid $w.batch.spBatchOpening -column 1 -row 1 -sticky e -padx 2
-  grid $w.batch.lBatchOpening -column 2 -row 1 -sticky w
+  grid $w.batch.spBatchOpening -column 1 -row 1 -sticky e 
+  grid $w.batch.lBatchOpening -column 2 -row 1 -sticky e
   set ::batchEnd $to
 
   checkbutton $w.batch.cbMarkTactics -text $::tr(MarkTacticalExercises) -variable ::markTacticalExercises
@@ -1108,6 +1134,18 @@ proc markExercise { prevscore score } {
   sc_pos setComment "****D${difficulty} [format %.1f $prevscore]->[format %.1f $score] [sc_pos getComment]"
   updateBoard
 }
+
+proc storeAnnotation {name text} {
+puts storeAnnotation\ \isShortAnnotation\ \$::isShortAnnotation
+    if {! $::isShortAnnotation } {
+      sc_pos setComment "[sc_pos getComment] $name: $text"
+    } else {
+      if {$::addScoreToShortAnnotations} {
+        sc_pos setComment "[sc_pos getComment] $text"
+      }
+    }
+}
+
 ################################################################################
 #
 ################################################################################
@@ -1207,14 +1245,7 @@ proc addAnnotation {} {
       }
     }
 
-
-    if {! $::isShortAnnotation } {
-      sc_pos setComment "[sc_pos getComment] $engine_name: $text"
-    } else {
-      if {$::addScoreToShortAnnotations} {
-        sc_pos setComment "[sc_pos getComment] $text"
-      }
-    }
+    storeAnnotation $engine_name $text
 
     if {$::isBatchOpening} {
       if { [sc_pos moveNumber] < $::isBatchOpeningMoves} {
@@ -1247,13 +1278,7 @@ proc addAnnotation {} {
     if { $score > $::informant("++-") && $tomove == {black} || \
           $score < [expr 0.0 - $::informant("++-") ] && $tomove == {white} } {
       set text [format "%+.2f (%+.2f)" $prevscore $score]
-      if {! $::isShortAnnotation } {
-        sc_pos setComment "[sc_pos getComment] $engine_name: $text"
-      }  else {
-        if {$::addScoreToShortAnnotations} {
-          sc_pos setComment "[sc_pos getComment] $text"
-        }
-      }
+      storeAnnotation $engine_name $text
     } else  {
       if {$absdeltamove > $::informant("?!") && $absdeltamove <= $::informant("?")} {
         sc_pos addNag "?!"
@@ -1266,6 +1291,7 @@ proc addAnnotation {} {
       }
       
       set text [format "%s %+.2f / %+.2f" $::tr(Blunder) $prevscore $score]
+      # storeAnnotation $engine_name $text
       if {! $::isShortAnnotation } {
         sc_pos setComment "[sc_pos getComment] $engine_name: $text"
       } else {
@@ -1358,12 +1384,14 @@ proc appendAnnotator { s } {
     }
   }
 
-  if {$oldAnn != {}} {
-    set ann "Annotator \"$oldAnn $s\"\n"
-  } else  {
-    set ann "Annotator \"$s\"\n"
+  if {![string match "*$s*" $oldAnn]} {
+    if {$oldAnn != {}} {
+      set ann "Annotator \"$oldAnn , $s\"\n"
+    } else  {
+      set ann "Annotator \"$s\"\n"
+    }
+    sc_game tags set -extra [list $ann]
   }
-  sc_game tags set -extra [ list $ann ]
 }
 ################################################################################
 #
@@ -1964,7 +1992,7 @@ proc makeAnalysisWin { {n 1} } {
   if {!$annotateModeButtonValue && !$annotateMode} {
     checkbutton $w.b.annotate -image tb_annotate -indicatoron false -width 32 -height 32 \
       -variable annotateModeButtonValue -command "initAnnotation $n" -relief $relief
-    ::utils::tooltip::Set $w.b.annotate $::tr(Annotate...)
+    ::utils::tooltip::Set $w.b.annotate $::tr(Annotate)
   } else {
     frame $w.b.annotate -width 0 -height 0
   }

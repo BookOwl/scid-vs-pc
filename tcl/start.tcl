@@ -120,6 +120,10 @@ set ::file::finder::data(EPD) 1
 set ::file::finder::data(Old) 1
 set ::tools::graphs::absfilter::type year
 set ::tools::graphs::filter::type year
+set ::addAnnotatorTag 1
+set ::annotateMoves all
+set ::annotateBlunders blundersonly
+set ::annotateType score
 
 
 ### Tree/mask options:

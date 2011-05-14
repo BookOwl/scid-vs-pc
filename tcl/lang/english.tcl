@@ -665,14 +665,14 @@ translate E StartEngine {Start engine}
 translate E LockEngine {Lock engine to current position}
 translate E AnalysisCommand {Analysis Command}
 translate E PreviousChoices {Previous Choices}
-translate E AnnotateTime {Time between moves (seconds)}
-translate E AnnotateWhich {Add variations}
-translate E AnnotateAll {For moves by both sides}
+translate E AnnotateTime {Seconds per Move}
+translate E AnnotateWhich {Which Side}
+translate E AnnotateAll {Moves by both sides}
 translate E AnnotateAllMoves {All moves}
-translate E AnnotateWhite {For White moves only}
-translate E AnnotateBlack {For Black moves only}
-translate E AnnotateNotBest {When game move is not best move}
-translate E AnnotateBlundersOnly {When game move is a blunder}
+translate E AnnotateWhite {White moves only}
+translate E AnnotateBlack {Black moves only}
+translate E AnnotateNotBest {When move is not the best}
+translate E AnnotateBlundersOnly {When move is a blunder}
 translate E AnnotateBlundersOnlyScoreChange {Analysis reports blunder, with score change from/to: }
 translate E BlundersThreshold {Threshold}
 translate E LowPriority {Low CPU Priority}
@@ -1429,7 +1429,7 @@ translate E TimeSec {sec}
 translate E AllExercisesDone {All exercises done}
 translate E MoveOutOfBook {Move out of book}
 translate E LastBookMove {Last book move}
-translate E AnnotateSeveralGames {Annotate several games\nFrom current to :}
+translate E AnnotateSeveralGames {Batch annotation\nFrom current to :}
 translate E FindOpeningErrors {Find opening errors}
 translate E MarkTacticalExercises {Mark tactical exercises}
 translate E UseBook {Use book}
@@ -1437,7 +1437,7 @@ translate E MultiPV {Multiple variations}
 translate E Hash {Hash memory}
 translate E OwnBook {Use engine book}
 translate E BookFile {Opening book}
-translate E AnnotateVariations {Annotate variations}
+translate E AnnotateVariations {Process variations}
 translate E ShortAnnotations {Short annotations}
 translate E addAnnotatorTag {Add annotator tag}
 translate E AddScoreToShortAnnotations {Add score to annotations}

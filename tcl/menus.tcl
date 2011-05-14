@@ -965,7 +965,8 @@ $m add command -label OptionsSave -command {
     ::pgn::symbolicNags ::pgn::moveNumberSpaces ::pgn::columnFormat myPlayerNames 
     tree(order) tree(autoSave) optionsAutoSave ::tree::mask::recentMask 
     ecoFile suggestMoves showVarPopup showVarArrows glistSize glexport 
-    blunderThreshold autoplayDelay animateDelay boardCoords boardSTM 
+    blunderThreshold addAnnotatorTag annotateMoves annotateBlunders annotateType
+    autoplayDelay animateDelay boardCoords boardSTM 
     moveEntry(AutoExpand) moveEntry(Coord) 
     translatePieces highlightLastMove highlightLastMoveWidth highlightLastMoveColor 
     askToReplaceMoves ::windows::switcher::icons locale(numeric) 
