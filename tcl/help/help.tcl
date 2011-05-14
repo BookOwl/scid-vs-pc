@@ -401,6 +401,8 @@ set helpText(Index) {<h1>Scid Help Index</h1>
 
   <h3><name S>S</name></h3>
   <ul>
+  <li><a Analysis Annotating>Scoring</a> games</li>
+  <li><a Graphs Score>Score Graph</a></li>
   <li><a Searches>Searches</a></li>
   <li><a Menus Search>Search menu</a></li>
   <li><a SeriousGame>Play serious game</a></li>
@@ -2715,82 +2717,67 @@ set helpText(Analysis) {<h1>Analysis Windows</h1>
 
   <h1>Features</h1>
 
-  <h3>Training</h3>
-  <p>
-  With the <b>Training</b> button <button tb_training 32>, you can play moves against the analysis
-  engine. The time for each move is fixed, and the analysis results are
-  not shown when training mode is on.
-  </p>
-
   <h3><name Annotating>Annotating Games</name></h3>
   <p>
-  Games can be annotated automatically using
-  the <b>Annotate</b> button <button tb_annotate 32> in the engine toolbar.
-  This feature adds <a Comment>comments</a>, <a NAGs>Informants</a>,
-  and best-lines to a game, and can be performed
-  on  multiple games.</p>
+  Games can be automatically analysed using
+  the Annotate Button <button tb_annotate> (in the <a Analysis>Analysis Engine</a> toolbar).
+  This feature adds Scores, <a Comment>Comments</a>, <a NAGs>Informants</a>,
+  and Bestlines to games.</p>
 
-  <p>After configuring the options and pressing OK, <b>autoplay
-  mode is enabled</b> and the engine starts its analysis.
-  A variation containing the score and best line of play is
-  automatically added for each position as autoplay mode moves
-  through the game.  Only positions from the current position
-  until the end of the game (or until you exit autoplay mode)
+  <p>After configuring the options and pressing OK, Autoplay
+  Mode is enabled and the engine starts its analysis.
+  A best line variation and/or score is
+  automatically added for each position as the engine processes the game.
+  Only positions from the current position until the end of the game
   are annotated, so you can skip annotation of opening moves
-  by moving to a middle-game position before starting autoplay.
-  To cancel annotation at any time, just turn off autoplay mode
+  by moving to a mid-game position before starting.
+  To cancel annotation at any time, turn off Autoplay Mode
   </p>
   <p><i>
   The <b>Annotate</b> feature of Scid vs. PC can be used with any engine,
-  but be sure not to open any other anaylsis windows while
-annotation is in progress!
+  but be sure not to open other Analysis Windows while annotation is in progress.
   </i></p>
 
-  <p>Options:
+  <p><b>Options</b>
   <ul>
-     <li><term>Time between moves</term>
-     number of seconds engine spends on analysing each move.</li>
-     <li><term>Add variations...</term> 
-     Select which side (or both) should be annotated.
-     <li><term>Annotate...</term>
-     Additionally, one can add an annotation only if the game
-     move is a blunder, or not the best move.
-     The "Blunder Threshold" is given in units of pawns (i.e. 0.2 means 
-     an evaluation drop of more than 2 pawns).  </li>
+     <li><term>Seconds per move</term>
+     Number of seconds engine spends on analysing each move.</li>
+     <li><term>Annotate With</term> 
+     Choose whether to add Variations or Scores.
+     (Scores can then be utilized by the <a Graphs Score>Score Graph</a>)</li>
+     <li><term>Which Side</term> 
+     Select which side(s) should be annotated.</li>
+     <li><term>Which Moves</term>
+     Add an annotation only if the game move is a blunder, or not the best move.
+     The "Blunder Threshold" is given in units of pawns (i.e. 0.5 means 
+     an evaluation drop of half a pawn).  </li>
 
-     <li><term>Annotate variations</term> will include variations
-     within the game in the analysis by the engine.</li>
-     <li><term>Short annotations</term> will only add minimal
-     annotations, that is the pure lines and NAG codes without the
-     engines names and usually without the current scores.</li>
-     <li><term>Add score to annotations</term> will add the engines
-     evaluation in pawn units to the annotations. This information can
-     be used later on to draw a <a Score>Score Graph</a> of the game
-     as a visualisation of the positions reached.
-     </li>
-     <li><term>Add annotator tag</term> will add an "Annotator" tag to
-     the game header. This is meant for the <term>Short
-     annotations</term> mode which does not signify which engine was
-     used to gain the current evaluations and lines.
-     </li>
-     <li><term>Use book</term> allows the specification of an opening
-     book. Moves that are contained in this opening book are skipped
-     in the annotation process, and the annotation starts in the middle game.</li>
-     <li><term>Annotate several games</term> 
-     Will automatically annotate a sequence of games,
-storing the annotations into the database.
-     </li>
-     <li><term>Find opening errors</term> will check the opening phase
-     up to the move specified for blunders. Additionally, the
+     <li><term>Process variations</term> Recursively process variations.</li>
+     <li><term>Add annotator to comment</term>
+     Store engine name with each annotation.</li>
+     <li><term>Add annotator tag</term>
+     Store engine name as an "Annotator" tag in the PGN header.</li>
+     <li><term>Use book</term> Moves that are contained in this opening book are skipped
+     in the annotation process, and annotation starts after the book moves.</li>
+     <li><term>Batch annotation</term> 
+     Automatically process multiple games, saving annotations as we go.</li>
+     <li><term>Find opening errors</term> Check the opening phase
+     (up to the move specified) for blunders. Additionally, the
      Annotator-tag gets an entry "opBlunder X" where X is the move the
-     blunder occurred.
-     </li>
+     blunder occurred.</li>
      <li><term>Mark tactical exercises</term> This can be used to
      generate exercises for the training function <a FindBestMove>Find
      best move</a>. This option is only available for <term>UCI</term>
      engines.
      </li>
   </ul>
+
+  <h3>Training</h3>
+  <p>
+  With the <b>Training</b> button <button tb_training>, you can play moves against the Analysis
+  Engine. The time for each move is fixed, and the analysis results are
+  not shown when training mode is on.
+  </p>
 
   <h1><name List>Configuring Engines</name></h1>
   <p>
@@ -2848,7 +2835,7 @@ engines support both formats.
   </p>
 
 
-  <p><footer>Updated: Scid vs. PC 4.3, January 2011</footer></p>
+  <p><footer>Updated: Scid vs. PC 4.4, May 2011</footer></p>
 }
 
 ####################
@@ -3413,7 +3400,7 @@ set helpText(Graphs) {<h1>Graph Windows</h1>
   </p>
   <p>
   Two types of evaluation comment are recognized: those produced by
-  the Scid <a Analysis>analysis</a> window (which have the format
+  the Scid <a Analysis>Analysis Window</a> (which have the format
   <ul>
   <li><b>1.e4 {"+0.25 ...."}</b></li>
   </ul>
@@ -3428,7 +3415,7 @@ set helpText(Graphs) {<h1>Graph Windows</h1>
   In case the scores are not given from whites perspective, one can
   choose the perspective to use from the options menu to correct for
   this.
-  ###--- Checking both ??? ---###
+  # todo: Checking both
   </p>
 
   <h3><name Tree>Tree Graph window</name></h3>
