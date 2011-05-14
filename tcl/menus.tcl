@@ -670,19 +670,12 @@ set helpMessage($m,[incr menuindex]) ToolsStartEngine2
 $m add separator
 incr menuindex
 
-$m add checkbutton -label ToolsEmail \
-    -accelerator "Ctrl+Shift+E" -variable emailWin -command ::tools::email
-bind . <Control-E> ::tools::email
-set helpMessage($m,[incr menuindex]) ToolsEmail
+# book tuning
+$m add command -label ToolsBookTuning -command ::book::tuning
+set helpMessage($m,[incr menuindex]) ToolsBookTuning
 
-$m add checkbutton -label ToolsFilterGraph \
-    -variable filterGraph -command tools::graphs::filter::Open
-set helpMessage($m,[incr menuindex]) ToolsFilterGraph
-
-$m add checkbutton -label ToolsAbsFilterGraph \
-    -accelerator "Ctrl+Shift+J" -variable absfilterGraph -command tools::graphs::absfilter::Open
-bind . <Control-J> tools::graphs::absfilter::Open
-set helpMessage($m,[incr menuindex]) ToolsAbsFilterGraph
+$m add command -label ToolsPlayerReport -command ::preport::preportDlg
+set helpMessage($m,[incr menuindex]) ToolsPlayerReport
 
 $m add command -label ToolsOpReport \
     -accelerator "Ctrl+Shift+O" -command ::optable::makeReportWin
@@ -694,9 +687,20 @@ $m add command -label ToolsTracker \
 bind . <Control-K> ::ptrack::make
 set helpMessage($m,[incr menuindex]) ToolsTracker
 
-# book tuning
-$m add command -label ToolsBookTuning -command ::book::tuning
-set helpMessage($m,[incr menuindex]) ToolsBookTuning
+$m add checkbutton -label ToolsEmail \
+    -accelerator "Ctrl+Shift+E" -variable emailWin -command ::tools::email
+bind . <Control-E> ::tools::email
+set helpMessage($m,[incr menuindex]) ToolsEmail
+
+menu $m.pinfo
+$m add cascade -label ToolsPInfo -menu $m.pinfo
+set helpMessage($m,[incr menuindex]) ToolsPInfo
+$m.pinfo add command -label White -underline 0 -command {
+  playerInfo [sc_game info white]
+}
+$m.pinfo add command -label Black -underline 0 -command {
+  playerInfo [sc_game info black]
+}
 
 # Connect Hardware
 menu $m.hardware
@@ -713,18 +717,14 @@ incr menuindex
 $m add separator
 incr menuindex
 
-menu $m.pinfo
-$m add cascade -label ToolsPInfo -menu $m.pinfo
-set helpMessage($m,[incr menuindex]) ToolsPInfo
-$m.pinfo add command -label White -underline 0 -command {
-  playerInfo [sc_game info white]
-}
-$m.pinfo add command -label Black -underline 0 -command {
-  playerInfo [sc_game info black]
-}
+$m add checkbutton -label ToolsFilterGraph \
+    -variable filterGraph -command tools::graphs::filter::Open
+set helpMessage($m,[incr menuindex]) ToolsFilterGraph
 
-$m add command -label ToolsPlayerReport -command ::preport::preportDlg
-set helpMessage($m,[incr menuindex]) ToolsPlayerReport
+$m add checkbutton -label ToolsAbsFilterGraph \
+    -accelerator "Ctrl+Shift+J" -variable absfilterGraph -command tools::graphs::absfilter::Open
+bind . <Control-J> tools::graphs::absfilter::Open
+set helpMessage($m,[incr menuindex]) ToolsAbsFilterGraph
 
 $m add command -label ToolsRating -command {::tools::graphs::rating::Refresh both}
 # bind . <Control-R> {::tools::graphs::rating::Refresh both}
