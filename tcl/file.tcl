@@ -297,7 +297,11 @@ proc openBase {name} {
   if {$showProgress} {
     progressWindow "Scid" "$::tr(OpeningTheDatabase): [file tail $name]..."
   }
-  set err [catch {sc_base open $name} result]
+  if {$::fastDBopen} {
+    set err [catch {sc_base open -fast $name} result]
+  } else {
+    set err [catch {sc_base open $name} result]
+  }
   if {$showProgress} { closeProgressWindow }
   if {$err} { return -code error $result }
   return $result

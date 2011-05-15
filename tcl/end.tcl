@@ -1416,6 +1416,7 @@ wm iconname . Scid
 
 # Check for arguments starting with "-" (or "/" on Windows):
 
+set fastDBopen 0 ; # fast database opens
 set loadAtStart(spell) 1
 set loadAtStart(eco) 1
 set loadAtStart(tb) 1
@@ -1469,7 +1470,8 @@ Http://scidvspc.sourceforge.net
         }
         "f"    -
         "fast" {
-          ::splash::add "Fast start: no tablebases, ECO or spelling file loaded."
+          ::splash::add "Fast start: Database fast opens enabled, and no tablebases, ECO or spelling file loaded."
+          set ::fastDBopen 1
           set loadAtStart(spell) 0
           set loadAtStart(eco) 0
           set loadAtStart(tb) 0

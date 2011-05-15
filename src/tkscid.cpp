@@ -1286,9 +1286,13 @@ sc_base_open (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
     // Compute name frequencies, flag counts, etc unless a fast open
     // was requested:
     if (! fastOpen) {
-        recalcNameFrequencies (db->nb, db->idx);
-        recalcFlagCounts (db);
-        recalcEstimatedRatings (db->nb);
+
+      const char* unused;
+      unused = Tcl_SetVar(ti, "progress_title", "Computing name frequencies...", TCL_GLOBAL_ONLY);
+
+      recalcNameFrequencies (db->nb, db->idx);
+      recalcFlagCounts (db);
+      recalcEstimatedRatings (db->nb);
     }
 
     // Initialise the filter: all games match at move 1 by default.

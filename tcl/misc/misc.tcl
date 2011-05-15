@@ -304,10 +304,25 @@ proc progressWindow {args} {
     set button [lindex $args 2]
     set command [lindex $args 3]
     set b 1
-  } else { return }
+  } else {
+    return
+  }
+
   wm title $w $title
+
+
   label $w.t -text $text
   pack $w.t -side top
+
+  # progress_title is set in sc_base_open before recomputing name frequencies, etc
+
+  set ::progress_title $text
+  trace add variable ::progress_title write {
+    .progressWin.t configure -text $::progress_title
+    update
+    unset ::progress_title
+  }
+
   canvas $w.c -width 400 -height 20  -relief solid -border 1
   $w.c create rectangle 0 0 0 0 -fill $::progcolor -outline $::progcolor -tags bar
   $w.c create text 395 10 -anchor e -font font_Regular -tags time \
@@ -395,6 +410,8 @@ proc closeProgressWindow {} {
   }
   grab release $w
   destroy $w
+
+  catch {unset ::progress_title}
 }
 
 proc setClipboard {string} {
