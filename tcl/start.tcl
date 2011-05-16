@@ -126,6 +126,7 @@ set ::annotateBlunders blundersonly
 set ::annotateType score
 set ::isAnnotateVar 0
 set ::addAnnotatorComment 0
+set ::maintFlag W
 
 
 ### Tree/mask options:

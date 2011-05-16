@@ -66,7 +66,6 @@ proc ::maint::SetGameFlags {flag type value} {
   ::windows::stats::Refresh
 }
 
-set maintFlag W
 set maintFlaglist {W B M E N P T Q K ! ? U}
 array set maintFlags {
   W WhiteOpFlag
