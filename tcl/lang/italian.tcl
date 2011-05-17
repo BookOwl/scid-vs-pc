@@ -889,6 +889,8 @@ translate I YearRange {Intervallo di anni:}
 translate I RatingRange {Intervallo di Punteggio:}
 translate I Description {Descrizione}
 translate I Flag {Identificatore}
+# ====== TODO To be translated ======
+translate I CustomFlags {Custom flags}
 translate I DeleteCurrent {Cancella la partita attuale}
 translate I DeleteFilter {Cancella le partite del filtro}
 translate I DeleteAll {Cancella tutte le partite}

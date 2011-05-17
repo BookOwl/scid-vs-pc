@@ -871,6 +871,7 @@ translate E YearRange {Year range:}
 translate E RatingRange {Rating range:}
 translate E Description {Description}
 translate E Flag {Flag}
+translate E CustomFlags {Custom flags}
 translate E DeleteCurrent {Delete current game}
 translate E DeleteFilter {Delete filter games}
 translate E DeleteAll {Delete all games}

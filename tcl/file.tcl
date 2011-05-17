@@ -238,6 +238,7 @@ proc refreshWindows {} {
   updateMenuStates
   updateTitle
   updateStatusBar
+  ::maint::RefreshCustom
 }
 
 # ::file::Upgrade

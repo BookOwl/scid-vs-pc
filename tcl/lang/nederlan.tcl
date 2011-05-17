@@ -940,6 +940,7 @@ translate N YearRange {JaarBereik:}
 translate N RatingRange {EloBereik (laag/hoog):}
 translate N Description {Beschrijving} ;
 translate N Flag {Markering}
+translate N CustomFlags {Markering volgens keus}
 translate N DeleteCurrent {Wis huidige partij}
 translate N DeleteFilter {Wis geselecteerde partijen}
 translate N DeleteAll {Wis alle partijen}

@@ -968,6 +968,7 @@ translate W YearRange {Tidsperiod:}
 translate W RatingRange {Ratingintervall:}
 translate W Description {Beskrivning} 
 translate W Flag {Flagga}
+translate W CustomFlags {Anpassade flaggor}
 translate W DeleteCurrent {Ta bort aktuellt parti}
 translate W DeleteFilter {Ta bort partierna i filtret}
 translate W DeleteAll {Ta bort alla partier}

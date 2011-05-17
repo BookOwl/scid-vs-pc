@@ -970,6 +970,8 @@ translate P YearRange {Data:}
 translate P RatingRange {Ranking:}
 translate P Description {Opis} 
 translate P Flag {Oznaczenie:}
+# ====== TODO To be translated ======
+translate P CustomFlags {Custom flags}
 translate P DeleteCurrent {Usuñ aktualn± partiê}
 translate P DeleteFilter {Usuñ partie z filtra}
 translate P DeleteAll {Usuñ wszystkie partie}

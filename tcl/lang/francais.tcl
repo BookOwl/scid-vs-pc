@@ -840,6 +840,8 @@ translate F YearRange {Années:}
 translate F RatingRange {Classements:}
 translate F Description {Description}
 translate F Flag {Drapeau}
+# ====== TODO To be translated ======
+translate F CustomFlags {Custom flags}
 translate F DeleteCurrent {Effacer la partie courante}
 translate F DeleteFilter {Effacer le filtre de parties}
 translate F DeleteAll {Effacer toutes les parties}

@@ -860,6 +860,7 @@ translate D YearRange {Jahr-Spanne:}
 translate D RatingRange {Elo-Spanne:}
 translate D Description {Beschreibung}
 translate D Flag {Markierung}
+translate D CustomFlags {Benutzerdefinierte Markierungen}
 translate D DeleteCurrent {Lösche aktuelle Partie}
 translate D DeleteFilter {Lösche Partien im Filter}
 translate D DeleteAll {Lösche alle Partien}

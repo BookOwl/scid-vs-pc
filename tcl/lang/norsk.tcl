@@ -966,6 +966,8 @@ translate O YearRange {Til/fra år:}
 translate O RatingRange {Til/fra rating:}
 translate O Description {Description} ;# ***
 translate O Flag {Flagg}
+# ====== TODO To be translated ======
+translate O CustomFlags {Custom flags}
 translate O DeleteCurrent {Slett gjeldende parti}
 translate O DeleteFilter {Slett filtrerte partier}
 translate O DeleteAll {Slett alle partier}

@@ -927,6 +927,7 @@ translate C YearRange {Rozsah rokù:}
 translate C RatingRange {Rozsah ratingu:}
 translate C Description {Popis}
 translate C Flag {Pøíznak}
+translate C CustomFlags {U¾ivatelské pøíznaky}
 translate C DeleteCurrent {Vymazat aktuální partii}
 translate C DeleteFilter {Vymazat filtrované partie}
 translate C DeleteAll {Vymazat v¹echny partie}

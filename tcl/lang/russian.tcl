@@ -970,6 +970,8 @@ translate R YearRange {Диапазон годов:}
 translate R RatingRange {Диапазон рейтинга:}
 translate R Description {Описание}
 translate R Flag {Флаг}
+# ====== TODO To be translated ======
+translate R CustomFlags {Custom flags}
 translate R DeleteCurrent {Удалить текущую партию}
 translate R DeleteFilter {Удалить отфильтрованные партии}
 translate R DeleteAll {Удалить все партии}

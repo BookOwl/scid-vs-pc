@@ -874,6 +874,7 @@ translate S YearRange {Rango de años:}
 translate S RatingRange {Rango de Elo:}
 translate S Description {Descripción}
 translate S Flag {Señal}
+translate S CustomFlags {Señales personalizadas}
 translate S DeleteCurrent {Borrar partida actual}
 translate S DeleteFilter {Borrar partidas filtradas}
 translate S DeleteAll {Borrar todas las partidas}

@@ -930,6 +930,8 @@ translate H YearRange {Évtartomány:}
 translate H RatingRange {Értékszámtartomány:}
 translate H Description {Leírás}
 translate H Flag {Megjelölés}
+# ====== TODO To be translated ======
+translate H CustomFlags {Custom flags}
 translate H DeleteCurrent {Törli az aktuális játszmát.}
 translate H DeleteFilter {Törli a szûrt játszmákat.}
 translate H DeleteAll {Minden játszmát töröl.}

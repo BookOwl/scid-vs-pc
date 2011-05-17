@@ -964,6 +964,8 @@ translate Y YearRange {Raspon godina:}
 translate Y RatingRange {Raspon rejtinga:}
 translate Y Description {Description} ;# ***
 translate Y Flag {Oznaka}
+# ====== TODO To be translated ======
+translate Y CustomFlags {Custom flags}
 translate Y DeleteCurrent {Obri¹i tekuæu partiju}
 translate Y DeleteFilter {Obri¹i filtrirane partije}
 translate Y DeleteAll {Obri¹i sve partije}

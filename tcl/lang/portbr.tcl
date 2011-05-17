@@ -928,6 +928,7 @@ translate B YearRange {Faixa de Anos:}
 translate B RatingRange {Faixa de Rating:}
 translate B Description {Description} ;# ***
 translate B Flag {Sinalizador}
+translate B CustomFlags {Flags customizadas}
 translate B DeleteCurrent {Deletar jogo corrente}
 translate B DeleteFilter {Deletar jogos filtrados}
 translate B DeleteAll {Deletar todos os jogos}
