@@ -7213,12 +7213,11 @@ sc_game_info (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
 
         char userFlags[16];
         if (ie->GetFlagStr (userFlags, NULL) != 0) {
-            // Print other flags set for this game (except "D" for Deleted, whic is shown above)
+            // Print other flags set for this game (except "D" for Deleted, which is shown above)
             const char * flagStr = userFlags;
-
             if (*flagStr == 'D') { flagStr++; }
             if (*flagStr != 0) {
-                Tcl_AppendResult (ti, "   <gray>(", translate (ti, "flags", "flags"), ": ", NULL);
+                Tcl_AppendResult (ti, "   <gray>(", translate (ti, "flags", "flags"), ": ", flagStr, NULL);
                 int flagCount = 0;
                 while (*flagStr != 0) {
                     char * flagName = NULL;
@@ -7235,9 +7234,10 @@ sc_game_info (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
                         case '!': flagName = "BrilliancyFlag"; break;
                         case '?': flagName = "BlunderFlag"; break;
                         case 'U': flagName = "UserFlag"; break;
+                        // todo : insert Custom Flag labels into gameinfo widget
                     }
                     if (flagName != NULL) {
-                        Tcl_AppendResult (ti, (flagCount > 0 ? ", " : ""),
+                        Tcl_AppendResult (ti, (flagCount > 0 ? ", " : " - "),
                                           translate (ti, flagName), NULL);
                     }
                     flagCount++;

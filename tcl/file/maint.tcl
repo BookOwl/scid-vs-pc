@@ -218,7 +218,7 @@ proc ::maint::OpenClose {} {
       $w.mark.title.m add command -label "$::tr($maintFlags($flag))  $flag" -command "
          set maintFlag $flag
          ::maint::Refresh
-         ::maint::RefreshCustom"
+         refreshCustomFlags"
     } else {
       # dont translate CustomFlag (todo)
       set tmp [sc_game flag $flag description]
@@ -226,7 +226,7 @@ proc ::maint::OpenClose {} {
       $w.mark.title.m add command -label "$tmp ($flag)" -command "
          set maintFlag $flag
          ::maint::Refresh
-         ::maint::RefreshCustom"
+         refreshCustomFlags"
     }
     incr i
   }
@@ -315,7 +315,7 @@ proc ::maint::OpenClose {} {
   standardShortcuts $w
   bind $w <Configure> "recordWinSize $w"
   ::maint::Refresh
-  ::maint::RefreshCustom
+  refreshCustomFlags
 }
 
 proc ::maint::ChangeBaseDescription {} {
@@ -334,7 +334,7 @@ proc ::maint::ChangeBaseDescription {} {
     catch {sc_base description [.bdesc.entry get]}
     grab release .bdesc
     destroy .bdesc
-    ::maint::Refresh
+    refreshCustomFlags
   }
   dialogbutton $w.b.cancel -text $::tr(Cancel) -command "grab release $w; destroy $w"
   pack $w.b -side bottom -fill x
@@ -379,7 +379,7 @@ proc ::maint::ChangeCustomDescription {} {
     }
     grab release .bcustom
     destroy .bcustom
-    ::maint::RefreshCustom
+    refreshCustomFlags
   }
 
   dialogbutton $w.b.cancel -text $::tr(Cancel) -command "grab release $w; destroy $w"
@@ -460,53 +460,6 @@ proc ::maint::Refresh {} {
   $w.db.compact configure -state $state
   $w.db.cleaner configure -state $state
 }
-
-proc ::maint::RefreshCustom {} {
-
-  ### ::maint::Refresh is performed after filter changes but 
-  #   ::maint::RefreshCustom only needs to be done after DB switch/open/close 
-
-  global maintFlag maintFlags
-
-  set w .maintWin
-  if {![winfo exists $w]} { return }
-
-  ### Update the CustomFlag entries
-
-  for {set i 1} { $i < 7} { incr i} {
-    set desc [sc_game flag $i description]
-    $w.title.cust.text$i configure -text $desc
-  }
-
-  ### Update the CustomFlag menubutton menus
-
-  for {set idx 12} {$idx < 18} {incr idx} {
-    set flag [ lindex $::maintFlaglist $idx]
-    set tmp [sc_game flag $flag description]
-    if {$tmp == "" } { set tmp $::maintFlags($flag) }
-    .maintWin.mark.title.m entryconfigure $idx -label "$tmp ($flag)"
-  }
-
-  ### Update the CustomFlag menubutton title
-  # [Dont translate CustomFlag1 (etc)]
-
-  if { [lsearch -exact { 1 2 3 4 5 6 } $maintFlag ] != -1 } {
-    set tmp [sc_game flag $maintFlag description]
-    if {$tmp == "" } { set tmp $maintFlags($maintFlag) }
-  } else  {
-    set tmp $::tr($maintFlags($maintFlag))
-  }
-  set flagname "$tmp ($maintFlag)"
-  # set flagname "$::tr($maintFlags($maintFlag)) [string tolower $::tr(Flag)]"
-  $w.mark.title configure -text $flagname
-  $w.title.mark configure -text $flagname
-  $w.title.desc.text configure -text [sc_base description]
-
-  ### Update the gamelist flag menubutton
-  # todo
-}
-
-
 
 set autoloadGame 0
 trace variable autoloadGame w {::utils::validate::Integer 9999999 0}

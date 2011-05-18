@@ -23,9 +23,9 @@ set sSideToMove wb
 set sHeaderFlagList {StdStart Promotions Comments Variations Annotations \
       DeleteFlag WhiteOpFlag BlackOpFlag MiddlegameFlag EndgameFlag \
       NoveltyFlag PawnFlag TacticsFlag KsideFlag QsideFlag \
-      BrilliancyFlag BlunderFlag UserFlag
-}
-foreach i $sHeaderFlagList {
+      BrilliancyFlag BlunderFlag UserFlag }
+set sHeaderCustomFlagList {  CustomFlag1 CustomFlag2 CustomFlag3 CustomFlag4 CustomFlag5 CustomFlag6 }
+foreach i [ concat $sHeaderFlagList $sHeaderCustomFlagList ] {
   set sHeaderFlags($i) both
 }
 set sPgntext(1) ""
@@ -87,7 +87,7 @@ proc ::search::header::defaults {} {
   set sResWin 1; set sResLoss 1; set sResDraw 1; set sResOther 1
   set sIgnoreCol No
   set sSideToMove wb
-  foreach flag $::sHeaderFlagList { set sHeaderFlags($flag) both }
+  foreach flag  [ concat $::sHeaderFlagList $::sHeaderCustomFlagList ] { set sHeaderFlags($flag) both }
   foreach i [array names sPgntext] { set sPgntext($i) "" }
   foreach i $::sTitleList {
     set sTitles(w:$i) 1
@@ -388,6 +388,27 @@ proc search::header {} {
     if {$count == 6} { set col 5; set row 0 }
     if {$count == 12} { set col 10; set row 0 }
   }
+  set count 1
+  set col 0
+  set row 7
+  foreach var $::sHeaderCustomFlagList {
+    
+    set lb [sc_game flag $count description]
+    if { $lb == ""  } {  set lb $var  }
+    
+    set lab [label $w.flags.l$var -text $lb -font font_Small]
+    grid $lab -row $row -column $col -sticky e
+    incr col
+    grid [radiobutton $w.flags.yes$var -variable sHeaderFlags($var) -value yes -text $::tr(Yes) -ind 0 -padx 2 -pady 0 -font font_Small] -row $row -column $col
+    incr col
+    grid [radiobutton $w.flags.no$var -variable sHeaderFlags($var) -value no -text $::tr(No) -ind 0 -padx 2 -pady 0 -font font_Small] -row $row -column $col
+    incr col
+    grid [radiobutton $w.flags.both$var -variable sHeaderFlags($var) -value both -text $::tr(Both) -ind 0 -padx 2 -pady 0 -font font_Small] -row $row -column $col
+    incr col 2
+    incr count
+    if {$count == 4} { set col 0; set row 8 }
+  }
+
   grid [label $w.flags.space -text "" -font $regular] -row 0 -column 4
   grid [label $w.flags.space2 -text "" -font $regular] -row 0 -column 9
 
@@ -424,6 +445,10 @@ proc search::header {} {
       if $sTitles(b:$i) { lappend btitles $i }
     }
 
+    ### (todo) SCID has some extra stuff here about
+    # if {($sWhite == "!me") || ($sBlack == "!me")}
+    # elseif {($sWhite == "!mymove") || ($sBlack == "!mymove")}
+
     set str [sc_search header -white $sWhite -black $sBlack \
         -event $sEvent -site $sSite -round $sRound \
         -date [list $sDateMin $sDateMax] \
@@ -454,6 +479,12 @@ proc search::header {} {
         -fBrilliancy $sHeaderFlags(BrilliancyFlag) \
         -fBlunder $sHeaderFlags(BlunderFlag) \
         -fUser $sHeaderFlags(UserFlag) \
+	-fCustom1 $sHeaderFlags(CustomFlag1) \
+	-fCustom2 $sHeaderFlags(CustomFlag2) \
+	-fCustom3 $sHeaderFlags(CustomFlag3) \
+	-fCustom4 $sHeaderFlags(CustomFlag4) \
+	-fCustom5 $sHeaderFlags(CustomFlag5) \
+	-fCustom6 $sHeaderFlags(CustomFlag6) \
         -pgn $sPgnlist -wtitles $wtitles -btitles $btitles \
         ]
 

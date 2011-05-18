@@ -238,7 +238,62 @@ proc refreshWindows {} {
   updateMenuStates
   updateTitle
   updateStatusBar
-  ::maint::RefreshCustom
+  refreshCustomFlags
+}
+
+### Update a few widgets with the Custom Flags
+### (Only needs to be done after DB switch/open/close)
+
+proc refreshCustomFlags {} {
+
+  global maintFlag maintFlags
+
+  ### maintenance window
+
+  set w .maintWin
+  if {[winfo exists $w]} {
+
+      for {set i 1} { $i < 7} { incr i} {
+	set desc [sc_game flag $i description]
+	$w.title.cust.text$i configure -text $desc
+      }
+
+      ### Update the CustomFlag menubutton menus
+
+      for {set idx 12} {$idx < 18} {incr idx} {
+	set flag [ lindex $::maintFlaglist $idx]
+	set tmp [sc_game flag $flag description]
+	if {$tmp == "" } { set tmp $::maintFlags($flag) }
+	.maintWin.mark.title.m entryconfigure $idx -label "$tmp ($flag)"
+      }
+
+      ### Update the CustomFlag menubutton title
+      # [Dont translate CustomFlag1 (etc)]
+
+      if { [lsearch -exact { 1 2 3 4 5 6 } $maintFlag ] != -1 } {
+	set tmp [sc_game flag $maintFlag description]
+	if {$tmp == "" } { set tmp $maintFlags($maintFlag) }
+      } else  {
+	set tmp $::tr($maintFlags($maintFlag))
+      }
+      set flagname "$tmp ($maintFlag)"
+      # set flagname "$::tr($maintFlags($maintFlag)) [string tolower $::tr(Flag)]"
+      $w.mark.title configure -text $flagname
+      $w.title.mark configure -text $flagname
+      $w.title.desc.text configure -text [sc_base description]
+  }
+
+  ### header search
+
+  set w .sh
+  if {[winfo exists $w]} {
+  }
+
+  ### gamelist menubutton
+
+  set w .gameListWin
+  if {[winfo exists $w]} {
+  }
 }
 
 # ::file::Upgrade
