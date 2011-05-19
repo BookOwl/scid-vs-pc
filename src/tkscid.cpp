@@ -480,7 +480,6 @@ scid_InitTclTk (Tcl_Interp * ti)
     CREATE_CMD (ti, "sc_compact", sc_compact);
     CREATE_CMD (ti, "sc_eco", sc_eco);
     CREATE_CMD (ti, "sc_filter", sc_filter);
-    // CREATE_CMD (ti, "sc_flags", sc_flags);
     CREATE_CMD (ti, "sc_game", sc_game);
     CREATE_CMD (ti, "sc_info", sc_info);
     CREATE_CMD (ti, "sc_move", sc_move);
@@ -5790,6 +5789,7 @@ clearFilter( scidBaseT * dbase, uint size)
 }
 
 /* broke S.A.
+CREATE_CMD (ti, "sc_flags", sc_flags);
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // sc_flags
@@ -5797,17 +5797,18 @@ clearFilter( scidBaseT * dbase, uint size)
 // returns a string with all set flags for this game
 //
 
-char *
+int
 sc_flags (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
 {
-    IndexEntry * ie = db->idx->FetchEntry(db->gameNumber);
-    char *userFlags = new char [32];
+    gameNumberT gameNumber = strGetUnsigned (argv[1]);
+    IndexEntry * ie = db->idx->FetchEntry(gameNumber);
+    char userFlags[32];
 
     ie->GetFlagStr (userFlags, NULL);
-    return userFlags;
+    Tcl_AppendResult (ti, userFlags, NULL);
+    return TCL_OK;
 }
 */
-
 
 //////////////////////////////////////////////////////////////////////
 ///  GAME functions
