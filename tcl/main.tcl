@@ -775,27 +775,14 @@ proc updateBoard2 {} {
 }
 
 proc updateBoard3 {pgnNeedsUpdate} {
-  global gameInfo
 
   if {![sc_base inUse]  ||  $::trialMode  ||  [sc_base isReadOnly]} {
     .tb.save configure -state disabled
   } else {
     .tb.save configure -state normal
   }
-  .gameInfo configure -state normal
-  .gameInfo delete 0.0 end
-  ::htext::display .gameInfo [sc_game info -hide $gameInfo(hideNextMove) \
-      -material $gameInfo(showMaterial) \
-      -cfull $gameInfo(fullComment) \
-      -fen $gameInfo(showFEN) -tb $gameInfo(showTB)]
-  if {$gameInfo(wrap)} {
-    .gameInfo configure -wrap word
-    .gameInfo tag configure wrap -lmargin2 10
-    .gameInfo tag add wrap 1.0 end
-  } else {
-    .gameInfo configure -wrap none
-  }
-  .gameInfo configure -state disabled
+
+  updateGameinfo
 
   #TODO
   #Each function should be safe and check the appropriate "winfo exists" at the start
@@ -825,6 +812,25 @@ proc updateBoard3 {pgnNeedsUpdate} {
   if {[winfo exists .bookWin]} { ::book::refresh }
   if {[winfo exists .bookTuningWin]} { ::book::refreshTuning }
   if {[winfo exists .noveltyWin]} { updateNoveltyWin }
+}
+
+proc updateGameinfo {} {
+  global gameInfo
+
+  .gameInfo configure -state normal
+  .gameInfo delete 0.0 end
+  ::htext::display .gameInfo [sc_game info -hide $gameInfo(hideNextMove) \
+      -material $gameInfo(showMaterial) \
+      -cfull $gameInfo(fullComment) \
+      -fen $gameInfo(showFEN) -tb $gameInfo(showTB)]
+  if {$gameInfo(wrap)} {
+    .gameInfo configure -wrap word
+    .gameInfo tag configure wrap -lmargin2 10
+    .gameInfo tag add wrap 1.0 end
+  } else {
+    .gameInfo configure -wrap none
+  }
+  .gameInfo configure -state disabled
 }
 
 # Set up player photos:

@@ -480,7 +480,7 @@ proc ::windows::gamelist::Open {} {
   button $w.c.delete -text {(Un)Delete} -font font_Small -command {
     ::windows::gamelist::ToggleFlag D
     configDeleteButtons
-    updateBoard
+    updateGameinfo
   }
 
   button $w.c.empty -text {Compact} -font font_Small -command "compactGames $w ; configDeleteButtons"
@@ -510,7 +510,10 @@ proc ::windows::gamelist::Open {} {
   # only need to call this now to init the menubutton "-text"
   refreshCustomFlags
 
-  button $w.c.flag -text $::tr(Flag) -font font_Small -command {::windows::gamelist::ToggleFlag $glistFlag}
+  button $w.c.flag -text $::tr(Flag) -font font_Small -command {
+    ::windows::gamelist::ToggleFlag $glistFlag
+    updateGameinfo
+  }
 
   configDeleteButtons
 
