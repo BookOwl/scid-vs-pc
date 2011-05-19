@@ -193,7 +193,6 @@ proc ::bookmarks::Go {entry} {
     flipBoardForPlayerNames $::myPlayerNames
   }
   ::windows::gamelist::Refresh
-  ::tree::refresh
   ::windows::stats::Refresh
   updateMenuStates
   updateBoard -pgn
