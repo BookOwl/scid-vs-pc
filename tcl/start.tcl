@@ -127,6 +127,7 @@ set ::annotateType score
 set ::isAnnotateVar 0
 set ::addAnnotatorComment 0
 set ::maintFlag W
+set ::glistFlag W
 
 
 ### Tree/mask options:

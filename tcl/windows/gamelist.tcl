@@ -262,6 +262,8 @@ proc ::windows::gamelist::Open {} {
 
   global highcolor helpMessage
   global glistNames glistFields glistSortedBy glSortReversed glistSize
+  global maintFlags maintFlaglist
+
   if {[winfo exists .glistWin]} {
     focus .
     destroy .glistWin
@@ -476,12 +478,39 @@ proc ::windows::gamelist::Open {} {
   }
 
   button $w.c.delete -text {(Un)Delete} -font font_Small -command {
-    ::windows::gamelist::ToggleFlag delete
+    ::windows::gamelist::ToggleFlag D
     configDeleteButtons
     updateBoard
   }
 
   button $w.c.empty -text {Compact} -font font_Small -command "compactGames $w ; configDeleteButtons"
+
+  # Flag Menubutton
+  menubutton $w.c.title -menu $w.c.title.m -indicatoron 1 -relief flat -font font_Small
+  menu $w.c.title.m -font font_Small
+
+  foreach flag $maintFlaglist  {
+    # dont translate CustomFlag (todo)
+    if { [lsearch -exact { 1 2 3 4 5 6 } $flag ] == -1 } {
+      set tmp $::tr($maintFlags($flag))
+    } else {
+      set tmp [sc_game flag $flag description]
+      if {$tmp == "" } {
+        set tmp "Custom $flag"
+      } else {
+        set tmp "$tmp ($flag)"
+      }
+    }
+    $w.c.title.m add command -label "$tmp" -command "
+      set glistFlag $flag
+      $w.c.title configure -text \"$tmp\"
+      refreshCustomFlags
+      "
+  }
+  # only need to call this now to init the menubutton "-text"
+  refreshCustomFlags
+
+  button $w.c.flag -text $::tr(Flag) -font font_Small -command {::windows::gamelist::ToggleFlag $glistFlag}
 
   configDeleteButtons
 
@@ -490,7 +519,7 @@ proc ::windows::gamelist::Open {} {
   button $w.c.close -textvar ::tr(Close) -font font_Small -command { focus .; destroy .glistWin }
 
   pack $w.c.close $w.c.help $w.c.export -side right -padx 3
-  pack $w.c.goto $w.c.browse $w.c.load $w.c.delete $w.c.empty -side left -padx 3
+  pack $w.c.goto $w.c.browse $w.c.load $w.c.delete $w.c.empty $w.c.title $w.c.flag -side left -padx 3
 
   set ::windows::gamelist::goto 1
   bind $w <Configure> {::windows::gamelist::Configure %W }
@@ -529,6 +558,11 @@ proc configDeleteButtons {} {
       $w.c.delete configure -state disabled
       $w.c.empty configure -state disabled
     } else {
+
+      ### do we want to always check the delete and flag buttons ? &&&
+      #  if {[.glistWin.tree selection] == ""} disable delete, flag
+      # $w.tree tag bind click <Button-1> {configDeleteButtons}
+
       $w.c.delete configure -state normal
       if {[compactGamesNull]} {
         $w.c.empty configure -state disabled
@@ -758,13 +792,6 @@ proc ::windows::gamelist::SetStart {unit} {
 
 proc ::windows::gamelist::ToggleFlag {flag} {
 
-  ### currently only used to mark games as (un)deleted
-
-  if {$flag != {delete}} {
-    puts "gamelist::ToggleFlag called with flag != delete"
-    return
-  }
-
   set items [.glistWin.tree selection]
   if { "$items" == "" } {
     bell
@@ -775,14 +802,22 @@ proc ::windows::gamelist::ToggleFlag {flag} {
       set number [.glistWin.tree set $item Number]
       catch {sc_game flag $flag $number invert}
 
-      # toggle treeview delete field
-      set deleted [.glistWin.tree set $item Deleted]
-      if {$deleted == {D }} {
-        set deleted {  }
+      if {$flag == {D}} {
+	# toggle treeview delete field
+	set deleted [.glistWin.tree set $item Deleted]
+	if {$deleted == {D }} {
+	  set deleted {  }
+	} else {
+	  set deleted {D }
+	}
+	.glistWin.tree set $item Deleted $deleted
       } else {
-        set deleted {D }
+        # todo:  toggle .glistWin.tree set $item Flags accordingly
+        # puts "sc_flags $number [sc_flags $number]"
       }
-      .glistWin.tree set $item Deleted $deleted
+    }
+    if {$flag != {D}} {
+      ::windows::gamelist::Refresh
     }
   }
 }

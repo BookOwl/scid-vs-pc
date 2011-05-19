@@ -246,7 +246,7 @@ proc refreshWindows {} {
 
 proc refreshCustomFlags {} {
 
-  global maintFlag maintFlags
+  global maintFlag maintFlags maintFlaglist glistFlag
 
   ### maintenance window
 
@@ -261,37 +261,75 @@ proc refreshCustomFlags {} {
       ### Update the CustomFlag menubutton menus
 
       for {set idx 12} {$idx < 18} {incr idx} {
-	set flag [ lindex $::maintFlaglist $idx]
+	set flag [ lindex $maintFlaglist $idx]
 	set tmp [sc_game flag $flag description]
-	if {$tmp == "" } { set tmp $::maintFlags($flag) }
-	.maintWin.mark.title.m entryconfigure $idx -label "$tmp ($flag)"
+        if {$tmp == "" } {
+          set tmp "Custom $flag"
+        } else {
+          set tmp "$tmp ($flag)"
+        }
+	.maintWin.mark.title.m entryconfigure $idx -label "$tmp"
       }
 
       ### Update the CustomFlag menubutton title
       # [Dont translate CustomFlag1 (etc)]
 
-      if { [lsearch -exact { 1 2 3 4 5 6 } $maintFlag ] != -1 } {
-	set tmp [sc_game flag $maintFlag description]
-	if {$tmp == "" } { set tmp $maintFlags($maintFlag) }
-      } else  {
+      if { [lsearch -exact { 1 2 3 4 5 6 } $maintFlag ] == -1 } {
 	set tmp $::tr($maintFlags($maintFlag))
+      } else  {
+	set tmp [sc_game flag $maintFlag description]
+	if {$tmp == "" } {
+	  set tmp "Custom $flag"
+	} else {
+	  set tmp "$tmp ($flag)"
+	}
       }
-      set flagname "$tmp ($maintFlag)"
+      set flagname $tmp
       # set flagname "$::tr($maintFlags($maintFlag)) [string tolower $::tr(Flag)]"
-      $w.mark.title configure -text $flagname
-      $w.title.mark configure -text $flagname
+      $w.mark.title configure -text "$flagname"
+      $w.title.mark configure -text "$flagname"
       $w.title.desc.text configure -text [sc_base description]
+  }
+
+  ### gamelist menubutton
+
+  set w .glistWin
+  if {[winfo exists $w]} {
+
+      ### Update the gamelist CustomFlag menubutton menus
+
+      for {set idx 12} {$idx < 18} {incr idx} {
+	set flag [ lindex $maintFlaglist $idx]
+	set tmp [sc_game flag $flag description]
+        if {$tmp == "" } {
+          set tmp "Custom $flag"
+        } else {
+          set tmp "$tmp ($flag)"
+        }
+	$w.c.title.m entryconfigure $idx -label "$tmp"
+      }
+
+      ### Update the gamelist CustomFlag menubutton title
+      # [Dont translate CustomFlag1 (etc)]
+
+      if { [lsearch -exact { 1 2 3 4 5 6 } $glistFlag ] == -1 } {
+	set tmp $::tr($maintFlags($glistFlag))
+      } else  {
+	set tmp [sc_game flag $glistFlag description]
+	if {$tmp == "" } {
+	  set tmp "Custom $glistFlag"
+	} else {
+	  set tmp "$tmp ($glistFlag)"
+	}
+      }
+      set flagname $tmp
+
+      $w.c.title configure -text "$flagname"
   }
 
   ### header search
 
   set w .sh
-  if {[winfo exists $w]} {
-  }
-
-  ### gamelist menubutton
-
-  set w .gameListWin
   if {[winfo exists $w]} {
   }
 }

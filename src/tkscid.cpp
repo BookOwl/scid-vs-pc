@@ -480,6 +480,7 @@ scid_InitTclTk (Tcl_Interp * ti)
     CREATE_CMD (ti, "sc_compact", sc_compact);
     CREATE_CMD (ti, "sc_eco", sc_eco);
     CREATE_CMD (ti, "sc_filter", sc_filter);
+    // CREATE_CMD (ti, "sc_flags", sc_flags);
     CREATE_CMD (ti, "sc_game", sc_game);
     CREATE_CMD (ti, "sc_info", sc_info);
     CREATE_CMD (ti, "sc_move", sc_move);
@@ -5788,6 +5789,25 @@ clearFilter( scidBaseT * dbase, uint size)
     dbase->treeFilter = NULL;
 }
 
+/* broke S.A.
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// sc_flags
+// Usage: sc_flags <gameNum>
+// returns a string with all set flags for this game
+//
+
+char *
+sc_flags (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
+{
+    IndexEntry * ie = db->idx->FetchEntry(db->gameNumber);
+    char *userFlags = new char [32];
+
+    ie->GetFlagStr (userFlags, NULL);
+    return userFlags;
+}
+*/
+
 
 //////////////////////////////////////////////////////////////////////
 ///  GAME functions
@@ -7211,7 +7231,8 @@ sc_game_info (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
         if (ie->GetDeleteFlag())
             Tcl_AppendResult (ti, "   <gray>(", translate (ti, "deleted"), ")</gray>", NULL);
 
-        char userFlags[16];
+        // max is 19 flags
+        char userFlags[32];
         if (ie->GetFlagStr (userFlags, NULL) != 0) {
             // Print other flags set for this game (except "D" for Deleted, which is shown above)
             const char * flagStr = userFlags;

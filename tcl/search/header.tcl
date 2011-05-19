@@ -394,7 +394,11 @@ proc search::header {} {
   foreach var $::sHeaderCustomFlagList {
     
     set lb [sc_game flag $count description]
-    if { $lb == ""  } {  set lb $var  }
+    if { $lb == ""  } {
+      set lb "Custom $count"
+    } else {
+      set lb "$lb ($count)"
+    }
     
     set lab [label $w.flags.l$var -text $lb -font font_Small]
     grid $lab -row $row -column $col -sticky e

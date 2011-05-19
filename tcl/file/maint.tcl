@@ -212,22 +212,22 @@ proc ::maint::OpenClose {} {
   menubutton $w.mark.title -menu $w.mark.title.m -indicatoron 1 -relief flat -font $bold
   menu $w.mark.title.m -font $font
 
-  set i 0
   foreach flag $maintFlaglist  {
-    if {$i < 12} {
-      $w.mark.title.m add command -label "$::tr($maintFlags($flag))  $flag" -command "
-         set maintFlag $flag
-         ::maint::Refresh
-         refreshCustomFlags"
+    # dont translate CustomFlag (todo)
+    if { [lsearch -exact { 1 2 3 4 5 6 } $flag ] == -1 } {
+      set tmp $::tr($maintFlags($flag))
     } else {
-      # dont translate CustomFlag (todo)
       set tmp [sc_game flag $flag description]
-      if {$tmp == "" } { set tmp $maintFlags($flag) }
-      $w.mark.title.m add command -label "$tmp ($flag)" -command "
-         set maintFlag $flag
-         ::maint::Refresh
-         refreshCustomFlags"
+      if {$tmp == "" } {
+        set tmp "Custom $flag"
+      } else {
+        set tmp "$tmp ($flag)"
+      }
     }
+    $w.mark.title.m add command -label "$tmp" -command "
+       set maintFlag $flag
+       ::maint::Refresh
+       refreshCustomFlags"
     incr i
   }
 
