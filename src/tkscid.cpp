@@ -481,6 +481,7 @@ scid_InitTclTk (Tcl_Interp * ti)
     CREATE_CMD (ti, "sc_eco", sc_eco);
     CREATE_CMD (ti, "sc_filter", sc_filter);
     CREATE_CMD (ti, "sc_game", sc_game);
+    CREATE_CMD (ti, "sc_flags", sc_flags);
     CREATE_CMD (ti, "sc_info", sc_info);
     CREATE_CMD (ti, "sc_move", sc_move);
     CREATE_CMD (ti, "sc_name", sc_name);
@@ -5788,27 +5789,41 @@ clearFilter( scidBaseT * dbase, uint size)
     dbase->treeFilter = NULL;
 }
 
-/* broke S.A.
-CREATE_CMD (ti, "sc_flags", sc_flags);
-
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // sc_flags
 // Usage: sc_flags <gameNum>
 // returns a string with all set flags for this game
 //
+// Could be incorporated into sc_game
+//
 
 int
 sc_flags (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
 {
-    gameNumberT gameNumber = strGetUnsigned (argv[1]);
-    IndexEntry * ie = db->idx->FetchEntry(gameNumber);
-    char userFlags[32];
+    char userFlags[32]="";
+    gameNumberT gnum;
+
+    if (argc != 2 ) {
+      return errorResult (ti, "Usage: sc_flags <gamenumber>");
+    }
+
+    gnum = strGetUnsigned (argv[1]);
+
+    if (gnum == 0) {
+      return setUintResult (ti, 0);
+    }
+    gnum--;
+
+    IndexEntry * ie = db->idx->FetchEntry(gnum);
+    if (ie == NULL) {
+      return setUintResult (ti, 0);
+    }
 
     ie->GetFlagStr (userFlags, NULL);
+
     Tcl_AppendResult (ti, userFlags, NULL);
     return TCL_OK;
 }
-*/
 
 //////////////////////////////////////////////////////////////////////
 ///  GAME functions

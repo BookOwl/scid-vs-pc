@@ -815,13 +815,10 @@ proc ::windows::gamelist::ToggleFlag {flag} {
 	}
 	.glistWin.tree set $item Deleted $deleted
       } else {
-        # todo:  toggle .glistWin.tree set $item Flags accordingly
-        # puts "sc_flags $number [sc_flags $number]"
+	.glistWin.tree set $item Flags "[string map {D {}} [sc_flags $number]] "
       }
     }
-    if {$flag != {D}} {
-      ::windows::gamelist::Refresh
-    }
+    # ::windows::gamelist::Refresh
   }
 }
 
