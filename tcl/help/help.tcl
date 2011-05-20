@@ -5816,6 +5816,50 @@ set helpText(Novag) {<h1>Connecting the Novag Citrine Chess Board</h1>
 set helpTitle(Changelog) "Scid vs PC Changelog"
 set helpText(Changelog) {<h1>Scid vs. PC</h1>
 
+<h4>4.4 (May 21, 2011)</h4>
+<ul>
+<li>Implement SCID's interruptable tree processing</li>
+<li>Implement SCID's custom flags </li>
+<li>Add two widgets to the gamelist widget for manipulating flags</li>
+<li>Opening Book and Book Tuning overhaul - allow two books to be opened with side-by-side sorting, and various interface improvements</li>
+<li>Overhaul Annotate widget - allow choice of scores/variation/both and remember annotation options </li>
+<li>Crosstable sort by Country feature</li>
+<li>Update Fics to allow for different Port/IP Address (using SCID code)</li>
+<li>Graph changes - remember widget settings, change colours+dot size, fix up half-move bug and a title misallignment, add 2010 decade</li>
+<li>Add "Half moves" (moves since capture or pawn move) to setup board</li>
+<li>ECO Browser changes - add "update" and "up" buttons, when clicking on "Start ECO" open browser at top level, make statistics more readable</li>
+<li>Add the "Last Move Color" to the main board colours widget</li>
+<li>Restructure "Tools" menu</li>
+<li>Icons - remove the large gameinfo and togglemenu buttons, add a "comment editor" icon to the toolbar and tidy up various icons</li>
+<li>Gamelist tweak for large DBs - use tk::scale (rather than ttk::scale) and "-bigincrement" for better performance</li>
+<li>Busy cursor when sorting database via Gamelist column click</li>
+<li>For OSX (esp. single button mice) - bind <Control-Button-1> to context menu for main window and pgn window</li>
+<li>Make the 'paste variation' feature work a bit better at var/game end</li>
+<li>Make variation popup remember it's location instead of being centered</li>
+<li>Add "Read-only" button to maintenance window. </li>
+<li>PGN/htext performance tweaks - include removing stupid ::htext::updateRate</li>
+<li>When using "-fast", perform fast database opens also. Otherwise, update the progressbar to show "Calculating name frequencies"</li>
+<li>Minor bug-fixes</li>
+<ul>
+<li>(Annotation probably has minor bugs, and the Tactical Exercise and Opening Errors features aren't tested)</li>
+<li> (todo: add custom labels to gameinfo)</li>
+<li>Paste FEN bug involving fen validation. Fix promotion bug involving busy CPU and missed grab</li>
+<li>Rewrite Comment Editor/Annotation help, and add a 'Apply' button</li>
+<li>Fix off-screen window placement on windows</li>
+<li>Change a few short-cuts. Add shortcut Help page. Fix up buggy Control+ bindings to quick switch to open databases</li>
+<li>Help find entry box didn't accept stings "-l" (for eg)</li>
+<li>On Macs, dont place the window at top of screen, as it's then stuck under the main menubar</li>
+<li>Make the game save dialog center and resize properly</li>
+<li>When move bookmarks around, make sure they dont go off the top/bottom of widget</li>
+<li>Fix: Promoting pawn by clicking on a8 then a7 (for eg) gave grab error</li>
+<li>Hopefully fixes a rare move bug: After the variation pop-up (and other times?) a single click moves piece to unwanted square</li>
+<li>Fix up a bug in the gamelist find widget, and make a note it is very slow</li>
+<li>Fix up file loading (and bookmarks) of DBs with dots (.) in their name</li>
+<li>Ubuntu 11 have put libX11.so somewhere stupid. Update configure script</li>
+<li>Statusbar shows correct value after Crosstable update</li>
+</ul>
+</ul>
+
 <h4>4.3 (March 10, 2011)</h4>
 <ul>
 <li> Clickable Variation arrows</li>
