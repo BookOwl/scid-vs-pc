@@ -1953,9 +1953,8 @@ proc makeAnalysisWin { {n 1} } {
   # Configure pipe for line buffering and non-blocking mode
   fconfigure $analysis(pipe$n) -buffering line -blocking 0
 
-  #
   # Set up the  analysis window:
-  #
+
   toplevel $w
   wm title $w "Scid: $analysisName"
 
@@ -1972,8 +1971,6 @@ proc makeAnalysisWin { {n 1} } {
   setWinSize $w
   standardShortcuts $w
 
-  ::board::new $w.bd 25
-  $w.bd configure -relief solid -borderwidth 1
   set analysis(showBoard$n) 0
 
   frame $w.b
@@ -2083,7 +2080,6 @@ proc makeAnalysisWin { {n 1} } {
       by moving backward or forward or making a new move.)"
   $w.text configure -state disabled
   bind $w <Destroy> "destroyAnalysisWin $n"
-  bind $w <Configure> "recordWinSize $w"
   bind $w <Escape> "focus .; destroy $w"
   bind $w <Key-a> "$w.b.startStop invoke"
   bind $w <Return> "addAnalysisMove $n"
@@ -2146,6 +2142,7 @@ proc makeAnalysisWin { {n 1} } {
     set analysis(priority$n) idle
     setAnalysisPriority $n
   }
+  bind $w <Configure> "recordWinSize $w"
 }
 
 proc addAnalysisMove {{n 0}} {
@@ -2948,15 +2945,23 @@ proc addMoveNumbers { e pv } {
 ################################################################################
 proc toggleAnalysisBoard {n} {
   global analysis
+  set w .analysisWin$n
+
+  # init if doesnt exist
+  if {![winfo exists $w.bd]} {
+    ::board::new $w.bd 25
+    $w.bd configure -relief solid -borderwidth 1
+  }
+
   if { $analysis(showBoard$n) } {
     set analysis(showBoard$n) 0
-    pack forget .analysisWin$n.bd
+    pack forget $w.bd
     # setWinSize .analysisWin$n
-    bind .analysisWin$n <Configure> "recordWinSize .analysisWin$n"
+    bind $w <Configure> "recordWinSize $w"
   } else {
-    bind .analysisWin$n <Configure> {}
+    bind $w <Configure> {}
     set analysis(showBoard$n) 1
-    pack .analysisWin$n.bd -side bottom -before .analysisWin$n.hist 
+    pack $w.bd -side bottom -before $w.hist 
 
     update
     ### these are too wayward S.A
@@ -2965,8 +2970,8 @@ proc toggleAnalysisBoard {n} {
     # set x [winfo reqwidth .analysisWin$n]
     # set y [winfo reqheight .analysisWin$n]
     # wm geometry .analysisWin$n ${x}x${y}
-    .analysisWin$n.hist.text configure -setgrid 1
-    .analysisWin$n.text configure -setgrid 1
+    $w.hist.text configure -setgrid 1
+    $w.text configure -setgrid 1
   }
 }
 

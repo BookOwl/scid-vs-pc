@@ -477,7 +477,7 @@ proc ::windows::gamelist::Open {} {
     }
   }
 
-  button $w.c.delete -text {(Un)Delete} -font font_Small -command {
+  button $w.c.delete -text $::tr(Delete) -font font_Small -command {
     ::windows::gamelist::ToggleFlag D
     configDeleteButtons
     updateGameinfo
@@ -517,7 +517,7 @@ proc ::windows::gamelist::Open {} {
 
   configDeleteButtons
 
-  button $w.c.export -textvar ::tr(Save...) -font font_Small -command openExportGList
+  button $w.c.export -textvar ::tr(Save) -font font_Small -command openExportGList
   button $w.c.help  -textvar ::tr(Help) -width 5 -font font_Small -command { helpWindow GameList }
   button $w.c.close -textvar ::tr(Close) -font font_Small -command { focus .; destroy .glistWin }
 
