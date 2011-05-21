@@ -4,7 +4,7 @@
 
 set playerInfoName ""
 
-proc playerInfo {{player ""}} {
+proc playerInfo {{player ""} {raise 0}} {
   global playerInfoName
   if {$player == ""} { set player $playerInfoName }
   if {[catch {sc_name info -htext $player} pinfo]} { return }
@@ -66,8 +66,10 @@ proc playerInfo {{player ""}} {
 
   } else {
     # Generating a player report refreshs stats, which refreshes this proc
-    # So util this mess is sorted out, don't raise this window.
-    # raiseWin $w
+    # So only raise if asked to
+    if {$raise != {0}} {
+      raiseWin $w
+    }
   }
   set player [trimEngineName $player]
   if {[info exists ::photo($player)]} {

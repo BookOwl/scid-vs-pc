@@ -423,7 +423,7 @@ proc ::htext::display {w helptext {section {}} {fixed 1}} {
         set playerName [string range $playerTag 3 end]
         set tagName pi
         # $w tag configure "$playerTag" -fore Blue
-        $w tag bind $playerTag <ButtonRelease-1> "playerInfo \"$playerName\""
+        $w tag bind $playerTag <ButtonRelease-1> [list playerInfo $playerName raise]
         $w tag bind $playerTag <Any-Enter> \
             "$w tag configure \"$playerTag\" -back gray85
              $w configure -cursor hand2"
