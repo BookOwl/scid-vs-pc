@@ -5844,7 +5844,7 @@ set helpText(Changelog) {<h1>Scid vs. PC</h1>
 <ul>
 <li>Implement SCID's interruptable tree processing</li>
 <li>Implement SCID's custom flags </li>
-<li>Add two widgets to the gamelist widget for manipulating flags</li>
+<li>Add widgets to the gamelist for manipulating flags and browsing first/last/next/previous games</li>
 <li>Opening Book and Book Tuning overhaul - allow two books to be opened with side-by-side sorting, and various interface improvements</li>
 <li>Overhaul Annotate widget - allow choice of scores/variation/both and remember annotation options </li>
 <li>Crosstable sort by Country feature</li>

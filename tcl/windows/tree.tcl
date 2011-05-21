@@ -187,13 +187,13 @@ proc ::tree::make { { baseNumber -1 } } {
   set helpMessage($w.menu.opt,3) TreeOptAutosave
 
   $w.menu.opt add separator
-  $w.menu.opt add radiobutton -label TreeOptSlowmode -value 0 -variable tree(fastmode$baseNumber) -command "::tree::refresh $baseNumber"
+  $w.menu.opt add radiobutton -label TreeOptSlowmode -value 0 -variable tree(fastmode$baseNumber)
   set helpMessage($w.menu.opt,5) TreeOptSlowmode
 
-  $w.menu.opt add radiobutton -label TreeOptFastmode -value 1 -variable tree(fastmode$baseNumber) -command "::tree::refresh $baseNumber"
+  $w.menu.opt add radiobutton -label TreeOptFastmode -value 1 -variable tree(fastmode$baseNumber)
   set helpMessage($w.menu.opt,6) TreeOptFastmode
 
-  $w.menu.opt add radiobutton -label TreeOptFastAndSlowmode -value 2 -variable tree(fastmode$baseNumber) -command "::tree::refresh $baseNumber"
+  $w.menu.opt add radiobutton -label TreeOptFastAndSlowmode -value 2 -variable tree(fastmode$baseNumber)
   set helpMessage($w.menu.opt,7) TreeOptFastAndSlowmode
   set tree(fastmode$baseNumber) 0
 
@@ -619,12 +619,12 @@ proc ::tree::displayLines { baseNumber moves } {
 
     set tagfg {}
 
-    if { $maskFile != {} && $i > 0 && $i < [expr $len - 3] } {
+    if { $maskFile != "" && $i > 0 && $i < [expr $len - 3] } {
       if { [::tree::mask::moveExists $move] } {
-        set tagfg bluefg
+        set tagfg "bluefg"
       }
     }
-    if { $maskFile != {} } {
+    if { $maskFile != "" } {
       if { $i > 0 && $i < [expr $len - 3] && $move != "\[end\]" } {
         # images
         foreach j { 0 1 } {
