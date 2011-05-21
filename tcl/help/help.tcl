@@ -1548,43 +1548,21 @@ set helpText(Tmt) {<h1>The Tournament Finder window</h1>
 ### GameList window help:
 
 set helpTitle(GameList) "Game List window"
-set helpText(GameList) {<h1>The Game List Window</h1>
+set helpText(GameList) {<h1>The Game List</h1>
 
   <p> The <run ::windows::gamelist::Open><green>Game List</green></run>
-widget allows easy perusal of all (filtered) games in the
+widget allows easy perusal of all filtered games in the
 currently open Database / PGN archive. At the bottom of the widget you'll also find
-the <a Switcher>Database Switcher</a>.
+the <a Bookmarks>Bookmark</a> icon and <a Switcher>Database Switcher</a>.
 </p>
-<p>A common use is to search for games by entering text in the <b>Find</b> entry box. Clicking <b>Filter</b>
-shows all matching games. Use "<b>+</b>" as a logical AND. For example: "Kasparov+Karpov".</p>
-<p><i>For more info about Searches and Filters, see <a Searches>here</a>, or below</i>.
-</p>
-<p>
-<b>Buttons</b>
-<ul>
-<li><b>Reset</b> - resets game filter</li>
-<li><b>Remove</b> - removes highlighted game(s) from filter</li>
-<li><b>Rem <img arrow_up></b> - remove all games above</li>
-<li><b>Rem <img arrow_down></b> - remove all games below</li>
-<li><b>Browse</b> - shows highlighted game in a pop-up window (resizable using Control+Wheel or Control+Shift+Left/Right). From here it is possible to <a GameList Browsing>merge</a> games.</li>
-<li><b>Current</b> - highlights the current game, <i>if it has not been filtered.</i></li>
-<li><b>Negate </b> - toggle the current filter.
-<li><b>Delete</b> - toggles the delete flag for highlighted games.</li>
-<li><b>Compact</b> - perform database compaction.</li>
-</ul>
-</p>
-<p>
-<b>Other Features</b>
-<ul>
-<li>Sort games by clicking column titles.</li>
-<li>Load games by double-clicking.</li>
-<li>Multiple games can be selected by using Shift or Control while single clicking. <lt>Control+A<gt> selects all games visible in widget.</li>
-<li>Resize column widths by dragging the column edge.</li>
-</ul>
+<p>Quick searches can be performed by entering text in the entry box and clicking the <b>Find</b> or <b>Filter</b> buttons.
+Use "+" as a logical AND (can be slow for <b>Find</b>). For example: "Kasparov+Karpov".</p>
+<p><i>For more info about Searches and Filters, see <a Searches>here</a>, or below</i>.</p>
+<p>The <a Flags>Flag</a> drop-menu and button allow one to quickly set and unset database flags for selected games.</p>
 <h3>Sorting the Gamelist</h3>
-<p>The Gamelist can be sorted by clicking column titles. But doing so is not trivial.
-<b>Sorts reset the game filter</b> (meaning the current game cannot be replaced), and
-also <b>affect search and tree performance</b>. For more details see <a Sorting>Sorting Database</a>.
+<p>The database can be <b>permanently sorted</b> by clicking column titles - but doing so is not trivial.
+<b>Sort resets the game filter</b> (meaning the current game cannot be replaced), and
+also <b>affects search and tree performance</b>. For more details see <a Sorting>Sorting Database</a>.
 </p>
 
   <h3>Deleted and Filtered Games</h3>
@@ -1592,18 +1570,47 @@ also <b>affect search and tree performance</b>. For more details see <a Sorting>
   Scid has two notions of removed games - which can be confusing.</p>
 
   <p>The first is <b>Filtered Games</b>.  In the Gamelist widget,
-  selecting some game(s) and pressing "Remove" or "Filter"
-  will <b>filter</b> those games. They will disappear from the Game List
-  widget, but can easily be found again with the "Reset" button. Filtering games
-  has <b>no effect</b> on the database.</p>
+  selecting some games and pressing <b>Remove</b> or <b>Filter</b>
+  will filter those games. They will disappear from the gamelist
+  widget, but can easily be found again with the <b>Reset</b> button. Filtering games
+  has no effect on the database.</p>
 
   <p><b>Deleted</b> games on the other hand, are not removed from the Game List widget.
   They are simply marked as deleted, and no further action is taken until
   the database is compacted - whence they will be <b>permanently deleted</b> from the database.
 This can be done by the <b>Compact</b> button, or 
   from the <a Maintenance>maintenance</a> window.</p>
-<p><i>Note - the default database (Clipbase) cannot be compacted</i>.</p>
-  
+<p><i>The default database (Clipbase) cannot be compacted</i>.</p>
+
+<h3>Buttons</h3>
+<ul>
+<li><img tb_gfirst> - load first filter game</li>
+<li><img tb_gprev> - load previous filter game</li>
+<li><img tb_gnext> - load next filter game</li>
+<li><img tb_glast> - load last filter game</li>
+<li><b>Current</b> - highlights the current game (if it has not been filtered)</li>
+<li><b>Negate </b> - toggle the filter.
+<li><b>Remove</b> - removes highlighted game(s) from filter</li>
+<li><b>Rem <img arrow_up></b> - remove all games above</li>
+<li><b>Rem <img arrow_down></b> - remove all games below</li>
+<li><b>Reset</b> - resets game filter</li>
+<li><b>Filter</b> - performs a general filter for entered text</li>
+<li><b>Find</b> - perform a (slow) general find for entered text</li>
+<br>
+<li><b>Flag</b> - toggles the selected User Flag for selected games</li>
+<li><b>Flag Menubutton</b> - select which User Flag to work with</li>
+<li><b>Browse</b> - shows selected game in a pop-up window (resizable using Control+Wheel or Control+Shift+Left/Right). From here it is possible to <a GameList Browsing>merge</a> games.</li>
+<li><b>Delete</b> - toggles the delete flag for selected games</li>
+<li><b>Compact</b> - perform database compaction.</li>
+</ul>
+</p>
+<h3>Other Features</h3>
+<ul>
+<li>Load games by double-clicking.</li>
+<li>Multiple games can be selected by using Shift or Control while single clicking. <lt>Control+A<gt> selects all visible games.</li>
+<li>Resize column widths by dragging the column edge.</li>
+</ul>
+
   <h3><name Browsing>Browsing and Merging Games</name></h3>
   <p>
   The <b>Browse Game</b> widget shows the moves of a selected game (without comments
@@ -1622,7 +1629,7 @@ This can be done by the <b>Compact</b> button, or
   opening phase.
   </p>
 
-  <p><footer>Updated: Scid vs. PC 4.4, Markch 2011</footer></p>
+  <p><footer>Updated: Scid vs. PC 4.4, May 2011</footer></p>
 }
 
 

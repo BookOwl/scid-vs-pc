@@ -287,10 +287,10 @@ proc ::windows::gamelist::Open {} {
 
   ### Frames
 
-  pack [frame $w.c] -side bottom -fill x -ipady 5 -padx 5 
-  pack [frame $w.b] -side bottom -fill x -ipady 5 -padx 5
+  pack [frame $w.c] -side bottom -fill x -ipady 4 -padx 5 
+  pack [frame $w.b] -side bottom -fill x -padx 5
 
-  ttk::frame $w.f
+  frame $w.f
   ttk::treeview $w.tree -columns $glistNames -show headings -xscroll "$w.hsb set"
     # -yscroll "$w.vsb set" -xscroll "$w.hsb set"
 
@@ -394,6 +394,15 @@ proc ::windows::gamelist::Open {} {
 
   ### Top row of buttons, etc
 
+  button $w.b.gfirst -image tb_gfirst -command "
+    event generate $w.tree <Home>
+    ::game::LoadNextPrev first 0" -relief flat
+  button $w.b.gprev -image tb_gprev -command {::game::LoadNextPrev previous 0} -relief flat
+  button $w.b.gnext -image tb_gnext -command {::game::LoadNextPrev next 0} -relief flat
+  button $w.b.glast -image tb_glast -command "
+    event generate $w.tree <End>
+   ::game::LoadNextPrev last 0" -relief flat
+
   button $w.b.current -font font_Small -relief flat -textvar ::tr(Current) \
     -command ::windows::gamelist::showCurrent
   set ::windows::gamelist::goto {}
@@ -455,7 +464,7 @@ proc ::windows::gamelist::Open {} {
   pack $w.b.findcase -side right
   pack $w.b.find -side right ; # -expand 1 -fill x
   pack $w.b.findlabel $w.b.filter $w.b.reset -side right
-  pack $w.b.current $w.b.negate $w.b.remove $w.b.removeabove $w.b.removebelow -side left
+  pack $w.b.gfirst $w.b.gprev $w.b.gnext $w.b.glast $w.b.current $w.b.negate $w.b.remove $w.b.removeabove $w.b.removebelow -side left
 
   ### Bottom row of buttons , etc
 
@@ -522,7 +531,7 @@ proc ::windows::gamelist::Open {} {
   button $w.c.close -textvar ::tr(Close) -font font_Small -command { focus .; destroy .glistWin }
 
   pack $w.c.close $w.c.help $w.c.export -side right -padx 3
-  pack $w.c.goto $w.c.browse $w.c.load $w.c.delete $w.c.empty $w.c.title $w.c.flag -side left -padx 3
+  pack $w.c.flag $w.c.title $w.c.goto $w.c.browse $w.c.load $w.c.delete $w.c.empty -side left -padx 3
 
   set ::windows::gamelist::goto 1
   bind $w <Configure> {::windows::gamelist::Configure %W }

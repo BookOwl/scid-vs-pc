@@ -131,7 +131,7 @@ proc ::game::Truncate {} {
 #   Loads the next or previous filtered game in the database.
 #   The parameter <action> should be "previous" , "next", "first" or "last"
 #
-proc ::game::LoadNextPrev {action} {
+proc ::game::LoadNextPrev {action {raise 1}} {
   global pgnWin statusBar
   if {![sc_base inUse]} {
     set statusBar "  There is no $action game: this is an empty database."
@@ -142,7 +142,7 @@ proc ::game::LoadNextPrev {action} {
     set statusBar "  There is no $action game in the current filter."
     return
   }
-  ::game::Load $number
+  ::game::Load $number 1 $raise
 }
 
 # ::game::Reload
@@ -232,7 +232,7 @@ proc ::game::LoadNumber {} {
 #
 #   Loads a specified game from the active database.
 #
-proc ::game::Load { selection {update 1}} {
+proc ::game::Load { selection {update 1} {raise 1}} {
   # If an invalid game number, just return:
   if {$selection < 1} { return }
   if {$selection > [sc_base numGames]} { return }
@@ -253,7 +253,8 @@ proc ::game::Load { selection {update 1}} {
   # ::windows::gamelist::Refresh
   updateTitle
 
-  if {![winfo exists .tourney] && \
+  if {$raise && \
+      ![winfo exists .tourney] && \
       ![winfo exists .twinchecker] && \
       ![winfo exists .sb] && \
       ![winfo exists .sh] && \
