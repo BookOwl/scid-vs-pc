@@ -253,6 +253,8 @@ set helpText(Index) {<h1>Scid Help Index</h1>
   <li><a Clipbase>Clipbase</a></li>
   <li><a Changelog>Changelog</a></li>
   <li><a Analysis>Chess Engines</a></li>
+  <li><a Analysis List>Chess Engine</a> configuration</li>
+  <li><a Analysis Debugging>Chess Engine</a>  debugging</li>
   <li><a Cmdline>Command-line options</a></li>
   <li><a Comment>Comment Editor</a></li>
   <li><a Tourney>Computer Tournament</a></li>
@@ -284,6 +286,8 @@ set helpText(Index) {<h1>Scid Help Index</h1>
   <li><a Email>Email manager</a> window</li>
   <li><a CCeMailChess>Email Chess</a></li>
   <li><a Analysis>Engines, Chess</a></li>
+  <li><a Analysis List>Engines</a> - configuring</li>
+  <li><a Analysis Debugging>Engines</a> - debugging</li>
   <li><a Moves>Entering moves</a></li>
   <li><a EPD>EPD files</a></li>
   <li><a Export>Exporting games to text files</a></li>
@@ -1557,7 +1561,7 @@ the <a Bookmarks>Bookmark</a> icon and <a Switcher>Database Switcher</a>.
 </p>
 <p>Quick searches can be performed by entering text in the entry box and clicking the <b>Find</b> or <b>Filter</b> buttons.
 Use "+" as a logical AND (can be slow for <b>Find</b>). For example: "Kasparov+Karpov".</p>
-<p><i>For more info about Searches and Filters, see <a Searches>here</a>, or below</i>.</p>
+<p><i>For more info about Searches and Filters, <a Searches>see here</a> or below</i>.</p>
 <p>The <a Flags>Flag</a> drop-menu and button allow one to quickly set and unset database flags for selected games.</p>
 <h3>Sorting the Gamelist</h3>
 <p>The database can be <b>permanently sorted</b> by clicking column titles - but doing so is not trivial.
@@ -2564,52 +2568,54 @@ set helpTitle(Flags) "Game Flags"
 set helpText(Flags) {<h1>Game Flags</h1>
 
   <p>
-  A <term>flag</term> is an indicator of some chess characteristic
-  that can be turned on or off for each game in the database.
-  There are 13 user-settable flags that you can directly set for
-  each game. Of these, only the Delete flag has any special
-  significance: games with the Delete flag turned on are marked
-  for deletion and will removed when the database is
-  <a Compact>compacted</a>.
+  Game Flags are indicators of some characteristic, such as <b>Brilliant Play</b> or <b>White Opening</b>.
+  There are <b>12 user flags</b> and <b>6 custom flags</b>
+  , and they're especially useful for enabling fast database searches.</p>
+
+<p>Additionally, files may be marked with the special-case <b>Delete Flag</b>. This
+  indicates they will be removed when the database it is next <a Compact>compacted</a>.
   </p>
   <p>
-  The other 12 user-settable flags and their symbols are:
+  The 12 user flags are
   </p>
 
   <ul>
-  <li>White opening (W)</li>
-  <li>Black opening (B)</li>
-  <li>Middlegame (M)</li>
-  <li>Endgame (E)</li>
-  <li>Novelty (N)</li>
-  <li>Pawn structure (P)</li>
-  <li>Tactics (T)</li>
-  <li>Queenside play (Q)</li>
-  <li>Kingside play (K)</li>
-  <li>Brilliancy (!)</li>
-  <li>Blunder (?)</li>
-  <li>User-defined (U)</li>
+  <li>W - White opening</li>
+  <li>B - Black opening</li>
+  <li>M - Middlegame</li>
+  <li>E - Endgame</li>
+  <li>N - Novelty</li>
+  <li>P - Pawn structure</li>
+  <li>T - Tactics</li>
+  <li>Q - Queenside play</li>
+  <li>K - Kingside play</li>
+  <li>! - Brilliancy</li>
+  <li>? - Blunder</li>
+  <li>U - User-defined</li>
   </ul>
+  <p>
+  The 6 custom flags (1 to 6) can be given any label up to eight characters long.
+  </p>
 
   <p>
-  A flag can be set for the current game, all filter games, or all
-  database games using the <a Maintenance>maintenance</a> window.
+  User and Custom flags are set in the <a Maintenance>Maintenance
+  Window</a>. Scid vs. PC also allows quick flag tagging via the <a
+  GameList>Gamelist</a> window.
   </p>
   <p>
-  You can use a <a Searches Header>header search</a> to find all
+  You can use a <a Searches Header>Header Search</a> to find all
   games in a database that have a particular flag turned on or off,
   or use flags as part of more complex searches.
   </p>
   <p>
-  Since all the user-settable flags (except the Delete flag) have
-  no significance to Scid, you can use them for any purpose that
-  suits your needs. For example, you could use the Kingside (K)
+  Since all the user flags (except Delete) have
+  no special significance, one may use them for any purpose.
+  For example, you could use the Kingside (K)
   flag for kingside pawn storms, or kingside heavy piece attacks,
   or even for endgames with all pawns on the kingside.
   </p>
   <p>
-  Note, that sensible handling of flags can speed up searches
-  significantly!
+  Note, sensible handling of flags can speed up searches significantly!
   </p>
   <p>
   The following functions of Scid set or require flags:
@@ -2619,7 +2625,7 @@ set helpText(Flags) {<h1>Game Flags</h1>
      <li><a Analysis Annotate>Find tactical exercise</a>: sets the (T) flag
   </ul>
 
-  <p><footer>Updated: Scid 3.6.26, October 2008</footer></p>
+  <p><footer>Updated: Scid vs. PC 4.4, May 2011</footer></p>
 }
 
 ####################
@@ -2631,7 +2637,7 @@ set helpText(Analysis) {<h1>Analysis Windows</h1>
   <p>
   Scid vs. PC allows for one (or many) <b>Chess Engines</b> to run at any time.
   A few engines come preinstalled, and others can be added via
-  the <a Analysis List>Engine Configuration</a> window.
+  the <a Analysis List>Engine Configuration</a> window. For troubleshooting, see the <a Analysis Debugging>Debugging</a> section.
   </p>
 
   <h3>Getting Started</h3>
@@ -2786,15 +2792,15 @@ set helpText(Analysis) {<h1>Analysis Windows</h1>
   not shown when training mode is on.
   </p>
 
-  <h1><name List>Configuring Engines</name></h1>
+  <h2><name List>Configuring Engines</name></h2>
   <p>
   The <run ::enginelist::choose><green>Tools--<gt>Analysis Engines</green></run>
   widget is where you can <b>Configure</b>, <b>Add</b>, and <b>Start</b> Chess Engines.
   </p>
 
 <p>
-  Scid vs. PC installs a few engines by default but it is also possible to install new ones
-  To do so you'll need to know the program's <b>Command</b>, any <b>Parameters</b> it takes,
+  Scid vs. PC installs a few engines by default. To install new ones you'll need to know
+  the program's <b>Command</b>, any <b>Parameters</b> it takes,
   whether it is uses the <b>UCI or Xboard</b> protocol, and also the
   <b>Directory</b> it should be run in.
   This sounds complicated, but is not too hard :-)
@@ -2841,6 +2847,17 @@ engines support both formats.
   liking.
   </p>
 
+  <h2><name Debugging>Debugging Engine Crashes</name></h2>
+  <p>
+  If an engine fails to start or crashes, one may examine the engines <b>log
+file</b>.  These files are kept in the user log directory. On
+Unix systems this should be <b>$HOME/.scidvspc</b>, and Windows it will be
+<b>Scid-vs-PC/bin/log</b>. In this directory you'll find files numbered
+<b>engine1.log, engine2.log</b>, etc. These numbers correspond to the engines
+position in the <run ::enginelist::choose><green>Tools--<gt>Analysis
+Engines</green></run>.
+  widget
+  </p>
 
   <p><footer>Updated: Scid vs. PC 4.4, May 2011</footer></p>
 }

@@ -287,7 +287,7 @@ proc ::windows::gamelist::Open {} {
 
   ### Frames
 
-  pack [frame $w.c] -side bottom -fill x -ipady 4 -padx 5 
+  pack [frame $w.c] -side bottom -fill x -padx 5 
   pack [frame $w.b] -side bottom -fill x -padx 5
 
   frame $w.f

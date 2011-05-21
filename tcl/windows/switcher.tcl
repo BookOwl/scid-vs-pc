@@ -918,6 +918,9 @@ proc ::windows::switcher::Open {} {
 
   frame $w
   pack $w -side bottom -before .glistWin.c -fill x
+  # spacer between lowest button bar and switcher
+  pack [frame .glistWin.spacer -height 3] -before .glistWin.c -side bottom
+
 
   bind $w <Escape> ::windows::switcher::Open
   bind $w <Destroy> { set baseWin 0 }
