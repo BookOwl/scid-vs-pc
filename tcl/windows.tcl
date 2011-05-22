@@ -85,8 +85,8 @@ proc setWinLocation {win} {
     if { $y < 0 } { set y 0 }
     set max_x [expr [winfo screenwidth .]]
     set max_y [expr [winfo screenheight .]]
-    if { $x > $max_x } { set x $max_x }
-    if { $y > $max_y } { set y $max_y }
+    if { $x > $max_x } { set x [expr $max_x - [winfo reqwidth $win]] }
+    if { $y > $max_y } { set y [expr $max_y - [winfo reqheight $win]] }
 
     catch [list wm geometry $win "+$x+$y"]
   }
