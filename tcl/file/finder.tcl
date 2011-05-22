@@ -297,7 +297,7 @@ proc ::file::finder::contextMenu {win fullPath x y xc yc} {
   $mctxt add command -label [tr FinderCtxMove ] -command "::file::finder::move [list $fullPath]"
   $mctxt add command -label Rename              -command "::file::finder::rename [list $fullPath]"
   $mctxt add separator
-  $mctxt add command -label [tr FinderCtxDelete ] -command "::file::finder::delete $fullPath"
+  $mctxt add command -label [tr FinderCtxDelete ] -command "::file::finder::delete [list $fullPath]"
 
   $mctxt post [winfo pointerx .] [winfo pointery .]
 

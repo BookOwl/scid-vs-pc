@@ -318,15 +318,11 @@ proc progressWindow {args} {
     button $w.b.cancel -text $button -command $command
     pack $w.b.cancel -side right -padx 5 -pady 2
   }
-  # Set up geometry for middle of screen:
-  set x [winfo screenwidth $w]
-  set x [expr {$x - 400} ]
-  set x [expr {$x / 2} ]
-  set y [winfo screenheight $w]
-  set y [expr {$y - 20} ]
-  set y [expr {$y / 2} ]
-  wm geometry $w +$x+$y
+
   sc_progressBar $w.c bar 401 21 time
+
+  update
+  placeWinOverParent $w .
   update idletasks
   wm deiconify $w
   raiseWin $w
@@ -338,7 +334,11 @@ proc progressWindow {args} {
   # This raises above whole desktop on KDE. Bad!
   # but not sure of best way to do it.
   # Perhaps on other WMs, the problems not so bad
-  bind $w <Visibility> "raiseWin $w"
+  # bind $w <Visibility> "raiseWin $w"
+
+  # works better
+  wm attributes $w -topmost 1
+
   set ::progressWin_time [clock seconds]
 }
 
