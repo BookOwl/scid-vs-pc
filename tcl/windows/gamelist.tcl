@@ -113,6 +113,8 @@ proc ::windows::gamelist::FilterText {} {
 ### Rewrote this ... again. S.A
 #
 # Find text only matches against White/Black/Event/Site
+#
+# Previously it would treat "+" as a logical AND... but it's just too slow for tcl.
 
 proc ::windows::gamelist::FindText {} {
   global glstart
@@ -121,57 +123,20 @@ proc ::windows::gamelist::FindText {} {
   ::utils::history::AddEntry ::windows::gamelist::findtext $findtext
   .glistWin.b.find selection range end end
 
-  set matches_needed [llength [split $findtext +]]
-  set needles [split $findtext +]
-  busyCursor .glistWin
+  busyCursor .glistWin 
   update
+  set temp [sc_filter textfind $::windows::gamelist::findcase $glstart $findtext]
+  unbusyCursor .glistWin
 
-  # Step through glist, looking for an entry that matches all needles
-  while {1} {
-    set matches 0
-    set firstmatch 0
-    set minmatch 0
-    foreach needle $needles {
-      set temp [sc_filter textfind $::windows::gamelist::findcase $glstart [string trim $needle]]
-      set glstart [expr $temp - 1]
-      if {$temp < 1} {
-	break
-      }
-      if {$firstmatch == 0} {
-	incr matches
-        set firstmatch $temp
-	set minmatch $temp
-        continue
-      }
-      if {$temp == $firstmatch} {
-        incr matches
-        if {$temp < $minmatch} {
-          set minmatch $temp
-        }
-      } else {
-        break
-      }
-    }
-    incr glstart
-    if {$matches >= $matches_needed} {
-      # success
-      break
-    }
-    if { $temp ==0 || $minmatch == 0} {
-      # give up
-      set glstart 1
-      break
-    }
-    set glstart $minmatch
-  }
-
-  ::windows::gamelist::Refresh first
-  if {$glstart == 1} {
+  if {$temp < 1} {
+    set glstart 1
+    ::windows::gamelist::Refresh first
     bell
   } else {
+    set glstart $temp
+    ::windows::gamelist::Refresh first
     .glistWin.tree selection set [lindex [.glistWin.tree children {}] 0]
   }
-  unbusyCursor .glistWin
 }
 
 proc ::windows::gamelist::Load {number} {

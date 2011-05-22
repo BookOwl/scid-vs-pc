@@ -1560,7 +1560,7 @@ currently open Database / PGN archive. At the bottom of the widget you'll also f
 the <a Bookmarks>Bookmark</a> icon and <a Switcher>Database Switcher</a>.
 </p>
 <p>Quick searches can be performed by entering text in the entry box and clicking the <b>Find</b> or <b>Filter</b> buttons.
-Use "+" as a logical AND (can be slow for <b>Find</b>). For example: "Kasparov+Karpov".</p>
+Use "+" as a logical AND with the <b>Filter</b> button. For example: "Kasparov+Karpov".</p>
 <p><i>For more info about Searches and Filters, <a Searches>see here</a> or below</i>.</p>
 <p>The <a Flags>Flag</a> drop-menu and button allow one to quickly set and unset database flags for selected games.</p>
 <h3>Sorting the Gamelist</h3>
@@ -5875,6 +5875,7 @@ set helpText(Changelog) {<h1>Scid vs. PC</h1>
 <li>Make the game save dialog center and resize properly</li>
 <li>Fix up file loading (and bookmarks) of DBs with dots (.) in their name</li>
 <li>Statusbar shows correct value after Crosstable update</li>
+<li>Don't perform logical ANDs in the "Find" widget using "+". Too slow.</li>
 </ul>
 </ul>
 
