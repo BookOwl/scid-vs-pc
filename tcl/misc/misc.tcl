@@ -306,6 +306,7 @@ proc progressWindow {args} {
     set b 1
   } else { return }
   wm title $w $title
+  wm transient $w .
   label $w.t -text $text
   pack $w.t -side top
   canvas $w.c -width 400 -height 20  -relief solid -border 1
@@ -335,9 +336,8 @@ proc progressWindow {args} {
   # but not sure of best way to do it.
   # Perhaps on other WMs, the problems not so bad
   # bind $w <Visibility> "raiseWin $w"
-
-  # works better
-  wm attributes $w -topmost 1
+  # wm attributes $w -topmost 1
+  ## This is achieved by transient above
 
   set ::progressWin_time [clock seconds]
 }

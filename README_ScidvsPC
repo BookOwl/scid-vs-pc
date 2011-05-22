@@ -435,13 +435,10 @@
 
   o  Implement SCID's custom flags
 
-  o  Gamelist is much faster (don't call compactGamesNull, *insert* into
-     treeview, and use tk::scale and "-bigincrement")
-
+  o  Gamelist is much faster for big databases
 
   o  Add widgets to the gamelist for manipulating flags and browsing
      first/last/next/previous games
-
   o  Opening Book and Book Tuning overhaul - allow two books to be
      opened with side-by-side sorting, and various interface
      improvements
@@ -456,6 +453,8 @@
 
   o  Graph changes - remember widget settings, change colours+dot size,
      fix up half-move bug and a title misallignment, add 2010 decade
+
+  o  Fix up the global grab for progressWindow (opening databases)
 
   o  Add "Half moves" (moves since capture or pawn move) to setup board
 
@@ -503,7 +502,6 @@
 
   o  On Macs, dont place the window at top of screen, as it's then stuck
      under the main menubar
-
 
   o  Make the game save dialog center and resize properly
 
@@ -571,6 +569,8 @@
 
   o  Browser widget has a nicer button bar, and windows wheel-mouse
      bindings
+
+
   o  Overhaul the Edit Menus
 
   o  Numerous GUI fixes

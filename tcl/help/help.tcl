@@ -5851,6 +5851,7 @@ set helpText(Changelog) {<h1>Scid vs. PC</h1>
 <li>Crosstable sort by Country feature</li>
 <li>Update Fics to allow for different Port/IP Address (using SCID code)</li>
 <li>Graph changes - remember widget settings, change colours+dot size, fix up half-move bug and a title misallignment, add 2010 decade</li>
+<li>Fix up the progress window grab when opening bases</li>
 <li>Add "Half moves" (moves since capture or pawn move) to setup board</li>
 <li>ECO Browser changes - add "update" and "up" buttons, when clicking on "Start ECO" open browser at top level, make statistics more readable</li>
 <li>Add the "Last Move Color" to the main board colours widget</li>
