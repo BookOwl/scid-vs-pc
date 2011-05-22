@@ -77,6 +77,9 @@ foreach {code title anchor null} $glistFields {
   lappend glistNames $title
 }
 
+### glistCodes is a printf format style string. A \n is used to split the main "sc_game list"
+# string into a proper list for processing. It is now appended in sc_game_list
+
 ### not sure about these missing fields at all &&&
 
 # set glistNames { Number White WElo Black BElo Event Site Round Date Result Length ECO Opening Deleted Flags Variations Comments Annos Start }
@@ -954,7 +957,10 @@ proc updateExportGList {args} {
   global glexport
   set w .glexport
   if {! [winfo exists $w]} { return }
-  set text [sc_game list 1 5 "$glexport\n"]
+  set text [sc_game list 1 5 "$glexport "]
+  # remove trailing "\n"
+  set text [string range $text 0 end-1]
+
   $w.preview configure -state normal
   $w.preview delete 1.0 end
   $w.preview insert end $text
