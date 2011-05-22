@@ -960,7 +960,9 @@ proc ::windows::switcher::Open {} {
 
     set closeLabel "[tr FileClose] [tr Database]"
     if {$i == [sc_info clipbase]} { set closeLabel [tr EditReset] }
-    $f.menu add command -label $closeLabel -command [list ::file::Close $i]
+    $f.menu add command -label $closeLabel -command "
+      ::file::Close $i
+      ::windows::switcher::Refresh"
 
     $f.menu add separator
 
