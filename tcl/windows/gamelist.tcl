@@ -618,7 +618,7 @@ proc ::windows::gamelist::SetSize {} {
     # Nasty hack to make things work
 
     if {$windowsOS} {
-      set glFontHeight [expr $fontspace*120/72]
+      set glFontHeight [expr $fontspace*130/72]
     } else {
       set glFontHeight [expr $fontspace*106/72]
     }
@@ -783,12 +783,15 @@ set tt [clock milliseconds]
   if {$c < 1} { return }
 
   set chunk [sc_game list $glstart $c $glistCodes]
+  # remove trailing "\n"
+  set chunk [string range $chunk 0 end-1]
+
   set  VALUES [split $chunk "\n"]
   set i [llength $VALUES]
 
   # reverse insert for speed-up
 
-  for {set line $glistEnd} {$line >= $glstart-1} {incr line -1} {
+  for {set line $glistEnd} {$line >= $glstart} {incr line -1} {
     incr i -1
     set values [lindex $VALUES $i]
 
