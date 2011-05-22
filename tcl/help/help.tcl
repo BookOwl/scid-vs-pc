@@ -5844,6 +5844,7 @@ set helpText(Changelog) {<h1>Scid vs. PC</h1>
 <ul>
 <li>Implement SCID's interruptable tree processing</li>
 <li>Implement SCID's custom flags </li>
+<li>Gamelist is much faster (don't call compactGamesNull, *insert* into treeview, and use tk::scale and "-bigincrement")</li>
 <li>Add widgets to the gamelist for manipulating flags and browsing first/last/next/previous games</li>
 <li>Opening Book and Book Tuning overhaul - allow two books to be opened with side-by-side sorting, and various interface improvements</li>
 <li>Overhaul Annotate widget - allow choice of scores/variation/both and remember annotation options </li>
@@ -5855,7 +5856,6 @@ set helpText(Changelog) {<h1>Scid vs. PC</h1>
 <li>Add the "Last Move Color" to the main board colours widget</li>
 <li>Restructure "Tools" menu</li>
 <li>Icons - remove the large gameinfo and togglemenu buttons, add a "comment editor" icon to the toolbar and tidy up various icons</li>
-<li>Gamelist tweak for large DBs - use tk::scale (rather than ttk::scale) and "-bigincrement" for better performance</li>
 <li>Busy cursor when sorting database via Gamelist column click</li>
 <li>For OSX (esp. single button mice) - bind <Control-Button-1> to context menu for main window and pgn window</li>
 <li>Make the 'paste variation' feature work a bit better at var/game end</li>

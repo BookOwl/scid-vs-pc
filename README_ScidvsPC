@@ -435,9 +435,12 @@
 
   o  Implement SCID's custom flags
 
+  o  Gamelist is much faster (don't call compactGamesNull, *insert* into
+     treeview, and use tk::scale and "-bigincrement")
+
+
   o  Add widgets to the gamelist for manipulating flags and browsing
      first/last/next/previous games
-
 
   o  Opening Book and Book Tuning overhaul - allow two books to be
      opened with side-by-side sorting, and various interface
@@ -466,9 +469,6 @@
 
   o  Icons - remove the large gameinfo and togglemenu buttons, add a
      "comment editor" icon to the toolbar and tidy up various icons
-
-  o  Gamelist tweak for large DBs - use tk::scale (rather than
-     ttk::scale) and "-bigincrement" for better performance
 
   o  Busy cursor when sorting database via Gamelist column click
 
