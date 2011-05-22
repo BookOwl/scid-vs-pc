@@ -776,9 +776,13 @@ set tt [clock milliseconds]
   set current [sc_game number]
 
   ### sc_game_list now returns a string with NEWLINES which we use to split into a list
-  ### It will probably break if somehow a NEWLINE gets into the database.
+  ### It will probably break/misbehave if somehow a NEWLINE gets into the database.
 
-  set chunk [sc_game list $glstart [expr $glistEnd - $glstart + 1] $glistCodes]
+  set c [expr $glistEnd - $glstart + 1]
+
+  if {$c < 1} { return }
+
+  set chunk [sc_game list $glstart $c $glistCodes]
   set  VALUES [split $chunk "\n"]
   set i [llength $VALUES]
 

@@ -7444,7 +7444,7 @@ sc_game_list (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
     uint index = db->filter->FilteredCountToIndex(start);
     IndexEntry * ie;
     const char * formatStr = argv[4];
-    char temp[1024];
+    char temp[2048];
     int update, updateStart;
     update = updateStart = 5000;
     uint linenum = 0;
