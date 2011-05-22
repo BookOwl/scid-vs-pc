@@ -729,7 +729,6 @@ proc ::windows::gamelist::Reload {} {
 
 proc ::windows::gamelist::Refresh {{see {}}} {
   global glistCodes glstart glistSize glistSortHist glistSortedBy
-set tt [clock milliseconds]
 
   set w .glistWin
   if {![winfo exists $w]} {return}
@@ -781,9 +780,11 @@ set tt [clock milliseconds]
   ### sc_game_list now returns a string with NEWLINES which we use to split into a list
   ### It will probably break/misbehave if somehow a NEWLINE gets into the database.
 
-  set c [expr $glistEnd - $glstart + 1]
+  if {$glistEnd < $glstart} {
+    set glistEnd $glstart
+  }
 
-  if {$c < 1} { return }
+  set c [expr $glistEnd - $glstart + 1]
 
   set chunk [sc_game list $glstart $c $glistCodes]
   # remove trailing "\n"
