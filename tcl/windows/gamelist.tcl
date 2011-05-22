@@ -576,11 +576,14 @@ proc configDeleteButtons {} {
       # $w.tree tag bind click <Button-1> {configDeleteButtons}
 
       $w.c.delete configure -state normal
-      if {[compactGamesNull]} {
-        $w.c.empty configure -state disabled
-      } else {
-        $w.c.empty configure -state normal
-      }
+      $w.c.empty configure -state normal
+
+      ### too slow!
+      # if {[compactGamesNull]} 
+      #  $w.c.empty configure -state disabled
+      # else 
+      #  $w.c.empty configure -state normal
+      
     }
   }
 }
@@ -620,8 +623,13 @@ proc ::windows::gamelist::SetSize {} {
       set glFontHeight [expr $fontspace*106/72]
     }
   }
+  # $glFontHeight ~ 22 linux
 
-  set glistSize [expr {[winfo height $w] / $glFontHeight}]
+  set glistSize [expr {[winfo height $w] / $glFontHeight +([winfo height $w]-300)/200}]
+
+  # debugging voodoo
+  # puts "glistSize $glistSize , winfo height [winfo height $w]"
+  # 700 = +2 # 100 = -1
 }
 
 image create photo arrow_up -format gif -data {
@@ -718,6 +726,7 @@ proc ::windows::gamelist::Reload {} {
 
 proc ::windows::gamelist::Refresh {{see {}}} {
   global glistCodes glstart glistSize glistSortHist glistSortedBy
+set tt [clock milliseconds]
 
   set w .glistWin
   if {![winfo exists $w]} {return}
@@ -765,23 +774,36 @@ proc ::windows::gamelist::Refresh {{see {}}} {
 
   set current_item {}
   set current [sc_game number]
-  for {set line $glstart} {$line <= $glistEnd} {incr line} {
-    set values [sc_game list $line 1 $glistCodes]
+
+  ### sc_game_list now returns a string with NEWLINES which we use to split into a list
+  ### It will probably break if somehow a NEWLINE gets into the database.
+
+  set chunk [sc_game list $glstart [expr $glistEnd - $glstart + 1] $glistCodes]
+  set  VALUES [split $chunk "\n"]
+  set i [llength $VALUES]
+
+  # reverse insert for speed-up
+
+  for {set line $glistEnd} {$line >= $glstart-1} {incr line -1} {
+    incr i -1
+    set values [lindex $VALUES $i]
+
     if {[lindex $values 0] == "$current "} {
-      set current_item [$w.tree insert {} end -values $values -tag [list click2 current]]
+      set current_item [$w.tree insert {} 0 -values $values -tag [list click2 current]]
     } elseif {[lindex $values 12] == {D }} {
-      $w.tree insert {} end -values $values -tag [list click2 deleted] ;#treefont
+      $w.tree insert {} 0 -values $values -tag [list click2 deleted] ;#treefont
     } else {
-      $w.tree insert {} end -values $values -tag click2
+      $w.tree insert {} 0 -values $values -tag click2
     }
   }
 
-  if {$see == {first}} {
-    $w.tree see [lindex [.glistWin.tree children {}] 0]
-  } 
-  if {$see == {last}} {
-    $w.tree see [lindex [.glistWin.tree children {}] end]
-  } 
+  ## first and last attempts to work around it's hard to know how many lines fit in ttk::treeview
+  ## but isnt working properly S.A
+  # if {$see == {first}} 
+
+  $w.tree see [lindex [.glistWin.tree children {}] 0]
+
+  # if {$see == {last}} { $w.tree see [lindex [.glistWin.tree children {}] end] } 
 
   setGamelistTitle
 

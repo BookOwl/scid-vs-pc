@@ -7475,7 +7475,8 @@ sc_game_list (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
             ie = db->idx->FetchEntry (index);
             ie->PrintGameInfo (temp, start, index+1, db->nb, formatStr);
             if (fp == NULL) {
-                Tcl_AppendResult (ti, temp, NULL);
+                // separate lines by newline &&& Issues ?
+                Tcl_AppendResult (ti, temp, "\n", NULL);
             } else {
                 //fputs (temp, fp);
 #ifdef WINCE
