@@ -204,7 +204,7 @@ proc ::file::Open {{fName ""} {parent .} {update 1}} {
 	tk_messageBox -icon warning -type ok -parent $parent \
 	    -title "Scid: Error opening file" -message $result
       } else {
-	doPgnFileImport $fName "Opening [file tail $fName] read-only...\n"
+	doPgnFileImport $fName "Opening [file tail $fName] read-only\n"
 	sc_base type [sc_base current] 3
 	::recentFiles::add $fName
 	set ::initialDir(base) [file dirname $fName]
@@ -350,7 +350,7 @@ proc ::file::Upgrade {name} {
   set msg [string trim $::tr(ConfirmUpgrade)]
   set res [tk_messageBox -title "Scid" -type yesno -icon info -message $msg]
   if {$res == "no"} { return }
-  progressWindow "Scid" "$::tr(Upgrading): [file tail $name]..."\
+  progressWindow "Scid" "$::tr(Upgrading): [file tail $name]"\
       $::tr(Cancel) "sc_progressBar"
   busyCursor .
   update
@@ -389,7 +389,7 @@ proc openBase {name} {
   set showProgress 0
   if {$bsize > 1000000} { set showProgress 1 }
   if {$showProgress} {
-    progressWindow "Scid" "$::tr(OpeningTheDatabase): [file tail $name]..."
+    progressWindow "Scid" "$::tr(OpeningTheDatabase): [file tail $name]"
   }
   if {$::fastDBopen} {
     set err [catch {sc_base open -fast $name} result]
@@ -521,7 +521,7 @@ proc ::file::openBaseAsTree { { fName "" } } {
       tk_messageBox -icon warning -type ok -parent . -title "Scid: Error opening file" -message $result
       return
     } else {
-      doPgnFileImport $fName "Opening [file tail $fName] read-only...\n"
+      doPgnFileImport $fName "Opening [file tail $fName] read-only\n"
       sc_base type [sc_base current] 3
       set ::initialDir(base) [file dirname $fName]
       set ::initialDir(file) [file tail $fName]

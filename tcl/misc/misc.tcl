@@ -294,6 +294,7 @@ proc progressWindow {args} {
   toplevel $w
   wm withdraw $w
   wm resizable $w 0 0
+
   if {[llength $args] == 2} {
     set title [lindex $args 0]
     set text [lindex $args 1]
@@ -318,6 +319,8 @@ proc progressWindow {args} {
     pack [frame $w.b] -side bottom -fill x
     button $w.b.cancel -text $button -command $command
     pack $w.b.cancel -side right -padx 5 -pady 2
+  } else {
+    wm protocol $w WM_DELETE_WINDOW {puts {progressWindow Destroy caught}}
   }
 
   sc_progressBar $w.c bar 401 21 time
