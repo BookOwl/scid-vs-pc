@@ -349,7 +349,12 @@ proc ::windows::gamelist::Open {} {
   }
   # MouseWheel bindings:
   # bind $w <MouseWheel> {::windows::gamelist::Scroll [expr {- (%D / 120)}]}
-  if {! $::windowsOS} {
+  if {$::windowsOS} {
+    bind $w <MouseWheel> {
+      if {[expr -%D] < 0} { ::windows::gamelist::Scroll -1}
+      if {[expr -%D] > 0} { ::windows::gamelist::Scroll 1}
+    }
+  } else {
     bind $w <Button-4> {::windows::gamelist::Scroll -1}
     bind $w <Button-5> {::windows::gamelist::Scroll 1}
   }
@@ -506,8 +511,14 @@ proc ::windows::gamelist::Open {} {
 
   update
 
-  # focus $w.tree
-  focus $w.b.find
+  if {$::windowsOS} {
+    # cant focus entry combo on windows as it hogs the wheelmouse
+    focus $w.tree
+  } else {
+    # focus entry box
+    focus $w.b.find
+  }
+
   # hacks to disable the down/page-down keys for combobox
   bind  $w.b.find <Down> "focus $w.tree ; event generate $w.tree <Down> ; break"
   bind  $w.b.find <End>  "focus $w.tree ; event generate $w.tree <End> ; break"
