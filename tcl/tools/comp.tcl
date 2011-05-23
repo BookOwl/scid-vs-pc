@@ -542,6 +542,16 @@ proc puts_ {message} {
 proc drawCombos {} {
   global analysis comp engines
 
+  # Check number of engines is sane
+  if {![string is integer -strict $comp(count)]} {
+    set comp(count) 2
+    update
+  }
+  if {$comp(count) > [llength $engines(list)]} {
+    set comp(count) [llength $engines(list)]
+    update
+  }
+
   set w .comp
   set l $w.engines.list
 
