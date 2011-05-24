@@ -1591,7 +1591,14 @@ proc fullname {fname} {
 # Need to check file type: .epd, .pgn, .pgn.gz, etc
 
 while {$argc > 0} {
-  set startbase [fullname [lindex $argv 0]]
+  set arg [lindex $argv 0]
+
+  # remove any "file://"
+  if {[string match {file://*} $arg]} {
+    set arg [string range $arg 7 end]
+  }
+
+  set startbase [fullname $arg]
   if {! [catch {sc_game startBoard $startbase}]} {
     set argc 0
     break
