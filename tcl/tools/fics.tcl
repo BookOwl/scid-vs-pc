@@ -796,9 +796,9 @@ namespace eval fics {
       set ::fics::findopponent(manual) manual
 
       # hide offers graph
-      if { $::fics::graphon } {
-        .fics.bottom.buttons.offers invoke
-      }
+      set ::fics::graphon 0
+      showOffers
+
       ::utils::sound::PlaySound sound_move
       sc_game new
       # fics::playing : 1==game_start/my move, 0==not playing, -1==opponents move

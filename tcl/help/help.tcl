@@ -5674,13 +5674,13 @@ for info about specific commands and variables.
     <li><term>+channel</term> NUMBER - Listen to channel NUMBER</li>
     <li><term>-channel</term> NUMBER - Stop listening to channel</li>
     <li><term>news</term>   Show Fics news</li>
+    <li><term>seek</term>   Seek a new game</li>
 </ul>
 
 <h3>Variables</h3>
 <p><i>To change settings use <term>set</term> VARIABLE VALUE. Often VALUE is a boolean 1 or 0.</i></p>
 
 <ul>
-<li><term>seek</term>	Show game requests</li>
 <li><term>silence</term>	Turn off shouts, cshouts and channel tells while you play, examine or observe a game</li>
 <li><term>gin</term>	Notify when games begin or end</li>
 <li><term>autoflag</term>	Automatically flag opponent as losing when his time runs out</li>
