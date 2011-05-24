@@ -5840,6 +5840,13 @@ set helpText(Novag) {<h1>Connecting the Novag Citrine Chess Board</h1>
 set helpTitle(Changelog) "Scid vs PC Changelog"
 set helpText(Changelog) {<h1>Scid vs. PC</h1>
 
+<h4>4.4.1 (May 24, 2011)</h4>
+<ul>
+<li>Fix nasty flicker bug when board is flipped</li>
+<li>Fix fics bug that graph sometimes doesn't stop when new game starts</li>
+<li>Add Burnett chess pieces</li>
+</ul>
+
 <h4>4.4 (May 22, 2011)</h4>
 <ul>
 <li>Implement SCID's interruptable tree processing</li>

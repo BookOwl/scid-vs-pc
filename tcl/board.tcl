@@ -1291,7 +1291,8 @@ proc ::board::resize2 {w psize} {
 
   ### update main board to keep up with tk packer... can cause problems though
   ### and it does cause flicker  for fics when  playing black
-  # oops fics if {$w == ".board"} {::update}
+  # oops when board is ffipped, this gets called, and is broke
+  #  if {$w == ".board"} {::update}
 
   ### When changing the border width, widget flickers but can't fix it - S.A.
   # $w.bd configure -state disabled
