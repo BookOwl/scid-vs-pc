@@ -275,7 +275,6 @@ proc doPgnFileImport {fname text {multiple 0} } {
   if {! [winfo exists $w]} {
     if {![file exists $fname]} {
       error "File $fname doesn't exist."
-      puts "NOT HERE!"
     } 
 
     # This should be centered over Scid main window,

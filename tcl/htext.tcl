@@ -548,7 +548,10 @@ proc ::htext::display {w helptext {section {}} {fixed 1}} {
     }
 
     # Eliminate the processed text from the string
-    set str [string range $str $endPos+1 end] 
+
+    ### Causes unicode bug in eco string!!!!!
+    # set str [string range $str $endPos+1 end] 
+    set str [string replace $str 0 $endPos]
     incr count
 
     ### What purpose this ? It (was) always set to 60 in pgn.tcl
