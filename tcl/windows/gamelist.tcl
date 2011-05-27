@@ -306,7 +306,12 @@ proc ::windows::gamelist::Open {} {
 
   set font [ttk::style lookup [$w.tree cget -style] -font]
   foreach {code col anchor null} $glistFields width $::windows::gamelist::widths {
-      $w.tree heading $col -text  $col   -command "SortBy $w.tree $col"
+      if {[info exists ::tr(Glist$col)]} {
+        set name $::tr(Glist$col)
+      } else {
+        set name $col
+      }
+      $w.tree heading $col -text  $name  -command [list SortBy $w.tree $col]
       $w.tree column  $col -width $width -anchor $anchor -stretch 0
   }
 
