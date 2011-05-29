@@ -58,6 +58,7 @@ proc ::move::Start {} {
   set ::pause 1
   sc_move start
   updateBoard  -pgn
+  # There's probably no reason to redraw pgn here, a "text see 0.0" would suffice
   if {[::move::drawVarArrows]} { ::move::showVarArrows }
 }
 

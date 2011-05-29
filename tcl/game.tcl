@@ -321,7 +321,8 @@ proc ::game::GotoMoveNumber {} {
     }
     focus .
     destroy .mnumDialog
-    updateBoard -pgn
+    # updateBoard -pgn
+    updateBoard
   }
   dialogbutton $b.cancel -text $::tr(Cancel) -command {
     focus .
