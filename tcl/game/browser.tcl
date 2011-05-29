@@ -4,7 +4,13 @@
 
 namespace eval ::gbrowser {}
 
-proc ::gbrowser::new {base gnum {ply -1}} {
+proc ::gbrowser::new {base gnum {ply -1} {w {}}} {
+
+  # If $w is given, it is a toplevel already created which we will use
+
+  # Hack to stop the gnext button from using ply after treeBest has been destroyed
+  if {![winfo exists .treeBest$base]} { set ply 0 }
+
   set gnum [string trim $gnum]
   set n 0
 
@@ -21,31 +27,130 @@ proc ::gbrowser::new {base gnum {ply -1}} {
     return
   }
 
-  while {[winfo exists .gb$n]} { incr n }
-  set w .gb$n
-  toplevel $w
-  setWinLocation $w
-  wm title $w "[lindex [split $header "\n"] 0]  \[$filename: $gnum\]"
+  if {$w == {}} {
+    while {[winfo exists .gb$n]} { incr n }
+    set w .gb$n
+    toplevel $w
+    setWinLocation $w
+    wm resizable $w 1 0
+
+    pack [frame $w.b] -side bottom -fill x
+
+    ::board::new $w.bd $::gbrowser::size
+    $w.bd configure -relief solid -borderwidth 1
+    pack $w.bd -side left -padx 4 -pady 4
+
+    autoscrollframe $w.t text $w.t.text \
+      -foreground black  -wrap word \
+      -width 40 -height 12 -font font_Small -setgrid 1
+    pack $w.t -side right -fill both -expand yes
+
+    set t $w.t.text
+    $t configure -cursor {}
+    event generate $t <ButtonRelease-1>
+    $t tag configure header -foreground darkBlue
+    $t tag configure next -background $::pgnColor(Current)
+
+    bind $w <F1> {helpWindow GameList Browsing}
+    bind $w <Escape> "destroy $w"
+    bind $w <Home> "::gbrowser::update $n start"
+    bind $w <End> "::gbrowser::update $n end"
+    bind $w <Left> "::gbrowser::update $n -1"
+    bind $w <Right> "::gbrowser::update $n +1"
+    bind $w <Up> "::gbrowser::update $n -10"
+    bind $w <Down> "::gbrowser::update $n +10"
+    bind $w <Control-Shift-Left> "::board::resize $w.bd -1"
+    bind $w <Control-Shift-Right> "::board::resize $w.bd +1"
+
+    if {$::windowsOS} {
+      # needs testing
+      bind $w <MouseWheel> {
+	if {[expr -%D] < 0} "::gbrowser::update $n -1"
+	if {[expr -%D] > 0} "::gbrowser::update $n +1"
+      }
+      bind $w <Control-MouseWheel> {
+	if {[expr -%D] < 0} "::board::resize $w.bd +1"
+	if {[expr -%D] > 0} "::board::resize $w.bd -1"
+      }
+      # TODO: Test above, and handle wheelmouse in text widget
+    } else {
+      bind $w <Button-4> "::gbrowser::update $n -1"
+      bind $w <Button-5> "::gbrowser::update $n +1"
+      bind $w <Control-Button-4> "::board::resize $w.bd +1"
+      bind $w <Control-Button-5> "::board::resize $w.bd -1"
+      # Handle wheelmouse in text widget
+      bind $w.t.text <Button-4> "::gbrowser::update $n -1 ; break"
+      bind $w.t.text <Button-5> "::gbrowser::update $n +1 ; break"
+      bind $w.t.text <Control-Button-4> "::board::resize $w.bd +1 ; break"
+      bind $w.t.text <Control-Button-5> "::board::resize $w.bd -1 ; break"
+    }
+
+    button $w.b.start -image tb_start -command "::gbrowser::update $n start" -relief flat
+    button $w.b.back -image tb_prev -command "::gbrowser::update $n -1" -relief flat
+    button $w.b.forward -image tb_next -command "::gbrowser::update $n +1" -relief flat
+    button $w.b.end -image tb_end -command "::gbrowser::update $n end" -relief flat
+    button $w.b.autoplay -image autoplay_off -command "::gbrowser::autoplay $n" -relief flat
+    set ::gbrowser::flip($n) [::board::isFlipped .board]
+    button $w.b.flip -image tb_flip -command "::gbrowser::flip $n" -relief flat
+
+    # hack to center the lower button bar
+    # set width [expr [winfo reqwidth $w.bd] - [winfo reqwidth $w.b.start]*6]
+
+    pack [frame $w.b.gap -width 20] $w.b.start $w.b.back $w.b.forward $w.b.end \
+      $w.b.autoplay $w.b.flip -side left -padx 3 -pady 1
+
+    set ::gbrowser::autoplay($n) 0
+
+    if {$gnum > 0} {
+      dialogbutton $w.b.load -textvar ::tr(LoadGame) -command "sc_base switch $base; ::game::Load $gnum"
+      dialogbutton $w.b.merge -textvar ::tr(MergeGame) -command "mergeGame $base $gnum"
+    }
+
+    # Behaviour of ply is a little confusing.
+    # It is generally "-1", and gets its value from sc_filter
+    # The gnext/gprev buttons below will also set it explicitly
+
+    if {$ply < 0} {
+      set ply 0
+      if {$gnum > 0} {
+	set ply [sc_filter value $base $gnum]
+	if {$ply > 0} { incr ply -1 }
+      }
+    }
+
+    button $w.b.first -image tb_gfirst -relief flat -command "::gbrowser::load $w $base $gnum $ply 1"
+    button $w.b.prev -image tb_gprev -relief flat -command   "::gbrowser::load $w $base $gnum $ply -1"
+    button $w.b.next -image tb_gnext -relief flat -command   "::gbrowser::load $w $base $gnum $ply +1"
+    button $w.b.last -image tb_glast -relief flat -command   "::gbrowser::load $w $base $gnum $ply end"
+    dialogbutton $w.b.close -textvar ::tr(Close) -command "destroy $w"
+
+    pack $w.b.close $w.b.last $w.b.next $w.b.prev $w.b.first -side right -padx 1 -pady 1
+    if {$gnum > 0} {
+      pack $w.b.merge $w.b.load -side right -padx 1 -pady 1
+    }
+
+    # bind $w <Configure> "recordWinSize $w"
+
+  } else {
+
+    scan $w {.gb%i} n
+    set t $w.t.text
+    $t configure -state normal
+    $t delete 0.0 end
+
+    $w.b.first configure -command "::gbrowser::load $w $base $gnum $ply 1"
+    $w.b.prev configure -command   "::gbrowser::load $w $base $gnum $ply -1"
+    $w.b.next configure -command   "::gbrowser::load $w $base $gnum $ply +1"
+    $w.b.last configure -command   "::gbrowser::load $w $base $gnum $ply end"
+  }
+
+  wm title $w "Scid:  $filename :  game $gnum"
   set ::gbrowser::boards($n) [sc_game summary -base $base -game $gnum boards]
   set moves [sc_game summary -base $base -game $gnum moves]
 
-  pack [frame $w.b] -side bottom -fill x
-  ::board::new $w.bd $::gbrowser::size
-  $w.bd configure -relief solid -borderwidth 1
-  pack $w.bd -side left -padx 4 -pady 4
-
-  autoscrollframe $w.t text $w.t.text \
-    -foreground black  -wrap word \
-    -width 40 -height 12 -font font_Small -setgrid 1
-  pack $w.t -side right -fill both -expand yes
-
-  set t $w.t.text
-  $t configure -cursor {}
-  event generate $t <ButtonRelease-1>
-  $t tag configure header -foreground darkBlue
-  $t tag configure next -background $::pgnColor(Current)
   $t insert end "$header" header
   $t insert end "\n\n"
+
   set m 0
 
   foreach i $moves {
@@ -59,90 +164,19 @@ proc ::gbrowser::new {base gnum {ply -1}} {
       "$t tag configure $moveTag -underline 0"
     incr m
   }
-  bind $w <F1> {helpWindow GameList Browsing}
-  bind $w <Escape> "destroy $w"
-  bind $w <Home> "::gbrowser::update $n start"
-  bind $w <End> "::gbrowser::update $n end"
-  bind $w <Left> "::gbrowser::update $n -1"
-  bind $w <Right> "::gbrowser::update $n +1"
-  bind $w <Up> "::gbrowser::update $n -10"
-  bind $w <Down> "::gbrowser::update $n +10"
-  bind $w <Control-Shift-Left> "::board::resize $w.bd -1"
-  bind $w <Control-Shift-Right> "::board::resize $w.bd +1"
 
-  if {$::windowsOS} {
-    # needs testing
-    bind $w <MouseWheel> {
-      if {[expr -%D] < 0} "::gbrowser::update $n -1"
-      if {[expr -%D] > 0} "::gbrowser::update $n +1"
-    }
-    bind $w <Control-MouseWheel> {
-      if {[expr -%D] < 0} "::board::resize $w.bd +1"
-      if {[expr -%D] > 0} "::board::resize $w.bd -1"
-    }
-    # TODO: Test above, and handle wheelmouse in text widget
-  } else {
-    bind $w <Button-4> "::gbrowser::update $n -1"
-    bind $w <Button-5> "::gbrowser::update $n +1"
-    bind $w <Control-Button-4> "::board::resize $w.bd +1"
-    bind $w <Control-Button-5> "::board::resize $w.bd -1"
-    # Handle wheelmouse in text widget
-    bind $w.t.text <Button-4> "::gbrowser::update $n -1 ; break"
-    bind $w.t.text <Button-5> "::gbrowser::update $n +1 ; break"
-    bind $w.t.text <Control-Button-4> "::board::resize $w.bd +1 ; break"
-    bind $w.t.text <Control-Button-5> "::board::resize $w.bd -1 ; break"
-  }
-
-  button $w.b.start -image tb_start -command "::gbrowser::update $n start" -relief flat
-  button $w.b.back -image tb_prev -command "::gbrowser::update $n -1" -relief flat
-  button $w.b.forward -image tb_next -command "::gbrowser::update $n +1" -relief flat
-  button $w.b.end -image tb_end -command "::gbrowser::update $n end" -relief flat
-  button $w.b.autoplay -image autoplay_off -command "::gbrowser::autoplay $n" -relief flat
-  set ::gbrowser::flip($n) [::board::isFlipped .board]
-  button $w.b.flip -image tb_flip -command "::gbrowser::flip $n" -relief flat
-
-  # hack to center the lower button bar
-  # set width [expr [winfo reqwidth $w.bd] - [winfo reqwidth $w.b.start]*6]
-
-  pack [frame $w.b.gap -width 20] $w.b.start $w.b.back $w.b.forward $w.b.end \
-    $w.b.autoplay $w.b.flip -side left -padx 3 -pady 1
-
-  set ::gbrowser::autoplay($n) 0
-
-  if {$gnum > 0} {
-    dialogbutton $w.b.load -textvar ::tr(LoadGame) -command "sc_base switch $base; ::game::Load $gnum"
-    dialogbutton $w.b.merge -textvar ::tr(MergeGame) -command "mergeGame $base $gnum"
-  }
-  button $w.b.first -image tb_gfirst -relief flat -command "::gbrowser::load $w $base $gnum $ply 1"
-  button $w.b.prev -image tb_gprev -relief flat -command   "::gbrowser::load $w $base $gnum $ply -1"
-  button $w.b.next -image tb_gnext -relief flat -command   "::gbrowser::load $w $base $gnum $ply +1"
-  button $w.b.last -image tb_glast -relief flat -command   "::gbrowser::load $w $base $gnum $ply end"
-  dialogbutton $w.b.close -textvar ::tr(Close) -command "destroy $w"
-
-  pack $w.b.close $w.b.last $w.b.next $w.b.prev $w.b.first -side right -padx 1 -pady 1
-  if {$gnum > 0} {
-    pack $w.b.merge $w.b.load -side right -padx 1 -pady 1
-  }
-
-  wm resizable $w 1 0
-  if {$ply < 0} {
-    set ply 0
-    if {$gnum > 0} {
-      set ply [sc_filter value $base $gnum]
-      if {$ply > 0} { incr ply -1 }
-    }
-  }
   ::gbrowser::update $n $ply
-  bind $w <Configure> "recordWinSize $w"
 }
 
 proc ::gbrowser::load {w base gnum ply n} {
   global tree
 
   # The behaviour changes according to whether .treeBest$base exists or not
-
-  # how to do this without flickr ??
-  destroy $w
+  if {![sc_base inUse $base]} {
+    tk_messageBox -type ok -icon error -title "Browser Error" -message "Base $base is no longer open." -parent $w
+    destroy $w
+    return
+  }
 
   if {[winfo exists .treeBest$base]} {
 
@@ -204,8 +238,7 @@ proc ::gbrowser::load {w base gnum ply n} {
    }
 
   }
-  ::gbrowser::new $base $newgame $ply
-
+  ::gbrowser::new $base $newgame $ply $w
 }
 
 proc ::gbrowser::flip {n} {
