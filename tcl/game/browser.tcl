@@ -36,7 +36,7 @@ proc ::gbrowser::new {base gnum {ply -1}} {
 
   autoscrollframe $w.t text $w.t.text \
     -foreground black  -wrap word \
-    -width 45 -height 12 -font font_Small -setgrid 1
+    -width 40 -height 12 -font font_Small -setgrid 1
   pack $w.t -side right -fill both -expand yes
 
   set t $w.t.text
@@ -80,14 +80,17 @@ proc ::gbrowser::new {base gnum {ply -1}} {
       if {[expr -%D] < 0} "::board::resize $w.bd +1"
       if {[expr -%D] > 0} "::board::resize $w.bd -1"
     }
+    # TODO: Test above, and handle wheelmouse in text widget
   } else {
     bind $w <Button-4> "::gbrowser::update $n -1"
     bind $w <Button-5> "::gbrowser::update $n +1"
-    # unbind pgn wheelmouse from the board
-    bind $w.t.text <Button-4> "$w.t.text yview scroll -1 units ; break"
-    bind $w.t.text <Button-5> "$w.t.text yview scroll +1 units ; break"
     bind $w <Control-Button-4> "::board::resize $w.bd +1"
     bind $w <Control-Button-5> "::board::resize $w.bd -1"
+    # Handle wheelmouse in text widget
+    bind $w.t.text <Button-4> "::gbrowser::update $n -1 ; break"
+    bind $w.t.text <Button-5> "::gbrowser::update $n +1 ; break"
+    bind $w.t.text <Control-Button-4> "::board::resize $w.bd +1 ; break"
+    bind $w.t.text <Control-Button-5> "::board::resize $w.bd -1 ; break"
   }
 
   button $w.b.start -image tb_start -command "::gbrowser::update $n start" -relief flat

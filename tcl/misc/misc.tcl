@@ -105,9 +105,6 @@ proc dialogbutton {w args} {
 #   with scrollbars that automatically hide themselves when they are
 #   not needed.
 #   The frame and widget may already exist; they are created if needed.
-#   FBF 2011.03.05:
-#     $frame and $w aspects are not changed if they already exists
-#     scrollbars are created on time 0, otherwise they are not hidden
 #
 #   Usage:
 #      autoscrollframe [-bars none|x|y|both] frame type w args
@@ -143,6 +140,7 @@ proc autoscrollframe {args} {
     }
     $w configure -relief flat -borderwidth 0
   }
+
   grid $w -in $frame -row 0 -column 0 -sticky news
   set setgrid 0
   catch {set setgrid [$w cget -setgrid]}
@@ -152,8 +150,8 @@ proc autoscrollframe {args} {
     $w configure -yscrollcommand [list _autoscroll $frame.ybar]
     grid $frame.ybar -row 0 -column 1 -sticky ns
     set _autoscroll($frame.ybar) 1
-    # set _autoscroll(time:$frame.ybar) [clock clicks -milli] &&&
-    set _autoscroll(time:$frame.ybar) 0
+    set _autoscroll(time:$frame.ybar) [clock clicks -milli]
+    # set _autoscroll(time:$frame.ybar) 0
     if {! $setgrid} {
       # bind $frame.ybar <Map> [list _autoscrollMap $frame]
     }
@@ -164,8 +162,7 @@ proc autoscrollframe {args} {
     $w configure -xscrollcommand [list _autoscroll $frame.xbar]
     grid $frame.xbar -row 1 -column 0 -sticky we
     set _autoscroll($frame.xbar) 1
-    set _autoscroll(time:$frame.xbar) 0
-    # set _autoscroll(time:$frame.xbar) [clock clicks -milli] &&&
+    set _autoscroll(time:$frame.xbar) [clock clicks -milli]
     if {! $setgrid} {
       # bind $frame.xbar <Map> [list _autoscrollMap $frame]
     }
@@ -190,8 +187,8 @@ array set _autoscroll {}
 #   the stupid Tcl/Tk text widget doesn't handle scrollbars well.
 #
 proc _autoscroll {bar args} {
-
   global _autoscroll
+
   if {[llength $args] == 2} {
     set min [lindex $args 0]
     set max [lindex $args 1]
@@ -206,10 +203,10 @@ proc _autoscroll {bar args} {
         set _autoscroll(time:$bar) [clock clicks -milli]
       }
     } else {
-      if {[clock clicks -milli] > [expr {$_autoscroll(time:$bar) + 100}]} {
-        grid remove $bar
-        set _autoscroll($bar) 0
-      }
+      # if {[clock clicks -milli] > [expr {$_autoscroll(time:$bar) + 100}]} 
+
+      grid remove $bar
+      set _autoscroll($bar) 0
     }
     # update idletasks
   }
