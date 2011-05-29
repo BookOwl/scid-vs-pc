@@ -101,10 +101,8 @@ proc ::gbrowser::new {base gnum {ply -1} {w {}}} {
 
     set ::gbrowser::autoplay($n) 0
 
-    if {$gnum > 0} {
-      dialogbutton $w.b.load -textvar ::tr(LoadGame) -command "sc_base switch $base; ::game::Load $gnum"
-      dialogbutton $w.b.merge -textvar ::tr(MergeGame) -command "mergeGame $base $gnum"
-    }
+    dialogbutton $w.b.load -textvar ::tr(LoadGame) -command "sc_base switch $base; ::game::Load $gnum"
+    dialogbutton $w.b.merge -textvar ::tr(MergeGame) -command "mergeGame $base $gnum"
 
     # Behaviour of ply is a little confusing.
     # It is generally "-1", and gets its value from sc_filter
@@ -125,9 +123,7 @@ proc ::gbrowser::new {base gnum {ply -1} {w {}}} {
     dialogbutton $w.b.close -textvar ::tr(Close) -command "destroy $w"
 
     pack $w.b.close $w.b.last $w.b.next $w.b.prev $w.b.first -side right -padx 1 -pady 1
-    if {$gnum > 0} {
-      pack $w.b.merge $w.b.load -side right -padx 1 -pady 1
-    }
+    pack $w.b.merge $w.b.load -side right -padx 1 -pady 1
 
     # bind $w <Configure> "recordWinSize $w"
 
