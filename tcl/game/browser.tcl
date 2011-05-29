@@ -142,6 +142,9 @@ proc ::gbrowser::new {base gnum {ply -1} {w {}}} {
     $w.b.prev configure -command   "::gbrowser::load $w $base $gnum $ply -1"
     $w.b.next configure -command   "::gbrowser::load $w $base $gnum $ply +1"
     $w.b.last configure -command   "::gbrowser::load $w $base $gnum $ply end"
+
+    $w.b.load configure -command "sc_base switch $base; ::game::Load $gnum"
+    $w.b.merge configure -command "mergeGame $base $gnum"
   }
 
   wm title $w "Scid:  $filename :  game $gnum"
