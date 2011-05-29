@@ -7,14 +7,24 @@ namespace eval ::gbrowser {}
 proc ::gbrowser::new {base gnum {ply -1}} {
   set gnum [string trim $gnum]
   set n 0
+
+  if {$base < 1} { set base [sc_base current] }
+  if {$gnum < 1} { set gnum [sc_game number] }
+
+  # perform sanity check
+  if {$gnum > [sc_base numGames $base]} {
+    set gnum [sc_base numGames $base]
+  }
+  
+  set filename [file tail [sc_base filename $base]]
+  if {[catch {set header [sc_game summary -base $base -game $gnum header]}]} {
+    return
+  }
+
   while {[winfo exists .gb$n]} { incr n }
   set w .gb$n
   toplevel $w
   setWinLocation $w
-  if {$base < 1} { set base [sc_base current] }
-  if {$gnum < 1} { set game [sc_game number] }
-  set filename [file tail [sc_base filename $base]]
-  set header [sc_game summary -base $base -game $gnum header]
   wm title $w "[lindex [split $header "\n"] 0]  \[$filename: $gnum\]"
   set ::gbrowser::boards($n) [sc_game summary -base $base -game $gnum boards]
   set moves [sc_game summary -base $base -game $gnum moves]
@@ -97,11 +107,16 @@ proc ::gbrowser::new {base gnum {ply -1}} {
   set ::gbrowser::autoplay($n) 0
 
   if {$gnum > 0} {
-    button $w.b.load -textvar ::tr(LoadGame) -command "sc_base switch $base; ::game::Load $gnum"
-    button $w.b.merge -textvar ::tr(MergeGame) -command "mergeGame $base $gnum"
+    dialogbutton $w.b.load -textvar ::tr(LoadGame) -command "sc_base switch $base; ::game::Load $gnum"
+    dialogbutton $w.b.merge -textvar ::tr(MergeGame) -command "mergeGame $base $gnum"
   }
-  button $w.b.close -textvar ::tr(Close) -command "destroy $w"
-  pack $w.b.close -side right -padx 1 -pady 1
+  button $w.b.first -image tb_gfirst -relief flat -command "::gbrowser::load $w $base $gnum $ply 1"
+  button $w.b.prev -image tb_gprev -relief flat -command   "::gbrowser::load $w $base $gnum $ply -1"
+  button $w.b.next -image tb_gnext -relief flat -command   "::gbrowser::load $w $base $gnum $ply +1"
+  button $w.b.last -image tb_glast -relief flat -command   "::gbrowser::load $w $base $gnum $ply end"
+  dialogbutton $w.b.close -textvar ::tr(Close) -command "destroy $w"
+
+  pack $w.b.close $w.b.last $w.b.next $w.b.prev $w.b.first -side right -padx 1 -pady 1
   if {$gnum > 0} {
     pack $w.b.merge $w.b.load -side right -padx 1 -pady 1
   }
@@ -116,6 +131,78 @@ proc ::gbrowser::new {base gnum {ply -1}} {
   }
   ::gbrowser::update $n $ply
   bind $w <Configure> "recordWinSize $w"
+}
+
+proc ::gbrowser::load {w base gnum ply n} {
+  global tree
+
+  # The behaviour changes according to whether .treeBest$base exists or not
+
+  # how to do this without flickr ??
+  destroy $w
+
+  if {[winfo exists .treeBest$base]} {
+
+    ### best games
+
+    set newgame $gnum
+    set index [lsearch $tree(bestList$base) $gnum]
+    set max [llength $tree(bestList$base)]
+    if {$index == -1} {
+      # oops - best games list may have changed, so load first game
+      set n 1
+    }
+
+    switch -- $n {
+      1 {
+	 set newgame [lindex $tree(bestList$base) 0]
+      }
+      -1 {
+	 if {$index > 0} {
+	   incr index -1
+	   set newgame [lindex $tree(bestList$base) $index]
+	 }
+      }
+      +1 {
+	 incr index 1
+	 if {$index < $max} {
+	   set newgame [lindex $tree(bestList$base) $index]
+	 }
+      }
+      end {
+	   set newgame [lindex $tree(bestList$base) end]
+      }
+      default {
+	 puts "::gbrowser::load: bad variable 'n'"
+	 set newgame 1
+      }
+   }
+  } else {
+    set newgame $gnum
+    switch -- $n {
+      1 {
+	 set newgame 1
+      }
+      -1 {
+	 if {$gnum > 1} {
+	   incr newgame -1
+	 }
+      }
+      +1 {
+	 incr newgame +1
+      }
+      end {
+	 set newgame 9999999
+      }
+      default {
+	 puts "::gbrowser::load: bad variable 'n'"
+	 set newgame 1
+      }
+   }
+
+  }
+  ::gbrowser::new $base $newgame $ply
+
 }
 
 proc ::gbrowser::flip {n} {

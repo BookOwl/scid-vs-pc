@@ -377,9 +377,9 @@ translate E Graph {Graph}
 translate E Help {Help}
 translate E Import {Import}
 translate E Index {Index}
-translate E LoadGame {Load Game}
-translate E BrowseGame {Browse Game}
-translate E MergeGame {Merge Game}
+translate E LoadGame {Load}
+translate E BrowseGame {Browse}
+translate E MergeGame {Merge}
 translate E MergeGames {Merge Games}
 translate E Ok {Ok}
 translate E Preview {Preview}
