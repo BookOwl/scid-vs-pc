@@ -462,7 +462,7 @@ proc ::maint::Refresh {} {
 }
 
 set autoloadGame 0
-trace variable autoloadGame w {::utils::validate::Integer 9999999 0}
+trace variable autoloadGame w {::utils::validate::Integer $::MAXGAME 0}
 
 # ::maint::SetAutoloadGame
 #
@@ -488,7 +488,7 @@ proc ::maint::SetAutoloadGame {{parent .}} {
   button $w.set.first -text $::tr(First) -command {set autoloadGame 1}
   button $w.set.current -text $::tr(Current) \
       -command {set autoloadGame [sc_game number]}
-  button $w.set.last -text $::tr(Last) -command {set autoloadGame 9999999}
+  button $w.set.last -text $::tr(Last) -command {set autoloadGame $::MAXGAME}
   foreach i {none first current last} {$w.set.$i configure -font font_Small}
   pack $w.set.none $w.set.first $w.set.current $w.set.last \
       -side left -padx 1 -pady 2

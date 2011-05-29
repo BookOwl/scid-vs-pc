@@ -44,6 +44,7 @@ trace variable sEloDiffMax w [list ::utils::validate::Integer "-[sc_info limit e
 trace variable sGlMin w {::utils::validate::Integer 9999 0}
 trace variable sGlMax w {::utils::validate::Integer 9999 0}
 
+# wtf &&&
 trace variable sGnumMin w {::utils::validate::Integer -9999999 0}
 trace variable sGnumMax w {::utils::validate::Integer -9999999 0}
 

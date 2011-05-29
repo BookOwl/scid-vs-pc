@@ -229,7 +229,7 @@ proc ::gbrowser::load {w base gnum ply n} {
 	 incr newgame +1
       }
       end {
-	 set newgame 9999999
+	 set newgame $::MAXGAME
       }
       default {
 	 puts "::gbrowser::load: bad variable 'n'"

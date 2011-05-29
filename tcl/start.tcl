@@ -88,6 +88,7 @@ foreach ns {
 
 ### ::pause is used as a semaphore by the trace command in tacgame (and fics)
 
+set ::MAXGAME 99999999
 set ::pause 0
 set ::defaultBackground white
 set ::tacgame::threshold 0.9

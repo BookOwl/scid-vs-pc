@@ -865,7 +865,7 @@ proc removeFromFilter {dir} {
   if {$dir == {up}} {
     sc_filter remove 1 [expr $gl_num - 1]
   } else {
-    sc_filter remove [expr $gl_num + 1] 9999999
+    sc_filter remove [expr $gl_num + 1] $::MAXGAME
   }
 
   ::windows::stats::Refresh
@@ -961,7 +961,7 @@ proc saveExportGList {} {
     progressWindow "Scid" "Saving game list..." $::tr(Cancel) sc_progressBar
   }
   busyCursor .
-  set res [catch {sc_game list 1 9999999 "$glexport\n" $fname} err]
+  set res [catch {sc_game list 1 $::MAXGAME "$glexport\n" $fname} err]
   unbusyCursor .
   if {$showProgress} { closeProgressWindow }
   if {$res} {
