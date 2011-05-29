@@ -1291,7 +1291,7 @@ proc ::board::resize2 {w psize} {
 
   ### update main board to keep up with tk packer... can cause problems though
   ### and it does cause flicker  for fics when  playing black
-  # oops when board is ffipped, this gets called, and is broke
+  # oops when board is flipped, this gets called, and is broke
   #  if {$w == ".board"} {::update}
 
   ### When changing the border width, widget flickers but can't fix it - S.A.
@@ -1334,7 +1334,9 @@ proc ::board::resize2 {w psize} {
   $w.wtm configure -height $stmsize -width $stmsize
   $w.btm configure -height $stmsize -width $stmsize
 
+  ### Update default boardsize and browser size
   if {$w == ".board"} {set boardSize $psize}
+  if {[string match .gb* $w]} {set ::gbrowser::size $psize}
 
   # resize the material canvas &
   if {$::board::_showmat($w)} {

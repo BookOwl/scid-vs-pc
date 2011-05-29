@@ -81,7 +81,8 @@ proc ::tree::make { { baseNumber -1 } } {
   set tree(locked$baseNumber) 0
   set tree(base$baseNumber) $baseNumber
   set tree(status$baseNumber) ""
-  set tree(bestMax$baseNumber) 20
+  ### The number of bestgames to display is not configurable anymore (except here) S.A.
+  set tree(bestMax$baseNumber) 50 
   set tree(order$baseNumber) "frequency"
   trace variable tree(bestMax$baseNumber) w "::tree::doTrace bestMax"
   set tree(bestRes$baseNumber) All
@@ -1034,7 +1035,6 @@ proc ::tree::best { baseNumber } {
     bind $w <Escape> "destroy $w"
     bind $w <F1> {helpWindow Tree Best}
     pack [frame $w.b] -side bottom -fill x
-    pack [frame $w.opt] -side bottom -fill x
     frame $w.blist
     pack $w.blist -side top -expand true -fill both
     scrollbar $w.blist.ybar -command "$w.blist.list yview" -takefocus 0
@@ -1044,13 +1044,9 @@ proc ::tree::best { baseNumber } {
     bind $w.blist.list <<ListboxSelect>> "::tree::bestPgn $baseNumber"
     bind $w.blist.list <Double-Button-1> "::tree::bestBrowse $baseNumber"
 
-    label $w.opt.lmax -text "Number of Games:" -font font_Small
-    tk_optionMenu $w.opt.max tree(bestMax$baseNumber) 10 20 50 100 200 500
-    $w.opt.max configure -font font_Small -relief ridge -borderwidth 0 -direction right
-
-    label $w.opt.lres -text " $::tr(Result:)" -font font_Small
-    tk_optionMenu $w.opt.res tree(bestRes$baseNumber) All 1-0 0-1 {1-0 0-1} {1/2-1/2}
-    $w.opt.res configure -font font_Small -relief ridge -borderwidth 0 -direction right
+    label $w.b.lres -text " $::tr(Result:)" -font font_Small
+    tk_optionMenu $w.b.res tree(bestRes$baseNumber) All 1-0 0-1 {1-0 0-1} {1/2-1/2}
+    $w.b.res configure -font font_Small -relief ridge -borderwidth 0 -direction right
 
     button $w.b.browse -text $::tr(BrowseGame) -command "::tree::bestBrowse $baseNumber"
     button $w.b.load -text $::tr(LoadGame) -command "::tree::bestLoad $baseNumber"
@@ -1059,8 +1055,7 @@ proc ::tree::best { baseNumber } {
     foreach i {browse load merge close} { $w.b.$i configure -font font_Small }
     pack $w.b.browse $w.b.load $w.b.merge -side left -padx 5 -pady 5
     pack $w.b.close -side right -padx 5 -pady 5
-    pack $w.opt.lmax $w.opt.max -side left -padx 5 -pady 5
-    pack $w.opt.lres $w.opt.res -side left -padx 5 -pady 5
+    pack $w.b.lres $w.b.res -side left -padx 5 -pady 5
     bind $w <Configure> "recordWinSize $w"
     focus $w.blist.list
   }

@@ -13628,7 +13628,7 @@ sc_tree_best (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
 
         dstr->Clear();
         dstr->Append (RESULT_STR[ie->GetResult()]);
-        dstr->Append ("(", (ie->GetNumHalfMoves() + 1) / 2, ")  ");
+        dstr->Append (" (", (ie->GetNumHalfMoves() + 1) / 2, ")  ");
         dstr->Append (wname);
         if (welo > 0) { dstr->Append (" (", welo, wEstimate ? "*)" : ")"); }
         dstr->Append (" - ", bname);

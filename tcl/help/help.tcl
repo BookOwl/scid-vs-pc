@@ -2024,8 +2024,7 @@ it is best to close the Tree Window first.</i>
   highest-rated games for the current tree (shown in order of average rating).
   </p>
   <p>
-  You can restrict the list to show games with a particular result, or limit the number of
-  games shown.
+  You can restrict the list to show games with a particular result.
   </p>
   <p>
   <i>Note: the Browse and Load game features will automatically start at the corresponding

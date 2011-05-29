@@ -3,9 +3,9 @@
 # Game Browser window
 
 namespace eval ::gbrowser {}
-set ::gbrowser::size 35
 
 proc ::gbrowser::new {base gnum {ply -1}} {
+  set gnum [string trim $gnum]
   set n 0
   while {[winfo exists .gb$n]} { incr n }
   set w .gb$n
@@ -14,8 +14,8 @@ proc ::gbrowser::new {base gnum {ply -1}} {
   if {$base < 1} { set base [sc_base current] }
   if {$gnum < 1} { set game [sc_game number] }
   set filename [file tail [sc_base filename $base]]
-  wm title $w "Scid: $::tr(BrowseGame) ($filename: $gnum)"
   set header [sc_game summary -base $base -game $gnum header]
+  wm title $w "[lindex [split $header "\n"] 0]  \[$filename: $gnum\]"
   set ::gbrowser::boards($n) [sc_game summary -base $base -game $gnum boards]
   set moves [sc_game summary -base $base -game $gnum moves]
 
@@ -24,22 +24,16 @@ proc ::gbrowser::new {base gnum {ply -1}} {
   $w.bd configure -relief solid -borderwidth 1
   pack $w.bd -side left -padx 4 -pady 4
 
-  #pack [frame $w.t] -side right -fill both -expand yes
-  #text $w.t.text -foreground black  -wrap word \
-  #  -width 45 -height 12 -font font_Small -yscrollcommand "$w.t.ybar set" \
-  #  -setgrid 1
-  #scrollbar $w.t.ybar -command "$w.t.text yview" -takefocus 0
-  #pack $w.t.ybar -side right -fill y
-  #pack $w.t.text -side left -fill both -expand yes
   autoscrollframe $w.t text $w.t.text \
     -foreground black  -wrap word \
     -width 45 -height 12 -font font_Small -setgrid 1
   pack $w.t -side right -fill both -expand yes
 
   set t $w.t.text
+  $t configure -cursor {}
   event generate $t <ButtonRelease-1>
   $t tag configure header -foreground darkBlue
-  $t tag configure next -foreground yellow -background darkBlue
+  $t tag configure next -background $::pgnColor(Current)
   $t insert end "$header" header
   $t insert end "\n\n"
   set m 0
@@ -50,11 +44,9 @@ proc ::gbrowser::new {base gnum {ply -1}} {
     $t insert end " "
     $t tag bind $moveTag <ButtonRelease-1> "::gbrowser::update $n $m"
     $t tag bind $moveTag <Any-Enter> \
-      "$t tag configure $moveTag -foreground red
-       $t configure -cursor hand2"
+      "$t tag configure $moveTag -underline 1"
     $t tag bind $moveTag <Any-Leave> \
-      "$t tag configure $moveTag -foreground {}
-       $t configure -cursor {}"
+      "$t tag configure $moveTag -underline 0"
     incr m
   }
   bind $w <F1> {helpWindow GameList Browsing}
