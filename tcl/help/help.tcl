@@ -233,6 +233,7 @@ set helpText(Index) {<h1>Scid Help Index</h1>
   <li><a Analysis Annotating>Annotating games</a> automatically</li>
   <li><a NAGs>Annotation symbols</a></li>
   <li><a Author>Author, contacting</a></li>
+  <li><a Maintenance Autoload>Autoloading</a> a game</li>
   <li><a MainWindow Autoplay>Autoplay mode</a></li>
   </ul>
 
@@ -2477,11 +2478,10 @@ set helpText(Maintenance) {<h1>Database Maintenance</h1>
   This is especially useful for maintenance of large databases.
   </p>
 
-  <h3>Autoloading a Game</h3>
+  <h3><name Autoload>Autoloading a Game</name></h3>
   <p>
-  When a database is opened, it is possible to automatically load a particular game
-  using <b>Autoload game number...</b>. To automatically load the
-  last game of a database, just select a very high number (eg 9999999).
+  When a database is opened, one may automatically load a particular game
+  using the Maintenance <b>Autoload game</b> feature. 
   </p>
 
   <h3>Repair a Base</h3>
