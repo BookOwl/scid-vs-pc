@@ -7,8 +7,10 @@ namespace eval ::gbrowser {}
 proc ::gbrowser::new {base gnum {ply -1} {w {}}} {
 
   # If $w is given, it is a toplevel already created which we will use
+  # this allows for the new first/prev/next/last buttons
 
   # Hack to stop the gnext button from using ply after treeBest has been destroyed
+  # but the use of ply in the browser should probably be checked S.A.
   if {![winfo exists .treeBest$base]} { set ply 0 }
 
   set gnum [string trim $gnum]
@@ -17,7 +19,7 @@ proc ::gbrowser::new {base gnum {ply -1} {w {}}} {
   if {$base < 1} { set base [sc_base current] }
   if {$gnum < 1} { set gnum [sc_game number] }
 
-  # perform sanity check
+  # Sanity check (which allows us to load game $::MAXGAME)
   if {$gnum > [sc_base numGames $base]} {
     set gnum [sc_base numGames $base]
   }
@@ -28,6 +30,7 @@ proc ::gbrowser::new {base gnum {ply -1} {w {}}} {
   }
 
   if {$w == {}} {
+    ### Init browser window
     while {[winfo exists .gb$n]} { incr n }
     set w .gb$n
     toplevel $w
@@ -49,7 +52,7 @@ proc ::gbrowser::new {base gnum {ply -1} {w {}}} {
     $t configure -cursor {}
     event generate $t <ButtonRelease-1>
     $t tag configure header -foreground darkBlue
-    $t tag configure next -background $::pgnColor(Current)
+    $t tag configure Current -background $::pgnColor(Current)
 
     bind $w <F1> {helpWindow GameList Browsing}
     bind $w <Escape> "destroy $w"
@@ -128,6 +131,8 @@ proc ::gbrowser::new {base gnum {ply -1} {w {}}} {
     # bind $w <Configure> "recordWinSize $w"
 
   } else {
+    # Already have a browser window topleve
+    # so just delete the old pgn text, and configure the buttons for their new meaning
 
     scan $w {.gb%i} n
     set t $w.t.text
@@ -150,7 +155,7 @@ proc ::gbrowser::new {base gnum {ply -1} {w {}}} {
   $t insert end "$header" header
   $t insert end "\n\n"
 
-  set m 0
+  set m 1
 
   foreach i $moves {
     set moveTag m$m
@@ -264,11 +269,10 @@ proc ::gbrowser::update {n ply} {
 
   set t $w.t.text
   $t configure -state normal
-  set moveRange [$t tag nextrange m$ply 1.0]
-  $t tag remove next 1.0 end
+  $t tag remove Current 1.0 end
   set moveRange [$t tag nextrange m$ply 1.0]
   if {[llength $moveRange] == 2} {
-    $t tag add next [lindex $moveRange 0] [lindex $moveRange 1]
+    $t tag add Current [lindex $moveRange 0] [lindex $moveRange 1]
     $t see [lindex $moveRange 0]
   }
   $t configure -state disabled
