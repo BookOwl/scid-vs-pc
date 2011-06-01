@@ -355,7 +355,7 @@ namespace eval fics {
       # ::fics::writechan "set gin $::fics::gamerequests" echo
     }
 
-    checkbutton $w.bottom.buttons.offers -text "Offers graph" -variable ::fics::graphon -command ::fics::showOffers -width 10 -state disabled
+    checkbutton $w.bottom.buttons.offers -text "Offers graph" -variable ::fics::graphon -command ::fics::showGraph -width 10 -state disabled
     # -state disabled ; enable for testing S.A. &&&
 
     grid $w.bottom.buttons.silence      -column 0 -row $row -sticky w
@@ -747,7 +747,7 @@ namespace eval fics {
     if { $::fics::sought } {
       if {[string match "* ad* displayed." $line]} {
         set ::fics::sought 0
-        catch { displayOffers }
+        catch { displayGraph }
         return
       }
       # lappend ::fics::soughtlist $line
@@ -797,7 +797,7 @@ namespace eval fics {
 
       # hide offers graph
       set ::fics::graphon 0
-      showOffers
+      showGraph
 
       ::utils::sound::PlaySound sound_move
       sc_game new
@@ -1259,6 +1259,8 @@ namespace eval fics {
   #
   ################################################################################
   proc parseStyle12 {line} {
+    # todo: use little boards for following
+puts $line
     set color [lindex $line 9]
     set gameNumber [lindex $line 16]
     set white [lindex $line 17]
@@ -1445,7 +1447,7 @@ namespace eval fics {
   ################################################################################
   #
   ################################################################################
-  proc showOffers {} {
+  proc showGraph {} {
 
     set w .fics.bottom
 
@@ -1455,9 +1457,9 @@ namespace eval fics {
     if { $::fics::graphon } {
       pack forget $w.clocks
       pack $w.graph -side left
-      updateOffers
+      updateGraph
     } else {
-      after cancel ::fics::updateOffers
+      after cancel ::fics::updateGraph
       pack forget $w.graph
       pack $w.clocks -side left -padx 10 -pady 5
     }
@@ -1468,20 +1470,21 @@ namespace eval fics {
   ################################################################################
   #
   ################################################################################
-  proc updateOffers { } {
+  proc updateGraph { } {
     set ::fics::sought 1
     set ::fics::soughtlist {}
     writechan "sought"
     vwaitTimed ::fics::sought 5000 "nowarn"
-    after 3000 ::fics::updateOffers
+    after 3000 ::fics::updateGraph
   }
   ################################################################################
   #
   ################################################################################
-  proc displayOffers { } {
+  proc displayGraph { } {
     global ::fics::graphwidth ::fics::graphheight ::fics::graphoff \
         ::fics::offers_minelo ::fics::offers_maxelo ::fics::offers_mintime ::fics::offers_maxtime
-    after cancel ::fics::updateOffers
+
+    after cancel ::fics::updateGraph
 
     set w .fics.bottom.graph
     set size 7
@@ -1552,9 +1555,9 @@ namespace eval fics {
       }
       $w.c create $object [expr $x - $size ] [expr $y - $size ] [expr $x + $size ] [expr $y + $size ] -tag game_$idx -fill $fillcolor -outline $outline
       
-      $w.c bind game_$idx <Enter> "::fics::setOfferStatus $idx %x %y"
-      $w.c bind game_$idx <Leave> "::fics::delOfferStatus $idx"
-      $w.c bind game_$idx <ButtonPress> "::fics::getOffersGame $idx"
+      $w.c bind game_$idx <Enter> "::fics::showGraphText $idx %x %y"
+      $w.c bind game_$idx <Leave> "::fics::delGraphText $idx"
+      $w.c bind game_$idx <ButtonPress> "::fics::acceptGraphGame $idx"
       incr idx
     }
 
@@ -1562,7 +1565,7 @@ namespace eval fics {
   ################################################################################
   # Play the selected game
   ################################################################################
-  proc getOffersGame { idx } {
+  proc acceptGraphGame { idx } {
     array set ga [lindex $::fics::soughtlist $idx]
     catch {
       writechan "play $ga(game)" echo
@@ -1572,14 +1575,14 @@ namespace eval fics {
   #
   ################################################################################
 
-  proc delOfferStatus { idx } {
+  proc delGraphText { idx } {
     set w .fics.bottom.graph
 
     $w.c itemconfig game_$idx -width 1
     $w.c delete status
   }
 
-  proc setOfferStatus { idx x y {exit 0}} {
+  proc showGraphText { idx x y {exit 0}} {
 
     set w .fics.bottom.graph
 
@@ -1644,7 +1647,7 @@ namespace eval fics {
     }
 
     set ::fics::sought 0
-    after cancel ::fics::updateOffers
+    after cancel ::fics::updateGraph
     after cancel ::fics::stayConnected
     set logged 0
 
