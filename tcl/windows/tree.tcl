@@ -540,23 +540,6 @@ proc ::tree::dorefresh { baseNumber } {
   # ========================================
 
 
-  # If the Tree base is not the current one, updates the Tree base to the first game in filter 
-  # This enables one to browse/load best games, continuing on from current position
-  # *IF FILTER IS BEING ADJUSTED*
-
-  # Fulvio's (unused) SCID patch incorporates ply into the bestgames widget, removing the need for this "sc_game load"
-  # but it also necessitates some tkscid changes.. so won't implement at the moment
-
-  if {$baseNumber != [sc_base current] } {
-    set current [sc_base current]
-    sc_base switch $baseNumber
-    ### stops game 0 getting nixed
-    ### if {[sc_filter first] != 0 &&  [sc_game number] != 0 && ![sc_game altered]}
-    if { [sc_filter first] != 0 } {
-          sc_game load [sc_filter first]
-    }
-    sc_base switch $current
-  }
 }
 
 ################################################################################
