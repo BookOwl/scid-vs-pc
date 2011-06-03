@@ -5421,11 +5421,20 @@ sc_filter_negate (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // sc_filter_next:
 //    Returns number of next game in the filter.
+//    (or the game after argv[2])
+//    Note there is an offset difference of 1 between the tcl gamenumber and the C gamenumber
+//    The conversion is done by both sides BEFORE passing to the other, which is a little strange
 int
 sc_filter_next (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
 {
+
     if (db->inUse) {
+
         uint nextNumber = db->gameNumber + 1;
+
+	if (argc > 2) 
+	    nextNumber = strGetUnsigned (argv[2]) + 1;
+
         while (nextNumber < db->numGames) {
             if (db->filter->Get(nextNumber) > 0) {
                 return setUintResult (ti, nextNumber + 1);
@@ -5439,11 +5448,17 @@ sc_filter_next (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // sc_filter_prev:
 //    Returns number of previous game in the filter.
+//    Note: prevNumber seems to work fine as 'int' rather tha 'uint'
 int
 sc_filter_prev (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
 {
     if (db->inUse) {
+
         int prevNumber = db->gameNumber - 1;
+
+	if (argc > 2) 
+	    prevNumber = strGetUnsigned (argv[2]) - 1;
+
         while (prevNumber >= 0) {
             if (db->filter->Get(prevNumber) > 0) {
                 return setIntResult (ti, prevNumber + 1);

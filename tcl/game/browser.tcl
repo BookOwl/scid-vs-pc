@@ -226,11 +226,11 @@ proc ::gbrowser::load {w base gnum ply n} {
       }
       -1 {
 	 if {$gnum > 1} {
-	   incr newgame -1
+	   set newgame [sc_filter prev [expr $gnum - 1]]
 	 }
       }
       +1 {
-	 incr newgame +1
+	 set newgame [sc_filter next [expr $gnum - 1]]
       }
       end {
 	 set newgame $::MAXGAME
@@ -240,8 +240,13 @@ proc ::gbrowser::load {w base gnum ply n} {
 	 set newgame 1
       }
    }
-
   }
+
+  if {$newgame < 1} {
+    # sc_filter next/prev failed
+    set newgame $gnum
+  }
+
   ::gbrowser::new $base $newgame $ply $w
 }
 
