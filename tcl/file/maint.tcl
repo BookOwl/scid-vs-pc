@@ -462,7 +462,7 @@ proc ::maint::Refresh {} {
 }
 
 set autoloadGame 0
-trace variable autoloadGame w {::utils::validate::Integer $::MAXGAME 0}
+trace variable autoloadGame w {::utils::validate::Integer $::MAXAUTOLOAD 0}
 
 # ::maint::SetAutoloadGame
 #
@@ -475,6 +475,7 @@ proc ::maint::SetAutoloadGame {{parent .}} {
   if {[winfo exists $w]} { return }
   toplevel $w
   wm title $w "Scid"
+  bind $w <F1> {helpWindow Maintenance Autoload}
   set autoloadGame [sc_base autoload]
 
   pack [frame $w.f] -side top
@@ -488,7 +489,7 @@ proc ::maint::SetAutoloadGame {{parent .}} {
   button $w.set.first -text $::tr(First) -command {set autoloadGame 1}
   button $w.set.current -text $::tr(Current) \
       -command {set autoloadGame [sc_game number]}
-  button $w.set.last -text $::tr(Last) -command {set autoloadGame $::MAXGAME}
+  button $w.set.last -text $::tr(Last) -command {set autoloadGame $::MAXAUTOLOAD}
   foreach i {none first current last} {$w.set.$i configure -font font_Small}
   pack $w.set.none $w.set.first $w.set.current $w.set.last \
       -side left -padx 1 -pady 2

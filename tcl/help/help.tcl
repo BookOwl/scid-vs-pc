@@ -356,6 +356,7 @@ set helpText(Index) {<h1>Scid Help Index</h1>
   <li><a Maintenance>Maintenance tools</a></li>
   <li><a TreeMasks>Masks for Trees</a></li>
   <li><a Searches Material>Material/pattern searches</a></li>
+  <li><a Formats>Maximum</a> number of games</li>
   <li><a Menus>Menus</a></li>
   <li><a GameList Browsing>Merging games</a></li>
   <li><a Moves>Move entry</a></li>
@@ -413,6 +414,7 @@ set helpText(Index) {<h1>Scid Help Index</h1>
   <li><a SeriousGame>Play serious game</a></li>
   <li><a ShortCuts>Shortcuts</a></li>
   <li><a ShortCuts alpha>Shortcuts (alphabetical)</a></li>
+  <li><a Formats>si4</a> database format</li>
   <li><a Sorting>Sorting a database</a></li>
   <li><a Maintenance Spellcheck>Spellchecking</a> names</li>
   <li><a Switcher>Switcher</a> window</li>
@@ -2482,6 +2484,7 @@ set helpText(Maintenance) {<h1>Database Maintenance</h1>
   <p>
   When a database is opened, one may automatically load a particular game
   using the Maintenance <b>Autoload game</b> feature. 
+  <i>Note: Because of design of si4 header, this number's upper limit is 16,777,214 (Approximately 2^(8*3)).</i>
   </p>
 
   <h3>Repair a Base</h3>
@@ -3751,6 +3754,8 @@ set helpTitle(Formats) "File Formats"
 set helpText(Formats) {<h1>Scid File Formats</h1>
   <p>
   Scid Databases consist of three files - an index file (file suffix .si4), a name file (.sn4) and a game file (.sg4).
+</p>
+<p><i>Scid only allocates three bytes for some data fields. This means si4's maximum number of games is 16777214. It may be possible to ignore this limit, but it is definitely not recommended. </i>
 </p>
 
   <h3>The Index File (.si4)</h3>
