@@ -462,7 +462,6 @@ namespace eval pgn {
        .pgnWin.text see [lindex $moveRange 0]
        .pgnWin.text see [lindex $moveRange 1]
       }
-      .pgnWin.text configure -state disabled
     } else {
       # Highlight current move in text only widget
 
@@ -474,8 +473,9 @@ namespace eval pgn {
       # seek to after first blank line
       set offset [expr [string first \n\n $pgnStr] + 2]
       #.pgnWin.text tag add Current UMMMM....
+
     }
-    return
+    .pgnWin.text configure -state disabled
   }
 }
 
