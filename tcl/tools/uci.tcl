@@ -706,7 +706,7 @@ namespace eval uci {
     if {[catch {set uciInfo(pipe$n) [open "| [list $analysisCommand] $analysisArgs" "r+"]} result]} {
       if {$oldpwd != ""} { catch {cd $oldpwd} }
       tk_messageBox -title "Error starting engine" -icon warning -type ok \
-          -message "Unable to start the program:\n$analysisCommand"
+          -message "Unable to start the program:\n$analysisCommand:\n$result"
       return
     }
 

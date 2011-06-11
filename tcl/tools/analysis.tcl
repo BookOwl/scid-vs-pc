@@ -1921,7 +1921,7 @@ proc makeAnalysisWin { {n 1} } {
     }
     tk_messageBox -title "Scid: error starting analysis" \
         -icon warning -type ok -parent $parent \
-        -message "Unable to start the program:\n$analysisCommand"
+        -message "Unable to start the program:\n$analysisCommand:\n$result"
     set analysisWin$n 0
     resetEngine $n
     return
