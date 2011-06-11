@@ -1097,6 +1097,7 @@ proc copyFilter {frombaseNum tobaseNum} {
     unbusyCursor .
     closeProgressWindow
     ::windows::gamelist::Refresh
+    # hmmmm... how to stop . getting raised over .glistWin ?
     if {$copyErr} {
       tk_messageBox -type ok -icon info -title "Scid" -message $result -parent .glistWin.baseWin
     }

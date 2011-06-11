@@ -623,15 +623,46 @@ proc updateMatchList { tw nametype maxMatches name el op } {
   $tw delete 0.0 end
   set matches {}
   catch {set matches [sc_name match $nametype $val $maxMatches]}
+
+
+if {0} {
+  # IGNORE - Used to be this
   set count [llength $matches]
   set nameMatchCount [expr {$count / 2}]
   for {set i 0} { $i < $count } {incr i 2} {
+
     set nameMatchCount [expr {($i / 2) + 1}]
     set nameMatches($nameMatchCount) [lindex $matches [expr {$i + 1}]]
-    set str "$nameMatchCount:\t[lindex $matches $i]\t$nameMatches($nameMatchCount)\n"
+
+    # $tw tag bind tag$nameMatchCount <ButtonRelease-1> [list set $name $nameMatches($nameMatchCount)]
+
+    set str "[lindex $matches $i]\t$nameMatches($nameMatchCount)\n"
     $tw insert end $str
   }
   $tw configure -state disabled
+} else {
+
+  # But this is much easier
+
+  ### Setup the autocomplete text button bindings
+
+  set i 1
+  # hmm... Unicode is broken for some reason (above also)
+
+  foreach {count string} $matches {
+    if {[string trim $string] != {}} {
+      set nameMatches($i) $string
+      $tw tag bind tag$i <ButtonRelease-1> [list set $name $string]
+      $tw tag bind focus$i <Any-Enter> "$tw tag configure focus$i -back gray85"
+      $tw tag bind focus$i <Any-Leave> "$tw tag configure focus$i -back {}"
+
+      $tw insert end "$count\t$string\n" [list tag$i focus$i]
+      incr i
+    }
+  }
+  $tw configure -state disabled
+}
+
 }
 
 proc clearMatchList { tw } {
@@ -863,7 +894,7 @@ proc nameEditor {} {
 
 # addGameSaveEntry:
 #   used in gameSave for setting up the simpler labels and entry boxes.
-#
+
 proc addGameSaveEntry { name row textname } {
   label .save.g.label$name -textvar $textname
   entry .save.g.entry$name -width 30  -relief sunken \
@@ -1039,19 +1070,19 @@ proc gameSave {gnum} {
 
   # Autocomplete text widget and label
 
-  text $f.list -height 9 -width 40 -relief sunken -background grey90 \
-      -tabs {2c right 2.5c left} -wrap none
+  text $f.list -height 9 -width 30 -relief sunken -background grey90 \
+      -tabs {2.5c left} -wrap none -cursor arrow
   clearMatchList $f.list
 
-  label $f.title -textvar ::tr(NameEditMatches) -font font_Italic
+  # label $f.title -textvar ::tr(NameEditMatches) -font font_Italic
+  # grid $f.title -row 7           -column 8 -columnspan 2 -sticky n -padx 10
 
   grid $f.list -row 0 -rowspan 7 -column 8 -columnspan 2 -sticky nsew -padx 10
-  grid $f.title -row 7           -column 8 -columnspan 2 -sticky n -padx 10
 
   # Extra tags text widget+scrollbar (in frame)
 
   frame $f.extra
-  grid $f.extra -row 8 -rowspan 2 -column 8 -columnspan 2 -padx 10 -sticky nsew
+  grid $f.extra -row 7 -rowspan 3 -column 8 -columnspan 2 -padx 10 -pady 2 -sticky nsew
   grid rowconfigure $f 8 -weight 1
   grid columnconfigure $f 8 -weight 1
 
@@ -1087,9 +1118,7 @@ proc gameSave {gnum} {
     bind $f.$i <Return> "$w.buttons.save invoke"
   }
 
-  # Bindings so Ctrl-1 to Ctrl-9 select a matching name in the player,
-  # site, event and round entryboxes:
-
+if {0} {
   set j 0
   foreach {i j} { \
     entryevent "event"
@@ -1103,6 +1132,7 @@ proc gameSave {gnum} {
             {set %s \$nameMatches(%d)}}" $z $j $z ]
     }
   }
+}
 
   # Divider
   pack [frame $w.bar -height 2 -borderwidth 1 -relief sunken] -fill x -pady 5

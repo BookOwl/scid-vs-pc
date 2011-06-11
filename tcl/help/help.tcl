@@ -3755,7 +3755,7 @@ set helpText(Formats) {<h1>Scid File Formats</h1>
   <p>
   Scid Databases consist of three files - an index file (file suffix .si4), a name file (.sn4) and a game file (.sg4).
 </p>
-<p><i>Scid only allocates three bytes for some data fields. This means si4's maximum number of games is 16777214. It may be possible to ignore this limit, but it is definitely not recommended. </i>
+<p><i>Scid only allocates three bytes for some data fields. This means si4's maximum number of games is 16,777,214. It may be possible to ignore this limit, but it is definitely not recommended. </i>
 </p>
 
   <h3>The Index File (.si4)</h3>
