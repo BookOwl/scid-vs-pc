@@ -7029,7 +7029,7 @@ sc_game_info (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
     // A few fields are alligned with TABS
 
     if ( *db->game->GetWhiteStr() == '?' )
-      sprintf (temp, "<center><gbold><run ::game::SetInfo White>?</run></gbold>");
+      sprintf (temp, "<center><gbold><run gameSave -1 white>?</run></gbold>");
     else
       sprintf (temp, "<center><gbold><pi %s>%s</pi></gbold>", db->game->GetWhiteStr(), db->game->GetWhiteStr());
 
@@ -7047,7 +7047,7 @@ sc_game_info (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
     }
 
     if ( *db->game->GetBlackStr() == '?' )
-      sprintf (temp, "    --    <gbold><run ::game::SetInfo Black>?</run></gbold>");
+      sprintf (temp, "    --    <gbold><run gameSave -1 black>?</run></gbold>");
     else
       sprintf (temp, "    --    <gbold><pi %s>%s</pi></gbold>", db->game->GetBlackStr(), db->game->GetBlackStr());
     Tcl_AppendResult (ti, temp, NULL);
@@ -7217,7 +7217,7 @@ sc_game_info (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
     
     Tcl_AppendResult (ti, "<br>Event : <blue>", NULL);
     if ( *db->game->GetEventStr() == '?' && *db->game->GetSiteStr() == '?' )
-      sprintf (temp, "<run ::game::SetInfo Event>?</run>");
+      sprintf (temp, "<run gameSave -1 event>?</run>");
     else {
       if (*db->game->GetSiteStr() == '?' )
         sprintf (temp, "<run ::crosstab::Open>%s</run>", db->game->GetEventStr());
@@ -7227,7 +7227,7 @@ sc_game_info (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
     Tcl_AppendResult (ti, temp, "</blue>", NULL);
 
     if ( *dateStr == '?' )
-      sprintf (temp, "  (<blue><run ::game::SetInfo Date>%s</run></blue>)", dateStr);
+      sprintf (temp, "  (<blue><run gameSave -1 date>%s</run></blue>)", dateStr);
     else {
       if ( *db->game->GetRoundStr() == '?' )
 	sprintf (temp, "  (%s)", dateStr);

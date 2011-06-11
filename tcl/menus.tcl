@@ -383,7 +383,7 @@ set helpMessage($m,[incr menuindex]) GameAdd
 $m add separator
 incr menuindex
 
-$m add command -label "Set Game Information" -command ::game::SetInfo
+$m add command -label "Set Game Information" -command {gameSave -1}
 set helpMessage($m,[incr menuindex]) {Set game information}
 $m add command -label "Browse Game" -command {::gbrowser::new [sc_base current] [sc_game number]}
 set helpMessage($m,[incr menuindex]) {See available games}

@@ -904,11 +904,12 @@ proc addGameSaveEntry { name row textname } {
 }
 
 # gameSave:
-#   The game save dialog. Used for adding and replacing games. If the
-#   value gnum is zero, it is to add a new game; otherwise it is to
-#   replace game number gnum.
-#
-proc gameSave {gnum} {
+#   The game save dialog. Used for adding and replacing games.
+#   gnum is zero == add a new game
+#   gnum >  zero == replace game number gnum.
+#   gnum <  zero == dont save game, merely change game info
+
+proc gameSave {gnum {focus {}}} {
   global date year month day white black resultVal event site round
   global whiteElo blackElo whiteRType blackRType eco extraTags gsaveNum
   global edate eyear emonth eday
@@ -934,9 +935,12 @@ proc gameSave {gnum} {
 
   if {$gnum == 0} {
     wm title $w "[tr GameAdd]"
-  } else {
+  } elseif {$gnum > 0} {
     wm title $w "[tr GameReplace]"
+  } else {
+    wm title $w {Set Game Information}
   }
+
   set gsaveNum $gnum
 
   # frame $f holds everything except save/cancel buttons 
@@ -1119,6 +1123,7 @@ proc gameSave {gnum} {
   }
 
 if {0} {
+  ### No longer use the Control-N key bindings
   set j 0
   foreach {i j} { \
     entryevent "event"
@@ -1150,6 +1155,10 @@ if {0} {
     destroy .save
   }
 
+  if {$gsaveNum < 0} {
+    $w.buttons.save configure -textvar {} -text Ok 
+  }
+
   dialogbutton $w.buttons.cancel -textvar ::tr(Cancel) -command "destroy $w"
   pack $w.buttons -side bottom -pady 10 -fill x
   if {$gnum == 0} {
@@ -1174,13 +1183,27 @@ if {0} {
   placeWinOverParent $w .
   wm deiconify $w
 
+  switch -- $focus {
+    {} {
+       }
+    "date" {
+         $f.dateyear selection range 0 end
+         focus $f.dateyear
+       }
+    default {
+         .save.g.entry$focus selection range 0 end
+         focus .save.g.entry$focus
+       }
+   }
+    
   if {$gnum > 0} { focus .save.buttons.save }
 }
 
 # gsave:
 #    Called by gameSave when the user presses the "Save" button
 #    to save the game. Attempts to save and reports the result.
-#
+#    (If gnum < 0 dont actually save game - just set game tags)
+
 proc gsave { gnum } {
   global date year month day white black resultVal event site round
   global whiteElo blackElo whiteRType blackRType eco extraTags
@@ -1194,10 +1217,17 @@ proc gsave { gnum } {
       -whiteElo $whiteElo -whiteRatingType $whiteRType \
       -blackElo $blackElo -blackRatingType $blackRType \
       -eco $eco -eventdate $edate -extra $extraTagsList
-  set res [sc_game save $gnum]
-  if {$res != {}} {
-    tk_messageBox -type ok -icon info -parent .save -title "Scid" -message $res
+
+  ### Dont save game if gnum < 0
+  if {$gnum < 0} {
+    sc_game setaltered 1
+  } else {
+    set res [sc_game save $gnum]
+    if {$res != {}} {
+      tk_messageBox -type ok -icon info -parent .save -title "Scid" -message $res
+    }
   }
+
   updateBoard -pgn
   ::windows::gamelist::Refresh
   updateTitle
