@@ -308,6 +308,17 @@ proc compNM {n m k} {
     # per game time control
     set comp(wtime) [expr $comp(seconds) * 1000]
     set comp(btime) [expr $comp(seconds) * 1000]
+    set mins [expr $comp(seconds)/60]
+    set secs [expr $comp(seconds)%60]
+    if {$secs == 0} {
+      set timecontrol $mins
+    } else {
+      if {$secs < 10} {
+	set secs "0$secs"
+      }
+      set timecontrol $mins:$secs
+    }
+
     puts_ "Game period is $comp(wtime) seconds"
   }
 
@@ -356,7 +367,11 @@ proc compNM {n m k} {
   } else {
     sc_game tags set -event "$comp(name)"
   }
-  sc_game tags set -date [::utils::date::today] -round $k -extra "{Movetime \"$comp(seconds)\"}"
+  if {$comp(control) == 0} {
+    sc_game tags set -date [::utils::date::today] -round $k -extra "{Movetime \"$comp(seconds)\"}"
+  } else {
+    sc_game tags set -date [::utils::date::today] -round $k -extra "{TimeControl \"$timecontrol/0\"}"
+  }
   update idletasks
   updateBoard -pgn
 
@@ -386,7 +401,10 @@ proc compNM {n m k} {
 
 	sendToEngine $current_engine "ponder on"
 	sendToEngine $current_engine "bk off"
-	sendToEngine $current_engine "st $comp(seconds)"
+
+	# done later
+	# sendToEngine $current_engine "st $comp(seconds)"
+
 	# Sjeng or Chen run too fast unless "hard" is issued
 	if {[regexp -nocase arasan $analysis(name$current_engine)]} {
 	  puts_ {Arasan detected. Issuing "hard"}
@@ -460,9 +478,21 @@ proc compNM {n m k} {
       # Some xboard engines move very rapidly... there might be a 
       # inbred bug confusing centiseconds and seconds.
 
-      # This needs sorting out properly
-      sendToEngine $current_engine "st $comp(seconds)"
-      sendToEngine $current_engine "time [expr $comp(seconds) * 100]"
+      if {$comp(control) == 0} {
+	# This needs sorting out properly
+	sendToEngine $current_engine "st $comp(seconds)"
+	sendToEngine $current_engine "time [expr $comp(seconds) * 100]"
+      } else {
+	if {$current_engine == $n} {
+          set temp $comp(wtime)
+        } else {
+          set temp $comp(btime)
+        }
+        set secs [expr $temp/1000]
+        set mins [expr $secs/60]:[expr $secs%60]
+        sendToEngine $current_engine "level 0 $mins 0"
+        puts_ "sendToEngine $current_engine level 0 $mins 0"
+      }
 
       sendToEngine $current_engine "go"
       vwait analysis(waitForBestMove$current_engine)
@@ -562,7 +592,7 @@ proc compNM {n m k} {
   # Save game
 
   if {$comp(control)} {
-    sc_pos setComment "White time $comp(wtime), Black time $comp(btime)"
+    sc_pos setComment "[sc_pos getComment]White time $comp(wtime), Black time $comp(btime)"
   }
 
   if {![sc_base isReadOnly]} {
@@ -647,8 +677,8 @@ proc compCueGame {n m name1 name2 k} {
 proc compTimeout {} {
     global analysis comp
 
-    puts_ "!!! compTimeout"
     puts_ "!!! Move timed out, starting next game"
+    sc_pos setComment {Game timed out.}
 
     set comp(playing) 0
     set analysis(waitForReadyOk$comp(move)) 1
@@ -691,8 +721,8 @@ proc compDestroy {} {
     ### there's some ttk bug when destroying widget, but havent found it yet
     # ttk::combobox seems to need destroying
     # for {set i 0} {$i < $comp(countcombos)} {incr i} {
-        # must unbind .comp Destroy
-	# destroy  .comp.engines.list.$i
+    # must unbind .comp Destroy
+    # destroy  .comp.engines.list.$i
     # }
 
     set comp(iconize) 0

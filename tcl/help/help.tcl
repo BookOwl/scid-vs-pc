@@ -2880,7 +2880,7 @@ set helpText(Tourney) {<h1>Computer Tournament</h1>
   </p>
   <p>
   Make sure you <b>open a database</b> so the results can be saved, then select
-  the number of competitors, tournament name and move period, and Press "OK".
+  the number of competitors, tournament name, time control method and seconds, and Press "OK".
   <b>Games are saved</b> after each is completed.
   </p>
   <p>
@@ -2900,9 +2900,6 @@ progress to the next.
   </p>
 
   <h3>Known Issues</h3>
-<br>
-  * The tournament currently implements a <b>per-move time limit</b> instead of a more sophisticated
-time control. This is slightly crude, but engine analysis is (now) continuous through-out.
 <br>
   * <b>Xboard/Winboard</b> protocol support is not as solid as for <b>UCI</b> (see below).
   The xboard <b>resign</b> request is supported.
@@ -2941,14 +2938,15 @@ Sjeng and XChenard are issued the "hard" command, and seem to work.
 Umko 1.1 seems to have occasional end-of-game fails, which have been worked around.
 Gaviota-0.74 runs in analysis/xboard mode, but will not play tournaments.
 Pervious versions of Phalanx had no time control, but it now works well.
-Gnu Chess needs the "-xboard" parameter.
+Gnu Chess needs the "-x" parameter, and only versions > 5.07 will properly handle
+time-per-game time control.
 Faile seems not to issue "move" under some circumstances, despite being in xboard mode.
 </p>
 <p>
-Testing under <b>Windows</b> has not been terribly extensive, and considering
-the number of engines available, unforseen issues will probably arise.  </p>
+Testing under <b>Windows</b> has not been extensive, and considering
+the number of engines available unforseen issues will probably arise.  </p>
 
-  <p><footer>Updated: Scid vs. PC 4.1, July 2010</footer></p>
+  <p><footer>Updated: Scid vs. PC 4.5, June 2011</footer></p>
 
 }
 
