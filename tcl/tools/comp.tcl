@@ -1,7 +1,7 @@
 ### Computer Tournament 
 ###
 ### comp.tcl: part of Scid.
-### Copyright (C) 2010 Steven Atkinson
+### Copyright (C) 2010- Steven Atkinson
 
 # Credit to Fulvio for a few lines of UCI code that enabled me
 # to make this run nicely (without constantly reseting analysis),
@@ -24,6 +24,7 @@ set comp(debug) 1
 set comp(badmoves) 0
 set comp(iconize) 0
 set comp(animate) 1
+set comp(control) 0
 
 proc compInit {} {
   global analysis comp engines
@@ -71,15 +72,26 @@ proc compInit {} {
 
   incr row
   label $w.config.roundslabel -text {Number of Rounds}
-  spinbox $w.config.roundsvalue -textvariable comp(rounds) -from 1 -to 6 -width 9
+  spinbox $w.config.roundsvalue -textvariable comp(rounds) -from 1 -to 10 -width 9
   set comp(rounds) 2
 
   grid $w.config.roundslabel -row $row -column 0 -sticky w -padx 5 -pady 2
   grid $w.config.roundsvalue -row $row -column 1 -sticky w -padx 5 -pady 2
 
   incr row
-  label $w.config.timelabel -text {Seconds per Move}
-  spinbox $w.config.timevalue -textvariable comp(seconds) -from 1 -to 300 -width 9
+  frame $w.config.control
+  label $w.config.control.0 -text {Time control is per}
+  radiobutton $w.config.control.1 -variable comp(control) -value 0 -text Move \
+    -command {set comp(seconds) 3}
+  radiobutton $w.config.control.2 -variable comp(control) -value 1 -text Game \
+    -command {set comp(seconds) 600}
+
+  pack $w.config.control.0 $w.config.control.1 $w.config.control.2 -side left -expand 1 -fill x
+  grid $w.config.control  -row $row -column 0 -columnspan 2 -sticky ew -pady 2
+
+  incr row
+  label $w.config.timelabel -text {Time period (seconds)}
+  spinbox $w.config.timevalue -textvariable comp(seconds) -from 1 -to 3600 -width 9
   set comp(seconds) 3
 
   grid $w.config.timelabel -row $row -column 0 -sticky w -padx 5 -pady 2
@@ -156,6 +168,7 @@ proc compInit {} {
 
   bind $w <Configure> "recordWinSize $w"
   bind $w <Destroy> compClose
+  bind $w <Escape> compClose
   wm state $w normal
   update
 
@@ -182,9 +195,13 @@ proc compOk {} {
   set players {}
   set names {}
   set comp(games) {}
-  set comp(time) [expr $comp(seconds) * 1000]
-  puts_ "Move delay is $comp(time) seconds"
   set comp(current) 0
+
+  if {$comp(control)==0} {
+    # per move time
+    set comp(time) [expr $comp(seconds) * 1000]
+    puts_ "Move delay is $comp(time) seconds"
+  } 
 
   for {set i 0} {$i < $comp(count)} {incr i} {
     set j [$w.engines.list.$i current]
@@ -208,13 +225,14 @@ proc compOk {} {
   for {set i 0} {$i < $comp(count)} {incr i} {
     $w.engines.list.$i configure -state disabled ; # disable widgets too
   }
-  foreach i {.config.eventlabel .config.evententry \
-    .config.timevalue .config.timelabel .config.roundsvalue .config.roundslabel \
-    .engines.label .engines.top.count .engines.top.update \
-    .config.verbosevalue .config.verboselabel .config.iconizevalue .config.iconizelabel \
-    .config.timeoutvalue .config.timeoutlabel .config.animatelabel .config.animatevalue \
-    .config.start_title .config.start1label .config.start2label .config.start3label \
-    .config.start1button .config.start2button .config.start3button \
+  foreach i {.config.eventlabel .config.evententry 
+    .config.timevalue .config.timelabel .config.roundsvalue .config.roundslabel 
+    .engines.label .engines.top.count .engines.top.update 
+    .config.verbosevalue .config.verboselabel .config.iconizevalue .config.iconizelabel 
+    .config.timeoutvalue .config.timeoutlabel .config.animatelabel .config.animatevalue 
+    .config.start_title .config.start1label .config.start2label .config.start3label 
+    .config.start1button .config.start2button .config.start3button 
+    .config.control.0 .config.control.1 .config.control.2
   } {
     $w$i configure -state disabled
   }
@@ -286,6 +304,12 @@ proc compOk {} {
 proc compNM {n m k} {
   global analysis comp
 
+  if {$comp(control)} {
+    # per game time control
+    set comp(wtime) [expr $comp(seconds) * 1000]
+    set comp(btime) [expr $comp(seconds) * 1000]
+    puts_ "Game period is $comp(wtime) seconds"
+  }
 
   if {$comp(start) > 0 && $comp(current) == 1} {
     # ok!
@@ -393,6 +417,7 @@ proc compNM {n m k} {
   # Thanks to Fulvio for inspiration to rewrite this properly (?!) :>
 
   while {$comp(playing)} {
+    set comp(lasttime) [clock clicks -milli]
     set comp(move) $current_engine
     set comp(nextmove) $other_engine
 
@@ -400,7 +425,19 @@ proc compNM {n m k} {
       ### uci
 
       sendToEngine $current_engine "position fen [sc_pos fen]"
-      sendToEngine $current_engine "go movetime $comp(time)"
+
+      if {$comp(control)==0} {
+	# per move time
+
+	sendToEngine $current_engine "go movetime $comp(time)"
+      } else {
+	# per game time control
+
+	puts_ "go wtime $comp(wtime) btime $comp(btime) winc 0 binc 0"
+	sendToEngine $current_engine "go wtime $comp(wtime) btime $comp(btime)"
+      }
+
+      
       set analysis(fen$current_engine) [sc_pos fen]
       set analysis(maxmovenumber$current_engine) 0
 
@@ -440,8 +477,11 @@ proc compNM {n m k} {
     }
 
     if {[makeAnalysisMove $current_engine]} {
-      puts_ {Move success}
       ### Move success
+
+      # expired time is
+      set expired [expr [clock clicks -milli] - $comp(lasttime)]
+      puts_ "Time expired $expired"
 
       set comp(badmoves) 0
       after cancel compTimeout
@@ -484,9 +524,27 @@ proc compNM {n m k} {
 
       # swap players
       if {$current_engine != $n} {
+	if {$comp(control)} {
+	  set comp(btime) [expr $comp(btime) - $expired]
+          if {$comp(btime) < 0} {
+            sc_game tags set -result 1
+            puts_ {Black forfeits on time}
+            break
+          }
+        }
+        # Now its whites turn
 	set current_engine $n
 	set other_engine $m
       } else {
+	if {$comp(control)} {
+	  set comp(wtime) [expr $comp(wtime) - $expired]
+          if {$comp(wtime) < 0} {
+            sc_game tags set -result 0
+            puts_ {White forfeits on time}
+            break
+          }
+        }
+        # Now its blacks turn
 	set current_engine $m
 	set other_engine $n
       }
@@ -502,6 +560,10 @@ proc compNM {n m k} {
   puts_ "Game $n - $m is over"
 
   # Save game
+
+  if {$comp(control)} {
+    sc_pos setComment "White time $comp(wtime), Black time $comp(btime)"
+  }
 
   if {![sc_base isReadOnly]} {
   puts_ {saving game}
