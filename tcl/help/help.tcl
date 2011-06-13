@@ -2868,47 +2868,55 @@ Engines</green></run>.
 ### Computer Tournament 
 set helpTitle(Tourney) "Computer Tournament"
 set helpText(Tourney) {<h1>Computer Tournament</h1>
-  <p>Scid vs. PC now has an automated
-  <run ::compInit><green>Computer Tournament</green></run> feature.
-  Any engine configured via the
+
+  <p>
+  Scid vs. PC can run automated <run ::compInit><green>Computer Tournaments</green></run>
+  with any installed engine (done via the
   <run ::enginelist::choose><green>Tools--<gt>Analysis Engines</green></run>
-  widget can be added.
-</p>
-<p>
-  Support for different engines is, afaik, good, but <b>a few old engines won't work</b>.
-  For more information about various engines see below.
+  widget).
   </p>
   <p>
-  Make sure you <b>open a database</b> so the results can be saved, then select
-  the number of competitors, tournament name, time control method and seconds, and Press "OK".
-  <b>Games are saved</b> after each is completed.
+  <i>Support for different engines is good, but many old and/or less-well-known engines won't work.
+  For more information about engine compatibility, see below.
+  </i></p>
+  <p>
+  Make sure you open a database so the results can be saved, then select
+  the number of competitors, tournament name, time control method and seconds, and Press <b>Ok</b>.
+  Games are saved after each is completed.
   </p>
   <p>
-  Though there's been some testing, it's probably still possible for single games to hang.
-To address this, there is a <b>Seconds for Timeout</b> value, which determines the
-maximum time that any one move should take before the game is ended automatically.
-In this case, the game is still saved , and game result can be edited manually later.
+  Though there's been some testing, it's still possible for single games to hang.
+  To address this, set the <b>Seconds for Time-out</b> value to the maximum time
+  that any move should take before the game is ended. If this
+  happens, the game is saved and result can be edited manually later.
   </p>
   <p>
-  If a game drags on for any reason, pressing the <b>End Game</b> button will save the game, and
-progress to the next.
+  If a game drags on for any reason, press <b>End Game</b> to save the game and progress to the next.
   </p>
   <p>
-  Once the tournament is completed, make sure to have a look at the 
+  The <b>Pause Game</b> feature tries to be fair about engine
+  analysis and to handle operating system suspend events, but more testing is good.
+  </p>
+  <p><i>
+  Once the tournament is completed, be sure to have a look at the 
   <run ::crosstab::Open><green>Crosstable</green></run> window
-  to see the results in a nice format.
-  </p>
+  to see the results summary.
+  </i></p>
 
   <h3>Known Issues</h3>
 <br>
-  * <b>Xboard/Winboard</b> protocol support is not as solid as for <b>UCI</b> (see below).
-  The xboard <b>resign</b> request is supported.
+  * Xboard/Winboard protocol support is not as solid as for UCI (see below).
+  The xboard "Resign" request is supported.
 <br>
-  * In the uncommon event of a game engine crashing, unfortunately the tournament will be ended.
+  * In the uncommon event of a game engine crashing (unfortunately) the tournament will be ended.
+<br>
+  <h3>Todo</h3>
+<br>
+  * Some engines declare draws via "insufficient material" and the like, with "Engine says 1/2 - 1/2"
 <br>
   <h3>Engines</h3>
 <p>
-The author has tested quite a few engines under <b>Linux</b>, with good results. These include:
+The author has tested quite a few engines under Linux, and a lesser number with Windows and Macs. These include:
 <br>
 <br>
 Arasanx<br>
@@ -2932,7 +2940,7 @@ XChenard<br>
 Umko 1.1<br>
 Zct<br>
 <br>
-Komodo performs well, but frequently abuses it's time slice.
+Komodo performs well, but some versions have broken time-per-move time control.
 Arasan, Spike, Sjeng, Homer and XChenard have issues relating to time control.
 Sjeng and XChenard are issued the "hard" command, and seem to work.
 Umko 1.1 seems to have occasional end-of-game fails, which have been worked around.
@@ -2942,11 +2950,8 @@ Gnu Chess needs the "-x" parameter, and only versions > 5.07 will properly handl
 time-per-game time control.
 Faile seems not to issue "move" under some circumstances, despite being in xboard mode.
 </p>
-<p>
-Testing under <b>Windows</b> has not been extensive, and considering
-the number of engines available unforseen issues will probably arise.  </p>
 
-  <p><footer>Updated: Scid vs. PC 4.5, June 2011</footer></p>
+<p><footer>Updated: Scid vs. PC 4.5, June 2011</footer></p>
 
 }
 

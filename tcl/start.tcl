@@ -131,6 +131,10 @@ set ::addAnnotatorComment 0
 set ::maintFlag W
 set ::glistFlag W
 set ::gbrowser::size 35
+set comp(timecontrol) pergame
+set comp(seconds) 180
+set comp(timeout) 60
+set comp(name) {Scid vs. PC}
 
 
 ### Tree/mask options:

@@ -24,7 +24,6 @@ set comp(debug) 1
 set comp(badmoves) 0
 set comp(iconize) 0
 set comp(animate) 1
-set comp(control) 0
 
 proc compInit {} {
   global analysis comp engines
@@ -81,10 +80,8 @@ proc compInit {} {
   incr row
   frame $w.config.control
   label $w.config.control.0 -text {Time control is per}
-  radiobutton $w.config.control.1 -variable comp(control) -value 0 -text Move \
-    -command {set comp(seconds) 3}
-  radiobutton $w.config.control.2 -variable comp(control) -value 1 -text Game \
-    -command {set comp(seconds) 600}
+  radiobutton $w.config.control.1 -variable comp(timecontrol) -value permove -text Move
+  radiobutton $w.config.control.2 -variable comp(timecontrol) -value pergame -text Game
 
   pack $w.config.control.0 $w.config.control.1 $w.config.control.2 -side left -expand 1 -fill x
   grid $w.config.control  -row $row -column 0 -columnspan 2 -sticky ew -pady 2
@@ -92,7 +89,6 @@ proc compInit {} {
   incr row
   label $w.config.timelabel -text {Time period (seconds)}
   spinbox $w.config.timevalue -textvariable comp(seconds) -from 1 -to 3600 -width 9
-  set comp(seconds) 3
 
   grid $w.config.timelabel -row $row -column 0 -sticky w -padx 5 -pady 2
   grid $w.config.timevalue -row $row -column 1 -sticky w -padx 5 -pady 2
@@ -100,7 +96,6 @@ proc compInit {} {
   incr row
   label $w.config.timeoutlabel -text {Seconds for Time-out}
   spinbox $w.config.timeoutvalue -textvariable comp(timeout) -from 1 -to 300 -width 9
-  set comp(timeout) 60
 
   grid $w.config.timeoutlabel -row $row -column 0 -sticky w -padx 5 -pady 2
   grid $w.config.timeoutvalue -row $row -column 1 -sticky w -padx 5 -pady 2
@@ -159,7 +154,7 @@ proc compInit {} {
   ### OK, Cancel Buttons
 
   dialogbutton $w.buttons.cancel -text Cancel -command compClose
-  dialogbutton $w.buttons.ok -text OK -command compOk
+  dialogbutton $w.buttons.ok -text Ok -command compOk
   dialogbutton $w.buttons.help -text $::tr(Help) -command {helpWindow Tourney}
 
   focus $w.buttons.ok
@@ -169,6 +164,7 @@ proc compInit {} {
   bind $w <Configure> "recordWinSize $w"
   bind $w <Destroy> compClose
   bind $w <Escape> compClose
+  bind $w <F1> {helpWindow Tourney}
   wm state $w normal
   update
 
@@ -197,8 +193,7 @@ proc compOk {} {
   set comp(games) {}
   set comp(current) 0
 
-  if {$comp(control)==0} {
-    # per move time
+  if {$comp(timecontrol) == "permove"} {
     set comp(time) [expr $comp(seconds) * 1000]
     puts_ "Move delay is $comp(time) seconds"
   } 
@@ -304,8 +299,7 @@ proc compOk {} {
 proc compNM {n m k} {
   global analysis comp
 
-  if {$comp(control)} {
-    # per game time control
+  if {$comp(timecontrol) == "pergame"} {
     set comp(wtime) [expr $comp(seconds) * 1000]
     set comp(btime) [expr $comp(seconds) * 1000]
     set mins [expr $comp(seconds)/60]
@@ -362,12 +356,8 @@ proc compNM {n m k} {
   puts_ "compNM : setting white $analysis(name$n) , black $analysis(name$m), round $k"
   sc_game tags set -white $analysis(name$n)
   sc_game tags set -black $analysis(name$m)
-  if {$comp(name) == {}} {
-    sc_game tags set -event {Scid-vs-PC Tournament}
-  } else {
-    sc_game tags set -event "$comp(name)"
-  }
-  if {$comp(control) == 0} {
+  sc_game tags set -event $comp(name)
+  if {$comp(timecontrol) == "permove"} {
     sc_game tags set -date [::utils::date::today] -round $k -extra "{Movetime \"$comp(seconds)\"}"
   } else {
     sc_game tags set -date [::utils::date::today] -round $k -extra "{TimeControl \"$timecontrol/0\"}"
@@ -444,13 +434,9 @@ proc compNM {n m k} {
 
       sendToEngine $current_engine "position fen [sc_pos fen]"
 
-      if {$comp(control)==0} {
-	# per move time
-
+      if {$comp(timecontrol) == "permove"} {
 	sendToEngine $current_engine "go movetime $comp(time)"
       } else {
-	# per game time control
-
 	puts_ "go wtime $comp(wtime) btime $comp(btime) winc 0 binc 0"
 	sendToEngine $current_engine "go wtime $comp(wtime) btime $comp(btime)"
       }
@@ -478,7 +464,7 @@ proc compNM {n m k} {
       # Some xboard engines move very rapidly... there might be a 
       # inbred bug confusing centiseconds and seconds.
 
-      if {$comp(control) == 0} {
+      if {$comp(timecontrol) == "permove"} {
 	# This needs sorting out properly
 	sendToEngine $current_engine "st $comp(seconds)"
 	sendToEngine $current_engine "time [expr $comp(seconds) * 100]"
@@ -502,10 +488,6 @@ proc compNM {n m k} {
       # sendToEngine $current_engine playother
     }
 
-    while {$comp(paused)} {
-      vwait comp(paused)
-    }
-
     if {[makeAnalysisMove $current_engine]} {
       ### Move success
 
@@ -515,6 +497,13 @@ proc compNM {n m k} {
 
       set comp(badmoves) 0
       after cancel compTimeout
+
+      while {$comp(paused)} {
+	puts_ "  PAUSED at [clock format [clock seconds]]"
+	vwait comp(paused)
+	puts_ "UNPAUSED at [clock format [clock seconds]]"
+      }
+
       after [expr $comp(timeout) * 1000] compTimeout
 
       # set moves [ lindex [ lindex $analysis(multiPV$current_engine) 0 ] 2 ]
@@ -554,7 +543,7 @@ proc compNM {n m k} {
 
       # swap players
       if {$current_engine != $n} {
-	if {$comp(control)} {
+	if {$comp(timecontrol) == "pergame"} {
 	  set comp(btime) [expr $comp(btime) - $expired]
           if {$comp(btime) < 0} {
             sc_game tags set -result 1
@@ -566,7 +555,7 @@ proc compNM {n m k} {
 	set current_engine $n
 	set other_engine $m
       } else {
-	if {$comp(control)} {
+	if {$comp(timecontrol) == "pergame"} {
 	  set comp(wtime) [expr $comp(wtime) - $expired]
           if {$comp(wtime) < 0} {
             sc_game tags set -result 0
@@ -580,9 +569,21 @@ proc compNM {n m k} {
       }
 
     } else {
-      # move failed... don't swap players
+      ### Move failed... don't swap players
       puts_ {Move FAIL}
+
+      ### Unlikely, but could happen
+      while {$comp(paused)} {
+	after cancel compTimeout
+
+	puts_ "  PAUSED at [clock format [clock seconds]]"
+	vwait comp(paused)
+	puts_ "UNPAUSED at [clock format [clock seconds]]"
+
+	after [expr $comp(timeout) * 1000] compTimeout
+      }
     }
+
   } 
   ### This game is over
 
@@ -591,7 +592,7 @@ proc compNM {n m k} {
 
   # Save game
 
-  if {$comp(control)} {
+  if {$comp(timecontrol) == "pergame"} {
     sc_pos setComment "[sc_pos getComment]White time $comp(wtime), Black time $comp(btime)"
   }
 
@@ -620,7 +621,6 @@ proc compResume {} {
   global analysis comp engines
   set w .comp
 
-  after [expr $comp(timeout) * 1000] compTimeout
   $w.buttons.ok configure -text Pause -command compPause
   set comp(paused) 0
 }
@@ -703,8 +703,10 @@ proc compAbort {} {
     set comp(playing) 0
     set comp(games) {}
 
-    set analysis(waitForReadyOk$comp(move)) 1
-    set analysis(waitForBestMove$comp(move)) 1
+    catch {
+      set analysis(waitForReadyOk$comp(move)) 1
+      set analysis(waitForBestMove$comp(move)) 1
+    }
 }
 
 proc compClose {} {
