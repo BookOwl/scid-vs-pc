@@ -1351,78 +1351,56 @@ know these details.</i></p>
 set helpTitle(Crosstable) "Crosstable window"
 set helpText(Crosstable) {<h1>The Crosstable Window</h1>
   <p>
-  The crosstable shows the tournament results for the
-  current game. Each time you refresh the crosstable window (by
-  pressing its Refresh button, by pressing the <b>Return</b> key in the
-  crosstable window, or by typing <b>Control+Shift+X</b> in the
-  <a MainWindow>main</a> or <a GameList>game list</a> windows), Scid
-  searches for all games in the same tournament as the current game.
+  The <run ::crosstab::OpenClose><green>Crosstable</green></run> shows the
+  Tournament result for the current game in All-play-all, Swiss or Knockout formats.
   </p>
   <p>
   Any game played up to <b>twelve months before or after</b> the current game,
-  with the <b>exact same Event and Site tags</b>, is considered to be in
-  the tournament.
-  </p>
-  <p>
-  Clicking on a result in the crosstable loads the corresponding game.
-  You can add all the games in the tournament to the
-  <a Searches Filter>filter</a>
-  with the <b>Add to filter</b> button in the crosstable window.
+  with <b>identical Event and Site</b> tags, is considered to be in the tournament.
   </p>
 
-  <h4>Crosstable window menus</h4>
+  <h4>Features</h4>
   <p>
-  The <menu>File</menu> menu lets you print the current table to a file
-  in plain text, LaTeX or HTML table format.
+  Clicking on a Game Result shows a menu from which one may Browse, Load or Merge a game.
   </p>
   <p>
-  The <menu>Display</menu> menu allows you to choose the table format:
-  <b>All-play-all</b>, <b>Swiss</b> or <b>Knockout</b> or <b>Auto</b>.
+  From the menubar you'll be able to access the Display Options, edit the Event
+  Details, or export the table as Text, LaTex ot HTML. Most of these features should need no explanation....
+  The "Group Scores" option shows a blank line between each group of
+  players with the same score (when sorting by Score is selected).
   </p>
   <p>
-  The all-play-all format (for round-robin-type events) has a limit of 30
-  players, but the Swiss format (for tournaments with many players) can
-  display up to 200 players and up to 20 rounds. <b>Auto</b>, which chooses
-  the best format automatically for each tournament, is the default.
-  </p>
-  <p>
-  Note that Scid uses the <b>Round</b> tag of each game to produce a Swiss
-  crosstable, so you will not see any games in the Swiss table for a tournament
-  if its games do not have numeric round values: 1, 2, 3, etc.
-  </p>
-  <p>
-  The Display menu also lets you customize the data presented to
-  include or exclude ratings, countries and player titles. You can also
-  choose whether color allocations in Swiss tables are displayed.
-  </p>
-  <p>
-  The <b>Separate score groups</b> option only affects the layout of the table
-  when the players are sorted by score: it causes a blank line to be inserted
-  between each group of players with the same score.
-  </p>
-  <p>
-  The <menu>Sort</menu> menu allows you to sort the players by name, rating
-  or score; by score is the default.
-  </p>
-  <p>
-  The <menu>Color</menu> menu lets you turn color (hypertext) display on or off.
-  Since it can take a long time to format and display large crosstables in
-  hypertext, selecting <b>Plain text</b> for large events will save a
-  lot of time.
-  However, in plain text mode you cannot click on players or games.
+  Scid vs. PC has a couple of extra features over mainline SCID: The ability to
+  sort the table by Nationality, and the current game is shown in green.
   </p>
 
-  <h4>Duplicate games in crosstables</h4>
+<h4>Table Format</h4>
   <p>
-  To get good results with the crosstable, you should mark duplicate games
-  for deletion and your games should have consistent spelling of player,
-  site and event names.
-  See the <a Maintenance>database maintenance</a> page for help on
-  deleting duplicate games and editing (or spellchecking)
-  player/event/site names.
+  One may view the tournament in All-play-all, Swiss or Knockout formats.
+  </p>
+  <ul>
+  <li>The <b>All-play-All</b> format - for round-robin-type events - has a limit of 30
+  players</li>
+  <br>
+  <li>The <b>Swiss</b> format - for tournaments with a large number of players - can
+  display up to 200 players and up to 20 rounds.
+  Scid uses the "Round" tag of each game to produce a Swiss
+  crosstable, so you will not see any games if they don't have numeric "Round" values (1, 2, 3, etc).
+  </li>
+  <br>
+  <li><b>Knock-out</b> shows game results on a round-by-round nature.</li>
+  <br>
+  <li><b>Auto</b> will choose the best format automatically.</li>
+  </ul>
+
+  <h4>Notes</h4>
+  <p>
+  For a good Crosstable, <b>duplicate games</b> should be marked for deletion, and
+  Player, Site and Event names should be spelt consistently.  See
+  <a Maintenance>Database Maintenance</a> for more information.
   </p>
 
-  <p><footer>Updated: Scid 3.6.15, May 2007</footer></p>
+  <p><footer>Updated: Scid vs. PC 4.5 June 2011</footer></p>
 }
 
 

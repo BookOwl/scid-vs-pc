@@ -129,6 +129,7 @@ class Crosstable
     uint         PlayerNumWidth;
     uint         SortedIndex [CROSSTABLE_MaxPlayers];
     uint         InvertedIndex [CROSSTABLE_MaxPlayers];
+    uint         CurrentGame;
 
     void   Tiebreaks (crosstableModeT mode);
 
@@ -195,7 +196,7 @@ class Crosstable
 
     crosstableModeT BestMode (void);
     eloT   AvgRating();
-    void   PrintTable (DString * dstr, crosstableModeT mode, uint playerLimit);
+    void   PrintTable (DString * dstr, crosstableModeT mode, uint playerLimit, int currentGame);
 
     static uint Performance (uint oppAvg, uint percentage);
     static uint FideCategory (eloT rating);

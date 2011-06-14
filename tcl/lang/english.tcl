@@ -761,7 +761,7 @@ menuText E CrosstabOptDeleted "Include Deleted Games" 8
 menuText E CrosstabOptColors "Colors (Swiss table only)" 0
 menuText E CrosstabOptColumnNumbers "Numbered Columns (All-play-all table only)" 2
 menuText E CrosstabOptGroup "Group Scores" 0
-menuText E CrosstabSort "Order by" 0
+menuText E CrosstabSort "Sort by" 0
 menuText E CrosstabSortName "Name" 0
 menuText E CrosstabSortRating "Rating" 0
 menuText E CrosstabSortScore "Score" 0

@@ -43,6 +43,7 @@ proc ::crosstab::ConfigMenus {{lang ""}} {
   foreach idx {0 1 2 3} tag {Name Rating Score Country} {
     configMenuText $m.sort $idx CrosstabSort$tag $lang
   }
+  # todo : put this menu item into the Display menu
   foreach idx {0 1} tag {Plain Hyper} {
     configMenuText $m.color $idx CrosstabColor$tag $lang
   }
@@ -230,6 +231,7 @@ proc ::crosstab::Open {} {
   $w.menu.sort add radiobutton -label CrosstabSortCountry \
     -variable crosstab(sort) -value country -command ::crosstab::Refresh
 
+  # todo : put this menu item into the Display menu
   $w.menu.color add radiobutton -label CrosstabColorPlain \
     -variable crosstab(text) -value plain -command ::crosstab::Refresh
   $w.menu.color add radiobutton -label CrosstabColorHyper \

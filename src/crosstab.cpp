@@ -451,8 +451,9 @@ Crosstable::AvgRating ()
 //      The format can be plain text or hypertext with player and game tags,
 //      depending on the value of the OutputFormat member variable.
 void
-Crosstable::PrintTable (DString * dstr, crosstableModeT mode, uint playerLimit)
+Crosstable::PrintTable (DString * dstr, crosstableModeT mode, uint playerLimit, int currentGame)
 {
+    CurrentGame = currentGame;
     if (playerLimit == 0  ||  playerLimit > PlayerCount) {
         playerLimit = PlayerCount;
     }
@@ -858,6 +859,11 @@ Crosstable::PrintAllPlayAll (DString * dstr, uint playerLimit)
             for (uint count = 0; count < MaxClashes; count++) {
                 if (clash != NULL) {
                     if (OutputFormat == CROSSTABLE_Hypertext) {
+                      if (CurrentGame == clash->gameNum)
+                        sprintf (stemp, "<green><g_%u>%c</g></green>",
+                                 clash->gameNum,
+                                 RESULT_CHAR[clash->result]);
+                      else
                         sprintf (stemp, "<blue><g_%u>%c</g></blue>",
                                  clash->gameNum,
                                  RESULT_CHAR[clash->result]);
@@ -1008,7 +1014,10 @@ Crosstable::PrintSwiss (DString * dstr, uint playerLimit)
                 if (SwissColors) { dstr->AddChar ('.'); }
             } else {
                 if (OutputFormat == CROSSTABLE_Hypertext) {
-                    sprintf (stemp, "<blue><g_%u>", clash->gameNum);
+                    if (CurrentGame == clash->gameNum)
+                      sprintf (stemp, "<green><g_%u>", clash->gameNum);
+                    else
+                      sprintf (stemp, "<blue><g_%u>", clash->gameNum);
                     dstr->Append (stemp);
                 }
                 if (SwissColors) {
@@ -1023,7 +1032,10 @@ Crosstable::PrintSwiss (DString * dstr, uint playerLimit)
                 }
                 dstr->Append (stemp);
                 if (OutputFormat == CROSSTABLE_Hypertext) {
-                    dstr->Append ("</g></blue>");
+                    if (CurrentGame == clash->gameNum)
+                      dstr->Append ("</g></green>");
+                    else
+                      dstr->Append ("</g></blue>");
                 }
             }
             dstr->Append (EndCol);
@@ -1101,9 +1113,14 @@ Crosstable::PrintKnockout (DString * dstr, uint playerLimit)
                 }
                 if (clash != NULL) {
                     if (OutputFormat == CROSSTABLE_Hypertext) {
-                        sprintf (stemp, "<blue><g_%u>%c</g></blue>",
-                                 clash->gameNum,
-                                 RESULT_CHAR[clash->result]);
+                        if (CurrentGame == clash->gameNum)
+                            sprintf (stemp, "<green><g_%u>%c</g></green>",
+                                     clash->gameNum,
+                                     RESULT_CHAR[clash->result]);
+                        else
+                            sprintf (stemp, "<blue><g_%u>%c</g></blue>",
+                                     clash->gameNum,
+                                     RESULT_CHAR[clash->result]);
                         dstr->Append (stemp);
                     } else {
                         dstr->AddChar (RESULT_CHAR[clash->result]);

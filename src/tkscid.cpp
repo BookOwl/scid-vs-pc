@@ -6283,7 +6283,8 @@ sc_game_crosstable (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv
 
     DString * dstr = new DString;
     if (mode != CROSSTABLE_AllPlayAll) { apaLimit = 0; }
-    ctable->PrintTable (dstr, mode, apaLimit);
+    ctable->PrintTable (dstr, mode, apaLimit, db->gameNumber+1);
+
     Tcl_AppendResult (ti, dstr->Data(), NULL);
     if (option == OPT_LATEX) {
         Tcl_AppendResult (ti, "\n\\end{document}\n", NULL);
