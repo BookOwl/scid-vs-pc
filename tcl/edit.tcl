@@ -257,12 +257,18 @@ proc exitSetupBoard {} {
 
 
 
+# The way setupFen is passed here needs fixing
+
 proc validateFEN {fen} {
+  global setupFen
+
   #### Do a sanity check on castling
   #    .. helpful because illegal FENs crash engines
   #    and we could also have one for enpassant
 
   set c [lindex $fen 2]
+
+  set setupFen $fen
 
   if {![validatePiece r 1 1]} {set c [string map {q {}} $c]}
   if {![validatePiece k 5 1]} {set c [string map {k {} q {}} $c]}
