@@ -701,7 +701,7 @@ proc updateBoard {args} {
 
   # wtf ! is this doing here ?
   # it does nothing generally as resize2 returns straight away
-  ::board::resize .board $boardSize
+  # ::board::resize .board $boardSize
 
   ::board::update .board [sc_pos board] $animate
   ::board::material .board
