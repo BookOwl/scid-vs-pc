@@ -79,22 +79,45 @@ proc compInit {} {
 
   incr row
   frame $w.config.control
-  label $w.config.control.0 -text {Time control is per}
-  radiobutton $w.config.control.1 -variable comp(timecontrol) -value permove -text Move
-  radiobutton $w.config.control.2 -variable comp(timecontrol) -value pergame -text Game
+  label $w.config.control.0 -text {Time Control is per}
+  radiobutton $w.config.control.1 -variable comp(timecontrol) -value pergame -text Game -command checkTimeControl
+  radiobutton $w.config.control.2 -variable comp(timecontrol) -value permove -text Move -command checkTimeControl
 
   pack $w.config.control.0 $w.config.control.1 $w.config.control.2 -side left -expand 1 -fill x
   grid $w.config.control  -row $row -column 0 -columnspan 2 -sticky ew -pady 2
 
   incr row
-  label $w.config.timelabel -text {Time period (seconds)}
-  spinbox $w.config.timevalue -textvariable comp(seconds) -from 1 -to 3600 -width 9
+  frame $w.config.timegame 
+    # hack to stop the spinbox from zeroing floating point values for minutes time
+    set temp $comp(minutes)
+  label $w.config.timegame.label -text {Time per Game}
+  spinbox $w.config.timegame.mins -textvariable comp(minutes) -from 0 -to 40 -width 4
+    set comp(minutes) $temp
+  label $w.config.timegame.label2 -text mins
+  spinbox $w.config.timegame.incr -textvariable comp(incr) -from 0 -to 60 -width 4
+  label $w.config.timegame.label3 -text secs
 
-  grid $w.config.timelabel -row $row -column 0 -sticky w -padx 5 -pady 2
-  grid $w.config.timevalue -row $row -column 1 -sticky w -padx 5 -pady 2
+  pack $w.config.timegame.label -side left
+  pack $w.config.timegame.label3 $w.config.timegame.incr $w.config.timegame.label2 $w.config.timegame.mins -side right
+  grid $w.config.timegame -row $row -column 0 -columnspan 2 -sticky ew -pady 2 -padx 5
 
   incr row
-  label $w.config.timeoutlabel -text {Seconds for Time-out}
+  frame $w.config.timesecs 
+  label $w.config.timesecs.label -text {Time per Move}
+  spinbox $w.config.timesecs.value -textvariable comp(seconds) -from 1 -to 3600 -width 4
+  label $w.config.timesecs.label2 -text secs
+
+  pack $w.config.timesecs.label -side left
+  pack $w.config.timesecs.label2 $w.config.timesecs.value -side right
+  grid $w.config.timesecs -row $row -column 0 -columnspan 2 -sticky ew -pady 2 -padx 5
+
+  checkTimeControl
+
+  incr row
+  grid  [frame $w.config.line -height 2 -borderwidth 2 -relief sunken] -pady 5 -sticky ew -row $row -column 0 -columnspan 2
+
+  incr row
+  label $w.config.timeoutlabel -text {Time-out (seconds)}
   spinbox $w.config.timeoutvalue -textvariable comp(timeout) -from 1 -to 300 -width 9
 
   grid $w.config.timeoutlabel -row $row -column 0 -sticky w -padx 5 -pady 2
@@ -170,6 +193,25 @@ proc compInit {} {
 
 }
 
+proc checkTimeControl {} {
+  if {$::comp(timecontrol) == "permove" } {
+    foreach i [winfo children .comp.config.timesecs] {
+      $i configure -state normal
+    }
+    foreach i [winfo children .comp.config.timegame] {
+      $i configure -state disabled
+    }
+  } else {
+    foreach i [winfo children .comp.config.timesecs] {
+      $i configure -state disabled
+    }
+    foreach i [winfo children .comp.config.timegame] {
+      $i configure -state normal
+    }
+  }
+  update
+}
+
 proc compOk {} {
   global analysis comp engines
 
@@ -220,20 +262,14 @@ proc compOk {} {
   for {set i 0} {$i < $comp(count)} {incr i} {
     $w.engines.list.$i configure -state disabled ; # disable widgets too
   }
-  foreach i {.config.eventlabel .config.evententry 
-    .config.timevalue .config.timelabel .config.roundsvalue .config.roundslabel 
-    .engines.label .engines.top.count .engines.top.update 
-    .config.verbosevalue .config.verboselabel .config.iconizevalue .config.iconizelabel 
-    .config.timeoutvalue .config.timeoutlabel .config.animatelabel .config.animatevalue 
-    .config.start_title .config.start1label .config.start2label .config.start3label 
-    .config.start1button .config.start2button .config.start3button 
-    .config.control.0 .config.control.1 .config.control.2
-  } {
-    $w$i configure -state disabled
+  foreach j {.comp.config .comp.engines .comp.engines.top .comp.config.control .comp.config.timesecs .comp.config.timegame} {
+    foreach i [winfo children $j] {
+      catch {$i configure -state disabled}
+    }
   }
-  $w.buttons.ok configure -text Pause -command compPause
-  $w.buttons.help configure -text {End Game} -command compGameEnd
-  $w.buttons.cancel configure -text {End Comp} -command compAbort
+  $w.buttons.ok configure -text Pause -command compPause -state normal
+  $w.buttons.help configure -text {End Game} -command compGameEnd -state normal
+  $w.buttons.cancel configure -text {End Comp} -command compAbort -state normal
   wm title $w {Scid Tournament}
   focus $w.buttons.ok
   bind $w <Destroy> compAbort
@@ -300,10 +336,12 @@ proc compNM {n m k} {
   global analysis comp
 
   if {$comp(timecontrol) == "pergame"} {
-    set comp(wtime) [expr $comp(seconds) * 1000]
-    set comp(btime) [expr $comp(seconds) * 1000]
-    set mins [expr $comp(seconds)/60]
-    set secs [expr $comp(seconds)%60]
+    # minutes does not have to be an integer
+    set comp(wtime) [expr int($comp(minutes)*60*1000)]
+    set comp(btime) [expr int($comp(minutes)*60*1000)]
+    set total [expr int($comp(minutes) * 60)]
+    set mins [expr $total/60]
+    set secs [expr $total%60]
     if {$secs == 0} {
       set timecontrol $mins
     } else {
@@ -360,7 +398,7 @@ proc compNM {n m k} {
   if {$comp(timecontrol) == "permove"} {
     sc_game tags set -date [::utils::date::today] -round $k -extra "{Movetime \"$comp(seconds)\"}"
   } else {
-    sc_game tags set -date [::utils::date::today] -round $k -extra "{TimeControl \"$timecontrol/0\"}"
+    sc_game tags set -date [::utils::date::today] -round $k -extra "{TimeControl \"$timecontrol/$comp(incr)\"}"
   }
   update idletasks
   updateBoard -pgn
@@ -437,8 +475,9 @@ proc compNM {n m k} {
       if {$comp(timecontrol) == "permove"} {
 	sendToEngine $current_engine "go movetime $comp(time)"
       } else {
-	puts_ "go wtime $comp(wtime) btime $comp(btime) winc 0 binc 0"
-	sendToEngine $current_engine "go wtime $comp(wtime) btime $comp(btime)"
+        set incr [expr $comp(incr) * 1000]
+	puts_ "go wtime $comp(wtime) btime $comp(btime) winc $incr binc $incr"
+	sendToEngine $current_engine "go wtime $comp(wtime) btime $comp(btime) winc $incr binc $incr"
       }
 
       
@@ -476,8 +515,8 @@ proc compNM {n m k} {
         }
         set secs [expr $temp/1000]
         set mins [expr $secs/60]:[expr $secs%60]
-        sendToEngine $current_engine "level 0 $mins 0"
-        puts_ "sendToEngine $current_engine level 0 $mins 0"
+        sendToEngine $current_engine "level 0 $mins $comp(incr)"
+        puts_ "sendToEngine $current_engine level 0 $mins $comp(incr)"
       }
 
       sendToEngine $current_engine "go"
@@ -550,6 +589,8 @@ proc compNM {n m k} {
             puts_ {Black forfeits on time}
             break
           }
+          # add time increment
+          incr comp(btime) [expr $comp(incr) * 1000]
         }
         # Now its whites turn
 	set current_engine $n
@@ -562,6 +603,8 @@ proc compNM {n m k} {
             puts_ {White forfeits on time}
             break
           }
+          # add time increment
+          incr comp(wtime) [expr $comp(incr) * 1000]
         }
         # Now its blacks turn
 	set current_engine $m
@@ -600,6 +643,7 @@ proc compNM {n m k} {
   puts_ {saving game}
     sc_game save [sc_game number]
     ::windows::gamelist::Refresh
+    ::crosstab::Refresh
   }
 
   # Destroy analysis windgets

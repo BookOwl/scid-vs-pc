@@ -132,6 +132,8 @@ set ::maintFlag W
 set ::glistFlag W
 set ::gbrowser::size 35
 set comp(timecontrol) pergame
+set comp(minutes) 1
+set comp(incr) 0
 set comp(seconds) 180
 set comp(timeout) 60
 set comp(name) {Scid vs. PC}

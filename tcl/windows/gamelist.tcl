@@ -279,6 +279,7 @@ proc ::windows::gamelist::Open {} {
 
   $w.tree tag bind click2 <Double-Button-1> {::windows::gamelist::Load [%W set [%W focus] Number]}
   $w.tree tag configure deleted -foreground gray80
+  # bind $w.tree <ButtonRelease-1> { parray ::ttk::treeview::State}
 
   # Hmm... seems no way to change the deafult blue bg colour for selected items
   # without using (extra) tags. So this colour must look ok with a blue background
