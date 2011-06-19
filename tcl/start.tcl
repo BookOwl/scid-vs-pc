@@ -136,6 +136,7 @@ set comp(minutes) 1
 set comp(incr) 0
 set comp(seconds) 180
 set comp(timeout) 60
+set comp(rounds) 2
 set comp(name) {Scid vs. PC}
 
 

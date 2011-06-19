@@ -72,7 +72,6 @@ proc compInit {} {
   incr row
   label $w.config.roundslabel -text {Number of Rounds}
   spinbox $w.config.roundsvalue -textvariable comp(rounds) -from 1 -to 10 -width 9
-  set comp(rounds) 2
 
   grid $w.config.roundslabel -row $row -column 0 -sticky w -padx 5 -pady 2
   grid $w.config.roundsvalue -row $row -column 1 -sticky w -padx 5 -pady 2
