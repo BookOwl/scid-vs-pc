@@ -41,7 +41,6 @@ proc ::tourney::Open {} {
   set ::tourney::minGames 4
 
   toplevel $w
-  wm title $w "Scid: [tr WindowsTmt]"
   wm withdraw $w
   setWinLocation $w
   setWinSize $w
@@ -96,11 +95,11 @@ proc ::tourney::Open {} {
     lappend tablist $tabwidth $justify
   }
   $w.t.text configure -tabs $tablist
-  $w.t.text tag configure date -foreground darkRed
+  $w.t.text tag configure date -foreground darkGreen
   $w.t.text tag configure np -foreground darkBlue
-  $w.t.text tag configure elo -foreground darkGreen
-  $w.t.text tag configure best -foreground steelBlue
-  # $w.t.text tag configure event -foreground darkRed
+  $w.t.text tag configure elo -foreground {}
+  # $w.t.text tag configure best -foreground steelBlue
+  $w.t.text tag configure event -foreground steelBlue
   $w.t.text tag configure title -font font_SmallBold
 
   set font font_Small
@@ -270,6 +269,7 @@ proc ::tourney::refresh {{option ""}} {
   set w .tourney
   if {! [winfo exists $w]} { return }
 
+  wm title $w "[tr WindowsTmt]: [file tail [sc_base filename]]"
   busyCursor $w
   ::utils::history::AddEntry ::tourney::site $::tourney::site
   ::utils::history::AddEntry ::tourney::event $::tourney::event
@@ -392,10 +392,10 @@ proc ::tourney::refresh {{option ""}} {
     $t insert end "\t" g$count
     $t insert end $elo [list elo g$count]
     $t insert end "\t" g$count
-    $t insert end "$site" [list site g$count]
+    $t insert end [string range $site 0 24] [list site g$count]
     $t insert end "\t" g$count
-    $t insert end "$event" [list event g$count]
-    $t insert end "\t$best" [list best g$count]
+    $t insert end [string range $event 0 24] [list event g$count]
+    $t insert end "\t$best" g$count
   }
   $t insert end "\n"
   $t configure -state disabled
