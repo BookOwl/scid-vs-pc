@@ -1260,7 +1260,7 @@ namespace eval fics {
   ################################################################################
   proc parseStyle12 {line} {
     # todo: use little boards for following
-puts $line
+    # <12> r-----k- p----ppp ---rq--- --R-p--- -------- ------PP --R--P-- ------K- W -1 0 0 0 0 2 182 stevenaaus DRSlay 1 5 12 13 24 84 28 32 Q/e7-e6 (0:40) Qe6 0 1 77
     set color [lindex $line 9]
     set gameNumber [lindex $line 16]
     set white [lindex $line 17]

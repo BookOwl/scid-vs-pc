@@ -36,6 +36,10 @@ proc ::tourney::Open {} {
 
   if {! [info exists ::tourney::_defaults]} { ::tourney::defaults }
 
+  # Override the defaults for start-up window
+  set ::tourney::start "[expr [::utils::date::today year] - 3].01.01"
+  set ::tourney::minGames 4
+
   toplevel $w
   wm title $w "Scid: [tr WindowsTmt]"
   wm withdraw $w
@@ -83,7 +87,11 @@ proc ::tourney::Open {} {
     -takefocus 0
   set xwidth [font measure [$w.t.text cget -font] "0"]
   set tablist {}
-  foreach {tab justify} {3 r 4 l 18 r 23 r 30 r 32 l 55 l} {
+
+  ### tabulation formatting
+
+  #                    Count    Date  Players Games    Elo     Site   Event  Winner Runnerup
+  foreach {tab justify} {3 r    4 l    18 r    23 r    30 r    32 l    55 l  88 l    108 l} {
     set tabwidth [expr {$xwidth * $tab} ]
     lappend tablist $tabwidth $justify
   }
@@ -131,7 +139,7 @@ proc ::tourney::Open {} {
 
   label $f.cn -text "  $::tr(Country)" -font $fbold
   ttk::combobox $f.ecn -width 5 -textvar ::tourney::country -values \
-    {{} AUT CZE DEN ENG ESP FRA GER GRE HUN ITA NED POL RUS SCG SUI SWE USA YUG}
+    {{} AUS AUT CZE DEN ENG ESP FRA GER GRE HUN ITA NED POL RUS SCG SUI SWE USA YUG}
   bindFocusColors $f.ecn
   bind $f.ecn <FocusOut> +::tourney::check
   pack $f.ecn $f.cn -side right
@@ -243,9 +251,9 @@ proc ::tourney::defaults {} {
   set ::tourney::_defaults 1
   set year [::utils::date::today year]
   #set ::tourney::start "$year.??.??"
-  set ::tourney::start "1800.??.??"
+  set ::tourney::start "1990.??.??"
   set ::tourney::end "$year.12.31"
-  set ::tourney::size 50
+  set ::tourney::size 200
   set ::tourney::minPlayers 2
   set ::tourney::maxPlayers 999
   set ::tourney::minGames 1
@@ -299,6 +307,11 @@ proc ::tourney::refresh {{option ""}} {
     }
     set ::tourney::list $tlist
   }
+
+  ### tlist list elements are
+  #
+  # {Date, Site, Event, Players, Games, Elo, ?, Winner}
+
   switch $::tourney::sort {
     "None" {}
     "Date" { set tlist [lsort -decreasing -index 0 $tlist] }
@@ -309,6 +322,8 @@ proc ::tourney::refresh {{option ""}} {
     "Event" { set tlist [lsort -dict -index 2 $tlist] }
     "Winner" { set tlist [lsort -dict -index 7 $tlist] }
   }
+
+  # Title headings
 
   foreach i {Date Players Games Elo Site Event Winner} {
     $t tag configure s$i -font font_SmallBold
@@ -326,7 +341,7 @@ proc ::tourney::refresh {{option ""}} {
   $t insert end [tr TmtSortElo] sElo
   $t insert end "\t"
   $t insert end [tr TmtSortSite] sSite
-  $t insert end ": "
+  $t insert end "\t"
   $t insert end [tr TmtSortEvent] sEvent
   $t insert end "\t"
   $t insert end [tr TmtSortWinner] sWinner
@@ -344,23 +359,24 @@ proc ::tourney::refresh {{option ""}} {
     set ng [lindex $tmt 4]
     set elo [lindex $tmt 5]
     set g [lindex $tmt 6]
-    set white [::utils::string::Surname [lindex $tmt 7]]
-    set welo [lindex $tmt 8]
-    set wscore [lindex $tmt 9]
-    set black [::utils::string::Surname [lindex $tmt 10]]
-    set belo [lindex $tmt 11]
-    set bscore [lindex $tmt 12]
-    if {$welo > 0} { append white "($welo)" }
-    if {$belo > 0} { append black "($belo)" }
-    append white " $wscore"
-    append black " $bscore"
-    set one "1."
-    set two "2."
-    if {$wscore == $bscore} {
+    set winner [::utils::string::Surname [lindex $tmt 7]]
+    set elo1 [lindex $tmt 8]
+    set score1 [lindex $tmt 9]
+    set runnerup [::utils::string::Surname [lindex $tmt 10]]
+    set elo2 [lindex $tmt 11]
+    set score2 [lindex $tmt 12]
+    if {$elo1 > 0} { append winner " ($elo1)" }
+    if {$elo2 > 0} { append runnerup " ($elo2)" }
+    # append winner " $score1"
+    # append runnerup " $score2"
+    ### add an extra space because {1. } is roughly the same width as {1=}
+    set one "1. "
+    set two "2. "
+    if {$score1 == $score2} {
       set one "1="; set two "1="
     }
-    set best "$one $white, $two $black, ..."
-    if {$np == 2} { set best "$one $white, $two $black" }
+    set best "$one $winner\t$two $runnerup, ..."
+    if {$np == 2} { set best "$one $winner\t$two $runnerup" }
 
     $t tag bind g$count <ButtonPress-3> [list ::tourney::select $g $event 1]
     $t tag bind g$count <ButtonPress-1> [list ::tourney::select $g $event]
@@ -376,7 +392,8 @@ proc ::tourney::refresh {{option ""}} {
     $t insert end "\t" g$count
     $t insert end $elo [list elo g$count]
     $t insert end "\t" g$count
-    $t insert end "$site: " [list site g$count]
+    $t insert end "$site" [list site g$count]
+    $t insert end "\t" g$count
     $t insert end "$event" [list event g$count]
     $t insert end "\t$best" [list best g$count]
   }

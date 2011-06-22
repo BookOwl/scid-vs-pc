@@ -1494,39 +1494,34 @@ databases, which consist of several files.
 set helpTitle(Tmt) "Tournament Finder window"
 set helpText(Tmt) {<h1>The Tournament Finder window</h1>
   <p>
-  The <term>Tournament Finder</term> lets you find tournaments in the
+  The <run ::tourney::toggle><green>Tournament Finder</green></run> searches for tournaments in the
   current database. It scans all the database games and collates data
-  about the tournaments found. Note that two games are considered to
-  be in the same tournament if they have the same Event tag, same Site
-  tag and were played within three months of each other.
+  about the tournaments found.
+  </p>
+  <p><i>
+  Two games are considered to be in the same tournament if they have the same Event and Site
+  tags, and were played within three months of each other.
+  </i></p>
+  <p>
+  Tournament selection criteria includes the Number of Players/Games, Date, Mean ELO and Country.
+  Adjust these fields in the widget, and press <b>Update</b> to see the new results.
   </p>
   <p>
-  You can limit the list of tournaments by the number of players and
-  games, date, mean Elo rating and country, by editing the fields below
-  the tournament list and then pressing the <b>Update</b> button.
+  The results can be sorted by Date, Number of Players, Number
+  of Games, Mean Elo rating, Site, Event or the Winner by
+  selecting the category from the <b>Sort</b> menu, or clicking on a
+  Column Title.
   </p>
   <p>
-  The displayed list can be sorted by date, number of players, number
-  of games, mean Elo rating, site, event or the surname of the winner.
-  Select the category from the <menu>Sort</menu> menu or click on a
-  column title to change the sort field.
+  Clicking on a tournament loads its first game and updates the <a Crosstable>Crosstable</a> if it is open.
+  Right-clicking loads the game, and automaticaly opens the Crosstable.
   </p>
-  <p>
-  To load the first game of any displayed tournament, just click the
-  left mouse button when its line is highlighted. This will also
-  update the <a Crosstable>Crosstable</a> window if it is open.
-  If you press the right mouse button instead, the game will be loaded
-  and the Crosstable window will be opened even if it is closed.
-  </p>
-  <p>
-  To speed up the tournament searching process, it is a good idea to
-  set a fairly small date range (like a few years at most) or select
-  a particular country (by its three-letter standard code). Doing
-  these will greatly reduce the number of games Scid has to consider
-  when trying to form tournaments out of the games in the database.
-  </p>
+  <p><i>
+  To speed up tournament searches, select a fairly narrow Date range (a few years at most),
+  or select a particular country - by choosing (or entering) its three-letter standard code.
+  </i></p>
 
-  <p><footer>Updated: Scid 3.6.2, December 2006</footer></p>
+  <p><footer>Updated: Scid vs. PC 4.5 June 2011</footer></p>
 }
 
 ####################
