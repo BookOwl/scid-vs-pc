@@ -523,9 +523,9 @@ image create photo tb_glist -data {
 
 image create photo tb_tmt -data {
 R0lGODlhFAAUAMIFAAAAAAAngYsAALDE3tnZ2f///////////yH5BAEKAAcA
-LAAAAAAUABQAAANbSLrcHTDKSau9mJbNu+dQAYxiIZjoeRahB3xeOL4nnaJs
-AJe7TKql2WvT2gEGyMHQZ6sNNslX8XMsJJU50Q91vGKnrqT1q5vdRFcAIbvb
-CAkjcNsdn8PimQogAQA7
+LAAAAAAUABQAAANXSLrcHTDKSau9mJbNu+cQBxQCaZboFopfu5pjKqvBN7Zg
+vaXxaRYvzw1AvAF1vhJxwBzcgsLBpjl6zQDSpvOIK2C1W6vvmw0jW2SnVHwt
+OgHQ7gYAz1wSADs=
 }
 
 image create photo tb_maint -data {
@@ -579,9 +579,9 @@ image create photo tb_engine -data {
 }
 
 image create photo tb_crosst -data {
-  R0lGODdhFAAUAMIAANnZ2QAngf///wAAAIsAAAAAAAAAAAAAACwAAAAAFAAUAAADSQi63B0w
-  ykmrvZiKzbvnkDCMo1h+QoiuW1iS5qqyaDilApHvehrILJtk99MZW79g7Xc7Fnc+WssjjPCI
-  0Jk0GW1edUmtFJS5JAAAOw==
+R0lGODlhFAAUAMIFAAAAAAAngYsAALDE3tnZ2f///////////yH5BAEKAAcA
+LAAAAAAUABQAAANJSLrcHTDKSau9mJbNu+cQBxQCaZboFopfu5pjKqvBN7Zg
+vaXxaRYvz82l85V6KWCxNey8ZkefEtdpTndG2C9ILQyfWR6ti8tgEgA7
 }
 
 image create photo tb_comment -data {

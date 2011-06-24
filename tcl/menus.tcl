@@ -1608,7 +1608,6 @@ proc setLanguageMenus {{lang ""}} {
   ::crosstab::ConfigMenus
   ::optable::ConfigMenus
   ::preport::ConfigMenus
-  ::tourney::ConfigMenus
 
   # Check for duplicate menu underline characters in this language:
   # set ::verifyMenus 1

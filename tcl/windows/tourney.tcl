@@ -58,25 +58,6 @@ proc ::tourney::Open {} {
   bind $w <Key-End> "$w.t.text yview moveto 0.99"
   bindMouseWheel $w $w.t.text
 
-  menu $w.menu
-  $w configure -menu $w.menu
-  $w.menu add cascade -label TmtFile -menu $w.menu.file
-  menu $w.menu.file
-  $w.menu.file add command -label TmtFileUpdate -command ::tourney::refresh
-  $w.menu.file add command -label TmtFileClose -command "destroy $w"
-  $w.menu add cascade -label TmtSort -menu $w.menu.sort
-
-  menu $w.menu.sort
-  foreach name {Date Players Games Elo Site Event Winner} {
-    $w.menu.sort add radiobutton -label TmtSor$name \
-      -variable ::tourney::sort -value $name -command {::tourney::refresh -fast}
-  }
-
-  $w.menu add cascade -label $::tr(Help) -menu $w.menu.help
-  menu $w.menu.help
-  $w.menu.help add command -label $::tr(Help) -command {helpWindow Tmt}
-
-
   foreach i {t o1 o2 o3 b} {frame $w.$i}
   text $w.t.text -width 75 -height 22 -font font_Small -wrap none \
     -fg black  -yscrollcommand "$w.t.ybar set" -setgrid 1 \
@@ -208,9 +189,10 @@ proc ::tourney::Open {} {
 
   dialogbutton $w.b.defaults -textvar ::tr(Defaults) -command ::tourney::defaults
   dialogbutton $w.b.update -textvar ::tr(Update) -command ::tourney::refresh
+  dialogbutton $w.b.help -textvar ::tr(Help) -command {helpWindow Tmt}
   dialogbutton $w.b.close -textvar ::tr(Close) -command "destroy $w"
   pack $w.b -side bottom -fill x -pady 5
-  packbuttons right $w.b.close $w.b.update  $w.b.esize $w.b.size 
+  packbuttons right $w.b.close $w.b.help $w.b.update  $w.b.esize $w.b.size 
   packbuttons left $w.b.defaults
   pack $w.o3 -side bottom -fill x -padx 2 -pady 2
   pack $w.o2 -side bottom -fill x -padx 2 -pady 2
@@ -226,25 +208,9 @@ proc ::tourney::Open {} {
   update
   wm deiconify $w
 
-  ::tourney::ConfigMenus
   ::tourney::refresh
 }
 
-proc ::tourney::ConfigMenus {{lang ""}} {
-  set w .tourney
-  if {! [winfo exists $w]} { return }
-  if {$lang == ""} { set lang $::language }
-  set m $w.menu
-  foreach idx {0 1} tag {File Sort} {
-    configMenuText $m $idx Tmt$tag $lang
-  }
-  foreach idx {0 2} tag {Update Close} {
-    configMenuText $m.file $idx TmtFile$tag $lang
-  }
-  foreach idx {0 1 2 3 4 5 6} tag {Date Players Games Elo Site Event Winner} {
-    configMenuText $m.sort $idx TmtSort$tag $lang
-  }
-}
 
 proc ::tourney::defaults {} {
   set ::tourney::_defaults 1
@@ -331,6 +297,9 @@ proc ::tourney::refresh {{option ""}} {
     $t tag bind s$i <Any-Enter> "$t tag config s$i -background grey85"
     $t tag bind s$i <Any-Leave> "$t tag config s$i -background {}"
   }
+
+  ### Titles
+
   $t insert end "\t\t"
   $t insert end [tr TmtSortDate] sDate
   $t insert end "\t"
@@ -345,9 +314,10 @@ proc ::tourney::refresh {{option ""}} {
   $t insert end [tr TmtSortEvent] sEvent
   $t insert end "\t"
   $t insert end [tr TmtSortWinner] sWinner
+
   $t insert end "\n"
 
-  set hc lemonchiffon
+  set hc grey85
   set count 0
   foreach tmt $tlist {
     incr count
@@ -379,6 +349,7 @@ proc ::tourney::refresh {{option ""}} {
     if {$np == 2} { set best "$one $winner\t$two $runnerup" }
 
     $t tag bind g$count <ButtonPress-3> [list ::tourney::select $g $event 1]
+    $t tag bind g$count <ButtonPress-2> [list ::tourney::select $g $event 1]
     $t tag bind g$count <ButtonPress-1> [list ::tourney::select $g $event]
     $t tag bind g$count <Any-Enter> "$t tag configure g$count -background $hc"
     $t tag bind g$count <Any-Leave> "$t tag configure g$count -background {}"

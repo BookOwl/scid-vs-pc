@@ -15,7 +15,7 @@ proc ::plist::defaults {} {
   set ::plist::maxGames 9999
   set ::plist::minElo 0
   set ::plist::maxElo [sc_info limit elo]
-  set ::plist::size 50
+  set ::plist::size 200
 }
 
 ::plist::defaults
@@ -41,7 +41,6 @@ proc ::plist::Open {} {
   set plistWin 1
 
   toplevel $w
-  wm title $w "Scid: [tr WindowsPList]"
   setWinLocation $w
   bind $w <Configure> "recordWinSize $w"
 
@@ -58,24 +57,6 @@ proc ::plist::Open {} {
   bind $w <Key-End> "$w.t.text yview moveto 0.99"
   #bindMouseWheel $w $w.t.text
 
-  menu $w.menu
-  $w configure -menu $w.menu
-  $w.menu add cascade -label PListFile -menu $w.menu.file
-  menu $w.menu.file
-  $w.menu.file add command -label Update -command ::plist::refresh
-  $w.menu.file add command -label Close -command "destroy $w"
-  $w.menu add cascade -label PListSort -menu $w.menu.sort
-
-  menu $w.menu.sort
-  foreach name {Name Elo Games Oldest Newest} {
-    $w.menu.sort add radiobutton -label $name -variable ::plist::sort \
-      -value $name -command ::plist::refresh
-  }
-
-  $w.menu add cascade -label $::tr(Help) -menu $w.menu.help
-  menu $w.menu.help
-  $w.menu.help add command -label $::tr(Help) -command {helpWindow PList}
-
   foreach i {t o1 o2 o3 b} {frame $w.$i}
   $w.t configure -relief sunken -borderwidth 1
   text $w.t.text -width 55 -height 25 -font font_Small -wrap none \
@@ -91,9 +72,9 @@ proc ::plist::Open {} {
   }
   $w.t.text configure -tabs $tablist
   $w.t.text tag configure ng -foreground darkBlue
-  $w.t.text tag configure date -foreground darkRed
-  $w.t.text tag configure elo -foreground darkGreen
-  $w.t.text tag configure name -foreground black
+  $w.t.text tag configure date -foreground darkGreen
+  $w.t.text tag configure elo -foreground {}
+  $w.t.text tag configure name -foreground steelBlue
   $w.t.text tag configure title -font font_SmallBold
 
   set font font_Small
@@ -152,9 +133,10 @@ proc ::plist::Open {} {
 
   dialogbutton $w.b.defaults -text $::tr(Defaults) -command ::plist::defaults
   dialogbutton $w.b.update -text $::tr(Update) -command ::plist::refresh
+  dialogbutton $w.b.help -text $::tr(Help) -command {helpWindow PList}
   dialogbutton $w.b.close -text $::tr(Close) -command "destroy $w"
   packbuttons left $w.b.defaults
-  packbuttons right $w.b.close $w.b.update
+  packbuttons right $w.b.close $w.b.help $w.b.update
 
   pack $w.b -side bottom -fill x
   pack $w.o3 -side bottom -fill x -padx 2 -pady 2
@@ -168,29 +150,14 @@ proc ::plist::Open {} {
   grid rowconfig $w.t 0 -weight 1 -minsize 0
   grid columnconfig $w.t 0 -weight 1 -minsize 0
 
-  ::plist::ConfigMenus
   ::plist::refresh
-}
-
-proc ::plist::ConfigMenus {{lang ""}} {
-  set w .plist
-  if {! [winfo exists $w]} { return }
-  if {$lang == ""} { set lang $::language }
-  set m $w.menu
-  foreach idx {0 1} tag {File Sort} {
-    configMenuText $m $idx PList$tag $lang
-  }
-  foreach idx {0 2} tag {Update Close} {
-    configMenuText $m.file $idx PListFile$tag $lang
-  }
-  foreach idx {0 1 2 3 4} tag {Name Elo Games Oldest Newest } {
-    configMenuText $m.sort $idx PListSort$tag $lang
-  }
 }
 
 proc ::plist::refresh {} {
   set w .plist
   if {! [winfo exists $w]} { return }
+
+  wm title $w "[tr WindowsPList]: [file tail [sc_base filename]]"
 
   busyCursor .
   ::utils::history::AddEntry ::plist::name $::plist::name
@@ -220,7 +187,7 @@ proc ::plist::refresh {} {
     return
   }
 
-  set hc lemonchiffon
+  set hc grey85
   set count 0
   foreach player $pdata {
     incr count

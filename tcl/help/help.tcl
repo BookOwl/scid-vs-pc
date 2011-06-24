@@ -1494,7 +1494,7 @@ databases, which consist of several files.
 set helpTitle(Tmt) "Tournament Finder window"
 set helpText(Tmt) {<h1>The Tournament Finder window</h1>
   <p>
-  The <run ::tourney::toggle><green>Tournament Finder</green></run> searches for tournaments in the
+  The <run ::tourney::Open><green>Tournament Finder</green></run> searches for tournaments in the
   current database. It scans all the database games and collates data
   about the tournaments found.
   </p>
@@ -3263,7 +3263,7 @@ set helpText(Reports) {<h1>Reports</h1>
 set helpTitle(PList) "Player Finder window"
 set helpText(PList) {<h1>The Player Finder Window</h1>
   <p>
-  The <term>Player Finder</term> window displays a list of names of
+  The <run ::plist::Open><green>Player Finder</green></run> window displays a list of names of
   players in the current database. Selecting a player will open the
   <a PInfo>Player Info</a> window to display more detailed information
   about that player.
@@ -3272,8 +3272,7 @@ set helpText(PList) {<h1>The Player Finder Window</h1>
   Five columns are displayed showing each player's name, peak Elo
   rating, number of games played and the year of their oldest and
   newest game.
-  Click on any column title at the top of the list to sort the
-  list by that column.
+  Click on any column title to sort the list by that column.
   </p>
   <p>
   The controls below the list allow you to filter the list contents.
