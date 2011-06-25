@@ -144,14 +144,14 @@ proc ::tree::make { { baseNumber -1 } } {
   $w.menu.file add command -label TreeFileClose -command ".treeWin$baseNumber.buttons.close invoke"
   set helpMessage($w.menu.file,12) TreeFileClose
 
-  $w.menu.mask add command -label TreeMaskNew -command "::tree::mask::new"
+  $w.menu.mask add command -label TreeMaskNew -command "::tree::mask::new $w"
   set helpMessage($w.menu.mask,0) TreeMaskNew
-  $w.menu.mask add command -label TreeMaskOpen -command "::tree::mask::open"
+  $w.menu.mask add command -label TreeMaskOpen -command "::tree::mask::open {} $w"
   set helpMessage($w.menu.mask,1) TreeMaskOpen
 
   menu $w.menu.mask.recent
   foreach f $::tree::mask::recentMask {
-    $w.menu.mask.recent add command -label $f -command "::tree::mask::open $f"
+    $w.menu.mask.recent add command -label $f -command "::tree::mask::open $f $w"
   }
   $w.menu.mask add cascade -label TreeMaskOpenRecent -menu $w.menu.mask.recent
   set helpMessage($w.menu.mask,2) TreeMaskOpenRecent
@@ -579,7 +579,7 @@ proc ::tree::displayLines { baseNumber moves } {
       set firstLine [ lindex [split $posComment "\n"] 0 ]
       $w.f.tl insert end "$firstLine\n" [ list bluefg tagtooltip_poscomment ]
       ::utils::tooltip::SetTag $w.f.tl $posComment tagtooltip_poscomment
-      $w.f.tl tag bind tagtooltip_poscomment <Double-Button-1> "::tree::mask::addComment"
+      $w.f.tl tag bind tagtooltip_poscomment <Double-Button-1> "::tree::mask::addComment {} $w"
     }
   }
 
@@ -660,7 +660,7 @@ proc ::tree::displayLines { baseNumber moves } {
         set firstLine [ lindex [split $comment "\n"] 0 ]
         $w.f.tl insert end " $firstLine" tagtooltip$i
         ::utils::tooltip::SetTag $w.f.tl $comment tagtooltip$i
-        $w.f.tl tag bind tagtooltip$i <Double-Button-1> "::tree::mask::addComment $move"
+        $w.f.tl tag bind tagtooltip$i <Double-Button-1> "::tree::mask::addComment $move $w"
       }
     }
     if { $maskFile != {} && $move != {[end]} } {
@@ -1451,14 +1451,14 @@ namespace eval ::tree::mask {
 ################################################################################
 #
 ################################################################################
-proc ::tree::mask::open { {filename ""} } {
+proc ::tree::mask::open { {filename ""} {parent .}} {
   global ::tree::mask::maskSerialized ::tree::mask::mask ::tree::mask::recentMask
 
   if {$filename == ""} {
     set types {
       {{Tree Mask Files}       {.stm}        }
     }
-    set filename [tk_getOpenFile -filetypes $types -defaultextension ".stm"]
+    set filename [tk_getOpenFile -filetypes $types -defaultextension ".stm" -parent $parent]
   }
 
   if {$filename != ""} {
@@ -1484,7 +1484,7 @@ proc ::tree::mask::open { {filename ""} } {
         if { [winfo exists $w] } {
           $w.menu.mask.recent delete 0 end
           foreach f $::tree::mask::recentMask {
-            $w.menu.mask.recent add command -label $f -command "::tree::mask::open $f"
+            $w.menu.mask.recent add command -label $f -command "::tree::mask::open $f $w"
           }
         }
       }
@@ -1506,12 +1506,12 @@ proc ::tree::mask::askForSave {} {
 ################################################################################
 #
 ################################################################################
-proc ::tree::mask::new {} {
+proc ::tree::mask::new {{parent .}} {
 
   set types {
     {{Tree Mask Files}       {.stm}        }
   }
-  set filename [tk_getSaveFile -filetypes $types -defaultextension ".stm"]
+  set filename [tk_getSaveFile -filetypes $types -defaultextension ".stm" -parent $parent]
 
   if {$filename != ""} {
     if {[file extension $filename] != ".stm" } {
@@ -1594,8 +1594,8 @@ proc ::tree::mask::contextMenu {win move x y xc yc} {
   }
   
   $mctxt add separator
-  $mctxt add command -label [ tr CommentMove] -command "::tree::mask::addComment $move" -state $state
-  $mctxt add command -label [ tr CommentPosition] -command "::tree::mask::addComment"
+  $mctxt add command -label [ tr CommentMove] -command "::tree::mask::addComment $move $win" -state $state
+  $mctxt add command -label [ tr CommentPosition] -command "::tree::mask::addComment {} $win"
   
   $mctxt add separator
   set lMatchMoves [sc_pos matchMoves ""]
@@ -1929,29 +1929,36 @@ proc ::tree::mask::getImage { move nmr } {
 ################################################################################
 # if move is null, this is a position comment
 ################################################################################
-proc ::tree::mask::addComment { { move "" } } {
+proc ::tree::mask::addComment { { move "" } {parent .} } {
   
+  if {[string match *.f.tl $parent]} {
+    # remove trailing .f.tl
+    set parent [string range $parent 0 end-5]
+  }
+
   # first check the move is present in Mask
   if { $move != "" } {
     if { ![::tree::mask::moveExists $move] } {
-      tk_messageBox -title "Scid" -type ok -icon warning -message [ tr AddMoveToMaskFirst ]
+      tk_messageBox -title "Scid" -type ok -icon warning -message [ tr AddMoveToMaskFirst ] -parent $parent
       return
     }
   }
   set w .treeMaskAddComment
-  toplevel .treeMaskAddComment
+  toplevel $w
+  placeWinOverParent $w $parent
+
   if {$move == ""} {
     set oldComment [::tree::mask::getPositionComment]
-    ::setTitle $w [::tr CommentPosition]
+    wm title $w [::tr CommentPosition]
   } else  {
     set oldComment [::tree::mask::getComment $move ]
-    ::setTitle $w [::tr CommentMove]
+    wm title $w [::tr CommentMove]
   }
   set oldComment [ string trim $oldComment ]
   autoscrollframe $w.f text $w.f.e -width 40 -height 5 -wrap word -setgrid 1
   $w.f.e insert end $oldComment
-  button $w.ok -text OK -command "::tree::mask::updateComment $move ; destroy $w ; ::tree::refresh"
-  pack  $w.f  -side top -expand 1 -fill both
+  dialogbutton $w.ok -text OK -command "::tree::mask::updateComment $move ; destroy $w ; ::tree::refresh"
+  pack  $w.f  -side top -expand 1 -fill both -padx 3 -pady 3
   pack  $w.ok -side bottom
   focus $w.f.e
 }
