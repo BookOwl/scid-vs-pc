@@ -2335,19 +2335,19 @@ proc ::tree::mask::searchMask { baseNumber } {
   pack $w.f2 -side top -fill both -expand 1 -padx 10 -pady 3
   
   # NAG selection
-  ttk::checkbutton $w.f1.nagl -text [tr Nag] -variable ::tree::mask::searchMask_usenag
+  checkbutton $w.f1.nagl -text [tr Nag] -variable ::tree::mask::searchMask_usenag
   menu $w.f1.nagmenu
   ttk::menubutton $w.f1.nag -textvariable ::tree::mask::searchMask_nag -menu $w.f1.nagmenu 
   set ::tree::mask::searchMask_nag  [::tr "None"]
   foreach nag [ list "!!" " !" "!?" "?!" " ?" "??" " ~" [::tr "None"]  ] {
     $w.f1.nagmenu add command -label $nag -command "set ::tree::mask::searchMask_nag $nag"
   }
-  grid $w.f1.nagl -column 0 -row 0
-  grid $w.f1.nag -column 0 -row 1
+  grid $w.f1.nagl -column 0 -row 0 -pady 2
+  grid $w.f1.nag -column 0 -row 1 -padx 2
   
   # Markers 1 & 2
   foreach j { 0 1 } {
-    ttk::checkbutton $w.f1.ml$j -text "[tr Marker] [expr $j +1]" -variable ::tree::mask::searchMask_usemarker$j
+    checkbutton $w.f1.ml$j -text "[tr Marker] [expr $j +1]" -variable ::tree::mask::searchMask_usemarker$j
     menu $w.f1.menum$j
     ttk::menubutton $w.f1.m$j -textvariable ::tree::mask::searchMask_trm$j -menu $w.f1.menum$j 
     set ::tree::mask::searchMask_trm$j [tr "Include"]
@@ -2357,12 +2357,12 @@ proc ::tree::mask::searchMask { baseNumber } {
       $w.f1.menum$j add command -label [ tr $e ] -image $i -compound left \
           -command "set ::tree::mask::searchMask_trm$j \"[tr $e ]\" ; set ::tree::mask::searchMask_m$j $i"
     }
-    grid $w.f1.ml$j -column [expr 1 + $j] -row 0
-    grid $w.f1.m$j -column [expr 1 + $j] -row 1
+    grid $w.f1.ml$j -column [expr 1 + $j] -row 0 -pady 2
+    grid $w.f1.m$j -column [expr 1 + $j] -row 1 -padx 2
   }
   
   # Color
-  ttk::checkbutton $w.f1.colorl -text [tr ColorMarker] -variable ::tree::mask::searchMask_usecolor
+  checkbutton $w.f1.colorl -text [tr ColorMarker] -variable ::tree::mask::searchMask_usecolor
   menu $w.f1.colormenu
   ttk::menubutton $w.f1.color -textvariable ::tree::mask::searchMask_trcolor -menu $w.f1.colormenu 
   set ::tree::mask::searchMask_trcolor  [::tr "White"]
@@ -2371,20 +2371,20 @@ proc ::tree::mask::searchMask { baseNumber } {
     $w.f1.colormenu add command -label [ tr "${c}Mark" ] \
         -command "set ::tree::mask::searchMask_trcolor [ tr ${c}Mark ] ; set ::tree::mask::searchMask_color $c"
   }
-  grid $w.f1.colorl -column 3 -row 0
-  grid $w.f1.color -column 3 -row 1
+  grid $w.f1.colorl -column 3 -row 0 -pady 2
+  grid $w.f1.color -column 3 -row 1 -padx 2
   
   # Move annotation
-  ttk::checkbutton $w.f1.movecommentl -text "Move comment" -variable ::tree::mask::searchMask_usemovecomment
+  checkbutton $w.f1.movecommentl -text "Move comment" -variable ::tree::mask::searchMask_usemovecomment
   entry $w.f1.movecomment -textvariable ::tree::mask::searchMask_movecomment -width 12
-  grid $w.f1.movecommentl -column 4 -row 0
-  grid $w.f1.movecomment -column 4 -row 1
+  grid $w.f1.movecommentl -column 4 -row 0 -padx 2 -pady 2
+  grid $w.f1.movecomment -column 4 -row 1 -padx 2
   
   # Position annotation
-  ttk::checkbutton $w.f1.poscommentl -text "Position comment" -variable ::tree::mask::searchMask_useposcomment
+  checkbutton $w.f1.poscommentl -text "Position comment" -variable ::tree::mask::searchMask_useposcomment
   entry $w.f1.poscomment -textvariable ::tree::mask::searchMask_poscomment -width 12
-  grid $w.f1.poscommentl -column 5 -row 0
-  grid $w.f1.poscomment -column 5 -row 1
+  grid $w.f1.poscommentl -column 5 -row 0 -padx 2 -pady 2
+  grid $w.f1.poscomment -column 5 -row 1 -padx 2
   
   ttk::button $w.f1.search -text [tr "Search"] -command " ::tree::mask::perfomSearch $baseNumber "
   grid $w.f1.search -column 6 -row 0 -rowspan 2 -padx 10
