@@ -2427,7 +2427,7 @@ proc  ::tree::mask::perfomSearch  { baseNumber } {
     set poscomment [ lindex $mask($fen) 1 ]
     if { $::tree::mask::searchMask_useposcomment  } {
       if { [string match -nocase "*$::tree::mask::searchMask_poscomment*"  $poscomment] } {
-        lappend res "$fen $poscomment"
+        lappend res "$fen [string map {"\n" ""} $poscomment]"
         incr pos_count
       } else  {
         continue
@@ -2474,7 +2474,7 @@ proc  ::tree::mask::perfomSearch  { baseNumber } {
         }
       }
       
-      lappend res "$fen [::trans [lindex $m 0]] $movecomment"
+      lappend res "$fen [::trans [lindex $m 0]] [string map {"\n" ""} $movecomment]"
       incr move_count
     }
   }
