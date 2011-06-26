@@ -354,7 +354,7 @@ set helpText(Index) {<h1>Scid Help Index</h1>
   <ul>
   <li><a MainWindow>Main Window</a></li>
   <li><a Maintenance>Maintenance tools</a></li>
-  <li><a TreeMasks>Masks for Trees</a></li>
+  <li>Tree <a TreeMasks>Masks</a></li>
   <li><a Searches Material>Material/pattern searches</a></li>
   <li><a Formats>Maximum</a> number of games</li>
   <li><a Menus>Menus</a></li>
@@ -1924,7 +1924,7 @@ set helpTitle(Repertoire) "Repertoire editor"
 set helpText(Repertoire) {<h1>The Repertoire Editor</h1>
 <p>The Repertoire Editor has been removed since Scid vs. PC 4.2.
 <br>
-Simlilar and more powerful features are available in the <a TreeMasks>Masks for Trees</a> window.
+Simlilar and more powerful features are available in the <a TreeMasks>Tree Masks</a> window.
 </p>
 
   <p><footer>Updated: Scid vs. PC 4.2, November 2010</footer></p>
@@ -2107,94 +2107,69 @@ it is best to close the Tree Window first.</i>
   <p><footer>Updated: Scid vs. PC 4.3, January 2011</footer></p>
 }
 
-set helpTitle(TreeMasks) "Masks for Trees"
-set helpText(TreeMasks) {<h1>Masks for Trees</h1>
+set helpTitle(TreeMasks) "Tree Masks"
+set helpText(TreeMasks) {<h1>Tree Masks</h1>
   <p>
-  The <a Tree>Tree window</a> displays information on all the moves
-  made from the current position in games in the database.
+  The <a Tree>Tree window</a> displays information on all the moves in the
+  database made from the current position.  <b>Masks</b> add additional
+  information, and can be imagined as a transparent layer above the Tree that
+  holds data such as commentaries for moves or positions, own
+  evaluations, and ones opening repertoir.
   </p>
   <p>
-  To add additional informations beyond pure statistical data a
-  <term>Mask</term> can be defined. One can imagine a
-  <term>Mask</term> as a transparent layer above the current tree, that
-  holds additional data e.g. commentaries for moves or positions, own
-  evaluations and ones own opening repertoir. <term>Masks</term> are
-  stored in a Mask file (.stm) and thus are independent of the
-  databases to be used with. That is, one can define a
-  <term>Mask</term> once and use it with various databases by just
-  loading it from the <term>Tree</term> windows menu.
+  They are stored in a Mask file (<b>.stm</b> - Scid Tree Mask) and are independent of the
+  databases to be used with. That is, one can create a
+  Mask once and use it with any database by just
+  loading it from the Tree Mask menu.
   </p>
   <p>
-  As soon as a <term>Mask</term> file is opened, the displays of
-  the <term>Tree</term> window change. First of all, all moves from
-  the current position that are present in the mask are highlighted.
-  Additionally, NAGs and markers may show up in front of a move or
-  commentaries concerning the move will show up at the end of its
-  line. Finally, the current postition may also hold a comment.
+  When a Mask is opened, the display of
+  the Tree window changes. First of all, all moves 
+  present in the mask are highlighted in blue.
+  Additionally, nags and markers are shown in front of a move, and
+  Comments concerning the move are shown after the move.
+  Finally, the current postition may also hold a comment.
   </p>
   <p>
-  <b>Note</b>: The indepencence of <term>Masks</term> from a database
-  make them a very powerfull tool to handle opening repertoirs.
-  Contrary to the traditional way of opening lines, <term>Masks</term>
+  These items are all configurable by right-clicking the Tree.
+  </p>
+  <p>
+  <i>The indepencence of Masks from a database
+  make them a very powerful tool for handling opening repertoirs.
+  Contrary to the traditional way of opening lines, Masks
   have the advantage to handle transpositions transparently, simply
-  cause they are based on the current positions instead of a line
-  leading to it.
+  because they are based on the current positions instead of a line
+  leading to it.</i>
   </p>
-  <h3>Using a Masks</h3>
+  <h3>Using Masks</h3>
   <p>
-  As <term>Masks</term> operate on the tree view of a given database,
-  first of all the tree view has to be opened either by <menu>Window /
-  Tree window</menu> or the shortcut <b>ctrl-t</b>. For starting out
-  it makes sense to open a larger reference database as this
-  simplifies the addition of moves to a <term>Mask</term>. However,
-  Masks work with every database, even the <term>Clipbase</term>, that
-  is one could also import a collection of games from a PGN file to
-  the Clipbase to set up a <term>Mask</term>.
+  The Mask menu of the Tree widget is where Masks are opened or created.
+  Once a Mask file is opened, commentary can be added 
+  by right-clicking on the Tree, adding a move to the mask, and then 
+  adding comments or nags. Moves existing in the Mask are displayed in blue.
   </p>
   <p>
-  Now, a mask file has to be created or loaded. These files use the
-  extension .stm. To create a new mask file select <menu>Mask /
-  New</menu> from the <term>Tree</term> windows menu. Similarly, an
-  existing mask can be opened using <menu>Mask / Open</menu>. Finally,
-  <menu>Mask / Open recent</menu> is a shortcut to the recently used
-  <term>Mask</term> files. 
-  </p>
-  <p>
-  Once a Mask file is opened new commentary can be added to this
-  specific mask. Note again, that the Mask is independent of database
-  used for its creation. It can later applied to any database of ones
-  liking. For an opening repertoir it might thus make sense to
+  For an opening repertoir it might thus make sense to
   generate two masks, one for the White and one for the Black
   openings.
   </p>
   <p>
-  To add markers or comments to moves, first add the move
-  to the mask by choosing <term>Add to mask</term> from the context
-  menu available by clicking on the line with the right mouse button.
-  After a line was added, it is highlighted in <blue>blue</blue>
-  within the tree window. Similarly, a move can be removed from the
-  mask by <menu>Remove from mask</menu> from the context menu.
+  <i>Moves not displayed in the Tree may be added to the Mask by means of 
+  the lastmost context menus - "Add Move to Mask".</i>
   </p>
   <p>
-  <b>Note</b>: If the move to be added is not displayed in the tree
-  window Scid offers a list of all possible moves by means of the
-  context menu. As this might be quite a bunch of moves, they are
-  split into several context menu items at the end of the available
-  choices. All are labled by <menu>Add this move to mask</menu> and in
-  case necessary numbered. Just select a move from one of those lists
-  if it does not show up in the tree anyway.
-  <p>
-  After a move was added to the <term>Mask</term> and one can select
-  the following markers from the context menu. These markers will show
-  up left to the move annotated:
+  Don't forget to save the Mask! You will be prompted to do it
+  if you close a Mask that has been modified or if a Tree Window is closed.
+  </p>
+  <h3>Configuring Masks</h3>
   <ul>
   <li><term>NAG</term> symbols are the simplest annotation symbol. The
   menu displays only those nags sensible for a move (not a position)
   which results in the following symbols possible <term>!!, !, !?, ?!,
   ?, ??, ~</term>
   </li>
-  <li>By selecting <menu>Marker 1</menu> and <menu>Marker 2</menu> up
-  to two additional graphical markers can be attached to a move. They
+<br>
+  <li><term>Markers</term> (1 and 2) allow two graphical markers to be attached to a move. They
   are mainly meant to handle opening repertoirs. The available options
   are:
      <ul>
@@ -2210,95 +2185,92 @@ set helpText(TreeMasks) {<h1>Masks for Trees</h1>
      <li> <img tb_help> Dubious line</li>
      <li> <img tb_cut> To remove</li>
      </ul>
-	  To remove a marker just select the item <menu>No marker</menu>.
+	  To remove a marker just select the item <b>No marker</b>.
   </li>
+  <br>
   <li><term>Color</term> Allows to add a little coloured square in
   front of the move for ones own highlighting. To remove it again
-  select <menu>White</menu></li>
-  <li><term>Comment move</term> allows to add a textual comment for
+  select <b>White</b></li>
+  <br>
+  <li><term>Comment Move</term> allows to add a textual comment for
   the line. This comment is shown  right to the line it is
   associated. Note that only a part of the first line shows up there
   to give some visual feedback that commentary exists. The whole
   comment shows up in a tooltip once the mouse is moved over the line
   in question.
   </li>
-  <li><term>Comment position</term> can be used to add a comment for the
-  current position. This comment is shown on top of <term>Tree</term>
+  <br>
+  <li><term>Comment Position</term> can be used to add a comment for the
+  current position. This comment is shown on top of Tree
   window once the commented position is reached. Note that Scid
   displays only the first line of the comment to save space in the
-  <term>Tree</term> window. However, if the mouse is moved over that
+  Tree window. However, if the mouse is moved over that
   line the whole commentary shows up in a tooltip.
   </li>
   </ul>
-  Don't forget to save the Mask! You will be prompted to do it
-  if you close a Mask that has been modified or if a <term>Tree</term>
-  window is closed.
+  <h3>Mask Searches</h3>
+  <p>
+  <i>When using Mask Searches, enabling the Tree </i><b>Adjust Filter</b><i> check-box is recommended.</i>
   </p>
   <p>
-  To search for commentary, symbols etc. use <menu>Masks /
-  Search</menu>. Here one can select various check boxes that use the
-  selected search option as criterion. After selecting
-  <button>Search</button> a list of all positions found is displayed
-  in <term>FEN</term> notation followed by the move in question and
-  the commentary if any.
+  The Mask Search feature enables searches for commentary, symbols etc.
+  Selecting the <b>Search</b> button displays a list of all positions found 
+  in FEN notation, followed by the move in question and commentary if any.
   </p>
+  <h3>Mask Display</h3>
   <p>
-  <menu>Display mask</menu> will display the current Mask in a line
-  style. Stating at the current position all subsequent moves are
+  The Mask Display feature shows the current Mask in a line
+  style. Starting at the current position all subsequent moves are
   sorted into some unfoldable tree to give an overview of the current
-  lines of play similar to what is found in many repertoir books.
-  Note that not all information are displayed (e.g. comments are
-  shorted to fit the display). Additionally, as <term>Masks</term>
-  work on positions rather than move sequences they may contain loops
-  (ie. transpositions) which can not be unfolded in a line wise
-  display perfectly. That is, this display may be cut at a certain
-  point.
+  lines of play - similar to what is found in many repertoir books.
+  Not all information is displayed (e.g. Comments are
+  shorted to fit the display). Additionally, as Masks
+  work on positions rather than move sequences, they may contain loops
+  (ie. transpositions) which can't be properly unfolded in a line wise
+  display. i.e this display may be cut at a certain point.
   </p>
   <h3>Conversion to Masks</h3>
   <p>
-  Setting up a mask can be a tendious taks especially for complex
+  Setting up a mask can be a tedious task, especially for complex
   opening repertoirs. However, if such a repertoir is available as a
   Scid Database or a number of PGN games, or lines stored in usual
   chess games, Scid can use that information to set up suitable
-  <term>Masks</term> automatically.
+  Masks automatically.
   </p>
   <p>
   First of all one has to load the information into a Scid Database.
   In case the information is already available as a Scid Database this
   is as easy as opening it. In case a PGN file is use it should be
   either imported into a Scid Database or one can use the
-  <term>Clipbase</term> to import it temporarily. In that case one
-  should make sure that the <term>Clipbase</term> is empty before
-  importing. (<menu>Edit / Empty Clipbase</menu>).
+  Clipbase to import it temporarily (In which case one
+  should make sure the Clipbase is empty before
+  importing).
   </p>
   <p>
   The next step is to open the tree for the just opened Scid Database.
-  Then a new <term>Mask</term> should be created or an existing one
-  opened. <b>Note</b> that this function may be used to consolidate
-  serveral bases into a single <term>Mask</term>.
+  Then a new Mask should be created or an existing one
+  opened. <i>This function may be used to consolidate
+  serveral bases into a single Mask</i>.
   </p>
   <p>
-  Now, the <term>Mask</term> can be filled automatically with the game
-  content of the database. In this process, comments within the games
-  will be converted to move comments (appending to those existing
-  eventually) in the <term>Mask</term>. <term>NAG</term> symbols will
-  be added as well. To initiate this process one can chose either
-  <menu>Masks / Fill with game</menu> to fill the <term>Mask</term>
-  with the contents of a single game, or <menu>Fill with
-  Database</menu> to loop over all games in the database.
+  Now, the Mask can be filled automatically with the game content of the
+  database. In this process, comments within the games will be converted to move
+  comments (appending to those existing eventually) in the Mask. NAGs will be
+  added as well. To initiate this process one can chose either <b>Fill with
+  game</b> to fill the Mask with the contents of a single game, or <b>Fill with
+  Database</b> to loop over all games in the database.
   </p>
   <p>
-  <b>Note</b>: especially filling a <term>Mask</term> with an entire
-  base can be quite time consuming.
+  <b>Note</b> filling a Mask with an entire base can be quite time consuming.
   </p>
   <p>
-  <b>Note</b>: The <term>mask</term> is filled with all moves till the
+  <b>Note</b> The Mask is filled with all moves till the
   end of the game including all variations within a game. Therefore,
   it is sensible to use only bases for this procedure that end the
   games as soon as the middle game is reached.
   </p>
 
-  <p><footer>(Updated: Scid 4.3, November 2010)</footer></p>
+  <p><footer>(Updated: Scid vs. PC 4.5, June 2011)</footer></p>
 }
 
 

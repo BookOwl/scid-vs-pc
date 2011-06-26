@@ -158,7 +158,7 @@ proc ::tree::make { { baseNumber -1 } } {
   
   $w.menu.mask add command -label TreeMaskSave -command "::tree::mask::save"
   set helpMessage($w.menu.mask,3) TreeMaskSave
-  $w.menu.mask add command -label TreeMaskClose -command "::tree::mask::close"
+  $w.menu.mask add command -label TreeMaskClose -command "::tree::mask::close $w"
   set helpMessage($w.menu.mask,4) TreeMaskClose
   $w.menu.mask add command -label TreeMaskFillWithGame -command "::tree::mask::fillWithGame"
   set helpMessage($w.menu.mask,5) TreeMaskFillWithGame
@@ -166,10 +166,11 @@ proc ::tree::make { { baseNumber -1 } } {
   set helpMessage($w.menu.mask,6) TreeMaskFillWithBase
   $w.menu.mask add command -label TreeMaskSearch -command "::tree::mask::searchMask $baseNumber"
   set helpMessage($w.menu.mask,7) TreeMaskSearch
-  $w.menu.mask add command -label TreeMaskInfo -command "::tree::mask::infoMask"
+  $w.menu.mask add command -label TreeMaskInfo -command "::tree::mask::infoMask $w"
   set helpMessage($w.menu.mask,8) TreeMaskInfo
   $w.menu.mask add command -label TreeMaskDisplay -command "::tree::mask::displayMask"
   set helpMessage($w.menu.mask,9) TreeMaskDisplay
+  $w.menu.mask add command -label Help -command {helpWindow TreeMasks}
 
   foreach label {Alpha ECO Freq Score} value {alpha eco frequency score} {
     $w.menu.sort add radiobutton -label TreeSort$label \
@@ -306,7 +307,7 @@ proc ::tree::closeTree {baseNumber} {
   global tree
 
   wm protocol .treeWin$baseNumber WM_DELETE_WINDOW {}
-  ::tree::mask::close
+  ::tree::mask::close .treeWin$baseNumber
   # needs closing explicitly if based open as tree and bestgames is open
   if {[winfo exists .treeBest$baseNumber]} {
     destroy .treeBest$baseNumber
@@ -570,7 +571,7 @@ proc ::tree::displayLines { baseNumber moves } {
     }
   }
 
-  # Position comment
+  # (Single) Mask position comment at top of move list
   set hasPositionComment 0
   if { $maskFile != "" } {
     set posComment [::tree::mask::getPositionComment]
@@ -583,15 +584,14 @@ proc ::tree::displayLines { baseNumber moves } {
     }
   }
 
-  # Display the first line
+  # Display the line with column headings
   if { $maskFile != "" } {
-    $w.f.tl image create end -image ::tree::mask::emptyImage -align center
-    $w.f.tl image create end -image ::tree::mask::emptyImage -align center
-    $w.f.tl insert end "    "
+    $w.f.tl insert end "      "
     $w.f.tl tag bind tagclick0 <Button-2> "::tree::mask::contextMenu $w.f.tl dummy %x %y %X %Y ; break"
   }
   $w.f.tl insert end "[lindex $moves 0]\n" tagclick0
   
+  # Display the lines of the tree
   for { set i 1 } { $i < [expr $len - 3 ] } { incr i } {
     set line [lindex $moves $i]
     if {$line == ""} { continue }
@@ -616,8 +616,14 @@ proc ::tree::displayLines { baseNumber moves } {
           $w.f.tl image create end -image $img -align center
         }
         # color tag
-        $w.f.tl tag configure color$i -background [::tree::mask::getColor $move]
-        $w.f.tl insert end "  " color$i
+        set color [::tree::mask::getColor $move]
+        if {$color != "white"} {
+	  $w.f.tl tag configure color$i -background [::tree::mask::getColor $move]
+	  $w.f.tl insert end "  " color$i
+        } else {
+          # disabling color here kind-of depends on getColor returning {white} when it *should* return {White}
+	  $w.f.tl insert end "  " 
+        }
         # NAG tag
         $w.f.tl insert end [::tree::mask::getNag $move]
       } else  {
@@ -648,7 +654,8 @@ proc ::tree::displayLines { baseNumber moves } {
     if {$move != {} && $move != {---} && $move != {[end]} && $i != $len-2 && $i != 0} {
       $w.f.tl tag bind tagclick$i <Button-1> "::tree::selectCallback $baseNumber $move ; break"
       if { $maskFile != {}} {
-        # Bind right button to popup a contextual menu:
+        ### Bind right button to popup a contextual menu
+        # todo: Only display full menu if move is in mask
         $w.f.tl tag bind tagclick$i <ButtonPress-3> "::tree::mask::contextMenu $w.f.tl $move %x %y %X %Y"
       }
     }
@@ -1462,7 +1469,7 @@ proc ::tree::mask::open { {filename ""} {parent .}} {
   }
 
   if {$filename != ""} {
-    ::tree::mask::askForSave
+    ::tree::mask::askForSave $parent
     array unset ::tree::mask::mask
     array set ::tree::mask::mask {}
     source $filename
@@ -1489,15 +1496,24 @@ proc ::tree::mask::open { {filename ""} {parent .}} {
         }
       }
     }
+::tree::mask::updateDisplayMask
   }
 }
 ################################################################################
 #
 ################################################################################
-proc ::tree::mask::askForSave {} {
+proc ::tree::mask::askForSave {{parent .}} {
   if {$::tree::mask::dirty} {
+
+    # Issue here - Closing the database breaks the "-parent $parent" for some reason
+    # Once we remove the parent option, the tree window stays open (albeit the menu widget gets destroyed!)
+    if {![winfo exists $parent]} {
+      set parent .
+    }
+
     set answer [tk_messageBox -title Scid -icon warning -type yesno \
-        -message "[ tr DoYouWantToSaveFirst ]\n$::tree::mask::maskFile ?"]
+	-message "[ tr DoYouWantToSaveFirst ]\n$::tree::mask::maskFile ?" -parent $parent]
+
     if {$answer == "yes"} {
       ::tree::mask::save
     }
@@ -1517,7 +1533,7 @@ proc ::tree::mask::new {{parent .}} {
     if {[file extension $filename] != ".stm" } {
       append filename ".stm"
     }
-    ::tree::mask::askForSave
+    ::tree::mask::askForSave $parent
     set ::tree::mask::dirty 0
     set ::tree::mask::maskFile $filename
     array unset ::tree::mask::mask
@@ -1528,11 +1544,11 @@ proc ::tree::mask::new {{parent .}} {
 ################################################################################
 #
 ################################################################################
-proc ::tree::mask::close {} {
+proc ::tree::mask::close {{parent .}} {
   if { $::tree::mask::maskFile == "" } {
     return
   }
-  ::tree::mask::askForSave
+  ::tree::mask::askForSave $parent
   set ::tree::mask::dirty 0
   array unset ::tree::mask::mask
   array set ::tree::mask::mask {}
@@ -1543,6 +1559,7 @@ proc ::tree::mask::close {} {
 #
 ################################################################################
 proc ::tree::mask::save {} {
+  if {$::tree::mask::maskFile == ""} {return}
   set f [ ::open $::tree::mask::maskFile w ]
   puts $f "set ::tree::mask::maskSerialized [list [array get ::tree::mask::mask]]"
   ::close $f
@@ -1603,7 +1620,8 @@ proc ::tree::mask::contextMenu {win move x y xc yc} {
     # split the moves in several menus
     for {set idxMenu 0} { $idxMenu <= [expr int([llength $lMatchMoves ] / 16) ]} {incr idxMenu} {
       menu $mctxt.matchmoves$idxMenu
-      $mctxt add cascade -label "[ tr AddThisMoveToMask ] ([expr $idxMenu + 1 ])" -menu $mctxt.matchmoves$idxMenu
+      $mctxt add cascade -label "Add Move to Mask" -menu $mctxt.matchmoves$idxMenu
+      # -label [ tr AddThisMoveToMask ]
       for {set i 0} {$i < 16} {incr i} {
         if {[expr $i + $idxMenu * 16 +1] > [llength $lMatchMoves ] } {
           break
@@ -2064,7 +2082,7 @@ proc ::tree::mask::setCacheFenIndex {} {
 ################################################################################
 #
 ################################################################################
-proc ::tree::mask::infoMask {} {
+proc ::tree::mask::infoMask {{parent .}} {
   global ::tree::mask::mask
   
   set npos [array size mask]
@@ -2073,7 +2091,7 @@ proc ::tree::mask::infoMask {} {
   # foreach pos $mask {
   # incr nmoves [llength [lindex $pos 1]]
   # }
-  tk_messageBox -title "Mask info" -type ok -icon info -message "Mask : $::tree::mask::maskFile\n[tr Positions] : $npos\n[tr Moves] : $nmoves"
+  tk_messageBox -title "Mask info" -type ok -icon info -message "Mask : $::tree::mask::maskFile\n[tr Positions] : $npos\n[tr Moves] : $nmoves" -parent $parent
 }
 ################################################################################
 # Dumps mask content in a tree view widget
@@ -2088,21 +2106,23 @@ proc ::tree::mask::displayMask {} {
     return
   }
   toplevel $w
-  wm title $w [::tr DisplayMask]
   setWinLocation $w
   setWinSize $w
   
-  button $w.bupdate -text [::tr "Update"] -command ::tree::mask::updateDisplayMask
   frame $w.f
   
-  
   frame $w.fcb
-  pack $w.fcb -fill x
+  pack $w.fcb -fill x -side bottom
+
   checkbutton $w.fcb.nag -text [::tr "Nag"] -variable ::tree::mask::displayMask_showNag -command ::tree::mask::updateDisplayMask
   checkbutton $w.fcb.comment -text [::tr "Comments"] -variable ::tree::mask::displayMask_showComment -command ::tree::mask::updateDisplayMask
+
+  dialogbutton $w.fcb.bupdate -text [::tr "Update"] -command ::tree::mask::updateDisplayMask
+  dialogbutton $w.fcb.close -text [::tr Close] -command {destroy .displaymask}
+
   pack $w.fcb.nag $w.fcb.comment -side left
-  
-  pack $w.bupdate -fill x
+  pack $w.fcb.close $w.fcb.bupdate -side right -padx 2 -pady 2
+
   pack $w.f -fill both -expand 1
   
   ttk::treeview $w.f.tree -yscrollcommand "$w.f.ybar set" -xscrollcommand "$w.f.xbar set" -show tree -selectmode browse
@@ -2130,7 +2150,12 @@ proc ::tree::mask::displayMask {} {
 proc ::tree::mask::updateDisplayMask {} {
   global ::tree::mask::mask
   
-  set tree  .displaymask.f.tree
+  set w .displaymask
+  if { ![winfo exists $w] } { return }
+
+  wm title $w "[::tr DisplayMask] [file tail $::tree::mask::maskFile]"
+
+  set tree  $w.f.tree
   $tree delete [ $tree children {} ]
   set fen [toShortFen [sc_pos fen] ]
   # use clipbase to enter a dummy game
@@ -2299,7 +2324,7 @@ proc ::tree::mask::searchMask { baseNumber } {
   
   set w .searchmask
   if { [winfo exists $w] } {
-    focus $w
+    raiseWin $w
     return
   }
   toplevel $w
@@ -2508,7 +2533,8 @@ proc  ::tree::mask::searchClick {x y win baseNumber} {
 #
 ################################################################################
 image create photo ::tree::mask::emptyImage -data {
-  R0lGODdhEQARAIAAAP///////ywAAAAAEQARAAACD4SPqcvtD6OctNqLs96xAAA7
+R0lGODlhEAAQAIAAAP///////yH5BAEKAAEALAAAAAAQABAAAAIOjI+py+0P
+o5y02ouzPgUAOw==
 }
 image create photo ::tree::mask::imageWhite -data {
   R0lGODlhEQARAMIEAAAAAD8/P39/f7+/v////////////////yH5BAEKAAcALAAAAAARABEA

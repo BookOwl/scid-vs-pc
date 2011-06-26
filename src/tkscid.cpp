@@ -14232,7 +14232,7 @@ db->bbuf->Empty();
     char temp [200];
     if (! listMode) {
         const char * titleRow =
-            "    Move   ECO       Frequency    Score  AvElo Perf AvYear %Draws";
+            "      Move   ECO       Frequency    Score  AvElo Perf AvYear %Draws";
         titleRow = translate (ti, "TreeTitleRow", titleRow);
         output->Append (titleRow);
         if (showEpdData) {
