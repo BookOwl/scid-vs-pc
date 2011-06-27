@@ -586,7 +586,11 @@ proc ::tree::displayLines { baseNumber moves } {
 
   # Display the line with column headings
   if { $maskFile != "" } {
-    $w.f.tl insert end "      "
+    # insert 2 blank images and 4 blank space
+    foreach j { 0 1 } {
+      $w.f.tl image create end -image ::tree::mask::emptyImage -align center
+    }
+    $w.f.tl insert end "    "
     $w.f.tl tag bind tagclick0 <Button-2> "::tree::mask::contextMenu $w.f.tl dummy %x %y %X %Y ; break"
   }
   $w.f.tl insert end "[lindex $moves 0]\n" tagclick0

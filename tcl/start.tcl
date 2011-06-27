@@ -186,9 +186,6 @@ set boardfile_lite "emptySquare"
 # boardSize: Default board size. See the available board sizes above.
 set boardSize 60
 
-# boardStyle: Default board piece set. See bitmaps.tcl for styles.
-set boardStyle Alpha
-
 # language for help pages and messages:
 set language E
 set oldLang X
@@ -235,7 +232,8 @@ if {$windowsOS} {
   set fontOptions(Menu)    { {MS Sans Serif}  9 normal roman}
   set fontOptions(Small)   { Arial            9 normal roman}
   set fontOptions(Tiny)    { Arial            8 normal roman}
-  set fontOptions(Fixed)   { Courier          9 normal roman}
+  set fontOptions(Fixed)   { systemfixed      9 normal roman}
+  # set fontOptions(Fixed)   { Courier          9 normal roman}
 } elseif {$macOS} {
   set fontOptions(Regular) { {Lucida Grande} 12 normal roman}
   set fontOptions(Menu)    { {Lucida Grande} 14 normal roman}
@@ -247,7 +245,15 @@ if {$windowsOS} {
   set fontOptions(Menu)    { helvetica 10 normal roman}
   set fontOptions(Small)   { helvetica 10 normal roman}
   set fontOptions(Tiny)    { helvetica  9 normal roman}
-  set fontOptions(Fixed)   { {courier 10 pitch} 12 normal roman}
+
+  # try a couple of fonts, and default to "fixed" if no luck
+  if {[lsearch [font families] {Liberation Mono}] > 0} {
+    set fontOptions(Fixed)   { {Liberation Mono} 11 normal roman}
+  } elseif {[lsearch [font families] {Courier 10 Pitch}] > 0} {
+    set fontOptions(Fixed)         { {Courier 10 Pitch} 12 normal roman}
+  } else {
+    set fontOptions(Fixed)   { fixed 11 normal roman}
+  }
 }
 
 createFont Regular
@@ -469,7 +475,7 @@ set askToReplaceMoves 1
 set suggestMoves 0
 
 # Show variations popup window, arrows
-set showVarPopup 1
+set showVarPopup 0
 set showVarArrows 1
 
 # Keyboard Move entry options:
