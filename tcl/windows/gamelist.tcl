@@ -279,6 +279,7 @@ proc ::windows::gamelist::Open {} {
 
   $w.tree tag bind click2 <Double-Button-1> {::windows::gamelist::Load [%W set [%W focus] Number]}
   $w.tree tag configure deleted -foreground gray80
+  $w.tree tag configure error -foreground red
   # bind $w.tree <ButtonRelease-1> { parray ::ttk::treeview::State}
 
   # Hmm... seems no way to change the deafult blue bg colour for selected items
@@ -781,12 +782,19 @@ proc ::windows::gamelist::Refresh {{see {}}} {
     incr i -1
     set values [lindex $VALUES $i]
 
-    if {[lindex $values 0] == "$current "} {
-      set current_item [$w.tree insert {} 0 -values $values -tag [list click2 current]]
-    } elseif {[lindex $values 12] == {D }} {
-      $w.tree insert {} 0 -values $values -tag [list click2 deleted] ;#treefont
+    if {[catch {set thisindex [lindex $values 0]}]} {
+      ### Mismatched brace in game values. Bad!
+      # Scid's gamelist handles it ok, but game causes errors in other places
+      set thisindex [string range $values 1 [string first " " $values]]
+      $w.tree insert {} 0 -values [list $thisindex {Unmatched brace} {in game}] -tag [list click2 error]
     } else {
-      $w.tree insert {} 0 -values $values -tag click2
+      if {$thisindex == "$current "} {
+	set current_item [$w.tree insert {} 0 -values $values -tag [list click2 current]]
+      } elseif {[lindex $values 12] == {D }} {
+	$w.tree insert {} 0 -values $values -tag [list click2 deleted] ;#treefont
+      } else {
+	$w.tree insert {} 0 -values $values -tag click2
+      }
     }
   }
 
