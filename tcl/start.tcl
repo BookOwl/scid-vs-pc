@@ -1020,6 +1020,18 @@ set optionsFile [scidConfigFile options]
 ::splash::add "Command line is \"$::argv0 $::argv\""
 ::splash::add "User directory is \"$scidUserDir\""
 
+# set board piece style
+
+if { [catch { package require img::png } ] } {
+  ::splash::add "TkImg not found. Most piece sets are disabled."
+  set png_image_support 0
+  set boardStyle Alpha
+} else {
+  ::splash::add "TkImg found. Enabling png image support."
+  set png_image_support 1
+  set boardStyle Usual
+}
+
 if {[catch {source $optionsFile} ]} {
   ::splash::add "Error loading options file \"$optionsFile\"" error
 } else {
