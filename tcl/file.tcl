@@ -384,7 +384,11 @@ proc openBase {name} {
   }
 
   set bsize 0
-  set gfile "[file rootname $name].sg4"
+
+  ### wrong i think
+  # set gfile "[file rootname $name].sg4" 
+  set gfile "$name.sg4"
+
   if {! [catch {file size $gfile} err]} { set bsize $err }
   set showProgress 0
   if {$bsize > 1000000} { set showProgress 1 }
