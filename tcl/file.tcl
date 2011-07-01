@@ -441,6 +441,7 @@ proc ::file::Close {{base -1}} {
     updateStatusBar
     updateTitle
   }
+  set ::glistStart($current) 1
 }
 
 

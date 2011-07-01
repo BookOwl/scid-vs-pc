@@ -289,8 +289,9 @@ proc ::windows::gamelist::Open {} {
   # $w.tree tag configure colour -background $::defaultBackground
   # $w.tree tag bind click1 <Button-1> {}
 
-  # ttk::scrollbar $w.vsb -orient vertical -command "$w.tree yview"
-  scale  $w.vsb -from 1 -orient vertical -variable glstart -showvalue 0 -command ::windows::gamelist::SetStart -bigincrement $glistSize -relief flat 
+  ### can't use scrollbar because  the line "set glstart $::glistStart($b)" in gamelist::Reload fails
+  # scale  $w.vsb -from 1 -orient vertical -variable glstart -showvalue 0 -command ::windows::gamelist::SetStart -bigincrement $glistSize -relief flat 
+  ttk::scale     $w.vsb -orient vertical -command ::windows::gamelist::SetStart -from 1 -variable glstart
   # -borderwidth 0
   ttk::scrollbar $w.hsb -orient horizontal -command "$w.tree xview"
 
@@ -630,16 +631,17 @@ GnRoqrgA26wAADs=
 
 ### Array recording which databases have been sorted, and which field and order
 
-array set glistSortHist {}
+array set glistSortColumn {}
+array set glistStart {}
 
 # There is no other mechanism to remember last database sort, but there should
 # probably be one in "tkscid.h::struct scidBaseT".
-# "glistSortHist" is currently not persistent.  It could be done, but isn't
+# "glistSortColumn" is currently not persistent.  It could be done, but isn't
 # trivial as a problem with having a history is that it gets complicated when
 # handling read-only PGNs
 
 proc SortBy {tree col} {
-    global glistCodes glistSortedBy glstart glSortReversed glistSortHist
+    global glistCodes glistSortedBy glstart glSortReversed glistSortColumn
 
     set w .glistWin
 
@@ -660,7 +662,7 @@ proc SortBy {tree col} {
       set glistSortedBy $col
     }
 
-    set glistSortHist([file tail [sc_base filename]]) [list $col $glSortReversed ]
+    set glistSortColumn([sc_base current]) [list $col $glSortReversed ]
 
     if {$glSortReversed} {
       sc_base sortdown
@@ -694,7 +696,13 @@ proc setTitle {message} {
 # called by file.tcl when db is changed
 
 proc ::windows::gamelist::Reload {} {
-  global glistSortedBy
+  global glistSortedBy glstart
+
+  set b [sc_base current]
+
+  if {[info exists ::glistStart($b)]} {
+    set glstart $::glistStart($b)
+  }
 
   set w .glistWin
   if {![winfo exists $w]} {return}
@@ -711,15 +719,16 @@ proc ::windows::gamelist::Reload {} {
 # Returns the treeview item for current game (if it is shown in widget)
 
 proc ::windows::gamelist::Refresh {{see {}}} {
-  global glistCodes glstart glistSize glistSortHist glistSortedBy
+  global glistCodes glstart glistSize glistSortColumn glistSortedBy glistStart
 
   set w .glistWin
   if {![winfo exists $w]} {return}
 
-  set b [file tail [sc_base filename]]
-  if {[info exists glistSortHist($b)]} {
+  set b [sc_base current]
 
-    foreach {col glSortReversed} $glistSortHist($b) {}
+  if {[info exists glistSortColumn($b)]} {
+
+    foreach {col glSortReversed} $glistSortColumn($b) {}
     set glistSortedBy $col
     if {$glSortReversed} {
 	$w.tree heading $col -image arrow_down
@@ -751,6 +760,7 @@ proc ::windows::gamelist::Refresh {{see {}}} {
   if {$glstart > $totalSize} {
     set glstart $totalSize
   }
+  set glistStart($b) $glstart
 
   set glistEnd [expr $glstart + $glistSize]
   if { $glistEnd > $totalSize} {
