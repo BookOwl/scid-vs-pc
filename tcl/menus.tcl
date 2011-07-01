@@ -110,30 +110,30 @@ if {$windowsOS} {
 }
 
 ## Mac Application menu has to be before any call to configure.
-# (from SCID. untested S.A.)
 if { $macOS } {
-  # Application menu:
-  .menu add cascade -label Scid -menu .menu.apple
-  menu .menu.apple
+  ### This menu change removes the standard "About Tcl/Tk" widget
+  ### and fails to rename the "tkscid" menu to "Scid" , as it appears to be trying to do
 
-  set menuindex -1
-  set m .menu.apple
+  # # Application menu:
+  # .menu add cascade -label Scid -menu .menu.apple
+  # menu .menu.apple
+  # 
+  # set menuindex -1
+  # set m .menu.apple
+  # 
+  # $m add command -label HelpAbout -command helpAbout
+  # set helpMessage($m,[incr menuindex]) HelpAbout
+  #
+  # $m add separator
+  # incr menuindex
 
-  $m add command -label HelpAbout -command helpAbout
-  set helpMessage($m,[incr menuindex]) HelpAbout
-
-  $m add separator
-  incr menuindex
-
-  # To Quit
   bind all <Command-q> "exit"
   bind all <Command-Q> "exit"
 
-  ## To get Help
   bind all <Command-?> {helpWindow Contents}
   bind all <Help> {helpWindow Contents}
 
-  # Fix Quitting on MacOS X, now it will save options on quit:
+  # Trap quitting from the tkscid OSX menu (needed to save options).
   proc exit {}  {
     ::file::Exit
   }
