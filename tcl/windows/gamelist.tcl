@@ -587,7 +587,7 @@ proc ::windows::gamelist::Scroll {nlines} {
 }
 
 proc ::windows::gamelist::SetSize {} {
-  global glistSize glFontHeight windowsOS
+  global glistSize glFontHeight 
 
   ### Figure out how many lines of text in the treeview widget
   ### This is probably broke on some platforms
@@ -604,8 +604,10 @@ proc ::windows::gamelist::SetSize {} {
 
     # Nasty hack to make things work
 
-    if {$windowsOS} {
+    if {$::windowsOS} {
       set glFontHeight [expr $fontspace*130/72]
+    } elsif {$::macOS} {
+      set glFontHeight [expr $fontspace*92/72]
     } else {
       set glFontHeight [expr $fontspace*106/72]
     }
