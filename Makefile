@@ -1,24 +1,20 @@
 ##### Makefile for Scid for Unix operating systems.
 
 ### Compiler: Most Unix systems use g++ for compiling and linking.
-#
-COMPILE = g++
+
+CXX = g++
 CC = gcc
 LINK = g++
 
-### DESTDIR seems unused S.A.
-#
-DESTDIR =
-
 # BINDIR: where the Scid programs are copied for "make install".
-#
+
 BINDIR = /usr/bin/
 
 SHAREDIR = /usr/share/scid/
 
 ### TCL_VERSION: Set this according to the version of Tcl/Tk you have
-#   installed that you want Scid to use: 8.0, 8.1, 8.2, 8.3, etc.
-#
+#   installed that you want Scid to use: 8.5 / 8.6 / ...
+
 TCL_VERSION = 8.5
 
 # TCL_INCLUDE, TCL_LIBRARY, TK_LIBRARY: these are the compiler options
@@ -27,7 +23,7 @@ TCL_VERSION = 8.5
 #    can use the examples below for help in setting these variables.
 #
 # The settings determined by "./configure" are:
-#
+
 TCL_INCLUDE = -I/usr/local/include
 TCL_LIBRARY = -L/usr/local/lib -ltcl$(TCL_VERSION)
 TK_LIBRARY  = $(TCL_LIBRARY) -ltk$(TCL_VERSION) -L/usr/lib -lX11
@@ -44,43 +40,32 @@ TK_LIBRARY  = $(TCL_LIBRARY) -ltk$(TCL_VERSION) -L/usr/lib -lX11
 # TCL_LIBRARY = -L /usr/local/tcl/lib -ltcl$(TCL_VERSION) -ldl
 # TK_LIBRARY  = $(TCL_LIBRARY) -ltk$(TCL_VERSION)
 
-# Someone sent me these settings for SuSE Linux 6.1:
 ### Linux (SuSE distribution):
 # TCL_INCLUDE = -I /usr/X11R6/include
 # TCL_LIBRARY = -L /usr/lib -ltcl$(TCL_VERSION) -ldl
 # TK_LIBRARY  = $(TCL_LIBRARY) -L /usr/X11R6/lib -ltk$(TCL_VERSION) -lX11
 
-# Someone sent me these settings for FreeBSD with Tcl/Tk 8.0:
 ### FreeBSD:
 # TCL_INCLUDE = -I /usr/local/include/tcl8.0 -I /usr/local/include/tk8.0
 # TCL_LIBRARY = -L /usr/local/lib -ltcl80 -ldl
 # TK_LIBRARY  = $(TCL_LIBRARY) -ltk80 -L /usr/X11/lib -lX11
 
 
-########################################
 ### Compiler options:
 
 ### TB: Using Nalimov tablebases with Scid. Use "TB = -DSCID_USE_TB" for 
 #      tablebase support, or just "TB = " for no tablebase capability.
 #      Use "TB = -DSCID_USE_TB -DT41_INCLUDE" to include use of 4-1
 #      (King + 3 pieces vs lone king) tablebases.
-#
+
 TB = -DSCID_USE_TB -DT41_INCLUDE
 
 ### SCIDFLAGS: Scid customization flags.
 #      Use -DZLIB if your system does not have zlib and you need
 #      to include the code in the src/zlib directory.
 #      The default is to use the system zlib library.
-#
-SCIDFLAGS = 
 
-### OPTIMIZE: Optimization options for C++ compiler.
-#      -O4 is the most optimization for g++, but -O2 generally performs as
-#      well and has less associated problems, so it is the default.
-#      On some systems, adding "-fno-rtti" and "-fno-exceptions" produces
-#      smaller, faster programs since Scid does not use those C++ features.
-#
-OPTIMIZE = -O2 -fno-rtti -fno-exceptions
+SCIDFLAGS = 
 
 ### DEBUG: Defining the macro ASSERTIONS will turn on assertions, which
 #       helps to track bugs after modifications, but the programs will run 
@@ -93,17 +78,13 @@ DEBUG = #-DASSERTIONS
 #
 WARNINGS = -Wall
 
-### PROFILE: Set this to "-pg" for profiling in g++ and gcc.
-#
-PROFILE = 
+#      On some systems, adding "-fno-rtti" and "-fno-exceptions" produces
+#      smaller, faster programs since Scid does not use those C++ features.
 
-### CPP_FLAGS: Flags for C++ compilation.
-#
-CPP_FLAGS = $(PROFILE) $(OPTIMIZE) $(WARNINGS) $(DEBUG) $(SCIDFLAGS)
+CFLAGS = -O2 -fno-rtti -fno-exceptions $(WARNINGS) $(DEBUG)
 
-### CFLAGS: Flags for C compilation (only used for compiling zlib).
-#
-CFLAGS = -O2 -Wall $(PROFILE)
+### CXXFLAGS: Flags for C++ compilation.
+CXXFLAGS = $(CFLAGS) $(SCIDFLAGS)
 
 ### LANGUAGES: List of additional Tcl files to include in Scid for
 #       multi-language menu support.
@@ -223,19 +204,19 @@ toga:
 install: install_scid install_engines
 
 install_scid: all_scid
-	install -m 755 -d $(DESTDIR)$(SHAREDIR)
-	install -m 755 -d $(DESTDIR)$(BINDIR)
-	install -m 755 -d $(DESTDIR)$(SHAREDIR)/data/
-	install -m 755 scid $(SCRIPTS) $(EXECS) $(DESTDIR)$(BINDIR)
-	install -m 644 -p scid.eco $(DESTDIR)$(SHAREDIR)/data/
-	install -m 644 -p spelling.ssp $(DESTDIR)$(SHAREDIR)
-	install -m 755 -d $(DESTDIR)$(SHAREDIR)/books
-	install -m 666 ./books/* $(DESTDIR)$(SHAREDIR)/books/
-	install -m 755 -d $(DESTDIR)$(SHAREDIR)/bases
-	install -m 666 ./bases/* $(DESTDIR)$(SHAREDIR)/bases/
-	install -m 755 -d $(DESTDIR)$(SHAREDIR)/html
-	cp -r ./html/* $(DESTDIR)$(SHAREDIR)/html/
-	chmod -R 0777 $(DESTDIR)$(SHAREDIR)/html/*
+	install -m 755 -d $(SHAREDIR)
+	install -m 755 -d $(BINDIR)
+	install -m 755 -d $(SHAREDIR)/data/
+	install -m 755 scid $(SCRIPTS) $(EXECS) $(BINDIR)
+	install -m 644 -p scid.eco $(SHAREDIR)/data/
+	install -m 644 -p spelling.ssp $(SHAREDIR)
+	install -m 755 -d $(SHAREDIR)/books
+	install -m 666 ./books/* $(SHAREDIR)/books/
+	install -m 755 -d $(SHAREDIR)/bases
+	install -m 666 ./bases/* $(SHAREDIR)/bases/
+	install -m 755 -d $(SHAREDIR)/html
+	cp -r ./html/* $(SHAREDIR)/html/
+	chmod -R 0777 $(SHAREDIR)/html/*
 
 install_engines: all_engines
 	install -m 755 -d $(SHAREDIR)/engines
@@ -244,11 +225,11 @@ install_engines: all_engines
 	install -m 644 ./engines/Phalanx-XXII/HISTORY $(SHAREDIR)/engines/Phalanx-XXII
 	install -m 644 ./engines/Phalanx-XXII/pbook.phalanx $(SHAREDIR)/engines/Phalanx-XXII
 	install -m 644 ./engines/Phalanx-XXII/README $(SHAREDIR)/engines/Phalanx-XXII
-	install ./engines/Phalanx-XXII/phalanx $(DESTDIR)$(BINDIR)
+	install ./engines/Phalanx-XXII/phalanx $(BINDIR)
 	install -m 755 -d $(SHAREDIR)/engines/toga
 	install -m 644 ./engines/toga/copying.txt $(SHAREDIR)/engines/toga
 	install -m 644 ./engines/toga/readme.txt $(SHAREDIR)/engines/toga
-	install ./engines/toga/src/fruit $(DESTDIR)$(BINDIR)
+	install ./engines/toga/src/fruit $(BINDIR)
 
 uninstall:
 	rm -rf $(SHAREDIR)/engines
@@ -362,7 +343,7 @@ scmerge: src/scmerge.o src/misc.o src/index.o src/date.o src/namebase.o \
 	$(LINK) -o scmerge src/scmerge.o $(OBJS) $(ZLIB)
 
 pgnscid: src/pgnscid.o $(OBJS)
-	$(LINK) $(PROFILE) -o pgnscid src/pgnscid.o $(OBJS) $(ZLIB)
+	$(LINK) -o pgnscid src/pgnscid.o $(OBJS) $(ZLIB)
 
 scidlet: src/scidlet.o src/engine.o src/recog.o src/misc.o src/position.o \
           src/dstring.o src/movelist.o src/myassert.o
@@ -385,26 +366,25 @@ eco2epd: src/eco2epd.o $(OBJS) src/pbook.o
 	$(LINK) -o eco2epd src/eco2epd.o $(OBJS) src/pbook.o $(ZLIB)
 
 ### Rules to create .o files from .cpp files:
-#
+
 src/tcscid.o: src/tkscid.cpp
-	$(COMPILE) $(CPP_FLAGS) $(TCL_INCLUDE) -DTCL_ONLY -o src/tcscid.o -c src/tkscid.cpp
+	$(CXX) $(CXXFLAGS) $(TCL_INCLUDE) -DTCL_ONLY -o src/tcscid.o -c src/tkscid.cpp
 
 src/tkscid.o: src/tkscid.cpp
-	$(COMPILE) $(CPP_FLAGS) $(TCL_INCLUDE) -o src/tkscid.o -c src/tkscid.cpp
+	$(CXX) $(CXXFLAGS) $(TCL_INCLUDE) -o src/tkscid.o -c src/tkscid.cpp
 
 ### The endgame tablebase code in the egtb/ subdirectory (not written by me)
-#   gives many warnings, so compile probe.cpp with warnings turned off:
-#
+
 src/probe.o: src/probe.cpp src/egtb/tbindex.cpp src/egtb/tbdecode.c
-	$(COMPILE) $(PROFILE) $(OPTIMIZE) $(DEBUG) $(SCIDFLAGS) $(TB) -o src/probe.o -c src/probe.cpp
+	$(CXX) $(DEBUG) $(SCIDFLAGS) $(TB) -o src/probe.o -c src/probe.cpp
 
 ### Generic rule for all other .cpp files:
-#
+
 %.o: %.cpp
-	$(COMPILE) $(CPP_FLAGS) $(TCL_INCLUDE) -o $@ -c $<
+	$(CXX) $(CXXFLAGS) $(TCL_INCLUDE) -o $@ -c $<
 
 ### Rule for compiling zlib source files:
-#
+
 src/zlib/%.o: src/zlib/%.c
 	$(CC) $(CFLAGS) -o $@ -c $<
 

@@ -1,5 +1,5 @@
 
-# files
+### Makefile editted by S.A to handle defaults passed by Scid Makefile
 
 EXE = fruit
 
@@ -18,9 +18,9 @@ clean:
 
 # general
 
-CXX      = g++
-CXXFLAGS = -pipe
-LDFLAGS  = -lm
+CXX      ?= g++
+CXXFLAGS += -pipe
+LDFLAGS  += -lm
 
 # C++
 
@@ -28,9 +28,8 @@ CXXFLAGS += -fno-exceptions -fno-rtti
 
 # optimisation
 
-CXXFLAGS += -O3 -fstrict-aliasing
+CXXFLAGS += -fstrict-aliasing
 CXXFLAGS += -fomit-frame-pointer
-# CXXFLAGS += -march=athlon-xp # SELECT ME
 
 # strip
 

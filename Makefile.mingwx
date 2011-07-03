@@ -16,7 +16,7 @@ TCL_VERSION:=85
 ### Compiler and linker:
 # I assume the $(MINGW_BIN) directory is on the $PATH
 # If not, prefix the following ones with $(MINGW_BIN)/
-COMPILE:=$(MINGW_TARGET)-g++
+CPP:=$(MINGW_TARGET)-g++
 CC:=$(MINGW_TARGET)-gcc
 LINK:=$(MINGW_TARGET)-g++
 RC:=$(MINGW_TARGET)-windres
@@ -44,21 +44,17 @@ CPPOPT = -fno-rtti -fno-exceptions
 ### WARNINGS: Compiler warnings
 WARNINGS = -Wall
 
-### PROFILE: Use "-pg" for profiling in g++
-#PROFILE = -fprofile-arcs -ftest-coverage
-PROFILE=
-
 # LFLAGS: Linker flags
-LFLAGS = $(PROFILE)
+LFLAGS = 
 
 ### CPPFLAGS: C++ compiler flags
-CPPFLAGS = -DZLIB -DWIN32 $(OPT) $(CPPOPT) $(PROFILE) $(WARNINGS)
+CPPFLAGS = -DZLIB -DWIN32 $(OPT) $(CPPOPT) $(WARNINGS)
 
 ### CPPFLAGSNOWARN: C++ compiler flags without warnings
-CPPFLAGSNOWARN = -DZLIB -DWIN32 $(OPT) $(CPPOPT) $(PROFILE)
+CPPFLAGSNOWARN = -DZLIB -DWIN32 $(OPT) $(CPPOPT)
 
 ### CFLAGS: C (not C++) compiler flags
-CFLAGS = -DZLIB -DWIN32 $(OPT) $(PROFILE)
+CFLAGS = -DZLIB -DWIN32 $(OPT)
 
 
 ### EXECS: all the evecutable programs compiled from C++ files.
@@ -199,22 +195,22 @@ strip:
 
 
 src/tcscid.o: src/tkscid.cpp
-	$(COMPILE) $(CPPFLAGS) -I$(TCL_INCLUDE) -DTCL_ONLY -c src/tkscid.cpp \
+	$(CPP) $(CPPFLAGS) -I$(TCL_INCLUDE) -DTCL_ONLY -c src/tkscid.cpp \
 	  -o ./src/tcscid.o
 
 src/tkscid.o: src/tkscid.cpp
-	$(COMPILE) $(CPPFLAGS) -I$(TCL_INCLUDE) -c src/tkscid.cpp \
+	$(CPP) $(CPPFLAGS) -I$(TCL_INCLUDE) -c src/tkscid.cpp \
 	  -o ./src/tkscid.o
 
 src/scid.o: src/tkscid.cpp
-	$(COMPILE) $(CPPFLAGS) -I$(TCL_INCLUDE) -DSOURCE_TCL_FILE="\"scid.gui\"" \
+	$(CPP) $(CPPFLAGS) -I$(TCL_INCLUDE) -DSOURCE_TCL_FILE="\"scid.gui\"" \
 	  -c src/tkscid.cpp -o ./src/scid.o
 
 src/probe.o: src/probe.cpp src/egtb/tbindex.cpp src/egtb/tbdecode.c
-	$(COMPILE) $(CPPFLAGSNOWARN) $(TB) -c src/probe.cpp -o ./src/probe.o
+	$(CPP) $(CPPFLAGSNOWARN) $(TB) -c src/probe.cpp -o ./src/probe.o
 
 %.o: %.cpp
-	$(COMPILE) $(CPPFLAGS) -I$(TCL_INCLUDE) -c $< -o ./$@
+	$(CPP) $(CPPFLAGS) -I$(TCL_INCLUDE) -c $< -o ./$@
 
 %.o: %.c
 	$(CC) $(CFLAGS) -c $< -o ./$@
