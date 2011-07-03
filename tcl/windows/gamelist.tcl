@@ -606,7 +606,7 @@ proc ::windows::gamelist::SetSize {} {
 
     if {$::windowsOS} {
       set glFontHeight [expr $fontspace*130/72]
-    } elsif {$::macOS} {
+    } elseif {$::macOS} {
       set glFontHeight [expr $fontspace*92/72]
     } else {
       set glFontHeight [expr $fontspace*106/72]
