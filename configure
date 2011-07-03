@@ -155,7 +155,7 @@ proc findTclTkPaths {} {
 
     # headerPath: List of possible locations for tcl.h and tk.h
     set headerPath {
-        /usr/include
+     	/usr/include
         /usr/local/tcl/include
         /usr/local/include
         /usr/X11/include
@@ -212,8 +212,8 @@ proc findTclTkPaths {} {
         /usr/local/X11R6/lib
         /usr/X/lib
         /usr/local/X/lib
-	/usr/lib/x86_64-linux-gnu
-	/usr/lib/i386-linux-gnu
+        /usr/lib/x86_64-linux-gnu
+        /usr/lib/i386-linux-gnu
     }
 
     if {! [info exists var(TCL_INCLUDE)]} {
@@ -387,6 +387,13 @@ proc checkZlib {} {
 #
 proc writeMakefile {{type ""}} {
     global var defaultVar
+  
+    puts "writeMakefile ($type)"
+    puts " [pwd]"
+    set Makefile_conf "Makefile.conf"
+    if {"$::tcl_platform(os)" == "Darwin" && [findTclTkPathsAqua]} {
+        set Makefile_conf "Makefile.conf.darwin"
+    }
     set default 0
     set success 0
     if {$type == "default"} {
@@ -409,8 +416,8 @@ proc writeMakefile {{type ""}} {
 
     checkZlib
 
-    if {[catch {set from [open "Makefile.conf" r]}]} {
-       puts "Error opening file for reading: Makefile.conf"
+    if {[catch {set from [open "$Makefile_conf" r]}]} {
+       puts "Error opening file for reading: $Makefile_conf"
        exit 1
     }
     if {[catch {set to [open "Makefile" w]}]} {

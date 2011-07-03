@@ -256,31 +256,39 @@ proc ::enginelist::write {} {
 # Read the user Engine List file now:
 
 catch { ::enginelist::read }
+
 if {[llength $engines(list)] == 0} {
-  # No engines, so set up a default engine list with Scidlet, Toga and Phalanx
 
-  ### scidlet
+  ### No engines, so set up a default engine list with Scidlet, Toga and Phalanx
+  # Engine directory names need updating properly
 
-  if {$::windowsOS} { set cmd [file join $::scidExeDir scidlet.exe]
-  } else { set cmd scidlet }
-
+  if {$::windowsOS} {
+    set cmd [file join $::scidExeDir scidlet.exe]
+  } else {
+    set cmd scidlet
+  }
   engine "Name Scidlet
           Cmd  $cmd
           Dir  ."
 
-  ### toga
-
-  engine "Name Toga
-          Cmd  fruit
-          Dir  $scidUserDir
-          UCI  1"
-
-  ### phalanx
-  # use "Cmd phalanx -g /tmp/phalanx_logfile" for debugging
-
-  engine "Name Phalanx
-          Cmd  phalanx
-          Dir  $scidUserDir"
+  if {$macApp} {
+    engine "Name Toga
+            Cmd  fruit
+            Dir  $scidShareDir/engines/togaII1.2.1a
+            UCI  1"
+    engine "Name Phalanx
+            Cmd  phalanx
+            Dir  $scidShareDir/engines/Phalanx-XXII"
+  } else {
+    engine "Name Toga
+            Cmd  fruit
+            Dir  $scidUserDir
+            UCI  1"
+    # use "Cmd phalanx -g /tmp/phalanx_logfile" for debugging
+    engine "Name Phalanx
+            Cmd  phalanx
+            Dir  $scidUserDir"
+  }
 
 }
 

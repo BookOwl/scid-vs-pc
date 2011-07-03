@@ -695,6 +695,12 @@ namespace eval uci {
     set analysisArgs [lindex $engineData 2]
     set analysisDir [ toAbsPath [lindex $engineData 3] ]
 
+    if {$::macApp && [file pathtype $analysisCommand] != "absolute"} {
+      # Maybe if they put a full path in the config they knew what they wanted?
+      # Otherwise, look in the analysisDir. - dr
+      set analysisCommand [file join $analysisDir $analysisCommand]
+    }
+
     # If the analysis directory is not current dir, cd to it:
     set oldpwd ""
     if {$analysisDir != "."} {

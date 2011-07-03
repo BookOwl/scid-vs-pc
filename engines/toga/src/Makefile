@@ -34,7 +34,7 @@ CXXFLAGS += -fomit-frame-pointer
 
 # strip
 
-LDFLAGS += -s
+#LDFLAGS += -s
 
 # dependencies
 

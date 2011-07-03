@@ -223,7 +223,7 @@ phalanx:
 	$(MAKE) -C engines/Phalanx-XXII CFLAGS="-O3 -fomit-frame-pointer -funroll-loops"
 
 toga:
-	$(MAKE) -C engines/togaII1.2.1a/src
+	$(MAKE) -C engines/toga/src
 
 ### To copy all executables to $BINDIR, with read and execute permission 
 #   for all users, and put extra files in $SHAREDIR, type "make install".
@@ -250,7 +250,7 @@ install_engines: all_engines
 	install -m 755 -d $(SHAREDIR)/engines/Phalanx-XXII
 	install ./engines/Phalanx-XXII/phalanx $(SHAREDIR)/engines/Phalanx-XXII
 	install -m 755 -d $(SHAREDIR)/engines/togaII1.2.1a
-	install ./engines/togaII1.2.1a/src/fruit $(SHAREDIR)/engines/togaII1.2.1a/
+	install ./engines/toga/src/fruit $(SHAREDIR)/engines/togaII1.2.1a/
 
 uninstall:
 	rm -rf $(SHAREDIR)/engines
@@ -270,25 +270,15 @@ uninstall:
 #   Get us back to as nearly a fresh distro state as we can
 #
 distclean: clean
-	rm -f engines/togaII1.2.1a/src/fruit
+	rm -f engines/toga/src/fruit
 	rm -rf ./dist
 
 ### To remove object and executable files: type "make clean".
 #
 clean:
-	rm -f game.* tkscid.so tkscid.dll position.* src/*.o src/zlib/*.o src/zlib/*.a src/polyglot/*.o $(EXECS) scid $(SCRIPTS)
+	rm -f game.* tkscid.so position.* src/*.o src/zlib/*.o src/zlib/*.a src/polyglot/*.o $(EXECS) scid $(SCRIPTS)
 	cd engines/Phalanx-XXII/ && make clean && cd ../../
-	cd engines/togaII1.2.1a/src/ && make clean && cd ../../../
-	cd pocket/toga/src/ && make clean && cd ../../../
-	cd pocket/toga134/src/ && make clean && cd ../../../
-	cd pocket/fruit_21/src/ && make clean && cd ../../../
-	cd pocket/gambitfruit/src/ && make clean && cd ../../../
-	cd pocket/glaurung/src/ && make clean && cd ../../../
-	cd pocket/phalanx/src/ && make clean && cd ../../../
-	cd pocket/viper01/src/ && make clean && cd ../../../
-	rm -f pocket/toga.exe pocket/glaurung.exe
-	rm -rf pocket/scid_pocket
-
+	cd engines/toga/src/ && make clean && cd ../../../
 
 ### To make the executable files smaller: type "make strip".
 #
@@ -306,23 +296,28 @@ scid: $(TCLS)
 	cat $(TCLS) > ./scid
 	chmod +x scid
 
-scid_app: all_scid
-	install -m 755 -d dist/Scid.app/Contents/MacOS
-	install -m 755 -d dist/Scid.app/Contents/Resources/bin
-	install -m 755 -d dist/Scid.app/Contents/Resources/share/scid/data
-	install -m 755 -d dist/Scid.app/Contents/Resources/share/scid/books
-	install -m 755 -d dist/Scid.app/Contents/Resources/share/scid/bases
-	install -m 755 -d dist/Scid.app/Contents/Resources/share/scid/html
-	install -m 755 $(SCRIPTS) $(EXECS) dist/Scid.app/Contents/Resources/bin/
-	install -m 644 -p scid.eco dist/Scid.app/Contents/Resources/share/scid/data/
-	#install -m 666 ./books/* dist/Scid.app/Contents/Resources/share/scid/books/
-	#install -m 666 ./bases/* dist/Scid.app/Contents/Resources/share/scid/bases/
-	install -m 644 icons/scid.icns dist/Scid.app/Contents/Resources/
-	install -m 644 Info.plist dist/Scid.app/Contents/
-	cp -r ./html/* dist/Scid.app/Contents/Resources/share/scid/html/
-	sed -e 's|exec `dirname $$0`/tkscid|exec "$$(cd "$$(dirname "$$0")/$$(dirname $$(readlink "$$0"))"; pwd)/tkscid"|' < scid > dist/Scid.app/Contents/Resources/bin/scid
-	chmod +x dist/Scid.app/Contents/Resources/bin/scid
-	cd dist/Scid.app/Contents/MacOS && ln -sf ../Resources/bin/scid
+scid_app: all_scid all_engines
+	install -m 755 -d dist/ScidVsMac.app/Contents/MacOS
+	install -m 755 -d dist/ScidVsMac.app/Contents/Resources/data
+	install -m 755 -d dist/ScidVsMac.app/Contents/Resources/books
+	install -m 755 -d dist/ScidVsMac.app/Contents/Resources/bases
+	install -m 755 -d dist/ScidVsMac.app/Contents/Resources/engines
+	install -m 755 -d dist/ScidVsMac.app/Contents/Resources/engines/Phalanx-XXII
+	install -m 755 -d dist/ScidVsMac.app/Contents/Resources/engines/togaII1.2.1a
+	install -m 755 -d dist/ScidVsMac.app/Contents/Resources/html
+	install -m 755 $(SCRIPTS) $(EXECS) dist/ScidVsMac.app/Contents/MacOS
+	install -m 755 scid dist/ScidVsMac.app/Contents/MacOS
+	install -m 644 -p scid.eco dist/ScidVsMac.app/Contents/Resources/data/
+	install -m 666 ./books/* dist/ScidVsMac.app/Contents/Resources/books/
+	install -m 666 ./bases/* dist/ScidVsMac.app/Contents/Resources/bases/
+	install -m 755 ./engines/Phalanx-XXII/phalanx dist/ScidVsMac.app/Contents/Resources/engines/Phalanx-XXII/
+	install -m 755 ./engines/toga/*.txt dist/ScidVsMac.app/Contents/Resources/engines/togaII1.2.1a/
+	install -m 755 ./engines/toga/src/fruit dist/ScidVsMac.app/Contents/Resources/engines/togaII1.2.1a/ 
+	install -m 644 icons/scid.icns dist/ScidVsMac.app/Contents/Resources/
+	install -m 644 Info.plist dist/ScidVsMac.app/Contents/
+	cp -r ./html/* dist/ScidVsMac.app/Contents/Resources/html/
+	sed -e 's|exec `dirname $$0`/tkscid|exec "$$(cd "$$(dirname "$$0")/$$(dirname $$(readlink "$$0"))"; pwd)/tkscid"|' < scid > dist/ScidVsMac.app/Contents/MacOS/scid
+	chmod +x dist/ScidVsMac.app/Contents/MacOS/scid
 
 scid_dmg: scid_app
 	hdiutil create -fs "HFS+" -volname Scid -srcfolder dist Scid-$(SCID_VERSION)-$$(uname -p).dmg

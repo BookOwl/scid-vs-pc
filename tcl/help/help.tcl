@@ -3,7 +3,8 @@
 #################################################
 
 set helpTitle(Contents) "$::scidName"
-set helpText(Contents) {<h1>Scid vs. PC</h1>
+set helpText(Contents) "<h1>$::scidName</h1>"
+append helpText(Contents) {
 
   <ht><img splash></ht>
   <ht><a Intro>Introduction</a></ht>

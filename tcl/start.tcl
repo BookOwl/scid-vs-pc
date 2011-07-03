@@ -13,7 +13,6 @@
 exec `dirname $0`/tkscid "$0" "$@"
 
 # Alter the version if any patches have been made to the Tcl code only:
-set scidName {Scid vs. PC}
 set scidVersion 4.4
 set scidVersionDate {May 22, 2011}
 
@@ -29,8 +28,24 @@ package require Tk  8.5
 set windowsOS	[expr {$tcl_platform(platform) == "windows"}]
 set unixOS	[expr {$tcl_platform(platform) == "unix"}]
 
-set macOS 0
-if {![catch {tk windowingsystem} wsystem] && $wsystem == "aqua"} { set macOS 1 }
+if {![catch {tk windowingsystem} wsystem] && $wsystem == "aqua"} {
+  set macOS 1
+  set scidName {Scid vs. Mac}
+} else {
+  set macOS 0
+  set scidName {Scid vs. PC}
+}
+
+# See if we're inside a Mac .app bundle.  This duplcates part of the command-line
+# parsing, which options should probably be done earlier, but I'm afraid to move
+# things around that much - dr
+
+if { $::macOS && ([string first "-psn" [lindex $argv 0]] == 0)} {
+  # Remember that we were invoked in a MacOS app bundle
+  set macApp 1
+} else {
+  set macApp 0
+}
 
 # Check that on Unix, the version of tkscid matches the version of this
 # script or on Windows, that the scid.exe and scid.gui versions are identical.
@@ -137,7 +152,7 @@ set comp(incr) 0
 set comp(seconds) 180
 set comp(timeout) 60
 set comp(rounds) 2
-set comp(name) {Scid vs. PC}
+set comp(name) $scidName
 
 
 ### Tree/mask options:
@@ -1029,7 +1044,7 @@ if { [catch { package require img::png } ] } {
 } else {
   ::splash::add "TkImg found. Enabling png image support."
   set png_image_support 1
-  set boardStyle Usual
+  set boardStyle Merida1
 }
 
 if {[catch {source $optionsFile} ]} {

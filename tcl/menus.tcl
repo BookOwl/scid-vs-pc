@@ -114,18 +114,18 @@ if { $macOS } {
   ### This menu change removes the standard "About Tcl/Tk" widget
   ### and fails to rename the "tkscid" menu to "Scid" , as it appears to be trying to do
 
-  # # Application menu:
-  # .menu add cascade -label Scid -menu .menu.apple
-  # menu .menu.apple
-  # 
-  # set menuindex -1
-  # set m .menu.apple
-  # 
-  # $m add command -label HelpAbout -command helpAbout
-  # set helpMessage($m,[incr menuindex]) HelpAbout
-  #
-  # $m add separator
-  # incr menuindex
+  # Application menu:
+  .menu add cascade -label Scid -menu .menu.apple
+  menu .menu.apple
+
+  set menuindex -1
+  set m .menu.apple
+
+  $m add command -label HelpAbout -command {helpWindow Author}
+  set helpMessage($m,[incr menuindex]) HelpAbout
+
+  $m add separator
+  incr menuindex
 
   bind all <Command-q> "exit"
   bind all <Command-Q> "exit"
