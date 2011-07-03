@@ -12,22 +12,20 @@
 ##### Makefile for Scid for Unix operating systems.
 
 ### Compiler: Most Unix systems use g++ for compiling and linking.
-#
-COMPILE = @COMPILE@
+
+CXX = @CXX@
 CC = @CC@
 LINK = @LINK@
 
 # BINDIR: where the Scid programs are copied for "make install".
-#
+
 BINDIR = @BINDIR@
 
-# SHAREDIR: where scid.eco is copied for "make install".
-#
 SHAREDIR = @SHAREDIR@
 
 ### TCL_VERSION: Set this according to the version of Tcl/Tk you have
-#   installed that you want Scid to use: 8.0, 8.1, 8.2, 8.3, etc.
-#
+#   installed that you want Scid to use: 8.5 / 8.6 / ...
+
 TCL_VERSION = @TCL_VERSION@
 
 # TCL_INCLUDE, TCL_LIBRARY, TK_LIBRARY: these are the compiler options
@@ -36,7 +34,7 @@ TCL_VERSION = @TCL_VERSION@
 #    can use the examples below for help in setting these variables.
 #
 # @CONFIG_RESULT@
-#
+
 TCL_INCLUDE = @TCL_INCLUDE@
 TCL_LIBRARY = @TCL_LIBRARY@
 TK_LIBRARY  = @TK_LIBRARY@
@@ -53,44 +51,32 @@ TK_LIBRARY  = @TK_LIBRARY@
 # TCL_LIBRARY = -L /usr/local/tcl/lib -ltcl$(TCL_VERSION) -ldl
 # TK_LIBRARY  = $(TCL_LIBRARY) -ltk$(TCL_VERSION)
 
-# Someone sent me these settings for SuSE Linux 6.1:
 ### Linux (SuSE distribution):
 # TCL_INCLUDE = -I /usr/X11R6/include
 # TCL_LIBRARY = -L /usr/lib -ltcl$(TCL_VERSION) -ldl
 # TK_LIBRARY  = $(TCL_LIBRARY) -L /usr/X11R6/lib -ltk$(TCL_VERSION) -lX11
 
-# Someone sent me these settings for FreeBSD with Tcl/Tk 8.0:
 ### FreeBSD:
 # TCL_INCLUDE = -I /usr/local/include/tcl8.0 -I /usr/local/include/tk8.0
 # TCL_LIBRARY = -L /usr/local/lib -ltcl80 -ldl
 # TK_LIBRARY  = $(TCL_LIBRARY) -ltk80 -L /usr/X11/lib -lX11
 
 
-########################################
 ### Compiler options:
 
 ### TB: Using Nalimov tablebases with Scid. Use "TB = -DSCID_USE_TB" for 
 #      tablebase support, or just "TB = " for no tablebase capability.
 #      Use "TB = -DSCID_USE_TB -DT41_INCLUDE" to include use of 4-1
 #      (King + 3 pieces vs lone king) tablebases.
-#
+
 TB = @TB@
 
 ### SCIDFLAGS: Scid customization flags.
 #      Use -DZLIB if your system does not have zlib and you need
 #      to include the code in the src/zlib directory.
 #      The default is to use the system zlib library.
-#
-SCIDFLAGS = @SCIDFLAGS@
 
-### OPTIMIZE: Optimization options for C++ compiler.
-#      -O4 is the most optimization for g++. I have found -O2 to do
-#      just as well, but someone reported a noticable difference in speed
-#      between -O4 and -O2 so the default here is -O4.
-#      On some systems, adding "-fno-rtti" and "-fno-exceptions" produces
-#      smaller, faster programs since Scid does not use those C++ features.
-#
-OPTIMIZE = @OPTIMIZE@
+SCIDFLAGS = @SCIDFLAGS@
 
 ### DEBUG: Defining the macro ASSERTIONS will turn on assertions, which
 #       helps to track bugs after modifications, but the programs will run 
@@ -103,17 +89,13 @@ DEBUG = @DEBUG@
 #
 WARNINGS = @WARNINGS@
 
-### PROFILE: Set this to "-pg" for profiling in g++ and gcc.
-#
-PROFILE = @PROFILE@
+#      On some systems, adding "-fno-rtti" and "-fno-exceptions" produces
+#      smaller, faster programs since Scid does not use those C++ features.
 
-### CPP_FLAGS: Flags for C++ compilation.
-#
-CPP_FLAGS = $(PROFILE) $(OPTIMIZE) $(WARNINGS) $(DEBUG) $(SCIDFLAGS)
+CFLAGS = @CFLAGS@ $(WARNINGS) $(DEBUG)
 
-### CFLAGS: Flags for C compilation (only used for compiling zlib).
-#
-CFLAGS = -O2 -Wall $(PROFILE)
+### CXXFLAGS: Flags for C++ compilation.
+CXXFLAGS = $(CFLAGS) $(SCIDFLAGS)
 
 ### LANGUAGES: List of additional Tcl files to include in Scid for
 #       multi-language menu support.
@@ -131,8 +113,8 @@ LANGUAGES = @LANGUAGES@
 ############################################################
 
 ### EXECS: executable programs compiled from C++ files.
-#     Note: scidt and eco2epd are obsolete and not compiled by default.
-#
+# Note: scidt and eco2epd are obsolete and not compiled by default.
+
 EXECS= pgnscid tkscid tcscid scmerge scidlet
 
 ### SCIDOBJS: not all the .o files that make up Scid, just the standard ones 
@@ -237,6 +219,7 @@ install_scid: all_scid
 	install -m 755 -d $(SHAREDIR)/data/
 	install -m 755 scid $(SCRIPTS) $(EXECS) $(BINDIR)
 	install -m 644 -p scid.eco $(SHAREDIR)/data/
+	install -m 644 -p spelling.ssp $(SHAREDIR)
 	install -m 755 -d $(SHAREDIR)/books
 	install -m 666 ./books/* $(SHAREDIR)/books/
 	install -m 755 -d $(SHAREDIR)/bases
@@ -258,12 +241,14 @@ uninstall:
 	rm -rf $(SHAREDIR)/bases
 	rm -rf $(SHAREDIR)/data/
 	rm -f $(SHAREDIR)/data/scid.eco
+	rm -f $(SHAREDIR)/spelling.ssp
 	rm -f $(BINDIR)/scid $(BINDIR)/sc_addmove $(BINDIR)/sc_epgn
 	rm -f $(BINDIR)/sc_spell $(BINDIR)/sc_eco $(BINDIR)/sc_import
 	rm -f $(BINDIR)/sc_remote $(BINDIR)/sc_tree $(BINDIR)/scidpgn
 	rm -f $(BINDIR)/pgnfix $(BINDIR)/spliteco
 	rm -f $(BINDIR)/pgnscid $(BINDIR)/tkscid $(BINDIR)/tcscid
 	rm -f $(BINDIR)/scmerge $(BINDIR)/scidlet
+	rm -f $(BINDIR)/phalanx $(BINDIR)/fruit
 	rm -rf $(SHAREDIR)/html
 	
 
@@ -296,28 +281,32 @@ scid: $(TCLS)
 	cat $(TCLS) > ./scid
 	chmod +x scid
 
+# Mac OSX App
+
 scid_app: all_scid all_engines
-	install -m 755 -d dist/ScidVsMac.app/Contents/MacOS
-	install -m 755 -d dist/ScidVsMac.app/Contents/Resources/data
-	install -m 755 -d dist/ScidVsMac.app/Contents/Resources/books
-	install -m 755 -d dist/ScidVsMac.app/Contents/Resources/bases
-	install -m 755 -d dist/ScidVsMac.app/Contents/Resources/engines
-	install -m 755 -d dist/ScidVsMac.app/Contents/Resources/engines/Phalanx-XXII
-	install -m 755 -d dist/ScidVsMac.app/Contents/Resources/engines/togaII1.2.1a
-	install -m 755 -d dist/ScidVsMac.app/Contents/Resources/html
-	install -m 755 $(SCRIPTS) $(EXECS) dist/ScidVsMac.app/Contents/MacOS
-	install -m 755 scid dist/ScidVsMac.app/Contents/MacOS
-	install -m 644 -p scid.eco dist/ScidVsMac.app/Contents/Resources/data/
-	install -m 666 ./books/* dist/ScidVsMac.app/Contents/Resources/books/
-	install -m 666 ./bases/* dist/ScidVsMac.app/Contents/Resources/bases/
-	install -m 755 ./engines/Phalanx-XXII/phalanx dist/ScidVsMac.app/Contents/Resources/engines/Phalanx-XXII/
-	install -m 755 ./engines/toga/*.txt dist/ScidVsMac.app/Contents/Resources/engines/togaII1.2.1a/
-	install -m 755 ./engines/toga/src/fruit dist/ScidVsMac.app/Contents/Resources/engines/togaII1.2.1a/ 
-	install -m 644 icons/scid.icns dist/ScidVsMac.app/Contents/Resources/
-	install -m 644 Info.plist dist/ScidVsMac.app/Contents/
-	cp -r ./html/* dist/ScidVsMac.app/Contents/Resources/html/
-	sed -e 's|exec `dirname $$0`/tkscid|exec "$$(cd "$$(dirname "$$0")/$$(dirname $$(readlink "$$0"))"; pwd)/tkscid"|' < scid > dist/ScidVsMac.app/Contents/MacOS/scid
-	chmod +x dist/ScidVsMac.app/Contents/MacOS/scid
+	install -m 755 -d dist/ScidvsMac.app/Contents/MacOS
+	install -m 755 -d dist/ScidvsMac.app/Contents/Resources/data
+	install -m 755 -d dist/ScidvsMac.app/Contents/Resources/books
+	install -m 755 -d dist/ScidvsMac.app/Contents/Resources/bases
+	install -m 755 -d dist/ScidvsMac.app/Contents/Resources/engines
+	install -m 755 -d dist/ScidvsMac.app/Contents/Resources/engines/Phalanx-XXII
+	install -m 755 -d dist/ScidvsMac.app/Contents/Resources/engines/togaII1.2.1a
+	install -m 755 -d dist/ScidvsMac.app/Contents/Resources/html
+	install -m 755 $(SCRIPTS) $(EXECS) dist/ScidvsMac.app/Contents/MacOS
+	install -m 755 scid dist/ScidvsMac.app/Contents/MacOS
+	install -m 644 -p scid.eco dist/ScidvsMac.app/Contents/Resources/data/
+	install -m 666 ./books/* dist/ScidvsMac.app/Contents/Resources/books/
+	install -m 666 ./bases/* dist/ScidvsMac.app/Contents/Resources/bases/
+	install -m 755 ./engines/Phalanx-XXII/phalanx dist/ScidvsMac.app/Contents/Resources/engines/Phalanx-XXII/
+	install -m 755 ./engines/toga/*.txt dist/ScidvsMac.app/Contents/Resources/engines/togaII1.2.1a/
+	install -m 755 ./engines/toga/src/fruit dist/ScidvsMac.app/Contents/Resources/engines/togaII1.2.1a/ 
+	install -m 644 icons/scid.icns dist/ScidvsMac.app/Contents/Resources/
+	install -m 644 Info.plist dist/ScidvsMac.app/Contents/
+	cp -r ./html/* dist/ScidvsMac.app/Contents/Resources/html/
+	sed -e 's|exec `dirname $$0`/tkscid|exec "$$(cd "$$(dirname "$$0")/$$(dirname $$(readlink "$$0"))"; pwd)/tkscid"|' < scid > dist/ScidvsMac.app/Contents/MacOS/scid
+	chmod +x dist/ScidvsMac.app/Contents/MacOS/scid
+
+# Compress App into an OSX disk image
 
 scid_dmg: scid_app
 	hdiutil create -fs "HFS+" -volname Scid -srcfolder dist Scid-$(SCID_VERSION)-$$(uname -p).dmg
@@ -384,11 +373,11 @@ twic2pgn: scripts/twic2pgn.py
 
 scmerge: src/scmerge.o src/misc.o src/index.o src/date.o src/namebase.o \
           src/gfile.o src/bytebuf.o src/textbuf.o src/myassert.o \
-          src/stralloc.o
-	$(LINK) -o scmerge src/scmerge.o $(OBJS) $(ZLIB) $(TCL_LIBRARY)
+          src/stralloc.o src/position.o
+	$(LINK) -o scmerge src/scmerge.o $(OBJS) $(ZLIB)
 
 pgnscid: src/pgnscid.o $(OBJS)
-	$(LINK) $(PROFILE) -o pgnscid src/pgnscid.o $(OBJS) $(ZLIB) $(TCL_LIBRARY)
+	$(LINK) -o pgnscid src/pgnscid.o $(OBJS) $(ZLIB) $(TCL_LIBRARY)
 
 scidlet: src/scidlet.o src/engine.o src/recog.o src/misc.o src/position.o \
           src/dstring.o src/movelist.o src/myassert.o
@@ -411,26 +400,25 @@ eco2epd: src/eco2epd.o $(OBJS) src/pbook.o
 	$(LINK) -o eco2epd src/eco2epd.o $(OBJS) src/pbook.o $(ZLIB)
 
 ### Rules to create .o files from .cpp files:
-#
+
 src/tcscid.o: src/tkscid.cpp
-	$(COMPILE) $(CPP_FLAGS) $(TCL_INCLUDE) -DTCL_ONLY -o src/tcscid.o -c src/tkscid.cpp
+	$(CXX) $(CXXFLAGS) $(TCL_INCLUDE) -DTCL_ONLY -o src/tcscid.o -c src/tkscid.cpp
 
 src/tkscid.o: src/tkscid.cpp
-	$(COMPILE) $(CPP_FLAGS) $(TCL_INCLUDE) -o src/tkscid.o -c src/tkscid.cpp
+	$(CXX) $(CXXFLAGS) $(TCL_INCLUDE) -o src/tkscid.o -c src/tkscid.cpp
 
 ### The endgame tablebase code in the egtb/ subdirectory (not written by me)
-#   gives many warnings, so compile probe.cpp with warnings turned off:
-#
+
 src/probe.o: src/probe.cpp src/egtb/tbindex.cpp src/egtb/tbdecode.c
-	$(COMPILE) $(PROFILE) $(OPTIMIZE) $(DEBUG) $(SCIDFLAGS) $(TB) -o src/probe.o -c src/probe.cpp
+	$(CXX) $(DEBUG) $(SCIDFLAGS) $(TB) -o src/probe.o -c src/probe.cpp
 
 ### Generic rule for all other .cpp files:
-#
+
 %.o: %.cpp
-	$(COMPILE) $(CPP_FLAGS) $(TCL_INCLUDE) -o $@ -c $<
+	$(CXX) $(CXXFLAGS) $(TCL_INCLUDE) -o $@ -c $<
 
 ### Rule for compiling zlib source files:
-#
+
 src/zlib/%.o: src/zlib/%.c
 	$(CC) $(CFLAGS) -o $@ -c $<
 
