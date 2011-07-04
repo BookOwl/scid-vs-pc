@@ -159,6 +159,8 @@ proc ::bookmarks::Go {entry} {
   set fname [lindex $entry 2]
   set gnum [lindex $entry 3]
   set ply [lindex $entry 4]
+
+  # Is the base already open ?
   set slot [sc_base slot $fname]
   if {$slot != 0} {
     sc_base switch $slot
@@ -173,7 +175,6 @@ proc ::bookmarks::Go {entry} {
       return
     }
     unbusyCursor .
-    set ::glist 1
     ::recentFiles::add "[file rootname $fname].si4"
   }
   # Find and load the best database game matching the bookmark:
@@ -191,8 +192,11 @@ proc ::bookmarks::Go {entry} {
   } else {
     sc_move pgn $ply
     flipBoardForPlayerNames $::myPlayerNames
+
+    # show this game in gamelist
+    set ::glistStart([sc_base current]) $best
   }
-  ::windows::gamelist::Refresh
+  ::windows::gamelist::Reload
   ::windows::stats::Refresh
   updateMenuStates
   updateBoard -pgn
