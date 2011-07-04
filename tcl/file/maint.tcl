@@ -1495,6 +1495,7 @@ proc makeBaseReadOnly {{parent .}} {
   if {$result == "yes"} {
     sc_base isReadOnly set
     updateMenuStates
+    configDeleteButtons
   }
 }
 

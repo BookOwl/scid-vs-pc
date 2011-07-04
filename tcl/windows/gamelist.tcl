@@ -546,32 +546,36 @@ proc ::windows::gamelist::Configure {window} {
 }
 
 proc configDeleteButtons {} {
+  # also check the Flag button
   set w .glistWin
   # debug puts [sc_base current] &&&
   if {[sc_base current] == [sc_info clipbase]} {
-    ### clipbase open
+    ### Can't compact clipbase
+    $w.c.empty configure -state disabled
+    $w.c.flag configure -state normal
+    $w.c.title configure -state normal
+    $w.c.delete configure -state normal
+  } elseif {[sc_base isReadOnly]} {
+    $w.c.flag configure -state disabled
+    $w.c.title configure -state disabled
     $w.c.delete configure -state disabled
     $w.c.empty configure -state disabled
   } else {
-    if {[sc_base isReadOnly]} {
-      $w.c.delete configure -state disabled
-      $w.c.empty configure -state disabled
-    } else {
 
-      ### do we want to always check the delete and flag buttons ? &&&
-      #  if {[.glistWin.tree selection] == ""} disable delete, flag
-      # $w.tree tag bind click <Button-1> {configDeleteButtons}
+    ### do we want to always check the delete and flag buttons ? &&&
+    #  if {[.glistWin.tree selection] == ""} disable delete, flag
+    # $w.tree tag bind click <Button-1> {configDeleteButtons}
 
-      $w.c.delete configure -state normal
-      $w.c.empty configure -state normal
+    $w.c.flag configure -state normal
+    $w.c.title configure -state normal
+    $w.c.delete configure -state normal
+    $w.c.empty configure -state normal
 
-      ### too slow!
-      # if {[compactGamesNull]} 
-      #  $w.c.empty configure -state disabled
-      # else 
-      #  $w.c.empty configure -state normal
-      
-    }
+    ### too slow!
+    # if {[compactGamesNull]} 
+    #  $w.c.empty configure -state disabled
+    # else 
+    #  $w.c.empty configure -state normal
   }
 }
 
