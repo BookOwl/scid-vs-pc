@@ -46,13 +46,13 @@ set markTacticalExercises 0
 ################################################################################
 # The different threshold values for !? ?? += etc
 array set informant {}
-set informant("!?") 0.5
-set informant("?") 1.5
-set informant("??") 3.0
-set informant("?!") 0.5
-set informant("+=") 0.5
+set informant("!?")  0.5
+set informant("?")   1.5
+set informant("??")  3.0
+set informant("?!")  0.5
+set informant("+=")  0.5
 set informant("+/-") 1.5
-set informant("+-") 3.0
+set informant("+-")  3.0
 set informant("++-") 5.5
 
 ################################################################################
@@ -1005,6 +1005,7 @@ proc okAnnotation {n} {
   set ::useAnalysisBookName [.configAnnotation.usebook.comboBooks get]
   set ::wentOutOfBook 0
   set ::book::lastBook1 $::useAnalysisBookName
+  set ::prevNag {}
 
   # tactical positions is selected, must be in multipv mode
   if {$::markTacticalExercises} {
@@ -1181,7 +1182,7 @@ proc storeScore {name text} {
 #
 ################################################################################
 proc addAnnotation {} {
-  global analysis annotateMoves annotateBlunders annotateMode blunderThreshold
+  global analysis annotateMoves annotateBlunders annotateMode blunderThreshold prevNag
 
   set n $annotateMode
   if {!$n} {
@@ -1262,19 +1263,6 @@ proc addAnnotation {} {
 
   set text [format "%+.2f" $score]
   if {$annotateBlunders == {allmoves}} {
-    set absdeltamove [expr { abs($deltamove) } ]
-    if { $deltamove < [expr 0.0 - $blunderThreshold] && $tomove == {black} || \
-          $deltamove > $blunderThreshold && $tomove == {white} } {
-      if {$absdeltamove > $::informant("?!") && $absdeltamove <= $::informant("?")} {
-        sc_pos addNag "?!"
-      } elseif {$absdeltamove > $::informant("?") && $absdeltamove <= $::informant("??")} {
-        sc_pos addNag "?"
-        markExercise $prevscore $score
-      } elseif {$absdeltamove > $::informant("??") } {
-        sc_pos addNag "??"
-        markExercise $prevscore $score
-      }
-    }
 
     storeScore $engine_name $text
 
@@ -1285,12 +1273,30 @@ proc addAnnotation {} {
       }
     }
 
-    set nag [ scoreToNag $score ]
-    if {$nag != {}} {
-      sc_pos addNag $nag
-    }
-
     if {$::annotateType != "score" } {
+
+      set absdeltamove [expr { abs($deltamove) } ]
+      if { $deltamove < [expr 0.0 - $blunderThreshold] && $tomove == {black} || \
+	    $deltamove > $blunderThreshold && $tomove == {white} } {
+	if {$absdeltamove > $::informant("?!") && $absdeltamove <= $::informant("?")} {
+	  sc_pos addNag "?!"
+	} elseif {$absdeltamove > $::informant("?") && $absdeltamove <= $::informant("??")} {
+	  sc_pos addNag "?"
+	  markExercise $prevscore $score
+	} elseif {$absdeltamove > $::informant("??") } {
+	  sc_pos addNag "??"
+	  markExercise $prevscore $score
+	}
+      }
+
+      ### Only show common nags if not the same as previous nag!
+      # but this is broke for variations , which arent tested/coded for
+      set nag [ scoreToNag $score ]
+      if {$nag != {} && $nag != $prevNag} {
+	sc_pos addNag $nag
+      }
+      set prevNag $nag
+
       sc_move back
       if { $analysis(prevmoves$n) != {}} {
 	sc_var create
@@ -1374,25 +1380,27 @@ proc addAnnotation {} {
 #
 ################################################################################
 proc scoreToNag {score} {
-  if {$score >= $::informant("+-")} {
+  global informant
+
+  if {$score >= $informant("+-")} {
     return "+-"
   }
-  if {$score >= $::informant("+/-")} {
+  if {$score >= $informant("+/-")} {
     return "+/-"
   }
-  if {$score >= $::informant("+=")} {
+  if {$score >= $informant("+=")} {
     return "+="
   }
-  if { $score >= [expr 0.0 - $::informant("+=") ]} {
+  if { $score >= 0.0 - $informant("+=")} {
     return "="
   }
-  if {$score <= [expr 0.0 - $::informant("+-") ]} {
+  if {$score <= 0.0 - $informant("+-")} {
     return "-+"
   }
-  if {$score <= [expr 0.0 - $::informant("+/-") ]} {
+  if {$score <= 0.0 - $informant("+/-")} {
     return "-/+"
   }
-  if {$score <= [expr 0.0 - $::informant("+=") ]} {
+  if {$score <= 0.0 - $informant("+=")} {
     return "-="
   }
 }
