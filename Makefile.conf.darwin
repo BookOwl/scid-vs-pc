@@ -295,6 +295,7 @@ scid_app: all_scid all_engines
 	install -m 755 $(SCRIPTS) $(EXECS) dist/ScidvsMac.app/Contents/MacOS
 	install -m 755 scid dist/ScidvsMac.app/Contents/MacOS
 	install -m 644 -p scid.eco dist/ScidvsMac.app/Contents/Resources/data/
+	install -m 644 -p spelling.ssp dist/ScidvsMac.app/Contents/Resources/
 	install -m 666 ./books/* dist/ScidvsMac.app/Contents/Resources/books/
 	install -m 666 ./bases/* dist/ScidvsMac.app/Contents/Resources/bases/
 	install -m 755 ./engines/Phalanx-XXII/phalanx dist/ScidvsMac.app/Contents/Resources/engines/Phalanx-XXII/
