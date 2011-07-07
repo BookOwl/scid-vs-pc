@@ -479,7 +479,7 @@ proc showVars {} {
   wm title $w $::tr(Variations)
   set h [expr $numVars + 1]
   if { $h> 19} { set h 19 }
-  listbox $w.lbVar -selectmode browse -height $h -width 20
+  listbox $w.lbVar -selectmode browse -height $h -width 30
   pack $w.lbVar -expand yes -fill both -side top
 
   #insert main line
