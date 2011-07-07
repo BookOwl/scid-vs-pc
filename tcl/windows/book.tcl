@@ -18,10 +18,18 @@ namespace eval book {
   set exportCount 0
   set exportMax 3000
   set hashList ""
+
+  ### Book Slots
+  # I've made a patch to only open bookSlot2 when required. I should apply it, but it complicates code.
   set bookSlot1 0
-  set bookSlot2 1
-  # Whats the significance of "bookTuningSlot 2"
+  set bookSlot2 3
   set bookTuningSlot 2
+
+  ### Slots must/should be unique to avoid conflicts. Other book slots used are:
+  # I tried changing bookSlot (sergame.tcl) to 4 ... but sergame books opening then dumps core - unsure why
+  # analysisBookSlot 1 (analysis.tcl) 
+  # bookSlot         2 (serame.tcl) 
+  # engineSlot       5 (tactics.tcl)
 
   ################################################################################
   # open a book, closing any previously opened one (called by annotation analysis)
