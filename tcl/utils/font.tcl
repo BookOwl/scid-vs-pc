@@ -257,9 +257,7 @@ proc FontDialogFixed {parent} {
 }
 
 proc FontDialogRegular {parent} {
-  global fontOptions
-  global graphFigurineAvailable
-  global graphFigurineFamily
+  global fontOptions graphFigurineAvailable graphFigurineFamily
 
   set fontOptions(temp) [FontDialog Regular $parent]
   if {$fontOptions(temp) != {}} { set fontOptions(Regular) $fontOptions(temp) }
@@ -360,7 +358,7 @@ proc FontSlant {style} {
 ### FontDialogRegen: Regenerates font from attributes.
 
 proc FontDialogRegen { font_name } {
-  global fd_family fd_style fd_size
+  global fd_family fd_style fd_size graphFigurineAvailable
 
   set weight "normal"
   if { $fd_style == "Bold Italic" || $fd_style == "Bold" } {
@@ -376,7 +374,9 @@ proc FontDialogRegen { font_name } {
   font configure $font_name -family $fd_family -size $fd_size -slant $slant -weight $weight
   if {$font_name == "font_Regular" } {
       font configure font_Bold -family $fd_family -size $fd_size -slant $slant
-      font configure font_Figurine -size $fd_size 
+      if {$graphFigurineAvailable} {
+	  font configure font_Figurine -size $fd_size 
+      }
   }
 }
 
