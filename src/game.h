@@ -212,6 +212,7 @@ enum gameFormatT {
 #define PGN_STYLE_SCIDFLAGS      512
 #define PGN_STYLE_STRIP_MARKS   1024   // Strip [%mark] and [%arrow] codes.
 #define PGN_STYLE_NO_NULL_MOVES 2048   // Convert null moves to comments.
+#define PGN_STYLE_UNICODE       4096   // Use U+2654..U+2659 for figurine
 
 
 void  game_printNag (byte nag, char * str, bool asSymbol, gameFormatT format);

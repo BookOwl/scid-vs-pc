@@ -8025,6 +8025,7 @@ sc_game_novelty (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
 //      -base (number): Print the game from the numbered base.
 //      -gameNumber (number): Print the numbered game instead of the
 //        active game.
+//      -unicode (0|1): use unicocde characters (e.g. U+2654 for king). Default=0.
 int
 sc_game_pgn (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
 {
@@ -8032,14 +8033,14 @@ sc_game_pgn (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
         "-column", "-comments", "-base", "-gameNumber", "-format",
         "-shortHeader", "-indentComments", "-indentVariations",
         "-symbols", "-tags", "-variations", "-width", "-space",
-        "-markCodes",
+        "-markCodes", "-unicode",
         NULL
     };
     enum {
         OPT_COLUMN, OPT_COMMENTS, OPT_BASE, OPT_GAME_NUMBER, OPT_FORMAT,
         OPT_SHORT_HDR, OPT_INDENT_COMMENTS, OPT_INDENT_VARS,
         OPT_SYMBOLS, OPT_TAGS, OPT_VARS, OPT_WIDTH, OPT_SPACE,
-        OPT_NOMARKS
+        OPT_NOMARKS, OPT_UNICODE,
     };
 
     scidBaseT * base = db;
@@ -8118,7 +8119,7 @@ sc_game_pgn (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
             uint bitmask = 0;
             switch (index) {
                 case OPT_COLUMN:
-                    bitmask = PGN_STYLE_COLUMN;        break;
+                    bitmask = PGN_STYLE_COLUMN;          break;
                 case OPT_COMMENTS:
                     bitmask = PGN_STYLE_COMMENTS;        break;
                 case OPT_SYMBOLS:
@@ -8136,7 +8137,9 @@ sc_game_pgn (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
                 case OPT_INDENT_COMMENTS:
                     bitmask = PGN_STYLE_INDENT_COMMENTS; break;
                 case OPT_NOMARKS:
-                    bitmask = PGN_STYLE_STRIP_MARKS;       break;
+                    bitmask = PGN_STYLE_STRIP_MARKS;     break;
+                case OPT_UNICODE:
+                    bitmask = PGN_STYLE_UNICODE;         break;
                 default: // unreachable!
                     return errorResult (ti, "Invalid option.");
             };

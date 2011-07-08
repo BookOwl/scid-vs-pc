@@ -217,12 +217,12 @@ proc updateHelpWindow {name {heading {}}} {
 
   if {$::windowsOS} {
     bind $w <Control-MouseWheel> {
-      if {[expr -%D] < 0} {FontBigger ; break}
-      if {[expr -%D] > 0} {FontSmaller ; break}
+      if {[expr -%D] < 0} {FontBiggerSmaller 1 ; break}
+      if {[expr -%D] > 0} {FontBiggerSmaller -1 ; break}
     }
   } else {
-    bind $w <Control-Button-4> {FontBigger ; break}
-    bind $w <Control-Button-5> {FontSmaller ; break}
+    bind $w <Control-Button-4> {FontBiggerSmaller 1 ; break}
+    bind $w <Control-Button-5> {FontBiggerSmaller -1 ; break}
   }
 
   ::htext::display $w.text $helptext $heading 0
@@ -235,6 +235,8 @@ proc ::htext::updateRate {w rate} {
 }
 
 proc ::htext::init {w} {
+  global graphFigurineAvailable
+
   set cyan {#007000}
   set maroon {#990000}
   set green {#008b00}
@@ -302,6 +304,10 @@ proc ::htext::init {w} {
   $w tag configure ip2 -lmargin1 50 -lmargin2 50
   $w tag configure ip3 -lmargin1 75 -lmargin2 75
   $w tag configure ip4 -lmargin1 100 -lmargin2 100
+
+  if {$graphFigurineAvailable} {
+    $w tag configure f -font font_Figurine
+  }
 }
 
 proc ::htext::isLinkTag {tagName} {

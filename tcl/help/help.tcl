@@ -1774,18 +1774,23 @@ set helpTitle(PGN) "PGN"
 set helpText(PGN) {<h1>PGN</h1>
 
   <p>
-  <b>Portable Game Notation</b> is a common standard for representing
-  chess games.  A PGN file consists of two
-  sections - a <b>Header</b> containing tags such as
-  [White "Kasparov, Gary"] and
-  [Result "1/2-1/2"], and a <b>Body</b> containing the actual moves in standard
-  algebraic notation (SAN) along with any variations, <a NAGs>annotation
-  symbols</a> and <a Comment>comments</a>.
+  Scid's <run ::pgn::OpenClose><green>PGN Window</green></run> shows the
+  current game in standard PGN representation.  In the move text, comments appear
+  in braces <b>{}</b> and variations in parentheses <b>()</b>.
   </p>
 
   <p>
-  Scid's <run ::pgn::OpenClose><green>PGN Window</green></run> shows the current game in standard PGN representation.
-  In the move text, comments appear in braces <b>{}</b> and variations in parentheses <b>()</b>.
+  The <b>Chess Pieces</b> option displays small chess pieces, for a small performance loss.
+  </p>
+
+  <p>
+  <i>Portable Game Notation is a common standard for representing
+  chess games.  A PGN file consists of two
+  sections - a 'Header' containing tags such as
+  [White "Kasparov, Gary"] and
+  [Result "1/2-1/2"], and a 'Body' containing the actual moves in standard
+  algebraic notation (SAN) along with any variations, <a NAGs>annotation
+  symbols</a> and <a Comment>comments</a></i>.
   </p>
 
   <h3>General Use</h3>
@@ -1813,12 +1818,12 @@ set helpText(PGN) {<h1>PGN</h1>
   <h3>Options</h3>
   <p>
   The PGN menu-bar contains options about how the game is displayed.
-  Some of them include: Color or Plain text, 3-line Header
+  Some of them include: Chess Pieces, Color or Plain text, 3-line Header
 and Column Style. 
-  The Color Display is easier to read, and allows you click on moves
-  , but it is much slower and can cause lag.
   </p>
   <p>
+  If True Type fonts are supported, the <b>Chess Pieces</b> option will show chess figures instead of letters. This may decrease performance.
+  One slow systems, deselecting 'Color Display', will speed things up but with reduced features..
   You can also alter the format of comments and variations, choosing
   to display them indented on a separate line for greater visibility.
   </p>

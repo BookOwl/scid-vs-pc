@@ -3,6 +3,22 @@
 #
 
 namespace eval pgn {
+
+  ################################################################################
+  # truetype support
+  ################################################################################
+  variable graphFigurineInComments 1
+  variable substUnicode { "\u2654" "<f>\u2654</f>"
+                          "\u2655" "<f>\u2655</f>"
+                          "\u2656" "<f>\u2656</f>"
+                          "\u2657" "<f>\u2657</f>"
+                          "\u2658" "<f>\u2658</f>"
+                          "\u2659" "<f>\u2659</f>"
+                        }
+  variable substPlaceHolders { "\\K\\" "\u2654" "\\Q\\" "\u2655" "\\R\\" "\u2656"
+                               "\\B\\" "\u2657" "\\N\\" "\u2658" "\\P\\" "\u2659"
+                             }
+
   ################################################################################
   #
   ################################################################################
@@ -36,6 +52,23 @@ namespace eval pgn {
     foreach idx {0 1} tag {PgnHelpPgn PgnHelpIndex} {
       configMenuText $m.help $idx $tag $lang
     }
+  }
+  ################################################################################
+  #
+  ################################################################################
+  proc PrepareForDisplay {str} {
+	 global useGraphFigurine
+    variable graphFigurineInComments
+    variable substPlaceHolders
+    variable substUnicode
+
+    if {!$useGraphFigurine} { return $str }
+    if {$graphFigurineInComments} {
+      regsub -all {([KQRBNP])([a-h1-8])?(x)?([a-h][1-8])} $str {\\\1\\\2\3\4} str
+      regsub -all {([a-h][1-8]=)([KQRBN])} $str {\1\\\2\\} str
+      set str [string map $substPlaceHolders $str]
+    }
+    return [string map $substUnicode $str]
   }
   ################################################################################
   #
@@ -90,6 +123,13 @@ namespace eval pgn {
         -variable ::pgn::symbolicNags -command {updateBoard -pgn}
     $w.menu.opt add checkbutton -label PgnOptStripMarks \
         -variable ::pgn::stripMarks -command {updateBoard -pgn}
+    if {$::graphFigurineAvailable} {
+      $w.menu.opt add checkbutton -label {Chess Pieces} \
+	  -variable ::useGraphFigurine -command {updateBoard -pgn}
+    } else {
+      $w.menu.opt add checkbutton -label {Chess Pieces} \
+	  -variable ::useGraphFigurine -command {updateBoard -pgn} -state disabled
+    }
 
     $w.menu.opt add separator
 
@@ -167,12 +207,12 @@ namespace eval pgn {
     bind $w <KeyPress-z> [bind . <KeyPress-z>]
     if {$::windowsOS} {
       bind $w <Control-MouseWheel> {
-	if {[expr -%D] < 0} {FontBigger ; break}
-	if {[expr -%D] > 0} {FontSmaller ; break}
+	if {[expr -%D] < 0} {FontBiggerSmaller 1 ; break}
+	if {[expr -%D] > 0} {FontBiggerSmaller -1 ; break}
       }
     } else {
-      bind $w <Control-Button-4> {FontBigger ; break}
-      bind $w <Control-Button-5> {FontSmaller ; break}
+      bind $w <Control-Button-4> {FontBiggerSmaller 1 ; break}
+      bind $w <Control-Button-5> {FontBiggerSmaller -1 ; break}
     }
     bind $w <Configure> "recordWinSize $w"
 
@@ -412,6 +452,8 @@ namespace eval pgn {
   #    tags will be updated.
   ################################################################################
   proc Refresh {{pgnNeedsUpdate 0}} {
+	 global useGraphFigurine
+
     if {![winfo exists .pgnWin]} { return }
 
     set format plain
@@ -420,7 +462,8 @@ namespace eval pgn {
     set pgnStr [sc_game pgn -symbols $::pgn::symbolicNags \
         -indentVar $::pgn::indentVars -indentCom $::pgn::indentComments \
         -space $::pgn::moveNumberSpaces -format $format -column $::pgn::columnFormat \
-        -short $::pgn::shortHeader -markCodes $::pgn::stripMarks]
+        -short $::pgn::shortHeader -markCodes $::pgn::stripMarks \
+        -unicode $useGraphFigurine]
     # debug puts $pgnStr
 
     if {$pgnNeedsUpdate} {
@@ -430,9 +473,9 @@ namespace eval pgn {
       .pgnWin.text delete 0.0 end
       if {$::pgn::showColor} {
         if {$::pgn::indentComments} {
-	  ::htext::display .pgnWin.text $pgnStr {} 2
+	  ::htext::display .pgnWin.text [PrepareForDisplay $pgnStr] {} 2
         } else {
-	  ::htext::display .pgnWin.text $pgnStr
+	  ::htext::display .pgnWin.text [PrepareForDisplay $pgnStr]
         }
       } else {
         .pgnWin.text insert 1.0 $pgnStr

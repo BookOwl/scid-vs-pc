@@ -258,6 +258,8 @@ proc FontDialogFixed {parent} {
 
 proc FontDialogRegular {parent} {
   global fontOptions
+  global graphFigurineAvailable
+  global graphFigurineFamily
 
   set fontOptions(temp) [FontDialog Regular $parent]
   if {$fontOptions(temp) != {}} { set fontOptions(Regular) $fontOptions(temp) }
@@ -272,6 +274,9 @@ proc FontDialogRegular {parent} {
   font configure font_H3 -family $font -size [expr {$fontsize + 4} ]
   font configure font_H4 -family $font -size [expr {$fontsize + 2} ]
   font configure font_H5 -family $font -size [expr {$fontsize + 0} ]
+  if {$graphFigurineAvailable} {
+    font configure font_Figurine -family $graphFigurineFamily -size $fontsize
+  }
 }
 
 proc FontDialogMenu {parent} {
@@ -371,19 +376,29 @@ proc FontDialogRegen { font_name } {
   font configure $font_name -family $fd_family -size $fd_size -slant $slant -weight $weight
   if {$font_name == "font_Regular" } {
       font configure font_Bold -family $fd_family -size $fd_size -slant $slant
+      font configure font_Figurine -size $fd_size 
   }
 }
 
-proc FontBigger {} {
-  set fontsize [font configure font_Regular -size]
-  font configure font_Bold -size [incr fontsize]
-  font configure font_Regular -size [incr fontsize]
-}
+proc FontBiggerSmaller {incr} {
+  global fd_size fontOptions graphFigurineAvailable
 
-proc FontSmaller {} {
-  set fontsize [font configure font_Regular -size]
-  font configure font_Bold -size [incr fontsize -1]
-  font configure font_Regular -size [incr fontsize -1]
+  set fd_size [font configure font_Regular -size]
+  incr fd_size $incr
+
+  font configure font_Bold -size $fd_size
+  font configure font_Regular -size $fd_size
+  font configure font_Italic -size $fd_size
+  font configure font_BoldItalic -size $fd_size
+  font configure font_H1 -size [expr $fd_size + 8]
+  font configure font_H2 -size [expr $fd_size + 6]
+  font configure font_H3 -size [expr $fd_size + 4]
+  font configure font_H4 -size [expr $fd_size + 2]
+  if {$graphFigurineAvailable} {
+    font configure font_Figurine -size $fd_size
+  }
+
+  set fontOptions(Regular) [lreplace $fontOptions(Regular) 1 1 $fd_size]
 }
 
 ### End of file: font.tcl

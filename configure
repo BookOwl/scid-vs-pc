@@ -408,6 +408,21 @@ proc writeMakefile {{type ""}} {
        exit 1
     }
 
+    if {"$::tcl_platform(os)" == "Darwin"} {
+        set var(FONTDIR) /Library/Fonts/
+    } else {
+	if {[string match {/usr/local*} $var(BINDIR)] && [file isdirectory /usr/local/share/fonts]} {
+		set prefix /usr/local
+	} else {
+		set prefix /usr
+	}
+	if {![file isdirectory $prefix/share/fonts]} {
+		set var(FONTDIR) "~/.fonts"
+	} else {
+		set var(FONTDIR) $prefix/share/fonts/truetype/Scid
+	}
+    }
+
     set line [gets $from]
     while {1} {
         set line [gets $from]

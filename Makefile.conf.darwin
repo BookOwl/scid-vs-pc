@@ -23,6 +23,8 @@ BINDIR = @BINDIR@
 
 SHAREDIR = @SHAREDIR@
 
+FONTDIR = @FONTDIR@
+
 ### TCL_VERSION: Set this according to the version of Tcl/Tk you have
 #   installed that you want Scid to use: 8.5 / 8.6 / ...
 
@@ -227,6 +229,21 @@ install_scid: all_scid
 	install -m 755 -d $(SHAREDIR)/html
 	cp -r ./html/* $(SHAREDIR)/html/
 	chmod -R 0777 $(SHAREDIR)/html/*
+	@if [ "`id -u`" -eq 0 ]; then \
+		install -m 644 -p fonts/*.ttf $(FONTDIR); \
+	else \
+		install -m 644 -p fonts/*.ttf ~/Library/Fonts; \
+	fi
+	@if [ ! -z "`which fc-cache`" ]; then \
+		if [ "`id -u`" -eq 0 ]; then \
+ 			fc-cache -fv $(FONTDIR); \
+		else \
+			fc-cache -fv ~/Library/Fonts; \
+		fi; \
+	else \
+		echo "Don't know how to setup truetype fonts (fc-cache not available)."; \
+		echo "Please contact your system administrator."; \
+	fi
 
 install_engines: all_engines
 	install -m 755 -d $(SHAREDIR)/engines
@@ -250,6 +267,21 @@ uninstall:
 	rm -f $(BINDIR)/scmerge $(BINDIR)/scidlet
 	rm -f $(BINDIR)/phalanx $(BINDIR)/fruit
 	rm -rf $(SHAREDIR)/html
+	@if [ "`id -u`" -eq 0 ]; then \
+		for f in `ls fonts/*.ttf`; do \
+			rm -f $(FONTDIR)/`basename $$f`; \
+		done; \
+		if [ ! -z "`which fc-cache`" ]; then \
+			fc-cache -fv $(FONTDIR); \
+		fi; \
+	else \
+		for f in `ls fonts/*.ttf`; do \
+			rm -f ~/Library/Fonts/`basename $$f`; \
+		done; \
+		if [ ! -z "`which fc-cache`" ]; then \
+			fc-cache -fv ~/Library/Fonts; \
+		fi; \
+	fi
 	
 
 #   Get us back to as nearly a fresh distro state as we can

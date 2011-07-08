@@ -2227,15 +2227,37 @@ Game::WriteMoveList (TextBuffer *tb, uint plyCount,
 		tb->PrintString (nextColumn);
 		tb->ResumeTranslations();
 	    }
-	    // translate pieces
-	    strcpy(tempTrans, m->san);
-	    transPieces(tempTrans);
-	    //tb->PrintWord (m->san);
-	    tb->PrintWord (tempTrans);
-	    colWidth -= strLength (m->san);
-	    if (IsColorFormat()) {
-		tb->PrintString ("</m>");
+		if (IsColorFormat() && (PgnStyle & PGN_STYLE_UNICODE)) {
+			char buf[100];
+			char* q = buf;
+
+			for (char const* p = m->san; *p; ++p) {
+				ASSERT(q - buf < sizeof(buf) - 4);
+
+				switch (*p) {
+					case 'K':	q = strncpy(q, "\xe2\x99\x94", 3) + 3; break;
+					case 'Q':	q = strncpy(q, "\xe2\x99\x95", 3) + 3; break;
+					case 'R':	q = strncpy(q, "\xe2\x99\x96", 3) + 3; break;
+					case 'B':	q = strncpy(q, "\xe2\x99\x97", 3) + 3; break;
+					case 'N':	q = strncpy(q, "\xe2\x99\x98", 3) + 3; break;
+					case 'P':	q = strncpy(q, "\xe2\x99\x99", 3) + 3; break;
+					default:	*q++ = *p; break;
+				}
+
+			}
+			*q = '\0';
+			tb->PrintWord (buf);
+		} else {
+			// translate pieces
+			strcpy(tempTrans, m->san);
+			transPieces(tempTrans);
+			//tb->PrintWord (m->san);
+			tb->PrintWord (tempTrans);
 	    }
+		colWidth -= strLength (m->san);
+		if (IsColorFormat()) {
+			tb->PrintString ("</m>");
+		}
         }
 
         bool endedColumn = false;
