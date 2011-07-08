@@ -123,6 +123,9 @@ namespace eval pgn {
         -variable ::pgn::symbolicNags -command {updateBoard -pgn}
     $w.menu.opt add checkbutton -label PgnOptStripMarks \
         -variable ::pgn::stripMarks -command {updateBoard -pgn}
+
+    $w.menu.opt add separator
+
     if {$::graphFigurineAvailable} {
       $w.menu.opt add checkbutton -label {Chess Pieces} \
 	  -variable ::useGraphFigurine -command {updateBoard -pgn}
@@ -130,8 +133,6 @@ namespace eval pgn {
       $w.menu.opt add checkbutton -label {Chess Pieces} \
 	  -variable ::useGraphFigurine -command {updateBoard -pgn} -state disabled
     }
-
-    $w.menu.opt add separator
 
     $w.menu.opt add command -label [tr OptionsFonts] -command "FontDialogRegular $w"
 
