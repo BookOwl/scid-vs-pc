@@ -1271,13 +1271,13 @@ if {[::tk windowingsystem] eq "x11"} {
 }
 
 if {$graphFigurineAvailable} {
-	set graphFontFamilies {}
+	set graphFigurineFamilies {}
 	foreach font [font families] {
-		if {[string match -nocase {Scid Chess *} $font]} { lappend graphFontFamilies $font }
+		if {[string match -nocase {Scid Chess *} $font]} { lappend graphFigurineFamilies $font }
 	}
-	if {[lsearch $graphFontFamilies {Scid Chess Traveller}] >= 0} {
+	if {[lsearch $graphFigurineFamilies {Scid Chess Traveller}] >= 0} {
 		set graphFigurineFamily {Scid Chess Traveller}
-	} elseif {[lsearch $graphFontFamilies {Scid Chess Berlin}] >= 0} {
+	} elseif {[lsearch $graphFigurineFamilies {Scid Chess Berlin}] >= 0} {
 		set graphFigurineFamily {Scid Chess Berlin}
 	} elseif {[llength $graphFigurineFamilies] > 0} {
 		set graphFigurineFamily [lindex $graphFigurineFamilies 0]
