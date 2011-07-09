@@ -278,6 +278,8 @@ proc ::windows::eco::KeyPress {key} {
 }
 
 proc ::windows::eco::LoadFile {} {
+  global ecoFile
+
   set ftype { { "Scid ECO files" {".eco"} } }
   if {[sc_info gzip]} {
     set ftype { { "Scid ECO files" {".eco" ".eco.gz"} } }

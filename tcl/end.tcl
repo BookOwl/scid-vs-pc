@@ -1613,7 +1613,7 @@ if {$loadAtStart(eco)} {
     # Could not load, so try "scid.eco" in the current directory:
     if {[catch {sc_eco read "scid.eco"} result]} {
       # Neither attempt worked, so do not use ECO classification
-      ::splash::add "    Unable to open the ECO file: $ecoFile"
+      ::splash::add "    Unable to open the ECO file: $ecoFile" error
     } else {
       ::splash::add "    ECO file \"./scid.eco\" loaded: $result positions."
     }
