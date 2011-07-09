@@ -1983,6 +1983,14 @@ proc makeAnalysisWin { {n 1} } {
   if {$::comp(iconize) && ![winfo exists .enginelist]} {
     wm iconify $w
   }
+
+  ### Set initial size of analysis widget
+  # not sure why these args seem to be in Char and not Pixels.
+  if {![info exists ::winWidth($w)]} {
+    set ::winWidth($w) 44
+    set ::winHeight($w) 8
+  }
+
   setWinLocation $w
   setWinSize $w
   standardShortcuts $w
@@ -2051,8 +2059,8 @@ proc makeAnalysisWin { {n 1} } {
 
 
   pack $w.b.startStop $w.b.move $w.b.line $w.b.alllines \
-       $w.b.multipv $w.b.lockengine $w.b.showinfo $w.b.priority $w.b.showboard \
-       $w.b.update $w.b.finishGame $w.b.annotate $w.b.automove -side left -pady 2 -padx 1
+       $w.b.multipv $w.b.lockengine $w.b.showinfo $w.b.priority $w.b.annotate $w.b.showboard \
+       $w.b.update $w.b.finishGame $w.b.automove -side left -pady 2 -padx 1
   pack $w.b.help -side right -pady 2 -padx 1
 
   # pack  $w.b.showinfo 

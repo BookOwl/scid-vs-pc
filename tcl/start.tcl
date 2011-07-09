@@ -207,11 +207,11 @@ set oldLang X
 
 # Toolbar configuration:
 foreach {tbicon status}  {
-  new 1 open 1 save 1 close 1
-  finder 1 bkm 1 gfirst 1 gprev 1 gnext 1 glast 1
+  new 0 open 0 save 1 close 0
+  finder 0 bkm 1 gfirst 1 gprev 1 gnext 1 glast 1
   newgame 0 copy 0 paste 0
-  rfilter 1 bsearch 1 hsearch 1 msearch 1
-  switcher 1 glist 1 pgn 1 tmt 1 comment 1 maint 1 eco 1 tree 1 crosst 1 engine 1
+  rfilter 0 bsearch 0 hsearch 0 msearch 0
+  glist 1 pgn 1 tmt 1 comment 0 maint 1 eco 0 tree 1 crosst 1 engine 1
 } {
   set toolbar($tbicon) $status
 }
@@ -773,8 +773,8 @@ set ::book::oppMovesVisible 0
 # Engines data:
 set engines(list) {}
 set engines(sort) Time
-set engines(F2)  1
-set engines(F3)  2
+set engines(F2)  2
+set engines(F3)  3
 set engines(F4)  {}
 set engineCoach1 {}
 set engineCoach2 {}
