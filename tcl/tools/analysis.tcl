@@ -273,12 +273,12 @@ if {[llength $engines(list)] == 0} {
 
   if {$macApp} {
     engine "Name Toga
-            Cmd  fruit
-            Dir  $scidShareDir/engines/togaII1.2.1a
+            Cmd  $scidShareDir/engines/toga/fruit
+            Dir  $scidUserDir
             UCI  1"
     engine "Name Phalanx
-            Cmd  phalanx
-            Dir  $scidShareDir/engines/Phalanx-XXII"
+            Cmd  $scidShareDir/engines/phalanx/phalanx
+            Dir  $scidUserDir"
   } else {
     engine "Name Toga
             Cmd  fruit

@@ -532,7 +532,7 @@ set myPlayerNames {}
 set gameInfo(show) 1
 set gameInfo(photos) 1
 set gameInfo(hideNextMove) 0
-set gameInfo(showMaterial) 0
+set gameInfo(showMaterial) 1
 set gameInfo(showFEN) 0
 set gameInfo(showButtons) 1
 set gameInfo(showStatus) 1
