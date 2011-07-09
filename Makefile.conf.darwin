@@ -1,5 +1,5 @@
 ! Makefile.conf
-!    Makefile template for Scid for Unix operating systems.
+!    Makefile template for OSX/Darwin
 !
 ! This file is NOT an actual Makefile; it is a template file used by 
 ! the configure program to produce the actual Makefile for Scid with
@@ -10,8 +10,6 @@
 ! variables enclosed in "@" symbols (such as @TCL_VERSION@) are set.
 !
 ##### Makefile for Scid for Unix operating systems.
-
-### Compiler: Most Unix systems use g++ for compiling and linking.
 
 CXX = @CXX@
 CC = @CC@
@@ -41,31 +39,6 @@ TCL_INCLUDE = @TCL_INCLUDE@
 TCL_LIBRARY = @TCL_LIBRARY@
 TK_LIBRARY  = @TK_LIBRARY@
 
-### Here are other commonly used settings for the Tcl/Tk compiler options:
-
-### Linux (Red Hat and other distributions):
-# TCL_INCLUDE = -I /usr/include
-# TCL_LIBRARY = -L /usr/lib -ltcl$(TCL_VERSION) -ldl
-# TK_LIBRARY  = $(TCL_LIBRARY) -ltk$(TCL_VERSION) -L /usr/X11R6/lib -lX11
-
-### Solaris:
-# TCL_INCLUDE = -I /usr/local/tcl/include
-# TCL_LIBRARY = -L /usr/local/tcl/lib -ltcl$(TCL_VERSION) -ldl
-# TK_LIBRARY  = $(TCL_LIBRARY) -ltk$(TCL_VERSION)
-
-### Linux (SuSE distribution):
-# TCL_INCLUDE = -I /usr/X11R6/include
-# TCL_LIBRARY = -L /usr/lib -ltcl$(TCL_VERSION) -ldl
-# TK_LIBRARY  = $(TCL_LIBRARY) -L /usr/X11R6/lib -ltk$(TCL_VERSION) -lX11
-
-### FreeBSD:
-# TCL_INCLUDE = -I /usr/local/include/tcl8.0 -I /usr/local/include/tk8.0
-# TCL_LIBRARY = -L /usr/local/lib -ltcl80 -ldl
-# TK_LIBRARY  = $(TCL_LIBRARY) -ltk80 -L /usr/X11/lib -lX11
-
-
-### Compiler options:
-
 ### TB: Using Nalimov tablebases with Scid. Use "TB = -DSCID_USE_TB" for 
 #      tablebase support, or just "TB = " for no tablebase capability.
 #      Use "TB = -DSCID_USE_TB -DT41_INCLUDE" to include use of 4-1
@@ -83,12 +56,12 @@ SCIDFLAGS = @SCIDFLAGS@
 ### DEBUG: Defining the macro ASSERTIONS will turn on assertions, which
 #       helps to track bugs after modifications, but the programs will run 
 #       a little faster with assertions turned off.
-#
+
 DEBUG = @DEBUG@
 
 ### WARNINGS: I always compile with all warnings on (-Wall), and all the
 #       files should compile warning-free using g++.
-#
+
 WARNINGS = @WARNINGS@
 
 #      On some systems, adding "-fno-rtti" and "-fno-exceptions" produces
@@ -97,6 +70,7 @@ WARNINGS = @WARNINGS@
 CFLAGS = @CFLAGS@ $(WARNINGS) $(DEBUG)
 
 ### CXXFLAGS: Flags for C++ compilation.
+
 CXXFLAGS = $(CFLAGS) $(SCIDFLAGS)
 
 ### LANGUAGES: List of additional Tcl files to include in Scid for
@@ -104,7 +78,7 @@ CXXFLAGS = $(CFLAGS) $(SCIDFLAGS)
 #       By default, it is all the contributed languages, but you
 #       can reduce the size of the Scid program by only specifying
 #       the languages you want supported.
-#
+
 LANGUAGES = @LANGUAGES@
 
 
@@ -121,13 +95,13 @@ EXECS= pgnscid tkscid tcscid scmerge scidlet
 
 ### SCIDOBJS: not all the .o files that make up Scid, just the standard ones 
 #     that most of the programs include.
-#
+
 SCIDOBJS= src/misc.o src/index.o src/date.o src/namebase.o src/position.o \
       src/game.o src/gfile.o src/matsig.o src/bytebuf.o src/textbuf.o \
       src/myassert.o src/stralloc.o src/mfile.o src/dstring.o src/pgnparse.o \
       src/stored.o src/movelist.o \
-			src/polyglot/attack.o src/polyglot/board.o src/polyglot/book.o \
-			src/polyglot/book_make.o src/polyglot/book_merge.o src/polyglot/colour.o \
+      src/polyglot/attack.o src/polyglot/board.o src/polyglot/book.o \
+      src/polyglot/book_make.o src/polyglot/book_merge.o src/polyglot/colour.o \
       src/polyglot/fen.o src/polyglot/game.o src/polyglot/hash.o \
       src/polyglot/io.o src/polyglot/line.o src/polyglot/list.o src/polyglot/main.o src/polyglot/move.o \
       src/polyglot/move_do.o src/polyglot/move_gen.o src/polyglot/move_legal.o src/polyglot/option.o \
@@ -135,7 +109,7 @@ SCIDOBJS= src/misc.o src/index.o src/date.o src/namebase.o src/position.o \
       src/polyglot/san.o src/polyglot/search.o src/polyglot/square.o src/polyglot/util.o
 
 ### ZLIBOBJS: object files in the zlib compression library.
-#
+
 ZLIBOBJS= src/zlib/adler32.o src/zlib/compress.o src/zlib/crc32.o \
       src/zlib/gzio.o src/zlib/uncompr.o src/zlib/deflate.o src/zlib/trees.o \
       src/zlib/zutil.o src/zlib/inflate.o src/zlib/infblock.o \
@@ -143,15 +117,16 @@ ZLIBOBJS= src/zlib/adler32.o src/zlib/compress.o src/zlib/crc32.o \
       src/zlib/inffast.o
        
 ### ZLIB: Should be "-lz" if your system has zlib, "" otherwise.
-#
+
 ZLIB = @ZLIB@
 
 ### OBJS: Will be "$(SCIDOBJS)", "$(POLYGLOTOBJS)", and also "$(ZLIBOBJS)" if they are
 #      needed on your system.
+
 OBJS= @OBJS@
 
 ### TCLS: all the .tcl files that make up "scid".
-#
+
 TCLS= \
   tcl/start.tcl \
   tcl/config.tcl \
@@ -190,13 +165,13 @@ TCLS= \
 ### SCRIPTS:
 # Small extra programs. Most are written in Tcl using tcscid, but
 # a few contributed ones may be in Python or other languages.
-#
+
 SCRIPTS= sc_addmove sc_epgn sc_spell sc_eco sc_import sc_remote sc_tree scidpgn pgnfix spliteco
 
 ####################
 
 ### Type "make" or "make all" to make all programs:
-#
+
 all: all_scid all_engines
 
 all_scid: scid $(SCRIPTS) $(EXECS)
@@ -211,7 +186,6 @@ toga:
 
 ### To copy all executables to $BINDIR, with read and execute permission 
 #   for all users, and put extra files in $SHAREDIR, type "make install".
-#
 
 install: install_scid install_engines
 
@@ -286,24 +260,21 @@ uninstall:
 
 #   Get us back to as nearly a fresh distro state as we can
 #
+
 distclean: clean
 	rm -f engines/toga/src/fruit
 	rm -rf ./dist
 
-### To remove object and executable files: type "make clean".
-#
 clean:
 	rm -f game.* tkscid.so position.* src/*.o src/zlib/*.o src/zlib/*.a src/polyglot/*.o $(EXECS) scid $(SCRIPTS)
 	cd engines/phalanx/ && make clean && cd ../../
 	cd engines/toga/src/ && make clean && cd ../../../
 
-### To make the executable files smaller: type "make strip".
-#
 strip:
 	strip $(EXECS)
 
 ### To compress scid and executables with gzexe: type "make gzexe".
-#
+
 gzexe:
 	gzexe $(EXECS) scid
 
@@ -313,9 +284,9 @@ scid: $(TCLS)
 	cat $(TCLS) > ./scid
 	chmod +x scid
 
-# Mac OSX App
+### Mac OSX App
 
-scid_app: all_scid all_engines
+app: all_scid all_engines
 	install -m 755 -d dist/ScidvsMac.app/Contents/MacOS
 	install -m 755 -d dist/ScidvsMac.app/Contents/Resources/data
 	install -m 755 -d dist/ScidvsMac.app/Contents/Resources/books
@@ -337,9 +308,13 @@ scid_app: all_scid all_engines
 	install -m 644 Info.plist dist/ScidvsMac.app/Contents/
 	cp -r ./html/* dist/ScidvsMac.app/Contents/Resources/html/
 
-# Compress App into an OSX disk image
+app_install: app
+	install -m 755 -d /Applications/ScidvsMac.app
+	cp -r dist/ScidvsMac.app/* /Applications/ScidvsMac.app
 
-scid_dmg: scid_app
+### Compress App into an OSX disk image
+
+dmg: app
 	hdiutil create -fs "HFS+" -volname Scid -srcfolder dist Scid-$(SCID_VERSION)-$$(uname -p).dmg
 
 sc_addmove: scripts/sc_addmove.tcl

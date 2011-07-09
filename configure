@@ -13,9 +13,6 @@ tclsh=tclsh8.5;
 # The backslash at the end of this line is needed: \
 exec $tclsh "$0" ${1+"$@"}
 
-
-# Default values for Makefile settings:
-
 set var(CXX) g++
 set var(CC) gcc
 set var(LINK) g++
@@ -57,7 +54,7 @@ set defaultVar(TK_LIBRARY) \
 #    has a line containing the regular expression "exp" is returned. If
 #    none of the found files contains the expression, the first file
 #    found is returned.
-#
+
 proc findDir {f path {exp ""}} {
     set best ""
     foreach dir $path {
@@ -79,6 +76,7 @@ proc findDir {f path {exp ""}} {
 # findTclTkPathsDarwin:
 #    Set-up paths using frameworks. Since frameworks are quite
 #    different, the UNIX search logic is not sharable:
+
 proc findTclTkPathsAqua {} {
     global var
     set frameworkPaths "\
@@ -126,11 +124,17 @@ proc findTclTkPathsAqua {} {
 # findTclTkPaths:
 #    Finds all details of the Tcl/Tk installation.
 #    Returns 1 on success, 0 on failure.
-#
+
 proc findTclTkPaths {} {
     global tclv tclv_nodot var
     set success 1
     array set opt {}
+
+    ### Look for frameworks *before* any system inslaled wish.
+    # The problem is, snow leopard ships with a broken Wish (8.5.7) and users
+    # upgrading manually must replace the framework, not just install a new
+    # wish on the Unix tree. (Is this correct ?)
+
     if {"$::tcl_platform(os)" == "Darwin" && [findTclTkPathsAqua]} {
         # Frameworks found, stop looking for paths:
         return 1
@@ -371,8 +375,6 @@ proc checkZlib {} {
 proc writeMakefile {{type ""}} {
     global var defaultVar
   
-    puts "writeMakefile ($type)"
-    puts " [pwd]"
     set Makefile_conf "Makefile.conf"
     if {"$::tcl_platform(os)" == "Darwin" && [findTclTkPathsAqua]} {
         set Makefile_conf "Makefile.conf.darwin"
@@ -452,7 +454,7 @@ proc writeMakefile {{type ""}} {
         puts {The default Makefile was written.}
     } elseif {$success} {
         puts {The Makefile configured for your system was written.}
-        puts {Now just type "make" to compile Scid.}
+        puts {Now type "make" to compile Scid.}
     } else {
         puts {Not all settings could be determined!}
         puts {The default Makefile was written.}
