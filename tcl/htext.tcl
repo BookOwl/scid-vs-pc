@@ -588,10 +588,10 @@ proc ::htext::display {w helptext {section {}} {fixed 1}} {
 # bh - background+hand
 
 proc u1 {w tag} {
-  $w tag configure $tag -underline 1
+  $w tag configure $tag -background gray80
 }
 proc u0 {w tag} {
-  $w tag configure $tag -underline 0
+  $w tag configure $tag -background {}
 }
 proc uh1 {w tag} {
   $w tag configure $tag -underline 1
