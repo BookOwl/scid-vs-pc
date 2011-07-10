@@ -157,7 +157,8 @@ namespace eval pgn {
     ::pgn::ConfigMenus
 
     text $w.text -width $::winWidth($w) -height $::winHeight($w) -wrap word \
-        -cursor {} -setgrid 1 -tabs {1c right 2c 4c}
+        -cursor {} -setgrid 1
+    configTabs
     if {$pgnColor(Background) != {white} && $pgnColor(Background) != {#ffffff}} {
 	$w.text configure -background $pgnColor(Background)
     }
@@ -221,6 +222,23 @@ namespace eval pgn {
 
     # Populate text widget &&&
     ::pgn::ResetColors
+  }
+
+  ### Set the tab stops for the pgn window (only used in column mode)
+
+  proc configTabs {} {
+    global fd_size
+
+    if {![winfo exists .pgnWin]} {return}
+
+    # Column mode tabbing is broke for large fonts
+    # The problem is lots spaces (in lieu of nags) are mixed with the tabs
+    # We have to change tab spacing according to font size
+
+    set t1 [expr $fd_size / 10.0]c
+    set t2 [expr $fd_size / 8.0]c
+    set t3 [expr ($fd_size - 8) / 3.5 + 3 + 0.5*($fd_size > 13)]c 
+    .pgnWin.text configure  -tabs "$t1 right $t2 $t3"
   }
 
   ################################################################################

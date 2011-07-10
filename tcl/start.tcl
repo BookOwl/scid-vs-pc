@@ -1071,7 +1071,9 @@ foreach i {Regular Menu Small Tiny Fixed} {
   }
 }
 
-# font_Regular is the default font for widgets:
+# make font_Regular the default font for widgets
+
+set fd_size [font actual font_Regular -size]
 option add *Font font_Regular
 option add *Text*background $defaultBackground widgetDefault
 if {!$windowsOS} {

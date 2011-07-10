@@ -275,6 +275,7 @@ proc FontDialogRegular {parent} {
   if {$graphFigurineAvailable} {
     font configure font_Figurine -family $graphFigurineFamily -size $fontsize
   }
+  ::pgn::configTabs
 }
 
 proc FontDialogMenu {parent} {
@@ -377,6 +378,7 @@ proc FontDialogRegen { font_name } {
       if {$graphFigurineAvailable} {
 	  font configure font_Figurine -size $fd_size 
       }
+      ::pgn::configTabs
   }
 }
 
@@ -397,6 +399,7 @@ proc FontBiggerSmaller {incr} {
   if {$graphFigurineAvailable} {
     font configure font_Figurine -size $fd_size
   }
+  ::pgn::configTabs
 
   set fontOptions(Regular) [lreplace $fontOptions(Regular) 1 1 $fd_size]
 }
