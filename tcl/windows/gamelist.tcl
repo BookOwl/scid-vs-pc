@@ -363,7 +363,9 @@ proc ::windows::gamelist::Open {} {
   }
   # MouseWheel bindings:
   # bind $w <MouseWheel> {::windows::gamelist::Scroll [expr {- (%D / 120)}]}
-  if {$::windowsOS} {
+  if {$::windowsOS || $::macOS} {
+    # Does this work fine on OSX ?
+    # http://sourceforge.net/tracker/?func=detail&aid=2931538&group_id=12997&atid=112997
     bind $w <MouseWheel> {
       if {[expr -%D] < 0} { ::windows::gamelist::Scroll -1}
       if {[expr -%D] > 0} { ::windows::gamelist::Scroll 1}
@@ -371,7 +373,6 @@ proc ::windows::gamelist::Open {} {
   } else {
     bind $w <Button-4> {::windows::gamelist::Scroll -1}
     bind $w <Button-5> {::windows::gamelist::Scroll 1}
-    # Note - ttk::treeview wheelmouse bindings are broken on OSX as of wish 8.5.10
   }
 
   bind $w <Control-F> ::search::filter::reset
