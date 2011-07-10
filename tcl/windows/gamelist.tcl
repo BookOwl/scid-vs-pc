@@ -284,7 +284,13 @@ proc ::windows::gamelist::Open {} {
 
   # Hmm... seems no way to change the deafult blue bg colour for selected items
   # without using (extra) tags. So this colour must look ok with a blue background
-  $w.tree tag configure current -foreground skyblue2
+
+  if {$::macOS} {
+    # OSX treeview selection colour is different
+    $w.tree tag configure current -foreground steelblue3
+  } else {
+    $w.tree tag configure current -foreground skyblue2
+  }
 
   # $w.tree tag configure colour -background $::defaultBackground
   # $w.tree tag bind click1 <Button-1> {}
@@ -365,6 +371,7 @@ proc ::windows::gamelist::Open {} {
   } else {
     bind $w <Button-4> {::windows::gamelist::Scroll -1}
     bind $w <Button-5> {::windows::gamelist::Scroll 1}
+    # Note - ttk::treeview wheelmouse bindings are broken on OSX as of wish 8.5.10
   }
 
   bind $w <Control-F> ::search::filter::reset
