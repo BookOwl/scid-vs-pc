@@ -408,7 +408,7 @@ namespace eval uci {
     scrollbar .uciConfigWin.vs -command {.uciConfigWin.sf yview}
     scrollbar .uciConfigWin.hs -command {.uciConfigWin.sf xview} -orient horizontal
 
-    if {$::windowsOS} {
+    if {$::windowsOS || $::macOS} {
       # needs testing
       bind .uciConfigWin <MouseWheel> {
 	if {[expr -%D] < 0} {.uciConfigWin.sf yview scroll -1 units}

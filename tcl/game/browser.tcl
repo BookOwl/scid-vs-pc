@@ -65,17 +65,16 @@ proc ::gbrowser::new {base gnum {ply -1} {w {}}} {
     bind $w <Control-Shift-Left> "::board::resize $w.bd -1"
     bind $w <Control-Shift-Right> "::board::resize $w.bd +1"
 
-    if {$::windowsOS} {
-      # needs testing
-      bind $w <MouseWheel> {
-	if {[expr -%D] < 0} "::gbrowser::update $n -1"
-	if {[expr -%D] > 0} "::gbrowser::update $n +1"
-      }
+    if {$::windowsOS || $::macOS} {
+      # needs testing on windows
+      bind $w <MouseWheel> "
+	if {\[expr -%D\] < 0} \"::gbrowser::update $n -1\"
+	if {\[expr -%D\] > 0} \"::gbrowser::update $n +1\"
+      "
       bind $w <Control-MouseWheel> {
 	if {[expr -%D] < 0} "::board::resize $w.bd +1"
 	if {[expr -%D] > 0} "::board::resize $w.bd -1"
       }
-      # TODO: Test above, and handle wheelmouse in text widget
     } else {
       bind $w <Button-4> "::gbrowser::update $n -1"
       bind $w <Button-5> "::gbrowser::update $n +1"

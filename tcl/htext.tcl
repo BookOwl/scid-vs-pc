@@ -215,7 +215,8 @@ proc updateHelpWindow {name {heading {}}} {
   bind $w <Alt-Right> "$w.b.forward invoke"
   # bind $w <Key-i> "$w.b.index invoke"
 
-  if {$::windowsOS} {
+  if {$::windowsOS || $::macOS} {
+    # Control-MouseWheel binding is (generally) grabbed on OSX and doesn't work
     bind $w <Control-MouseWheel> {
       if {[expr -%D] < 0} {FontBiggerSmaller 1 ; break}
       if {[expr -%D] > 0} {FontBiggerSmaller -1 ; break}

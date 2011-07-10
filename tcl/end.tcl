@@ -1369,7 +1369,7 @@ bind . <End> ::move::End
 bind . <Control-f> {if {!$tree(refresh)} {toggleRotateBoard}}
 
 # MouseWheel in main window:
-if {$windowsOS} {
+if {$windowsOS || $macOS} {
   bind . <MouseWheel> {
     if {[expr -%D] < 0} { ::move::Back }
     if {[expr -%D] > 0} { ::move::Forward }
