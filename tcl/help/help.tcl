@@ -1,7 +1,5 @@
 ### help.tcl: Help pages for Scid.
 
-#################################################
-
 set helpTitle(Contents) "$::scidName"
 set helpText(Contents) "<h1>$::scidName</h1>"
 append helpText(Contents) {
@@ -10,11 +8,11 @@ append helpText(Contents) {
   <ht><a Intro>Introduction</a></ht>
   <ht><a TacticalGame>Playing against the Computer</a></ht>
   <ht><a FICS>Playing on the Internet (FICS)</a></ht>
-  <ht><a Analysis>Running Chess Engines</a></ht>
+  <ht><a Scid>Databases and General Use</a></ht>
   <ht><a Tourney>Computer Tournaments</a></ht>
+  <ht><a Analysis>Running Chess Engines</a></ht>
   <ht><a BrowsingPGN>Browsing Games and Tournaments</a></ht>
   <ht><a TacticsTrainer>Mate in ..N.. Puzzles</a></ht>
-  <ht><a Scid>Databases and General Use</a></ht>
   <br>
   <br>
   <ht><a Related>Links</a></ht>
@@ -27,46 +25,43 @@ set helpText(Intro) {<h1>Introduction</h1>
 
 <p>
 <url http://scidvspc.sourceforge.net/>Scid vs. PC</url>
-is a usability and bug-fix fork of Scid. With it you can play chess online
-or against the computer, browse tournaments downloaded in pgn format, and
-create huge chess databases.</p>
+is a usability and bug-fix fork of <b>Shane's Chess Information Database</b>. With
+it you can play chess online or against the computer, browse tournaments
+downloaded in pgn format, and create huge chess databases.</p>
 
-<p>
+<p><i>
 Chess is a very technical thing. A single game can be analysed through and
 through, openings can fill volumes, and tournaments are full of statistics
 about winners, losers and openings played. Scid is a program whose original
-purpose was to combine all this information into databases of various
-sorts; hence it's name "Shane's Chess Information Database". As it turns
-out, computers are very good at  playing  chess too. This is the focus of
-Scid vs. PC</p>
+purpose was to combine this information into databases of various
+sorts; but has evolved into a powerful general-purpose Chess Toolkit.
+</i></p>
 
-<h3>Features</h3>
+<h3>Improvements over Scid</h3>
 <ul>
-<li>A Computer Tournament feature</li>
-<li>Compatibility with SCID's si4 databases.</li>
-<li>Rewritten Gamelist Widget using the new Ttk Treeview feature. Deleted items are greyed out, a Compact button, and the Database Switcher resides here.</li>
+<li>A Computer Tournament feature.</li>
+<li>Rewritten Gamelist Widget with much improved functionality, and the Database Switcher incorporated.</li>
+<li>The Options widgets have been totally overhauled. There are some nice colour and tile themes, and great piece sets.</li>
+<li>A right-click menu for hiding/unhiding various parts of the main window.</li>
 <li>Improved Tactical Game and FICs features.</li>
 <li>Clickable Variation Arrows, and Paste Variation feature.</li>
 <li>Redone Button bar, Toolbar and Icons.</li>
 <li>Improvements to "Mate in ..." puzzles.</li>
-<li>The Chessboard/Pieces config widget has been totally overhauled. There are some nice colour and tile theme, and great piece set available if the optional TkImg package is installed.</li>
 <li>The Setup Start Board has many fixes and improvements. Annoyingly, if Scid uses a tiled theme, it's setup board is displayed a different colour.</li>
-<li>The main board has a handy right-click menu, and the side-to-move indicator is now on the left.</li>
 <li>The Help index is now meaningful to new users, with links to the game's main features.</li>
 <li>The Comment editor has been overhauled, and is much more stream-lined.</li>
 <li>Restructured workings of the Analysis Engines widget. The F2 and F3 key bindings can now be set explicitly.</li>
 <li>Many other improved interfaces and help files.</li>
 </ul>
-<h3>Note</h3>
+<h3>Unsupported Features</h3>
 <ul>
 <li>The Docked Mode and Theme features of Scid are not included.</li>
 <li>Wish 8.5 includes a basic implementation of themes, and there has been
 widespread changes to Scid to use them. Unfortunately, the changes are not
 justified for some dubious eye candy.</li>
-<li>The use of si4 custom flags is not included (but this does not affect
-the database, or SCID's use of them).</li>
+<li>As of 4.4, the undo feature is still not included.</li>
 </ul>
-  <p><footer>Updated: Scid vs. PC 4.2 November 2010 </footer></p>
+  <p><footer>Updated: Scid vs. PC 4.5 July 2011 </footer></p>
 }
 
 set helpTitle(FICS) "Fics"
@@ -153,10 +148,12 @@ and only as single games. If you open a PGN file with multiple games, Scid does 
 
 set helpTitle(Scid) {General Use}
 set helpText(Scid) {<h1>Databases and General Use</h1>
-  <p>
+  <p><i>
   Scid is a chess database application; with it you can browse databases of
   chess games, perform searches, view best lines, and other
-  statistics. Databases are implemented via a fast <a Formats>three file format</a> and populated by importing PGN archives or other databases.
+  statistics.</i></p>
+  <p>
+  Databases are implemented via a fast <a Formats>three file format</a>, and populated by importing PGN archives or other databases using the <a Clipbase>Clipbase</a> as a cut and paste tool.
   </p>
 
   <h4>Starting Out</h4>
@@ -217,9 +214,6 @@ set helpText(Scid) {<h1>Databases and General Use</h1>
 
   <p><footer>Updated: Scid vs. PC 4.1, September 2010</footer></p>
 }
-
-###############
-### Topic Index
 
 set helpTitle(Index) "Scid Help Topic Index"
 set helpText(Index) {<h1>Scid Help Index</h1>
@@ -468,8 +462,6 @@ set helpText(Index) {<h1>Scid Help Index</h1>
 
 
 
-####################
-### Hints page:
 set helpTitle(Hints) "Scid Hints"
 set helpText(Hints) {<h1>Scid Hints</h1>
 
@@ -522,8 +514,8 @@ set helpText(Hints) {<h1>Scid Hints</h1>
 
   <h4>How can I use the tree window on a selection of games, not my whole database?</h4>
   <p>
-  Using the Filter and <a Switcher>Database Switcher</a>, copy the relevant games to <a Clipbase>clipbase</a>.
-  Then open the tree window in the clipbase.
+  Using the Filter and <a Switcher>Database Switcher</a>, copy the relevant games to <a Clipbase>Clipbase</a>.
+  Then open the tree window in the Clipbase.
   </p>
 
   <h4>The Tree is slow for large databases. How do I speed it up?</h4>
@@ -560,9 +552,6 @@ set helpText(Hints) {<h1>Scid Hints</h1>
   <p><footer>Updated: Scid vs. PC 4.3, December 2010</footer></p>
 }
 
-
-####################
-### Main window help:
 
 set helpTitle(MainWindow) "Scid Main Window"
 set helpText(MainWindow) {<h1>Scid Main Window</h1>
@@ -657,9 +646,6 @@ set helpText(MainWindow) {<h1>Scid Main Window</h1>
 }
 
 
-####################
-### Menus help screen:
-
 set helpTitle(Menus) "Menus"
 set helpText(Menus) {<h1>Scid Menus</h1>
 
@@ -687,7 +673,7 @@ set helpText(Menus) {<h1>Scid Menus</h1>
   <li><menu>Repair Base</menu>: Repair broken database.</li>
   </ul>
   <li><menu>Read-Only</menu>: Makes the current database read-only.</li>
-  <li><menu>Switch to Database</menu>: Switch between the nine available database slots and the <a Clipbase>clipbase</a> database.</li>
+  <li><menu>Switch to Database</menu>: Switch between the nine available database slots and the <a Clipbase>Clipbase</a> database.</li>
   <li><menu>Exit</menu>: Exit Scid. </li>
   </ul>
 
@@ -698,9 +684,9 @@ set helpText(Menus) {<h1>Scid Menus</h1>
   <li><menu>Paste FEN</menu>: Set-up board according to FEN in clipboard.</li>
   <li><menu>Paste PGN</menu>: Import a game from PGN in clipboard.</li>
   <br>
-  <li><menu>Empty Clipbase</menu>: Clear the temporary database (<a Clipbase>clipbase</a>).</li>
-  <li><menu>Copy to Clipbase</menu>: Copies the current game to the <a Clipbase>clipbase</a> database.</li>
-  <li><menu>Paste from Clipbase</menu>: Pastes the active game of the <a Clipbase>clipbase</a> to be the active game of the current database.</li>
+  <li><menu>Empty Clipbase</menu>: Clear the temporary database (<a Clipbase>Clipbase</a>).</li>
+  <li><menu>Copy to Clipbase</menu>: Copies the current game to the <a Clipbase>Clipbase</a> database.</li>
+  <li><menu>Paste from Clipbase</menu>: Pastes the active game of the <a Clipbase>Clipbase</a> to be the active game of the current database.</li>
   <br>
   <li><menu>Add Variation</menu>: Adds a new empty variation for the
   next move, or for the previous move if there is no next move yet.</li>
@@ -839,9 +825,6 @@ set helpText(Menus) {<h1>Scid Menus</h1>
 }
 
 
-####################
-### Entering moves help:
-
 set helpTitle(Moves) "Entering moves"
 set helpText(Moves) {<h1>Entering Chess Moves</h1>
   <p>
@@ -968,10 +951,6 @@ to which there is a legal move.
 
   <p><footer>Updated: Scid vs. PC 4.2 November 2010 </footer></p>
 }
-
-
-########################################
-### Searches help screen:
 
 set helpTitle(Searches) "Searches"
 set helpText(Searches) {<h1>Searches in Scid</h1>
@@ -1139,49 +1118,45 @@ set helpText(Searches) {<h1>Searches in Scid</h1>
 }
 
 
-#################
-### Clipbase help:
-
 set helpTitle(Clipbase) "The Clipbase"
 set helpText(Clipbase) {<h1>The Default Database</h1>
   <p>
   In addition to physical databases existing on disk, Scid provides
-  a transient one known as <term>clipbase</term>. It is opened by default, and used to cut and paste games between other bases. Additionally, each base has a 
-  game numbered 0 which also acts as a scratch game.
+  a transient one known as the <b>Clipbase</b>. It is opened by default, and
+  used to cut and paste games between other bases (using the <a
+  Switcher>Database Switcher</a>). Additionally, each base has a game numbered 0
+  which also acts as a scratch game.
   </p>
+<h3>Use</h3>
   <p>
-  The clipbase is useful as a temporary database, for merging
+  The Clipbase is useful as a temporary database; for merging
   the results of searches on more than one database or for treating the
   results of a search as a separate database.
+  </p>
+  <p>
   For example, assume you want to prepare for an opponent and have searched
   a database so the <a Searches Filter>filter</a> contains only games where
-  the opponent played White.
-  You can copy these games to the clipbase (by dragging from their database
-  to the clipbase in the <a Switcher>database switcher</a> window),
-  switch to the clipbase database, and then open
-  the <a Tree>Tree window</a> to examine that players repertoire.
+  the opponent played white.
+  You can copy these games to the Clipbase by opening the <a Switcher>Switcher</a> and
+  dragging from the database to the Clipbase.
+  Then, switch to the Clipbase, and open
+  the <a Tree>Tree Window</a> to examine that players repertoire.
   </p>
-<h4>Notes</h4>
+<h3>Notes</h3>
   <p>
-  You can copy games in the filter of one database directly to another
-  opened database (without needing the clipbase as an intermediary
-  location) using the <a Switcher>database switcher</a> window.
-  </p>
-  <p>
-  Note that the clipbase <i>cannot</i> be closed; selecting the
-  <green>File--<gt>Close</green> command while in the clipbase is equivalent
-  to <green>Edit--<gt>Empty Clipbase</green> which empties the clipbase.
+  You can copy games from one open database directly to another
+  without using the Clipbase as an intermediary.
   </p>
   <p>
-  The clipbase has a limit of 100,000 games at any time, since it exists in
-  memory only.
+  The Clipbase cannot be closed; selecting <green>File--<gt>Close</green> is equivalent
+  to emptying it with <green>Edit--<gt>Empty Clipbase</green>.
+  </p>
+  <p>
+  Games in the Clipbase consume RAM, as they exist in memory only. So please consider this when copying a large number of games.
   </p>
 
-  <p><footer>Updated: Scid vs. PC 4.1 September 2010</footer></p>
+  <p><footer>Updated: Scid vs. PC 4.5 July 2010</footer></p>
 }
-
-#################################
-### Variations and comments help:
 
 set helpTitle(Variations) "Variations"
 set helpText(Variations) {<h1>Variations</h1>
@@ -1240,9 +1215,6 @@ set helpText(Variations) {<h1>Variations</h1>
 
   <p><footer>Updated: Scid 3.6.26, October 2008</footer></p>
 }
-
-###############################
-### Comment editor window help:
 
 set helpTitle(Comment) "Comment Editor"
 set helpText(Comment) {<h1>The Comment Editor</h1>
@@ -1346,9 +1318,6 @@ know these details.</i></p>
   <p><footer>Updated: Scid vs. PC 4.4, March 2010</footer></p>
 }
 
-####################
-### Crosstable window help:
-
 set helpTitle(Crosstable) "Crosstable window"
 set helpText(Crosstable) {<h1>The Crosstable Window</h1>
   <p>
@@ -1405,9 +1374,6 @@ set helpText(Crosstable) {<h1>The Crosstable Window</h1>
 }
 
 
-####################
-### Database switcher help:
-
 set helpTitle(Switcher) "Database Switcher"
 set helpText(Switcher) {<h1>The Database Switcher Window</h1>
   <p>
@@ -1430,9 +1396,6 @@ close the database. It is also possible to
   <p><footer>Updated: Scid 4.3 January 2011</footer></p>
 }
 
-
-####################
-### File Finder window help:
 
 set helpTitle(Finder) "File Finder Window"
 set helpText(Finder) {<h1>File Finder Window</h1>
@@ -1489,9 +1452,6 @@ databases, which consist of several files.
   <p><footer>Updated: Scid vs. PC 4.1, August 2010</footer></p>
 }
 
-####################
-### Tournament Finder window help:
-
 set helpTitle(Tmt) "Tournament Finder window"
 set helpText(Tmt) {<h1>The Tournament Finder window</h1>
   <p>
@@ -1524,9 +1484,6 @@ set helpText(Tmt) {<h1>The Tournament Finder window</h1>
 
   <p><footer>Updated: Scid vs. PC 4.5 June 2011</footer></p>
 }
-
-####################
-### GameList window help:
 
 set helpTitle(GameList) "Game List window"
 set helpText(GameList) {<h1>The Game List</h1>
@@ -1614,9 +1571,6 @@ This can be done by the <b>Compact</b> button, or
 }
 
 
-####################
-### Import window help:
-
 set helpTitle(Import) "Import window"
 set helpText(Import) {<h1>The Import Window</h1>
   <p>
@@ -1658,9 +1612,6 @@ set helpText(Import) {<h1>The Import Window</h1>
 
   <p><footer>Updated: Scid vs. PC 4.3, February 2011</footer></p>
 }
-
-####################
-### Exporting help:
 
 set helpTitle(Export) "Exporting games"
 set helpText(Export) {<h1>Exporting Games</h1>
@@ -1742,9 +1693,6 @@ set helpText(Export) {<h1>Exporting Games</h1>
   <p><footer>Updated: Scid 3.6.26, October 2008</footer></p>
 }
 
-####################
-### LaTeX help:
-
 set helpTitle(LaTeX) "Scid and LaTeX"
 set helpText(LaTeX) {<h1>Using LaTeX with Scid</h1>
   <p>
@@ -1766,9 +1714,6 @@ set helpText(LaTeX) {<h1>Using LaTeX with Scid</h1>
 
   <p><footer>Updated: Scid 3.6.2, December 2006</footer></p>
 }
-
-####################
-### PGN window help:
 
 set helpTitle(PGN) "PGN"
 set helpText(PGN) {<h1>PGN</h1>
@@ -1837,9 +1782,6 @@ and Column Style.
   <p><footer>Updated: Scid vs. PC 4.3, February 2011</footer></p>
 }
 
-
-####################
-### Piece Tracker help:
 
 set helpTitle(PTracker) "Piece tracker"
 set helpText(PTracker) {<h1>The Piece Tracker Window</h1>
@@ -1923,9 +1865,6 @@ set helpText(PTracker) {<h1>The Piece Tracker Window</h1>
 }
 
 
-####################
-### Repertoire editor help:
-
 set helpTitle(Repertoire) "Repertoire editor"
 set helpText(Repertoire) {<h1>The Repertoire Editor</h1>
 <p>The Repertoire Editor has been removed since Scid vs. PC 4.2.
@@ -1935,9 +1874,6 @@ Simlilar and more powerful features are available in the <a TreeMasks>Tree Masks
 
   <p><footer>Updated: Scid vs. PC 4.2, November 2010</footer></p>
 }
-
-####################
-### Tree window help:
 
 set helpTitle(Tree) "Tree Window"
 set helpText(Tree) {<h1>Tree Window</h1>
@@ -2280,10 +2216,6 @@ set helpText(TreeMasks) {<h1>Tree Masks</h1>
 }
 
 
-
-####################
-### Compaction help:
-
 set helpTitle(Compact) "Database compaction"
 set helpText(Compact) {<h1>Database Compaction</h1>
   <p>
@@ -2320,9 +2252,6 @@ set helpText(Compact) {<h1>Database Compaction</h1>
   <p><footer>Updated: Scid vs. PC 4.3, December 2010</footer></p>
 }
 
-
-####################
-### Database maintenance tools help:
 
 set helpTitle(Maintenance) "Database Maintenance"
 set helpText(Maintenance) {<h1>Database Maintenance</h1>
@@ -2450,9 +2379,6 @@ set helpText(Maintenance) {<h1>Database Maintenance</h1>
   <p><footer>Updated: Scid vs. PC 4.3, December 2010</footer></p>
 }
 
-####################
-### Sorting help:
-
 set helpTitle(Sorting) "Sorting a database"
 set helpText(Sorting) {<h1>Sorting Databases</h1>
   <p>
@@ -2513,9 +2439,6 @@ compacted) can use <b>fast tree searches<b>.
 
   <p><footer>Updated: Scid vs. PC 4.4 March 2011</footer></p>
 }
-
-####################
-### Flags help:
 
 set helpTitle(Flags) "Game Flags"
 set helpText(Flags) {<h1>Game Flags</h1>
@@ -2580,9 +2503,6 @@ set helpText(Flags) {<h1>Game Flags</h1>
 
   <p><footer>Updated: Scid vs. PC 4.4, May 2011</footer></p>
 }
-
-####################
-### Analysis window help:
 
 set helpTitle(Analysis) "Analysis window"
 set helpText(Analysis) {<h1>Analysis Windows</h1>
@@ -2815,8 +2735,6 @@ Engines</green></run>.
   <p><footer>Updated: Scid vs. PC 4.4, May 2011</footer></p>
 }
 
-####################
-### Computer Tournament 
 set helpTitle(Tourney) "Computer Tournament"
 set helpText(Tourney) {<h1>Computer Tournament</h1>
 
@@ -2906,9 +2824,6 @@ Faile seems not to issue "move" under some circumstances, despite being in xboar
 
 }
 
-####################
-### Calvar window help:
-
 set helpTitle(CalVar) "Calculation of variation"
 set helpText(CalVar) {<h1>The Calculation of Variation Window</h1>
   <p>
@@ -2950,9 +2865,6 @@ set helpText(CalVar) {<h1>The Calculation of Variation Window</h1>
   <p><footer>Updated: Scid 3.6.21, December 2007</footer></p>
 }
 
-
-####################
-### EPD files help:
 
 set helpTitle(EPD) "EPD files"
 set helpText(EPD) {<h1>EPD Files</h1>
@@ -3060,9 +2972,6 @@ set helpText(EPD) {<h1>EPD Files</h1>
   <p><footer>Updated: Scid 3.6.26, October 2008</footer></p>
 }
 
-####################
-### Email window help:
-
 set helpTitle(Email) "Email window"
 set helpText(Email) {<h1>The Email Window</h1>
   <p>
@@ -3124,9 +3033,6 @@ set helpText(Email) {<h1>The Email Window</h1>
 
   <p><footer>Updated: Scid 3.6.2, December 2006</footer></p>
 }
-
-####################
-### Reports help:
 
 set helpTitle(Reports) "Reports"
 set helpText(Reports) {<h1>Reports</h1>
@@ -3235,9 +3141,6 @@ set helpText(Reports) {<h1>Reports</h1>
 }
 
 
-####################
-### Player List help:
-
 set helpTitle(PList) "Player Finder window"
 set helpText(PList) {<h1>The Player Finder Window</h1>
   <p>
@@ -3261,9 +3164,6 @@ set helpText(PList) {<h1>The Player Finder Window</h1>
 
   <p><footer>Updated: Scid 3.6.2, December 2006</footer></p>
 }
-
-####################
-### Player Info help:
 
 set helpTitle(PInfo) "Player Information"
 set helpText(PInfo) {<h1>Player Information</h1>
@@ -3312,9 +3212,6 @@ To disable them, unselect <green>Options--<gt>Game Information--<gt>Show Photos<
 
   <p><footer>Updated: Scid vs. PC 4.3 January 2011</footer></p>
 }
-
-####################
-### Graphs help:
 
 set helpTitle(Graphs) "Graph windows"
 set helpText(Graphs) {<h1>Graph Windows</h1>
@@ -3407,9 +3304,6 @@ set helpText(Graphs) {<h1>Graph Windows</h1>
 
   <p><footer>Updated: Scid vs. PC 4.4 April 2011</footer></p>
 }
-
-####################
-### Tablebases help:
 
 set helpTitle(TB) "Tablebases"
 set helpText(TB) {<h1>Tablebases</h1>
@@ -3537,9 +3431,6 @@ set helpText(TB) {<h1>Tablebases</h1>
   <p><footer>Updated: Scid 3.6.2, December 2006</footer></p>
 }
 
-####################
-### Bookmarks help
-
 set helpTitle(Bookmarks) "Bookmarks"
 set helpText(Bookmarks) {<h1>Bookmarks</h1>
   <p>
@@ -3553,7 +3444,7 @@ set helpText(Bookmarks) {<h1>Bookmarks</h1>
   position at which it was bookmarked.
   </p>
   <p><i>
-  Games in a PGN file or the clipbase can not be bookmarked.
+  Games in a PGN file or the Clipbase can not be bookmarked.
   </p>
   <p>
   If the database is sorted or compacted, the bookmark
@@ -3588,9 +3479,6 @@ set helpText(Bookmarks) {<h1>Bookmarks</h1>
 
   <p><footer>Updated: Scid vs. PC 4.3, January 2010</footer></p>
 }
-
-####################
-### Command-line options help:
 
 set helpTitle(Cmdline) "Command-line options"
 set helpText(Cmdline) {<h1>Command-line Options</h1>
@@ -3629,9 +3517,6 @@ set helpText(Cmdline) {<h1>Command-line Options</h1>
 
   <p><footer>Updated: Scid 3.6.26, October 2008</footer></p>
 }
-
-####################
-### Pgnscid help:
 
 set helpTitle(Pgnscid) "Pgnscid"
 set helpText(Pgnscid) {<h1>Pgnscid</h1>
@@ -3699,9 +3584,6 @@ set helpText(Pgnscid) {<h1>Pgnscid</h1>
   <p><footer>Updated: Scid 3.6.2, December 2006</footer></p>
 }
 
-
-####################
-### File formats help:
 
 set helpTitle(Formats) "File Formats"
 set helpText(Formats) {<h1>Scid File Formats</h1>
@@ -3786,9 +3668,6 @@ set helpText(Formats) {<h1>Scid File Formats</h1>
   <p><footer>Updated: Scid vs. PC 4.2 November 2010 </footer></p>
 }
 
-####################
-### Options and Fonts help:
-
 set helpTitle(Options) "Options"
 set helpText(Options) {<h1>Options and Preferences</h1>
   <p>
@@ -3830,9 +3709,6 @@ set helpText(Options) {<h1>Options and Preferences</h1>
 
   <p><footer>Updated: Scid 3.6.2, December 2006</footer></p>
 }
-
-####################
-### NAG values help:
 
 set helpTitle(NAGs) "NAG values"
 set helpText(NAGs) {<h1>Standard NAG Values</h1>
@@ -4400,8 +4276,6 @@ set helpText(OpeningTrainer) {<h1>Opening Trainer</h1>
   <p><footer>Updated: Scid 3.6.26, October 2008</footer></p>
 }
 
-####################
-### Correspondence Chess help:
 set helpTitle(Correspondence) "Correspondence Chess"
 set helpText(Correspondence) {<h1>Correspondence Chess</h1>
 
@@ -4808,8 +4682,6 @@ information about the fields required.)
 <p><footer>Updated: Scid 3.6.23, March 2008</footer></p>
 }
 
-#############
-# eMail Chess:
 set helpTitle(CCeMailChess) "Correspondence Chess via eMail"
 set helpText(CCeMailChess) {<h1>Correspondence Chess via eMail</h1>
 
@@ -4964,8 +4836,6 @@ not know which move it was, when you sent yours.
 <p><footer>Updated: Scid 3.6.23, March 2008</footer></p>
 }
 
-#############
-# Correspondence Chess setup dialog help:
 set helpTitle(CCSetupDialog) "Correspondence Chess Setup"
 set helpText(CCSetupDialog) {<h1>Correspondence Chess Setup</h1>
 
@@ -5182,8 +5052,6 @@ is <b>only</b> used in <term>mailx</term> mode.
 <p><footer>Updated: Scid 3.6.24, March 2008</footer></p>
 }
 
-#############
-# Correspondence Chess setup dialog help:
 set helpTitle(CCXfccSetupDialog) "Xfcc Server Setup"
 set helpText(CCXfccSetupDialog) {<h1>Xfcc Server Setup</h1>
 <p>
@@ -5867,7 +5735,7 @@ set helpText(Changelog) {<h1>Scid vs. PC</h1>
 <li> Help Widget has a search entrybox</li>
 <li> Help Widget font size (and Pgn Window) can be easily increased by control+wheelmouse </li>
 <li> When pasting FEN directly, do a castling sanity check.</li>
-<li> Bugfix: When user starts scidvspc for the first time, clipbase is left closed</li>
+<li> Bugfix: When user starts scidvspc for the first time, Clipbase is left closed</li>
 <li> Browser widget has a nicer button bar, and windows wheel-mouse bindings</li>
 <li> Overhaul the Edit Menus</li>
 <li> Numerous GUI fixes</li>
@@ -6226,8 +6094,8 @@ The window manager may interfere with some shortcuts.
 
 <h4>Copy / Paste</h4>
 <ul>
-<li><b>control-c</b> - Copy game to clipbase</li>
-<li><b>control-v</b> - Paste game from clipbase</li>
+<li><b>control-c</b> - Copy game to Clipbase</li>
+<li><b>control-v</b> - Paste game from Clipbase</li>
 <li><b>control-C</b> - Copy FEN</li>
 <li><b>control-V</b> - Paste FEN</li>
 <li><b>control-I</b> - Import PGN</li>
@@ -6254,7 +6122,7 @@ The window manager may interfere with some shortcuts.
 <li><b>control-1</b> - Switch to first open base</li>
 <li><b>control-2</b> - Switch to second open base</li>
 <li>....</li>
-<li><b>control-9</b> - Switch to clipbase</li>
+<li><b>control-9</b> - Switch to Clipbase</li>
 </ul>
 
 <h4>Search / Filter</h4>
@@ -6279,7 +6147,7 @@ The window manager may interfere with some shortcuts.
 <li><b>control-A</b> - Analysis engines</li>
 <li><b>control-b</b> - Book window</li>
 <li><b>control-B</b> - Board search</li>
-<li><b>control-c</b> - Copy game to clipbase</li>
+<li><b>control-c</b> - Copy game to Clipbase</li>
 <li><b>control-C</b> - Copy FEN</li>
 <li><b>control-e</b> - Comment editor</li>
 <li><b>control-f</b> - Flip Board</li>
@@ -6302,7 +6170,7 @@ The window manager may interfere with some shortcuts.
 <li><b>control-S</b> - Setup board</li>
 <li><b>control-t</b> - Tree window</li>
 <li><b>control-T</b> - Tournament finder</li>
-<li><b>control-v</b> - Paste game from clipbase</li>
+<li><b>control-v</b> - Paste game from Clipbase</li>
 <li><b>control-V</b> - Paste FEN</li>
 <li><b>control-y</b> - ECO browser</li>
 <li><b>control-w</b> - Close database</li>
@@ -6319,7 +6187,7 @@ The window manager may interfere with some shortcuts.
 <li><b>control-1</b> - Switch to first open base</li>
 <li><b>control-2</b> - Switch to second open base</li>
 <li>....</li>
-<li><b>control-9</b> - Switch to clipbase</li>
+<li><b>control-9</b> - Switch to Clipbase</li>
 <li></li>
 
 <li><b>left</b> - Back one move</li>
