@@ -4,6 +4,10 @@
 #    Prompt for confirmation then exit.
 #
 proc ::file::Exit {}  {
+
+  # sanity check in case of errant multiple call
+  if {[winfo exists .unsaved]} {return}
+
   # Check for altered game in all bases except the clipbase:
   set unsavedCount 0
   set savedBase [sc_base current]
@@ -34,8 +38,12 @@ proc ::file::Exit {}  {
 
   # Only ask before exiting if there are unsaved changes:
   if {$unsavedCount > 0} {
-    set answer [tk_dialog .unsaved "Scid: Unsaved Changes" $msg question {} "   [tr FileExit]   " [tr Cancel]]
+    set answer [tk_dialog .unsaved "Scid: Unsaved Changes" $msg question {} [tr FileExit] [tr Cancel]]
     if {$answer != 0} { return }
+
+    ### Gilles reports tk_dialog issues on his mac
+    # set answer [tk_messageBox -title "Scid: [tr FileExit]" -message $msg -type yesno -icon question]
+    # if {$answer != "yes"} { return }
   }
   if {$::optionsAutoSave} {
     # restore askToReplaceMoves if necessary

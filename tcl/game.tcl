@@ -10,6 +10,9 @@
 
 proc ::game::ConfirmDiscard {} {
 
+  # sanity check in case of errant multiple call
+  if {[winfo exists .cgDialog]} {return 0}
+
   if {$::trialMode}		{return 1}
   if {[sc_base isReadOnly]}	{return 1}
   if {! [sc_game altered]}	{return 1}

@@ -3698,13 +3698,11 @@ set helpText(Options) {<h1>Options and Preferences</h1>
 
   <h3><name Fonts>Setting Fonts</name></h3>
   <p>
-  Scid has three basic fonts it uses in most of its windows, and you can
-  customize all of them. They are called <b>regular</b>, <b>small</b> and
-  <b>fixed</b>.
+  Scid has four basic fonts; <b>Regular</b>, <b>Menu</b>, <b>Small</b> and <b>Fixed</b>.
+  They are customized via the <green>Options->Fonts</green>, or by <b>Control+WheelMouse</b> in the PGN and Help windows.
   </p>
   <p>
-  The fixed font should be a fixed-width (not proportional) font. It is used
-  for the <a Tree>tree</a> and <a Crosstable>crosstable</a> windows.
+  The Fixed font is used by the <a Tree>tree</a> and <a Crosstable>crosstable</a> windows, and should be a fixed-width font.
   </p>
 
   <p><footer>Updated: Scid 3.6.2, December 2006</footer></p>
