@@ -8,6 +8,9 @@ proc ::file::Exit {}  {
   # sanity check in case of errant multiple call
   if {[winfo exists .unsaved]} {return}
 
+  # is OSX recursively calling this proc when tk_dialog exits ?
+  wm protocol . WM_DELETE_WINDOW {}
+
   # Check for altered game in all bases except the clipbase:
   set unsavedCount 0
   set savedBase [sc_base current]
@@ -40,11 +43,10 @@ proc ::file::Exit {}  {
   if {$unsavedCount > 0} {
     # space pad Exit button
     set answer [tk_dialog .unsaved "Scid: Unsaved Changes" $msg question {} "   [tr FileExit]   " [tr Cancel]]
-    if {$answer != 0} { return }
-
-    ### Gilles reports tk_dialog issues on his mac
-    # set answer [tk_messageBox -title "Scid: [tr FileExit]" -message $msg -type yesno -icon question]
-    # if {$answer != "yes"} { return }
+    if {$answer != 0} {
+      wm protocol . WM_DELETE_WINDOW {::file::Exit}
+      return
+    }
   }
   if {$::optionsAutoSave} {
     # restore askToReplaceMoves if necessary
@@ -53,13 +55,13 @@ proc ::file::Exit {}  {
     }
     .menu.options invoke [tr OptionsSave]
   }
-  wm protocol . WM_DELETE_WINDOW {}
   ::recentFiles::save
   ::utils::history::Save
   destroy .
 }
 
 proc ::file::ExitFast {} {
+  wm protocol . WM_DELETE_WINDOW {}
   if {$::optionsAutoSave} {
     # restore askToReplaceMoves if necessary
     if {[winfo exists .tacticsWin]} {
@@ -67,7 +69,6 @@ proc ::file::ExitFast {} {
     }
     .menu.options invoke [tr OptionsSave]
   }
-  wm protocol . WM_DELETE_WINDOW {}
   ::recentFiles::save
   destroy .
 }
