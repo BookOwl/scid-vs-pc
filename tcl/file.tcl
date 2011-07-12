@@ -38,7 +38,8 @@ proc ::file::Exit {}  {
 
   # Only ask before exiting if there are unsaved changes:
   if {$unsavedCount > 0} {
-    set answer [tk_dialog .unsaved "Scid: Unsaved Changes" $msg question {} [tr FileExit] [tr Cancel]]
+    # space pad Exit button
+    set answer [tk_dialog .unsaved "Scid: Unsaved Changes" $msg question {} "   [tr FileExit]   " [tr Cancel]]
     if {$answer != 0} { return }
 
     ### Gilles reports tk_dialog issues on his mac
@@ -52,6 +53,7 @@ proc ::file::Exit {}  {
     }
     .menu.options invoke [tr OptionsSave]
   }
+  wm protocol . WM_DELETE_WINDOW {}
   ::recentFiles::save
   ::utils::history::Save
   destroy .
@@ -65,6 +67,7 @@ proc ::file::ExitFast {} {
     }
     .menu.options invoke [tr OptionsSave]
   }
+  wm protocol . WM_DELETE_WINDOW {}
   ::recentFiles::save
   destroy .
 }
