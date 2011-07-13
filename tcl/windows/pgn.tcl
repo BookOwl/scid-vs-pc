@@ -174,14 +174,16 @@ namespace eval pgn {
     set pgnWin 1
     bind $w <Destroy> { set pgnWin 0 }
 
-    # Left button closes context menu
+    ### Left button closes context menu
+    # (The "Move tag" text binding in htext.tcl will move game to this position)
     bind $w <ButtonPress-1> {
       if {[winfo exists .pgnWin.text.ctxtMenu]} { destroy .pgnWin.text.ctxtMenu; focus .pgnWin }
     }
 
-    # Middle button popups a PGN board
-    bind $w <ButtonPress-2> "::pgn::ShowBoard .pgnWin.text 5 %x %y %X %Y"
-    bind $w <ButtonRelease-2> ::pgn::HideBoard
+    # This is very broken for the new "Chess pieces" option, and a shitty feature anyway (?)
+    # # Middle button popups a PGN board
+    # bind $w <ButtonPress-2> "::pgn::ShowBoard .pgnWin.text 5 %x %y %X %Y"
+    # bind $w <ButtonRelease-2> ::pgn::HideBoard
 
     # Right button draws context menu
     bind $w <ButtonPress-3> "::pgn::contextMenu .pgnWin.text 5 %x %y %X %Y"
@@ -315,6 +317,7 @@ namespace eval pgn {
   }
 
   proc contextMenu {win startLine x y xc yc} {
+    # startLine x y xc yc -  unused
 
     update idletasks
 
@@ -338,7 +341,8 @@ namespace eval pgn {
     $mctxt add separator
     $mctxt add command -label "[tr WindowsComment]" -command ::commenteditor::Open
 
-    $mctxt post [winfo pointerx .] [winfo pointery .]
+    # Offset the menu a little so as to not obstruct move
+    $mctxt post [expr [winfo pointerx .] + 15] [expr [winfo pointery .] + 0]
   }
 
   proc deleteVar { var } {
