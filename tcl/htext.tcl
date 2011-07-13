@@ -377,8 +377,8 @@ proc ::htext::display {w helptext {section {}} {fixed 1}} {
         set moveTag $tagName
         set tagName m
         # Too many bindings! 
-        $w tag bind $moveTag <ButtonRelease-1> [list ::pgn::move $moveTag]
-        $w tag bind $moveTag <ButtonPress-3>   [list ::pgn::move $moveTag]
+        $w tag bind $moveTag <ButtonPress-1> [list ::pgn::move $moveTag]
+        $w tag bind $moveTag <ButtonPress-3> [list ::pgn::move $moveTag]
         $w tag bind $moveTag <Any-Enter> [list u1 $w $moveTag]
         $w tag bind $moveTag <Any-Leave> [list u0 $w $moveTag]
       } elseif {[strIsPrefix {a } $tagName]} {
