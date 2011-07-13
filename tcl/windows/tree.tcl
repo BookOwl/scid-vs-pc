@@ -7,6 +7,8 @@
 ### Originally authored by Shane Hudson.
 ### All Mask features by Pascal Georges [S.A.]
 
+# ::tree::displayLines populates tree widget
+
 namespace eval ::tree {
   set trainingBase 0
   array set cachesize {}
@@ -436,6 +438,10 @@ proc ::tree::doTraining { { n 0 } } {
     }
   }
 
+  # Must flush tree before calling sc_tree move 
+  # is this correct ?
+  update idletasks
+
   set move [sc_tree move $::tree::trainingBase random]
   addSanMove $move -animate -notraining
   updateBoard -pgn
@@ -543,9 +549,8 @@ proc ::tree::dorefresh { baseNumber } {
 
 }
 
-################################################################################
-#
-################################################################################
+### Insert lines into the tree widget S.A.
+
 proc ::tree::displayLines { baseNumber moves } {
   global ::tree::mask::maskFile
 
