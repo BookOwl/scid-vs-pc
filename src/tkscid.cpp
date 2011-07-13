@@ -11555,6 +11555,7 @@ sc_name_info (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
     bool ratingsOnly = false;
     bool htextOutput = false;
     bool setFilter = false;   // Set filter to games by this player
+    bool setRefine = false; // Refine filter to games by this player
     bool setOpponent = false; // Set filter to games vs this opponent
     bool filter [NUM_COLOR_TYPES][NUM_RESULT_TYPES] =
     {
@@ -11571,9 +11572,12 @@ sc_name_info (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
             }
         } else if (strIsPrefix ("-h", opt)  &&  strIsPrefix (opt, "-htext")) {
             htextOutput = true;
-        } else if (opt[0] == '-'  &&  (opt[1] == 'f' || opt[1] == 'o')) {
+        } else if (opt[0] == '-'  &&  (opt[1] == 'f' || opt[1] == 'F' || opt[1] == 'o')) {
             if (opt[1] == 'f') {
                 setFilter = true;
+            } else if (opt[1] == 'F') {
+                setFilter = true;
+                setRefine = true;
             } else {
                 setOpponent = true;
             }
@@ -11696,7 +11700,8 @@ sc_name_info (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
 #endif
     for (uint month=0; month < monthMax; month++) { eloByMonth[month] = 0; }
 
-    if (setFilter || setOpponent) { db->filter->Fill (0); }
+    // if (setFilter || setOpponent) { db->filter->Fill (0); }
+    if ((setFilter && ! setRefine) || setOpponent) { db->filter->Fill (0); }
 
     for (uint i=0; i < db->numGames; i++) {
         IndexEntry * ie = db->idx->FetchEntry (i);
@@ -11716,6 +11721,10 @@ sc_name_info (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
         idNumberT whiteId = ie->GetWhite();
         idNumberT blackId = ie->GetBlack();
         dateT date = ZERO_DATE;
+
+        // Remove from filter if not this person
+        if (setRefine && whiteId != id && blackId != id) 
+            db->filter->Set (i, 0);
 
         // Track statistics as white and black:
         if (whiteId == id) {
@@ -12174,8 +12183,9 @@ sc_name_info (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
              "", bothscore[STATS_FILTER][RESULT_Draw], "",
              "", bothscore[STATS_FILTER][RESULT_Black], "",
              score / 2, decimalPointChar, score % 2 ? '5' : '0',
-             "", totalcount[STATS_FILTER],
-             htextOutput ? "</tt>" : "");
+             htextOutput ? "<green><run sc_name info -F {}; ::windows::stats::Refresh>" : "",
+             totalcount[STATS_FILTER],
+             htextOutput ? "</run></green></tt>" : "");
     Tcl_AppendResult (ti, temp, newline, NULL);
 
     // Now print stats for games against the current opponent:
