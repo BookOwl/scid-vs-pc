@@ -127,14 +127,15 @@ if { $macOS } {
   $m add separator
   incr menuindex
 
-  bind all <Command-q> "exit"
-  bind all <Command-Q> "exit"
+  # Probably redundant (and can sause problems)
+  # bind all <Command-q> "exit"
+  # bind all <Command-Q> "exit"
 
   bind all <Command-?> {helpWindow Contents}
   bind all <Help> {helpWindow Contents}
 
   # Trap quitting from the tkscid OSX menu (needed to save options).
-  proc exit {}  {
+  proc ::tk::mac::Quit {}  {
     ::file::Exit
   }
 
