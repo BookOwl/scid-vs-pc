@@ -78,15 +78,15 @@ menuText E FileMaintTwin "Twin Checker Window" 0 \
 menuText E FileMaintName "Name Spelling" 0 {Name editing and spelling tools}
 menuText E FileMaintNameEditor "Name Editor" 0 \
   {Open/close the name editor window}
-menuText E FileMaintNamePlayer "Spellcheck Player Names..." 11 \
+menuText E FileMaintNamePlayer "Spellcheck Player Names" 11 \
   {Spellcheck player names using the spellcheck file}
-menuText E FileMaintNameEvent "Spellcheck Event Names..." 11 \
+menuText E FileMaintNameEvent "Spellcheck Event Names" 11 \
   {Spellcheck event names using the spellcheck file}
-menuText E FileMaintNameSite "Spellcheck Site Names..." 11 \
+menuText E FileMaintNameSite "Spellcheck Site Names" 11 \
   {Spellcheck site names using the spellcheck file}
-menuText E FileMaintNameRound "Spellcheck Round Names..." 11 \
+menuText E FileMaintNameRound "Spellcheck Round Names" 11 \
   {Spellcheck round names using the spellcheck file}
-menuText E FileReadOnly "Read-only..." 0 \
+menuText E FileReadOnly "Read-only" 0 \
   {Treat the current database as read-only, preventing changes}
 menuText E FileSwitch "Switch to Database" 0 \
   {Switch to a different opened database}
@@ -139,7 +139,7 @@ menuText E GameReload "Re-Load Current Game" 3 \
 menuText E GameNext "Load Next Game" 7 {Load the next filtered game}
 menuText E GameLast "Load Last Game" 8 {Load the last filtered game}
 menuText E GameRandom "Load Random Game" 8 {Load a random filtered game}
-menuText E GameNumber "Load Game Number..." 5 \
+menuText E GameNumber "Load Game Number" 5 \
   {Load a game by entering its number}
 menuText E GameReplace "Replace Game" 6 \
   {Save this game, replacing the old version}
@@ -147,9 +147,9 @@ menuText E GameAdd "Add New Game" 0 \
   {Save this game as a new game in the database}
 menuText E GameDeepest "Identify Opening" 0 \
   {Goto the deepest game position listed in the ECO book}
-menuText E GameGotoMove "Goto Move Number..." 5 \
+menuText E GameGotoMove "Goto Move Number" 5 \
   {Go to a specified move number in the current game}
-menuText E GameNovelty "Find Novelty..." 7 \
+menuText E GameNovelty "Find Novelty" 7 \
   {Find the first move of this game that has not played before}
 
 # Search Menu:
@@ -220,21 +220,21 @@ menuText E ToolsRating "Rating Graph" 0 \
 menuText E ToolsScore "Score Graph" 0 {Show the score graph window}
 menuText E ToolsExpCurrent "Export Current Game" 8 \
   {Write current game to a text file}
-menuText E ToolsExpCurrentPGN "Export Game to PGN File..." 15 \
+menuText E ToolsExpCurrentPGN "Export Game to PGN" 15 \
   {Write current game to a PGN file}
-menuText E ToolsExpCurrentHTML "Export Game to HTML File..." 15 \
+menuText E ToolsExpCurrentHTML "Export Game to HTML" 15 \
   {Write current game to a HTML file}
-menuText E ToolsExpCurrentHTMLJS "Export Game to HTML and JavaScript File..." 15 {Write current game to a HTML and JavaScript file}  
-menuText E ToolsExpCurrentLaTeX "Export Game to LaTeX File..." 15 \
+menuText E ToolsExpCurrentHTMLJS "Export Game to HTML and JavaScript" 15 {Write current game to a HTML and JavaScript file}  
+menuText E ToolsExpCurrentLaTeX "Export Game to LaTeX" 15 \
   {Write current game to a LaTeX file}
 menuText E ToolsExpFilter "Export All Filter Games" 1 \
   {Write all filtered games to a text file}
-menuText E ToolsExpFilterPGN "Export Filter to PGN File..." 17 \
+menuText E ToolsExpFilterPGN "Export Filter to PGN" 17 \
   {Write all filtered games to a PGN file}
-menuText E ToolsExpFilterHTML "Export Filter to HTML File..." 17 \
+menuText E ToolsExpFilterHTML "Export Filter to HTML" 17 \
   {Write all filtered games to a HTML file}
-menuText E ToolsExpFilterHTMLJS "Export Filter to HTML and JavaScript File..." 17 {Write all filtered games to a HTML and JavaScript file}  
-menuText E ToolsExpFilterLaTeX "Export Filter to LaTeX File..." 17 \
+menuText E ToolsExpFilterHTMLJS "Export Filter to HTML and JavaScript" 17 {Write all filtered games to a HTML and JavaScript file}  
+menuText E ToolsExpFilterLaTeX "Export Filter to LaTeX" 17 \
   {Write all filtered games to a LaTeX file}
 menuText E ToolsImportOne "Import PGN Text" 0 \
   {Import a game from PGN text}
@@ -273,7 +273,7 @@ menuText E CCEditCopy "Copy Gamelist to Clipbase" 0 {Copy the games as CSV list 
 menuText E Options "Options" 0
 menuText E OptionsBoard "Chessboard/Pieces" 0 {Chess board appearance}
 menuText E OptionsColour "Background Colour" 0 {Default text widget color}
-menuText E OptionsNames "My Player Names..." 3 {Edit my player names}
+menuText E OptionsNames "My Player Names" 3 {Edit my player names}
 menuText E OptionsExport "Exporting" 0 {Change text export options}
 menuText E OptionsFonts "Fonts" 0 {Change fonts}
 menuText E OptionsFontsRegular "Regular" 0 {Change the regular font}
@@ -292,7 +292,7 @@ menuText E OptionsMovesAsk "Ask Before Replacing Moves" 0 \
   {Ask before overwriting any existing moves}
 menuText E OptionsMovesAnimate "Animation Time" 1 \
   {Set the amount of time used to animate moves}
-menuText E OptionsMovesDelay "Autoplay Time Delay..." 1 \
+menuText E OptionsMovesDelay "Autoplay Time Delay" 1 \
   {Set the time delay for autoplay mode}
 menuText E OptionsMovesCoord "Coordinate Move Entry" 0 \
   {Accept coordinate-style move entry (e.g. "g1f3")}
@@ -310,16 +310,16 @@ menuText E OptionsWindowsIconify "Auto-Iconify" 5 \
   {Iconify all windows when the main window is iconified}
 menuText E OptionsWindowsRaise "Auto-Raise" 5 \
   {Raise certain windows (e.g. progress bars) whenever they are obscured}
-menuText E OptionsSounds "Sounds..." 2 {Configure move announcement sounds}
-menuText E OptionsToolbar "Toolbar..." 0 {Configure the main window toolbar}
-menuText E OptionsECO "Load ECO File..." 7 {Load the ECO classification file}
-menuText E OptionsSpell "Load Spellcheck File..." 11 \
+menuText E OptionsSounds "Sounds" 2 {Configure move announcement sounds}
+menuText E OptionsToolbar "Toolbar" 0 {Configure the main window toolbar}
+menuText E OptionsECO "Load ECO File" 7 {Load the ECO classification file}
+menuText E OptionsSpell "Load Spellcheck File" 11 \
   {Load the Scid spellcheck file}
-menuText E OptionsTable "Tablebase Directory..." 10 \
+menuText E OptionsTable "Tablebase Directory" 10 \
   {Select a tablebase file; all tablebases in its directory will be used}
-menuText E OptionsRecent "Recent Files..." 0 {Change the number of recent files displayed in the File menu}
-menuText E OptionsBooksDir "Books directory..." 0 {Sets the opening books directory}
-menuText E OptionsTacticsBasesDir "Bases directory..." 0 {Sets the tactics (training) bases directory}
+menuText E OptionsRecent "Recent Files" 0 {Change the number of recent files displayed in the File menu}
+menuText E OptionsBooksDir "Books directory" 0 {Sets the opening books directory}
+menuText E OptionsTacticsBasesDir "Bases directory" 0 {Sets the tactics (training) bases directory}
 menuText E OptionsSave "Save Options" 0 "Save all settable options to the file $::optionsFile"
 menuText E OptionsAutoSave "Auto-Save Options on Exit" 0 \
   {Auto-save all options when exiting Scid}
@@ -639,8 +639,8 @@ translate E TmtNone "No matching tournaments were found."
 
 # Graph windows:
 menuText E GraphFile "File" 0
-menuText E GraphFileColor "Save as Color PostScript..." 8
-menuText E GraphFileGrey "Save as Greyscale PostScript..." 8
+menuText E GraphFileColor "Save as Color PostScript" 8
+menuText E GraphFileGrey "Save as Greyscale PostScript" 8
 menuText E GraphFileClose "Close" 0
 menuText E GraphOptions "Options" 0
 menuText E GraphOptionsWhite "White" 0
@@ -705,13 +705,13 @@ translate E EngineRequired {Fields in bold are required; others are optional}
 
 # Stats window menus:
 menuText E StatsFile "Statistics" 0
-menuText E StatsFilePrint "Print to File..." 0
+menuText E StatsFilePrint "Print to File" 0
 menuText E StatsFileClose "Close Window" 0
 menuText E StatsOpt "Options" 0
 
 # PGN window menus:
 menuText E PgnFile "Pgn" 0
-menuText E PgnFilePrint "Save Game as..." 0
+menuText E PgnFilePrint "Save Game as" 0
 menuText E PgnFileCopy "Copy to Clipboard" 0
 menuText E PgnFileClose "Close" 10
 menuText E PgnOpt "Options" 0
@@ -740,9 +740,9 @@ translate E PgnWindowTitle {Game Notation - game %u}
 
 # Crosstable window menus:
 menuText E CrosstabFile "Crosstable" 0
-menuText E CrosstabFileText "Save as Text ..." 8
-menuText E CrosstabFileHtml "Save as Html ..." 8
-menuText E CrosstabFileLaTeX "Save as Latex ..." 8
+menuText E CrosstabFileText "Save as Text" 8
+menuText E CrosstabFileHtml "Save as Html" 8
+menuText E CrosstabFileLaTeX "Save as Latex" 8
 menuText E CrosstabFileClose "Close" 0
 menuText E CrosstabEdit "Edit" 0
 menuText E CrosstabEditEvent "Event" 0
@@ -780,15 +780,15 @@ translate E Category {Category}
 
 # Opening report window menus:
 menuText E OprepFile "Report" 0
-menuText E OprepFileText "Print to Text File..." 9
-menuText E OprepFileHtml "Print to HTML File..." 9
-menuText E OprepFileLaTeX "Print to LaTeX File..." 9
-menuText E OprepFileOptions "Options..." 0
+menuText E OprepFileText "Print to Text" 9
+menuText E OprepFileHtml "Print to HTML" 9
+menuText E OprepFileLaTeX "Print to LaTeX" 9
+menuText E OprepFileOptions "Options" 0
 menuText E OprepFileClose "Close Report Window" 0
 menuText E OprepFavorites "Favorites" 1
-menuText E OprepFavoritesAdd "Add Report..." 0
-menuText E OprepFavoritesEdit "Edit Report Favorites..." 0
-menuText E OprepFavoritesGenerate "Generate Reports..." 0
+menuText E OprepFavoritesAdd "Add Report" 0
+menuText E OprepFavoritesEdit "Edit Report Favorites" 0
+menuText E OprepFavoritesGenerate "Generate Reports" 0
 menuText E OprepHelp "Help" 0
 menuText E OprepHelpReport "Opening Report Help" 0
 menuText E OprepHelpIndex "Help Index" 0
@@ -920,7 +920,7 @@ translate E TwinChecknextPair {Next pair}
 translate E TwinChecker {Scid: Twin game checker}
 translate E TwinCheckTournament {Games in tournament:}
 translate E TwinCheckNoTwin {No twin  }
-translate E TwinCheckNoTwinfound {No twin was detected for this game.\nTo show twins using this window, you must first use the "Delete twin games..." function. }
+translate E TwinCheckNoTwinfound {No twin was detected for this game.\nTo show twins using this window, you must first use the "Delete twin games" function. }
 translate E TwinCheckTag {Share tags...}
 translate E TwinCheckFound1 {Scid found $result twin games}
 translate E TwinCheckFound2 { and set their delete flags}
