@@ -175,9 +175,16 @@ proc compInit {} {
 
   ### OK, Cancel Buttons
 
-  dialogbutton $w.buttons.cancel -text Cancel -command compClose
-  dialogbutton $w.buttons.ok -text Ok -command compOk
-  dialogbutton $w.buttons.help -text $::tr(Help) -command {helpWindow Tourney}
+  if {$::windowsOS} {
+    # fixed width dialogbutton cuts text in winxp
+    set button button
+  } else {
+    set button dialogbutton
+  }
+
+  $button $w.buttons.cancel -text Cancel -command compClose
+  $button $w.buttons.ok -text Ok -command compOk
+  $button $w.buttons.help -text $::tr(Help) -command {helpWindow Tourney}
 
   focus $w.buttons.ok
   pack $w.buttons.ok $w.buttons.help -side left -padx 5
