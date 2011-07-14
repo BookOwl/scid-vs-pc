@@ -153,7 +153,7 @@ proc ::tree::make { { baseNumber -1 } } {
 
   menu $w.menu.mask.recent
   foreach f $::tree::mask::recentMask {
-    $w.menu.mask.recent add command -label $f -command "::tree::mask::open $f $w"
+    $w.menu.mask.recent add command -label $f -command [list ::tree::mask::open $f $w]
   }
   $w.menu.mask add cascade -label TreeMaskOpenRecent -menu $w.menu.mask.recent
   set helpMessage($w.menu.mask,2) TreeMaskOpenRecent
@@ -1500,7 +1500,7 @@ proc ::tree::mask::open { {filename ""} {parent .}} {
         if { [winfo exists $w] } {
           $w.menu.mask.recent delete 0 end
           foreach f $::tree::mask::recentMask {
-            $w.menu.mask.recent add command -label $f -command "::tree::mask::open $f $w"
+            $w.menu.mask.recent add command -label $f -command [list ::tree::mask::open $f $w]
           }
         }
       }
