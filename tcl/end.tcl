@@ -1794,8 +1794,6 @@ while {$argc > 0} {
   set argv [lrange $argv 1 end]
 }
 
-::splash::add "\nStartup complete."
-
 ##################################
 ### Main window initialisation ###
 ##################################

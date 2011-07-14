@@ -130,7 +130,7 @@ proc updateHelpWindow {name {heading {}}} {
 
     ### Help Widget Find
 
-    $w.text tag configure Highlight -background lightsteelblue3
+    $w.text tag configure Highlight -background gray85
 
     entry $w.b.find -width 10 -textvariable ::helpWin(find)
     set ::helpWin(findprev) {}
@@ -387,7 +387,7 @@ proc ::htext::display {w helptext {section {}} {fixed 1}} {
         set sectionName [::htext::extractSectionName $tagName]
         set linkTag "link ${linkName} ${sectionName}"
         set tagName a
-        $w tag configure $linkTag -fore dodgerblue2
+        $w tag configure $linkTag -fore dodgerblue3
         $w tag bind $linkTag <ButtonRelease-1> "helpWindow $linkName $sectionName"
         $w tag bind $linkTag <Any-Enter> [list uh1 $w $linkTag]
         $w tag bind $linkTag <Any-Leave> [list uh0 $w $linkTag]
@@ -396,7 +396,7 @@ proc ::htext::display {w helptext {section {}} {fixed 1}} {
         set urlName [string range $tagName 4 end]
         set urlTag "url $urlName"
         set tagName url
-        $w tag configure $urlTag -fore coral
+        $w tag configure $urlTag -fore darkred
         $w tag bind $urlTag <ButtonRelease-1> "openURL {$urlName}"
         $w tag bind $urlTag <Any-Enter> [list uh1 $w $urlTag]
         $w tag bind $urlTag <Any-Leave> [list uh0 $w $urlTag]

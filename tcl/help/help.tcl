@@ -4,7 +4,7 @@ set helpTitle(Contents) "$::scidName"
 set helpText(Contents) "<h1>$::scidName</h1>"
 append helpText(Contents) {
 
-  <ht><img splash></ht>
+  <ht><img icon></ht>
   <ht><a Intro>Introduction</a></ht>
   <ht><a TacticalGame>Playing against the Computer</a></ht>
   <ht><a FICS>Playing on the Internet (FICS)</a></ht>
@@ -4056,8 +4056,7 @@ set helpText(ECO) {<h1>ECO Codes</h1>
 
 set helpTitle(Author) "About"
 set helpText(Author) "<h1>Scid vs. PC</h1>
-  <ht><img splash></ht>
-  <p>
+  <ht><img icon></ht>
   <ul> <ul> <ul> <ul> <ul> <ul> <ul>
   <li>Scid vs. PC  version $::scidVersion</li>
   <br>
@@ -4065,9 +4064,9 @@ set helpText(Author) "<h1>Scid vs. PC</h1>
   <br>
   <li><url http://scidvspc.sourceforge.net/>http://scidvspc.sourceforge.net/</url></li>
   <br>
-  <li>Based on: Shane's Chess Information Database 3.6.26</li>
-  <li>, including many updates from mainline Scid.</li>
-  <br>
+  <li>Based on:</li>
+  <li>Shane's Chess Information Database 3.6.26</li>
+  <li>(with many updates from mainline Scid).</li>
   <li>Authors: Shane Hudson and Pascal Georges.</li>
   <li>(C) Shane Hudson, Pascal Georges and others.</li>
   <br>
@@ -4092,7 +4091,7 @@ set helpText(Related) {<h1>Related Links</h1>
   <li>Fics homepage  <url http://www.freechess.org>www.freechess.org</url></li>
   <li>Fics games <url http://ficsgames.com>http://ficsgames.com</url></li>
   <li>Player Information resources  <url http://linweb.ris.at/~nagl/index.html>http://linweb.ris.at/~nagl</url></li>
-  <li>Professional quality chess icons, providing this project's new logo.  <url www.virtualpieces.net>www.virtualpieces.net</url></li>
+  <li>Professional quality chess icons.  <url www.virtualpieces.net>www.virtualpieces.net</url></li>
   <li>The PGN Standard, created by Steven J. Edwards in 1994, explains the PGN
   and EPD formats in detail. <url www.saremba.de/chessgml/standards/pgn/pgn-complete.htm>www.saremba.de/chessgml/standards/pgn...</url></li>
   <br>
