@@ -1,6 +1,6 @@
 ##### Makefile for Scid for Unix operating systems.
 
-# This file is overwritten by ./configure
+# This file overwritten by configure
 
 CXX = g++
 CC = gcc
@@ -70,9 +70,9 @@ WARNINGS = -Wall
 
 CFLAGS = -O2 -fno-rtti -fno-exceptions $(WARNINGS) $(DEBUG)
 
-### CXXFLAGS: Flags for C++ compilation.
-
 CXXFLAGS = $(CFLAGS) $(SCIDFLAGS)
+
+LDFLAGS = 
 
 ### LANGUAGES: List of additional Tcl files to include in Scid for
 #       multi-language menu support.
@@ -365,31 +365,31 @@ twic2pgn: scripts/twic2pgn.py
 scmerge: src/scmerge.o src/misc.o src/index.o src/date.o src/namebase.o \
           src/gfile.o src/bytebuf.o src/textbuf.o src/myassert.o \
           src/stralloc.o src/position.o
-	$(LINK) -o scmerge src/scmerge.o $(OBJS) $(ZLIB)
+	$(LINK) $(LDFLAGS) -o scmerge src/scmerge.o $(OBJS) $(ZLIB)
 
 pgnscid: src/pgnscid.o $(OBJS)
-	$(LINK) -o pgnscid src/pgnscid.o $(OBJS) $(ZLIB)
+	$(LINK) $(LDFLAGS) -o pgnscid src/pgnscid.o $(OBJS) $(ZLIB)
 
 scidlet: src/scidlet.o src/engine.o src/recog.o src/misc.o src/position.o \
           src/dstring.o src/movelist.o src/myassert.o
-	$(LINK) -o scidlet src/scidlet.o src/engine.o src/recog.o src/misc.o src/position.o src/movelist.o src/dstring.o src/myassert.o
+	$(LINK) $(LDFLAGS) -o scidlet src/scidlet.o src/engine.o src/recog.o src/misc.o src/position.o src/movelist.o src/dstring.o src/myassert.o
 
 scidt: src/scidt.o $(OBJS)
-	$(LINK) -o scidt src/scidt.o $(OBJS) $(ZLIB)
+	$(LINK) $(LDFLAGS) -o scidt src/scidt.o $(OBJS) $(ZLIB)
 
 tkscid: src/tkscid.o $(OBJS) src/tree.o src/filter.o src/pbook.o src/crosstab.o \
           src/spellchk.o src/probe.o src/optable.o src/engine.o src/recog.o
-	$(LINK) -o tkscid src/tkscid.o $(OBJS) src/tree.o src/filter.o src/pbook.o src/crosstab.o src/spellchk.o src/probe.o src/optable.o src/engine.o src/recog.o $(ZLIB) $(TK_LIBRARY)
+	$(LINK) $(LDFLAGS) -o tkscid src/tkscid.o $(OBJS) src/tree.o src/filter.o src/pbook.o src/crosstab.o src/spellchk.o src/probe.o src/optable.o src/engine.o src/recog.o $(ZLIB) $(TK_LIBRARY)
 
 tcscid: src/tcscid.o $(OBJS) src/tree.o src/filter.o src/pbook.o src/crosstab.o \
           src/spellchk.o src/probe.o src/optable.o src/engine.o src/recog.o
-	$(LINK) -o tcscid src/tcscid.o $(OBJS) src/tree.o src/filter.o src/pbook.o src/crosstab.o src/spellchk.o src/probe.o src/optable.o src/engine.o src/recog.o $(ZLIB) $(TCL_LIBRARY)
+	$(LINK) $(LDFLAGS) -o tcscid src/tcscid.o $(OBJS) src/tree.o src/filter.o src/pbook.o src/crosstab.o src/spellchk.o src/probe.o src/optable.o src/engine.o src/recog.o $(ZLIB) $(TCL_LIBRARY)
 
 # eco2epd is now optional extra program NOT compiled by default, since
 # scid now reads the .eco file format directly.
 
 eco2epd: src/eco2epd.o $(OBJS) src/pbook.o
-	$(LINK) -o eco2epd src/eco2epd.o $(OBJS) src/pbook.o $(ZLIB)
+	$(LINK) $(LDFLAGS) -o eco2epd src/eco2epd.o $(OBJS) src/pbook.o $(ZLIB)
 
 ### Rules to create .o files from .cpp files:
 
@@ -402,7 +402,7 @@ src/tkscid.o: src/tkscid.cpp
 ### The endgame tablebase code in the egtb/ subdirectory (not written by me)
 
 src/probe.o: src/probe.cpp src/egtb/tbindex.cpp src/egtb/tbdecode.c
-	$(CXX) $(DEBUG) $(SCIDFLAGS) $(TB) -o src/probe.o -c src/probe.cpp
+	$(CXX) $(CXXFLAGS) $(TB) -o src/probe.o -c src/probe.cpp
 
 ### Generic rule for all other .cpp files:
 

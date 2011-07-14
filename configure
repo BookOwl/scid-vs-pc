@@ -18,6 +18,7 @@ set var(CC) gcc
 set var(LINK) g++
 set var(DEBUG) #-DASSERTIONS
 set var(CFLAGS) {-O2 -fno-rtti -fno-exceptions}
+set var(LDFLAGS) {}
 set var(WARNINGS) -Wall
 set var(SCIDFLAGS) {}
 
@@ -473,6 +474,7 @@ proc usage {} {
     puts {  CC           Your C compiler. Default: "gcc".}
     puts {  LINK         Your C++ linker. Default: "g++".}
     puts {  CFLAGS       C optimizations. Default: "-O2 -fno-rtti -fno-exceptions".}
+    puts {  LDFLAGS      Linking flags.}
     puts {  WARNINGS     C++ compiler warnings. Default: "-Wall".}
     puts {  DEBUG        Debugging flags. Use DEBUG="-DASSERTIONS" for assertions.}
     puts {  SCIDFLAGS    Scid customization flags. Default: none.}
@@ -489,8 +491,15 @@ proc usage {} {
     puts {  starting with TCL_ and TK_ automatically, so you should only use those}
     puts {  options if it fails to find your Tcl/Tk installation.}
     puts {}
-    puts {Example usage:}
-    puts {  ./configure CFLAGS="-O4" LANGUAGES="tcl/francais.tcl"}
+    puts {Examples}
+    puts {To install in /usr}
+    puts {  ./configure BINDIR=/usr/bin/ SHAREDIR=/usr/share/scid/}
+    puts {To install debug without languages}
+    puts {  ./configure LANGUAGES="" DEBUG="-DASSERTIONS"}
+    puts {To install for i386 for Linux}
+    puts {  ./configure 'CFLAGS=-march=i386' 'LDFLAGS=-march=i386'}
+    puts {To install for i386 and PPC for OSX}
+    puts {  ./configure 'CFLAGS=-arch i386 ppc' 'LDFLAGS=-arch i386 ppc'}
     puts {}
     exit 1
 }
