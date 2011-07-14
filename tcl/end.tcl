@@ -1754,11 +1754,6 @@ while {$argc > 0} {
       ::windows::gamelist::Refresh
       ::windows::stats::Refresh
     }
-  } elseif {[string match "*.sor" $startbase]} {
-    ::splash::add "Opening repertoire file: $startbase..."
-    if {[catch {::rep::OpenWithFile $startbase} err]} {
-      ::splash::add "Error opening $startbase: $err" error
-    }
   } else {
     busyCursor .
     ::splash::add "Opening database: $startbase ..."

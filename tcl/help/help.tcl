@@ -1437,10 +1437,8 @@ databases, which consist of several files.
   <h3>Games Field</h3>
   <p>
   The meaning of this field depends on the file type;
-  For Databases and PGN files it is
-  the number of games, for EPD files, the number of
-  positions, and for repertoire files it is the number of
-  (include or exclude) lines.
+  For Databases and PGN files it is the number of games, and for EPD files the number of
+  positions.
   </p>
   <p>
   For all file types except Scid Databases, the file size is
@@ -2905,7 +2903,7 @@ set helpText(EPD) {<h1>EPD Files</h1>
   EPD files have a number of uses: Scid uses an EPD file to classify
   games according to the <a ECO>Encyclopedia of Chess Openings</a> (ECO)
   system, and you can create an EPD file for your opening repertoire,
-  adding comments for positions you regularly reach in games.
+  adding comments for positions you regularly reach in games (removed).
   </p>
   <p>
   You can create a new EPD file or open an existing one, from the

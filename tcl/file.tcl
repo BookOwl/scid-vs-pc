@@ -130,14 +130,14 @@ proc ::file::Open {{fName ""} {parent .} {update 1}} {
 
   if {[sc_info gzip]} {
     set ftype {
-      { {All Scid files} {.si4 .si3 .pgn .PGN .pgn.gz .epd .epd.gz .sor} }
+      { {All Scid files} {.si4 .si3 .pgn .PGN .pgn.gz .epd .epd.gz} }
       { {Scid databases} {.si4 .si3} }
       { {PGN files} {.pgn .PGN .pgn.gz} }
       { {EPD files} {.epd .EPD .epd.gz} }
     }
   } else {
     set ftype {
-      { {All Scid files} {.si4 .si3 .pgn .PGN .epd .sor} }
+      { {All Scid files} {.si4 .si3 .pgn .PGN .epd} }
       { {Scid databases} {.si4 .si3} }
       { {PGN files} {.pgn .PGN} }
       { {EPD files} {.epd .EPD} }
@@ -155,14 +155,6 @@ proc ::file::Open {{fName ""} {parent .} {update 1}} {
 
   if {[file extension $fName] == "" || [file readable "$fName.si4"]} {
     set fName "$fName.si4"
-  }
-
-  if {[file extension $fName] == ".sor"} {
-    if {[catch {::rep::OpenWithFile $fName} err]} {
-      tk_messageBox -parent $parent -type ok -icon info -title "Scid" \
-          -message "Unable to open \"$fName\": $err"
-    }
-    return
   }
 
   if {[file extension $fName] == ".si3" && [file exists $fName]} {
@@ -501,14 +493,6 @@ proc ::file::openBaseAsTree { { fName "" } } {
 
   if {[file extension $fName] == ""} {
     set fName "$fName.si4"
-  }
-
-  if {[file extension $fName] == ".sor"} {
-    if {[catch {::rep::OpenWithFile $fName} err]} {
-      tk_messageBox -parent . -type ok -icon info -title "Scid" \
-          -message "Unable to open \"$fName\": $err"
-    }
-    return
   }
 
   if {[file extension $fName] == ".si3" && [file exists $fName]} {
