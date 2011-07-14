@@ -183,7 +183,7 @@ proc ::tree::make { { baseNumber -1 } } {
       -command "::tree::toggleLock $baseNumber"
   set helpMessage($w.menu.opt,0) TreeOptLock
 
-  $w.menu.opt add checkbutton -label TreeOptTraining -variable tree(training$baseNumber) -command "::tree::toggleTraining $baseNumber"
+  $w.menu.opt add checkbutton -label TreeOptTraining -variable tree(training$baseNumber) -command "::tree::refreshTraining $baseNumber"
   set helpMessage($w.menu.opt,1) TreeOptTraining
 
   $w.menu.opt add separator
@@ -248,21 +248,17 @@ proc ::tree::make { { baseNumber -1 } } {
 
   button $w.buttons.best -image b_list -command "::tree::toggleBest $baseNumber"
   button $w.buttons.graph -image b_bargraph -command "::tree::toggleGraph $baseNumber"
+  button $w.buttons.training -image tb_training -command "::tree::toggleTraining $baseNumber"
   # add a button to start/stop tree refresh &&&
   # button $w.buttons.bStartStop -image engine_on -command "::tree::toggleRefresh $baseNumber" ;# -relief flat
 
   checkbutton $w.buttons.refresh -text Refresh \
       -variable tree(autorefresh$baseNumber) -command "::tree::toggleRefresh $baseNumber" 
-  checkbutton $w.buttons.lock -textvar ::tr(LockTree) \
-      -variable tree(locked$baseNumber) -command "::tree::toggleLock $baseNumber"
-  checkbutton $w.buttons.training -textvar ::tr(Training) \
-      -variable tree(training$baseNumber) -command "::tree::toggleTraining $baseNumber"
   checkbutton $w.buttons.mask -text {Adjust Filter} -variable tree(maskfilter$baseNumber) -command "::tree::dorefresh $baseNumber"
 
   # bStartStop TreeOptStartStop
   foreach {b t} {
-    best TreeFileBest graph TreeFileGraph lock TreeOptLock
-    training TreeOptTraining
+    best TreeFileBest graph TreeFileGraph training TreeOptTraining
   } {
     set helpMessage($w.buttons.$b) $t
   }
@@ -270,9 +266,8 @@ proc ::tree::make { { baseNumber -1 } } {
   dialogbutton $w.buttons.stop -textvar ::tr(Stop) -command { sc_progressBar }
   dialogbutton $w.buttons.close -textvar ::tr(Close) -command "::tree::closeTree $baseNumber"
 
-  pack $w.buttons.best $w.buttons.graph $w.buttons.refresh $w.buttons.mask \
+  pack $w.buttons.best $w.buttons.graph $w.buttons.training $w.buttons.refresh $w.buttons.mask \
       -side left -padx 3 -pady 2
-  # $w.buttons.lock , $w.buttons.training  not packed..... too crowded
 
   packbuttons right $w.buttons.close $w.buttons.stop
   $w.buttons.stop configure -state disabled
@@ -357,8 +352,14 @@ proc ::tree::doTrace { prefix name1 name2 op} {
   }
   ::tree::best $baseNumber
 }
-################################################################################
+
 proc ::tree::toggleTraining { baseNumber } {
+  global tree
+  set tree(training$baseNumber) [expr !$tree(training$baseNumber)]
+  ::tree::refreshTraining $baseNumber
+}
+
+proc ::tree::refreshTraining { baseNumber } {
   global tree
 
   for {set i 1 } {$i <= [sc_base count total]} {incr i} {
@@ -368,11 +369,10 @@ proc ::tree::toggleTraining { baseNumber } {
 
   if {$tree(training$baseNumber)} {
     set ::tree::trainingBase $baseNumber
-    ::tree::doTraining
   } else {
     set ::tree::trainingBase 0
-    ::tree::refresh $baseNumber
   }
+  ::tree::refresh $baseNumber
 }
 
 ################################################################################
@@ -447,12 +447,10 @@ proc ::tree::doTraining { { n 0 } } {
   updateBoard -pgn
 }
 
-################################################################################
 proc ::tree::toggleLock { baseNumber } {
   ::tree::refresh $baseNumber
 }
 
-################################################################################
 proc ::tree::select { move baseNumber } {
   global tree
 
@@ -493,7 +491,7 @@ proc ::tree::dorefresh { baseNumber } {
 
   # busyCursor .
   sc_progressBar $w.progress bar 251 16
-  foreach button {best graph training lock close} {
+  foreach button {best graph training close} {
     $w.buttons.$button configure -state disabled
   }
   $w.buttons.stop configure -state normal
@@ -515,7 +513,7 @@ proc ::tree::dorefresh { baseNumber } {
 
   catch {$w.f.tl itemconfigure 0 -foreground darkBlue}
 
-  foreach button {best graph training lock close} {
+  foreach button {best graph training close} {
     $w.buttons.$button configure -state normal
   }
   $w.buttons.stop configure -state disabled -relief raised

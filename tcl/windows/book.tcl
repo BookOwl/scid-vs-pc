@@ -389,8 +389,12 @@ togglePositionsDisplay
   #
   ################################################################################
   proc makeBookMove { move } {
-    set action "replace"
-    if {![sc_pos isAt vend]} { set action [confirmReplaceMove] }
+    if {[sc_pos isAt vend]} {
+      set action replace
+    } else {
+      set action [confirmReplaceMove]
+    }
+
     if {$action == "replace"} {
       sc_move addSan $move
     } elseif {$action == "var"} {

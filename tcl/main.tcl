@@ -1198,7 +1198,6 @@ proc addMove { sq1 sq2 {animate ""}} {
   updateBoard -pgn $animate
 
   ::tree::doTraining
-
 }
 
 # addSanMove
