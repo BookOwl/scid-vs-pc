@@ -39,10 +39,11 @@ TCL_INCLUDE = @TCL_INCLUDE@
 TCL_LIBRARY = @TCL_LIBRARY@
 TK_LIBRARY  = @TK_LIBRARY@
 
-### TB: Using Nalimov tablebases with Scid. Use "TB = -DSCID_USE_TB" for 
-#      tablebase support, or just "TB = " for no tablebase capability.
-#      Use "TB = -DSCID_USE_TB -DT41_INCLUDE" to include use of 4-1
-#      (King + 3 pieces vs lone king) tablebases.
+### Nalimov tablebases
+# TB =                   for no tablebase support
+# TB = -DSCID_USE_TB     for tablebase support
+# TB = -DSCID_USE_TB -DT41_INCLUDE
+#                        for use of 4-1 (King + 3 pieces vs lone king) tablebases.
 
 TB = @TB@
 
@@ -69,7 +70,7 @@ WARNINGS = @WARNINGS@
 
 CFLAGS = @CFLAGS@ $(WARNINGS) $(DEBUG)
 
-CXXFLAGS = $(CFLAGS) $(SCIDFLAGS)
+CXXFLAGS = @CXXFLAGS@ $(CFLAGS) $(SCIDFLAGS)
 
 LDFLAGS = @LDFLAGS@
 
@@ -172,17 +173,17 @@ SCRIPTS= sc_addmove sc_epgn sc_spell sc_eco sc_import sc_remote sc_tree scidpgn 
 
 ### Type "make" or "make all" to make all programs:
 
-all: all_scid all_engines
+all: all_scid engines
 
 all_scid: scid $(SCRIPTS) $(EXECS)
 
-all_engines: phalanx toga
+engines: phalanx toga
 
 phalanx:
-	$(MAKE) -C engines/phalanx CFLAGS="-O3 -fomit-frame-pointer -funroll-loops"
+	$(MAKE) -C engines/phalanx/ -f Makefile CC="$(CC)" LINK="$(LINK)" CFLAGS="$(CFLAGS)" CXXFLAGS="$(CXXFLAGS)" LDFLAGS="$(LDFLAGS)" 
 
 toga:
-	$(MAKE) -C engines/toga/src
+	$(MAKE) -C engines/toga/src -f Makefile CC="$(CC)" LINK="$(LINK)" CFLAGS="$(CFLAGS)" CXXFLAGS="$(CXXFLAGS)" LDFLAGS="$(LDFLAGS)" 
 
 ### To copy all executables to $BINDIR, with read and execute permission 
 #   for all users, and put extra files in $SHAREDIR, type "make install".
@@ -208,18 +209,8 @@ install_scid: all_scid
 	else \
 		install -m 644 -p fonts/*.ttf ~/Library/Fonts; \
 	fi
-	@if [ ! -z "`which fc-cache`" ]; then \
-		if [ "`id -u`" -eq 0 ]; then \
- 			fc-cache -fv $(FONTDIR); \
-		else \
-			fc-cache -fv ~/Library/Fonts; \
-		fi; \
-	else \
-		echo "Don't know how to setup truetype fonts (fc-cache not available)."; \
-		echo "Please contact your system administrator."; \
-	fi
 
-install_engines: all_engines
+install_engines: engines
 	install -m 755 -d $(SHAREDIR)/engines
 	install -m 755 -d $(SHAREDIR)/engines/phalanx
 	install ./engines/phalanx/phalanx $(SHAREDIR)/engines/phalanx
@@ -241,22 +232,8 @@ uninstall:
 	rm -f $(BINDIR)/scmerge $(BINDIR)/scidlet
 	rm -f $(BINDIR)/phalanx $(BINDIR)/fruit
 	rm -rf $(SHAREDIR)/html
-	@if [ "`id -u`" -eq 0 ]; then \
-		for f in `ls fonts/*.ttf`; do \
-			rm -f $(FONTDIR)/`basename $$f`; \
-		done; \
-		if [ ! -z "`which fc-cache`" ]; then \
-			fc-cache -fv $(FONTDIR); \
-		fi; \
-	else \
-		for f in `ls fonts/*.ttf`; do \
-			rm -f ~/Library/Fonts/`basename $$f`; \
-		done; \
-		if [ ! -z "`which fc-cache`" ]; then \
-			fc-cache -fv ~/Library/Fonts; \
-		fi; \
-	fi
-	
+	# Not going to uninstall OSX fonts....
+	# They all exist in the one directory, and don't want to trash it by accident
 
 #   Get us back to as nearly a fresh distro state as we can
 #
@@ -286,7 +263,7 @@ scid: $(TCLS)
 
 ### Mac OSX App
 
-app: all_scid all_engines
+app: all_scid engines
 	install -m 755 -d dist/ScidvsMac.app/Contents/MacOS
 	install -m 755 -d dist/ScidvsMac.app/Contents/Resources/data
 	install -m 755 -d dist/ScidvsMac.app/Contents/Resources/books

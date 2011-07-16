@@ -1,5 +1,5 @@
-
-### Makefile editted by S.A to handle defaults passed by Scid Makefile
+### Toga Makefile
+# editted by S.A to handle defaults passed by Scid Makefile
 
 EXE = fruit
 
@@ -16,29 +16,15 @@ all: $(EXE) .depend
 clean:
 	rm -rf *.o .depend gmon.out $(EXE)
 
-# general
-
-CXX      ?= g++
-CXXFLAGS += -pipe
-LDFLAGS  += -lm
-
-# C++
-
-CXXFLAGS += -fno-exceptions -fno-rtti
-
 # optimisation
 
 CXXFLAGS += -fstrict-aliasing
 CXXFLAGS += -fomit-frame-pointer
 
-# strip
-
-#LDFLAGS += -s
-
 # dependencies
 
 $(EXE): $(OBJS)
-	$(CXX) $(LDFLAGS) -o $@ $(OBJS)
+	$(CXX) $(CXXFLAGS) $(LDFLAGS) -o $@ $(OBJS)
 
 .depend:
-	$(CXX) -MM $(OBJS:.o=.cpp) > $@
+	$(CXX) $(CXXFLAGS) -MM $(OBJS:.o=.cpp) > $@

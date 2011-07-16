@@ -17,7 +17,8 @@ set var(CXX) g++
 set var(CC) gcc
 set var(LINK) g++
 set var(DEBUG) #-DASSERTIONS
-set var(CFLAGS) {-O2 -fno-rtti -fno-exceptions}
+set var(CFLAGS) {-O2 -fno-exceptions}
+set var(CXXFLAGS) {-fno-rtti}
 set var(LDFLAGS) {}
 set var(WARNINGS) -Wall
 set var(SCIDFLAGS) {}
@@ -473,7 +474,8 @@ proc usage {} {
     puts {  CXX          Your C++ compiler. Default: "g++".}
     puts {  CC           Your C compiler. Default: "gcc".}
     puts {  LINK         Your C++ linker. Default: "g++".}
-    puts {  CFLAGS       C optimizations. Default: "-O2 -fno-rtti -fno-exceptions".}
+    puts {  CFLAGS       C optimizations. Default: "-O2 -fno-exceptions".}
+    puts {  CXXFLAGS     Extra flags for C++ Default: "-fno-rtti".}
     puts {  LDFLAGS      Linking flags.}
     puts {  WARNINGS     C++ compiler warnings. Default: "-Wall".}
     puts {  DEBUG        Debugging flags. Use DEBUG="-DASSERTIONS" for assertions.}
@@ -504,25 +506,28 @@ proc usage {} {
     exit 1
 }
 
-########################################
+### Main ###
 
-puts "configure: Makefile configuration program for Scid"
+puts "Configure: Makefile configuration program for Scid"
 
-# Parse command-line arguments:
+### Parse command-line args
+
 set default 0
 
 foreach arg $argv {
-    if {![string compare "default" $arg]} {
+    if {$arg == {default}} {
         set default 1
+    } elseif {$arg == {--help} || $arg ==  {-?}} {
+        usage
     } else {
-        set temp_idx [string first "=" $arg]
-        if {$temp_idx > 0} {
-            set temp_var [string range $arg 0 [expr $temp_idx - 1]]
-            set temp_value [string range $arg [expr $temp_idx + 1] end]
+        set idx [string first "=" $arg]
+        if {$idx > 0} {
+            set temp_var [string range $arg 0 [expr $idx - 1]]
+            set temp_value [string range $arg [expr $idx + 1] end]
             set var($temp_var) $temp_value
         } else {
             puts "Invalid argument: $arg"
-            usage
+            exit 1
         }
     }
 }
