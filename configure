@@ -517,6 +517,8 @@ set default 0
 foreach arg $argv {
     if {$arg == {default}} {
         set default 1
+    } elseif {$arg == {}} {
+      continue
     } elseif {$arg == {--help} || $arg ==  {-?}} {
         usage
     } else {

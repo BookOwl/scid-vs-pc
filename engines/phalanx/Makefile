@@ -1,16 +1,6 @@
-CC = gcc
+### Phalanx Makefile
+# editted by S.A to handle defaults passed by Scid Makefile
 
-####### choose the line that makes the binary faster on your machine
-# CFLAGS = -O3 -Wall -fomit-frame-pointer -funroll-loops
-CFLAGS = -O0 -Wall -fomit-frame-pointer --std=gnu89 -D_GNU_SOURCE
-# -std=c99 
-#-Werror removed
-
-####### debug/tuning options for developers
-# CFLAGS = -O -Wall -g3 -static
-# CFLAGS = -O -Wall -pg
-
-#######
 ### DEFINES
 ### -DSHOW_FORCED_MOVES
 ### -DPBOOK_FILE=\"pbook.phalanx\"
@@ -21,17 +11,16 @@ CFLAGS = -O0 -Wall -fomit-frame-pointer --std=gnu89 -D_GNU_SOURCE
 ### -DLEARN_DIR=\"/var/local/lib\"
 ### -DQCAPSONLY
 
-DEFINES = -DGNUFUN 
-LDFLAGS =
+DEFINES = #-DGNUFUN 
 
 OBJ = .o/phalanx.o .o/bcreate.o .o/search.o .o/io.o .o/data.o \
       .o/evaluate.o .o/genmoves.o .o/moving.o .o/hash.o .o/static.o \
       .o/levels.o .o/book.o .o/killers.o .o/endgame.o .o/learn.o
 
 phalanx: .o $(OBJ)
-	$(CC) $(CFLAGS) $(DEFINES) $(LDFLAGS) $(OBJ) -o phalanx
+	$(LINK) $(CFLAGS) $(DEFINES) $(LDFLAGS) $(OBJ) -o phalanx
 
-.o/%.o: makefile %.c
+.o/%.o: Makefile %.c
 	$(CC) $(CFLAGS) $(DEFINES) -c $*.c -o .o/$*.o
 
 .o:
@@ -42,5 +31,5 @@ clean:
 
 backup:
 	tar -czvf Archive/phalanx.tgz \
-	makefile *.c *.h pbook.phalanx sbook.phalanx test.fin
+	Makefile *.c *.h pbook.phalanx sbook.phalanx test.fin
 
