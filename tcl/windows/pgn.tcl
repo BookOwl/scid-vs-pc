@@ -367,8 +367,7 @@ namespace eval pgn {
       return 0
     }
     set tags [$win tag names $lastline.$lastcol]
-    if {$tags == {} || [string match *var* $tags]} {
-      # Havent figured out vars yet S.A
+    if {$tags == {}} {
       return 0
     }
     set tag [lindex $tags end]
@@ -376,16 +375,12 @@ namespace eval pgn {
     if {![string is integer -strict $movenum]} {
       return 0
     } else {
-      return [expr $movenum - 1]
+      return $movenum
     }
   }
 
   ### Produces a popup window showing the board position in the
   ### game at the current mouse location in the PGN window.
-  # This was previously broke in a couple of ways:
-  # 1 Middleclicking the first part of the move gave board for move-1
-  # 2 Broke for variations, all moves after a variation, and non-standard starts
-  # Now it's only broke for variations &^%! S.A
 
   proc ShowBoard {win startLine x y xc yc} {
     global lite dark
@@ -397,16 +392,11 @@ namespace eval pgn {
     # extract movenumber from pgn widget tag 
 
     set moveTag m_[getMoveNumber $win $startLine [ $win index @$x,$y]]
-    if {$moveTag == {m_1}} {
-      # first move seems to have no binding, wtf ?
-      set movenum 1
-    } else {
-      set movenum [string trim [lindex [split [$win tag bind $moveTag <1>] _] end]]
-    }
+    set movenum [string trim [lindex [split [$win tag bind $moveTag <1>] _] end]]
    
     # Do these pushes/pops break anything elsewhere ?
     sc_game push copyfast
-    sc_move ply $movenum
+    sc_move pgn $movenum
     set bd [sc_pos board]
     sc_game pop
 
