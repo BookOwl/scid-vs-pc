@@ -180,10 +180,9 @@ namespace eval pgn {
       if {[winfo exists .pgnWin.text.ctxtMenu]} { destroy .pgnWin.text.ctxtMenu; focus .pgnWin }
     }
 
-    # This is very broken for the new "Chess pieces" option, and a shitty feature anyway (?)
     # # Middle button popups a PGN board
-    # bind $w <ButtonPress-2> "::pgn::ShowBoard .pgnWin.text 5 %x %y %X %Y"
-    # bind $w <ButtonRelease-2> ::pgn::HideBoard
+    bind $w <ButtonPress-2> "::pgn::ShowBoard .pgnWin.text 5 %x %y %X %Y"
+    bind $w <ButtonRelease-2> ::pgn::HideBoard
 
     # Right button draws context menu
     bind $w <ButtonPress-3> "::pgn::contextMenu .pgnWin.text 5 %x %y %X %Y"
@@ -362,42 +361,32 @@ namespace eval pgn {
     sc_var promote $var
     updateBoard -pgn
   }
-  ################################################################################
-  # removes the comments in text widget (or parsing in sc_pos pgnBoard will fail
-  # and return a wrong position
-  ################################################################################
-  proc removeCommentTag { win startline lastpos } {
-    set ret ""
+
+  proc getMoveNumber { win startline lastpos } {
     if {[scan $lastpos "%d.%d" lastline lastcol] != 2} {
-      return $ret
+      return 0
     }
-    for {set line $startline} {$line < $lastline} {incr line} {
-      if { [ scan [$win index $line.end ] "%d.%d" dummy colend ] != 2 } {
-        return $ret
-      }
-      for {set col 0} {$col <= $colend} {incr col} {
-        set t [$win tag names $line.$col]
-        if {[lsearch -glob $t "c_*"] == -1} {
-          append ret [$win get $line.$col]
-        }
-      }
+    set tags [$win tag names $lastline.$lastcol]
+    if {$tags == {} || [string match *var* $tags]} {
+      # Havent figured out vars yet S.A
+      return 0
     }
-
-    for {set col 0} {$col <= $lastcol} {incr col} {
-      set t [$win tag names $lastline.$col]
-      if {[lsearch -glob $t "c_*"] == -1} {
-        append ret [$win get $lastline.$col]
-      }
+    set tag [lindex $tags end]
+    set movenum [string range $tag 2 end]
+    if {![string is integer -strict $movenum]} {
+      return 0
+    } else {
+      return [expr $movenum - 1]
     }
-
-    return $ret
   }
-  ################################################################################
-  # ::pgn::ShowBoard:
-  #    Produces a popup window showing the board position in the
-  #    game at the current mouse location in the PGN window.
-  #
-  ################################################################################
+
+  ### Produces a popup window showing the board position in the
+  ### game at the current mouse location in the PGN window.
+  # This was previously broke in a couple of ways:
+  # 1 Middleclicking the first part of the move gave board for move-1
+  # 2 Broke for variations, all moves after a variation, and non-standard starts
+  # Now it's only broke for variations &^%! S.A
+
   proc ShowBoard {win startLine x y xc yc} {
     global lite dark
 
@@ -405,9 +394,22 @@ namespace eval pgn {
     set mctxt $win.ctxtMenu
     if { [winfo exists $mctxt] } { destroy $mctxt }
 
-    set txt [removeCommentTag $win $startLine [ $win index @$x,$y]]
-    # set bd [sc_pos pgnBoard [::untrans [$win get $startLine.0 @$x,$y]] ]
-    set bd [ sc_pos pgnBoard [::untrans $txt ] ]
+    # extract movenumber from pgn widget tag 
+
+    set moveTag m_[getMoveNumber $win $startLine [ $win index @$x,$y]]
+    if {$moveTag == {m_1}} {
+      # first move seems to have no binding, wtf ?
+      set movenum 1
+    } else {
+      set movenum [string trim [lindex [split [$win tag bind $moveTag <1>] _] end]]
+    }
+   
+    # Do these pushes/pops break anything elsewhere ?
+    sc_game push copyfast
+    sc_move ply $movenum
+    set bd [sc_pos board]
+    sc_game pop
+
     set w .pgnPopup
     set psize 30
     if {$psize > $::boardSize} { set psize $::boardSize }
@@ -420,7 +422,6 @@ namespace eval pgn {
       pack $w.bd -side top -padx 2 -pady 2
       wm withdraw $w
     }
-
     ::board::update $w.bd $bd
 
     # Make sure the popup window can fit on the screen:
