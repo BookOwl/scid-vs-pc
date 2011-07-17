@@ -241,6 +241,7 @@ proc ::windows::gamelist::Open {} {
   set w .glistWin
   toplevel $w
   wm iconname $w "Scid: [tr WindowsGList]"
+  wm minsize $w 300 160
   wm withdraw $w
   setWinLocation $w
   setWinSize $w

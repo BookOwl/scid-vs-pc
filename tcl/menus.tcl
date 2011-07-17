@@ -955,8 +955,7 @@ $m add command -label OptionsSave -command {
     tk_messageBox -title "Scid: Unable to write file" -type ok -icon warning \
         -message "Unable to write options file: [scidConfigFile options]\n$optionF"
   } else {
-    puts $optionF "# Scid options file"
-    puts $optionF "# Version: $scidVersion"
+    puts $optionF "# Scid vs. PC (version $scidVersion) Options file"
     puts $optionF "# This file contains commands in the Tcl language format."
     puts $optionF "# If you edit this file, you must preserve valid its Tcl"
     puts $optionF "# format or it will not set your Scid options properly."
