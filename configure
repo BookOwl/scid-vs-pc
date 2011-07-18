@@ -467,48 +467,43 @@ proc writeMakefile {{type ""}} {
 
 # usage:
 #     Explains the usage of this script, then exits
-#
+
 proc usage {} {
     puts {Valid options are:}
-    puts {  BINDIR       The location for scid executables for "make install".}
-    puts {  CXX          Your C++ compiler. Default: "g++".}
-    puts {  CC           Your C compiler. Default: "gcc".}
-    puts {  LINK         Your C++ linker. Default: "g++".}
-    puts {  CFLAGS       C optimizations. Default: "-O2 -fno-exceptions".}
-    puts {  CXXFLAGS     Extra flags for C++ Default: "-fno-rtti".}
-    puts {  LDFLAGS      Linking flags.}
-    puts {  WARNINGS     C++ compiler warnings. Default: "-Wall".}
-    puts {  DEBUG        Debugging flags. Use DEBUG="-DASSERTIONS" for assertions.}
-    puts {  SCIDFLAGS    Scid customization flags. Default: none.}
+    puts {  CC           C compiler          Default: "gcc"}
+    puts {  CXX          C++ compiler        Default: "g++"}
+    puts {  LINK         C++ linker          Default: "g++"}
+    puts {  CFLAGS       C optimizations     Default: "-O2 -fno-exceptions"}
+    puts {  CXXFLAGS     Extra flags for C++ Default: "-fno-rtti"}
+    puts {  LDFLAGS      Linker flags        Default: ""}
+    puts {  WARNINGS     C++ warnings        Default: "-Wall"}
+    puts {  DEBUG        Debugging flags     Use DEBUG="-DASSERTIONS" for assertions}
+    puts {  SCIDFLAGS    Scid customizations Default: ""}
+    puts {  BINDIR       Location to install executables}
+    puts {  SHAREDIR     Location to install extra files (ECO, Spelling.ssp, etc)}
+    puts {  LANGUAGES    Eg: LANGUAGES="" for English only, LANGUAGES=tcl/lang/deutsch.tcl to include German}
+    puts {  TB           Tablebase support.  Use TB="" to exclude Tablebase code.}
+    puts {  TCL_VERSION  Tcl/Tk version. Eg: TCL_VERSION="8.5"}
+    puts {  TCL_INCLUDE  Location of Tcl headers  (TCL/TK values should be detected}
+    puts {  TCL_LIBRARY  Location of Tcl libs      automatically, and only need changing}
+    puts {  TK_LIBRARY   Location of Tk libs       if configure fails to find them)}
     puts {}
-    puts {  LANGUAGES    Multi-language support. Use LANGUAGES="" for English only.}
-    puts {  SHAREDIR     Location of Scid data (ECO, spelling) files for "make install".}
-    puts {  TB           Tablebase support. Use TB="" to exclude Tablebase code.}
-    puts {  TCL_INCLUDE  Compiler directives for including Tcl.}
-    puts {  TCL_LIBRARY  Compiler directives for linking Tcl.}
-    puts {  TCL_VERSION  Your Tcl/Tk version. Example: TCL_VERSION="8.3".}
-    puts {  TK_LIBRARY   Compiler directives for linking Tcl/Tk.}
-    puts {}
-    puts {  This configure program should find the proper values for the options}
-    puts {  starting with TCL_ and TK_ automatically, so you should only use those}
-    puts {  options if it fails to find your Tcl/Tk installation.}
-    puts {}
-    puts {Examples}
-    puts {To install in /usr}
+    puts {Examples:}
+    puts {Install in /usr}
     puts {  ./configure BINDIR=/usr/bin/ SHAREDIR=/usr/share/scid/}
-    puts {To install debug without languages}
+    puts {Debug, without languages}
     puts {  ./configure LANGUAGES="" DEBUG="-DASSERTIONS"}
-    puts {To install for i386 for Linux}
-    puts {  ./configure 'CFLAGS=-march=i386' 'LDFLAGS=-march=i386'}
-    puts {To install for i386 and PPC for OSX}
-    puts {  ./configure 'CFLAGS=-arch i386 ppc' 'LDFLAGS=-arch i386 ppc'}
+    puts {Optimize for Core2}
+    puts {  ./configure "CFLAGS=-march=core2" "LDFLAGS=-march=core2"}
+    puts {Make a universal binary for OSX (i386 and PPC)}
+    puts {  ./configure "CFLAGS=-arch i386 -arch ppc" "LDFLAGS=-arch i386 -arch ppc"}
     puts {}
     exit 1
 }
 
 ### Main ###
 
-puts "Configure: Makefile configuration program for Scid"
+puts "Scid vs. PC configure - Makefile configuration program"
 
 ### Parse command-line args
 
