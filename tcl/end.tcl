@@ -942,6 +942,7 @@ proc gameSave {gnum {focus {}}} {
   }
 
   set gsaveNum $gnum
+  catch {grab $w}
 
   # frame $f holds everything except save/cancel buttons 
   set f [frame $w.g]

@@ -194,9 +194,9 @@ menuText E ToolsOpenRecentBaseAsTree "Open recent base as tree" 0   {Open a rece
 menuText E ToolsTracker "Piece Tracker"  6 {Open the Piece Tracker window}
 menuText E ToolsTraining "Training"  0 {Training tools (tactics, openings,...) }
 menuText E ToolsComp "Computer Tournament" 0 {Chess engine tournament}
-menuText E ToolsTacticalGame "Tactical game"  0 {Play a game with tactics}
+menuText E ToolsTacticalGame "Phalanx"  0 {Play a game with tactics}
 menuText E ToolsSeriousGame "Serious game"  0 {Play a serious game}
-menuText E ToolsTrainTactics "Puzzle"  0 {Solve "Mate in" puzzles}
+menuText E ToolsTrainTactics "Mate in ..N.. Puzzle"  0 {Solve "Mate in" puzzles}
 menuText E ToolsTrainCalvar "Calculation of variations"  0 {Calculation of variations training}
 menuText E ToolsTrainFindBestMove "Find best move"  0 {Find best move}
 menuText E ToolsTrainFics "FICS (Internet)"  0 {Play on freechess.org}

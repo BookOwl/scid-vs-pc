@@ -8,10 +8,10 @@ append helpText(Contents) {
   <ht><a Intro>Introduction</a></ht>
   <ht><a TacticalGame>Playing against the Computer</a></ht>
   <ht><a FICS>Playing on the Internet (FICS)</a></ht>
-  <ht><a Scid>Databases and General Use</a></ht>
-  <ht><a Tourney>Computer Tournaments</a></ht>
+  <ht><a BrowsingPGN>PGN Files and Scid</a></ht>
   <ht><a Analysis>Running Chess Engines</a></ht>
-  <ht><a BrowsingPGN>Browsing Games and Tournaments</a></ht>
+  <ht><a Tourney>Computer Tournaments</a></ht>
+  <ht><a Scid>Databases and General Use</a></ht>
   <ht><a TacticsTrainer>Mate in ..N.. Puzzles</a></ht>
   <br>
   <br>
@@ -97,17 +97,19 @@ To start FICS use <run ::fics::config><green>Play--<gt>FICS (Internet)</green></
 }
 
 set helpTitle(BrowsingPGN) "PGN"
-set helpText(BrowsingPGN) {<h1>Browsing Games and Tournaments</h1>
+set helpText(BrowsingPGN) {<h1>PGN Files and Scid</h1>
 
-<ul>
-<p>A great use for Scid is to download chess tournaments in PGN format and play
-through the games. <a PGN>PGN</a> (Portable Game Notation) is the standard in
-which games are stored as plain text files. They can comprise single games,
-or many games pasted back to back.</p></ul>
+<p>PGN is the standard format for Chess Games, and Scid will happily open and display large PGN files.</p>
 
-<h3>Opening a Game</h3>
+<p><i>But PGN is not the native format of Scid's Databases</i></p>
 
-<ul><p>Once you have loaded a game from the command line or the 
+<p>You are allowed to make changes to a PGN file with only one game. If you
+wish to change a file with multiple games, it must first be converted to a <a
+Scid>Scid Database</a></i>.</p>
+
+<h3>Opening and Viewing Games</h3>
+
+<p>Once you have loaded a game from the command line, or the 
 <run ::file::Open><green>File-<gt>Open</green></run> dialog,
 open the <run ::pgn::OpenClose><green>PGN Window</green></run>
 to browse the game. Clicking on moves will move the game forward. (You can also
@@ -119,31 +121,26 @@ tournament. These names are also clickable, and will show you information about
 the tournament and how the player performed. This is the start of Scid's
 database capabilities.</p></ul>
 
-<h3>Browsing Games</h3>
+<h3> Making Changes</h3>
 
-<ul><p>If you have opened a mult-game PGN, the
-<a GameList>Game List</a> widget
-allows you to browse the games and select those of interest.</p>
+<p>Changes made to a single PGN game may be saved back to PGN via <run
+::pgn::savePgn .><green>File--<gt>Save PGN</green></run>.  But if you open a
+PGN file with multiple games, Scid does not support saving these changes to PGN, and you 
+must instead <run importPgnFile><green>Import</green></run> the file into a <a Formats>Scid Database</a>.</p> 
+
+<h3>Browsing Game Archives</h3>
+
+<p>If you have opened a multi-game PGN, the <a GameList>Game List</a>
+widget allows you to browse the games and select those of interest.</p>
 
 <p>This window also serves to select and delete games from Scid's
-databases.</p></ul>
-
-<h3>Saving Changes</h3>
-
-<ul>
-<p>Beware, PGN is not the native format of Scid Databases. In general , any
-changes or variations you make to a PGN file must be saved via the
-<run ::pgn::savePgn .><green>File--<gt>Save PGN</green></run> menu,
-and only as single games. If you open a PGN file with multiple games, Scid does not support saving any changes or comments you may add. In this case you should import the file into a 
-<a Formats>Scid Database</a>, or save the individual game and manually insert it into the PGN archive.</p>
-</ul>
+databases.</p>
 
 <h3>More Information</h3>
 
-<ul><p>For more detail about the PGN window's function, see <a PGN>here</a>.</p>
-</ul>
+<p>For more detail about the PGN window's function, see <a PGN>here</a>.</p>
 
-<p><footer>Updated: Scid vs. PC 3.6.26.8, December 2009</footer></p>
+<p><footer>Updated: Scid vs. PC 4.5 July 2011</footer></p>
 }
 
 set helpTitle(Scid) {General Use}
@@ -153,7 +150,7 @@ set helpText(Scid) {<h1>Databases and General Use</h1>
   chess games, perform searches, view best lines, and other
   statistics.</i></p>
   <p>
-  Databases are implemented via a fast <a Formats>three file format</a>, and populated by importing PGN archives or other databases using the <a Clipbase>Clipbase</a> as a cut and paste tool.
+  Databases are implemented via a fast <a Formats>three file format</a>, and populated by <a importing PGN archives or other databases using the <a Clipbase>Clipbase</a> as a cut and paste tool.
   </p>
 
   <h4>Starting Out</h4>
@@ -4140,7 +4137,7 @@ set helpTitle(TacticalGame) "Tactical Game Window"
 set helpText(TacticalGame) {<h1>Tactical Game</h1>
 
 <p> Scid offers several ways to play the computer at chess. The most convenient
-is the <run ::tacgame::config><green>Play--<gt>Tactical Game</green></run> menu item. Here you'll find the option to start a new game (or Fischer Chess game), against a flexible computer opponent whose skill you can select. Skill levels vary between 1200 (a bright teenager with some experience), to 2200 (a National Master).
+is the <run ::tacgame::config><green>Play--<gt>Phalanx</green></run> menu item. Here you'll find the option to start a new game (or Fischer Chess game), against a flexible computer opponent whose skill you can select. Skill levels vary between 1200 (a bright teenager with some experience), to 2200 (a National Master).
 </p><p>
 Your opponent is played by the <b>Phalanx</b> engine, and there is also a
 computer coach (<b>Toga II</b>) watching the game who will indicate any
