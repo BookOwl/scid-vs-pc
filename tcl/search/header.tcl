@@ -526,7 +526,6 @@ proc search::header {} {
   pack $w.progress -side bottom -pady 2
   # update
   wm resizable $w 0 0
-  standardShortcuts $w
   ::search::Config
 
   placeWinOverParent $w .

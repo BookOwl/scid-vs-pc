@@ -92,7 +92,9 @@ set tips(E) {
   }
   {
     You can copy games from one database to another using drag and drop
-    in the <a Switcher>database switcher</a> window.
+    in the <a Switcher>database switcher</a> window. Dragging some filtered
+    games to the Clipbase allows one to sort the games without having to sort the
+    whole database.
   }
   {
     Scid can open PGN files, even if they are compressed with Gzip
@@ -100,6 +102,9 @@ set tips(E) {
     if you want to edit a PGN file in Scid, create a new Scid database
     and copy the PGN file games to it using the
     <a Switcher>database switcher</a>.
+  }
+  {
+    The cut-off (dotted line) entry in the <green>File-<gt>Switch to Database</green> menu makes it a great little database switcher.
   }
   {
     If you have a large database you use with the <a Tree>tree</a> window
@@ -211,17 +216,16 @@ set tips(E) {
     can copy a chess position in standard FEN notation to the clipboard)
     and want to copy its current chess position to Scid, the fastest and
     easiest way is to select <b>Copy Position</b> from the File menu in
-    XBoard/WinBoard, then <b>Paste start board</b> from the Edit menu
+    XBoard/WinBoard, then <b>Paste FEN</b> from the Edit menu
     in Scid.
   }
   {
-    In a <a Searches Header>header search</a>, player/event/site/round
-    names are case-insensitive and match anywhere in a name. You can choose
-    to do a case-sensitive wildcard search instead
-    (where "?" = any single character and "*" = zero or more characters)
-    by entering the search text "in quotes". For example, type "*BEL"
-    (with the quote characters) in the site field to find all games played
-    in Belgium but not Belgrade.
+    In a <a Searches Header>General Search</a>, Player/Event/Site/Round
+    Names are case-insensitive and match anywhere in a name. You can choose
+    to do more precise searches using double-quotes and the wildcards
+    "?" (any single character) and "*" (zero or more characters)
+    For example, searching for <b>belg</b> (in the site field) shows many matches
+    but <b>"*Belgium*" shows fewer matches.
   }
   {
     If you want to correct a move in a game without losing all the moves
@@ -258,9 +262,8 @@ set tips(E) {
     Statistics window (shortcut: Ctrl+I).
   }
   {
-    You can change the main window board size by holding down the <b>Ctrl</b>
-    and <b>Shift</b> keys, and pressing the <b>Left</b> or <b>Right</b>
-    arrow key, or <b>Ctrl</b>+<b>Wheelmouse</b>.
+    You can resize the main board size with <b>Ctrl</b>+<b>Wheelmouse</b>, or by holding down the <b>Ctrl</b>
+    and <b>Shift</b> keys, and pressing <b>Left</b> or <b>Right</b> arrow.
   }
   {
     After a <a Searches>search</a>, you can easily browse through all

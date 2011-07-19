@@ -993,7 +993,7 @@ set helpText(Searches) {<h1>Searches in Scid</h1>
   <h3><name Header>General (Header) Searches</name></h3>
   <p>
   This search is for game information stored
-  in the header; such as player names, date, result, flags and ratings.
+  in the game header such as Player Names, Date, Result, Flags and Ratings.
   </p>
   <p>
   For a game to match a Header search, <b>all</b> fields that you
@@ -1004,13 +1004,13 @@ set helpText(Searches) {<h1>Searches in Scid</h1>
   inside the name, case-insensitive and ignoring spaces.
   </p>
   <p>
-  You can do case-sensitive wildcard searches for the White, Black, Event,
-  Site and Round fields (with <b>?</b> representing one character and
-  <b>*</b> representing zero or more characters) by putting the
-  search text in double quotes. For example a search for the site <b>USA</b>
+  You can do more precise searches for the White, Black, Event,
+  Site and Round fields by using the <b>?</b> (one character) and
+  <b>*</b> (zero or more characters) wild-cards, and enclosing the search in
+  double quotes. For example a search for the site <b>USA</b>
   will find American cities and also <b>Lausanne SUI</b>, which is probably
-  not what you wanted! A search for the site <b>"*USA"</b> (remember to
-  use the double-quotes) will only match cities in the United States.
+  not what you wanted! <b>"*USA"</b> (remember the
+  double-quotes) is probably what you wanted.
   </p>
   <p>
   If you are searching for a particular player (or pair of opponents) as White
