@@ -314,22 +314,7 @@ Position::GenCastling (MoveList * mlist)
     squareT target, skip, rookSq;
     pieceT rookPiece;
 
-    // Queenside Castling:
-    if (!StrictCastling  ||  GetCastling (ToMove, QSIDE)) {
-        if (ToMove == WHITE) {
-            target = C1; skip = D1; rookSq = A1; rookPiece = WR;
-        } else {
-            target = C8; skip = D8; rookSq = A8; rookPiece = BR;
-        }
-        if (Board[target] == EMPTY  &&  Board[skip] == EMPTY
-                &&  Board[rookSq] == rookPiece
-                &&  Board[target - 1] == EMPTY // B1 or B8 must be empty too!
-                &&  CalcNumChecks (target) == 0
-                &&  CalcNumChecks (skip) == 0
-                &&  ! square_Adjacent (target, enemyKingSq)) {
-            AddLegalMove (mlist, from, target, EMPTY);
-        }
-    }
+    // Try kingside first
 
     // Kingside Castling:
     if (!StrictCastling  ||  GetCastling (ToMove, KSIDE)) {
@@ -340,6 +325,23 @@ Position::GenCastling (MoveList * mlist)
         }
         if (Board[target] == EMPTY  &&  Board[skip] == EMPTY
                 &&  Board[rookSq] == rookPiece
+                &&  CalcNumChecks (target) == 0
+                &&  CalcNumChecks (skip) == 0
+                &&  ! square_Adjacent (target, enemyKingSq)) {
+            AddLegalMove (mlist, from, target, EMPTY);
+        }
+    }
+
+    // Queenside Castling:
+    if (!StrictCastling  ||  GetCastling (ToMove, QSIDE)) {
+        if (ToMove == WHITE) {
+            target = C1; skip = D1; rookSq = A1; rookPiece = WR;
+        } else {
+            target = C8; skip = D8; rookSq = A8; rookPiece = BR;
+        }
+        if (Board[target] == EMPTY  &&  Board[skip] == EMPTY
+                &&  Board[rookSq] == rookPiece
+                &&  Board[target - 1] == EMPTY // B1 or B8 must be empty too!
                 &&  CalcNumChecks (target) == 0
                 &&  CalcNumChecks (skip) == 0
                 &&  ! square_Adjacent (target, enemyKingSq)) {

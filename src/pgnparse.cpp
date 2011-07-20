@@ -1000,6 +1000,11 @@ PgnParser::ParseMoves (Game * game, char * buffer, uint bufSize)
         case TOKEN_Move_Null:
             err = game->GetCurrentPos()->ReadMove (&sm, buffer, token);
 
+            // If king castling failed, maybe it's OO meaning castle queen-side
+            if (err != OK  &&  token == TOKEN_Move_Castle_King) {
+                err = game->GetCurrentPos()->ReadMove (&sm, buffer, TOKEN_Move_Castle_Queen);
+            }
+
             // The most common type of "illegal" move in standard
             // chess is castling when the king or rook have already
             // moved. So if a castling move failed, turn off

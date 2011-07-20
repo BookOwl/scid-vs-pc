@@ -10697,10 +10697,20 @@ sc_pos_matchMoves (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
     sanListT sanList;
     p->CalcSANStrings (&sanList, SAN_NO_CHECKTEST);
 
+    bool kingside_castle=0;
     for (uint i=0; i < sanList.num; i++) {
         strCopyExclude (str, sanList.list[i], "x=+#");
-        if (strEqual (str, "O-O")) { strCopy (str, "OK"); }
-        if (strEqual (str, "O-O-O")) { strCopy (str, "OQ"); }
+        // O-O comes first in the list
+        if (strEqual (str, "O-O")) {
+            strCopy (str, "OO");
+            kingside_castle=1;
+        }
+        if (strEqual (str, "O-O-O")) {
+            if (kingside_castle) 
+		strCopy (str, "OQ");
+            else 
+		strCopy (str, "OO");
+        }
         if (strIsPrefix (prefix, str)) {
             Tcl_AppendElement (ti, str);
         }

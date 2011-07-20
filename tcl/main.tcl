@@ -30,9 +30,6 @@ proc moveEntry_Clear {} {
   updateStatusBar
 }
 
-### Changing the keyboard bindings for castling (O-O) needs to be done
-### in sc_pos_matchMoves and a redesign of sorts is nesessary S.A.
-
 proc moveEntry_Complete {} {
   global moveEntry
 
@@ -1131,7 +1128,7 @@ proc addMove { sq1 sq2 {animate ""}} {
 
   set moveUCI [::board::san $sq2][::board::san $sq1]$promoLetter
   set move [sc_game info nextMoveUCI]
-  if { [ string compare -nocase $moveUCI $move] == 0 } {
+  if { [ string compare -nocase $moveUCI $move] == 0 && ! $nullmove } {
        sc_move forward
        updateBoard
        return
