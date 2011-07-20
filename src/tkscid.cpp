@@ -10693,6 +10693,8 @@ sc_pos_matchMoves (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
     const char * prefix = argv[2];
     if (argc == 4) { coordMoves = strGetBoolean (argv[3]); }
     char str[20];
+    char str1[20]="";
+    char str2[20]="";
     Position * p = db->game->GetCurrentPos();
     sanListT sanList;
     p->CalcSANStrings (&sanList, SAN_NO_CHECKTEST);
@@ -10702,17 +10704,25 @@ sc_pos_matchMoves (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
         strCopyExclude (str, sanList.list[i], "x=+#");
         // O-O comes first in the list
         if (strEqual (str, "O-O")) {
-            strCopy (str, "OO");
+            strCopy (str1, "OO");
+	    strCopy (str2, "OK");
             kingside_castle=1;
         }
         if (strEqual (str, "O-O-O")) {
             if (kingside_castle) 
-		strCopy (str, "OQ");
-            else 
-		strCopy (str, "OO");
+		strCopy (str1, "OQ");
+            else {
+		strCopy (str1, "OO");
+		strCopy (str2, "OQ");
+            }
         }
-        if (strIsPrefix (prefix, str)) {
-            Tcl_AppendElement (ti, str);
+        if (str1 && strIsPrefix (prefix, str1)) {
+            Tcl_AppendElement (ti, str1);
+            str1[0]=0;
+        }
+        if (str2 && strIsPrefix (prefix, str2)) {
+            Tcl_AppendElement (ti, str2);
+            str2[0]=0;
         }
     }
 
