@@ -1225,14 +1225,8 @@ $m add command -label OptionsFontsRegular -underline 0 -command {
     FontDialogRegular .
 }
 
-if {$windowsOS} {
-	$m add command -state disabled -label OptionsFontsMenu -underline 0 -command {
-	    FontDialogMenu .
-	}
-} else {
-	$m add command -label OptionsFontsMenu -underline 0 -command {
-	    FontDialogMenu .
-	}
+$m add command -label OptionsFontsMenu -underline 0 -command {
+    FontDialogMenu .
 }
 
 $m add command -label OptionsFontsSmall -underline 0 -command {

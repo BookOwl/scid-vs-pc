@@ -1,6 +1,4 @@
-
-########################################################################
-### Games list window
+### gamelist.tcl
 
 # 27/06/2009
 # Rewritten to use the ttk::treeview widget (man ttk_treeview) by Steven Atkinson
@@ -618,7 +616,7 @@ proc ::windows::gamelist::SetSize {} {
     # Nasty hack to make things work
 
     if {$::windowsOS} {
-      set glFontHeight [expr $fontspace*130/72]
+      set glFontHeight [expr $fontspace*125/72]
     } elseif {$::macOS} {
       set glFontHeight [expr $fontspace*92/72]
     } else {
@@ -1008,3 +1006,4 @@ proc saveExportGList {} {
   return
 }
 
+### end of gamelist.tcl
