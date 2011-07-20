@@ -353,10 +353,11 @@ proc ::crosstab::Refresh {} {
   $w.f.text configure -state disabled
   update idle
   $w.b.stop configure -state normal
-  foreach button {update cancel setfilter addfilter type} {
+  foreach button {update cancel font setfilter addfilter type} {
     $w.b.$button configure -state disabled
   }
-  pack $w.b.stop -side right -padx 5 -pady 3
+  ### Stop button is broken currently - S.A.
+  # pack $w.b.stop -side right -padx 5 -pady 3
   catch {grab $w.b.stop}
   update
   catch {sc_game crosstable $crosstab(text) $crosstab(sort) $crosstab(type) \
@@ -377,8 +378,9 @@ proc ::crosstab::Refresh {} {
   unbusyCursor .
   catch {grab release $w.b.stop}
   $w.b.stop configure -state disabled
-  pack forget $w.b.stop
-  foreach button {update cancel setfilter addfilter type} {
+  ### We cant use forget on this because of a bug in the windows packer
+  # pack forget $w.b.stop
+  foreach button {update cancel font setfilter addfilter type} {
     $w.b.$button configure -state normal
   }
   $w.f.text configure -state disabled
