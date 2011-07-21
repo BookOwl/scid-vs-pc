@@ -479,7 +479,7 @@ togglePositionsDisplay
     ttk::combobox $w.left.combo -width 12 -values $tmp
     catch { $w.left.combo current $idx }
 
-    menubutton $w.left.add -text $::tr(AddMove) -menu $w.left.add.otherMoves 
+    menubutton $w.left.add -text $::tr(AddMove) -menu $w.left.add.otherMoves -indicatoron 1
     menu $w.left.add.otherMoves
     
     frame $w.left.space1 -height 60
@@ -491,8 +491,7 @@ togglePositionsDisplay
     
     pack $w.left.combo $w.left.add $w.left.space1 -side top -padx 5 -pady 3
 
-    # pack $w.left.export $w.left.save $w.left.space $w.left.help $w.left.close -side bottom -padx 5 -pady 3
-    pack $w.left.close $w.left.help $w.left.space2 $w.left.save $w.left.export -side bottom -padx 5 -pady 3
+    pack $w.left.close $w.left.help $w.left.space2 $w.left.export $w.left.save -side bottom -padx 5 -pady 3
 
     bind $w.left.combo <<ComboboxSelected>> ::book::bookTuningSelect
     bind $w <Destroy> "::book::closeTuningBook"
@@ -617,12 +616,22 @@ togglePositionsDisplay
       ::book::refresh
     }
   }
-  ################################################################################
-  #
-  ################################################################################
+
+  ### Export all book moves from current position into the current game
+
   proc export {} {
+
     ::windows::gamelist::Refresh
     updateTitle
+
+    set reply [
+      tk_dialog .export_ok Scid {Export will attempt to insert all book moves (from the current position) into this game.} question 1 $::tr(Export) $::tr(Cancel)
+    ]
+    if {$reply != 0} {return}
+
+    # set reply [ tk_messageBox -title $::tr(Export) -type okcancel -icon info -parent .bookTuningWin -message {Export will attempt to insert all book moves (from the current position) into this game.} ]
+    # if {$reply != {ok}} {return}
+
     progressWindow "Scid" "ExportingBook..." $::tr(Cancel) "::book::sc_progressBar"
     set ::book::cancelBookExport 0
     set ::book::exportCount 0
@@ -630,16 +639,16 @@ togglePositionsDisplay
     set ::book::hashList ""
     closeProgressWindow
     if { $::book::exportCount >= $::book::exportMax } {
-      tk_messageBox -title "Scid" -type ok -icon info \
+      tk_messageBox -title Scid -type ok -icon info \
           -message "$::tr(Movesloaded)  $::book::exportCount\n$::tr(BookPartiallyLoaded)"
     } else  {
       tk_messageBox -title "Scid" -type ok -icon info -message "$::tr(Movesloaded)  $::book::exportCount"
     }
     updateBoard -pgn
   }
-  ################################################################################
-  #
-  ################################################################################
+
+  # Perform recursive book export
+
   proc book2pgn { } {
     global ::book::hashList
 
@@ -680,9 +689,9 @@ togglePositionsDisplay
     }
 
   }
-  ################################################################################
-  # cancel book export
-  ################################################################################
+
+  # Cancel book export
+
   proc sc_progressBar {} {
     set ::book::cancelBookExport 1
   }
