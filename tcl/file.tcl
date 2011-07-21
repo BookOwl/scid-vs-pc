@@ -463,7 +463,7 @@ proc ::file::SwitchToBase {b} {
 
 ################################################################################
 proc ::file::openBaseAsTree { { fName "" } } {
-  set current [sc_base current]
+  set oldbase [sc_base current]
 
   if {[sc_base count free] == 0} {
     tk_messageBox -type ok -icon info -title "Scid" \
@@ -529,10 +529,12 @@ proc ::file::openBaseAsTree { { fName "" } } {
       ::recentFiles::add $fName
     }
   }
-
   unbusyCursor .
-  ::tree::make [sc_base current]
-  .treeWin[sc_base current].buttons.lock invoke
-  ::file::SwitchToBase $current
+
+  set current [sc_base current]
+  ::tree::make $current
+  set ::tree(locked$current) 1
+
+  ::file::SwitchToBase $oldbase
 }
 
