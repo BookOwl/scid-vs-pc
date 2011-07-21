@@ -384,12 +384,28 @@ set helpMessage($m,[incr menuindex]) GameAdd
 $m add separator
 incr menuindex
 
-$m add command -label "Set Game Information" -command {gameSave -1}
+$m add command -label "Set Game Information" -command {gameSave -1} -underline 9
 set helpMessage($m,[incr menuindex]) {Set game information}
-$m add command -label "Browse Game" -command {::gbrowser::new [sc_base current] [sc_game number]}
+
+$m add command -label "Browse Game" -command {::gbrowser::new [sc_base current] [sc_game number]} -underline 0
+set helpMessage($m,[incr menuindex]) {View this game}
+
+$m add command -label {List all Games} -command ::windows::gamelist::Open -underline 9
 set helpMessage($m,[incr menuindex]) {See available games}
-$m add command -label "Browse Games" -command ::windows::gamelist::Open
-set helpMessage($m,[incr menuindex]) {See available games}
+
+$m add separator
+incr menuindex
+
+$m  add command -label {Delete Game} -command {
+  sc_game flag delete [sc_game number] invert
+  updateBoard
+  ::windows::gamelist::Refresh
+}  -underline 0
+set helpMessage($m,[incr menuindex]) {Mark game as deleted}
+
+$m add command -label GameReload -command ::game::Reload -accelerator "Ctrl+Shift+L"
+bind . <Control-L> ::game::Reload
+set helpMessage($m,[incr menuindex]) GameReload
 
 $m add separator
 incr menuindex
@@ -399,25 +415,20 @@ $m add command -label GameFirst -accelerator "Ctrl+Home" \
 bind . <Control-Home> {::game::LoadNextPrev first}
 set helpMessage($m,[incr menuindex]) GameFirst
 
-$m add command -label GamePrev -accelerator "Ctrl+Up" \
-    -command {::game::LoadNextPrev previous}
-bind . <Control-Up> {::game::LoadNextPrev previous}
-set helpMessage($m,[incr menuindex]) GamePrev
-
-$m add command -label GameReload -command ::game::Reload \
-    -accelerator "Ctrl+Shift+L"
-bind . <Control-L> ::game::Reload
-set helpMessage($m,[incr menuindex]) GameReload
+$m add command -label GameLast -accelerator "Ctrl+End" \
+    -command {::game::LoadNextPrev last}
+bind . <Control-End> {::game::LoadNextPrev last}
+set helpMessage($m,[incr menuindex]) GameLast
 
 $m add command -label GameNext -accelerator "Ctrl+Down" \
     -command {::game::LoadNextPrev next}
 bind . <Control-Down> {::game::LoadNextPrev next}
 set helpMessage($m,[incr menuindex]) GameNext
 
-$m add command -label GameLast -accelerator "Ctrl+End" \
-    -command {::game::LoadNextPrev last}
-bind . <Control-End> {::game::LoadNextPrev last}
-set helpMessage($m,[incr menuindex]) GameLast
+$m add command -label GamePrev -accelerator "Ctrl+Up" \
+    -command {::game::LoadNextPrev previous}
+bind . <Control-Up> {::game::LoadNextPrev previous}
+set helpMessage($m,[incr menuindex]) GamePrev
 
 $m add command -label GameRandom -command ::game::LoadRandom -accelerator "Ctrl+?"
 bind . <Control-question> ::game::LoadRandom
@@ -1377,20 +1388,16 @@ proc updateMenuStates {} {
     $m.game entryconfig [tr GameLast] -state $state
     $m.game entryconfig [tr GameRandom] -state $state
     $m.game entryconfig [tr GameNumber] -state $state
-
-    # Load previous button:
-    if {[sc_filter previous]} {set state normal} else {set state disabled}
     $m.game entryconfig [tr GamePrev] -state $state
+    $m.game entryconfig [tr GameNext] -state $state
     # .tb.gprev configure -state $state
+    # .tb.gnext configure -state $state
 
-    # Reload button:
+    # Reload and Delete
     if {[sc_game number]} {set state normal} else {set state disabled}
     $m.game entryconfig [tr GameReload] -state $state
-
-    # Load next button:
-    if {[sc_filter next]} {set state normal} else {set state disabled}
-    $m.game entryconfig [tr GameNext] -state $state
-    # .tb.gnext configure -state $state
+    if {$isReadOnly} {set state disabled}
+    $m.game entryconfig {Delete Game} -state $state
 
     # Save add button:
     set state normal

@@ -130,27 +130,19 @@ menuText E EditPasteBoard "Paste FEN" 6 \
 
 # Game menu:
 menuText E Game "Game" 0
-menuText E GameNew "New Game" 0 \
-  {Reset to an empty game, discarding any changes}
-menuText E GameFirst "Load First Game" 5 {Load the first filtered game}
-menuText E GamePrev "Load Previous Game" 5 {Load the previous filtered game}
-menuText E GameReload "Re-Load Current Game" 3 \
-  {Reload this game, discarding any changes made}
-menuText E GameNext "Load Next Game" 7 {Load the next filtered game}
-menuText E GameLast "Load Last Game" 8 {Load the last filtered game}
+menuText E GameNew "New Game" 0 {Reset to an empty game, discarding any changes}
+menuText E GameFirst "Load First" 5 {Load the first filtered game}
+menuText E GamePrev "Load Previous" 5 {Load the previous filtered game}
+menuText E GameReload "Reload Game" 2 {Reload this game, discarding any changes made}
+menuText E GameNext "Load Next" 7 {Load the next filtered game}
+menuText E GameLast "Load Last" 8 {Load the last filtered game}
 menuText E GameRandom "Load Random Game" 8 {Load a random filtered game}
-menuText E GameNumber "Load Game Number" 5 \
-  {Load a game by entering its number}
-menuText E GameReplace "Replace Game" 6 \
-  {Save this game, replacing the old version}
-menuText E GameAdd "Add New Game" 0 \
-  {Save this game as a new game in the database}
-menuText E GameDeepest "Identify Opening" 0 \
-  {Goto the deepest game position listed in the ECO book}
-menuText E GameGotoMove "Goto Move Number" 5 \
-  {Go to a specified move number in the current game}
-menuText E GameNovelty "Find Novelty" 7 \
-  {Find the first move of this game that has not played before}
+menuText E GameNumber "Load Game Number" 5 {Load a game by entering its number}
+menuText E GameReplace "Save: Replace Game" 6 {Save this game, replacing the old version}
+menuText E GameAdd "Save: Add Game" 0 {Save this game as a new game in the database}
+menuText E GameDeepest "Identify Opening" 0 {Goto the deepest game position listed in the ECO book}
+menuText E GameGotoMove "Goto Move Number" 5 {Go to a specified move number in the current game}
+menuText E GameNovelty "Find Novelty" 7 {Find the first move of this game that has not played before}
 
 # Search Menu:
 menuText E Search "Search" 0

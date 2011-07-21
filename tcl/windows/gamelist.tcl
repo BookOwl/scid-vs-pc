@@ -685,9 +685,11 @@ proc SortBy {tree col} {
 
     busyCursor .
     update
-    catch {sc_base sort $col {}}
-    unbusyCursor .
 
+    catch {sc_base sort $col {}}
+
+    unbusyCursor .
+    updateBoard
     set glstart 1
     ::windows::gamelist::Refresh
 }
