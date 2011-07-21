@@ -194,6 +194,13 @@ menu $m.bookmarks
 $m add separator
 incr menuindex
 
+$m add cascade -label FileSwitch -menu $m.switch
+set helpMessage($m,[incr menuindex]) FileSwitch
+
+### .menu.file.switch menu items added in updateMenuStates
+
+menu $m.switch -tearoff 1
+
 # naming is weird because the menus are moved from Tools to File menus
 
 $m add command -label ToolsOpenBaseAsTree -command ::file::openBaseAsTree
@@ -255,17 +262,12 @@ $m.utils.name add command -label FileMaintNameRound -command {openSpellCheckWin 
 set helpMessage($m.utils.name,4) FileMaintNameRound
 
 $m.utils add separator
+
 $m.utils add command -label FileMaintFixBase -command ::maint::fixCorruptedBase
 set helpMessage($m.utils,10) FileMaintFixBase
 
 $m add command -label FileReadOnly -command makeBaseReadOnly
 set helpMessage($m,[incr menuindex]) FileReadOnly
-
-$m add cascade -label FileSwitch -menu $m.switch
-set helpMessage($m,[incr menuindex]) FileSwitch
-
-# .menu.file.switch menu items added in updateMenuStates
-menu $m.switch -tearoff 1
 
 set totalBaseSlots [sc_base count total]
 set clipbaseSlot [sc_info clipbase]
@@ -279,7 +281,8 @@ bind . <Control-q> ::file::Exit
 set helpMessage($m,[incr menuindex]) FileExit
 
 
-### Edit menu:
+### Edit menu
+
 set menuindex -1
 set m .menu.edit
 

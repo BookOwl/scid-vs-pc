@@ -48,7 +48,7 @@ proc setLanguage_E {} {
 menuText E File "File" 0
 menuText E FileNew "New" 0 {Create a new Scid database}
 menuText E FileOpen "Open" 0 {Open an existing Scid database}
-menuText E FileSavePgn "Save Pgn" 0 {Save this game to file}
+menuText E FileSavePgn "Save PGN" 0 {Save this game to file}
 menuText E FileClose "Close" 0 {Close the active Scid database}
 menuText E FileFinder "Finder" 0 {Open the File Finder window}
 menuText E FileBookmarks "Bookmarks" 0 {Bookmarks menu (shortcut: Ctrl+B)}
@@ -86,9 +86,9 @@ menuText E FileMaintNameSite "Spellcheck Site Names" 11 \
   {Spellcheck site names using the spellcheck file}
 menuText E FileMaintNameRound "Spellcheck Round Names" 11 \
   {Spellcheck round names using the spellcheck file}
-menuText E FileReadOnly "Read-only" 0 \
+menuText E FileReadOnly "Read-Only" 0 \
   {Treat the current database as read-only, preventing changes}
-menuText E FileSwitch "Switch to Database" 0 \
+menuText E FileSwitch "Switch to Base" 1 \
   {Switch to a different opened database}
 menuText E FileExit "Exit" 1 {Exit Scid}
 menuText E FileMaintFixBase "Repair base" 0 {Try to repair a corrupted base}
@@ -181,8 +181,8 @@ menuText E ToolsEmail "Email Manager" 0 {Open/close the email chess manager wind
 menuText E ToolsFilterGraph "Rel. Filter Graph" 12 {Open/close the filter graph window for relative values}
 menuText E ToolsAbsFilterGraph "Abs. Filter Graph" 7 {Open/close the filter graph window for absolute values}
 menuText E ToolsOpReport "Opening Report" 0 {Generate an opening report for the current position}
-menuText E ToolsOpenBaseAsTree "Open base as tree" 0   {Open a base and use it in Tree window}
-menuText E ToolsOpenRecentBaseAsTree "Open recent base as tree" 0   {Open a recent base and use it in Tree window}
+menuText E ToolsOpenBaseAsTree "Open Base as Tree" 13   {Open a base and use it in Tree window}
+menuText E ToolsOpenRecentBaseAsTree "Open Recent as Tree" 0   {Open a recent base and use it in Tree window}
 menuText E ToolsTracker "Piece Tracker"  6 {Open the Piece Tracker window}
 menuText E ToolsTraining "Training"  0 {Training tools (tactics, openings,...) }
 menuText E ToolsComp "Computer Tournament" 0 {Chess engine tournament}
