@@ -125,9 +125,9 @@ wm minsize $w 50 200
     bind $w <F1> {helpWindow Book}
     standardShortcuts $w
 
+    bind $w <Button-4> ::move::Back
+    bind $w <Button-5> ::move::Forward
     frame $w.main 
-    bind $w.main <Button-4> ::move::Back
-    bind $w.main <Button-5> ::move::Forward
     pack $w.main -fill both -side left
 
     set name1 $lastBook1
@@ -352,7 +352,11 @@ focus .
 	}
 	.bookWin.$z.booktext tag add bookMove$line $line.0 $line.end
 	.bookWin.$z.booktext tag add $x            $line.0 $line.end
-	.bookWin.$z.booktext tag bind bookMove$line <ButtonPress-1> "::book::makeBookMove $x"
+	if {$x == $nextmove} {
+	  .bookWin.$z.booktext tag bind bookMove$line <ButtonPress-1> ::move::Forward
+        } else {
+	  .bookWin.$z.booktext tag bind bookMove$line <ButtonPress-1> "::book::makeBookMove $x"
+        }
 	.bookWin.$z.booktext tag bind bookMove$line <Any-Enter> "
 	  .bookWin.$z.booktext tag configure bookMove$line -background grey
 	  .bookWin.1.booktext tag configure $x -background grey
@@ -385,9 +389,8 @@ togglePositionsDisplay
     .bookWin.2.booktext configure -state disabled -height $height
 
   }
-  ################################################################################
-  #
-  ################################################################################
+
+
   proc makeBookMove { move } {
     if {[sc_pos isAt vend]} {
       set action replace
@@ -411,9 +414,8 @@ togglePositionsDisplay
     ::utils::sound::AnnounceNewMove $move
     if {$action == "replace"} { ::tree::doTraining }
   }
-  ################################################################################
-  #
-  ################################################################################
+
+
   proc bookSelect {} {
     set w .bookWin
     set ::book::lastBook1 [$w.main.combo1 get]

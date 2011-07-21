@@ -792,13 +792,12 @@ proc updateBoard3 {pgnNeedsUpdate} {
   updateEpdWins
   updateAnalysisWindows
 
-  ::tree::refresh
   ::commenteditor::Refresh
   if {[::tb::isopen]} { ::tb::results }
   updateMenuStates
   moveEntry_Clear
 
-  # Don't update if fics and not at end 
+  # Show a warning message in the statusbar if Fics is playing
   if {[winfo exists .fics] && ![sc_pos isAt end] && $::fics::playing} {
     set ::statusBar "Fics: warning, board doesn't show current game position"
     .statusbar configure -foreground red3
@@ -812,6 +811,9 @@ proc updateBoard3 {pgnNeedsUpdate} {
   if {[winfo exists .bookWin]} { ::book::refresh }
   if {[winfo exists .bookTuningWin]} { ::book::refreshTuning }
   if {[winfo exists .noveltyWin]} { updateNoveltyWin }
+
+  # Refresh tree last because it is slowest. Side effects ?
+  ::tree::refresh
 }
 
 proc updateGameinfo {} {
