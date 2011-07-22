@@ -423,10 +423,10 @@ proc ::maint::Refresh {} {
   # Disable buttons if current base is closed or read-only
   if {[sc_base inUse]  &&  ![sc_base isReadOnly]} {
     set state normal
-    $w.title.status.text configure -text {Read/Write}
+    $w.title.status.text configure -text "[sc_base filename] (read/write)"
   } else {
     set state disabled
-    $w.title.status.text configure -text {Read Only}
+    $w.title.status.text configure -text "[sc_base filename] ([tr readonly])"
   }
   foreach spell {player event site round} {
     $w.spell.$spell configure -state $state
