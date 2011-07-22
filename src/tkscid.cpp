@@ -10705,17 +10705,21 @@ sc_pos_matchMoves (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
         // O-O comes first in the list
         if (strEqual (str, "O-O")) {
             strCopy (str1, "OO");
-	    strCopy (str2, "OK");
+            strCopy (str2, "OK");
             kingside_castle=1;
-        }
-        if (strEqual (str, "O-O-O")) {
-            if (kingside_castle) 
-		strCopy (str1, "OQ");
-            else {
-		strCopy (str1, "OO");
-		strCopy (str2, "OQ");
+        } else {
+           if (strEqual (str, "O-O-O")) {
+             if (kingside_castle) 
+                strCopy (str1, "OQ");
+             else {
+                strCopy (str1, "OO");
+                strCopy (str2, "OQ");
             }
+          } else {
+            strCopy (str1, str);
+          }
         }
+
         if (str1 && strIsPrefix (prefix, str1)) {
             Tcl_AppendElement (ti, str1);
             str1[0]=0;
