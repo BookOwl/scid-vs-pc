@@ -408,6 +408,7 @@ set helpText(Index) {<h1>Scid Help Index</h1>
   <li><a ShortCuts alpha>Shortcuts (alphabetical)</a></li>
   <li><a Formats>si4</a> database format</li>
   <li><a Sorting>Sorting a database</a></li>
+  <li><a Sound>Sound</a></li>
   <li><a Maintenance Spellcheck>Spellchecking</a> names</li>
   <li><a Switcher>Switcher</a> window</li>
   </ul>
@@ -5651,7 +5652,28 @@ set helpText(Novag) {<h1>Connecting the Novag Citrine Chess Board</h1>
    to hook up the board.
    ###--- Detailed description needed ---###
    </p>
-  <p><footer>Updated: Scid 3.6.26, October 2008</footer></p>
+    <p><footer>Updated: Scid 3.6.26, October 2008</footer></p>
+}
+
+set helpTitle(Sound) "Sound"
+set helpText(Sound) {<h1>Sound</h1>
+   <p>
+   Scid has limited sound capabilities.
+   </p>
+   <p>
+   The feature relies on a poorly maintained Tcl package, <b>Snack</b>,
+   which should be installed by default on Windows and OSX.
+   </p>
+   <p>
+   To see if sound is enabled, examine the Start-up Window.
+   The sound options are configured from the 
+   <run ::utils::sound::OptionsDialog><green>Options--<gt>Sounds</green></run> menu.
+   </p>
+   <p>
+   Sound may be disabled by selecting an invalid folder.
+
+   </p>
+   <p><footer>Updated: Scid vs. PC 4.5 July 2011</footer></p>
 }
 
 set helpTitle(Changelog) "Scid vs PC Changelog"

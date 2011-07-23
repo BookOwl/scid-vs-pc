@@ -310,8 +310,8 @@ menuText E OptionsSpell "Load Spellcheck File" 11 \
 menuText E OptionsTable "Tablebase Directory" 10 \
   {Select a tablebase file; all tablebases in its directory will be used}
 menuText E OptionsRecent "Recent Files" 0 {Change the number of recent files displayed in the File menu}
-menuText E OptionsBooksDir "Books directory" 0 {Sets the opening books directory}
-menuText E OptionsTacticsBasesDir "Bases directory" 0 {Sets the tactics (training) bases directory}
+menuText E OptionsBooksDir "Books Directory" 0 {Sets the opening books directory}
+menuText E OptionsTacticsBasesDir "Bases Directory" 0 {Sets the tactics (training) bases directory}
 menuText E OptionsSave "Save Options" 0 "Save all settable options to the file $::optionsFile"
 menuText E OptionsAutoSave "Auto-Save Options on Exit" 0 \
   {Auto-save all options when exiting Scid}

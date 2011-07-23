@@ -1,4 +1,5 @@
-# config.tcl: Some embedded configuration for Scid
+###
+### config.tcl: Some embedded configuration for Scid
 
 namespace eval ::config {}
 
@@ -38,4 +39,29 @@ if {![info exists spellCheckFile]} {
     set spellCheckFile [file join $scidShareDir "spelling.ssp"]
   }
 }
+
+# Don't worry the folder doesn't exists...
+# Setting soundFolder to a non-folder enables disabling sound
+
+if {![info exists ::utils::sound::soundFolder]} {
+  set ::utils::sound::soundFolder [file nativename [file join $::scidShareDir sounds]]
+}
+
+### Display directories
+
+::splash::add "scidShareDir is $scidShareDir"
+
+if {[file isdirectory $::scidBasesDir]} {
+  ::splash::add "scidBasesDir is $scidBasesDir"
+} else {
+  ::splash::add "scidBasesDir $scidBasesDir not found!" error
+}
+
+if {[file isdirectory $::scidBooksDir]} {
+  ::splash::add "scidBooksDir is $scidBooksDir"
+} else {
+  ::splash::add "scidBooksDir $scidBooksDir not found!" error
+}
+
+### end of config.tcl
 

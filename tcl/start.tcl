@@ -743,7 +743,8 @@ proc showGameInfo {} {
   update idletasks
 }
 
-# Email configuration:
+# Email configuration
+
 set email(logfile) [file join $scidLogDir "scidmail.log"]
 set email(smtp) 1
 set email(smproc) "/usr/lib/sendmail"
@@ -751,10 +752,8 @@ set email(server) localhost
 set email(from) ""
 set email(bcc) ""
 
+# Sound options
 
-### Audio move announcement options:
-
-set ::utils::sound::soundFolder [file nativename [file join $::scidExeDir sounds]]
 set ::utils::sound::announceNew 0
 set ::utils::sound::announceForward 0
 set ::utils::sound::announceBack 0

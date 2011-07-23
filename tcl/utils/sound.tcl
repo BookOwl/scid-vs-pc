@@ -43,11 +43,11 @@ proc ::utils::sound::Setup {} {
   ::splash::add "Setting up audio move announcement..."
   if {[catch {package require snack 2.0}]} {
     set hasSnackPackage 0
-    ::splash::add "    Move speech disabled - Snack sound package not found"
+    ::splash::add "   Move speech disabled - Snack sound package not found"
     return
   }
 
-  ::splash::add "    Move speech enabled - Snack sound package found"
+  ::splash::add "   Move speech enabled - Snack sound package found"
   set hasSnackPackage 1
 
   # Set up sounds. Each sound will be empty until a WAV file for it is found.
@@ -57,7 +57,6 @@ proc ::utils::sound::Setup {} {
 
   set numSounds [::utils::sound::ReadFolder]
   set numSought [llength $soundFiles]
-  ::splash::add "Searching sounds folder for move announcement sounds..."
   ::splash::add "   Found $numSounds of $numSought sound files in $soundFolder"
 }
 
@@ -67,11 +66,9 @@ proc ::utils::sound::Setup {} {
 #   Reads sound files from the specified directory.
 #   Returns the number of Scid sound files found in that directory.
 #
-proc ::utils::sound::ReadFolder {{newFolder ""}} {
+proc ::utils::sound::ReadFolder {} {
   variable soundFiles
   variable soundFolder
-
-  if {$newFolder != ""} { set soundFolder "" }
 
   set count 0
   foreach soundFile $soundFiles {
@@ -205,10 +202,9 @@ proc ::utils::sound::OptionsDialog {} {
   incr r
 
   entry $f.folderEntry -width 40 -textvariable ::utils::sound::soundFolder_temp
-  grid $f.folderEntry -row $r -column 0 -columnspan 2 -sticky we
-  button $f.folderBrowse -text " $::tr(Browse)... " \
-      -command ::utils::sound::OptionsDialogChooseFolder
-  grid $f.folderBrowse -row $r -column 2
+  grid $f.folderEntry -row $r -column 0 -columnspan 2 -sticky we -padx 3
+  button $f.folderBrowse -text " $::tr(Browse)" -command ::utils::sound::ChooseFolder
+  grid $f.folderBrowse -row $r -column 2 -padx 3
   incr r
 
   label $f.folderHelp -text $::tr(SoundsFolderHelp)
@@ -241,20 +237,26 @@ proc ::utils::sound::OptionsDialog {} {
   incr r
 
   dialogbutton $w.b.ok -text OK -command ::utils::sound::OptionsDialogOK
+  dialogbutton $w.b.help -text $::tr(Help) -command {helpWindow Sound}
   dialogbutton $w.b.cancel -text $::tr(Cancel) -command [list destroy $w]
-  packbuttons right $w.b.cancel $w.b.ok
+  packbuttons right $w.b.cancel $w.b.help $w.b.ok
   bind $w <Return> [list $w.b.ok invoke]
   bind $w <Escape> [list $w.b.cancel invoke]
+  bind $w <F1> {helpWindow Sound}
   ::utils::win::Centre $w
   wm resizable $w 0 0
   raiseWin $w
-  grab $w
-  focus $w.f.folderEntry
+
 }
 
-proc ::utils::sound::OptionsDialogChooseFolder {} {
+proc ::utils::sound::ChooseFolder {} {
+  if {[file isdirectory $::utils::sound::soundFolder_temp]} {
+    set initialdir $::utils::sound::soundFolder_temp
+  } else {
+    set initialdir $::env(HOME)
+  }
   set newFolder [tk_chooseDirectory \
-      -initialdir $::utils::sound::soundFolder_temp \
+      -initialdir $initialdir \
       -parent .soundOptions \
       -title "Scid: $::tr(SoundsFolder)"]
   if {$newFolder != ""} {
@@ -267,13 +269,9 @@ proc ::utils::sound::OptionsDialogOK {} {
 
   # Destroy the Sounds options dialog
   set w .soundOptions
-  catch {grab release $w}
   destroy $w
 
-  set isNewSoundFolder 0
-  if {$soundFolder != $::utils::sound::soundFolder_temp} {
-    set isNewSoundFolder 1
-  }
+  set isNewSoundFolder [expr {$soundFolder != $::utils::sound::soundFolder_temp}]
 
   # Update the user-settable sound variables:
   foreach v {soundFolder announceNew announceForward announceBack} {

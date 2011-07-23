@@ -942,7 +942,7 @@ set helpMessage($m,[incr menuindex]) OptionsTacticsBasesDir
 
 proc setBooksDir {} {
   global scidBooksDir
-  set dir [tk_chooseDirectory -initialdir $scidBooksDir -mustexist 1]
+  set dir [tk_chooseDirectory -initialdir $scidBooksDir -mustexist 1 -title "[tr Book] [tr Directory]"]
   if {$dir == ""} {
     return
   } else {
@@ -952,10 +952,8 @@ proc setBooksDir {} {
 
 proc setTacticsBasesDir {} {
   global scidBasesDir
-  set dir [tk_chooseDirectory -initialdir $scidBasesDir -mustexist 1]
-  if {$dir == ""} {
-    return
-  } else {
+  set dir [tk_chooseDirectory -initialdir $scidBasesDir -mustexist 1 -title "Bases [tr Directory]"]
+  if {$dir != ""} {
     set scidBasesDir $dir
   }
 }

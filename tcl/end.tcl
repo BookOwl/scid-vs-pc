@@ -1,39 +1,6 @@
 # end.tcl: part of Scid.
 # Copyright (C) 2000-2003 Shane Hudson.
 
-### This is broke. S.A.
-#
-# # detect the case where, under Linux, Scid is used without prior installation
-# # the fallback directory is Scid's exec dir
-# if {! [file isdirectory $::scidBasesDir] || ! [file isdirectory $::scidBooksDir]} {
-#   set scidShareDir $::scidExeDir
-#   set scidBasesDir [file nativename [file join $::scidShareDir "bases"]]
-#   set scidBooksDir [file nativename [file join $scidShareDir "books"]]
-# }
-
-::splash::add "scidShareDir is $scidShareDir"
-
-if {[file isdirectory $::scidBasesDir]} {
-  ::splash::add "scidBasesDir is $scidBasesDir"
-} else {
-  ::splash::add "scidBasesDir $scidBasesDir not found!" error
-}
-
-if {[file isdirectory $::scidBooksDir]} {
-  ::splash::add "scidBooksDir is $scidBooksDir"
-} else {
-  ::splash::add "scidBooksDir $scidBooksDir not found!" error
-}
-
-############################################################
-### Main window title, etc:
-
-
-
-############################################################
-### Menu/etc Functions:
-
-
 # findNovelty:
 #   Searches the for first position in the current game not
 #   found in the selected database.
