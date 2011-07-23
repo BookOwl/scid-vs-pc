@@ -287,7 +287,7 @@ app: all_scid engines
 
 app_install: app
 	install -m 755 -d /Applications/ScidvsMac.app
-	cp -r dist/ScidvsMac.app/* /Applications/ScidvsMac.app
+	cp -rp dist/ScidvsMac.app/* /Applications/ScidvsMac.app
 
 ### Compress App into an OSX disk image
 
