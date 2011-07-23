@@ -27,4 +27,4 @@ $(EXE): $(OBJS)
 	$(CXX) $(CXXFLAGS) $(LDFLAGS) -o $@ $(OBJS)
 
 .depend:
-	$(CXX) $(CXXFLAGS) -MM $(OBJS:.o=.cpp) > $@
+	$(CXX) $(CXXFLAGS) $(OBJS:.o=.cpp) > $@
