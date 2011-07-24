@@ -331,10 +331,16 @@ proc compOk {} {
     wm geometry .comp [wm geometry .comp]
     pack forget .comp.buttons.ok
     pack forget .comp.buttons.cancel
+
+    # Hmm - if we leave this window open , and run F2 (say) the engines can sometimes stop working 
+    # So better make sure this window gets closed
+
     .comp.buttons.help configure -text Close -command {
+       grab release .comp
        compDestroy
     }
     raiseWin .comp
+    grab .comp
   }
 }
 

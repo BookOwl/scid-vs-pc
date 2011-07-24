@@ -2747,7 +2747,7 @@ set helpText(Tourney) {<h1>Computer Tournament</h1>
   <p>
   Make sure you open a database so the results can be saved, then select
   the number of competitors, tournament name, time control method and seconds, and Press <b>Ok</b>.
-  Games are saved after each is completed.
+  Games are saved after each is completed. When ths tournament is over, press <b>Close</b>.
   </p>
   <p>
   Though there's been some testing, it's still possible for single games to hang.
