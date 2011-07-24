@@ -4124,13 +4124,23 @@ set helpText(Book) {<h1>Book Window</h1>
   like moves side-by-side.
   </p>
 <p>Scid also has an Opponent's Book. [todo ???] and <a BookTuning>Book Tuning</a> feature.</p>
-<h2>Other</h2>
+<h2>Polyglot</h2>
 <p>
   To build new opening books, and find put more about chess opening books,
 visit the <url http://wbec-ridderkerk.nl/html/details1/PolyGlot.html>Polyglot
-web page</url>.
-  </p>
-  <p><footer>Updated: Scid vs. PC 4.4 April 2011</footer></p>
+web page</url>. 
+</p>
+<p>
+To make a .bin book from a .pgn
+<br>
+<b>polyglot make-book -pgn games.pgn -bin book.bin -max-ply 30</b>
+<br>
+<br>
+To merge two books
+<br>
+<b>polyglot merge-book -in1 w.bin -in2 b.bin out book.bin</b>
+</p>
+<p><footer>Updated: Scid vs. PC 4.5 July 2011</footer></p>
 }
 
 # Tactical game window help

@@ -297,8 +297,7 @@ dmg: app
 # Change menu bindings and description
 
 mac_menus:
-	@echo 'Makefile: "sed -i -e "s/Control-/Command-/g" -e "s/Ctrl+/Command-/g" tcl/menus.tcl'
-	@sed -i "" -e "s/Control-/Command-/g" -e "s/Ctrl+/Command-/g" tcl/menus.tcl
+	sed -i "" -e "s/Control-/Command-/g" -e "s/Ctrl+/Command-/g" tcl/menus.tcl
 
 sc_addmove: scripts/sc_addmove.tcl
 	cp scripts/sc_addmove.tcl ./sc_addmove
