@@ -291,7 +291,7 @@ proc compOk {} {
 
   if {$comp(showclock) && $comp(timecontrol) == "pergame"} {
     frame $w.clocks
-    pack $w.clocks -side top -expand yes -fill x -padx 30
+    pack $w.clocks -side top -expand yes -fill x -padx 20
 
     ::gameclock::new $w.clocks 1 80 1
     ::gameclock::new $w.clocks 2 80 1
@@ -534,11 +534,11 @@ proc compNM {n m k} {
     set comp(nextmove) $other_engine
 
     if {$comp(showclock) && $comp(timecontrol) == "pergame"} {
+      ::gameclock::setSec 1 [ expr -int($comp(wtime)/1000) ]
+      ::gameclock::setSec 2 [ expr -int($comp(btime)/1000) ]
       if {$current_engine == $n} {
-	::gameclock::setSec 1 [ expr -int($comp(wtime)/1000) ]
 	::gameclock::start 1
       } else {
-	::gameclock::setSec 2 [ expr -int($comp(btime)/1000) ]
 	::gameclock::start 2
       }
     }
