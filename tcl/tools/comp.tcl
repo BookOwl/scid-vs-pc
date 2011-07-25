@@ -150,6 +150,13 @@ proc compInit {} {
   grid $w.config.animatevalue -row $row -column 1 -padx 5 
 
   incr row
+  label $w.config.showclocklabel -text {Show clocks}
+  checkbutton $w.config.showclockvalue -variable comp(showclock) 
+
+  grid $w.config.showclocklabel -row $row -column 0 -sticky w -padx 5 
+  grid $w.config.showclockvalue -row $row -column 1 -padx 5 
+
+  incr row
   label $w.config.start_title -text {Start Position}
   grid $w.config.start_title -row $row -column 0 -columnspan 2
 
@@ -274,11 +281,43 @@ proc compOk {} {
     }
   }
   $w.buttons.ok configure -text Pause -command compPause -state normal
-  $w.buttons.help configure -text {End Game} -command compGameEnd -state normal
+  pack forget $w.buttons.help
   $w.buttons.cancel configure -text {End Comp} -command compAbort -state normal
   wm title $w {Scid Tournament}
   focus $w.buttons.ok
   bind $w <Destroy> compAbort
+
+  ### Clocks
+
+  if {$comp(showclock) && $comp(timecontrol) == "pergame"} {
+    frame $w.clocks
+    pack $w.clocks -side top -expand yes -fill x -padx 30
+
+    ::gameclock::new $w.clocks 1 80 1
+    ::gameclock::new $w.clocks 2 80 1
+    ::gameclock::setColor 1 white
+    ::gameclock::setColor 2 black
+
+  }
+
+  ### Extra decision buttons
+
+  frame $w.say
+  pack $w.say -side bottom -pady 5 -padx 5
+
+  if {$::windowsOS} {
+    # fixed width dialogbutton cuts text in winxp
+    set button button
+  } else {
+    set button dialogbutton
+  }
+
+  $button $w.say.white -text "$::tr(White) wins" -command {compGameEnd 1}
+  $button $w.say.draw  -text "$::tr(Draw)" -command {compGameEnd =}
+  $button $w.say.black -text "$::tr(Black) wins" -command {compGameEnd 0}
+
+  pack $w.say.white $w.say.draw -side left -padx 5
+  pack $w.say.black -side right -padx 5
   
   ### Place games in cue
 
@@ -344,6 +383,9 @@ proc compOk {} {
        grab release .comp
        compDestroy
     }
+    foreach i [winfo children $w.say] {
+      catch {$i configure -state disabled}
+    }
     raiseWin .comp
     grab .comp
   }
@@ -351,6 +393,8 @@ proc compOk {} {
 
 proc compNM {n m k} {
   global analysis comp
+
+  set comp(result) {}
 
   if {$comp(timecontrol) == "pergame"} {
     # minutes does not have to be an integer
@@ -369,6 +413,11 @@ proc compNM {n m k} {
     }
 
     puts_ "Game period is $comp(wtime) seconds"
+
+    if {$comp(showclock) && $comp(timecontrol) == "pergame"} {
+      ::gameclock::setSec 1 [ expr -int($comp(minutes)*60) ]
+      ::gameclock::setSec 2 [ expr -int($comp(minutes)*60) ]
+    }
   }
 
   if {$comp(start) > 0 && $comp(current) == 1} {
@@ -484,6 +533,16 @@ proc compNM {n m k} {
     set comp(move) $current_engine
     set comp(nextmove) $other_engine
 
+    if {$comp(showclock) && $comp(timecontrol) == "pergame"} {
+      if {$current_engine == $n} {
+	::gameclock::setSec 1 [ expr -int($comp(wtime)/1000) ]
+	::gameclock::start 1
+      } else {
+	::gameclock::setSec 2 [ expr -int($comp(btime)/1000) ]
+	::gameclock::start 2
+      }
+    }
+
     if {$::analysis(uci$current_engine)} {
       ### uci
 
@@ -536,6 +595,7 @@ proc compNM {n m k} {
         puts_ "sendToEngine $current_engine level 0 $mins $comp(incr)"
       }
 
+
       sendToEngine $current_engine "go"
       vwait analysis(waitForBestMove$current_engine)
 
@@ -553,6 +613,14 @@ proc compNM {n m k} {
 
       set comp(badmoves) 0
       after cancel compTimeout
+
+      if {$comp(showclock) && $comp(timecontrol) == "pergame"} {
+	if {$current_engine == $n} {
+	  ::gameclock::stop 1
+	} else {
+	  ::gameclock::stop 2
+	}
+      }
 
       while {$comp(paused)} {
 	puts_ "  PAUSED at [clock format [clock seconds]]"
@@ -650,7 +718,17 @@ proc compNM {n m k} {
   after cancel compTimeout
   puts_ "Game $n - $m is over"
 
+  if {$comp(showclock) && $comp(timecontrol) == "pergame"} {
+    ::gameclock::stop 1
+    ::gameclock::stop 2
+  }
+
   # Save game
+
+  # Perhaps game has been adjudicated by user ?
+  if {$comp(result) != {}} {
+    sc_game tags set -result $comp(result)
+  }
 
   if {$comp(timecontrol) == "pergame"} {
     sc_pos setComment "[sc_pos getComment]White time $comp(wtime), Black time $comp(btime)"
@@ -662,6 +740,7 @@ proc compNM {n m k} {
     ::windows::gamelist::Refresh
     ::crosstab::Refresh
   }
+  ::pgn::Refresh 1
 
   # Destroy analysis windgets
 
@@ -746,7 +825,7 @@ proc compTimeout {} {
     set analysis(waitForBestMove$comp(move)) 1
 }
 
-proc compGameEnd {} {
+proc compGameEnd {result} {
     global analysis comp
  
     puts_ compGameEnd
@@ -755,6 +834,8 @@ proc compGameEnd {} {
       compResume
     }
     set comp(playing) 0
+    set comp(result) $result
+
     set analysis(waitForReadyOk$comp(move)) 1
     set analysis(waitForBestMove$comp(move)) 1
 }

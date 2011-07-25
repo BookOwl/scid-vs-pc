@@ -153,7 +153,7 @@ set comp(seconds) 180
 set comp(timeout) 60
 set comp(rounds) 2
 set comp(name) $scidName
-
+set comp(showclock) 0
 
 ### Tree/mask options:
 set ::tree::mask::recentMask {}
