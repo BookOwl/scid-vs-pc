@@ -43,17 +43,17 @@ proc compInit {} {
   addHorizontalRule $w
   pack [frame $w.config] -fill x -expand 1
   addHorizontalRule $w
-  pack [frame $w.buttons] -side bottom -pady 10 -padx 5
+  pack [frame $w.buttons] -side bottom -pady 5 -padx 5
 
   ### Engines
 
   pack [label $w.engines.label -text "Number of Engines"] -side top -padx 5 -pady 5
 
-  pack [frame $w.engines.top] -side top -padx 10 -pady 5 -expand 1 -fill x
+  pack [frame $w.engines.top] -side top -expand 1 -fill x
   pack [spinbox $w.engines.top.count -textvariable comp(count) -from 2 -to [llength $engines(list)] -width 5] \
-    -side left -padx 5 -pady 5
-  dialogbutton $w.engines.top.update -text Update -command drawCombos
-  pack $w.engines.top.update -side right -padx 5 -pady 5
+    -side left -padx 5
+  dialogbutton $w.engines.top.update -text $::tr(Update) -command drawCombos
+  pack $w.engines.top.update -side right -padx 5
 
   set comp(count) 2
   set comp(countcombos) $comp(count)
@@ -119,35 +119,35 @@ proc compInit {} {
   label $w.config.timeoutlabel -text {Time-out (seconds)}
   spinbox $w.config.timeoutvalue -textvariable comp(timeout) -from 1 -to 300 -width 9
 
-  grid $w.config.timeoutlabel -row $row -column 0 -sticky w -padx 5 -pady 2
-  grid $w.config.timeoutvalue -row $row -column 1 -sticky w -padx 5 -pady 2
+  grid $w.config.timeoutlabel -row $row -column 0 -sticky w -padx 5 
+  grid $w.config.timeoutvalue -row $row -column 1 -sticky w -padx 5 
 
   incr row
   label $w.config.verboselabel -text {Print info to Console}
   checkbutton $w.config.verbosevalue -variable comp(debug) 
   set comp(debug) 1
 
-  grid $w.config.verboselabel -row $row -column 0 -sticky w -padx 5 -pady 2
-  grid $w.config.verbosevalue -row $row -column 1 -padx 5 -pady 2
+  grid $w.config.verboselabel -row $row -column 0 -sticky w -padx 5 
+  grid $w.config.verbosevalue -row $row -column 1 -padx 5 
 
-  grid $w.config.verboselabel -row $row -column 0 -sticky w -padx 5 -pady 2
-  grid $w.config.verbosevalue -row $row -column 1 -padx 5 -pady 2
+  grid $w.config.verboselabel -row $row -column 0 -sticky w -padx 5 
+  grid $w.config.verbosevalue -row $row -column 1 -padx 5 
 
   incr row
   label $w.config.iconizelabel -text {Analysis starts Iconized}
   checkbutton $w.config.iconizevalue -variable comp(iconize) 
   set comp(iconize) 1
 
-  grid $w.config.iconizelabel -row $row -column 0 -sticky w -padx 5 -pady 2
-  grid $w.config.iconizevalue -row $row -column 1 -padx 5 -pady 2
+  grid $w.config.iconizelabel -row $row -column 0 -sticky w -padx 5 
+  grid $w.config.iconizevalue -row $row -column 1 -padx 5 
 
   incr row
   label $w.config.animatelabel -text {Animate moves}
   checkbutton $w.config.animatevalue -variable comp(animate) 
   set comp(animate) 1
 
-  grid $w.config.animatelabel -row $row -column 0 -sticky w -padx 5 -pady 2
-  grid $w.config.animatevalue -row $row -column 1 -padx 5 -pady 2
+  grid $w.config.animatelabel -row $row -column 0 -sticky w -padx 5 
+  grid $w.config.animatevalue -row $row -column 1 -padx 5 
 
   incr row
   label $w.config.start_title -text {Start Position}
@@ -158,20 +158,20 @@ proc compInit {} {
   incr row
   label $w.config.start1label -text {New Games}
   radiobutton $w.config.start1button -variable comp(start) -value 0
-  grid $w.config.start1label -row $row -column 0 -sticky w -padx 5 -pady 2
-  grid $w.config.start1button -row $row -column 1 -padx 5 -pady 2
+  grid $w.config.start1label -row $row -column 0 -sticky w -padx 5 
+  grid $w.config.start1button -row $row -column 1 -padx 5 
 
   incr row
   label $w.config.start2label -text {First game from this position}
   radiobutton $w.config.start2button -variable comp(start) -value 1
-  grid $w.config.start2label -row $row -column 0 -sticky w -padx 5 -pady 2
-  grid $w.config.start2button -row $row -column 1 -padx 5 -pady 2
+  grid $w.config.start2label -row $row -column 0 -sticky w -padx 5 
+  grid $w.config.start2button -row $row -column 1 -padx 5 
 
   incr row
   label $w.config.start3label -text {All games from this position}
   radiobutton $w.config.start3button -variable comp(start) -value 2
-  grid $w.config.start3label -row $row -column 0 -sticky w -padx 5 -pady 2
-  grid $w.config.start3button -row $row -column 1 -padx 5 -pady 2
+  grid $w.config.start3label -row $row -column 0 -sticky w -padx 5 
+  grid $w.config.start3button -row $row -column 1 -padx 5 
 
   ### OK, Cancel Buttons
 
@@ -182,7 +182,7 @@ proc compInit {} {
     set button dialogbutton
   }
 
-  $button $w.buttons.cancel -text Cancel -command compClose
+  $button $w.buttons.cancel -text $::tr(Cancel) -command compClose
   $button $w.buttons.ok -text Ok -command compOk
   $button $w.buttons.help -text $::tr(Help) -command {helpWindow Tourney}
 
@@ -329,13 +329,18 @@ proc compOk {} {
     bind .comp <Destroy> {}
     # voodoo that you do
     wm geometry .comp [wm geometry .comp]
-    pack forget .comp.buttons.ok
-    pack forget .comp.buttons.cancel
+    pack forget .comp.buttons.help
 
     # Hmm - if we leave this window open , and run F2 (say) the engines can sometimes stop working 
     # So better make sure this window gets closed
 
-    .comp.buttons.help configure -text Close -command {
+    .comp.buttons.ok configure -text [tr Restart] -command {
+       grab release .comp
+       compDestroy
+       update
+       compInit
+    }
+    .comp.buttons.cancel configure -text [tr Close] -command {
        grab release .comp
        compDestroy
     }
@@ -707,7 +712,7 @@ proc drawCombos {} {
   if {[winfo exists $l]} {destroy $l}
   bind $w <Destroy> compClose
 
-  pack [frame $l] -side top -padx 10 -pady 10
+  pack [frame $l] -side top -padx 5 -pady 2
 
   set values {}
 
@@ -718,7 +723,7 @@ proc drawCombos {} {
   for {set i 0} {$i < $comp(count)} {incr i} {
     ttk::combobox  $l.$i -width 20 -state readonly -values $values
     $l.$i current $i
-    pack $l.$i -side top -pady 5
+    pack $l.$i -side top -pady 3
   }
   set comp(countcombos) $comp(count)
   update
@@ -746,6 +751,9 @@ proc compGameEnd {} {
  
     puts_ compGameEnd
 
+    if {$comp(paused)} {
+      compResume
+    }
     set comp(playing) 0
     set analysis(waitForReadyOk$comp(move)) 1
     set analysis(waitForBestMove$comp(move)) 1
@@ -756,6 +764,10 @@ proc compAbort {} {
     global analysis comp
 
     puts_ compAbort
+
+    if {$comp(paused)} {
+      compResume
+    }
     set comp(playing) 0
     set comp(games) {}
 
