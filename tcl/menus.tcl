@@ -552,8 +552,7 @@ $m.correspondence add command -label CCConfigRelay   -command {::CorrespondenceC
 set helpMessage($m.correspondence,1) CCConfigRelay
 
 $m.correspondence add separator
-$m.correspondence add command -label CCOpenDB      -command {::CorrespondenceChess::OpenCorrespondenceDB; ::CorrespondenceChess::ReadInbox} \
-    -accelerator "Ctrl+F12"
+$m.correspondence add command -label CCOpenDB      -command {::CorrespondenceChess::OpenCorrespondenceDB; ::CorrespondenceChess::ReadInbox} 
 set helpMessage($m.correspondence,3) CCOpenDB
 
 $m.correspondence add separator
@@ -656,8 +655,7 @@ set helpMessage($m,[incr menuindex]) WindowsBook
 bind . <Control-b>  ::book::OpenClose
 
 $m add checkbutton -label WindowsCorrChess -variable ::CorrespondenceChess::isOpen \
-    -command ::CorrespondenceChess::CCWindow -accelerator "F12"
-bind . <F12> ::CorrespondenceChess::CCWindow
+    -command ::CorrespondenceChess::CCWindow 
 
 ### Tools menu:
 
