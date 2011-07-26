@@ -116,15 +116,24 @@ proc compInit {} {
 
   checkTimeControl
 
+  ### separator
+
   incr row
   grid  [frame $w.config.line -height 2 -borderwidth 2 -relief sunken] -pady 5 -sticky ew -row $row -column 0 -columnspan 2
 
   incr row
-  label $w.config.timeoutlabel -text {Time-out (seconds)}
-  spinbox $w.config.timeoutvalue -textvariable comp(timeout) -from 1 -to 300 -width 9
+  label $w.config.showclocklabel -text {Show clocks}
+  checkbutton $w.config.showclockvalue -variable comp(showclock) 
 
-  grid $w.config.timeoutlabel -row $row -column 0 -sticky w -padx 5 
-  grid $w.config.timeoutvalue -row $row -column 1 -sticky w -padx 5 
+  grid $w.config.showclocklabel -row $row -column 0 -sticky w -padx 5 
+  grid $w.config.showclockvalue -row $row -column 1 -padx 5 
+
+  incr row
+  label $w.config.animatelabel -text {Animate moves}
+  checkbutton $w.config.animatevalue -variable comp(animate) 
+
+  grid $w.config.animatelabel -row $row -column 0 -sticky w -padx 5 
+  grid $w.config.animatevalue -row $row -column 1 -padx 5 
 
   incr row
   label $w.config.verboselabel -text {Print info to Console}
@@ -145,18 +154,11 @@ proc compInit {} {
   grid $w.config.iconizevalue -row $row -column 1 -padx 5 
 
   incr row
-  label $w.config.animatelabel -text {Animate moves}
-  checkbutton $w.config.animatevalue -variable comp(animate) 
+  label $w.config.timeoutlabel -text {Time-out (seconds)}
+  spinbox $w.config.timeoutvalue -textvariable comp(timeout) -from 1 -to 300 -width 9
 
-  grid $w.config.animatelabel -row $row -column 0 -sticky w -padx 5 
-  grid $w.config.animatevalue -row $row -column 1 -padx 5 
-
-  incr row
-  label $w.config.showclocklabel -text {Show clocks}
-  checkbutton $w.config.showclockvalue -variable comp(showclock) 
-
-  grid $w.config.showclocklabel -row $row -column 0 -sticky w -padx 5 
-  grid $w.config.showclockvalue -row $row -column 1 -padx 5 
+  grid $w.config.timeoutlabel -row $row -column 0 -sticky w -padx 5 
+  grid $w.config.timeoutvalue -row $row -column 1 -sticky w -padx 5 
 
   incr row
   label $w.config.start_title -text {Start Position}
@@ -536,8 +538,6 @@ proc compNM {n m k} {
     set comp(nextmove) $other_engine
 
     if {$comp(showclock) && $comp(timecontrol) == "pergame"} {
-      ::gameclock::setSec 1 [ expr -int($comp(wtime)/1000) ]
-      ::gameclock::setSec 2 [ expr -int($comp(btime)/1000) ]
       if {$current_engine == $n} {
 	::gameclock::start 1
       } else {
@@ -678,6 +678,10 @@ proc compNM {n m k} {
           }
           # add time increment
           incr comp(btime) [expr $comp(incr) * 1000]
+	  if {$comp(showclock) && $comp(timecontrol) == "pergame"} {
+	    ::gameclock::setSec 2 [ expr -int($comp(btime)/1000) ]
+	  }
+
         }
         # Now its whites turn
 	set current_engine $n
@@ -692,6 +696,9 @@ proc compNM {n m k} {
           }
           # add time increment
           incr comp(wtime) [expr $comp(incr) * 1000]
+	  if {$comp(showclock) && $comp(timecontrol) == "pergame"} {
+	    ::gameclock::setSec 1 [ expr -int($comp(wtime)/1000) ]
+	  }
         }
         # Now its blacks turn
 	set current_engine $m

@@ -2735,32 +2735,39 @@ set helpTitle(Tourney) "Computer Tournament"
 set helpText(Tourney) {<h1>Computer Tournament</h1>
 
   <p>
-  Scid vs. PC can run automated <run ::compInit><green>Computer Tournaments</green></run>
-  with any installed engine (done via the
-  <run ::enginelist::choose><green>Tools--<gt>Analysis Engines</green></run>
-  widget).
+  Automated <run ::compInit><green>Computer Tournaments</green></run>
+  can be run with any XBoard or UCI engine installed via the
+  <run ::enginelist::choose><green>Tools--<gt>Analysis Engines</green></run> widget.
   </p>
   <p>
   <i>Support for different engines is good, but many old and/or less-well-known engines won't work.
   For more information about engine compatibility, see below.
   </i></p>
+
+  <h3>Getting Started</h3>
+
   <p>
-  Make sure you open a database so the results can be saved, then select
-  the number of competitors, tournament name, time control method and seconds, and Press <b>Ok</b>.
-  Games are saved after each is completed. When ths tournament is over, press <b>Close</b>.
+  First, select the details of your tournament. Configurable items include:
+  the <b>Number of Competitors</b>, <b>Tournament Name</b>, <b>Time-Control Method</b> and <b>Period</b>.
+  The Tournament currently doesn't support Scid's opening books, though any
+  engine's personal opening book may be enabled manually if desired. To address
+  this, it is possible to run tournaments from a particular position. 
   </p>
   <p>
-  Though there's been some testing, it's still possible for single games to hang.
+  Games are saved after each is completed, so open an appropriate Base, or just
+  use the Clipbase. When the tournament is over, press "Close".
+  </p>
+  <p>
+  Though there's been some testing, it's still possible for less-well-known engines to hang.
   To address this, set the <b>Seconds for Time-out</b> value to the maximum time
   that any move should take before the game is ended. If this
   happens, the game is saved and result can be edited manually later.
   </p>
   <p>
-  If a game drags on for any reason, press <b>End Game</b> to save the game and progress to the next.
+  If a game drags on for any reason, three buttons allow for manual adjudication of a game.
   </p>
   <p>
-  The <b>Pause Game</b> feature tries to be fair about engine
-  analysis and to handle operating system suspend events, but more testing is good.
+  The "Pause Game" button does not effect instantaneously, but first waits for the current move to be made, before pausing further progress.
   </p>
   <p><i>
   Once the tournament is completed, be sure to have a look at the 
@@ -2768,7 +2775,10 @@ set helpText(Tourney) {<h1>Computer Tournament</h1>
   to see the results summary.
   </i></p>
 
-  <h3>Known Issues</h3>
+  <h3>Notes</h3>
+<br>
+  * Updating Scid's interface does take some CPU activity, but effort is made to not include this time in each engine's time-slice.
+  Additionally, the clock widgets take a small CPU slice - around .0005 seconds per move on my 2600MHz Core2Quad.
 <br>
   * Xboard/Winboard protocol support is not as solid as for UCI (see below).
   The xboard "Resign" request is supported.
@@ -2786,6 +2796,7 @@ The author has tested quite a few engines under Linux, and a lesser number with 
 <br>
 Arasanx<br>
 Crafty<br>
+Critter<br>
 Faile<br>
 Glaurung<br>
 Gnu Chess 5<br>
