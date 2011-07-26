@@ -21,6 +21,7 @@ set comp(playing) 0
 set comp(current) 0
 set comp(games) {}
 set comp(badmoves) 0
+set comp(iconize) 0 ; # needs to be zero for normal analysis
 set comp(count) 2 ; # number of computer players
 set comp(start) 0 ; # "Start at position" radiobutton
 
