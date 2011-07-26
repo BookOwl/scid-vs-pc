@@ -1006,7 +1006,8 @@ $m add command -label OptionsSave -command {
     ::file::finder::data(EPD) ::file::finder::data(Old) 
     FilterMaxMoves FilterMinMoves FilterStepMoves FilterMaxElo FilterMinElo FilterStepElo 
     FilterMaxYear FilterMinYear FilterStepYear FilterGuessELO
-    ::comp(timecontrol) ::comp(seconds) ::comp(minutes) ::comp(incr) ::comp(timeout) ::comp(name) ::comp(rounds) ::comp(showclock) 
+    ::comp(timecontrol) ::comp(seconds) ::comp(minutes) ::comp(incr) ::comp(timeout) ::comp(name)
+    ::comp(rounds) ::comp(showclock) ::comp(debug) ::comp(animate)
     ::tools::graphs::filter::type  ::tools::graphs::absfilter::type ::maintFlag glistFlag
     ::useGraphFigurine} {
 

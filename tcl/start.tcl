@@ -147,13 +147,15 @@ set ::maintFlag W
 set ::glistFlag W
 set ::gbrowser::size 35
 set comp(timecontrol) pergame
+set comp(seconds) 180
 set comp(minutes) 1
 set comp(incr) 0
-set comp(seconds) 180
 set comp(timeout) 60
-set comp(rounds) 2
 set comp(name) $scidName
+set comp(rounds) 2
 set comp(showclock) 0
+set comp(debug) 1 ; # print info to console
+set comp(animate) 1
 
 ### Tree/mask options:
 set ::tree::mask::recentMask {}

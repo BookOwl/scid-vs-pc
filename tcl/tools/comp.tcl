@@ -20,10 +20,11 @@
 set comp(playing) 0
 set comp(current) 0
 set comp(games) {}
-set comp(debug) 1
 set comp(badmoves) 0
-set comp(iconize) 0
-set comp(animate) 1
+set comp(count) 2 ; # number of computer players
+set comp(start) 0 ; # "Start at position" radiobutton
+
+### Non-transient options are set in start.tcl
 
 proc compInit {} {
   global analysis comp engines
@@ -55,7 +56,6 @@ proc compInit {} {
   dialogbutton $w.engines.top.update -text $::tr(Update) -command drawCombos
   pack $w.engines.top.update -side right -padx 5
 
-  set comp(count) 2
   set comp(countcombos) $comp(count)
   drawCombos
 
@@ -64,17 +64,20 @@ proc compInit {} {
   set row 0
 
   label $w.config.eventlabel -text {Event Name}
-  entry $w.config.evententry -width 10 -textvariable comp(name) -borderwidth 1
+  entry $w.config.evententry -width 17 -textvariable comp(name) -borderwidth 1
+
+  # 17 is magic number to pad the widget out to match the width
+  # after the three adjudication buttons have been packed
 
   grid $w.config.eventlabel -row $row -column 0 -sticky w -padx 5 -pady 2
-  grid $w.config.evententry -row $row -column 1 -sticky w -padx 5 -pady 2
+  grid $w.config.evententry -row $row -column 1 -sticky ew -padx 5 -pady 2
 
   incr row
   label $w.config.roundslabel -text {Number of Rounds}
   spinbox $w.config.roundsvalue -textvariable comp(rounds) -from 1 -to 10 -width 9
 
   grid $w.config.roundslabel -row $row -column 0 -sticky w -padx 5 -pady 2
-  grid $w.config.roundsvalue -row $row -column 1 -sticky w -padx 5 -pady 2
+  grid $w.config.roundsvalue -row $row -column 1 -sticky ew -padx 5 -pady 2
 
   incr row
   frame $w.config.control
@@ -125,7 +128,6 @@ proc compInit {} {
   incr row
   label $w.config.verboselabel -text {Print info to Console}
   checkbutton $w.config.verbosevalue -variable comp(debug) 
-  set comp(debug) 1
 
   grid $w.config.verboselabel -row $row -column 0 -sticky w -padx 5 
   grid $w.config.verbosevalue -row $row -column 1 -padx 5 
@@ -144,7 +146,6 @@ proc compInit {} {
   incr row
   label $w.config.animatelabel -text {Animate moves}
   checkbutton $w.config.animatevalue -variable comp(animate) 
-  set comp(animate) 1
 
   grid $w.config.animatelabel -row $row -column 0 -sticky w -padx 5 
   grid $w.config.animatevalue -row $row -column 1 -padx 5 
@@ -159,8 +160,6 @@ proc compInit {} {
   incr row
   label $w.config.start_title -text {Start Position}
   grid $w.config.start_title -row $row -column 0 -columnspan 2
-
-  set comp(start) 0
 
   incr row
   label $w.config.start1label -text {New Games}
@@ -201,8 +200,8 @@ proc compInit {} {
   bind $w <Destroy> compClose
   bind $w <Escape> compClose
   bind $w <F1> {helpWindow Tourney}
-  wm state $w normal
   update
+  wm state $w normal
 
 }
 
@@ -244,6 +243,7 @@ proc compOk {} {
   }
     
   set players {}
+  set comp(players) {} ;# to remember which engines are selected between widget restarts
   set names {}
   set comp(games) {}
   set comp(current) 0
@@ -255,6 +255,7 @@ proc compOk {} {
 
   for {set i 0} {$i < $comp(count)} {incr i} {
     set j [$w.engines.list.$i current]
+    lappend comp(players) $j
     lappend players [expr $j + 1]
     lappend names   [lindex [lindex $engines(list) $j] 0]
   }
@@ -799,9 +800,20 @@ proc drawCombos {} {
     lappend values [lindex $e 0]
   }
 
+
   for {set i 0} {$i < $comp(count)} {incr i} {
     ttk::combobox  $l.$i -width 20 -state readonly -values $values
-    $l.$i current $i
+
+    if {[info exists comp(players)]} {
+      # Set the combo boxes to the previous players if we can
+      set prev_player [lindex $comp(players) $i]
+      if {[catch {$l.$i current $prev_player}]} {
+	$l.$i current $i
+      }
+    } else {
+      $l.$i current $i
+    }
+
     pack $l.$i -side top -pady 3
   }
   set comp(countcombos) $comp(count)
