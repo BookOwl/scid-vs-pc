@@ -416,16 +416,20 @@ proc setClipboard {string} {
 # clock widget
 ################################################################################
 namespace eval gameclock {
+
   array set data {}
-  ################################################################################
-  proc new { parent n { size 100 } {showfall 0} {type horizontal} } {
+
+  proc new { parent n { size 100 } {showfall 0} {aspect horizontal} {type both}} {
+  # n is either 1 or 2, but extra clocks could be numbered 3,4 (for eg)
+  # type can be analog, digital or both (unimplemented)
     global ::gameclock::data
     set data(showfallen$n) $showfall
     set data(id$n) $parent.clock$n
+    set data(type$n) $type
     canvas $data(id$n) -height $size -width $size
 
-    if {$type == "horizontal"} {
-      if {$n == 1 } {
+    if {$aspect == "horizontal"} {
+      if { $n % 2 } {
 	  pack $data(id$n) -side left -padx 10 -pady 10
       } else {
 	  pack $data(id$n) -side right -padx 10 -pady 10
@@ -434,11 +438,15 @@ namespace eval gameclock {
       pack $data(id$n) -side top -anchor center
     }
 
+    ### Draw digits 1 to 12 (tagged with "clock")
+    # The hands and digitalcounter are drawn in {proc draw}, and tagged "aig"
+    # Initially they are both neutral colour, and are given white/black by {proc setColor}
+
     for {set i 1} {$i<13} {incr i} {
       set a [expr {$i/6.*acos(-1)}]
       set x [expr { ($size/2 + (($size-15)/2)*sin($a) ) }]
       set y [expr { ($size/2 - (($size-15)/2)*cos($a) ) }]
-      $data(id$n) create text $x $y -text $i -tag clock$n
+      $data(id$n) create text $x $y -text $i -tag clock
     }
     set data(fg$n) "black"
     set data(running$n) 0
@@ -451,7 +459,7 @@ namespace eval gameclock {
   proc draw { n } {
     global ::gameclock::data
     if {! [winfo exists $data(id$n)]} { return }
-    $data(id$n) delete aig$n
+    $data(id$n) delete aig
 
     set w [$data(id$n) cget -width ]
     set h [$data(id$n) cget -height ]
@@ -477,13 +485,13 @@ namespace eval gameclock {
           set angle [expr {$sec * acos(-1) / $divisor}]
           set x [expr {$cx + $length * sin($angle)}]
           set y [expr {$cy - $length * cos($angle)}]
-          $data(id$n) create line $cx $cy $x $y -width $width -tags aig$n -fill $color
+          $data(id$n) create line $cx $cy $x $y -width $width -tags aig -fill $color
         }
     # draw a digital clock
     if {$data(digital$n)} {
       set m [format "%02d" [expr abs($sec) / 60] ]
       set s [format "%02d" [expr abs($sec) % 60] ]
-      $data(id$n) create text $cx [expr $cy + $size/4 ] -text "$m:$s" -anchor center -fill $color -tag aig$n
+      $data(id$n) create text $cx [expr $cy + $size/4 ] -text "$m:$s" -anchor center -fill $color -tag aig
     }
   }
   ################################################################################
@@ -546,8 +554,8 @@ namespace eval gameclock {
     }
     set ::gameclock::data(fg$n) $fg
     $::gameclock::data(id$n) configure -background $bg
-    $::gameclock::data(id$n) itemconfigure clock$n -fill $fg
-    $::gameclock::data(id$n) itemconfigure aig$n -fill $fg
+    $::gameclock::data(id$n) itemconfigure clock -fill $fg
+    $::gameclock::data(id$n) itemconfigure aig -fill $fg
   }
 }
 ################################################################################
