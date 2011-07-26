@@ -155,7 +155,7 @@ proc compInit {} {
 
   incr row
   label $w.config.timeoutlabel -text {Time-out (seconds)}
-  spinbox $w.config.timeoutvalue -textvariable comp(timeout) -from 1 -to 300 -width 9
+  spinbox $w.config.timeoutvalue -textvariable comp(timeout) -from 0 -to 300 -width 9
 
   grid $w.config.timeoutlabel -row $row -column 0 -sticky w -padx 5 
   grid $w.config.timeoutvalue -row $row -column 1 -sticky w -padx 5 
@@ -241,9 +241,20 @@ proc compOk {} {
 
   if {[sc_base isReadOnly]} {
     set answer [tk_messageBox -title Tournanment -icon question -type okcancel \
-	-message {Database is read only, continue ?} -parent $w]
+	-message {Database is read only. Continue ?} -parent $w]
     if {$answer != "ok"} {return}
   }
+  if {![sc_pos isAt end] && $comp(start) > 0} {
+    set answer [tk_messageBox -title Tournanment -icon question -type okcancel \
+	-message {Current game is not at end of game. Continue ?} -parent $w]
+    if {$answer != "ok"} {return}
+  }
+    
+  set players {}
+  set comp(players) {} ;# to remember which engines are selected between widget restarts
+  set names {}
+  set comp(games) {}
+  set comp(current) 0
     
   set players {}
   set comp(players) {} ;# to remember which engines are selected between widget restarts
@@ -476,7 +487,7 @@ proc compNM {n m k} {
   updateTitle
   update
 
-  after [expr $comp(timeout) * 1000] compTimeout
+  if {$comp(timeout) > 0} { after [expr $comp(timeout) * 1000] compTimeout } 
 
   ### Initialsation
 
@@ -630,7 +641,7 @@ proc compNM {n m k} {
 	puts_ "UNPAUSED at [clock format [clock seconds]]"
       }
 
-      after [expr $comp(timeout) * 1000] compTimeout
+      if {$comp(timeout) > 0} { after [expr $comp(timeout) * 1000] compTimeout }
 
       # set moves [ lindex [ lindex $analysis(multiPV$current_engine) 0 ] 2 ]
       # set text [format "%+.2f %s - %s  Depth: %d  Time:%6.2f s" \
@@ -717,7 +728,7 @@ proc compNM {n m k} {
 	vwait comp(paused)
 	puts_ "UNPAUSED at [clock format [clock seconds]]"
 
-	after [expr $comp(timeout) * 1000] compTimeout
+	if {$comp(timeout) > 0} { after [expr $comp(timeout) * 1000] compTimeout }
       }
     }
 
@@ -838,7 +849,7 @@ proc compTimeout {} {
     global analysis comp
 
     puts_ "!!! Move timed out, starting next game"
-    sc_pos setComment {Game timed out.}
+    sc_pos setComment {Game timed out. }
 
     set comp(playing) 0
     set analysis(waitForReadyOk$comp(move)) 1
@@ -855,6 +866,7 @@ proc compGameEnd {result} {
     }
     set comp(playing) 0
     set comp(result) $result
+    sc_pos setComment {Manual adjudication. }
 
     set analysis(waitForReadyOk$comp(move)) 1
     set analysis(waitForBestMove$comp(move)) 1

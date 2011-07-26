@@ -2754,20 +2754,20 @@ set helpText(Tourney) {<h1>Computer Tournament</h1>
   this, it is possible to run tournaments from a particular position. 
   </p>
   <p>
-  Games are saved after each is completed, so open an appropriate Base, or just
+  Games are <b>saved after each is completed</b>, so open an appropriate base, or just
   use the Clipbase. When the tournament is over, press "Close".
   </p>
   <p>
-  Though there's been some testing, it's still possible for less-well-known engines to hang.
+  If a game drags on for any reason, three buttons allow for <b>manual adjudication</b> of a game.
+  </p>
+  <p>
+  Though there's been some testing, it's still possible for less well-known engines to hang.
   To address this, set the <b>Seconds for Time-out</b> value to the maximum time
-  that any move should take before the game is ended. If this
-  happens, the game is saved and result can be edited manually later.
+  that any move should take. <b>0 seconds</b> disables this feature, and is the default.
+  If the game ~does~ get timed-out, the game is saved, and the result may be edited later.
   </p>
   <p>
-  If a game drags on for any reason, three buttons allow for manual adjudication of a game.
-  </p>
-  <p>
-  The "Pause Game" button does not effect instantaneously, but first waits for the current move to be made, before pausing further progress.
+  The "Pause Game" button does not take effect instantaneously, but first waits for the current move to be made before pausing further progress.
   </p>
   <p><i>
   Once the tournament is completed, be sure to have a look at the 
@@ -2778,16 +2778,16 @@ set helpText(Tourney) {<h1>Computer Tournament</h1>
   <h3>Notes</h3>
 <br>
   * Updating Scid's interface does take some CPU activity, but effort is made to not include this time in each engine's time-slice.
-  Additionally, the clock widgets take a small CPU slice - around .0005 seconds per move on my 2600MHz Core2Quad.
+  Additionally, the <b>Clock Widgets</b> take a small CPU slice - around .0005 seconds per move on my 2600MHz Core2Quad.
 <br>
-  * Xboard/Winboard protocol support is not as solid as for UCI (see below).
+  * <b>Xboard/Winboard protocol</b> support is not as solid as for UCI (see below).
   The xboard "Resign" request is supported.
 <br>
   * In the uncommon event of a game engine crashing (unfortunately) the tournament will be ended.
 <br>
   <h3>Todo</h3>
 <br>
-  * Some engines declare draws via "insufficient material" and the like, with "Engine says 1/2 - 1/2"
+  * Some engines - perhaps only Crafty - declare draws with "Engine says: 1/2 - 1/2 {Insufficient material}"
 <br>
   <h3>Engines</h3>
 <p>

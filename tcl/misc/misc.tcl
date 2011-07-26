@@ -499,7 +499,7 @@ namespace eval gameclock {
     incr ::gameclock::data(counter$n)
     eval $body
     if {[winfo exists $::gameclock::data(id$n)]} {
-      set ::gameclock::id$n [after $ms [info level 0]]
+      set ::gameclock::after$n [after $ms [info level 0]]
     }
   }
   ################################################################################
@@ -527,13 +527,13 @@ namespace eval gameclock {
     if {$::gameclock::data(running$n)} { return }
     set ::gameclock::data(running$n) 1
 
-    set ::gameclock::id$n [after 1000 "::gameclock::every 1000 \"draw $n\" $n"]
+    set ::gameclock::after$n [after 1000 "::gameclock::every 1000 \"draw $n\" $n"]
   }
   ################################################################################
   proc stop { n } {
     if {! $::gameclock::data(running$n)} { return }
     set ::gameclock::data(running$n) 0
-    after cancel [set ::gameclock::id$n]
+    after cancel [set ::gameclock::after$n]
   }
   ################################################################################
   proc toggleClock { n } {

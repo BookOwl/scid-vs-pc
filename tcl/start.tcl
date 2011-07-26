@@ -150,7 +150,7 @@ set comp(timecontrol) pergame
 set comp(seconds) 180
 set comp(minutes) 1
 set comp(incr) 0
-set comp(timeout) 60
+set comp(timeout) 0 ;# disabled by default
 set comp(name) $scidName
 set comp(rounds) 2
 set comp(showclock) 0
