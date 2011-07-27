@@ -969,8 +969,8 @@ $m add command -label OptionsSave -command {
   foreach i {boardSize boardStyle language ::pgn::showColor 
     ::pgn::indentVars ::pgn::indentComments ::defaultBackground 
     ::pgn::shortHeader ::pgn::boldMainLine ::pgn::stripMarks 
-    ::pgn::symbolicNags ::pgn::moveNumberSpaces ::pgn::columnFormat myPlayerNames 
-    tree(order) tree(autoSave) optionsAutoSave ::tree::mask::recentMask 
+    ::pgn::symbolicNags ::pgn::moveNumberSpaces ::pgn::columnFormat ::pgn::showScrollbar
+    myPlayerNames tree(order) tree(autoSave) optionsAutoSave ::tree::mask::recentMask 
     ecoFile suggestMoves showVarPopup showVarArrows glistSize glexport 
     blunderThreshold addAnnotatorTag annotateMoves annotateBlunders annotateType isAnnotateVar addAnnotatorComment
     autoplayDelay animateDelay boardCoords boardSTM 

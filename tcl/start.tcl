@@ -317,9 +317,10 @@ set ::pgn::indentComments 1
 set ::pgn::symbolicNags 1
 set ::pgn::moveNumberSpaces 0
 set ::pgn::shortHeader 0
-set ::pgn::boldMainLine 1
+set ::pgn::boldMainLine 0
 set ::pgn::columnFormat 0
 set ::pgn::stripMarks 0
+set ::pgn::showScrollbar 0
 set pgnColor(Header) "\#00008b"
 set pgnColor(Main) "\#000000"
 set pgnColor(Var) "\#0000ee"

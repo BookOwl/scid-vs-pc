@@ -128,13 +128,15 @@ namespace eval pgn {
 
     if {$::graphFigurineAvailable} {
       $w.menu.opt add checkbutton -label {Chess Pieces} \
-	  -variable ::useGraphFigurine -command {updateBoard -pgn}
+	  -variable ::useGraphFigurine -command {updateBoard -pgn} -underline 6
     } else {
       $w.menu.opt add checkbutton -label {Chess Pieces} \
-	  -variable ::useGraphFigurine -command {updateBoard -pgn} -state disabled
+	  -variable ::useGraphFigurine -command {updateBoard -pgn} -state disabled -underline 6
     }
 
-    $w.menu.opt add command -label [tr OptionsFonts] -command "FontDialogRegular $w"
+    $w.menu.opt add checkbutton -variable ::pgn::showScrollbar -label Scrollbar -command ::pgn::packScrollbar -underline 0
+
+    $w.menu.opt add command -label [tr OptionsFonts] -command "FontDialogRegular $w" -underline 0
 
     $w.menu.color add command -label PgnColorHeader \
         -command {::pgn::ChooseColor Header "header text"}
@@ -149,7 +151,6 @@ namespace eval pgn {
     $w.menu.color add command -label PgnColorCurrent \
         -command {::pgn::ChooseColor Current current}
 
-
     $w.menu.help add command -label PgnHelpPgn \
         -accelerator F1 -command {helpWindow PGN}
     $w.menu.help add command -label PgnHelpIndex -command {helpWindow Index}
@@ -157,7 +158,7 @@ namespace eval pgn {
     ::pgn::ConfigMenus
 
     text $w.text -width $::winWidth($w) -height $::winHeight($w) -wrap word \
-        -cursor {} -setgrid 1
+        -cursor {} -setgrid 1 -yscrollcommand "$w.ybar set"
     configTabs
     if {$pgnColor(Background) != {white} && $pgnColor(Background) != {#ffffff}} {
 	$w.text configure -background $pgnColor(Background)
@@ -166,11 +167,12 @@ namespace eval pgn {
       $w.text configure -font font_Bold
     }
 
-    pack [frame $w.buttons] -side bottom -fill x
-    pack $w.text -fill both -expand yes
-    button $w.buttons.help -textvar ::tr(Help) -command { helpWindow PGN }
-    button $w.buttons.close -textvar ::tr(Close) -command { focus .; destroy .pgnWin }
-    #pack $w.buttons.close $w.buttons.help -side right -padx 5 -pady 2
+    scrollbar $w.ybar -orient vertical -command "$w.text yview" -width 12
+
+    pack $w.text -side left -fill both -expand yes
+
+    ::pgn::packScrollbar
+
     set pgnWin 1
     bind $w <Destroy> { set pgnWin 0 }
 
@@ -240,6 +242,14 @@ namespace eval pgn {
     set t2 [expr $fd_size / 8.0]c
     set t3 [expr ($fd_size - 8) / 3.5 + 3 + 0.5*($fd_size > 13)]c 
     .pgnWin.text configure  -tabs "$t1 right $t2 $t3"
+  }
+
+  proc packScrollbar {} {
+    if {$::pgn::showScrollbar} {
+      pack .pgnWin.ybar -before .pgnWin.text -side right -fill y
+    } else {
+      pack forget .pgnWin.ybar
+    }
   }
 
   ################################################################################

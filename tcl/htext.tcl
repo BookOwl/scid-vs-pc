@@ -118,7 +118,7 @@ proc updateHelpWindow {name {heading {}}} {
     text $w.text -setgrid yes -wrap word -width $::winWidth($w) \
         -height $::winHeight($w) -relief sunken -border 2 \
         -yscroll "$w.scroll set"
-    scrollbar $w.scroll -relief sunken -command "$w.text yview"
+    scrollbar $w.scroll -relief sunken -command "$w.text yview" -width 12
 
     frame $w.b -relief raised -border 2
     pack $w.b -side bottom -fill x
