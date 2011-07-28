@@ -70,8 +70,8 @@ proc ::tourney::Open {} {
 
   ### tabulation formatting
 
-  #                    Count    Date  Players Games    Elo     Site   Event  Winner Runnerup
-  foreach {tab justify} {3 r    4 l    18 r    23 r    30 r    32 l    55 l  88 l    108 l} {
+  #                    Count    Date  Players Games    Elo     Event   Site  Winner Runnerup
+  foreach {tab justify} {3 r    4 l    18 r    23 r    30 r    32 l    55 l  76 l    94 l} {
     set tabwidth [expr {$xwidth * $tab} ]
     lappend tablist $tabwidth $justify
   }
@@ -216,7 +216,7 @@ proc ::tourney::defaults {} {
   set ::tourney::_defaults 1
   set year [::utils::date::today year]
   #set ::tourney::start "$year.??.??"
-  set ::tourney::start "1990.??.??"
+  set ::tourney::start "1960.??.??"
   set ::tourney::end "$year.12.31"
   set ::tourney::size 200
   set ::tourney::minPlayers 2
@@ -309,9 +309,9 @@ proc ::tourney::refresh {{option ""}} {
   $t insert end "\t"
   $t insert end [tr TmtSortElo] sElo
   $t insert end "\t"
-  $t insert end [tr TmtSortSite] sSite
-  $t insert end "\t"
   $t insert end [tr TmtSortEvent] sEvent
+  $t insert end "\t"
+  $t insert end [tr TmtSortSite] sSite
   $t insert end "\t"
   $t insert end [tr TmtSortWinner] sWinner
 
@@ -363,9 +363,10 @@ proc ::tourney::refresh {{option ""}} {
     $t insert end "\t" g$count
     $t insert end $elo [list elo g$count]
     $t insert end "\t" g$count
-    $t insert end [string range $site 0 24] [list site g$count]
-    $t insert end "\t" g$count
+    # These "24" widths don't work perfectly because the fonts aren't fixed
     $t insert end [string range $event 0 24] [list event g$count]
+    $t insert end "\t" g$count
+    $t insert end [string range $site 0 24] [list site g$count]
     $t insert end "\t$best" g$count
   }
   $t insert end "\n"
