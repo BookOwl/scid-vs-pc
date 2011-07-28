@@ -2284,7 +2284,16 @@ Position::MakeUCIString (simpleMoveT * m, char * s)
     pieceT  p    = piece_Type (Board[List[ToMove][m->pieceNum]]);
     squareT from = List[ToMove][m->pieceNum];
     squareT to   = m->to;
+
     char * c     = s;
+
+    if (from == to) {
+      // null move
+      *c++ = '-';
+      *c++ = '-';
+      *c = 0;
+      return;
+    }
 
     *c++ = square_FyleChar(from);
     *c++ = square_RankChar(from);

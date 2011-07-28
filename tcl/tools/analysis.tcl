@@ -1517,7 +1517,11 @@ proc addAnalysisVariation {n} {
 
   if {$isAt_vend} {
     # Add the last move of the game at the beginning of the analysis
-    sc_move_add $lastMove $n
+    if {$lastMove == {--} } {
+      sc_move addSan null
+    } else {
+      sc_move_add $lastMove $n
+    }
   }
 
   # Add as many moves as possible from the engine analysis:
