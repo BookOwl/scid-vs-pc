@@ -90,6 +90,16 @@ proc compInit {} {
   grid $w.config.control  -row $row -column 0 -columnspan 2 -sticky ew -pady 2
 
   incr row
+  frame $w.config.timesecs 
+  label $w.config.timesecs.label -text {Time per Move}
+  spinbox $w.config.timesecs.value -textvariable comp(seconds) -from 1 -to 3600 -width 4
+  label $w.config.timesecs.label2 -text secs
+
+  pack $w.config.timesecs.label -side left
+  pack $w.config.timesecs.label2 $w.config.timesecs.value -side right
+  grid $w.config.timesecs -row $row -column 0 -columnspan 2 -sticky ew -pady 2 -padx 5
+
+  incr row
   frame $w.config.timegame 
     # hack to stop the spinbox from zeroing floating point values for minutes time
     set temp $comp(minutes)
@@ -105,14 +115,11 @@ proc compInit {} {
   grid $w.config.timegame -row $row -column 0 -columnspan 2 -sticky ew -pady 2 -padx 5
 
   incr row
-  frame $w.config.timesecs 
-  label $w.config.timesecs.label -text {Time per Move}
-  spinbox $w.config.timesecs.value -textvariable comp(seconds) -from 1 -to 3600 -width 4
-  label $w.config.timesecs.label2 -text secs
+  label $w.config.showclocklabel -text {Show Clocks}
+  checkbutton $w.config.showclockvalue -variable comp(showclock) 
 
-  pack $w.config.timesecs.label -side left
-  pack $w.config.timesecs.label2 $w.config.timesecs.value -side right
-  grid $w.config.timesecs -row $row -column 0 -columnspan 2 -sticky ew -pady 2 -padx 5
+  grid $w.config.showclocklabel -row $row -column 0 -sticky w -padx 5 
+  grid $w.config.showclockvalue -row $row -column 1 -padx 5 
 
   checkTimeControl
 
@@ -122,14 +129,7 @@ proc compInit {} {
   grid  [frame $w.config.line -height 2 -borderwidth 2 -relief sunken] -pady 5 -sticky ew -row $row -column 0 -columnspan 2
 
   incr row
-  label $w.config.showclocklabel -text {Show clocks}
-  checkbutton $w.config.showclockvalue -variable comp(showclock) 
-
-  grid $w.config.showclocklabel -row $row -column 0 -sticky w -padx 5 
-  grid $w.config.showclockvalue -row $row -column 1 -padx 5 
-
-  incr row
-  label $w.config.animatelabel -text {Animate moves}
+  label $w.config.animatelabel -text {Animate Moves}
   checkbutton $w.config.animatevalue -variable comp(animate) 
 
   grid $w.config.animatelabel -row $row -column 0 -sticky w -padx 5 
@@ -165,22 +165,22 @@ proc compInit {} {
   grid $w.config.start_title -row $row -column 0 -columnspan 2
 
   incr row
-  label $w.config.start1label -text {New Games}
+  label $w.config.start1label -text {All games from start position}
   radiobutton $w.config.start1button -variable comp(start) -value 0
   grid $w.config.start1label -row $row -column 0 -sticky w -padx 5 
   grid $w.config.start1button -row $row -column 1 -padx 5 
 
   incr row
-  label $w.config.start2label -text {First game from this position}
-  radiobutton $w.config.start2button -variable comp(start) -value 1
-  grid $w.config.start2label -row $row -column 0 -sticky w -padx 5 
-  grid $w.config.start2button -row $row -column 1 -padx 5 
-
-  incr row
-  label $w.config.start3label -text {All games from this position}
+  label $w.config.start3label -text {All games from current position}
   radiobutton $w.config.start3button -variable comp(start) -value 2
   grid $w.config.start3label -row $row -column 0 -sticky w -padx 5 
   grid $w.config.start3button -row $row -column 1 -padx 5 
+
+  incr row
+  label $w.config.start2label -text {First game from current position}
+  radiobutton $w.config.start2button -variable comp(start) -value 1
+  grid $w.config.start2label -row $row -column 0 -sticky w -padx 5 
+  grid $w.config.start2button -row $row -column 1 -padx 5 
 
   ### OK, Cancel Buttons
 
@@ -209,18 +209,19 @@ proc compInit {} {
 }
 
 proc checkTimeControl {} {
+  set w .comp
   if {$::comp(timecontrol) == "permove" } {
-    foreach i [winfo children .comp.config.timesecs] {
+    foreach i [winfo children $w.config.timesecs] {
       $i configure -state normal
     }
-    foreach i [winfo children .comp.config.timegame] {
+    foreach i "[winfo children $w.config.timegame] $w.config.showclocklabel $w.config.showclockvalue" {
       $i configure -state disabled
     }
   } else {
-    foreach i [winfo children .comp.config.timesecs] {
+    foreach i [winfo children $w.config.timesecs] {
       $i configure -state disabled
     }
-    foreach i [winfo children .comp.config.timegame] {
+    foreach i "[winfo children $w.config.timegame] $w.config.showclocklabel $w.config.showclockvalue" {
       $i configure -state normal
     }
   }

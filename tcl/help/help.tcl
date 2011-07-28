@@ -2749,6 +2749,9 @@ set helpText(Tourney) {<h1>Computer Tournament</h1>
   <p>
   First, select the details of your tournament. Configurable items include:
   the <b>Number of Competitors</b>, <b>Tournament Name</b>, <b>Time-Control Method</b> and <b>Period</b>.
+  If using the per-game time-control, <b>Show Clocks</b> will display the engines remaining time.
+</p>
+<p>
   The Tournament currently doesn't support Scid's opening books, though any
   engine's personal opening book may be enabled manually if desired. To address
   this, it is possible to run tournaments from a particular position. 
@@ -2761,13 +2764,13 @@ set helpText(Tourney) {<h1>Computer Tournament</h1>
   If a game drags on for any reason, three buttons allow for <b>manual adjudication</b> of a game.
   </p>
   <p>
+  The "Pause Game" button does not take effect instantaneously, but first waits for the current move to be made before pausing further progress.
+  </p>
+  <p>
   Though there's been some testing, it's still possible for less well-known engines to hang.
   To address this, set the <b>Seconds for Time-out</b> value to the maximum time
   that any move should take. <b>0 seconds</b> disables this feature, and is the default.
   If the game ~does~ get timed-out, the game is saved, and the result may be edited later.
-  </p>
-  <p>
-  The "Pause Game" button does not take effect instantaneously, but first waits for the current move to be made before pausing further progress.
   </p>
   <p><i>
   Once the tournament is completed, be sure to have a look at the 

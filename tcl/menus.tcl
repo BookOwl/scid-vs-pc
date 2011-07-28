@@ -519,11 +519,11 @@ set helpMessage($m,[incr menuindex]) ToolsTacticalGame
 $m add command -label ToolsTrainFics -command ::fics::config
 set helpMessage($m,[incr menuindex]) ToolsTrainFics
 
-$m add command -label ToolsTrainTactics -command ::tactics::config
-set helpMessage($m,[incr menuindex]) ToolsTrainTactics
-
 $m add command -label ToolsComp -command {compInit}
 set helpMessage($m,[incr menuindex]) ToolsComp
+
+$m add command -label ToolsTrainTactics -command ::tactics::config
+set helpMessage($m,[incr menuindex]) ToolsTrainTactics
 
 $m add separator
 incr menuindex
