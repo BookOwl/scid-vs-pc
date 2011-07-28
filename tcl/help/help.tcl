@@ -344,7 +344,7 @@ set helpText(Index) {<h1>Scid Help Index</h1>
 
   <h3><name M>M</name></h3>
   <ul>
-  <li><a MainWindow>Main Window</a></li>
+  <li><a MainWindow>Main window</a></li>
   <li><a Maintenance>Maintenance tools</a></li>
   <li>Tree <a TreeMasks>Masks</a></li>
   <li><a Searches Material>Material/pattern searches</a></li>
@@ -373,6 +373,7 @@ set helpText(Index) {<h1>Scid Help Index</h1>
 
   <h3><name P>P</name></h3>
   <ul>
+  <li><a Variations Paste>Paste variation</a></li>
   <li><a PGN>PGN</a> window</li>
   <li><a Pgnscid>Pgnscid</a></li>
   <li><a FICS>Play on the Internet (FICS)</a></li>
@@ -1159,24 +1160,41 @@ set helpText(Clipbase) {<h1>The Default Database</h1>
 set helpTitle(Variations) "Variations"
 set helpText(Variations) {<h1>Variations</h1>
 
-  <h3><name Vars>Variations</name></h3>
   <p>
-  A <term>variation</term> of a move is an alternative sequence of
-  moves at a particular point in a game. Variations can contain
-  comments and even recursively have sub-variations. The buttons
-  above the board with a "<b>V</b>" symbol, and commands in the
-  <menu>Edit</menu> menu, can be used to create, navigate and edit
-  variations.
+  A Variation is an alternative sequence of
+  moves at a particular point in a game. They can contain
+  comments and recursive subvariations.
+  </p>
+  <p>The <button tb_outvar 32> <button tb_invar 32>  <button tb_addvar 32>
+  buttons are used to exit, enter and add variations respectively.
+  And in the <b>Edit Menu</b>, and <a PGN>PGN</a> context menu, are further useful commands.
+  </p>
+  <h4>Variation Arrows</h4>
+  <p>
+  Scid vs. PC has clickable Variation Arrows (enabled via
+  Options / Moves / Show Variation Arrows). But for this feature to work, the
+  <b>Variations Window</b> (Options / Moves / Show Variation Window) must first
+  be disabled.
   </p>
 
-  <h4>Keyboard shortcuts</h4>
+  <h4><name Paste>Paste Variation</h4>
+  <p>
+  This feature (in the Edit Menu) will try to add the currently selected text as a variation.
+  It is not very sophisticated; but very useful when adding a <b>single line of MulitPV analysis</b>
+from a paused engine.
+  </p>
+  <p>
+  <i>Please see <a Variations Null>below</a> in regards to adding null moves.</i>
+  </p>
+
+  <h4>Keyboard Shortcuts</h4>
   <p>
   When a move has variations, they are shown in the game information
   area. The first will be named <b>v1</b>, the second <b>v2</b>, etc.
   You can click on a variation to enter it, or press "<b>v</b>". In
-  the latter case the <term>Variation</term> window will pop up
-  allowing to select a variation using the cursor keys. Setting
-  Options / Moves / Show variation window will pop up this window
+  the latter case the <b>Variation Window</b> will pop up
+  allowing to select a variation using the cursor keys or mouse. Setting
+  Options / Moves / Show Variation Window will pop up this window
   automatically every time a move with a variation is found while
   navigating through the game using the cursor keys. In the variation
   window one can enter the variation by selecting it with the up/down
@@ -1187,31 +1205,30 @@ set helpText(Variations) {<h1>Variations</h1>
   alternatively.
   </p>
 
-  <h3><name Null>Null moves</name></h3>
+  <h3><name Null>Null Moves</name></h3>
   <p>
-  Sometimes, you may find it useful in a variation to skip over a move
-  for one side. For example, you may want to add the move 14.Bd3 to
-  a variation and point out that it threatens 15.Bxh7+ Kxh7 16.Ng5+
-  with an attack. You can do this by making a <term>null move</term>
-  between 14.Bd3 and 15.Bxh7+, in the above example. A null move is
-  displayed as "<b>--</b>" and can be inserted using the mouse by making
-  an illegal move of capturing one king with the other, or from the
-  keyboard by typing "<b>--</b>" (two minus signs).
+  Null moves are used to skip a move by one side. This is of course illegal,
+  but is a well known idea, and useful for analyzing your opponent's immediate threats.
   </p>
   <p>
-  Note that null moves are not a part of the PGN Standard, so if you
-  export games with null moves to a PGN file, Scid will provide (among
-  other export options) an option to preserve null moves or convert them
-  to comments for compatibility with other software.
-  See the <a Export>Exporting</a> help page for more details.
+  Null moves are displayed as "<b>--</b>" and can be made by typing this string, or by
+  using the mouse to make a <b>King</b> x <b>King</b> capture.
+  They are not a part of the PGN Standard, so when
+  <a Export>exporting games</a> to PGN, Scid provides (among
+  other options) one to convert null moves to comments - for compatibility with other software.
   </p>
+  <p><i>
+  Some other programs use <term>Z0</term> as a null move, and Scid will successfully import this move.
+  </i></p>
   <p>
-  Also note, that Scid is capable of handling the move <term>Z0</term>
-  as a null move, a notation that is common in some commercial chess
-  applications.
+  One final issue arises with Engine Analysis. If you have null move <b>at then
+end</b> of a game or variation , the <a Analysis>analysis window</a> will not
+successfully add a variation to it. Instead, one should <b>first add a single
+move</b>, then variations may be added. This note also applies to the <b>
+<b>Paste Variation</b> feature.
   </p>
 
-  <p><footer>Updated: Scid 3.6.26, October 2008</footer></p>
+  <p><footer>Updated: Scid vs. PC 4.5 July 2011</footer></p>
 }
 
 set helpTitle(Comment) "Comment Editor"
