@@ -1176,39 +1176,6 @@ if {$unixOS} {
   option add *Menu*selectColor $buttoncolor
 }
 
-### Setup for truetype (and PGN figurine) support
-
-set graphFigurineFamily {}
-set graphFigurineAvailable [expr $windowsOS || $macOS]
-if {[::tk windowingsystem] eq "x11"} {
-	catch { if {[::tk::pkgconfig get fontsystem] eq "xft"} { set graphFigurineAvailable 1 } }
-}
-
-if {$graphFigurineAvailable} {
-	set graphFigurineFamilies {}
-	foreach font [font families] {
-		if {[string match -nocase {Scid Chess *} $font]} { lappend graphFigurineFamilies $font }
-	}
-	if {[lsearch $graphFigurineFamilies {Scid Chess Traveller}] >= 0} {
-		set graphFigurineFamily {Scid Chess Traveller}
-	} elseif {[lsearch $graphFigurineFamilies {Scid Chess Berlin}] >= 0} {
-		set graphFigurineFamily {Scid Chess Berlin}
-	} elseif {[llength $graphFigurineFamilies] > 0} {
-		set graphFigurineFamily [lindex $graphFigurineFamilies 0]
-	} else {
-		set graphFigurineAvailable 0
-		set useGraphFigurine 0
-	}
-} else {
-	set useGraphFigurine 0
-}
-
-if {$graphFigurineAvailable} {
-  ::splash::add "True type fonts (PGN figurines) enabled."
-} else {
-  ::splash::add "True type fonts (PGN figurines) disabled." error
-}
-
 set fontsize [font configure font_Regular -size]
 set font [font configure font_Regular -family]
 
@@ -1221,10 +1188,6 @@ font create font_H2 -family $font -size [expr {$fontsize + 6} ] -weight bold
 font create font_H3 -family $font -size [expr {$fontsize + 4} ] -weight bold
 font create font_H4 -family $font -size [expr {$fontsize + 2} ] -weight bold
 font create font_H5 -family $font -size [expr {$fontsize + 0} ] -weight bold
-
-if {$graphFigurineAvailable} {
-	font create font_Figurine -family $graphFigurineFamily -size $fontsize
-}
 
 set fontsize [font configure font_Small -size]
 set font [font configure font_Small -family]

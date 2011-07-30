@@ -63,5 +63,57 @@ if {[file isdirectory $::scidBooksDir]} {
   ::splash::add "scidBooksDir $scidBooksDir not found!" error
 }
 
+# Install windows fonts if applicable
+
+if {$windowsOS && [file exists "$scidShareDir/fonts/ScidChessBerin.ttf"]} {
+    set dest [file join $env(windir) fonts]
+    if {[catch {
+	foreach i [glob $scidShareDir/fonts/*] {
+	    file rename $i $dest
+        }
+    }]} {
+          ::splash::add "Failed to install PGN chess fonts" error
+    } else {
+          ::splash::add "Successfully installed PGN chess fonts"
+    }
+}
+
+### Setup for truetype (and PGN figurine) support
+
+set graphFigurineFamily {}
+set graphFigurineAvailable [expr $windowsOS || $macOS]
+if {[::tk windowingsystem] eq "x11"} {
+    catch { if {[::tk::pkgconfig get fontsystem] eq "xft"} { set graphFigurineAvailable 1 } }
+}
+
+if {$graphFigurineAvailable} {
+    set graphFigurineFamilies {}
+    foreach font [font families] {
+        if {[string match -nocase {Scid Chess *} $font]} { lappend graphFigurineFamilies $font }
+    }
+    if {[lsearch $graphFigurineFamilies {Scid Chess Traveller}] >= 0} {
+        set graphFigurineFamily {Scid Chess Traveller}
+    } elseif {[lsearch $graphFigurineFamilies {Scid Chess Berlin}] >= 0} {
+        set graphFigurineFamily {Scid Chess Berlin}
+    } elseif {[llength $graphFigurineFamilies] > 0} {
+        set graphFigurineFamily [lindex $graphFigurineFamilies 0]
+    } else {
+        set graphFigurineAvailable 0
+        set useGraphFigurine 0
+    }
+} else {
+    set useGraphFigurine 0
+}
+
+if {$graphFigurineAvailable} {
+  ::splash::add "True type fonts (PGN figurines) enabled."
+} else {
+  ::splash::add "True type fonts (PGN figurines) disabled." error
+}
+
+if {$graphFigurineAvailable} {
+        font create font_Figurine -family $graphFigurineFamily -size $fontsize
+}
+
 ### end of config.tcl
 

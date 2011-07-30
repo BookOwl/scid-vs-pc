@@ -18,7 +18,7 @@ append helpText(Contents) {
   <ht><a Related>Links</a></ht>
   <ht><a Author>About</a></ht>
   <br>
-  <p><footer>Updated: Scid vs. PC 4.1, September 2010</footer></p>
+  <p><footer>Updated: Scid vs. PC 4.5, July 2011</footer></p>
 }
 set helpTitle(Intro) "$::scidName"
 set helpText(Intro) {<h1>Introduction</h1>
@@ -111,9 +111,9 @@ Scid>Scid Database</a></i>.</p>
 
 <p>Once you have loaded a game from the command line, or the 
 <run ::file::Open><green>File-<gt>Open</green></run> dialog,
-open the <run ::pgn::OpenClose><green>PGN Window</green></run>
-to browse the game. Clicking on moves will move the game forward. (You can also
-use the buttons or the wheel mouse in the main window). Clicking on comments
+open the <a PGN>PGN Window</a>
+to browse the game. Clicking on moves will advance the game, and you can also
+use the buttons or the wheel mouse in the main window. Clicking on comments
 allows you to edit them.</p>
 
 <p>In the Game Info window, you will see the names of the players and
@@ -1734,11 +1734,11 @@ set helpText(PGN) {<h1>PGN</h1>
   <p>
   Scid's <run ::pgn::OpenClose><green>PGN Window</green></run> shows the
   current game in standard PGN representation.  In the move text, comments appear
-  in braces <b>{}</b> and variations in parentheses <b>()</b>.
+  in braces "<b>{}</b>" and variations in parentheses "<b>()</b>".
   </p>
 
   <p>
-  The <b>Chess Pieces</b> option displays small chess pieces, for a small performance loss.
+  The <b>Chess Pieces</b> option displays small chess figurines instead of letters, to represent pieces (see below).
   </p>
 
   <p>
@@ -1759,6 +1759,35 @@ set helpText(PGN) {<h1>PGN</h1>
   game navigation).  Using the middle button displays a small
   board. Right-clicking displays a context menu.
   </p>
+
+  <h3>Chess Figurines</h3>
+  <p>
+  If True Type fonts are supported, the <b>Chess Pieces</b> option will
+  show chess figures instead of letters, and may incur a small performance loss.
+  </p>
+  <p>
+  On <b>Microsoft Windows</b>, the fonts are installed automatically, but may
+  not be available until Windows has updated the font cache.
+  </p>
+
+  <h3>Options</h3>
+  <p>
+  The PGN menu contains options about how the game is displayed.
+  Some of them include: Colour or Plain text, Short Header, Column Style and <b>Scrollbar</b>.
+  Personalised <b>Colours</b> may also be selected.
+  </p>
+  <p>
+  One slow systems, deselecting <b>Color Display</b>, will speed things up but with reduced features.
+  You can also alter the format of comments and variations, choosing
+  to display them indented on a separate line for greater visibility.
+  </p>
+
+  <h3>Editing PGN</h3>
+  <p>
+  You cannot use the PGN window to edit a game. Correcting moves
+  is done in the <a Import>Import game</a> window.
+  </p>
+
   <h3>Context Menu</h3>
   <ul>
      <li><term>Delete Variation:</term> Deletes the current variation </li>
@@ -1772,25 +1801,6 @@ set helpText(PGN) {<h1>PGN</h1>
      <li><term>Strip:Moves from the beginning</term> </li>
      <li><term>Strip:Moves to the End</term> </li>
   </ul>
-
-  <h3>Options</h3>
-  <p>
-  The PGN menu-bar contains options about how the game is displayed.
-  Some of them include: Chess Pieces, Color or Plain text, 3-line Header
-and Column Style. 
-  </p>
-  <p>
-  If True Type fonts are supported, the <b>Chess Pieces</b> option will show chess figures instead of letters. This may decrease performance.
-  One slow systems, deselecting 'Color Display', will speed things up but with reduced features..
-  You can also alter the format of comments and variations, choosing
-  to display them indented on a separate line for greater visibility.
-  </p>
-
-  <h3>Editing PGN</h3>
-  <p>
-  You cannot use the PGN window to edit a game. Correcting moves
-  is done in the <a Import>Import game</a> window.
-  </p>
 
   <p><footer>Updated: Scid vs. PC 4.3, February 2011</footer></p>
 }
