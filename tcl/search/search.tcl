@@ -27,14 +27,16 @@ proc filterText {{base 0} {kilo 0}} {
 }
 
 
-# search::filter::reset
-#   Resets the filter to contain all games. Calls sc_filter reset and
-#   updates relevant windows.
-#
-proc ::search::filter::reset {} {
-  global glstart
-  sc_filter reset
-  set glstart 1
+proc ::search::filter::reset {{base {}}} {
+  if {$base == {}} {set base [sc_base current]}
+
+  sc_filter reset $base
+
+  if {$base == [sc_base current]} { 
+    set ::glstart 1
+  } else {
+    set ::glistStart($base) 1
+  }
   ::windows::gamelist::Refresh
   ::windows::stats::Refresh
   updateMenuStates
