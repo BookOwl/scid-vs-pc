@@ -1517,7 +1517,7 @@ proc addAnalysisVariation {n} {
 
   if {$isAt_vend} {
     # Add the last move of the game at the beginning of the analysis
-    if {$lastMove == {--} } {
+    if {$lastMove == {0000} } {
       sc_move addSan null
     } else {
       sc_move_add $lastMove $n
@@ -1587,7 +1587,7 @@ proc addAllVariations {{n 1}} {
     sc_pos setComment "[sc_pos getComment] $text"
     if {$addAtEnd} {
       # Add the last move of the game at the beginning of the analysis
-      if {$lastMove == {--} } {
+      if {$lastMove == {0000} } {
 	sc_move addSan null
       } else {
 	sc_move_add $lastMove $n

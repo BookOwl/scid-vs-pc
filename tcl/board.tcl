@@ -2052,7 +2052,7 @@ proc  ::board::lastMoveHighlight {w} {
   $w.bd delete highlightLastMove
   if { ! $::highlightLastMove } {return}
   set moveuci [ sc_game info previousMoveUCI ]
-  if {[string length $moveuci] >= 4} {
+  if {[string length $moveuci] >= 4 && $moveuci != {0000}} {
     set moveuci [ string range $moveuci 0 3 ]
     set square1 [ ::board::sq [string range $moveuci 0 1 ] ]
     set square2 [ ::board::sq [string range $moveuci 2 3 ] ]

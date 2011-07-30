@@ -619,7 +619,7 @@ set exportFlags(vars) 1
 set exportFlags(indentv) 1
 set exportFlags(column) 0
 set exportFlags(append) 0
-set exportFlags(symbols) 1
+set exportFlags(symbols) 0
 set exportFlags(htmldiag) 0
 set exportFlags(stripMarks) 0
 set exportFlags(convertNullMoves) 1

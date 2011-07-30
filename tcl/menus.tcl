@@ -978,10 +978,8 @@ $m add command -label OptionsSave -command {
     translatePieces highlightLastMove highlightLastMoveWidth highlightLastMoveColor 
     askToReplaceMoves ::windows::switcher::icons locale(numeric) 
     spellCheckFile ::splash::keepopen autoRaise autoIconify 
-    exportFlags(comments) exportFlags(vars) 
-    exportFlags(indentc) exportFlags(indentv) 
-    exportFlags(column) exportFlags(symbols) 
-    exportFlags(htmldiag) exportFlags(convertNullMoves) 
+    exportFlags(comments) exportFlags(vars) exportFlags(indentc)
+    exportFlags(indentv) exportFlags(column) exportFlags(htmldiag) 
     email(smtp) email(smproc) email(server) 
     email(from) email(bcc) ::windows::gamelist::widths ::windows::gamelist::findcase 
     gameInfo(show) gameInfo(photos) gameInfo(hideNextMove) gameInfo(wrap) gameInfo(showStatus) 

@@ -126,7 +126,9 @@ database capabilities.</p></ul>
 <p>Changes made to a single PGN game may be saved back to PGN via <run
 ::pgn::savePgn .><green>File--<gt>Save PGN</green></run>.  But if you open a
 PGN file with multiple games, Scid does not support saving these changes to PGN, and you 
-must instead <run importPgnFile><green>Import</green></run> the file into a <a Formats>Scid Database</a>.</p> 
+must instead <run importPgnFile><green>Import</green></run> the file, and then
+<a Export>Export</a> them back to PGN after your changes have been made.
+</p> 
 
 <h3>Browsing Game Archives</h3>
 
@@ -198,7 +200,7 @@ set helpText(Scid) {<h1>Databases and General Use</h1>
   <li><a Maintenance><b>Database maintenance</b> tools</a></li>
   <li><a ECO><b>ECO</b> codes</a></li>
   <li><a EPD><b>EPD</b> files</a></li>
-  <li><a Export><b>Exporting</b> games to text files</a></li>
+  <li><a Export><b>Exporting</b> games</a></li>
   <li><a Flags>Game <b>Flags</b></a></li>
   <li><a LaTeX>Using <b>LaTeX</b> with Scid</a></li>
   <li><a Options><b>Options</b> and preferences</a></li>
@@ -283,7 +285,7 @@ set helpText(Index) {<h1>Scid Help Index</h1>
   <li><a Analysis Debugging>Engines</a> - debugging</li>
   <li><a Moves>Entering moves</a></li>
   <li><a EPD>EPD files</a></li>
-  <li><a Export>Exporting games to text files</a></li>
+  <li><a Export>Exporting games</a></li>
   </ul>
 
   <h3><name F>F</name></h3>
@@ -1629,50 +1631,41 @@ set helpText(Import) {<h1>The Import Window</h1>
 set helpTitle(Export) "Exporting games"
 set helpText(Export) {<h1>Exporting Games</h1>
   <p>
-  You can use commands under the <menu>Tools</menu> menu to export the
-  current game or all games in the current filter to a text file.
+  You can use commands under the <b>Tools Menu</b> to export
+  games to a text file.
   </p>
   <p>
-  Four text file formats are available: <a PGN>PGN</a> (portable game
-  notation), HTML (for web pages), HTML and JavaScript (for
-  interactive web pages) and LaTeX (a popular typesetting system).
+  Four file formats are available: <a PGN>PGN</a> (portable game
+  notation), <b>HTML</b> for web pages, <b>HTML and JavaScript</b> for
+  interactive web pages, and <b>LaTeX</b> (a popular typesetting system).
   </p>
   <p>
-  When exporting, you can choose to create a new file, or add the
-  games to an existing file of games exported by Scid.
+  One may export a single game or all filter games, and to create a new file or append
+  to an existing one.
   </p>
 
   <h3>Diagrams</h3>
   <p>
   When exporting in HTML or LaTeX format, Scid will automatically add
-  a diagram wherever a diagram <a NAGs>nag</a> ("D") or a <a
-  Comment>comment</a> that starts with the character "#" appears in
-  the game.
+  a diagram wherever a diagram <a NAGs>nag</a> <b>D</b> or a <a
+  Comment>comment</a> starting with <b>#</b> appears.
+  In this case, Scid's <b>bitmaps</b> directory should be placed alongside your exported file.
   </p>
 
-  <h3><name Null>Null moves in PGN Export</name></h3>
+  <h3><name Null>PGN Compatability Issues</name></h3>
   <p>
-  Scid allows <a Variations Null>null (empty) moves</a> to be stored
-  in games, as they can be helpful when annotating games using
-  variations.  However, the PGN Standard has no null move concept. So
-  if you export Scid games with null moves to a PGN file, other
-  PGN-reading software will not be able to read the null moves.
+  The PGN Standard has no <a Variations Null>null move</a> concept. So
+  if you export games including them to PGN, other
+  software may not be able to read these games correctly.
   </p>
   <p>
-  To solve this problem, Scid provides an extra option,
-  <b>Convert null moves to comments</b>, when exporting games in PGN format.
-  If you want to create a PGN file that other software can use, turn this
-  option on and variations containing null moves will be converted to
-  comments. However, if you want to create a PGN file that can be imported
-  back into Scid later with null moves preserved, leave the option off.
+  To solve this problem, one should enable the <b>Convert null moves to comments</b> option.
+  Of course, if you wish to later reimport the PGN file
+  , with null moves preserved, disable this option.
   </p>
-
-  <h3>HTML Export</h3>
   <p>
-  Scid can export games to an HTML file. For diagrams to appear, you
-  will need the diagram images (distributed with Scid in the directory
-  "<b>bitmaps/</b>") to be in a subdirectory <b>bitmaps/</b> under the
-  directory the HTML file is in.
+  Scid's use of Ascii strings (such as <b>+=</b> to represent annotations is also against the PGN standard.
+  For compatability, <b>Symbolic annotation style</b> should be set to <b>$2 $14</b>.
   </p>
 
   <h3>HTML with JavaScript Export</h3>
@@ -1703,7 +1696,7 @@ set helpText(Export) {<h1>Exporting Games</h1>
   See the <a LaTeX>Using LaTeX with Scid</a> help page for more information.
   </p>
 
-  <p><footer>Updated: Scid 3.6.26, October 2008</footer></p>
+  <p><footer>Updated: Scid vs. PC 4.5 July 2011</footer></p>
 }
 
 set helpTitle(LaTeX) "Scid and LaTeX"

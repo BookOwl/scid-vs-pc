@@ -333,6 +333,7 @@ proc exportOptions {exportType} {
   set w .exportFlagsWin
   set exportFlags(ok) -1
   toplevel $w
+  wm withdraw $w
   wm title $w "Scid: [tr OptionsExport]"
   wm transient $w .
   wm protocol $w WM_DELETE_WINDOW { }
@@ -400,14 +401,14 @@ proc exportOptions {exportType} {
   grid $w.o.column -row 6 -column 0 -sticky w
   grid $w.o.columnOn -row 6 -column 1 -sticky w
   grid $w.o.columnOff -row 6 -column 2 -sticky w
-  grid $w.o.symbols -row 7 -column 0 -sticky w
-  grid $w.o.symbolsOn -row 7 -column 1 -sticky w
-  grid $w.o.symbolsOff -row 7 -column 2 -sticky w
+  label $w.o.space -text ""
+  grid $w.o.space -row 7 -column 0 -sticky w
+  grid $w.o.symbols -row 8 -column 0 -sticky w
+  grid $w.o.symbolsOn -row 8 -column 1 -sticky w
+  grid $w.o.symbolsOff -row 8 -column 2 -sticky w
 
   # Extra option for PGN format: handling of null moves
   if {$exportType == "PGN"} {
-    label $w.o.space -text ""
-    grid $w.o.space -row 8 -column 0 -sticky w
     label $w.o.nullMoves -text "Convert null moves to comments"
     radiobutton $w.o.convertNullMoves -text $::tr(Yes) \
         -variable exportFlags(convertNullMoves) -value 1
@@ -444,20 +445,15 @@ proc exportOptions {exportType} {
   dialogbutton $w.b.cancel -text $::tr(Cancel) -command {
     set exportFlags(ok) 0
   }
-  pack $w.b.ok $w.b.cancel -side left -padx 5 -pady 5
+  dialogbutton $w.b.help -text $::tr(Help) -command {helpWindow Export}
+  pack $w.b.ok $w.b.help $w.b.cancel -side left -padx 5 -pady 5
 
-  wm withdraw $w
-  update idletasks
-  set x [expr {[winfo screenwidth $w]/2 - [winfo reqwidth $w]/2 \
-        - [winfo vrootx [winfo parent $w]]}]
-  set y [expr {[winfo screenheight $w]/2 - [winfo reqheight $w]/2 \
-        - [winfo vrooty [winfo parent $w]]}]
-  wm geom $w +$x+$y
+  update
+  placeWinOverParent $w .
   wm deiconify $w
 
-  grab $w
   tkwait variable exportFlags(ok)
-  grab release $w
+
   destroy $w
   return $exportFlags(ok)
 }

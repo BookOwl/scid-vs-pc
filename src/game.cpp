@@ -2102,8 +2102,8 @@ Game::WriteMoveList (TextBuffer *tb, uint plyCount,
     moveT * m = CurrentMove;
 
     // Print null moves:
-    if ((PgnStyle & PGN_STYLE_NO_NULL_MOVES) && !inComment &&
-            IsPlainFormat()  &&  isNullMove(m)) {
+    if ((isNullMove(m) && PgnStyle & PGN_STYLE_NO_NULL_MOVES) && !inComment &&
+            IsPlainFormat()) {
         inComment = true;
         tb->PrintString(preCommentStr);
         preCommentStr = "";

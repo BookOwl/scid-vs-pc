@@ -2288,10 +2288,8 @@ Position::MakeUCIString (simpleMoveT * m, char * s)
     char * c     = s;
 
     if (from == to && to != NULL_SQUARE) {
-      // null move
-      *c++ = '-';
-      *c++ = '-';
-      *c = 0;
+      // UCI standard for null move
+      strcpy (c,"0000");
       return;
     }
 
