@@ -1043,9 +1043,10 @@ translate E GoBack {Go back}
 translate E ReplaceMove {Replace Move}
 translate E AddNewVar {Add Variation}
 translate E NewMainLine {New Main Line}
-translate E ReplaceMoveMessage {A move already exists here.
+translate E ReplaceMoveMessage {Move Already Exists.
 
-You can replace it, discarding all moves after it, or add your move as a new variation.  (To avoid seeing this message, adjust the menu item Options::Moves::Ask Before Replacing Moves).}
+Please Enter Choice.
+Replace Move will discard all subsequent moves.}
 
 # Make database read-only dialog:
 translate E ReadOnlyDialog {Do you want to make this database read-only?

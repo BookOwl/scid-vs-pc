@@ -2287,7 +2287,7 @@ Position::MakeUCIString (simpleMoveT * m, char * s)
 
     char * c     = s;
 
-    if (from == to) {
+    if (from == to && to != NULL_SQUARE) {
       // null move
       *c++ = '-';
       *c++ = '-';
