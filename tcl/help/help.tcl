@@ -101,46 +101,39 @@ set helpText(BrowsingPGN) {<h1>PGN Files and Scid</h1>
 
 <p>PGN is the standard format for Chess Games, and Scid will happily open and display large PGN files.</p>
 
-<p><i>But PGN is not the native format of Scid's Databases</i></p>
-
-<p>You are allowed to make changes to a PGN file with only one game. If you
-wish to change a file with multiple games, it must first be converted to a <a
-Scid>Scid Database</a></i>.</p>
+<p><i>But PGN is not the native format of Scid's Databases.</i></p>
 
 <h3>Opening and Viewing Games</h3>
 
-<p>Once you have loaded a game from the command line, or the 
+<p>Once you have loaded a game from the command line or the 
 <run ::file::Open><green>File-<gt>Open</green></run> dialog,
 open the <a PGN>PGN Window</a>
-to browse the game. Clicking on moves will advance the game, and you can also
-use the buttons or the wheel mouse in the main window. Clicking on comments
+to browse the game. Clicking on moves will advance the game, or 
+use the wheel-mouse in the main window. Clicking on <a Comment>comments</a>
 allows you to edit them.</p>
 
-<p>In the Game Info window, you will see the names of the players and
-tournament. These names are also clickable, and will show you information about
+<p>In the <a MainWindow GameInfo>Game Info</a> window, you will see the names of the players and
+tournament. These names are also clickable, and diaply information about
 the tournament and how the player performed. This is the start of Scid's
-database capabilities.</p></ul>
+database capabilities.</p>
 
-<h3> Making Changes</h3>
-
-<p>Changes made to a single PGN game may be saved back to PGN via <run
-::pgn::savePgn .><green>File--<gt>Save PGN</green></run>.  But if you open a
-PGN file with multiple games, Scid does not support saving these changes to PGN, and you 
-must instead <run importPgnFile><green>Import</green></run> the file, and then
-<a Export>Export</a> them back to PGN after your changes have been made.
-</p> 
-
-<h3>Browsing Game Archives</h3>
-
-<p>If you have opened a multi-game PGN, the <a GameList>Game List</a>
+<p>If you have opened a multigame PGN, the <a GameList>Game List</a>
 widget allows you to browse the games and select those of interest.</p>
 
-<p>This window also serves to select and delete games from Scid's
-databases.</p>
+<p><i>The Gamelist also serves to select and delete games from Scid's
+databases.</i></p>
 
-<h3>More Information</h3>
+<h3>Editing Games</h3>
 
-<p>For more detail about the PGN window's function, see <a PGN>here</a>.</p>
+<p>Changes made to a single game PGN file may be saved back to PGN via <run
+::pgn::savePgn .><green>File--<gt>Save PGN</green></run>. 
+
+But If you wish to change a file with multiple games, it must first be
+converted to a <a Scid>Scid Database</a>. The easiest way to do this is by
+opening the <a GameList>Gamelist</a> and dragging the PGN file to the Clipbase.
+After making changes in the Clipbase, then use <a Export>Export</a> to write them
+back to PGN.
+</p>
 
 <p><footer>Updated: Scid vs. PC 4.5 July 2011</footer></p>
 }
@@ -375,8 +368,9 @@ set helpText(Index) {<h1>Scid Help Index</h1>
 
   <h3><name P>P</name></h3>
   <ul>
-  <li><a Variations Paste>Paste variation</a></li>
   <li><a PGN>PGN</a> window</li>
+  <li><a Export Null>PGN and Scid</a> (exporting)</li>
+  <li><a Variations Paste>Paste variation</a></li>
   <li><a Pgnscid>Pgnscid</a></li>
   <li><a FICS>Play on the Internet (FICS)</a></li>
   <li><a PTracker>Piece Tracker</a> window</li>
