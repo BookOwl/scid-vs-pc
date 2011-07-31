@@ -1,6 +1,8 @@
 ### Phalanx Makefile
 # editted by S.A to handle defaults passed by Scid Makefile
 
+LINK ?= $(CC)
+
 ### DEFINES
 ### -DSHOW_FORCED_MOVES
 ### -DPBOOK_FILE=\"pbook.phalanx\"

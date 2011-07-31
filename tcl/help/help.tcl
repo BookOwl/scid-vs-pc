@@ -5757,7 +5757,7 @@ set helpText(Changelog) {<h1>Scid vs. PC</h1>
 </ul>
 <li>OSX:</li>
 <ul>
-<li>Make an OSX app with a working ;> version of Tcl (thanks Gilles)</li>
+<li>Make an OSX app with a working ;<gt> version of Tcl (thanks Gilles)</li>
 <li>OSX wheelmouse and graphical fixes.</li>
 </ul>
 <li>Bug fixes:</li>
