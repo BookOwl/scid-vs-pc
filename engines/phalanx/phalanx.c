@@ -7,12 +7,37 @@
 
 #include "phalanx.h"
 
+const char initialpos[] = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
+
 /* 2005-09-14, José de Paula
  * GCC 3.0 deprecated multi-line strings, and, as of GCC 3.4, they are no longer supported.
  */
 void badoptions(void)
 {
-printf("\nUsage:    phalanx [options] [<moves> <minutes> [<increment in seconds>]]\n          phalanx [options] [<seconds per move>]\n          phalanx bench\n          phalanx bcreate [options]\nOptions:  -t <transposition table size in kilobytes>\n          -f <fixed search time in seconds>\n          -x <+/->  xboard mode on/off        default: on\n          -p <+/->  permanent brain on/off    default: off\n          -s <+/->  show thinking on/off      default: off\n           -c <+/->  cpu time                  default: off\n          -o <+/->  polling input             default: on\n          -b <+/->  opening book              default: on\n          -r <resign value in centipawns>     default: 0 (no resigning)\n          -e <easy level 0...100>             default: 0 (best play)\n          -l <+/->  learning on/off           default: on\n          -v        print version and exit\n          -P <primary book directory>\n          -S <secondary book directory>\n          -L <learning file directory>\n          -g <log file name>\nExamples: phalanx -c+ -s+ -o - -x- -f 60 -t4000\n          xboard -fcp \"phalanx -l+ -r800\"\n");
+printf("\n"
+       "Usage:    phalanx [options] [<moves> <minutes> [<increment in seconds>]]\n"
+       "          phalanx [options] [<seconds per move>]\n"
+       "          phalanx bench\n"
+       "          phalanx bcreate [options]\n"
+       "Options:  -t <transposition table size in kilobytes>\n"
+       "          -f <fixed search time in seconds>\n"
+       "          -x <+/->  xboard mode on/off        default: on\n"
+       "          -p <+/->  permanent brain on/off    default: off\n"
+       "          -s <+/->  show thinking on/off      default: off\n"
+       "           -c <+/->  cpu time                  default: off\n"
+       "          -o <+/->  polling input             default: on\n"
+       "          -b <+/->  opening book              default: on\n"
+       "          -r <resign value in centipawns>     default: 0 (no resigning)\n"
+       "          -e <easy level 0...100>             default: 0 (best play)\n"
+       "          -l <+/->  learning on/off           default: on\n"
+       "          -v        print version and exit\n"
+       "          -P <primary book directory>\n"
+       "          -S <secondary book directory>\n"
+       "          -L <learning file directory>\n"
+       "          -g <log file name>\n"
+       "Examples: phalanx -c+ -s+ -o - -x- -f 60 -t4000\n"
+       "          xboard -fcp \"phalanx -l+ -r800\"\n"
+      );
 exit(0);
 }
 
@@ -96,7 +121,7 @@ srand( ((unsigned)time(NULL)) + ((unsigned)getpid()) );
 /* SIG_INT */
 signal(SIGINT,SIG_IGN);
 
-setfen("rnbqkbnr/pppppppp/////PPPPPPPP/RNBQKBNR/w");
+setfen(initialpos);
 
 #undef debugsee
 #ifdef debugsee
@@ -280,8 +305,8 @@ if( Flag.bench )
 	int i;
 	long tim;
 	int64 allnodes = 0;
-	char * positions[NPOS] =
-	{ "rnbqkbnr/pppppppp/////PPPPPPPP/RNBQKBNR/w",
+	const char * positions[NPOS] =
+	{ initialpos,
 	  "2kr3r/pp3Npp/2pbbn2/6B1/2BPp3/6Pq/PPP1Q2P/2KR3R b",
 	  "r1bq1r1k/2pn2bp/1p1p1np1/pN1Pp3/1PP1Pp2/P2B1P2/1BQN2PP/1R3RK1 b",
 	  "r4rk1/2p1p1b1/p1n3pp/1p1qP3/P1pP4/B1P2PPN/4Q1K1/R6R b",
@@ -290,7 +315,8 @@ if( Flag.bench )
 	  "3r1rk1/1q2b1pp/pn3p2/1pp5/4PB2/5N2/PP1RQPPP/3R2K1 w",
 	  "8/2p5/5pK1/5R2/4k2P/p4P2/1r6/8 b",
 	  "3r1rk1/p3qp1p/2bb2p1/2pp4/8/1P2P3/PBQN1PPP/2R2RK1 b",
-	  "k7/ppp5/8/8/8/8/P1P5/K7/w" };
+	  "k7/ppp5/8/8/8/8/P1P5/K7 w"
+        };
 
 	Flag.cpu = 1;
 	Flag.level = fixedtime;

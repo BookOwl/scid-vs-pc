@@ -1,6 +1,7 @@
 #ifndef PHALANX_INCLUDED
 #define PHALANX_INCLUDED
 
+#define ENGNAME "Phalanx"
 #define VERSION "XXIII"
 
 #ifdef GNUFUN
@@ -260,7 +261,7 @@ tdist;
 
 /* Pieces */
 
-#define piece(X) ((X)&0xFC)
+#define piece(X) ((X)&0x7C)
 
 #define PAWN   0x10
 #define KNIGHT 0x20
@@ -386,7 +387,6 @@ tdist;
 #define H9 99 /* a bumper: we are out of board */
 
 
-
 /*
  * VARIABLES
  */
@@ -400,6 +400,8 @@ extern tlist L[120];                  /* List of pieces */
 
 extern signed char * Th;              /* horizontal axe transf., (H8<->H1) */
 extern signed char * Tv;              /* vertical axe tr., (H8<->A8) */
+
+extern const char initialpos[];
 
 extern tdist dist[120*120];
 extern tknow Wknow, Bknow;            /* Things i know about actual position */
@@ -475,7 +477,7 @@ extern void printPV(int,int,char*);
 extern void infoline(int,char*);
 extern void verboseline(tmove*,int,int);
 extern void printboard(char*);
-extern int setfen(char*);
+extern int setfen(const char*);
 extern void shell(void);
 extern int command(void);
 extern tmove * sandex(char*,tmove*,int);

@@ -327,13 +327,11 @@ if( Flag.log != NULL )
 		else
 			fprintf(Flag.log,"  opponent plays ");
 		printm( G[Counter-1].m, pb );
-		fprintf(Flag.log,pb);
-		fprintf(Flag.log,"\n");
+		fprintf(Flag.log,"%s\n",pb);
 	}
 
 	printboard(pb);
-	fprintf(Flag.log,pb);
-	fprintf(Flag.log,"\n");
+	fprintf(Flag.log,"%s\n",pb);
 }
 
 if( Flag.book )

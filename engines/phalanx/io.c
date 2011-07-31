@@ -5,11 +5,11 @@ extern long Time;
 
 
 char Inp[256] = "\0";
-char piece[7] =
+const char piece[7] =
  { ' ', 'P', 'N', 'B', 'R', 'Q', 'K' };
-char file[10] =
+const char file[10] =
  { '<', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', '>' };
-char row[12] =
+const char row[12] =
  { '<', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '>' };
 
 tmove Pm[256];
@@ -160,7 +160,7 @@ sprintf( ss+strlen(ss), "  " );
 
 endprint:;
 
-if( s == NULL ) printf(ss); else strcpy( s, ss );
+if( s == NULL ) printf("%s",ss); else strcpy( s, ss );
 
 }
 
@@ -501,7 +501,7 @@ void printPV( int mpl, int lid, char *s )
 
 	sprintf( ss+strlen(ss), "\n" );
 
-	if( s == NULL ) printf(ss); else strcpy(s,ss);
+	if( s == NULL ) printf("%s",ss); else strcpy(s,ss);
 }
 
 
@@ -529,7 +529,7 @@ if( Flag.log && s==NULL )
 	Flag.xboard = 0;
 	infoline(typ,ss);
 	Flag.xboard = x;
-	fprintf(Flag.log, ss);
+	fprintf(Flag.log,"%s", ss);
 }
 
 if( Flag.xboard == 2 )
@@ -621,7 +621,7 @@ case 5: printm( PV[0][0], ss+strlen(ss) );
 if( s != NULL ) strcpy( s, ss );
 else
 {
-	printf(ss);
+	printf("%s",ss);
 }
 
 }
@@ -644,7 +644,7 @@ void verboseline( tmove* m, int i, int n )
 	sprintf( s+strlen(s), "     " );
 	for( j=0; j!=79; j++ ) sprintf( s+strlen(s), "" );
 
-	printf(s);
+	printf("%s",s);
 }
 
 
@@ -678,7 +678,7 @@ void printboard(char *s)
 	if( Color == WHITE ) sprintf(ss+strlen(ss),"   White to move\n");
 	else sprintf(ss+strlen(ss),"   Black to move\n");
 
-	if( s==NULL ) printf(ss); else strcpy(s,ss);
+	if( s==NULL ) printf("%s",ss); else strcpy(s,ss);
 
 	/* printf("%08X\n",G[Counter].hashboard); */
 }
@@ -689,81 +689,168 @@ void printboard(char *s)
 ***  The setfen() function is one of the two ways to set a position.
 ***  The second one is edit().
 **/
-int setfen( char *f )
+int setfen( const char *f )
 {
+const char *g, *errmsg, errstring[] = "tellusererror Illegal position";
+int i,j;
+tgamenode p, q;
 
-int s;
+   if( Flag.log != NULL )
+   {
+     fprintf(Flag.log,"\n\nsetting position\n%s\n\n",f);
+   }
+   if (Flag.xboard != 0)
+      errmsg = errstring;
+   else  /* interactive mode */
+      errmsg = strchr(errstring, ' ') + 1; /* skip "tellusererror" */
 
-if( Flag.log != NULL )
-{
-	fprintf(Flag.log,"\n\nsetting position\n");
-	fprintf(Flag.log,f);
-	fprintf(Flag.log,"\n\n");
-}
+   memset(B, 3, sizeof(B));
+   for (i=FILE_A; i<=FILE_H; i++)
+       memset(&B[10*i+11], 0, 8);
+   memset(G, 0, sizeof(G));
+   p = q = G[0];
 
-for( s=0; s!=120; s++ )
-if( s>H8 || s<A1 || s%10==0 || s%10==9 ) B[s] = 3; else B[s] = 0;
+   for (j = A8; j != H1+1; f++)
+   {
+      if(*f == '\0' || *f == ' ') /* we shall find info for each squares */
+      { puts(errmsg); return 1; }
 
-for( s=A8; s>=A1; f++ )
-{
-	if( *f == '\0' )
-	{ puts("error: unexpected end of fen line"); return 1; }
+      if (isdigit(*f)) /* skip a number of squares */
+      {
+         if (*f == '0' || *f == '9') /* these are not allowed */
+         { puts(errmsg); return 1; }
+         j += (*f-'0');
+      }
+      else if (*f == '/')  /* end of row reached, go to next row */
+      {
+         if (j%10 == 9) 
+            j -= 18;  /* next lower row */
+         else
+         { puts(errmsg); return 1; } /* we are lacking a field in the row processed */
+      }
+      else
+      { 
+         switch( tolower(*f) )
+         {
+         case 'k': B[j] = KING;   break;
+         case 'q': B[j] = QUEEN;  break;
+         case 'r': B[j] = ROOK;   break;
+         case 'b': B[j] = BISHOP; break;
+         case 'n': B[j] = KNIGHT; break;
+         case 'p': B[j] = PAWN;   break;
+         default: puts(errmsg); return 1;  /* illegal piece char */
+         }
+         if (tolower(*f) == *f) /* black */
+            B[j] |= BLACK;
+         else
+            B[j] |= WHITE;
+         if (piece(B[j]) == KING)
+            L[color(B[j])].next=j;
+         j++;
+      }
+   }
 
-	if( isdigit(*f) ) /* skip squares */
-	{ s += *f - ('1'-1); continue; }
+   while (*f == ' ' && *f != '\0')
+      f++;
+   switch(*f)
+   {
+     case 'w': Color = WHITE; break;
+     case 'b': Color = BLACK; break;
+     default: puts(errmsg); return 1;
+   }
+   f++;
+/* set up castling */
+   while (*f == ' ' && *f != '\0')
+      f++;
+   q.castling = 0;
+   if (strchr(f, 'K')==NULL)     /* no K */
+      q.castling |= WSHORT;   /* white short castling is impossible */
+   if (strchr(f, 'Q')==NULL)     /* no Q */
+      q.castling |= WLONG;    /* white long castling is impossible */
+   if (strchr(f, 'k')==NULL)     /* no k */
+      q.castling |= BSHORT;   /* black short castling is impossible */
+   if (strchr(f, 'q')==NULL)     /* no q */
+      q.castling |= BLONG;    /* black long castling is impossible */
 
-	switch( *f )
-	{
-	case 'K': B[s] = WK; L[1].next=s; break;
-	case 'k': B[s] = BK; L[2].next=s; break;
-	case 'Q': B[s] = WQ; break;
-	case 'q': B[s] = BQ; break;
-	case 'R': B[s] = WR; break;
-	case 'r': B[s] = BR; break;
-	case 'B': B[s] = WB; break;
-	case 'b': B[s] = BB; break;
-	case 'N': B[s] = WN; break;
-	case 'n': B[s] = BN; break;
-	case 'P': B[s] = WP; break;
-	case 'p': B[s] = BP; break;
-	case '/': case ' ': case ';': s -= s%10 + 10; break;
-	default: puts("error in fen line"); return 1;
-	}
+   while (*f != ' ' && *f != '\0')
+      f++;
+   while (*f == ' ' && *f != '\0')
+      f++;
 
-	s++;
-}
+/* en-passant */
+   g = f + 1;
+   if (  *f != '-'
+      && strchr("abcdefgh", *f) != NULL
+      && (  (*g == '3' && Color == BLACK)
+         || (*g == '6' && Color == WHITE)
+         )
+      )
+   {  /* en-passant is possible so the last move was a pawn move
+         which we construct here */
+      /* determine the target field i */
+      i = 21 + (int)(*f-'a') + 10*(int)(*g-'1');
+      j = 10;
+      if (Color == WHITE)
+         j = -j;
+      /* piece was an opposite pawn, obviously,
+       * so check if this is plausible */
+      if (B[i+j] == (PAWN | (Color ^ (BLACK|WHITE))))
+      {  /* to and from are one line before and after the special field */
+         p.m.from    = i - j;
+         p.m.special = i;
+         p.m.to      = i + j;
+         p.m.in1     = p.m.in2a = B[i+j];
+      }
+      f = g + 1;   // jump behind the e.p. info
+   }
+   while (*f != ' ' && *f != '\0')
+      f++;
+   while (*f == ' ' && *f != '\0')
+      f++;
 
-switch( *f )
-{
-	case 'w': Color = WHITE; break;
-	case 'W': Color = WHITE; break;
-	case 'b': Color = BLACK; break;
-	case 'B': Color = BLACK; break;
-	default:
-		puts("error: side to move must be either 'w' or 'b'");
-		return 1;
-}
+   initbs();
+   q.hashboard = hashboard();
+   q.mtrl = p.xmtrl = G[0].mtrl;
+   q.xmtrl = p.mtrl = G[0].xmtrl;
+   G[0].mtrl = G[0].xmtrl = G[0].hashboard = 0;
 
-// set up castling
+   /* Now we should have the fifty-move info */
+   i = 0;
+   while (isdigit(*f) && f != '\0') /* find the end of the fifty-move info */
+      i = 10*i + (*f - '0'), f++;
+   q.rule50 = i < 50 ? i : 50;
+   if (i > 0 && p.m.special != 0) /* we have a "previous" move because of e.p. */
+      p.rule50 = q.rule50 - 1; /* so set the rule50 info, too, can't be wrong */
 
-// f++;
+   while (*f == ' ' && *f != '\0')
+      f++;
 
-G[0].castling = 0;
-if  (strchr(f, 'K')==NULL) G[0].castling |= WSHORT;
-if  (strchr(f, 'Q')==NULL) G[0].castling |= WLONG;
-if  (strchr(f, 'k')==NULL) G[0].castling |= BSHORT;
-if  (strchr(f, 'q')==NULL) G[0].castling |= BLONG;
-// #define WSHORT 1 /* if set, white short castling is impossible */
+   /* Finally, check the fullmove number */
+   Counter = 0;
+   if (p.m.special != 0)
+   {
+      Counter++;
+      if (Color == WHITE)
+         Counter++;
+   }
 
-//
-// en-passant
+   i = 0;
+   while (isdigit(*f) && *f != '\0') /* find the end of the fullmove number */
+      i = 10*i + (*f - '0'), f++;
+   i = 2*i;
+   if (i != 0)
+   {
+      i--;
+      if (Color == BLACK)
+         i++;
+      Counter = i;
+   }
 
-// Sometime soon S.A.
-
-initbs();
-
-return 0;
-
+   /* put results in place */ 
+   G[Counter] = q;
+   if (Counter > 0 && p.m.special != 0)
+      G[Counter-1] = p;
+   return 0;
 }
 
 
@@ -888,7 +975,7 @@ printf("%d %d\n", G[Counter].rule50, Counter/2+1);
 void about(void)
 {
 
-printf(" Phalanx "); puts(VERSION);
+printf(" " ENGNAME " "); puts(VERSION);
 puts(" Copyright (C) Dusan Dobes, 1997-2000");
 
 printf(" Level ................. ");
@@ -1007,14 +1094,31 @@ int command(void)
 	if( strncmp(Inp,"exit",4) == 0 && Flag.analyze )
 	{ Flag.machine_color = Flag.analyze = 0; Inp[0]='\0'; return 1; }
 
-	if( strncmp(Inp,"quit",4) == 0
-	 || strncmp(Inp,"exit",4) == 0 )
+	if (  strncmp(Inp,"quit",4) == 0
+	   || strncmp(Inp,"exit",4) == 0
+      )
 	{
 		if( Flag.ponder < 2 ) return 0;
 		else
 		{ Abort = 1; return 0; }
 	}
 
+/* COMMAND: protover */
+/* added by Bernhard Pruemmer */
+	if( strncmp( Inp, "protover", 8 ) == 0 )
+	{
+		puts("feature "
+           "myname=\"" ENGNAME " " VERSION "\" "
+           "analyze=1 "
+           "setboard=1 "
+           "sigint=1 "
+           "time=1 "
+           "draw=0 "
+           );
+		Inp[0]='\0'; return 1;
+	}
+
+         
 /* COMMAND: comment */
 	if( Inp[0]=='#' )
 	{ printf("%s",Inp); no_prompt = 1; Inp[0]='\0'; return 1; }
@@ -1071,7 +1175,7 @@ int command(void)
 	{
 		if( Flag.ponder >= 2 ) { Abort = 1; return 0; }
 		// setfen("rnbqkbnr/pppppppp/////PPPPPPPP/RNBQKBNR/w");
-		setfen("rnbqkbnr/pppppppp/////PPPPPPPP/RNBQKBNR w KQkq");
+		setfen(initialpos);
 		DrawScore = -20;
 		if( Flag.analyze ) Flag.machine_color = WHITE;
 		else
@@ -1319,22 +1423,12 @@ puts("# (comment)");
 		Inp[0]='\0'; return 1;
 	}
 
-/* COMMAND: edit (xboard) */
-	if( strncmp( Inp, "edit\n", 5 ) == 0 )
-	{
-		if( Flag.ponder >= 2 ) { Abort = 1; return 0; }
-		edit();
-		if( Flag.analyze ) Flag.machine_color = 3;
-		else Flag.machine_color = 0;
-		if( Inp[0]=='e' ) Inp[0]='\0';
-		return 1;
-	}
-
 /* COMMAND: setboard <FEN> */
 /* added by Pascal Georges */
 	if( strncmp( Inp, "setboard ", 9 ) == 0 )
 	{
-		setfen(Inp+9);
+		if (setfen(Inp+9))
+                   setfen(initialpos);
 		Inp[0] = '\0';
 		return 1;
 	}

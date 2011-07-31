@@ -368,16 +368,15 @@ int bookmove( tmove *m, int n )
 			else sprintf(s+strlen(s),", book2");
 
 			sprintf(s+strlen(s),"\n");
-			printf(s);
+			printf("%s",s);
 			if( Flag.log!=NULL && Flag.ponder<2 )
 			{
 				char sm[64];
-				if(Flag.xboard) fprintf(Flag.log,s+26);
-				else            fprintf(Flag.log,s);
+				if(Flag.xboard) fprintf(Flag.log,"%s",s+26);
+				else            fprintf(Flag.log,"%s",s);
 				fprintf(Flag.log,"  selected move ");
 				printm( m[moves[ii]], sm );
-				fprintf(Flag.log,sm);
-				fprintf(Flag.log,"\n");
+				fprintf(Flag.log,"%s\n",sm);
 			}
 		}
 		return ( moves[ii] );
@@ -424,7 +423,7 @@ if( att != 0 && Eco!=NULL )
 		  (peco+seco)->point=ftell(Eco)-1;
 		  while( (c=getc(Eco))!=']' ) if( c==EOF ) goto doneinit;
 		  if( c==EOF ) goto doneinit;
-		  setfen("rnbqkbnr/pppppppp/////PPPPPPPP/RNBQKBNR/w");
+		  setfen(initialpos);
 		  for(;;)
 		  {
 		 	msi=0;
@@ -451,7 +450,7 @@ if( att != 0 && Eco!=NULL )
 		doneinit:;
 		printf(" parsed %i ECO records\n",seco);
 		att=2;
-		setfen("rnbqkbnr/pppppppp/////PPPPPPPP/RNBQKBNR/w");
+		setfen(initialpos);
 	}
 
 	if( Counter>0 && att>1 )
