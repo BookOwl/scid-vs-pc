@@ -254,7 +254,7 @@ proc ::tree::make { { baseNumber -1 } } {
 
   checkbutton $w.buttons.refresh -text Refresh \
       -variable tree(autorefresh$baseNumber) -command "::tree::toggleRefresh $baseNumber" 
-  checkbutton $w.buttons.mask -text {Adjust Filter} -variable tree(maskfilter$baseNumber) -command "::tree::dorefresh $baseNumber"
+  checkbutton $w.buttons.adjust -text {Adjust Filter} -variable tree(adjustfilter$baseNumber) -command "::tree::dorefresh $baseNumber"
 
   # bStartStop TreeOptStartStop
   foreach {b t} {
@@ -266,7 +266,7 @@ proc ::tree::make { { baseNumber -1 } } {
   dialogbutton $w.buttons.stop -textvar ::tr(Stop) -command { sc_progressBar }
   dialogbutton $w.buttons.close -textvar ::tr(Close) -command "::tree::closeTree $baseNumber"
 
-  pack $w.buttons.best $w.buttons.graph $w.buttons.training $w.buttons.refresh $w.buttons.mask \
+  pack $w.buttons.best $w.buttons.graph $w.buttons.training $w.buttons.refresh $w.buttons.adjust \
       -side left -padx 3 -pady 2
 
   packbuttons right $w.buttons.close $w.buttons.stop
@@ -508,7 +508,7 @@ proc ::tree::dorefresh { baseNumber } {
   }
 
   set moves [sc_tree search -hide $tree(training$baseNumber) -sort $tree(order$baseNumber) -base $base \
-                            -fastmode $fastmode -mask $tree(maskfilter$baseNumber) ]
+                            -fastmode $fastmode -mask $tree(adjustfilter$baseNumber) ]
   # CVS: set moves [sc_tree search -hide $tree(training$baseNumber) -sort $tree(order$baseNumber) -base $base -fastmode $fastmode]
 
   catch {$w.f.tl itemconfigure 0 -foreground darkBlue}
@@ -526,7 +526,7 @@ proc ::tree::dorefresh { baseNumber } {
   ::tree::status "" $baseNumber
   set glstart 1
   ::windows::stats::Refresh
-  if {$::tree(maskfilter$baseNumber)} {::windows::gamelist::Refresh}
+  if {$::tree(adjustfilter$baseNumber)} {::windows::gamelist::Refresh}
   updateTitle
 
   if { $moves == "canceled" } { return "canceled"}
@@ -540,6 +540,8 @@ proc ::tree::dorefresh { baseNumber } {
     ::tree::status "" $baseNumber
     sc_progressBar $w.progress bar 251 16
     set moves [sc_tree search -hide $tree(training$baseNumber) -sort $tree(order$baseNumber) -base $base -fastmode 0]
+    ### todo: should we have "-mask $tree(adjustfilter$baseNumber)"  here ?
+
     displayLines $baseNumber $moves
   }
   # ========================================
