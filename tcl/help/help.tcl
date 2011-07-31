@@ -4087,9 +4087,11 @@ set helpText(Author) "<h1>Scid vs. PC</h1>
   <ul> <ul> <ul> <ul> <ul> <ul> <ul>
   <li>Scid vs. PC  version $::scidVersion</li>
   <br>
-  <li>(C) Steven Atkinson, stevenaaus@yahoo.com</li>
+  <li>(C) Steven Atkinson</li>
   <br>
   <li><url http://scidvspc.sourceforge.net/>http://scidvspc.sourceforge.net/</url></li>
+  <li>Mailing list: <url http://sourceforge.net/mailarchive/forum.php?forum_name=scidvspc-users>archive</url>,
+  <url https://lists.sourceforge.net/lists/listinfo/scidvspc-users>subscribe</url></li>
   <br>
   <li>Based on:</li>
   <li>Shane's Chess Information Database 3.6.26</li>
@@ -4112,6 +4114,8 @@ set helpText(Related) {<h1>Related Links</h1>
   <ul>
   <li>Scid vs. PC  <url http://scidvspc.sourceforge.net/>http://scidvspc.sourceforge.net/</url></li>
   <li>Project page  <url http://sourceforge.net/projects/scidvspc>http://sourceforge.net/projects/scidvspc</url></li>
+  <li>Mailing list archive <url http://sourceforge.net/mailarchive/forum.php?forum_name=scidvspc-users>http://sourceforge.net/mailarchive/forum.php?forum_name=scidvspc-users</url></li>
+  <li>Mailing list subscribe <url https://lists.sourceforge.net/lists/listinfo/scidvspc-users>https://lists.sourceforge.net/lists/listinfo/scidvspc-users</url></li>
   <br>
   <li>Scid <url http://scid.sourceforge.net/>http://scid.sourceforge.net/</url></li>
   <li>Scid mailing list  <url http://sourceforge.net/mailarchive/forum.php?forum_name=scid-users>http://sourceforge.net/mailarchive/forum.php...</url></li>

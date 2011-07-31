@@ -292,7 +292,7 @@ app_install: app
 ### Compress App into an OSX disk image
 
 dmg: app
-	hdiutil create -fs "HFS+" -volname Scid -srcfolder dist Scid-$(SCID_VERSION)-$$(uname -p).dmg
+	hdiutil create -fs "HFS+" -volname Scid -srcfolder dist ScidvsMac-$(SCID_VERSION).dmg
 
 # Change menu bindings and description
 
