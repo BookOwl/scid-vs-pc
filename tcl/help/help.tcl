@@ -1754,7 +1754,8 @@ set helpText(PGN) {<h1>PGN</h1>
   </p>
   <p>
   On <b>Microsoft Windows</b>, the fonts are installed automatically, but may
-  not be available until Windows has updated the font cache.
+  not be available until Windows has updated the font cache. If they aren't available, browse the Windows\Fonts directory
+  and double click the Scid fonts.
   </p>
 
   <h3>Options</h3>
@@ -5717,6 +5718,62 @@ set helpText(Sound) {<h1>Sound</h1>
 set helpTitle(Changelog) "Scid vs PC Changelog"
 set helpText(Changelog) {<h1>Scid vs. PC</h1>
 
+<h4>4.5 (August 10, 2011)</h4>
+<ul>
+<li>PGN chess font support (but font installation on Windows isn't great)</li>
+<br>
+<li>Computer Tournament:</li>
+<ul>
+<li>Per-game time control</li>
+<li>Clock widgets for remaining time.</li>
+<li>Manual adjudication buttons, and a Restart button.</li>
+</ul>
+<li>General:</li>
+<ul>
+<li>Game List remembers it's view when switching between bases.</li>
+<li>Game Browser has new buttons and functionality</li>
+<li>Tournament Finder is more readable</li>
+<li>Restore PGN scrollbar (pgn option)</li>
+<li>Player Info: add a 'Refine Filter' result group</li>
+<li>Typing 'OO' castles (previously only 'OK','OQ')</li>
+<li>Mask Search widget fixes</li>
+<li>Annotation: Dont add nags when annotating score. Don't repeat previous nag if annotating all moves.</li>
+<li>Crosstable shows current game in green</li>
+<li>Use translations for Game List column titles (if available).</li>
+<li>Add a 'Game Delete' menu</li>
+<li>Improve ./configure and Makefile, and CC FLAGS are propagated to all targets</li>
+<li>Game Save autocomplete now uses mouse instead of clumsy keyboard bindings</li>
+</ul>
+<li>MS Windows tweaks:</li>
+<ul>
+<li>Windows Crosstable transparency glitch is fixed.</li>
+<li>Fix wheelmouse support in a few places</li>
+<li>Add a 'make-scidgui.bat' hack for assembling a new 'scid.gui' from subversion</li>
+<li>Computer Tournament buttons padding fixed</li>
+</ul>
+<li>OSX:</li>
+<ul>
+<li>Make an OSX app with a working ;> version of Tcl (thanks Gilles)</li>
+<li>OSX wheelmouse and graphical fixes.</li>
+</ul>
+<li>Bug fixes:</li>
+<ul>
+<li>Null move fixes including - analysis engines can append variations</li>
+<li>Tree training feature fixes</li>
+<li>Show Progressbar for loading bases with a dot (.) in their name.</li>
+<li>If Scid crashes, Game List could be left with zero size</li>
+<li>PGN middle-click move preview feature fixed for variations</li>
+<li>PGN text tabstops are now dynamic to allow for correct column allignment in column mode</li>
+<li>Remember position of custom ecoFile if loaded.</li>
+<li>Change the second book slot to avoid conflict with Annotation feature</li>
+<li>Catch unmatched braces in gamelist values.</li>
+<li>Fix 'Paste FEN' castling sanity check</li>
+<li>Browser previously highlighted Next move instead of Current move</li>
+<li>Fix scid.eco unicode bug</li>
+<li>Remove 'newlines' from Mask Search results.</li>
+
+</ul>
+
 <h4>4.4.1 (May 24, 2011)</h4>
 <ul>
 <li>Fix nasty flicker bug when board is flipped</li>
@@ -5761,7 +5818,6 @@ set helpText(Changelog) {<h1>Scid vs. PC</h1>
 <li>Fix up file loading (and bookmarks) of DBs with dots (.) in their name</li>
 <li>Statusbar shows correct value after Crosstable update</li>
 <li>Don't perform logical ANDs in the "Find" widget using "+". Too slow.</li>
-</ul>
 </ul>
 
 <h4>4.3 (March 10, 2011)</h4>
