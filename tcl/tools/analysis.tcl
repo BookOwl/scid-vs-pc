@@ -1525,21 +1525,26 @@ proc addAnalysisVariation {n} {
   }
 
   # Add as many moves as possible from the engine analysis:
-  sc_move_add $moves $n
-
-  # Now go back to the previous place
-  if {$create_var} {
-    sc_var exit
+  if {[sc_move_add $moves $n]} {
+    # Oops, add move failed
+    if {$create_var} {
+      sc_var exit
+    }
   } else {
-    sc_move back [llength $moves]
-  }
+    # Now go back to the previous place
+    if {$create_var} {
+      sc_var exit
+    } else {
+      sc_move back [llength $moves]
+    }
 
-  if {$addAtStart} {
-    sc_move start
-  } elseif {$isAt_vend && $create_var} {
-    ### Automatically goto variation S.A.
-    # todo : sould only do this if only a single var exists
-    sc_var enter 0
+    if {$addAtStart} {
+      sc_move start
+    } elseif {$isAt_vend && $create_var} {
+      ### Automatically goto variation S.A.
+      # todo : sould only do this if only a single var exists
+      sc_var enter 0
+    }
   }
 
   # Restore the pre-move command:
