@@ -658,7 +658,13 @@ proc SortBy {tree col} {
 
     set w .glistWin
 
-    # hmmm. WElo, BElo and a few others are not valid sorting... apparently
+    # hmmm. a few fields are not valid sorting.
+
+    if {[sc_base numGames] > 200000} {
+      set answer [tk_messageBox -parent $w -title "Scid" -type yesno -default yes -icon question \
+          -message "Do you wish to sort database \"[file tail [sc_base filename]]\" containing [sc_base numGames] games."]
+      if {$answer != "yes"} { return }
+    }
 
     set ::windows::gamelist::finditems {}
   
