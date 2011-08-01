@@ -78,11 +78,13 @@ foreach {code title anchor null} $glistFields {
 ### glistCodes is a printf format style string. A \n is used to split the main "sc_game list"
 # string into a proper list for processing. It is now appended in sc_game_list
 
-### not sure about these missing fields at all &&&
+# glistNames is set from glistFields (above)
+# Number White Black Result Length Event Round Date WElo BElo Site ECO Deleted Opening Flags Variations Comments Annos Start
 
-# set glistNames { Number White WElo Black BElo Event Site Round Date Result Length ECO Opening Deleted Flags Variations Comments Annos Start }
-# Number Filtered White WElo Black BElo Event Site Round Date Year EDate Result Length Country ECO Opening EndMaterial Deleted Flags Variations Comments Annos Start
-#  Number White WElo Black BElo Event Site Round Date Result Length ECO Opening Deleted Flags Variations Comments Annos Start
+# These fields are used by "sc_base sort $col {}" in proc SortBy
+# (ECO/Eco case seems to differ, but not matter)
+# src/index.cpp: static const char * sortCriteriaNames[] = 
+# Date, Event, Site, Round, White, Black, Eco, Result, Length, Rating, WElo, BElo, Country, Month, Deleted, Eventdate, Variations, Comments
 
 proc ::windows::gamelist::FilterText {} {
   global glstart
@@ -319,7 +321,13 @@ proc ::windows::gamelist::Open {} {
       } else {
         set name $col
       }
-      $w.tree heading $col -text  $name  -command [list SortBy $w.tree $col]
+
+      # No sort implemented for these columns
+      if {[lsearch {Number Opening Flags Annos Start} $col] == -1} {
+	$w.tree heading $col -text  $name  -command [list SortBy $w.tree $col]
+      } else {
+	$w.tree heading $col -text  $name
+      }
       $w.tree column  $col -width $width -anchor $anchor -stretch 0
   }
 
@@ -662,7 +670,7 @@ proc SortBy {tree col} {
 
     if {[sc_base numGames] > 200000} {
       set answer [tk_messageBox -parent $w -title "Scid" -type yesno -default yes -icon question \
-          -message "Do you wish to sort database \"[file tail [sc_base filename]]\" containing [sc_base numGames] games."]
+          -message "Do you wish to sort database \"[file tail [sc_base filename]]\" containing [sc_base numGames] games by \"$col\""]
       if {$answer != "yes"} { return }
     }
 
