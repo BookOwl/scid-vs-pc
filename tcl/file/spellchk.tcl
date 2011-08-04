@@ -5,7 +5,7 @@
 set spellcheckType Player
 set spell_maxCorrections 2000
 set spellcheckSurnames 0
-set spellcheckAmbiguous 1
+set spellcheckAmbiguous 0
 
 # readSpellCheckFile:
 #    Presents a File Open dialog box for a Scid spellcheck file,
@@ -38,6 +38,7 @@ proc readSpellCheckFile {{message 1}} {
 }
 
 proc updateSpellCheckWin {type} {
+  wm title .spellcheckWin "Scid: Spellcheck [file tail [sc_base filename [sc_base current]]]"
   global spellcheckType spell_maxCorrections spellcheckSurnames
   global spellcheckAmbiguous
   busyCursor .
@@ -79,11 +80,11 @@ proc openSpellCheckWin {type {parent .}} {
   set spellcheckType $type
 
   toplevel $w
-  wm title $w "Scid: Spellcheck Results"
+  wm title $w "Scid: Spellcheck [file tail [sc_base filename [sc_base current]]]"
   wm withdraw $w
   wm minsize $w 50 10
 
-  bind $w <F1> { helpWindow Maintenance }
+  bind $w <F1> { helpWindow Maintenance Spellcheck}
   bind $w <Configure> "recordWinSize $w"
 
   set f [frame $w.buttons]
@@ -135,7 +136,14 @@ proc openSpellCheckWin {type {parent .}} {
   scrollbar $f.xbar -orient horizontal -command "$f.text xview"
   text $f.text -yscrollcommand "$f.ybar set" -xscrollcommand "$f.xbar set" \
     -setgrid 1 -width $::winWidth($w) -height $::winHeight($w) \
-     -wrap none
+     -wrap none -undo 1
+
+  # Undo and redo bindings
+  bind $f.text <Control-z> {catch {.spellcheckWin.text.text edit undo} ; break}
+  bind $f.text <Control-y> {catch {.spellcheckWin.text.text edit redo} ; break}
+  bind $f.text <Control-r> {catch {.spellcheckWin.text.text edit redo} ; break}
+  bind $f.text <Control-a> {.spellcheckWin.text.text tag add sel 0.0 end-1c ; break}
+
   $f.text configure -tabs \
     [font measure font_Regular  "xxxxxxxxxxxxxxxxxxxxxxxxx"]
 

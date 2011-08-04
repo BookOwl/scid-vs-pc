@@ -2317,39 +2317,47 @@ set helpText(Maintenance) {<h1>Database Maintenance</h1>
   </p>
   <p>
   Each unique name is only stored once in the <a Formats>name file</a>, so changing a name
-  actually changes all occurrences of it.
+  actually changes all occurrences of it. Similarly, some names in the name file may not actually be used. To remove such names, 
+perform a Namebase <a Compact>Compaction</a>.
   </p>
   <p>
   <i>Please take care when using the Name Editor. Changes are not properly undoable if the "With" name already exists.</i>
   </p>
 
-  <h3><name Spellcheck>Spell Checking Names</name></h3>
+  <h3><name Spellcheck>Spell Checking</name></h3>
+  <p><i>
+  Updated versions of the Spellcheck file are available at
+  <url http://linweb.ris.at/~nagl/index.html>http://linweb.ris.at/~nagl/index.html</url>.
+  </i></p>
   <p>
-  Scid has the ability to correct misspelt Player, Event, Site and Round names.
-  This is especially useful for standardizing player names throughout a database.
-  For example, the names "Kramnik,V.", "Vladimir Kramnik", and "V. Kramnik"
-  would all be corrected to "Kramnik, Vladimir".
+  Scid's Spell Checking feature is used to standardize <b>Player</b>, <b>Event</b>, <b>Site</b> and <b>Round</b> names names throughout a database.
+  To do so, the <b>spelling.ssp</b> file must be loaded. This should be done on startup, or
+  <run readSpellCheckFile><green>performed manually</green></run>.
   </p>
   <p>
-  To do so, the "spelling.ssp" file should be installed into Scid's data directory
-  (or it can be loaded manually via
-  <run readSpellCheckFile><green>Options--<gt>Load Spellcheck File</green></run>.
-  When spellcheck is run, a list of corrections is produced. This list
-  can then be selectively edited before making any actual changes.
+  When Spell Check is run, a list of proposed corrections is produced. These
+  should be perused and edited before actually making the corrections on disk.
+  <i>The normal keyboard shortcuts for Cut, Copy, Paste, Undo and Redo apply</i>.
   </p>
   <p>
-  The spellcheck file has one additional use. When it is loaded, its player data is
+  The format of each correction is: <b>"Old Name" <gt><gt> "New Name"</b>
+  with no space before "Old Name". The number in brackets is the count of
+  proposed changes.
+  </p>
+  <p>
+  One may discard any correction by deleting it, or adding a
+  space or any other character at the start of the line.  Player names with a
+  <b>surname only</b>, or prefaced with <b>Ambiguous</b>, do not get corrected,
+  though one may choose to allow surname only corrections.
+  </p>
+  <p>
+  The spellcheck file has another important use. When it is loaded, it is
   used to enhance the <a PInfo>player information</a> and <a Crosstable>crosstable</a> windows.
-  You will see FIDE master titles
-  (eg International Grandmaster)
+  You will see FIDE master titles (eg International Grandmaster)
   and country information, for any player that is
   listed in the spellcheck file. Over a 100,000 strong players of the past and
   present are included.
   </p>
-  <p><i>
-  Updated versions of the spellcheck resource files
-  are available at <url http://linweb.ris.at/~nagl/index.html>http://linweb.ris.at/~nagl/index.html</url>.
-  </i></p>
 
   <h3><name Ratings>Adding Elo Ratings to Games</name></h3>
   <p>
@@ -2390,7 +2398,7 @@ set helpText(Maintenance) {<h1>Database Maintenance</h1>
   back in a consistent and usable state.
   </p>
 
-  <p><footer>Updated: Scid vs. PC 4.3, December 2010</footer></p>
+  <p><footer>Updated: Scid vs. PC 4.5, August 2011</footer></p>
 }
 
 set helpTitle(Sorting) "Sorting a database"

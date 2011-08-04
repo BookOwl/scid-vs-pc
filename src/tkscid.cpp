@@ -13099,7 +13099,7 @@ sc_name_spellcheck (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv
         }
     }
 
-    // Now generate the return message:
+    // Generate message
 
     sprintf (tempStr, "Scid found %u %s name correction%s",
              correctionCount, NAME_TYPE_STRING[nt],
@@ -13107,31 +13107,13 @@ sc_name_spellcheck (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv
     Tcl_AppendResult (ti, tempStr, NULL);
     if (correctionCount > maxCorrections) {
         sprintf (tempStr, ", the first %u are listed below.", maxCorrections);
-    } else if (correctionCount > 0) {
-        strCopy (tempStr, ", all are listed below.");
     } else {
         strCopy (tempStr, ".");
     }
-    Tcl_AppendResult (ti, tempStr, "\n", NULL);
 
-    Tcl_AppendResult (ti,
-        "Edit the list to remove any corrections you do not want.\n",
-        "Only lines of the form:\n",
-        "   \"Old Name\" >> \"New Name\"\n",
-        "(with no spaces before the \"Old Name\") are processed.\n",
-        "You can discard a correction you do not want by deleting\n",
-        "its line, or simply by adding a space or any other character\n",
-        "at the start of the line.\n",
-        NULL);
-    if (nt == NAME_PLAYER  &&  ! doSurnames) {
-        Tcl_AppendResult (ti,
-            "Note: player names with a surname only, such as \"Kramnik\",\n",
-            "have not been corrected, since such corrections are often\n",
-            "wrong. You can choose to also show surname-only corrections\n",
-            "using the button below.\n",
-            NULL);
-    }
-    Tcl_AppendResult (ti, "\n", dstr->Data(), NULL);
+    Tcl_AppendResult (ti, tempStr, "\n", NULL);
+    Tcl_AppendResult (ti, "Press 'F1' for help.\n", dstr->Data(), NULL);
+
     delete dstr;
 #endif
     return TCL_OK;
