@@ -2330,7 +2330,7 @@ perform a Namebase <a Compact>Compaction</a>.
   <url http://linweb.ris.at/~nagl/index.html>http://linweb.ris.at/~nagl/index.html</url>.
   </i></p>
   <p>
-  Scid's Spell Checking feature is used to standardize <b>Player</b>, <b>Event</b>, <b>Site</b> and <b>Round</b> names names throughout a database.
+  Scid's Spell Checking feature is used to standardize <b>Player</b>, <b>Event</b>, <b>Site</b> and <b>Round</b> names throughout a database.
   To do so, the <b>spelling.ssp</b> file must be loaded. This should be done on startup, or
   <run readSpellCheckFile><green>performed manually</green></run>.
   </p>

@@ -181,6 +181,9 @@ proc search::header {} {
       checkbutton $w.t$c.b$i -text $name -width 5 -font $regular \
           -variable sTitles($c:$i) -offvalue 0 -onvalue 1 -indicatoron 0 \
           -state $spellstate -pady 0
+      if {$::macOS} {
+         $w.t$c.b$i configure -height 2
+      }
       pack $w.t$c.b$i -side left -padx 1
     }
   }

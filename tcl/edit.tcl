@@ -405,13 +405,14 @@ proc setupBoard {} {
   # It's fairly hacked together from lots of other places, so i hope it's solid.
   # Trying to make drag and drop... not too easy. - S.A.
 
+  if {!$::macOS} {
   frame $sl.hints
-  # label $sl.hints.label1 -text {Mouse buttons:} -font font_SmallItalic
   label $sl.hints.label2 -text {Left button - Paste} -font font_SmallItalic
   label $sl.hints.label3 -text {Middle button - Cut} -font font_SmallItalic
   label $sl.hints.label4 -text {Right button - Copy} -font font_SmallItalic
   pack $sl.hints -side top -expand yes -fill x
   pack $sl.hints.label2 $sl.hints.label3 $sl.hints.label4 -side left -expand yes -fill x
+  }
 
   frame $sbd
   canvas $sbd.bd -width $bsize -height $bsize -background $::bgcolor \
@@ -472,8 +473,13 @@ proc setupBoard {} {
   set setupboardSize2 [boardSize_plus_n -4]
   foreach i {p n b r q k} {
     foreach color {w b} value "[string toupper $i] $i" {
-      radiobutton $sl.$color.$i -image $color$i$setupboardSize2 -indicatoron 0 \
-	-variable pastePiece -value $value -activebackground $highcolor 
+      if {$::macOS} {
+	ttk::radiobutton $sl.$color.$i -image $color$i$setupboardSize2 \
+	  -variable pastePiece -value $value 
+      } else {
+	radiobutton $sl.$color.$i -image $color$i$setupboardSize2 -indicatoron 0 \
+	  -variable pastePiece -value $value -activebackground $highcolor
+      }
 	# -relief raised -activebackground grey75 -selectcolor rosybrown
       pack $sl.$color.$i -side left ;# -expand yes -fill x -padx 5
     }

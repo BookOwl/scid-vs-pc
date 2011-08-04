@@ -1027,10 +1027,11 @@ proc getPromoPiece {} {
   set col "w"
   if { [sc_pos side] == "black" } { set col "b" }
   set size [boardSize_plus_n -1]
-  button $w.bq -image ${col}q$size -command "set ::result 2 ; destroy $w"
-  button $w.br -image ${col}r$size -command "set ::result 3 ; destroy $w"
-  button $w.bb -image ${col}b$size -command "set ::result 4 ; destroy $w"
-  button $w.bn -image ${col}n$size -command "set ::result 5 ; destroy $w"
+  # OSX requires ttk::button because the png images get messed-up
+  ttk::button $w.bq -image ${col}q$size -command "set ::result 2 ; destroy $w"
+  ttk::button $w.br -image ${col}r$size -command "set ::result 3 ; destroy $w"
+  ttk::button $w.bb -image ${col}b$size -command "set ::result 4 ; destroy $w"
+  ttk::button $w.bn -image ${col}n$size -command "set ::result 5 ; destroy $w"
   pack $w.bq $w.br $w.bb $w.bn -side left
   bind $w <Escape> "set ::result 2 ; destroy $w"
   bind $w <Return> "set ::result 2 ; destroy $w"
