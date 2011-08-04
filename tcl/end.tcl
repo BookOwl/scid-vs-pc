@@ -588,25 +588,6 @@ proc updateMatchList { tw nametype maxMatches name el op } {
   catch {set matches [sc_name match $nametype $val $maxMatches]}
 
 
-if {0} {
-  # IGNORE - Used to be this
-  set count [llength $matches]
-  set nameMatchCount [expr {$count / 2}]
-  for {set i 0} { $i < $count } {incr i 2} {
-
-    set nameMatchCount [expr {($i / 2) + 1}]
-    set nameMatches($nameMatchCount) [lindex $matches [expr {$i + 1}]]
-
-    # $tw tag bind tag$nameMatchCount <ButtonRelease-1> [list set $name $nameMatches($nameMatchCount)]
-
-    set str "[lindex $matches $i]\t$nameMatches($nameMatchCount)\n"
-    $tw insert end $str
-  }
-  $tw configure -state disabled
-} else {
-
-  # But this is much easier
-
   ### Setup the autocomplete text button bindings
 
   set i 1
@@ -624,7 +605,6 @@ if {0} {
     }
   }
   $tw configure -state disabled
-}
 
 }
 
@@ -698,7 +678,7 @@ proc nameEditor {} {
   setWinLocation $w
   bind $w <Configure> "recordWinSize $w"
 
-  label $w.typeLabel -textvar ::tr(NameEditType:) -font font_Bold
+  label $w.typeLabel -textvar ::tr(NameEditType) -font font_Bold
   frame $w.typeButtons
   pack $w.typeLabel $w.typeButtons -side top -pady 5
   foreach i { "Player" "Event" "Site" "Round"} {
@@ -722,7 +702,7 @@ proc nameEditor {} {
         grid remove .nedit.g.fromD
         grid remove .nedit.g.toD
         grid .nedit.g.fromE -row 0 -column 2 -sticky w
-        grid .nedit.g.rtype -row 1 -column 0 -columnspan 2 -sticky e
+        grid .nedit.g.rtype -row 1 -column 0 -columnspan 2 -sticky e -padx 5
         grid .nedit.g.ratingE -row 1 -column 2 -sticky w
       }
   radiobutton $w.typeButtons.date -textvar ::tr(Date) -variable editNameType \
@@ -759,66 +739,50 @@ proc nameEditor {} {
     SelectFilterGames
     SelectTournamentGames
   } {
-    radiobutton $w.selectButtons.$i -textvar ::tr($text) \
-        -variable editNameSelect -value $i
+    radiobutton $w.selectButtons.$i -textvar ::tr($text) -variable editNameSelect -value $i
     grid $w.selectButtons.$i -row $row -column 0 -sticky w
   }
 
   addHorizontalRule $w
 
   pack [frame $w.g] -side top
-  label $w.g.space -text "    "
-  grid $w.g.space $w.g.space -row 0 -column 0
-  label $w.g.fromL -textvar ::tr(NameEditReplace:) -font font_Bold -anchor e
-  entry $w.g.fromE -width 40  -relief sunken \
-      -textvariable editName
-  entry $w.g.fromD -width 15  -relief sunken \
-      -textvariable editDate
-  grid $w.g.fromL -row 0 -column 1 -sticky e
+  label $w.g.fromL -textvar ::tr(NameEditReplace) -anchor e
+  entry $w.g.fromE -width 29  -relief sunken -textvariable editName
+  entry $w.g.fromD -width 15  -relief sunken -textvariable editDate
+  grid $w.g.fromL -row 0 -column 1 -sticky e -padx 10
   grid $w.g.fromE -row 0 -column 2 -sticky we
 
-  label $w.g.toL -textvar ::tr(NameEditWith:) -font font_Bold -anchor e
-  entry $w.g.toE -width 40  -relief sunken \
-      -textvariable editNameNew
-  entry $w.g.toD -width 15  -relief sunken \
-      -textvariable editDateNew
-  grid $w.g.toL -row 1 -column 1 -sticky e
+  label $w.g.toL -textvar ::tr(NameEditWith)
+  entry $w.g.toE -width 29  -relief sunken -textvariable editNameNew
+  entry $w.g.toD -width 15  -relief sunken -textvariable editDateNew
+  grid $w.g.toL -row 1 -column 1 -sticky e  -padx 10
   grid $w.g.toE -row 1 -column 2 -sticky we
 
-  entry $w.g.ratingE -width 5  -relief sunken \
-      -textvariable editNameRating -justify right
+  entry $w.g.ratingE -width 5  -relief sunken -textvariable editNameRating -justify right
   eval tk_optionMenu $w.g.rtype editNameRType [sc_info ratings]
-  $w.g.rtype configure -pady 2
+  $w.g.rtype configure -pady 2 -relief flat
 
-  label $w.g.title -textvar ::tr(NameEditMatches) \
-      -font font_Bold
   text $w.g.list -height 9 -width 40 -relief sunken \
-      -background grey90 -tabs {2c right 2.5c left} -wrap none
+      -background grey90 -tabs {2c left} -wrap none
 
-  label $w.g.padding -text ""
-  grid $w.g.padding -row 2 -column 0
-
-  grid $w.g.title -row 3 -column 1 -columnspan 2 -sticky n
-  grid $w.g.list -row 4 -column 1 -rowspan 9 -columnspan 2 -sticky n
+  grid $w.g.list -row 2 -column 1 -rowspan 9 -columnspan 2 -sticky n -pady 5
 
   updateMatchList $w.g.list "" 9 editName "" w
+ # $tw tag bind tag$i <ButtonRelease-1> [list set $name $string]
 
-  foreach i {fromE toE ratingE fromD toD} {
-    bind $w.g.$i <FocusIn> { %W configure -background lightYellow }
-    bind $w.g.$i <FocusOut> { %W configure -background white }
-  }
-  foreach {i j} {.nedit.g.fromE "editName"  .nedit.g.toE "editNameNew" } {
-    for {set z 1} {$z <= 9} {incr z} {
-      bind $i [format "<Control-Key-%d>" $z] \
-          [format "eval {if {\$nameMatchCount >= %d} { \
-              set %s \$nameMatches(%d)}}; break" $z $j $z ]
-    }
-  }
+  # Update fromE and to entries automatch , when clicked in
+  bind $w.g.fromE <FocusIn> "updateMatchList $w.g.list {} 9 editName {} w"
+  bind $w.g.toE <FocusIn> "updateMatchList $w.g.list {} 9 editNameNew {} w"
+
+  grid rowconfigure $w.g 0 -pad 5
+  grid rowconfigure $w.g 1 -pad 5
+  grid columnconfigure $w.g 1 -pad 20
+  grid columnconfigure $w.g 2 -pad 5
 
   addHorizontalRule $w
 
   frame $w.buttons
-  button $w.buttons.replace -textvar ::tr(NameEditReplace) -command {
+  dialogbutton $w.buttons.replace -textvar ::tr(NameEditReplace) -command {
     if {$editNameType == "rating"} {
       set err [catch {sc_name edit $editNameType $editNameSelect $editName $editNameRating $editNameRType} result]
     } elseif {$editNameType == "date"  ||  $editNameType == "edate"} {
@@ -831,25 +795,25 @@ proc nameEditor {} {
           -message $result
     } else {
       .nedit.status configure -text $result
+      pack .nedit.status -side bottom -fill x
     }
     sc_game tags reload
     updateBoard -pgn
     ::windows::gamelist::Refresh
   }
 
+  dialogbutton $w.buttons.help -textvar ::tr(Help) -command {helpWindow Maintenance Editing}
   dialogbutton $w.buttons.cancel -textvar ::tr(Close) -command {focus .; destroy .nedit}
   pack $w.buttons -side top -pady 5
-  pack $w.buttons.replace $w.buttons.cancel -side left -padx 10
+  pack $w.buttons.replace $w.buttons.help $w.buttons.cancel -side left -padx 10
 
   label $w.status -text "" -width 1 -font font_Small -relief sunken -anchor w
-  pack $w.status -side bottom -fill x
 
   wm resizable $w 0 0
   bind $w <Escape> { focus .; destroy .nedit }
   bind $w <Return> {.nedit.buttons.replace invoke}
   bind $w <Destroy> {set nameEditorWin 0}
   bind $w <F1> {helpWindow Maintenance Editing}
-  standardShortcuts $w
   focus $w
   $w.typeButtons.$editNameType invoke
 }
@@ -1039,7 +1003,7 @@ proc gameSave {gnum {focus {}}} {
   # Autocomplete text widget and label
 
   text $f.list -height 9 -width 30 -relief sunken -background grey90 \
-      -tabs {2.5c left} -wrap none -cursor arrow
+      -tabs {2c left} -wrap none -cursor arrow
   clearMatchList $f.list
 
   # label $f.title -textvar ::tr(NameEditMatches) -font font_Italic

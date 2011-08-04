@@ -377,7 +377,7 @@ set helpText(Index) {<h1>Scid Help Index</h1>
   <li><a PList>Player Finder</a> window</li>
   <li><a PInfo>Player Information</a> </li>
   <li><a PInfo Photos>Player Photos</a></li>
-  <li><a Maintenance Spellcheck>Spell Checking</a> player names</li>
+  <li>Spell Checking <a Maintenance Spellcheck>Player Names</a></li>
   <li><a Reports Player>Player Report</a> window</li>
   <li><a TacticalGame>Play Tactical game</a></li>
   <li><a SeriousGame>Play Serious game</a></li>
@@ -407,6 +407,7 @@ set helpText(Index) {<h1>Scid Help Index</h1>
   <li><a Sorting>Sorting a database</a></li>
   <li><a Sound>Sound</a></li>
   <li><a Maintenance Spellcheck>Spellchecking</a> names</li>
+  <li>Editing Name <a Maintenance Editing>Spelling</a></li>
   <li><a Switcher>Switcher</a> window</li>
   </ul>
 
@@ -2312,17 +2313,19 @@ set helpText(Maintenance) {<h1>Database Maintenance</h1>
   <p>
   The 
   <run nameEditor><green>Name Editor</green></run>
-  (Control+Shift+N),
   is a tool to selectively edit entity names.
   </p>
   <p>
   Each unique name is only stored once in the <a Formats>name file</a>, so changing a name
   actually changes all occurrences of it.
   </p>
+  <p>
+  <i>Please take care when using the Name Editor. Changes are not properly undoable if the "With" name already exists.</i>
+  </p>
 
   <h3><name Spellcheck>Spell Checking Names</name></h3>
   <p>
-  Scid has the ability to correct mis-spelt Player, Event, Site and Round names.
+  Scid has the ability to correct misspelt Player, Event, Site and Round names.
   This is especially useful for standardizing player names throughout a database.
   For example, the names "Kramnik,V.", "Vladimir Kramnik", and "V. Kramnik"
   would all be corrected to "Kramnik, Vladimir".

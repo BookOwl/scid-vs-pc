@@ -1202,10 +1202,10 @@ translate E TwinsDeleteNewer {Greater game number}
 translate E TwinsDelete {Delete games}
 
 # Name editor window:
-translate E NameEditType {Type of name to edit}
-translate E NameEditSelect {Games to edit}
+translate E NameEditType {Name Type to Edit}
+translate E NameEditSelect {Games to Edit}
 translate E NameEditReplace {Replace}
-translate E NameEditWith {with}
+translate E NameEditWith {With}
 translate E NameEditMatches {Matches: Press Ctrl+1 to Ctrl+9 to select}
 
 # Check games window:
