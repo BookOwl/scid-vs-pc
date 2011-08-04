@@ -589,7 +589,14 @@ proc ::file::finder::OpenDIR {} {
   frame $w.b
   dialogbutton $w.b.ok -text OK -command {
     if {[file isdir [.finderdir.entry get]]} {
-      ::file::finder::Refresh [.finderdir.entry get]
+      set dir [.finderdir.entry get]
+      # silly hacks to fix up finder bug with "~"
+      if {$dir == {~}} {
+        set dir $::env(HOME)
+      } elseif {[string range $dir 0 1] == {~/}} {
+        set dir "$::env(HOME)/[string range $dir 2 end]"
+      }
+      ::file::finder::Refresh $dir
     }
     grab release .finderdir
     destroy .finderdir
