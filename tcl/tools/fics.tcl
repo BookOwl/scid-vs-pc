@@ -172,6 +172,7 @@ namespace eval fics {
     update
     placeWinOverParent $w .
     wm state $w normal
+    focus $w.button.connect
     update
   }
 
@@ -509,21 +510,37 @@ namespace eval fics {
   #
   ################################################################################
   proc cmd {} {
-    set l [.fics.command.entry get]
-    .fics.command.entry delete 0 end
-    if {$l == "quit"} {
+    set w .fics
+
+    set l [$w.command.entry get]
+    $w.command.entry delete 0 end
+    if {$l == "quit" || $l == "exit"} {
       ::fics::close
       return
     }
-    # do nothing if the command is void
     if {[string trim $l] == ""} {
+      return
+    }
+    set c [lindex $l 0]
+    if {$c == "fg" || $c == "foreground"} {
+      set fg [lindex $l 1]
+      if {![catch {$w.console.text configure -fg $fg}]} {
+	set ::fics::consolefg $fg
+      }
+      return
+    }
+    if {$c == "bg" || $c == "background"} {
+      set bg [lindex $l 1]
+      if {![catch {$w.console.text configure -bg $bg}]} {
+	set ::fics::consolebg $bg
+      }
       return
     }
     writechan $l "echo"
     # &&& for TESTING comment above
     lappend ::fics::history $l
     set ::fics::history_pos [llength $::fics::history]
-    .fics.console.text yview moveto 1
+    $w.console.text yview moveto 1
   }
   ################################################################################
   #
