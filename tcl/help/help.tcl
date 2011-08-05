@@ -6191,6 +6191,7 @@ The window manager may interfere with some shortcuts.
 <li><b>enter</b> - Add move from chess engine</li>
 <li></li>
 <li><b>F1</b> - Help</li>
+<li><b>control-F7</b> - Dump all Images and exit (developer only)</li>
 <li><b>control-F12</b> - Screenshot</li>
 <li><b>alt-KEY</b> - Menu shortcut (*nix only)</li>
 </ul>
@@ -6333,6 +6334,7 @@ The window manager may interfere with some shortcuts.
 <li><b>F2</b> - Toggle engine 1</li>
 <li><b>F3</b> - Toggle engine 2</li>
 <li><b>F4</b> - Toggle engine 3</li>
+<li><b>control-F7</b> - Dump all Images and exit (developer only)</li>
 <li><b>control-F12</b> - Screenshot</li>
 
 </ul>

@@ -1751,50 +1751,15 @@ updateLocale
 update
 bind . <Configure> {recordWinSize .}
 
-### bind this to the main canvas as statusbar can now be hidden
-# Bindings to map/unmap all windows when main window is mapped
-bind .board.bd <Map> {puts map; raiseAllWindows }
+### Bindings to map/unmap all windows when main window is mapped
+# Bind this to the main canvas as statusbar can now be hidden
+
+bind .board.bd <Map> { raiseAllWindows }
 bind .board.bd <Unmap> { showHideAllWindows iconify}
 
-################################################################################
-# returns a list of all toplevel windows, except some that are utilities
-################################################################################
-proc getTopLevel {} {
-
-  set topl {}
-  set exclude { ".splash" ".tooltip" ".glistExtra" ".menu" "." ".pgnPopup" }
-  foreach c [winfo children .] {
-    if { $c != [winfo toplevel $c] } { continue }
-    # Tk report .__tk_filedialog as toplevel window even if the window has been closed
-    if { [ lsearch $topl $c ] == -1 && [ lsearch $exclude $c ] == -1 && ![string match "\.__tk*" $c] } {
-      lappend topl $c
-    }
-  }
-
-  # Place .glistWin, .pgnWin last so raiseAllWindows places them on top. Side effects ?
-
-  foreach win {.pgnWin .glistWin}  {
-    set pos [lsearch $topl $win]
-    if {$pos >=0} {
-      set topl [lreplace $topl $pos $pos]
-      lappend topl $win
-    }
-  }
-  return $topl
-}
-################################################################################
-#
-################################################################################
 # showHideAllWindows:
 #   Arranges for all major Scid windows to be shown/hidden
-#   Should be called type = "iconify" or "deiconify"
-
-# Scid main windows are
-#   .baseWin .glistWin .pgnWin .tourney .maintWin \
-#   .ecograph .crosstabWin .treeWin .analysisWin1 .anslysisWin2 \
-#   .playerInfoWin .commentWin .repWin .statsWin .tbWin \
-#   .sb .sh .sm .noveltyWin .emailWin .oprepWin .plist \
-#   .rgraph .sgraph .importWin .helpWin .tipsWin
+#   type = "iconify" or "deiconify"
 
 proc showHideAllWindows {type} {
   if {! $::autoIconify} { return }
@@ -1805,7 +1770,7 @@ proc showHideAllWindows {type} {
 
   if {($type == "iconify")  && ([winfo ismapped .] == 1)} { return }
 
-  foreach w [getTopLevel] {
+  foreach w [getTopLevel $type] {
     if {[winfo exists $w]} { catch {wm $type $w} }
   }
 }
@@ -1813,7 +1778,7 @@ proc showHideAllWindows {type} {
 proc raiseAllWindows {} {
   if {! $::autoRaise} { return }
 
-  foreach w [getTopLevel] {
+  foreach w [getTopLevel deiconify] {
     if {[winfo exists $w]} {
       catch {
 	wm deiconify $w
@@ -1824,7 +1789,43 @@ proc raiseAllWindows {} {
   # raise .
 }
 
-# Hack to extract gif images out of Scid:
+### Scid main windows are below, but we use [winfo children .] to gather info
+#   .baseWin .glistWin .pgnWin .tourney .maintWin \
+#   .ecograph .crosstabWin .treeWin .analysisWin1 .anslysisWin2 \
+#   .playerInfoWin .commentWin .repWin .statsWin .tbWin \
+#   .sb .sh .sm .noveltyWin .emailWin .oprepWin .plist \
+#   .rgraph .sgraph .importWin .helpWin .tipsWin .comp
+
+### Return a list of all toplevels, except some utilities
+
+proc getTopLevel {{type {}}} {
+
+  set topl {}
+  set exclude { .splash .tooltip .glistExtra .menu . .pgnPopup }
+  foreach c [winfo children .] {
+    if { $c != [winfo toplevel $c] } { continue }
+    # Tk report .__tk_filedialog as toplevel window even if the window has been closed
+    if { [ lsearch $topl $c ] == -1 && [ lsearch $exclude $c ] == -1 && ![string match "\.__tk*" $c] } {
+      ### Dont deiconify analysis widgets if tournament is running
+      if {!($type == "deiconify" && [winfo exists .comp] && [string match .analysisWin* $c])} {
+	lappend topl $c
+      }
+    }
+  }
+
+  ### Place .glistWin, .pgnWin last so raiseAllWindows places them on top. Side effects ?
+
+  foreach win {.pgnWin .glistWin}  {
+    set pos [lsearch $topl $win]
+    if {$pos >=0} {
+      set topl [lreplace $topl $pos $pos]
+      lappend topl $win
+    }
+  }
+  return $topl
+}
+
+### Hack to extract gif images out of Scid
 
 proc dumpGifImages {dir} {
   package require base64
@@ -1845,9 +1846,9 @@ proc dumpGifImages {dir} {
 
 # hmm... Control-Shift-F7 doesn't work for me ???
 bind . <Control-F7> {
-      puts "Dumping images to /tmp/ScidImages"
-      dumpGifImages /tmp/ScidImages
-      exit
+    puts "Dumping images to /tmp/ScidImages"
+    dumpGifImages /tmp/ScidImages
+    exit
 }
 
 if {$startup(tip)} { ::tip::show }
