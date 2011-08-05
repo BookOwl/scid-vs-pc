@@ -11195,6 +11195,8 @@ sc_name_correct (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
             newID = newIDs [oldID];
             if (oldID != newID) {
                 dateT date = ie->GetDate();
+                // These startDate comparisons check each game for whether it occured before player born
+                // but perhaps it's desirable to nominate an age (say 10 years; being uint -5120)
                 if ((startDate[oldID] == ZERO_DATE  ||   date >= startDate[oldID])
                     &&  (endDate[oldID] == ZERO_DATE  ||   date <= endDate[oldID])) {
                     newIE.SetWhite (newID);

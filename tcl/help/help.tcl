@@ -406,6 +406,7 @@ set helpText(Index) {<h1>Scid Help Index</h1>
   <li><a Formats>si4</a> database format</li>
   <li><a Sorting>Sorting a database</a></li>
   <li><a Sound>Sound</a></li>
+  <li><a Maintenance Spellfile>Spellcheck File</a></li>
   <li><a Maintenance Spellcheck>Spellchecking</a> names</li>
   <li>Editing Name <a Maintenance Editing>Spelling</a></li>
   <li><a Switcher>Switcher</a> window</li>
@@ -2324,15 +2325,24 @@ perform a Namebase <a Compact>Compaction</a>.
   <i>Please take care when using the Name Editor. Changes are not properly undoable if the "With" name already exists.</i>
   </p>
 
-  <h3><name Spellcheck>Spell Checking</name></h3>
-  <p><i>
-  Updated versions of the Spellcheck file are available at
+  <h3><name Spellfile>Spell Check File</name></h3>
+  <p>
+  The spellcheck file <b>spelling.ssp</b> contains information about Player Names, Titles, Birth & Death dates, and Country(s) of origin.
+  <b>Please use with caution</b>. The names it contains may not be
+  unique, and player initials may be incorrectly identified.
+  It is also possible to substitute the larger <b>ratings.ssp</b>, which additionally includes Elo ratings.
+  </p>
+  <p>
+  The file should be loaded on startup, or can be <run
+  readSpellCheckFile><green>loaded manually</green></run>.<i>
+  Updated versions are available at
   <url http://linweb.ris.at/~nagl/index.html>http://linweb.ris.at/~nagl/index.html</url>.
   </i></p>
+  
+  <h3><name Spellcheck>Spell Checking</name></h3>
   <p>
   Scid's Spell Checking feature is used to standardize <b>Player</b>, <b>Event</b>, <b>Site</b> and <b>Round</b> names throughout a database.
-  To do so, the <b>spelling.ssp</b> file must be loaded. This should be done on startup, or
-  <run readSpellCheckFile><green>performed manually</green></run>.
+  To do so, the <a Maintenance Spellfile>spelling.ssp</a> file must be loaded.
   </p>
   <p>
   When Spell Check is run, a list of proposed corrections is produced. These
@@ -2340,35 +2350,30 @@ perform a Namebase <a Compact>Compaction</a>.
   <i>The normal keyboard shortcuts for Cut, Copy, Paste, Undo and Redo apply</i>.
   </p>
   <p>
-  The format of each correction is: <b>"Old Name" <gt><gt> "New Name"</b>
-  with no space before "Old Name". The number in brackets is the count of
-  proposed changes.
+  The format of each correction is:
+  <br><b>"Old Name" <gt><gt> "New Name"</b> (<b>N</b>) <b>Birthdate</b>--<b>Deathdate</b><br>
+  There should be no space before "Old Name", and "N" represents the number of games matching the original player name.
   </p>
   <p>
   One may discard any correction by deleting it, or adding a
   space or any other character at the start of the line.  Player names with a
-  <b>surname only</b>, or prefaced with <b>Ambiguous</b>, do not get corrected,
-  though one may choose to allow surname only corrections.
+  <b>surname only</b> do not get corrected by default.
+  Simliarly , <b>Ambiguous</b> name substitutions are not performed unless one
+  manually removes the Ambiguous prefix from each line.
   </p>
   <p>
-  The spellcheck file has another important use. When it is loaded, it is
-  used to enhance the <a PInfo>player information</a> and <a Crosstable>crosstable</a> windows.
-  You will see FIDE master titles (eg International Grandmaster)
-  and country information, for any player that is
-  listed in the spellcheck file. Over a 100,000 strong players of the past and
-  present are included.
+  Name substitution will not occur in games dated before the Player's birth, or after death - unless the birth and death dates are removed from the translation.
   </p>
 
   <h3><name Ratings>Adding Elo Ratings to Games</name></h3>
   <p>
-  The "Add Elo ratings..." button 
-  searches for games with null player ratings.
+  The <b>Add Elo ratings</b> button (Maintenance window) searches for games with null player ratings.
   If the spellcheck file has an ELO rating for the
   player - at the date of the game - Scid will add such ratings
   to the database.
   </p>
   <p>
-  The spellcheck file "spelling.ssp" provided with Scid does not contain
+  The <a Maintenance Spellfile>spellcheck file</a> provided with Scid does not contain
   the Elo rating information needed for this function. Instead,
   the larger "ratings.ssp" file should be used.
   </p>
@@ -3206,8 +3211,7 @@ set helpText(PInfo) {<h1>Player Information</h1>
   <p>
 
   The Player Information window shows basic information when available.
-  It draws upon the data file <b>spelling.ssp</b>,
-  which is also used by the <a Maintenance Spellcheck>Spell Check</a> feature,
+  It draws upon the <a Maintenance Spellfile>spelling.ssp file</a>,
   and includes Ratings, Country of Origin and Official Titles.</p>
 
   <p><b>Please use with caution</b>. <i>The names it contains may not be
