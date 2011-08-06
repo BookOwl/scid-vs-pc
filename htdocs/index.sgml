@@ -301,6 +301,9 @@ General:
 <item>Game Browser has new buttons and functionality
 <item>Tournament Finder is more readable
 <item>Restore PGN scrollbar (pgn option)
+<item>Phalanx now reads enpassant and 50 move field from FEN (thanks Bernhard Prümmer)
+<item>FICs console fg and bg colours are now configurable
+<item>Name Editor tidy up and documentation review
 <item>Player Info: add a 'Refine Filter' result group
 <item>Typing 'OO' castles (previously only 'OK','OQ')
 <item>Mask Search widget fixes
@@ -310,6 +313,8 @@ General:
 <item>Add a 'Game Delete' menu
 <item>Improve ./configure and Makefile, and CC FLAGS are propagated to all targets
 <item>Game Save autocomplete now uses mouse instead of clumsy keyboard bindings
+<item>Restrict Game List sort to valid columns, and add a 'confirm sort' widget for bases > 200000 games
+
 </itemize>
 MS Windows tweaks:
 <itemize>
@@ -321,23 +326,25 @@ MS Windows tweaks:
 OSX:
 <itemize>
 <item>Make an OSX app with a working ;> version of Tcl (thanks Gilles)
-<item>OSX wheelmouse and graphical fixes.
+<item>Many OSX wheelmouse and graphical fixes.
 </itemize>
 Bug fixes:
 <itemize>
 <item>Null move fixes including - analysis engines can append variations
 <item>Tree training feature fixes
-<item>Show Progressbar for loading bases with a dot (.) in their name.
+<item>Show Progressbar for loading bases with a dot (.) in their name
 <item>If Scid crashes, Game List could be left with zero size
 <item>PGN middle-click move preview feature fixed for variations
 <item>PGN text tabstops are now dynamic to allow for correct column allignment in column mode
-<item>Remember position of custom ecoFile if loaded.
+<item>Remember position of custom ecoFile if loaded
 <item>Change the second book slot to avoid conflict with Annotation feature
-<item>Catch unmatched braces in gamelist values.
+<item>Catch unmatched braces in gamelist values
 <item>Fix 'Paste FEN' castling sanity check
 <item>Browser previously highlighted Next move instead of Current move
 <item>Fix scid.eco unicode bug
-<item>Remove 'newlines' from Mask Search results.
+<item>Remove 'newlines' from Mask Search results
+<item>When addAnalysisVariation fails due to bad moves, don't move back N moves
+<item>Theory table incorrectly started from start position.
 </itemize></p>
 
 <sect2> Scid vs. PC 4.4.1 <p>
