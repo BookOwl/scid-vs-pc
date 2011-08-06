@@ -5772,7 +5772,7 @@ set helpText(Changelog) {<h1>Scid vs. PC</h1>
 <li>Add a 'Game Delete' menu</li>
 <li>Improve ./configure and Makefile, and CC FLAGS are propagated to all targets</li>
 <li>Game Save autocomplete now uses mouse instead of clumsy keyboard bindings</li>
-<li>Restrict Game List sort to valid columns, and add a 'confirm sort' widget for bases > 200000 games</li>
+<li>Restrict Game List sort to valid columns, and add a 'confirm sort' widget for bases <gt> 200000 games</li>
 
 
 </ul>

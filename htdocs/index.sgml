@@ -117,7 +117,7 @@ If the PGN figurines (chess pieces) option is disabled, try grabbing the ttf fon
 <sect2> Mac OSX <p>
 
 The ScidvsMac-4.5 app in the <ref name="downloads" id="download_"> section
-should included everything you need. 
+should include everything you need. 
 
 <em>Note: Users upgrading may have to remove (or edit) <bf>$HOME/.scidvspc/config/engines.dat</bf>
 to properly configure the chess engines.</em>
