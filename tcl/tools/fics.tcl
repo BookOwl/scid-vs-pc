@@ -524,6 +524,9 @@ namespace eval fics {
     set c [lindex $l 0]
     if {$c == "fg" || $c == "foreground"} {
       set fg [lindex $l 1]
+      if {$fg == {}} {
+        set fg [tk_chooseColor -initialcolor $::fics::consolefg -title {FICs Background} -parent $w]
+      }
       if {![catch {$w.console.text configure -fg $fg}]} {
 	set ::fics::consolefg $fg
       }
@@ -531,6 +534,9 @@ namespace eval fics {
     }
     if {$c == "bg" || $c == "background"} {
       set bg [lindex $l 1]
+      if {$bg == {}} {
+        set bg [tk_chooseColor -initialcolor $::fics::consolebg -title {FICs Background} -parent $w]
+      }
       if {![catch {$w.console.text configure -bg $bg}]} {
 	set ::fics::consolebg $bg
       }

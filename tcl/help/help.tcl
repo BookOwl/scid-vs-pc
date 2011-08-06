@@ -5497,6 +5497,7 @@ console window, some command buttons, and clocks.</p>
 the Command Buttons. For an outline of popular commands see the
 <a FICScommands><term>Commands</term></a> section.</p>
 
+  <h3>Console Colours</h3>
 <p>
 Normal messages are written in green; messages from other
 players appear in red.  It can be a little confusing, but
@@ -5504,7 +5505,7 @@ toggling the <b>Tells</b> and <b>Shouts</b> boxes will make
 it quieter.
 </p>
 <p>
-Alternatively, one may <b>customize the colours</b> by entering
+Alternatively, one may <b>customize the colours</b> by entering "fg", "bg" for colour menus, or
 "fg COLOUR", or "bg COLOUR" for foreground and background colours. By default they are LimeGreen and grey35.
 </p>
 
