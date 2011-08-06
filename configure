@@ -415,11 +415,8 @@ proc writeMakefile {{type ""}} {
     if {"$::tcl_platform(os)" == "Darwin"} {
         set var(FONTDIR) /Library/Fonts/
     } else {
-	if {[string match {/usr/local*} $var(BINDIR)] && [file isdirectory /usr/local/share/fonts]} {
-		set prefix /usr/local
-	} else {
-		set prefix /usr
-	}
+        # Just install fonts in to /usr irrespective of system prefix. /usr/local may not be active
+	set prefix /usr
 	if {![file isdirectory $prefix/share/fonts]} {
 		set var(FONTDIR) "~/.fonts"
 	} else {
