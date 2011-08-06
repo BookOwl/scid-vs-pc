@@ -40,13 +40,6 @@ if {![info exists spellCheckFile]} {
   }
 }
 
-# Don't worry the folder doesn't exists...
-# Setting soundFolder to a non-folder enables disabling sound
-
-if {![info exists ::utils::sound::soundFolder]} {
-  set ::utils::sound::soundFolder [file nativename [file join $::scidShareDir sounds]]
-}
-
 ### Display directories
 
 ::splash::add "scidShareDir is $scidShareDir"

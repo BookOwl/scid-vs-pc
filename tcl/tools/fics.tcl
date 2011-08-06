@@ -817,37 +817,34 @@ namespace eval fics {
       catch {destroy .ficsOffers}
       # Setting this, stops automatically accepting rematches. (But algorythm needs fixing a little)
       set ::fics::findopponent(manual) manual
+      after cancel ::fics::updateGraph
 
-      # hide offers graph
-      set ::fics::graphon 0
-      showGraph
-
-      ::utils::sound::PlaySound sound_move
       sc_game new
-      # fics::playing : 1==game_start/my move, 0==not playing, -1==opponents move
-      set ::fics::playing 1
 
       set idx1 [string first "(" $line]
       set white [string trim [string range $line 10 [expr $idx1 -1]] ]
       set idx2 [string first ")" $line]
       set whiteElo [string trim [string range $line [expr $idx1 +1] [expr $idx2 -1]] ]
-      
+
       set idx1 [expr $idx2 +1]
       set idx2 [string first "(" $line $idx1]
       set black [string trim [string range $line $idx1 [expr $idx2 -1]] ]
-      
+
       set idx1 [expr $idx2 +1]
       set idx2 [string first ")" $line $idx1]
       set blackElo [string trim [string range $line $idx1 [expr $idx2 -1]] ]
-      
+
       if { $whiteElo == "++++"} { set whiteElo 0 }
       if { $blackElo == "++++"} { set blackElo 0 }
 
-      # set white [lindex $line 1]
-      # set whiteElo [string map { "(" "" ")" "" } [lindex $line 2] ]
-      # set black [lindex $line 3]
-      # set blackElo [string map { "(" "" ")" "" } [lindex $line 4] ]
-      
+
+      if { [ string match -nocase $white $::fics::reallogin ] } {
+	### 1 = game_start/my move, 0 = not playing, -1 = opponents move
+	set ::fics::playing 1
+      } else {
+	set ::fics::playing -1
+      }
+
       sc_game tags set -white $white
       sc_game tags set -whiteElo $whiteElo
       sc_game tags set -black $black
@@ -866,6 +863,13 @@ namespace eval fics {
       }
       updateBoard -pgn -animate
       updateTitle
+
+      ::utils::sound::PlaySound sound_move
+
+      ### hide offers graph ; sometime ::fics::updateGraph doesn't get cancelled though !?^&$%!
+      set ::fics::graphon 0
+      showGraph
+
       # display the win / draw / loss score
       ::fics::writechan "assess" "noecho"
       set ::fics::ignore_abort 0
@@ -1365,7 +1369,7 @@ namespace eval fics {
     set fen "$fen $castle $enpassant [lindex $line 15] $moveNumber"
 
     # puts $verbose_move
-    puts $moveSan
+    # puts $moveSan
 
     # try to play the move and check if fen corresponds. If not this means the position needs to be set up.
     if {$moveSan != "none" && $::fics::playing != -1} {

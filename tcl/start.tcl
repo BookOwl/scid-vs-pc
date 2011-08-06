@@ -249,8 +249,7 @@ if {$windowsOS} {
   set fontOptions(Menu)    { {MS Sans Serif}  9 normal roman}
   set fontOptions(Small)   { Arial            9 normal roman}
   set fontOptions(Tiny)    { Arial            8 normal roman}
-  set fontOptions(Fixed)   { systemfixed      9 normal roman}
-  # set fontOptions(Fixed)   { Courier          9 normal roman}
+  set fontOptions(Fixed)   { Courier          9 normal roman}
 } elseif {$macOS} {
   set fontOptions(Regular) { {Lucida Grande} 12 normal roman}
   set fontOptions(Menu)    { {Lucida Grande} 14 normal roman}
@@ -405,7 +404,7 @@ set winWidth(.statsWin) 60
 set winHeight(.statsWin) 13
 
 # Default crosstable window size:
-set winWidth(.crosstabWin)  65
+set winWidth(.crosstabWin)  75
 set winHeight(.crosstabWin) 15
 
 # Default tree window size:
@@ -760,6 +759,7 @@ set email(bcc) ""
 set ::utils::sound::announceNew 0
 set ::utils::sound::announceForward 0
 set ::utils::sound::announceBack 0
+set ::utils::sound::soundFolder {} ;# disabled by default
 
 set ::book::lastBook1 {} ; # book name without extension (.bin)
 set ::book::lastBook2 {}
