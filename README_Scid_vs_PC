@@ -423,6 +423,13 @@
 
   o  Restore PGN scrollbar (pgn option)
 
+  o  Phalanx now reads enpassant and 50 move field from FEN (thanks
+     Bernhard Prmmer)
+
+  o  FICs console fg and bg colours are now configurable
+
+  o  Name Editor tidy up and documentation review
+
   o  Player Info: add a 'Refine Filter' result group
 
   o  Typing 'OO' castles (previously only 'OK','OQ')
@@ -444,6 +451,9 @@
   o  Game Save autocomplete now uses mouse instead of clumsy keyboard
      bindings
 
+  o  Restrict Game List sort to valid columns, and add a 'confirm sort'
+     widget for bases > 200000 games
+
      MS Windows tweaks:
 
   o  Windows Crosstable transparency glitch is fixed.
@@ -459,7 +469,7 @@
 
   o  Make an OSX app with a working ;> version of Tcl (thanks Gilles)
 
-  o  OSX wheelmouse and graphical fixes.
+  o  Many OSX wheelmouse and graphical fixes.
 
      Bug fixes:
 
@@ -467,7 +477,7 @@
 
   o  Tree training feature fixes
 
-  o  Show Progressbar for loading bases with a dot (.) in their name.
+  o  Show Progressbar for loading bases with a dot (.) in their name
 
   o  If Scid crashes, Game List could be left with zero size
 
@@ -476,12 +486,12 @@
   o  PGN text tabstops are now dynamic to allow for correct column
      allignment in column mode
 
-  o  Remember position of custom ecoFile if loaded.
+  o  Remember position of custom ecoFile if loaded
 
   o  Change the second book slot to avoid conflict with Annotation
      feature
 
-  o  Catch unmatched braces in gamelist values.
+  o  Catch unmatched braces in gamelist values
 
   o  Fix 'Paste FEN' castling sanity check
 
@@ -489,7 +499,13 @@
 
   o  Fix scid.eco unicode bug
 
-  o  Remove 'newlines' from Mask Search results.
+  o  Remove 'newlines' from Mask Search results
+
+  o  When addAnalysisVariation fails due to bad moves, don't move back N
+     moves
+
+  o  Theory table incorrectly started from start position.
+
 
   7.0.2.  Scid vs. PC 4.4.1
 
@@ -557,7 +573,6 @@
 
   o  A nice PGN/htext performance tweak that smooths out large game
      edits
-
   o  When using "-fast", perform fast database opens also. Otherwise,
      update the progressbar to show "Calculating name
      frequencies"(todo?)
@@ -624,7 +639,6 @@
 
   o  Other SCID C++ changes from Gerd and Fulvio, including "Don't
      decode games when copying games"
-
   o  Some Tree Search optimisations from SCID
 
   o  Sort by number of Variations and Comments from Gerd
@@ -691,7 +705,6 @@
 
   o  New icon
 
-
   7.0.6.  Scid vs. PC 4.1
 
 
@@ -705,6 +718,7 @@
 
   o  Tactics feature fixed up: Renamed "Puzzle" , and Problem Solutions
      can now be browsed in-game
+
   o  Analysis window "add variation" now *appends* variations if at var
      end
 
@@ -770,7 +784,6 @@
 
      o  No context menu if dragging a piece
 
-
      o  RobboLito (and others ?) had uppercase piece promotion which
         occasionally broke
 
@@ -824,7 +837,6 @@
 
   o  Bind mouse wheel to move progression (and widget resize) for the
      little browser windows
-
   o  Change all comboboxes to ttk::combobox
 
   o  Allow xboard lowercase promotion moves (eg while g7g8Q always
@@ -835,7 +847,6 @@
   o  Fix up analysis widget "lock to position" feature
 
   o  All analysis windows can now use annotation, and autoplay feature
-
 
   o  Bind F4 to start another analysis window
 
@@ -890,6 +901,7 @@
 
 
   o  Added a random pawns feature to tacgame
+
 
   o  Added magnetic chess pieces
 
@@ -957,8 +969,6 @@
 
   o  (Promise to) fix the Gamelist widget , and add a Comp vs. Comp
      feature for next release
-
-
   7.0.9.  Scid vs. PC 3.6.26.8
 
 
@@ -967,7 +977,6 @@
 
   o  Made a few friendly help menus, as well as adding a "Forward"
      button to the help interface
-
 
   o  Fixed up the "Show Material" widget. It can now be flipped and
      resized, and draws pieces either side of halfway according to
@@ -1024,7 +1033,6 @@
   o  Fix sometime-issue with material widget outline
 
   o  Small change to Tacgame about getMyPlayerName
-
 
   7.0.11.  Scid vs. PC 3.6.26.6
 
@@ -1160,7 +1168,6 @@
   o  Game info panel restructured ;>
 
   o  New Berlin, Spatial chess pieces
-
 
   o  Fics and Fischer chess changes
 

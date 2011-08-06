@@ -1727,7 +1727,7 @@ set helpText(PGN) {<h1>PGN</h1>
   </p>
 
   <p>
-  The <b>Chess Pieces</b> option displays small chess figurines instead of letters, to represent pieces (see below).
+  The <b>Chess Pieces</b> option displays small chess figurines instead of letters, to represent pieces (<a PGN ttf>see below</a>).
   </p>
 
   <p>
@@ -1749,10 +1749,10 @@ set helpText(PGN) {<h1>PGN</h1>
   board. Right-clicking displays a context menu.
   </p>
 
-  <h3>Chess Figurines</h3>
+  <h3><name ttf>Chess Figurines</name></h3>
   <p>
-  If True Type fonts are supported, the <b>Chess Pieces</b> option will
-  show chess figures instead of letters, and may incur a small performance loss.
+  If truetype fonts are supported, and ScidChessBerin.ttf has successfully been installed, the <b>Chess Pieces</b> option will
+  show chess figures instead of letters. This feature may incur a small performance loss.
   </p>
   <p>
   On <b>Microsoft Windows</b>, the fonts are installed automatically, but may
@@ -3743,6 +3743,9 @@ set helpText(Options) {<h1>Options and Preferences</h1>
   </p>
   <p>
   The Fixed font is used by the <a Tree>tree</a> and <a Crosstable>crosstable</a> windows, and should be a fixed-width font.
+  </p>
+  <p>
+  Additionally, the new PGN chess figurines require a truetype font ScidChessBerin.ttf to be installed on your operating system. Scid vs. PC attempts to do this, but issues may arise in which case this feature will be disabled in the PGN Options Menu.
   </p>
 
   <p><footer>Updated: Scid 3.6.2, December 2006</footer></p>
@@ -5756,6 +5759,9 @@ set helpText(Changelog) {<h1>Scid vs. PC</h1>
 <li>Game Browser has new buttons and functionality</li>
 <li>Tournament Finder is more readable</li>
 <li>Restore PGN scrollbar (pgn option)</li>
+<li>Phalanx now reads enpassant and 50 move field from FEN (thanks Bernhard Prümmer)</li>
+<li>FICs console fg and bg colours are now configurable</li>
+<li>Name Editor tidy up and documentation review</li>
 <li>Player Info: add a 'Refine Filter' result group</li>
 <li>Typing 'OO' castles (previously only 'OK','OQ')</li>
 <li>Mask Search widget fixes</li>
@@ -5765,6 +5771,9 @@ set helpText(Changelog) {<h1>Scid vs. PC</h1>
 <li>Add a 'Game Delete' menu</li>
 <li>Improve ./configure and Makefile, and CC FLAGS are propagated to all targets</li>
 <li>Game Save autocomplete now uses mouse instead of clumsy keyboard bindings</li>
+<li>Restrict Game List sort to valid columns, and add a 'confirm sort' widget for bases > 200000 games</li>
+
+
 </ul>
 <li>MS Windows tweaks:</li>
 <ul>
@@ -5776,7 +5785,7 @@ set helpText(Changelog) {<h1>Scid vs. PC</h1>
 <li>OSX:</li>
 <ul>
 <li>Make an OSX app with a working ;<gt> version of Tcl (thanks Gilles)</li>
-<li>OSX wheelmouse and graphical fixes.</li>
+<li>Many OSX wheelmouse and graphical fixes.</li>
 </ul>
 <li>Bug fixes:</li>
 <ul>
@@ -5792,8 +5801,9 @@ set helpText(Changelog) {<h1>Scid vs. PC</h1>
 <li>Fix 'Paste FEN' castling sanity check</li>
 <li>Browser previously highlighted Next move instead of Current move</li>
 <li>Fix scid.eco unicode bug</li>
-<li>Remove 'newlines' from Mask Search results.</li>
-
+<li>Remove 'newlines' from Mask Search results</li>
+<li>When addAnalysisVariation fails due to bad moves, don't move back N moves</li>
+<li>Theory table incorrectly started from start position</li>
 </ul>
 
 <h4>4.4.1 (May 24, 2011)</h4>
