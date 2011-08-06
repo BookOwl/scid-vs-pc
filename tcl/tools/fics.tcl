@@ -1501,8 +1501,12 @@ namespace eval fics {
     set ::fics::sought 1
     set ::fics::soughtlist {}
     writechan "sought"
+    ### This vwait cause f-ing headaches.
+    # ... so don't update graph if playing
     vwaitTimed ::fics::sought 5000 "nowarn"
-    after 3000 ::fics::updateGraph
+    if {$::fics::playing == 0 && $::fics::graphon } {
+      after 3000 ::fics::updateGraph
+    }
   }
   ################################################################################
   #
