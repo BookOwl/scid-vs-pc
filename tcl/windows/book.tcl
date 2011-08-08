@@ -481,6 +481,9 @@ togglePositionsDisplay
 
     menubutton $w.left.add -text $::tr(AddMove) -menu $w.left.add.otherMoves -indicatoron 1
     menu $w.left.add.otherMoves
+
+    menubutton $w.left.remove -text "$::tr(GlistDeleteField) $::tr(GlistMoveField)" -menu $w.left.remove.otherMoves -indicatoron 1
+    menu $w.left.remove.otherMoves
     
     frame $w.left.space1 -height 60
     dialogbutton $w.left.export -text $::tr(Export) -command ::book::export
@@ -489,7 +492,7 @@ togglePositionsDisplay
     dialogbutton $w.left.help -text $::tr(Help) -command {helpWindow BookTuning}
     dialogbutton $w.left.close -text $::tr(Close) -command "destroy $w"
     
-    pack $w.left.combo $w.left.add $w.left.space1 -side top -padx 5 -pady 3
+    pack $w.left.combo $w.left.add $w.left.remove $w.left.space1 -side top -padx 5 -pady 3
 
     pack $w.left.close $w.left.help $w.left.space2 $w.left.export $w.left.save -side bottom -padx 5 -pady 3
 
@@ -511,9 +514,8 @@ togglePositionsDisplay
     sc_book close $::book::bookTuningSlot
     set ::book::currentTuningBook ""
   }
-  ################################################################################
-  #
-  ################################################################################
+
+
   proc bookTuningSelect {} {
     set w .bookTuningWin
 
@@ -528,30 +530,56 @@ togglePositionsDisplay
     }
     refreshTuning
   }
-  ################################################################################
-  #   add a move to displayed bookmoves
-  ################################################################################
+
+
   proc addBookMove { move } {
     global ::book::bookTuningMoves
-    
+
     if { $::book::isReadonly > 0 } { return }
-    
+
     set w .bookTuningWin
-    set children [winfo children $w.f]
-    set count [expr [llength $children] / 2]
-    label $w.f.m$count -text [::trans $move]
-    bind $w.f.m$count <ButtonPress-1> " ::book::makeBookMove $move"
-    spinbox $w.f.sp$count -from 0 -to 100 -width 3 -font font_Fixed
-    $w.f.sp$count set 0
-    grid $w.f.m$count -row $count -column 0 -sticky w
-    grid $w.f.sp$count -row $count -column 1 -sticky w
+
+    # first check this move doesn't already exists in ::book::bookTuningMoves and has been forgotten
+    set count [lsearch $::book::bookTuningMoves $move]
+    if {$count == -1} {
+      set children [winfo children $w.f]
+      set count [expr [llength $children] / 2]
+
+      label $w.f.m$count -text [::trans $move]
+      bind $w.f.m$count <ButtonPress-1> " ::book::makeBookMove $move"
+      spinbox $w.f.sp$count -from 0 -to 100 -width 3 -font font_Fixed
+      $w.f.sp$count set 0
+      grid $w.f.m$count -row $count -column 0 -sticky e -pady 2
+      grid $w.f.sp$count -row $count -column 1 -sticky w -pady 2
+    } else {
+      $w.f.sp$count set 0
+      grid $w.f.m$count
+      grid $w.f.sp$count
+    }
+
     $w.left.add.otherMoves delete [::trans $move]
+    $w.left.remove.otherMoves add command -label [::trans $move] -command "::book::removeBookMove $move $count"
     lappend ::book::bookTuningMoves $move
   }
 
-  ################################################################################
-  #   updates book display when board changes
-  ################################################################################
+  proc removeBookMove { move row } {
+    global ::book::bookTuningMoves
+
+    if { $::book::isReadonly > 0 } { return }
+
+    set w .bookTuningWin
+
+    ### set probability to -1 and forget from grid
+
+    grid remove $w.f.m$row
+    grid remove $w.f.sp$row
+    $w.f.sp$row set -1
+    $w.left.remove.otherMoves delete [::trans $move]
+    $w.left.add.otherMoves add command -label [::trans $move] -command "::book::addBookMove $move"
+  }
+
+  ### Update book display when board changes
+
   proc refreshTuning {} {
     if { $::book::isReadonly > 0 } { return }
     
@@ -569,6 +597,8 @@ togglePositionsDisplay
       destroy $c
     }
 
+    $w.left.remove.otherMoves delete 0 end
+
     set row 0
     foreach {x y} $moves {
       lappend ::book::bookTuningMoves $x
@@ -580,12 +610,16 @@ togglePositionsDisplay
       $w.f.sp$row set $value
       grid $w.f.m$row  -row $row -column 0 -sticky w -pady 2
       grid $w.f.sp$row -row $row -column 1 -sticky w -pady 2
+
+      $w.left.remove.otherMoves add command -label [::trans $x] -command "::book::removeBookMove $x $row"
+
       incr row
     }
 
-    # load legal moves
+    ### Load legal moves
     $w.left.add.otherMoves delete 0 end
-    $w.left.add.otherMoves add command -label $::tr(None)
+    # $w.left.add.otherMoves add command -label $::tr(None)
+
     set moveList [ sc_pos moves ]
     foreach move $moveList {
       if { [ lsearch  $moves $move ] == -1 } {
@@ -603,14 +637,20 @@ togglePositionsDisplay
     if { $::book::isReadonly > 0 } { return }
 
     set prob {}
+    set bookMoves {}
     set w .bookTuningWin
     set children [winfo children $w.f]
     set count [expr [llength $children] / 2]
     for {set row 0} {$row < $count} {incr row} {
-      lappend prob [$w.f.sp$row get]
+      set t [$w.f.sp$row get]
+      ### removeBookMove pack forgets deleted move, and sets it's probablility to -1
+      if {$t != -1 } {
+        lappend prob $t
+        lappend bookMoves [lindex $::book::bookTuningMoves $row]
+      }
     }
     set tempfile [file join $::scidUserDir tempfile.[pid]]
-    sc_book movesupdate $::book::bookTuningMoves $prob $::book::bookTuningSlot $tempfile
+    sc_book movesupdate $bookMoves $prob $::book::bookTuningSlot $tempfile
     file delete $tempfile
     if {  [ winfo exists .bookWin ] } {
       ::book::refresh
