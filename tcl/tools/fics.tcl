@@ -766,7 +766,7 @@ namespace eval fics {
     variable logged
 
     if {$line == "" || $line == "fics% "} {return}
-
+puts $line
     if { $::fics::sought } {
       if {[string match "* ad* displayed." $line]} {
         set ::fics::sought 0
@@ -1286,6 +1286,7 @@ namespace eval fics {
   #
   ################################################################################
   proc parseStyle12 {line} {
+
     # todo: use little boards for following
     # <12> r-----k- p----ppp ---rq--- --R-p--- -------- ------PP --R--P-- ------K- W -1 0 0 0 0 2 182 stevenaaus DRSlay 1 5 12 13 24 84 28 32 Q/e7-e6 (0:40) Qe6 0 1 77
     set color [lindex $line 9]
@@ -1303,7 +1304,13 @@ namespace eval fics {
     set verbose_move [lindex $line 27]
     set moveTime [lindex $line 28]
     set moveSan [lindex $line 29]
-    set ::fics::playing $relation ; # 1 is players move -1 is opponents move
+    set ::fics::playing $relation
+      # -3 isolated position, such as for "ref 3" or the "sposition" command
+      # -2 I am observing game being examined
+      #  2 I am the examiner of this game
+      # -1 I am playing, it is my opponent's move
+      #  1 I am playing and it is my move
+      #  0 I am observing a game being played
     set ::fics::observedGame $gameNumber
 
     ::gameclock::setSec 1 [ expr 0 - $whiteRemainingTime ]
@@ -1316,6 +1323,8 @@ namespace eval fics {
       ::gameclock::stop 1
     }
 
+    ### Constrct fen from [lrange $line 1 8] lines of the game. Slow!
+    ### r-----k- p----ppp ---rq--- --R-p--- -------- ------PP --R--P-- ------K-
     set fen ""
     for {set i 1} {$i <=8} { incr i} {
       set l [lindex $line $i]
@@ -1327,18 +1336,18 @@ namespace eval fics {
           incr count
         } else {
           if {$count != 0} {
-            set fen "$fen$count"
+            append fen $count
             set count 0
           }
-          set fen "$fen$c"
+          append fen $c
         }
       }
       
-      if {$count != 0} { set fen "$fen$count" }
-      if {$i != 8} { set fen "$fen/" }
+      if {$count != 0} { append fen $count }
+      if {$i != 8} { append fen {/} }
     }
 
-    set fen "$fen [string tolower $color]"
+    append fen " [string tolower $color]"
     set f [lindex $line 10]
 
     # en passant
@@ -1366,7 +1375,7 @@ namespace eval fics {
     if {[lindex $line 14] == "1"} {set castle "${castle}q"}
     if {$castle == ""} {set castle "-"}
 
-    set fen "$fen $castle $enpassant [lindex $line 15] $moveNumber"
+    append fen " $castle $enpassant [lindex $line 15] $moveNumber"
 
     # puts $verbose_move
     # puts $moveSan
@@ -1396,6 +1405,12 @@ namespace eval fics {
     }
 
     if {$fen != [sc_pos fen]} {
+      ### If player makes a move after his time has expired, we end up here. Bad.
+      # error Error reading move(s): Ke6
+      # Debug fen
+      # 6k1/1p6/p3K3/P1p3p1/2Pq1p2/8/8/8 b - - 2 46
+      # 6k1/1p4q1/p3K3/P1p3p1/2P2p2/8/8/8 w - - 3 47
+
       ### Game out of sync, probably due to player takeback request (or opponent take back 2).
       # After player takeback, game gets reconstructed, comments are zeroed. Opponents takeback is handled better elsewhere.
       # Fics doesn't give much warning that take back was succesful, only the uncertain "Takeback request sent."
