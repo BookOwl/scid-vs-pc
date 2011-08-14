@@ -104,7 +104,7 @@ namespace eval sergame {
       set options [lindex $engineData 8]
       set ::uci::autoSaveOptionsIndex $index
       set ::uci::autoSaveOptions 1
-      ::uci::uciConfig 3 [ toAbsPath $cmd ] $args [ toAbsPath $dir ] $options
+      ::uci::uciConfig $index [ toAbsPath $cmd ] $args [ toAbsPath $dir ] $options
     }
     pack $w.fengines.bEngineConfig -side top
 

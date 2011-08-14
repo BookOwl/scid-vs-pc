@@ -603,10 +603,10 @@ proc ::enginelist::edit {index} {
     -command "checkState ::engines(newUCI) $f.bUCI"
   pack $f.rb.uci -side left
   pack $f.rb.xboard -side right
-  button $f.bUCI -text Configure -command {
-    ::uci::uciConfig 2 [toAbsPath $engines(newCmd)] $engines(newArgs) \
-                       [toAbsPath $engines(newDir)] $engines(newUCIoptions)
-  }
+  button $f.bUCI -text Configure -command "
+    ::uci::uciConfig $index \[toAbsPath \$engines(newCmd)\] \$engines(newArgs) \
+                       \[toAbsPath \$engines(newDir)\] \$engines(newUCIoptions)
+  "
   checkState ::engines(newUCI) $f.bUCI
 
   # Mark required fields:

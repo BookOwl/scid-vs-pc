@@ -15,10 +15,6 @@ namespace eval uci {
   set oldOptions ""
   array set check ""
 
-  # autoSaveOptions is only used by sergame.tcl
-  set autoSaveOptions 0 ; # UCI options are saved as soon as the options dialog is closed
-  set autoSaveOptionsIndex -1
-
   # The list of token that comes with info
   set infoToken { depth seldepth time nodes pv multipv score cp mate lowerbound upperbound \
         currmove currmovenumber hashfull nps tbhits sbhits cpuload string refutation currline }
@@ -322,28 +318,10 @@ namespace eval uci {
       updateAnalysisText $n
     }
   }
-  ################################################################################
-  #
-  ################################################################################
-  proc readUCI { n } {
-    global ::uci::uciOptions
 
-    set line [string trim [gets $::uci::uciInfo(pipe$n)] ]
-    # end of options
-    if {$line == "uciok"} {
-      # we got all options, stop engine
-      closeUCIengine $n 1
-      uciConfigWin
-    }
-    # get options
-    if { [string first "option name" $line] == 0 } {
-      lappend uciOptions $line
-    }
-  }
-  ################################################################################
-  # build a dialog with UCI options published by the engine
-  # and available in analysis(uciOptions)
-  ################################################################################
+  ### Open the pipe and issue 'uci'
+  ### Pipe is read by readUCI, which then inits uciConfigWin after options have been read
+
   proc uciConfig { n cmd arg dir options } {
     global ::uci::uciOptions ::uci::oldOptions
 
@@ -393,10 +371,27 @@ namespace eval uci {
     after 5000  "::uci::closeUCIengine $n 0"
   }
 
-  ################################################################################
-  #   builds the dialog for UCI engine configuration
-  ################################################################################
-  proc uciConfigWin {} {
+  ### Only used by uciConfig to gather options info for uciConfigWin
+
+  proc readUCI { n } {
+    global ::uci::uciOptions
+
+    set line [string trim [gets $::uci::uciInfo(pipe$n)] ]
+    # end of options
+    if {$line == "uciok"} {
+      # we got all options, stop engine
+      closeUCIengine $n 1
+      uciConfigWin $n
+    }
+    # get options
+    if { [string first "option name" $line] == 0 } {
+      lappend uciOptions $line
+    }
+  }
+
+  ### Builds the dialog for UCI engine configuration 
+
+  proc uciConfigWin {n} {
     global ::uci::uciOptions ::uci::optList ::uci::optionToken ::uci::oldOptions ::uci::optionImportant
 
     set w .uciConfigWin
@@ -604,10 +599,11 @@ namespace eval uci {
       incr optnbr
     }
 
-    button $w.fbuttons.save -text $::tr(Save) -command {
-      ::uci::saveConfig
+    button $w.fbuttons.save -text $::tr(Save) -command "
+      ::uci::saveConfig $n
       destroy .uciConfigWin
-    }
+    "
+
     button $w.fbuttons.cancel -text $::tr(Cancel) -command "destroy .uciConfigWin"
     pack $w.fbuttons.save $w.fbuttons.cancel -side left -expand yes -fill both -padx 20 -pady 2
     pack $w.fopt
@@ -617,10 +613,11 @@ namespace eval uci {
     bind $w <Escape> "destroy .uciConfigWin"
     catch {grab .uciConfigWin}
   }
-  ################################################################################
-  # will generate a list of list {{name}/value} pairs
-  ################################################################################
-  proc saveConfig {} {
+
+  ### UCI configuration (uciConfigWin) is finished
+  ### Generate a list of list {{name}/value} pairs and save the new ::engines(list) to file engines.dat
+
+  proc saveConfig {n} {
     global ::uci::optList ::uci::newOptions
 
     set newOptions {}
@@ -644,24 +641,18 @@ namespace eval uci {
 
     # Make engine config widget remember these options
     set ::engines(newUCIoptions) $::uci::newOptions
+    # Is the above line still necessary ?
 
-    # Only used by sergame.tcl
-    if { $::uci::autoSaveOptions } {
-      writeOptions
-      set ::uci::autoSaveOptions 0
-    }
-  }
-  ################################################################################
-  # If the config window is called outside the engine dialog, save UCI options
-  # (only the UCI options dialog box is called
-  ################################################################################
-  proc writeOptions {} {
-    set elt [lindex $::engines(list) $::uci::autoSaveOptionsIndex]
-    set elt [ lreplace $elt 8 8 $::uci::newOptions]
-    set ::engines(list) [lreplace $::engines(list) $::uci::autoSaveOptionsIndex $::uci::autoSaveOptionsIndex $elt]
+    ### Automatically save these options since "Save" has been pressed
+    ### Previously it was only done when user "OK"ed the parent widget, or via sergame.tcl
+
+    set enginedata [lindex $::engines(list) $n]
+    set enginedata [lreplace $enginedata 8 8 $::uci::newOptions]
+    set ::engines(list) [lreplace $::engines(list) $n $n $enginedata]
 
     ::enginelist::write
-  }
+}
+
   ################################################################################
   # The engine replied readyok, so it's time to configure it (sends the options to the engine)
   # It seems necessary to ask first if engine is ready
