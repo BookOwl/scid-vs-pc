@@ -70,8 +70,8 @@ proc confirmCloseEpd {id} {
   storeEpdText $id
   if {[sc_epd altered $id]  &&  ! [sc_epd readonly $id]} {
     set result [tk_dialog .dialog "Save changes?" \
-        "This file has been altered; do you want to save it?" \
-        "" 0 "Save changes" "Close without saving" "Cancel"]
+        "This file has been altered" \
+        "" 0 "Save Changes" Exit $::tr(Cancel)]
     if {$result == 2} { return }
     if {$result == 0} { sc_epd write $id }
   }
@@ -132,9 +132,13 @@ proc newEpdWin {cmd {fname ""}} {
       set fname [tk_getSaveFile -initialdir $::initialDir(epd) -filetypes $new_types -title "Create an EPD file"]
     } elseif {$cmd == "open"} {
       set fname [tk_getOpenFile -initialdir $::initialDir(epd) -filetypes $open_types -title "Open an EPD file"]
-    } else { return 0 }
+    } else {
+      return 0
+    }
   }
-  if {$fname == ""} { return 0 }
+  if {$fname == ""} {
+    return 0
+  }
 
   busyCursor . 1
   if {[catch {sc_epd $cmd $fname} result]} {
@@ -150,7 +154,12 @@ proc newEpdWin {cmd {fname ""}} {
   # id is 1 for first epd window, 2 for second...
   set id $result
   set w .epd$id
+
   toplevel $w
+  wm withdraw $w
+  setWinLocation $w
+  setWinSize $w
+
   wm title $w "Scid EPD: [file tail $fname]"
   wm minsize $w 40 1
   bind $w <Destroy> "closeEpdWin $id"
@@ -159,7 +168,13 @@ proc newEpdWin {cmd {fname ""}} {
   frame $w.grid
   text $w.text  -font font_Regular -width 60 -height 7 \
       -wrap none -setgrid 1 -yscrollcommand "$w.ybar set" \
-      -xscrollcommand "$w.xbar set"
+      -xscrollcommand "$w.xbar set" -undo 1
+
+  bind $w.text <Control-a> "$w.text tag add sel 0.0 end-1c ; break"
+  bind $w.text <Control-z> "catch \"$w.text edit undo\" ; break"
+  bind $w.text <Control-y> "catch \"$w.text edit redo\" ; break"
+  bind $w.text <Control-r> "catch \"$w.text edit redo\" ; break"
+
   scrollbar $w.ybar -takefocus 0 -command "$w.text yview"
   scrollbar $w.xbar -orient horizontal -takefocus 0 -command "$w.text xview"
   label $w.status -width 1 -anchor w -font font_Small -relief sunken
@@ -198,6 +213,7 @@ proc newEpdWin {cmd {fname ""}} {
   $m add command -label "Close" -acc "Ctrl+Q" -underline 0 \
       -command "confirmCloseEpd $id"
   bind $w <Control-q> "confirmCloseEpd $id"
+  wm protocol $w WM_DELETE_WINDOW "confirmCloseEpd $id"
 
   set m $w.menu.edit.m
   $m add command -label "Cut" -acc "Ctrl+X" -underline 2 -command "tk_textCut $w.text"
@@ -217,29 +233,20 @@ proc newEpdWin {cmd {fname ""}} {
       -underline 0 -command "epd_sortLines $w.text"
   bind $w <Control-S> "epd_sortLines $w.text; break"
 
-  set m $w.menu.tools.m
-  $m add command -label "Find Deepest game position" \
-      -underline 5 -command "epd_MoveToDeepestMatch $id"
-  $m add separator
-  $m add command -label "Next position in file" \
-      -accelerator "Ctrl+DownArrow" -underline 0 -command "nextEpd $id"
   bind $w <Control-Down> "nextEpd $id ; break"
-  $m add command -label "Previous position in file" \
-      -accelerator "Ctrl+UpArrow" -underline 0  -command "prevEpd $id"
   bind $w <Control-Up> "prevEpd $id; break"
-  $m add separator
-  $m add command -label "Paste analysis" -accelerator "Ctrl+Shift+A" \
+
+  set m $w.menu.tools.m
+
+  $m add command -label "Paste Analysis" -accelerator "Ctrl+Shift+A" \
       -underline 6 -command "epd_pasteAnalysis $w.text"
   bind $w <Control-A> "epd_pasteAnalysis $w.text; break"
-  $m add command -label "Annotate positions" -command "epd_Analyse $w.text $id"
-  $m add separator
-  $m add command -label "Strip out EPD field" -underline 0 \
-      -command "epd_chooseStripField $id"
+  $m add command -label "Annotate Positions" -command "epd_Analyse $w.text $id"
+  $m add command -label "Strip EPD field" -underline 0 -command "epd_chooseStripField $id"
+  $m add command -label "Find Deepest Game Position" -underline 5 -command "epd_MoveToDeepestMatch $id"
 
-  $w.menu.help.m add command -label "EPD files help" -underline 0 \
-      -acc "F1" -command "helpWindow EPD"
-  $w.menu.help.m add command -label "General index" -underline 0 \
-      -command "helpWindow Index"
+  $w.menu.help.m add command -label "EPD Help" -underline 0 -acc "F1" -command "helpWindow EPD"
+  $w.menu.help.m add command -label Index -underline 0 -command "helpWindow Index"
 
   pack $w.status -side bottom -fill x
   pack $w.grid -fill both -expand yes
@@ -251,6 +258,7 @@ proc newEpdWin {cmd {fname ""}} {
   grid $w.xbar2 -in $w.grid -row 3 -column 0 -sticky news
 
   grid rowconfig $w.grid 0 -weight 1 -minsize 0
+  grid rowconfig $w.grid 2 -weight 2 -minsize 0
   grid columnconfig $w.grid 0 -weight 1 -minsize 0
 
   # Right-mouse button cut/copy/paste menu:
@@ -266,16 +274,20 @@ proc newEpdWin {cmd {fname ""}} {
 
   bind $w.lb <<ListboxSelect>> "refreshEpd $id"
 
+  bind $w <Configure> "recordWinSize $w"
+  wm state $w normal
+
   return 1
 }
-################################################################################
-#
-################################################################################
+
 proc refreshEpd { id } {
   set w .epd$id
   set idx [ expr [$w.lb curselection] +1 ]
-  sc_epd load $id $::selection($id) $idx
-  set ::selection($id) $idx
+  # This fails if it's a new epd file without entries, so catch it
+  catch {
+    sc_epd load $id $::selection($id) $idx
+    set ::selection($id) $idx
+  }
   updateBoard -pgn
 }
 
@@ -324,7 +336,11 @@ proc loadEpdLines { id } {
     set line [sc_epd get $id]
     set line [string map {"\n" "; "} $line]
     set fen [string range [sc_pos fen] 0 end-4]
-    $w.lb insert end "$i $fen $line"
+
+    ### Simplify the listbox display. The additional information is displayed on it's own anyway.
+    ### Any issues ?
+    # $w.lb insert end "$i $fen $line"
+    $w.lb insert end "$i    $fen"
   }
   $w.lb selection set 0
   if {! [catch {sc_epd load $id $size 1} ]} {
@@ -360,13 +376,18 @@ proc epd_Analyse { textwidget id } {
 
   # choose analysis time
   set y .epdDelay
+
   toplevel $y
   wm title $y "Scid EPD"
+  placeWinOverParent $y .epd$id
+
   label $y.label -text $::tr(AnnotateTime:)
   pack $y.label -side top -pady 5 -padx 5
   spinbox $y.spDelay  -width 8 -textvariable ::delayEpd -from 1 -to 300 -increment 1 -validate all -vcmd { regexp {^[0-9]+$} %P }
   pack $y.spDelay -side top -pady 5
-  button $y.ok -text "OK" -command "destroy $y ; epd_LaunchAnalysis $id $textwidget"
+  dialogbutton $y.ok -text "OK" -command "
+    destroy $y
+    epd_LaunchAnalysis $id $textwidget"
   pack $y.ok -side right -padx 5 -pady 5
   focus $y.spDelay
   update ; # or grab will fail
@@ -415,13 +436,25 @@ proc epd_LaunchAnalysis {id textwidget} {
 proc epd_pasteAnalysis {textwidget} {
   global analysis
   if {! [winfo exists $textwidget]} { return }
-  if {! [winfo exists .analysisWin1]} { return }
-  $textwidget insert insert "acd $analysis(depth1)\n"
-  $textwidget insert insert "acn $analysis(nodes1)\n"
-  set ce [expr {int($analysis(score1) * 100)} ]
+
+  set win 0
+  # find an open analysis window
+  for {set i 1} {$i <= [llength $::engines(list)]} {incr i} {
+    if {[winfo exists .analysisWin$i]} {
+      set win $i
+      break
+    }
+  }
+  if {!$win} {
+    return
+  }
+
+  $textwidget insert insert "acd $analysis(depth$win)\n"
+  $textwidget insert insert "acn $analysis(nodes$win)\n"
+  set ce [expr {int($analysis(score$win) * 100)} ]
   if {[sc_pos side] == "black"} { set ce [expr {0 - $ce} ] }
   $textwidget insert insert "ce $ce\n"
-  $textwidget insert insert "pv $analysis(moves1)\n"
+  $textwidget insert insert "pv $analysis(moves$win)\n"
 }
 
 set epd_stripField ""
@@ -433,6 +466,7 @@ proc epd_chooseStripField {id} {
   if {! [winfo exists .epd$id]} { return }
   set w [toplevel .epdStrip]
   wm title $w "Scid: Strip EPD field"
+  placeWinOverParent $w .epd$id
   wm resizable $w false false
   label $w.label -text "Enter the name of the EPD field you want\n\
       removed from all positions in this file:"
@@ -455,14 +489,14 @@ proc epd_chooseStripField {id} {
 ################################################################################
 proc epd_stripEpdField {id field} {
   if {! [winfo exists .epdStrip]} { return }
-  if {! [string compare $field ""]} { beep; return }
+  if {! [string compare $field ""]} { return }
   set result [sc_epd strip $id $field]
   updateEpdWin $id
+  destroy .epdStrip
+  update
   tk_messageBox -type ok -icon info -title "Scid: EPD field stripped" \
       -message "Scid found and stripped an EPD field named \"$field\" from\
-      $result positions."
-  focus .epd$id
-  destroy .epdStrip
+      $result positions." -parent  .epd$id
 }
 ################################################################################
 #

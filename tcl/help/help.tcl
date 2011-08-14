@@ -276,9 +276,10 @@ set helpText(Index) {<h1>Scid Help Index</h1>
   <li><a Analysis>Engines, Chess</a></li>
   <li><a Analysis List>Engines</a> - configuring</li>
   <li><a Analysis Debugging>Engines</a> - debugging</li>
-  <li><a Moves>Entering moves</a></li>
-  <li><a EPD>EPD files</a></li>
-  <li><a Export>Exporting games</a></li>
+  <li><a Moves>Entering Moves</a></li>
+  <li><a EPD>EPD Files</a></li>
+  <li><a EPD opcodes>EPD Opcodes</a></li>
+  <li><a Export>Exporting Games</a></li>
   </ul>
 
   <h3><name F>F</name></h3>
@@ -2910,21 +2911,64 @@ set helpText(CalVar) {<h1>The Calculation of Variation Window</h1>
 set helpTitle(EPD) "EPD files"
 set helpText(EPD) {<h1>EPD Files</h1>
   <p>
-  An EPD (extended position description) file is a collection of positions,
-  where each position has some associated text. Like <a PGN>PGN</a>, it
-  is a common standard for chess information.
+  An <b>Extended Position Description</b> file is a text file with chess positions;
+  each having some associated text.
+  <br>
+  Like <a PGN>PGN</a>, it is a common standard for chess information.
   </p>
   <p>
-  An EPD file has a number of defined <term>opcodes</term> (fields)
-  which are stored separated by semicolons (<b>;</b>) in the file
-  but are shown on separate lines in a Scid EPD window to make editing easier.
-  A semicolon within an EPD field is stored as "<b>\s</b>" by Scid to
-  distinguish it from an end-of-field marker.
-  Each position and its associated opcodes are stored on one single line
-  in the EPD file.
+  EPD files contain <a EPD opcodes>Opcodes</a> , or fields, which are separated by semicolons in the file,
+  but shown on separate lines in Scid's EPD Window.
+  (Semicolons within an EPD field are stored as "<b>\s</b>" to distinguish them from end-of-field markers).
+  They have a number of uses. Scid uses an EPD file to classify
+  games according to the <a ECO>ECO</a> system, and you can create an EPD file for your opening repertoire,
+  adding comments for positions you regularly reach in games [Feature removed].
   </p>
   <p>
-  Standard EPD opcodes include:
+  At most four EPD files can be open at any time.
+  </p>
+
+  <h3>Navigating EPD files</h3>
+  <p>
+  To browse the positions in an EPD file, use  the <b>Control+Down</b>,
+  <b>Control+Up</b>, <b>Control+Home</b> or <b>Control+End</b> keys.
+  These commands move to the next/previous position in the file, clearing
+  the current game and setting its start position.
+  </p>
+
+  <h3>Annotating</h3>
+  <p>
+  EPD files can be automatically annotated by the <b>Tools--<gt>Annotate Positions</b> menu.
+  A dialogue will ask for the Analysis Time 
+  , and the first analysis engine will start.
+  The EPD tags used are <b>acd</b>, <b>acn</b>, <b>ce</b> and <b>pv</b>.
+  </p>
+
+  <h3>Stripping out EPD fields</h3>
+  <p>
+  EPD files you find on the Internet may contain fields that do not
+  interest you, and they can waste a lot of space in the file.
+  For example, an EPD file of computer evaluations might have ce, acd,
+  acn, pm, pv and id fields but you may only need the ce and pv fields.
+  </p>
+  <p>
+  You can strip out an EPD opcode from all positions in the EPD file using
+  the <b>Tools--<gt>Strip out EPD field</b> menu.
+  </p>
+
+  <h3>The EPD window status bar</h3>
+  <p>
+  The status bar of each EPD window shows:
+  <ul>
+  <li>- the file status (<b>--</b> means unchanged, <b>XX</b> means
+  changed, and <b>%%</b> means read-only); </li>
+  <li>- the file name; </li>
+  <li>- the number of positions in the file; </li>
+  <li>- legal moves from the current position reach another position
+  in this EPD file.</li>
+  </ul>
+
+  <h3><name opcodes>Standard EPD Opcodes</name></h3>
   <ul>
   <li> <b>acd</b> Analysis count: depth searched.</li>
   <li> <b>acn</b> Analysis count: number of nodes searched.</li>
@@ -2942,75 +2986,7 @@ set helpText(EPD) {<h1>EPD Files</h1>
   <li> <b>pv</b> Predicted variation: the line of best play.</li>
   </ul>
 
-  <p>
-  EPD files have a number of uses: Scid uses an EPD file to classify
-  games according to the <a ECO>Encyclopedia of Chess Openings</a> (ECO)
-  system, and you can create an EPD file for your opening repertoire,
-  adding comments for positions you regularly reach in games (removed).
-  </p>
-  <p>
-  You can create a new EPD file or open an existing one, from the
-  <menu>New</menu> and <menu>Open</menu> commands of the
-  <menu>File</menu> menu. At most four EPD files can be open at any time.
-  </p>
-
-  <h3>EPD windows</h3>
-  <p>
-  For each open EPD file, you will see a window which shows the text for
-  the current position. You do not have to press the Store button to store
-  any changes you make to a positions text; the text will be stored whenever
-  you move to a different position in the game.
-  </p>
-
-  <h3>Navigating EPD files</h3>
-  <p>
-  To browse through the positions in a EPD file, use the
-  <menu>Next position</menu> and <menu>Previous position</menu> commands
-  from the EPD window <menu>Tools</menu> menu, or use the shortcut
-  keys <b>Ctrl+DownArrow</b> and <b>Ctrl+UpArrow</b>.
-  These commands move to the next/previous position in the file, clearing
-  the current game and setting its start position.
-  </p>
-
-  <h3>Annotating</h3>
-  <p>
-  EPD-files can be automatically annotated by selecting Tools /
-  Annotate position. The upcoming dialogue asks for the time that
-  should be used for the analysis, then the <a Analysis List>engine
-  list</a> is opened for selection of an engine to be used. <b>Note</b> If an
-  analysis window is already opened, the analysis is done using this
-  engine without asking the user beforehand. Then the engine is
-  started and the result added to the EPD. The EPD tags used are :
-  acd, acn, ce and pv.
-  </p>
-  <p>
-
-  <h3>Stripping out EPD fields</h3>
-  <p>
-  EPD files you find on the Internet may contain fields that do not
-  interest you, and they can waste a lot of space in the file.
-  For example, an EPD file of computer evaluations might have ce, acd,
-  acn, pm, pv and id fields but you may only need the ce and pv fields.
-  </p>
-  <p>
-  You can strip out an EPD opcode from all positions in the EPD file using
-  the <menu>Strip out EPD field</menu> from the EPD window <menu>Tools</menu>
-  menu.
-  </p>
-
-  <h3>The EPD window status bar</h3>
-  <p>
-  The status bar of each EPD window shows:
-  <ul>
-  <li>- the file status (<b>--</b> means unchanged, <b>XX</b> means
-  changed, and <b>%%</b> means read-only); </li>
-  <li>- the file name; </li>
-  <li>- the number of positions in the file; </li>
-  <li>- legal moves from the current position reach another position
-  in this EPD file.</li>
-  </ul>
-
-  <p><footer>Updated: Scid 3.6.26, October 2008</footer></p>
+  <p><footer>Updated: Scid vs. PC 4.6, August 2011</footer></p>
 }
 
 set helpTitle(Email) "Email window"
