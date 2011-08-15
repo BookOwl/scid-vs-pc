@@ -674,6 +674,16 @@ namespace eval uci {
   # will start an engine for playing (not analysis)
   ################################################################################
   proc startEngine {index n} {
+    # todo : sort out bugs.
+    # index and n are not both necessary !??
+    # startEngine called by tcl/tools/uci.tcl tcl/tools/calvar.tcl tcl/tools/sergame.tcl tcl/tools/tactics.tcl tcl/tools/tacgame.tcl
+    # $index is only used a couple of places.
+
+    # To verify bug:
+    # Start engine number 2
+    # Play tacgame.
+    # See engine #2 becomes toga!
+
     global ::uci::uciInfo
     resetUciInfo $n
     set uciInfo(pipe$n) ""
