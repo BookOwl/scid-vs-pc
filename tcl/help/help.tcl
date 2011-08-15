@@ -145,7 +145,7 @@ set helpText(Scid) {<h1>Databases and General Use</h1>
   chess games, perform searches, view best lines, and other
   statistics.</i></p>
   <p>
-  Databases are implemented via a fast <a Formats>three file format</a>, and populated by <a importing PGN archives or other databases using the <a Clipbase>Clipbase</a> as a cut and paste tool.
+  Databases are implemented via a fast <a Formats>three file format</a>, and populated by importing PGN archives or other databases using the <a Clipbase>Clipbase</a> as a cut and paste tool.
   </p>
 
   <h4>Starting Out</h4>
