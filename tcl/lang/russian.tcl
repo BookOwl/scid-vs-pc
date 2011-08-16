@@ -1834,6 +1834,34 @@ translate R KingsIndianSamisch {King's Indian S?misch}
 translate R KingsIndianMainLine {King's Indian Main Line}
 # ====== TODO To be translated ======
 
+# FICS todo
+translate R ConfigureFics {Configure FICS}
+translate R FICSLogin {Login}
+translate R FICSGuest {Login as Guest}
+translate R FICSServerPort {Server port}
+translate R FICSServerAddress {IP Address}
+translate R FICSRefresh {Refresh}
+translate R FICSTimeseal {Timeseal}
+translate R FICSTimesealPort {Timeseal port}
+translate R FICSSilence {Console filter}
+translate R FICSOffers {Offers}
+translate R FICSGames {Games}
+translate R FICSFindOpponent {Find opponent}
+translate R FICSTakeback {Takeback}
+translate R FICSTakeback2 {Takeback 2}
+translate R FICSInitTime {Time (min)}
+translate R FICSIncrement {Increment (sec)}
+translate R FICSRatedGame {Rated Game}
+translate R FICSAutoColour {Automatic}
+translate R FICSManualConfirm {Confirm manually}
+translate R FICSFilterFormula {Filter with formula}
+translate R FICSIssueSeek {Issue seek}
+translate R FICSAccept {Accept}
+translate R FICSDecline {Decline}
+translate R FICSColour {Colour}
+translate R FICSSend {Send}
+translate R FICSConnect {Connect}
+
 translate R CCDlgConfigureWindowTitle {Configure Correspondence Chess}
 # ====== TODO To be translated ======
 translate R CCDlgCGeneraloptions {General Options}

@@ -1766,6 +1766,39 @@ translate N KingsIndianSamisch {Koningsindisch Sämisch}
 translate N KingsIndianMainLine {Koningsindisch Hoofdvariant}
 # ====== TODO To be translated ======
 
+translate N ConfigureFics {Configureer FICS}
+translate N FICSGuest {Login als Gast}
+translate N FICSServerPort {Server poort}
+translate N FICSServerAddress {IP Addres}
+translate N FICSRefresh {Ververs}
+translate N FICSTimesealPort {Tijdsoverschrijdingspoort}
+translate N FICSSilence {Stilte}
+translate N FICSOffers {Biedt aan}
+translate N FICSConsole {Console}
+translate N FICSGames {Partiejen}
+translate N FICSUnobserve {Stop gadeslaan partij}
+translate N FICSProfile {Toon jouw geschiedenis en profiel}
+translate N FICSRelayedGames {Doorgezonden partijen}
+translate N FICSFindOpponent {Zoek opponent}
+translate N FICSTakeback {Terugnemen}
+translate N FICSTakeback2 {Terugnemen 2}
+translate N FICSInitTime {Initiële tijd (min)}
+translate N FICSIncrement {Toename (sec)}
+translate N FICSRatedGame {De Betreffende Partij}
+translate N FICSAutoColour {Automatisch}
+translate N FICSManualConfirm {Bevestig manueel}
+translate N FICSFilterFormula {Filter met fromule}
+translate N FICSIssueSeek {Zoek uitdager}
+translate N FICSChallenge {Uitdagen}
+translate N FICSAccept {Aanvaard}
+translate N FICSDecline {weiger}
+translate N FICSColour {Kleur}
+translate N FICSSend {Zend}
+translate N FICSConnect {Verbind}
+translate N FICSdefaultuservars {Gebruik standaard waarden}
+translate N FICSObserveconfirm {Wil je de partij gadeslaan}
+
+
 translate N CCDlgConfigureWindowTitle {Configureer Correspondentie Schaak}
 translate N CCDlgCGeneraloptions {Algemene Opties}
 translate N CCDlgDefaultDB {Default Databank:}

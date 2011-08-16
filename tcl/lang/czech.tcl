@@ -1772,6 +1772,45 @@ translate C KingsIndianSamisch {King's Indian Sämisch}
 # ====== TODO To be translated ======
 translate C KingsIndianMainLine {King's Indian Main Line}
 # ====== TODO To be translated ======
+
+translate C ConfigureFics {Konfigurovat FICS}
+translate C FICSGuest {Pøihlásit jako host}
+translate C FICSServerPort {Port serveru}
+translate C FICSServerAddress {IP adresa}
+translate C FICSRefresh {Obnovit}
+translate C FICSTimesealPort {Port timesealu}
+translate C FICSSilence {Ticho}
+translate C FICSOffers {Nabídky}
+translate C FICSConsole {Konzola}
+translate C FICSGames {Hry}
+translate C FICSUnobserve {Ukonèit sledování partie}
+translate C FICSProfile {Zobrazit va¹i historii a profil}
+# ====== TODO To be translated ======
+translate C FICSRelayedGames {Relayed games}
+translate C FICSFindOpponent {Najít soupeøe}
+translate C FICSTakeback {Vrátit tah}
+translate C FICSTakeback2 {Vrátit tah 2}
+translate C FICSInitTime {Poèáteèní èas (min)}
+translate C FICSIncrement {Inkrement (s)}
+translate C FICSRatedGame {Partie zapoèítaná do ratingu}
+translate C FICSAutoColour {automatické}
+translate C FICSManualConfirm {potvrdit ruènì}
+translate C FICSFilterFormula {Filtrovat formulí}
+# ====== TODO To be translated ======
+translate C FICSIssueSeek {Issue seek}
+# ====== TODO To be translated ======
+translate C FICSChallenge {Challenge}
+# ====== TODO To be translated ======
+translate C FICSAccept {accept}
+# ====== TODO To be translated ======
+translate C FICSDecline {decline}
+translate C FICSColour {Barva}
+# ====== TODO To be translated ======
+translate C FICSSend {send}
+translate C FICSConnect {Pøipojit}
+translate C FICSdefaultuservars {Pou¾ít výchozí promìnné}
+translate C FICSObserveconfirm {Chcete sledovat partii}
+
 translate C CCDlgConfigureWindowTitle {Konfigurovat korespondenèní ¹ach}
 translate C CCDlgCGeneraloptions {Obecná nastavení}
 translate C CCDlgDefaultDB {Výchozí databáze:}

@@ -1498,6 +1498,34 @@ translate E KingsIndian {King's Indian}
 translate E KingsIndianSamisch {King's Indian Sämisch}
 translate E KingsIndianMainLine {King's Indian Main Line}
 
+# FICS
+translate E ConfigureFics {Configure FICS}
+translate E FICSLogin {Login}
+translate E FICSGuest {Login as Guest}
+translate E FICSServerPort {Server port}
+translate E FICSServerAddress {IP Address}
+translate E FICSRefresh {Refresh}
+translate E FICSTimeseal {Timeseal}
+translate E FICSTimesealPort {Timeseal port}
+translate E FICSSilence {Console filter}
+translate E FICSOffers {Offers}
+translate E FICSGames {Games}
+translate E FICSFindOpponent {Find opponent}
+translate E FICSTakeback {Takeback}
+translate E FICSTakeback2 {Takeback 2}
+translate E FICSInitTime {Time (min)}
+translate E FICSIncrement {Increment (sec)}
+translate E FICSRatedGame {Rated Game}
+translate E FICSAutoColour {Automatic}
+translate E FICSManualConfirm {Confirm manually}
+translate E FICSFilterFormula {Filter with formula}
+translate E FICSIssueSeek {Issue seek}
+translate E FICSAccept {Accept}
+translate E FICSDecline {Decline}
+translate E FICSColour {Colour}
+translate E FICSSend {Send}
+translate E FICSConnect {Connect}
+
 # Correspondence Chess Dialogs:
 translate E CCDlgConfigureWindowTitle {Configure Correspondence Chess}
 translate E CCDlgCGeneraloptions {General Options}
@@ -1555,11 +1583,11 @@ translate E CCSendBtn {Send move}
 translate E CCEmptyBtn {Empty In- and Outbox}
 translate E CCHelpBtn {Help on icons and status indicators.\nFor general Help press F1!}
 
-translate E CCDlgServerName {Server Name:}
-translate E CCDlgLoginName  {Login Name:}
-translate E CCDlgPassword   {Password:}
-translate E CCDlgURL        {Xfcc-URL:}
-translate E CCDlgRatingType {Rating Type:}
+translate E CCDlgServerName {Server Name}
+translate E CCDlgLoginName  {Login Name}
+translate E CCDlgPassword   {Password}
+translate E CCDlgURL        {Xfcc-URL}
+translate E CCDlgRatingType {Rating Type}
 
 translate E CCDlgDuplicateGame {Non-unique game ID}
 translate E CCDlgDuplicateGameError {This game exists more than once in your database. Please delete all duplicates and compact your game file (File/Maintenance/Compact Database).}

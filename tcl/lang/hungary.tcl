@@ -1768,6 +1768,47 @@ translate H KingsIndianSamisch {King's Indian Sämisch}
 translate H KingsIndianMainLine {King's Indian Main Line}
 # ====== TODO To be translated ======
 
+translate H ConfigureFics {FICS beállítása}
+translate H FICSGuest {Belépés vendégként}
+translate H FICSServerPort {Szerverport}
+# ====== TODO To be translated ======
+translate H FICSServerAddress {IP Address}
+# ====== TODO To be translated ======
+translate H FICSRefresh {Refresh}
+translate H FICSTimesealPort {Idõbélyegport}
+translate H FICSSilence {Csend}
+translate H FICSOffers {Ajánlatok}
+# ====== TODO To be translated ======
+translate H FICSConsole {Console}
+translate H FICSGames {Játszmák}
+# ====== TODO To be translated ======
+translate H FICSUnobserve {Stop observing game}
+# ====== TODO To be translated ======
+translate H FICSProfile {Display your history and profile}
+# ====== TODO To be translated ======
+translate H FICSRelayedGames {Relayed games}
+translate H FICSFindOpponent {Ellenfélkeresõ}
+translate H FICSTakeback {Visszavétel}
+translate H FICSTakeback2 {Visszavétel 2}
+translate H FICSInitTime {Kezdeti idõ (perc)}
+translate H FICSIncrement {Növekmény (másodperc)}
+translate H FICSRatedGame {Éles játszma}
+translate H FICSAutoColour {automatikus}
+translate H FICSManualConfirm {kézi megerõsítés}
+translate H FICSFilterFormula {Szûrõformula}
+translate H FICSIssueSeek {Keresés}
+translate H FICSChallenge {Kihívás}
+translate H FICSAccept {elfogad}
+translate H FICSDecline {elutasít}
+translate H FICSColour {Szín}
+translate H FICSSend {küld}
+translate H FICSConnect {Csatlakozás}
+# ====== TODO To be translated ======
+translate H FICSdefaultuservars {Use default variables}
+# ====== TODO To be translated ======
+translate H FICSObserveconfirm {Do you want to observe game}
+
+
 translate H CCDlgConfigureWindowTitle {Levelezési sakk beállításai}
 translate H CCDlgCGeneraloptions {Általános lehetõségek}
 translate H CCDlgDefaultDB {Alapértelmezésû adatbázis:}

@@ -1808,6 +1808,34 @@ translate W KingsIndianSamisch {Kungsindiskt Sämisch}
 translate W KingsIndianMainLine {Kungsindiskt Huvudvariation}
 # ====== TODO To be translated ======
 
+# FICS todo
+translate W ConfigureFics {Configure FICS}
+translate W FICSLogin {Login}
+translate W FICSGuest {Login as Guest}
+translate W FICSServerPort {Server port}
+translate W FICSServerAddress {IP Address}
+translate W FICSRefresh {Refresh}
+translate W FICSTimeseal {Timeseal}
+translate W FICSTimesealPort {Timeseal port}
+translate W FICSSilence {Console filter}
+translate W FICSOffers {Offers}
+translate W FICSGames {Games}
+translate W FICSFindOpponent {Find opponent}
+translate W FICSTakeback {Takeback}
+translate W FICSTakeback2 {Takeback 2}
+translate W FICSInitTime {Time (min)}
+translate W FICSIncrement {Increment (sec)}
+translate W FICSRatedGame {Rated Game}
+translate W FICSAutoColour {Automatic}
+translate W FICSManualConfirm {Confirm manually}
+translate W FICSFilterFormula {Filter with formula}
+translate W FICSIssueSeek {Issue seek}
+translate W FICSAccept {Accept}
+translate W FICSDecline {Decline}
+translate W FICSColour {Colour}
+translate W FICSSend {Send}
+translate W FICSConnect {Connect}
+
 translate W CCDlgConfigureWindowTitle {Konfigurera Korrespondensschack}
 # ====== TODO To be translated ======
 translate W CCDlgCGeneraloptions {Generella inställningar}

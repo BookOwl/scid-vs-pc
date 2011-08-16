@@ -1812,6 +1812,34 @@ translate P KingsIndianSamisch {King's Indian Sämisch}
 translate P KingsIndianMainLine {King's Indian Main Line}
 # ====== TODO To be translated ======
 
+# FICS todo
+translate P ConfigureFics {Configure FICS}
+translate P FICSLogin {Login}
+translate P FICSGuest {Login as Guest}
+translate P FICSServerPort {Server port}
+translate P FICSServerAddress {IP Address}
+translate P FICSRefresh {Refresh}
+translate P FICSTimeseal {Timeseal}
+translate P FICSTimesealPort {Timeseal port}
+translate P FICSSilence {Console filter}
+translate P FICSOffers {Offers}
+translate P FICSGames {Games}
+translate P FICSFindOpponent {Find opponent}
+translate P FICSTakeback {Takeback}
+translate P FICSTakeback2 {Takeback 2}
+translate P FICSInitTime {Time (min)}
+translate P FICSIncrement {Increment (sec)}
+translate P FICSRatedGame {Rated Game}
+translate P FICSAutoColour {Automatic}
+translate P FICSManualConfirm {Confirm manually}
+translate P FICSFilterFormula {Filter with formula}
+translate P FICSIssueSeek {Issue seek}
+translate P FICSAccept {Accept}
+translate P FICSDecline {Decline}
+translate P FICSColour {Colour}
+translate P FICSSend {Send}
+translate P FICSConnect {Connect}
+
 translate P CCDlgConfigureWindowTitle {Configure Correspondence Chess}
 # ====== TODO To be translated ======
 translate P CCDlgCGeneraloptions {General Options}

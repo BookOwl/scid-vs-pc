@@ -1513,6 +1513,38 @@ translate D KingsIndian {Königsindische Verteidigung}
 translate D KingsIndianSamisch {Königsinsisch, Sämisch}
 translate D KingsIndianMainLine {Königsinsisch, Hauptvariante}
 
+translate D ConfigureFics {FICS Konfigurieren}
+translate D FICSGuest {Gastlogin}
+translate D FICSServerPort {Serverport}
+translate D FICSServerAddress {IP Adresse}
+translate D FICSRefresh {Aktualisieren}
+translate D FICSTimesealPort {Timeseal Port}
+translate D FICSSilence {Konsolenfilter}
+translate D FICSOffers {Herausforderungen}
+translate D FICSConsole {Konsole}
+translate D FICSGames {laufende Partien}
+translate D FICSUnobserve {Beobachtung abbrechen}
+translate D FICSProfile {Eigenes Profil ausgeben}
+translate D FICSRelayedGames {Übertragene Partien}
+translate D FICSFindOpponent {Gegner suchen}
+translate D FICSTakeback {Zurücknehmen}
+translate D FICSTakeback2 {2 zurücknehmen}
+translate D FICSInitTime {Zeit (min)}
+translate D FICSIncrement {Inkrement (s)}
+translate D FICSRatedGame {Wertungspartie}
+translate D FICSAutoColour {automatisch}
+translate D FICSManualConfirm {manuell bestätigen}
+translate D FICSFilterFormula {Filterformel anwenden}
+translate D FICSIssueSeek {Partie anbieten}
+translate D FICSChallenge {Herausfordern}
+translate D FICSAccept {Annehmen}
+translate D FICSDecline {Ablehnen}
+translate D FICSColour {Seite wählen:}
+translate D FICSSend {senden}
+translate D FICSConnect {Verbinden}
+translate D FICSdefaultuservars {Standardvariablen verwenden}
+translate D FICSObserveconfirm {Bestätige Beobachtung der Partie}
+
 # Correspondence Chess Dialogs:
 translate D CCDlgConfigureWindowTitle {Einstellungen für Fernschach}
 translate D CCDlgCGeneraloptions {Allgemeine Einstellungen}

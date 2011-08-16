@@ -43,7 +43,7 @@ namespace eval fics {
   ################################################################################
   proc config {} {
     variable logged
-    global ::fics::sockChan
+    global ::fics::sockChan tr
     set w .ficsConfig
 
     if {[winfo exists $w]} {
@@ -63,11 +63,11 @@ namespace eval fics {
 
     label $w.lLogin -text "Username"
     entry $w.login -width 20 -textvariable ::fics::login
-    label $w.lPwd -text "Password"
+    label $w.lPwd -text [::tr "CCDlgPassword"]
     entry $w.passwd -width 20 -textvariable ::fics::password -show "*"
 
     # Time seal configuration
-    checkbutton $w.timeseal -text "Time seal" -variable ::fics::use_timeseal \
+    checkbutton $w.timeseal -text [::tr FICSTimeseal] -variable ::fics::use_timeseal \
       -onvalue 1 -offvalue 0 -command {
         if {$::fics::use_timeseal} {
 	  .ficsConfig.timeseal_entry configure -state normal
@@ -78,38 +78,38 @@ namespace eval fics {
         }
     }
     entry $w.timeseal_entry -width 20 -textvariable ::fics::timeseal_exec
-    button $w.timeseal_browse -text ". . ." -command { set ::fics::timeseal_exec [tk_getOpenFile -parent .ficsConfig] } -pady 0.8
+    button $w.timeseal_browse -text $tr(Browse) -command { set ::fics::timeseal_exec [tk_getOpenFile -parent .ficsConfig] } -pady 0.8
 
     if {!$::fics::use_timeseal} {
       $w.timeseal_entry configure -state disabled
       $w.timeseal_browse configure -state disabled
     }
     # label IP address, Refresh button
-    label $w.lFICS_ip -text {IP Address} 
+    label $w.lFICS_ip -text $tr(FICSServerAddress)
     entry $w.ipserver -textvariable ::fics::server_ip -state readonly
-    button $w.bRefresh -text {Refresh} -command ::fics::getIP -pady 0.8
+    button $w.bRefresh -text $tr(FICSRefresh) -command ::fics::getIP -pady 0.8
 
-    label $w.lFICS_port -text "Server port"
+    label $w.lFICS_port -text $tr(FICSServerPort)
     entry $w.portserver -width 6 -textvariable ::fics::port_fics
-    label $w.ltsport -text "Timeseal port"
+    label $w.ltsport -text $tr(FICSTimesealPort)
     entry $w.portts -width 6 -textvariable ::fics::port_timeseal
 
     frame $w.button
-    button $w.button.connect -text Login -command {
+    button $w.button.connect -text $tr(FICSLogin) -command {
       set ::fics::login     [.ficsConfig.login get]
       set ::fics::reallogin $::fics::login
       set ::fics::password  [.ficsConfig.passwd get]
       ::fics::connect
     }
 
-    button $w.button.connectguest -text {Login as Guest} -command {
+    button $w.button.connectguest -text $tr(FICSGuest) -command {
       set ::fics::reallogin guest
       ::fics::connect guest
     }
 
-    button $w.button.help -text Help -command {helpWindow FICS}
+    button $w.button.help -text $tr(Help) -command {helpWindow FICS}
 
-    button $w.button.cancel -text Cancel -command {
+    button $w.button.cancel -text $tr(Cancel) -command {
       destroy .ficsConfig
     }
 
@@ -240,7 +240,7 @@ namespace eval fics {
   #
   ################################################################################
   proc connect {{guest no}} {
-    global ::fics::sockchan ::fics::seeklist ::fics::graphwidth ::fics::graphheight fontOptions
+    global ::fics::sockchan ::fics::seeklist ::fics::graphwidth ::fics::graphheight fontOptions tr
 
     if { $guest=="no" && $::fics::reallogin == ""} {
       tk_messageBox -title "Error" -icon error -type ok -parent .ficsConfig \
@@ -310,12 +310,12 @@ namespace eval fics {
     $w.console.text tag configure channel -foreground rosybrown
 
     entry $w.command.entry -insertofftime 0 -bg grey75 -font font_Large -state disabled
-    button $w.command.send -text Send -command ::fics::cmd
-    button $w.command.clear -text Clear -command "
+    button $w.command.send -text $tr(FICSSend) -command ::fics::cmd
+    button $w.command.clear -text $tr(Clear) -command "
       $w.console.text delete 0.0 end
       $w.console.text insert 0.0 \"FICs ($::scidName $::scidVersion)\n\"
     "
-    button $w.command.next -text Next -command {::fics::writechan next echo}
+    button $w.command.next -text $tr(Next) -command {::fics::writechan next echo}
     bind $w.command.entry <Return> { ::fics::cmd }
     bind $w.command.entry <Up> { ::fics::cmdHistory up }
     bind $w.command.entry <Down> { ::fics::cmdHistory down }
@@ -356,7 +356,7 @@ namespace eval fics {
       # ::fics::writechan "set gin $::fics::gamerequests" echo
     }
 
-    checkbutton $w.bottom.buttons.offers -text "Offers graph" -variable ::fics::graphon -command ::fics::showGraph -width 10 -state disabled
+    checkbutton $w.bottom.buttons.offers -text "$tr(FICSOffers) $tr(Graph)" -variable ::fics::graphon -command ::fics::showGraph -width 10 -state disabled
     # -state disabled ; enable for testing S.A. &&&
 
     grid $w.bottom.buttons.silence      -column 0 -row $row -sticky w
@@ -397,16 +397,16 @@ namespace eval fics {
     grid $w.bottom.buttons.abort  -column 2 -row $row -sticky ew -padx 3 -pady 2
 
     incr row
-    button $w.bottom.buttons.takeback  -text {Take Back}   -command {
+    button $w.bottom.buttons.takeback  -text $tr(FICSTakeback) -command {
       ::fics::writechan takeback
       # these two comments gets zero-ed. See "Game out of sync"
       catch { ::commenteditor::appendComment "$::fics::reallogin requests takeback $::fics::playerslastmove" }
     }
-    button $w.bottom.buttons.takeback2 -text {Take Back 2} -command {
+    button $w.bottom.buttons.takeback2 -text $tr(FICSTakeback2) -command {
       ::fics::writechan {takeback 2}
       catch { ::commenteditor::appendComment "$::fics::reallogin requests takeback $::fics::playerslastmove" }
     }
-    button $w.bottom.buttons.help    -text Help -command {helpWindow FICS}
+    button $w.bottom.buttons.help    -text $tr(Help) -command {helpWindow FICS}
     grid $w.bottom.buttons.takeback  -column 0 -row $row -sticky ew -padx 3 -pady 2
     grid $w.bottom.buttons.takeback2 -column 1 -row $row -sticky ew -padx 3 -pady 2
     grid $w.bottom.buttons.help      -column 2 -row $row -sticky ew -padx 3 -pady 2
@@ -416,7 +416,7 @@ namespace eval fics {
     grid  $w.bottom.buttons.space -column 0 -row $row -columnspan 3 -sticky ew -pady 3
 
     incr row
-    button $w.bottom.buttons.findopp -text {Start Game} -command { ::fics::findOpponent }
+    button $w.bottom.buttons.findopp -text "$tr(FICSFindOpponent)" -command { ::fics::findOpponent }
     button $w.bottom.buttons.cancel -text {Quit FICs} -command { ::fics::close }
     grid $w.bottom.buttons.findopp -column 0 -row $row -sticky ew -padx 3 -pady 2
     grid $w.bottom.buttons.cancel -column 2 -row $row -sticky ew -padx 3 -pady 2
@@ -579,6 +579,8 @@ namespace eval fics {
   #
   ################################################################################
   proc findOpponent {} {
+    global tr
+
     set w .ficsfindopp
     if {[winfo exists $w]} {
       focus $w
@@ -590,11 +592,11 @@ namespace eval fics {
 
     set row 0
 
-    checkbutton $w.cbrated -text {Rated game} -onvalue rated -offvalue unrated -variable ::fics::findopponent(rated)
+    checkbutton $w.cbrated -text $tr(FICSRatedGame) -onvalue rated -offvalue unrated -variable ::fics::findopponent(rated)
     grid $w.cbrated -column 1 -row $row -sticky w
 
     incr row
-    checkbutton $w.cbmanual -text {Confirm manually} -onvalue manual -offvalue auto -variable ::fics::findopponent(manual)
+    checkbutton $w.cbmanual -text $tr(FICSManualConfirm) -onvalue manual -offvalue auto -variable ::fics::findopponent(manual)
     grid $w.cbmanual -column 1 -row $row -sticky w
 
     incr row
@@ -602,9 +604,9 @@ namespace eval fics {
     grid  $w.space$row -column 0 -row $row -columnspan 3 -sticky ew -pady 3
 
     incr row
-    label $w.linit -text {Time (minutes)}
+    label $w.linit -text $tr(FICSInitTime)
     spinbox $w.sbTime1 -width 7 -textvariable ::fics::findopponent(initTime) -from 0 -to 120 -increment 1
-    label $w.linc -text {Increment (seconds)}
+    label $w.linc -text $tr(FICSIncrement)
     spinbox $w.sbTime2 -width 7 -textvariable ::fics::findopponent(incTime) -from 0 -to 120 -increment 1
     grid $w.linit   -column 0 -row $row -sticky ew -padx 5
     grid $w.sbTime1 -column 1 -row $row -padx 5
@@ -617,13 +619,13 @@ namespace eval fics {
     grid  $w.space$row -column 0 -row $row -columnspan 3 -sticky ew -pady 3
 
     incr row
-    label $w.color -text Color
+    label $w.color -text $tr(FICSColour)
     grid $w.color -column 1 -row $row
 
     incr row
-    radiobutton $w.rb2 -text White -value white -variable ::fics::findopponent(color)
-    radiobutton $w.rb3 -text Black -value black -variable ::fics::findopponent(color)
-    radiobutton $w.rb1 -text Auto  -value auto  -variable ::fics::findopponent(color)
+    radiobutton $w.rb2 -text $tr(White) -value white -variable ::fics::findopponent(color)
+    radiobutton $w.rb3 -text $tr(Black) -value black -variable ::fics::findopponent(color)
+    radiobutton $w.rb1 -text $tr(FICSAutoColour)  -value auto  -variable ::fics::findopponent(color)
     grid $w.rb1 -column 0 -row $row -ipadx 5
     grid $w.rb2 -column 1 -row $row -ipadx 5
     grid $w.rb3 -column 2 -row $row -ipadx 5
@@ -633,7 +635,7 @@ namespace eval fics {
     grid  $w.space$row -column 0 -row $row -columnspan 3 -sticky ew -pady 3
 
     incr row
-    checkbutton $w.cblimitrating -text {Rating between} -variable ::fics::findopponent(limitrating)
+    checkbutton $w.cblimitrating -text $tr(RatingRange) -variable ::fics::findopponent(limitrating)
     spinbox $w.sbrating1 -width 7 -textvariable ::fics::findopponent(rating1) \
 	-from 800 -to 2800 -increment 50
     spinbox $w.sbrating2 -width 7 -textvariable ::fics::findopponent(rating2) \
@@ -644,7 +646,7 @@ namespace eval fics {
     grid $w.sbrating2     -column 2 -row $row
 
     incr row
-    checkbutton $w.cbformula -text {Filter with formula} -onvalue formula \
+    checkbutton $w.cbformula -text $tr(FICSFilterFormula) -onvalue formula \
       -offvalue none -variable ::fics::findopponent(formula)
     grid $w.cbformula -column 0 -row $row -sticky w
 
@@ -671,8 +673,8 @@ namespace eval fics {
       destroy .ficsfindopp
       ::fics::initOffers
     } -width 10
-    button $w.help   -text "Help" -command "helpWindow FICSfindopp" -width 10
-    button $w.cancel -text "Cancel" -command "destroy $w" -width 10
+    button $w.help   -text $tr(Help) -command "helpWindow FICSfindopp" -width 10
+    button $w.cancel -text $tr(Cancel) -command "destroy $w" -width 10
 
     bind $w <F1> {helpWindow FICSfindopp}
 

@@ -1536,6 +1536,35 @@ translate I KingsIndian {Indiana di Re}
 translate I KingsIndianSamisch {Indiana di Re Samisch}
 translate I KingsIndianMainLine {Indiana di Re Liena Principale}
 
+# FICS todo
+translate I ConfigureFics {Configure FICS}
+translate I FICSLogin {Login}
+translate I FICSGuest {Login as Guest}
+translate I FICSServerPort {Server port}
+translate I FICSServerAddress {IP Address}
+translate I FICSRefresh {Refresh}
+translate I FICSTimeseal {Timeseal}
+translate I FICSTimesealPort {Timeseal port}
+translate I FICSSilence {Console filter}
+translate I FICSOffers {Offers}
+translate I FICSGames {Games}
+translate I FICSFindOpponent {Find opponent}
+translate I FICSTakeback {Takeback}
+translate I FICSTakeback2 {Takeback 2}
+translate I FICSInitTime {Time (min)}
+translate I FICSIncrement {Increment (sec)}
+translate I FICSRatedGame {Rated Game}
+translate I FICSAutoColour {Automatic}
+translate I FICSManualConfirm {Confirm manually}
+translate I FICSFilterFormula {Filter with formula}
+translate I FICSIssueSeek {Issue seek}
+translate I FICSAccept {Accept}
+translate I FICSDecline {Decline}
+translate I FICSColour {Colour}
+translate I FICSSend {Send}
+translate I FICSConnect {Connect}
+
+
 translate I CCDlgConfigureWindowTitle {Configura Scacchi per Corrispondenza}
 translate I CCDlgCGeneraloptions {Opzioni generali}
 translate I CCDlgDefaultDB {Database di Default:}

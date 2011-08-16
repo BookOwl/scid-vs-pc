@@ -1510,6 +1510,39 @@ translate S KingsIndian {India de Rey}
 translate S KingsIndianSamisch {Ataque Sämish de la India de Rey}
 translate S KingsIndianMainLine {Linea Principal India de Rey}
 
+translate S ConfigureFics {Configurar FICS}
+translate S FICSGuest {Autentificación como invitado}
+translate S FICSServerPort {Puerto del servidor}
+translate S FICSServerAddress {Dirección IP}
+translate S FICSRefresh {Refrescar}
+translate S FICSTimesealPort {Puerto Timeseal}
+translate S FICSSilence {Silencio}
+translate S FICSOffers {Ofertas}
+translate S FICSConsole {Consola}
+translate S FICSGames {Partidas}
+translate S FICSUnobserve {Parar vistazo de partida}
+translate S FICSProfile {Muestra tu historia y perfil}
+translate S FICSRelayedGames {Partidas retransmitidas}
+translate S FICSFindOpponent {Buscar oponente}
+translate S FICSTakeback {Retrocede}
+translate S FICSTakeback2 {Retrocede 2}
+translate S FICSInitTime {Tiempo inicial (min)}
+translate S FICSIncrement {Incremento (seg)}
+translate S FICSRatedGame {Partida valorada}
+translate S FICSAutoColour {automático}
+translate S FICSManualConfirm {confirma manualmente}
+translate S FICSFilterFormula {Filtrar con fórmula}
+translate S FICSIssueSeek {Panel de retos}
+translate S FICSChallenge {Retar}
+translate S FICSAccept {aceptar}
+translate S FICSDecline {rechazar}
+translate S FICSColour {Color}
+translate S FICSSend {enviar}
+translate S FICSConnect {Conectar}
+translate S FICSdefaultuservars {Usa valores por defecto}
+translate S FICSObserveconfirm {Quieres observar la partida}
+
+
 translate S CCDlgConfigureWindowTitle {Configurar Ajedrez por correo}
 translate S CCDlgCGeneraloptions {Opciones generales}
 translate S CCDlgDefaultDB {Base por defecto:}

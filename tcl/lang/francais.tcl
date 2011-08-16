@@ -1479,6 +1479,38 @@ translate F KingsIndian {Est-indienne}
 translate F KingsIndianSamisch {Est-indienne Sämisch}
 translate F KingsIndianMainLine {Est-indienne ligne principale}
 
+translate F ConfigureFics {Configurer FICS}
+translate F FICSGuest {Login comme invité}
+translate F FICSServerPort {Port du serveur}
+translate F FICSServerAddress {Adresse IP}
+translate F FICSRefresh {Rafraîchir}
+translate F FICSTimesealPort {Port Timeseal}
+translate F FICSSilence {Silence}
+translate F FICSOffers {Offres}
+translate F FICSConsole {Console}
+translate F FICSGames {Parties}
+translate F FICSUnobserve {Arrêter de suivre la partie}
+translate F FICSProfile {Afficher mon historique et mes données}
+translate F FICSRelayedGames {Parties retransmises}
+translate F FICSFindOpponent {Trouver adversaire}
+translate F FICSTakeback {Reprendre un coup}
+translate F FICSTakeback2 {Rependre deux coups}
+translate F FICSInitTime {Temps initial (min)}
+translate F FICSIncrement {Incrément (sec)}
+translate F FICSRatedGame {Partie classée}
+translate F FICSAutoColour {automatique}
+translate F FICSManualConfirm {accepter manuellement}
+translate F FICSFilterFormula {Filtrer avec formule}
+translate F FICSIssueSeek {Envoyer seek}
+translate F FICSChallenge {Challenge}
+translate F FICSAccept {accepter}
+translate F FICSDecline {refuser}
+translate F FICSColour {Couleur}
+translate F FICSSend {envoyer}
+translate F FICSConnect {Connecter}
+translate F FICSdefaultuservars {Variables par défaut}
+translate F FICSObserveconfirm {Voulez-vous suivre la partie}
+
 translate F CCDlgConfigureWindowTitle {Configurer échecs par correspondance}
 translate F CCDlgCGeneraloptions {Options générales}
 translate F CCDlgDefaultDB {Base par défaut:}
