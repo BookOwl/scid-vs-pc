@@ -446,7 +446,7 @@ namespace eval gameclock {
       set a [expr {$i/6.*acos(-1)}]
       set x [expr { ($size/2 + (($size-15)/2)*sin($a) ) }]
       set y [expr { ($size/2 - (($size-15)/2)*cos($a) ) }]
-      $data(id$n) create text $x $y -text $i -tag clock
+      $data(id$n) create text $x $y -text $i -tag clock -font font_Small
     }
     set data(fg$n) "black"
     set data(running$n) 0

@@ -9,11 +9,6 @@
 # semaphores/vwait instead of the often abused dig-deeper procedural flow 
 # sometimes evident in tcl programs.
 
-# The functionality of this feature is not amazing because of my lack of knowledge
-# about the uci and xboard protocols. Having said that, it works great imho, and
-# supports a suprising number of chess engines. UCI support seems comprehensive, and
-# on the xboard side - Crafty, Scorpio, Sjeng and GnuChess, amongst others, seem fine.
-
 # Opening books are disabled for UCI engines... which makes doing a computer
 # tournament Xboard openings will work if configured individually.
 
@@ -269,7 +264,7 @@ proc compOk {} {
   } 
 
   for {set i 0} {$i < $comp(count)} {incr i} {
-    set j [$w.engines.list.$i current]
+    set j [$w.engines.list.$i.combo current]
     lappend comp(players) $j
     lappend players [expr $j + 1]
     lappend names   [lindex [lindex $engines(list) $j] 0]
@@ -289,7 +284,8 @@ proc compOk {} {
   ### Reconfigure init widget for pausing
 
   for {set i 0} {$i < $comp(count)} {incr i} {
-    $w.engines.list.$i configure -state disabled ; # disable widgets too
+    $w.engines.list.$i.combo configure -state disabled ; # disable widgets too
+    $w.engines.list.$i.configure configure -state disabled 
   }
   foreach j {.comp.config .comp.engines .comp.engines.top .comp.config.control .comp.config.timesecs .comp.config.timegame} {
     foreach i [winfo children $j] {
@@ -752,7 +748,7 @@ proc compNM {n m k} {
   }
 
   if {$comp(timecontrol) == "pergame"} {
-    sc_pos setComment "[sc_pos getComment]White time $comp(wtime), Black time $comp(btime)"
+    sc_pos setComment "[sc_pos getComment]$::tr(White) $::tr(Time) $comp(wtime), $::tr(Black) $::tr(Time) $comp(btime)"
   }
 
   if {![sc_base isReadOnly]} {
@@ -822,19 +818,41 @@ proc drawCombos {} {
 
 
   for {set i 0} {$i < $comp(count)} {incr i} {
-    ttk::combobox  $l.$i -width 20 -state readonly -values $values
+
+    pack [frame $l.$i] -side top -pady 3
+
+    ttk::combobox  $l.$i.combo -width 20 -state readonly -values $values
+
+    set command { set engineData [lindex $::engines(list) }
+    append command " \[ $l.$i.combo current \] "
+    append command { ]
+      if {![lindex $engineData 7]} {
+        tk_messageBox -title Oops -icon warning -type ok -message {Engine is not UCI} -parent .comp
+        return
+      }
+      set name [lindex $engineData 0]
+      set cmd [ toAbsPath [lindex $engineData 1] ]
+      set args [lindex $engineData 2]
+      set dir [ toAbsPath [lindex $engineData 3] ]
+      set options [lindex $engineData 8]
+      ::uci::uciConfig }
+    append command " \[ $l.$i.combo current \] "
+    append command { [ toAbsPath $cmd ] $args [ toAbsPath $dir ] $options }
+
+    button $l.$i.configure -image tb_maint -command $command -width 24 -height 24
+
+    pack $l.$i.configure $l.$i.combo -side left -padx 10
 
     if {[info exists comp(players)]} {
       # Set the combo boxes to the previous players if we can
       set prev_player [lindex $comp(players) $i]
-      if {[catch {$l.$i current $prev_player}]} {
-	$l.$i current $i
+      if {[catch {$l.$i.combo current $prev_player}]} {
+	$l.$i.combo current $i
       }
     } else {
-      $l.$i current $i
+      $l.$i.combo current $i
     }
 
-    pack $l.$i -side top -pady 3
   }
   set comp(countcombos) $comp(count)
   update

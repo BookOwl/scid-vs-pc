@@ -1671,13 +1671,18 @@ proc makeAnalysisMove {n} {
     set s [string range $s 1 end]
   }
   if {[scan $s %s move] != 1} { set res 0 }
-  set action "replace"
-  if {! [sc_pos isAt vend]} {
+
+  if {! [sc_pos isAt vend] && ! $::comp(playing)} {
     set action [confirmReplaceMove]
+    if {$action == "cancel"} {
+      return
+    }
+    if {$action == "var"} {
+      sc_var create
+    }
   }
-  if {$action == {cancel}} { return }
+
   set analysis(automoveThinking$n) 0
-  if {$action == {var}} { sc_var create }
 
   if { [sc_move_add $move $n] } {
     ### Move fail

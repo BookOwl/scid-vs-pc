@@ -356,7 +356,7 @@ namespace eval uci {
 
     # Configure pipe for line buffering and non-blocking mode:
     fconfigure $pipe -buffering full -blocking 0
-    fileevent $pipe readable "::uci::readUCI $n"
+    fileevent $pipe readable "::uci::readUCI $n $cmd"
 
     # Return to original dir if necessary:
     if {$oldpwd != ""} { catch {cd $oldpwd} }
@@ -373,7 +373,7 @@ namespace eval uci {
 
   ### Only used by uciConfig to gather options info for uciConfigWin
 
-  proc readUCI { n } {
+  proc readUCI { n command } {
     global ::uci::uciOptions
 
     set line [string trim [gets $::uci::uciInfo(pipe$n)] ]
@@ -381,7 +381,7 @@ namespace eval uci {
     if {$line == "uciok"} {
       # we got all options, stop engine
       closeUCIengine $n 1
-      uciConfigWin $n
+      uciConfigWin $n $command
     }
     # get options
     if { [string first "option name" $line] == 0 } {
@@ -391,13 +391,13 @@ namespace eval uci {
 
   ### Builds the dialog for UCI engine configuration 
 
-  proc uciConfigWin {n} {
+  proc uciConfigWin {n command} {
     global ::uci::uciOptions ::uci::optList ::uci::optionToken ::uci::oldOptions ::uci::optionImportant
 
     set w .uciConfigWin
     if { [winfo exists $w]} { return }
     toplevel $w
-    wm title $w $::tr(ConfigureUCIengine)
+    wm title $w "Configure $command"
     ::scrolledframe::scrolledframe .uciConfigWin.sf -xscrollcommand {.uciConfigWin.hs set} -yscrollcommand {.uciConfigWin.vs set} \
         -fill both -width 1000 -height 600
     scrollbar .uciConfigWin.vs -command {.uciConfigWin.sf yview}
@@ -641,7 +641,6 @@ namespace eval uci {
 
     # Make engine config widget remember these options
     set ::engines(newUCIoptions) $::uci::newOptions
-    # Is the above line still necessary ?
 
     ### Automatically save these options since "Save" has been pressed
     ### Previously it was only done when user "OK"ed the parent widget, or via sergame.tcl
