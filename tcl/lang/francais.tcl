@@ -699,6 +699,8 @@ menuText F PgnOptIndentV "Indentation des variantes" 16
 menuText F PgnOptColumn "Style en colonne (un coup par ligne)" 1
 menuText F PgnOptSpace "Espace après numéro des coups" 0
 menuText F PgnOptStripMarks "Enlever les codes de flèches et de coloration de cases" 1
+menuText F PgnOptChess "Echecs Pièces" 0
+menuText F PgnOptScrollbar "Barre de défilement" 0
 menuText F PgnOptBoldMainLine "Mettre en gras les coups de la ligne principale" 4
 menuText F PgnColor "Couleur" 0
 menuText F PgnColorHeader "Entête..." 0

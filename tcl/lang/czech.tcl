@@ -780,6 +780,8 @@ menuText C PgnOptIndentV "Odsazovat varianty" 10
 menuText C PgnOptColumn "Sloupcový styl (jeden tah na øádek)" 1
 menuText C PgnOptSpace "Mezera za èíslem tahu" 0
 menuText C PgnOptStripMarks "Odstranit kódy barevných polí a ¹ipek" 0
+menuText C PgnOptChess "Sachové figurky" 0
+menuText C PgnOptScrollbar "Posuvník" 0
 menuText C PgnOptBoldMainLine "Use Bold Text for Main Line Moves" 4 ;# ***
 menuText C PgnColor "Barvy" 0
 menuText C PgnColorHeader "Hlavièka..." 0

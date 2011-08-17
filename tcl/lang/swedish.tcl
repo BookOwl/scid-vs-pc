@@ -819,6 +819,8 @@ menuText W PgnOptIndentV "Indragna variationer" 7
 menuText W PgnOptColumn "Spaltstil (ett drag per rad)" 1
 menuText W PgnOptSpace "Utrymme efter dragnummer" 1
 menuText W PgnOptStripMarks "Avlägsna koder för färgade fält och pilar" 1 
+menuText W PgnOptChess "Schack Pieces" 0
+menuText W PgnOptScrollbar "Rullningslist" 0
 menuText W PgnOptBoldMainLine "Använd Fet Text för Huvudvariationsdrag" 4
 menuText W PgnColor "Färger" 0
 menuText W PgnColorHeader "Huvud..." 0

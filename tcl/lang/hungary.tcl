@@ -783,6 +783,8 @@ menuText H PgnOptIndentV "Változatok behúzása" 0
 menuText H PgnOptColumn "Oszlopok stílusa (soronként egy lépés)" 0
 menuText H PgnOptSpace "Szóköz a lépés sorszáma után" 3
 menuText H PgnOptStripMarks "Színes mezõk és nyilak kifejtése" 2
+menuText H PgnOptChess "Sakk darabok" 0
+menuText H PgnOptScrollbar "Görgetosav" 0
 menuText H PgnOptBoldMainLine "A fõváltozat lépései vastag betûvel" 21
 menuText H PgnColor "Színek" 1
 menuText H PgnColorHeader "Fejléc..." 0

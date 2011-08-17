@@ -793,6 +793,8 @@ menuText N PgnOptIndentV "Inspringen (variant)" 12
 menuText N PgnOptColumn "Kolom stijl (een zet per regel)" 0
 menuText N PgnOptSpace "Spatie na zetnummer" 0
 menuText N PgnOptStripMarks "Verwijder gekleurde vierkante haken codes" 1
+menuText N PgnOptChess "Schaak stukken" 0
+menuText N PgnOptScrollbar "Scrollbar" 6
 menuText N PgnOptBoldMainLine "Gebrui Dikke Tekst voo Hoofdvariant Zetten" 4 ;
 menuText N PgnColor "Kleuren" 0
 menuText N PgnColorHeader "Kop..." 0

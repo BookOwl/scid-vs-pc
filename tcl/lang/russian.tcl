@@ -822,6 +822,8 @@ menuText R PgnOptIndentV "Варианты с отступом" 0
 menuText R PgnOptColumn "В колонку (один ход на строчку)" 4
 menuText R PgnOptSpace "Пробел после номера хода" 0
 menuText R PgnOptStripMarks "Удалить коды цветных полей/стрелок" 0
+menuText R PgnOptChess "Chess Pieces" 6
+menuText R PgnOptScrollbar "Scrollbar" 6
 menuText R PgnOptBoldMainLine "Use Bold Text for Main Line Moves" 4
 menuText R PgnColor "Цвета" 0
 menuText R PgnColorHeader "Заголовок..." 0

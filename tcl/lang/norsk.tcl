@@ -819,6 +819,8 @@ menuText O PgnOptIndentV "Rykk inn variasjoner" 0
 menuText O PgnOptColumn "Bruk kolonner (ett trekk per linje)" 0
 menuText O PgnOptSpace "Mellomrom etter trekknummer" 0
 menuText O PgnOptStripMarks "Fjern fargekoder" 0
+menuText O PgnOptChess "Sjakk brikker" 0
+menuText O PgnOptScrollbar "Rullefelt" 0
 menuText O PgnOptBoldMainLine "Use Bold Text for Main Line Moves" 4 ;# ***
 menuText O PgnColor "Farger" 0
 menuText O PgnColorHeader "Header..." 0

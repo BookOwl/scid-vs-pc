@@ -41,8 +41,8 @@ namespace eval pgn {
     foreach idx {0 1 3} tag {PgnFilePrint PgnFileCopy PgnFileClose} {
       configMenuText $m.file $idx $tag $lang
     }
-    foreach idx {1 2 3 4 5 6 7 8 9} tag {
-      PgnOptShort PgnOptColumn PgnOptColor PgnOptIndentC PgnOptIndentV PgnOptBoldMainLine PgnOptSpace PgnOptSymbols PgnOptStripMarks
+    foreach idx {1 2 3 4 5 6 7 8 9 11 12} tag {
+      PgnOptShort PgnOptColumn PgnOptColor PgnOptIndentC PgnOptIndentV PgnOptBoldMainLine PgnOptSpace PgnOptSymbols PgnOptStripMarks PgnOptChess PgnOptScrollbar
     } {
       configMenuText $m.opt $idx $tag $lang
     }
@@ -127,14 +127,14 @@ namespace eval pgn {
     $w.menu.opt add separator
 
     if {$::graphFigurineAvailable} {
-      $w.menu.opt add checkbutton -label {Chess Pieces} \
-	  -variable ::useGraphFigurine -command {updateBoard -pgn} -underline 6
+      $w.menu.opt add checkbutton -label PgnOptChess \
+	  -variable ::useGraphFigurine -command {updateBoard -pgn}
     } else {
-      $w.menu.opt add checkbutton -label {Chess Pieces} \
-	  -variable ::useGraphFigurine -command {updateBoard -pgn} -state disabled -underline 6
+      $w.menu.opt add checkbutton -label PgnOptChess \
+	  -variable ::useGraphFigurine -command {updateBoard -pgn} -state disabled
     }
 
-    $w.menu.opt add checkbutton -variable ::pgn::showScrollbar -label Scrollbar -command ::pgn::packScrollbar -underline 0
+    $w.menu.opt add checkbutton -variable ::pgn::showScrollbar -label PgnOptScrollbar -command ::pgn::packScrollbar 
 
     $w.menu.opt add command -label [tr OptionsFonts] -command "FontDialogRegular $w" -underline 0
 

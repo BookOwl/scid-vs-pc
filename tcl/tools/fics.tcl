@@ -61,7 +61,7 @@ namespace eval fics {
     wm state $w withdrawn
     wm title $w "Configure Fics"
 
-    label $w.lLogin -text "Username"
+    label $w.lLogin -text "$tr(UserFlag)[string tolower $tr(EngineName)]"
     entry $w.login -width 20 -textvariable ::fics::login
     label $w.lPwd -text [::tr "CCDlgPassword"]
     entry $w.passwd -width 20 -textvariable ::fics::password -show "*"

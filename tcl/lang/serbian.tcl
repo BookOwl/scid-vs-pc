@@ -817,6 +817,8 @@ menuText Y PgnOptIndentV "Uvuci pasus kod varijanata" 16
 menuText Y PgnOptColumn "Pasus stil (jedan potez po liniji)" 1
 menuText Y PgnOptSpace "Blanko posle broja poteza" 0
 menuText Y PgnOptStripMarks "Strip out colored square/arrow codes" 1 ;# ***
+menuText Y PgnOptChess "Chess Pieces" 6
+menuText Y PgnOptScrollbar "Scrollbar" 6
 menuText Y PgnOptBoldMainLine "Use Bold Text for Main Line Moves" 4 ;# ***
 menuText Y PgnColor "Boje" 0
 menuText Y PgnColorHeader "Zaglavlje..." 0

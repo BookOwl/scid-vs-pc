@@ -781,6 +781,8 @@ menuText B PgnOptIndentV "Identar variantes" 7
 menuText B PgnOptColumn "Estilo Coluna (um movimento por linha)" 0
 menuText B PgnOptSpace "Espaco apos o numero do movimento" 0
 menuText B PgnOptStripMarks "Strip out colored square/arrow codes" 1 ;# ***
+menuText B PgnOptChess "Xadrez pecas" 0
+menuText B PgnOptScrollbar "Barra de rolagem" 0
 menuText B PgnOptBoldMainLine "Use Bold Text for Main Line Moves" 4 ;# ***
 menuText B PgnColor "Cores" 0
 menuText B PgnColorHeader "Cabecalho..." 0
@@ -1848,6 +1850,4 @@ translate B DoneWithPosition {Done with position}
 }
 
 # end of portbr.tcl
-
-
 

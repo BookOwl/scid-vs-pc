@@ -736,6 +736,8 @@ menuText S PgnOptIndentV "Sangría en variaciones" 11
 menuText S PgnOptColumn "Estilo de columna (un movimiento por línea)" 1
 menuText S PgnOptSpace "Espacio después del número del movimiento" 0
 menuText S PgnOptStripMarks "Quitar códigos de color en casilla/flecha" 3
+menuText S PgnOptChess "Ajedrez Piezas" 0
+menuText S PgnOptScrollbar "Barra de desplazamiento" 0
 menuText S PgnOptBoldMainLine "Usar texto en negrita para las jugadas principales" 4
 menuText S PgnColor "Colores" 1
 menuText S PgnColorHeader "Encabezamiento..." 0

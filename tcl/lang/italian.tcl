@@ -750,6 +750,8 @@ menuText I PgnOptIndentV "Indenta le varianti" 1
 menuText I PgnOptColumn "Stile della colonna (una mossa per riga)" 0
 menuText I PgnOptSpace "Spazio dopo i numeri delle mosse" 0
 menuText I PgnOptStripMarks "Elimina i codici colorati delle caselle/frecce" 0
+menuText I PgnOptChess "Scacchi pezzi" 0
+menuText I PgnOptScrollbar "Barra di scorrimento" 0
 menuText I PgnOptBoldMainLine "Usa il grassetto per le mosse della linea principale" 4
 menuText I PgnColor "Colori" 0
 menuText I PgnColorHeader "Intestazione..." 0

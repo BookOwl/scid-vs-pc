@@ -823,6 +823,8 @@ menuText P PgnOptIndentV "Wcinaj warianty" 7
 menuText P PgnOptColumn "Kolumny (jedno posuniêcie w wierszu)" 0
 menuText P PgnOptSpace "Spacja po numerze ruchu" 0
 menuText P PgnOptStripMarks "Usuñ kody kolorowych pól i strza³ek" 0
+menuText P PgnOptChess "Szachy sztuk" 0
+menuText P PgnOptScrollbar "Pasek przewijania" 0
 menuText P PgnOptBoldMainLine "Use Bold Text for Main Line Moves" 4 ;# ***
 menuText P PgnColor "Kolory" 0
 menuText P PgnColorHeader "Nag³ówek..." 0

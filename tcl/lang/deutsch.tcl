@@ -722,6 +722,8 @@ menuText D PgnOptIndentV "Varianten einrücken" 0
 menuText D PgnOptColumn "Tabellarisch (ein Zug pro Zeile)" 0
 menuText D PgnOptSpace "Leerzeichen nach Zugnummer" 0
 menuText D PgnOptStripMarks "Farbfelder-/Pfeile-Zeichen entfernen" 27
+menuText D PgnOptChess "Schach Pieces" 6
+menuText D PgnOptScrollbar "Bildlaufleiste" 0
 menuText D PgnOptBoldMainLine "Partiezüge in Fettdruck" 0
 menuText D PgnColor "Farben" 0
 menuText D PgnColorHeader "Vorspann..." 0
