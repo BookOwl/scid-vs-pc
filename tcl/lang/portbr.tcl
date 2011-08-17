@@ -59,6 +59,7 @@ menuText B FileMaintFixBase "Fix corrupted base" 0 {Try to fix a corrupted base}
 # Edit menu:
 menuText B Edit "Editar" 0
 menuText B EditAdd "Adiciona variante" 0 {Adiciona variante do movimento}
+menuText B EditPasteVar "Variação colar" 0
 menuText B EditDelete "Deleta Variante" 0 {Exclui variante do movimento}
 menuText B EditFirst "Converte para Primeira Variante" 14 \
   {Faz com que uma variante seja a primeira da lista}
@@ -109,6 +110,9 @@ menuText B GameReplace "Salvar: Substituir Jogo..." 8 \
   {Salva o jogo e substitui a versao antiga}
 menuText B GameAdd "Salvar: Adicionar Jogo..." 9 \
   {Salva este jogo como um novo jogo na base de dados}
+menuText B GameInfo "Informações sobre o jogo definido" 0
+menuText B GameBrowse "Pesquisar Jogos" 0
+menuText B GameList "Lista de Todos os Jogos" 0
 menuText B GameDeepest "Identificar Abertura" 0 \
   {Vai para a posicao mais avancada da partida, de acordo com o codigo ECO}
 menuText B GameGotoMove "Ir para o movimento numero..." 5 \
@@ -170,7 +174,7 @@ menuText B ToolsOpenRecentBaseAsTree "Open recent base as tree" 0   {Open a rece
 menuText B ToolsTracker "Piece Tracker"  0 {Open the Piece Tracker window} ;# ***
 # ====== TODO To be translated ======
 menuText B ToolsTraining "Training"  0 {Training tools (tactics, openings,...) }
-menuText E ToolsComp "Computer Tournament" 2 {Chess engine tournament}
+menuText B ToolsComp "Computer Tournament" 2 {Chess engine tournament}
 # ====== TODO To be translated ======
 menuText B ToolsTacticalGame "Tactical game"  0 {Play a game with tactics}
 # ====== TODO To be translated ======
@@ -231,6 +235,7 @@ menuText B ToolsImportFile "Importa arquivo de jogos PGN..." 7 \
 # ====== TODO To be translated ======
 menuText B ToolsStartEngine1 "Iniciar engine 1" 0  {Inicia engine 1}
 menuText B ToolsStartEngine2 "Iniciar engine 2" 0  {Inicia engine 2}
+menuText B ToolsScreenshot "Screenshot bordo" 0
 menuText B Play "Jogar" 0
 menuText B CorrespondenceChess "Xadrez por correspondência" 0 {Funções para jogar xadrez por correspondência usando eMail e Xfcc}
 menuText B CCConfigure "Configurar..." 0 {Configura ferramentas externas e configuração geral}
@@ -715,6 +720,10 @@ translate B AnnotateBlundersOnly {When game move is an obvious blunder}
 # ====== TODO To be translated ======
 translate B AnnotateBlundersOnlyScoreChange {Analysis reports blunder, with score change from/to: }
 # ====== TODO To be translated ======
+translate B AnnotateTitle {Configure Annotation}
+translate B AnnotateWhichMoves {Com anotações}
+translate B AnnotateWith {Que se Move}
+translate B AnnotateComment {Adicionar anotador a comentar}
 translate B BlundersThreshold {Threshold}
 translate B LowPriority {Low CPU priority} ;# ***
 # ====== TODO To be translated ======

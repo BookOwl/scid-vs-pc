@@ -416,7 +416,7 @@ namespace eval fics {
     grid  $w.bottom.buttons.space -column 0 -row $row -columnspan 3 -sticky ew -pady 3
 
     incr row
-    button $w.bottom.buttons.findopp -text "$tr(FICSFindOpponent)" -command { ::fics::findOpponent }
+    button $w.bottom.buttons.findopp -text $tr(FICSFindOpponent) -command { ::fics::findOpponent }
     button $w.bottom.buttons.cancel -text {Quit FICs} -command { ::fics::close }
     grid $w.bottom.buttons.findopp -column 0 -row $row -sticky ew -padx 3 -pady 2
     grid $w.bottom.buttons.cancel -column 2 -row $row -sticky ew -padx 3 -pady 2

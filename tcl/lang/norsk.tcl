@@ -61,6 +61,7 @@ menuText O FileMaintFixBase "Fix corrupted base" 0 {Try to fix a corrupted base}
 # Edit menu:
 menuText O Edit "Rediger" 0
 menuText O EditAdd "Legg til variasjon" 0 {Legg til en variasjon av dette trekket i partiet}
+menuText O EditPasteVar "Lim Variasjon" 0
 menuText O EditDelete "Slett variasjon" 0 {Slett en variasjon av dette trekket}
 menuText O EditFirst "Flytt variasjon øverst" 0 \
   {Gjør variasjonen til den øverste på listen}
@@ -109,6 +110,9 @@ menuText O GameReplace "Lagre: Erstatt parti..." 0 \
   {Lagre og overskriv dette partiet}
 menuText O GameAdd "Lagre som nytt parti..." 0 \
   {Lagre dette partiet som et nytt parti}
+menuText O GameInfo "Set Spillinformasjon" 0
+menuText O GameBrowse "Bla gjennom spill" 0
+menuText O GameList "List Alle spill" 0
 menuText O GameDeepest "Identifiser åpning" 0 \
   {Gå til dypeste posisjon i dette partiet listet i ECO-boken}
 menuText O GameGotoMove "Gå til trekk..." 0 \
@@ -170,7 +174,7 @@ menuText O ToolsOpenRecentBaseAsTree "Open recent base as tree" 0   {Open a rece
 menuText O ToolsTracker "Brikkesporing"  0 {Åpne brikkesporingsvinduet}
 # ====== TODO To be translated ======
 menuText O ToolsTraining "Training"  0 {Training tools (tactics, openings,...) }
-menuText E ToolsComp "Computer Tournament" 2 {Chess engine tournament}
+menuText O ToolsComp "Computer Tournament" 2 {Chess engine tournament}
 # ====== TODO To be translated ======
 menuText O ToolsTacticalGame "Tactical game"  0 {Play a game with tactics}
 # ====== TODO To be translated ======
@@ -235,6 +239,7 @@ menuText O ToolsStartEngine1 "Start engine 1" 0  {Start engine 1}
 # ====== TODO To be translated ======
 menuText O ToolsStartEngine2 "Start engine 2" 0  {Start engine 2}
 # ====== TODO To be translated ======
+menuText O ToolsScreenshot "Board Skjermbilde" 0
 menuText O Play "Play" 0
 # ====== TODO To be translated ======
 menuText O CorrespondenceChess "Correspondence Chess" 0 {Functions for eMail and Xfcc based correspondence chess}
@@ -753,6 +758,10 @@ translate O AnnotateBlundersOnly {When game move is an obvious blunder}
 # ====== TODO To be translated ======
 translate O AnnotateBlundersOnlyScoreChange {Analysis reports blunder, with score change from/to: }
 # ====== TODO To be translated ======
+translate O AnnotateTitle {Konfigurer Annotation}
+translate O AnnotateWith {Kommentere Med}
+translate O AnnotateWhichMoves {Hvilken Moves}
+translate O AnnotateComment {Legg annotator å kommentere}
 translate O BlundersThreshold {Threshold}
 translate O LowPriority {Low CPU priority} ;# ***
 # ====== TODO To be translated ======

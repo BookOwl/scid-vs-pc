@@ -58,6 +58,7 @@ menuText F FileMaintFixBase "Réparer base" 0 {Essaie de réparer une base corromp
 # Edit menu:
 menuText F Edit "Éditer" 0
 menuText F EditAdd "Ajouter variante" 0 {Ajouter une variante}
+menuText F EditPasteVar "Variation Coller" 0
 menuText F EditDelete "Effacer variante" 0 {Effacer cette variante}
 menuText F EditFirst "Déplacer en tête" 0 \
   {Déplacer cette variante en tête de liste}
@@ -106,6 +107,9 @@ menuText F GameReplace "Enregistrer: Remplacer la partie..." 13 \
   {Enregistrer cette partie, en écrasant l'ancienne version}
 menuText F GameAdd "Enregistrer: Ajouter nouvelle partie..." 13 \
   {Enregistrer cette partie en tant que nouvelle partie dans la base}
+menuText F GameInfo "Informations sur les jeux Set" 0
+menuText F GameBrowse "Parcourir les jeux" 0
+menuText F GameList "Liste Tous les jeux" 0
 menuText F GameDeepest "Identifier ouverture" 11 \
   {Trouver la partie la plus proche dans la nomenclature ECO}
 menuText F GameGotoMove "Coup numéro..." 6 \
@@ -168,7 +172,7 @@ menuText F ToolsOpenBaseAsTree "Ouvrir base dans arbre" 0   {Ouvrir une base dan
 menuText F ToolsOpenRecentBaseAsTree "Ouvrir base récente dans arbre" 0   {Ouvrir une base récente dans la fenêtre d'arbre}
 menuText F ToolsTracker "Suivi de pièce"  0 {Ouvrir la fenêtre de suivi de pièce}
 menuText F ToolsTraining "Entrainement"  0 {Entrainement (tactique, ouvertures, ...) }
-menuText E ToolsComp "Computer Tournament" 2 {Chess engine tournament}
+menuText F ToolsComp "Computer Tournament" 2 {Chess engine tournament}
 menuText F ToolsTacticalGame "Partie tactique"  0 {Jouer une partie tactique}
 menuText F ToolsSeriousGame "Partie sérieuse"  0 {Jouer une partie sans handicap}
 menuText F ToolsTrainOpenings "Ouvertures"  0 {Entrainement sur un répertoire}
@@ -219,6 +223,7 @@ menuText F ToolsImportFile "Importer un fichier en PGN..." 12 \
   {Importer des parties à partir d'un fichier PGN}
 menuText F ToolsStartEngine1 "Démarrer moteur 1" 0  {Démarrer moteur 1}
 menuText F ToolsStartEngine2 "Démarrer moteur 2" 0  {Démarrer moteur 2}
+menuText F ToolsScreenshot "Capture conseil" 0
 menuText F Play "Jouer" 0
 menuText F CorrespondenceChess "Echecs par correspondance" 0 {eMail et Xfcc échecs par correspondance}
 menuText F CCConfigure "Configurer..." 0 {Configurer outils externes et config générale}
@@ -642,6 +647,10 @@ translate F AnnotateBlack {Pour les coups des noirs seulement}
 translate F AnnotateNotBest {Quand le coup de la partie n'est pas le meilleur}
 translate F AnnotateBlundersOnly {Quand le coup est une erreur}
 translate F AnnotateBlundersOnlyScoreChange {Coup faible, le score varie de/à: }
+translate F AnnotateTitle {Configurer Annotation}
+translate F AnnotateWith {Annoter Avec}
+translate F AnnotateWhichMoves {Qui se déplace}
+translate F AnnotateComment {Ajouter annotateur de commenter}
 translate F BlundersThreshold {Seuil de l'erreur}
 translate F LowPriority {Priorité processeur basse}
 translate F ClickHereToSeeMoves {Cliquer ici pour afficher les coups}

@@ -59,6 +59,7 @@ menuText C FileMaintFixBase "Fix corrupted base" 0 {Try to fix a corrupted base}
 # Edit menu:
 menuText C Edit "Editace" 0
 menuText C EditAdd "Pøidat variantu" 0 {Pøidat variantu k tomuto tahu v partii}
+menuText C EditPasteVar "Vlozit variace" 0
 menuText C EditDelete "Vymazat variantu" 0 {Vymazat variantu k tomuto tahu}
 menuText C EditFirst "Zaøadit jako první variantu" 0 \
   {Zaøadit variantu na první místo v seznamu variant}
@@ -107,6 +108,9 @@ menuText C GameReplace "Ulo¾it: pøepsání partie..." 0 \
   {Ulo¾it tuto partii - pøepí¹e pùvodní verzi}
 menuText C GameAdd "Ulo¾it: pøidání nové partie..." 1 \
   {Ulo¾it tuto partii jako novou partii v databázi}
+menuText C GameInfo "Set Informace o hre" 0
+menuText C GameBrowse "Procházet hry" 0
+menuText C GameList "Seznam vsech her" 0
 menuText C GameDeepest "Identifikace zahájení" 0 \
   {Pøejít na koncovou pozici z ECO knihovny, která odpovídá zvolenému zahájení}
 menuText C GameGotoMove "Pøejít na tah èíslo..." 10 \
@@ -164,7 +168,7 @@ menuText C ToolsOpenRecentBaseAsTree "Open recent base as tree" 0   {Open a rece
 menuText C ToolsTracker "Stopaø figur"  0 {Otevøít okno stopaøe figur}
 # ====== TODO To be translated ======
 menuText C ToolsTraining "Training"  0 {Training tools (tactics, openings,...) }
-menuText E ToolsComp "Computer Tournament" 2 {Chess engine tournament}
+menuText C ToolsComp "Computer Tournament" 2 {Chess engine tournament}
 # ====== TODO To be translated ======
 menuText C ToolsTacticalGame "Tactical game"  0 {Play a game with tactics}
 # ====== TODO To be translated ======
@@ -229,6 +233,7 @@ menuText C ToolsStartEngine1 "Start engine 1" 0  {Start engine 1}
 # ====== TODO To be translated ======
 menuText C ToolsStartEngine2 "Start engine 2" 0  {Start engine 2}
 # ====== TODO To be translated ======
+menuText C ToolsScreenshot "desce Screenshot" 0
 menuText C Play "Hra" 0
 menuText C CorrespondenceChess "Korespondenèní ¹ach" 0 {Funkce pro korespondenèní ¹ach zalo¾ený na e-mailu a Xfcc}
 menuText C CCConfigure "Konfigurovat..." 0 {Konfigurovat externí nástroje a obecná nastavení}
@@ -713,6 +718,10 @@ translate C AnnotateNotBest {Pokud tah v partii není nejlep¹ím tahem}
 translate C AnnotateBlundersOnly {When game move is an obvious blunder}
 # ====== TODO To be translated ======
 translate C AnnotateBlundersOnlyScoreChange {Analysis reports blunder, with score change from/to: }
+translate C AnnotateTitle {Konfigurace Anotace}
+translate C AnnotateWith {S komentovat}
+translate C AnnotateWhichMoves {Který se pohybuje}
+translate C AnnotateComment {Vlozit do annotator komentar}
 # ====== TODO To be translated ======
 translate C BlundersThreshold {Threshold}
 translate C LowPriority {Nízká CPU priorita}

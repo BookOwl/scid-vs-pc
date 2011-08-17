@@ -745,12 +745,12 @@ proc updateBoard2 {} {
   # Cannot add a variation to an empty line:
   if {[sc_pos isAt vstart]  &&  [sc_pos isAt vend]} {
     .menu.edit entryconfig [tr EditAdd] -state disabled
-    .menu.edit entryconfig {Paste Variation}  -state disabled
+    .menu.edit entryconfig [tr EditPasteVar]  -state disabled
     .button.addVar configure -state disabled
     bind . <Control-a> {}
   } else {
     .menu.edit entryconfig [tr EditAdd] -state normal
-    .menu.edit entryconfig {Paste Variation}  -state normal
+    .menu.edit entryconfig [tr EditPasteVar] -state normal
     .button.addVar configure -state normal
     bind . <Control-a> {sc_var create; updateBoard -pgn}
   }

@@ -75,6 +75,7 @@ menuText D FileMaintFixBase "Inkonsistenzen beseitigen" 0 {Versuche eine inkonsi
 menuText D Edit "Bearbeiten" 0
 menuText D EditAdd "Variante hinzufügen" 0 \
   {Füge zu diesem Zug eine Variante hinzu}
+menuText D EditPasteVar "Paste Variation" 0
 menuText D EditDelete "Variante löschen" 9 \
   {Lösche eine Variante zu diesen Zug}
 menuText D EditFirst "Als erste Variante setzen" 4 \
@@ -128,6 +129,9 @@ menuText D GameReplace "Partie ersetzen..." 8 \
   {Diese Partie sichern, dabei alte Version überschreiben}
 menuText D GameAdd "Partie speichern..." 7 \
   {Diese Partie als neue Partie in der Datenbank sichern}
+menuText D GameInfo "Set Game Information" 9
+menuText D GameBrowse "Spiele durchsuchen" 0
+menuText D GameList "Alle Spiele" 0
 menuText D GameDeepest "Eröffnung identifizieren" 10 \
   {Zur Position der längstmöglichen Zugfolge nach ECO-Klassifikation gehen}
 menuText D GameGotoMove "Zugnummer..." 0 \
@@ -188,7 +192,7 @@ menuText D ToolsOpenRecentBaseAsTree "Letzte DB als Baum" 0   {Öffne zuletzt ver
 menuText D ToolsTracker "Figurenverteilung"  7 \
   {Figurenverteilungsfenster öffnen}
 menuText D ToolsTraining "Training"  0 {Trainingswerkzeuge (Taktik, Eröffnungen,...) }
-menuText E ToolsComp "Computer Tournament" 2 {Chess engine tournament}
+menuText D ToolsComp "Computer Tournament" 2 {Chess engine tournament}
 menuText D ToolsTacticalGame "Trainingspartie"  0 {Trainingspartie spielen}
 menuText D ToolsSeriousGame "Ernste Partie"  0 {Ernste Partie spielen}
 menuText D ToolsTrainTactics "Taktik"  0 {Taktische Stellungen lösen}
@@ -234,6 +238,7 @@ menuText D ToolsImportFile "PGN-Partien importieren..." 0 \
   {Partien aus einer PGN-Datei lesen}
 menuText D ToolsStartEngine1 "Starte Engine1" 0  {Starte Analyse von Analyse-Engine1}
 menuText D ToolsStartEngine2 "Starte Engine2" 0  {Starte Analyse von Analyse-Engine2}
+menuText D ToolsScreenshot "Foren-Screenshot" 0
 #-----AW------
 menuText D Play "Spielen" 0 {Partien spielen}
 menuText D CorrespondenceChess "Fernschach" 0 {Funktionen für eMail und Xfcc basiertes Fernschach}
@@ -665,6 +670,11 @@ translate D AnnotateBlack {Nur für Züge von Schwarz}
 translate D AnnotateNotBest {Wenn der Partiezug nicht der beste Zug ist}
 translate D AnnotateBlundersOnly {Wenn der Partiezug ein offensichtlicher Fehler ist}
 translate D AnnotateBlundersOnlyScoreChange {Analyse berichtet Fehler, Bewertungsänderung von/nach: }
+translate D AnnotateTitle {konfigurieren Annotation}
+translate D AnnotateWith {Kommentieren mit}
+translate D AnnotateWhichMoves {welche Moves}
+translate D AnnotateComment {Add Kommentator Kommentar}
+translate D AnnotateTitle {ConfigureAnnotation} ;# todo
 translate D BlundersThreshold {Grenze}
 translate D LowPriority {Niedrige CPU-Priorität}
 translate D ClickHereToSeeMoves {Hier klicken um Züge anzuzeigen}

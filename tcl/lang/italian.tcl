@@ -62,6 +62,7 @@ menuText I FileMaintFixBase "Fix corrupted base" 0 {Try to fix a corrupted base}
 # Edit menu:
 menuText I Edit "Edita" 0
 menuText I EditAdd "Aggiunge una variante" 0 {Aggiunge una variante a questa mossa nella partita}
+menuText I EditPasteVar "Variazione pasta" 0
 menuText I EditDelete "Cancella Variante" 0 {Cancella una variante per questa mossa}
 menuText I EditFirst "Variante principale" 5 \
   {Promuove a variante principale nella lista}
@@ -110,6 +111,9 @@ menuText I GameReplace "Salva: Sostituisce la partita..." 8 \
   {Salva questa partita, sostituendo la vecchia versione}
 menuText I GameAdd "Save: Aggiunge la nuova partita..." 7 \
   {Salva questa partita come nuova partita nel database}
+menuText I GameInfo "Informazioni del gioco insieme" 0
+menuText I GameBrowse "Cerca giochi" 0
+menuText I GameList "Tutti i giochi" 0
 menuText I GameDeepest "Identifica apertura" 0 \
   {Va' alla posizione di partita piu' profonda listata nel libro ECO}
 menuText I GameGotoMove "Vai alla mossa numero..." 0 \
@@ -162,7 +166,7 @@ menuText I ToolsOpenBaseAsTree "Apri come albero..." 0   {Apre un database nella
 menuText I ToolsOpenRecentBaseAsTree "Apri recente come albero" 0   {Apre un database recente nella finestra per l'albero}
 menuText I ToolsTracker "Dislocazione dei Pezzi"  0 {Apre/chiude la finestra con la traccia sulla dislocazione dei pezzi}
 menuText I ToolsTraining "Allenamento"  0 {Strumenti per l'allenamento (tattica, aperture,...) }
-menuText E ToolsComp "Computer Tournament" 2 {Chess engine tournament}
+menuText I ToolsComp "Computer Tournament" 2 {Chess engine tournament}
 menuText I ToolsTacticalGame "Partita tattica"  0 {Gioca una partita con le tattiche}
 menuText I ToolsSeriousGame "Partita seria"  0 {Gioca una partita seria}
 menuText I ToolsTrainTactics "Tattiche"  0 {Risolvi problemi tattici}
@@ -212,6 +216,7 @@ menuText I ToolsImportFile "Importa il file di partite PGN..." 11 \
   {Importa le partite da un file PGN}
 menuText I ToolsStartEngine1 "Avvia il motore 1" 0  {Avvia il primo motore per l'analisi della posizione}
 menuText I ToolsStartEngine2 "Avvia il motore 2" 0  {Avvia il secondo motore per l'analisi della posizione}
+menuText I ToolsScreenshot "Consiglio Screenshot" 0
 
 # Play menue
 menuText I Play "Gioca" 0
@@ -695,6 +700,10 @@ translate I AnnotateBlack {Per solo le mosse del Nero}
 translate I AnnotateNotBest {Quando la mossa della partita non e' la migliore}
 translate I AnnotateBlundersOnly {Quando la mossa è chiaramente un errore}
 translate I AnnotateBlundersOnlyScoreChange {L'analisi riporta come errori, con variazione del punteggio da/a:}
+translate I AnnotateTitle {Configurare Annotazione}
+translate I AnnotateWith {Con annotare}
+translate I AnnotateWhichMoves {Che si muove}
+translate I AnnotateComment {Aggiungi annotatore di commentare}
 translate I BlundersThreshold {Limite}
 translate I LowPriority {Imposta la priorità della CPU a bassa}
 translate I ClickHereToSeeMoves {Clicca qui per vedere le mosse}

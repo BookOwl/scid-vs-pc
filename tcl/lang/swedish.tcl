@@ -61,6 +61,7 @@ menuText W FileMaintFixBase "Fixa trasig databas" 0 {Försök att fixa en trasig d
 # Edit menu:
 menuText W Edit "Redigera" 0
 menuText W EditAdd "Lägg till variant" 0 {Skapa en variant vid denna ställning}
+menuText W EditPasteVar "Klistra Variation" 0
 menuText W EditDelete "Radera variant" 0 {Radera en variant vid denna ställning}
 menuText W EditFirst "Skapa huvudvariant" 6 \
   {Gör en av varianterna till huvudvariant}
@@ -110,6 +111,9 @@ menuText W GameReplace "Spara: Ersätt parti..." 7 \
   {Spara partiet och ersätt tidigare version}
 menuText W GameAdd "Spara: Nytt parti..." 1 \
   {Spara ett nytt parti}
+menuText W GameInfo "Ställ Spelinformation" 0
+menuText W GameBrowse "Bläddra bland spel" 0
+menuText W GameList "Visa alla spel" 0
 menuText W GameDeepest "Identifiera öppningen" 0 \
   {Gå till den mest detaljerade ställningen i ECO boken}
 menuText W GameGotoMove "Gå till drag nummer..." 8 \
@@ -171,7 +175,7 @@ menuText W ToolsOpenRecentBaseAsTree "Öppna senaste databasen som träd" 0   {Öpp
 menuText W ToolsTracker "Sök material"  0 {Öppnar dialog för att söka efter en viss materiell balans} 
 # ====== TODO To be translated ======
 menuText W ToolsTraining "Träning"  0 {Träningsverktyg (taktik, öppningar,...) }
-menuText E ToolsComp "Computer Tournament" 2 {Chess engine tournament}
+menuText W ToolsComp "Computer Tournament" 2 {Chess engine tournament}
 # ====== TODO To be translated ======
 menuText W ToolsTacticalGame "Taktiskt parti"  0 {Spela ett parti med taktik}
 # ====== TODO To be translated ======
@@ -238,6 +242,7 @@ menuText W ToolsStartEngine1 "Starta schackmotor 1" 0  {Starta schackmotor 1}
 # ====== TODO To be translated ======
 menuText W ToolsStartEngine2 "Starta schackmotor 2" 0  {Starta schackmotor 2}
 # ====== TODO To be translated ======
+menuText W ToolsScreenshot "Styrelsen Skärmdump" 0
 menuText W Play "Spela" 0
 menuText W CorrespondenceChess "Korrespondensschack" 0 {Funktioner för eMail och Xfcc baserad Korrespondensschack}
 # ====== TODO To be translated ======
@@ -750,10 +755,12 @@ translate W AnnotateAllMoves {Kommentera alla drag}
 translate W AnnotateWhite {Endast vits drag}
 translate W AnnotateBlack {Endast svarts drag}
 translate W AnnotateNotBest {När partidraget inte är det bästa}
-# ====== TODO To be translated ======
 translate W AnnotateBlundersOnly {När partidraget är en uppenbar blunder}
-# ====== TODO To be translated ======
-translate W AnnotateBlundersOnlyScoreChange {Analysen rapporterar blunder, med värderingsförändringar från/till: }
+translate W AnnotateBlundersOnlyScoreChange {Analysen rapporterar blunder, med värderingsförändringar från/till}
+translate W AnnotateTitle {Konfigurera Anteckningar}
+translate W AnnotateWith {Kommentera Med}
+translate W AnnotateWhichMoves {Som Flyttar}
+translate W AnnotateComment {Lägg annotator att kommentera}
 # ====== TODO To be translated ======
 translate W BlundersThreshold {Tröskelvärde}
 translate W LowPriority {Kör som lågprioriterad process} 

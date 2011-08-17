@@ -61,6 +61,7 @@ menuText R FileMaintFixBase "Fix corrupted base" 0 {Try to fix a corrupted base}
 # Edit menu:
 menuText R Edit "Редактирование" 0
 menuText R EditAdd "Добавить вариант" 0 {Добавить вариант к этому ходу партии}
+menuText R EditPasteVar "Paste Variation" 0
 menuText R EditDelete "Удалить вариант" 0 {Удалить вариант для этого хода}
 menuText R EditFirst "Сделать вариант первым" 0 \
   {Продвинуть вариант на первое место в списке}
@@ -110,6 +111,9 @@ menuText R GameReplace "Сохранить: Заменить партию..." 0 \
   {Сохранить эту партию, заменив старую версию}
 menuText R GameAdd "Сохранить: Добавить новую партию..." 2 \
   {Сохранить эту партию, как новую в базу данных}
+menuText R GameInfo "Set Game Information" 9
+menuText R GameBrowse "Browse Game" 0
+menuText R GameList "List all Games" 0
 menuText R GameDeepest "Определить дебют" 0 \
   {Найти самую позднюю позицию партии, имеющуюся в книге ECO}
 menuText R GameGotoMove "Перейти к ходу номер..." 5 \
@@ -171,7 +175,7 @@ menuText R ToolsOpenRecentBaseAsTree "Open recent base as tree" 0   {Open a rece
 menuText R ToolsTracker "Положение фигуры"  4 {Открыть окно положения фигуры}
 # ====== TODO To be translated ======
 menuText R ToolsTraining "Training"  0 {Training tools (tactics, openings,...) }
-menuText E ToolsComp "Computer Tournament" 2 {Chess engine tournament}
+menuText R ToolsComp "Computer Tournament" 2 {Chess engine tournament}
 # ====== TODO To be translated ======
 menuText R ToolsTacticalGame "Tactical game"  0 {Play a game with tactics}
 # ====== TODO To be translated ======
@@ -236,6 +240,7 @@ menuText R ToolsStartEngine1 "Start engine 1" 0  {Start engine 1}
 # ====== TODO To be translated ======
 menuText R ToolsStartEngine2 "Start engine 2" 0  {Start engine 2}
 # ====== TODO To be translated ======
+menuText E ToolsScreenshot "Board Screenshot" 0
 menuText R Play "Play" 0
 # ====== TODO To be translated ======
 menuText R CorrespondenceChess "Correspondence Chess" 0 {Functions for eMail and Xfcc based correspondence chess}
@@ -756,6 +761,10 @@ translate R AnnotateBlundersOnly {When game move is an obvious blunder}
 # ====== TODO To be translated ======
 translate R AnnotateBlundersOnlyScoreChange {Analysis reports blunder, with score change from/to: }
 # ====== TODO To be translated ======
+translate R AnnotateTitle {Configure Annotation}
+translate R AnnotateWith {Annotate With}
+translate R AnnotateWhichMoves {Which Moves}
+translate R AnnotateComment {Add annotator to comment}
 translate R BlundersThreshold {Threshold}
 translate R LowPriority {Низкий приоритет CPU}
 # ====== TODO To be translated ======

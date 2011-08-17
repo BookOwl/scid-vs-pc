@@ -65,6 +65,7 @@ menuText N FileMaintFixBase "Fix corrupted base" 0 {Try to fix a corrupted base}
 menuText N Edit "Bewerken" 0
 menuText N EditAdd "Nieuwe variant" 8 \
  {Voeg op dit punt een variant toe}
+menuText N EditPasteVar "Plakken Variatie" 0
 menuText N EditDelete "Variant verwijderen" 11 \
  {Verwijder een variant voor deze zet}
 menuText N EditFirst "Maak hoofdvariant" 5 \
@@ -116,6 +117,9 @@ menuText N GameReplace "Partij overschrijven..." 11 \
   {Bewaar partij; overschrijf oude versie}
 menuText N GameAdd "Partij toevoegen..." 7 \
   {Bewaar partij en voeg toe aan de database}
+menuText N GameInfo "Set Game Information" 9
+menuText N GameBrowse "Browse Games" 0
+menuText N GameList "Laat alle games zien" 0
 menuText N GameDeepest "Opening bepalen" 8 \
   {Ga naar de diepste positie uit het ECO openingboek}
 menuText N GameGotoMove "Zetnummer..." 0 \
@@ -182,7 +186,7 @@ menuText N ToolsOpenBaseAsTree "Open base as tree" 0   {Open a base and use it i
 menuText N ToolsOpenRecentBaseAsTree "Open recent base as tree" 0   {Open a recent base and use it in Tree window}
 menuText N ToolsTracker "Stuk Spoorvolger "  0 {Open het Stuk Spoorvolger venster}
 menuText N ToolsTraining "Training"  0 {Training gereedschappen (taktiek, openingen,...) }
-menuText E ToolsComp "Computer Tournament" 2 {Chess engine tournament}
+menuText N ToolsComp "Computer Tournament" 2 {Chess engine tournament}
 menuText N ToolsTacticalGame "Taktische partij"  0 {Speel en taktische partij}
 # ====== TODO To be translated ======
 menuText N ToolsSeriousGame "Serious game"  0 {Play a serious game}
@@ -243,6 +247,7 @@ menuText N ToolsImportFile "PGN database importeren..." 4 \
 menuText N ToolsStartEngine1 "Start engine 1" 0  {Start engine 1}
 menuText N ToolsStartEngine2 "Start engine 2" 0  {Start engine 2}
 # ====== TODO To be translated ======
+menuText N ToolsScreenshot "Board Screenshot" 0
 menuText N Play "Speel" 0
 
 menuText N CorrespondenceChess "Correspondentieschaak" 0 {Functies voor eMail en Xfcc gebaseerde correspondentieschaak}
@@ -728,6 +733,10 @@ translate N AnnotateBlack { Alleen voor zetten door Zwart}
 translate N AnnotateNotBest {Als de partijzet niet de beste is.}
 translate N AnnotateBlundersOnly {Als de partijzet een klaarblijjelijke blunder is}
 translate N AnnotateBlundersOnlyScoreChange {Blunder Analyse rapport, met scorewijziging van/naar: }
+translate N AnnotateTitle {Configureren Annotatie}
+translate N AnnotateWith {Annoteren Met}
+translate N AnnotateWhichMoves {welke Moves}
+translate N AnnotateComment {Voeg annotator commentaar te leveren}
 translate N BlundersThreshold {Ondergrens}
 translate N LowPriority {Lage CPU prioriteit} ;
 # ====== TODO To be translated ======

@@ -802,7 +802,7 @@ proc  checkBlunderState {} {
 
 
 proc initAnnotation {n} {
-  global autoplayDelay tempdelay blunderThreshold annotateModeButtonValue annotateMode analysis annotateType
+  global autoplayDelay tempdelay blunderThreshold annotateModeButtonValue annotateMode analysis annotateType tr
 
   set analysis(prevscore$n) 0
 
@@ -818,14 +818,14 @@ proc initAnnotation {n} {
   set tempdelay [expr {$autoplayDelay / 1000.0}]
   toplevel $w
   wm state $w withdrawn
-  wm title $w "Configure Annotation"
+  wm title $w $tr(AnnotateTitle)
 
   ### Seconds per move
 
   frame $w.delay
   pack $w.delay -side top -pady 3 
 
-  label $w.delay.label -text $::tr(SecondsPerMove)
+  label $w.delay.label -text $tr(SecondsPerMove)
   spinbox $w.delay.spDelay -width 4 -textvariable tempdelay -from 1 -to 300 -increment 1
 
   pack $w.delay.label -side left -padx 5 
@@ -835,11 +835,11 @@ proc initAnnotation {n} {
 
   ### Annotate type
 
-  label $w.typelabel -text {Annotate With}
+  label $w.typelabel -text $tr(AnnotateWith)
   frame $w.type
-  radiobutton $w.type.score -text [string totitle $::tr(score)] -variable annotateType -value score -anchor w
-  radiobutton $w.type.var -text $::tr(GlistVars) -variable annotateType -value var -anchor w
-  radiobutton $w.type.both -text $::tr(Both) -variable annotateType -value both -anchor w
+  radiobutton $w.type.score -text [string totitle $tr(score)] -variable annotateType -value score -anchor w
+  radiobutton $w.type.var -text $tr(GlistVars) -variable annotateType -value var -anchor w
+  radiobutton $w.type.both -text $tr(Both) -variable annotateType -value both -anchor w
 
   pack $w.typelabel -side top
   pack $w.type -side top
@@ -848,10 +848,10 @@ proc initAnnotation {n} {
   ### Which side
 
   addHorizontalRule $w
-  label $w.avlabel -text $::tr(AnnotateWhich)
-  radiobutton $w.all -text $::tr(AnnotateAll) -variable annotateMoves -value all -anchor w
-  radiobutton $w.white -text $::tr(AnnotateWhite) -variable annotateMoves -value white -anchor w
-  radiobutton $w.black -text $::tr(AnnotateBlack) -variable annotateMoves -value black -anchor w
+  label $w.avlabel -text $tr(AnnotateWhich)
+  radiobutton $w.all -text $tr(AnnotateAll) -variable annotateMoves -value all -anchor w
+  radiobutton $w.white -text $tr(AnnotateWhite) -variable annotateMoves -value white -anchor w
+  radiobutton $w.black -text $tr(AnnotateBlack) -variable annotateMoves -value black -anchor w
 
   pack $w.avlabel -side top
   pack $w.all $w.white $w.black -side top -fill x
@@ -859,17 +859,17 @@ proc initAnnotation {n} {
 
   ### Which Moves
 
-  label $w.anlabel -text {Which Moves} ; #$::tr(Annotate)
-  radiobutton $w.allmoves -text $::tr(AnnotateAllMoves) -variable annotateBlunders \
+  label $w.anlabel -text $tr(AnnotateWhichMoves) ; #$tr(Annotate)
+  radiobutton $w.allmoves -text $tr(AnnotateAllMoves) -variable annotateBlunders \
     -value allmoves -anchor w -command checkBlunderState
-  radiobutton $w.notbest -text $::tr(AnnotateNotBest) -variable annotateBlunders \
+  radiobutton $w.notbest -text $tr(AnnotateNotBest) -variable annotateBlunders \
     -value notbest -anchor w -command checkBlunderState
-  radiobutton $w.blundersonly -text $::tr(AnnotateBlundersOnly) -variable annotateBlunders \
+  radiobutton $w.blundersonly -text $tr(AnnotateBlundersOnly) -variable annotateBlunders \
     -value blundersonly -anchor w -command checkBlunderState
 
   frame $w.blunderbox
 
-  label $w.blunderbox.label -text "$::tr(Blunder) $::tr(BlundersThreshold)"
+  label $w.blunderbox.label -text "$tr(Blunder) $tr(BlundersThreshold)"
   spinbox $w.blunderbox.spBlunder -width 4 -textvariable blunderThreshold \
       -from 0.1 -to 3.0 -increment 0.1
 
@@ -885,9 +885,9 @@ proc initAnnotation {n} {
 
   ### General options frame
 
-  checkbutton $w.cbAnnotateVar  -text $::tr(AnnotateVariations) -variable ::isAnnotateVar -anchor w
-  checkbutton $w.cbAddAnnotatorComment  -text {Add annotator to comment} -variable ::addAnnotatorComment -anchor w
-  checkbutton $w.cbAddAnnotatorTag  -text $::tr(addAnnotatorTag) -variable ::addAnnotatorTag -anchor w
+  checkbutton $w.cbAnnotateVar  -text $tr(AnnotateVariations) -variable ::isAnnotateVar -anchor w
+  checkbutton $w.cbAddAnnotatorComment  -text $tr(AnnotateComment) -variable ::addAnnotatorComment -anchor w
+  checkbutton $w.cbAddAnnotatorTag  -text $tr(addAnnotatorTag) -variable ::addAnnotatorTag -anchor w
   pack $w.cbAnnotateVar $w.cbAddAnnotatorComment $w.cbAddAnnotatorTag -anchor w
 
   # Book
@@ -895,7 +895,7 @@ proc initAnnotation {n} {
   frame $w.usebook
   pack  $w.usebook -side top -fill x
 
-  checkbutton $w.usebook.cbBook  -text $::tr(UseBook) -variable ::useAnalysisBook \
+  checkbutton $w.usebook.cbBook  -text $tr(UseBook) -variable ::useAnalysisBook \
     -command "checkState ::useAnalysisBook $w.usebook.comboBooks"
 
   # load book names
@@ -930,7 +930,7 @@ proc initAnnotation {n} {
   pack $w.batch -side top -fill x
   set to [sc_base numGames]
   if {$to <1} { set to 1}
-  checkbutton $w.batch.cbBatch -text $::tr(AnnotateSeveralGames) -variable ::isBatch \
+  checkbutton $w.batch.cbBatch -text $tr(AnnotateSeveralGames) -variable ::isBatch \
     -command "checkState ::isBatch $w.batch.spBatchEnd"
 
   spinbox $w.batch.spBatchEnd -width 6 -textvariable ::batchEnd \
@@ -940,7 +940,7 @@ proc initAnnotation {n} {
 
   # Find Opening Errors
 
-  checkbutton $w.batch.cbBatchOpening -text $::tr(FindOpeningErrors) -variable ::isBatchOpening \
+  checkbutton $w.batch.cbBatchOpening -text $tr(FindOpeningErrors) -variable ::isBatchOpening \
      -command "checkState ::isBatchOpening $w.batch.spBatchOpening"
 
   spinbox $w.batch.spBatchOpening -width 2 -textvariable ::isBatchOpeningMoves \
@@ -948,7 +948,7 @@ proc initAnnotation {n} {
 
   checkState ::isBatchOpening $w.batch.spBatchOpening
 
-  label $w.batch.lBatchOpening -text $::tr(moves)
+  label $w.batch.lBatchOpening -text $tr(moves)
 
   # Pack
 
@@ -961,7 +961,7 @@ proc initAnnotation {n} {
   grid $w.batch.lBatchOpening -column 2 -row 1 -sticky e
   set ::batchEnd $to
 
-  checkbutton $w.batch.cbMarkTactics -text $::tr(MarkTacticalExercises) -variable ::markTacticalExercises
+  checkbutton $w.batch.cbMarkTactics -text $tr(MarkTacticalExercises) -variable ::markTacticalExercises
   grid $w.batch.cbMarkTactics -column 0 -row 2 -sticky w
   if {! $::analysis(uci$n)} {
     set ::markTacticalExercises 0
@@ -971,13 +971,13 @@ proc initAnnotation {n} {
   addHorizontalRule $w
   frame $w.buttons
   pack $w.buttons -side top -fill x
-  dialogbutton $w.buttons.cancel -text $::tr(Cancel) -command {
+  dialogbutton $w.buttons.cancel -text $tr(Cancel) -command {
     bind .configAnnotation <Destroy> {}
     destroy .configAnnotation
     set annotateMode 0
     set annotateModeButtonValue 0
   }
-  dialogbutton $w.buttons.help -text $::tr(Help) -command {helpWindow Analysis Annotating}
+  dialogbutton $w.buttons.help -text $tr(Help) -command {helpWindow Analysis Annotating}
   dialogbutton $w.buttons.ok -text "OK" -command "okAnnotation $n"
 
   pack $w.buttons.cancel $w.buttons.help $w.buttons.ok -side right -padx 5 -pady 5

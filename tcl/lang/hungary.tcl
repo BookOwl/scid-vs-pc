@@ -59,6 +59,7 @@ menuText H FileMaintFixBase "Fix corrupted base" 0 {Try to fix a corrupted base}
 # Edit menu:
 menuText H Edit "Szerkesztés" 1
 menuText H EditAdd "Új változat" 0 {Ennél a lépésnél új változatot szúr be a játszmába.}
+menuText H EditPasteVar "Beillesztés változása" 0
 menuText H EditDelete "Változat törlése" 9 {Töröl egy változatot ennél a lépésnél.}
 menuText H EditFirst "Elsõ változattá tesz" 0 \
   {Elsõ helyre teszi a változatot a listán.}
@@ -107,6 +108,9 @@ menuText H GameReplace "Mentés cserével..." 7 \
   {Elmenti ezt a játszmát; felülírja a régi változatot.}
 menuText H GameAdd "Mentés új játszmaként..." 0 \
   {Elmenti ezt a játszmát; új játszmát hoz létre az adatbázisban.}
+menuText H GameInfo "Set Game Information" 9
+menuText H GameBrowse "Böngésszen játékok" 0
+menuText H GameList "Összes Játék" 0
 menuText H GameDeepest "Megnyitás azonosítása" 10 \
   {Az ECO-könyvben szereplõ legnagyobb mélységig megy bele a játszmába.}
 menuText H GameGotoMove "Ugrás megadott sorszámú lépéshez..." 1 \
@@ -168,7 +172,7 @@ menuText H ToolsOpenRecentBaseAsTree "Open recent base as tree" 0   {Open a rece
 menuText H ToolsTracker "Figurakövetõ"  0 {Kinyitja/becsukja a figurakövetõ ablakot.}
 # ====== TODO To be translated ======
 menuText H ToolsTraining "Training"  0 {Training tools (tactics, openings,...) }
-menuText E ToolsComp "Computer Tournament" 2 {Chess engine tournament}
+menuText H ToolsComp "Computer Tournament" 2 {Chess engine tournament}
 # ====== TODO To be translated ======
 menuText H ToolsTacticalGame "Tactical game"  0 {Play a game with tactics}
 # ====== TODO To be translated ======
@@ -233,6 +237,7 @@ menuText H ToolsStartEngine1 "Start engine 1" 0  {Start engine 1}
 # ====== TODO To be translated ======
 menuText H ToolsStartEngine2 "Start engine 2" 0  {Start engine 2}
 # ====== TODO To be translated ======
+menuText H ToolsScreenshot "Fórum Screenshot" 0
 menuText H Play "Játék" 0
 menuText H CorrespondenceChess "Levelezési sakk" 0 {Segédeszközök eMail vagy Xfcc alapú levelezési sakkhoz}
 menuText H CCConfigure "Beállítások" 0 {Külsõ eszközök és alaptulajdonságok}
@@ -717,6 +722,10 @@ translate H AnnotateBlundersOnly {When game move is an obvious blunder}
 # ====== TODO To be translated ======
 translate H AnnotateBlundersOnlyScoreChange {Analysis reports blunder, with score change from/to: }
 # ====== TODO To be translated ======
+translate H AnnotateTitle {Állítsa Jegyzet}
+translate H AnnotateWith {A jegyzetekkel}
+translate H AnnotateWhichMoves {Melyik mozgatja}
+translate H AnnotateComment {Add annotator a hozzászólásr}
 translate H BlundersThreshold {Threshold}
 translate H LowPriority {Alacsony CPU-prioritás}
 # ====== TODO To be translated ======

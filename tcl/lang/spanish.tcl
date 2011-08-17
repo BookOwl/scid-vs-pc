@@ -63,6 +63,7 @@ menuText S FileMaintFixBase "Fijar base corrupta" 0 {Prueba a fijar una base cor
 menuText S Edit "Editar" 0
 menuText S EditAdd "Añadir variación" 0 \
   {Añade una variación a este movimiento en la partida}
+menuText S EditPasteVar "pega Variación" 0
 menuText S EditDelete "Borrar variación" 0 {Borra variación para este movimiento}
 menuText S EditFirst "Convertir en primera variación" 0 \
   {Hace que una variación sea la primera en la lista}
@@ -112,6 +113,9 @@ menuText S GameReplace "Guardar: Reemplazar partida..." 10 \
   {Guarda esta partida, reemplazando la antigua versión}
 menuText S GameAdd "Guardar: Añadir nueva partida..." 9 \
   {Guarda esta partida como una nueva partida en la base de datos}
+menuText S GameInfo "Juego Set de Información" 0
+menuText S GameBrowse "Buscar Juegos" 0
+menuText S GameList "Lista de Todos los Juegos" 0
 menuText S GameDeepest "Identificar apertura" 1 \
   {Va a la posición más avanzada de la partida según el libro ECO}
 menuText S GameGotoMove "Ir al movimiento número..." 6 \
@@ -175,7 +179,7 @@ menuText S ToolsOpenBaseAsTree "Abrir base como árbol" 0   {Abrir una base y usa
 menuText S ToolsOpenRecentBaseAsTree "Abrir base reciente como árbol" 0   {Abre una base reciente y la usa en Ventana de árbol (Tree)} 
 menuText S ToolsTracker "Rastreador de piezas"  14 {Abre la ventana del rastreador de piezas}
 menuText S ToolsTraining "Entrenamiento"  0 {Entrenamiento (táctica, aperturas,...}
-menuText E ToolsComp "Computer Tournament" 2 {Chess engine tournament}
+menuText S ToolsComp "Computer Tournament" 2 {Chess engine tournament}
 menuText S ToolsTacticalGame "Partida Táctica"  0 {Jugar una partida táctica}
 menuText S ToolsSeriousGame "Partida seria"  0 {Jugar una partida seria}
 menuText S ToolsTrainTactics "Táctica (problemas)"  0 {Resover problemas de táctica}
@@ -226,6 +230,7 @@ menuText S ToolsImportFile "Importar un archivo de partidas PGN..." 2 \
   {Importa partidas de un archivo PGN}
 menuText S ToolsStartEngine1 "Empezar motor 1" 0  {Empezar motor 1}
 menuText S ToolsStartEngine2 "Empezar motor 2" 0  {Empezar Motor 2}
+menuText S ToolsScreenshot "Junta de Imagen" 0
 menuText S Play "Jugar" 0
 menuText S CorrespondenceChess "Ajedrez por correo" 0 \
   {Funciones para ajedrez por correo basado en email y Xfcc}
@@ -681,6 +686,10 @@ translate S AnnotateBlack {Sólo para movimientos de las Negras}
 translate S AnnotateNotBest {Cuando el movimiento de la partida no es el mejor}
 translate S AnnotateBlundersOnly {Cuando el movimiento de la partida es un error}
 translate S AnnotateBlundersOnlyScoreChange {Análisis reporta errores, con cambio de puntuación desde: }
+translate S AnnotateTitle {Configurar Anotación}
+translate S AnnotateWith {Con anotaciones}
+translate S AnnotateWhichMoves {Que se mueve}
+translate S AnnotateComment {Añadir un comentario anotador}
 translate S BlundersThreshold {Umbral del error }
 translate S LowPriority {Baja prioridad del procesador}
 translate S ClickHereToSeeMoves {Click aquí para ver movimientos}

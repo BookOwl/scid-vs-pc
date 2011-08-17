@@ -57,6 +57,7 @@ menuText P FileMaintFixBase "Fix corrupted base" 0 {Try to fix a corrupted base}
 
 menuText P Edit "Edytuj" 0
 menuText P EditAdd "Dodaj wariant" 0 {Dodaj wariant do ruchu w partii}
+menuText P EditPasteVar "Zmiana wklej" 0
 menuText P EditDelete "Usuñ wariant" 0 {Usuñ wariant dla tego posuniêcia}
 menuText P EditFirst "Twórz pierwszy wariant" 0 \
   {Przesuñ wariant na pierwsze miejsce na li¶cie}
@@ -108,6 +109,9 @@ menuText P GameReplace "Zapisz: zast±p partiê..." 3 \
   {Zapisz partiê, zast±p poprzedni± wersjê}
 menuText P GameAdd "Zapisz: dodaj now± partiê..." 8 \
   {Zapisz tê partiê jako nowa partiê w bazie}
+menuText P GameInfo "Ustaw Informacje o grze" 0
+menuText P GameBrowse "Przegladaj gry" 0
+menuText P GameList "Lista wszystkich gier" 0
 menuText P GameDeepest "Rozpoznaj debiut" 0 \
   {Przejd¼ do najd³u¿szego wariantu z ksi±¿ki debiutowej}
 menuText P GameGotoMove "Przejd¼ do posuniêcia nr..." 13 \
@@ -239,6 +243,7 @@ menuText P ToolsStartEngine1 "Start engine 1" 0  {Start engine 1}
 # ====== TODO To be translated ======
 menuText P ToolsStartEngine2 "Start engine 2" 0  {Start engine 2}
 # ====== TODO To be translated ======
+menuText P ToolsScreenshot "Screenshot pokladzie" 0
 menuText P Play "Play" 0
 # ====== TODO To be translated ======
 menuText P CorrespondenceChess "Correspondence Chess" 0 {Functions for eMail and Xfcc based correspondence chess}
@@ -757,6 +762,10 @@ translate P AnnotateBlundersOnly {When game move is an obvious blunder}
 # ====== TODO To be translated ======
 translate P AnnotateBlundersOnlyScoreChange {Analysis reports blunder, with score change from/to: }
 # ====== TODO To be translated ======
+translate P AnnotateTitle {Konfiguracja adnotacji}
+translate P AnnotateWith {Opisywanie Z}
+translate P AnnotateWhichMoves {Który porusza sie}
+translate P AnnotateComment {Dodaj annotator komentarz}
 translate P BlundersThreshold {Threshold}
 translate P LowPriority {Niski priorytet CPU} 
 # ====== TODO To be translated ======

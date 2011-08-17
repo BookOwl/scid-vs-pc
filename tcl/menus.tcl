@@ -330,8 +330,8 @@ incr menuindex
 $m add command -label EditAdd -accel "Ctrl+A" -command {sc_var create; updateBoard -pgn}
 set helpMessage($m,[incr menuindex]) EditAdd
 
-$m add command -label "Paste Variation" -command importVar
-incr menuindex
+$m add command -label EditPasteVar -command importVar
+set helpMessage($m,[incr menuindex]) EditPasteVar
 
 menu $m.del
 $m add cascade -label EditDelete -menu $m.del
@@ -382,14 +382,14 @@ set helpMessage($m,[incr menuindex]) GameAdd
 $m add separator
 incr menuindex
 
-$m add command -label "Set Game Information" -command {gameSave -1} -underline 9
-set helpMessage($m,[incr menuindex]) {Set game information}
+$m add command -label GameInfo -command {gameSave -1} -underline 9
+set helpMessage($m,[incr menuindex]) GameInfo
 
-$m add command -label "Browse Game" -command {::gbrowser::new [sc_base current] [sc_game number]} -underline 0
-set helpMessage($m,[incr menuindex]) {View this game}
+$m add command -label GameBrowse -command {::gbrowser::new [sc_base current] [sc_game number]}
+set helpMessage($m,[incr menuindex]) GameBrowse
 
-$m add command -label {List all Games} -command ::windows::gamelist::Open -underline 9
-set helpMessage($m,[incr menuindex]) {See available games}
+$m add command -label GameList -command ::windows::gamelist::Open 
+set helpMessage($m,[incr menuindex]) GameList
 
 $m add separator
 incr menuindex
@@ -804,7 +804,7 @@ set helpMessage($m,[incr menuindex]) ToolsImportFile
 $m add separator
 incr menuindex
 
-$m add command -label {Board Screenshot} -command {boardToFile {} {}} -accelerator Ctrl+F12
+$m add command -label ToolsScreenshot -command {boardToFile {} {}} -accelerator Ctrl+F12
 bind . <Control-F12> {boardToFile {} {}}
 set helpMessage($m,[incr menuindex]) {Board Screenshot}
 
@@ -1419,7 +1419,7 @@ proc updateMenuStates {} {
     # Base is not in use:
     $m.file entryconfig [tr FileClose] -state disabled
 
-    foreach i {Replace Add First Prev Reload Next Last Random Number} {
+    foreach i {Replace Add First Prev Reload Next Last Random Number Info Browse List} {
       $m.game entryconfig [tr Game$i] -state disabled
     }
     # .tb.gprev configure -state disabled
@@ -1511,7 +1511,7 @@ proc setLanguageMenus {{lang ""}} {
     configMenuText .menu.file.utils.name [tr FileMaintName$tag $oldLang] \
         FileMaintName$tag $lang
   }
-  foreach tag {PastePGN Setup CopyBoard CopyPGN PasteBoard Reset Copy Paste Add Delete First Main Trial Strip } {
+  foreach tag {PastePGN Setup CopyBoard CopyPGN PasteBoard Reset Copy Paste Add Delete First Main Trial Strip PasteVar} {
     configMenuText .menu.edit [tr Edit$tag $oldLang] Edit$tag $lang
   }
   foreach tag {Comments Vars Begin End} {
@@ -1525,7 +1525,7 @@ proc setLanguageMenus {{lang ""}} {
   configMenuText .menu.search [tr WindowsPList $oldLang] WindowsPList $lang
   configMenuText .menu.search [tr WindowsTmt $oldLang] WindowsTmt $lang
 
-  foreach tag {Replace Add New First Prev Reload Next Last Random Number
+  foreach tag {Replace Add New First Prev Reload Next Last Random Number Info Browse List
     Deepest GotoMove Novelty} {
     configMenuText .menu.game [tr Game$tag $oldLang] Game$tag $lang
   }
@@ -1536,7 +1536,7 @@ proc setLanguageMenus {{lang ""}} {
 
   foreach tag {Analysis Email FilterGraph AbsFilterGraph OpReport Tracker
     Rating Score ExpCurrent ExpFilter ImportOne ImportFile StartEngine1 StartEngine2 BookTuning
-    PInfo PlayerReport ConnectHardware} {
+    PInfo PlayerReport ConnectHardware Screenshot} {
     configMenuText .menu.tools [tr Tools$tag $oldLang] Tools$tag $lang
   }
 

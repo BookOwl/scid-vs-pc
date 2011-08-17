@@ -59,6 +59,7 @@ menuText Y FileMaintFixBase "Fix corrupted base" 0 {Try to fix a corrupted base}
 # Edit menu:
 menuText Y Edit "Izmene" 0
 menuText Y EditAdd "Dodaj varijantu" 0 {Dodaj varijantu potezu u partiji}
+menuText Y EditPasteVar "Paste Vraiation" 0
 menuText Y EditDelete "Obri¹i varijantu" 0 {Obri¹i varijantu za ovaj potez}
 menuText Y EditFirst "Postavi prvu varijantu" 5 \
   {Postavi varijantu kao prvu u listi}
@@ -107,6 +108,9 @@ menuText Y GameReplace "Saèuvaj: Zameni partiju..." 6 \
   {Saèuvaj ovu partiju preko stare partiju u bazi}
 menuText Y GameAdd "Saèuvaj: Dodaj novu partiju..." 6 \
   {Saèuvaj ovu partiju kao novu u bazi}
+menuText Y GameInfo "Set Game Information" 9
+menuText Y GameBrowse "Browse Game" 0
+menuText Y GameList "List all Games" 0
 menuText Y GameDeepest "Identifikuj otvaranje" 0 \
   {Idi na poslednju poziciju partije koja odgovara knjizi otvaranja}
 menuText Y GameGotoMove "Idi na potez broj..." 5 \
@@ -168,7 +172,7 @@ menuText Y ToolsOpenRecentBaseAsTree "Open recent base as tree" 0   {Open a rece
 menuText Y ToolsTracker "Piece Tracker"  0 {Open the Piece Tracker window} ;# ***
 # ====== TODO To be translated ======
 menuText Y ToolsTraining "Training"  0 {Training tools (tactics, openings,...) }
-menuText E ToolsComp "Computer Tournament" 2 {Chess engine tournament}
+menuText Y ToolsComp "Computer Tournament" 2 {Chess engine tournament}
 # ====== TODO To be translated ======
 menuText Y ToolsTacticalGame "Tactical game"  0 {Play a game with tactics}
 # ====== TODO To be translated ======
@@ -233,6 +237,7 @@ menuText Y ToolsStartEngine1 "Start engine 1" 0  {Start engine 1}
 # ====== TODO To be translated ======
 menuText Y ToolsStartEngine2 "Start engine 2" 0  {Start engine 2}
 # ====== TODO To be translated ======
+menuText Y ToolsScreenshot "Board Screenshot" 0
 menuText Y Play "Play" 0
 # ====== TODO To be translated ======
 menuText Y CorrespondenceChess "Correspondence Chess" 0 {Functions for eMail and Xfcc based correspondence chess}
@@ -751,6 +756,10 @@ translate Y AnnotateBlundersOnly {When game move is an obvious blunder}
 # ====== TODO To be translated ======
 translate Y AnnotateBlundersOnlyScoreChange {Analysis reports blunder, with score change from/to: }
 # ====== TODO To be translated ======
+translate Y AnnotateTitle {Configure Annotation}
+translate Y AnnotateWith {Annotate With}
+translate Y AnnotateWhichMoves {Which Moves}
+translate Y AnnotateComment {Add annotator to comment}
 translate Y BlundersThreshold {Threshold}
 translate Y LowPriority {Low CPU priority} ;# ***
 # ====== TODO To be translated ======

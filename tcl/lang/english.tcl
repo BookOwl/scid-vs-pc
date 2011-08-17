@@ -96,6 +96,7 @@ menuText E FileMaintFixBase "Repair base" 0 {Try to repair a corrupted base}
 # Edit menu:
 menuText E Edit "Edit" 0
 menuText E EditAdd "Add Variation" 0 {Add a variation at this move in the game}
+menuText E EditPasteVar "Paste Variation" 0
 menuText E EditDelete "Delete Variation" 0 {Delete a variation for this move}
 menuText E EditFirst "Make First Variation" 5 \
   {Promote a variation to be first in the list}
@@ -140,6 +141,9 @@ menuText E GameRandom "Load Random Game" 8 {Load a random filtered game}
 menuText E GameNumber "Load Game Number" 5 {Load a game by entering its number}
 menuText E GameReplace "Save: Replace Game" 6 {Save this game, replacing the old version}
 menuText E GameAdd "Save: Add Game" 0 {Save this game as a new game in the database}
+menuText E GameInfo "Set Game Information" 9
+menuText E GameBrowse "Browse Game" 0
+menuText E GameList "List all Games" 0
 menuText E GameDeepest "Identify Opening" 0 {Goto the deepest game position listed in the ECO book}
 menuText E GameGotoMove "Goto Move Number" 5 {Go to a specified move number in the current game}
 menuText E GameNovelty "Find Novelty" 7 {Find the first move of this game that has not played before}
@@ -233,6 +237,7 @@ menuText E ToolsImportOne "Import PGN Text" 0 \
 menuText E ToolsImportFile "Import PGN File" 7 {Import games from a PGN file}
 menuText E ToolsStartEngine1 "Start engine 1" 0  {Start engine 1}
 menuText E ToolsStartEngine2 "Start engine 2" 0  {Start engine 2}
+menuText E ToolsScreenshot "Board Screenshot" 0
 
 # Play menue
 menuText E Play "Play" 0
@@ -667,6 +672,10 @@ translate E AnnotateBlack {Black moves only}
 translate E AnnotateNotBest {When move is not the best}
 translate E AnnotateBlundersOnly {When move is a blunder}
 translate E AnnotateBlundersOnlyScoreChange {Analysis reports blunder, with score change from/to: }
+translate E AnnotateTitle {Configure Annotation}
+translate E AnnotateWith {Annotate With}
+translate E AnnotateWhichMoves {Which Moves}
+translate E AnnotateComment {Add annotator to comment}
 translate E BlundersThreshold {Threshold}
 translate E LowPriority {Low CPU Priority}
 translate E ClickHereToSeeMoves {Click here to see moves}
