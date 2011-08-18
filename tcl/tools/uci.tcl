@@ -353,10 +353,11 @@ namespace eval uci {
     }
 
     set ::uci::uciInfo(pipe$n) $pipe
+    set ::uci:name {}
 
     # Configure pipe for line buffering and non-blocking mode:
     fconfigure $pipe -buffering full -blocking 0
-    fileevent $pipe readable "::uci::readUCI $n $cmd"
+    fileevent $pipe readable "::uci::readUCI $n"
 
     # Return to original dir if necessary:
     if {$oldpwd != ""} { catch {cd $oldpwd} }
@@ -373,7 +374,7 @@ namespace eval uci {
 
   ### Only used by uciConfig to gather options info for uciConfigWin
 
-  proc readUCI { n command } {
+  proc readUCI {n} {
     global ::uci::uciOptions
 
     set line [string trim [gets $::uci::uciInfo(pipe$n)] ]
@@ -381,45 +382,76 @@ namespace eval uci {
     if {$line == "uciok"} {
       # we got all options, stop engine
       closeUCIengine $n 1
-      uciConfigWin $n $command
+      uciConfigWin $n 
     }
     # get options
     if { [string first "option name" $line] == 0 } {
       lappend uciOptions $line
     }
+    if { [string first "id name" $line] == 0 } {
+      set ::uci::name [string range $line 8 end]
+    }
   }
 
   ### Builds the dialog for UCI engine configuration 
 
-  proc uciConfigWin {n command} {
+  proc uciConfigWin {n} {
     global ::uci::uciOptions ::uci::optList ::uci::optionToken ::uci::oldOptions ::uci::optionImportant
 
     set w .uciConfigWin
-    if { [winfo exists $w]} { return }
+
+    if { [winfo exists $w]} {
+      return
+    }
+
     toplevel $w
-    wm title $w "Configure $command"
-    ::scrolledframe::scrolledframe .uciConfigWin.sf -xscrollcommand {.uciConfigWin.hs set} -yscrollcommand {.uciConfigWin.vs set} \
-        -fill both -width 1000 -height 600
-    scrollbar .uciConfigWin.vs -command {.uciConfigWin.sf yview}
-    scrollbar .uciConfigWin.hs -command {.uciConfigWin.sf xview} -orient horizontal
+
+    wm state $w withdrawn
+    setWinLocation $w
+    setWinSize $w
+
+    if {$::uci::name == {}} {
+      set ::uci::name [lindex [lindex $::engines(list) $n] 0]
+    }
+    wm title $w "UCI Configure $::uci::name"
+
+    pack [label $w.title -text $::uci::name] -side top -pady 5
+    addHorizontalRule $w
+    pack [frame $w.buttons] -side bottom 
+    pack [frame $w.wtf] -side top -expand 1 -fill both
+
+    ### Whoever wrote this gridded widget hierarchy 
+    #   scrolledframe scrolledframe $w.sf (scrolledframe) .scrolledframe (later)
+    # is an f-ing eediot
+
 
     if {$::windowsOS || $::macOS} {
       # needs testing
-      bind .uciConfigWin <MouseWheel> {
-	if {[expr -%D] < 0} {.uciConfigWin.sf yview scroll -1 units}
-	if {[expr -%D] > 0} {.uciConfigWin.sf yview scroll +1 units}
+      bind $w {
+	if {[expr -%D] < 0} {.uciConfigWin.wtf.sf yview scroll -1 units}
+	if {[expr -%D] > 0} {.uciConfigWin.wtf.sf yview scroll +1 units}
       }
     } else {
-	bind .uciConfigWin <Button-4> {.uciConfigWin.sf yview scroll -1 units}
-	bind .uciConfigWin <Button-5> {.uciConfigWin.sf yview scroll +1 units}
+	bind $w <Button-4> ".uciConfigWin.wtf.sf yview scroll -1 units"
+	bind $w <Button-5> ".uciConfigWin.wtf.sf yview scroll +1 units"
     }
 
-    grid .uciConfigWin.sf -row 0 -column 0 -sticky nsew
-    grid .uciConfigWin.vs -row 0 -column 1 -sticky ns
-    grid .uciConfigWin.hs -row 1 -column 0 -sticky ew
-    grid rowconfigure .uciConfigWin 0 -weight 1
-    grid columnconfigure .uciConfigWin 0 -weight 1
-    set w .uciConfigWin.sf.scrolled
+    ### Add an extra frame around it to allow the Save/Cancel buttons and Title lable to sit outside it.
+
+    set w $w.wtf
+
+    ::scrolledframe::scrolledframe $w.sf -xscrollcommand "$w.hs set" -yscrollcommand "$w.vs set" \
+        -fill both -width 1000 -height 600
+    scrollbar $w.vs -command "$w.sf yview" -width 12
+    scrollbar $w.hs -command "$w.sf xview" -orient horizontal -width 12
+
+    grid $w.sf -row 0 -column 0 -sticky nsew
+    grid $w.vs -row 0 -column 1 -sticky ns
+    grid $w.hs -row 1 -column 0 -sticky ew
+    grid rowconfigure $w 0 -weight 1
+    grid columnconfigure $w 0 -weight 1
+
+    set w $w.sf.scrolled
 
     proc tokeep {opt} {
       foreach tokeep $::uci::optionToKeep {
@@ -433,6 +465,7 @@ namespace eval uci {
     set optList ""
     array set elt {}
     foreach opt $uciOptions {
+puts $opt
       set elt(name) "" ; set elt(type) "" ; set elt(default) "" ; set elt(min) "" ; set elt(max) "" ; set elt(var) ""
       set data [split $opt]
       # skip options starting with UCI_ and Ponder
@@ -514,7 +547,6 @@ namespace eval uci {
 
     set optnbr 0
     frame $w.fopt
-    frame $w.fbuttons
 
     set row 0
     set col 0
@@ -598,20 +630,29 @@ namespace eval uci {
       incr col
       incr optnbr
     }
+    pack $w.fopt
 
-    button $w.fbuttons.save -text $::tr(Save) -command "
+    set w .uciConfigWin
+
+    dialogbutton $w.buttons.save -text $::tr(Save) -command "
       ::uci::saveConfig $n
       destroy .uciConfigWin
     "
 
-    button $w.fbuttons.cancel -text $::tr(Cancel) -command "destroy .uciConfigWin"
-    pack $w.fbuttons.save $w.fbuttons.cancel -side left -expand yes -fill both -padx 20 -pady 2
-    pack $w.fopt
+    dialogbutton $w.buttons.help -text $::tr(Help) -command {helpWindow Analysis UCI}
+    dialogbutton $w.buttons.cancel -text $::tr(Cancel) -command "destroy .uciConfigWin"
+
+    pack $w.buttons.save $w.buttons.help $w.buttons.cancel -side left -expand yes -fill both -padx 20 -pady 2
     addHorizontalRule $w
-    pack $w.fbuttons
-    bind $w <Return> "$w.fbuttons.save invoke"
+
+    # bind $w <Return> "$w.buttons.save invoke"
+
     bind $w <Escape> "destroy .uciConfigWin"
-    catch {grab .uciConfigWin}
+    bind $w <Configure> "recordWinSize $w"
+    bind $w <F1> {helpWindow Analysis UCI}
+
+    update
+    wm state $w normal
   }
 
   ### UCI configuration (uciConfigWin) is finished
@@ -621,7 +662,7 @@ namespace eval uci {
     global ::uci::optList ::uci::newOptions
 
     set newOptions {}
-    set w .uciConfigWin.sf.scrolled
+    set w .uciConfigWin.wtf.sf.scrolled
     set optnbr 0
 
     foreach l $optList {

@@ -430,6 +430,7 @@ set helpText(Index) {<h1>Scid Help Index</h1>
 
   <h3><name U>U</name></h3>
   <ul>
+  <li><a Analysis UCI>UCI Engine</a> Options</li>
   </ul>
 
   <h3><name V>V</name></h3>
@@ -2739,11 +2740,11 @@ engines support both formats.
   this page in the web browser.
   </p>
 
+  <h2><name UCI>UCI Configuration Options</name></h2>
+
   <p>
-  Finally, If the engine uses the <b>UCI</b> protocol 
-  , it can be configured by pressing the <b>Configure</b> button.
-  A dialog will be shown where all engine parameters can be tuned to the users
-  liking.
+  UCI Engines can be configured by pressing the <b>Configure</b> button, whence
+  a dialog with the engines parameters will be shown. Gilles will write a big help section here;<gt>
   </p>
 
   <h2><name Debugging>Debugging Engine Crashes</name></h2>
@@ -2767,7 +2768,7 @@ set helpText(Tourney) {<h1>Computer Tournament</h1>
   <p>
   Automated <run ::compInit><green>Computer Tournaments</green></run>
   can be run with any XBoard or UCI engine installed via the
-  <run ::enginelist::choose><green>Tools--<gt>Analysis Engines</green></run> widget.
+  <a Analysis List>Analysis Engines</a> widget.
   </p>
   <p>
   <i>Support for different engines is good, but many old and/or less-well-known engines won't work.
