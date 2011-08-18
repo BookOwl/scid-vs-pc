@@ -38,8 +38,8 @@ set wentOutOfBook 0
 
 set isBatch 0
 set batchEnd 1
-set isBatchOpening 0
-set isBatchOpeningMoves 12
+set isOpeningOnly 0
+set isOpeningOnlyMoves 10
 set stack ""
 set markTacticalExercises 0
 
@@ -940,13 +940,13 @@ proc initAnnotation {n} {
 
   # Find Opening Errors
 
-  checkbutton $w.batch.cbBatchOpening -text $tr(FindOpeningErrors) -variable ::isBatchOpening \
-     -command "checkState ::isBatchOpening $w.batch.spBatchOpening"
+  checkbutton $w.batch.cbBatchOpening -text $tr(FindOpeningErrors) -variable ::isOpeningOnly \
+     -command "checkState ::isOpeningOnly $w.batch.spBatchOpening"
 
-  spinbox $w.batch.spBatchOpening -width 2 -textvariable ::isBatchOpeningMoves \
-      -from 10 -to 20 -increment 1 -validate all -vcmd { regexp {^[0-9]+$} %P }
+  spinbox $w.batch.spBatchOpening -width 2 -textvariable ::isOpeningOnlyMoves \
+      -from 5 -to 20 -increment 1 -validate all -vcmd { regexp {^[0-9]+$} %P }
 
-  checkState ::isBatchOpening $w.batch.spBatchOpening
+  checkState ::isOpeningOnly $w.batch.spBatchOpening
 
   label $w.batch.lBatchOpening -text $tr(moves)
 
@@ -1024,7 +1024,7 @@ proc okAnnotation {n} {
     toggleEngineAnalysis $n 1
   }
   if {$::addAnnotatorTag} {
-    appendAnnotator "$analysis(name$n)"
+    appendTag Annotator "$analysis(name$n)"
   }
   if {$autoplayMode == 0} { toggleAutoplay }
 }
@@ -1266,9 +1266,11 @@ proc addAnnotation {} {
 
     storeScore $engine_name $text
 
-    if {$::isBatchOpening} {
-      if { [sc_pos moveNumber] < $::isBatchOpeningMoves} {
-        appendAnnotator "opBlunder [sc_pos moveNumber] ([sc_pos side])"
+    if {0} {
+      if {$::isOpeningOnly} 
+      # this needs sorting out
+      if { [sc_pos moveNumber] < $::isOpeningOnlyMoves} {
+        appendTag OpeningBlunder "[sc_pos moveNumber] ([sc_pos side])"
         updateBoard -pgn
       }
     }
@@ -1335,12 +1337,6 @@ proc addAnnotation {} {
       storeScore $engine_name $text
     }
 
-    if {$::isBatchOpening} {
-      if { [sc_pos moveNumber] < $::isBatchOpeningMoves} {
-        appendAnnotator "opBlunder [sc_pos moveNumber] ([sc_pos side])"
-        updateBoard -pgn
-      }
-    }
     set nag [ scoreToNag $score ]
     if {$nag != {}} {
       sc_pos addNag $nag
@@ -1404,35 +1400,45 @@ proc scoreToNag {score} {
     return "-="
   }
 }
-################################################################################
-# will append arg to current game Annotator tag
-################################################################################
-proc appendAnnotator {s} {
-  set s [string trim $s]
-  set extra [sc_game tags get Extra]
-  # find Annotator tag
-  set oldAnn {}
+
+### Add an extra tag to the game tags
+#
+# Notably, tag will be Annotator or OpeningBlunder
+
+proc appendTag {tag value} {
+  set s [string trim $value]
+  set tags [sc_game tags get Extra]
+
+  ### See below for the format of tags
+
+  ### The extra tags are very tough on newlines and lists. Prepare for pain
+
   set found 0
-  foreach line $extra {
-    if {$found} {
-      set oldAnn $line
-      break
-    }
-    if {[string match Annotator $line]} {
+  set new {}
+
+  foreach {t v} $tags {
+    if {$t == $tag} {
       set found 1
-      continue
+      # dont rewrite if value already matches
+      if {[string match "*$value*" $v]} {
+	append new "$t \"$v\"\n"
+      } else {
+	append new "$t \"$v , $s\"\n"
+      }
+    } else {
+      append new "$t \"$v\"\n"
     }
   }
 
-  if {![string match "*$s*" $oldAnn]} {
-    if {$oldAnn != {}} {
-      set ann "Annotator \"$oldAnn , $s\"\n"
-    } else  {
-      set ann "Annotator \"$s\"\n"
-    }
-    sc_game tags set -extra [list $ann]
+  if {!$found} {
+      append new "$tag \"$s\"\n"
   }
+
+  ### dog know why this is needed S.A
+
+  sc_game tags set -extra [split $new "\n"]
 }
+
 ################################################################################
 #
 ################################################################################

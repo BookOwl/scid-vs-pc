@@ -1436,7 +1436,7 @@ translate E AllExercisesDone {All exercises done}
 translate E MoveOutOfBook {Move out of book}
 translate E LastBookMove {Last book move}
 translate E AnnotateSeveralGames {Batch annotation\nFrom current to :}
-translate E FindOpeningErrors {Find opening errors}
+translate E FindOpeningErrors {Opening errors only}
 translate E MarkTacticalExercises {Mark tactical exercises}
 translate E UseBook {Use book}
 translate E MultiPV {Multiple variations}

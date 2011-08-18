@@ -2675,10 +2675,8 @@ set helpText(Analysis) {<h1>Analysis Windows</h1>
      in the annotation process, and annotation starts after the book moves.</li>
      <li><term>Batch annotation</term> 
      Automatically process multiple games, saving annotations as we go.</li>
-     <li><term>Find opening errors</term> Check the opening phase
-     (up to the move specified) for blunders. Additionally, the
-     Annotator-tag gets an entry "opBlunder X" where X is the move the
-     blunder occurred.</li>
+     <li><term>Opening errors only</term> Only check for opening errors.
+     (up to the move specified).</li>
      <li><term>Mark tactical exercises</term> This can be used to
      generate exercises for the training function <a FindBestMove>Find
      best move</a>. This option is only available for <term>UCI</term>

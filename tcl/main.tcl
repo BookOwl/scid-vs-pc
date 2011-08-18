@@ -1445,15 +1445,16 @@ proc autoplay {} {
   }
 
   # stop game annotation when out of opening
-  if { $::isBatch && $annotateMode && $::isBatchOpening && \
-        [sc_pos moveNumber] > $::isBatchOpeningMoves } {
+
+  if { $annotateMode && $::isBatch && $::isOpeningOnly && \
+        ( [sc_pos moveNumber] > $::isOpeningOnlyMoves || $::wentOutOfBook)} {
     toggleEngineAnalysis $n 1
     sc_game save [sc_game number]
 
     if {[sc_game number] < $::batchEnd} {
       sc_game load [expr [sc_game number] + 1]
       if {$::addAnnotatorTag} {
-        appendAnnotator " $analysis(name$n)"
+        appendTag Annotator " $analysis(name$n)"
       }
       set ::wentOutOfBook 0
       updateMenuStates
@@ -1465,11 +1466,15 @@ proc autoplay {} {
       nextgameAutoplay $n
       toggleEngineAnalysis $n 1
       after $autoplayDelay autoplay
-      return
     } else  {
       cancelAutoplay
-      return
     }
+    return
+  }
+
+  if {$::isOpeningOnly && $::wentOutOfBook} {
+    cancelAutoplay
+    return
   }
 
   if { [sc_pos isAt end] } {
@@ -1496,7 +1501,7 @@ proc autoplay {} {
         if {[sc_game number] < $::batchEnd} {
           sc_game load [expr [sc_game number] + 1]
           if {$::addAnnotatorTag} {
-            appendAnnotator " $analysis(name$n)"
+            appendTag Annotator " $analysis(name$n)"
           }
           set ::wentOutOfBook 0
           updateMenuStates
