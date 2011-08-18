@@ -375,7 +375,7 @@ namespace eval uci {
   ### Only used by uciConfig to gather options info for uciConfigWin
 
   proc readUCI {n} {
-    global ::uci::uciOptions
+    global ::uci::uciOptions ::uci::name
 
     set line [string trim [gets $::uci::uciInfo(pipe$n)] ]
     # end of options
@@ -385,11 +385,11 @@ namespace eval uci {
       uciConfigWin $n 
     }
     # get options
-    if { [string first "option name" $line] == 0 } {
+    if {[string match {option name *} $line]} {
       lappend uciOptions $line
     }
-    if { [string first "id name" $line] == 0 } {
-      set ::uci::name [string range $line 8 end]
+    if {[string match {id name *}     $line]} {
+      set name [string range $line 8 end]
     }
   }
 
@@ -422,7 +422,7 @@ namespace eval uci {
 
     ### Whoever wrote this gridded widget hierarchy 
     #   scrolledframe scrolledframe $w.sf (scrolledframe) .scrolledframe (later)
-    # is an f-ing eediot
+    # is an f-ing eediot. (But it's nicely functional otherwise :)
 
 
     if {$::windowsOS || $::macOS} {
@@ -436,7 +436,7 @@ namespace eval uci {
 	bind $w <Button-5> ".uciConfigWin.wtf.sf yview scroll +1 units"
     }
 
-    ### Add an extra frame around it to allow the Save/Cancel buttons and Title lable to sit outside it.
+    ### Add an extra frame around the scrolledframe to allow the Save/Cancel buttons and Title label to pack outside
 
     set w $w.wtf
 
@@ -465,9 +465,12 @@ namespace eval uci {
     set optList ""
     array set elt {}
     foreach opt $uciOptions {
-puts $opt
-      set elt(name) "" ; set elt(type) "" ; set elt(default) "" ; set elt(min) "" ; set elt(max) "" ; set elt(var) ""
+      foreach i {name type default min max var} {
+        set elt($i) ""
+      }
       set data [split $opt]
+
+      ### todo - check these skipped options on some modern engines S.A.
       # skip options starting with UCI_ and Ponder
       # some engines like shredder use UCI_* options that should not be ignored
       
@@ -643,7 +646,6 @@ puts $opt
     dialogbutton $w.buttons.cancel -text $::tr(Cancel) -command "destroy .uciConfigWin"
 
     pack $w.buttons.save $w.buttons.help $w.buttons.cancel -side left -expand yes -fill both -padx 20 -pady 2
-    addHorizontalRule $w
 
     # bind $w <Return> "$w.buttons.save invoke"
 
