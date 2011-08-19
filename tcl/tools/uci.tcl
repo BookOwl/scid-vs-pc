@@ -440,6 +440,10 @@ namespace eval uci {
 
     set w $w.wtf
 
+    ### Haha - this is how it's done
+    # Make the scrolledframe widget use small fonts
+    # option add *uciConfigWin*wtf*Font font_Small
+
     ::scrolledframe::scrolledframe $w.sf -xscrollcommand "$w.hs set" -yscrollcommand "$w.vs set" \
         -fill both -width 1000 -height 600
     scrollbar $w.vs -command "$w.sf yview" -width 12

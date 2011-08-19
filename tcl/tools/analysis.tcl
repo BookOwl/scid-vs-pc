@@ -731,14 +731,25 @@ proc ::enginelist::move {dir} {
   set current [lindex [.enginelist.list.list curselection] 0]
   set max [llength $engines(list)]
 
+  set flag {}
   for {set i 1} {$i <= $max} {incr i} {
     if {[winfo exists .analysisWin$i]} {
-      tk_messageBox -title Scid \
-	  -icon warning -type ok -parent .enginelist \
-	  -message "Please close all Engines first"
-      return
+       set flag "all Engines"
     }
   }
+  foreach win {.comp .uciConfigWin .engineEdit} title {"Computer Tournament" "UCI Config window" "Configure Engine window"} {
+    if {[winfo exists $win]} {
+      set flag $title
+      break
+    }
+  }
+  if {$flag != {}} {
+      tk_messageBox -title Scid \
+	  -icon warning -type ok -parent .enginelist \
+	  -message "Please close $flag first"
+      return
+  }
+
   if {($dir == -1 && $current == 0) || ($dir == 1 && $current == $max-1)} {
     return
   }
