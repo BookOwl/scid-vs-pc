@@ -2573,7 +2573,7 @@ if { [catch {package require img::window}] } {
 }
 
 if {!$png_image_support || !$window_image_support} {
-  .menu.tools entryconfig {Board Screenshot} -state disabled
+  .menu.tools entryconfig ToolsScreenshot -state disabled
   if {!$png_image_support} {
     ::splash::add "Board screenshot disabled - no png support"
   } else {
