@@ -416,6 +416,9 @@ proc ::enginelist::choose {} {
   # arrow images defined in bookmark.tcl
   button $w.buttons.up   -image bookmark_up   -command {::enginelist::move -1} 
   button $w.buttons.down -image bookmark_down -command {::enginelist::move 1} 
+  button $w.buttons.uci  -image uci           -command {
+    ::uci::uciConfigN [lindex [.enginelist.list.list curselection] 0] .enginelist
+  }
 
   dialogbutton $w.buttons.delete -text $::tr(Delete) -command {
     ::enginelist::delete [lindex [.enginelist.list.list curselection] 0]
@@ -431,7 +434,7 @@ proc ::enginelist::choose {} {
     destroy .enginelist
   }
 
-  pack $w.buttons.up $w.buttons.down $w.buttons.add $w.buttons.edit $w.buttons.delete $w.buttons.start -side left -expand yes
+  pack $w.buttons.up $w.buttons.down $w.buttons.uci $w.buttons.add $w.buttons.edit $w.buttons.delete $w.buttons.start -side left -expand yes
   pack $w.buttons -side top -pady 12 -padx 2 -fill x
   pack $w.close -side bottom -pady 8
   focus $w.buttons.start
@@ -3584,4 +3587,22 @@ ozpBIjToEKA7ZmaQUDB6YIBcqyi9CTOliZMoT4C0yGEiQm2BAXC12hQq0yJA
 fgL5oTOGxogMx/8FqHUqUhosQ2xP6AgCJMaJFR84ZA9gS1UlUJYQARJUKFCc
 Mi9UiFhPK9UjQ3Kc4cUXYICRxRI7MAHCekow0gUVR9wAgww9JGEEET+gMEB2
 2mHloYcahfhPQAA7
+}
+
+image create photo uci -data {
+R0lGODlhGAAYAMZaACBKhzRlpF9fXlhthEVxqVtxiU50pGB2j2B3kVR8rmN7
+lVl9q3l4dHx8fH19fX9/f2WErGyFoYaGhoeHh4GKlXWQroGTqZGRkYKXso2Y
+pYSctpmZmZ6enp+fnpCmvpGmvpeltqenppmtw6SttqKuvK2trZ2wyq+vr6ex
+vaG0yJ22zp240rW1taS60Lu7u7vByMHBwbDG28zMzM/NysDR4tjY19zc3NPf
+6t/f39fi7ePi4ePj4uTj4d/n8Ofm5Ojn5Ojn5urp6Ovp5+rq6uzq6O3r6e3r
+6vDw8O3y9vLx7+7z9vPy8fPz8vD09/T09Pb29fj39vj49/j4+Pn49/n59/n5
++Pr6+fr6+vv7+/7+/v//////////////////////////////////////////
+////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////yH5BAEKAH8A
+LAAAAAAYABgAAAf0gH+Cg4SFhoeCDw+IjIQPQVU1i42MD1BLkogYAY0PRFWT
+hQFaBpyDDYqCLkaghqMyJxCOP0MPJTtEVgyuNiemgxtASUVEQsatgwFXAb+E
+EzNRVVRVxlOTAVnNhhyKDyxVxU8dAVLalA9VPi8ETuaUfw8mATgLIe+EAPkB
+TgkjWKGUAFRo4QFAABQwdGQBiEjgDRIqFAB4kMXYwkYANOTIoGAFAgDwshS7
+eAiAiB4WBqyoUABkSIsSDAFIocTCgZUtHWXhIYCkIAAfmoC4ydKlTiZHAAKI
+gYQCTqOFLjxwUAhAhBU0PuS8hy9CBIlcZeYLS7ZRIAA7
 }

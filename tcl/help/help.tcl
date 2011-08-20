@@ -2743,7 +2743,7 @@ engines support both formats.
   <h2><name UCI>UCI Configuration Options</name></h2>
 
   <p>
-  UCI Engines can be configured by pressing the <b>Configure</b> button, whence
+  UCI Engines can be configured by pressing <button uci> or <b>Configure</b> in the Edit Window, whence
   a dialog with the engines parameters will be shown. Gilles will write a big help section here;<gt>
   </p>
 
@@ -4115,7 +4115,8 @@ set helpText(Related) {<h1>Related Links</h1>
   <li>Fics homepage  <url http://www.freechess.org>www.freechess.org</url></li>
   <li>Fics games <url http://ficsgames.com>http://ficsgames.com</url></li>
   <li>Player Information resources  <url http://linweb.ris.at/~nagl/index.html>http://linweb.ris.at/~nagl</url></li>
-  <li>Professional quality chess icons.  <url www.virtualpieces.net>www.virtualpieces.net</url></li>
+  <li>Professional quality chess icons  <url www.virtualpieces.net>www.virtualpieces.net</url></li>
+  <li>Tango Icons <url http://tango.freedesktop.org/Tango_Desktop_Project>http://tango.freedesktop.org/Tango_Desktop_Project</url></li>
   <li>The PGN Standard, created by Steven J. Edwards in 1994, explains the PGN
   and EPD formats in detail. <url www.saremba.de/chessgml/standards/pgn/pgn-complete.htm>www.saremba.de/chessgml/standards/pgn...</url></li>
   <br>

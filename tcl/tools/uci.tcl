@@ -319,6 +319,26 @@ namespace eval uci {
     }
   }
 
+  ### Called by comp.tcl and the AnalysisEngine toplevel
+
+  proc uciConfigN {n parent} {
+    global engines
+
+    if {![string is integer -strict $n]} {
+      return
+    }
+    set engineData [lindex $engines(list) $n]
+    if {![lindex $engineData 7]} {
+      tk_messageBox -title Oops -icon warning -type ok -message {Engine is not UCI} -parent $parent
+      return
+    }
+    set cmd  [lindex $engineData 1]
+    set args [lindex $engineData 2]
+    set dir  [lindex $engineData 3] 
+    set options [lindex $engineData 8]
+    ::uci::uciConfig $n [ toAbsPath $cmd ] $args [ toAbsPath $dir ] $options 
+  }
+
   ### Open the pipe and issue 'uci'
   ### Pipe is read by readUCI, which then inits uciConfigWin after options have been read
 

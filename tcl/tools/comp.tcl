@@ -823,23 +823,9 @@ proc drawCombos {} {
 
     ttk::combobox  $l.$i.combo -width 20 -state readonly -values $values
 
-    set command { set engineData [lindex $::engines(list) }
-    append command " \[ $l.$i.combo current \] "
-    append command { ]
-      if {![lindex $engineData 7]} {
-        tk_messageBox -title Oops -icon warning -type ok -message {Engine is not UCI} -parent .comp
-        return
-      }
-      set name [lindex $engineData 0]
-      set cmd [ toAbsPath [lindex $engineData 1] ]
-      set args [lindex $engineData 2]
-      set dir [ toAbsPath [lindex $engineData 3] ]
-      set options [lindex $engineData 8]
-      ::uci::uciConfig }
-    append command " \[ $l.$i.combo current \] "
-    append command { [ toAbsPath $cmd ] $args [ toAbsPath $dir ] $options }
-
-    button $l.$i.configure -image tb_maint -command $command -width 24 -height 24
+    button $l.$i.configure -image uci -width 24 -height 24 -command "
+      ::uci::uciConfigN \[ $l.$i.combo current \] .comp
+    "
 
     pack $l.$i.configure $l.$i.combo -side left -padx 10
 
