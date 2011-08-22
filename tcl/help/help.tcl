@@ -5534,6 +5534,9 @@ for info about specific commands and variables.
     <li><term>-channel</term> NUMBER - Stop listening to channel</li>
     <li><term>news</term>   Show Fics news</li>
     <li><term>seek</term>   Seek a new game</li>
+    <li><term>=notify</term> - Display the player names of whom you are automatically notified.</li>
+    <li><term>+notify</term> PLAYER - Add player to your notify list</li>
+    <li><term>-notify</term> PLAYER - Remove player to your notify list</li>
 </ul>
 
 <h3>Variables</h3>

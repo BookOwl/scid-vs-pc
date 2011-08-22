@@ -70,10 +70,6 @@ proc addLanguage {letter name underline {encodingSystem ""}} {
 ################################################################################
 proc menuText {lang tag label underline {helpMsg ""}} {
   global hasEncoding langEncoding
-  if {$hasEncoding  &&  $langEncoding($lang) != ""  &&  $::tcl_version <= 8.3} {
-    catch {set label [encoding convertfrom $langEncoding($lang) $label]}
-    catch {set helpMsg [encoding convertfrom $langEncoding($lang) $helpMsg]}
-  }
 
   set ::menuLabel($lang,$tag) $label
   set ::menuUnder($lang,$tag) $underline
@@ -86,10 +82,7 @@ proc menuText {lang tag label underline {helpMsg ""}} {
 #    Assigns the help message for a particular language for a button.
 # ################################################################################
 proc helpMsg {lang button message} {
-  global hasEncoding langEncoding
-  if {$hasEncoding  &&  $langEncoding($lang) != ""  &&  $::tcl_version <= 8.3} {
-    catch {set message [encoding convertfrom $langEncoding($lang) $message]}
-  }
+
   set ::helpMessage($lang,$button) $message
 }
 
@@ -100,11 +93,7 @@ array set translations {}
 #    Assigns a translation for future reference.
 ################################################################################
 proc translate {lang tag label} {
-  global menuLabel hasEncoding langEncoding
   regsub {\\n} $label "\n" label
-  if {$hasEncoding  &&  $langEncoding($lang) != ""  &&  $::tcl_version <= 8.3} {
-    catch {set label [encoding convertfrom $langEncoding($lang) $label]}
-  }
   set ::translations($lang,$tag) $label
   set ::tr($tag) $label
   foreach extra {":" "..."} {
@@ -120,11 +109,7 @@ proc translate {lang tag label} {
 #    assigns the translations for future reference.
 ################################################################################
 proc translateECO {lang pairList} {
-  global hasEncoding langEncoding
   foreach {from to} $pairList {
-    if {$hasEncoding  &&  $langEncoding($lang) != ""  &&  $::tcl_version <= 8.3} {
-      catch {set to [encoding convertfrom $langEncoding($lang) $to]}
-    }
     sc_eco translate $lang $from $to
   }
 }
@@ -156,7 +141,14 @@ proc tr {tag {lang ""}} {
 proc setLanguage {{lang ""}} {
   global menuLabel menuUnder oldLang hasEncoding langEncoding
 
+
   if {$lang == ""} {set lang $::language}
+
+  if {![info exists langEncoding($lang)]} {
+    # Need this check incase Scid is built with nolang but previously used *with* languages
+    set ::language E
+    set lang E
+  }
 
   if { $::translatePieces } {
     switch $lang {
@@ -176,8 +168,9 @@ proc setLanguage {{lang ""}} {
   }
 
   if {[catch {setLanguage_$lang} err]} { puts "Error: $err" }
+
   # TODO: Check this:
-  if {$hasEncoding  &&  $langEncoding($lang) != ""} {
+  if {$hasEncoding  && $langEncoding($lang) != ""} {
     # encoding system $langEncoding($lang)
   }
 
