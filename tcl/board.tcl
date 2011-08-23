@@ -219,7 +219,7 @@ proc initBoardColors {} {
     set l 0
     foreach i $boardStyles {
       set j [string tolower $i]
-      button $w.pieces$l.$j -text $i -font font_Menu -relief flat -command "
+      button $w.pieces$l.$j -text $i -font font_Small -relief flat -command "
 	set boardStyle $i
 	setPieceFont $i"
       pack $w.pieces$l.$j -side left
@@ -229,7 +229,7 @@ proc initBoardColors {} {
   } else {
     foreach i $boardStyles {
       set j [string tolower $i]
-      button $w.pieces1.$j -text $i -font font_Menu -relief flat -command "
+      button $w.pieces1.$j -text $i -font font_Small -relief flat -command "
 	set boardStyle $i
 	setPieceFont $i"
       pack $w.pieces1.$j -side left
@@ -288,7 +288,7 @@ proc initBoardColors {} {
   } {
     button $f.b$c -image e20 -background [set $c] -command "chooseAColor $w $c"
 
-    button $f.l$c -text "$::tr($n)  " -command "chooseAColor $w $c" -relief flat -font font_Menu
+    button $f.l$c -text "$::tr($n)  " -command "chooseAColor $w $c" -relief flat -font font_Small
     grid $f.b$c -row $row -column $column
     grid $f.l$c -row $row -column [expr {$column + 1} ] -sticky w
   }
