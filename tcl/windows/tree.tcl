@@ -1026,6 +1026,8 @@ proc ::tree::best { baseNumber } {
   global tree
   set w .treeBest$baseNumber
   if {! [winfo exists .treeWin$baseNumber]} { return }
+  # Hmmm... listbox widgets seem to clash, so need this hack
+  if {[winfo exists .variations]} { return }
   if {! [winfo exists $w]} {
     toplevel $w
     wm title $w "Scid: $::tr(TreeBestGames) \[[file tail [sc_base filename $baseNumber]]\]"
