@@ -1703,7 +1703,6 @@ proc makeAnalysisMove {n} {
   }
 
   set analysis(automoveThinking$n) 0
-  set comp(lastmove) $move
   if { [sc_move_add $move $n] } {
     ### Move fail
     set res 0
@@ -2418,10 +2417,10 @@ proc processAnalysisInput {n} {
       puts_ "RESIGNS (engine $n)"
       if {$n == $comp(white)} {
 	sc_game tags set -result 0
-	sc_pos setComment "White resigns"
+	sc_pos setComment "White resigns "
       } else {
 	sc_game tags set -result 1
-	sc_pos setComment "Black resigns"
+	sc_pos setComment "Black resigns "
       }
       set comp(playing) 0
       set analysis(waitForBestMove$n) 0

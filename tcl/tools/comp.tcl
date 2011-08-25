@@ -166,16 +166,16 @@ proc compInit {} {
   grid $w.config.start1button -row $row -column 1 -padx 5 
 
   incr row
-  label $w.config.start3label -text {All games from current position}
-  radiobutton $w.config.start3button -variable comp(start) -value 2
-  grid $w.config.start3label -row $row -column 0 -sticky w -padx 5 
-  grid $w.config.start3button -row $row -column 1 -padx 5 
-
-  incr row
   label $w.config.start2label -text {First game from current position}
   radiobutton $w.config.start2button -variable comp(start) -value 1
   grid $w.config.start2label -row $row -column 0 -sticky w -padx 5 
   grid $w.config.start2button -row $row -column 1 -padx 5 
+
+  incr row
+  label $w.config.start3label -text {All games from current position}
+  radiobutton $w.config.start3button -variable comp(start) -value 2
+  grid $w.config.start3label -row $row -column 0 -sticky w -padx 5 
+  grid $w.config.start3button -row $row -column 1 -padx 5 
 
   ### OK, Cancel Buttons
 
@@ -228,7 +228,7 @@ proc compOk {} {
 
   set w .comp
 
-  set comp(start_fen) [sc_pos fen]
+  set comp(startfen) [sc_pos fen]
 
   if {$comp(count) != $comp(countcombos)} {
     drawCombos
@@ -432,20 +432,19 @@ proc compNM {n m k} {
     }
   }
 
-  if {$comp(start) > 0 && $comp(current) == 1} {
-    # ok!
-  } elseif {$comp(start) == 2} {
-    sc_game new
-    sc_game startBoard $comp(start_fen)
+  sc_game new
+
+  if {($comp(start) == 1 && $comp(current) == 1) || $comp(start) == 2} {
+    sc_game startBoard $comp(startfen)
+    set comp(startpos) "fen $comp(startfen)"
   } else {
-    sc_game new
+    set comp(startpos) startpos 
   }
 
   set comp(playing) 1
   set comp(paused) 0
   set comp(white) $n
   set comp(fen) {}
-  set comp(lastmove) {}
 
   if {[winfo exists .analysisWin$n]} "destroy .analysisWin$n"
   if {[winfo exists .analysisWin$m]} "destroy .analysisWin$m"
@@ -498,6 +497,7 @@ proc compNM {n m k} {
 	sendToEngine $current_engine "isready"
 	vwait analysis(waitForReadyOk$current_engine)
 	# if {!$comp(playing)} {break}
+      sendToEngine $current_engine ucinewgame
     } else {
         ### xboard
 	sendToEngine $current_engine xboard
@@ -541,7 +541,7 @@ if {$comp(timecontrol) == "permove"} {
         sendToEngine $current_engine "level 0 $mins $comp(incr)"
         puts_ "sendToEngine $current_engine level 0 $mins $comp(incr)"
 }
-	if {$current_engine == $m} { sendToEngine $current_engine new }
+	# if {$current_engine == $m} { sendToEngine $current_engine new }
     }
   }
 
@@ -568,10 +568,18 @@ if {$comp(timecontrol) == "permove"} {
       }
     }
 
+    # hmm... promo pieces are shown in uppercase, but this crashes some engines
+    set movehistory [string tolower [sc_game moves c]]
+
     if {$::analysis(uci$current_engine)} {
       ### uci
-
-      sendToEngine $current_engine "position fen [sc_pos fen]"
+      if {$movehistory == {}} {
+	if {$comp(startpos) != "startpos"} {
+	  sendToEngine $current_engine "position $comp(startpos)"
+	}
+      } else {
+	sendToEngine $current_engine "position $comp(startpos) moves $movehistory"
+      }
 
       if {$comp(timecontrol) == "permove"} {
 	sendToEngine $current_engine "go movetime $comp(time)"
@@ -602,13 +610,12 @@ if {$comp(timecontrol) == "permove"} {
       # sendToEngine $current_engine "setboard [sc_pos fen]"
 
       # protocol 2 can also use "usermove MOVE"
-puts "LASTMOVE $comp(lastmove)"
-      if {$comp(lastmove) != {}} {
-	sendToEngine $current_engine $comp(lastmove)
+      set lastmove [lindex $movehistory end]
+      if {$lastmove != {}} {
+	sendToEngine $current_engine $lastmove
       }
 
       if {[llength $comp(fen)] < 2} {
-puts FIRSTMOVE
 	sendToEngine $current_engine "go"
      } else {
 	if {$comp(timecontrol) != "permove"} {
