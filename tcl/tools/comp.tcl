@@ -445,6 +445,7 @@ proc compNM {n m k} {
   set comp(paused) 0
   set comp(white) $n
   set comp(fen) {}
+  set comp(lastmove) {}
 
   if {[winfo exists .analysisWin$n]} "destroy .analysisWin$n"
   if {[winfo exists .analysisWin$m]} "destroy .analysisWin$m"
@@ -491,12 +492,14 @@ proc compNM {n m k} {
   puts_ "COMP Engine initialisation"
   foreach current_engine "$n $m" {
     if {$::analysis(uci$current_engine)} {
+        ### UCI
         # fulvio issues isready every move ??
 	set analysis(waitForReadyOk$current_engine) 1
 	sendToEngine $current_engine "isready"
 	vwait analysis(waitForReadyOk$current_engine)
 	# if {!$comp(playing)} {break}
     } else {
+        ### xboard
 	sendToEngine $current_engine xboard
 
 	# Should this be ponder off ?
@@ -511,6 +514,7 @@ proc compNM {n m k} {
 	# done later
 	# sendToEngine $current_engine "st $comp(seconds)"
 
+if {0} {
 	# Sjeng or Chen run too fast unless "hard" is issued
 	if {[regexp -nocase arasan $analysis(name$current_engine)]} {
 	  puts_ {Arasan detected. Issuing "hard"}
@@ -525,8 +529,19 @@ proc compNM {n m k} {
 	  puts_ {Chenard detected. Issuing "hard"}
 	  sendToEngine $current_engine hard
 	}
-        # I thought this might be necessary to ?
-	# if {$current_engine == $m} { sendToEngine $current_engine new }
+}
+
+if {$comp(timecontrol) == "permove"} {
+	sendToEngine $current_engine "st $comp(seconds)"
+	puts_ "sendToEngine $current_engine st $comp(seconds)"
+} else {
+        # send initial time control to engine
+        set secs [expr $comp(wtime)/1000]
+        set mins [expr $secs/60]:[expr $secs%60]
+        sendToEngine $current_engine "level 0 $mins $comp(incr)"
+        puts_ "sendToEngine $current_engine level 0 $mins $comp(incr)"
+}
+	if {$current_engine == $m} { sendToEngine $current_engine new }
     }
   }
 
@@ -584,29 +599,31 @@ proc compNM {n m k} {
 
       ## Don't test for setboard as Phalanx doest report this working feature
       # if {$analysis(has_setboard$current_engine)}
-      sendToEngine $current_engine "setboard [sc_pos fen]"
+      # sendToEngine $current_engine "setboard [sc_pos fen]"
 
-      # Some xboard engines move very rapidly... there might be a 
-      # inbred bug confusing centiseconds and seconds.
-
-      if {$comp(timecontrol) == "permove"} {
-	# This needs sorting out properly
-	sendToEngine $current_engine "st $comp(seconds)"
-	sendToEngine $current_engine "time [expr $comp(seconds) * 100]"
-      } else {
-	if {$current_engine == $n} {
-          set temp $comp(wtime)
-        } else {
-          set temp $comp(btime)
-        }
-        set secs [expr $temp/1000]
-        set mins [expr $secs/60]:[expr $secs%60]
-        sendToEngine $current_engine "level 0 $mins $comp(incr)"
-        puts_ "sendToEngine $current_engine level 0 $mins $comp(incr)"
+      # protocol 2 can also use "usermove MOVE"
+puts "LASTMOVE $comp(lastmove)"
+      if {$comp(lastmove) != {}} {
+	sendToEngine $current_engine $comp(lastmove)
       }
 
+      if {[llength $comp(fen)] < 2} {
+puts FIRSTMOVE
+	sendToEngine $current_engine "go"
+     } else {
+	if {$comp(timecontrol) != "permove"} {
+          if {$comp(white) == $current_engine} {
+	    sendToEngine $current_engine "time [expr $comp(wtime)/10]"
+          } else {
+	    sendToEngine $current_engine "time [expr $comp(btime)/10]"
+          }
+	} else {
+	  # sendToEngine $current_engine "st $comp(seconds)"
+       }
 
-      sendToEngine $current_engine "go"
+     }
+
+
       vwait analysis(waitForBestMove$current_engine)
 
       if {!$comp(playing)} {break}

@@ -1703,7 +1703,7 @@ proc makeAnalysisMove {n} {
   }
 
   set analysis(automoveThinking$n) 0
-
+  set comp(lastmove) $move
   if { [sc_move_add $move $n] } {
     ### Move fail
     set res 0
