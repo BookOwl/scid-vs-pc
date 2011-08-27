@@ -2250,7 +2250,16 @@ proc toggleMovesDisplay {n} {
   $h configure -state normal
   $h delete 1.0 end
   $h configure -state disabled
-  updateAnalysisText $n
+
+  if {$::analysis(movesDisplay$n)} {
+    updateAnalysisText $n
+  } else {
+    $h configure -state normal
+    $h delete 0.0 end
+    $h insert end "\n\n\n     Right click to see moves\n" blue
+    updateAnalysisBoard $n {}
+    $h configure -state disabled
+  }
 }
 
 ################################################################################
@@ -2410,12 +2419,14 @@ proc processAnalysisInput {n} {
 
   if {! $analysis(seen$n)} {
     set analysis(seen$n) 1
+  if {!$comp(playing)} {
     # First line of output from the program, so send initial commands:
     logEngineNote $n {First line from engine seen; sending it initial commands now.}
     sendToEngine $n xboard
     sendToEngine $n {protover 2}
     sendToEngine $n {ponder off}
     sendToEngine $n post
+  }
   }
 
   if {$comp(playing)} {
@@ -2466,6 +2477,11 @@ proc processAnalysisInput {n} {
   }
 
 
+  # hack to quit processAnalysisInput when playing a comp
+  if {$comp(playing)} {
+    return
+  }
+
   # Check for a line starting with "Crafty", so Scid can work well
   # with older Crafty versions that do not recognize "protover"
 
@@ -2487,11 +2503,6 @@ proc processAnalysisInput {n} {
     set analysis(isCrafty$n) 1
     set analysis(has_setboard$n) 1
     set analysis(has_analyze$n) 1
-    return
-  }
-
-  # hack to quit processAnalysisInput when playing a comp
-  if {$comp(playing)} {
     return
   }
 
@@ -2566,38 +2577,40 @@ proc processAnalysisInput {n} {
 proc checkEngineIsAlive { {n 1} } {
   global analysis
 
-  if {[eof $analysis(pipe$n)]} {
-    fileevent $analysis(pipe$n) readable {}
-    catch {close $analysis(pipe$n)}
-    set analysis(pipe$n) {}
-    logEngineNote $n {Engine terminated without warning.}
-    if {$::comp(playing)} {
-      set ::comp(move) $n
-      compAbort
-    } else {
-      catch {destroy .analysisWin$n}
-    }
-
-    if {[winfo exists .comp]} {
-      set parent .comp
-    } elseif {[winfo exists .enginelist]} {
-      set parent .enginelist
-    } else {
-      set parent .
-    }
-
-    tk_messageBox -type ok -icon info -parent $parent -title Scid -message \
-      "Analysis engine $analysis(name$n) terminated without warning. \
-       It probably crashed, had an internal errors, or is misconfigured."
-    if {[winfo exists .comp]} {
-      puts_ "Engine failed... destroying .analysisWin$n, comp widget"
-      compDestroy
-      destroy .analysisWin$n
-    }
-    return 0
+  if {![eof $analysis(pipe$n)]} {
+    return 1
   }
-  return 1
+
+  fileevent $analysis(pipe$n) readable {}
+  catch {close $analysis(pipe$n)}
+  set analysis(pipe$n) {}
+  logEngineNote $n {Engine terminated without warning.}
+  if {$::comp(playing)} {
+    set ::comp(move) $n
+    compAbort
+  } else {
+    catch {destroy .analysisWin$n}
+  }
+
+  if {[winfo exists .comp]} {
+    set parent .comp
+  } elseif {[winfo exists .enginelist]} {
+    set parent .enginelist
+  } else {
+    set parent .
+  }
+
+  tk_messageBox -type ok -icon info -parent $parent -title Scid -message \
+    "Analysis engine $analysis(name$n) terminated without warning. \
+     It probably crashed, had an internal errors, or is misconfigured."
+  if {[winfo exists .comp]} {
+    puts_ "Engine failed... destroying .analysisWin$n, comp widget"
+    compDestroy
+    destroy .analysisWin$n
+  }
+  return 0
 }
+
 ################################################################################
 # formatAnalysisMoves:
 #   Given the text at the end of a line of analysis data from an engine,
@@ -2764,12 +2777,15 @@ proc toggleLockEngine {n} {
   $w.b.finishGame configure -state $state
   updateAnalysis $n
 }
-################################################################################
-# updateAnalysisText
-#   Update the text in an analysis window.
-################################################################################
-proc updateAnalysisText {{n 1}} {
+
+### Update the text in an analysis window.
+
+proc updateAnalysisText {n} {
   global analysis
+
+  if {!$analysis(movesDisplay$n)} {
+    return
+  }
 
   set nps 0
   if {$analysis(currmovenumber$n) > $analysis(maxmovenumber$n) } {
@@ -2841,16 +2857,6 @@ proc updateAnalysisText {{n 1}} {
     }
     $t configure -state disabled
     updateAnalysisBoard $n {}
-    return
-  }
-
-  if {! $::analysis(movesDisplay$n)}  {
-    $h configure -state normal
-    $h delete 0.0 end
-
-    $h insert end "\n\n\n     Right click to see moves\n" blue
-    updateAnalysisBoard $n {}
-    $h configure -state disabled
     return
   }
 
@@ -3137,7 +3143,9 @@ proc updateAnalysisWindows {} {
 
 proc updateAnalysis {{n 1}} {
 
-if {[info exists ::comp(playing)] && $::comp(playing)} {return}
+  if {$::comp(playing)} {
+    return
+  }
 
   global analysis analysisWin windowsOS
   if {$analysis(pipe$n) == {}} { return }

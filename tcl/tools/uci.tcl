@@ -49,12 +49,20 @@ namespace eval uci {
     set uciInfo(currline$n) ""
     # set uciInfo(bestmove$n) ""
   }
+
   ################################################################################
   # if analyze = 0 -> engine mode
   # if analyze = 1 -> analysis mode
   ################################################################################
+
+  # todo: sort out the analyze var with computer tournament feature &&&
+
   proc processAnalysisInput { { n 1 } { analyze 1 } } {
     global analysis ::uci::uciInfo ::uci::infoToken ::uci::optionToken
+
+    # Now this is f-ing good ! New too.
+    # Wtf is the difference between ::checkEngineIsAlive and ::uci::checkEngineIsAlive
+    # and the difference between ::sendToEngine $n "uci" and ::uci::sendToEngine $n "uci"
 
     if {$analyze} {
       set pipe $analysis(pipe$n)
@@ -89,9 +97,6 @@ namespace eval uci {
 
     logEngine $n "Engine: $line"
 
-    # keep UI responsive when engine outputs lots of info (garbage ?)
-    update idletasks
-
     if {[string match "bestmove*" $line]} {
       set data [split $line]
       set uciInfo(bestmove$n) [lindex $data 1]
@@ -109,29 +114,22 @@ namespace eval uci {
         set uciInfo(ponder$n) ""
       }
       set analysis(waitForBestMove$n) 0
+
       return
     }
 
-    if {[string match "id *name *" $line] && ![winfo exists .comp] } {
-      # Hmmmm.... What happens if we're playing compuetr tournaments with the same engine against itself
-      # So if tourney, don't rename engine
-      set name [ regsub {id[ ]?name[ ]?} $line "" ]
-      if {$analyze} {
-        set analysis(name$n) $name
-      } else  {
-        set uciInfo(name$n) $name
-      }
-      
-      if {$n == 1} {
-        catch {wm title .analysisWin$n "Scid: $name"}
-      } else {
-        catch {wm title .analysisWin$n "Scid: $name"}
-      }
-    }
+    ### Parse info line
 
-    set toBeFormatted 0
-    # parse an info line
-    if {[string first "info" $line ] == 0} {
+    if {[string match "info*" $line]} {
+      if {!$::analysis(movesDisplay$n)} {
+        return
+      }
+
+      # keep UI responsive when engine outputs lots of info (garbage ?)
+      update idletasks
+
+      set toBeFormatted 0
+
       resetUciInfo $n
       set data [split $line]
       set length [llength $data]
@@ -264,7 +262,12 @@ namespace eval uci {
           lappend analysis(multiPVraw$n) "$uciInfo(depth$n) $uciInfo(tmp_score$n) [list $pvRaw] $uciInfo(scoremate$n)"
         }
       }
-      
+
+      if {$analyze} {
+	updateAnalysisText $n
+      }
+
+      return
     } ;# end of info line
 
     # the UCI engine answers to <uci> command
@@ -283,6 +286,8 @@ namespace eval uci {
       } else  {
         set uciInfo(uciok$n) 1
       }
+
+      return
     }
 
     # the UCI engine answers to <isready> command
@@ -290,11 +295,12 @@ namespace eval uci {
       if {$analysis(waitForReadyOk$n)} {
         set analysis(waitForReadyOk$n) 0
       }
+
       return
     }
 
     # get options and save only part of data
-    if { [string first "option name" $line] == 0 && $analyze } {
+    if { [string match "option name*" $line] && $analyze } {
       set min "" ; set max ""
       set data [split $line]
       set length [llength $data]
@@ -315,9 +321,20 @@ namespace eval uci {
         if {$t == "max"} {incr i ; set max [ lindex $data $i ] ; continue }
       }
       lappend analysis(uciOptions$n) [ list $name $min $max ]
+
+      return
     }
-    if {$analyze} {
-      updateAnalysisText $n
+
+    # Hmmmm.... What happens if we're playing computer tournaments with the same engine against itself
+    # So if tourney, don't rename engine
+    if {!$::comp(playing) && [string match "id name *" $line]} {
+      set name [ regsub {id[ ]?name[ ]?} $line "" ]
+      if {$analyze} {
+        set analysis(name$n) $name
+      } else  {
+        set uciInfo(name$n) $name
+      }
+      catch {wm title .analysisWin$n "Scid: $name"}
     }
   }
 
@@ -815,22 +832,24 @@ namespace eval uci {
   ################################################################################
   proc checkEngineIsAlive { n } {
     global ::uci::uciInfo
-    if {[eof $uciInfo(pipe$n)]} {
-      fileevent $uciInfo(pipe$n) readable {}
-      catch {close $uciInfo(pipe$n)}
-      set uciInfo(pipe$n) ""
-      logEngineNote $n {Engine terminated without warning.}
-      tk_messageBox -type ok -icon info -parent . -title "Scid" -message \
-          "UCI analysis engine $::analysis(name$n) terminated without warning. \
-           It probably crashed, had an internal errors, or is misconfigured."
-      if {[winfo exists .comp]} {
-	puts_ "Uci engine failed... destroying .analysisWin$n, comp widget"
-	compDestroy
-	destroy .analysisWin$n
-      }
-      return 0
+
+    if {![eof $uciInfo(pipe$n)]} {
+      return 1
     }
-    return 1
+
+    fileevent $uciInfo(pipe$n) readable {}
+    catch {close $uciInfo(pipe$n)}
+    set uciInfo(pipe$n) ""
+    logEngineNote $n {Engine terminated without warning.}
+    tk_messageBox -type ok -icon info -parent . -title "Scid" -message \
+	"UCI analysis engine $::analysis(name$n) terminated without warning. \
+	 It probably crashed, had an internal errors, or is misconfigured."
+    if {[winfo exists .comp]} {
+      puts_ "Uci engine failed... destroying .analysisWin$n, comp widget"
+      compDestroy
+      destroy .analysisWin$n
+    }
+    return 0
   }
   ################################################################################
   # close the engine

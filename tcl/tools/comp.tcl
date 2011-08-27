@@ -87,7 +87,9 @@ proc compInit {} {
   incr row
   frame $w.config.timesecs 
   label $w.config.timesecs.label -text {Time per Move}
+  set tmp $comp(seconds)
   spinbox $w.config.timesecs.value -textvariable comp(seconds) -from 1 -to 3600 -width 4
+  set comp(seconds) $tmp
   label $w.config.timesecs.label2 -text secs
 
   pack $w.config.timesecs.label -side left
@@ -494,13 +496,20 @@ proc compNM {n m k} {
         ### UCI
         # fulvio issues isready every move ??
 	set analysis(waitForReadyOk$current_engine) 1
+	sendToEngine $current_engine ucinewgame
 	sendToEngine $current_engine "isready"
 	vwait analysis(waitForReadyOk$current_engine)
 	# if {!$comp(playing)} {break}
-      sendToEngine $current_engine ucinewgame
+      # sendToEngine $current_engine {debug off}
     } else {
         ### xboard
 	sendToEngine $current_engine xboard
+
+        if {!$analysis(seen$current_engine)} {
+          vwait analysis(seen$current_engine)
+        }
+
+	sendToEngine $n {protover 2}
 
 	# Should this be ponder off ?
 	# If you have one computer and you want to use all cores of the
@@ -541,7 +550,7 @@ if {$comp(timecontrol) == "permove"} {
         sendToEngine $current_engine "level 0 $mins $comp(incr)"
         puts_ "sendToEngine $current_engine level 0 $mins $comp(incr)"
 }
-	# if {$current_engine == $m} { sendToEngine $current_engine new }
+	if {$current_engine == $m} { sendToEngine $current_engine new }
     }
   }
 
@@ -556,9 +565,9 @@ if {$comp(timecontrol) == "permove"} {
   # Thanks to Fulvio for inspiration to rewrite this properly (?!) :>
 
   while {$comp(playing)} {
-    set comp(lasttime) [clock clicks -milli]
-    set comp(move) $current_engine
-    set comp(nextmove) $other_engine
+
+    # hmm... promo pieces are shown in uppercase, but this crashes some engines
+    set movehistory [string tolower [sc_game moves c]]
 
     if {$comp(showclock) && $comp(timecontrol) == "pergame"} {
       if {$current_engine == $n} {
@@ -568,15 +577,14 @@ if {$comp(timecontrol) == "permove"} {
       }
     }
 
-    # hmm... promo pieces are shown in uppercase, but this crashes some engines
-    set movehistory [string tolower [sc_game moves c]]
+    set comp(lasttime) [clock clicks -milli]
+    set comp(move) $current_engine
+    set comp(nextmove) $other_engine
 
     if {$::analysis(uci$current_engine)} {
       ### uci
       if {$movehistory == {}} {
-	if {$comp(startpos) != "startpos"} {
-	  sendToEngine $current_engine "position $comp(startpos)"
-	}
+	sendToEngine $current_engine "position $comp(startpos)"
       } else {
 	sendToEngine $current_engine "position $comp(startpos) moves $movehistory"
       }
@@ -590,7 +598,7 @@ if {$comp(timecontrol) == "permove"} {
       }
 
       
-      set analysis(fen$current_engine) [sc_pos fen]
+# set analysis(fen$current_engine) [sc_pos fen]
       set analysis(maxmovenumber$current_engine) 0
 
       set analysis(waitForBestMove$current_engine) 1
@@ -615,9 +623,9 @@ if {$comp(timecontrol) == "permove"} {
 	sendToEngine $current_engine $lastmove
       }
 
-      if {[llength $comp(fen)] < 2} {
+      if {[llength $comp(fen)] < 1} {
 	sendToEngine $current_engine "go"
-     } else {
+      } else {
 	if {$comp(timecontrol) != "permove"} {
           if {$comp(white) == $current_engine} {
 	    sendToEngine $current_engine "time [expr $comp(wtime)/10]"
@@ -626,9 +634,8 @@ if {$comp(timecontrol) == "permove"} {
           }
 	} else {
 	  # sendToEngine $current_engine "st $comp(seconds)"
-       }
-
-     }
+	}
+      }
 
 
       vwait analysis(waitForBestMove$current_engine)
