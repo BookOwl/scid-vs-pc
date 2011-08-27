@@ -1730,7 +1730,7 @@ proc makeAnalysisMove {n} {
     puts "Error adding move $move" ; # &&&
     set analysis(waitForBestMove$n) 1
   } else {
-    puts_ "MOVE $n moves $move"
+    puts_ "ENGINE $n moves $move"
   }
     
   update idletasks ; # fixes tournament issues ?
@@ -1824,8 +1824,7 @@ proc destroyAnalysisWin {n} {
   set ::analysisWin$n 0
 }
 
-# sendToEngine:
-#   Send a command to a running analysis engine.
+###  Send a command to a running analysis engine
 
 proc sendToEngine {n text} {
   logEngine $n "Scid  : $text"
@@ -1837,7 +1836,7 @@ proc sendToEngine {n text} {
 #   Sends a move to a running analysis engine, using sendToEngine.
 #   If the engine has indicated (with "usermove=1" on a "feature" line)
 #   that it wants it, send with "usermove " before the move.
-#
+
 proc sendMoveToEngine {n move} {
   # Convert "e7e8Q" into "e7e8q" since that is the XBoard/WinBoard
   # standard for sending moves in coordinate notation:

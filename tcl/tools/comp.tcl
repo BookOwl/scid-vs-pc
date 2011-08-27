@@ -15,7 +15,6 @@
 set comp(playing) 0
 set comp(current) 0
 set comp(games) {}
-set comp(badmoves) 0
 set comp(iconize) 0 ; # needs to be zero for normal analysis
 set comp(count) 2 ; # number of computer players
 set comp(start) 0 ; # "Start at position" radiobutton
@@ -488,69 +487,81 @@ proc compNM {n m k} {
 
   if {$comp(timeout) > 0} { after [expr $comp(timeout) * 1000] compTimeout } 
 
-  ### Initialsation
+  ### Thanks to HGM and Talkchess for help with UCI/Xboard protocols
+
+  ### Initialisation
 
   puts_ "COMP Engine initialisation"
   foreach current_engine "$n $m" {
     if {$::analysis(uci$current_engine)} {
-        ### UCI
+        ### UCI initialisation
+
         # fulvio issues isready every move ??
 	set analysis(waitForReadyOk$current_engine) 1
 	sendToEngine $current_engine ucinewgame
 	sendToEngine $current_engine "isready"
 	vwait analysis(waitForReadyOk$current_engine)
 	# if {!$comp(playing)} {break}
-      # sendToEngine $current_engine {debug off}
+	# sendToEngine $current_engine {debug off}
     } else {
-        ### xboard
+        ### xboard initialisation
+
 	sendToEngine $current_engine xboard
 
         if {!$analysis(seen$current_engine)} {
           vwait analysis(seen$current_engine)
         }
 
-	sendToEngine $n {protover 2}
-
-	# Should this be ponder off ?
-	# If you have one computer and you want to use all cores of the
-	# computer and you start to test with ponder on then it is possible
-	# that one program may steal time from the second program(because you
-	# have no way to force both engines to use 50% of the cpu time)
-
+	sendToEngine $current_engine "protover 2"
 	sendToEngine $current_engine "ponder on"
 	sendToEngine $current_engine "bk off"
 
 	# done later
 	# sendToEngine $current_engine "st $comp(seconds)"
 
-if {0} {
-	# Sjeng or Chen run too fast unless "hard" is issued
-	if {[regexp -nocase arasan $analysis(name$current_engine)]} {
-	  puts_ {Arasan detected. Issuing "hard"}
-	  sendToEngine $current_engine hard
-	}
-	if {[regexp -nocase sjeng $analysis(name$current_engine)]} {
-	  puts_ {Sjeng detected. Issuing "hard"}
-	  sendToEngine $current_engine hard
-	}
-	if {[regexp -nocase xchen $analysis(name$current_engine)] || \
-	    [regexp -nocase chenard $analysis(name$current_engine)] } {
-	  puts_ {Chenard detected. Issuing "hard"}
-	  sendToEngine $current_engine hard
-	}
-}
+	### Hacks
 
-if {$comp(timecontrol) == "permove"} {
-	sendToEngine $current_engine "st $comp(seconds)"
-	puts_ "sendToEngine $current_engine st $comp(seconds)"
-} else {
-        # send initial time control to engine
-        set secs [expr $comp(wtime)/1000]
-        set mins [expr $secs/60]:[expr $secs%60]
-        sendToEngine $current_engine "level 0 $mins $comp(incr)"
-        puts_ "sendToEngine $current_engine level 0 $mins $comp(incr)"
-}
-	if {$current_engine == $m} { sendToEngine $current_engine new }
+	if {1} {
+	  # Sjeng or Chen run too fast unless "hard" is issued
+	  if {[regexp -nocase arasan $analysis(name$current_engine)]} {
+	    puts_ {Hack: Arasan detected. Issuing "hard"}
+	    sendToEngine $current_engine hard
+	  }
+	  if {[regexp -nocase sjeng $analysis(name$current_engine)]} {
+	    puts_ {Hack: Sjeng detected. Issuing "hard"}
+	    sendToEngine $current_engine hard
+	  }
+	  if {[regexp -nocase xchen $analysis(name$current_engine)] || \
+	      [regexp -nocase chenard $analysis(name$current_engine)] } {
+	    puts_ {Hack: Chenard detected. Issuing "hard"}
+	    sendToEngine $current_engine hard
+	  }
+	}
+
+        ### Send initial time control
+
+	if {$comp(timecontrol) == "permove"} {
+	  sendToEngine $current_engine "st $comp(seconds)"
+	} else {
+	  set secs [expr $comp(wtime)/1000]
+	  set mins [expr $secs/60]:[expr $secs%60]
+	  sendToEngine $current_engine "level 0 $mins $comp(incr)"
+	}
+
+        ### Setup initial position
+
+	if {$comp(startpos) == "startpos"} {
+	  if {$current_engine == $m} {
+            # "new" command means "play black"
+            sendToEngine $current_engine "new"
+          }
+        } else {
+	  ## Don't test for setboard as Phalanx doest report this working feature
+	  # if {$analysis(has_setboard$current_engine)}
+	  sendToEngine $current_engine "setboard $comp(startfen)"
+          # Without force, some engines try to play both side !?
+	  sendToEngine $current_engine "force"
+        }
     }
   }
 
@@ -562,11 +573,14 @@ if {$comp(timecontrol) == "permove"} {
     set other_engine $n
   }
 
-  # Thanks to Fulvio for inspiration to rewrite this properly (?!) :>
+
+  ### Main control loop
+  # Thanks to Fulvio for inspiration to rewrite this properly :>
 
   while {$comp(playing)} {
 
     # hmm... promo pieces are shown in uppercase, but this crashes some engines
+    # todo: make command "sc_game move uci"
     set movehistory [string tolower [sc_game moves c]]
 
     if {$comp(showclock) && $comp(timecontrol) == "pergame"} {
@@ -582,7 +596,7 @@ if {$comp(timecontrol) == "permove"} {
     set comp(nextmove) $other_engine
 
     if {$::analysis(uci$current_engine)} {
-      ### uci
+      ### UCI main loop
       if {$movehistory == {}} {
 	sendToEngine $current_engine "position $comp(startpos)"
       } else {
@@ -593,12 +607,11 @@ if {$comp(timecontrol) == "permove"} {
 	sendToEngine $current_engine "go movetime $comp(time)"
       } else {
         set incr [expr $comp(incr) * 1000]
-	puts_ "go wtime $comp(wtime) btime $comp(btime) winc $incr binc $incr"
 	sendToEngine $current_engine "go wtime $comp(wtime) btime $comp(btime) winc $incr binc $incr"
       }
 
       
-# set analysis(fen$current_engine) [sc_pos fen]
+      # set analysis(fen$current_engine) [sc_pos fen]
       set analysis(maxmovenumber$current_engine) 0
 
       set analysis(waitForBestMove$current_engine) 1
@@ -606,24 +619,19 @@ if {$comp(timecontrol) == "permove"} {
 
       if {!$comp(playing)} {break}
     } else {
-      ### xboard
+      ### Xboard main loop
 
-      # "st TIME" [time limit] and "playother" are only for protoversion 2
-      # phalanx and other older(?) engines won't honour time limit
-      # but they'll get beat anyway
-      # Should fix it up though
+      ### Send the previous move to engine
+      # (protocol 2 can also use "usermove MOVE")
 
-      ## Don't test for setboard as Phalanx doest report this working feature
-      # if {$analysis(has_setboard$current_engine)}
-      # sendToEngine $current_engine "setboard [sc_pos fen]"
-
-      # protocol 2 can also use "usermove MOVE"
       set lastmove [lindex $movehistory end]
       if {$lastmove != {}} {
 	sendToEngine $current_engine $lastmove
       }
 
-      if {[llength $comp(fen)] < 1} {
+      set nummoves [llength $comp(fen)]
+      if {$nummoves == 0 || $nummoves == 1 && $comp(startpos) != "startpos"} {
+        ### If only one or two moves, complete initialisation
 	sendToEngine $current_engine "go"
       } else {
 	if {$comp(timecontrol) != "permove"} {
@@ -633,26 +641,22 @@ if {$comp(timecontrol) == "permove"} {
 	    sendToEngine $current_engine "time [expr $comp(btime)/10]"
           }
 	} else {
+          ### permove time contorl doesn't need reissuing
 	  # sendToEngine $current_engine "st $comp(seconds)"
 	}
       }
 
-
       vwait analysis(waitForBestMove$current_engine)
 
       if {!$comp(playing)} {break}
-
-      # sendToEngine $current_engine playother
     }
 
     if {[makeAnalysisMove $current_engine]} {
       ### Move success
 
-      # expired time is
       set expired [expr [clock clicks -milli] - $comp(lasttime)]
       puts_ "Time expired $expired"
 
-      set comp(badmoves) 0
       after cancel compTimeout
 
       if {$comp(showclock) && $comp(timecontrol) == "pergame"} {
@@ -661,7 +665,8 @@ if {$comp(timecontrol) == "permove"} {
 	} else {
 	  ::gameclock::stop 2
 	}
-      }
+      } 
+      # Note - No time slice enforcement for permove time control
 
       while {$comp(paused)} {
 	puts_ "  PAUSED at [clock format [clock seconds]]"
@@ -671,14 +676,7 @@ if {$comp(timecontrol) == "permove"} {
 
       if {$comp(timeout) > 0} { after [expr $comp(timeout) * 1000] compTimeout }
 
-      # set moves [ lindex [ lindex $analysis(multiPV$current_engine) 0 ] 2 ]
-      # set text [format "%+.2f %s - %s  Depth: %d  Time:%6.2f s" \
-      # $analysis(score$current_engine) \
-      # [addMoveNumbers $current_engine [::trans $moves]] \
-      # $analysis(name$current_engine) \
-      # $analysis(depth$current_engine) \
-      # $analysis(time$current_engine) ]
-      # sc_pos setComment $text
+      ### Check if game is over
 
       set score [sc_pos analyze -time 50]
       if { $score == {0 {}}} {
@@ -706,7 +704,8 @@ if {$comp(timecontrol) == "permove"} {
 	} 
       }
 
-      # swap players
+      ### Swap players
+
       if {$current_engine != $n} {
 	if {$comp(timecontrol) == "pergame"} {
 	  set comp(btime) [expr $comp(btime) - $expired]
@@ -760,7 +759,8 @@ if {$comp(timecontrol) == "permove"} {
       }
     }
 
-  } 
+  } ; # end main control loop
+
   ### This game is over
 
   after cancel compTimeout
@@ -771,7 +771,7 @@ if {$comp(timecontrol) == "permove"} {
     ::gameclock::stop 2
   }
 
-  # Save game
+  ### Save game
 
   # Perhaps game has been adjudicated by user ?
   if {$comp(result) != {}} {

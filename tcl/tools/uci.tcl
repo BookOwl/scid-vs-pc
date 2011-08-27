@@ -60,7 +60,7 @@ namespace eval uci {
   proc processAnalysisInput { { n 1 } { analyze 1 } } {
     global analysis ::uci::uciInfo ::uci::infoToken ::uci::optionToken
 
-    # Now this is f-ing good ! New too.
+    ### Now this is f-ing good ! New too.
     # Wtf is the difference between ::checkEngineIsAlive and ::uci::checkEngineIsAlive
     # and the difference between ::sendToEngine $n "uci" and ::uci::sendToEngine $n "uci"
 
