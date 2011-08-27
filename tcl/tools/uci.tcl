@@ -112,7 +112,9 @@ namespace eval uci {
       return
     }
 
-    if {[string match "id *name *" $line]} {
+    if {[string match "id *name *" $line] && ![winfo exists .comp] } {
+      # Hmmmm.... What happens if we're playing compuetr tournaments with the same engine against itself
+      # So if tourney, don't rename engine
       set name [ regsub {id[ ]?name[ ]?} $line "" ]
       if {$analyze} {
         set analysis(name$n) $name
@@ -395,7 +397,7 @@ namespace eval uci {
   ### Only used by uciConfig to gather options info for uciConfigWin
 
   proc readUCI {n} {
-    global ::uci::uciOptions ::uci::name
+    global ::uci::uciOptions
 
     set line [string trim [gets $::uci::uciInfo(pipe$n)] ]
     # end of options
@@ -408,9 +410,8 @@ namespace eval uci {
     if {[string match {option name *} $line]} {
       lappend uciOptions $line
     }
-    if {[string match {id name *}     $line]} {
-      set name [string range $line 8 end]
-    }
+    # Can't use this, in case of testing the same engine against itself
+    # if {[string match {id name *}     $line]} { set name [string range $line 8 end] }
   }
 
   ### Builds the dialog for UCI engine configuration 
@@ -430,9 +431,9 @@ namespace eval uci {
     setWinLocation $w
     setWinSize $w
 
-    if {$::uci::name == {}} {
-      set ::uci::name [lindex [lindex $::engines(list) $n] 0]
-    }
+    # if {$::uci::name == {}} 
+    set ::uci::name [lindex [lindex $::engines(list) $n] 0]
+
     wm title $w "UCI Configure $::uci::name"
 
     pack [label $w.title -text $::uci::name] -side top -pady 5
