@@ -406,9 +406,15 @@ namespace eval uci {
     puts $pipe "uci"
     flush $pipe
 
-    # give a few seconds for the engine to output its options, then automatically kill it
+    # Give a few seconds for the engine to output its options, then automatically kill it
     # (to handle xboard engines)
-    after 5000  "::uci::closeUCIengine $n 0"
+
+    if {!$::windowsOS && ([string match {*wine*} $cmd] || [string match *.exe $cmd])} {
+      # if program is using Wine , give it longer to start up
+      after 10000  "::uci::closeUCIengine $n 0"
+    } else {
+      after 5000  "::uci::closeUCIengine $n 0"
+    }
   }
 
   ### Only used by uciConfig to gather options info for uciConfigWin
