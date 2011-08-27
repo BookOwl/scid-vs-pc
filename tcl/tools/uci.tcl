@@ -709,14 +709,16 @@ namespace eval uci {
     # Make engine config widget remember these options
     set ::engines(newUCIoptions) $::uci::newOptions
 
-    ### Automatically save these options since "Save" has been pressed
-    ### Previously it was only done when user "OK"ed the parent widget, or via sergame.tcl
+    if {$n != -1} {
+      ### Automatically save these options since "Save" has been pressed
+      ### Previously it was only done when user "OK"ed the parent widget, or via sergame.tcl
 
-    set enginedata [lindex $::engines(list) $n]
-    set enginedata [lreplace $enginedata 8 8 $::uci::newOptions]
-    set ::engines(list) [lreplace $::engines(list) $n $n $enginedata]
+      set enginedata [lindex $::engines(list) $n]
+      set enginedata [lreplace $enginedata 8 8 $::uci::newOptions]
+      set ::engines(list) [lreplace $::engines(list) $n $n $enginedata]
 
-    ::enginelist::write
+      ::enginelist::write
+    }
 }
 
   ################################################################################

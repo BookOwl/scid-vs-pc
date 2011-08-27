@@ -371,6 +371,7 @@ proc ::enginelist::choose {} {
   pack $w.flabel -side top -pady 5
 
   frame $w.buttons
+  frame $w.buttons2
 
   text $w.title -width 50 -height 1 -font font_Fixed -relief flat \
       -cursor top_left_arrow -background gray95
@@ -400,7 +401,7 @@ proc ::enginelist::choose {} {
   listbox $w.list.list -height 10 -selectmode browse -setgrid 1 \
       -yscrollcommand "$w.list.ybar set" -font font_Fixed -exportselection 0 ; # -bg text_bg_color
 
-  bind $w.list.list <Double-ButtonRelease-1> "$w.buttons.start invoke; break"
+  bind $w.list.list <Double-ButtonRelease-1> "$w.buttons2.start invoke; break"
   scrollbar $w.list.ybar -command "$w.list.list yview"
 
   pack $w.list.ybar -side right -fill y
@@ -411,6 +412,10 @@ proc ::enginelist::choose {} {
 
   dialogbutton $w.buttons.edit -text $::tr(EngineEdit) -command {
     ::enginelist::edit [lindex [.enginelist.list.list curselection] 0]
+  }
+
+  dialogbutton $w.buttons.copy -text [lindex $::tr(CopyGames) 0] -command {
+    ::enginelist::edit [lindex [.enginelist.list.list curselection] 0] copy
   }
 
   # arrow images defined in bookmark.tcl
@@ -426,18 +431,22 @@ proc ::enginelist::choose {} {
 
   label $w.buttons.sep -text "   "
 
-  dialogbutton $w.buttons.start -text $::tr(Start) -command {
+  dialogbutton $w.buttons2.start -text $::tr(Start) -command {
     makeAnalysisWin [expr [lindex [.enginelist.list.list curselection] 0] + 1]
   }
 
-  dialogbutton $w.close -textvar ::tr(Close) -command {
+  dialogbutton $w.buttons2.close -textvar ::tr(Close) -command {
     destroy .enginelist
   }
 
-  pack $w.buttons.up $w.buttons.down $w.buttons.uci $w.buttons.add $w.buttons.edit $w.buttons.delete $w.buttons.start -side left -expand yes
+  pack $w.buttons.up $w.buttons.down $w.buttons.uci $w.buttons.add $w.buttons.edit $w.buttons.copy $w.buttons.delete -side left -expand yes
+
+  pack $w.buttons2.start $w.buttons2.close -side left -expand yes -pady 12 -padx 10 
+
   pack $w.buttons -side top -pady 12 -padx 2 -fill x
-  pack $w.close -side bottom -pady 8
-  focus $w.buttons.start
+  pack $w.buttons2 -side top -padx 2 
+
+  focus $w.buttons2.start
 
   ::enginelist::listEngines
   update
@@ -492,7 +501,7 @@ Confirm delete engine\n"
 #   index >= 0), or adding a new entry (if index is -1).
 #
 
-proc ::enginelist::edit {index} {
+proc ::enginelist::edit {index {copy {}}} {
   global engines
 
   set w .engineEdit
@@ -503,14 +512,23 @@ proc ::enginelist::edit {index} {
   }
 
 
+  # This "||  $index >= [llength $engines(list)]"
+  # seems erroneous
   if {$index >= 0  ||  $index >= [llength $engines(list)]} {
     set e [lindex $engines(list) $index]
   } else {
     set e [list "" "" "" . 0 0 "" 1]
   }
 
-  set engines(newIndex) $index
   set engines(newName)	[lindex $e 0]
+
+  if {$copy == "copy"} {
+    # Ok... we've copied the current engine, now pretend we've been called for a new engine
+    set index -1
+    append engines(newName) {-new}
+  }
+
+  set engines(newIndex) $index
   set engines(newCmd)	[lindex $e 1]
   set engines(newArgs)	[lindex $e 2]
   set engines(newDir)	[lindex $e 3]
@@ -719,10 +737,13 @@ proc ::enginelist::edit {index} {
   bind $w <Return> "$f.ok invoke"
   bind $w <Escape> "destroy $w"
   bind $w <F1> { helpWindow Analysis List }
-  # focus $w.f.eName
 
   placeWinOverParent $w .enginelist
   wm state $w normal
+
+  if {$index == -1}  {
+    focus $w.frame.eName
+  }
   # bind $w <Configure> "recordWinSize $w"
   # wm resizable $w 1 0
   # catch {grab $w}
