@@ -1337,7 +1337,7 @@ set helpTitle(Crosstable) "Crosstable window"
 set helpText(Crosstable) {<h1>The Crosstable Window</h1>
   <p>
   The <run ::crosstab::OpenClose><green>Crosstable</green></run> shows the
-  Tournament result for the current game in All-play-all, Swiss or Knockout formats.
+  Tournament result for the current game in All-Play-All, Swiss or Knockout formats.
   </p>
   <p>
   Any game played up to <b>twelve months before or after</b> the current game,
@@ -1361,10 +1361,10 @@ set helpText(Crosstable) {<h1>The Crosstable Window</h1>
 
 <h4>Table Format</h4>
   <p>
-  One may view the tournament in All-play-all, Swiss or Knockout formats.
+  One may view the tournament in All-Play-all, Swiss or Knockout formats.
   </p>
   <ul>
-  <li>The <b>All-play-All</b> format - for round-robin-type events - has a limit of 30
+  <li>The <b>All-Play-All</b> format - for round-robin-type events - has a limit of 30
   players</li>
   <br>
   <li>The <b>Swiss</b> format - for tournaments with a large number of players - can
@@ -1373,7 +1373,7 @@ set helpText(Crosstable) {<h1>The Crosstable Window</h1>
   crosstable, so you will not see any games if they don't have numeric "Round" values (1, 2, 3, etc).
   </li>
   <br>
-  <li><b>Knock-out</b> shows game results on a round-by-round nature.</li>
+  <li><b>Knockout</b> shows game results on a round-by-round nature.</li>
   <br>
   <li><b>Auto</b> will choose the best format automatically.</li>
   </ul>

@@ -202,15 +202,12 @@ proc engine {arglist} {
   return 1
 }
 
-# ::enginelist::read
-#   Reads the user Engine list file.
+
+### The analysis engines config file is $HOME/.scidvspc/config/engines.dat on linux and macs
 
 proc ::enginelist::read {} {
   catch {source [scidConfigFile engines]}
 }
-
-# ::enginelist::write:
-#   Writes the user Engine list file.
 
 proc ::enginelist::write {} {
   global engines scidUserDir scidShareDir
@@ -224,18 +221,18 @@ proc ::enginelist::write {} {
     return 0
   }
 
-  puts $f "\# Analysis engines list file for Scid [sc_info version] with UCI support"
+  puts $f "\# Analysis Engines configuration for $::scidName [sc_info version]"
   puts $f {}
   foreach e $engines(list) {
     set name [lindex $e 0]
-    set cmd [lindex $e 1]
+    set cmd  [lindex $e 1]
     set args [lindex $e 2]
-    set dir [lindex $e 3]
-    set elo [lindex $e 4]
+    set dir  [lindex $e 3]
+    set elo  [lindex $e 4]
     set time [lindex $e 5]
-    set url [lindex $e 6]
-    set uci [lindex $e 7]
-    set opt [lindex $e 8]
+    set url  [lindex $e 6]
+    set uci  [lindex $e 7]
+    set opt  [lindex $e 8]
     puts $f "engine {"
       puts $f "  Name [list $name]"
       puts $f "  Cmd  [list $cmd]"
@@ -244,7 +241,7 @@ proc ::enginelist::write {} {
       puts $f "  Elo  [list $elo]"
       puts $f "  Time [list $time]"
       puts $f "  URL  [list $url]"
-      puts $f "  UCI [list $uci]"
+      puts $f "  UCI  [list $uci]"
       puts $f "  UCIoptions [list $opt]"
       puts $f "}"
     puts $f {}
