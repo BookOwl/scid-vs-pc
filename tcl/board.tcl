@@ -302,7 +302,7 @@ proc initBoardColors {} {
   }
 
   set f $w.select
-  foreach row {0 1 0 1 0 1 2 2} column {0 0 2 2 4 4 0 2} c {
+  foreach row {0 0 1 1 0 1 2 2} column {0 2 0 2 4 4 0 2} c {
     lite dark highcolor bestcolor bgcolor highlightLastMoveColor maincolor varcolor
   } n {
     LightSquares DarkSquares SelectedSquares SuggestedSquares Grid Previous ArrowMain ArrowVar

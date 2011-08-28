@@ -1278,7 +1278,7 @@ translate F BlackPieces {Pièces noires}
 translate F WhiteBorder {Bordure des pièces blanches}
 translate F BlackBorder {Bordure des pièces noires}
 translate F ArrowMain   {Main Arrow}
-translate F ArrowVar    {Var Arrow}
+translate F ArrowVar    {Var Arrows}
 
 # Novelty window:
 translate F FindNovelty {Trouver la nouveauté}

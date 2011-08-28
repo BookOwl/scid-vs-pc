@@ -1322,7 +1322,7 @@ translate I BlackPieces {Pezzi Neri}
 translate I WhiteBorder {Bordi del Bianco}
 translate I BlackBorder {Bordi del Nero}
 translate I ArrowMain   {Main Arrow}
-translate I ArrowVar    {Var Arrow}
+translate I ArrowVar    {Var Arrows}
 
 # Novelty window:
 translate I FindNovelty {Trova Novita'}

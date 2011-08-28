@@ -1296,7 +1296,7 @@ translate E BlackPieces {Black pieces}
 translate E WhiteBorder {White border}
 translate E BlackBorder {Black border}
 translate E ArrowMain   {Main Arrow}
-translate E ArrowVar    {Var Arrow}
+translate E ArrowVar    {Var Arrows}
 
 # Novelty window:
 translate E FindNovelty {Find Novelty}

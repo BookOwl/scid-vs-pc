@@ -1436,7 +1436,7 @@ translate W BlackPieces {Svarta pjäser}
 translate W WhiteBorder {Vit kantlinje}
 translate W BlackBorder {Svart kantlinje}
 translate W ArrowMain   {Main Arrow}
-translate W ArrowVar    {Var Arrow}
+translate W ArrowVar    {Var Arrows}
 
 # Novelty window:
 translate W FindNovelty {Hitta nyhet}

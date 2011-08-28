@@ -1394,7 +1394,7 @@ translate B BlackPieces {Pecas Pretas}
 translate B WhiteBorder {Borda Branca}
 translate B BlackBorder {Borda Preta}
 translate B ArrowMain   {Main Arrow}
-translate B ArrowVar    {Var Arrow}
+translate B ArrowVar    {Var Arrows}
 
 # Novelty window:
 translate B FindNovelty {Buscar Novidade}

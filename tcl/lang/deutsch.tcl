@@ -1311,7 +1311,7 @@ translate D BlackPieces {Schwarze Steine}
 translate D WhiteBorder {Weiﬂe Umrandung}
 translate D BlackBorder {Schwarze Umrandung}
 translate D ArrowMain   {Main Arrow}
-translate D ArrowVar    {Var Arrow}
+translate D ArrowVar    {Var Arrows}
 
 # Novelty window:
 translate D FindNovelty {Finde Neuerung}

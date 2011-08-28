@@ -1393,7 +1393,7 @@ translate C BlackPieces {Èerné figury}
 translate C WhiteBorder {Obrys bílých figur}
 translate C BlackBorder {Obrys èerných figur}
 translate C ArrowMain   {Main Arrow}
-translate C ArrowVar    {Var Arrow}
+translate C ArrowVar    {Var Arrows}
 
 # Novelty window:
 translate C FindNovelty {Hledat novinku}
