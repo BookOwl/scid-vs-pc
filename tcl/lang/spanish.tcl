@@ -1310,6 +1310,8 @@ translate S WhitePieces {Piezas blancas}
 translate S BlackPieces {Piezas negras}
 translate S WhiteBorder {Borde blancas}
 translate S BlackBorder {Borde negras}
+translate S ArrowMain   {Main Arrow}
+translate S ArrowVar    {Var Arrow}
 
 # Novelty window:
 translate S FindNovelty {Encontrar Novedad}

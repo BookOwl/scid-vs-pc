@@ -88,14 +88,16 @@ proc setBoardColor {row choice} {
   set newColors(bgcolor)   [lindex $list 5]
   # highlightLastMoveColor needs to be added to colorSchemes1 , colorSchemes2 above 
   set newColors(highlightLastMoveColor)   $::highlightLastMoveColor
+  set newColors(maincolor) $::maincolor
+  set newColors(varcolor)  $::varcolor
 }
 
 proc applyBoardColors {} {
 
-  global newColors lite dark highcolor bestcolor bgcolor highlightLastMoveColor borderwidth
+  global newColors lite dark highcolor bestcolor bgcolor highlightLastMoveColor borderwidth maincolor varcolor
 
   set w .boardOptions
-  set colors {lite dark highcolor bestcolor bgcolor highlightLastMoveColor}
+  set colors {lite dark highcolor bestcolor bgcolor highlightLastMoveColor maincolor varcolor}
 
   foreach i $colors {
     set $i $newColors($i)
@@ -124,6 +126,27 @@ proc applyBoardColors {} {
 
   ### use this command if you want a third color to be used instead of black
   # .board.bd configure -background $newColors(dark)
+
+  ### Update Variation arrows colours
+
+  ### The board gets redrawn straight after Apply, so there's no use running this:
+  # .board.bd itemconfigure var0 -fill $newColors(maincolor)
+  # .board.bd itemconfigure var1 -fill $newColors(varcolor)
+  # set maincolor $newColors(maincolor)
+  # set varcolor  $newColors(varcolor)
+
+  ### To apply, we have to alter a (private) var
+  set tmp {}
+  foreach mark $::board::_mark(.board) {
+    if {[lindex $mark 0] == "var0"} {
+      lappend tmp [lreplace $mark 3 3 $newColors(maincolor)]
+    } elseif {[string match var* [lindex $mark 0]]} {
+      lappend tmp [lreplace $mark 3 3 $newColors(varcolor)]
+    } else {
+      lappend tmp $mark
+    }
+  }
+  set ::board::_mark(.board) $tmp
 
   ::board::resize .board redraw
 }
@@ -165,12 +188,10 @@ proc chooseBoardColors {} {
 
 proc initBoardColors {} {
 
-  # These procedures re-written by S.A.
-
-  global lite dark highcolor bestcolor bgcolor highlightLastMoveColor png_image_support
+  global lite dark highcolor bestcolor bgcolor highlightLastMoveColor png_image_support maincolor varcolor
   global newColors boardStyles boardStyle boardSizes
 
-  set colors {lite dark highcolor bestcolor bgcolor highlightLastMoveColor}
+  set colors {lite dark highcolor bestcolor bgcolor highlightLastMoveColor maincolor varcolor}
   set w .boardOptions
 
   if { [winfo exists $w] } {
@@ -281,10 +302,10 @@ proc initBoardColors {} {
   }
 
   set f $w.select
-  foreach row {0 1 0 1 0 1} column {0 0 2 2 4 4} c {
-    lite dark highcolor bestcolor bgcolor highlightLastMoveColor
+  foreach row {0 1 0 1 0 1 2 2} column {0 0 2 2 4 4 0 2} c {
+    lite dark highcolor bestcolor bgcolor highlightLastMoveColor maincolor varcolor
   } n {
-    LightSquares DarkSquares SelectedSquares SuggestedSquares Grid Previous
+    LightSquares DarkSquares SelectedSquares SuggestedSquares Grid Previous ArrowMain ArrowVar
   } {
     button $f.b$c -image e20 -background [set $c] -command "chooseAColor $w $c"
 
@@ -1637,7 +1658,7 @@ proc ::board::mark::clear {win} {
 # Results:
 #	For a given square, mark type, color, and optional (type-specific)
 #	destination arguments, creates the proper canvas object.
-#
+
 proc ::board::mark::add {win args} {
   # Rearrange list if "type" is simple character:
   if {[string length [lindex $args 0]] == 1} {
@@ -2071,7 +2092,7 @@ proc  ::board::lastMoveHighlight {w} {
 #   N.B. resize (and update) is also called when changing background tiles
 
 proc ::board::update {w {board ""} {animate 0} {resize 0}} {
-  global highcolor currentSq bestSq bestcolor bgcolor highlightLastMoveColor
+  global highcolor currentSq bestSq bestcolor bgcolor highlightLastMoveColor maincolor varcolor
 
   set oldboard $::board::_data($w)
   if {$board == {}} {

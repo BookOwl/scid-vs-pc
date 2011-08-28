@@ -1432,6 +1432,8 @@ translate Y WhitePieces {Bele figure}
 translate Y BlackPieces {Crne figure}
 translate Y WhiteBorder {Ivica belih figura}
 translate Y BlackBorder {Ivica crnih figura}
+translate Y ArrowMain   {Main Arrow}
+translate Y ArrowVar    {Var Arrow}
 
 # Novelty window:
 translate Y FindNovelty {Pronaði novost}

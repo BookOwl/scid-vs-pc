@@ -1429,6 +1429,8 @@ translate O WhitePieces {Hvite brikker}
 translate O BlackPieces {Sorte brikker}
 translate O WhiteBorder {Hvit ramme}
 translate O BlackBorder {Sort ramme}
+translate O ArrowMain   {Main Arrow}
+translate O ArrowVar    {Var Arrow}
 
 # Novelty window:
 translate O FindNovelty {Finn avvik}

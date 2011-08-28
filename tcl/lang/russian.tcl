@@ -1460,6 +1460,8 @@ translate R WhitePieces {Белые фигуры}
 translate R BlackPieces {Черные фигуры}
 translate R WhiteBorder {Белые границы}
 translate R BlackBorder {Черные границы}
+translate R ArrowMain   {Main Arrow}
+translate R ArrowVar    {Var Arrow}
 
 # Novelty window:
 translate R FindNovelty {Найти новинку}

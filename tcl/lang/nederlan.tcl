@@ -1406,6 +1406,8 @@ translate N WhitePieces {Witte stukken}
 translate N BlackPieces {Zwarte stukken}
 translate N WhiteBorder {Witte rand}
 translate N BlackBorder {Zwarte rand}
+translate N ArrowMain   {Main Arrow}
+translate N ArrowVar    {Var Arrow}
 
 # Novelty window:
 translate N FindNovelty {Vind Nieuwtje}

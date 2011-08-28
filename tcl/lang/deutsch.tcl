@@ -1310,6 +1310,8 @@ translate D WhitePieces {Weiﬂe Steine}
 translate D BlackPieces {Schwarze Steine}
 translate D WhiteBorder {Weiﬂe Umrandung}
 translate D BlackBorder {Schwarze Umrandung}
+translate D ArrowMain   {Main Arrow}
+translate D ArrowVar    {Var Arrow}
 
 # Novelty window:
 translate D FindNovelty {Finde Neuerung}

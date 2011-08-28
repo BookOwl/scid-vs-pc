@@ -754,7 +754,7 @@ menuText E CrosstabEditDate "Date" 0
 menuText E CrosstabOpt "Display" 0
 menuText E CrosstabOptAll "All-Play-All" 0
 menuText E CrosstabOptSwiss "Swiss" 0
-menuText E CrosstabOptKnockout "Knockout" 0
+menuText E CrosstabOptKnockout "Rounds" 0
 menuText E CrosstabOptAuto "Auto" 1
 menuText E CrosstabOptAges "Ages in Years" 8
 menuText E CrosstabOptNats "Nationalities" 0
@@ -1295,6 +1295,8 @@ translate E WhitePieces {White pieces}
 translate E BlackPieces {Black pieces}
 translate E WhiteBorder {White border}
 translate E BlackBorder {Black border}
+translate E ArrowMain   {Main Arrow}
+translate E ArrowVar    {Var Arrow}
 
 # Novelty window:
 translate E FindNovelty {Find Novelty}

@@ -1396,6 +1396,8 @@ translate H WhitePieces {Világos figurák}
 translate H BlackPieces {Sötét figurák}
 translate H WhiteBorder {Világos körvonal}
 translate H BlackBorder {Sötét körvonal}
+translate H ArrowMain   {Main Arrow}
+translate H ArrowVar    {Var Arrow}
 
 # Novelty window:
 translate H FindNovelty {Újítás keresése}

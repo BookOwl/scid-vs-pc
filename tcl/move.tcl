@@ -42,14 +42,14 @@ proc ::move::showVarArrows {} {
   if {$move != ""} {
     set sq_start [ ::board::sq [ string range $move 0 1 ] ]
     set sq_end [ ::board::sq [ string range $move 2 3 ] ]
-    ::board::mark::add .board var$var $sq_start $sq_end black
+    ::board::mark::add .board var$var $sq_start $sq_end $::maincolor
     incr var
   }
 
   foreach { move } $varList {
     set sq_start [ ::board::sq [ string range $move 0 1 ] ]
     set sq_end [ ::board::sq [ string range $move 2 3 ] ]
-    ::board::mark::add .board var$var $sq_start $sq_end grey80
+    ::board::mark::add .board var$var $sq_start $sq_end $::varcolor
     incr var
   }
 }

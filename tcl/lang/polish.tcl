@@ -1439,6 +1439,8 @@ translate P WhitePieces {Bia³e figury}
 translate P BlackPieces {Czarne figury}
 translate P WhiteBorder {Kontur bia³ych figur}
 translate P BlackBorder {Kontur czarnych figur}
+translate P ArrowMain   {Main Arrow}
+translate P ArrowVar    {Var Arrow}
 
 # Novelty window:
 translate P FindNovelty {Znajd¼ nowinkê}
