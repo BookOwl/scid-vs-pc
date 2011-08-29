@@ -1330,6 +1330,7 @@ proc updateMenuStates {} {
       }
     }
   }
+  bind . <Control-Key-quoteleft> "::file::SwitchToBase 9"
 
   foreach i {Compact Delete} {
     $m.file.utils entryconfig [tr FileMaint$i] -state disabled
