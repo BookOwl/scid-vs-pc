@@ -116,11 +116,10 @@ proc updateHelpWindow {name {heading {}}} {
     setWinLocation $w
     setWinSize $w
     text $w.text -setgrid yes -wrap word -width $::winWidth($w) \
-        -height $::winHeight($w) -relief sunken -border 2 \
-        -yscroll "$w.scroll set"
+        -height $::winHeight($w) -relief sunken -yscroll "$w.scroll set"
     scrollbar $w.scroll -relief sunken -command "$w.text yview" -width 12
 
-    frame $w.b -relief raised -border 2
+    frame $w.b -relief raised 
     pack $w.b -side bottom -fill x
     button $w.b.contents -textvar ::tr(Contents) -width 6 -command { helpWindow Contents }
     button $w.b.index -textvar ::tr(Index) -width 6 -command { helpWindow Index }
@@ -166,9 +165,9 @@ proc updateHelpWindow {name {heading {}}} {
 
     pack $w.b.back $w.b.contents $w.b.index $w.b.forward -side left -padx 3 -pady 2
     pack $w.b.close -side right -padx 3 -pady 2
-    pack $w.b.find -side right -padx 3 -pady 2
-    pack $w.scroll -side right -fill y -padx 2 -pady 2
-    pack $w.text -fill both -expand 1 -padx 5
+    pack $w.b.find -side right -padx 3 -pady 2 -ipady 2
+    pack $w.scroll -side right -fill y -pady 2
+    pack $w.text -fill both -expand 1 -padx 1
 
     $w.text configure -font font_Regular
     ::htext::init $w.text
