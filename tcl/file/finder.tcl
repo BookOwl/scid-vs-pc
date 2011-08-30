@@ -230,17 +230,20 @@ proc ::file::finder::Refresh {{newdir ""}} {
     set type [lindex $i 1]
     set fname [string range [lindex $i 2] 0 15] ; # limit to 16 chars S.A.
     set path [lindex $i 3]
+    # If case path has spaces, they break tag bindings, so use this tag
+    set pathtag [string map {{ } _} $path]
+
     set mtime [lindex $i 4]
     set est [lindex $i 5]
     $t insert end "\n "
-    $t insert end "$fname\t" f$path
+    $t insert end "$fname\t" f$pathtag
     set esize ""
     if {$est} { set esize "~" }
     append esize [::utils::thousands $size]
-    $t insert end "$esize\t" f$path
-    $t insert end $type [list $type f$path]
-    $t insert end "\t[clock format $mtime -format {%d-%m-%Y}]" f$path
-    $t insert end "\t" f$path
+    $t insert end "$esize\t" f$pathtag
+    $t insert end $type [list $type f$pathtag]
+    $t insert end "\t[clock format $mtime -format {%d-%m-%Y}]" f$pathtag
+    $t insert end "\t" f$pathtag
     set dir [file dirname $path]
     set tail [file tail $path]
     if {$dir == "."} {
@@ -249,22 +252,20 @@ proc ::file::finder::Refresh {{newdir ""}} {
       set fullpath $data(dir)/$dir/$tail
     }
 
-    $t tag bind f$path <Double-Button-1> "::file::Open [list $fullpath]"
+    $t tag bind f$pathtag <Double-Button-1> "::file::Open [list $fullpath]"
     # Bind right button to popup a contextual menu:
-    $t tag bind f$path <ButtonPress-3> "::file::finder::contextMenu .finder.t.text [list $fullpath] %x %y %X %Y"
+    $t tag bind f$pathtag <ButtonPress-3> "::file::finder::contextMenu .finder.t.text [list $fullpath] %x %y %X %Y"
 
-    $t tag bind f$path <Any-Enter> \
-        "$t tag configure [list f$path] -background $hc"
-    $t tag bind f$path <Any-Leave> \
-        "$t tag configure [list f$path] -background {}"
+    $t tag bind f$pathtag <Any-Enter> "$t tag configure [list f$pathtag] -background $hc"
+    $t tag bind f$pathtag <Any-Leave> "$t tag configure [list f$pathtag] -background {}"
     if {$dir == "."} {
       set fullpath "$data(dir)/$tail"
     } else {
       $t tag configure p$path -foreground darkblue
-      $t insert end "$dir/" [list p$path f$path]
+      $t insert end "$dir/" [list p$path f$pathtag]
     }
     $t tag configure t$path -foreground blue
-    $t insert end $tail [list t$path f$path]
+    $t insert end $tail [list t$path f$pathtag]
   }
   $t configure -state disabled
 

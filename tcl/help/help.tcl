@@ -44,6 +44,7 @@ sorts; but has evolved into a powerful general-purpose Chess Toolkit.
 <li>The Options widgets have been totally overhauled with new colours, tile themes and pieces.</li>
 <li>A right-click menu for hiding/unhiding any part of the main window.</li>
 <li>Improved Tactical Game and FICs features.</li>
+<li>Chess figurines in the PGN window.</li>
 <li>Clickable Variation Arrows, and Paste Variation feature.</li>
 <li>Redone Button bar, Toolbar and Icons.</li>
 <li>Rewritten Help contents.</li>
