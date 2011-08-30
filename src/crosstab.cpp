@@ -1086,9 +1086,9 @@ Crosstable::PrintKnockout (DString * dstr, uint playerLimit)
             clashT * clash = pdata->roundClash[round];
             if (clash == NULL) { continue; }
             if (pdata->printed) { continue; }
-            // if black first, skip this game till white is first
-            if (clash->color == 1) { continue; }
             uint opponent = clash->opponent;
+            // if black first, skip this game till white is first
+            if (pdata->firstClash[opponent]->color == 1) { continue; }
             uint score = 0;
             uint nGames = 0;
             clash = pdata->firstClash[opponent];
