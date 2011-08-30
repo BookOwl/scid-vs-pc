@@ -40,28 +40,27 @@ sorts; but has evolved into a powerful general-purpose Chess Toolkit.
 <h3>Improvements over Scid</h3>
 <ul>
 <li>A Computer Tournament feature.</li>
-<li>Rewritten Gamelist Widget with much improved functionality, and the Database Switcher incorporated.</li>
-<li>The Options widgets have been totally overhauled. There are some nice colour and tile themes, and great piece sets.</li>
-<li>A right-click menu for hiding/unhiding various parts of the main window.</li>
+<li>Rewritten Gamelist with improved functionality and the Database Switcher incorporated.</li>
+<li>The Options widgets have been totally overhauled with new colours, tile themes and pieces.</li>
+<li>A right-click menu for hiding/unhiding any part of the main window.</li>
 <li>Improved Tactical Game and FICs features.</li>
 <li>Clickable Variation Arrows, and Paste Variation feature.</li>
 <li>Redone Button bar, Toolbar and Icons.</li>
-<li>Improvements to "Mate in ..." puzzles.</li>
-<li>The Setup Start Board has many fixes and improvements. Annoyingly, if Scid uses a tiled theme, it's setup board is displayed a different colour.</li>
-<li>The Help index is now meaningful to new users, with links to the game's main features.</li>
-<li>The Comment editor has been overhauled, and is much more stream-lined.</li>
-<li>Restructured workings of the Analysis Engines widget. The F2 and F3 key bindings can now be set explicitly.</li>
-<li>Many other improved interfaces and help files.</li>
+<li>Rewritten Help contents.</li>
+<li>Restructured Analysis Engines widget. The function key bindings can be set explicitly.</li>
+<li>Many other improved interfaces and bug-fixes.</li>
 </ul>
 <h3>Unsupported Features</h3>
 <ul>
-<li>The Docked Mode and Theme features of Scid are not included.</li>
-<li>Wish 8.5 includes a basic implementation of themes, and there has been
-widespread changes to Scid to use them. Unfortunately, the changes are not
-justified for some dubious eye candy.</li>
-<li>As of 4.4, the undo feature is still not included.</li>
+<li>Undo is still not tested or included.</li>
+<li>The Docked Mode and Theme features of SCID are not included.</li>
+<ul>
+<li>Docked mode enables all windows to be tiled into a single one. It is a nice idea, but blighted by too many bugs and focus issues.</li>
+<li>Wish 8.5 includes a basic implementation of themes, and the
+widespread changes to SCID's tcl codebase are not justified for some trivial and hardly used eye candy.</li>
 </ul>
-  <p><footer>Updated: Scid vs. PC 4.5 July 2011 </footer></p>
+</ul>
+  <p><footer>Updated: Scid vs. PC 4.6 August 2011 </footer></p>
 }
 
 set helpTitle(FICS) "Fics"
