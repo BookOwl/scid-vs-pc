@@ -2450,6 +2450,19 @@ proc processAnalysisInput {n} {
       set comp(playing) 0
       set analysis(waitForBestMove$n) 0
     }
+
+    if {[string match {1/2-1/2*} $line]} {
+      puts_ "DRAW (engine $n)"
+      sc_game tags set -result =
+      if {$n == $comp(white)} {
+        sc_pos setComment "White declares draw. "
+      } else {
+        sc_pos setComment "Black declares draw. "
+      }
+      set comp(playing) 0
+      set analysis(waitForBestMove$n) 0
+   }
+
   }
 
   # Check for "feature" commands so we can determine if the engine
