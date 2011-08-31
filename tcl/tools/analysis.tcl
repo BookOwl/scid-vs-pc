@@ -3,10 +3,12 @@
 ### analysis.tcl: part of Scid.
 ### Copyright (C) 1999-2003  Shane Hudson.
 ### Copyright (C) 2007  Pascal Georges
+### Copyright (C) 2009 - 2011 Steven Atkinson
 
-# Rewritten stevenaaus July 2009
-# String optimisations Dec  2009
-# Overhauled again     May,November  2010
+# NOTE we have descrepancy between some functions in uci.tcl and analysis.tcl
+# The transient procs for reading uci options (uciConfigN, uciConfig, readUCI, uciConfigWin
+# and startEngine from sergame.tcl, etc use n=0 for the first engine
+# BUT the procs for the analysis widget proper (makeAnalysisWin, updateAnalysis  use n=1 for the first engine.
 #
 # Parts of this widget had a very bad procedural flow, which
 # hopefully makes some sense now. Anyway, i have removed all
@@ -115,7 +117,6 @@ proc resetEngine {n} {
   set analysis(uciOptions$n) {}
   # the number of lines in multiPV. If =1 then act the traditional way
   set analysis(multiPVCount$n) 4      ;# number of N-best lines
-  set analysis(index$n) 0             ;# the index of engine in engine list
   set analysis(uciok$n) 0             ;# uciok sent by engine in response to uci command
   set analysis(name$n) {}             ;# engine name
   set analysis(processInput$n) 0      ;# the time of the last processed event
@@ -153,7 +154,7 @@ proc calculateNodes {{n}} {
 # resetAnalysis:
 #   Resets the analysis statistics: score, depth, etc.
 #
-proc resetAnalysis {{n 1}} {
+proc resetAnalysis {{n 0}} {
   global analysis
   set analysis(score$n) 0
   set analysis(scoremate$n) 0
@@ -305,7 +306,6 @@ proc ::enginelist::listEngines {{focus 0}} {
   $f delete 0 end
   set count 0
   foreach engine $engines(list) {
-    incr count
     set name [lindex $engine 0]
     set elo  [lindex $engine 4]
     set time [lindex $engine 5]
@@ -331,6 +331,8 @@ proc ::enginelist::listEngines {{focus 0}} {
     if {$time > 0} { set timeText "  $date" }
     append text $timeText
     $f insert end $text
+
+    incr count
   }
   $f selection set $focus
   $f see $focus
@@ -429,7 +431,7 @@ proc ::enginelist::choose {} {
   label $w.buttons.sep -text "   "
 
   dialogbutton $w.buttons2.start -text $::tr(Start) -command {
-    makeAnalysisWin [expr [lindex [.enginelist.list.list curselection] 0] + 1]
+    makeAnalysisWin [lindex [.enginelist.list.list curselection] 0]
   }
 
   dialogbutton $w.buttons2.close -textvar ::tr(Close) -command {
@@ -482,9 +484,9 @@ Confirm delete engine\n"
   if {$answer == "ok"} {
     set engines(list) [lreplace $engines(list) $index $index]
     foreach f {F2 F3 F4} {
-      if {$engines($f) == $index+1} {
+      if {$engines($f) == $index} {
         set engines($f) {}
-      } elseif {$engines($f) > $index} {
+      } elseif {$engines($f) >= $index} {
         incr engines($f) -1
       }
     }
@@ -672,9 +674,9 @@ proc ::enginelist::edit {index {copy {}}} {
   bind $w <F4> {set hotkey F4}
 
   $w.radio.none select
-  if {$engines(F2) == [expr $engines(newIndex) + 1]} {$w.radio.f2 select} 
-  if {$engines(F3) == [expr $engines(newIndex) + 1]} {$w.radio.f3 select}
-  if {$engines(F4) == [expr $engines(newIndex) + 1]} {$w.radio.f4 select}
+  if {$engines(F2) == $engines(newIndex)} {$w.radio.f2 select} 
+  if {$engines(F3) == $engines(newIndex)} {$w.radio.f3 select}
+  if {$engines(F4) == $engines(newIndex)} {$w.radio.f4 select}
 
   pack $w.radio -side top -anchor w
   pack $w.radio.label -side left
@@ -699,7 +701,7 @@ proc ::enginelist::edit {index {copy {}}} {
           $engines(newElo) $engines(newTime) \
           $engines(newURL) $engines(newUCI) $::uci::newOptions ]
 
-      set index [expr $engines(newIndex) + 1]
+      set index $engines(newIndex)
 
       # just disable first in case of multiple selection
       if {$engines(F2) == $index} {set engines(F2) {}}
@@ -753,7 +755,7 @@ proc ::enginelist::move {dir} {
   set max [llength $engines(list)]
 
   set flag {}
-  for {set i 1} {$i <= $max} {incr i} {
+  for {set i 0} {$i < $max} {incr i} {
     if {[winfo exists .analysisWin$i]} {
        set flag "all Engines"
     }
@@ -789,11 +791,11 @@ proc ::enginelist::move {dir} {
   }
   # Update the F2 key bindings
   foreach f {F2 F3 F4} {
-    if {$engines($f) == $current+1} {
-     set engines($f) [expr $current +1 +$dir]
+    if {$engines($f) == $current} {
+     set engines($f) [expr $current + $dir]
     } else {
-      if {$engines($f) == $current+1+$dir} {
-       set engines($f) [expr $current+1]
+      if {$engines($f) == $current + $dir} {
+       set engines($f) [expr $current]
       }
     }
   }
@@ -1923,7 +1925,7 @@ proc toggleMini {} {
 
 ### makeAnalysisWin: toggle analysis engine n
 
-proc makeAnalysisWin { {n 1} } {
+proc makeAnalysisWin {{n 0}} {
   global analysisWin$n font_Analysis analysisCommand analysis annotateModeButtonValue annotateMode
 
   set w .analysisWin$n
@@ -1949,21 +1951,16 @@ proc makeAnalysisWin { {n 1} } {
 
   resetEngine $n
 
-  # engine[0] will run in toplevel .analysisWin1
-  # engine[1] will run in toplevel .analysisWin2
+  ### Previously engine[0] will run in toplevel .analysisWin1
+  ### but now    engine[0] will run in toplevel .analysisWin0
 
-  set index [expr {$n - 1}]
-
-  # index is now which engine to run from engine list
-
-  if {$index == {}  ||  $index < 0} {
+  if {$n == {}  ||  $n < 0} {
     set analysisWin$n 0
     return
   }
-  ::enginelist::setTime $index
+  ::enginelist::setTime $n
   catch {::enginelist::write}
-  set analysis(index$n) $index
-  set engineData [lindex $::engines(list) $index]
+  set engineData [lindex $::engines(list) $n]
   set analysisName [lindex $engineData 0]
   set analysisCommand [ toAbsPath [lindex $engineData 1] ]
   set analysisArgs [lindex $engineData 2]
@@ -2570,7 +2567,7 @@ proc processAnalysisInput {n} {
 # Returns 0 if engine died abruptly or 1 otherwise
 # - this procedure is duplicated(?) in uci.tcl
 ################################################################################
-proc checkEngineIsAlive { {n 1} } {
+proc checkEngineIsAlive { {n 0} } {
   global analysis
 
   if {![eof $analysis(pipe$n)]} {
@@ -2698,7 +2695,7 @@ proc toggleEngineAnalysis {n {force 0}} {
 # startAnalyzeMode:
 #   Put the engine in analyze mode.
 ################################################################################
-proc startAnalyzeMode {{n 1} {force 0}} {
+proc startAnalyzeMode {{n 0} {force 0}} {
   global analysis
 
   # Check that the engine has not already had analyze mode started:
@@ -2722,7 +2719,7 @@ proc startAnalyzeMode {{n 1} {force 0}} {
 ################################################################################
 # stopAnalyzeMode
 ################################################################################
-proc stopAnalyzeMode { {n 1} } {
+proc stopAnalyzeMode { {n 0} } {
   global analysis
   if {! $analysis(analyzeMode$n)} { return }
   set analysis(analyzeMode$n) 0
@@ -3137,7 +3134,7 @@ proc updateAnalysisWindows {} {
   }
 }
 
-proc updateAnalysis {{n 1}} {
+proc updateAnalysis {{n 0}} {
 
   if {$::comp(playing)} {
     return
@@ -3309,7 +3306,7 @@ proc updateAnalysis {{n 1}} {
 set temptime 0
 trace variable temptime w {::utils::validate::Regexp {^[0-9]*\.?[0-9]*$}}
 
-proc setAutomoveTime {{n 1}} {
+proc setAutomoveTime {{n 0}} {
   global analysis temptime dialogResult
   set ::tempn $n
   set temptime [expr {$analysis(automoveTime$n) / 1000.0} ]
@@ -3376,14 +3373,14 @@ proc toggleAutomove {{n 1}} {
   }
 }
 
-proc cancelAutomove {{n 1}} {
+proc cancelAutomove {{n 0}} {
   global analysis
   set analysis(automove$n) 0
   after cancel "automove $n"
   after cancel "automove_go $n"
 }
 
-proc automove {{n 1}} {
+proc automove {{n 0}} {
   global analysis autoplayDelay
   if {! $analysis(automove$n)} { return }
   after cancel "automove $n"
@@ -3391,7 +3388,7 @@ proc automove {{n 1}} {
   after $analysis(automoveTime$n) "automove_go $n"
 }
 
-proc automove_go {{n 1}} {
+proc automove_go {{n 0}} {
   global analysis
   if {$analysis(automove$n)} {
     if {[makeAnalysisMove $n]} {

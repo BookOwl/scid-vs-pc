@@ -8,8 +8,6 @@
 
 namespace eval sergame {
 
-  # DEBUG
-  set ::uci::uciInfo(log_stdout3) 0
 
   # if true, follow a specific opening
   set isOpening 0
@@ -41,14 +39,13 @@ namespace eval sergame {
   proc config {} {
     global ::sergame::configWin ::sergame::chosenOpening
 
-    # check if game window is already opened. If yes abort previous game
-    set w ".serGameWin"
-    if {[winfo exists $w]} {
+    # Abort previous game if exists
+    if {[winfo exists .serGameWin]} {
       focus .
-      destroy $w
+      destroy .serGameWin
     }
 
-    set w ".configSerGameWin"
+    set w .configSerGameWin
     if {[winfo exists $w]} {
       focus $w
       return
@@ -84,7 +81,11 @@ namespace eval sergame {
     set i 0
     set idx 0
     foreach e $::engines(list) {
-      if { [lindex $e 7] != 1} { incr idx ; continue }
+      if { [lindex $e 7] != 1} {
+        # not an UCI engine
+        incr idx
+        continue
+      }
       set ::sergame::engineListBox($i) $idx
       set name [lindex $e 0]
       $w.fengines.fEnginesList.lbEngines insert end $name
@@ -232,10 +233,12 @@ namespace eval sergame {
     pack $w.fopening.cbOpening -fill x -side top
     pack $w.fopening.fOpeningList -expand yes -fill both -side top -expand 1
 
-    button $w.fbuttons.close -text $::tr(Play) -command {
+    button $w.fbuttons.play -text $::tr(Play) -command {
       focus .
-      set chosenEngine [.configSerGameWin.fengines.fEnginesList.lbEngines curselection]
-      set ::sergame::engineName [.configSerGameWin.fengines.fEnginesList.lbEngines get $chosenEngine]
+      set n [.configSerGameWin.fengines.fEnginesList.lbEngines curselection]
+puts "n is $n , ::sergame::engineListBox is [parray ::sergame::engineListBox]"
+      set n $::sergame::engineListBox($n)
+      set ::sergame::engineName [.configSerGameWin.fengines.fEnginesList.lbEngines get $n]
       set ::sergame::chosenOpening [.configSerGameWin.fopening.fOpeningList.lbOpening curselection]
       if {$::sergame::useBook} {
         set ::sergame::bookToUse [.configSerGameWin.fbook.combo get]
@@ -243,23 +246,23 @@ namespace eval sergame {
           set ::sergame::useBook 0
         }
       }
-      set ::uci::uciInfo(wtime3) [expr [.configSerGameWin.ftime.timebonus.whitespminutes get]*1000*60]
-      set ::uci::uciInfo(btime3) [expr [.configSerGameWin.ftime.timebonus.blackspminutes get]*1000*60]
-      set ::uci::uciInfo(winc3) [expr [.configSerGameWin.ftime.timebonus.whitespseconds get]*1000]
-      set ::uci::uciInfo(binc3) [expr [.configSerGameWin.ftime.timebonus.blackspseconds get]*1000]
-      set ::uci::uciInfo(fixeddepth3) [.configSerGameWin.ftime.depth.value get]
-      set ::uci::uciInfo(fixednodes3) [expr [.configSerGameWin.ftime.nodes.value get]*1000]
-      set ::uci::uciInfo(movetime3) [expr [.configSerGameWin.ftime.movetime.value get]*1000]
+      set ::uci::uciInfo(wtime$n) [expr [.configSerGameWin.ftime.timebonus.whitespminutes get]*1000*60]
+      set ::uci::uciInfo(btime$n) [expr [.configSerGameWin.ftime.timebonus.blackspminutes get]*1000*60]
+      set ::uci::uciInfo(winc$n) [expr [.configSerGameWin.ftime.timebonus.whitespseconds get]*1000]
+      set ::uci::uciInfo(binc$n) [expr [.configSerGameWin.ftime.timebonus.blackspseconds get]*1000]
+      set ::uci::uciInfo(fixeddepth$n) [.configSerGameWin.ftime.depth.value get]
+      set ::uci::uciInfo(fixednodes$n) [expr [.configSerGameWin.ftime.nodes.value get]*1000]
+      set ::uci::uciInfo(movetime$n) [expr [.configSerGameWin.ftime.movetime.value get]*1000]
       
       destroy .configSerGameWin
-      ::sergame::play $chosenEngine
+      ::sergame::play $n
     }
     button $w.fbuttons.cancel -textvar ::tr(Cancel) -command "focus .; destroy $w"
 
-    pack $w.fbuttons.close $w.fbuttons.cancel -expand yes -side left
+    pack $w.fbuttons.play $w.fbuttons.cancel -expand yes -side left
 
     bind $w <Escape> { .configSerGameWin.fbuttons.cancel invoke }
-    bind $w <Return> { .configSerGameWin.fbuttons.close invoke }
+    bind $w <Return> { .configSerGameWin.fbuttons.play invoke }
     bind $w <F1> { helpWindow SeriousGame }
     bind $w <Destroy> ""
     update
@@ -271,13 +274,13 @@ namespace eval sergame {
   ################################################################################
   #
   ################################################################################
-  proc play { engine {n 3} } {
+  proc play {n} {
     global ::sergame::chosenOpening ::sergame::isOpening ::tacgame::openingList ::sergame::openingMovesList \
         ::sergame::openingMovesHash ::sergame::openingMoves ::sergame::outOfOpening
 
     set ::sergame::lFen {}
 
-    ::uci::startEngine $::sergame::engineListBox($engine) $n
+    ::uci::startEngine $::sergame::engineListBox($n)
     ::uci::sendUCIoptions $n
 
     set ::uci::uciInfo(prevscore$n) 0.0
@@ -335,7 +338,7 @@ namespace eval sergame {
     ::windows::gamelist::Refresh
     updateTitle
     updateMenuStates
-    set w ".serGameWin"
+    set w .serGameWin
     if {[winfo exists $w]} {
       focus .
       destroy $w
@@ -356,8 +359,8 @@ namespace eval sergame {
     ::gameclock::reset 1
     ::gameclock::start 1
 
-    button $w.fbuttons.close -textvar ::tr(Abort) -command ::sergame::abortGame
-    pack $w.fbuttons.close -expand yes -fill both
+    button $w.fbuttons.abort -textvar ::tr(Abort) -command ::sergame::abortGame
+    pack $w.fbuttons.abort -expand yes -fill both
 
     bind $w <F1> { helpWindow TacticalGame }
     bind $w <Destroy> ::sergame::abortGame
@@ -396,7 +399,7 @@ namespace eval sergame {
   #
   ################################################################################
   proc sendToEngine {n text} {
-    ::sergame::logEngine $n "Scid  : $text"
+    logEngine $n "Scid  : $text"
     catch {puts $::uci::uciInfo(pipe$n) $text}
   }
   ################################################################################
@@ -679,12 +682,6 @@ namespace eval sergame {
   ################################################################################
   #
   ################################################################################
-  proc logEngine {n text} {
-    if {$::uci::uciInfo(log_stdout$n)} {
-      puts stdout "$n $text"
-    }
-  }
-
 }
 ###
 ### End of file: sergame.tcl

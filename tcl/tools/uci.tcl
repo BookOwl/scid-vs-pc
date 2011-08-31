@@ -749,9 +749,9 @@ namespace eval uci {
   # The engine replied readyok, so it's time to configure it (sends the options to the engine)
   # It seems necessary to ask first if engine is ready
   ################################################################################
-  proc sendUCIoptions { n } {
+  proc sendUCIoptions {n} {
     global analysis
-    set engineData [ lindex $::engines(list) $analysis(index$n) ]
+    set engineData [ lindex $::engines(list) $n ]
     set options [ lindex $engineData 8 ]
     foreach opt $options {
       set name [lindex $opt 0]
@@ -765,11 +765,9 @@ namespace eval uci {
   ################################################################################
   # will start an engine for playing (not analysis)
   ################################################################################
-  proc startEngine {index n} {
+  proc startEngine {n} {
     # todo : sort out bugs.
-    # index and n are not both necessary !??
     # startEngine called by tcl/tools/uci.tcl tcl/tools/calvar.tcl tcl/tools/sergame.tcl tcl/tools/tactics.tcl tcl/tools/tacgame.tcl
-    # $index is only used a couple of places.
 
     # To verify bug:
     # Start engine number 2
@@ -782,7 +780,7 @@ namespace eval uci {
     set uciInfo(seen$n) 0
     set uciInfo(uciok$n) 0
     ::resetEngine $n
-    set engineData [lindex $::engines(list) $index]
+    set engineData [lindex $::engines(list) $n]
     set analysisName [lindex $engineData 0]
     set analysisCommand [ toAbsPath [lindex $engineData 1] ]
     set analysisArgs [lindex $engineData 2]
@@ -809,7 +807,6 @@ namespace eval uci {
       return
     }
 
-    set ::analysis(index$n) $index
     set ::analysis(pipe$n) $uciInfo(pipe$n)
 
     # Return to original dir if necessary:

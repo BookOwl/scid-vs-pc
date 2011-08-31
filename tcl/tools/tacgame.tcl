@@ -8,9 +8,6 @@ namespace eval tacgame {
   ### Tacgame window: uses a chess engine (Phalanx) in easy mode and
   ### another engine (for example Toga) to track blunders
 
-  ### many variables are now set in start.tcl to allow for
-  ### remembering them in options.dat S.A
-
   set resignCount 0
 
   # if true, follow a specific opening
@@ -22,9 +19,6 @@ namespace eval tacgame {
 
   # list of fen positions played to detect 3 fold repetition
   set lFen {}
-
-  set index1 0
-  set index2 0
 
   set lastblundervalue 0.0
   set prev_lastblundervalue 0.0
@@ -41,7 +35,6 @@ namespace eval tacgame {
   set currentPosHash 0
   set lscore {}
 
-  set analysisCoach(automove1) 0
   set analysisCoach(paused) 0 ; # S.A
 
   # ======================================================================
@@ -83,6 +76,7 @@ namespace eval tacgame {
     set analysisCoach(wholeSeconds$n) 0      ;# Engine times in seconds not centisec
     set analysisCoach(analyzeMode$n) 0       ;# Scid has started analyze mode
     set analysisCoach(invertScore$n) 1       ;# Score is for side to move, not white
+    # these vars used by analysis.tcl
     set analysisCoach(automove$n) 0
     set analysisCoach(automoveThinking$n) 0
     set analysisCoach(automoveTime$n) 2000
@@ -115,7 +109,7 @@ namespace eval tacgame {
       ::tacgame::closeEngine 2
     }
 
-    # find Phalanx and Toga engines
+    # find Phalanx (index1) and Toga (index2) engines
     set i 0
     set index1 -1
     set index2 -1
@@ -125,6 +119,7 @@ namespace eval tacgame {
       if { [ string match -nocase "*phalanx*" $name ]  } {
         set engineCoach1 $name
         set index1 $i
+	set analysisCoach(automove$index1) 0
       }
       
       if { [ string match -nocase "*toga*" $name ] } {
@@ -350,7 +345,7 @@ namespace eval tacgame {
 
     resetEngine 1
     resetEngine 2
-    catch { unset ::uci::uciInfo(score2) }
+    catch { unset ::uci::uciInfo(score$::tacgame::index2) }
 
     set ::tacgame::lFen {}
 
@@ -503,10 +498,10 @@ namespace eval tacgame {
     button $w.fbuttons.close -textvar ::tr(Abort) -command ::tacgame::abortGame
     pack $w.fbuttons.close -expand yes -fill both -padx 10 -pady 2
 
-    ::tacgame::launchengine $index1 1
-    ::uci::startEngine $index2 2
-    set ::uci::uciInfo(multipv2) 1
-    changePVSize 2
+    ::tacgame::launchengine $index1
+    ::uci::startEngine $index2 
+    set ::uci::uciInfo(multipv$index2) 1
+    changePVSize $index2
 
     ::tacgame::resetValues
     updateAnalysisText
@@ -544,18 +539,17 @@ namespace eval tacgame {
     # if {[sc_base inUse [sc_base current]]} { catch {sc_game save 0}  }
   }
 
-  ################################################################################
-  #
-  ################################################################################
+
   proc abortGame {} {
     after cancel ::tacgame::phalanxGo
     stopAnalyze
     destroy .coachWin
     focus .
-    ::tacgame::closeEngine 1
-    ::tacgame::closeEngine 2
+    ::tacgame::closeEngine $::tacgame::index1
+    ::tacgame::closeEngine $::tacgame::index2
     # ::uci::closeUCIengine 2 ?
   }
+
   # ======================================================================
   #   ::tacgame::launchengine
   #  - launches both engines
@@ -565,12 +559,11 @@ namespace eval tacgame {
   #						totalblundersmissed (real), totalblunders (real)
   # ======================================================================
 
-  proc launchengine {index n} {
+  proc launchengine {n} {
     global ::tacgame::analysisCoach ::tacgame::level
 
     ::tacgame::resetEngine $n
-
-    set engineData [lindex $::engines(list) $index]
+    set engineData [lindex $::engines(list) $n]
     set analysisName [lindex $engineData 0]
     set analysisCommand [ ::toAbsPath [ lindex $engineData 1 ] ]
     set analysisArgs [lindex $engineData 2]
@@ -583,11 +576,9 @@ namespace eval tacgame {
     }
 
     # turn phalanx book, ponder and learning off, easy on
-    if {$n == 1} {
-      # convert Elo = 1200 to level 100 up to Elo=2200 to level 0
-      set easylevel [expr int(100-(100*($level-1200)/(2200-1200)))]
-      append analysisArgs " -b+ -p- -l- -e $easylevel "
-    }
+    # convert Elo = 1200 to level 100 up to Elo=2200 to level 0
+    set easylevel [expr int(100-(100*($level-1200)/(2200-1200)))]
+    append analysisArgs " -b+ -p- -l- -e $easylevel "
 
     # If the analysis directory is not current dir, cd to it:
     set oldpwd ""
@@ -612,10 +603,8 @@ namespace eval tacgame {
     # Configure pipe for line buffering and non-blocking mode:
     fconfigure $analysisCoach(pipe$n) -buffering line -blocking 0
 
-    if {$n == 1} {
-      fileevent $analysisCoach(pipe$n) readable ::tacgame::processInput
-      after 1000 "::tacgame::checkAnalysisStarted $n"
-    }
+    fileevent $analysisCoach(pipe$n) readable ::tacgame::processInput
+    after 1000 "::tacgame::checkAnalysisStarted $n"
 
   }
 
@@ -626,13 +615,13 @@ namespace eval tacgame {
   proc closeEngine {n} {
     global windowsOS ::tacgame::analysisCoach
 
-    # Check the pipe is not already closed:
-    if { $n == 1 } {
+    # Check the pipe is not already closed
+    if { $n == $::tacgame::index1 } {
       if {$analysisCoach(pipe$n) == "" } {
         return
       }
     }
-    if { $n == 2 } {
+    if { $n == $::tacgame::index2 } {
       ::uci::closeUCIengine $n
       return
     }
@@ -702,13 +691,14 @@ namespace eval tacgame {
   #
   # ======================================================================
   proc processInput {} {
-    global ::tacgame::analysisCoach ::tacgame::analysis
+    global ::tacgame::analysisCoach ::tacgame::analysis ::tacgame::index1 
 
     # Get one line from the engine:
-    set line [gets $analysisCoach(pipe1)]
+    set line [gets $analysisCoach(pipe$index1)]
+    if {$line == ""} {return}
 
     # check that the engine is really Phalanx
-    if { ! $analysisCoach(seen1) && $line != {Phalanx XXII-pg} && $line != {Phalanx XXIII} } {
+    if { ! $analysisCoach(seen$index1) && $line != {Phalanx XXII-pg} && $line != {Phalanx XXIII} } {
       # There's a bug here... Control flow somehow continues, giving an error
       ::tacgame::abortGame
       tk_messageBox -type ok -icon warning -parent . -title "Scid" -message \
@@ -718,19 +708,19 @@ namespace eval tacgame {
     }
 
     # Check that the engine did not terminate unexpectedly:
-    if {[eof $analysisCoach(pipe1)]} {
-      fileevent $analysisCoach(pipe1) readable {}
-      catch {close $analysisCoach(pipe1)}
-      set analysisCoach(pipe1) ""
+    if {[eof $analysisCoach(pipe$index1)]} {
+      fileevent $analysisCoach(pipe$index1) readable {}
+      catch {close $analysisCoach(pipe$index1)}
+      set analysisCoach(pipe$index1) ""
       tk_messageBox -type ok -icon info -parent . -title "Scid" \
-          -message "The analysis engine 1 terminated without warning; it probably crashed or had an internal error."
+          -message "Phalanx terminated without warning; it probably crashed or had an internal error."
     }
 
-    if {! $analysisCoach(seen1)} {
+    if {! $analysisCoach(seen$index1)} {
       # First line of output from the program, so send initial commands:
-      set analysisCoach(seen1) 1
-      ::tacgame::sendToEngine 1 "xboard"
-      ::tacgame::sendToEngine 1 "post"
+      set analysisCoach(seen$index1) 1
+      ::tacgame::sendToEngine $index1 "xboard"
+      ::tacgame::sendToEngine $index1 "post"
     }
 
     ::tacgame::makePhalanxMove $line
@@ -742,7 +732,7 @@ namespace eval tacgame {
   # ======================================================================
   proc startAnalyze { } {
     global ::tacgame::analysisCoach ::tacgame::isLimitedAnalysisTime ::tacgame::analysisTime
-    set n 2
+    set n $::tacgame::index2
     set ::analysis(waitForReadyOk$n) 1
     ::uci::sendToEngine $n "isready"
     vwait ::analysis(waitForReadyOk$n)
@@ -813,11 +803,10 @@ namespace eval tacgame {
   # phalanxGo
   #		it is phalanx's turn to play
   # ======================================================================
-  # This has a funny control structure. Is it correct ? S.A
 
   proc phalanxGo {} {
     global ::tacgame::analysisCoach ::tacgame::openingType ::tacgame::openingMovesList \
-        ::tacgame::openingMovesHash ::tacgame::openingMoves ::tacgame::outOfOpening
+        ::tacgame::openingMovesHash ::tacgame::openingMoves ::tacgame::outOfOpening ::tacgame::index1
 
     after cancel ::tacgame::phalanxGo
 
@@ -834,7 +823,7 @@ namespace eval tacgame {
     }
 
     # check if Phalanx is already thinking
-    if { $analysisCoach(automoveThinking1) == 1 } {
+    if { $analysisCoach(automoveThinking$index1) } {
       after 1000 ::tacgame::phalanxGo
       return
     }
@@ -901,7 +890,6 @@ namespace eval tacgame {
           }
           
           ::utils::sound::AnnounceNewMove $move
-          
           updateBoard -pgn -animate
           ::gameclock::stop 2
           ::gameclock::start 1
@@ -914,11 +902,12 @@ namespace eval tacgame {
     }
 
     # Pascal Georges : original Phalanx does not have 'setboard'
-    set analysisCoach(automoveThinking1) 1
-    sendToEngine 1 "setboard [sc_pos fen]"
-    sendToEngine 1 "go"
+    set analysisCoach(automoveThinking$index1) 1
+    sendToEngine $index1 "setboard [sc_pos fen]"
+    sendToEngine $index1 "go"
     after 1000 ::tacgame::phalanxGo
   }
+
   ################################################################################
   #   add current position for 3fold repetition detection and returns 1 if
   # the position is a repetion
@@ -937,15 +926,16 @@ namespace eval tacgame {
     }
     return 0
   }
-  # ======================================================================
-  # makePhalanxMove:
-  #
-  # ======================================================================
-  proc makePhalanxMove { input } {
-    global ::tacgame::lscore ::tacgame::analysisCoach ::tacgame::currentPosHash ::tacgame::resignCount
+
+
+  proc makePhalanxMove {input} {
+
+    global ::tacgame::lscore ::tacgame::analysisCoach ::tacgame::currentPosHash ::tacgame::resignCount ::tacgame::index1
 
     # The input move is of the form "my move is MOVE"
-    if {[scan $input "my move is %s" move] != 1} { return 0 }
+    if {[scan $input "my move is %s" move] != 1} {
+      return 0
+    }
 
     ::tacgame::stopAnalyze
 
@@ -1004,9 +994,11 @@ namespace eval tacgame {
       sc_var exit
       sc_var promote [expr {[sc_var count] - 1}]
       sc_move forward 1
-    } elseif {$action == "cancel"} { return }
+    } elseif {$action == "cancel"} {
+      return
+    }
 
-    set analysisCoach(automoveThinking1) 0
+    set analysisCoach(automoveThinking$index1) 0
     set currentPosHash [sc_pos hash]
 
     ::tacgame::startAnalyze
@@ -1022,20 +1014,20 @@ namespace eval tacgame {
       set ::tacgame::resignShown 1
       set resignCount 0
     }
-
-    return 1
   }
 
   # ======================================================================
   # updateScore
   # ======================================================================
   proc updateScore { } {
+    global ::tacgame::index2
+
     if { ! $::tacgame::showevaluation } { return }
-    if {![info exists ::uci::uciInfo(score2)]} {
+    if {![info exists ::uci::uciInfo(score$index2)]} {
       set ::tacgame::scoreLabel ""
       return
     } else {
-      set ::tacgame::scoreLabel "Score : $::uci::uciInfo(score2)"
+      set ::tacgame::scoreLabel "Score : $::uci::uciInfo(score$index2)"
     }
   }
 
@@ -1049,13 +1041,13 @@ namespace eval tacgame {
         ::tacgame::showblunder ::tacgame::showblundervalue ::tacgame::showblunderfound ::tacgame::showmovevalue \
         ::tacgame::showevaluation ::tacgame::lscore ::tacgame::threshold \
         ::tacgame::lastblundervalue ::tacgame::prev_lastblundervalue ::tacgame::scoreLabel \
-        ::tacgame::blunderpending ::tacgame::prev_blunderpending ::tacgame::sc1
+        ::tacgame::blunderpending ::tacgame::prev_blunderpending ::tacgame::sc1 ::tacgame::index1 ::tacgame::index2
 
     # only update when it is human turn
     if { [getPhalanxColor] == [sc_pos side] } { return }
 
     catch {
-      set sc1 $::uci::uciInfo(score2)
+      set sc1 $::uci::uciInfo(score$index2)
       set sc2 [lindex $lscore end]
     }
 
@@ -1072,7 +1064,7 @@ namespace eval tacgame {
     # set sc1 [lindex $lscore end]
     # set sc2 [lindex $lscore end-1]
 
-    if { $analysisCoach(automoveThinking1) } {
+    if { $analysisCoach(automoveThinking$index1) } {
       set blunderWarningLabel $::tr(Noinfo)
     }
 
@@ -1117,7 +1109,7 @@ namespace eval tacgame {
       set blunderWarningLabel "---"
     }
 
-    if { !$showblunder || $analysisCoach(automoveThinking1) } {
+    if { !$showblunder || $analysisCoach(automoveThinking$index1) } {
       set blunderWarningLabel "---"
     }
 

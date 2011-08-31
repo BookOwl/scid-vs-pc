@@ -267,7 +267,7 @@ proc compOk {} {
   for {set i 0} {$i < $comp(count)} {incr i} {
     set j [$w.engines.list.$i.combo current]
     lappend comp(players) $j
-    lappend players [expr $j + 1]
+    lappend players $j
     lappend names   [lindex [lindex $engines(list) $j] 0]
   }
 
