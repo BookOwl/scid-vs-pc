@@ -439,7 +439,7 @@ proc epd_pasteAnalysis {textwidget} {
 
   set win 0
   # find an open analysis window
-  for {set i 1} {$i <= [llength $::engines(list)]} {incr i} {
+  for {set i 0} {$i < [llength $::engines(list)]} {incr i} {
     if {[winfo exists .analysisWin$i]} {
       set win $i
       break

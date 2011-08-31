@@ -767,7 +767,7 @@ namespace eval uci {
   ################################################################################
   proc startEngine {n} {
     # todo : sort out bugs.
-    # startEngine called by tcl/tools/uci.tcl tcl/tools/calvar.tcl tcl/tools/sergame.tcl tcl/tools/tactics.tcl tcl/tools/tacgame.tcl
+    # startEngine called by tcl/tools/calvar.tcl tcl/tools/sergame.tcl tcl/tools/tactics.tcl tcl/tools/tacgame.tcl
 
     # To verify bug:
     # Start engine number 2

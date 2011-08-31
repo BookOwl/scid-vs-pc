@@ -63,7 +63,7 @@ set informant("++-") 5.5
 ################################################################################
 
 proc resetEngines {} {
-  for {set i 1} {$i <= [llength $::engines(list)]} {incr i} {
+  for {set i 0} {$i < [llength $::engines(list)]} {incr i} {
     if {[winfo exists .analysisWin$i]} {
       resetEngine $i
     }
@@ -3127,7 +3127,7 @@ proc sendFENtoEngineUCI {engine_n  {delay 0}} {
 ################################################################################
 
 proc updateAnalysisWindows {} {
-  for {set i 1} {$i <= [llength $::engines(list)]} {incr i} {
+  for {set i 0} {$i < [llength $::engines(list)]} {incr i} {
     if {[winfo exists .analysisWin$i]} {
       updateAnalysis $i
     }
