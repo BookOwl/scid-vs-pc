@@ -2436,9 +2436,9 @@ proc processAnalysisInput {n} {
       set analysis(waitForBestMove$n) 0
     }
 
-    if {[string match {1-0 *} $line] || \
-	[string match {0-1 *} $line] || \
-	[string match {resign *} $line]} {
+    if {[string match {1-0*} $line] || \
+	[string match {0-1*} $line] || \
+	[string match {resign*} $line]} {
       puts_ "RESIGNS (engine $n)"
       if {$n == $comp(white)} {
 	sc_game tags set -result 0
