@@ -290,9 +290,8 @@ if {[llength $engines(list)] == 0} {
 
 }
 
-# ::enginelist::date
-#   Given a time in seconds since 1970, returns a formatted date string.
-#
+### Given a time in seconds since 1970, returns a formatted date string.
+
 proc ::enginelist::date {time} {
   return [clock format $time -format "%d-%b-%Y %H:%M"]
 }
@@ -333,6 +332,9 @@ proc ::enginelist::listEngines {{focus 0}} {
     $f insert end $text
 
     incr count
+  }
+  if {$focus == -1} {
+    set focus [expr $count - 1]
   }
   $f selection set $focus
   $f see $focus
@@ -624,7 +626,7 @@ proc ::enginelist::edit {index {copy {}}} {
   pack $f.rb.uci -side left
   pack $f.rb.xboard -side right
   button $f.bUCI -text Configure -command "
-    ::uci::uciConfig $index \[toAbsPath \$engines(newCmd)\] \$engines(newArgs) \
+    ::uci::uciConfig $index  \$engines(newName) \[toAbsPath \$engines(newCmd)\] \$engines(newArgs) \
                        \[toAbsPath \$engines(newDir)\] \$engines(newUCIoptions)
   "
   checkState ::engines(newUCI) $f.bUCI
@@ -715,7 +717,7 @@ proc ::enginelist::edit {index {copy {}}} {
       if {$engines(newIndex) < 0} {
         lappend engines(list) $newEntry
 	if { $hotkey == "F2" || $hotkey == "F3" || $hotkey == "F4" } {
-	  set engines($hotkey) [llength $engines(list)]
+	  set engines($hotkey) [expr [llength $engines(list)] - 1]
         }
       } else {
         set engines(list) [lreplace $engines(list) \

@@ -103,7 +103,7 @@ namespace eval sergame {
       set args [lindex $engineData 2]
       set dir [ toAbsPath [lindex $engineData 3] ]
       set options [lindex $engineData 8]
-      ::uci::uciConfig $index [ toAbsPath $cmd ] $args [ toAbsPath $dir ] $options
+      ::uci::uciConfig $index $name [toAbsPath $cmd] $args [toAbsPath $dir] $options
     }
     pack $w.fengines.bEngineConfig -side top
 

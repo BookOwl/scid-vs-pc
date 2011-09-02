@@ -351,18 +351,21 @@ namespace eval uci {
       tk_messageBox -title Oops -icon warning -type ok -message {Engine is not UCI} -parent $parent
       return
     }
+    set name [lindex $engineData 0]
     set cmd  [lindex $engineData 1]
     set args [lindex $engineData 2]
     set dir  [lindex $engineData 3] 
     set options [lindex $engineData 8]
-    ::uci::uciConfig $n [ toAbsPath $cmd ] $args [ toAbsPath $dir ] $options 
+    ::uci::uciConfig $n $name [ toAbsPath $cmd ] $args [ toAbsPath $dir ] $options 
   }
 
   ### Open the pipe and issue 'uci'
   ### Pipe is read by readUCI, which then inits uciConfigWin after options have been read
 
-  proc uciConfig { n cmd arg dir options } {
+  proc uciConfig { n name cmd arg dir options } {
     global ::uci::uciOptions ::uci::oldOptions
+
+    set ::uci::name $name
 
     if {[info exists ::uci::uciInfo(pipe$n)]} {
       if {$::uci::uciInfo(pipe$n) != ""} {
@@ -392,7 +395,6 @@ namespace eval uci {
     }
 
     set ::uci::uciInfo(pipe$n) $pipe
-    set ::uci:name {}
 
     # Configure pipe for line buffering and non-blocking mode:
     fconfigure $pipe -buffering full -blocking 0
@@ -453,9 +455,6 @@ namespace eval uci {
     wm state $w withdrawn
     setWinLocation $w
     setWinSize $w
-
-    # if {$::uci::name == {}} 
-    set ::uci::name [lindex [lindex $::engines(list) $n] 0]
 
     wm title $w "UCI Configure $::uci::name"
 
