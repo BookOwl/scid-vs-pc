@@ -461,6 +461,23 @@ proc ::file::SwitchToBase {b} {
   refreshWindows
 }
 
+proc ::file::SwitchToNextBase {} {
+  set b [sc_base current]
+  set clipbase [sc_info clipbase]
+
+  ### Rotate between bases until we find an open one.
+  ### Switching to unopen bases seems silly, but this is old and tested (?) code from SCID
+  while {1} {
+    incr b
+    if {$b > $clipbase} {
+      set b 1
+    }
+    sc_base switch $b
+    if {[sc_base inUse]} { break }
+  }
+  SwitchToBase $b
+}
+
 ################################################################################
 proc ::file::openBaseAsTree { { fName "" } } {
   set oldbase [sc_base current]

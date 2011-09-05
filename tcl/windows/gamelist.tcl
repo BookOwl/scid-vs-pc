@@ -250,6 +250,7 @@ proc ::windows::gamelist::Open {} {
   standardShortcuts $w
   bind $w <F1> { helpWindow GameList }
   bind $w <Destroy> { ::windows::gamelist::Close }
+  bind $w <Control-Tab> {::file::SwitchToNextBase ; break}
   bind $w <Escape> "destroy $w"
 
   set ::windows::gamelist::isOpen 1
