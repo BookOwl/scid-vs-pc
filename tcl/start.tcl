@@ -103,8 +103,7 @@ foreach ns {
 
 ### ::pause is used as a semaphore by the trace command in tacgame (and fics)
 
-set ::MAXGAME 99999999
-set ::MAXAUTOLOAD 16777214 ; # si4 allocates 3 bytes only
+set ::MAX_GAMES [sc_info limit games]
 set ::pause 0
 set ::defaultBackground white
 set ::tacgame::threshold 0.9

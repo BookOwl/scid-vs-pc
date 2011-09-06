@@ -8232,6 +8232,7 @@ sc_game_push (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
 int
 sc_savegame (Tcl_Interp * ti, Game * game, gameNumberT gnum, scidBaseT * base)
 {
+    char temp[200];
     if (! base->inUse) {
         Tcl_AppendResult (ti, errMsgNotOpen(ti), NULL);
         return TCL_ERROR;
@@ -8241,7 +8242,6 @@ sc_savegame (Tcl_Interp * ti, Game * game, gameNumberT gnum, scidBaseT * base)
         return TCL_ERROR;
     }
     if (base == clipbase   &&  base->numGames >= clipbaseMaxGames) {
-        char temp[200];
         sprintf (temp, "Sorry, the clipbase has a limit of %u games.\n",
                  clipbaseMaxGames);
         Tcl_AppendResult (ti, temp, NULL);
@@ -8279,7 +8279,8 @@ sc_savegame (Tcl_Interp * ti, Game * game, gameNumberT gnum, scidBaseT * base)
     } else {
       // add game without resetting the index, because it has been filled by game->encode above
       if (base->idx->AddGame (&gNumber, &iE, false) != OK) {
-        Tcl_AppendResult (ti, "Too many games in this database.", NULL);
+        sprintf (temp, "Scid maximum games (%u) reached.\n", MAX_GAMES);
+        Tcl_AppendResult (ti, temp, NULL);
         return TCL_ERROR;
       }
       base->numGames = base->idx->GetNumGames();
@@ -8394,6 +8395,7 @@ sc_savegame (Tcl_Interp * ti, Game * game, gameNumberT gnum, scidBaseT * base)
 int
 sc_savegame (Tcl_Interp * ti, scidBaseT * sourceBase, ByteBuffer * bbuf, IndexEntry * srcIe, scidBaseT * base)
 {
+    char temp[200];
     if (! base->inUse) {
         Tcl_AppendResult (ti, errMsgNotOpen(ti), NULL);
         return TCL_ERROR;
@@ -8403,7 +8405,6 @@ sc_savegame (Tcl_Interp * ti, scidBaseT * sourceBase, ByteBuffer * bbuf, IndexEn
         return TCL_ERROR;
     }
     if (base == clipbase   &&  base->numGames >= clipbaseMaxGames) {
-        char temp[200];
         sprintf (temp, "Sorry, the clipbase has a limit of %u games.\n",
                  clipbaseMaxGames);
         Tcl_AppendResult (ti, temp, NULL);
@@ -8422,8 +8423,9 @@ sc_savegame (Tcl_Interp * ti, scidBaseT * sourceBase, ByteBuffer * bbuf, IndexEn
 
     // add game without resetting the index, because it has been filled by game->encode above
     if (base->idx->AddGame (&gNumber, &iE, false) != OK) {
-		Tcl_AppendResult (ti, "Too many games in this database.", NULL);
-		return TCL_ERROR;
+        sprintf (temp, "Scid maximum games (%u) reached.\n", MAX_GAMES);
+        Tcl_AppendResult (ti, temp, NULL);
+        return TCL_ERROR;
     }
     base->numGames = base->idx->GetNumGames();
   

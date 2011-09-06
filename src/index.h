@@ -33,7 +33,10 @@
 const char         INDEX_SUFFIX[]     = ".si4";
 const char         OLD_INDEX_SUFFIX[] = ".si3";
 const char         INDEX_MAGIC[8]     = "Scid.si";
-const gameNumberT  MAX_GAMES          = 16000000;  // max. # of games in file
+const gameNumberT  MAX_GAMES          = 16777214;
+// max. number of games is 2^(3*8)-1-1,
+// The "2^(3*8)-1" as si4 only uses three bytes to store this integer,
+// The second "-1" because GetAutoLoad uses 0 to mean "no autoload"
 
 // Descriptions can be up to 107 bytes long.
 const uint  SCID_DESC_LENGTH = 107;

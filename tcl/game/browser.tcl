@@ -19,7 +19,7 @@ proc ::gbrowser::new {base gnum {ply -1} {w {}}} {
   if {$base < 1} { set base [sc_base current] }
   if {$gnum < 1} { set gnum [sc_game number] }
 
-  # Sanity check (which allows us to load game $::MAXGAME)
+  ### if too large, load the last game
   if {$gnum > [sc_base numGames $base]} {
     set gnum [sc_base numGames $base]
   }
@@ -231,7 +231,7 @@ proc ::gbrowser::load {w base gnum ply n} {
 	 set newgame [sc_filter next [expr $gnum - 1]]
       }
       end {
-	 set newgame $::MAXGAME
+	 set newgame $::MAX_GAMES
       }
       default {
 	 puts "::gbrowser::load: bad variable 'n'"
