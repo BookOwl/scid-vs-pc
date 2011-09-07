@@ -1,9 +1,11 @@
+### tcl/utils/validate.tcl
 
+# See http://wiki.tcl.tk/3991 for a better approach to validation
 
 # ::utils::validate::Integer
 #
 #   Used to check the size of integers in entry boxes.
-#
+
 proc ::utils::validate::Integer {maxValue allowQuestionMarks name el op} {
   global $name ${name}_old
   if {[string comp {} $el]} {

@@ -383,7 +383,7 @@ proc epd_Analyse { textwidget id } {
 
   label $y.label -text $::tr(AnnotateTime:)
   pack $y.label -side top -pady 5 -padx 5
-  spinbox $y.spDelay  -width 8 -textvariable ::delayEpd -from 1 -to 300 -increment 1 -validate all -vcmd { regexp {^[0-9]+$} %P }
+  spinbox $y.spDelay  -width 8 -textvariable ::delayEpd -from 1 -to 300 -increment 1 -validate all -vcmd {string is int %P}
   pack $y.spDelay -side top -pady 5
   dialogbutton $y.ok -text "OK" -command "
     destroy $y

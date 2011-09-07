@@ -155,11 +155,11 @@ namespace eval sergame {
 
     label $w.ftime.timebonus.whitelabel -text $::tr(White)
     grid $w.ftime.timebonus.whitelabel -row $row -column 1
-    spinbox $w.ftime.timebonus.whitespminutes  -width 4 -from 1 -to 120 -increment 1 -validate all -vcmd { regexp {^[0-9]+$} %P }
+    spinbox $w.ftime.timebonus.whitespminutes  -width 4 -from 1 -to 120 -increment 1 -validate all -vcmd {string is int %P}
     grid $w.ftime.timebonus.whitespminutes -row $row -column 2
     label $w.ftime.timebonus.whitelminutes -text $::tr(TimeMin)
     grid $w.ftime.timebonus.whitelminutes -row $row -column 3
-    spinbox $w.ftime.timebonus.whitespseconds  -width 4 -from 0 -to 60 -increment 1 -validate all -vcmd { regexp {^[0-9]+$} %P }
+    spinbox $w.ftime.timebonus.whitespseconds  -width 4 -from 0 -to 60 -increment 1 -validate all -vcmd {string is int %P}
     grid $w.ftime.timebonus.whitespseconds -row $row -column 4
     label $w.ftime.timebonus.whitelseconds -text $::tr(TimeSec)
     grid $w.ftime.timebonus.whitelseconds -row $row -column 5
@@ -167,11 +167,11 @@ namespace eval sergame {
     incr row
     label $w.ftime.timebonus.blacklabel -text $::tr(Black)
     grid $w.ftime.timebonus.blacklabel -row $row -column 1
-    spinbox $w.ftime.timebonus.blackspminutes  -width 4 -from 1 -to 120 -increment 1 -validate all -vcmd { regexp {^[0-9]+$} %P }
+    spinbox $w.ftime.timebonus.blackspminutes  -width 4 -from 1 -to 120 -increment 1 -validate all -vcmd {string is int %P}
     grid $w.ftime.timebonus.blackspminutes -row $row -column 2
     label $w.ftime.timebonus.blacklminutes -text $::tr(TimeMin)
     grid $w.ftime.timebonus.blacklminutes -row $row -column 3
-    spinbox $w.ftime.timebonus.blackspseconds  -width 4 -from 0 -to 60 -increment 1 -validate all -vcmd { regexp {^[0-9]+$} %P }
+    spinbox $w.ftime.timebonus.blackspseconds  -width 4 -from 0 -to 60 -increment 1 -validate all -vcmd {string is int %P}
     grid $w.ftime.timebonus.blackspseconds -row $row -column 4
     label $w.ftime.timebonus.blacklseconds -text $::tr(TimeSec)
     grid $w.ftime.timebonus.blacklseconds -row $row -column 5
@@ -184,7 +184,7 @@ namespace eval sergame {
     # Fixed depth
     frame $w.ftime.depth
     radiobutton $w.ftime.depth.button -text $::tr(FixedDepth) -value "depth" -variable ::sergame::timeMode
-    spinbox $w.ftime.depth.value  -width 4 -from 1 -to 20 -increment 1 -validate all -vcmd { regexp {^[0-9]+$} %P }
+    spinbox $w.ftime.depth.value  -width 4 -from 1 -to 20 -increment 1 -validate all -vcmd {string is int %P}
     $w.ftime.depth.value set 3
 
     pack $w.ftime.depth -side top -fill x
@@ -193,7 +193,7 @@ namespace eval sergame {
 
     frame $w.ftime.nodes
     radiobutton $w.ftime.nodes.button -text "$::tr(Nodes) (x1000)" -value "nodes" -variable ::sergame::timeMode
-    spinbox $w.ftime.nodes.value  -width 4 -from 5 -to 10000 -increment 5 -validate all -vcmd { regexp {^[0-9]+$} %P }
+    spinbox $w.ftime.nodes.value  -width 4 -from 5 -to 10000 -increment 5 -validate all -vcmd {string is int %P}
     $w.ftime.nodes.value set 10
 
     pack $w.ftime.nodes -side top -fill x
@@ -202,7 +202,7 @@ namespace eval sergame {
 
     frame $w.ftime.movetime
     radiobutton $w.ftime.movetime.button -text $::tr(SecondsPerMove) -value "movetime" -variable ::sergame::timeMode
-    spinbox $w.ftime.movetime.value  -width 4 -from 1 -to 120 -increment 1 -validate all -vcmd { regexp {^[0-9]+$} %P }
+    spinbox $w.ftime.movetime.value  -width 4 -from 1 -to 120 -increment 1 -validate all -vcmd {string is int %P}
     $w.ftime.movetime.value set 5
 
     pack $w.ftime.movetime -side top -fill x
@@ -236,7 +236,6 @@ namespace eval sergame {
     button $w.fbuttons.play -text $::tr(Play) -command {
       focus .
       set n [.configSerGameWin.fengines.fEnginesList.lbEngines curselection]
-puts "n is $n , ::sergame::engineListBox is [parray ::sergame::engineListBox]"
       set n $::sergame::engineListBox($n)
       set ::sergame::engineName [.configSerGameWin.fengines.fEnginesList.lbEngines get $n]
       set ::sergame::chosenOpening [.configSerGameWin.fopening.fOpeningList.lbOpening curselection]
@@ -359,12 +358,12 @@ puts "n is $n , ::sergame::engineListBox is [parray ::sergame::engineListBox]"
     ::gameclock::reset 1
     ::gameclock::start 1
 
-    button $w.fbuttons.abort -textvar ::tr(Abort) -command ::sergame::abortGame
+    button $w.fbuttons.abort -textvar ::tr(Abort) -command "::sergame::abortGame $n"
     pack $w.fbuttons.abort -expand yes -fill both
 
     bind $w <F1> { helpWindow TacticalGame }
-    bind $w <Destroy> ::sergame::abortGame
-    bind $w <Escape> ::sergame::abortGame
+    bind $w <Destroy> "::sergame::abortGame $n"
+    bind $w <Escape> "::sergame::abortGame $n"
     bind $w <Configure> "recordWinSize $w"
     wm minsize $w 45 0
 
@@ -383,7 +382,7 @@ puts "n is $n , ::sergame::engineListBox is [parray ::sergame::engineListBox]"
   ################################################################################
   #
   ################################################################################
-  proc abortGame { { n 3 } } {
+  proc abortGame {n} {
     set ::sergame::lFen {}
     if { $::uci::uciInfo(pipe$n) == ""} { return }
     after cancel ::sergame::engineGo $n

@@ -113,10 +113,10 @@ namespace eval calvar {
     # spinbox $f.sbThreshold  -width 3 -textvariable ::calvar::blunderThreshold -from 0.1 -to 1.5 -increment 0.1
     # pack $f.lThreshold $f.sbThreshold -side left
     label $f.lTime -text "Move thinking time"
-    spinbox $f.sbTime  -width 3 -textvariable ::calvar::thinkingTimePerLine -from 5 -to 120 -increment 5 -validate all -vcmd { regexp {^[0-9]+$} %P }
+    spinbox $f.sbTime  -width 3 -textvariable ::calvar::thinkingTimePerLine -from 5 -to 120 -increment 5 -validate all -vcmd {string is int %P}
     pack $f.lTime $f.sbTime -side left
     label $f.lTime2 -text "Position thinking time"
-    spinbox $f.sbTime2  -width 3 -textvariable ::calvar::thinkingTimePosition -from 5 -to 300 -increment 5 -validate all -vcmd { regexp {^[0-9]+$} %P }
+    spinbox $f.sbTime2  -width 3 -textvariable ::calvar::thinkingTimePosition -from 5 -to 300 -increment 5 -validate all -vcmd {string is int %P}
     pack $f.lTime2 $f.sbTime2 -side left
 
     frame $w.fbuttons

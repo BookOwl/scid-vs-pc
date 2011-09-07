@@ -970,7 +970,7 @@ proc initAnnotation {n} {
     -command "checkState ::isBatch $w.batch.spBatchEnd"
 
   spinbox $w.batch.spBatchEnd -width 6 -textvariable ::batchEnd \
-      -from 1 -to $to -increment 1 -validate all -vcmd { regexp {^[0-9]+$} %P }
+      -from 1 -to $to -increment 1 -validate all -vcmd {string is int %P}
 
   checkState ::isBatch $w.batch.spBatchEnd
 
@@ -980,7 +980,7 @@ proc initAnnotation {n} {
      -command "checkState ::isOpeningOnly $w.batch.spBatchOpening"
 
   spinbox $w.batch.spBatchOpening -width 2 -textvariable ::isOpeningOnlyMoves \
-      -from 5 -to 20 -increment 1 -validate all -vcmd { regexp {^[0-9]+$} %P }
+      -from 5 -to 20 -increment 1 -validate all -vcmd {string is int %P}
 
   checkState ::isOpeningOnly $w.batch.spBatchOpening
 
