@@ -132,7 +132,7 @@ proc resetEngine {n} {
 
 resetEngines
 
-set annotateMode 0		; # $n of engine annotating
+set annotateMode -1		; # $n of engine annotating
 set annotateModeButtonValue 0	; # annotate checkbutton value
 
 ################################################################################
@@ -1010,7 +1010,7 @@ proc initAnnotation {n} {
   dialogbutton $w.buttons.cancel -text $tr(Cancel) -command {
     bind .configAnnotation <Destroy> {}
     destroy .configAnnotation
-    set annotateMode 0
+    set annotateMode -1
     set annotateModeButtonValue 0
   }
   dialogbutton $w.buttons.help -text $tr(Help) -command {helpWindow Analysis Annotating}
@@ -1034,7 +1034,7 @@ proc initAnnotation {n} {
 proc okAnnotation {n} {
   global autoplayDelay tempdelay annotateMode analysis autoplayMode
 
-  if {$annotateMode} {
+  if {$annotateMode > -1} {
     puts stderr "Scid: initAnnotation reports engine $annotateMode already annotating"
     return
   }
@@ -1072,7 +1072,7 @@ proc okAnnotation {n} {
 proc bookAnnotation { {n 1} } {
   global analysis
 
-  if {!($::annotateMode && $::useAnalysisBook)} {
+  if {!($::annotateMode > -1 && $::useAnalysisBook)} {
     return
   }
 
@@ -1221,8 +1221,8 @@ proc addAnnotation {} {
   global analysis annotateMoves annotateBlunders annotateMode blunderThreshold prevNag
 
   set n $annotateMode
-  if {!$n} {
-    puts stderr "Scid: addAnnotation called while annotateMode is 0"
+  if {$n == -1} {
+    puts stderr "Scid: addAnnotation called while annotateMode is -1"
     return
   }
   # First look in the book selected
@@ -2086,7 +2086,7 @@ proc makeAnalysisWin {{n 0}} {
     -command "toggleAutomove $n" -variable analysis(automove$n) -relief $relief
   ::utils::tooltip::Set $w.b.automove $::tr(Training)
 
-  if {!$annotateModeButtonValue && !$annotateMode} {
+  if {!$annotateModeButtonValue && $annotateMode == -1} {
     checkbutton $w.b.annotate -image tb_annotate -indicatoron false -width 32 -height 32 \
       -variable annotateModeButtonValue -command "initAnnotation $n" -relief $relief
     ::utils::tooltip::Set $w.b.annotate $::tr(Annotate)
