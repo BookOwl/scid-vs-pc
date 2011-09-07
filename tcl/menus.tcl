@@ -1726,23 +1726,28 @@ proc configInformant {} {
   wm state $w withdrawn
   wm title $w $::tr(ConfigureInformant)
 
-  frame $w.spinF
-  set idx 0
+  frame $w.main
+  frame $w.buttons
   set row 0
 
   foreach i [lsort [array names informant]] {
-    label $w.spinF.labelExpl$idx -text [ ::tr "Informant[ string trim $i "\""]" ]
-    label $w.spinF.label$idx -text [string trim $i {"}]
-    spinbox $w.spinF.sp$idx -textvariable informant($i) -width 4 -from 0.0 -to 9.9 -increment 0.1 -validate all -vcmd { regexp {^[0-9]\.[0-9]$} %P } -justify center
-    grid $w.spinF.labelExpl$idx -row $row -column 0 -sticky w 
-    grid $w.spinF.label$idx -row $row -column 1 -sticky w -padx 5 -pady 3
-    grid $w.spinF.sp$idx -row $row -column 2 -sticky w -padx 5 -pady 3
+    label $w.main.explanation$row -text [ ::tr "Informant[ string trim $i "\""]" ]
+    label $w.main.label$row -text [string trim $i {"}]
+    spinbox $w.main.value$row -textvariable informant($i) -width 4 -from 0.0 -to 9.9 -increment 0.1 \
+        -validate all -vcmd {string is double %P} -justify center
+    grid $w.main.explanation$row -row $row -column 0 -sticky w 
+    grid $w.main.label$row -row $row -column 1 -sticky w -padx 5 -pady 3
+    grid $w.main.value$row -row $row -column 2 -sticky w -padx 5 -pady 3
     incr row
-    incr idx
   }
 
-  button $w.close -textvar ::tr(Close) -command "destroy $w"
-  pack $w.spinF $w.close -pady 5
+  dialogbutton $w.buttons.defaults -textvar ::tr(Defaults) -command resetInformants
+  dialogbutton $w.buttons.help -textvar ::tr(Help) -command {helpWindow Moves Informant}
+  dialogbutton $w.buttons.ok -text OK -command "destroy $w"
+  pack $w.main $w.buttons -pady 5
+
+  pack $w.buttons.defaults $w.buttons.help -side left -padx 5
+  pack $w.buttons.ok  -side right -padx 5
 
   update
   placeWinOverParent $w .

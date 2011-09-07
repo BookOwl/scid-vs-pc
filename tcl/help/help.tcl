@@ -218,7 +218,8 @@ set helpText(Index) {<h1>Scid Help Index</h1>
   <li><a Analysis>Analysis</a> window</li>
   <li><a Comment>Annotating games</a></li>
   <li><a Analysis Annotating>Annotating games</a> automatically</li>
-  <li><a NAGs>Annotation symbols</a></li>
+  <li><a NAGs>Annotation symbols</a> (NAGs)</li>
+  <li>Configuring <a Moves Informant>annotation symbols</a></li>
   <li><a Author>Author, contacting</a></li>
   <li><a Maintenance Autoload>Autoloading</a> a game</li>
   <li><a MainWindow Autoplay>Autoplay mode</a></li>
@@ -921,12 +922,18 @@ to which there is a legal move.
   typing "<b>--</b>" (that is, pressing the minus key twice).
   </p>
 
-  <h3><name Informant>Entering Common Annotation Symbols</h3>
+  <h3><name Informant>Common Annotation Symbols</h3>
   <p>
-  You can also add common <a NAGs>annotation symbols</a> using the keyboard
-  in the main window, without needing to use the <a Comment>comment editor</a>
-  window. The following list shows which symbols you can add, and their
-  keyboard shortcuts:
+  One may add annotation symbols (or <a NAGs>NAGs</a>) using the keyboard
+  (and without the <a Comment>comment editor)</a>. Below are the relevant shortcuts.
+  </p>
+  <p>
+  Scid also uses some of these symbols for <a Analysis Annotating>Automatic
+  Annotations</a>. To this end, the symbols are associated
+  with a certain pawn value which can be set via 
+  <run configInformant><green>Options-<gt>Game Information-<gt>Configure Informant Values</green></run>. 
+  </p>
+
   <ul>
   <li> !	[!][Return]</li>
   <li> ?	[?][Return]</li>
@@ -943,12 +950,8 @@ to which there is a legal move.
   <li> -/+	[-][/]</li>
   <li> =+	[=][+]</li>
   </ul>
-  <b>Note</b> Scid also uses some of these symbols for automatic
-  annotations. To this end, these symbols have to be associated
-  with a certain pawn value. These pawn values can be set via Options
-  / Game information / Configure Informant values.
 
-  <p><footer>Updated: Scid vs. PC 4.2 November 2010 </footer></p>
+  <p><footer>Updated: Scid vs. PC 4.6 September 2011 </footer></p>
 }
 
 set helpTitle(Searches) "Searches"
@@ -2636,7 +2639,7 @@ set helpText(Analysis) {<h1>Analysis Windows</h1>
   <p>
   Games can be automatically analysed using
   the Annotate Button <button tb_annotate> (in the <a Analysis>Analysis Engine</a> toolbar).
-  This feature adds Scores, <a Comment>Comments</a>, <a NAGs>Informants</a>,
+  This feature adds Scores, <a Comment>Comments</a>, <a Moves Informant>Informants</a>,
   and Bestlines to games.</p>
 
   <p>After configuring the options and pressing OK, Autoplay
@@ -3729,8 +3732,9 @@ set helpText(Options) {<h1>Options and Preferences</h1>
 set helpTitle(NAGs) "NAG values"
 set helpText(NAGs) {<h1>Standard NAG Values</h1>
   <p>
-  Standard NAG (Numeric Annotation Glyph) values defined in the
-  <a Related>PGN Standard</a> are:
+  Standard NAG (Numeric Annotation Glyph) values are defined in the
+  <a Related>PGN Standard</a> and described below.
+  Scid's use of Ascii strings to represent annotations is common, <i>but against the PGN standard</i>.
   </p>
   <cyan>
   <ul>

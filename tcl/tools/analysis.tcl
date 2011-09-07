@@ -46,18 +46,6 @@ set stack ""
 set markTacticalExercises 0
 
 ################################################################################
-# The different threshold values for !? ?? += etc
-array set informant {}
-set informant("!?")  0.5
-set informant("?")   1.5
-set informant("??")  3.0
-set informant("?!")  0.5
-set informant("+=")  0.5
-set informant("+/-") 1.5
-set informant("+-")  3.0
-set informant("++-") 5.5
-
-################################################################################
 # resetEngine:
 #   Reset all engine-specific data.
 ################################################################################

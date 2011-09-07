@@ -785,6 +785,21 @@ set engines(F4)  {}
 set engineCoach1 {}
 set engineCoach2 {}
 
+proc resetInformants {} {
+  global informant
+  array set informant {}
+  set informant("!?")  0.5
+  set informant("?")   1.5
+  set informant("??")  3.0
+  set informant("?!")  0.5
+  set informant("+=")  0.5
+  set informant("+/-") 1.5
+  set informant("+-")  3.0
+  set informant("++-") 5.5
+}
+
+resetInformants
+
 # Nice icon from OSX,
 # ... but it doesn't antialias well in the text widget !%^&*
 

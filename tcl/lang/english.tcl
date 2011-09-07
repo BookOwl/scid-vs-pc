@@ -345,7 +345,7 @@ menuText E GInfoTBResult "Tablebases: Result Only" 12
 menuText E GInfoTBAll "Tablebases: Result and Best Moves" 19
 menuText E GInfoDelete "(Un)Delete This Game" 4
 menuText E GInfoMark "(Un)Mark This Game" 4
-menuText E GInfoInformant "Configure informant values" 0
+menuText E GInfoInformant "Configure Informant Values" 0
 
 # Main window buttons:
 helpMsg E .button.start {Go to start of game  (key: Home)}
