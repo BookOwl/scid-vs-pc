@@ -171,7 +171,6 @@ set helpText(Scid) {<h1>Databases and General Use</h1>
   <li><a Finder><b>File Finder</b> window</a></li>
   <li><a GameList><b>Game List</b> window</a></li>
   <li><a Import><b>Import game</b> window</a></li>
-  <li><a OpeningTrainer><b>Opening Trainer</b> window </a></li>
   <li><a Reports><b>Reports</b></a></li>
   <li><a PGN><b>PGN</b> (game text) window</a></li>
   <li><a PTracker><b>Piece Tracker</b></a></li>
@@ -364,7 +363,6 @@ set helpText(Index) {<h1>Scid Help Index</h1>
   <li><a Book>Opening books</a></li>
   <li><a ECO>Opening classification (ECO)</a></li>
   <li><a Reports Opening>Opening report</a> window</li>
-  <li><a OpeningTrainer>Training: Openings</a></li>
   <li><a Options>Options</a></li>
   </ul>
 
@@ -422,7 +420,6 @@ set helpText(Index) {<h1>Scid Help Index</h1>
   <li><a Tourney>Tournament</a>of Chess Engines</li>
   <li><a Tmt>Tournament finder</a></li>
   <li><a FindBestMove>Training: Find best move</a></li>
-  <li><a OpeningTrainer>Training: Openings</a></li>
   <li><a FICStraining>Training: FICS lectures</a></li>
   <li><a Tree>Tree window</a></li>
   <li><a Moves Trial>Trial mode</a></li>
@@ -2010,8 +2007,7 @@ it is best to close the Tree Window first.</i>
   in 80% of database games will be chosen by Scid with 80% probability.
   Turning on this feature, then hiding (or iconifying) the Tree window and
   playing openings against a large database, is a great way to test your
-  knowledge of your opening repertoire. Another option to train an
-  opening offers <a OpeningTrainer>Training / Openings</a>.
+  knowledge of your opening repertoire.
   </p>
 
   <h3>Caching for Faster Results</h3>
@@ -2042,8 +2038,7 @@ it is best to close the Tree Window first.</i>
   base or a game by choosing File / Fill Cache with base and File /
   Fill Cache with game, respectively. The cache will be filled with
   the contents of these including all variations. This is most helpful
-  if one has one or more repertoire bases that can serve as input. (See
-  also <a OpeningTrainer> about this type of bases.)
+  if one has one or more repertoire bases that can serve as input. 
   <p>
   Tree refresh can be dramatically enhanced if the database is sorted
   by ECO code then compacted (see the <a Maintenance>maintenance</a>
@@ -2528,7 +2523,6 @@ set helpText(Flags) {<h1>Game Flags</h1>
   <p>
   The following functions of Scid set or require flags:
   <ul>
-     <li><a OpeningTrainer>Opening Trainer</a>: can evaluate the (B) and (W) flags
      <li><a Analysis Annotate>Find best move</a>: evaluates the (T) flag
      <li><a Analysis Annotate>Find tactical exercise</a>: sets the (T) flag
   </ul>
@@ -4221,93 +4215,6 @@ our game.</li>
   </ul>
 
 <p><footer>Updated: Scid vs. PC 4.0, May 2010</footer></p>
-}
-
-# Opening Trainer window help
-set helpTitle(OpeningTrainer) "Opening Trainer"
-set helpText(OpeningTrainer) {<h1>Opening Trainer</h1>
-  <p>
-  A Scid Database can be used as a repertoire, each game representing
-  an opening line. The games can contain variations and may also
-  contain NAG values to specify values for each line, and thus
-  allowing to mark preferred or dubious lines. To be a valid database
-  for the opening trainer it is also required to be of proper type.
-  That is, if openings for white are to be trained, the database has
-  to be of type <term>Openings for White</term> (similar for Black and
-  both colours). The type can be set via the <a Maintenance>Maintenance
-  window</a> by selecting the icon or via the database switchers
-  context menu.
-  </p>
-  <p>
-  To use the opening trainer first of all open a repertoire database
-  of the proper type. Then choose Play / Training / Opening Trainer.
-  The upcoming dialogue offers some choices about the next training
-  session
-  <ul>
-      <li><term>white</term>/<term>black</term>/<term>both</term> is
-      used to select the side of the opening to train
-      </li>
-      <li><term>Allow only best moves</term> will treat lower rated moves
-      as error. The rating of a line is given by NAG values.</li>
-      <li><term>Opponent plays best moves</term> Scid will always play
-      the best continuation according to the repertoire database. If
-      unchecked Scid is allowed to choose also lower rated
-      continuations. This is helpful to learn the refutations as well.
-      </li>
-      <li><term>Only flagged lines</term> Scid will only play lines
-      from games flagged as <term>Opening for White</term> or
-      <term>Opening for Black</term>.
-      </li>
-      <li><term>Reset statistics</term> will reset the statistics
-      before the training session.</li>
-  </ul>
-  Press the <term>Continue</term> button to proceed with the training.
-  </p>
-  <p>
-  The actual opening trainer will show up. Here one can display
-  possible candidate moves (hidden by default) and also display their
-  values by just enabling these functions. If <term>Show
-  statistics</term> is enabled, the current statistics is shown in the
-  colour coded fields below the checkbox. Otherwise the overall
-  statistics can be accessed by the button <term>Show report</term>
-
-  <h3>Opening trainer statistics</h3>
-  <p>
-  Four numbers are displayed showing statistics for current position:
-  <ul>
-  <li><term>Green</term> the number of moves played by the user that
-  are good moves</li>
-  <li><term>Yellow</term> the number of dubious moves played that are
-  in the repertoire</li>
-  <li><term>Red</term> the number of moves played that are not in the
-  repertoire</li>
-  <li><term>White</term> the number of times the position was
-  encountered</li>
-  </ul>
-  </p>
-
-  <h3>The report</h3>
-  <p>
-  The report shows statistics for the whole repertoire and gives
-  information about user's knowledge :
-  <ul>
-  <li><term>Positions in repertoire</term> the total number of
-  positions in the repertoire (all lines in database)</li>
-  <li><term>Positions not played</term> the positions that were never
-  encountered</li>
-  <li><term>Positions played</term> the positions that were played and
-  the sum of the number of times they were encountered. Note that this
-  figure represents the sum of occurrences of a position in all
-  opening lines: this number can quickly become big for positions
-  that are close to the start position</li>
-  <li><term>Success</term> the number of good moves made by the player</li>
-  <li><term>Dubious moves</term> the number of weak moves made by the
-  player</li>
-  <li><term>Out of repertoire</term> the number of moves made by the
-  player that were not in repertoire</li>
-  </ul>
-  </p> 
-  <p><footer>Updated: Scid 3.6.26, October 2008</footer></p>
 }
 
 set helpTitle(Correspondence) "Correspondence Chess"
