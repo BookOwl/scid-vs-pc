@@ -538,16 +538,6 @@ proc compNM {n m k} {
 	  }
 	}
 
-        ### Send initial time control
-
-	if {$comp(timecontrol) == "permove"} {
-	  sendToEngine $current_engine "st $comp(seconds)"
-	} else {
-	  set secs [expr $comp(wtime)/1000]
-	  set mins [expr $secs/60]:[expr $secs%60]
-	  sendToEngine $current_engine "level 0 $mins $comp(incr)"
-	}
-
         ### Setup initial position
 
 	if {$comp(startpos) == "startpos"} {
@@ -562,6 +552,16 @@ proc compNM {n m k} {
           # Without force, some engines try to play both side !?
 	  sendToEngine $current_engine "force"
         }
+
+        ### Send initial time control
+
+	if {$comp(timecontrol) == "permove"} {
+	  sendToEngine $current_engine "st $comp(seconds)"
+	} else {
+	  set secs [expr $comp(wtime)/1000]
+	  set mins [expr $secs/60]:[expr $secs%60]
+	  sendToEngine $current_engine "level 0 $mins $comp(incr)"
+	}
     }
   }
 
@@ -637,8 +637,10 @@ proc compNM {n m k} {
 	if {$comp(timecontrol) != "permove"} {
           if {$comp(white) == $current_engine} {
 	    sendToEngine $current_engine "time [expr $comp(wtime)/10]"
+	    sendToEngine $current_engine "otim [expr $comp(btime)/10]"
           } else {
 	    sendToEngine $current_engine "time [expr $comp(btime)/10]"
+	    sendToEngine $current_engine "otim [expr $comp(wtime)/10]"
           }
 	} else {
           ### permove time contorl doesn't need reissuing

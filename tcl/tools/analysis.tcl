@@ -83,6 +83,7 @@ proc resetEngine {n} {
   set analysis(nonStdStart$n) 0       ;# Game has non-standard start
   set analysis(has_analyze$n) 0       ;# Engine has analyze command
   set analysis(has_setboard$n) 0      ;# Engine has setboard command
+  set analysis(has_playother$n) 0     ;# Engine has playother command
   set analysis(send_sigint$n) 0       ;# Engine wants INT signal
   set analysis(wants_usermove$n) 0    ;# Engine wants "usermove" before moves
   set analysis(isCrafty$n) 0          ;# Engine appears to be Crafty
@@ -2462,6 +2463,7 @@ proc processAnalysisInput {n} {
   if {[string match {feature*} $line]} {
     if {[string match {*analyze=1*} $line]} { set analysis(has_analyze$n) 1 }
     if {[string match {*setboard=1*} $line]} { set analysis(has_setboard$n) 1 }
+    if {[string match {*playother=1*} $line]} { set analysis(has_playother$n) 1 }
     if {[string match {*usermove=1*} $line]} { set analysis(wants_usermove$n) 1 }
     if {[string match {*sigint=1*} $line]} { set analysis(send_sigint$n) 1 }
     if {[string match {*myname=*} $line] } {
