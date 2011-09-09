@@ -1821,20 +1821,21 @@ proc sendToEngine {n text} {
   catch {puts $::analysis(pipe$n) $text}
 }
 
-# sendMoveToEngine:
-#   Sends a move to a running analysis engine, using sendToEngine.
-#   If the engine has indicated (with "usermove=1" on a "feature" line)
-#   that it wants it, send with "usermove " before the move.
+### Send a move to a running analysis engine
 
 proc sendMoveToEngine {n move} {
+
   # Convert "e7e8Q" into "e7e8q" since that is the XBoard/WinBoard
   # standard for sending moves in coordinate notation:
   set move [string tolower $move]
+
   if {$::analysis(uci$n)} {
-    # should be position fen [sc_pos fen] moves ?
+    # This proc is never called for UCI engines, and so below command is redundant
     sendToEngine $n "position fen [sc_pos fen] moves $move"
   } else  {
     if {$::analysis(wants_usermove$n)} {
+      #  If the engine has indicated (with "usermove=1" on a "feature" line)
+      #  that it wants it, send with "usermove " before the move.
       sendToEngine $n "usermove $move"
     } else {
       sendToEngine $n $move
@@ -3100,34 +3101,42 @@ proc updateAnalysisBoard {n moves} {
 ################################################################################
 # sendFENtoEngineUCI
 #   Wait for the engine to be ready then send position and go infinite
-#   engine_n: number of the engine that will receive the commands
 #   delay: delay the commands - INTERNAL - DON'T USE OUTSIDE sendFENtoEngineUCI
 ################################################################################
 
-proc sendFENtoEngineUCI {engine_n  {delay 0}} {
+proc sendFENtoEngineUCI {n  {delay 0}} {
     global analysis
-    set analysis(after$engine_n) ""
 
-    if {$analysis(waitForReadyOk$engine_n) } {
-        #If too slow something is wrong: give up
-        if {$delay > 250} { return }
+    set analysis(after$n) ""
 
+    if {$analysis(waitForReadyOk$n) } {
+        # If too slow something is wrong: give up
+        if {$delay > 250} {
+          return
+        }
         # Engine is not ready: process events, idle tasks and then call me back
         incr delay
-        set cmd "set ::analysis(after$engine_n) "
-        append cmd { [ } " after $delay sendFENtoEngineUCI $engine_n $delay " { ] }
-        set analysis(after$engine_n) [eval [list after idle $cmd]]
+        set cmd "set ::analysis(after$n) "
+        append cmd { [ } " after $delay sendFENtoEngineUCI $n $delay " { ] }
+        set analysis(after$n) [eval [list after idle $cmd]]
     } else {
-        sendToEngine $engine_n "position fen $analysis(fen$engine_n)"
-        sendToEngine $engine_n "go infinite"
+	sendToEngine $n "position fen $analysis(fen$n)"
+        sendToEngine $n "go infinite"
+
+	if {0} {
+	  ### Alternative implementation - not finished
+	  ### We have to store the startpos somehow
+	  ### "set analysis(nonStdStart$n) [sc_game startBoard]" is only a boolean
+	  set movehist [string tolower [sc_game moves c]]
+	  sendToEngine $n "position fen $analysis(fen$n)"
+	  if {$movehist == {}} {
+            sendToEngine $n "position startpos"
+	  } else {
+            sendToEngine $n "position startpos moves $movehist"
+	  }
+        }
     }
 }
-
-################################################################################
-# updateAnalysis
-#   Update an analysis window by sending the current board
-#   to the engine.
-################################################################################
 
 proc updateAnalysisWindows {} {
   for {set i 0} {$i < [llength $::engines(list)]} {incr i} {
@@ -3137,98 +3146,125 @@ proc updateAnalysisWindows {} {
   }
 }
 
+###   Update an analysis window by sending the current board
+
 proc updateAnalysis {{n 0}} {
+
+  global analysis analysisWin windowsOS
 
   if {$::comp(playing)} {
     return
   }
 
-  global analysis analysisWin windowsOS
-  if {$analysis(pipe$n) == {}} { return }
-
-  # Just return if no output has been seen from the analysis program yet:
-  if {! $analysis(seen$n)} { return }
-
-  # No need to update if no analysis is running
-  if { ! $analysis(analyzeMode$n) } { return }
-    # No need to send current board if engine is locked
-    if { $analysis(lockEngine$n) } { return }
-
-    if { $analysis(uci$n) } {
-        if {$analysis(after$n) == "" } {
-            if { $analysis(fen$n) != "" } { sendToEngine $n "stop" }
-            set analysis(waitForReadyOk$n) 1
-            sendToEngine $n "isready"
-            set analysis(after$n) [after idle "sendFENtoEngineUCI $n"]
-        }
-        set analysis(fen$n) [sc_pos fen]
-        set analysis(maxmovenumber$n) 0
-        set analysis(movelist$n) [sc_game moves coord list]
-        set analysis(nonStdStart$n) [sc_game startBoard]
-    } else {
-        #TODO: remove 0.3s delay even for other engines
-
-  # If too close to the previous update, and no other future update is
-  # pending, reschedule this update to occur in another 0.3 seconds:
-  #
-  if {[catch {set clicks [clock clicks -milliseconds]}]} {
-    set clicks [clock clicks]
-  }
-  set diff [expr {$clicks - $analysis(lastClicks$n)} ]
-  if {$diff < 300  &&  $diff >= 0} {
-    if {$analysis(after$n) == {}} {
-      set analysis(after$n) [after 300 updateAnalysis $n]
-    }
+  if {$analysis(pipe$n) == {}} {
     return
   }
-  set analysis(lastClicks$n) $clicks
-  set analysis(after$n) {}
-  after cancel updateAnalysis $n
 
-  set old_movelist $analysis(movelist$n)
-  set movelist [sc_game moves coord list]
-  set analysis(movelist$n) $movelist
-  set nonStdStart [sc_game startBoard]
-  set old_nonStdStart $analysis(nonStdStart$n)
-  set analysis(nonStdStart$n) $nonStdStart
+  # Return if no output has been seen from the analysis program yet
+  if {! $analysis(seen$n)} {
+    return
+  }
 
-    # This section is for engines that support "analyze":
+  # No need to update if no analysis is running
+  if { !$analysis(analyzeMode$n) } {
+    return
+  }
+
+  # Or if engine is locked
+  if { $analysis(lockEngine$n) } {
+     return
+  }
+
+  if { $analysis(uci$n) } {
+
+    ### UCI
+
+    if {$analysis(after$n) == "" } {
+       if { $analysis(fen$n) != "" } {
+         sendToEngine $n "stop"
+       }
+       set analysis(waitForReadyOk$n) 1
+       sendToEngine $n "isready"
+	set analysis(after$n) [after idle "sendFENtoEngineUCI $n"]
+    }
+    set analysis(fen$n) [sc_pos fen]
+    set analysis(maxmovenumber$n) 0
+    set analysis(movelist$n) [sc_game moves coord list]
+    ### This var is not used by UCI engines
+    # set analysis(nonStdStart$n) [sc_game startBoard]
+
+  } else {
+
+    ### Xboard
+
+    #TODO: remove 0.3s delay even for other engines
+
+    # If too close to the previous update, and no other future update is
+    # pending, reschedule this update to occur in another 0.3 seconds:
+    #
+    if {[catch {set clicks [clock clicks -milliseconds]}]} {
+      set clicks [clock clicks]
+    }
+    set diff [expr {$clicks - $analysis(lastClicks$n)} ]
+    if {$diff < 300  &&  $diff >= 0} {
+      if {$analysis(after$n) == {}} {
+	set analysis(after$n) [after 300 updateAnalysis $n]
+      }
+      return
+    }
+    set analysis(lastClicks$n) $clicks
+    set analysis(after$n) {}
+    after cancel updateAnalysis $n
+
+    set old_movelist $analysis(movelist$n)
+    set movelist [sc_game moves coord list]
+    set analysis(movelist$n) $movelist
+    set nonStdStart [sc_game startBoard]
+    set old_nonStdStart $analysis(nonStdStart$n)
+    set analysis(nonStdStart$n) $nonStdStart
+
     if {$analysis(has_analyze$n)} {
-      sendToEngine $n "exit"   ;# Get out of analyze mode, to send moves.
+
+      ### Xboard engine supports "analyze"
+
+      # Get out of analyze mode, to send moves.
+      sendToEngine $n "exit"
       
+      ### Try living without this Crafty hack S.A.
       # On Crafty, "force" command has different meaning when not in
       # XBoard mode, and some users have noticed Crafty not being in
       # that mode at this point -- although I cannot reproduce this.
       # So just re-send "xboard" to Crafty to make sure:
-
-      ### try living without this S.A.
       # if {$analysis(isCrafty$n)} { sendToEngine $n xboard }
       
-      sendToEngine $n "force"  ;# Stop engine replying to moves.
+      # Stop engine replying to moves.
+      sendToEngine $n "force"
+
       # Check if the setboard command must be used -- that is, if the
       # previous or current position arose from a non-standard start.
       
-      #if {$analysis(has_setboard$n)  &&  ($old_nonStdStart  || $nonStdStart)}
-      # We skip all code below if the engine has setboard capability : this is provides less error prone behavior
+      # if {$analysis(has_setboard$n)  &&  ($old_nonStdStart  || $nonStdStart)}
+
+      ### Use "setboard" if supported, and return (this is provides less error prone behavior)
+
       if {$analysis(has_setboard$n)} {
-        sendToEngine $n "setboard [sc_pos fen]"
-        # Most engines with setboard do not recognize the crafty "mn"
-        # command (it is not in the XBoard/WinBoard protocol), so only send it to crafty:
-        if {$analysis(isCrafty$n)} { sendToEngine $n "mn [sc_pos moveNumber]" }
-        sendToEngine $n analyze
-        return
+	sendToEngine $n "setboard [sc_pos fen]"
+
+	# "mn" command is specific to crafty
+	if {$analysis(isCrafty$n)} {
+          sendToEngine $n "mn [sc_pos moveNumber]"
+        }
+	sendToEngine $n analyze
+	return
       }
       
-      # If we need a non-standard start and the engine does not have
-      # setboard, the user is out of luck:
+      ### Ok- no "setboard"
+
       if {$nonStdStart} {
         set analysis(moves$n) "  Sorry, this game has a non-standard start position."
         updateAnalysisText $n
         return
       }
-      
-      # Here, the engine has the analyze command (and no setboard) but this game does
-      # not have a non-standard start position.
       
       set oldlen [llength $old_movelist]
       set newlen [llength $movelist]
@@ -3241,34 +3277,35 @@ proc updateAnalysis {{n 0}} {
       # Send just the new move if possible (if the new move list is exactly
       # the same as the previous move list, with one extra move):
       if {($newlen == $oldlen + 1) && ($old_movelist == [lrange $movelist 0 [expr {$oldlen - 1} ]])} {
-        sendMoveToEngine $n [lindex $movelist $oldlen]
-        
+	sendMoveToEngine $n [lindex $movelist $oldlen]
+	
       } elseif {($newlen + 1 == $oldlen) && ($movelist == [lrange $old_movelist 0 [expr {$newlen - 1} ]])} {
-        # Here the new move list is the same as the old list but with one
-        # less move, just send one "undo":
-        sendToEngine $n undo
-        
+	# Here the new move list is the same as the old list but with one
+	# less move, just send one "undo":
+	sendToEngine $n undo
+	
       } elseif {$newlen == $oldlen  &&  $old_movelist == $movelist} {
-        
-        # Here the board has not changed, so send nothing
-        
+	
+	# Here the board has not changed, so send nothing
+	
       } else {
-        
-        # Otherwise, undo and re-send all moves:
-        for {set i 0} {$i < $oldlen} {incr i} {
-          sendToEngine $n undo
-        }
-        foreach m $movelist {
-          sendMoveToEngine $n $m
-        }
-        
+	
+	# Otherwise, undo and re-send all moves:
+	for {set i 0} {$i < $oldlen} {incr i} {
+	  sendToEngine $n undo
+	}
+	foreach m $movelist {
+	  sendMoveToEngine $n $m
+	}
+	
       }
       
       sendToEngine $n analyze
       
     } else {
+
+      ### Xboard engine doesn't support "analyze"
       
-      # This section is for engines without the analyze command:
       # In this case, Scid just sends "new", "force" and a bunch
       # of moves, then sets a very long search time/depth and
       # sends "go". This is not ideal but it works OK for engines
@@ -3276,21 +3313,21 @@ proc updateAnalysis {{n 0}} {
       
       # If Unix OS and engine wants it, send an INT signal:
       if {(!$windowsOS)  &&  $analysis(send_sigint$n)} {
-        catch {exec -- kill -s INT [pid $analysis(pipe$n)]}
+	catch {exec -- kill -s INT [pid $analysis(pipe$n)]}
       }
       sendToEngine $n new
       sendToEngine $n force
       if { $nonStdStart && ! $analysis(has_setboard$n) } {
-        set analysis(moves$n) "  Sorry, this game has a non-standard start position."
-        updateAnalysisText $n
-        return
+	set analysis(moves$n) "  Sorry, this game has a non-standard start position."
+	updateAnalysisText $n
+	return
       }
       if {$analysis(has_setboard$n)} {
-        sendToEngine $n "setboard [sc_pos fen]"
+	sendToEngine $n "setboard [sc_pos fen]"
       } else  {
-        foreach m $movelist {
-          sendMoveToEngine $n $m
-        }
+	foreach m $movelist {
+	  sendMoveToEngine $n $m
+	}
       }
       # Set engine to be white or black:
       sendToEngine $n [sc_pos side]
@@ -3302,9 +3339,6 @@ proc updateAnalysis {{n 0}} {
     }
   }
 }
-################################################################################
-#
-################################################################################
 
 set temptime 0
 trace variable temptime w {::utils::validate::Regexp {^[0-9]*\.?[0-9]*$}}
