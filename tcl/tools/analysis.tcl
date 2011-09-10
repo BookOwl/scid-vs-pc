@@ -68,7 +68,7 @@ proc resetEngine {n} {
   set analysis(prevmoves$n) {}        ;# Immediately previous best line out from engine
   set analysis(nodes$n) 0             ;# Number of (kilo)nodes searched
   set analysis(depth$n) 0             ;# Depth in ply
-  set analysis(prev_depth$n) 0        ;# Previous depth
+  set analysis(prevdepth$n) 0        ;# Previous depth
   set analysis(time$n) 0              ;# Time in centisec (or sec; see below)
   set analysis(moves$n) {}            ;# PV (best line) output from engine
   set analysis(seldepth$n) 0
@@ -122,7 +122,7 @@ proc resetEngine {n} {
 resetEngines
 
 set annotateEngine -1		; # $n of engine annotating
-set annotateModeButtonValue 0	; # annotate checkbutton value
+set annotateButton 0	; # annotate checkbutton value
 
 ################################################################################
 # calculateNodes:
@@ -148,7 +148,7 @@ proc resetAnalysis {{n 0}} {
   set analysis(score$n) 0
   set analysis(scoremate$n) 0
   set analysis(nodes$n) 0
-  set analysis(prev_depth$n) 0
+  set analysis(prevdepth$n) 0
   set analysis(depth$n) 0
   set analysis(time$n) 0
   set analysis(moves$n) {}
@@ -827,13 +827,13 @@ proc  checkBlunderState {} {
 
 
 proc initAnnotation {n} {
-  global autoplayDelay tempdelay blunderThreshold annotateModeButtonValue annotateEngine analysis annotateType tr
+  global autoplayDelay tempdelay blunderThreshold annotateButton annotateEngine analysis annotateType tr
 
   set analysis(prevscore$n) 0
 
   set w .configAnnotation
   if { [winfo exists $w] } { destroy $w }
-  if { ! $annotateModeButtonValue } { ; # end annotation
+  if { ! $annotateButton } { ; # end annotation
     toggleAutoplay
     return
   }
@@ -1000,7 +1000,7 @@ proc initAnnotation {n} {
     bind .configAnnotation <Destroy> {}
     destroy .configAnnotation
     set annotateEngine -1
-    set annotateModeButtonValue 0
+    set annotateButton 0
   }
   dialogbutton $w.buttons.help -text $tr(Help) -command {helpWindow Analysis Annotating}
   dialogbutton $w.buttons.ok -text "OK" -command "okAnnotation $n"
@@ -1758,13 +1758,19 @@ proc destroyAnalysisWin {n} {
 
   # Is this working properly. We seem to have a process left S.A.
 
-  global windowsOS analysis annotateModeButtonValue
+  global windowsOS analysis annotateButton annotateEngine
 
   puts_ "destroyAnalysisWin $n"
   bind .analysisWin$n <Destroy> {}
 
-  if { $annotateModeButtonValue } { ; # end annotation
-    set annotateModeButtonValue 0
+
+  if {[winfo exists .configAnnotation]} {
+    # Is annotation being configured ?
+    set annotateButton 0
+    destroy .configAnnotation
+  } elseif {$annotateEngine == $n} {
+    # Is annotation going ?
+    set annotateButton 0
     toggleAutoplay
   }
 
@@ -1918,7 +1924,7 @@ proc toggleMini {} {
 ### makeAnalysisWin: toggle analysis engine n
 
 proc makeAnalysisWin {{n 0}} {
-  global analysisWin$n font_Analysis analysisCommand analysis annotateModeButtonValue annotateEngine
+  global analysisWin$n font_Analysis analysisCommand analysis annotateButton annotateEngine
 
   set w .analysisWin$n
 
@@ -1932,8 +1938,6 @@ proc makeAnalysisWin {{n 0}} {
     update
     return
   }
-
-  set annotateModeButtonValue 0
 
   # What an f-ing mess.
   # Previously the engines were sorted , and only engine 1 or 2 (in the sort order)
@@ -2076,9 +2080,9 @@ proc makeAnalysisWin {{n 0}} {
     -command "toggleAutomove $n" -variable analysis(automove$n) -relief $relief
   ::utils::tooltip::Set $w.b.automove $::tr(Training)
 
-  if {!$annotateModeButtonValue && $annotateEngine == -1} {
+  if {!$annotateButton} {
     checkbutton $w.b.annotate -image tb_annotate -indicatoron false -width 32 -height 32 \
-      -variable annotateModeButtonValue -command "initAnnotation $n" -relief $relief
+      -variable annotateButton -command "initAnnotation $n" -relief $relief
     ::utils::tooltip::Set $w.b.annotate $::tr(Annotate)
   } else {
     frame $w.b.annotate -width 0 -height 0
@@ -2642,7 +2646,7 @@ proc toggleFinishGame {n} {
   global analysis
   set b ".analysisWin$n.b.finishGame"
 
-  if { $::annotateModeButtonValue || $::autoplayMode || !$analysis(analyzeMode$n) || ! [sc_pos isAt vend] } {
+  if { $::annotateButton || $::autoplayMode || !$analysis(analyzeMode$n) || ! [sc_pos isAt vend] } {
     return
   }
 
@@ -2675,7 +2679,7 @@ proc toggleEngineAnalysis {n {force 0}} {
   global analysis
   set b .analysisWin$n.b.startStop
 
-  if { ($::annotateModeButtonValue || $::finishGameMode) && ! $force } {
+  if { ($::annotateButton || $::finishGameMode) && ! $force } {
     return
   }
 
@@ -2867,7 +2871,7 @@ proc updateAnalysisText {n} {
 
   $h configure -state normal
   set cleared 0
-  if { $analysis(depth$n) < $analysis(prev_depth$n)  || $analysis(prev_depth$n) == 0 } {
+  if { $analysis(depth$n) < $analysis(prevdepth$n)  || $analysis(prevdepth$n) == 0 } {
     $h delete 1.0 end
     set analysis(lastHistory$n) hmmm
     set cleared 1
@@ -2936,7 +2940,7 @@ proc updateAnalysisText {n} {
   } ; # end skip
 
   $h configure -state disabled
-  set analysis(prev_depth$n) $analysis(depth$n)
+  set analysis(prevdepth$n) $analysis(depth$n)
   if { ! $analysis(uci$n) } {
     $t insert end [::trans $moves] blue
   }

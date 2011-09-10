@@ -229,7 +229,7 @@ namespace eval uci {
       
       if { $uciInfo(multipv$n) == 1 && $analyze} {
         # this is the best line
-        set analysis(prev_depth$n) $analysis(depth$n)
+        set analysis(prevdepth$n) $analysis(depth$n)
         set analysis(depth$n) $uciInfo(depth$n)
         set analysis(score$n) $uciInfo(score$n)
         if { $uciInfo(scoremate$n) != "" } {

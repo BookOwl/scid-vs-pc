@@ -1413,10 +1413,10 @@ proc setAutoplayDelay {} {
   bind $w <Return> { .apdialog.buttons.ok invoke }
   focus $w.spDelay
 }
-################################################################################
-#
-################################################################################
-proc toggleAutoplay { } {
+
+
+
+proc toggleAutoplay {} {
   global autoplayMode
   if {$autoplayMode == 0} {
     set autoplayMode 1
@@ -1427,9 +1427,8 @@ proc toggleAutoplay { } {
   }
 }
 
-################################################################################
-#
-################################################################################
+### Automatically move thorugh a games moves at a certain speed.
+
 proc autoplay {} {
   global autoplayDelay autoplayMode annotateEngine analysis
 
@@ -1440,36 +1439,24 @@ proc autoplay {} {
 
   set n $annotateEngine
 
-  if {$annotateEngine > -1} {
-    if { ![sc_pos isAt start] } { addAnnotation }
+  if {$n == -1} {
+    ::move::Forward
+    after $autoplayDelay autoplay
+    return
+  }
+
+  ### Engine Annotation feature
+
+  if { ![sc_pos isAt start] } {
+    addAnnotation
   }
 
   # stop game annotation when out of opening
 
-  if { $annotateEngine > -1 && $::isBatch && $::isOpeningOnly && \
+  if { $::isBatch && $::isOpeningOnly && \
         ( [sc_pos moveNumber] > $::isOpeningOnlyMoves || $::wentOutOfBook)} {
-    toggleEngineAnalysis $n 1
-    sc_game save [sc_game number]
-
-    if {[sc_game number] < $::batchEnd} {
-      sc_game load [expr [sc_game number] + 1]
-      if {$::addAnnotatorTag} {
-        appendTag Annotator " $analysis(name$n)"
-      }
-      set ::wentOutOfBook 0
-      updateMenuStates
-      updateStatusBar
-      updateTitle
-      updateBoard -pgn
-      addAnnotation
-
       nextgameAutoplay $n
-      toggleEngineAnalysis $n 1
-      after $autoplayDelay autoplay
-    } else  {
-      cancelAutoplay
-    }
-    return
+      return
   }
 
   if {$::isOpeningOnly && $::wentOutOfBook} {
@@ -1478,54 +1465,31 @@ proc autoplay {} {
   }
 
   if { [sc_pos isAt end] } {
-    if {$annotateEngine > -1} { ; # end of game if not mate, add the thinking line
-      set move_done [sc_game info previousMoveNT]
-      if { [string index $move_done end] != "#" && $::annotateType != "score"} {
-        set text [format "%d:%+.2f" $analysis(depth$n) $analysis(score$n)]
-        set moves $analysis(moves$n)
-        sc_move back
-        sc_info preMoveCmd {}
-        sc_var create
-        sc_move addSan $move_done
-        sc_pos setComment "[sc_pos getComment] $text"
-        sc_move_add $moves $n
-        sc_var exit
-        sc_info preMoveCmd preMoveCommand
-        updateBoard -pgn
-      }
-      if {$::isBatch && [sc_game number] != 0} {
-        toggleEngineAnalysis $n 1
-        sc_game save [sc_game number]
-	set analysis(prevscore$n) 0
-
-        if {[sc_game number] < $::batchEnd} {
-          sc_game load [expr [sc_game number] + 1]
-          if {$::addAnnotatorTag} {
-            appendTag Annotator " $analysis(name$n)"
-          }
-          set ::wentOutOfBook 0
-          updateMenuStates
-          updateStatusBar
-          updateTitle
-          updateBoard -pgn
-          addAnnotation
-
-          nextgameAutoplay $annotateEngine
-          toggleEngineAnalysis $n 1
-          after $autoplayDelay autoplay
-          return
-        } else  {
-          cancelAutoplay
-          return
-        }
-      }
+    set move_done [sc_game info previousMoveNT]
+    if { [string index $move_done end] != "#" && $::annotateType != "score"} {
+      set text [format "%d:%+.2f" $analysis(depth$n) $analysis(score$n)]
+      set moves $analysis(moves$n)
+      sc_move back
+      sc_info preMoveCmd {}
+      sc_var create
+      sc_move addSan $move_done
+      sc_pos setComment "[sc_pos getComment] $text"
+      sc_move_add $moves $n
+      sc_var exit
+      sc_info preMoveCmd preMoveCommand
+      updateBoard -pgn
+    }
+    if {$::isBatch && [sc_game number] != 0} {
+      nextgameAutoplay $n
+      return
     }
     cancelAutoplay
     return
   }
 
-  # annotate all sub variations
-  if { $annotateEngine > -1 && $::isAnnotateVar } {
+  ### Annotate variations
+
+  if {$::isAnnotateVar} {
     if { [sc_pos isAt vend] } {
       sc_var exit
       set lastVar [::popAnalysisData $n]
@@ -1547,42 +1511,57 @@ proc autoplay {} {
         ::move::Forward
       }
     }
-    after $autoplayDelay autoplay
-    return
+  } else {
+    ::move::Forward
   }
 
-  ::move::Forward
   after $autoplayDelay autoplay
 }
-################################################################################
-#
-################################################################################
+
 
 proc nextgameAutoplay {n} {
-  global analysis
+  global autoplayDelay analysis
 
-  set ::stack {}
+  toggleEngineAnalysis $n 1
+  sc_game save [sc_game number]
   set analysis(prevscore$n) 0
-  set analysis(score$n) 0
-  set analysis(prevmoves$n) 0
-  set analysis(prev_depth$n) 0
+
+  if {[sc_game number] < $::batchEnd} {
+    sc_game load [expr [sc_game number] + 1]
+    if {$::addAnnotatorTag} {
+      appendTag Annotator " $analysis(name$n)"
+    }
+    set ::wentOutOfBook 0
+    updateMenuStates
+    updateStatusBar
+    updateTitle
+    updateBoard -pgn
+    addAnnotation
+
+    set ::stack {}
+    set analysis(prevscore$n) 0
+    set analysis(score$n) 0
+    set analysis(prevmoves$n) 0
+    set analysis(prevdepth$n) 0
+
+    toggleEngineAnalysis $n 1
+    after $autoplayDelay autoplay
+  } else  {
+    cancelAutoplay
+  }
 }
 
 proc cancelAutoplay {} {
-  global autoplayMode annotateEngine annotateModeButtonValue
+  global autoplayMode annotateEngine annotateButton
 
   set autoplayMode 0
   set annotateEngine -1
-  set annotateModeButtonValue 0
+  set annotateButton 0
   after cancel autoplay
-  .button.autoplay configure -image autoplay_off ; # -relief flat S.A
+  .button.autoplay configure -image autoplay_off
 }
-################################################################################
-#
-################################################################################
 
 bind . <Return> addAnalysisMove
-
 bind . <Control-z> {toggleAutoplay; break}
 
 set trialMode 0
