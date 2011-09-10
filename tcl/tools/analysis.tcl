@@ -920,8 +920,14 @@ proc initAnnotation {n} {
   frame $w.usebook
   pack  $w.usebook -side top -fill x
 
-  checkbutton $w.usebook.cbBook  -text $tr(UseBook) -variable ::useAnalysisBook \
-    -command "checkState ::useAnalysisBook $w.usebook.comboBooks"
+  checkbutton $w.usebook.cbBook  -text $tr(UseBook) -variable ::useAnalysisBook -command "
+    if {!\$::useAnalysisBook} {
+      set ::isOpeningOnly 0
+    }
+    checkState ::useAnalysisBook $w.usebook.comboBooks
+    checkState ::useAnalysisBook $w.batch.cbOpeningOnly
+    checkState ::useAnalysisBook $w.batch.spOpeningOnly
+    checkState ::useAnalysisBook $w.batch.lOpeningOnly"
 
   # load book names
   set bookPath $::scidBooksDir
@@ -945,7 +951,7 @@ proc initAnnotation {n} {
 
   ttk::combobox $w.usebook.comboBooks -width 12 -values $tmp
   catch { $w.usebook.comboBooks current $idx }
-  checkState ::useAnalysisBook $w.usebook.comboBooks
+
   pack $w.usebook.cbBook -side left 
   pack $w.usebook.comboBooks -side right
 
@@ -963,27 +969,32 @@ proc initAnnotation {n} {
 
   checkState ::isBatch $w.batch.spBatchEnd
 
-  # Find Opening Errors
 
-  checkbutton $w.batch.cbBatchOpening -text $tr(FindOpeningErrors) -variable ::isOpeningOnly \
-     -command "checkState ::isOpeningOnly $w.batch.spBatchOpening"
+  # Opening Errors Only
 
-  spinbox $w.batch.spBatchOpening -width 2 -textvariable ::isOpeningOnlyMoves \
+  checkbutton $w.batch.cbOpeningOnly -text $tr(FindOpeningErrors) -variable ::isOpeningOnly \
+     -command "checkState ::isOpeningOnly $w.batch.spOpeningOnly"
+
+  spinbox $w.batch.spOpeningOnly -width 2 -textvariable ::isOpeningOnlyMoves \
       -from 5 -to 20 -increment 1 -validate all -vcmd {string is int %P}
 
-  checkState ::isOpeningOnly $w.batch.spBatchOpening
+  label $w.batch.lOpeningOnly -text $tr(moves)
 
-  label $w.batch.lBatchOpening -text $tr(moves)
+  checkState ::useAnalysisBook $w.usebook.comboBooks
+  checkState ::useAnalysisBook $w.batch.cbOpeningOnly
+  checkState ::useAnalysisBook $w.batch.spOpeningOnly
+  checkState ::useAnalysisBook $w.batch.lOpeningOnly
+
+  checkState ::isOpeningOnly $w.batch.spOpeningOnly
 
   # Pack
 
-  # pack $w.batch.cbBatch $w.batch.spBatchEnd -side top -fill x
-  # pack $w.batch.cbBatchOpening $w.batch.spBatchOpening $w.batch.lBatchOpening  -side left -fill x
-  grid $w.batch.cbBatch -column 0 -row 0 -sticky w
-  grid $w.batch.spBatchEnd -column 1 -row 0 -columnspan 2 -sticky e
-  grid $w.batch.cbBatchOpening -column 0 -row 1 -sticky w
-  grid $w.batch.spBatchOpening -column 1 -row 1 -padx 5
-  grid $w.batch.lBatchOpening -column 2 -row 1 -sticky e
+  grid $w.batch.cbOpeningOnly -column 0 -row 0 -sticky w -pady 2
+  grid $w.batch.spOpeningOnly -column 1 -row 0 -padx 5 -pady 2
+  grid $w.batch.lOpeningOnly -column 2 -row 0 -sticky e -pady 2
+
+  grid $w.batch.cbBatch -column 0 -row 1 -sticky w
+  grid $w.batch.spBatchEnd -column 1 -row 1 -columnspan 2 -sticky e
   set ::batchEnd $to
 
   checkbutton $w.batch.cbMarkTactics -text $tr(MarkTacticalExercises) -variable ::markTacticalExercises

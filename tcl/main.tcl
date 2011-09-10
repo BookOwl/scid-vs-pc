@@ -1526,8 +1526,13 @@ proc nextgameAutoplay {n} {
   sc_game save [sc_game number]
   set analysis(prevscore$n) 0
 
-  if {[sc_game number] < $::batchEnd} {
-    sc_game load [expr [sc_game number] + 1]
+  if {[sc_filter next] <= $::batchEnd  && [sc_filter next] != 0} {
+    # if [sc_game number] < $::batchEnd
+    # sc_game load [expr [sc_game number] + 1]
+
+    ### Skip games not in filter (dont autoraise main window)
+    ::game::LoadNextPrev next 0
+
     if {$::addAnnotatorTag} {
       appendTag Annotator " $analysis(name$n)"
     }
