@@ -555,12 +555,21 @@ proc compNM {n m k} {
 
         ### Send initial time control
 
-	if {$comp(timecontrol) == "permove"} {
-	  sendToEngine $current_engine "st $comp(seconds)"
-	} else {
-	  set secs [expr $comp(wtime)/1000]
-	  set mins [expr $secs/60]:[expr $secs%60]
-	  sendToEngine $current_engine "level 0 $mins $comp(incr)"
+        if {$comp(timecontrol) == "permove"} {
+          sendToEngine $current_engine "st $comp(seconds)"
+        } else {
+          set secs [expr $comp(wtime)/1000]
+          set seconds [expr $secs%60]
+          if {$seconds < 10} {
+            set seconds 0$seconds
+          }
+          set mins [expr $secs/60]:$seconds
+          sendToEngine $current_engine "level 0 $mins $comp(incr)"
+          ### set search depth.
+          # "sd" is meant to be orthogonal to the "time" command, but the first engine i tested (zct) never came back
+          # While spike needs it set to something reasonable, otherwise it never plays a move
+          # but spike is uci too... hmmm
+          # sendToEngine $current_engine "sd 12"
 	}
     }
   }

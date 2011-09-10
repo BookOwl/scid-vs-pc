@@ -1431,22 +1431,22 @@ proc toggleAutoplay { } {
 #
 ################################################################################
 proc autoplay {} {
-  global autoplayDelay autoplayMode annotateMode analysis
+  global autoplayDelay autoplayMode annotateEngine analysis
 
   ### autoplay had issues when not using book and moving from one game to the next
   # Hard to fix because of the (variation) stack
 
   if {$autoplayMode == 0} { return }
 
-  set n $annotateMode
+  set n $annotateEngine
 
-  if {$annotateMode > -1} {
+  if {$annotateEngine > -1} {
     if { ![sc_pos isAt start] } { addAnnotation }
   }
 
   # stop game annotation when out of opening
 
-  if { $annotateMode > -1 && $::isBatch && $::isOpeningOnly && \
+  if { $annotateEngine > -1 && $::isBatch && $::isOpeningOnly && \
         ( [sc_pos moveNumber] > $::isOpeningOnlyMoves || $::wentOutOfBook)} {
     toggleEngineAnalysis $n 1
     sc_game save [sc_game number]
@@ -1478,7 +1478,7 @@ proc autoplay {} {
   }
 
   if { [sc_pos isAt end] } {
-    if {$annotateMode > -1} { ; # end of game if not mate, add the thinking line
+    if {$annotateEngine > -1} { ; # end of game if not mate, add the thinking line
       set move_done [sc_game info previousMoveNT]
       if { [string index $move_done end] != "#" && $::annotateType != "score"} {
         set text [format "%d:%+.2f" $analysis(depth$n) $analysis(score$n)]
@@ -1510,7 +1510,7 @@ proc autoplay {} {
           updateBoard -pgn
           addAnnotation
 
-          nextgameAutoplay $annotateMode
+          nextgameAutoplay $annotateEngine
           toggleEngineAnalysis $n 1
           after $autoplayDelay autoplay
           return
@@ -1525,7 +1525,7 @@ proc autoplay {} {
   }
 
   # annotate all sub variations
-  if { $annotateMode > -1 && $::isAnnotateVar } {
+  if { $annotateEngine > -1 && $::isAnnotateVar } {
     if { [sc_pos isAt vend] } {
       sc_var exit
       set lastVar [::popAnalysisData $n]
@@ -1569,10 +1569,10 @@ proc nextgameAutoplay {n} {
 }
 
 proc cancelAutoplay {} {
-  global autoplayMode annotateMode annotateModeButtonValue
+  global autoplayMode annotateEngine annotateModeButtonValue
 
   set autoplayMode 0
-  set annotateMode -1
+  set annotateEngine -1
   set annotateModeButtonValue 0
   after cancel autoplay
   .button.autoplay configure -image autoplay_off ; # -relief flat S.A

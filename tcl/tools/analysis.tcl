@@ -121,7 +121,7 @@ proc resetEngine {n} {
 
 resetEngines
 
-set annotateMode -1		; # $n of engine annotating
+set annotateEngine -1		; # $n of engine annotating
 set annotateModeButtonValue 0	; # annotate checkbutton value
 
 ################################################################################
@@ -827,7 +827,7 @@ proc  checkBlunderState {} {
 
 
 proc initAnnotation {n} {
-  global autoplayDelay tempdelay blunderThreshold annotateModeButtonValue annotateMode analysis annotateType tr
+  global autoplayDelay tempdelay blunderThreshold annotateModeButtonValue annotateEngine analysis annotateType tr
 
   set analysis(prevscore$n) 0
 
@@ -999,7 +999,7 @@ proc initAnnotation {n} {
   dialogbutton $w.buttons.cancel -text $tr(Cancel) -command {
     bind .configAnnotation <Destroy> {}
     destroy .configAnnotation
-    set annotateMode -1
+    set annotateEngine -1
     set annotateModeButtonValue 0
   }
   dialogbutton $w.buttons.help -text $tr(Help) -command {helpWindow Analysis Annotating}
@@ -1021,10 +1021,10 @@ proc initAnnotation {n} {
 # Start Annotation
 ################################################################################
 proc okAnnotation {n} {
-  global autoplayDelay tempdelay annotateMode analysis autoplayMode
+  global autoplayDelay tempdelay annotateEngine analysis autoplayMode
 
-  if {$annotateMode > -1} {
-    puts stderr "Scid: initAnnotation reports engine $annotateMode already annotating"
+  if {$annotateEngine > -1} {
+    puts stderr "Scid: initAnnotation reports engine $annotateEngine already annotating"
     return
   }
   set ::useAnalysisBookName [.configAnnotation.usebook.comboBooks get]
@@ -1044,7 +1044,7 @@ proc okAnnotation {n} {
   set autoplayDelay [expr {int($tempdelay * 1000)}]
   bind .configAnnotation <Destroy> {}
   destroy .configAnnotation
-  set annotateMode $n
+  set annotateEngine $n
   if {! $analysis(analyzeMode$n)} {
     toggleEngineAnalysis $n 1
   }
@@ -1061,7 +1061,7 @@ proc okAnnotation {n} {
 proc bookAnnotation { {n 1} } {
   global analysis
 
-  if {!($::annotateMode > -1 && $::useAnalysisBook)} {
+  if {!($::annotateEngine > -1 && $::useAnalysisBook)} {
     return
   }
 
@@ -1112,8 +1112,8 @@ proc bookAnnotation { {n 1} } {
 #
 ################################################################################
 proc markExercise { prevscore score } {
-  global annotateMode
-  set n $annotateMode
+  global annotateEngine
+  set n $annotateEngine
 
   if {!$::markTacticalExercises} { return }
 
@@ -1207,11 +1207,11 @@ proc storeScore {name text} {
 #
 ################################################################################
 proc addAnnotation {} {
-  global analysis annotateMoves annotateBlunders annotateMode blunderThreshold prevNag
+  global analysis annotateMoves annotateBlunders annotateEngine blunderThreshold prevNag
 
-  set n $annotateMode
+  set n $annotateEngine
   if {$n == -1} {
-    puts stderr "Scid: addAnnotation called while annotateMode is -1"
+    puts stderr "Scid: addAnnotation called while annotateEngine is -1"
     return
   }
   # First look in the book selected
@@ -1918,7 +1918,7 @@ proc toggleMini {} {
 ### makeAnalysisWin: toggle analysis engine n
 
 proc makeAnalysisWin {{n 0}} {
-  global analysisWin$n font_Analysis analysisCommand analysis annotateModeButtonValue annotateMode
+  global analysisWin$n font_Analysis analysisCommand analysis annotateModeButtonValue annotateEngine
 
   set w .analysisWin$n
 
@@ -2076,7 +2076,7 @@ proc makeAnalysisWin {{n 0}} {
     -command "toggleAutomove $n" -variable analysis(automove$n) -relief $relief
   ::utils::tooltip::Set $w.b.automove $::tr(Training)
 
-  if {!$annotateModeButtonValue && $annotateMode == -1} {
+  if {!$annotateModeButtonValue && $annotateEngine == -1} {
     checkbutton $w.b.annotate -image tb_annotate -indicatoron false -width 32 -height 32 \
       -variable annotateModeButtonValue -command "initAnnotation $n" -relief $relief
     ::utils::tooltip::Set $w.b.annotate $::tr(Annotate)
