@@ -60,6 +60,7 @@ proc ::commenteditor::Open {} {
   # wm resizable $w 0 1
   # wm state $w withdrawn
 
+  bind $w <Control-e> makeCommentWin
   bind $w <F1> {helpWindow Comment}
   bind $w <Escape> "destroy  $w"
   bind $w <Destroy> ""
@@ -183,7 +184,7 @@ proc ::commenteditor::Open {} {
   dialogbutton $w.b.apply -text Apply -command ::commenteditor::storeComment
   set helpMessage(E,$w.b.apply) {Apply changes}
 
-  button $w.b.clear -textvar ::tr(Clear) -pady 1 -command "
+  dialogbutton $w.b.clear -textvar ::tr(Clear) -pady 1 -command "
       $w.cf.text delete 0.0 end
       focus $w.cf.text"
   set helpMessage(E,$w.b.apply) {Apply Changes}
@@ -194,9 +195,7 @@ proc ::commenteditor::Open {} {
                 destroy .commentWin"
   set helpMessage(E,$w.b.cancel) {Close comment editor window}
 
-  pack $w.b.hide -side left -padx 10
-  pack $w.b.ok $w.b.apply $w.b.cancel -side left -padx 5
-  pack $w.b.clear  -side right
+  pack $w.b.hide $w.b.clear $w.b.ok $w.b.apply $w.b.cancel -side left -padx 5
 
   ### Insert-mark frame
 
