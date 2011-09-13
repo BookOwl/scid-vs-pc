@@ -5015,6 +5015,9 @@ filter_reset (scidBaseT * base, byte value)
 //    reset:     resets the filter so all games are included.
 //    remove:    removes game number <x> from the filter.
 //    stats:     prints filter statistics.
+//    value:     return value for this base and game
+//               0 value means game is not in filter,
+//               N value represents the ply at which to load game
 int
 sc_filter (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
 {
@@ -5788,6 +5791,20 @@ updateMainFilter( scidBaseT * dbase)
     // int updateMainFilter( scidBaseT * dbase)
     // ....
     // return TCL_OK;
+}
+
+// Same as above, but only update non-zero values for their ply 
+void
+updateMainFilter2( scidBaseT * dbase)
+{
+    if( dbase->dbFilter != dbase->filter)
+    {
+        for (uint i=0; i < dbase->numGames; i++)
+        {
+            if( dbase->dbFilter->Get(i) > 0 && dbase->treeFilter->Get(i) > 0)
+                dbase->filter->Set(i,dbase->treeFilter->Get(i));
+        }
+    }
 }
 
 void 
@@ -14210,6 +14227,8 @@ db->bbuf->Empty();
     // Update the normal filter (if desired) S.A.
     if (maskMode)
       updateMainFilter(base);
+    else 
+      updateMainFilter2(base);
 
     // Now we generate the score of each move: it is the expected score per
     // 1000 games. Also generate the ECO code of each move.

@@ -1904,8 +1904,7 @@ set helpText(Tree) {<h1>Tree Window</h1>
   </p>
   <p>
   The <a Searches Filter>Filter</a> behaviour is changed by the <b>Adjust Filter</b> check-box.
-  If checked, only games containing the current position will be shown in the filter,
-  and the <a Tree Best>Best Games</a> window will browse and load games <i>from the current position</i>.
+  If checked, only games containing the current position will be shown in the filter.
 </p>
   <p>
   Clicking the left mouse button on a move in the tree window adds
@@ -1958,10 +1957,6 @@ it is best to close the Tree Window first.</i>
   </p>
   <p>
   You can restrict the list to show games with a particular result.
-  </p>
-  <p>
-  <i>Note: the Browse and Load game features will automatically start at the corresponding
-  move, if the tree </i><b>Adjust Filter</b><i> checkbox is selected</i>.
   </p>
 
   <h3><name Graph>Tree Graph Window</name></h3>
