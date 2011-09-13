@@ -29,8 +29,8 @@ namespace eval tactics {
   # set labelSolution {. . . . . . }
   set lastGameLoaded 0
   set prevFen ""
-  # This is a significant (?) constant
-  set engineSlot 5
+  ### This used to be significant, but now is dynamic, according to which slot "toga" has
+  # set engineSlot 5
   # Don't try to find the exact best move but to win a won game (that is a mate in 5 is ok even if there was a pending mate in 2)
   set winWonGame 0
 
@@ -708,29 +708,27 @@ namespace eval tactics {
   proc launchengine {} {
     global ::tactics::analysisEngine
 
-    ::uci::resetUciInfo $::tactics::engineSlot
-
     set analysisEngine(analyzeMode) 0
 
-    # find engine
-    set engineFound 0
+    # Use Toga
     set index 0
     foreach e $::engines(list) {
       if { [string equal -nocase -length 4 [lindex $e 0] "toga" ] } {
-        set engineFound 1
-        break
+	# Start engine in analysis mode
+        set ::tactics::engineSlot $index
+	::uci::startEngine $index
+	return 1
       }
       incr index
     }
-    if { ! $engineFound } {
-      tk_messageBox -type ok -icon warning -parent . -title "Scid" \
-        -message "Unable to find engine.\nPlease configure engine with Toga as name"
-      return 0
-    }
 
-    # start engine in analysis mode
-    ::uci::startEngine $index $::tactics::engineSlot
-    return 1
+    # failsafe only ???
+    set ::tactics::engineSlot 0
+
+    tk_messageBox -type ok -icon warning -parent . -title "Scid" \
+      -message "Unable to find engine.\nPlease configure engine with Toga as name"
+    return 0
+
   }
 
   # ======================================================================
