@@ -355,18 +355,24 @@ namespace eval pgn {
   }
 
   proc deleteVar { var } {
+    sc_game undoPoint
+
     sc_var exit
     sc_var delete $var
     updateBoard -pgn
   }
 
   proc firstVar { var } {
+    sc_game undoPoint
+
     sc_var exit
     sc_var first $var
     updateBoard -pgn
   }
 
   proc mainVar { var } {
+    sc_game undoPoint
+
     sc_var exit
     sc_var promote $var
     updateBoard -pgn

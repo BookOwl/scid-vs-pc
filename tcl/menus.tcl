@@ -1684,6 +1684,8 @@ proc standardShortcuts {w} {
   bind $w <Control-Z> ::tools::graphs::score::Refresh
   bind $w <Control-I> importPgnGame
 
+  bind $w <Control-z> {  sc_game undo ; updateBoard -pgn }
+
   # extra generic bindings added for Scid 3.6.24 : hope there is no conflict
   bind $w <Home>  ::move::Start
   bind $w <Up> {

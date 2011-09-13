@@ -51,11 +51,14 @@ proc moveEntry_Complete {} {
     set action "replace"
     if {![sc_pos isAt vend]} { set action [confirmReplaceMove] }
     if {$action == "replace"} {
+      sc_game undoPoint
       sc_move addSan $move
     } elseif {$action == "var"} {
+      sc_game undoPoint
       sc_var create
       sc_move addSan $move
     } elseif {$action == "mainline"} {
+      sc_game undoPoint
       sc_var create
       sc_move addSan $move
       sc_var exit
@@ -1148,6 +1151,7 @@ proc addMove { sq1 sq2 {animate ""}} {
        incr i
   }
 
+  sc_game undoPoint
 
   set action "replace"
   if {![sc_pos isAt vend]} {
@@ -1235,6 +1239,7 @@ proc addSanMove {san {animate ""} {noTraining ""}} {
     return
   }
   # if {[winfo exists .commentWin]} { .commentWin.cf.text delete 0.0 end }
+  sc_game undoPoint
   sc_move addSan $san
   if {$action == "mainline"} {
     sc_var exit
@@ -1567,7 +1572,6 @@ proc cancelAutoplay {} {
 }
 
 bind . <Return> addAnalysisMove
-bind . <Control-z> {toggleAutoplay; break}
 
 set trialMode 0
 
