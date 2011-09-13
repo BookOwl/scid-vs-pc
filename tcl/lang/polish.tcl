@@ -1,3 +1,4 @@
+
 ### Polish menus for Scid.
 # Contributed by Michal Rudolf and Adam Umiastowski.
 
@@ -10,7 +11,7 @@ menuText P FileNew "Nowy..." 0 {Twórz nowa bazê Scid}
 menuText P FileOpen "Otwórz..." 0 {Otwórz istniej±c± bazê Scid}
 menuText P FileClose "Zamknij" 0 {Zamknij aktywn± bazê Scid}
 menuText P FileFinder "Poszukiwacz plików" 0 {Otwórz okno poszukiwacza plików}
-menuText P FileSavePgn "Save Pgn..." 0 {}
+menuText P FileSavePgn "Zapisz PGN" 0 {Zapisz bazê w formacie PGN}
 menuText P FileBookmarks "Zak³adki" 2 {Menu zak³adek (klawisz: Ctrl+B)}
 menuText P FileBookmarksAdd "Dodaj zak³adkê" 0 \
   {Dodaj zak³adkê do aktualnej bazy i pozycji}
@@ -52,12 +53,11 @@ menuText P FileReadOnly "Tylko do odczytu..." 0 \
 menuText P FileSwitch "Prze³±cz bazê" 1 \
   {Prze³±cz na inn± otwart± bazê} 
 menuText P FileExit "Koniec" 0 {Zamknij Scida}
-# ====== TODO To be translated ======
-menuText P FileMaintFixBase "Fix corrupted base" 0 {Try to fix a corrupted base}
+menuText P FileMaintFixBase "Napraw bazê" 0 {Spróbuj naprawiæ uszkodzon± bazê}
 
 menuText P Edit "Edytuj" 0
 menuText P EditAdd "Dodaj wariant" 0 {Dodaj wariant do ruchu w partii}
-menuText P EditPasteVar "Zmiana wklej" 0
+menuText P EditPasteVar "Wklej wariant" 0
 menuText P EditDelete "Usuñ wariant" 0 {Usuñ wariant dla tego posuniêcia}
 menuText P EditFirst "Twórz pierwszy wariant" 0 \
   {Przesuñ wariant na pierwsze miejsce na li¶cie}
@@ -81,8 +81,8 @@ menuText P EditCopy "Kopiuj partiê do schowka" 0 \
   {Kopiuj partiê do schowka}
 menuText P EditPaste "Wklej aktywn± partiê ze schowka" 0 \
   {Wklej aktywn± partiê ze schowka}
-menuText P EditPastePGN "Paste Clipboard text as PGN game..." 10 \
-  {Interpret the clipboard text as a game in PGN notation and paste it here} ;# ***
+menuText P EditPastePGN "Wklej tekst ze schowka jako partiê PGN..." 10 \
+  {Zinterpretuj zawarto¶æ schowka jako partiê w formacie PGN i wklej j± tutaj}
 menuText P EditSetup "Ustaw pozycjê pocz±tkow±..." 6 \
   {Ustaw pozycjê pocz±tkow± partii}
 menuText P EditCopyBoard "Kopiuj pozycjê" 7 \
@@ -97,7 +97,7 @@ menuText P GameNew "Opu¶æ partiê" 0 \
 menuText P GameFirst "Pierwsza partia" 2 {Wczytaj pierwsz± partiê z filtra}
 menuText P GamePrev "Poka¿ poprzedni± partiê" 0 \
   {Wczytaj poprzedni± wyszukan± partiê}
-menuText P GameReload "Prze³aduj aktualn± partiê"  10 \
+menuText P GameReload "Wczytaj ponownie aktualn± partiê"  10 \
   {Wczytaj partiê ponownie, rezygnuj±c z wszelkich zmian}
 menuText P GameNext "Nastêpna partia" 0 \
   {Wczytaj nastêpn± wyszukan± partiê}
@@ -109,9 +109,9 @@ menuText P GameReplace "Zapisz: zast±p partiê..." 3 \
   {Zapisz partiê, zast±p poprzedni± wersjê}
 menuText P GameAdd "Zapisz: dodaj now± partiê..." 8 \
   {Zapisz tê partiê jako nowa partiê w bazie}
-menuText P GameInfo "Ustaw Informacje o grze" 0
-menuText P GameBrowse "Przegladaj gry" 0
-menuText P GameList "Lista wszystkich gier" 0
+menuText P GameInfo "Ustaw informacje o partii" 0
+menuText P GameBrowse "Przegl±daj partie" 0
+menuText P GameList "Lista partii" 0
 menuText P GameDeepest "Rozpoznaj debiut" 0 \
   {Przejd¼ do najd³u¿szego wariantu z ksi±¿ki debiutowej}
 menuText P GameGotoMove "Przejd¼ do posuniêcia nr..." 13 \
@@ -134,7 +134,7 @@ menuText P SearchUsing "Stosuj plik poszukiwania..." 0 \
   {Szukaj stosuj±c plik z opcjami poszukiwania}
 
 menuText P Windows "Okna" 1
-menuText P WindowsGameinfo {Show game info} 0 {Show/hide the game info panel}
+menuText P WindowsGameinfo {Poka¿ informacje o partii} 0 {Otwórz/zamknij okno informacji o partii}
 menuText P WindowsComment "Edytor komentarzy" 0 \
   {Otwórz/zamknij edytor komentarzy}
 menuText P WindowsGList "Lista partii" 0 {Otwórz/zamknij listê partii}
@@ -153,10 +153,8 @@ menuText P WindowsStats "Statystyka" 0 \
 menuText P WindowsTree "Drzewo wariantów" 0 {Otwórz/zamknij drzewo wariantów}
 menuText P WindowsTB "Tablica koñcówek" 8 \
   {Otwórz/zamknij okno tablicy koñcówek}
-# ====== TODO To be translated ======
-menuText P WindowsBook "Book Window" 0 {Open/close the Book window}
-# ====== TODO To be translated ======
-menuText P WindowsCorrChess "Correspondence Window" 0 {Open/close the Correspondence window}
+menuText P WindowsBook "Ksi±¿ka debiutowa" 0 {Otwórz/zamknij ksi±¿kê debiutow±}
+menuText P WindowsCorrChess "Gra korespondencyjna" 0 {Otwórz/zamknij okno gry korespondencyjnej}
 
 menuText P Tools "Narzêdzia" 0
 menuText P ToolsAnalysis "Program analizuj±cy..." 8 \
@@ -165,48 +163,31 @@ menuText P ToolsAnalysis2 "Program analizuj±cy 2..." 21 \
   {Uruchom/zatrzymaj program analizuj±cy}
 menuText P ToolsEmail "Zarz±dzanie poczt± e-mail" 0 \
   {Otwórz/zamknij zarz±dzanie adresami e-mail}
-menuText P ToolsFilterGraph "Wykres filtra" 7 \
-  {Otwórz/zamknij wykres filtra}
-# ====== TODO To be translated ======
-menuText P ToolsAbsFilterGraph "Abs. Filter Graph" 7 {Open/close the filter graph window for absolute values}
+menuText P ToolsFilterGraph "U¶redniony wykres filtra" 7 \
+  {Otwórz/zamknij wykres filtra w przeliczeniu na 1000 partii}
+menuText P ToolsAbsFilterGraph "Wykres filtra" 7 {Otwórz/zamknij wykres filtra}
 menuText P ToolsOpReport "Raport debiutowy" 0 \
   {Utwórz raport debiutowy dla aktualnej pozycji}
-# ====== TODO To be translated ======
-menuText P ToolsOpenBaseAsTree "Open base as tree" 0   {Open a base and use it in Tree window}
-# ====== TODO To be translated ======
-menuText P ToolsOpenRecentBaseAsTree "Open recent base as tree" 0   {Open a recent base and use it in Tree window}
-menuText P ToolsTracker "¦ledzenie figur"  10 {Otwórz/zamknij okno ¶ledzenia figur} 
-# ====== TODO To be translated ======
-menuText P ToolsTraining "Training"  0 {Training tools (tactics, openings,...) }
-menuText E ToolsComp "Computer Tournament" 2 {Chess engine tournament}
-# ====== TODO To be translated ======
-menuText P ToolsTacticalGame "Tactical game"  0 {Play a game with tactics}
-# ====== TODO To be translated ======
-menuText P ToolsSeriousGame "Serious game"  0 {Play a serious game}
-# ====== TODO To be translated ======
-menuText P ToolsTrainTactics "Tactics"  0 {Solve tactics}
-# ====== TODO To be translated ======
-menuText P ToolsTrainCalvar "Calculation of variations"  0 {Calculation of variations training}
-# ====== TODO To be translated ======
-menuText P ToolsTrainFindBestMove "Find best move"  0 {Find best move}
-# ====== TODO To be translated ======
-menuText P ToolsTrainFics "Internet"  0 {Play on freechess.org}
-# ====== TODO To be translated ======
-menuText P ToolsBookTuning "Book tuning" 0 {Book tuning}
-# ====== TODO To be translated ======
-menuText P ToolsConnectHardware "Connect Hardware" 0 {Connect external hardware}
-# ====== TODO To be translated ======
-menuText P ToolsConnectHardwareConfigure "Configure..." 0 {Configure external hardware and connection}
-# ====== TODO To be translated ======
-menuText P ToolsConnectHardwareNovagCitrineConnect "Connect Novag Citrine" 0 {Connect Novag Citrine}
-# ====== TODO To be translated ======
-menuText P ToolsConnectHardwareInputEngineConnect "Connect Input Engine" 0 {Connect Input Engine (e.g. DGT)}
-# ====== TODO To be translated ======
+menuText P ToolsOpenBaseAsTree "Otwórz bazê jako drzewo" 0   {Otwórz bazê i u¿yj jej jako drzewa}
+menuText P ToolsOpenRecentBaseAsTree "Otwórz ostatnio otwieran± bazê jako drzewo" 0   {Otwórz ostatnio otwieran± bazê i u¿yj jej jako drzewa}
+menuText P ToolsTracker "¦ledzenie figur"  1 {Otwórz/zamknij okno ¶ledzenia figur} 
+menuText P ToolsTraining "Trening"  0 {Narzêdzia do treningu taktyki i debiutów}
+menuText P ToolsComp "Turniej komputerowy" 2 {Turniej programów komputerowych}
+menuText P ToolsComp "Turniej komputerowy" 2 {Turniej programów komputerowych}
+menuText P ToolsTacticalGame "Partia taktyczna"  0 {Rozegraj partiê z taktyk±}
+menuText P ToolsSeriousGame "Partia turniejowa"  1 {Rozegraj partiê turniejow±}
+menuText P ToolsTrainTactics "Taktyka"  0 {Rozwi±zuj zadania taktyczne}
+menuText P ToolsTrainCalvar "Liczenie wariantów"  0 {Æwicz liczenie wariantów}
+menuText P ToolsTrainFindBestMove "Znajd¼ najlepszy ruch"  0 {Znajd¼ najlepszy ruch}
+menuText P ToolsTrainFics "Internet"  0 {Graj w szachy na freechess.org}
+menuText P ToolsBookTuning "Konfiguracja ksi±¿ki debiutowej" 0 {Konfiguruj ksi±¿kê debiutow±}
+menuText P ToolsConnectHardware "Pod³±cz urz±dzenie" 0 {Pod³±cz zewnêtrzne urz±dzenie}
+menuText P ToolsConnectHardwareConfigure "Konfiguruj..." 0 {Konfiguruj zewnêtrzne urz±dzenie i po³±czenie}
+menuText P ToolsConnectHardwareNovagCitrineConnect "Pod³±cz Novag Citrine" 0 {Pod³±cz Novag Citrine}
+menuText P ToolsConnectHardwareInputEngineConnect "Pod³±cz urz±dzenie wej¶ciowe" 0 {Pod³±cz urz±dzenie wej¶ciowe, na przyk³ad DGT}
 menuText P ToolsNovagCitrine "Novag Citrine" 0 {Novag Citrine}
-# ====== TODO To be translated ======
-menuText P ToolsNovagCitrineConfig "Configuration" 0 {Novag Citrine configuration}
-# ====== TODO To be translated ======
-menuText P ToolsNovagCitrineConnect "Connect" 0 {Novag Citrine connect}
+menuText P ToolsNovagCitrineConfig "Konfiguracja" 0 {Konfiguracja Novag Citrine}
+menuText P ToolsNovagCitrineConnect "Pod³±cz" 0 {Pod³±cz Novag Citrine}
 menuText P ToolsPInfo "Informacje o zawodniku"  0 \
   {Otwórz/od¶wie¿ okno informacji o zawodniku}
 menuText P ToolsPlayerReport "Raport o graczu" 9 \
@@ -220,8 +201,7 @@ menuText P ToolsExpCurrentPGN "Do pliku PGN..." 9 \
   {Zapisz partiê do pliku PGN}
 menuText P ToolsExpCurrentHTML "Do pliku HTML..." 9 \
   {Zapisz partiê do pliku HTML}
-# ====== TODO To be translated ======
-menuText P ToolsExpCurrentHTMLJS "Export Game to HTML and JavaScript File..." 15 {Write current game to a HTML and JavaScript file}  
+menuText P ToolsExpCurrentHTMLJS "Eksportuj partiê do HTML z JavaScriptem..." 15 {Zapisz aktualn± partiê do pliku HTML z JavaScriptem}  
 menuText P ToolsExpCurrentLaTeX "Do pliku LaTeX-a..." 9 \
   {Zapisz partiê do pliku LaTeX-a}
 menuText P ToolsExpFilter "Eksportuj wyszukane partie" 1 \
@@ -230,74 +210,51 @@ menuText P ToolsExpFilterPGN "Do pliku PGN..." 9 \
   {Zapisz wyszukane partie do pliku PGN}
 menuText P ToolsExpFilterHTML "Do pliku HTML..." 9 \
   {Zapisz wyszukane partie do pliku HTML}
-# ====== TODO To be translated ======
-menuText P ToolsExpFilterHTMLJS "Export Filter to HTML and JavaScript File..." 17 {Write all filtered games to a HTML and JavaScript file}  
+menuText P ToolsExpFilterHTMLJS "Eksportuj filtr do HTML z Javascriptem..." 17 {Zapisz wszystkie partie w filtrze do pliku HTML z Javascriptem}  
 menuText P ToolsExpFilterLaTeX "Do pliku LaTeX..." 9 \
   {Zapisz wyszukane partie do pliku LaTeX}
 menuText P ToolsImportOne "Wklej partiê w formacie PGN..." 0 \
   {Pobierz partiê z pliku PGN}
 menuText P ToolsImportFile "Importuj plik PGN..." 2 \
   {Pobierz partie z pliku PGN}
-# ====== TODO To be translated ======
-menuText P ToolsStartEngine1 "Start engine 1" 0  {Start engine 1}
-# ====== TODO To be translated ======
-menuText P ToolsStartEngine2 "Start engine 2" 0  {Start engine 2}
-# ====== TODO To be translated ======
-menuText P ToolsScreenshot "Screenshot pokladzie" 0
-menuText P Play "Play" 0
-# ====== TODO To be translated ======
-menuText P CorrespondenceChess "Correspondence Chess" 0 {Functions for eMail and Xfcc based correspondence chess}
-# ====== TODO To be translated ======
-menuText P CCConfigure "Configure..." 0 {Configure external tools and general setup}
-# ====== TODO To be translated ======
-menuText P CCConfigRelay "Configure observations..." 10 {Configure games to be observed}
-# ====== TODO To be translated ======
-menuText P CCOpenDB "Open Database..." 0 {Open the default Correspondence database}
-# ====== TODO To be translated ======
-menuText P CCRetrieve "Retrieve Games" 0 {Retrieve games via external (Xfcc-)helper}
-# ====== TODO To be translated ======
-menuText P CCInbox "Process Inobx" 0 {Process all files in scids Inbox}
-# ====== TODO To be translated ======
-menuText P CCSend "Send Move" 0 {Send your move via eMail or external (Xfcc-)helper}
-# ====== TODO To be translated ======
-menuText P CCResign "Resign" 0 {Resign (not via eMail)}
-# ====== TODO To be translated ======
-menuText P CCClaimDraw "Claim Draw" 0 {Send move and claim a draw (not via eMail)}
-# ====== TODO To be translated ======
-menuText P CCOfferDraw "Offer Draw" 0 {Send move and offer a draw (not via eMail)}
-# ====== TODO To be translated ======
-menuText P CCAcceptDraw "Accept Draw" 0 {Accept a draw offer (not via eMail)}
-# ====== TODO To be translated ======
-menuText P CCNewMailGame "New eMail Game..." 0 {Start a new eMail game}
-# ====== TODO To be translated ======
-menuText P CCMailMove "Mail Move..." 0 {Send the move via eMail to the opponent}
-# ====== TODO To be translated ======
-menuText P CCGamePage "Game Page..." 0 {Call up the game via the web browser}
-# ====== TODO To be translated ======
-menuText P CCEditCopy "Copy Gamelist to Clipbase" 0 {Copy the games as CSV list to clipbase}
+menuText P ToolsStartEngine1 "Uruchom program 1" 0  {Uruchom program 1}
+menuText P ToolsStartEngine2 "Uruchom program 2" 0  {Uruchom program 2}
+menuText P ToolsScreenshot "Zrzut ekranu" 0
+
+menuText P Play "Gra" 0
+menuText P CorrespondenceChess "Szachy korespondencyjne" 0 {Funkcje do gry korespondencyjnej przez e-mail i Xfcc}
+menuText P CCConfigure "Konfiguruj..." 0 {Konfiguruj ustawienia i narzêdzia zewnêtrzne}
+menuText P CCConfigRelay "Konfiguruj obserwowane..." 1 {Konfiguruj obserwowane partie}
+menuText P CCOpenDB "Otwórz bazê..." 0 {Otwórz domy¶ln± bazê korespondencyjn±}
+menuText P CCRetrieve "Pobierz partie" 0 {Pobierz partie zewnêtrznym narzêdziem Xfcc}
+menuText P CCInbox "Przetwórz skrzynkê wej¶ciow±" 0 {Przetwórz wszystkie pliki w skrzynce wej¶ciowej}
+menuText P CCSend "Wy¶lij posuniêcie" 0 {Wy¶lij posuniêcie przez e-mail lub zewnêtrzne narzêdzie Xfcc}
+menuText P CCResign "Poddaj siê" 0 {Poddaj siê (nie przez e-mail)}
+menuText P CCClaimDraw "Reklamuj remis" 0 {Wy¶lij posuniêcie i reklamuj remis (nie przez e-mail)}
+menuText P CCOfferDraw "Zaproponuj remis" 0 {Wy¶lij posuniêcie i zaproponuj remis (nie przez e-mail)}
+menuText P CCAcceptDraw "Przyjmij remis" 0 {Przyjmij propozycjê remisu (nie przez e-mail)}
+menuText P CCNewMailGame "Nowa partia e-mail..." 0 {Rozpocznij now± partiê e-mail}
+menuText P CCMailMove "Wy¶lij posuniêcie przez e-mail..." 0 {Wy¶lij posuniêcie przez e-mail}
+menuText P CCGamePage "Strona partii..." 0 {Otwórz stronê partii w przegl±darce}
+menuText P CCEditCopy "Kopiuj listê partii do schowka" 0 {Skopiuj listê partii w formacie CSV do schowka}
 
 menuText P Options "Opcje" 0
 menuText P OptionsBoard "Szachownica" 0 {Konfiguracja wygl±du szachownicy}
-menuText P OptionsColour "Background Colour" 0 {Default text widget color}
+menuText P OptionsColour "Kolor t³a" 0 {Domy¶lny kolor t³a}
 menuText P OptionsNames "Moje nazwiska" 0 {Modyfikuj listê moich graczy}
 menuText P OptionsExport "Eksport" 0 {Zmieñ opcje eksportu tekstu}
-menuText P OptionsFonts "Czcionka" 0 {Zmieñ font}
+menuText P OptionsFonts "Czcionka" 0 {Zmieñ czcionkê}
 menuText P OptionsFontsRegular "Podstawowa" 0 {Zmieñ podstawow± czcionkê}
 menuText P OptionsFontsMenu "Menu" 0 {Zmieñ czcionkê menu} 
 menuText P OptionsFontsSmall "Ma³a" 0 {Zmieñ ma³± czcionkê}
 menuText P OptionsFontsFixed "Sta³a" 0 {Zmieñ czcionkê sta³ej szeroko¶ci}
 menuText P OptionsGInfo "Informacje o partii" 0 {Sposób wy¶wietlania informacji o partii}
 menuText P OptionsLanguage "Jêzyk" 0 {Wybierz jêzyk}
-# ====== TODO To be translated ======
-menuText P OptionsMovesTranslatePieces "Translate pieces" 0 {Translate first letter of pieces}
-# ====== TODO To be translated ======
-menuText P OptionsMovesHighlightLastMove "Highlight last move" 0 {Highlight last move}
-# ====== TODO To be translated ======
-menuText P OptionsMovesHighlightLastMoveDisplay "Show" 0 {Display last move Highlight}
-# ====== TODO To be translated ======
-menuText P OptionsMovesHighlightLastMoveWidth "Width" 0 {Thickness of line}
-# ====== TODO To be translated ======
-menuText P OptionsMovesHighlightLastMoveColor "Color" 0 {Color of line}
+menuText P OptionsMovesTranslatePieces "T³umacz oznaczenia figur" 0 {T³umacz pierwsze litery figur}
+menuText P OptionsMovesHighlightLastMove "Pod¶wietl ostatnie posuniêcie" 0 {Pod¶wietl ostatnie posuniêcie}
+menuText P OptionsMovesHighlightLastMoveDisplay "Poka¿" 0 {Poka¿ ostatnie posuniêcie}
+menuText P OptionsMovesHighlightLastMoveWidth "Width" 0 {Grubo¶æ linii}
+menuText P OptionsMovesHighlightLastMoveColor "Kolor" 0 {Kolor linii}
 menuText P OptionsMoves "Posuniêcia" 0 {Wprowadzanie posuniêæ}
 menuText P OptionsMovesAsk "Zapytaj przed zast±pieniem posuniêæ" 0 \
   {Zapytaj przed zast±pieniem aktualnych posuniêæ}
@@ -309,14 +266,11 @@ menuText P OptionsMovesCoord "Posuniêcia w formacie \"g1f3\"" 0 \
   {Akceptuj posuniêcia wprowadzone w formacie "g1f3"}
 menuText P OptionsMovesSuggest "Poka¿ proponowane posuniêcia" 1 \
   {W³±cz/wy³±cz proponowanie posuniêæ}
-# ====== TODO To be translated ======
-menuText P OptionsShowVarPopup "Show Variation Window" 0 {Turn on/off the display of a variations window}  
-# ====== TODO To be translated ======
-menuText P OptionsMovesSpace "Add spaces after move number" 0 {Add spaces after move number}  
+menuText P OptionsShowVarPopup "Poka¿ okno wariantów" 0 {W³±cz/wy³±cz wy¶wietlanie okna wariantów}  
+menuText P OptionsMovesSpace "Dodaj spacjê po numerze posuniêcia" 0 {Dodawaj spacjê po numerze posuniêcia}  
 menuText P OptionsMovesKey "Automatyczne dope³nianie posuniêæ" 1 \
   {W³±cz/wy³±cz automatyczne dope³nianie posuniêæ wprowadzanych z klawiatury}
-# ====== TODO To be translated ======
-menuText P OptionsMovesShowVarArrows "Show Variation Arrows" 0 {Turn on/off arrows showing moves in variations}
+menuText P OptionsMovesShowVarArrows "Poka¿ strza³ki wariantów" 0 {W³±cz/wy³±cz strza³ki pokazuj±ce ruchy wariantów}
 menuText P OptionsNumbers "Format zapisu liczb" 0 {Wybierz format zapisu liczb}
 menuText P OptionsStartup "Start" 0 {Wybierz okna, które maj± byæ widoczne po uruchomieniu programu}
 menuText P OptionsWindows "Okna" 0 {Opcje okien}
@@ -324,7 +278,7 @@ menuText P OptionsWindowsIconify "Minimalizuj wszystkie okna" 0 \
   {Schowaj wszystkie okna przy minimalizacji g³ównego okna}
 menuText P OptionsWindowsRaise "Automatyczne uaktywnianie" 0 \
   {Automatycznie uaktywniaj niektóre okna (np. pasek postêpu), gdy s± zas³oniête}
-menuText P OptionsSounds "Sounds..." 2 {Configure move announcement sounds} ;# ***
+menuText P OptionsSounds "D¼wiêki..." 0 {Konfiguruj d¼wiêki zapowiadaj±ce ruchy}
 menuText P OptionsToolbar "Pasek narzêdziowy" 6 \
   {Schowaj/poka¿ pasek narzêdziowy}
 menuText P OptionsECO "Wczytaj ksi±¿kê debiutow±..." 16 \
@@ -335,17 +289,16 @@ menuText P OptionsTable "Katalog z baz± koñcówek..." 10 \
   {Wybierz bazê koñcówek; u¿yte zostan± wszystkie bazy z tego katalogu}
 menuText P OptionsRecent "Ostatnie pliki..." 0 \
   {Zmieñ liczbê ostatnio otwartych plików, wy¶wietlanych w menu Plik} 
-# ====== TODO To be translated ======
-menuText P OptionsBooksDir "Books directory..." 0 {Sets the opening books directory}
-# ====== TODO To be translated ======
-menuText P OptionsTacticsBasesDir "Bases directory..." 0 {Sets the tactics (training) bases directory}
+
+menuText P OptionsBooksDir "Katalog ksi±¿ek debiutowych..." 0 {Ustaw katalog ksi±¿ek debiutowych}
+menuText P OptionsTacticsBasesDir "Katalog baz..." 0 {Ustaw katalog baz treningowych}
 menuText P OptionsSave "Zapamiêtaj opcje" 0 \
   "Zapamiêtaj wszystkie ustawienia w pliku $::optionsFile"
 menuText P OptionsAutoSave "Automatycznie zapisuj opcje" 0 \
   {Automatycznie zapisz opcje przy zamykaniu programu}
 
 menuText P Help "Pomoc" 2
-menuText P HelpContents "Contents" 0 {Poka¿ spis tre¶ci pomocy} 
+menuText P HelpContents "Spis tre¶ci" 0 {Poka¿ spis tre¶ci pomocy} 
 menuText P HelpIndex "Spis tre¶ci" 0 {Poka¿ indeks pomocy}
 menuText P HelpGuide "Krótki przewodnik" 0 {Poka¿ krótki przewodnik}
 menuText P HelpHints "Podpowiedzi" 0 {Poka¿ podpowiedzi}
@@ -368,8 +321,7 @@ menuText P GInfoTBResult "Tablica koñcówek: tylko wynik" 18
 menuText P GInfoTBAll "Tablica koñcówek: wszystko" 18
 menuText P GInfoDelete "Usuñ/przywróæ tê partiê" 0
 menuText P GInfoMark "W³±cz/wy³±cz zaznaczenie tej partii" 0
-# ====== TODO To be translated ======
-menuText P GInfoInformant "Configure informant values" 0
+menuText P GInfoInformant "Konfiguruj oceny Informatora" 0
 
 # Main window buttons:
 helpMsg P .button.start {Id¼ do pocz±tku partii (klawisz: Home)}
@@ -388,8 +340,7 @@ helpMsg P .button.autoplay \
 translate P Back {Z powrotem}
 translate P Browse {Przegl±daj}
 translate P Cancel {Anuluj}
-# ====== TODO To be translated ======
-translate P Continue {Continue}
+translate P Continue {Kontynuuj}
 translate P Clear {Wyczy¶æ}
 translate P Close {Zamknij}
 translate P Contents {Spis tre¶ci}
@@ -402,8 +353,7 @@ translate P Index {Indeks}
 translate P LoadGame {Wczytaj partiê}
 translate P BrowseGame {Przegl±daj partiê}
 translate P MergeGame {Do³±cz partiê}
-# ====== TODO To be translated ======
-translate P MergeGames {Merge Games}
+translate P MergeGames {Po³±cz partie}
 translate P Preview {Podgl±d}
 translate P Revert {Odwróæ}
 translate P Save {Zapisz}
@@ -412,7 +362,7 @@ translate P Stop {Stop}
 translate P Store {Zapamiêtaj}
 translate P Update {Uaktualnij}
 translate P ChangeOrient {Zmieñ po³o¿enie okna}
-translate P ShowIcons {Show Icons} ;# ***
+translate P ShowIcons {Poka¿ ikony}
 translate P None {Brak}
 translate P First {Pierwsza}
 translate P Current {Aktualn±}
@@ -522,14 +472,10 @@ translate P TipAtStartup {Poka¿ poradê przy starcie}
 
 # Tree window menus:
 menuText P TreeFile "Plik" 0
-# ====== TODO To be translated ======
-menuText P TreeFileFillWithBase "Fill Cache with base" 0 {Fill the cache file with all games in current base}
-# ====== TODO To be translated ======
-menuText P TreeFileFillWithGame "Fill Cache with game" 0 {Fill the cache file with current game in current base}
-# ====== TODO To be translated ======
-menuText P TreeFileSetCacheSize "Cache size" 0 {Set the cache size}
-# ====== TODO To be translated ======
-menuText P TreeFileCacheInfo "Cache info" 0 {Get info on cache usage}
+menuText P TreeFileFillWithBase "Wype³nij bufor baz±" 0 {Wype³nij plik bufora wszystkimi partiami w aktualnej bazie}
+menuText P TreeFileFillWithGame "Wype³nij bufor parti±" 0 {Wype³nij plik bufora aktualn± parti±}
+menuText P TreeFileSetCacheSize "Wielko¶æ bufora" 0 {Ustaw wielko¶æ bufora}
+menuText P TreeFileCacheInfo "Informacje o buforze" 0 {Wy¶wietl informacje o wykorzystaniu bufora}
 menuText P TreeFileSave "Zapisz bufor" 7 {Zapisz plik bufora (.stc)}
 menuText P TreeFileFill "Twórz standardowy plik cache" 0 {Wstaw typowe pozycje debiutowe do bufora}
 menuText P TreeFileBest "Najlepsze partie" 0 {Poka¿ listê najlepszych partii}
@@ -537,42 +483,27 @@ menuText P TreeFileGraph "Poka¿ wykres" 0 {Poka¿ wykres dla tej ga³êzi drzewa}
 menuText P TreeFileCopy "Kopiuj drzewo do schowka" 0 \
   {Skopiuj drzewo ze statystykami do schowka}
 menuText P TreeFileClose "Zamknij" 0 {Zamknij okno drzewa}
-# ====== TODO To be translated ======
-menuText P TreeMask "Mask" 0
-# ====== TODO To be translated ======
-menuText P TreeMaskNew "New" 0 {New mask}
-# ====== TODO To be translated ======
-menuText P TreeMaskOpen "Open" 0 {Open mask}
-# ====== TODO To be translated ======
-menuText P TreeMaskOpenRecent "Open recent" 0 {Open recent mask}
-# ====== TODO To be translated ======
-menuText P TreeMaskSave "Save" 0 {Save mask}
-# ====== TODO To be translated ======
-menuText P TreeMaskClose "Close" 0 {Close mask}
-# ====== TODO To be translated ======
-menuText P TreeMaskFillWithGame "Fill with game" 0 {Fill mask with game}
-# ====== TODO To be translated ======
-menuText P TreeMaskFillWithBase "Fill with base" 0 {Fill mask with all games in base}
-# ====== TODO To be translated ======
-menuText P TreeMaskInfo "Info" 0 {Show statistics for current mask}
-# ====== TODO To be translated ======
-menuText P TreeMaskDisplay "Display mask map" 0 {Show mask data in a tree form}
-# ====== TODO To be translated ======
-menuText P TreeMaskSearch "Search" 0 {Search in current mask}
+menuText P TreeMask "Maska" 0
+menuText P TreeMaskNew "Nowa" 0 {Nowa maska}
+menuText P TreeMaskOpen "Otwórz" 0 {Otwórz maskê}
+menuText P TreeMaskOpenRecent "Otwórz ostatni± maskê" 0 {Otwórz ostatni± maskê}
+menuText P TreeMaskSave "Zapisz" 0 {Zapisz maskê}
+menuText P TreeMaskClose "Zamknij" 0 {Zamknij maskê}
+menuText P TreeMaskFillWithGame "Wype³nij maskê parti±" 0 {Wype³nij maskê parti±}
+menuText P TreeMaskFillWithBase "Wype³nij maskê baz±" 0 {Wype³nij maskê wszystkimi partiami w bazie}
+menuText P TreeMaskInfo "Informacje" 0 {Poka¿ statystykê aktualnej maski}
+menuText P TreeMaskDisplay "Poka¿ mapê maski" 0 {Poka¿ dane maski jako drzewo}
+menuText P TreeMaskSearch "Znajd¼" 0 {Znajd¼ w aktualnej masce}
 menuText P TreeSort "Sortowanie" 0
 menuText P TreeSortAlpha "Alfabetycznie" 0
 menuText P TreeSortECO "Kod ECO" 0
 menuText P TreeSortFreq "Czêsto¶æ" 0
 menuText P TreeSortScore "Punkty" 0
 menuText P TreeOpt "Opcje" 0
-# ====== TODO To be translated ======
-menuText P TreeOptSlowmode "Slow mode" 0 {Slow mode for updates (high accuracy)}
-# ====== TODO To be translated ======
-menuText P TreeOptFastmode "Fast mode" 0 {Fast mode for updates (no move transposition)}
-# ====== TODO To be translated ======
-menuText P TreeOptFastAndSlowmode "Fast and slow mode" 0 {Fast mode then slow mode for updates}
-# ====== TODO To be translated ======
-menuText P TreeOptStartStop "Auto refreshing" 0 {Toggles automatic refreshing of the tree window}
+menuText P TreeOptSlowmode "Tryb dok³adny" 0 {Wolne uaktualnianie (du¿a dok³adno¶æ)}
+menuText P TreeOptFastmode "Tryb szybki" 0 {Tryb szybki (bez transpozycji)}
+menuText P TreeOptFastAndSlowmode "Tryb mieszany" 0 {Tryb szybki, a potem dok³adne uaktualnienie}
+menuText P TreeOptStartStop "Automatyczne od¶wie¿anie" 0 {W³±cz/wy³±cz automatyczne od¶wie¿anie drzewa}
 menuText P TreeOptLock "Blokada" 0 {Zablokuj/odblokuj drzewo na aktualnej bazie}
 menuText P TreeOptTraining "Trening" 0 {W³±cz/wy³±cz tryb treningowy}
 menuText P TreeOptAutosave "Automatyczny zapis bufora" 0 \
@@ -593,60 +524,33 @@ translate P TreeTitleRow \
   {    Pos.   ECO       Czêsto¶æ     Wynik  Rav   Rperf Rok   %Remis}
 # {    Move   ECO       Frequency    Score  AvElo Perf AvYear %Draws}
 translate P TreeTotal {RAZEM}
-# ====== TODO To be translated ======
-translate P DoYouWantToSaveFirst {Do you want to save first}
-# ====== TODO To be translated ======
-translate P AddToMask {Add to Mask}
-# ====== TODO To be translated ======
-translate P RemoveFromMask {Remove from Mask}
-# ====== TODO To be translated ======
-translate P Nag {Nag code}
-# ====== TODO To be translated ======
-translate P Marker {Marker}
-# ====== TODO To be translated ======
-translate P Include {Include}
-# ====== TODO To be translated ======
-translate P Exclude {Exclude}
-# ====== TODO To be translated ======
-translate P MainLine {Main line}
-# ====== TODO To be translated ======
-translate P Bookmark {Bookmark}
-# ====== TODO To be translated ======
-translate P NewLine {New line}
-# ====== TODO To be translated ======
-translate P ToBeVerified {To be verified}
-# ====== TODO To be translated ======
-translate P ToTrain {To train}
-# ====== TODO To be translated ======
-translate P Dubious {Dubious}
-# ====== TODO To be translated ======
-translate P ToRemove {To remove}
-# ====== TODO To be translated ======
-translate P NoMarker {No marker}
-# ====== TODO To be translated ======
-translate P ColorMarker {Color}
-# ====== TODO To be translated ======
-translate P WhiteMark {White}
-# ====== TODO To be translated ======
-translate P GreenMark {Green}
-# ====== TODO To be translated ======
-translate P YellowMark {Yellow}
-# ====== TODO To be translated ======
-translate P BlueMark {Blue}
-# ====== TODO To be translated ======
-translate P RedMark {Red}
-# ====== TODO To be translated ======
-translate P CommentMove {Comment move}
-# ====== TODO To be translated ======
-translate P CommentPosition {Comment position}
-# ====== TODO To be translated ======
-translate P AddMoveToMaskFirst {Add move to mask first}
-# ====== TODO To be translated ======
-translate P OpenAMaskFileFirst {Open a mask file first}
-# ====== TODO To be translated ======
-translate P Positions {Positions}
-# ====== TODO To be translated ======
-translate P Moves {Moves}
+translate P DoYouWantToSaveFirst {Zapisaæ najpierw}
+translate P AddToMask {Dodaj do maski}
+translate P RemoveFromMask {Usuñ z maski}
+translate P Nag {Kod NAG}
+translate P Marker {Znacznik}
+translate P Include {Do³±cz}
+translate P Exclude {Wyklucz}
+translate P MainLine {Wariant g³ówny}
+translate P Bookmark {Zak³adka}
+translate P NewLine {Nowy wariant}
+translate P ToBeVerified {Do sprawdzenia}
+translate P ToTrain {Do przeæwiczenia}
+translate P Dubious {W±tpliwe}
+translate P ToRemove {Do usuniêcia}
+translate P NoMarker {Bez znacznika}
+translate P ColorMarker {Kolor}
+translate P WhiteMark {Bia³y}
+translate P GreenMark {Zielony}
+translate P YellowMark {¯ó³ty}
+translate P BlueMark {Niebieski}
+translate P RedMark {Czerwony}
+translate P CommentMove {Komentuj posuniêcie}
+translate P CommentPosition {Komentuj pozycjê}
+translate P AddMoveToMaskFirst {Najpierw dodaj posuniêcie do maski}
+translate P OpenAMaskFileFirst {Najpierw otwórz plik maski}
+translate P Positions {Pozycje}
+translate P Moves {Posuniêcia}
 
 # Finder window:
 menuText P FinderFile "Plik" 0
@@ -671,16 +575,11 @@ translate P FinderDir {Katalog}
 translate P FinderDirs {Katalogi}
 translate P FinderFiles {Pliki}
 translate P FinderUpDir {wy¿ej}
-# ====== TODO To be translated ======
-translate P FinderCtxOpen {Open}
-# ====== TODO To be translated ======
-translate P FinderCtxBackup {Backup}
-# ====== TODO To be translated ======
-translate P FinderCtxCopy {Copy}
-# ====== TODO To be translated ======
-translate P FinderCtxMove {Move}
-# ====== TODO To be translated ======
-translate P FinderCtxDelete {Delete}
+translate P FinderCtxOpen {Otwórz}
+translate P FinderCtxBackup {Utwórz kopiê}
+translate P FinderCtxCopy {Kopiuj}
+translate P FinderCtxMove {Przenie¶}
+translate P FinderCtxDelete {Usuñ}
 
 # Player finder:
 menuText P PListFile "Plik" 0
@@ -720,76 +619,51 @@ menuText P GraphOptionsBlack "Czarne" 0
 menuText P GraphOptionsBoth "Oba kolory" 1
 menuText P GraphOptionsPInfo "Gracz z Informacji o graczu" 0
 translate P GraphFilterTitle "Filtr: czêsto¶æ na 1000 partii" 
-# ====== TODO To be translated ======
-translate P GraphAbsFilterTitle "Filter Graph: frequency of the games"
-# ====== TODO To be translated ======
-translate P ConfigureFilter {Configure X-Axes for Year, Rating and Moves}
-# ====== TODO To be translated ======
-translate P FilterEstimate "Estimate"
-# ====== TODO To be translated ======
-translate P TitleFilterGraph "Scid: Filter Graph"
+translate P GraphAbsFilterTitle "Wykres filtra: czêsto¶æ partii"
+translate P ConfigureFilter {Konfiguruj o¶ X: rok, ranking i posuniêcia}
+translate P FilterEstimate "Oszacuj"
+translate P TitleFilterGraph "Scid: wykres filtra"
 
 # Analysis window:
 translate P AddVariation {Dodaj wariant}
-# ====== TODO To be translated ======
-translate P AddAllVariations {Add All Variations}
+translate P AddAllVariations {Dodaj wszystkie warianty}
 translate P AddMove {Dodaj posuniêcie}
 translate P Annotate {Komentuj}
-# ====== TODO To be translated ======
-translate P ShowAnalysisBoard {Show analysis board}
-# ====== TODO To be translated ======
-translate P ShowInfo {Show engine info}
-# ====== TODO To be translated ======
-translate P FinishGame {Finish game}
-# ====== TODO To be translated ======
-translate P StopEngine {Stop engine}
-# ====== TODO To be translated ======
-translate P StartEngine {Start engine}
-# ====== TODO To be translated ======
-translate P LockEngine {Lock engine to current position}
+translate P ShowAnalysisBoard {Poka¿ pozycjê koñcow±}
+translate P ShowInfo {Poka¿ informacje o programie}
+translate P FinishGame {Zakoñcz partiê}
+translate P StopEngine {Zatrzymaj program}
+translate P StartEngine {Uruchom program}
+translate P LockEngine {Zablokuj program na analizie aktualnej pozycji}
 translate P AnalysisCommand {Program do analizy}
 translate P PreviousChoices {Poprzednie programy}
 translate P AnnotateTime {Czas miêdzy ruchami (w sekundach)}
 translate P AnnotateWhich {Dodaj warianty}
 translate P AnnotateAll {Dla obu stron}
-# ====== TODO To be translated ======
-translate P AnnotateAllMoves {Annotate all moves}
+translate P AnnotateAllMoves {Wszystkie}
 translate P AnnotateWhite {Dla bia³ych}
 translate P AnnotateBlack {Dla czarnych}
-translate P AnnotateNotBest {Tylko dla posuniêæ lepszych ni¿ w partii}
+translate P AnnotateNotBest {Tylko posuniêcia lepsze ni¿ w partii}
+translate P AnnotateBlundersOnly {Tylko oczywiste b³êdy}
+translate P AnnotateBlundersOnlyScoreChange {Tylko b³êdy ze zmian± oceny z/na: }
 # ====== TODO To be translated ======
-translate P AnnotateBlundersOnly {When game move is an obvious blunder}
-# ====== TODO To be translated ======
-translate P AnnotateBlundersOnlyScoreChange {Analysis reports blunder, with score change from/to: }
-# ====== TODO To be translated ======
-translate P AnnotateTitle {Konfiguracja adnotacji}
-translate P AnnotateWith {Opisywanie Z}
-translate P AnnotateWhichMoves {Który porusza sie}
-translate P AnnotateComment {Dodaj annotator komentarz}
-translate P BlundersThreshold {Threshold}
+translate P AnnotateTitle {Konfiguracja komentarza}
+translate P AnnotateWith {Format komentarza}
+translate P AnnotateWhichMoves {Komentowane posuniêcia}
+translate P AnnotateComment {Dodaj pole komentatora}
+translate P BlundersThreshold {Granica b³êdu}
 translate P LowPriority {Niski priorytet CPU} 
-# ====== TODO To be translated ======
-translate P ClickHereToSeeMoves {Click here to see moves}
-# ====== TODO To be translated ======
-translate P ConfigureInformant {Configure Informant}
-# ====== TODO To be translated ======
-translate P Informant!? {Interesting move}
-# ====== TODO To be translated ======
-translate P Informant? {Poor move}
-# ====== TODO To be translated ======
-translate P Informant?? {Blunder}
-# ====== TODO To be translated ======
-translate P Informant?! {Dubious move}
-# ====== TODO To be translated ======
-translate P Informant+= {White has a slight advantage}
-# ====== TODO To be translated ======
-translate P Informant+/- {White has a moderate advantage}
-# ====== TODO To be translated ======
-translate P Informant+- {White has a decisive advantage}
-# ====== TODO To be translated ======
-translate P Informant++- {The game is considered won}
-# ====== TODO To be translated ======
-translate P Book {Book}
+translate P ClickHereToSeeMoves {Kliknij, by zobaczyæ posuniêcia}
+translate P ConfigureInformant {Konfiguruj oceny Informatora}
+translate P Informant!? {Ciekawe posuniêcie}
+translate P Informant? {B³±d}
+translate P Informant?? {Powa¿ny b³±d}
+translate P Informant?! {W±tpliwe posuniêcie}
+translate P Informant+= {Niewielka przewaga}
+translate P Informant+/- {Wyra¼na przewaga}
+translate P Informant+- {Rozstrzygaj±ca przewaga}
+translate P Informant++- {Wygrana}
+translate P Book {Ksi±¿ka debiutowa}
 
 # Analysis Engine open dialog:
 translate P EngineList {Programy szachowe}
@@ -823,25 +697,22 @@ menuText P PgnOptIndentV "Wcinaj warianty" 7
 menuText P PgnOptColumn "Kolumny (jedno posuniêcie w wierszu)" 0
 menuText P PgnOptSpace "Spacja po numerze ruchu" 0
 menuText P PgnOptStripMarks "Usuñ kody kolorowych pól i strza³ek" 0
-menuText P PgnOptChess "Szachy sztuk" 0
+menuText P PgnOptChess "U¿yj czcionki szachowej" 0
 menuText P PgnOptScrollbar "Pasek przewijania" 0
-menuText P PgnOptBoldMainLine "Use Bold Text for Main Line Moves" 4 ;# ***
+menuText P PgnOptBoldMainLine "Wyt³u¶æ tekst partii" 2
 menuText P PgnColor "Kolory" 0
 menuText P PgnColorHeader "Nag³ówek..." 0
 menuText P PgnColorAnno "Uwagi..." 3
 menuText P PgnColorComments "Komentarze..." 0
 menuText P PgnColorVars "Warianty..." 0
 menuText P PgnColorBackground "T³o..." 0
-# ====== TODO To be translated ======
-menuText P PgnColorMain "Main line..." 0
-# ====== TODO To be translated ======
-menuText P PgnColorCurrent "Current move background..." 1
-# ====== TODO To be translated ======
-menuText P PgnColorNextMove "Next move background..." 0
+menuText P PgnColorMain "G³ówny wariant..." 0
+menuText P PgnColorCurrent "T³o aktualnego posuniêcia..." 1
+menuText P PgnColorNextMove "T³o nastêpnego posuniêcia..." 0
 menuText P PgnHelp "Pomoc" 2
 menuText P PgnHelpPgn "PGN" 0
 menuText P PgnHelpIndex "Spis tre¶ci" 0
-translate P PgnWindowTitle {Game Notation - game %u} ;# ***
+translate P PgnWindowTitle {Tekst partii - partia  %u}
 
 # Crosstable window menus:
 menuText P CrosstabFile "Plik" 0
@@ -900,7 +771,7 @@ menuText P OprepHelpIndex "Spis tre¶ci" 0
 
 # Header search:
 translate P HeaderSearch {Wyszukiwanie wg nag³ówka}
-translate P EndSideToMove {Side to move at end of game} ;# ***
+translate P EndSideToMove {Strona na posuniêciu po zakoñczeniu partii}
 translate P GamesWithNoECO {Partie bez ECO?}
 translate P GameLength {D³ugo¶æ}
 translate P FindGamesWith {Znajd¼ partie}
@@ -958,18 +829,12 @@ translate P GlistWidth {Szeroko¶æ}
 translate P GlistAlign {Wyrównanie}
 translate P GlistColor {Kolor}
 translate P GlistSep {Separator}
-# ====== TODO To be translated ======
-translate P GlistRemoveThisGameFromFilter  {Remove this game from Filter}
-# ====== TODO To be translated ======
-translate P GlistRemoveGameAndAboveFromFilter  {Remove game (and all above it) from Filter}
-# ====== TODO To be translated ======
-translate P GlistRemoveGameAndBelowFromFilter  {Remove game (and all below it) from Filter}
-# ====== TODO To be translated ======
-translate P GlistDeleteGame {(Un)Delete this game} 
-# ====== TODO To be translated ======
-translate P GlistDeleteAllGames {Delete all games in filter} 
-# ====== TODO To be translated ======
-translate P GlistUndeleteAllGames {Undelete all games in filter} 
+translate P GlistRemoveThisGameFromFilter  {Usuñ tê partiê z filtra}
+translate P GlistRemoveGameAndAboveFromFilter  {Usuñ tê i poprzednie partie z filtra}
+translate P GlistRemoveGameAndBelowFromFilter  {Usuñ tê i nastêpne partie z filtra}
+translate P GlistDeleteGame {Usuñ/przywróæ tê partiê} 
+translate P GlistDeleteAllGames {Usuñ wszystkie partie z filtra} 
+translate P GlistUndeleteAllGames {Przywróæ wszystkie partie z filtra} 
 
 # Maintenance window:
 translate P DatabaseName {Nazwa bazy:}
@@ -981,8 +846,7 @@ translate P YearRange {Data:}
 translate P RatingRange {Ranking:}
 translate P Description {Opis} 
 translate P Flag {Oznaczenie:}
-# ====== TODO To be translated ======
-translate P CustomFlags {Custom flags}
+translate P CustomFlags {Flagi u¿ytkownika}
 translate P DeleteCurrent {Usuñ aktualn± partiê}
 translate P DeleteFilter {Usuñ partie z filtra}
 translate P DeleteAll {Usuñ wszystkie partie}
@@ -1009,8 +873,7 @@ translate P AddEloRatings {Dodaj rankingi ELO}
 translate P AutoloadGame {Domy¶lna partia}
 translate P StripTags {Usuñ znaczniki PGN} 
 translate P StripTag {Usuñ znacznik}
-# ====== TODO To be translated ======
-translate P CheckGames {Check games}
+translate P CheckGames {Sprawd¼ partie}
 translate P Cleaner {Zestaw zadañ}
 translate P CleanerHelp {
 Zestaw zadañ pozwala wykonaæ od razu kilka operacji porz±dkowania bazy. Operacje wybrane z listy
@@ -1026,74 +889,53 @@ ustawieñ).
 
 Na pewno wykonaæ wybrane zadania?
 }
-# ====== TODO To be translated ======
-translate P TwinCheckUndelete {to flip; "u" undeletes both)}
-# ====== TODO To be translated ======
-translate P TwinCheckprevPair {Previous pair}
-# ====== TODO To be translated ======
-translate P TwinChecknextPair {Next pair}
-# ====== TODO To be translated ======
-translate P TwinChecker {Scid: Twin game checker}
-# ====== TODO To be translated ======
-translate P TwinCheckTournament {Games in tournament:}
-# ====== TODO To be translated ======
-translate P TwinCheckNoTwin {No twin  }
-# ====== TODO To be translated ======
-translate P TwinCheckNoTwinfound {No twin was detected for this game.\nTo show twins using this window, you must first use the "Delete twin games..." function. }
-# ====== TODO To be translated ======
-translate P TwinCheckTag {Share tags...}
-# ====== TODO To be translated ======
-translate P TwinCheckFound1 {Scid found $result twin games}
-# ====== TODO To be translated ======
-translate P TwinCheckFound2 { and set their delete flags}
-# ====== TODO To be translated ======
-translate P TwinCheckNoDelete {There are no games in this database to delete.}
-# ====== TODO To be translated ======
-translate P TwinCriteria1 { Your settings for finding twin games are potentially likely to\ncause non-twin games with similar moves to be marked as twins.}
-# ====== TODO To be translated ======
-translate P TwinCriteria2 {It is recommended that if you select "No" for "same moves", you should select "Yes" for the colors, event, site, round, year and month settings.\nDo you want to continue and delete twins anyway? }
-# ====== TODO To be translated ======
-translate P TwinCriteria3 {It is recommended that you specify "Yes" for at least two of the "same site", "same round" and "same year" settings.\nDo you want to continue and delete twins anyway?}
-# ====== TODO To be translated ======
-translate P TwinCriteriaConfirm {Scid: Confirm twin settings}
-# ====== TODO To be translated ======
-translate P TwinChangeTag "Change the following game tags:\n\n"
-# ====== TODO To be translated ======
-translate P AllocRatingDescription "This command will use the current spellcheck file to add Elo ratings to games in this database. Wherever a player has no currrent rating but his/her rating at the time of the game is listed in the spellcheck file, that rating will be added."
-# ====== TODO To be translated ======
-translate P RatingOverride "Overwrite existing non-zero ratings?"
-# ====== TODO To be translated ======
-translate P AddRatings "Add ratings to:"
-# ====== TODO To be translated ======
-translate P AddedRatings {Scid added $r Elo ratings in $g games.}
-# ====== TODO To be translated ======
-translate P NewSubmenu "New submenu"
+translate P TwinCheckUndelete {¿eby prze³±czyæ; "u" przywraca obie)}
+translate P TwinCheckprevPair {Poprzednia para}
+translate P TwinChecknextPair {Nastêpna para}
+translate P TwinChecker {Scid: wyszukiwarka powtórzonych partii}
+translate P TwinCheckTournament {Partie w turnieju:}
+translate P TwinCheckNoTwin {Bez powtórzeñ  }
+translate P TwinCheckNoTwinfound {Brak powtórzeñ tej partii.\n¯eby zobaczyæ powtórzone partie, u¿yj najpierw funkcji "Znajd¼ powtórzone partie...". }
+translate P TwinCheckTag {Dziel znaczniki...}
+translate P TwinCheckFound1 {Scid znalaz³ $result powtórzonych partii}
+translate P TwinCheckFound2 { i ustawi³ ich flagê usuniêcia}
+translate P TwinCheckNoDelete {W tej bazie brak partii do usuniêcia.}
+translate P TwinCriteria1 { Aktualne ustawienia do wyszukiwania powtórzeñ mog± spowodowaæ\noznaczenie ró¿nych partii o podobnym przebiegu jako powtórzeñ.}
+translate P TwinCriteria2 {Przy ustawieniu "Nie" dla "tych samych posuniêæ", zaleca siê wybranie "Tak" dla koloru, turnieju, miejsca, rundy, roku i miesi±ca.\nCzy kontynuowaæ i usun±æ powtórzone partie? }
+translate P TwinCriteria3 {Zaleca siê wybranie "Tak" przynajmniej dla dwóch z opcji: "to samo miejsce", "ta sama runda" i "ten sam rok".\nCzy kontynuowaæ i usun±æ powtórzone partie?}
+translate P TwinCriteriaConfirm {Scid: potwierd¼ ustawienia wyszukiwania powtórzeñ}
+translate P TwinChangeTag "Zmieñ nastêpuj±ce znaczniki:\n\n"
+translate P AllocRatingDescription "To polecenie u¿ywa aktualnego pliku do sprawdzania pisowni, ¿eby dodaæ rankingi Elo do partii w bazie. Je¶li gracz nie ma przypisanego rankingu, ale plik pisowni zawiera potrzebne informacje, ranking zostanie dodany."
+translate P RatingOverride "Zast±piæ istniej±ce rankingi?"
+translate P AddRatings "Dodaj rankingi do:"
+translate P AddedRatings {Scid doda³ $r rankingów Elo w $g partiach.}
+translate P NewSubmenu "Nowe podmenu"
 
 # Comment editor:
 translate P AnnotationSymbols  {Symbole:}
 translate P Comment {Komentarz:}
 translate P InsertMark {Wstaw znak}
 translate P InsertMarkHelp {
-Insert/remove mark: Select color, type, square.
-Insert/remove arrow: Right-click two squares.
-} ;# ***
+Dodaj/usuñ znacznik: wybierz kolor, typ i pole.
+Dodaj/usuñ strza³kê: kliknij prawym przyciskiem na dwóch polach.
+} 
 
 # Nag buttons in comment editor:
-translate P GoodMove {Good move} ;# ***
-translate P PoorMove {Poor move} ;# ***
-translate P ExcellentMove {Excellent move} ;# ***
+translate P GoodMove {Silne posuniêcie}
+translate P PoorMove {S³abe posuniêcie}
+translate P ExcellentMove {Znakomite posuniêcie}
 translate P Blunder {Podstawka}
-translate P InterestingMove {Interesting move} ;# ***
-translate P DubiousMove {Dubious move} ;# ***
-translate P WhiteDecisiveAdvantage {White has a decisive advantage} ;# ***
-translate P BlackDecisiveAdvantage {Black has a decisive advantage} ;# ***
-translate P WhiteClearAdvantage {White has a clear advantage} ;# ***
-translate P BlackClearAdvantage {Black has a clear advantage} ;# ***
-translate P WhiteSlightAdvantage {White has a slight advantage} ;# ***
-translate P BlackSlightAdvantage {Black has a slight advantage} ;# ***
-translate P Equality {Equality} ;# ***
-translate P Unclear {Unclear} ;# ***
-translate P Diagram {Diagram} ;# ***
+translate P InterestingMove {Ciekawe posuniêcie}
+translate P DubiousMove {W±tpliwe posuniêcie}
+translate P WhiteDecisiveAdvantage {Bia³e maj± decyduj±c± przewagê} 
+translate P BlackDecisiveAdvantage {Czarne maj± decyduj±c± przewagê} 
+translate P WhiteClearAdvantage {Bia³e maj± wyra¼n± przewagê} 
+translate P BlackClearAdvantage {Czarne  maj± wyra¼n± przewagê} 
+translate P WhiteSlightAdvantage {Bia³e maj± niewielk± przewagê} 
+translate P BlackSlightAdvantage {Czarne maj± niewielk± przewagê}
+translate P Equality {Równowaga} 
+translate P Unclear {Niejasna pozycja}
+translate P Diagram {Diagram}
 
 # Board search:
 translate P BoardSearch {Wyszukiwanie wg pozycji}
@@ -1127,35 +969,35 @@ translate P MatchForAtLeast {Pasuje min.}
 translate P HalfMoves {pó³ruchy}
 
 # Common endings in material search:
-translate P EndingPawns {Pawn endings} ;# ***
-translate P EndingRookVsPawns {Rook vs. Pawn(s)} ;# ***
-translate P EndingRookPawnVsRook {Rook and 1 Pawn vs. Rook} ;# ***
-translate P EndingRookPawnsVsRook {Rook and Pawn(s) vs. Rook} ;# ***
-translate P EndingRooks {Rook vs. Rook endings} ;# ***
-translate P EndingRooksPassedA {Rook vs. Rook endings with a passed a-pawn} ;# ***
-translate P EndingRooksDouble {Double Rook endings} ;# ***
-translate P EndingBishops {Bishop vs. Bishop endings} ;# ***
-translate P EndingBishopVsKnight {Bishop vs. Knight endings} ;# ***
-translate P EndingKnights {Knight vs. Knight endings} ;# ***
-translate P EndingQueens {Queen vs. Queen endings} ;# ***
-translate P EndingQueenPawnVsQueen {Queen and 1 Pawn vs. Queen} ;# ***
-translate P BishopPairVsKnightPair {Two Bishops vs. Two Knights middlegame} ;# ***
+translate P EndingPawns {Koñcówki pionowe} 
+translate P EndingRookVsPawns {Wie¿a na pion(y)} 
+translate P EndingRookPawnVsRook {Wie¿a i pion na wie¿ê}
+translate P EndingRookPawnsVsRook {Wie¿a i pion(y) na wie¿ê}
+translate P EndingRooks {Koñcówki wie¿owe}
+translate P EndingRooksPassedA {Koñcówki wie¿owe z wolnym pionem a}
+translate P EndingRooksDouble {Koñcówki czterowie¿owe}
+translate P EndingBishops {Koñcówki goñcowe}
+translate P EndingBishopVsKnight {Koñcówki goniec na skoczka}
+translate P EndingKnights {Koñcówki skoczkowe}
+translate P EndingQueens {Koñcówki hetmañskie}
+translate P EndingQueenPawnVsQueen {Hetman i pion na hetmana}
+translate P BishopPairVsKnightPair {Dwa goñce na dwa skoczki w grze ¶rodkowej}
 
 # Common patterns in material search:
-translate P PatternWhiteIQP {White IQP} ;# ***
-translate P PatternWhiteIQPBreakE6 {White IQP: d4-d5 break vs. e6} ;# ***
-translate P PatternWhiteIQPBreakC6 {White IQP: d4-d5 break vs. c6} ;# ***
-translate P PatternBlackIQP {Black IQP} ;# ***
-translate P PatternWhiteBlackIQP {White IQP vs. Black IQP} ;# ***
-translate P PatternCoupleC3D4 {White c3+d4 Isolated Pawn Couple} ;# ***
-translate P PatternHangingC5D5 {Black Hanging Pawns on c5 and d5} ;# ***
-translate P PatternMaroczy {Maroczy Center (with Pawns on c4 and e4)} ;# ***
-translate P PatternRookSacC3 {Rook Sacrifice on c3} ;# ***
-translate P PatternKc1Kg8 {O-O-O vs. O-O (Kc1 vs. Kg8)} ;# ***
-translate P PatternKg1Kc8 {O-O vs. O-O-O (Kg1 vs. Kc8)} ;# ***
-translate P PatternLightFian {Light-Square Fianchettos (Bishop-g2 vs. Bishop-b7)} ;# ***
-translate P PatternDarkFian {Dark-Square Fianchettos (Bishop-b2 vs. Bishop-g7)} ;# ***
-translate P PatternFourFian {Four Fianchettos (Bishops on b2,g2,b7,g7)} ;# ***
+translate P PatternWhiteIQP {Izolowany pion u bia³ych} 
+translate P PatternWhiteIQPBreakE6 {Izolowowany pion u bia³ych: prze³om d4-d5 przy pionku e6}
+translate P PatternWhiteIQPBreakC6 {Izolowowany pion u bia³ych: prze³om d4-d5 przy pionku c6}
+translate P PatternBlackIQP {Izolowany pion u czarnych}
+translate P PatternWhiteBlackIQP {Izolowane piony u obu stron}
+translate P PatternCoupleC3D4 {Wisz±ce bia³e piony c3+d4}
+translate P PatternHangingC5D5 {Wisz±ce czarne piony c5+d5}
+translate P PatternMaroczy {Struktura Maroczego (piony na c4 i e4)} 
+translate P PatternRookSacC3 {Ofiara wie¿y na c3}
+translate P PatternKc1Kg8 {Ró¿nostronne roszady (Kc1 i Kg8)}
+translate P PatternKg1Kc8 {Ró¿nostronne roszady (Kg1 i Kc8)}
+translate P PatternLightFian {Bia³opolowe fianchetto (Gg2 i Gb7)}
+translate P PatternDarkFian {Czarnopolowe fianchetto (Gb2 i Gg7)}
+translate P PatternFourFian {Poczwórne fianchetto (goñce na b2, g2, b7, g7)}
 
 # Game saving:
 translate P Today {Dzisiaj}
@@ -1170,18 +1012,14 @@ translate P Castling {Roszada}
 translate P EnPassantFile {Bicie w przelocie}
 translate P ClearFen {Kopiuj FEN}
 translate P PasteFen {Wklej pozycjê FEN}
-# ====== TODO To be translated ======
-translate P SaveAndContinue {Save and continue}
-# ====== TODO To be translated ======
-translate P DiscardChangesAndContinue {Discard changes\nand continue}
-# ====== TODO To be translated ======
-translate P GoBack {Go back}
+translate P SaveAndContinue {Zapisz i kontynuuj}
+translate P DiscardChangesAndContinue {Porzuæ zmiany\ni kontynuuj}
+translate P GoBack {Anuluj}
 
 # Replace move dialog:
 translate P ReplaceMove {Zmieñ posuniêcie}
 translate P AddNewVar {Dodaj wariant}
-# ====== TODO To be translated ======
-translate P NewMainLine {New Main Line}
+translate P NewMainLine {Nowy wariant g³ówny}
 translate P ReplaceMoveMessage {Posuniêcie ju¿ istnieje.
 
 Mo¿esz je zast±piæ, usuwaj±c dalszy ci±g partii lub dodaæ nowy wariant.
@@ -1212,8 +1050,7 @@ translate P ExitUnsaved {Nastêpuj±ce bazy zawieraj± niezapisane zmiany. Je¶li za
 translate P PasteCurrentGame {Wklej aktualn± partiê}
 translate P ImportHelp1 {Wprowad¼ lub wklej partiê w formacie PGN w poni¿sz± ramkê.}
 translate P ImportHelp2 {Tu bêd± wy¶wietlane b³êdy przy importowaniu partii.}
-# ====== TODO To be translated ======
-translate P OverwriteExistingMoves {Overwrite existing moves ?}
+translate P OverwriteExistingMoves {Zast±piæ istniej±ce posuniêcia?}
 
 # ECO Browser:
 translate P ECOAllSections {Wszystkie kody ECO}
@@ -1295,8 +1132,8 @@ translate P OprepViewLaTeX {¬ród³o LaTeX}
 
 # Player Report:
 translate P PReportTitle {Raport o graczu}
-translate P PReportColorWhite {with the White pieces} ;# ***
-translate P PReportColorBlack {with the Black pieces} ;# ***
+translate P PReportColorWhite {bia³ymi}
+translate P PReportColorBlack {czarnymi}
 translate P PReportMoves {po %s}
 translate P PReportOpenings {Debiuty}
 translate P PReportClipbase {Wyczy¶æ schowek i skopiuj do niego wybrane partie}
@@ -1353,14 +1190,10 @@ translate P NameEditSelect {Partie do edycji}
 translate P NameEditReplace {Zast±p}
 translate P NameEditWith {przez}
 translate P NameEditMatches {Pasuj±ce: Ctrl+1 do Ctrl+9 wybiera}
-# ====== TODO To be translated ======
-translate P CheckGames {Check games}
-# ====== TODO To be translated ======
-translate P CheckGamesWhich {Check games}
-# ====== TODO To be translated ======
-translate P CheckAll {All games}
-# ====== TODO To be translated ======
-translate P CheckSelectFilterGames {Only games in filter}
+translate P CheckGames {Sprawd¼ partie}
+translate P CheckGamesWhich {Sprawd¼ partie}
+translate P CheckAll {Wszystkie}
+translate P CheckSelectFilterGames {Tylko partie z filtra}
 
 # Classify window:
 translate P Classify {Przyporz±dkowanie ECO}
@@ -1383,14 +1216,10 @@ translate P CurrentState {Status}
 translate P AfterCompaction {Po uporz±dkowaniu}
 translate P CompactNames {Uporz±dkuj nazwy}
 translate P CompactGames {Uporz±dkuj partie}
-# ====== TODO To be translated ======
-translate P NoUnusedNames "There are no unused names, so the name file is already fully compacted."
-# ====== TODO To be translated ======
-translate P NoUnusedGames "The game file is already fully compacted."
-# ====== TODO To be translated ======
-translate P NameFileCompacted {The name file for the database "[file tail [sc_base filename]]" was compacted.}
-# ====== TODO To be translated ======
-translate P GameFileCompacted {The game file for the database "[file tail [sc_base filename]]" was compacted.}
+translate P NoUnusedNames "Brak nieu¿ywanych nazw, plik nazw jest ju¿ uporz±dkowany."
+translate P NoUnusedGames "Plik partii jest ju¿ uporz±dkowany."
+translate P NameFileCompacted {Plik nazw dla bazy "[file tail [sc_base filename]]" zosta³ uporz±dkowany.}
+translate P GameFileCompacted {Plik partii dla bazy "[file tail [sc_base filename]]" zosta³ uporz±dkowany.}
 
 # Sorting:
 translate P SortCriteria {Kryteria sortowania}
@@ -1452,12 +1281,12 @@ Scid znajdzie pierwsze posuniêcie w partii, po którym powstanie pozycja niewystê
 }
 
 # Sounds configuration:
-translate P SoundsFolder {Sound Files Folder} ;# ***
-translate P SoundsFolderHelp {The folder should contain the files King.wav, a.wav, 1.wav, etc} ;# ***
-translate P SoundsAnnounceOptions {Move Announcement Options} ;# ***
-translate P SoundsAnnounceNew {Announce new moves as they are made} ;# ***
-translate P SoundsAnnounceForward {Announce moves when moving forward one move} ;# ***
-translate P SoundsAnnounceBack {Announce when retracting or moving back one move} ;# ***
+translate P SoundsFolder {Katalog plików d¼wiêkowych}
+translate P SoundsFolderHelp {Katalog powinien zawieraæ pliki King.wav, a.wav, 1.wav itd.}
+translate P SoundsAnnounceOptions {Ustawienia og³aszania posuniêæ}
+translate P SoundsAnnounceNew {Og³aszaj nowe posuniêcia}
+translate P SoundsAnnounceForward {Og³aszaj posuniêcia przy przegl±daniu}
+translate P SoundsAnnounceBack {Og³aszaj posuniêcia przy cofaniu}
 
 # Upgrading databases:
 translate P Upgrading {Konwersja}
@@ -1487,531 +1316,279 @@ Podaj listê preferowanych nazwisk graczy, po jednym w wierszu. W nazwiskach mo¿n
 
 Wszystkie partie grane przez jednego z graczy z listy bêd± wy¶wietlane z jego perspektywy.
 }
-# ====== TODO To be translated ======
-translate P showblunderexists {show blunder exists}
-# ====== TODO To be translated ======
-translate P showblundervalue {show blunder value}
-# ====== TODO To be translated ======
-translate P showscore {show score}
-# ====== TODO To be translated ======
-translate P coachgame {coach game}
-# ====== TODO To be translated ======
-translate P configurecoachgame {configure coach game}
-# ====== TODO To be translated ======
-translate P configuregame {Game configuration}
-# ====== TODO To be translated ======
-translate P Phalanxengine {Phalanx engine}
-# ====== TODO To be translated ======
-translate P Coachengine {Coach engine}
-# ====== TODO To be translated ======
-translate P difficulty {difficulty}
-# ====== TODO To be translated ======
-translate P hard {hard}
-# ====== TODO To be translated ======
-translate P easy {easy}
-# ====== TODO To be translated ======
-translate P Playwith {Play with}
-# ====== TODO To be translated ======
-translate P white {white}
-# ====== TODO To be translated ======
-translate P black {black}
-# ====== TODO To be translated ======
-translate P both {both}
-# ====== TODO To be translated ======
-translate P Play {Play}
-# ====== TODO To be translated ======
-translate P Noblunder {No blunder}
-# ====== TODO To be translated ======
-translate P blunder {blunder}
-# ====== TODO To be translated ======
-translate P Noinfo {-- No info --}
-# ====== TODO To be translated ======
-translate P PhalanxOrTogaMissing {Phalanx or Toga not found}
-# ====== TODO To be translated ======
-# ====== TODO To be translated ======
-# ====== TODO To be translated ======
+translate P showblunderexists {poka¿ b³±d}
+translate P showblundervalue {poka¿ wagê b³êdu}
+translate P showscore {poka¿ ocenê}
+translate P coachgame {partia treningowa}
+translate P configurecoachgame {konfiguruj partiê treningow±}
+translate P configuregame {Konfiguracja partii}
+translate P Phalanxengine {Program Phalanx}
+translate P Coachengine {Program treningowy}
+translate P difficulty {poziom trudno¶ci}
+translate P hard {wysoki}
+translate P easy {niski}
+translate P Playwith {Graj}
+translate P white {bia³ymi}
+translate P black {czarnymi}
+translate P both {oboma kolorami}
+translate P Play {Gra}
+translate P Noblunder {Bez b³êdów}
+translate P blunder {b³±d}
+translate P Noinfo {-- Brak informacji --}
+translate P PhalanxOrTogaMissing {Brak programu Phalanx lub Toga}
 translate P moveblunderthreshold {move is a blunder if loss is greater than}
-# ====== TODO To be translated ======
-translate P limitanalysis {limit engine analysis time}
-# ====== TODO To be translated ======
-translate P seconds {seconds}
-# ====== TODO To be translated ======
-translate P Abort {Abort}
-# ====== TODO To be translated ======
-translate P Resume {Resume}
-# ====== TODO To be translated ======
-translate P OutOfOpening {Out of opening}
-# ====== TODO To be translated ======
-translate P NotFollowedLine {You did not follow the line}
-# ====== TODO To be translated ======
-translate P DoYouWantContinue {Do you want yo continue ?}
-# ====== TODO To be translated ======
-translate P CoachIsWatching {Coach is watching}
-# ====== TODO To be translated ======
-translate P Ponder {Permanent thinking}
-# ====== TODO To be translated ======
-translate P LimitELO {Limit ELO strength}
-# ====== TODO To be translated ======
-translate P DubiousMovePlayedTakeBack {Dubious move played, do you want to take back ?}
-# ====== TODO To be translated ======
-translate P WeakMovePlayedTakeBack {Weak move played, do you want to take back ?}
-# ====== TODO To be translated ======
-translate P BadMovePlayedTakeBack {Bad move played, do you want to take back ?}
-# ====== TODO To be translated ======
-translate P Iresign {I resign}
-# ====== TODO To be translated ======
-translate P yourmoveisnotgood {your move is not good}
-# ====== TODO To be translated ======
-translate P EndOfVar {End of variation}
-# ====== TODO To be translated ======
-translate P Openingtrainer {Opening trainer}
-# ====== TODO To be translated ======
-translate P DisplayCM {Display candidate moves}
-# ====== TODO To be translated ======
-translate P DisplayCMValue {Display candidate moves value}
-# ====== TODO To be translated ======
-translate P DisplayOpeningStats {Show statistics}
-# ====== TODO To be translated ======
-translate P ShowReport {Show report}
-# ====== TODO To be translated ======
-translate P NumberOfGoodMovesPlayed {good moves played}
-# ====== TODO To be translated ======
-translate P NumberOfDubiousMovesPlayed {dubious moves played}
-# ====== TODO To be translated ======
-translate P NumberOfTimesPositionEncountered {times position encountered}
-# ====== TODO To be translated ======
-translate P PlayerBestMove  {Allow only best moves}
-# ====== TODO To be translated ======
-translate P OpponentBestMove {Opponent plays best moves}
-# ====== TODO To be translated ======
-translate P OnlyFlaggedLines {Only flagged lines}
-# ====== TODO To be translated ======
-translate P resetStats {Reset statistics}
-# ====== TODO To be translated ======
-translate P Movesloaded {Moves loaded}
-# ====== TODO To be translated ======
-translate P PositionsNotPlayed {Positions not played}
-# ====== TODO To be translated ======
-translate P PositionsPlayed {Positions played}
-# ====== TODO To be translated ======
-translate P Success {Success}
-# ====== TODO To be translated ======
-translate P DubiousMoves {Dubious moves}
-# ====== TODO To be translated ======
-translate P ConfigureTactics {Configure tactics}
-# ====== TODO To be translated ======
-translate P ResetScores {Reset scores}
-# ====== TODO To be translated ======
-translate P LoadingBase {Loading base}
-# ====== TODO To be translated ======
-translate P Tactics {Tactics}
-# ====== TODO To be translated ======
-translate P ShowSolution {Show solution}
-# ====== TODO To be translated ======
-translate P Next {Next}
-# ====== TODO To be translated ======
-translate P ResettingScore {Resetting score}
-# ====== TODO To be translated ======
-translate P LoadingGame {Loading game}
-# ====== TODO To be translated ======
-translate P MateFound {Mate found}
-# ====== TODO To be translated ======
-translate P BestSolutionNotFound {Best solution NOT found !}
-# ====== TODO To be translated ======
-translate P MateNotFound {Mate not found}
-# ====== TODO To be translated ======
-translate P ShorterMateExists {Shorter mate exists}
-# ====== TODO To be translated ======
-translate P ScorePlayed {Score played}
-# ====== TODO To be translated ======
-translate P Expected {expected}
-# ====== TODO To be translated ======
-translate P ChooseTrainingBase {Choose training base}
-# ====== TODO To be translated ======
-translate P Thinking {Thinking}
-# ====== TODO To be translated ======
-translate P AnalyzeDone {Analyze done}
-# ====== TODO To be translated ======
-translate P WinWonGame {Win won game}
-# ====== TODO To be translated ======
-translate P Lines {Lines}
-# ====== TODO To be translated ======
-translate P ConfigureUCIengine {Configure UCI engine}
-# ====== TODO To be translated ======
-translate P SpecificOpening {Specific opening}
-# ====== TODO To be translated ======
-translate P StartNewGame {Start new game}
-# ====== TODO To be translated ======
-translate P FixedLevel {Fixed level}
-# ====== TODO To be translated ======
-translate P Opening {Opening}
-# ====== TODO To be translated ======
-translate P RandomLevel {Random level}
-# ====== TODO To be translated ======
-translate P StartFromCurrentPosition {Start from current position}
-# ====== TODO To be translated ======
-translate P FixedDepth {Fixed depth}
-# ====== TODO To be translated ======
-translate P Nodes {Nodes} 
-# ====== TODO To be translated ======
-translate P Depth {Depth}
-# ====== TODO To be translated ======
-translate P Time {Time} 
-# ====== TODO To be translated ======
-translate P SecondsPerMove {Seconds per move}
-# ====== TODO To be translated ======
-translate P Engine {Engine}
-# ====== TODO To be translated ======
-translate P TimeMode {Time mode}
-# ====== TODO To be translated ======
-translate P TimeBonus {Time + bonus}
-# ====== TODO To be translated ======
-# ====== TODO To be translated ======
+translate P limitanalysis {ogranicz czas analizy}
+translate P seconds {sekund}
+translate P Abort {Przerwij}
+translate P Resume {Wznów}
+translate P OutOfOpening {Po debiucie}
+translate P NotFollowedLine {Nie gra³e¶ wariantu}
+translate P DoYouWantContinue {Na pewno kontynuowaæ?}
+translate P CoachIsWatching {Trener siê przygl±da}
+translate P Ponder {Ci±g³e my¶lenie}
+translate P LimitELO {Ogranicz si³ê Elo}
+translate P DubiousMovePlayedTakeBack {Zagra³e¶ w±tpliwe posuniêcie, chcesz je cofn±æ?}
+translate P WeakMovePlayedTakeBack {Zagra³e¶ s³abe posuniêcie, chcesz je cofn±æ?}
+translate P BadMovePlayedTakeBack {Zagra³e¶ bardzo s³abe posuniêcie, chcesz je cofn±æ?}
+translate P Iresign {Poddajê siê}
+translate P yourmoveisnotgood {twoje posuniêcie nie jest dobre}
+translate P EndOfVar {Koniec wariantu}
+translate P Openingtrainer {Trening debiutowy}
+translate P DisplayCM {Poka¿ ruchy-kandydaty}
+translate P DisplayCMValue {Poka¿ ocenê ruchów-kandydatów}
+translate P DisplayOpeningStats {Poka¿ statystykê}
+translate P ShowReport {Poka¿ raport}
+translate P NumberOfGoodMovesPlayed {liczba dobrych posuniêæ}
+translate P NumberOfDubiousMovesPlayed {liczba w±tpliwych posuniêæ}
+translate P NumberOfTimesPositionEncountered {liczba wyst±pieñ pozycji}
+translate P PlayerBestMove  {Tylko najlepsze posuniêcia}
+translate P OpponentBestMove {Przeciwnik gra najlepsze posuniêcia}
+translate P OnlyFlaggedLines {Tylko zaznaczone warianty}
+translate P resetStats {Wyczy¶æ statystykê}
+translate P Movesloaded {Posuniêcia wczytane}
+translate P PositionsNotPlayed {Pozycje nie rozgrywane}
+translate P PositionsPlayed {Pozycje rozgrywane}
+translate P Success {Sukces}
+translate P DubiousMoves {W±tpliwe posuniêcia}
+translate P ConfigureTactics {Konfiguruj taktykê}
+translate P ResetScores {Wyczy¶æ punkty}
+translate P LoadingBase {Wczytaj bazê}
+translate P Tactics {Taktyka}
+translate P ShowSolution {Poka¿ rozwi±zanie}
+translate P Next {Nastêpne}
+translate P ResettingScore {Czyszczenie punktów}
+translate P LoadingGame {Wczytywanie partii}
+translate P MateFound {Znaleziono mata}
+translate P BestSolutionNotFound {Nie znaleziono rozwi±zania!}
+translate P MateNotFound {Nie znaleziono mata}
+translate P ShorterMateExists {Istnieje krótsze rozwi±zanie}
+translate P ScorePlayed {Ocena zagranego posuniêcia}
+translate P Expected {oczekiwana ocena}
+translate P ChooseTrainingBase {Wybierz bazê treningow±}
+translate P Thinking {Analiza}
+translate P AnalyzeDone {Analiza zakoñczona}
+translate P WinWonGame {Wygraj wygran± partiê}
+translate P Lines {Warianty}
+translate P ConfigureUCIengine {Konfiguruj program UCI}
+translate P SpecificOpening {Wybrany program}
+translate P StartNewGame {Rozpocznij now± partiê}
+translate P FixedLevel {Sta³y poziom}
+translate P Opening {Debiut}
+translate P RandomLevel {Losowy poziom}
+translate P StartFromCurrentPosition {Rozpocznij od aktualnej pozycji}
+translate P FixedDepth {Sta³a g³êboko¶æ}
+translate P Nodes {Pozycje} 
+translate P Depth {G³êboko¶æ}
+translate P Time {Czas} 
+translate P SecondsPerMove {Sekundy na posuniêcie}
+translate P Engine {Program}
+translate P TimeMode {Tempo gry}
+translate P TimeBonus {Czas + inkrement}
 translate P TimeMin {min}
-# ====== TODO To be translated ======
-translate P TimeSec {sec}
-# ====== TODO To be translated ======
-# ====== TODO To be translated ======
-# ====== TODO To be translated ======
-translate P AllExercisesDone {All exercises done}
-# ====== TODO To be translated ======
-translate P MoveOutOfBook {Move out of book}
-# ====== TODO To be translated ======
-translate P LastBookMove {Last book move}
-# ====== TODO To be translated ======
-translate P AnnotateSeveralGames {Annotate several games\nfrom current to :}
-# ====== TODO To be translated ======
-translate P FindOpeningErrors {Find opening errors}
-# ====== TODO To be translated ======
-translate P MarkTacticalExercises {Mark tactical exercises}
-# ====== TODO To be translated ======
-translate P UseBook {Use book}
-# ====== TODO To be translated ======
-translate P MultiPV {Multiple variations}
-# ====== TODO To be translated ======
-translate P Hash {Hash memory}
-# ====== TODO To be translated ======
-translate P OwnBook {Use engine book}
-# ====== TODO To be translated ======
-translate P BookFile {Opening book}
-# ====== TODO To be translated ======
-translate P AnnotateVariations {Annotate variations}
-# ====== TODO To be translated ======
-translate P ShortAnnotations {Short annotations}
-# ====== TODO To be translated ======
-translate P addAnnotatorTag {Add annotator tag}
-# ====== TODO To be translated ======
-translate P AddScoreToShortAnnotations {Add score to short annotations}
-# ====== TODO To be translated ======
-translate P Export {Export}
-# ====== TODO To be translated ======
-translate P BookPartiallyLoaded {Book partially loaded}
-# ====== TODO To be translated ======
-translate P Calvar {Calculation of variations}
-# ====== TODO To be translated ======
-translate P ConfigureCalvar {Configuration}
-# ====== TODO To be translated ======
-# ====== TODO To be translated ======
-translate P Reti {Reti}
-# ====== TODO To be translated ======
-translate P English {English}
-# ====== TODO To be translated ======
-translate P d4Nf6Miscellaneous {1.d4 Nf6 Miscellaneous}
-# ====== TODO To be translated ======
+translate P TimeSec {s}
+translate P AllExercisesDone {Wszystkie zadania zakoñczone}
+translate P MoveOutOfBook {Posuniêcie spoza ksi±¿ki debiutowej}
+translate P LastBookMove {Ostatnie posuniêcie w ksi±¿ce debiutowej}
+translate P AnnotateSeveralGames {Komentuj kilka partii\nod aktualnej do:}
+translate P FindOpeningErrors {Znajd¼ b³êdy debiutowe}
+translate P MarkTacticalExercises {Oznacz zadania taktyczne}
+translate P UseBook {U¿yj ksi±¿ki debiutowej}
+translate P MultiPV {Wiele wariantów}
+translate P Hash {Pamiêæ bufora}
+translate P OwnBook {U¿yj ksi±¿ki debiutowej programu}
+translate P BookFile {Ksi±¿ka debiutowa}
+translate P AnnotateVariations {Komentuj warianty}
+translate P ShortAnnotations {Skrócone komentarze}
+translate P addAnnotatorTag {Dodaj znacznik komentatora}
+translate P AddScoreToShortAnnotations {Dodaj ocenê do skróconych komentarzy}
+translate P Export {Eksportuj}
+translate P BookPartiallyLoaded {Ksi±¿ka czê¶ciowo wczytana}
+translate P Calvar {Liczenie wariantów}
+translate P ConfigureCalvar {Konfiguracja}
+translate P Reti {Debiut Reti}
+translate P English {Partia angielska}
+translate P d4Nf6Miscellaneous {1.d4 Nf6 inne}
 translate P Trompowsky {Trompowsky}
-# ====== TODO To be translated ======
-translate P Budapest {Budapest}
-# ====== TODO To be translated ======
-translate P OldIndian {Old Indian}
-# ====== TODO To be translated ======
-translate P BenkoGambit {Benko Gambit}
-# ====== TODO To be translated ======
+translate P Budapest {Gambit budapeszteñski}
+translate P OldIndian {Obrona staroindyjska}
+translate P BenkoGambit {Gambit wo³¿añski}
 translate P ModernBenoni {Modern Benoni}
-# ====== TODO To be translated ======
-translate P DutchDefence {Dutch Defence}
-# ====== TODO To be translated ======
-translate P Scandinavian {Scandinavian}
-# ====== TODO To be translated ======
-translate P AlekhineDefence {Alekhine Defence}
-# ====== TODO To be translated ======
-translate P Pirc {Pirc}
-# ====== TODO To be translated ======
-translate P CaroKann {Caro-Kann}
-# ====== TODO To be translated ======
-translate P CaroKannAdvance {Caro-Kann Advance}
-# ====== TODO To be translated ======
-translate P Sicilian {Sicilian}
-# ====== TODO To be translated ======
-translate P SicilianAlapin {Sicilian Alapin}
-# ====== TODO To be translated ======
-translate P SicilianClosed {Sicilian Closed}
-# ====== TODO To be translated ======
-translate P SicilianRauzer {Sicilian Rauzer}
-# ====== TODO To be translated ======
-translate P SicilianDragon {Sicilian Dragon}
-# ====== TODO To be translated ======
-translate P SicilianScheveningen {Sicilian Scheveningen}
-# ====== TODO To be translated ======
-translate P SicilianNajdorf {Sicilian Najdorf}
-# ====== TODO To be translated ======
-translate P OpenGame {Open Game}
-# ====== TODO To be translated ======
-translate P Vienna {Vienna}
-# ====== TODO To be translated ======
-translate P KingsGambit {King's Gambit}
-# ====== TODO To be translated ======
-translate P RussianGame {Russian Game}
-# ====== TODO To be translated ======
-translate P ItalianTwoKnights {Italian/Two Knights}
-# ====== TODO To be translated ======
-translate P Spanish {Spanish}
-# ====== TODO To be translated ======
-translate P SpanishExchange {Spanish Exchange}
-# ====== TODO To be translated ======
-translate P SpanishOpen {Spanish Open}
-# ====== TODO To be translated ======
-translate P SpanishClosed {Spanish Closed}
-# ====== TODO To be translated ======
-translate P FrenchDefence {French Defence}
-# ====== TODO To be translated ======
-translate P FrenchAdvance {French Advance}
-# ====== TODO To be translated ======
-translate P FrenchTarrasch {French Tarrasch}
-# ====== TODO To be translated ======
-translate P FrenchWinawer {French Winawer}
-# ====== TODO To be translated ======
-translate P FrenchExchange {French Exchange}
-# ====== TODO To be translated ======
-translate P QueensPawn {Queen's Pawn}
-# ====== TODO To be translated ======
-translate P Slav {Slav}
-# ====== TODO To be translated ======
-translate P QGA {QGA}
-# ====== TODO To be translated ======
-translate P QGD {QGD}
-# ====== TODO To be translated ======
-translate P QGDExchange {QGD Exchange}
-# ====== TODO To be translated ======
-translate P SemiSlav {Semi-Slav}
-# ====== TODO To be translated ======
-translate P QGDwithBg5 {QGD with Bg5}
-# ====== TODO To be translated ======
-translate P QGDOrthodox {QGD Orthodox}
-# ====== TODO To be translated ======
-translate P Grunfeld {Grünfeld}
-# ====== TODO To be translated ======
-translate P GrunfeldExchange {Grünfeld Exchange}
-# ====== TODO To be translated ======
-translate P GrunfeldRussian {Grünfeld Russian}
-# ====== TODO To be translated ======
-translate P Catalan {Catalan}
-# ====== TODO To be translated ======
-translate P CatalanOpen {Catalan Open}
-# ====== TODO To be translated ======
-translate P CatalanClosed {Catalan Closed}
-# ====== TODO To be translated ======
-translate P QueensIndian {Queen's Indian}
-# ====== TODO To be translated ======
-translate P NimzoIndian {Nimzo-Indian}
-# ====== TODO To be translated ======
-translate P NimzoIndianClassical {Nimzo-Indian Classical}
-# ====== TODO To be translated ======
-translate P NimzoIndianRubinstein {Nimzo-Indian Rubinstein}
-# ====== TODO To be translated ======
-translate P KingsIndian {King's Indian}
-# ====== TODO To be translated ======
-translate P KingsIndianSamisch {King's Indian Sämisch}
-# ====== TODO To be translated ======
-translate P KingsIndianMainLine {King's Indian Main Line}
-# ====== TODO To be translated ======
+translate P DutchDefence {Obrona holenderska}
+translate P Scandinavian {Obrona skandynawska}
+translate P AlekhineDefence {Obrona Alechina}
+translate P Pirc {Obrona Pirca}
+translate P CaroKann {Obrona Caro-Kann}
+translate P CaroKannAdvance {Obrona Caro-Kann, 3.e5}
+translate P Sicilian {Obrona sycylijska}
+translate P SicilianAlapin {Obrona sycylijska, wariant A³apina}
+translate P SicilianClosed {Obrona sycylijska, wariant zamkniêty}
+translate P SicilianRauzer {Obrona sycylijska, wariant Rauzera}
+translate P SicilianDragon {Obrona sycylijska, wariant smoczy}
+translate P SicilianScheveningen {Obrona sycylijska, wariant Scheveningen}
+translate P SicilianNajdorf {Obrona sycylijska, wariant Najdorfa}
+translate P OpenGame {Debiuty otwarte}
+translate P Vienna {Partia wiedeñska}
+translate P KingsGambit {Gambit królewski}
+translate P RussianGame {Partia rosyjska}
+translate P ItalianTwoKnights {Partia w³oska/obrona dwóch skoczków}
+translate P Spanish {Partia hiszpañska}
+translate P SpanishExchange {Partia hiszpañska, wariant wymienny}
+translate P SpanishOpen {Partia hiszpañska, wariant otwarty}
+translate P SpanishClosed {Partia hiszpañska, wariant zamkniêty}
+translate P FrenchDefence {Obrona francuska}
+translate P FrenchAdvance {Obrona francuska, 3.e5}
+translate P FrenchTarrasch {Obrona francuska, wariant Tarrascha}
+translate P FrenchWinawer {Obrona francuska, wariant Winawera}
+translate P FrenchExchange {Obrona francuska, wariant wymienny}
+translate P QueensPawn {Debiut piona hetmañskiego}
+translate P Slav {Obrona s³owiañska}
+translate P QGA {Przyjêty gambit hetmañski}
+translate P QGD {Nieprzyjêty gabit hetmañski}
+translate P QGDExchange {Gambit hetmañski, wariant wymienny}
+translate P SemiSlav {Obrona pó³s³owiañska}
+translate P QGDwithBg5 {Gambit hetmañski z Bg5}
+translate P QGDOrthodox {Gambit hetmañski, wariant ortodoksalny}
+translate P Grunfeld {Obrona Grünfelda}
+translate P GrunfeldExchange {Obrona Grünfeld, wariant wymienny}
+translate P GrunfeldRussian {Obrona Grünfelda, wariant rosyjski}
+translate P Catalan {Partia kataloñska}
+translate P CatalanOpen {Partia kataloñska, wariant otwarty}
+translate P CatalanClosed {Partia kataloñska, wariant zamkniêty}
+translate P QueensIndian {Obrona hetmañsko-indyjska}
+translate P NimzoIndian {Obrona Nimzowitscha}
+translate P NimzoIndianClassical {Obrona Nimzowitscha, wariant klasyczny}
+translate P NimzoIndianRubinstein {Obrona Nimzowitscha, wariant Rubinsteina}
+translate P KingsIndian {Obrona królewsko-indyjska}
+translate P KingsIndianSamisch {Obrona królewsko-indyjska, wariant Sämischa}
+translate P KingsIndianMainLine {Obrona królewsko-indyjska, wariant g³ówny}
 
 # FICS todo
-translate P ConfigureFics {Configure FICS}
-translate P FICSLogin {Login}
-translate P FICSGuest {Login as Guest}
-translate P FICSServerPort {Server port}
-translate P FICSServerAddress {IP Address}
-translate P FICSRefresh {Refresh}
+translate P ConfigureFics {Konfiguruj FICS}
+translate P FICSLogin {Zaloguj siê}
+translate P FICSGuest {Zaloguj siê jako go¶æ}
+translate P FICSServerPort {Port serwera}
+translate P FICSServerAddress {Adres IP}
+translate P FICSRefresh {Od¶wie¿}
 translate P FICSTimeseal {Timeseal}
-translate P FICSTimesealPort {Timeseal port}
-translate P FICSSilence {Console filter}
-translate P FICSOffers {Offers}
-translate P FICSGames {Games}
-translate P FICSFindOpponent {Find opponent}
-translate P FICSTakeback {Takeback}
-translate P FICSTakeback2 {Takeback 2}
-translate P FICSInitTime {Time (min)}
-translate P FICSIncrement {Increment (sec)}
-translate P FICSRatedGame {Rated Game}
-translate P FICSAutoColour {Automatic}
-translate P FICSManualConfirm {Confirm manually}
-translate P FICSFilterFormula {Filter with formula}
-translate P FICSIssueSeek {Issue seek}
-translate P FICSAccept {Accept}
-translate P FICSDecline {Decline}
-translate P FICSColour {Colour}
-translate P FICSSend {Send}
-translate P FICSConnect {Connect}
+translate P FICSTimesealPort {Port Timeseal}
+translate P FICSSilence {Filtr konsoli}
+translate P FICSOffers {Propozycje}
+translate P FICSGames {Partie}
+translate P FICSFindOpponent {Znajd¼ przeciwnika}
+translate P FICSTakeback {Cofnij}
+translate P FICSTakeback2 {Cofnij 2}
+translate P FICSInitTime {Czas (min)}
+translate P FICSIncrement {Inkrement (sec)}
+translate P FICSRatedGame {Partia liczona do rankingu}
+translate P FICSAutoColour {Automatycznie}
+translate P FICSManualConfirm {Potwierd¼ rêcznie}
+translate P FICSFilterFormula {Filtruj przy u¿yciu formu³y}
+translate P FICSIssueSeek {Szukaj przeciwnika}
+translate P FICSAccept {Akceptuj}
+translate P FICSDecline {Odrzuæ}
+translate P FICSColour {Kolor}
+translate P FICSSend {Wy¶lij}
+translate P FICSConnect {Po³±cz}
 
-translate P CCDlgConfigureWindowTitle {Configure Correspondence Chess}
-# ====== TODO To be translated ======
-translate P CCDlgCGeneraloptions {General Options}
-# ====== TODO To be translated ======
-translate P CCDlgDefaultDB {Default Database:}
-# ====== TODO To be translated ======
-translate P CCDlgInbox {Inbox (path):}
-# ====== TODO To be translated ======
-translate P CCDlgOutbox {Outbox (path):}
-# ====== TODO To be translated ======
-translate P CCDlgXfcc {Xfcc Configuration:}
-# ====== TODO To be translated ======
-translate P CCDlgExternalProtocol {External Protocol Handler (e.g. Xfcc)}
-# ====== TODO To be translated ======
-translate P CCDlgFetchTool {Fetch Tool:}
-# ====== TODO To be translated ======
-translate P CCDlgSendTool {Send Tool:}
-# ====== TODO To be translated ======
-translate P CCDlgEmailCommunication {eMail Communication}
-# ====== TODO To be translated ======
-translate P CCDlgMailPrg {Mail program:}
-# ====== TODO To be translated ======
-translate P CCDlgBCCAddr {(B)CC Address:}
-# ====== TODO To be translated ======
-translate P CCDlgMailerMode {Mode:}
-# ====== TODO To be translated ======
-translate P CCDlgThunderbirdEg {e.g. Thunderbird, Mozilla Mail, Icedove...}
-# ====== TODO To be translated ======
-translate P CCDlgMailUrlEg {e.g. Evolution}
-# ====== TODO To be translated ======
-translate P CCDlgClawsEg {e.g Sylpheed Claws}
-# ====== TODO To be translated ======
-translate P CCDlgmailxEg {e.g. mailx, mutt, nail...}
-# ====== TODO To be translated ======
-translate P CCDlgAttachementPar {Attachment parameter:}
-# ====== TODO To be translated ======
-translate P CCDlgInternalXfcc {Use internal Xfcc support}
-# ====== TODO To be translated ======
-translate P CCDlgConfirmXfcc {Confirm moves}
-# ====== TODO To be translated ======
-translate P CCDlgSubjectPar {Subject parameter:}
-# ====== TODO To be translated ======
-translate P CCDlgDeleteBoxes {Empty In-/Outbox}
-# ====== TODO To be translated ======
-translate P CCDlgDeleteBoxesText {Do you really want to empty your In- and Outbox folders for Correspondence Chess? This requires a new sync to show the last state of your games}
-# ====== TODO To be translated ======
-translate P CCDlgConfirmMove {Confirm move}
-# ====== TODO To be translated ======
-translate P CCDlgConfirmMoveText {If you confirm, the following move and comment will be sent to the server:}
-# ====== TODO To be translated ======
-translate P CCDlgDBGameToLong {Inconsistent Mainline}
-# ====== TODO To be translated ======
-translate P CCDlgDBGameToLongError {The mainline in your database is longer than the game in your Inbox. If the Inbox contains current games, i.e. right after a sync, some moves were added to the mainline in the database erroneously.\nIn this case please shorten the mainline to (at max) move\n}
-# ====== TODO To be translated ======
-translate P CCDlgStartEmail {Start new eMail game}
-# ====== TODO To be translated ======
-translate P CCDlgYourName {Your Name:}
-# ====== TODO To be translated ======
-translate P CCDlgYourMail {Your eMail Address:}
-# ====== TODO To be translated ======
-translate P CCDlgOpponentName {Opponents Name:}
-# ====== TODO To be translated ======
-translate P CCDlgOpponentMail {Opponents eMail Address:}
-# ====== TODO To be translated ======
-translate P CCDlgGameID {Game ID (unique):}
-# ====== TODO To be translated ======
-translate P CCDlgTitNoOutbox {Scid: Correspondence Chess Outbox}
-# ====== TODO To be translated ======
-translate P CCDlgTitNoInbox {Scid: Correspondence Chess Inbox}
-# ====== TODO To be translated ======
-translate P CCDlgTitNoGames {Scid: No Correspondence Chess Games}
-# ====== TODO To be translated ======
-translate P CCErrInboxDir {Correspondence Chess inbox directory:}
-# ====== TODO To be translated ======
-translate P CCErrOutboxDir {Correspondence Chess outbox directory:}
-# ====== TODO To be translated ======
-translate P CCErrDirNotUsable {does not exist or is not accessible!\nPlease check and correct the settings.}
-# ====== TODO To be translated ======
-translate P CCErrNoGames {does not contain any games!\nPlease fetch them first.}
-# ====== TODO To be translated ======
-translate P CCDlgTitNoCCDB {Scid: No Correspondence Database}
-# ====== TODO To be translated ======
-translate P CCErrNoCCDB {No Database of type 'Correspondence' is opened. Please open one before using correspondence chess functions.}
-# ====== TODO To be translated ======
-translate P CCFetchBtn {Fetch games from the server and process the Inbox}
-# ====== TODO To be translated ======
-translate P CCPrevBtn {Goto previous game}
-# ====== TODO To be translated ======
-translate P CCNextBtn {Goto next game}
-# ====== TODO To be translated ======
-translate P CCSendBtn {Send move}
-# ====== TODO To be translated ======
-translate P CCEmptyBtn {Empty In- and Outbox}
-# ====== TODO To be translated ======
-translate P CCHelpBtn {Help on icons and status indicators.\nFor general Help press F1!}
-# ====== TODO To be translated ======
-translate P CCDlgServerName {Server Name:}
-# ====== TODO To be translated ======
-translate P CCDlgLoginName  {Login Name:}
-# ====== TODO To be translated ======
-translate P CCDlgPassword   {Password:}
-# ====== TODO To be translated ======
-translate P CCDlgURL        {Xfcc-URL:}
-# ====== TODO To be translated ======
-translate P CCDlgRatingType {Rating Type:}
-# ====== TODO To be translated ======
-translate P CCDlgDuplicateGame {Non-unique game ID}
-# ====== TODO To be translated ======
-translate P CCDlgDuplicateGameError {This game exists more than once in your database. Please delete all duplicates and compact your game file (File/Maintenance/Compact Database).}
-# ====== TODO To be translated ======
-translate P CCDlgSortOption {Sorting:}
-# ====== TODO To be translated ======
-translate P CCDlgListOnlyOwnMove {Only games I have the move}
-# ====== TODO To be translated ======
-translate P CCOrderClassicTxt {Site, Event, Round, Result, White, Black}
-# ====== TODO To be translated ======
-translate P CCOrderMyTimeTxt {My Clock}
-# ====== TODO To be translated ======
-translate P CCOrderTimePerMoveTxt {Time per move till next time control}
-# ====== TODO To be translated ======
-translate P CCOrderStartDate {Start date}
-# ====== TODO To be translated ======
-translate P CCOrderOppTimeTxt {Opponents Clock}
-# ====== TODO To be translated ======
-translate P CCDlgConfigRelay {Configure ICCF observations}
-# ====== TODO To be translated ======
-translate P CCDlgConfigRelayHelp {Go to the games page on http://www.iccf-webchess.com and display the game to be observed.  If you see the chessboard copy the URL from your browser to the list below. One URL per line only!\nExample: http://www.iccf-webchess.com/MakeAMove.aspx?id=266452}
-
-# ====== TODO To be translated ======
-translate P ExtHWConfigConnection {Configure external hardware}
-# ====== TODO To be translated ======
+translate P CCDlgConfigureWindowTitle {Konfiguruj grê korespondencyjn±}
+translate P CCDlgCGeneraloptions {Ustawienia ogólne}
+translate P CCDlgDefaultDB {Domy¶lna baza:}
+translate P CCDlgInbox {Skrzynka odbiorcza (¶cie¿ka):}
+translate P CCDlgOutbox {Skrzynka nadawcza (¶cie¿ka):}
+translate P CCDlgXfcc {Konfiguracja Xfcx:}
+translate P CCDlgExternalProtocol {Zewnêtrzna obs³uga protoko³ów (np. Xfcc)}
+translate P CCDlgFetchTool {Narzêdzie pobierania:}
+translate P CCDlgSendTool {Narzêdzie wysy³ania:}
+translate P CCDlgEmailCommunication {Komunikacja e-mail}
+translate P CCDlgMailPrg {Program pocztowy:}
+translate P CCDlgBCCAddr {Adres (U)DW:}
+translate P CCDlgMailerMode {Tryb:}
+translate P CCDlgThunderbirdEg {np. Thunderbird, Mozilla Mail, Icedove...}
+translate P CCDlgMailUrlEg {np. Evolution}
+translate P CCDlgClawsEg {np Sylpheed Claws}
+translate P CCDlgmailxEg {np. mailx, mutt, nail...}
+translate P CCDlgAttachementPar {Parametr za³±cznika:}
+translate P CCDlgInternalXfcc {U¿yj wbudowanej obs³ugi Xfcc}
+translate P CCDlgConfirmXfcc {Potwierd¼ posuniêcia}
+translate P CCDlgSubjectPar {Parametr tematu:}
+translate P CCDlgDeleteBoxes {Opró¿nij skrzynki nadawcz± i odbiorcz±}
+translate P CCDlgDeleteBoxesText {Na pewno opró¿niæ foldery nadawczy i odbiorczy dla szachów korespondencyjnych? To wymaga synchronizacji, by wy¶wietliæ aktualny stan Twoich partii}
+translate P CCDlgConfirmMove {Potwierd¼ posuniêcie}
+translate P CCDlgConfirmMoveText {Je¶li potwierdzisz, nastêpuj±ce posuniêcie i komentarz zostan± wys³ane na serwer:}
+translate P CCDlgDBGameToLong {Niezgodny wariant g³ówny}
+translate P CCDlgDBGameToLongError {Wariant g³ówny w Twojej bazie jest d³u¿szy ni¿ w skrzynce odbiorczej. Je¶li skrzynka odbiorcza zawiera aktualny stan partii, posuniêcia zosta³y b³êdnie dodanoe do g³ównej bazy.\nW takim wypadku proszê skróciæ wariant g³ówny co najmniej do posuniêcia\n}
+translate P CCDlgStartEmail {Rozpocznij now± partiê e-mail}
+translate P CCDlgYourName {Imiê i nazwisko:}
+translate P CCDlgYourMail {Adres e-mail:}
+translate P CCDlgOpponentName {Imiê i nazwisko przeciwnika:}
+translate P CCDlgOpponentMail {Adres e-mail przeciwnika:}
+translate P CCDlgGameID {Unikatowy identyfikator partii:}
+translate P CCDlgTitNoOutbox {Scid: skrzynka nadawcza}
+translate P CCDlgTitNoInbox {Scid: skrzynka odbiorcza}
+translate P CCDlgTitNoGames {Scid: brak partii korespondencyjnych}
+translate P CCErrInboxDir {Katalog odbiorczy szachów korespondencyjnych:}
+translate P CCErrOutboxDir {Katalog nadawczy szachów korespondencyjnych:}
+translate P CCErrDirNotUsable {nie istnieje lub jest niedostêpny.\nProszê sprawdziæ i poprawiæ ustawienia.}
+translate P CCErrNoGames {nie zawiera ¿adnych partii!\nProszê najpierw je pobraæ.}
+translate P CCDlgTitNoCCDB {Scid: brak bazy korespondencyjnej}
+translate P CCErrNoCCDB {Nie otwarto bazy typu 'Szachy korespondencyjne'. Proszê otworzyæ j± przed u¿yciem funkcji do gry korespondencyjnej.}
+translate P CCFetchBtn {Pobierz partie z serwera i przetwórz skrzynkê odbiorcz±}
+translate P CCPrevBtn {Przejd¼ do poprzedniej partii}
+translate P CCNextBtn {Przejd¼ do nastêpnej partii}
+translate P CCSendBtn {Wy¶lij posuniêcie}
+translate P CCEmptyBtn {Opró¿nij skrzynkê odbiorcz± i nadawcz±}
+translate P CCHelpBtn {Pomoc dla ikon i znaczników stanu.\nProszê wcisn±æ F1, by zobaczyæ ogóln± pomoc.}
+translate P CCDlgServerName {Nazwa serwera:}
+translate P CCDlgLoginName  {Nazwa u¿ytkownika:}
+translate P CCDlgPassword   {Has³o:}
+translate P CCDlgURL        {Adres Xfcc:}
+translate P CCDlgRatingType {Typ rankingu:}
+translate P CCDlgDuplicateGame {Nieunikatowy identyfikator partii}
+translate P CCDlgDuplicateGameError {Ta partia jest powtórzona w bazie danych. Proszê usun±æ wszystkie powtórzenia i uporz±dkowaæ plik bazy  delete (Plik/Obs³uga/Uporz±dkuj).}
+translate P CCDlgSortOption {Sortowanie:}
+translate P CCDlgListOnlyOwnMove {Tylko partie, gdzie jestem na posuniêciu}
+translate P CCOrderClassicTxt {Miejsce, turniej, runda, wynik, bia³e, czarne}
+translate P CCOrderMyTimeTxt {Mój czas}
+translate P CCOrderTimePerMoveTxt {Czas na posuniêcie do nastêpnej kontroli}
+translate P CCOrderStartDate {Data rozpoczêcia}
+translate P CCOrderOppTimeTxt {Czas przeciwnika}
+translate P CCDlgConfigRelay {Konfiguruj obserwowanie ICCF}
+translate P CCDlgConfigRelayHelp {Przejd¼ na stronê partii na http://www.iccf-webchess.com i wy¶wietl partiê do obserwowania. Je¶li widzisz szachownicê, skopiuj adres z przegl±darki do listy poni¿ej (jeden adres na wiersz).\nPrzyk³ad: http://www.iccf-webchess.com/MakeAMove.aspx?id=266452}
+translate P ExtHWConfigConnection {Konfiguruj urz±dzenie zewnêtrzne}
 translate P ExtHWPort {Port}
-# ====== TODO To be translated ======
-translate P ExtHWEngineCmd {Engine command}
-# ====== TODO To be translated ======
-translate P ExtHWEngineParam {Engine parameter}
-# ====== TODO To be translated ======
-translate P ExtHWShowButton {Show button}
-# ====== TODO To be translated ======
-translate P ExtHWHardware {Hardware}
-# ====== TODO To be translated ======
+translate P ExtHWEngineCmd {Polecenie programu}
+translate P ExtHWEngineParam {Parametr programu}
+translate P ExtHWShowButton {Poka¿ przycisk}
+translate P ExtHWHardware {Sprzêt}
 translate P ExtHWNovag {Novag Citrine}
-# ====== TODO To be translated ======
-translate P ExtHWInputEngine {Input Engine}
-# ====== TODO To be translated ======
-translate P ExtHWNoBoard {No board}
-# ====== TODO To be translated ======
-translate P IEConsole {Input Engine Console}
-# ====== TODO To be translated ======
-translate P IESending {Moves sent for}
-# ====== TODO To be translated ======
-translate P IESynchronise {Synchronise}
-# ====== TODO To be translated ======
-translate P IERotate  {Rotate}
-# ====== TODO To be translated ======
-translate P IEUnableToStart {Unable to start Input Engine:}
-# ====== TODO To be translated ======
-translate P DoneWithPosition {Done with position}
-# ====== TODO To be translated ======
+translate P ExtHWInputEngine {Program wej¶ciowy}
+translate P ExtHWNoBoard {Brak szachownicy}
+translate P IEConsole {Terminal programu wej¶ciowego}
+translate P IESending {Posuniêcia wys³ane do}
+translate P IESynchronise {Synchronizuj}
+translate P IERotate  {Obróæ}
+translate P IEUnableToStart {Nie mo¿na uruchomiæ programu wej¶ciowego:}
+translate P DoneWithPosition {Pozycja zakoñczona}
 }
 
 ### Tips of the day in Polish:
