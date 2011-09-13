@@ -102,7 +102,12 @@ proc ::gbrowser::new {base gnum {ply -1} {w {}}} {
 
     set ::gbrowser::autoplay($n) 0
 
-    dialogbutton $w.b.load -textvar ::tr(LoadGame) -command "sc_base switch $base; ::game::Load $gnum"
+    dialogbutton $w.b.load -textvar ::tr(LoadGame) -command "
+      sc_base switch $base
+      ::game::Load $gnum 0
+      sc_move ply \$::gbrowser::ply($n)
+      updateBoard -pgn"
+
     dialogbutton $w.b.merge -textvar ::tr(MergeGame) -command "mergeGame $base $gnum"
 
     # Behaviour of ply is a little confusing.
@@ -142,7 +147,11 @@ proc ::gbrowser::new {base gnum {ply -1} {w {}}} {
     $w.b.next configure -command   "::gbrowser::load $w $base $gnum $ply +1"
     $w.b.last configure -command   "::gbrowser::load $w $base $gnum $ply end"
 
-    $w.b.load configure -command "sc_base switch $base; ::game::Load $gnum"
+    $w.b.load configure -command "
+      sc_base switch $base
+      ::game::Load $gnum 0
+      sc_move ply \$::gbrowser::ply($n)
+      updateBoard -pgn"
     $w.b.merge configure -command "mergeGame $base $gnum"
   }
 
