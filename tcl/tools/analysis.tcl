@@ -1515,6 +1515,8 @@ proc addAnalysisVariation {n} {
 
   if {! [winfo exists .analysisWin$n]} { return }
 
+  sc_game undoPoint
+
   # if we are at the end of the game, we cannot add variation, so we add the
   # analysis one move before and append the last game move at the beginning of
   # the analysis
@@ -1607,6 +1609,8 @@ proc addAllVariations {{n 1}} {
 
   # Cannot add a variation to an empty variation:
   if {[sc_pos isAt vstart]  &&  [sc_pos isAt vend]} { return }
+
+  sc_game undoPoint
 
   # if we are at the end of the game, we cannot add variation
   # so we add the analysis one move before and append the last game move at the beginning of the analysis

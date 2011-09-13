@@ -6013,7 +6013,7 @@ sc_game (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
         break;
     case GAME_UNDO_POINT:
         sc_game_save_for_undo();
-                break;
+        break;
 
     default:
         return InvalidCommand (ti, "sc_game", options);
@@ -9480,9 +9480,8 @@ sc_game_tags_share (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv
     return TCL_OK;
 }
 
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// sc_game_save_for_undo:
-//    change current game to latest saved state
+//    Set undo point
+
 void sc_game_save_for_undo() {
 
     Game * g = NULL;

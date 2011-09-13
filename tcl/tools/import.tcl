@@ -145,6 +145,8 @@ proc importVar {} {
     return
   }
 
+  sc_game undoPoint
+
   # Code reused from addAnalysisVariation
 
   set addAtStart [expr [sc_pos isAt vstart]  &&  [sc_pos isAt vend]]
