@@ -593,7 +593,11 @@ proc updateMatchList { tw nametype maxMatches name el op } {
   set i 1
   # hmm... Unicode is broken for some reason (above also)
 
+  set entrywidget [focus]
+
   foreach {count string} $matches {
+    # mouse binding
+
     if {[string trim $string] != {}} {
       set nameMatches($i) $string
       $tw tag bind tag$i <ButtonRelease-1> [list set $name $string]
@@ -601,8 +605,14 @@ proc updateMatchList { tw nametype maxMatches name el op } {
       $tw tag bind focus$i <Any-Leave> "$tw tag configure focus$i -back {}"
 
       $tw insert end "$count\t$string\n" [list tag$i focus$i]
-      incr i
     }
+
+    # Control-N key binding
+    bind $entrywidget <Control-Key-$i> "
+      set $name \"$string\"
+      $entrywidget icursor end"
+
+    incr i
   }
   $tw configure -state disabled
 
@@ -1049,23 +1059,6 @@ proc gameSave {gnum {focus {}}} {
 	     weloentry beloentry ecoentry edateyear edatemonth edateday} {
     bind $f.$i <Return> "$w.buttons.save invoke"
   }
-
-if {0} {
-  ### No longer use the Control-N key bindings
-  set j 0
-  foreach {i j} { \
-    entryevent "event"
-    entrysite  "site"
-    entrywhite "white"
-    entryblack "black"
-    entryround "round" } {
-    for {set z 1} {$z <= 9} {incr z} {
-      bind $f.$i [format "<Control-Key-%d>" $z] \
-          [format "eval {if {\$nameMatchCount >= %d} \
-            {set %s \$nameMatches(%d)}}" $z $j $z ]
-    }
-  }
-}
 
   # Divider
   pack [frame $w.bar -height 2 -borderwidth 1 -relief sunken] -fill x -pady 5
