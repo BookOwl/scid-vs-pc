@@ -2112,7 +2112,7 @@ proc makeAnalysisWin {{n 0}} {
     -command "if {$analysis(uci$n)} {sendToEngine $n .}"  -relief $relief
   ::utils::tooltip::Set $w.b.update $::tr(Update)
 
-  checkbutton $w.b.showinfo -image tb_engine -indicatoron false -width 32 -height 32 \
+  checkbutton $w.b.showinfo -image tb_info -indicatoron false -width 32 -height 32 \
     -variable analysis(showEngineInfo$n) -command "toggleEngineInfo $n" -relief $relief
   ::utils::tooltip::Set $w.b.showinfo $::tr(ShowInfo)
 
@@ -3640,32 +3640,31 @@ kDVQECgR2gAKwAmxg2KU/YF2EIFLDAvayp1Lt67du4UCAQA7
 }
 
 image create photo tb_lockengine -data {
-R0lGODlhGAAYAOe+ADIhEC4kGTgvKW1CFV5QSV1YV2hhX2lkZJdcGmtlZJdd
-GmxkbJheGmxlbW1lbGxmbJpeG5tgHnBsanFtbG9xbXFzb3FzcXZycHN2cqNr
-L3Z3dnZ4daZxN3t9enx+fLB1MKl3PH+Cf6t4P7J3M7N4NLR4NLN5NLJ6PLJ7
-O7Z8NrZ9OLZ9Ord9ObR/Q7SBRbmAPbSCQLSBRraCQbmBP7qBPpCJiLSDSbeD
-QoqNirqDP7WETLqEQpKLi7iFRIyOjLmFSLaGTLWITbyGRbeHTrqHSryHRryH
-SLqISbmITruJSayMZbyKS76KTLqLUrqMVLqMVZOVkruNVbuOVryOVsCNUb2O
-VpiWkbyPWL2QWMCRVcCSVr+SWsCTWMSSVsGVXMKVXMKWXMOWX6GemsaYVsOY
-YMaYWMeYWMSZYMSZYcaYYaOgnaGim6SgnsabZMacZMibZ8ecZcmdYcidZcid
-ZsqdYcieZsifaMqfY8mfaKilo8qebcqfaKmmo6qnpMuja6qppsyka8ykbMyk
-bc2kbc6ka8ylbc6kbsymbc6mb9ClcM+mcM+ncM+ncrGsq8+nfNKndtCpcdGo
-dLKurbOurdOqetOqe9KtdtOse7OzsNSud7W1stauf9KvhdSwfNavgNewgNiz
-f9m0hNW2jtq2hde7ldm+mdq+meG9lNzAnd/AluDAmeDBmeLCm+PCnOPDnOTE
-neTGoOXQs+fSuenVvu7Vt+3WuO7Yuu7Yu+7YvO/Yu+3ZwO/avvDav+/bv/ft
-rPftrPftrPftrPftrPftrPftrPftrPftrPftrPftrPftrPftrPftrPftrPft
-rPftrPftrPftrPftrPftrPftrPftrPftrPftrPftrPftrPftrPftrPftrPft
-rPftrPftrPftrPftrPftrPftrPftrPftrPftrPftrPftrPftrPftrPftrPft
-rPftrPftrPftrPftrPftrPftrPftrPftrPftrPftrPftrPftrPftrPftrPft
-rPftrPftrPftrPftrPftrCH5BAEKAP8ALAAAAAAYABgAAAj+AP8JHEiwoMGD
-CBMqFHihocMLCws2VJOHDx82DSMyvIAJiocOHXz8ybiwoaYNBTWsIZnwwiQc
-B0NYgajwgiQMBy2IodmyUYWDFPrwRHihxoQGDpI6WPBAAo+hBQMEEHDAgNSr
-UgkkKAAgwMEAvXTNkhULValSpkqREsXJEQSvBgPwguXpUiI8bdzMgUNGi5AU
-DOBGxeXKUyVFe9zUsVMHDZciLN5+vcVqk540W6RUwXIFiYsdJRAIJhhg16tP
-ozpBIjToEKA7ZmaQUDB6YIBcqyi9CTOliZMoT4C0yGEiQm2BAXC12hQq0yJA
-fgL5oTOGxogMx/8FqHUqUhosQ2xP6AgCJMaJFR84ZA9gS1UlUJYQARJUKFCc
-Mi9UiFhPK9UjQ3Kc4cUXYICRxRI7MAHCekow0gUVR9wAgww9JGEEET+gMEB2
-2mHloYcahfhPQAA7
+R0lGODlhHgAeAOeZAAAAAHxrR4BuSH9vToFyUYJyUoN1VYR3WYN4XYN4XoJ6
+ZIJ7Z4F9dI9+XZiEXF+NzmqMu4yIdI6IcJuHXZiHZpuHXpyIX4+Jf4eLkJuJ
+aJ6KY52ManiTtqKNZKKOZZCQjKCObaSPZ3yVtX6VtIGWsaOTcqOTc5KWlZSX
+mqWWd4OdwKeZfKiZfJ+akKKbiHGj5amcgoqhv5OgsY+huZ2fo5ahsJSitaug
+h6ygiJ6joZWktnSq85aluLaheKijma2jjaSkpHis86KlqaWnoqKnraaopLym
+e6GruLyogKars6KvwbCxssayiMayismziMmzicqzici0jrW3uci1kMi2ksi2
+lbi4uMi3lc23jcu4lM64jbq6ure8wry8vL29vdK8kr2/wdW+ksHBwdfBl9vE
+mMfHx8bIysXIzd3In8rKyuDJnd/KosvNz83Nzc7Ozs7Oz+HOqePOpubQptLS
+0tTU1OjSqeXUs9bW1ufVs+rXsevXsevXstnZ2tra2tvb2+navdzc3N3d3e3c
+vd7e3u/evPHfu+3hx+Li4vDhxOPj4+/iyPTkx/Tlx/TmzPHn0fbq0/js0u3t
+7frt0/ju2fju2u/v7/nw3fLy8vzz3f//////////////////////////////
+////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////
+/////////////////////yH5BAEKAP8ALAAAAAAeAB4AAAj+AP8JHEiwoMGD
+CBMqXMiwocOHDJWc6ePHzBGIB7kAqlQp0qVEUmJgJDiIzz8RHGawOTRyYJk3
+Ix4MhACGDpGWbpIcnLNkpJA7NQySaLPFJyAbB9N4GUkjEA+DKspYGYnBjYyD
+XYBgzMHAx4d/QwQW+XeixYV/LhxaQDKlCpUnTqBAcfIkypUsTUIsaFjBSBgy
+cQQ1mmSJ0iNEe+Ro8aCAYYR/fsmoqVNIEiZIjAjpUewhAd/IkytfzpyHM4LP
+f0Nbxkyo9OKGEvqmpryaNOcDqCXTvryoNWeHsnWLhtTbtQcDuVWP9r2YQPLd
+rF13cDgBNPTiijsIaOigB5YvY9Yn4FHkyNAfO3DQMNEQoOGABhk2gDDBAseP
+GzBWpChBoUDL/wAG+FBAADs=
 }
 
 image create photo uci -data {
@@ -3684,4 +3683,9 @@ EzNRVVRVxlOTAVnNhhyKDyxVxU8dAVLalA9VPi8ETuaUfw8mATgLIe+EAPkB
 TgkjWKGUAFRo4QFAABQwdGQBiEjgDRIqFAB4kMXYwkYANOTIoGAFAgDwshS7
 eAiAiB4WBqyoUABkSIsSDAFIocTCgZUtHWXhIYCkIAAfmoC4ydKlTiZHAAKI
 gYQCTqOFLjxwUAhAhBU0PuS8hy9CBIlcZeYLS7ZRIAA7
+}
+
+image creat photo tb_info -data {
+R0lGODlhHgAeAIABACUhIf///yH5BAEKAAEALAAAAAAeAB4AAAIwjI+py+0P
+o5y02osn2Flt0IXimH0c+ZFBip4j+7oiPMshfdsdvuulbzEBVcSisVEAADs=
 }

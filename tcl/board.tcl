@@ -617,8 +617,9 @@ EA8wLA4JKjAXHlMUH1iDYWKxsly0tbC4trpVYLxRUEEAOw==
 }
 
 image create photo tb_help -data {
-R0lGODlhGAAYAIABACA9bf///yH5BAEKAAEALAAAAAAYABgAAAIujI+py+0G
-onxJ2kmvBhlD64CVR41RuYjooa5Bu8KoXNI16eb6rtvdufPxhkRHAQA7
+R0lGODlhHgAeAIABACUhIf///yH5BAEKAAEALAAAAAAeAB4AAAI9jI+py+0P
+o5wRWEvX3TgbDnpgmG0IV16JSamr6ylsfM50gN6fTee6/4PpcMJgZ4jUFG88
+5rL3TEqn1OqtAAA7
 }
 
 image create photo b_bargraph -data {
