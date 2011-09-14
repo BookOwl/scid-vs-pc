@@ -49,12 +49,13 @@ proc moveEntry_Complete {} {
     if {$move == "OK"} { set move "O-O" }
     if {$move == "OQ"} { set move "O-O-O" }
 
-    set action "replace"
-    if {![sc_pos isAt vend]} { set action [confirmReplaceMove] }
-
-    if {$action != "cancel"} {
-      sc_game undoPoint
-      # What happens afterwards ?
+    if {[sc_pos isAt vend]} {
+      set action replace
+    } else {
+      set action [confirmReplaceMove]
+      if {$action == "replace"} {
+	sc_game undoPoint
+      }
     }
 
     if {$action == "replace"} {
@@ -1155,16 +1156,18 @@ proc addMove { sq1 sq2 {animate ""}} {
        incr i
   }
 
-  set action "replace"
-  if {![sc_pos isAt vend]} {
+  if {[sc_pos isAt vend]} {
+    set action replace
+  } else {
     set action [confirmReplaceMove]
+    if {$action == "replace"} {
+      sc_game undoPoint
+    }
   }
 
   if {$action == "cancel"} {
     return
   }
-
-  sc_game undoPoint
 
   if {$action == "mainline" || $action == "var"} {
     sc_var create
@@ -1230,20 +1233,22 @@ proc addSanMove {san {animate ""} {noTraining ""}} {
        incr i
   }
 
-  set action "replace"
-  if {![sc_pos isAt vend]} {
+  if {[sc_pos isAt vend]} {
+    set action replace
+  } else {
     set action [confirmReplaceMove]
+    if {$action == "replace"} {
+      sc_game undoPoint
+    }
   }
 
   if {$action == "cancel"} {
     return
   }
 
-  sc_game undoPoint
-
   if {$action == "var" || $action == "mainline"} {
     sc_var create
-  }
+  } 
 
   # if {[winfo exists .commentWin]} { .commentWin.cf.text delete 0.0 end }
   sc_move addSan $san
