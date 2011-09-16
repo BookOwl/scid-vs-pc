@@ -53,9 +53,10 @@ proc moveEntry_Complete {} {
       set action replace
     } else {
       set action [confirmReplaceMove]
-      if {$action == "replace"} {
-	sc_game undoPoint
-      }
+    }
+
+    if {$action != "cancel"} {
+      sc_game undoPoint
     }
 
     if {$action == "replace"} {
@@ -1160,14 +1161,12 @@ proc addMove { sq1 sq2 {animate ""}} {
     set action replace
   } else {
     set action [confirmReplaceMove]
-    if {$action == "replace"} {
-      sc_game undoPoint
-    }
   }
 
   if {$action == "cancel"} {
     return
   }
+  sc_game undoPoint
 
   if {$action == "mainline" || $action == "var"} {
     sc_var create
@@ -1237,14 +1236,12 @@ proc addSanMove {san {animate ""} {noTraining ""}} {
     set action replace
   } else {
     set action [confirmReplaceMove]
-    if {$action == "replace"} {
-      sc_game undoPoint
-    }
   }
 
   if {$action == "cancel"} {
     return
   }
+  sc_game undoPoint
 
   if {$action == "var" || $action == "mainline"} {
     sc_var create
