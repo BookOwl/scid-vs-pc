@@ -8981,17 +8981,18 @@ int
 sc_game_tags (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
 {
     const char * options[] = {
-        "get", "set", "reload", "share", NULL
+        "get", "set", "setUndo", "reload", "share", NULL
     };
-    enum { OPT_GET, OPT_SET, OPT_RELOAD, OPT_SHARE };
+    enum { OPT_GET, OPT_SET, OPT_SETUNDO, OPT_RELOAD, OPT_SHARE };
 
     int index = -1;
     if (argc >= 3) { index = strUniqueMatch (argv[2], options); }
 
     switch (index) {
         case OPT_GET:    return sc_game_tags_get (cd, ti, argc, argv);
-        case OPT_SET:
+        case OPT_SETUNDO:
           sc_game_save_for_undo();
+        case OPT_SET:
           return sc_game_tags_set (cd, ti, argc, argv);
         case OPT_RELOAD: return sc_game_tags_reload (cd, ti, argc, argv);
         case OPT_SHARE:  return sc_game_tags_share (cd, ti, argc, argv);
