@@ -10300,14 +10300,14 @@ sc_pos (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
         "fen", "getComment", "getNags", "hash", "html",
         "isAt", "isLegal", "isPromotion",
         "matchMoves", "moveNumber", "pgnBoard", "pgnOffset",
-        "probe", "setComment", "side", "tex", "moves", NULL
+        "probe", "setComment", "setCommentUndo", "side", "tex", "moves", NULL
     };
     enum {
         POS_ADDNAG, POS_ANALYZE, POS_BESTSQ, POS_BOARD, POS_CLEARNAGS,
         POS_FEN, POS_GETCOMMENT, POS_GETNAGS, POS_HASH, POS_HTML,
         POS_ISAT, POS_ISLEGAL, POS_ISPROMO,
         POS_MATCHMOVES, POS_MOVENUM, POS_PGNBOARD, POS_PGNOFFSET,
-        POS_PROBE, POS_SETCOMMENT, POS_SIDE, POS_TEX, POS_MOVES
+        POS_PROBE, POS_SETCOMMENT, POS_SETCOMMENTUNDO, POS_SIDE, POS_TEX, POS_MOVES
     };
 
     char boardStr[200];
@@ -10396,8 +10396,10 @@ sc_pos (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
     case POS_PROBE:
         return sc_pos_probe (cd, ti, argc, argv);
 
-    case POS_SETCOMMENT:
+    case POS_SETCOMMENTUNDO:
         sc_game_save_for_undo();
+
+    case POS_SETCOMMENT:
         return sc_pos_setComment (cd, ti, argc, argv);
 
     case POS_SIDE:

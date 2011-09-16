@@ -463,9 +463,9 @@ proc ::commenteditor::ButtonReleased {board button x_root y_root} {
 proc ::commenteditor::appendComment {arg} {
   set comment [sc_pos getComment]
   if {$comment == {}} {
-    sc_pos setComment "$arg"
+    sc_pos setCommentUndo "$arg"
   } else {
-    sc_pos setComment "$comment\n$arg"
+    sc_pos setCommentUndo "$comment\n$arg"
   }
   updateStatusBar
   updateBoard -pgn
@@ -493,7 +493,7 @@ proc ::commenteditor::storeComment {} {
   set newComment [.commentWin.cf.text get 1.0 end-1c]
   set oldComment [sc_pos getComment]
   if {[string compare $oldComment $newComment]} {
-    sc_pos setComment $newComment
+    sc_pos setCommentUndo $newComment
     updateStatusBar
     updateBoard -pgn
   }
