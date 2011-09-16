@@ -462,10 +462,12 @@ proc ::commenteditor::ButtonReleased {board button x_root y_root} {
 # Append arg as a comment
 proc ::commenteditor::appendComment {arg} {
   set comment [sc_pos getComment]
+
+  sc_game undoPoint
   if {$comment == {}} {
-    sc_pos setCommentUndo "$arg"
+    sc_pos setComment "$arg"
   } else {
-    sc_pos setCommentUndo "$comment\n$arg"
+    sc_pos setComment "$comment\n$arg"
   }
   updateStatusBar
   updateBoard -pgn
@@ -493,7 +495,8 @@ proc ::commenteditor::storeComment {} {
   set newComment [.commentWin.cf.text get 1.0 end-1c]
   set oldComment [sc_pos getComment]
   if {[string compare $oldComment $newComment]} {
-    sc_pos setCommentUndo $newComment
+    sc_game undoPoint
+    sc_pos setComment $newComment
     updateStatusBar
     updateBoard -pgn
   }

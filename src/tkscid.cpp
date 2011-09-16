@@ -8981,19 +8981,16 @@ int
 sc_game_tags (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
 {
     const char * options[] = {
-        "get", "set", "setUndo", "reload", "share", NULL
+        "get", "set", "reload", "share", NULL
     };
-    enum { OPT_GET, OPT_SET, OPT_SETUNDO, OPT_RELOAD, OPT_SHARE };
+    enum { OPT_GET, OPT_SET, OPT_RELOAD, OPT_SHARE };
 
     int index = -1;
     if (argc >= 3) { index = strUniqueMatch (argv[2], options); }
 
     switch (index) {
         case OPT_GET:    return sc_game_tags_get (cd, ti, argc, argv);
-        case OPT_SETUNDO:
-          sc_game_save_for_undo();
-        case OPT_SET:
-          return sc_game_tags_set (cd, ti, argc, argv);
+        case OPT_SET:    return sc_game_tags_set (cd, ti, argc, argv);
         case OPT_RELOAD: return sc_game_tags_reload (cd, ti, argc, argv);
         case OPT_SHARE:  return sc_game_tags_share (cd, ti, argc, argv);
         default:         return InvalidCommand (ti, "sc_game tags", options);
@@ -10301,14 +10298,14 @@ sc_pos (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
         "fen", "getComment", "getNags", "hash", "html",
         "isAt", "isLegal", "isPromotion",
         "matchMoves", "moveNumber", "pgnBoard", "pgnOffset",
-        "probe", "setComment", "setCommentUndo", "side", "tex", "moves", NULL
+        "probe", "setComment", "side", "tex", "moves", NULL
     };
     enum {
         POS_ADDNAG, POS_ANALYZE, POS_BESTSQ, POS_BOARD, POS_CLEARNAGS,
         POS_FEN, POS_GETCOMMENT, POS_GETNAGS, POS_HASH, POS_HTML,
         POS_ISAT, POS_ISLEGAL, POS_ISPROMO,
         POS_MATCHMOVES, POS_MOVENUM, POS_PGNBOARD, POS_PGNOFFSET,
-        POS_PROBE, POS_SETCOMMENT, POS_SETCOMMENTUNDO, POS_SIDE, POS_TEX, POS_MOVES
+        POS_PROBE, POS_SETCOMMENT, POS_SIDE, POS_TEX, POS_MOVES
     };
 
     char boardStr[200];
@@ -10396,9 +10393,6 @@ sc_pos (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
 
     case POS_PROBE:
         return sc_pos_probe (cd, ti, argc, argv);
-
-    case POS_SETCOMMENTUNDO:
-        sc_game_save_for_undo();
 
     case POS_SETCOMMENT:
         return sc_pos_setComment (cd, ti, argc, argv);
