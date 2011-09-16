@@ -69,6 +69,7 @@ menuText B EditTrial "Experimentar variante" 0 \
   {Inicia/Para experimentacao, para testar alguma nova ideia no tabuleiro}
 menuText B EditStrip "Limpar Comentarios e Variantes" 2 \
   {Limpa comentarios e variantes no jogo atual}
+menuText B EditUndo "Desfazer" 0 {Desfaz última mudança no jogo}
 menuText B EditStripComments "Limpar Comentarios" 0 \
   {Limpa comentarios e anotacoes no jogo atual}
 menuText B EditStripVars "Limpar Variantes" 0 \

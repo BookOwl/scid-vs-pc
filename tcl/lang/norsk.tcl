@@ -70,6 +70,8 @@ menuText O EditMain "Gjør variasjon til hovedlinje" 0 \
 menuText O EditTrial "Prøv variasjon" 0 \
   {Start/avslutt prøvemodus, for å teste ut en ide på brettet}
 menuText O EditStrip "Fjern" 0 {Fjern kommentarer eller variasjoner fra partiet}
+# ====== TODO To be translated ======
+menuText O EditUndo "Undo" 0 {Undo last game change}
 menuText O EditStripComments "Kommentarer" 0 \
   {Fjern alle kommentarer og annotasjoner fra dette partiet}
 menuText O EditStripVars "Variasjoner" 0 {Fjern alle variasjoner fra dette partiet}

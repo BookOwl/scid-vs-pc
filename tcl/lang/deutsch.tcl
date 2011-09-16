@@ -86,6 +86,7 @@ menuText D EditTrial "Variante testen" 9 \
   {Testmodus starten/stoppen, um eine Idee am Brett auszuprobieren}
 menuText D EditStrip "Entfernen" 1 \
    {Kommentare oder Varianten aus der Partie entfernen}
+menuText D EditUndo "Rückgängig" 0 {Macht die letzte Änderung rückgängig}
 menuText D EditStripComments "Kommentare" 0 \
   {Alle Kommentare und Kommentarzeichen aus dieser Partie entfernen}
 menuText D EditStripVars "Varianten" 0 \

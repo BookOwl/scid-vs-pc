@@ -73,6 +73,7 @@ menuText S EditTrial "Probar variación" 1 \
   {Inicia/para el modo de prueba, para ensayar una idea en el tablero}
 menuText S EditStrip "Eliminar" 2 \
   {Eliminar comentarios o variaciones de esta partida}
+menuText S EditUndo "Deshacer" 0 {Deshace el último cambio en la partida}
 menuText S EditStripComments "Comentarios" 0 \
   {Quita todos los comentarios y variaciones de esta partida}
 menuText S EditStripVars "Variaciones" 0 {Quita todas las variaciones de esta partida}

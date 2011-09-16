@@ -68,6 +68,8 @@ menuText H EditMain "Fõváltozattá tesz" 0 \
 menuText H EditTrial "Változat kipróbálása" 11 \
   {Elindítja/megállítja a próbaüzemmódot, amellyel egy elgondolást lehet a táblán kipróbálni.}
 menuText H EditStrip "Lecsupaszít" 2 {Eltávolítja a megjegyzéseket vagy a változatokat ebbõl a játszmából.}
+# ====== TODO To be translated ======
+menuText H EditUndo "Undo" 0 {Undo last game change}
 menuText H EditStripComments "Megjegyzések" 0 \
   {Eltávolítja az összes megjegyzést és elemzést ebbõl a játszmából.}
 menuText H EditStripVars "Változatok" 0 {Eltávolítja az összes változatot ebbõl a játszmából.}

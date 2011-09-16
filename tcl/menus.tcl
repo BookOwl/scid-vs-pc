@@ -353,6 +353,9 @@ set helpMessage($m,[incr menuindex]) EditTrial
 $m add cascade -label EditStrip -menu $m.strip
 set helpMessage($m,[incr menuindex]) EditStrip
 
+$m add command -label EditUndo -command {sc_game undo ; updateBoard -pgn}
+set helpMessage($m,[incr menuindex]) EditUndo
+
 menu $m.strip
 $m.strip add command -label EditStripComments -command {::game::Strip comments}
 set helpMessage($m.strip,0) EditStripComments
@@ -362,6 +365,7 @@ $m.strip add command -label EditStripBegin -command {::game::TruncateBegin}
 set helpMessage($m.strip,2) EditStripBegin
 $m.strip add command -label EditStripEnd -command {::game::Truncate}
 set helpMessage($m.strip,3) EditStripEnd
+
 
 
 ### Game menu:
@@ -1513,7 +1517,7 @@ proc setLanguageMenus {{lang ""}} {
     configMenuText .menu.file.utils.name [tr FileMaintName$tag $oldLang] \
         FileMaintName$tag $lang
   }
-  foreach tag {PastePGN Setup CopyBoard CopyPGN PasteBoard Reset Copy Paste Add Delete First Main Trial Strip PasteVar} {
+  foreach tag {PastePGN Setup CopyBoard CopyPGN PasteBoard Reset Copy Paste Add Delete First Main Trial Strip PasteVar Undo} {
     configMenuText .menu.edit [tr Edit$tag $oldLang] Edit$tag $lang
   }
   foreach tag {Comments Vars Begin End} {
