@@ -55,7 +55,7 @@ proc moveEntry_Complete {} {
       set action [confirmReplaceMove]
     }
 
-    if {$action != "cancel" && !$::comp(playing)} {
+    if {$action != "cancel"} {
       sc_game undoPoint
     }
 
@@ -1167,9 +1167,7 @@ proc addMove { sq1 sq2 {animate ""}} {
     return
   }
 
-  if {!$::comp(playing)} {
-    sc_game undoPoint
-  }
+  sc_game undoPoint
 
   if {$action == "mainline" || $action == "var"} {
     sc_var create
@@ -1245,9 +1243,7 @@ proc addSanMove {san {animate ""} {noTraining ""}} {
     return
   }
 
-  if {!$::comp(playing)} {
-    sc_game undoPoint
-  }
+  sc_game undoPoint
 
   if {$action == "var" || $action == "mainline"} {
     sc_var create
