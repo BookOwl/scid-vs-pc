@@ -1723,9 +1723,16 @@ proc makeAnalysisMove {n} {
     if {$action == "cancel"} {
       return
     }
-    if {$action == "var"} {
-      sc_var create
-    }
+  } else {
+    set action replace
+  }
+
+  if {!$::comp(playing)} {
+    sc_game undoPoint
+  }
+
+  if {$action == "var"} {
+    sc_var create
   }
 
   set analysis(automoveThinking$n) 0

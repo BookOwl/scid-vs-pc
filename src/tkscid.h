@@ -163,6 +163,7 @@ struct scidBaseT {
     Game *       game;          // the active game for this base.
     Game *       undoGame[UNDO_MAX]; // array of games kept for undos
     int          undoIndex;
+    int          maxundoIndex;
     int          gameNumber;    // game number of active game.
     bool         gameAltered;   // true if game is modified
     bool         inUse;         // true if the database is open (in use).

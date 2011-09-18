@@ -355,6 +355,7 @@ set helpMessage($m,[incr menuindex]) EditStrip
 
 $m add command -label EditUndo -command {sc_game undo ; updateBoard -pgn}
 set helpMessage($m,[incr menuindex]) EditUndo
+$m add command -label Redo -command {sc_game redo ; updateBoard -pgn}
 
 menu $m.strip
 $m.strip add command -label EditStripComments -command {::game::Strip comments}
@@ -633,9 +634,8 @@ set helpMessage($m,[incr menuindex]) WindowsMaint
 $m add separator
 incr menuindex
 
-$m add checkbutton -label WindowsECO -accelerator "Ctrl+Y" \
+$m add checkbutton -label WindowsECO \
     -variable ::windows::eco::isOpen -command {::windows::eco::OpenClose}
-bind . <Control-y> ::windows::eco::OpenClose
 set helpMessage($m,[incr menuindex]) WindowsECO
 
 $m add checkbutton -label WindowsStats -variable ::windows::stats::isOpen \
@@ -1689,6 +1689,8 @@ proc standardShortcuts {w} {
   bind $w <Control-I> importPgnGame
 
   bind $w <Control-z> {  sc_game undo ; updateBoard -pgn }
+  bind $w <Control-y> {  sc_game redo ; updateBoard -pgn }
+
 
   # extra generic bindings added for Scid 3.6.24 : hope there is no conflict
   bind $w <Home>  ::move::Start
