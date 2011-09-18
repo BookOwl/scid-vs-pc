@@ -158,7 +158,7 @@ uint Game::GetVarNumber() {
 // ===================================================
 
 const char * ratingTypeNames [17] = {
-    "Elo", "Rating", "Rapid", "ICCF", "USCF", "DWZ", "BCF",
+    "Elo", "Rating", "Rapid", "ICCF", "USCF", "DWZ", "ECF",
     // Reserved for future use:
     NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL,
     // End of array marker:
