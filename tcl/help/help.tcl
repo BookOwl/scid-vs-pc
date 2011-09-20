@@ -2570,7 +2570,7 @@ set helpText(Analysis) {<h1>Analysis Windows</h1>
   whole main line.</li>
   <li> <button tb_addallvars 32> <b>Multi-PV</b>  if the engine supports multi-pv, add all principal variations.</li>
 
-  <li> <button tb_engine 32> <b>Show Info</b> show additional information.</li>
+  <li> <button tb_info 32> <b>Show Info</b> show additional information.</li>
   <li> <button tb_cpu 32> <b>Low CPU priority</b> 
   give the engine a low priority for CPU
   scheduling. On Windows, engines are run on low priority by default.

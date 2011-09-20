@@ -15,7 +15,7 @@ menuText S FileNew "Nuevo..." 0 {Crea una nueva base de datos Scid vacía}
 menuText S FileOpen "Abrir..." 1 {Abre una base de datos Scid ya existente}
 menuText S FileClose "Cerrar" 0 {Cierra la base de datos Scid activa}
 menuText S FileFinder "Visor..." 0 {Abre la ventana del visor de Archivos}
-menuText S FileSavePgn "Save Pgn..." 0 {}
+menuText S FileSavePgn "Grabar Pgn..." 0 {}
 menuText S FileBookmarks "Partidas favoritas" 0 {Seleccionar partidas favoritas (Ctrl+B)}
 menuText S FileBookmarksAdd "Añadir" 0 \
   {Señala la partida y posición actual de la base de datos}
@@ -180,7 +180,7 @@ menuText S ToolsOpenBaseAsTree "Abrir base como árbol" 0   {Abrir una base y usa
 menuText S ToolsOpenRecentBaseAsTree "Abrir base reciente como árbol" 0   {Abre una base reciente y la usa en Ventana de árbol (Tree)} 
 menuText S ToolsTracker "Rastreador de piezas"  14 {Abre la ventana del rastreador de piezas}
 menuText S ToolsTraining "Entrenamiento"  0 {Entrenamiento (táctica, aperturas,...}
-menuText S ToolsComp "Computer Tournament" 2 {Chess engine tournament}
+menuText S ToolsComp "Torneo de motores" 2 {Chess engine tournament}
 menuText S ToolsTacticalGame "Partida Táctica"  0 {Jugar una partida táctica}
 menuText S ToolsSeriousGame "Partida seria"  0 {Jugar una partida seria}
 menuText S ToolsTrainTactics "Táctica (problemas)"  0 {Resover problemas de táctica}
@@ -188,14 +188,10 @@ menuText S ToolsTrainCalvar "Cálculo of variaciones"  0 {Calculo de variantes}
 menuText S ToolsTrainFindBestMove "Encontrar la mejor jugada"  0 {Busca el movimiento mejor}
 menuText S ToolsTrainFics "Jugar en internet"  0 {Jugar en freechess.org}
 menuText S ToolsBookTuning "Sintonizar Libro de aperturas" 0 {Sintonizar Libro (Book)}
-# ====== TODO To be translated ======
-menuText S ToolsConnectHardware "Connect Hardware" 0 {Connect external hardware}
-# ====== TODO To be translated ======
-menuText S ToolsConnectHardwareConfigure "Configure..." 0 {Configure external hardware and connection}
-# ====== TODO To be translated ======
-menuText S ToolsConnectHardwareNovagCitrineConnect "Connect Novag Citrine" 0 {Connect Novag Citrine}
-# ====== TODO To be translated ======
-menuText S ToolsConnectHardwareInputEngineConnect "Connect Input Engine" 0 {Connect Input Engine (e.g. DGT)}
+menuText S ToolsConnectHardware "Conectar Hardware" 0 {Connect external hardware}
+menuText S ToolsConnectHardwareConfigure "Configurar..." 0 {Configure external hardware and connection}
+menuText S ToolsConnectHardwareNovagCitrineConnect "Conectar Novag Citrine" 0 {Connect Novag Citrine}
+menuText S ToolsConnectHardwareInputEngineConnect "Conectar Tablero" 0 {Connect Input Engine (e.g. DGT)}
 menuText S ToolsNovagCitrine "Novag Citrine" 0 {Novag Citrine}
 menuText S ToolsNovagCitrineConfig "Configuración" 0 {Configuración Novag Citrine}
 menuText S ToolsNovagCitrineConnect "Conectar" 0 {Conectar Novag}
@@ -265,7 +261,7 @@ menuText S CCEditCopy "Copiar lista de partidas a Clipbase" 0 \
 # Options menu:
 menuText S Options "Opciones" 0
 menuText S OptionsBoard "Tablero" 0 {Opciones sobre el aspecto del tablero}
-menuText S OptionsColour "Background Colour" 0 {Default text widget color}
+menuText S OptionsColour "Color de fondo" 0 {Default text widget color}
 menuText S OptionsNames "Mis nombres de jugador..." 0 {Edita mis nombres de jugador}
 menuText S OptionsExport "Exportación" 0 {Cambia las opciones de exportación de texto}
 menuText S OptionsFonts "Fuentes" 0 {Cambia las fuentes}
@@ -387,7 +383,7 @@ translate S Stop {Parar}
 translate S Store {Almacenar}
 translate S Update {Actualizar}
 translate S ChangeOrient {Cambiar orientación de la ventana}
-translate S ShowIcons {Show Icons} ;# ***
+translate S ShowIcons {Mostrar iconos}
 translate S None {Ninguno}
 translate S First {Primera}
 translate S Current {Actual}
@@ -913,8 +909,7 @@ translate S AddEloRatings {Añadir clasificación Elo}
 translate S AutoloadGame {Autocargar número de partida}
 translate S StripTags {Quitar etiquetas PGN}
 translate S StripTag {Quitar etiquetas}
-# ====== TODO To be translated ======
-translate S CheckGames {Check games}
+translate S CheckGames {Revisar partidas}
 translate S Cleaner {MultiHerramienta}
 translate S CleanerHelp {
 Scid ejecutará, en la actual base de datos, todas las acciones de mantenimiento
@@ -1230,14 +1225,10 @@ translate S NameEditSelect {Partidas a editar}
 translate S NameEditReplace {Reemplazar}
 translate S NameEditWith {con}
 translate S NameEditMatches {Encuentros: Presionar Ctrl+1 a Ctrl+9 para seleccionarlo}
-# ====== TODO To be translated ======
-translate S CheckGames {Check games}
-# ====== TODO To be translated ======
-translate S CheckGamesWhich {Check games}
-# ====== TODO To be translated ======
-translate S CheckAll {All games}
-# ====== TODO To be translated ======
-translate S CheckSelectFilterGames {Only games in filter}
+translate S CheckGames {Revisar partidas}
+translate S CheckGamesWhich {Revisar partidas}
+translate S CheckAll {Todas las partidas}
+translate S CheckSelectFilterGames {Solo partidas en filtro}
 
 # Classify window:
 translate S Classify {Clasificar}
@@ -1311,8 +1302,8 @@ translate S WhitePieces {Piezas blancas}
 translate S BlackPieces {Piezas negras}
 translate S WhiteBorder {Borde blancas}
 translate S BlackBorder {Borde negras}
-translate S ArrowMain   {Main Arrow}
-translate S ArrowVar    {Var Arrows}
+translate S ArrowMain   {Flecha línea principal}
+translate S ArrowVar    {Flechas de variantes}
 
 # Novelty window:
 translate S FindNovelty {Encontrar Novedad}
@@ -1473,7 +1464,7 @@ translate S d4Nf6Miscellaneous {1.d4 Cf6 variadas}
 translate S Trompowsky {Apertura Trompowsky}
 translate S Budapest {Gambito Budapest}
 translate S OldIndian {Defensa India Antigua}
-translate S BenkoGambit {Gambito Benko}
+translate S BenkoGambit {Gambinko}
 translate S ModernBenoni {Defensa Benoni Moderna}
 translate S DutchDefence {Defensa Holandesa}
 translate S Scandinavian {Defensa Escandinava}
@@ -1622,36 +1613,21 @@ translate S CCOrderOppTimeTxt {Reloj de los oponentes}
 translate S CCDlgConfigRelay {Configurar observaciones ICCF}
 translate S CCDlgConfigRelayHelp {Ir a las partidas de la página en http://www.iccf-webchess.com y mostrar la partida a ser observada. Si tu ves el tablero de ajedrez copia la URL desde tu explorador a la lista. !Una sola URL por línea!\nExample: http://www.iccf-webchess.com/MakeAMove.aspx?id=266452}
 
-# ====== TODO To be translated ======
-translate S ExtHWConfigConnection {Configure external hardware}
-# ====== TODO To be translated ======
-translate S ExtHWPort {Port}
-# ====== TODO To be translated ======
-translate S ExtHWEngineCmd {Engine command}
-# ====== TODO To be translated ======
-translate S ExtHWEngineParam {Engine parameter}
-# ====== TODO To be translated ======
-translate S ExtHWShowButton {Show button}
-# ====== TODO To be translated ======
-translate S ExtHWHardware {Hardware}
-# ====== TODO To be translated ======
+translate S ExtHWConfigConnection {Configurar Tablero externo}
+translate S ExtHWPort {Puerto}
+translate S ExtHWEngineCmd {Comando del motor}
+translate S ExtHWEngineParam {Parámetro del motor}
+translate S ExtHWShowButton {Mostrar botón}
+translate S ExtHWHardware {Tablero}
 translate S ExtHWNovag {Novag Citrine}
-# ====== TODO To be translated ======
-translate S ExtHWInputEngine {Input Engine}
-# ====== TODO To be translated ======
-translate S ExtHWNoBoard {No board}
-# ====== TODO To be translated ======
-translate S IEConsole {Input Engine Console}
-# ====== TODO To be translated ======
-translate S IESending {Moves sent for}
-# ====== TODO To be translated ======
-translate S IESynchronise {Synchronise}
-# ====== TODO To be translated ======
-translate S IESyncrhonise {Synchronise}
-# ====== TODO To be translated ======
-translate S IERotate  {Rotate}
-# ====== TODO To be translated ======
-translate S IEUnableToStart {Unable to start Input Engine:}
+translate S ExtHWInputEngine {Tablero (Ext)}
+translate S ExtHWNoBoard {Sin tablero}
+translate S IEConsole {Consola Tablero (Ext)}
+translate S IESending {Movimientos enviador por}
+translate S IESynchronise {Sincronizar}
+translate S IESyncrhonise {Sincronizar}
+translate S IERotate  {Rotar}
+translate S IEUnableToStart {Imposible empezar Tablero (Ext):}
 translate S DoneWithPosition {Hecho con la posición}
 }
 # end of spanish.tcl
