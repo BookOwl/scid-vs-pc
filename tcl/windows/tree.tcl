@@ -84,7 +84,7 @@ proc ::tree::make { { baseNumber -1 } } {
   set tree(base$baseNumber) $baseNumber
   set tree(status$baseNumber) ""
   ### The number of bestgames to display is not configurable anymore (except here) S.A.
-  set tree(bestMax$baseNumber) 50 
+  set tree(bestMax$baseNumber) 100 
   set tree(order$baseNumber) "frequency"
   trace variable tree(bestMax$baseNumber) w "::tree::doTrace bestMax"
   set tree(bestRes$baseNumber) All
@@ -1039,7 +1039,7 @@ proc ::tree::best { baseNumber } {
     frame $w.blist
     pack $w.blist -side top -expand true -fill both
     scrollbar $w.blist.ybar -command "$w.blist.list yview" -takefocus 0
-    listbox $w.blist.list  -yscrollcommand "$w.blist.ybar set" -font font_Small
+    listbox $w.blist.list  -yscrollcommand "$w.blist.ybar set" -font font_Fixed
     pack $w.blist.ybar -side right -fill y
     pack $w.blist.list -side left -fill both -expand yes
     bind $w.blist.list <<ListboxSelect>> "::tree::bestPgn $baseNumber"

@@ -13766,7 +13766,8 @@ sc_tree_best (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
     }
 
     // Now generate the Tcl list of best game details:
-    DString * dstr = new DString;
+    char line[256];
+
     for (uint i=0; i < count; i++) {
         IndexEntry * ie = base->idx->FetchEntry (bestIndex[i]);
         eloT welo = ie->GetWhiteElo();
@@ -13784,43 +13785,63 @@ sc_tree_best (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
 
         appendUintElement (ti, bestIndex[i] + 1);
 
-        char * wname = strDuplicate (ie->GetWhiteName (base->nb));
-        char * bname = strDuplicate (ie->GetBlackName (base->nb));
-        strTrimSurname (wname, 1);
-        strTrimSurname (bname, 1);
+        char wname[15];
+        char bname[15];
 
-        dstr->Clear();
-        dstr->Append (RESULT_STR[ie->GetResult()]);
-        dstr->Append (" (", (ie->GetNumHalfMoves() + 1) / 2, ")  ");
-        dstr->Append (wname);
-        if (welo > 0) { dstr->Append (" (", welo, wEstimate ? "*)" : ")"); }
-        dstr->Append (" - ", bname);
-        if (belo > 0) { dstr->Append (" (", belo, bEstimate ? "*)" : ")"); }
-        dstr->Append (", ", ie->GetYear(), " ");
-        const char * site = ie->GetSiteName (base->nb);
-        const char * event = ie->GetEventName (base->nb);
-        const char * round = ie->GetRoundName (base->nb);
-        if (!strIsUnknownName (site)) { dstr->Append (site); }
-        if (!strIsUnknownName (event)) {
-            if (! strIsUnknownName(site)) { dstr->Append (": "); }
-            dstr->Append (event);
+        snprintf (wname, 12, ie->GetWhiteName (base->nb));
+	strTrimSurname (wname, 1);
+	strPad (wname, wname, 12, ' ');
+
+        snprintf (bname, 12, ie->GetBlackName (base->nb));
+	strTrimSurname (bname, 1);
+        strPad (bname, bname, 12, ' ');
+
+        char welo_str[15];
+        char belo_str[15];
+
+        if (welo > 0) {
+          if (wEstimate) 
+	    snprintf (welo_str, 15, "*(%4hi)", welo);
+          else
+	    snprintf (welo_str, 15, " (%4hi)", welo);
+        } else {
+          sprintf (welo_str, "       ");
         }
-        if (!strIsUnknownName (round)) { dstr->Append (" (", round, ")"); }
-        Tcl_AppendElement (ti, (char *) dstr->Data());
-#ifdef WINCE
-        my_Tcl_Free((char*) wname);
-        my_Tcl_Free((char*) bname);
+        if (belo > 0) {
+          if (bEstimate) 
+	    snprintf (belo_str, 15, "*(%4hi)", belo);
+          else
+	    snprintf (belo_str, 15, " (%4hi)", belo);
+        } else {
+          sprintf (belo_str, "       ");
+        }
+
+        char year[15];
+        snprintf (year, 15, "%4u", ie->GetYear());
+
+        char event[15];
+        char site[15];
+        char combo[32];
+        snprintf (event, 15, ie->GetEventName (base->nb));
+        snprintf (site, 15, ie->GetSiteName (base->nb));
+
+        if (strIsUnknownName(site)) 
+	  snprintf (combo, 32, "%s", event);
+        else 
+	  snprintf (combo, 32, "%s (%s)", event, site);
+
+        char result[4];
+        strPad (result, RESULT_STR[ie->GetResult()], 3, ' ');
+
+        snprintf (line, sizeof(line), "%s%s - %s%s %s %s %s",
+           wname, welo_str, bname, belo_str, result, year, combo);
+        Tcl_AppendElement (ti, line);
     }
 
-    delete dstr;
+#ifdef WINCE
     my_Tcl_Free((char*)bestIndex);
     my_Tcl_Free((char*)bestElo);
 #else
-        delete[] wname;
-        delete[] bname;
-    }
-
-    delete dstr;
     delete[] bestIndex;
     delete[] bestElo;
 #endif
