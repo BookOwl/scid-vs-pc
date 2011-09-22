@@ -280,8 +280,8 @@ menuText E OptionsFontsSmall "Small" 0 {Change the small font}
 menuText E OptionsFontsFixed "Fixed" 0 {Change the fixed-width font}
 menuText E OptionsGInfo "Game Information" 0 {Game information options}
 menuText E OptionsLanguage "Language" 0 {Select menu language}
-menuText E OptionsMovesTranslatePieces "Translate pieces" 0 {Translate first letter of pieces}
-menuText E OptionsMovesHighlightLastMove "Highlight last move" 0 {Highlight last move}
+menuText E OptionsMovesTranslatePieces "Translate Pieces" 0 {Translate first letter of pieces}
+menuText E OptionsMovesHighlightLastMove "Highlight Last Move" 0 {Highlight last move}
 menuText E OptionsMovesHighlightLastMoveDisplay "Show" 0 {Display last move Highlight}
 menuText E OptionsMovesHighlightLastMoveWidth "Width" 0 {Thickness of line}
 menuText E OptionsMovesHighlightLastMoveColor "Color" 0 {Color of line}
@@ -297,7 +297,7 @@ menuText E OptionsMovesCoord "Coordinate Move Entry" 0 \
 menuText E OptionsMovesSuggest "Show Suggested Moves" 0 \
   {Turn on/off move suggestion}
 menuText E OptionsShowVarPopup "Show Variation Window" 0 {Turn on/off the display of a variations window}  
-menuText E OptionsMovesSpace "Add spaces after move number" 0 {Add spaces after move number}  
+menuText E OptionsMovesSpace "Add Spaces after Move Number" 0 {Add spaces after move number}  
 menuText E OptionsMovesKey "Keyboard Completion" 0 \
   {Turn on/off keyboard move auto-completion}
 menuText E OptionsMovesShowVarArrows "Show Variation Arrows" 0 {Turn on/off arrows showing moves in variations}

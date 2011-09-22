@@ -347,7 +347,7 @@ set helpText(Index) {<h1>Scid Help Index</h1>
   <li><a Formats>Maximum</a> number of games</li>
   <li><a Menus>Menus</a></li>
   <li><a GameList Browsing>Merging games</a></li>
-  <li><a Moves>Move entry</a></li>
+  <li><a Moves>Move entry</a> and options</li>
   </ul>
 
   <h3><name N>N</name></h3>
@@ -391,6 +391,7 @@ set helpText(Index) {<h1>Scid Help Index</h1>
   <h3><name R>R</name></h3>
   <ul>
   <li><a Graphs Rating>Rating graph</a></li>
+  <li><a Moves Undo>Redo</a></li>
   <li><a Repertoire>Repertoire editor</a></li>
   </ul>
 
@@ -429,6 +430,7 @@ set helpText(Index) {<h1>Scid Help Index</h1>
   <h3><name U>U</name></h3>
   <ul>
   <li><a Analysis UCI>UCI Engine</a> Options</li>
+  <li><a Moves Undo>Undo</a></li>
   </ul>
 
   <h3><name V>V</name></h3>
@@ -822,23 +824,18 @@ set helpText(Menus) {<h1>Scid Menus</h1>
 }
 
 
-set helpTitle(Moves) "Entering moves"
-set helpText(Moves) {<h1>Entering Chess Moves</h1>
+set helpTitle(Moves) "Entering Moves"
+set helpText(Moves) {<h1>Move Entry and Options</h1>
   <p>
-  Scid allow moves to be made using either the mouse or keyboard.
-  Use the mouse to click on a piece, and then on the
-destination square. Alternatively you may drag the piece. There exists a
-<b>suggested move</b> feature which, if enabled, will highlight all squares
-to which there is a legal move.
+  Scid allows moves to be made using the mouse or keyboard.
+  Use the mouse to click on a piece, and then click on the
+destination square. Alternatively one may drag the piece.
   </p>
-  <p><i>
-  If you want to enter a variation without being asked for a
-  confirmation, use the middle mouse button of the mouse to enter the
-  move.
-  </i></p>
+  
   <p>
-  Keyboard moves are made using the standard notation, with the exception of castling.
-  To castle kingside enter <b>OK</b>, or queen-side use <b>OQ</b>. See below for more info.
+  Keyboard moves are made using the standard notation.
+  Castling is done with <b>OO</b>, or <b>OK</b> and <b>OQ</b>
+  for King and Queenside respectively.
   </p>
 
   <h4>Retracting Moves</h4>
@@ -847,15 +844,26 @@ to which there is a legal move.
   or Control+Backspace keys.
   </p>
 
-  <h4>Replacing Old Moves</h4>
+  <h4>Replacing Moves</h4>
   <p>
   When you enter a move where a move already exists,
   Scid will ask if you want to replace the
   move (when the old move and all after it will be lost), or
   add the new move as a variation. If one finds this annoying, 
-  it is possible to skip this dialog
-  via the <green>Options--<gt>Moves</green> menu option
+  it is possible to skip this dialog by unchecking the
+  <green>Options--<gt>Moves--<gt>Ask Before Replacing Moves</green> menu option
   </p>
+
+  <h4><name Undo>Undo</name></h4>
+  <p>
+  From 4.6, Scid vs. PC has Undo and Redo features. This allows a 10 edit history
+  for Move, Variation, Comment and Game Information changes. The Undo and Redo commands are 
+  bound to <b>Control-z</b> and <b>Control-y</b>, but please use carefully as these shortcuts
+  are also the defaults for editing text windows such as the Comment Editor.
+  </p>
+  <p><i>
+  Mixing Undo and Trial Modes is not recommended.
+  </i></p>
 
   <h4><name Trial>Trial Mode</name></h4>
   <p>
@@ -871,8 +879,8 @@ to which there is a legal move.
   If you are entering a game and suddenly see an incorrect move several
   moves earlier, it is possible to correct it without losing the extra
   moves you have added. The only way is to edit the PGN representation
-  of the game: open the <a Import>Import</a> window, select "Paste current
-  game", correct the incorrect move, then select "Import".
+  of the game. Open the <a Import>Import</a> window, select "Paste Current
+  Game", correct the incorrect move, then select "Import".
   </p>
 
   <h3>Keyboard Move Entry</h3>
@@ -901,15 +909,29 @@ to which there is a legal move.
   you must use a capital [B] for the Bishop move.
   </p>
 
+  <h4>Coordinate Move Entry</h4>
+  <p>
+  The Coordinate Move Entry option allows one to input moves of the form
+  <b>a2a4</b>  and <b>g1f3</b> (instead of Nf3). This is the default, but it
+  interferes with the Auto-Completion feature.
+  </p>
+
   <h4>Auto-Completion</h4>
   <p>
-  In the Options menu, you can turn on or off <term>Auto-Completion</term>
-  of moves.
+  In the Options menu, you can select Keyboard Auto-Completion of moves.
   With auto-completion, a move is made as soon as you have typed enough
   to distinguish it from any other legal move. For example, with
   auto-completion, you would only need to type [n][f] instead
   of [n][f][3] for <b>Nf3</b> in the starting position.
+  This feature only works with <b>pawn moves</b> if <b>Coordinate Move Entry</b>
+  is disabled.
   </p>
+
+  <h4>Suggested Moves</h4>
+  <p>
+  The Suggested Move feature, if enabled, highlights all squares
+  to which there is a legal move. This can be confusing at times, as is disblaed by default in Scid vs. PC.
+  </p> 
 
   <h3><name Null>Entering Null Moves</name></h3>
   <p>
@@ -1169,6 +1191,12 @@ set helpText(Variations) {<h1>Variations</h1>
   buttons are used to exit, enter and add variations respectively.
   And in the <b>Edit Menu</b>, and <a PGN>PGN</a> context menu, are further useful commands.
   </p>
+  <p><i>
+  If you want to enter a variation without being asked for a
+  confirmation, use the middle mouse button of the mouse to enter the
+  move.
+  </i></p>
+
   <h4>Variation Arrows</h4>
   <p>
   Scid vs. PC has clickable Variation Arrows (enabled via
@@ -2582,7 +2610,7 @@ set helpText(Analysis) {<h1>Analysis Windows</h1>
   </ul>
   </p>
 
-  <h3><name Moves>Moves</h3>
+  <h3><name Moves>Moves</name></h3>
   <p>
   Each line of the main text widget contains a move prediction.
   The first number is the current <b>Search Depth</b>. The next (prefixed with
@@ -3675,47 +3703,48 @@ set helpText(Formats) {<h1>Scid File Formats</h1>
   <p><footer>Updated: Scid vs. PC 4.2 November 2010 </footer></p>
 }
 
+# See the <green><run wm deiconify .splash ; raiseWin .splash>Splash Window</run></green> 
+
 set helpTitle(Options) "Options"
 set helpText(Options) {<h1>Options and Preferences</h1>
   <p>
-  Many Scid options and preferences (such as the board size, colors, fonts,
-  and default settings) are adjustable from the <menu>Options</menu> menu.
-  All these (and more, such as the last directory you loaded a database from
-  and the sizes of some windows) are saved to an options file when
-  you select <b>Save Options</b> from the Options menu.
-  The options file is loaded whenever you start Scid.
+  Scid's options are stored in Scid-User-Directory/<b>config/options.dat</b>.
+  These are generally saved when Scid closes, but can also be saved by the <b>Save Options</b> menu
   </p>
   <p>
-  If you use Windows, the options file is <b>scid.opt</b> in the directory
-  where the Scid program file <b>scid.exe</b> is located. For users of Unix
-  operating systems (such as Solaris or Linux) the file
-  is <b>~/.scid/scidrc</b>.
+  The <green><run chooseBoardColors>Board and Chesspiece</run></green> options window allows to configure the look and feel.
   </p>
-
-  <h3><name MyPlayerNames>Setting your player names</name></h3>
   <p>
-  There may be a player name (or several names) for whom, whenever a game
-  is loaded, you would like the main window chessboard to be displayed from
-  the perspective of that player. You can configure a list of such names
-  using <b>My Player Names...</b> from the <menu>Options/Chessboard</menu>
-  menu. In the dialog box that appears, enter one player name on each line.
-  Wildcard characters ("<b>?</b>" for exactly one character and "<b>*</b>"
-  for a sequence of zero or more characters) can be used.
+  The options themselves are very numerous, and are generally dealt with in
+  their own Help items, but below you'll find a few items explained.
   </p>
 
-  <h3><name Fonts>Setting Fonts</name></h3>
+  <h3><name MyPlayerNames>My Player Names</name></h3>
+  <p>
+  <green><run editMyPlayerNames>My Player Names</run></green> allows one to
+  select one, or man,  special Player Names. These are used by the Player vs.
+  Computer feature, and also cause the board to flip automatically when a game
+  featuring such a name (as black) is loaded.
+  </p>
+  <p>
+  My Player Names are entered one per-line, and may contain the
+  wildcards "<b>?</b>" (for exactly one character) and "<b>*</b>"
+  (for a sequence of zero or more characters).
+  </p>
+
+  <h3><name Fonts>Fonts</name></h3>
   <p>
   Scid has four basic fonts; <b>Regular</b>, <b>Menu</b>, <b>Small</b> and <b>Fixed</b>.
-  They are customized via the <green>Options->Fonts</green>, or by <b>Control+WheelMouse</b> in the PGN and Help windows.
+  They are customized via the <green>Options-<gt>Fonts</green>, or by <b>Control+WheelMouse</b> in the PGN and Help windows.
   </p>
   <p>
-  The Fixed font is used by the <a Tree>tree</a> and <a Crosstable>crosstable</a> windows, and should be a fixed-width font.
+  The <b>Fixed</b> font is used by the <a Tree>Tree</a> and <a Crosstable>Crosstable</a> windows, and requires a fixed-width font to make text allign nicely.
   </p>
   <p>
-  Additionally, the new PGN chess figurines require a truetype font ScidChessBerin.ttf to be installed on your operating system. Scid vs. PC attempts to do this, but issues may arise in which case this feature will be disabled in the PGN Options Menu.
+  The new <b>PGN Figurines</b> feature require the truetype font ScidChessBerin.ttf to be installed on your operating system. Scid vs. PC attempts to do this, but issues may arise in which case this feature will be disabled in the PGN Options Menu.
   </p>
 
-  <p><footer>Updated: Scid 3.6.2, December 2006</footer></p>
+  <p><footer>Updated: Scid vs. PC 4.6 September 2011</footer></p>
 }
 
 set helpTitle(NAGs) "NAG values"

@@ -1289,6 +1289,7 @@ incr menuindex
 $m add command -label HelpTip -command ::tip::show
 set helpMessage($m,[incr menuindex]) HelpTip
 $m add command -label HelpStartup -command {
+  # .splash window is never destroyed !!
   wm deiconify .splash
   raiseWin .splash
 }
