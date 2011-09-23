@@ -1521,7 +1521,7 @@ puts $line
     ### This vwait cause f-ing headaches.
     # ... so don't update graph if playing
     vwaitTimed ::fics::sought 5000 "nowarn"
-    if {$::fics::playing == 0 && $::fics::graphon } {
+    if {$::fics::playing == 0 && $::fics::graphon && [winfo exists .fics]} {
       after 3000 ::fics::updateGraph
     }
   }
