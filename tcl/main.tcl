@@ -1026,7 +1026,10 @@ proc getPromoPiece {} {
   global boardSize
 
   set w .promoWin
-  set ::result 2
+  set ::result 2 ; # queen
+  if {$::fics::playing && $::moveEntry(AutoPromote)} {
+     return $::result
+  }
   set ::selectedSq -1
   toplevel $w
   wm transient $w .

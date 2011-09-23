@@ -978,7 +978,7 @@ $m add command -label OptionsSave -command {
     ecoFile suggestMoves showVarPopup showVarArrows glistSize glexport 
     blunderThreshold addAnnotatorTag annotateMoves annotateBlunders annotateType isAnnotateVar addAnnotatorComment
     autoplayDelay animateDelay boardCoords boardSTM 
-    moveEntry(AutoExpand) moveEntry(Coord) 
+    moveEntry(AutoExpand) moveEntry(Coord) moveEntry(AutoPromote)
     translatePieces highlightLastMove highlightLastMoveWidth highlightLastMoveColor 
     askToReplaceMoves ::windows::switcher::icons locale(numeric) 
     spellCheckFile ::splash::keepopen autoRaise autoIconify 
@@ -1189,6 +1189,8 @@ set helpMessage($m.entry,7) OptionsMovesSpace
 $m.entry add checkbutton -label OptionsMovesTranslatePieces \
     -variable ::translatePieces -offvalue 0 -onvalue 1 -command setLanguage
 set helpMessage($m.entry,8) OptionsMovesTranslatePieces
+
+$m.entry add checkbutton -label {Fics Autopromote Queen} -variable moveEntry(AutoPromote)
 
 proc updateLocale {} {
   global locale

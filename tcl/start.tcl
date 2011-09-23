@@ -503,6 +503,7 @@ set showVarArrows 1
 set moveEntry(On) 1
 set moveEntry(AutoExpand) 0
 set moveEntry(Coord) 1
+set moveEntry(AutoPromote) 0
 
 # Autoplay and animation delays in milliseconds:
 set autoplayDelay 5000
