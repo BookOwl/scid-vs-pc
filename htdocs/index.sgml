@@ -53,12 +53,13 @@ id="contact_">, and has been tested with the four million game ICOfY database.
 <sect2>Features not currently implemented
 
 <itemize>
-<item>No undo.
 <item>Language translations need volunteers and updating.
-<item>Scid's bibliographic/player fide links.
 <newline>
 <newline>
 <item> The <bf>Docked Mode</bf> and <bf>Theme</bf> features of Scid are not included.
+<newline>
+<newline>
+<item>Scid's bibliographic/player fide links.
 </itemize>
 
 <label id="download_">
@@ -131,6 +132,11 @@ break Scid vs. Mac when loading files. Users installing from source should
 upgrade their Tcl/Tk frameworks to 8.5.9 - built with</em> <bf>-arch i386</bf>
 
 <sect> news <p>
+
+<bf> September 29, 2011 </bf>
+
+Jiri Pavlovsky has made a windows installer. It's a nice piece of software :)
+Big thank-you. And we now have undo and redo features.
 
 <bf> July 8, 2011 </bf>
 
@@ -230,7 +236,7 @@ set to "none"
 
 Thanks to <url url="http://scidb.sf.net" name="Gregor Cramer"> for his technical support and the PGN figurines code.
 
-For Gilles and Dorothy for OSX packages,
+For Gilles and Dorothy for OSX packages, and Jiri Pavlovsky for the windows installer.
 
 <url url="http://sourceforge.net" name="Sourceforge.net"> for their great hosting,
 
@@ -722,8 +728,6 @@ Fics (which really gets stuffed up). Mouse wheel bindings remain.
 <itemize>
 <item> Language updates (volunteers welcome).
 <item> Give gamelist widget context menus ??
-<item> Port SCID's undo feature.
-
 
 </itemize>
 
