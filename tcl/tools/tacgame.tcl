@@ -357,7 +357,7 @@ namespace eval tacgame {
       }
       set level [expr int(rand()*($::tacgame::levelMax - $::tacgame::levelMin)) + $::tacgame::levelMin ]
     } else {
-      set level $::tacgame::levelFixed; # S.A.
+      set level $::tacgame::levelFixed
     }
 
     # if will follow a specific opening line
@@ -579,6 +579,7 @@ namespace eval tacgame {
     # convert Elo = 1200 to level 100 up to Elo=2200 to level 0
     set easylevel [expr int(100-(100*($level-1200)/(2200-1200)))]
     append analysisArgs " -b+ -p- -l- -e $easylevel "
+puts "$analysisArgs"
 
     # If the analysis directory is not current dir, cd to it:
     set oldpwd ""
@@ -752,7 +753,7 @@ namespace eval tacgame {
     global ::tacgame::analysisCoach ::tacgame::isLimitedAnalysisTime ::tacgame::analysisTime
 
     after cancel ::tacgame::stopAnalyze
-    ::uci::sendToEngine 2 "stop"
+    ::uci::sendToEngine $::tacgame::index1 stop
   }
   ################################################################################
   # returns true if last move is a mate and stops clocks
