@@ -1859,7 +1859,7 @@ if {$::splash::keepopen} {
 # Opening files by drag & drop on Scid icon on Mac
 # Todo: implement for Windows and Linux (haha!)
 
-if {![catch {tk windowingsystem} wsystem] && $wsystem == "aqua"} {
+if {$::macOS} {
   # We opened for a drag & drop request, process it now:
   set isopenBaseready 1
   if {$dndargs != 0} {

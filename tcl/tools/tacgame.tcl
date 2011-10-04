@@ -547,7 +547,6 @@ namespace eval tacgame {
     focus .
     ::tacgame::closeEngine $::tacgame::index1
     ::tacgame::closeEngine $::tacgame::index2
-    # ::uci::closeUCIengine 2 ?
   }
 
   # ======================================================================
