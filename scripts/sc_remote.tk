@@ -1,8 +1,8 @@
 #!/bin/sh
 # Emacs please open me in -*-Tcl-*- mode
 # the next line restarts using wish if it is in the path \
-	exec wish "$0" ${1+"$@"}
-#
+exec `dirname $0`/tkscid "$0" "$@"
+
 ###############################################################################
 #
 #
@@ -38,7 +38,7 @@
 # use wish to get the winfo and send commands).  
 #
 wm withdraw .
-#
+set SCID "[file dirname $::argv0]/scid"
 set debugging 0
 #
 # showStatus determines whether a status window is displayed or not
@@ -187,7 +187,11 @@ proc centreWin {w} {
 #
 proc getScidList {} {
     set ret [list]
-    foreach i [winfo interps] {
+    set interps [winfo interps]
+    if {$::debugging} {
+      puts "interps are $interps"
+    }
+    foreach i $interps {
 	if { [validScidInterp $i] } {
 	    lappend ret $i
 	}
@@ -269,14 +273,15 @@ proc indexSlotTable { slotArrName indexArrName } {
 	lappend index($val) $key
     }
 }
-#
+
 # isBusy tests a Scid interp for busy status (assumed busy if cursor of .
 # is "watch") - actually this isn't quite sufficient since scid may be 
 # busy starting up - we also need to check the startup window for the
 # "Startup completed" message...
-#
+
 proc isBusy { interp } {
     set ret 0
+if {0} {
     if { [send $interp winfo exists .splash.t] } {
 	# splash screen text widget exists see if startup is finished
 	set cmd [list .splash.t search "Startup complete" 1.0 end]
@@ -290,6 +295,7 @@ proc isBusy { interp } {
 	dputs "isBusy: no splash screen text widget - assume busy"
 	return 1
     }
+}
     # if we got here then there is a splash screen and it contains 
     # "Startup complete".  Now we go by the cursor status
     dputs "isBusy - using cursor status to determine busy status"
@@ -363,6 +369,8 @@ foreach arg $argv {
 	    set showStatus 0
 	} elseif { "-status" == $arg } {
 	    set showStatus 1
+	} elseif { "-debug" == $arg } {
+	    set debugging 1
 	} else {
 	    lappend scidArgs $arg
 	}
@@ -477,7 +485,7 @@ while { [llength $toOpen] > 0 } {
 	    # 2. $next may contain spaces.
 	    updateStatus $next "Done (Open new Scid)" green
 	    dputs "Gave up waiting for interp $interp exec a new one for $next"
-	    eval {exec nohup scid} $scidArgs {$next} &
+	    eval {exec nohup $::SCID} $scidArgs {$next} &
 	    # wait a short time for the new Scid to startup so that it 
 	    # will show up in the updated slot list
 	    dputs "waiting 250ms"
@@ -494,7 +502,7 @@ while { [llength $toOpen] > 0 } {
 	# execute scid to open $next.  
 	dputs "Couldn't find any free slots, start a new interp for $next"
 	updateStatus $next "Done (Open new Scid)" green
-	eval {exec nohup scid} $scidArgs {$next} &
+	eval {exec nohup $::SCID} $scidArgs {$next} &
 	# wait a short time for the new Scid to startup so that it 
 	# will show up in the updated slot list
 	dputs "waiting 250ms"

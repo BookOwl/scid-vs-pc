@@ -1,3 +1,5 @@
+Scid vs. PC 4.6, 4 October 2011
+Enable '-debug', disable 'Startup complete' check (broken on scidvspc), and hopefully sort out path issues.
 
 RCS file: /home/oakden/cvsroot/scripts/sc_remote/sc_remote,v
 Working file: sc_remote
