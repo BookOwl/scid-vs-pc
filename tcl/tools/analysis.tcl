@@ -1909,11 +1909,16 @@ proc logEngineNote {n text} {
 # Horrible hopeless design decisions meaning this code hasnt been touched since
 # - Sorry Shane ;> (mostly fixed now)
 
-proc startAnalysisWin { FunctionKey } {
+proc startAnalysisWin { FunctionKey  {force {}}} {
   global engines
 
   if {$engines($FunctionKey) != {}} {
     makeAnalysisWin $engines($FunctionKey)
+  } else {
+    if {$force != {}} {
+      # User pressed the engine toolbar. Should do something
+      makeAnalysisWin 0
+    }
   }
 }
 
