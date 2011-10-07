@@ -102,6 +102,7 @@ class Crosstable
 
     crosstableOutputT OutputFormat;
     crosstableSortT SortOption;
+    bool         ThreeWin;
 
     playerDataT * PlayerData [CROSSTABLE_MaxPlayers];
 
@@ -172,6 +173,8 @@ class Crosstable
     void   SetLaTeXOutput()     { OutputFormat = CROSSTABLE_LaTeX; }
 
     void   SetSortOption (crosstableSortT option) { SortOption = option; }
+    void   SetThreeWin   (bool threewin) { ThreeWin = threewin; }
+
     void   SortByName()  { SortOption = CROSSTABLE_SortName; }
     void   SortByElo()   { SortOption = CROSSTABLE_SortElo; }
     void   SortByScore() { SortOption = CROSSTABLE_SortScore; }

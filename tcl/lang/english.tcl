@@ -752,11 +752,12 @@ menuText E CrosstabEdit "Edit" 0
 menuText E CrosstabEditEvent "Event" 0
 menuText E CrosstabEditSite "Site" 0
 menuText E CrosstabEditDate "Date" 0
-menuText E CrosstabOpt "Display" 0
+menuText E CrosstabOpt "Options" 0
 menuText E CrosstabOptAll "All-Play-All" 0
 menuText E CrosstabOptSwiss "Swiss" 0
 menuText E CrosstabOptKnockout "Rounds" 0
 menuText E CrosstabOptAuto "Auto" 1
+menuText E CrosstabOptThreeWin "3 Points for Win" 1
 menuText E CrosstabOptAges "Ages in Years" 8
 menuText E CrosstabOptNats "Nationalities" 0
 menuText E CrosstabOptRatings "Ratings" 0

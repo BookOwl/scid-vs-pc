@@ -29,7 +29,7 @@ proc ::crosstab::ConfigMenus {{lang ""}} {
   }
   # foreach idx {0 1 2 3 5 6 7 8 9  10 12 13 15} must change because of tearoff
   # Scid menus are the biggest steaming pile of shit S.A
-  foreach idx   {1 2 3 4 6 7 8 9 10 11 13 14 16} tag {All Swiss Knockout Auto Ages Nats Ratings Titles Breaks Deleted Colors ColumnNumbers Group} {
+  foreach idx   {1 2 3 4 6 8 9 10 11 12 13 15 16 18} tag {All Swiss Knockout Auto ThreeWin Ages Nats Ratings Titles Breaks Deleted Colors ColumnNumbers Group} {
     configMenuText $m.opt $idx CrosstabOpt$tag $lang
   }
 
@@ -127,7 +127,7 @@ proc ::crosstab::Open {} {
         catch {sc_game crosstable html $crosstab(sort) $crosstab(type) \
                  $crosstab(ratings) $crosstab(countries) $crosstab(titles) \
                  $crosstab(colors) $crosstab(groups) $crosstab(ages) \
-                 $crosstab(breaks) $crosstab(cnumbers) $crosstab(deleted)} \
+                 $crosstab(breaks) $crosstab(cnumbers) $crosstab(deleted) $crosstab(threewin)} \
           result
         puts $tempfile $result
         close $tempfile
@@ -149,7 +149,7 @@ proc ::crosstab::Open {} {
         catch {sc_game crosstable latex $crosstab(sort) $crosstab(type) \
                  $crosstab(ratings) $crosstab(countries) $crosstab(titles) \
                  $crosstab(colors) $crosstab(groups) $crosstab(ages) \
-                 $crosstab(breaks) $crosstab(cnumbers) $crosstab(deleted)} \
+                 $crosstab(breaks) $crosstab(cnumbers) $crosstab(deleted) $crosstab(threewin)} \
           result
         puts $tempfile $result
         close $tempfile
@@ -191,6 +191,14 @@ proc ::crosstab::Open {} {
     -variable crosstab(type) -value knockout -command ::crosstab::Refresh
   $w.menu.opt add radiobutton -label CrosstabOptAuto \
     -variable crosstab(type) -value auto -command ::crosstab::Refresh
+
+  $w.menu.opt add separator
+
+  set crosstab(threewin) "-threewin"
+  $w.menu.opt add checkbutton -label CrosstabOptThreeWin \
+    -variable crosstab(threewin) -command ::crosstab::Refresh  \
+    -onvalue "+threewin" -offvalue "-threewin"
+
   $w.menu.opt add separator
   $w.menu.opt add checkbutton -label CrosstabOptAges \
     -variable crosstab(ages) -onvalue "+ages" \
@@ -363,7 +371,7 @@ proc ::crosstab::Refresh {} {
   catch {sc_game crosstable $crosstab(text) $crosstab(sort) $crosstab(type) \
          $crosstab(ratings) $crosstab(countries) $crosstab(titles) \
          $crosstab(colors) $crosstab(groups) $crosstab(ages) \
-         $crosstab(breaks) $crosstab(cnumbers) $crosstab(deleted)} result
+         $crosstab(breaks) $crosstab(cnumbers) $crosstab(deleted) $crosstab(threewin)} result
   $w.f.text configure -state normal
   if {$crosstab(text) == "plain"} {
     $w.f.text insert end $result

@@ -340,20 +340,20 @@ Crosstable::AddResult (uint gameNumber, idNumberT white, idNumberT black,
 
     switch (result) {
     case RESULT_White:
-        pwhite->score += 2;
+        pwhite->score += (ThreeWin ? 6 : 2);
         if (pblack->elo > 0) {
             pwhite->oppEloScore += 2;
         }
         break;
     case RESULT_Black:
-        pblack->score += 2;
+        pblack->score += (ThreeWin ? 6 : 2);
         if (pwhite->elo > 0) {
             pblack->oppEloScore += 2;
         }
         break;
     case RESULT_Draw:
-        pwhite->score++;
-        pblack->score++;
+        pwhite->score += (ThreeWin ? 2 : 1);
+        pblack->score += (ThreeWin ? 2 : 1);
         if (pblack->elo > 0) {
             pwhite->oppEloScore ++;
         }
@@ -771,9 +771,13 @@ Crosstable::PrintAllPlayAll (DString * dstr, uint playerLimit)
         dstr->Append (StartBoldCol, " Nat", EndBoldCol);
     }
     if (OutputFormat == CROSSTABLE_LaTeX) {
+        // Todo : fix LateX Score column allignemtn with 3 points for win.
         dstr->Append (" \\multicolumn{2}{c}{\\bf Score} & ");
     } else {
-        dstr->Append ("   ", StartBoldCol, " Score ", EndBoldCol, "   ");
+        if (ThreeWin) 
+	  dstr->Append ("  ", StartBoldCol, "Score", EndBoldCol, " ");
+        else
+	  dstr->Append ("   ", StartBoldCol, " Score ", EndBoldCol, "   ");
     }
     if (PrintTiebreaks) {
         dstr->Append (StartBoldCol, "   SB  ", EndBoldCol);
@@ -839,9 +843,15 @@ Crosstable::PrintAllPlayAll (DString * dstr, uint playerLimit)
             sprintf (stemp, " %2u  ", pdata->gameCount);
             dstr->Append (StartRightCol, stemp, EndRightCol);
         } else {
-            sprintf (stemp, " %2u%c%c / %2u  ",
-                     pdata->score / 2, DecimalPointChar,
-                     (pdata->score & 1 ? '5' : '0'), pdata->gameCount);
+            if (ThreeWin) {
+	      sprintf (stemp, " %2u%c%c  ",
+		       pdata->score / 2, DecimalPointChar,
+		       (pdata->score & 1 ? '5' : '0'));
+            } else {
+	      sprintf (stemp, " %2u%c%c / %2u  ",
+		       pdata->score / 2, DecimalPointChar,
+		       (pdata->score & 1 ? '5' : '0'), pdata->gameCount);
+            }
             dstr->Append (StartRightCol, stemp, EndRightCol);
         }
         if (PrintTiebreaks) {
@@ -945,7 +955,10 @@ Crosstable::PrintSwiss (DString * dstr, uint playerLimit)
     if (OutputFormat == CROSSTABLE_LaTeX) {
         dstr->Append (" \\multicolumn{2}{c}{\\bf Score} & ");
     } else {
-        dstr->Append ("   ", StartBoldCol, " Score ", EndBoldCol, "   ");
+        if (ThreeWin) 
+	  dstr->Append ("  ", StartBoldCol, "Score", EndBoldCol, " ");
+        else
+	  dstr->Append ("   ", StartBoldCol, " Score ", EndBoldCol, "   ");
     }
     if (PrintTiebreaks) {
         dstr->Append (StartBoldCol, " SOP ", EndBoldCol);
@@ -993,9 +1006,15 @@ Crosstable::PrintSwiss (DString * dstr, uint playerLimit)
             sprintf (stemp, " %2u  ", pdata->gameCount);
             dstr->Append (StartRightCol, stemp, EndRightCol);
         } else {
-            sprintf (stemp, " %2u%c%c / %2u  ",
-                     pdata->score / 2, DecimalPointChar,
-                     (pdata->score & 1 ? '5' : '0'), pdata->gameCount);
+            if (ThreeWin) {
+	      sprintf (stemp, " %2u%c%c  ",
+		       pdata->score / 2, DecimalPointChar,
+		       (pdata->score & 1 ? '5' : '0'));
+            } else {
+	      sprintf (stemp, " %2u%c%c / %2u  ",
+		       pdata->score / 2, DecimalPointChar,
+		       (pdata->score & 1 ? '5' : '0'), pdata->gameCount);
+            }
             dstr->Append (StartRightCol, stemp, EndRightCol);
         }
         if (PrintTiebreaks) {

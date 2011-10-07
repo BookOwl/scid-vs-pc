@@ -6134,6 +6134,7 @@ sc_game_crosstable (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv
         "-deleted", "+deleted",         // Include deleted games in table
         "-numcolumns", "+numcolumns",   // All-play-all numbered columns
         "-gameNumber",
+        "-threewin", "+threewin",       // Give 3 points for win, 1 for draw
         NULL
     };
     enum {
@@ -6148,7 +6149,8 @@ sc_game_crosstable (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv
         EOPT_GROUPS_OFF, EOPT_GROUPS_ON,
         EOPT_DELETED_OFF, EOPT_DELETED_ON,
         EOPT_NUMCOLUMNS_OFF, EOPT_NUMCOLUMNS_ON,
-        EOPT_GNUMBER
+        EOPT_GNUMBER,
+        EOPT_THREEWIN_OFF, EOPT_THREEWIN_ON
     };
 
     int sort = EOPT_SORT_SCORE;
@@ -6164,6 +6166,7 @@ sc_game_crosstable (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv
     bool numColumns = false;  // Numbers for columns in all-play-all table
     uint numTableGames = 0;
     uint gameNumber = 0;
+    bool threewin = false;
 
     if (argc >= 3) { option = strUniqueMatch (argv[2], options); }
     if (option < 0) { return errorResult (ti, usageMsg); }
@@ -6204,6 +6207,8 @@ sc_game_crosstable (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv
                 gameNumber = strGetUnsigned (argv[arg+1]);
                 arg++;
                 break;
+            case EOPT_THREEWIN_OFF:  threewin = false ; break;
+            case EOPT_THREEWIN_ON:   threewin = true  ; break;
             default: return errorResult (ti, usageMsg);
         }
     }
@@ -6262,6 +6267,8 @@ sc_game_crosstable (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv
     if (sort == EOPT_SORT_NAME) { ctable->SortByName(); }
     if (sort == EOPT_SORT_RATING) { ctable->SortByElo(); }
     if (sort == EOPT_SORT_COUNTRY) { ctable->SortByCountry(); }
+
+    ctable->SetThreeWin(threewin);
     ctable->SetSwissColors (showColors);
     ctable->SetAges (showAges);
     ctable->SetCountries (showCountries);
