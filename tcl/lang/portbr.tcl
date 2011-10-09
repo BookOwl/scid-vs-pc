@@ -817,6 +817,8 @@ menuText B CrosstabOptAll "Todos contra todos" 0
 menuText B CrosstabOptSwiss "Swiss" 0
 menuText B CrosstabOptKnockout "Knockout" 0
 menuText B CrosstabOptAuto "Automatico" 0
+# todo
+menuText B CrosstabOptThreeWin "3 Points for Win" 1
 menuText B CrosstabOptAges "Idade em anos" 0
 menuText B CrosstabOptNats "Nacionalidades" 0
 menuText B CrosstabOptRatings "Ratings" 0

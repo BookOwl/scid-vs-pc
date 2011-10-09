@@ -755,6 +755,8 @@ menuText D CrosstabOptAll "Jeder gegen jeden" 0
 menuText D CrosstabOptSwiss "Schweizer System" 0
 menuText D CrosstabOptKnockout "K.o.-System" 0
 menuText D CrosstabOptAuto "Automatisch" 1
+# todo
+menuText D CrosstabOptThreeWin "3 Points for Win" 1
 menuText D CrosstabOptAges "Alter in Jahren" 0
 menuText D CrosstabOptNats "Nationalität" 0
 menuText D CrosstabOptRatings "Elo" 0

@@ -732,6 +732,8 @@ menuText F CrosstabOptAll "Toutes rondes" 0
 menuText F CrosstabOptSwiss "Suisse" 0
 menuText F CrosstabOptKnockout "KO" 0
 menuText F CrosstabOptAuto "Auto" 0
+# todo
+menuText F CrosstabOptThreeWin "3 Points for Win" 1
 menuText F CrosstabOptAges "Ages en années" 8
 menuText F CrosstabOptNats "Nationalités" 0
 menuText F CrosstabOptRatings "Classements" 0

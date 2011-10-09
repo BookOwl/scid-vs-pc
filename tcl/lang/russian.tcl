@@ -859,6 +859,8 @@ menuText R CrosstabOptAll "Все против всех" 0
 menuText R CrosstabOptSwiss "Швейцарская система" 0
 menuText R CrosstabOptKnockout "На вылет" 0
 menuText R CrosstabOptAuto "Авто" 0
+# todo
+menuText R CrosstabOptThreeWin "3 Points for Win" 1
 menuText R CrosstabOptAges "Возвраст в годах" 2
 menuText R CrosstabOptNats "Национальность" 2
 menuText R CrosstabOptRatings "Рейтинг" 0

@@ -816,6 +816,8 @@ menuText C CrosstabOptAll "Ka¾dý s ka¾dým" 0
 menuText C CrosstabOptSwiss "©výcarský systém" 3
 menuText C CrosstabOptKnockout "Vyøazovací" 4
 menuText C CrosstabOptAuto "Auto" 0
+# todo
+menuText C CrosstabOptThreeWin "3 Points for Win" 1
 menuText C CrosstabOptAges "Vìk" 0
 menuText C CrosstabOptNats "Národnost" 0
 menuText C CrosstabOptRatings "Rating" 0

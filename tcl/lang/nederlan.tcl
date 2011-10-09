@@ -829,6 +829,8 @@ menuText N CrosstabOptAll "Gesloten" 0
 menuText N CrosstabOptSwiss "Zwitsers" 0
 menuText N CrosstabOptKnockout "Knockout" 0
 menuText N CrosstabOptAuto "Auto" 0
+# todo
+menuText N CrosstabOptThreeWin "3 Points for Win" 1
 menuText N CrosstabOptAges "Leeftijd in jaren" 8
 menuText N CrosstabOptNats "Nationaliteiten" 1
 menuText N CrosstabOptRatings "Elo" 0

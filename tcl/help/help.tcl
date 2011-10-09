@@ -1365,7 +1365,7 @@ set helpTitle(Crosstable) "Crosstable window"
 set helpText(Crosstable) {<h1>The Crosstable Window</h1>
   <p>
   The <run ::crosstab::OpenClose><green>Crosstable</green></run> shows the
-  Tournament result for the current game in All-Play-All, Swiss or Knockout formats.
+  tournament result for the current game in <b>All-Play-All, Swiss</b> or <b>Knockout</b> formats.
   </p>
   <p>
   Any game played up to <b>twelve months before or after</b> the current game,
@@ -1377,15 +1377,18 @@ set helpText(Crosstable) {<h1>The Crosstable Window</h1>
   Clicking on a Game Result shows a menu from which one may Browse, Load or Merge a game.
   </p>
   <p>
-  From the menubar you'll be able to access the Display Options, edit the Event
-  Details, or export the table as Text, LaTex ot HTML. Most of these features should need no explanation....
-  The "Group Scores" option shows a blank line between each group of
-  players with the same score (when sorting by Score is selected).
+From the menubar you'll be able to access the Display Options, edit the
+<b>Event,  Site</b> or <b>Date</b> fields, export the table as <b>Text, LaTex
+</b>or <b>HTML</b>, or choose the <b>Sort Criteria</b> for the crosstable.
+  </p>
+  <p>
+When sorting by score, the <b>Group Scores</b> option shows a blank line
+between players with the same score.
   </p>
   <p>
   Scid vs. PC has a couple of extra features over mainline SCID: The ability to
-  sort the table by Nationality, and the current game is shown in green.
-  </p>
+  sort the table by <b>Nationality</b>, the <b>current game is shown in
+green</b>, and an option for <b>3 Points for a Win</b>.  </p>
 
 <h4>Table Format</h4>
   <p>

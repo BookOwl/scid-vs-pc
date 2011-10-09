@@ -765,6 +765,8 @@ menuText S CrosstabOptAll "Todos contra todos" 0
 menuText S CrosstabOptSwiss "Suizo" 0
 menuText S CrosstabOptKnockout "Eliminatoria directa" 0
 menuText S CrosstabOptAuto "Auto" 0
+# todo
+menuText S CrosstabOptThreeWin "3 Points for Win" 1
 menuText S CrosstabOptAges "Edad en años" 1
 menuText S CrosstabOptNats "Nacionalidades" 0
 menuText S CrosstabOptRatings "Elo" 0

@@ -856,6 +856,8 @@ menuText O CrosstabOptAll "Alle-mot-alle" 0
 menuText O CrosstabOptSwiss "Sveitsisk" 0
 menuText O CrosstabOptKnockout "Kun vinnere" 0
 menuText O CrosstabOptAuto "Auto" 0
+# todo
+menuText O CrosstabOptThreeWin "3 Points for Win" 1
 menuText O CrosstabOptAges "Aldre i år" 0
 menuText O CrosstabOptNats "Nasjonaliteter" 0
 menuText O CrosstabOptRatings "Ratinger" 0

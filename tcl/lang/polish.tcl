@@ -731,6 +731,8 @@ menuText P CrosstabOptAll "Turniej ko³owy" 0
 menuText P CrosstabOptSwiss "Szwajcar" 0
 menuText P CrosstabOptKnockout "Knockout" 0
 menuText P CrosstabOptAuto "Automatycznie" 0
+# todo
+menuText P CrosstabOptThreeWin "3 Points for Win" 1
 menuText P CrosstabOptAges "Wiek" 0
 menuText P CrosstabOptNats "Narodowo¶æ" 0
 menuText P CrosstabOptRatings "Ranking" 0

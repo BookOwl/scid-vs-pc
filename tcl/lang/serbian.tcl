@@ -854,6 +854,8 @@ menuText Y CrosstabOptAll "Svako sa svakim" 0
 menuText Y CrosstabOptSwiss "©vajcarski sistem" 0
 menuText Y CrosstabOptKnockout "Nokaut" 0
 menuText Y CrosstabOptAuto "Auto" 0 ;# ***
+# todo
+menuText Y CrosstabOptThreeWin "3 Points for Win" 1
 menuText Y CrosstabOptAges "Starost u godinama" 10
 menuText Y CrosstabOptNats "Narodnost" 0
 menuText Y CrosstabOptRatings "Rejtinzi" 0
