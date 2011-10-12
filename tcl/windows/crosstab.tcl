@@ -35,9 +35,9 @@ proc ::crosstab::ConfigMenus {{lang ""}} {
 
   # Disable the Ages, Nats, Titles items if spellcheck not enabled. S.A
   if {!$::spellCheckFileExists} {
-    $m.opt entryconfig 6 -state disabled -variable {}
-    $m.opt entryconfig 7 -state disabled -variable {}
+    $m.opt entryconfig 8 -state disabled -variable {}
     $m.opt entryconfig 9 -state disabled -variable {}
+    $m.opt entryconfig 11 -state disabled -variable {}
   }
 
   foreach idx {0 1 2 3} tag {Name Rating Score Country} {
