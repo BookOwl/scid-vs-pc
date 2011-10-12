@@ -165,14 +165,33 @@ set ::tree::mask::recentMask {}
 # scidExeDir: contains the directory of the Scid executable program.
 # Used to determine the location of various relative data directories.
 set scidExecutable [info nameofexecutable]
-if {[file type $scidExecutable] == "link"} {
-  set scidExeDir [file dirname [file readlink $scidExecutable]]
-  if {[file pathtype $scidExeDir] == "relative"} {
-    set scidExeDir [file dirname [file join [file dirname $scidExecutable]\
-      [file readlink $scidExecutable]]]
+
+if {$scidExecutable == {}} {
+  ### Shit. Wish8.6b2 returns {} 
+  # I wonder if new tcl-8.5 works ok ?
+  if {$unixOS} {
+    catch {
+      set scidExecutable [exec readlink /proc/[pid]/exe]
+    }
+    puts "scidExecutable is null. Now $scidExecutable" 
+  } else {
+    puts "scidExecutable is null" 
   }
+}
+
+if {$scidExecutable == {}} {
+  ### may work on windows, but will be broken on other OS
+  set scidExeDir .
 } else {
-  set scidExeDir [file dirname $scidExecutable]
+  if {[file type $scidExecutable] == "link"} {
+    set scidExeDir [file dirname [file readlink $scidExecutable]]
+    if {[file pathtype $scidExeDir] == "relative"} {
+      set scidExeDir [file dirname [file join [file dirname $scidExecutable]\
+	[file readlink $scidExecutable]]]
+    }
+  } else {
+    set scidExeDir [file dirname $scidExecutable]
+  }
 }
 
 # scidUserDir: location of user-specific Scid files.
