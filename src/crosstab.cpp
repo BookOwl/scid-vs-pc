@@ -771,7 +771,7 @@ Crosstable::PrintAllPlayAll (DString * dstr, uint playerLimit)
         dstr->Append (StartBoldCol, " Nat", EndBoldCol);
     }
     if (OutputFormat == CROSSTABLE_LaTeX) {
-        // Todo : fix LateX Score column allignemtn with 3 points for win.
+        // Todo : fix LateX Score column allignment with 3 points for win.
         dstr->Append (" \\multicolumn{2}{c}{\\bf Score} & ");
     } else {
         if (ThreeWin) 
@@ -780,7 +780,7 @@ Crosstable::PrintAllPlayAll (DString * dstr, uint playerLimit)
 	  dstr->Append ("   ", StartBoldCol, " Score ", EndBoldCol, "   ");
     }
     if (PrintTiebreaks) {
-        dstr->Append (StartBoldCol, "   SB  ", EndBoldCol);
+        dstr->Append (StartBoldCol, " (Tie) ", EndBoldCol);
     }
 
     for (player = 0; player < playerLimit; player++) {
@@ -961,7 +961,7 @@ Crosstable::PrintSwiss (DString * dstr, uint playerLimit)
 	  dstr->Append ("   ", StartBoldCol, " Score ", EndBoldCol, "   ");
     }
     if (PrintTiebreaks) {
-        dstr->Append (StartBoldCol, " SOP ", EndBoldCol);
+        dstr->Append (StartBoldCol, "(Tie)", EndBoldCol);
     }
 
     for (uint round = 1; round <= MaxRound; round++) {

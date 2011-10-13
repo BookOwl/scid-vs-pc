@@ -276,7 +276,7 @@ proc ::crosstab::Open {} {
   button $w.b.stop -textvar ::tr(Stop) -state disabled \
     -command { set ::htext::interrupt 1 }
   menubutton $w.b.type -text "" -menu $w.b.type.menu \
-    -relief raised -bd 2 -indicatoron 1
+    -relief raised -bd 1 -indicatoron 1
   menu $w.b.type.menu
   $w.b.type.menu add radiobutton -label [tr CrosstabOptAll] \
     -variable crosstab(type) -value allplay -command ::crosstab::Refresh
@@ -304,12 +304,9 @@ proc ::crosstab::Open {} {
     updateStatusBar
   }
 
-  frame $w.b.space -width 20
-  label $w.b.label -text Format
-
-  button $w.b.font -text Font -command {FontDialogFixed .crosstabWin}
+  button $w.b.font -text { Font } -command {FontDialogFixed .crosstabWin}
   pack $w.b.cancel $w.b.update -side right -pady 3 -padx 5
-  pack $w.b.setfilter $w.b.addfilter $w.b.space $w.b.label $w.b.type $w.b.font -side left -pady 3 -padx 5
+  pack $w.b.setfilter $w.b.addfilter $w.b.type $w.b.font -side left -pady 3 -padx 5
 
   standardShortcuts $w
 
