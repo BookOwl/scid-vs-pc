@@ -125,7 +125,7 @@ set tips(E) {
   {
     With the <a PInfo>player information</a> window (just click on either
     player name in the game info area below the main window chessboard
-    to open it), you can easily set the <a Searches Filter>filter</a> to
+    to open it), you can easily set the <a Filter>filter</a> to
     contain all games by a certain player with a certain result by
     clicking on any value that is displayed <red>in red text</red>.
   }
@@ -269,7 +269,7 @@ set tips(E) {
     After a <a Searches>search</a>, you can easily browse through all
     the matching games by holding down <b>Ctrl</b> and pressing the
     <b>Up</b> or <b>Down</b> key to load the previous or next
-    <a Searches Filter>filter</a> game.
+    <a Filter>filter</a> game.
   }
   {
     <a Tourney>Computer Tournaments</a> between numerous opponents are possible.

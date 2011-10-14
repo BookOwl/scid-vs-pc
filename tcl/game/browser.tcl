@@ -11,7 +11,7 @@ proc ::gbrowser::new {base gnum {ply -1} {w {}}} {
 
   # Hack to stop the gnext button from using ply after treeBest has been destroyed
   # but the use of ply in the browser should probably be checked S.A.
-  if {![winfo exists .treeBest$base]} { set ply 0 }
+  # if {![winfo exists .treeBest$base]} { set ply 0 }
 
   set gnum [string trim $gnum]
   set n 0
@@ -227,9 +227,13 @@ proc ::gbrowser::load {w base gnum ply n} {
    }
   } else {
     set newgame $gnum
+
+    ### should these 1, -1 +1 end , be replaced with first, prev,next end
+    ### but would need major changes to this file
+
     switch -- $n {
       1 {
-	 set newgame 1
+	 set newgame [sc_filter first]
       }
       -1 {
 	 if {$gnum > 1} {
@@ -240,7 +244,7 @@ proc ::gbrowser::load {w base gnum ply n} {
 	 set newgame [sc_filter next [expr $gnum - 1]]
       }
       end {
-	 set newgame $::MAX_GAMES
+	 set newgame [sc_filter last]
       }
       default {
 	 puts "::gbrowser::load: bad variable 'n'"

@@ -289,7 +289,7 @@ set helpText(Index) {<h1>Scid Help Index</h1>
   <li><a FindBestMove>Training: Find best move</a></li>
   <li><a Formats>File formats</a></li>
   <li><a Menus File>File menu</a></li>
-  <li><a Searches Filter>Filter</a></li>
+  <li><a Filter>Filter</a></li>
   <li><a Export>Filter, exporting</a></li>
   <li><a Graphs Filter>Filter graph</a></li>
   <li><a Finder>Finder</a></li>
@@ -501,7 +501,7 @@ set helpText(Hints) {<h1>Scid Hints</h1>
 
   <h4>How do I copy games from one database to another?</h4>
   <p>
-  Use the <a Switcher>Database Switcher</a> to drag and drop (<a Searches Filter>filter</a>)
+  Use the <a Switcher>Database Switcher</a> to drag and drop (<a Filter>filter</a>)
   games between databases.
   </p>
 
@@ -621,7 +621,7 @@ set helpText(MainWindow) {<h1>Scid Main Window</h1>
   The first field indicates the game status: <b>XX</b> means it has been
   altered and not yet saved, while <b>--</b> means it is unchanged,
   and <b>%%</b> indicates the database is read-only (not alterable).
-  Also shown is how many games are currently in the game <a Searches Filter>filter</a>.
+  Also shown is how many games are currently in the game <a Filter>filter</a>.
   </p>
 
   <h4><name Autoplay>Autoplay Mode</name></h4>
@@ -707,7 +707,7 @@ set helpText(Menus) {<h1>Scid Menus</h1>
   <li><menu>New Game</menu>: Resets the active game to an empty state,
   discarding any unsaved changes.</li>
   <li><menu>Load First/Previous/Next/Last Game</menu>: These load the first,
-  previous, next or last game in the <a Searches Filter>filter</a>.</li>
+  previous, next or last game in the <a Filter>filter</a>.</li>
   <li><menu>Reload this game</menu>: Reloads the current game, discarding
   any changes made.</li>
   <li><menu>Load Game Number</menu>: Loads the game given its game number
@@ -731,7 +731,7 @@ set helpText(Menus) {<h1>Scid Menus</h1>
 
   <h3><name Search>Search</name></h3>
   <ul>
-  <li><menu>Reset Filter</menu>: Resets the <a Searches Filter>filter</a>
+  <li><menu>Reset Filter</menu>: Resets the <a Filter>filter</a>
   so all games are included.</li>
   <li><menu>Negate filter</menu>: Inverts the filter to only include
   games that were excluded.</li>
@@ -765,7 +765,7 @@ set helpText(Menus) {<h1>Scid Menus</h1>
   <li><menu>ECO Browser</menu>: Opens/closes the <a ECO browser>ECO Browser</a> window.</li>
   <li><menu>Statistics window</menu>: Opens/closes the
   <term>Filter statistics window</term> which gives a win/loss summary
-  of the games in the <a Searches Filter>filter.</a></li>
+  of the games in the <a Filter>filter.</a></li>
   <li><menu>Tree window</menu>: Opens/closes the <a Tree>tree window</a>.</li>
   <li><menu>Endgame Tablebase window</menu>: Opens/closes the window that
   displays <a TB>tablebase</a> information.</li>
@@ -799,7 +799,7 @@ set helpText(Menus) {<h1>Scid Menus</h1>
   file in PGN, HTML or LaTeX format. See the <a Export>export</a> help
   page.</li>
   <li><menu>Export all filter games</menu>: Saves all games in the
-  search <a Searches Filter>filter</a> to a text file in PGN, HTML or
+  search <a Filter>filter</a> to a text file in PGN, HTML or
   LaTeX format. See the <a Export>export</a> help page.</li>
   <br>
   <li><menu>Import PGN text</menu>: Opens the <a Import>Import window</a>
@@ -976,52 +976,35 @@ destination square. Alternatively one may drag the piece.
 set helpTitle(Searches) "Searches"
 set helpText(Searches) {<h1>Searches in Scid</h1>
   <p>
-  Scid can perform many different types of searches.
-  The main ones are:
+  Scid can perform several different types of searches. The main ones are:
   <ul>
-  <li><b>General information</b> searches (such as players, result, date) in the game header </li>
-  <li><b>Game positions</b> identical to the current board </li>
-  <li>Specific <b>material and piece</b> patterns </li>
-  </ul>
+  <li><b>General</b> (or Header) searches - such as Players, Result or Date</li>
+  <li><b>Game Positions</b> - matching the Current Board</li>
+  <li><b>Material and Piece Pattern</b> searches.</li>
+  </ul></p>
   <p>
-  <i>In addition to these, there is also an automatic search mode called the
-  <a Tree>Tree window</a>, explained separately</i>.
-  </p>
-
-  <h3><name Filter>The Filter</name></h3>
-  <p>
-  The Scid filter represents
-  a subset of games in the current database. At any time, each game is either
-  included in or excluded from the filter (as per the <a GameList>Game List</a> widget).
+  <i>Positional Searches can also be performed automatically, by the <a Tree>Tree Window</a>.</i>
   </p>
   <p>
-  With each new search, you can choose to restrict the existing
-  filter, add to it, or reset it and search the whole database.
-  This choice permits complex searches to be built up incrementally.
-  </p>
-  <p><i>Do not confuse Filtered games with Deleted games. They are separate ideas... See <a GameList>here</a> for more info</i></p>
-  <p>
-  You can also copy all games in the filter of one database to another
-  using the <a Switcher>database switcher</a> window.
+  Searches display their results by adjusting the <a Filter>Filter</a> with matching games.
   </p>
   <p>
-  With exact position, <a Tree>tree</a> or material/pattern searches, the
-  move number of the first matching position of each matching game is
-  remembered, so when you load each game it will show the matching position
-  automatically.
+  By default they will <b>Reset</b> the Filter (searching the whole database). But one may also
+  <b>Add to</b>, or <b>Restrict</b> the Filter, allowing complex searches to be built up.
   </p>
   <p>
-  <i>Most searches only apply to the main line moves of a game, not to variations</i>.
+  With Position, Tree, and Material/Pattern searches, when you load a matching game
+  it will automatically show the relevent game position.
+  </p>
+  <p>
+  <i>Most searches only apply to the Main Line of a game, and not to Variations</i>.
   </p>
 
   <h3><name Header>General (Header) Searches</name></h3>
   <p>
   This search is for game information stored
   in the game header such as Player Names, Date, Result, Flags and Ratings.
-  </p>
-  <p>
-  For a game to match a Header search, <b>all</b> fields that you
-  specify must match.
+  For a successful match, <b>all fields must match</b>.
   </p>
   <p>
   The name fields (White, Black, Event, Site and Round) match on any text
@@ -1087,9 +1070,8 @@ set helpText(Searches) {<h1>Searches in Scid</h1>
   in an endgame.
   </p>
   <p>
-  To search for an arbitrary position, you can set the position first
-  (from the <menu>Edit: Setup Start Board</menu> menu) and then
-  start the search.
+  To search for an arbitrary position, set the board position 
+  via <green>Edit--<gt>Setup Board</green> before running the search.
   </p>
   <p>
   You can request that the search look in variations (instead of only
@@ -1118,26 +1100,41 @@ set helpText(Searches) {<h1>Searches in Scid</h1>
 
   <h3><name Settings>Saving Search Settings</name></h3>
   <p>
-  The Material/Pattern and Header search windows provide a
-  <term>Save settings</term> button. This lets you save the current
-  search settings for later use, to a <term>SearchOptions</term> file
-  (<b>.sso</b>).
-  To search using a previously saved SearchOptions (.sso) file, select
-  <menu>Open</menu> from the <menu>Search</menu> menu.
+  The Material/Pattern and Header Search windows provide a
+  <b>Save</b> button, enabling one to save the current
+  search settings to a SearchOptions file (<b>.sso</b>).
+  Loading this file is done from <green>Search--<gt>Load Search File</green> menu.
   </p>
 
   <h3>Search Times and Skipped Games</h3>
   <p>
   Most searches produce a message indicating the time taken and the number
-  of games that were <term>skipped</term>. A skipped game is one that can
+  of games that were skipped. A <b>skipped</b> game is one that can
   be excluded from the search without decoding any of its moves, based on
   information stored in the index. See the help page on
   <a Formats>file formats</a> for more information.
   </p>
 
-  <p><footer>Updated: Scid vs. PC 4.1 September 2010</footer></p>
+  <p><footer>Updated: Scid vs. PC 4.6 October 2011</footer></p>
 }
 
+set helpTitle(Filter) "The Filter"
+set helpText(Filter) {<h1>The Filter</h1>
+  <p>
+  Scid's Filter represents a subset of games in the current base or pgn archive. At any time, each game is either
+  included in or excluded from the filter, as displayed by the <a GameList>Game List</a> widget.
+  </p>
+  <p>
+  The Filter is often used to show <a Searches>Search</a> results.
+  </p>
+  <p><i>Do not confuse Filtered games with Deleted games. They are <a GameList Del>separate things.</a></i></p>
+  <p>
+  You can also copy all games in the Filter of one Database to another
+  using the <a Switcher>Database Switcher</a>.
+  </p>
+
+  <p><footer>Updated: Scid vs. PC 4.6 October 2011</footer></p>
+}
 
 set helpTitle(Clipbase) "The Clipbase"
 set helpText(Clipbase) {<h1>The Default Database</h1>
@@ -1156,7 +1153,7 @@ set helpText(Clipbase) {<h1>The Default Database</h1>
   </p>
   <p>
   For example, assume you want to prepare for an opponent and have searched
-  a database so the <a Searches Filter>filter</a> contains only games where
+  a database so the <a Filter>filter</a> contains only games where
   the opponent played white.
   You can copy these games to the Clipbase by opening the <a Switcher>Switcher</a> and
   dragging from the database to the Clipbase.
@@ -1425,7 +1422,7 @@ set helpText(Switcher) {<h1>The Database Switcher Window</h1>
   <p>
   The Database Switcher, located at the bottom of the <a GameList>Game List</a> widget,
   gives visual feedback on open databases. 
-  The name, <a Searches Filter>filter</a> state and icon
+  The name, <a Filter>filter</a> state and icon
   of each database is displayed, and the active database is highlighted
   with a white background. At the left most is a <a Bookmarks>bookmark</a> button.
   </p>
@@ -1434,7 +1431,7 @@ set helpText(Switcher) {<h1>The Database Switcher Window</h1>
   </p>
   <p>
   Pressing right mouse button over a database produces a popup menu
-  from which you can change the icon, reset its <a Searches Filter>filter</a>, or
+  from which you can change the icon, reset its <a Filter>filter</a>, or
 close the database. It is also possible to
   show or hide database icons.
   </p>
@@ -1547,7 +1544,7 @@ Use "+" as a logical AND with the <b>Filter</b> button. For example: "Kasparov+K
 also <b>affects search and tree performance</b>. For more details see <a Sorting>Sorting Database</a>.
 </p>
 
-  <h3>Deleted and Filtered Games</h3>
+  <h3><name Del>Deleted and Filtered Games</name></h3>
   <p>
   Scid has two notions of removed games - which can be confusing.</p>
 
@@ -1934,7 +1931,7 @@ set helpText(Tree) {<h1>Tree Window</h1>
   can be disabled by de-selecting the <b>Refresh</b> check-box.
   </p>
   <p>
-  The <a Searches Filter>Filter</a> behaviour is changed by the <b>Adjust Filter</b> check-box.
+  The <a Filter>Filter</a> behaviour is changed by the <b>Adjust Filter</b> check-box.
   If checked, only games containing the current position will be shown in the filter.
 </p>
   <p>
@@ -2440,7 +2437,7 @@ set helpText(Sorting) {<h1>Sorting Databases</h1>
   or multiple fields, with the frist field having priority, and so-on.
   </p>
   <p>
-  <b>Note</b>: <i>Sorting a database resets the <a Searches Filter>search filter</a></i>.
+  <b>Note</b>: <i>Sorting a database resets the <a Filter>search filter</a></i>.
   </p>
 
   <p>
@@ -3228,7 +3225,7 @@ set helpText(PInfo) {<h1>Player Information</h1>
   <p>
   You can see the player's rating history in a graph by pressing the
   <a Graphs Rating>Rating graph</a> button.
-  Numbers displayed in red are links that set the <a Searches Filter>filter</a>
+  Numbers displayed in red are links that set the <a Filter>filter</a>
   to the games it represents.
   </p>
 
@@ -4103,7 +4100,7 @@ set helpTitle(Author) "About"
 set helpText(Author) "<h1>Scid vs. PC</h1>
   <ht><img icon></ht>
   <ul> <ul> <ul> <ul> <ul> <ul> <ul>
-  <li>Scid vs. PC  version $::scidVersion</li>
+  <li>$::scidName  version $::scidVersion</li>
   <br>
   <li>(C) Steven Atkinson</li>
   <br>

@@ -429,7 +429,7 @@ proc search::header {} {
   frame $w.b
   button $w.b.defaults -textvar ::tr(Defaults) -padx 20 \
       -command ::search::header::defaults
-  button $w.b.save -textvar ::tr(Save...) -padx 20 -command ::search::header::save
+  button $w.b.save -textvar ::tr(Save) -padx 20 -command ::search::header::save
   button $w.b.stop -textvar ::tr(Stop) -command sc_progressBar
   button $w.b.search -textvar ::tr(Search) -padx 20 -command {
     ::utils::history::AddEntry HeaderSearchWhite $sWhite
@@ -544,8 +544,9 @@ proc ::search::header::save {} {
   global sResWin sResLoss sResDraw sResOther glstart sPgntext
 
   set ftype { { "Scid SearchOptions files" {".sso"} } }
-  set fName [tk_getSaveFile -initialdir [pwd] -filetypes $ftype -title "Create a SearchOptions file" -parent .sh]
+  set fName [tk_getSaveFile -initialdir $::initialDir(sso) -filetypes $ftype -title "Create a SearchOptions file" -parent .sh]
   if {$fName == ""} { return }
+  set ::initialDir(sso) [file dirname $fName]
 
   if {[string compare [file extension $fName] ".sso"] != 0} {
     append fName ".sso"
@@ -556,7 +557,7 @@ proc ::search::header::save {} {
         -message "Unable to create SearchOptions file: $fName"
     return
   }
-  puts $searchF "\# SearchOptions File created by Scid [sc_info version]"
+  puts $searchF "\# SearchOptions File created by $::scidName $::scidVersion"
   puts $searchF "set searchType Header"
 
   # First write the regular variables:

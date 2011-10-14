@@ -103,9 +103,10 @@ proc ::search::Config {{state ""}} {
 
 proc ::search::usefile {} {
   set ftype { { "Scid SearchOption files" {".sso"} } }
-  set ::fName [tk_getOpenFile -initialdir $::initialDir(base) \
+  set ::fName [tk_getOpenFile -initialdir $::initialDir(sso) \
                  -filetypes $ftype -title "Select a SearchOptions file"]
   if {$::fName == ""} { return }
+  set ::initialDir(sso) [file dirname $::fName]
 
   if {[catch {uplevel "#0" {source $::fName} } ]} {
     tk_messageBox -title "Scid: Error reading file" -type ok -icon warning \

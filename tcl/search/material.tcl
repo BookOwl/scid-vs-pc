@@ -256,7 +256,7 @@ proc ::search::material {} {
     }
   }
 
-  menubutton $f.common -textvar ::tr(CommonEndings...) \
+  menubutton $f.common -textvar ::tr(CommonEndings) \
       -menu $f.common.m -relief raised -font $small
   menu $f.common.m -font $small
   set m $f.common.m
@@ -397,7 +397,7 @@ proc ::search::material {} {
   set f .sm.mp.patt.b2
   frame $f
   dialogbutton $f.clearPat -textvar ::tr(Clear) -command clearPatterns
-  menubutton $f.common -textvar ::tr(CommonPatterns...) \
+  menubutton $f.common -textvar ::tr(CommonPatterns) \
       -menu $f.common.m -relief raised -font $small
   menu $f.common.m -font $small
   $f.common.m add command -label [tr PatternWhiteIQP] -command {
@@ -530,7 +530,7 @@ proc ::search::material {} {
   checkbutton $f.ignorecol -textvar ::tr(IgnoreColors) \
       -variable ignoreColors -padx 4
 
-  dialogbutton $f.save -textvar ::tr(Save...) -padx 10 -command ::search::material::save
+  dialogbutton $f.save -textvar ::tr(Save) -padx 10 -command ::search::material::save
 
   dialogbutton $f.stop -textvar ::tr(Stop) -command sc_progressBar
   $f.stop configure -state disabled
@@ -599,9 +599,10 @@ proc ::search::material::save {} {
   global pattPiece pattFyle pattRank pattBool oppBishops nPatterns
 
   set ftype { { "Scid SearchOptions files" {".sso"} } }
-  set fName [tk_getSaveFile -initialdir [pwd] -filetypes $ftype \
+  set fName [tk_getSaveFile -initialdir $::initialDir(sso) -filetypes $ftype \
              -parent .sm -title {Create a SearchOptions file}]
   if {$fName == ""} { return }
+  set ::initialDir(sso) [file dirname $fName]
 
   if {[string compare [file extension $fName] ".sso"] != 0} {
     append fName ".sso"
@@ -633,8 +634,6 @@ proc ::search::material::save {} {
     puts $searchF "set pattRank($i) $pattRank($i)"
     puts $searchF "set pattBool($i) $pattBool($i)"
   }
-  tk_messageBox -type ok -icon info -title "Search Options saved" \
-      -message "Material/pattern search options saved to: $fName"
   close $searchF
 }
 
