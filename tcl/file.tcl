@@ -211,7 +211,7 @@ proc ::file::Open {{fName ""} {parent .} {update 1}} {
 	doPgnFileImport $fName "Opening [file tail $fName] read-only\n"
 	sc_base type [sc_base current] 3
 	::recentFiles::add $fName
-	set ::initialDir(base) [file dirname $fName]
+	set ::initialDir(pgn) [file dirname $fName]
 	set ::initialDir(file) [file tail $fName]
       }
     }
@@ -541,7 +541,7 @@ proc ::file::openBaseAsTree { { fName "" } } {
     } else {
       doPgnFileImport $fName "Opening [file tail $fName] read-only\n"
       sc_base type [sc_base current] 3
-      set ::initialDir(base) [file dirname $fName]
+      set ::initialDir(pgn) [file dirname $fName]
       set ::initialDir(file) [file tail $fName]
       ::recentFiles::add $fName
     }

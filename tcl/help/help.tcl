@@ -251,7 +251,7 @@ set helpText(Index) {<h1>Scid Help Index</h1>
   <li><a CCIcons>Correspondence Chess Icons</a></li>
   <li><a Author>Contact information</a></li>
   <li><a Contents>Contents</a></li>
-  <li><a Crosstable>Crosstable</a> window</li>
+  <li><a Crosstable>Crosstable</a></li>
   </ul>
 
   <h3><name D>D</name></h3>
@@ -1361,7 +1361,7 @@ know these details.</i></p>
   <p><footer>Updated: Scid vs. PC 4.4, March 2010</footer></p>
 }
 
-set helpTitle(Crosstable) "Crosstable window"
+set helpTitle(Crosstable) "Crosstable Window"
 set helpText(Crosstable) {<h1>The Crosstable Window</h1>
   <p>
   The <run ::crosstab::OpenClose><green>Crosstable</green></run> shows the

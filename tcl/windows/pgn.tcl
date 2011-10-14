@@ -272,7 +272,7 @@ namespace eval pgn {
       set tail {}
     }
     set fname [tk_getSaveFile -parent $parent \
-                 -initialdir $::initialDir(base) -initialfile $tail \
+                 -initialdir $::initialDir(pgn) -initialfile $tail \
                  -filetypes $ftype -defaultextension .pgn -title {Save PGN}]
     if {$fname != ""} {
       if {[file extension $fname] != ".txt" && [file extension $fname] != ".pgn" } {
@@ -292,10 +292,9 @@ namespace eval pgn {
 	close $tempfile
         ::recentFiles::add $fname
         set ::initialDir(file) [file tail $fname]
-        set ::initialDir(base) [file dirname $fname]
         updateMenuStates
       }
-      set initialDir(base) [file dirname $fname]
+      set initialDir(pgn) [file dirname $fname]
     }
   }
 

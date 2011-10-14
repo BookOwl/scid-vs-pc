@@ -376,10 +376,13 @@ set ::fics::server_ip   0.0.0.0
 
 # Defaults for initial directories:
 set initialDir(base) "."
+set initialDir(pgn) "."
 set initialDir(book) "."
 set initialDir(epd) "."
 set initialDir(html) "."
 set initialDir(tex)  "."
+set initialDir(stm)  "."
+set initialDir(sso)  "."
 set initialDir(report) "."
 set initialDir(tablebase1) ""
 set initialDir(tablebase2) ""

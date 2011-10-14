@@ -1476,10 +1476,11 @@ proc ::tree::mask::open { {filename ""} {parent .}} {
     set types {
       {{Tree Mask Files}       {.stm}        }
     }
-    set filename [tk_getOpenFile -filetypes $types -defaultextension ".stm" -parent $parent]
+    set filename [tk_getOpenFile -initialdir $::initialDir(stm) -filetypes $types -defaultextension ".stm" -parent $parent]
   }
 
   if {$filename != ""} {
+    set ::initialDir(stm) [file dirname $filename]
     ::tree::mask::askForSave $parent
     array unset ::tree::mask::mask
     array set ::tree::mask::mask {}
