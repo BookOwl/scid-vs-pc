@@ -1004,7 +1004,7 @@ $m add command -label OptionsSave -command {
     ::tacgame::isLimitedAnalysisTime ::tacgame::analysisTime ::tacgame::openingType 
     ::commenteditor::showBoard boardfile_lite boardfile_dark 
     ::file::finder::data(dir) ::file::finder::data(sort) ::file::finder::data(recurse) 
-    ::file::finder::data(Scid) ::file::finder::data(PGN) ::file::finder::data(Rep) 
+    ::file::finder::data(Scid) ::file::finder::data(PGN) 
     ::file::finder::data(EPD) ::file::finder::data(Old) 
     FilterMaxMoves FilterMinMoves FilterStepMoves FilterMaxElo FilterMinElo FilterStepElo 
     FilterMaxYear FilterMinYear FilterStepYear FilterGuessELO

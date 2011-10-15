@@ -131,7 +131,6 @@ set ::file::finder::data(sort) name
 set ::file::finder::data(recurse) 0
 set ::file::finder::data(Scid) 1
 set ::file::finder::data(PGN) 1
-set ::file::finder::data(Rep) 1
 set ::file::finder::data(EPD) 1
 set ::file::finder::data(Old) 1
 set ::tools::graphs::absfilter::type year

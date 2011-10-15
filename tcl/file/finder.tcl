@@ -4,16 +4,13 @@
 
 set ::file::finder::data(stop) 0
 
-image create photo ::file::finder::updir -data {
-  R0lGODdhGQAUAKEAANnZ2QAAAPD/gAAngSwAAAAAGQAUAAACToSPqcvtEGJ8LIh7A00WY71B
-  0kiWnIemHmh06pshrjAM8CpjdX3HR7fboXifnM6WIvpaHmUTuYQ8g1Tcb0gVWpk9FUvaTX1F
-  pfIohE4zCgA7
-}
+### Open/Close the finder
 
 proc ::file::finder::Open {} {
   set w .finder
+
   if {[winfo exists $w]} {
-    raiseWin $w
+    destroy $w
     return
   }
 
@@ -43,6 +40,10 @@ proc ::file::finder::Open {} {
 
   $w.menu add cascade -label FinderTypes -menu $w.menu.types
   menu $w.menu.types -tearoff 1
+
+  # I'd like to change these to {si4 si3 pgn epd}, but it means changing lots of stuff,
+  # including the language FinderTypes entries
+
   foreach type {Scid Old PGN EPD} {
     $w.menu.types add checkbutton -label FinderTypes$type \
         -variable ::file::finder::data($type) -onvalue 1 -offvalue 0 \
@@ -91,7 +92,9 @@ proc ::file::finder::Open {} {
   dialogbutton $w.b.stop -textvar ::tr(Stop) -command {set finder(stop) 1 }
   dialogbutton $w.b.help -textvar ::tr(Help) -command {helpWindow Finder}
   dialogbutton $w.b.close -textvar ::tr(Close) -command "destroy $w"
-  bind $w <Escape> "$w.b.close invoke"
+  bind $w <Escape>        "$w.b.close invoke"
+  bind $w <Control-slash> "$w.b.close invoke"
+
   # Bind left button to close ctxt menu:
   bind $w <ButtonPress-1> {
     if {[winfo exists .finder.t.text.ctxtMenu]} {
@@ -533,9 +536,6 @@ proc ::file::finder::GetFiles {dir {len -1}} {
       } elseif {$ext == ".si3"} {
         set showFile 1
         set type Old
-      } elseif {$ext == ".sor"} {
-        set showFile 1
-        set type Rep
       } elseif {$ext == ".epd"} {
         set type EPD
         set showFile 1
