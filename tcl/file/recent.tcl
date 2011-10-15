@@ -42,13 +42,12 @@ proc ::recentFiles::remove {fname} {
 # ::recentFiles::add
 #   Adds a file to the recent files list, or moves it to the front
 #   if that file is already in the list.
-#
+
 proc ::recentFiles::add {fname {delete 0}} {
   global recentFiles
   set rlist $recentFiles(data)
 
-  # Remove file ot be added from its current place in the
-  # list, if it is there:
+  # Remove file to be added from its current place in the list (if any)
   while {1} {
     set idx [lsearch -exact $rlist $fname]
     if {$idx < 0} { break }
@@ -67,6 +66,9 @@ proc ::recentFiles::add {fname {delete 0}} {
 
   set recentFiles(data) $rlist
   # ::recentFiles::save
+
+  ### Start the finder and ::file::Open from here
+  set ::file::finder::data(dir) [file dirname $fname]
 }
 
 # ::recentFiles::load

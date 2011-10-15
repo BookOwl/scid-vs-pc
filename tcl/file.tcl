@@ -148,7 +148,7 @@ proc ::file::Open {{fName ""} {parent .} {update 1}} {
     if {! [file isdirectory $::initialDir(base)] } {
       set ::initialDir(base) $::env(HOME)
     }
-    set fName [tk_getOpenFile -initialdir $::initialDir(base) -filetypes $ftype \
+    set fName [tk_getOpenFile -initialdir $::file::finder::data(dir) -filetypes $ftype \
                  -title "Open a Scid file" -parent $parent]
     if {$fName == ""} { return }
   }
