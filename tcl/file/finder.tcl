@@ -65,7 +65,8 @@ proc ::file::finder::Open {} {
       -fg black  -yscrollcommand "$w.t.ybar set" -setgrid 1 \
       -cursor top_left_arrow
   scrollbar $w.t.ybar -command "$w.t.text yview" -width 12
-  $w.t.text tag configure Dir -foreground brown
+  $w.t.text tag configure Up -foreground brown
+  $w.t.text tag configure Dir -foreground steelblue
   $w.t.text tag configure Vol -foreground gray25
   $w.t.text tag configure PGN -foreground blue
   $w.t.text tag configure Scid -foreground skyblue
@@ -149,7 +150,7 @@ proc ::file::finder::Refresh {{newdir ""}} {
     "mod"  { set flist [lsort -integer -decreasing -index 4 $flist] }
   }
 
-  set hc lemonchiffon
+  set hc grey85
   $t delete 1.0 end
   set dcount 0
   # $t insert end [string toupper "$::tr(FinderDirs)\n"] {center bold}
@@ -175,7 +176,8 @@ proc ::file::finder::Refresh {{newdir ""}} {
   # Generate other directory entries:
   set dirlist [lsort -dictionary [glob -nocomplain [file join $data(dir) *]]]
   foreach dir $dirlist {
-    if {[file isdir $dir]} {
+    # Don't show directories matching "*_files" (Personal hack for S.A.)
+    if {[file isdir $dir] && ![string match {*_files} $dir]} {
       lappend dlist $dir
     }
   }
@@ -190,7 +192,7 @@ proc ::file::finder::Refresh {{newdir ""}} {
     incr dcount
     if {$dir == ".."} {
       set d ..
-      $t insert end " .. ($::tr(FinderUpDir)) " [list Dir d..]
+      $t insert end " .. ($::tr(FinderUpDir)) " [list Up d..]
     } else {
       set d [file tail $dir]
       $t insert end " $d " [list Dir d$d]

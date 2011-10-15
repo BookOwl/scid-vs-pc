@@ -10,8 +10,6 @@
 
 proc ::game::ConfirmDiscard {} {
 
-puts "[info  level [expr [info level] -1]]"
-puts "[info  level [expr [info level] -2]]"
   # sanity check in case of errant multiple call
   if {[winfo exists .cgDialog]} {return 0}
 
