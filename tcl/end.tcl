@@ -1687,8 +1687,9 @@ while {$argc > 0} {
           [string match "*.pgn.gz" $startbase]} {
       set err [catch {sc_base create $startbase true} errMessage]
       if {$err == 0} {
-        set err [catch {doPgnFileImport $startbase \
-                    "\nOpening [file tail $startbase] read-only...\n"} errMessage]
+        set err [catch {
+                  doPgnFileImport $startbase "Opening [file tail $startbase] read-only.\n"
+                 } errMessage]
         if {!$err} {
 	  sc_base type [sc_base current] 3
         }
@@ -1854,6 +1855,11 @@ if {$::splash::keepopen} {
   update
 } else {
   after 500 { wm withdraw .splash }
+}
+
+### Raise pgn import window if open
+if {[winfo exists .ipgnWin]} {
+  raiseWin .ipgnWin
 }
 
 # Opening files by drag & drop on Scid icon on Mac

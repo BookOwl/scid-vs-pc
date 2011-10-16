@@ -235,12 +235,9 @@ proc importMoveListTrans {line} {
 
 }
 
-set importPgnErrors ""
-
 ### Import file of Pgn games:
 
 proc importPgnFile {} {
-  global importPgnErrors
 
   set err ""
   if {[sc_base isReadOnly]} { set err "Database \"[file tail [sc_base filename]]\" is read-only." }
@@ -281,11 +278,10 @@ proc doPgnFileImport {fname text {multiple 0} } {
       error "File $fname doesn't exist."
     } 
 
-    # This should be centered over Scid main window,
-    # but there are issues with focus and grabs
-
     toplevel $w
+    wm state $w withdrawn
     wm title $w "Scid: Importing PGN file"
+
 
     canvas $w.progress -width 350 -height 20  -relief solid 
     $w.progress create rectangle 0 0 0 0 -fill rosybrown3 -outline rosybrown3 -tags bar
@@ -302,10 +298,13 @@ proc doPgnFileImport {fname text {multiple 0} } {
 
     pack [frame $w.tf] -side top -expand yes -fill both
     text $w.text -height 8 -width 60 -background gray90 \
-        -wrap none -cursor watch -setgrid 1 -yscrollcommand "$w.ybar set"
-    scrollbar $w.ybar -command "$w.text yview"
-    pack $w.ybar -in $w.tf -side right -fill y
-    pack $w.text -in $w.tf -side left -fill both -expand yes
+        -wrap none -cursor watch -setgrid 1 -yscrollcommand "$w.ybar set" -xscrollcommand "$w.xbar set"
+    scrollbar $w.xbar -command "$w.text xview" -orient horizontal
+    scrollbar $w.ybar -command "$w.text yview" -orient vertical
+    grid $w.text -row 0 -column 0 -in $w.tf -sticky nsew
+    grid $w.ybar -row 0 -column 1 -in $w.tf -sticky ns
+    grid $w.xbar -row 1 -column 0 -in $w.tf -sticky ew
+    ::utils::win::Centre $w
   }
 
   sc_progressBar $w.progress bar 351 21 time
@@ -315,13 +314,12 @@ proc doPgnFileImport {fname text {multiple 0} } {
   bind $w <Escape> "$w.buttons.stop invoke"
   $w.buttons.close configure -state disabled
   $w.text insert end $text
-  $w.text insert end "Importing PGN games from [file tail $fname]...\n\n"
+  $w.text insert end "Importing file $fname\n"
   $w.text configure -state disabled
 
-  set importPgnErrors ""
   set err [catch {sc_base import file $fname} result]
-  unbusyCursor .
 
+  unbusyCursor .
   set warnings ""
   $w.text configure -state normal
   $w.text configure -cursor top_left_arrow
@@ -330,15 +328,15 @@ proc doPgnFileImport {fname text {multiple 0} } {
   } else {
     set nImported [lindex $result 0]
     set warnings [lindex $result 1]
-    set str "Imported $nImported "
+    set str "\nImported $nImported "
     if {$nImported == 1} { append str "game" } else { append str "games" }
     if {$warnings == ""} {
       append str " successfully."
     } else {
-      append str ".\nPGN errors/warnings:\n$warnings"
+      append str ":\n$warnings"
     }
     $w.text insert end "$str\n"
-    # This needs testing S.A. &&&
+
     ::recentFiles::add $fname
   }
 

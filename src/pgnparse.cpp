@@ -40,6 +40,7 @@ PgnParser::Reset()
     ErrorFile = NULL;
 #endif
     LineCounter = 0;
+    GameCounter = 0;
     StorePreGameText = true;
     EndOfInputWarnings = true;
     ResultWarnings = true;
@@ -133,14 +134,12 @@ PgnParser::LogError (const char * errMessage, const char * text)
         if (InFile != NULL) {
             fprintf (ErrorFile, "%s:", InFile->GetFileName());
         }
-        fprintf (ErrorFile, "%u: %s%s\n", LineCounter, errMessage, text);
+        fprintf (ErrorFile, "(game %u, line %u) %s%s\n", GameCounter, LineCounter, errMessage, text);
         return;
     }
 #endif
-    if (InFile != NULL) {
-        ErrorBuffer->Append (InFile->GetFileName(), ":");
-    }
-    ErrorBuffer->Append (LineCounter, ": ");
+    ErrorBuffer->Append ("(game ", GameCounter);
+    ErrorBuffer->Append (", line ", LineCounter, ") ");
     ErrorBuffer->Append (errMessage, text, "\n");
 }
 
@@ -1104,12 +1103,13 @@ PgnParser::ParseMoves (Game * game, char * buffer, uint bufSize)
             break;
 
         case TOKEN_Tag:
-            LogError ("Error: PGN Header tag seen inside a game", "");
+            // This is often seen when missing TOKEN_Result
+            LogError ("PGN header '[' seen inside game (result missing ?)", "");
             return ERROR_Game;
 
         case TOKEN_EndOfInput:
             if (EndOfInputWarnings) {
-                LogError ("Warning: End of input reached in a game", "");
+                LogError ("End of input reached in game (result missing ?)", "");
                 return ERROR_Game;
             } else {
                 return OK;
@@ -1137,7 +1137,7 @@ PgnParser::ParseMoves (Game * game, char * buffer, uint bufSize)
         // Use the end-of-game result instead of the header tag result:
         game->SetResult (r);
         if (ResultWarnings) {
-            LogError ("Warning: Result did not match the header result", "");
+            LogError ("Result did not match the header result", "");
         }
     }
     return OK;
@@ -1166,6 +1166,7 @@ PgnParser::ParseGame (Game * game)
     char * preGameTextBuffer = new char [MAX_COMMENT_SIZE];
 #endif
 
+    GameCounter++;
     errorT err = ERROR_NotFound;
     ParseMode = PARSE_Searching;
     tokenT token = GetNextToken (buffer, MAX_COMMENT_SIZE);
