@@ -5661,7 +5661,7 @@ sc_filter_textfind (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv
 	stringcompare = strCaseContains;
 
     const char * text = argv[4];
-    char datestring[12];
+    char datestring[16];
     datestring[0]=0;
     if (db->inUse) {
         NameBase * nb = db->nb;
