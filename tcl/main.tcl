@@ -217,20 +217,20 @@ proc updateStatusBar {} {
   # Check if translations have not been set up yet:
   if {! [info exists ::tr(Database)]} { return }
 
-  append statusBar "  $::tr(Database): "
+  # append statusBar "  $::tr(Database): "
   set fname [sc_base filename]
   set fname [file tail $fname]
   if {$fname == ""} { set fname "<none>" }
-  append statusBar $fname
+  append statusBar "$fname: "
 
   if {[sc_base isReadOnly]} {
     append statusBar { (read-only) }
   } 
-  # if {[sc_game altered]} { append statusBar "XX" }
 
-  # Show filter count:
-  append statusBar "   $::tr(Filter)"
-  append statusBar ": [filterText]"
+  # append statusBar "   $::tr(Filter)"
+  append statusBar "  [filterText]"
+
+  # if {[sc_game altered]} { append statusBar " (altered)" }
 }
 
 
