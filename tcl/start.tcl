@@ -1197,6 +1197,15 @@ if {(! $windowsOS)  &&  (! $unixOS)} {
   ::splash::add "Operating System may not be supported"
 }
 
+### Workaround a bug in Wish 8.5.10 ttk::scale.
+# To trigger, press Control-l three times and try to move y scrollbar
+
+set buggyttk [expr {[info patchlevel] == {8.5.10}}]
+if {$buggyttk} {
+      ::splash::add "Warning - Disabling Tk-8.5.10's buggy ttk::scale widget." error
+}
+
+
 # Check board size is valid:
 set newSize [lindex $boardSizes 0]
 foreach sz $boardSizes {

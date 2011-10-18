@@ -8,11 +8,6 @@ set glstart 1
 set ::windows::gamelist::findtext {}
 set ::windows::gamelist::goto {}
 
-### Workaround a bug in Wish 8.5.10 ttk::scale.
-# To trigger, press Control-l three times and try to move y scrollbar
-
-set ::windows::gamelist::buggyttk [expr {[info patchlevel] == {8.5.10}}]
-
 ### This trace messes up some other widgets i think S.A.
 # trace variable ::windows::gamelist::goto w {::utils::validate::Regexp {^[0-9]*$}}
 
@@ -255,6 +250,7 @@ proc ::windows::gamelist::Open {} {
   bind $w <F1> { helpWindow GameList }
   bind $w <Destroy> { ::windows::gamelist::Close }
   bind $w <Control-Tab> {::file::SwitchToNextBase ; break}
+  bind $w <Control-Key-quoteleft> {::file::SwitchToBase 9}
   bind $w <Escape> "destroy $w"
 
   set ::windows::gamelist::isOpen 1
@@ -301,7 +297,7 @@ proc ::windows::gamelist::Open {} {
   # $w.tree tag configure colour -background $::defaultBackground
   # $w.tree tag bind click1 <Button-1> {}
 
-  if {$::windows::gamelist::buggyttk} {
+  if {$::buggyttk} {
     ### Using tk::scale has a hiccup because the line "set glstart $::glistStart($b)" in gamelist::Reload fails
     ### So switching between bases with wish-8.5.10 doesn't remember which games we're looking at
     scale  $w.vsb -from 1 -orient vertical -variable glstart -showvalue 0 -command ::windows::gamelist::SetStart -bigincrement $glistSize -relief flat
