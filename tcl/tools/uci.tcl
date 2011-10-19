@@ -131,7 +131,10 @@ namespace eval uci {
       set toBeFormatted 0
 
       resetUciInfo $n
+      # concat extra spaces together
+      regsub -all { +} $line { } line
       set data [split $line]
+
       set length [llength $data]
       for {set i 0} {$i < $length } {incr i} {
         set t [lindex $data $i]
@@ -211,6 +214,9 @@ namespace eval uci {
         if { $t == "refutation" } { continue }
         if { $t == "currline" } { continue }
       };# end for data loop
+
+      ### Malformed time args break. Should we include this check ?
+      # if {![string is double $uciInfo(time$n)]} {set uciInfo(time$n) 0}
       
       # return if no interesting info
       if { $uciInfo(tmp_score$n) == "" || $uciInfo(pv$n) == "" } {
