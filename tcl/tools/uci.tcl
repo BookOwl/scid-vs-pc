@@ -131,9 +131,11 @@ namespace eval uci {
       set toBeFormatted 0
 
       resetUciInfo $n
+      ### Think this is totally unneeded
       # concat extra spaces together
-      regsub -all { +} $line { } line
-      set data [split $line]
+      # regsub -all { +} $line { } line
+      # set data [split $line]
+      set data $line
 
       set length [llength $data]
       for {set i 0} {$i < $length } {incr i} {
