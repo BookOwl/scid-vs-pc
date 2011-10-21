@@ -75,8 +75,6 @@ proc resetEngine {n} {
   set analysis(currmove$n) {}         ;# current move output from engine
   set analysis(currmovenumber$n) 0    ;# current move number output from engine
   set analysis(nps$n) 0
-  set analysis(tbhits$n) 0
-  set analysis(sbhits$n) 0
   set analysis(movelist$n) {}         ;# Moves to reach current position
   set analysis(nonStdStart$n) 0       ;# Game has non-standard start
   set analysis(has_analyze$n) 0       ;# Engine has analyze command
@@ -2832,19 +2830,19 @@ proc updateAnalysisText {n} {
 
   if { $analysis(uci$n) } {
     if { [expr abs($score)] >= 327.0 } {
-      if { [catch { set tmp [format "M%d " $analysis(scoremate$n)]} ] } {
-        set tmp [format "%+.1f " $score]
+      if { [catch { set tmp [format "M%d" $analysis(scoremate$n)]} ] } {
+        set tmp [format "%+.2f " $score]
       }
     } else {
-      set tmp [format "%+.1f " $score]
+      set tmp [format "%+.2f " $score]
     }
-    $t insert end $tmp
+    $t insert end "\[$tmp\]  "
 
     $t insert end "[tr Depth]: "
     if {$analysis(showEngineInfo$n) && $analysis(seldepth$n) != 0} {
-      $t insert end [ format "%2u/%u " $analysis(depth$n) $analysis(seldepth$n)]
+      $t insert end [ format "%2u/%u  " $analysis(depth$n) $analysis(seldepth$n)]
     } else {
-      $t insert end [ format "%2u " $analysis(depth$n) ]
+      $t insert end [ format "%2u  " $analysis(depth$n) ]
     }
     $t insert end "[tr Nodes]: "
     $t insert end [ format "%6uK (%u kn/s) " $analysis(nodes$n) $nps ]
@@ -2852,14 +2850,12 @@ proc updateAnalysisText {n} {
     $t insert end [ format "%6.2f s" $analysis(time$n) ]
     if {$analysis(showEngineInfo$n)} {
       $t insert end \n
+      $t insert end "NPS: [format "%u " $analysis(nps$n)] "
+      $t insert end "Hash: $::uci::uciInfo(hashfull$n)  "
+      $t insert end "Load: $::uci::uciInfo(cpuload$n) "
+      $t insert end "TB hits: $::uci::uciInfo(tbhits$n) "
       $t insert end "[tr Current]: "
       $t insert end [ format "%s (%s/%s) " [::trans $analysis(currmove$n)] $analysis(currmovenumber$n) $analysis(maxmovenumber$n)]
-      $t insert end {TB Hits: }
-      $t insert end [ format "%u " $analysis(tbhits$n)]
-      $t insert end {Nps: }
-      $t insert end [ format "%u n/s " $analysis(nps$n)]
-      $t insert end "Hash: $::uci::uciInfo(hashfull$n)  "
-      $t insert end "Load: $::uci::uciInfo(cpuload$n)"
     }
   } else {
     set newStr [format "Depth:   %6u      Nodes: %6uK (%u kn/s)\n" $analysis(depth$n) $analysis(nodes$n) $nps]

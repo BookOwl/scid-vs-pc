@@ -29,28 +29,34 @@ namespace eval uci {
   ################################################################################
   #
   ################################################################################
-  proc resetUciInfo { { n 1 }} {
+  proc resetUciInfo {n} {
     global ::uci::uciInfo
-    set uciInfo(depth$n) 0
+    set uciInfo(depth$n)    0
     set uciInfo(seldepth$n) 0
-    set uciInfo(time$n) 0
-    set uciInfo(nodes$n) 0
-    set uciInfo(pv$n) ""
+    set uciInfo(time$n)     0
+    set uciInfo(nodes$n)    0
+    set uciInfo(pv$n)      ""
     set uciInfo(multipv$n) ""
-    # set uciInfo(pvlist$n) {}
-    # set uciInfo(score$n) ""
     set uciInfo(tmp_score$n) ""
     set uciInfo(scoremate$n) ""
     set uciInfo(currmove$n) ""
     set uciInfo(currmovenumber$n) 0
-    set uciInfo(hashfull$n) --
+    # hmmm
+    # set uciInfo(score$n) ""
+  }
+
+  proc resetUciInfo2 {n} {
+    global ::uci::uciInfo
     set uciInfo(nps$n) 0
-    set uciInfo(tbhits$n) 0
-    set uciInfo(sbhits$n) 0
-    set uciInfo(cpuload$n) --
-    set uciInfo(string$n) ""
-    set uciInfo(refutation$n) ""
-    set uciInfo(currline$n) ""
+    set uciInfo(hashfull$n) ----
+    set uciInfo(tbhits$n) ----
+    set uciInfo(sbhits$n) ----
+    set uciInfo(cpuload$n) ----
+    ### these three are unused
+    # set uciInfo(string$n) ""
+    # set uciInfo(refutation$n) ""
+    # set uciInfo(currline$n) ""
+
     # set uciInfo(bestmove$n) ""
   }
 
@@ -134,13 +140,8 @@ namespace eval uci {
 
       set toBeFormatted 0
 
-      ### todo - check if this is necessary
       resetUciInfo $n
 
-      ### Think this is totally unneeded
-      # concat extra spaces together
-      # regsub -all { +} $line { } line
-      # set data [split $line]
       set data $line
 
       set length [llength $data]
@@ -198,31 +199,50 @@ namespace eval uci {
           # don't consider lowerbound & upperbound score info
           continue
         }
-        if { $t == "currmove" } { incr i ; set uciInfo(currmove$n) [ lindex $data $i ] ; set analysis(currmove$n) [formatPv $uciInfo(currmove$n) $analysis(fen$n)] ; continue}
-        if { $t == "currmovenumber" } { incr i ; set uciInfo(currmovenumber$n) [ lindex $data $i ] ; set analysis(currmovenumber$n) $uciInfo(currmovenumber$n) ; continue}
+        if { $t == "currmove" } {
+           incr i
+           set uciInfo(currmove$n) [lindex $data $i]
+           set analysis(currmove$n) [formatPv $uciInfo(currmove$n) $analysis(fen$n)]
+           continue}
+        if { $t == "currmovenumber" } {
+           incr i
+           set uciInfo(currmovenumber$n) [lindex $data $i]
+           set analysis(currmovenumber$n) $uciInfo(currmovenumber$n)
+           continue}
+        if { $t == "nps" } {
+           incr i
+           set uciInfo(nps$n) [lindex $data $i]
+           set analysis(nps$n) $uciInfo(nps$n)
+           continue}
+
+        # These are UCI only
         if { $t == "hashfull" } {
            incr i
            set uciInfo(hashfull$n) [format "%u%%" [expr {round([lindex $data $i] / 10)}]]
            continue}
-        if { $t == "nps" } { incr i ; set uciInfo(nps$n) [ lindex $data $i ] ; set analysis(nps$n) $uciInfo(nps$n) ; continue}
-        if { $t == "tbhits" } { incr i ; set uciInfo(tbhits$n) [ lindex $data $i ] ; set analysis(tbhits$n) $uciInfo(tbhits$n) ; continue}
-        if { $t == "sbhits" } { incr i ; set uciInfo(sbhits$n) [ lindex $data $i ] ; set analysis(sbhits$n) $uciInfo(sbhits$n) ; continue}
+        if { $t == "tbhits" } {
+           # unused at moment
+           incr i
+           set uciInfo(tbhits$n) [format "%u" [lindex $data $i]]
+           continue}
+        if { $t == "sbhits" } {
+           # unused at moment
+           incr i
+           set uciInfo(sbhits$n) [format "%u" [lindex $data $i]]
+           continue}
         if { $t == "cpuload" } {
            incr i
-           set uciInfo(cpuload$n) [ format "%u%%" [expr {round( [lindex $data $i] / 10)}]]
+           set uciInfo(cpuload$n) [format "%u%%" [expr {round( [lindex $data $i] / 10)}]]
            continue}
         if { $t == "string" } {
+          # seems unused
           incr i
-          while { $i < $length } {
-            append uciInfo(string$n) [ lindex $data $i ] " "
-            incr i
-          }
-          break
-        }
+          set uciInfo(string$n) [lrange $data $i end]
+          break}
         # TODO parse following tokens if necessary  : refutation currline
         if { $t == "refutation" } { continue }
         if { $t == "currline" } { continue }
-      };# end for data loop
+      }; # end for data loop
 
       ### Malformed time args break. Should we include this check ?
       # if {![string is double $uciInfo(time$n)]} {set uciInfo(time$n) 0}
@@ -291,6 +311,7 @@ namespace eval uci {
         set analysis(waitForUciOk$n) 0
       }
       resetUciInfo $n
+      resetUciInfo2 $n
       sendUCIoptions $n
       if {$analyze} {
         set analysis(uciok$n) 1
@@ -789,6 +810,7 @@ namespace eval uci {
 
     global ::uci::uciInfo
     resetUciInfo $n
+    resetUciInfo2 $n
     set uciInfo(pipe$n) ""
     set uciInfo(seen$n) 0
     set uciInfo(uciok$n) 0
