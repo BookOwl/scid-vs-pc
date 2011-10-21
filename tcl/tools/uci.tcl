@@ -16,7 +16,7 @@ namespace eval uci {
   array set check ""
 
   # The list of token that comes with info
-  set infoToken { depth seldepth time nodes pv multipv score cp mate lowerbound upperbound \
+  # set infoToken { depth seldepth time nodes pv multipv score cp mate lowerbound upperbound \
         currmove currmovenumber hashfull nps tbhits sbhits cpuload string refutation currline }
   # This was previously used in limiting the data to "pv" infos.
   # but in my testing "pv" infos are always *last*
@@ -43,7 +43,7 @@ namespace eval uci {
     set uciInfo(scoremate$n) ""
     set uciInfo(currmove$n) ""
     set uciInfo(currmovenumber$n) 0
-    set uciInfo(hashfull$n) 0
+    set uciInfo(hashfull$n) --
     set uciInfo(nps$n) 0
     set uciInfo(tbhits$n) 0
     set uciInfo(sbhits$n) 0
@@ -134,7 +134,9 @@ namespace eval uci {
 
       set toBeFormatted 0
 
+      ### todo - check if this is necessary
       resetUciInfo $n
+
       ### Think this is totally unneeded
       # concat extra spaces together
       # regsub -all { +} $line { } line
@@ -198,11 +200,17 @@ namespace eval uci {
         }
         if { $t == "currmove" } { incr i ; set uciInfo(currmove$n) [ lindex $data $i ] ; set analysis(currmove$n) [formatPv $uciInfo(currmove$n) $analysis(fen$n)] ; continue}
         if { $t == "currmovenumber" } { incr i ; set uciInfo(currmovenumber$n) [ lindex $data $i ] ; set analysis(currmovenumber$n) $uciInfo(currmovenumber$n) ; continue}
-        if { $t == "hashfull" } { incr i ; set uciInfo(hashfull$n) [ lindex $data $i ] ; set analysis(hashfull$n) $uciInfo(hashfull$n) ; continue}
+        if { $t == "hashfull" } {
+           incr i
+           set uciInfo(hashfull$n) [format "%u%%" [expr {round([lindex $data $i] / 10)}]]
+           continue}
         if { $t == "nps" } { incr i ; set uciInfo(nps$n) [ lindex $data $i ] ; set analysis(nps$n) $uciInfo(nps$n) ; continue}
         if { $t == "tbhits" } { incr i ; set uciInfo(tbhits$n) [ lindex $data $i ] ; set analysis(tbhits$n) $uciInfo(tbhits$n) ; continue}
         if { $t == "sbhits" } { incr i ; set uciInfo(sbhits$n) [ lindex $data $i ] ; set analysis(sbhits$n) $uciInfo(sbhits$n) ; continue}
-        if { $t == "cpuload" } { incr i ; set uciInfo(cpuload$n) [ lindex $data $i ] ; set analysis(cpuload$n) $uciInfo(cpuload$n) ; continue}
+        if { $t == "cpuload" } {
+           incr i
+           set uciInfo(cpuload$n) [ format "%u%%" [expr {round( [lindex $data $i] / 10)}]]
+           continue}
         if { $t == "string" } {
           incr i
           while { $i < $length } {

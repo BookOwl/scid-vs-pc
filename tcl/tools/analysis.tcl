@@ -74,11 +74,9 @@ proc resetEngine {n} {
   set analysis(seldepth$n) 0
   set analysis(currmove$n) {}         ;# current move output from engine
   set analysis(currmovenumber$n) 0    ;# current move number output from engine
-  set analysis(hashfull$n) 0
   set analysis(nps$n) 0
   set analysis(tbhits$n) 0
   set analysis(sbhits$n) 0
-  set analysis(cpuload$n) 0
   set analysis(movelist$n) {}         ;# Moves to reach current position
   set analysis(nonStdStart$n) 0       ;# Game has non-standard start
   set analysis(has_analyze$n) 0       ;# Engine has analyze command
@@ -2860,14 +2858,8 @@ proc updateAnalysisText {n} {
       $t insert end [ format "%u " $analysis(tbhits$n)]
       $t insert end {Nps: }
       $t insert end [ format "%u n/s " $analysis(nps$n)]
-      $t insert end {Hash: }
-      set hashfull [expr {round($analysis(hashfull$n) / 10)}]
-      $t insert end [ format "%u%% " $hashfull ]
-      $t insert end {Load: }
-      set cpuload [expr {round($analysis(cpuload$n) / 10)}]
-      $t insert end [ format "%u%% " $cpuload ]
-      
-      #$t insert end [ format "\nCurrent: %s (%s) - Hashfull: %u - nps: %u - TBhits: %u - CPUload: %u" $analysis(currmove$n) $analysis(currmovenumber$n) $analysis(hashfull$n) $analysis(nps$n) $analysis(tbhits$n) $analysis(cpuload$n) ]
+      $t insert end "Hash: $::uci::uciInfo(hashfull$n)  "
+      $t insert end "Load: $::uci::uciInfo(cpuload$n)"
     }
   } else {
     set newStr [format "Depth:   %6u      Nodes: %6uK (%u kn/s)\n" $analysis(depth$n) $analysis(nodes$n) $nps]
