@@ -18,6 +18,10 @@ namespace eval uci {
   # The list of token that comes with info
   set infoToken { depth seldepth time nodes pv multipv score cp mate lowerbound upperbound \
         currmove currmovenumber hashfull nps tbhits sbhits cpuload string refutation currline }
+  # This was previously used in limiting the data to "pv" infos.
+  # but in my testing "pv" infos are always *last*
+  # so infoToken is unused now.
+
   set optionToken {name type default min max var }
   set optionImportant { MultiPV Hash OwnBook BookFile UCI_LimitStrength UCI_Elo }
   set optionToKeep { UCI_LimitStrength UCI_Elo UCI_ShredderbasesPath }
@@ -43,7 +47,7 @@ namespace eval uci {
     set uciInfo(nps$n) 0
     set uciInfo(tbhits$n) 0
     set uciInfo(sbhits$n) 0
-    set uciInfo(cpuload$n) 0
+    set uciInfo(cpuload$n) --
     set uciInfo(string$n) ""
     set uciInfo(refutation$n) ""
     set uciInfo(currline$n) ""
@@ -58,7 +62,7 @@ namespace eval uci {
   # todo: sort out the analyze var with computer tournament feature &&&
 
   proc processAnalysisInput { { n 1 } { analyze 1 } } {
-    global analysis ::uci::uciInfo ::uci::infoToken ::uci::optionToken
+    global analysis ::uci::uciInfo ::uci::optionToken
 
     ### Now this is f-ing good ! New too.
     # Wtf is the difference between ::checkEngineIsAlive and ::uci::checkEngineIsAlive
@@ -147,15 +151,10 @@ namespace eval uci {
         if { $t == "nodes" } { incr i ; set uciInfo(nodes$n) [ lindex $data $i ] ; continue }
         if { $t == "pv" } {
           incr i
-          set uciInfo(pv$n) [ lindex $data $i ]
-          incr i
-          while { [ lsearch -exact $infoToken [ lindex $data $i ] ] == -1 && $i < $length } {
-            append uciInfo(pv$n) " " [ lindex $data $i ]
-            incr i
-          }
+          set uciInfo(pv$n) [lrange $data $i end]
           set toBeFormatted 1
-          incr i -1
-          continue
+          # Assume "pv" infos are always last
+          break
         }
         if { $t == "multipv" } { incr i ; set uciInfo(multipv$n) [ lindex $data $i ] ; continue }
         if { $t == "score" } {
@@ -251,13 +250,13 @@ namespace eval uci {
       }
       
       set pvRaw $uciInfo(pv$n)
-      
+
       # convert to something more readable
       if ($toBeFormatted) {
         set uciInfo(pv$n) [formatPv $uciInfo(pv$n) $analysis(fen$n)]
         set toBeFormatted 0
       }
-      
+
       set idx [ expr $uciInfo(multipv$n) -1 ]
       
       # was if $analyze etc..
@@ -943,6 +942,10 @@ namespace eval uci {
   ################################################################################
   #make UCI output more readable (b1c3 -> Nc3)
   ################################################################################
+
+  # This is done by pushing game, then adding moves to game one at a time and getting the converted string
+  # surely this is crap ? S.A. todo: improve
+
   proc formatPv { moves fen } {
 
     sc_info preMoveCmd {}
