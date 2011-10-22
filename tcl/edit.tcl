@@ -378,7 +378,7 @@ proc setupBoard {} {
 
   # Fenframe is a gridded frame at bottom of screen
   frame .setup.fenframe
-  pack .setup.fenframe -side bottom -expand yes -fill x
+  pack .setup.fenframe -side bottom -fill x -padx 5 -pady 5
 
   set sl .setup.l
   set sr .setup.r
@@ -386,8 +386,8 @@ proc setupBoard {} {
 
   frame $sl
   frame $sr
-  pack $sl -side left
-  pack $sr -side right -expand yes -fill y
+  pack $sl -side left -expand 1 -fill both
+  pack $sr -side right -expand 1 -fill y
 
   # make the setup board a couple of sizes smaller
   set setupboardSize [boardSize_plus_n -3]
@@ -410,18 +410,13 @@ proc setupBoard {} {
   label $sl.hints.label2 -text {Left button - Paste} -font font_SmallItalic
   label $sl.hints.label3 -text {Middle button - Cut} -font font_SmallItalic
   label $sl.hints.label4 -text {Right button - Copy} -font font_SmallItalic
-  pack $sl.hints -side top -expand yes -fill x
+  pack $sl.hints -side top -fill x
   pack $sl.hints.label2 $sl.hints.label3 $sl.hints.label4 -side left -expand yes -fill x
   }
 
   frame $sbd
   canvas $sbd.bd -width $bsize -height $bsize -background $::bgcolor \
                  -borderwidth 0 -highlightthickness 0
-  if {[info tclversion] >= 8.5} {
-    grid anchor $sbd center
-  }
-
-  grid $sbd -row 1 -column 1 -rowspan 8 -columnspan 8
 
   pack $sbd -padx 10 -pady 10
   pack $sbd.bd
@@ -459,8 +454,8 @@ proc setupBoard {} {
   bind .setup <ButtonPress-4> "switchPastePiece next"
   bind .setup <ButtonPress-5> "switchPastePiece prev"
 
-  pack [frame $sl.b] -side top -padx 8 -pady 8    ;# -expand yes -fill x
-  pack [frame $sl.w] -side bottom -padx 8 -pady 8 ;# -expand yes -fill x
+  pack [frame $sl.w] -side bottom -padx 8 -pady 8
+  pack [frame $sl.b] -side bottom -padx 8 -pady 8
 
   set setupBd [sc_pos board]
   setBoard $sbd $setupBd $setupboardSize
