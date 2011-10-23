@@ -768,7 +768,6 @@ namespace eval fics {
     variable logged
 
     if {$line == "" || $line == "fics% "} {return}
-puts $line
     if { $::fics::sought } {
       if {[string match "* ad* displayed." $line]} {
         set ::fics::sought 0

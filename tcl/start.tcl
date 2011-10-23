@@ -172,7 +172,7 @@ if {$scidExecutable == {}} {
     catch {
       set scidExecutable [exec readlink /proc/[pid]/exe]
     }
-    puts "scidExecutable is null. Now $scidExecutable" 
+    puts "scidExecutable is null. Now is \"$scidExecutable\"" 
   } else {
     puts "scidExecutable is null" 
   }
