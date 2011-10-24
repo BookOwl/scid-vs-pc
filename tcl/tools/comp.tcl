@@ -708,7 +708,7 @@ proc compNM {n m k} {
 	set fen [sc_pos fen]
 	set f [lindex $fen 0]
 	lappend comp(fen) $f
-	if {[llength [lsearch -all $comp(fen) $f]] > 2 || [lindex $fen 4] > 49} {
+	if {[llength [lsearch -all $comp(fen) $f]] > 2 || [lindex $fen 4] > 99} {
 	  sc_game tags set -result =
 	  ### draw
 	  puts_ Draw
