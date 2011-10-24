@@ -298,8 +298,9 @@ proc ::windows::gamelist::Open {} {
   # $w.tree tag bind click1 <Button-1> {}
 
   if {$::buggyttk} {
-    ### Using tk::scale has a hiccup because the line "set glstart $::glistStart($b)" in gamelist::Reload fails
-    ### So switching between bases with wish-8.5.10 doesn't remember which games we're looking at
+    # Using tk::scale has a hiccup because the line "set glstart $::glistStart($b)" in gamelist::Reload fails
+    # So switching between bases with wish-8.5.10 doesn't remember which games we're looking at
+    # Also, "find" doesn't find things on the last page.
     scale  $w.vsb -from 1 -orient vertical -variable glstart -showvalue 0 -command ::windows::gamelist::SetStart -bigincrement $glistSize -relief flat
   } else {
     ttk::scale $w.vsb -orient vertical -command ::windows::gamelist::SetStart -from 1 -variable glstart
