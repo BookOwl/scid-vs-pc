@@ -1021,7 +1021,7 @@ PgnParser::ParseMoves (Game * game, char * buffer, uint bufSize)
                 // worked, but still print a warning about it:
                 if (err == OK) {
                     char tempStr[500];
-                    sprintf (tempStr, "(%s) in game %s - %s, %u",
+                    snprintf (tempStr, sizeof(tempStr), "(%s) in game %s - %s, %u",
                              buffer, game->GetWhiteStr(), game->GetBlackStr(),
                              date_GetYear (game->GetDate()));
                     LogError ("Warning: illegal castling ", tempStr);
@@ -1038,9 +1038,9 @@ PgnParser::ParseMoves (Game * game, char * buffer, uint bufSize)
                 if (moveErrorCount <= maxMoveErrorsPerGame) {
                     char tempStr [500];
                     // Add an error comment to the game:
-                    sprintf (tempStr, "Error reading move: %s", buffer);
+                    snprintf (tempStr, sizeof(tempStr), "Error reading move: %s", buffer);
                     game->SetMoveComment (tempStr);
-                    sprintf (tempStr, "Error reading move in game %s - %s, %u: ",
+                    snprintf (tempStr, sizeof(tempStr), "Error reading move in game %s - %s, %u: ",
                              game->GetWhiteStr(), game->GetBlackStr(),
                              date_GetYear (game->GetDate()));
                     LogError (tempStr, buffer);
