@@ -5,38 +5,29 @@
 ### Copyright (C) 2007  Pascal Georges
 ### Copyright (C) 2009 - 2011 Steven Atkinson
 
-# NOTE we have descrepancy between some functions in uci.tcl and analysis.tcl
-# The transient procs for reading uci options (uciConfigN, uciConfig, readUCI, uciConfigWin
-# and startEngine from sergame.tcl, etc use n=0 for the first engine
-# BUT the procs for the analysis widget proper (makeAnalysisWin, updateAnalysis  use n=1 for the first engine.
-#
-# Parts of this widget had a very bad procedural flow, which
-# hopefully makes some sense now. Anyway, i have removed all
-# sorting functionality, and added a configurable "Hot Key"
-# feature Also swapped around the finish_{on,off} graphics,
-# which were erroneous.
-#
-# The auto finish mode now exists on all engines, instead of
-# just #1. Number of engines running at one time is now not
-# limited
+### Changes by S.A
+# Overhauled procedural flow, removed the "two engine" limit and other limits.
+# Stop engine spamming (visually) when in end-game positions.
+# Added "Hot Keys" (F2 f3 F4) which are explictly changeable in the config widget
+# Allow engines to bemoved up/down in order
+# Allow UCI engines to be configured from the main widget
+# Add a 'Copy' feature to clone an engine
+# Overhauled look and feel
+# Removed sorting functionality
+# Other performance tweaks.
 
-# analysis(logMax):
-#   The maximum number of log message lines to be saved in a log file.
+# Maximum number of lines to be saved in a log file
 set analysis(logMax) 5000
 
-# analysis(log_stdout):
-#   Set this to 1 if you want Scid-Engine communication log messages
-#   to be echoed to stdout.
-#
+# Should Scid <-> Engine communication log messages be echoed to stdout
 set analysis(log_stdout) 0
-
-# Below seems to be init ok when checkbutton is init
-# set analysis(showEngineInfo$i) 0
 
 set useAnalysisBook 1
 set analysisBookSlot 1
 set useAnalysisBookName ""
 set wentOutOfBook 0
+
+# Todo: these should be in analysis array
 
 set isBatch 0
 set batchEnd 1
@@ -44,11 +35,6 @@ set isOpeningOnly 0
 set isOpeningOnlyMoves 10
 set stack ""
 set markTacticalExercises 0
-
-################################################################################
-# resetEngine:
-#   Reset all engine-specific data.
-################################################################################
 
 proc resetEngines {} {
   for {set i 0} {$i < [llength $::engines(list)]} {incr i} {
@@ -60,6 +46,7 @@ proc resetEngines {} {
 
 proc resetEngine {n} {
   global analysis
+
   set analysis(pipe$n) {}             ;# Communication pipe file channel
   set analysis(seen$n) 0              ;# Seen any output from engine yet?
   set analysis(seenEval$n) 0          ;# Seen evaluation line yet?
@@ -74,7 +61,7 @@ proc resetEngine {n} {
   set analysis(seldepth$n) 0
   set analysis(currmove$n) {}         ;# current move output from engine
   set analysis(currmovenumber$n) 0    ;# current move number output from engine
-  set analysis(nps$n) 0
+  set analysis(nps$n) 0               ;# nodes per second
   set analysis(movelist$n) {}         ;# Moves to reach current position
   set analysis(nonStdStart$n) 0       ;# Game has non-standard start
   set analysis(has_analyze$n) 0       ;# Engine has analyze command
@@ -1114,19 +1101,22 @@ proc bookAnnotation { {n 1} } {
     updateBoard -pgn
   }
 }
-################################################################################
-# Will add **** to any position considered as a tactical shot
-#
-################################################################################
+
+### Will add **** to any position considered as a tactical shot
+# (S.A. wtf!)
+# Mark tactical exercises This can be used to generate
+# exercises for the training function Find best move. This option is only
+# available for UCI engines
+
 proc markExercise { prevscore score } {
-  global annotateEngine
-  set n $annotateEngine
+  set n $::annotateEngine
 
-  if {!$::markTacticalExercises} { return }
+  if {! $::markTacticalExercises || ! $::analysis(uci$n)} {
+    return
+  }
 
-  # check at which depth the tactical shot is found
+  # Check at which depth the tactical shot is found
   # this assumes analysis by an UCI engine
-  if {! $::analysis(uci$n)} { return }
 
   set deltamove [expr {$score - $prevscore}]
   # filter tactics so only those with high gains are kept
@@ -2120,6 +2110,10 @@ proc makeAnalysisWin {{n 0}} {
     -command "if {$analysis(uci$n)} {sendToEngine $n .}"  -relief $relief
   ::utils::tooltip::Set $w.b.update $::tr(Update)
 
+  if {![info exists analysis(showEngineInfo$n)]} {
+    set analysis(showEngineInfo$n) 0
+  }
+
   checkbutton $w.b.showinfo -image tb_info -indicatoron false -width 32 -height 32 \
     -variable analysis(showEngineInfo$n) -command "toggleEngineInfo $n" -relief $relief
   ::utils::tooltip::Set $w.b.showinfo $::tr(ShowInfo)
@@ -2239,8 +2233,9 @@ proc makeAnalysisWin {{n 0}} {
   bind $w <Configure> "recordWinSize $w"
 }
 
+### Add move from first analysis n (or first analysis window, if any)
+
 proc addAnalysisMove {{n 0}} {
-  ### Add move from first analysis n (or first analysis window, if any)
 
   if {!$n} {
     set w [lsearch -glob -inline [ wm stackorder . ] {.analysisWin*}]
@@ -2253,10 +2248,10 @@ proc addAnalysisMove {{n 0}} {
   }
 }
 
-################################################################################
-#
-################################################################################
+### Toggle whether Move History is shown
+
 proc toggleMovesDisplay {n} {
+
   set ::analysis(movesDisplay$n) [expr 1 - $::analysis(movesDisplay$n)]
   set h .analysisWin$n.hist.text
   $h configure -state normal
@@ -2277,8 +2272,11 @@ proc toggleMovesDisplay {n} {
 ################################################################################
 # will truncate PV list if necessary and tell the engine to send N best lines
 ################################################################################
+
 proc changePVSize { n } {
+
   global analysis
+
   if { $analysis(multiPVCount$n) < [llength $analysis(multiPV$n)] } {
     set analysis(multiPV$n) {}
     set analysis(multiPVraw$n) {}
@@ -2307,11 +2305,13 @@ proc changePVSize { n } {
     }
   }
 }
+
 ################################################################################
 # setAnalysisPriority
 #   Sets the priority class (in Windows) or nice level (in Unix)
 #   of a running analysis engine.
 ################################################################################
+
 proc setAnalysisPriority {n} {
   global analysis
 
@@ -2342,12 +2342,14 @@ proc setAnalysisPriority {n} {
     set analysis(priority$n) $priority
   }
 }
+
 ################################################################################
 # checkAnalysisStarted
 #   Called a short time after an analysis engine was started
 #   to send it commands if Scid has not seen any output from
 #   it yet.
 ################################################################################
+
 proc checkAnalysisStarted {n} {
   global analysis
   if {$analysis(seen$n)} { return }
@@ -2377,12 +2379,14 @@ proc checkAnalysisStarted {n} {
     sendToEngine $n force
   }
 }
-################################################################################
-# with wb engines, we don't know when the startup phase is over and when the
-# engine is ready : so wait for the end of initial output and take some margin
-# to issue an analyze command
-################################################################################
+
 proc initialAnalysisStart {n} {
+
+  ### Xboard only
+  # With Xboard engines we don't know when the startup phase is over and when the
+  # engine is ready : so wait for the end of initial output and take some margin
+  # to issue an analyze command
+
   global analysis comp
 
   # hack to stop initialAnalysisStart when playing a comp
@@ -2403,12 +2407,14 @@ proc initialAnalysisStart {n} {
   }
   after 200 startAnalyzeMode $n 1
 }
-################################################################################
-# processAnalysisInput (only for win/xboard engines)
-#   Called from a fileevent whenever there is a line of input
-#   from an analysis engine waiting to be processed.
-################################################################################
+
 proc processAnalysisInput {n} {
+
+  ### Xboard only
+  # (see also ::uci::processAnalysisInput)
+  # Called from a fileevent whenever there is a line of input
+  # from an analysis engine waiting to be processed.
+
   global analysis comp
 
   # Get one line from the engine:

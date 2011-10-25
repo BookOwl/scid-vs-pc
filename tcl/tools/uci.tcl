@@ -797,18 +797,13 @@ namespace eval uci {
     }
   }
   ################################################################################
-  # will start an engine for playing (not analysis)
+  # Start an engine for playing (not analysis)
+  # - called by tcl/tools/calvar.tcl tcl/tools/sergame.tcl tcl/tools/tactics.tcl tcl/tools/tacgame.tcl
   ################################################################################
   proc startEngine {n} {
-    # todo : sort out bugs.
-    # startEngine called by tcl/tools/calvar.tcl tcl/tools/sergame.tcl tcl/tools/tactics.tcl tcl/tools/tacgame.tcl
-
-    # To verify bug:
-    # Start engine number 2
-    # Play tacgame.
-    # See engine #2 becomes toga!
 
     global ::uci::uciInfo
+
     resetUciInfo $n
     resetUciInfo2 $n
     set uciInfo(pipe$n) ""
