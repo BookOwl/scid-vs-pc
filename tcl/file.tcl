@@ -2,7 +2,7 @@
 # ::file::Exit
 #
 #    Prompt for confirmation then exit.
-#
+
 proc ::file::Exit {}  {
 
   # sanity check in case of errant multiple call
@@ -34,20 +34,20 @@ proc ::file::Exit {}  {
   # Switch back to original database:
   sc_base switch $savedBase
 
-  if {$msg != ""} {
-    append msg "\n"
-  }
-  append msg $::tr(ExitDialog)
+  if {$unsavedCount > 0 || [winfo exists .comp]} {
+    if {$unsavedCount == 0} {
+      set msg {A Computer Tournament is running.}
+    }
+    append msg "\n$::tr(ExitDialog)"
 
-  # Only ask before exiting if there are unsaved changes:
-  if {$unsavedCount > 0} {
-    # space pad Exit button
-    set answer [tk_dialog .unsaved "Scid: Unsaved Changes" $msg question {} "   [tr FileExit]   " [tr Cancel]]
+    set answer [tk_dialog .unsaved "Scid: Confirm Quit" $msg question {} "   [tr FileExit]   " [tr Cancel]]
+
     if {$answer != 0} {
       wm protocol . WM_DELETE_WINDOW {::file::Exit}
       return
     }
   }
+
   if {$::optionsAutoSave} {
     # restore askToReplaceMoves if necessary
     if {[winfo exists .tacticsWin]} {
