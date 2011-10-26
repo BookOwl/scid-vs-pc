@@ -17,8 +17,8 @@ proc ::tip::show {{n -1}} {
     pack $w.text -side left -fill both -expand 1
     checkbutton $w.b.start -textvar ::tr(TipAtStartup) -font font_Small \
       -variable startup(tip)
-    dialogbutton $w.b.prev -text "<" -font font_Small
-    dialogbutton $w.b.next -text ">" -font font_Small
+    dialogbutton $w.b.prev -text "<<" -font font_Small
+    dialogbutton $w.b.next -text ">>" -font font_Small
     dialogbutton $w.b.close -textvar ::tr(Close) -font font_Small \
       -command "destroy $w"
     pack $w.b.start -side left -padx 2
@@ -52,146 +52,132 @@ proc ::tip::show {{n -1}} {
   set next [expr ($n + 1) % $ntips]
   $w.b.prev configure -command "::tip::show $prev"
   $w.b.next configure -command "::tip::show $next"
-  set tip "<center><b>$::tr(Tip) [expr $n + 1]:</b></center><br><br>"
+  set tip "<center><b>$::tr(Tip) [expr $n + 1]</b></center><br><br>"
   append tip [string trim [lindex $tiplist $n]]
-  if {$::hasEncoding  &&  $::langEncoding($language) != ""  &&  $::tcl_version <= 8.3} {
-    # Convert tip charset, e.g. from is08859-2 coding in Tcl/Tk 8.3:
-    # catch {set tip [encoding convertfrom $::langEncoding($language) $tip]}
-  }
   ::htext::display $w.text $tip "" 0
 }
 
 set tips(E) {
   {
-    Scid has over 30 <a Index>help pages</a>, and in most Scid windows
-    pressing the <b>F1</b> key will produce the help page about that
-    window.
+    Scid has over seventy <a Index>help pages</a>. They are accessible
+    by pressing <b>F1</b> in most windows.
   }
   {
     The main board has a handy right-click menu that allows
-    one to select which widgets are visible.
+    one to show or hide various widgets.
   }
   {
-    Scid offers you more than one way to enter chess moves, letting
-    you choose which suits you best. You can use the mouse
-    (with or without move suggestion) or the keyboard
+    Scid offers you several ways to enter chess moves.
+    You can use the mouse
+    (with or without move suggestion), or keyboard
     (with or without move completion). Read the
-    <a Moves>entering chess moves</a> help page for details.
+    <a Moves>Move Entry</a> help item for details.
   }
   {
-    If you have a few databases that you open often, add a
-    <a Bookmarks>bookmark</a> for each one, and then you will be able
-    to open them faster using the bookmarks menu.
+    For quick access to oft used databases, add
+    <a Bookmarks>bookmarks</a> for each of them, and make sure the bookmark icon is
+    visible in the toolbar (Options--<gt>Toolbar).
   }
   {
-    You can see all the moves of the current game
-    (with any variations and comments) using the <a PGN>PGN window</a>.
-    In the PGN window, you can go to any move by clicking
-    the left mouse button on it, or use the middle button
-    to see a preview of that position.
+    You can see the moves, comments and variations of the current game
+    in the <a PGN>PGN Window</a>.
+    Using the middle mouse button on a move, shows
+    a preview of that position.
   }
   {
-    You can copy games from one database to another using drag and drop
-    in the <a Switcher>database switcher</a> window. Dragging some filtered
-    games to the Clipbase allows one to sort the games without having to sort the
-    whole database.
+    Copy games from one database to another using drag and drop
+    in the <a Switcher>Database Switcher</a> (in the bottom of the gamelist).
+    Dragging filtered games to the Clipbase allows one to sort the games without having to sort the
+    whole base.
   }
   {
-    Scid can open PGN files, even if they are compressed with Gzip
-    (with a .gz filename suffix). PGN files are opened read-only, so
-    if you want to edit a PGN file in Scid, create a new Scid database
-    and copy the PGN file games to it using the
-    <a Switcher>database switcher</a>.
+    Single-game PGN files can be saved via <b>File--<gt>Save PGN</b>
+    But larger PGN files are always opened read-only.
+    If you want to edit a PGN file in Scid, create a new database
+    and copy the PGN games to it using the <a Switcher>database switcher</a>.
   }
   {
-    The cut-off (dotted line) entry in the <green>File-<gt>Switch to Database</green> menu makes it a great little database switcher.
+    The cut-off menu (dotted line) in the <green>File-<gt>Switch to Database</green> menu makes it a great little database switcher.
   }
   {
-    If you have a large database you use with the <a Tree>tree</a> window
-    often, it is worth selecting <b>Fill cache file</b> from the tree
-    window File menu. This will remember tree statistics for many common
-    opening positions, making tree access faster for the database.
+    The <a Tree>Tree Window</a> shows all moves played from the
+    current position. To see the move orders
+    that reached this position, generate an <a OpReport>Opening Report</a>.
   }
   {
-    The <a Tree>tree</a> window can show you all moves played from the
-    current position, but if you also want to see all the move orders
-    that reached this position, you can find them by generating
-    an <a OpReport>opening report</a>.
+   If you have a large database you often use with the <a Tree>Tree</a>,
+   selecting <b>Fill Cache File</b> (from the Tree Menu) will greatly speed
+   things up.
   }
   {
-    In the main window, clicking on the status bar will start the (first)
-    chess engine. Right-clicking will dock/undock the engine.
+    In the main window, double-clicking on the Status Bar starts the (first)
+    chess engine. Right-clicking docks/undocks the engine.
   }
   {
-    With the <a PInfo>player information</a> window (just click on either
-    player name in the game info area below the main window chessboard
-    to open it), you can easily set the <a Filter>filter</a> to
-    contain all games by a certain player with a certain result by
-    clicking on any value that is displayed <red>in red text</red>.
+    Clicking on a player's name shows the <a PInfo>Player Information Window</a>.
+    From here , one can easily select all games by the player 
+    by clicking on the win/lose/filter values (in green).
   }
   {
-    When studying an opening, it can be very useful to do a
-    <a Searches Board>board search</a> with the <b>Pawns</b> or
-    <b>Files</b> option on an important opening position, as this may
-    reveal other openings that reach the same pawn structure.
+    When studying an Opening, it can be useful to peform a
+    <a Searches Board>Board Search</a> with the Pawns or
+    Files option on an important position, as this may
+    reveal other openings reaching the same pawn structure.
   }
   {
-    In the game information area (below the chessboard), you can press
-    the right mouse button to produce a menu for customising it. For
-    example, you can make Scid hide the next move which is useful for
-    training by playing though a game guessing the moves.
+   The <a Maintenance Cleaner>Maintenance Cleaner</a> allows
+   one to do several <a Maintenance>maintenance</a> jobs at the one time.
   }
   {
-    If you often do a lot of database <a Maintenance>maintenance</a> on
-    a large database, you can do several maintenance jobs at once using
-    the <a Maintenance Cleaner>cleaner</a>.
+   The <a Maintenance Editing>Name Editor</a> allows one to substitute individual 
+   Player and Event names (and more).
   }
   {
-    If you have a large database where most games have an EventDate and
-    you want the games in date order, consider <a Sorting>sorting</a> it
-    by EventDate then Event instead of Date then Event, as this will
-    help to keep games in the same tournament with different dates
-    together (assuming they all have the same EventDate, of course).
+    Here's a sorting hint. If you have a large Database where most games have
+    an Event Date To sort the games by date, consider <a
+    Sorting>sorting</a> it by Event Date, then Event
+    (instead of Date then Event), as
+    this keeps games in the same tournament, but with different dates,
+    together. (Assuming they all have the same EventDate).
   }
   {
-    Before <a Maintenance Twins>deleting twin games</a>, it is a good idea
-    to <a Maintenance Spellcheck>spellcheck</a> your database since this
-    will enable to Scid find more twins and mark them for deletion.
+    Before looking for <a Maintenance Twins>Twin Games</a>, it is a good idea
+    to <a Maintenance Spellcheck>spell check</a> your database, as this
+    allows Scid to better find twins.
   }
   {
     <a Flags>Flags</a> are useful for marking database games with
-    characteristics you may want to search for at a later time, such
-    as pawn structure, tactics, etc. You can search by flags with a
-    <a Searches Header>header search</a>.
+    particular characteristics , such as pawn structure, tactics, etc.
+    This can be done in Scid vs. PC's gamelist. There are also 6 custom flags, whose labels can
+    be changed in the <a Maintenance>Maintenance</a> window.
+  } 
+  {
+    You can search for flagged or deleted games with the
+    <a Searches Header>General Search</a> window.
+    After saving Search Criteria with the <b>Save</b> button, these saves can then
+     be reloaded later from Scid's main <b>Search Menu</b>.
   }
   {
-    If you are playing through a game and want to try out some moves
-    without altering the game, simply turn on Trial mode (with the
-    <b>Ctrl+space</b> shortcut or from the toolbar icon), then turn it off
-    again to return to the original game when you are done.
+    If you are playing through a game and want to quickly try out some moves
+    , simply turn on Trial mode (with the
+    <b>Control-Space</b> shortcut or the buttonbar icon). Turning it off
+    again returns the game to it's original state.
   }
   {
-    To find the most prominent games (with high-rated opponents)
-    reaching a particular position, open the <a Tree>tree</a> window
-    and from there, open the best games list. You can even restrict
-    the best games list to show only games with a particular result.
+    To find the most important games (with high-rated opponents)
+    reaching a certain position, open the <a Tree>Tree Window</a>
+    and then the Best Games widget. You can even restrict
+    theese games to show only a particular result.
   }
   {
     A great way to study an opening using a large database of games is
-    to turn on training mode in the <a Tree>tree</a> window, then play
-    against the database to see which lines occur often.
+    to turn on training mode in the <a Tree>Tree Window</a>. Then play
+    against the database to see which lines most often occur.
   }
   {
-    If you have two databases open, and want to see <a Tree>tree</a>
-    statistics of the first database while examining a game from the
-    second database, just press the <b>Lock</b> button in the tree
-    window to lock it to the first database and then switch to the
-    second base.
-  }
-  {
-    The <a Tmt>tournament finder</a> is not only useful for finding
-    a particular tournament, but can also be used to see what tournaments
-    a certain player has competed in recently or browse the top
+    The <a Tmt>Tournament Finder</a> not only finds
+    a particular tournament, but can also show what tournaments
+    a player has recently competed in, or browse the top
     tournaments played in a particular country.
   }
   {
@@ -200,24 +186,20 @@ set tips(E) {
     may find useful for openings or middlegame study.
   }
   {
-    When searching for a particular material situation in the
-    <a Searches Material>Material/Pattern</a> search window, it is
-    often useful to restrict the search to games that match for at
-    least a few half-moves to eliminate games where the searched-for
-    situation only occurred briefly.
+    When searching for material differences in the
+    <a Searches Material>Material/Pattern</a> search window, pay attention
+    to the "Half moves" entry, to eliminate games where the difference
+    only occurs briefly.
   }
   {
-    If you have an important database you do not want to accidentally
-    alter, select <b>Read-only...</b> from the <b>File</b> menu after
-    opening it, or change its file permissions to be read-only.
+    Important databases can be made <b>Read-Only</b>
+    from the <b>File</b> menu (after opening it), or by changing
+    the bases file permissions through Windows/Linux/OSX.
   }
   {
-    If you use XBoard or WinBoard (or some other chess program that
-    can copy a chess position in standard FEN notation to the clipboard)
-    and want to copy its current chess position to Scid, the fastest and
-    easiest way is to select <b>Copy Position</b> from the File menu in
-    XBoard/WinBoard, then <b>Paste FEN</b> from the Edit menu
-    in Scid.
+    If you use XBoard , the quickest way to copy a  chess position to Scid
+    is to select <b>Copy Position</b> from Xboard's File menu 
+    , then <b>Paste FEN</b> from Scid's Edit menu.
   }
   {
     In a <a Searches Header>General Search</a>, Player/Event/Site/Round
@@ -229,22 +211,22 @@ set tips(E) {
   }
   {
     If you want to correct a move in a game without losing all the moves
-    played after it, open the <a Import>Import</a> window, press the
+    played after it, open the <a Import>Import Window</a>, press the
     <b>Paste current game</b> button, edit the incorrect move and then
     press <b>Import</b>.
   }
   {
     If you have an ECO classification file loaded, you can go to the
     deepest classified position in the current game with
-    <b>Identify opening</b> in the <b>Game</b> menu
-    (shortcut: Ctrl+Shift+D).
+    <b>Identify Opening</b> in the <b>Game</b> menu
+    (shortcut: Control-Shift-D).
   }
   {
     If you want to check the size of a file or its date of last modification
-    before opening it, use the <a Finder>file finder</a> to open it.
+    before opening it, open the <a Finder>File Finder</a> with <b>Control-/</b>.
   }
   {
-    An <a OpReport>opening report</a> is great for learning more about
+    An <a OpReport>Opening Report</a> is great for learning more about
     a particular position. You can see how well it scores, whether it
     leads to frequent short draws, and common positional themes.
   }
@@ -256,24 +238,24 @@ set tips(E) {
     <a Moves>Entering Chess Moves</a> help page for details.
   }
   {
-    If you are browsing openings in a database with the <a Tree>tree</a>,
+    If you are browsing openings in a database with the <a Tree>Tree</a>,
     you can see a useful overview of how well the current opening is
     scoring recently and between high-rated players by opening the
-    Statistics window (shortcut: Ctrl+I).
+    Statistics window (<b>Control-I</b>).
   }
   {
-    You can resize the main board size with <b>Ctrl</b>+<b>Wheelmouse</b>, or by holding down the <b>Ctrl</b>
-    and <b>Shift</b> keys, and pressing <b>Left</b> or <b>Right</b> arrow.
+    You can resize the main board size with <b>Control+Wheelmouse</b>, or by
+    <b>Control-Shift-Left/Right</b>.
   }
   {
-    After a <a Searches>search</a>, you can easily browse through all
-    the matching games by holding down <b>Ctrl</b> and pressing the
-    <b>Up</b> or <b>Down</b> key to load the previous or next
+    After a <a Searches>search</a>, you can browse through all
+    matching games with <b>Control-Up/Down</b> to load the previous/next
     <a Filter>filter</a> game.
   }
   {
-    <a Tourney>Computer Tournaments</a> between numerous opponents are possible.
+    Scid vs. PC makes <a Tourney>Computer Tournaments</a> between numerous opponents possible.
     To select extra opponents, change the "Number of Engines", then press "Update".
+    Short games can be played by entering (for example) .5 minutes , for 30 second games.
   }
 }
 
