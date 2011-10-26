@@ -7179,148 +7179,6 @@ sc_game_info (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
 
     Tcl_AppendResult (ti, "</center>", NULL);
 
-    /*** Move line ****/
-
-    char san [20];
-    byte *nags;
-    colorT toMove = db->game->GetCurrentPos()->GetToMove();
-    uint moveCount = db->game->GetCurrentPos()->GetFullMoveCount();
-    uint prevMoveCount = moveCount;
-    if (toMove == WHITE) { prevMoveCount--; }
-
-    db->game->GetPrevSAN (san);
-    strcpy(tempTrans, san);
-    transPieces(tempTrans);
-    bool printNags = true;
-    if (san[0] == 0) {
-        strCopy (temp, "");
-        strAppend (temp, db->game->GetVarLevel() == 0 ?
-                   translate (ti, "GameStart", "Start of game") :
-                   translate (ti, "LineStart", "Start of line"));
-        strAppend (temp, "");
-        printNags = false;
-    } else {
-        sprintf (temp, "<run ::commenteditor::Open>%u.   <blue>%s%s",
-                 prevMoveCount, toMove==WHITE ? "...  " : "", tempTrans);
-        printNags = true;
-    }
-
-    // Tcl_AppendResult (ti, "<br>", translate (ti, "Move", "Move"), ":  ", NULL);
-
-    // if (san[0] != 0) 
-    Tcl_AppendResult (ti, "<br>Move:  ", temp, NULL);
-
-    nags = db->game->GetNags();
-    if (printNags  &&  *nags != 0 ) {
-        for (uint nagCount = 0 ; nags[nagCount] != 0; nagCount++) {
-	  char nagstr[20];
-	  game_printNag (nags[nagCount], nagstr, true, PGN_FORMAT_Plain);
-	  // if (nagCount > 0  ||  (nagstr[0] != '!' && nagstr[0] != '?')) {
-	  //     Tcl_AppendResult (ti, " ", NULL);
-	  // }
-	  Tcl_AppendResult (ti, nagstr, NULL);
-        }
-    }  
-    Tcl_AppendResult (ti, "</blue></run>",  NULL);
-
-
-    /*** Comment ***/
-
-    if (db->game->GetMoveComment() != NULL) {
-        Tcl_AppendResult (ti, "   <green><run ::commenteditor::Open>", NULL);
-        char * str = strDuplicate(db->game->GetMoveComment());
-        strTrimMarkCodes (str);
-        const char * s = str;
-        uint len;
-        uint lines = 0;
-	char ch;
-
-        // Add the first commentWidth characters of the comment, up to
-        // the first commentHeight lines:
-        for (len = 0; len < commentWidth; len++, s++) {
-            ch = *s;
-            if (ch == 0) { break; }
-            if (ch == '\n') {
-                lines++;
-                if (lines >= commentHeight) { break; }
-                Tcl_AppendResult (ti, "\t", NULL);
-                // Tcl_AppendResult (ti, "<br>", NULL);
-            } else if (ch == '<') {
-                Tcl_AppendResult (ti, "<lt>", NULL);
-            } else if (ch == '>') {
-                Tcl_AppendResult (ti, "<gt>", NULL);
-            } else {
-                appendCharResult (ti, ch);
-            }
-        }
-        // Complete the current comment word and add "..." if necessary:
-        if (len == commentWidth) {
-            char ch = *s;
-            while (ch != ' '  &&  ch != '\n'  &&  ch != 0) {
-                appendCharResult (ti, ch);
-                s++;
-                ch = *s;
-            }
-            if (ch != 0) {
-                Tcl_AppendResult (ti, "...", NULL);
-            }
-        }
-        Tcl_AppendResult (ti, "</run></green>", NULL);
-#ifdef WINCE
-        my_Tcl_Free((char*) str);
-#else
-        delete[] str;
-#endif
-    }
-
-    /*** Variation ***/
-
-    Tcl_AppendResult (ti, "\t", NULL);
-
-    if (db->game->GetVarLevel() > 0) {
-        Tcl_AppendResult (ti, "<gray><run sc_var exit; updateBoard -animate>\t(Var)</run></gray>", NULL);
-    }
-
-    /*** Next Move ***/
-
-    db->game->GetSAN (san);
-    strcpy(tempTrans, san);
-    transPieces(tempTrans);
-    if (san[0] == 0) {
-        strCopy (temp, "");
-        strAppend (temp, db->game->GetVarLevel() == 0 ?
-		   translate (ti, "GameEnd", "End of game") :
-		   translate (ti, "LineEnd", "End of line"));
-        strAppend (temp, "");
-        printNags = false;
-    } else {
-      if (hideNextMove) {
-	  sprintf (temp, "%u.   %s(", moveCount, toMove==WHITE ? "" : "...  ");
-	  strAppend (temp, translate (ti, "hidden"));
-	  strAppend (temp, ")");
-	  printNags = false;
-      } else {
-	  sprintf (temp, "<run ::move::Forward>%u.<blue>%s%s",
-		moveCount, toMove==WHITE ? "" : "..", tempTrans);//san);
-	  printNags = true;
-      }
-    }
-    if (!hideNextMove) {
-      Tcl_AppendResult (ti, "\t", translate (ti, "NextMove", "Next"), NULL);
-      Tcl_AppendResult (ti, ":  ", temp, NULL);
-
-      nags = db->game->GetNextNags();
-      if (printNags  &&  *nags != 0) {
-	  for (uint nagCount = 0 ; nags[nagCount] != 0; nagCount++) {
-	      char nagstr[20];
-
-	      game_printNag (nags[nagCount], nagstr, true, PGN_FORMAT_Plain);
-	      Tcl_AppendResult (ti, nagstr, NULL);
-	  }
-      }
-      Tcl_AppendResult (ti, "</run></blue>", NULL);
-    }
-
     /*** Event line ****/
 
     char dateStr[20];
@@ -7469,6 +7327,149 @@ sc_game_info (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
             delete tempDStr;
         }
     }
+
+    /*** Move line ****/
+
+    char san [20];
+    byte *nags;
+    colorT toMove = db->game->GetCurrentPos()->GetToMove();
+    uint moveCount = db->game->GetCurrentPos()->GetFullMoveCount();
+    uint prevMoveCount = moveCount;
+    if (toMove == WHITE) { prevMoveCount--; }
+
+    db->game->GetPrevSAN (san);
+    strcpy(tempTrans, san);
+    transPieces(tempTrans);
+    bool printNags = true;
+    if (san[0] == 0) {
+        strCopy (temp, "");
+        strAppend (temp, db->game->GetVarLevel() == 0 ?
+                   translate (ti, "GameStart", "Start of game") :
+                   translate (ti, "LineStart", "Start of line"));
+        strAppend (temp, "");
+        printNags = false;
+    } else {
+        sprintf (temp, "<run ::commenteditor::Open>%u.   <blue>%s%s",
+                 prevMoveCount, toMove==WHITE ? "...  " : "", tempTrans);
+        printNags = true;
+    }
+
+    // Tcl_AppendResult (ti, "<br>", translate (ti, "Move", "Move"), ":  ", NULL);
+
+    // if (san[0] != 0) 
+    Tcl_AppendResult (ti, "<br>Move:  ", temp, NULL);
+
+    nags = db->game->GetNags();
+    if (printNags  &&  *nags != 0 ) {
+        for (uint nagCount = 0 ; nags[nagCount] != 0; nagCount++) {
+	  char nagstr[20];
+	  game_printNag (nags[nagCount], nagstr, true, PGN_FORMAT_Plain);
+	  // if (nagCount > 0  ||  (nagstr[0] != '!' && nagstr[0] != '?')) {
+	  //     Tcl_AppendResult (ti, " ", NULL);
+	  // }
+	  Tcl_AppendResult (ti, nagstr, NULL);
+        }
+    }  
+    Tcl_AppendResult (ti, "</blue></run>",  NULL);
+
+
+    /*** Comment ***/
+
+    if (db->game->GetMoveComment() != NULL) {
+        Tcl_AppendResult (ti, "   <green><run ::commenteditor::Open>", NULL);
+        char * str = strDuplicate(db->game->GetMoveComment());
+        strTrimMarkCodes (str);
+        const char * s = str;
+        uint len;
+        uint lines = 0;
+	char ch;
+
+        // Add the first commentWidth characters of the comment, up to
+        // the first commentHeight lines:
+        for (len = 0; len < commentWidth; len++, s++) {
+            ch = *s;
+            if (ch == 0) { break; }
+            if (ch == '\n') {
+                lines++;
+                if (lines >= commentHeight) { break; }
+                Tcl_AppendResult (ti, "\t", NULL);
+                // Tcl_AppendResult (ti, "<br>", NULL);
+            } else if (ch == '<') {
+                Tcl_AppendResult (ti, "<lt>", NULL);
+            } else if (ch == '>') {
+                Tcl_AppendResult (ti, "<gt>", NULL);
+            } else {
+                appendCharResult (ti, ch);
+            }
+        }
+        // Complete the current comment word and add "..." if necessary:
+        if (len == commentWidth) {
+            char ch = *s;
+            while (ch != ' '  &&  ch != '\n'  &&  ch != 0) {
+                appendCharResult (ti, ch);
+                s++;
+                ch = *s;
+            }
+            if (ch != 0) {
+                Tcl_AppendResult (ti, "...", NULL);
+            }
+        }
+        Tcl_AppendResult (ti, "</run></green>", NULL);
+#ifdef WINCE
+        my_Tcl_Free((char*) str);
+#else
+        delete[] str;
+#endif
+    }
+
+    /*** Variation ***/
+
+    Tcl_AppendResult (ti, "\t", NULL);
+
+    if (db->game->GetVarLevel() > 0) {
+        Tcl_AppendResult (ti, "<gray><run sc_var exit; updateBoard -animate>\t(Var)</run></gray>", NULL);
+    }
+
+    /*** Next Move ***/
+
+    db->game->GetSAN (san);
+    strcpy(tempTrans, san);
+    transPieces(tempTrans);
+    if (san[0] == 0) {
+        strCopy (temp, "");
+        strAppend (temp, db->game->GetVarLevel() == 0 ?
+		   translate (ti, "GameEnd", "End of game") :
+		   translate (ti, "LineEnd", "End of line"));
+        strAppend (temp, "");
+        printNags = false;
+    } else {
+      if (hideNextMove) {
+	  sprintf (temp, "%u.   %s(", moveCount, toMove==WHITE ? "" : "...  ");
+	  strAppend (temp, translate (ti, "hidden"));
+	  strAppend (temp, ")");
+	  printNags = false;
+      } else {
+	  sprintf (temp, "<run ::move::Forward>%u.<blue>%s%s",
+		moveCount, toMove==WHITE ? "" : "..", tempTrans);//san);
+	  printNags = true;
+      }
+    }
+    if (!hideNextMove) {
+      Tcl_AppendResult (ti, "\t", translate (ti, "NextMove", "Next"), NULL);
+      Tcl_AppendResult (ti, ":  ", temp, NULL);
+
+      nags = db->game->GetNextNags();
+      if (printNags  &&  *nags != 0) {
+	  for (uint nagCount = 0 ; nags[nagCount] != 0; nagCount++) {
+	      char nagstr[20];
+
+	      game_printNag (nags[nagCount], nagstr, true, PGN_FORMAT_Plain);
+	      Tcl_AppendResult (ti, nagstr, NULL);
+	  }
+      }
+      Tcl_AppendResult (ti, "</run></blue>", NULL);
+    }
+
 
     /*** Variations ***/
     // (Often hid off the bottom of the gameinfo widget)
