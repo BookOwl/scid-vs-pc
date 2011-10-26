@@ -978,11 +978,12 @@ translate E FilterOperation {Filter Setting}
 translate E FilterAnd {Restrict filter (AND)}
 translate E FilterOr {Add to filter (OR)}
 translate E FilterIgnore {Reset filter}
-translate E SearchType {Search type}
+translate E SearchType {Search Type}
 translate E SearchBoardExact {Exact position (all pieces on same squares)}
 translate E SearchBoardPawns {Pawns (same material, all pawns on same squares)}
 translate E SearchBoardFiles {Files (same material, all pawns on same files)}
 translate E SearchBoardAny {Any (same material, pawns and pieces anywhere)}
+translate E SearchInRefDatabase { Search in database }
 translate E LookInVars {Look in variations}
 
 # Material search:

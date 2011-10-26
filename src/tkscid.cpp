@@ -14815,6 +14815,8 @@ sc_search_board (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
     int oldCurrentBase = currentBase;
     bool searchInRefBase = false;
     if (argc == 7) {
+//                   0        1          2                        3
+//       set str [sc_search board $::search::filter::operation $sBoardSearchType $searchInVars $sBoardIgnoreCols $base]
       baseNum = strGetUnsigned( argv[6] );
       searchInRefBase = true;
       currentBase = baseNum - 1;

@@ -986,6 +986,7 @@ translate S SearchBoardExact {Posición exacta (todas las piezas en las mismas ca
 translate S SearchBoardPawns {Peones (igual material, todos los peones en las mismas casillas)}
 translate S SearchBoardFiles {Columnas (igual material, todos los peones en las mismas columnas)}
 translate S SearchBoardAny {Cualquiera (igual material, peones y piezas en cualquier parte)}
+translate S SearchInRefDatabase {Búsqueda en la base de referencia}
 translate S LookInVars {Mirar en variaciones}
 
 # Material search:

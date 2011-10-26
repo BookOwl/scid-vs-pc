@@ -1102,6 +1102,7 @@ translate W SearchBoardExact {Exakt position (alla pjäser på samma rutor)}
 translate W SearchBoardPawns {Bönder (samma material, alla bönder på samma rutor)}
 translate W SearchBoardFiles {Filer (samma material, alla bönder på samma filer)}
 translate W SearchBoardAny {Obestämt (samma material, bönder och pjäser på valfria rutor)}
+translate W SearchInRefDatabase {Sök i databas}
 translate W LookInVars {Sök i variationer}
 
 # Material search:

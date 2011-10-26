@@ -1075,6 +1075,7 @@ translate N SearchBoardExact {Exacte positie (stukken op dezelfde velden)}
 translate N SearchBoardPawns {Pionnen (hetzelfde materiaal, alle pionnen op dezelfde velden)}
 translate N SearchBoardFiles {Lijnen (hetzelfde materiaal, alle pionnen op dezelfde lijnen)}
 translate N SearchBoardAny {Willekeurig (hetzelfde materiaal, pionnen en stukken willekeurig)}
+translate N SearchInRefDatabase { Zoek in database }
 translate N LookInVars {Zoek in varianten}
 
 # Material search:

@@ -1064,6 +1064,7 @@ translate B SearchBoardExact {Posicao exata (todas as pecas nas mesmas casas)}
 translate B SearchBoardPawns {Peoes (mesmo material, todos os peoes nas mesmas casas)}
 translate B SearchBoardFiles {Colunas (mesmo material, todos os peoes na mesma coluna)}
 translate B SearchBoardAny {Qualquer (mesmo material, peoes e pecas em qualquer posicao)}
+translate B SearchInRefDatabase { Pesquisa na base }
 translate B LookInVars {Olhar nas variantes}
 
 # Material search:

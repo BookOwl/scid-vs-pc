@@ -45,6 +45,29 @@ proc ::search::board {} {
   }
   addHorizontalRule $w
 
+  pack [frame $w.refdb] -side top -fill x
+  checkbutton $w.refdb.cb -textvar ::tr(SearchInRefDatabase) -variable ::searchRefBase \
+               -command "checkState ::searchRefBase $w.refdb.lb"
+  set ::listbases {}
+  set ::listbasesindex {}
+
+  # populate the combobox
+  for {set i 1} {$i <= [sc_base count total]} {incr i} {
+    if {[sc_base inUse $i]} {
+      set fname [file tail [sc_base filename $i]]
+      lappend ::listbases $fname
+      lappend ::listbasesindex $i
+    }
+  }
+  ttk::combobox $w.refdb.lb -textvariable refDatabase -values $::listbases
+  $w.refdb.lb current 0
+
+  checkState ::searchRefBase $w.refdb.lb
+  
+  pack $w.refdb.cb -side left
+  pack $w.refdb.lb -side left -padx 20
+  addHorizontalRule $w
+
   ::search::addFilterOpFrame $w
   addHorizontalRule $w
 
@@ -71,18 +94,40 @@ proc ::search::board {} {
     .sb.b.stop configure -state normal
     grab .sb.b.stop
     sc_progressBar .sb.progress bar 301 21 time
-    set str [sc_search board \
-        $::search::filter::operation \
-        $sBoardSearchType $searchInVars $sBoardIgnoreCols]
+
+    set base ""
+    if { $::searchRefBase } {
+      if {$refDatabase == {[clipbase]}} {
+        # [clipbase] seems to mess up the below line
+        set base 9
+      } else {
+	set base [lindex $::listbasesindex [lsearch $::listbases $refDatabase]]
+      }
+      if {[sc_base inUse $base]} {
+        # Should always be true, except when person has closed a base in the mean time
+	set str [sc_search board $::search::filter::operation $sBoardSearchType $searchInVars $sBoardIgnoreCols $base]
+      } else {
+	set str {Board search error!}
+      }
+    } else {
+      set str [sc_search board $::search::filter::operation $sBoardSearchType $searchInVars $sBoardIgnoreCols ]
+    }
+
     unbusyCursor .
     grab release .sb.b.stop
     .sb.b.stop configure -state disabled
     .sb.status configure -text $str
     set glstart 1
     ::windows::gamelist::Refresh
-    ::search::loadFirstGame
+
+    set gamesFound [lindex $str 0]
+    if { $::searchRefBase && $gamesFound > 0} {
+      ::file::SwitchToBase $base
+      ::search::loadFirstGame
+    }
     ::windows::stats::Refresh
   }
+
   dialogbutton $w.b.cancel -textvar ::tr(Close) -command "focus .; destroy $w"
   pack $w.b2.vars $w.b2.flip -side left -pady 2 -padx 5
   packbuttons right $w.b.cancel .sb.b.stop .sb.b.search
