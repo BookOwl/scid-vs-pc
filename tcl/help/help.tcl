@@ -231,6 +231,7 @@ set helpText(Index) {<h1>Scid Help Index</h1>
   <li><a Searches Board>Board searches</a></li>
   <li><a Book>Book</a> window</li>
   <li><a BookTuning>Book tuning</a></li>
+  <li>Making <a Book Polyglot>Polyglot Books</a></li>
   <li><a Bookmarks>Bookmarks</a></li>
   <li><a GameList Browsing>Browsing games</a></li>
   </ul>
@@ -381,6 +382,7 @@ set helpText(Index) {<h1>Scid Help Index</h1>
   <li><a Reports Player>Player Report</a> window</li>
   <li><a TacticalGame>Play Tactical game</a></li>
   <li><a SeriousGame>Play Serious game</a></li>
+  <li><a Book Polyglot>Polyglot</a></li>
   <li><a TacticsTrainer>Puzzles</a> - Mate in ... </li>
   </ul>
 
@@ -4173,23 +4175,28 @@ set helpText(Book) {<h1>Book Window</h1>
   like moves side-by-side.
   </p>
 <p>Scid also has an Opponent's Book. [todo ???] and <a BookTuning>Book Tuning</a> feature.</p>
-<h2>Polyglot</h2>
+
+<h2><name Polyglot>Polyglot</name></h2>
+
 <p>
-  To build new opening books, and find put more about chess opening books,
-visit the <url http://wbec-ridderkerk.nl/html/details1/PolyGlot.html>Polyglot
-web page</url>. 
+<i>Scid comes with an altered version of Polyglot. The below features require the
+<url http://wbec-ridderkerk.nl/html/details1/PolyGlot.html>full version</url></i> of the command line tool. 
 </p>
+<h4>Making Opening Books</h4>
 <p>
-To make a .bin book from a .pgn
+First, remove games with non-standard starts.
+These can be found by <a Searches Header>searching</a> for games with the "non-standard start" flag.
+Then, negate the filter, <a Export>export</a> the games to PGN, and from the command line:
 <br>
-<b>polyglot make-book -pgn games.pgn -bin book.bin -max-ply 30</b>
+<b>polyglot make-book -pgn GAMES.PGN -bin BOOK.BIN -max-ply 30</b>
 <br>
-<br>
-To merge two books
-<br>
+See the polyglot documentation for more options.
+</p>
+<h4>Merging Two Books</h4>
+<p>
 <b>polyglot merge-book -in1 w.bin -in2 b.bin out book.bin</b>
 </p>
-<p><footer>Updated: Scid vs. PC 4.5 July 2011</footer></p>
+<p><footer>Updated: Scid vs. PC 4.6 October, 2011</footer></p>
 }
 
 # Tactical game window help
@@ -5595,9 +5602,12 @@ set helpText(BookTuning) {<h1>Book Tuning</h1>
    from game collections. One should also note that all values should add up to 100%.
    </p>
 <h2>Exporting Books</h2>
+   <p><i>For information about exporting multiple games to Polyglot Books, see
+   the <a Book Polyglot>Polyglot</a> section.
+   </i></p>
    <p>
    Choosing <b>Export</b> will export a branch of the book from
-   the current position onwards into a single game. The continuation
+   the current position onwards <b>into a single game</b>. The continuation
    with the highest probability will make up the main line while all
    others are stored in variations. This allows for semi manually
    selecting lines to be included in a new book to be created. Note,
