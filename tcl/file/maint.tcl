@@ -807,6 +807,7 @@ proc checkAllGames {} {
     .checkGames.f.b.cancel configure -textvar ::tr(Close)
     ::windows::gamelist::Refresh
   }
+  dialogbutton $w.f.b.help   -textvar ::tr(Help) -command {helpWindow Maintenance Check}
   dialogbutton $w.f.b.cancel -textvar ::tr(Close) -command "focus .; destroy $w"
   canvas $w.f.progress -width 300 -height 20 -bg white -relief solid -border 1
   $w.f.progress create rectangle 0 0 0 0 -fill blue -outline blue -tags bar
@@ -816,10 +817,11 @@ proc checkAllGames {} {
   pack $w.f.label $w.f.g -side top -pady 5
   pack $w.f.progress -side top -padx 2 -pady 2
   pack $w.f.b -side top -pady 5 -fill x
-  pack $w.f.b.cancel $w.f.b.go -side right -pady 10 -padx 10
+  pack $w.f.b.go -side left -pady 5 -padx 5
+  pack $w.f.b.cancel $w.f.b.help -side right -pady 5 -padx 5
   wm resizable $w 0 0
-  bind $w <F1> {helpWindow ECO}
-  bind $w <Escape> "$w.b.cancel invoke"
+  bind $w <F1> {helpWindow Maintenance Check}
+  bind $w <Escape> "$w.f.b.cancel invoke"
   placeWinOverParent $w .maintWin
   wm state $w normal
   updateClassifyWin

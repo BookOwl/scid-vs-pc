@@ -1223,7 +1223,7 @@ translate E NameEditWith {With}
 translate E NameEditMatches {Matches: Press Ctrl+1 to Ctrl+9 to select}
 
 # Check games window:
-translate E CheckGames {Check games}
+translate E CheckGames {Check Games}
 translate E CheckGamesWhich {Check Games}
 translate E CheckAll {All games}
 translate E CheckSelectFilterGames {Filter games}

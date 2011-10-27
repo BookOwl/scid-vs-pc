@@ -2419,6 +2419,23 @@ perform a Namebase <a Compact>Compaction</a>.
   <i>Note: Because of design of si4 header, this number's upper limit is 16,777,214 (Approximately 2^(8*3)).</i>
   </p>
 
+  <h3><name Check>Check Games</name></h3>
+  <p>
+  This feature performs basic checks on every game/filter games.
+  </p>
+  <p>
+  Each Game 
+  <br>
+  * Has index entry fetched
+  <br>
+  * Read from disk
+  <br>
+  * And is Decoded.
+  </p>
+  <p>
+  Any errors are reported.
+  </p>
+
   <h3>Repair a Base</h3>
   <p>
   In the rare cases that a Scid Database is corrupted one might try to
