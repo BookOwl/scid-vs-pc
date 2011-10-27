@@ -4,16 +4,18 @@
 
 namespace eval ::search {}
 
-# searchType: set to Header or Material in a SearchOptions file
+# 'Header' or 'Material' in a SearchOptions file (.sso)
+# (Can't save a Board search)
 set searchType 0
 
+# How search affects the filter
+# Can be   0 (And)   1 (Or)   2 (Ignore/Reset) which is the default
 set ::search::filter::operation 2
-
 
 # TODO: Rename to ::search::filter::text
 # filterText: returns text describing state of filter for specified
 #   database, e.g. "no games" or "all / 400" or "1,043 / 2,057"
-#
+
 proc filterText {{base 0} {kilo 0}} {
   # Default to current base if no base specified:
   if {$base == 0} { set base [sc_base current] }
@@ -57,22 +59,25 @@ proc ::search::filter::negate {} {
 
 
 
-# ::search::addFilterOpFrame
+# Add a frame of radiobuttons to specify which filter operation to perform with search
 #
-#   Add a frame of radiobuttons to specify which filter operation
-#   Options are: AND with current filter, OR with current filter, or RESET filter
-#   Default value is RESET
+# The variable ::search::filter::operation is shared between the three search widgets
+# (but there should be different variables, to avoid interaction)
+# and can be  0 (And), 1 (Or), 2 (Ignore/Reset) which is the default
 
 proc ::search::addFilterOpFrame {w {small 0}} {
-  frame $w.filterop
   set f $w.filterop
-  pack $f -side top
-  set regular font_Regular
-  set bold font_Bold
+
+  frame $f
+  pack  $f -side top
   if {$small} {
     set regular font_Small
-    set bold font_SmallBold
+    set bold    font_SmallBold
+  } else {
+    set regular font_Regular
+    set bold    font_Bold
   }
+
   label $f.title -font $bold -textvar ::tr(FilterOperation)
   radiobutton $f.and -textvar ::tr(FilterAnd) -variable ::search::filter::operation \
     -value 0 -pady 5 -padx 5 -font $regular
@@ -80,6 +85,7 @@ proc ::search::addFilterOpFrame {w {small 0}} {
     -value 1 -pady 5 -padx 5 -font $regular
   radiobutton $f.ignore -textvar ::tr(FilterIgnore) -variable ::search::filter::operation \
     -value 2 -pady 5 -padx 5 -font $regular
+
   pack $f.title -side top
   pack $f.ignore $f.and $f.or -side left
 }
@@ -88,11 +94,14 @@ proc ::search::addFilterOpFrame {w {small 0}} {
 # ::search::Config
 #
 #   Sets state of Search button in Header, Board and Material windows
-#
+
 proc ::search::Config {{state ""}} {
   if {$state == ""} {
-    set state disabled
-    if {[sc_base inUse]} { set state normal }
+    if {[sc_base inUse]} {
+      set state normal
+    } else {
+      set state disabled
+    }
   }
   catch {.sh.b.search configure -state $state }
   catch {.sb.b.search configure -state $state }

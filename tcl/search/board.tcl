@@ -48,15 +48,14 @@ proc ::search::board {} {
   pack [frame $w.refdb] -side top -fill x
   checkbutton $w.refdb.cb -textvar ::tr(SearchInRefDatabase) -variable ::searchRefBase \
                -command "checkState ::searchRefBase $w.refdb.lb"
+
   set ::listbases {}
-  set ::listbasesindex {}
 
   # populate the combobox
   for {set i 1} {$i <= [sc_base count total]} {incr i} {
     if {[sc_base inUse $i]} {
       set fname [file tail [sc_base filename $i]]
       lappend ::listbases $fname
-      lappend ::listbasesindex $i
     }
   }
   ttk::combobox $w.refdb.lb -textvariable refDatabase -values $::listbases
@@ -95,19 +94,27 @@ proc ::search::board {} {
     grab .sb.b.stop
     sc_progressBar .sb.progress bar 301 21 time
 
-    set base ""
     if { $::searchRefBase } {
-      if {$refDatabase == {[clipbase]}} {
-        # [clipbase] seems to mess up the below line
-        set base 9
-      } else {
-	set base [lindex $::listbasesindex [lsearch $::listbases $refDatabase]]
+      ### Search a particular base rather than the one that is open
+
+      # Find the base number by searching the basenames for a match with combobox variable refDatabase
+      set found 0
+      set base  9 ; # this line not really needed
+      for {set i 1} {$i <= [sc_base count total]} {incr i} {
+	if {[sc_base inUse $i]} {
+	  set fname [file tail [sc_base filename $i]]
+	  if {$fname == $refDatabase} {
+	    set base $i
+	    set found 1
+	    break
+	  }
+	}
       }
-      if {[sc_base inUse $base]} {
-        # Should always be true, except when person has closed a base in the mean time
+
+      if {$found} {
 	set str [sc_search board $::search::filter::operation $sBoardSearchType $searchInVars $sBoardIgnoreCols $base]
       } else {
-	set str {Board search error!}
+	set str {Database not open}
       }
     } else {
       set str [sc_search board $::search::filter::operation $sBoardSearchType $searchInVars $sBoardIgnoreCols ]
@@ -121,7 +128,7 @@ proc ::search::board {} {
     ::windows::gamelist::Refresh
 
     set gamesFound [lindex $str 0]
-    if { $::searchRefBase && $gamesFound > 0} {
+    if { $::searchRefBase && $gamesFound > 0 && $gamesFound != {Database}} {
       ::file::SwitchToBase $base
       ::search::loadFirstGame
     }
