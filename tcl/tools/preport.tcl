@@ -15,23 +15,22 @@ set ::preport::_clipbase 0
 #   Present a dialog allowing the user to select the
 #   player and color for which to generate a player report.
 
-proc ::preport::preportDlg {args} {
+proc ::preport::preportDlg {{player {}}} {
 
-  # Set default player and color if parameters are provided
-  if {[llength $args] >= 1} {
-    set ::preport::_player [lindex $args 0]
-    if {$::preport::_player == [sc_game info white]} {
+  if {$player != {}} {
+    set ::preport::_player $player
+    if {$player == [sc_game info white]} {
       set ::preport::_color white
-    } elseif {$::preport::_player == [sc_game info black]} {
+    } elseif {$player == [sc_game info black]} {
       set ::preport::_color black
     }
   }
-  if {[llength $args] >= 2} {
-    set ::preport::_color [lindex $args 1]
-  }
 
   set w .preportDlg
-  if {[winfo exists $w]} { return }
+  if {[winfo exists $w]} {
+puts RETURN
+    return
+  }
   toplevel $w
   wm title $w "Scid: [tr ToolsPlayerReport]"
 
@@ -42,7 +41,11 @@ proc ::preport::preportDlg {args} {
   label $w.g.where -text "Player:"
   grid $w.g.where -row 0 -column 0 -sticky w
   ttk::combobox $w.g.player -width 30 -textvariable ::preport::_player
+
+  set tmp $::preport::_player
   ::utils::history::SetCombobox ::preport::_player $w.g.player
+  set ::preport::_player $tmp
+
   grid $w.g.player -row 0 -column 1 -columnspan 2 -padx 10
 
   label $w.g.has -text "Color:"
@@ -128,9 +131,9 @@ proc ::preport::ConfigMenus {{lang ""}} {
 
 proc ::preport::makeReportWin {args} {
   if {! [sc_base inUse]} { return }
-  set showProgress 1
   set args [linsert $args 0 "args"]
-  if {[lsearch -exact $args "-noprogress"] >= 0} { set showProgress 0 }
+
+  set showProgress 1
   if {$showProgress} {
     set w .progress
     toplevel $w
@@ -156,11 +159,7 @@ proc ::preport::makeReportWin {args} {
         -fill black -text "0:00 / 0:00"
       pack $w.c$i -side top -pady 10
     }
-    wm resizable $w 0 0
-    # Set up geometry for middle of screen:
-    set x [winfo screenwidth $w]; set x [expr $x - 400]; set x [expr $x / 2]
-    set y [winfo screenheight $w]; set y [expr $y - 20]; set y [expr $y / 2]
-    wm geometry $w +$x+$y
+    ::utils::win::Centre $w
     wm deiconify $w
     grab $w.b.cancel
     sc_progressBar $w.c1 bar 401 21 time
@@ -282,7 +281,9 @@ proc ::preport::makeReportWin {args} {
 
 proc ::preport::setOptions {} {
   set w .preportOptions
-  if {[winfo exists $w]} { return }
+  if {[winfo exists $w]} {
+    return
+  }
   toplevel $w
   pack [frame $w.f] -side top -fill x -padx 5 -pady 5
   set row 0
@@ -345,6 +346,8 @@ proc ::preport::setOptions {} {
 
   pack $w.b.defaults -side left -padx 5 -pady 5
   pack $w.b.cancel $w.b.ok -side right -padx 5 -pady 5
+
+  ::utils::win::Centre $w
 
   array set ::preport::backup [array get ::preport]
   wm resizable $w 0 0
