@@ -48,7 +48,6 @@ proc ::plist::Open {} {
   bind $w <Escape> "$w.b.close invoke"
   bind $w <Return> ::plist::refresh
   bind $w <Destroy> { set plistWin 0 }
-  standardShortcuts $w
   bind $w <Up> "$w.t.text yview scroll -1 units"
   bind $w <Down> "$w.t.text yview scroll 1 units"
   bind $w <Prior> "$w.t.text yview scroll -1 pages"
@@ -99,8 +98,12 @@ proc ::plist::Open {} {
   # Player
 
   label $f.nlabel -text $::tr(Player) -font $fbold
+
+  set tmp $::plist::name
   ttk::combobox $f.name -textvariable ::plist::name -width 20
   ::utils::history::SetCombobox ::plist::name $f.name
+  set ::plist::name $tmp
+
   bindFocusColors $f.name
   pack $f.name $f.nlabel -side right
 
@@ -177,6 +180,7 @@ proc ::plist::refresh {} {
   $t insert end "\n" title
 
   update
+
   set err [catch {sc_name plist -name $::plist::name -size $::plist::size \
             -minGames $::plist::minGames -maxGames $::plist::maxGames \
             -minElo $::plist::minElo -maxElo $::plist::maxElo \

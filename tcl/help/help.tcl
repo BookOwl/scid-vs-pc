@@ -373,6 +373,7 @@ set helpText(Index) {<h1>Scid Help Index</h1>
   <li><a Export Null>PGN and Scid</a> (exporting)</li>
   <li><a Variations Paste>Paste variation</a></li>
   <li><a Pgnscid>Pgnscid</a></li>
+  <li><a PInfo Photos>Photos</a></li>
   <li><a FICS>Play on the Internet (FICS)</a></li>
   <li><a PTracker>Piece Tracker</a> window</li>
   <li><a PList>Player Finder</a> window</li>
@@ -3226,7 +3227,7 @@ set helpText(PInfo) {<h1>Player Information</h1>
 
   The Player Information window shows basic information when available.
   It draws upon the <a Maintenance Spellfile>spelling.ssp file</a>,
-  and includes Ratings, Country of Origin and Official Titles.</p>
+  and includes Ratings, Country of Origin,  Official Titles and even Photos.</p>
 
   <p><b>Please use with caution</b>. <i>The names it contains may not be
   unique, and player initials may be incorrectly identified. Mainline SCID uses a
@@ -3239,13 +3240,19 @@ set helpText(PInfo) {<h1>Player Information</h1>
   All percentages displayed are an expected score (success rate), from the
   player's perspective -- so higher is always better for the player, whether they
   are White or Black.
+  Clicking the numbers displayed in green will set the <a Filter>filter</a>
+  according to the statistic it represents.
   </p>
 
+  <h4>Features</h4>
   <p>
-  You can see the player's rating history in a graph by pressing the
-  <a Graphs Rating>Rating graph</a> button.
-  Numbers displayed in red are links that set the <a Filter>filter</a>
-  to the games it represents.
+  You can see a player's rating history by pressing 
+  <a Graphs Rating>Rating Graph</a> , and perform rating assignments.
+  </p>
+  <p>
+  There are also buttons to help browse similar Player Names, 
+  perform <a Maintenance Editing>name substitutions</b> in the whole (or part) database, or run the 
+  <a Reports Player>Player Report</a> feature.
   </p>
 
 <h3><name Photos>Player Photos</name></h3>
@@ -3264,7 +3271,7 @@ To disable them, unselect <green>Options--<gt>Game Information--<gt>Show Photos<
 
 </p>
 
-  <p><footer>Updated: Scid vs. PC 4.3 January 2011</footer></p>
+  <p><footer>Updated: Scid vs. PC 4.6 October 2011</footer></p>
 }
 
 set helpTitle(Graphs) "Graph windows"
