@@ -14,7 +14,7 @@ set ::preport::_clipbase 0
 # preportDlg
 #   Present a dialog allowing the user to select the
 #   player and color for which to generate a player report.
-#
+
 proc ::preport::preportDlg {args} {
 
   # Set default player and color if parameters are provided
@@ -47,10 +47,8 @@ proc ::preport::preportDlg {args} {
 
   label $w.g.has -text "Color:"
   grid $w.g.has -row 1 -column 0 -sticky w
-  radiobutton $w.g.white -text $::tr(White) \
-    -variable ::preport::_color -value white
-  radiobutton $w.g.black -text $::tr(Black) \
-    -variable ::preport::_color -value black
+  radiobutton $w.g.white -text $::tr(White) -variable ::preport::_color -value white
+  radiobutton $w.g.black -text $::tr(Black) -variable ::preport::_color -value black
   grid $w.g.white -row 1 -column 1 -sticky w
   grid $w.g.black -row 1 -column 2 -sticky w
 
@@ -192,7 +190,7 @@ proc ::preport::makeReportWin {args} {
   ::utils::history::AddEntry ::preport::_player $::preport::_player
 
   if {$::preport::_pos == "start"} { sc_game push }
-  sc_search board AND Exact false
+  sc_search board AND Exact false 0
   sc_report player create $::preport(ExtraMoves) $::preport(MaxGames)
   if {$::preport::_pos == "start"} { sc_game pop }
   if {$::preport::_clipbase} {
