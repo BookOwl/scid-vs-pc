@@ -22,7 +22,7 @@ proc playerInfo {{player ""} {raise 0}} {
     pack [frame $w.b] -side bottom -expand 1 -fill x -pady 5 
 
     button $w.b.graph -text [tr ToolsRating] \
-      -command {::tools::graphs::rating::Refresh player $playerInfoName} 
+      -command {::tools::graphs::rating::Refresh $playerInfoName} 
     button $w.b.edit -text $::tr(PInfoEditRatings) -command {
       makeNameEditor
       setNameEditorType rating

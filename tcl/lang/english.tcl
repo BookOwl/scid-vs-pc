@@ -212,7 +212,7 @@ menuText E ToolsPInfo "Player Information"  0 \
   {Open/update the Player Information window}
 menuText E ToolsPlayerReport "Player Report" 3 \
   {Generate a player report}
-menuText E ToolsRating "Rating Graph" 0 \
+menuText E ToolsRating "Player Ratings" 0 \
   {Graph the rating history of the current game players}
 menuText E ToolsScore "Score Graph" 0 {Show the score graph window}
 menuText E ToolsExpCurrent "Export Current Game" 8 \

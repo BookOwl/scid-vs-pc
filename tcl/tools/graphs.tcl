@@ -1,14 +1,11 @@
 ### graph.tcl: part of Scid.
 
-# ::tools::graphs::Save
-#
-#   Saves a graph (e.g. tree graph, filter graph, rating graph) to a
-#   color or greyscale Postscript file.
-#
-#   The mode should be "color" or "gray".
-
 set maxyear [clock format [clock seconds] -format "%Y"]
 set FilterMaxYear $maxyear
+
+#   Saves a graph (e.g. tree graph, filter graph, rating graph) to a
+#   color or greyscale Postscript file.
+#   The mode should be "color" or "gray".
 
 proc ::tools::graphs::Save {mode w} {
   if {! [winfo exists $w]} { return }
@@ -66,20 +63,24 @@ GWLYoUAWpMWViCSOaCILJRAQgAAltnjii2mdQEALAQEAOw==
 }
 
 #Check for illegal Values and set to default values
+
 proc checkConfigFilterGraph {} { 
+
   global FilterMaxMoves FilterMinMoves FilterStepMoves FilterMaxElo FilterMinElo FilterStepElo FilterMaxYear FilterMinYear FilterStepYear
-      if { $FilterStepMoves < 1 } { set FilterStepMoves 1 }
-      if { $FilterStepElo < 1 } { set FilterStepElo 100 }
-      if { $FilterStepYear < 1 } { set FilterStepYear 1 }
-      if { $FilterMinMoves < 1 } { set FilterMinMoves 1 }
-      if { $FilterMinElo < 0 } { set FilterMinElo 2100 }
-      if { $FilterMinYear < 1 } { set FilterMinYear 1995 }
-      if { $FilterMaxMoves < 1 } { set FilterMaxMoves 80 }
-      if { $FilterMaxElo < 1 } { set FilterMaxElo 2800 }
-      if { $FilterMaxYear < 1 } { set FilterMaxYear $::maxyear }
+
+  if { $FilterStepMoves < 1 } { set FilterStepMoves 1 }
+  if { $FilterStepElo < 1 } { set FilterStepElo 100 }
+  if { $FilterStepYear < 1 } { set FilterStepYear 1 }
+  if { $FilterMinMoves < 1 } { set FilterMinMoves 1 }
+  if { $FilterMinElo < 0 } { set FilterMinElo 2100 }
+  if { $FilterMinYear < 1 } { set FilterMinYear 1995 }
+  if { $FilterMaxMoves < 1 } { set FilterMaxMoves 80 }
+  if { $FilterMaxElo < 1 } { set FilterMaxElo 2800 }
+  if { $FilterMaxYear < 1 } { set FilterMaxYear $::maxyear }
 }
 
 proc configureFilterGraph {parent} {
+
   global FilterMaxMoves FilterMinMoves FilterStepMoves FilterMaxElo FilterMinElo FilterStepElo FilterMaxYear FilterMinYear FilterStepYear FilterGuessELO
 
   set w .configFilterGraph
@@ -145,15 +146,14 @@ proc configureFilterGraph {parent} {
   wm deiconify $w
 }
 
-#####################
-# Filter graph window
+### Filter graph window
 
-# ::tools::graphs::filter::type
-#   can be "decade", "year" or "elo" , "move"
-#
+# ::tools::graphs::filter::type  can be "decade", "year" or "elo" , "move"
 
 proc tools::graphs::filter::Open {} {
+
   global filterGraph
+
   set w .fgraph
   if {[winfo exists $w]} {
     focus .
@@ -161,6 +161,7 @@ proc tools::graphs::filter::Open {} {
     set filterGraph 0
     return
   }
+
   toplevel $w
   wm title $w $::tr(TitleFilterGraph)
   wm withdraw $w
@@ -384,10 +385,10 @@ proc ::tools::graphs::filter::Refresh {} {
 set ::tools::graphs::score::White 0
 set ::tools::graphs::score::Black 0
 
-####################
-# Game score graph
+### Game Score graph
 
 proc ::tools::graphs::score::Refresh {} {
+
   set linecolor steelblue
   set linewidth 2
   set psize 2
@@ -410,6 +411,7 @@ proc ::tools::graphs::score::Refresh {} {
       -command "::tools::graphs::Save gray $w.c"
     $w.menu.file add separator
     $w.menu.file add command -label GraphFileClose -command "destroy $w"
+
     $w.menu add cascade -label GraphOptions -menu $w.menu.options
 #Klimmek: Checkbuttons for Invert white/black Score in Score graph
     menu $w.menu.options
@@ -477,6 +479,7 @@ proc ::tools::graphs::score::Refresh {} {
 }
 
 proc ::tools::graphs::score::ConfigMenus {{lang ""}} {
+
   if {! [winfo exists .sgraph]} { return }
   if {$lang == ""} { set lang $::language }
   set m .sgraph.menu
@@ -486,7 +489,7 @@ proc ::tools::graphs::score::ConfigMenus {{lang ""}} {
   foreach idx {0 1 3} tag {Color Grey Close} {
     configMenuText $m.file $idx GraphFile$tag $lang
   }
-#Klimmek: translate optionsmenu
+  #Klimmek: translate optionsmenu
   foreach idx {0 1} tag {White Black} {
     configMenuText $m.options $idx GraphOptions$tag $lang
   }
@@ -500,31 +503,24 @@ proc ::tools::graphs::score::Move {xc} {
 }
 
 
-####################
-# Rating graph
 
 set ::tools::graphs::rating::year 1900
 set ::tools::graphs::rating::type both
-set ::tools::graphs::rating::player ""
+set ::tools::graphs::rating::players {} 
+set ::tools::graphs::rating::colors {steelblue seagreen rosybrown violet skyblue red}
 
-proc ::tools::graphs::rating::Refresh {{type ""} {player ""}} {
-  set white [sc_game info white]
-  set black [sc_game info black]
-  set whiteColor royalblue
-  set blackColor blue
-  set lwidth 2
-  set psize 2
+### Rating graph
 
-  if {$type == ""} { set type $::tools::graphs::rating::type }
-  if {$player == ""} { set player $::tools::graphs::rating::player }
-  set ::tools::graphs::rating::type $type
-  set ::tools::graphs::rating::player $player
+proc ::tools::graphs::rating::Refresh {{player {}}} {
 
   set w .rgraph
 
-  if {! [winfo exists $w]} {
+  if {[winfo exists $w]} {
+    raiseWin $w
+  } else {
     toplevel $w
     wm withdraw $w
+    wm title $w "Scid: [tr ToolsRating]"
 
     menu $w.menu
     $w configure -menu $w.menu
@@ -536,19 +532,18 @@ proc ::tools::graphs::rating::Refresh {{type ""} {player ""}} {
       -command "::tools::graphs::Save gray $w.c"
     $w.menu.file add separator
     $w.menu.file add command -label GraphFileClose -command "destroy $w"
+
     $w.menu add cascade -label GraphOptions -menu $w.menu.options
     menu $w.menu.options
-    foreach i {White Black Both PInfo} j {white black both player} {
-      $w.menu.options add radiobutton -label GraphOptions$i \
-        -variable ::tools::graphs::rating::type -value $j \
-        -command "::tools::graphs::rating::Refresh"
-    }
-    $w.menu.options add separator
     foreach i {1900 1980 1985 1990 1995 2000 2005 2010 2015 } {
       $w.menu.options add radiobutton -label "Since $i" \
         -variable ::tools::graphs::rating::year -value $i \
-        -command "::tools::graphs::rating::Refresh"
+        -command ::tools::graphs::rating::Refresh
     }
+
+    $w.menu add cascade -label $::tr(Help) -menu $w.menu.help 
+    menu $w.menu.help
+    $w.menu.help add command -label $::tr(Help) -accelerator F1 -command {helpWindow Graphs Rating}
 
     canvas $w.c -width 500 -height 300
     $w.c create text 25 10 -tag text -justify center -width 1 \
@@ -565,16 +560,18 @@ proc ::tools::graphs::rating::Refresh {{type ""} {player ""}} {
       update
       recordWinSize .rgraph
     }
-    bind $w.c <Button-1> "::tools::graphs::rating::Refresh"
-    bind $w.c <Button-3> "::tools::graphs::rating::Refresh"
+    bind $w.c <Button-3> ::tools::graphs::rating::Refresh
     bind $w <Escape> "destroy $w"
-    wm title $w "Scid: [tr ToolsRating]"
-    ::tools::graphs::rating::ConfigMenus
+    bind $w <Destroy> {set ::tools::graphs::rating::players {}}
 
+    ::tools::graphs::rating::ConfigMenus
     setWinLocation $w
     setWinSize $w
     wm deiconify $w
   }
+
+  set lwidth 2
+  set psize 2
 
   $w.c itemconfigure text -width [expr {[winfo width $w.c] - 50} ]
   $w.c coords text [expr {[winfo width $w.c] / 2} ] 10
@@ -588,32 +585,43 @@ proc ::tools::graphs::rating::Refresh {{type ""} {player ""}} {
   busyCursor $w
   update
 
-  set title "[tr ToolsRating]: "
+  set title "[tr ToolsRating]"
+  # append title player-names ?
+
   set year $::tools::graphs::rating::year
-  if {$type == "player"} {
-    append title $player
-    catch {::utils::graph::data ratings d -color $whiteColor -points 1 -lines 1 \
-             -linewidth $lwidth -radius $psize -outline $whiteColor \
-             -coords [sc_name info -ratings:$year $player]}
-    # Player ratings ... "-points 0" ? S.A.
+
+  if {$player == {both} && $::tools::graphs::rating::players == {}} {
+    set ::tools::graphs::rating::players [list [sc_game info white] [sc_game info black]]
   }
-  if {$type == "white"  ||  $type == "both"} {
-    set key ""
-    if {$type == "both"} { set key [::utils::string::Surname $white] }
-    append title $white
-    catch {::utils::graph::data ratings d -color $whiteColor -points 1 -lines 1 \
-             -linewidth $lwidth -radius $psize -outline $whiteColor \
-             -key $key -coords [sc_name info -ratings:$year $white]}
+
+  if {$player != {}} {
+    # player already in graph ?
+    set i [lsearch $::tools::graphs::rating::players $player]
+
+    if {$i == -1} {
+      # add player
+      lappend ::tools::graphs::rating::players $player
+    } else {
+      # remove player
+      set ::tools::graphs::rating::players [lreplace $::tools::graphs::rating::players $i $i]
+
+    }
   }
-  if {$type == "both"} { append title " - " }
-  if {$type == "black"  ||  $type == "both"} {
-    set key ""
-    if {$type == "both"} { set key [::utils::string::Surname $black] }
-    append title $black
-    catch {::utils::graph::data ratings d2 -color $blackColor -points 1 -lines 1 \
-             -linewidth $lwidth -radius $psize -outline $blackColor \
-             -key $key -coords [sc_name info -ratings:$year $black]}
+
+  # Re-add data for every player
+
+  set i 1
+  foreach p $::tools::graphs::rating::players {
+    set key [::utils::string::Surname $p]
+    set color [lindex $::tools::graphs::rating::colors [expr ($i - 1) % [llength $::tools::graphs::rating::colors]]]
+    catch {
+      ::utils::graph::data ratings d$i -color $color -points 1 -lines 1 \
+	       -linewidth $lwidth -radius $psize -outline $color \
+	       -key $key -coords [sc_name info -ratings:$year $p]
+    }
+    incr i
   }
+
   set minYear [expr {int([::utils::graph::cget ratings axmin])} ]
   set maxYear [expr {int([::utils::graph::cget ratings axmax])} ]
   ::utils::graph::configure ratings -xtick 1
@@ -632,9 +640,6 @@ proc ::tools::graphs::rating::ConfigMenus {{lang ""}} {
   }
   foreach idx {0 1 3} tag {Color Grey Close} {
     configMenuText $m.file $idx GraphFile$tag $lang
-  }
-  foreach idx {0 1 2 3} tag {White Black Both PInfo} {
-    configMenuText $m.options $idx GraphOptions$tag $lang
   }
 }
 
