@@ -33,6 +33,7 @@ proc playerInfo {{player ""} {raise 0}} {
       set ::plist::name [lindex $playerInfoName 0]
       if {[winfo exists .plist]} {
 	::plist::refresh
+        raiseWin .plist
       } else {
 	::plist::Open
       }
@@ -41,6 +42,7 @@ proc playerInfo {{player ""} {raise 0}} {
       makeNameEditor
       setNameEditorType player
       set editName $playerInfoName
+      set editNameNew $playerInfoName
       set editNameSelect all
     }
 
