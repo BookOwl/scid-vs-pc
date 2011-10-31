@@ -29,7 +29,7 @@ proc playerInfo {{player ""} {raise 0}} {
       set editName $playerInfoName
       set editNameSelect crosstable
     }
-    button $w.b.match -text {Match Name}  -command {
+    button $w.b.match -text {Player Name} -command {
       set ::plist::name [lindex $playerInfoName 0]
       if {[winfo exists .plist]} {
 	::plist::refresh
@@ -38,7 +38,7 @@ proc playerInfo {{player ""} {raise 0}} {
 	::plist::Open
       }
     }
-    button $w.b.nedit -text {Change Name} -command {
+    button $w.b.nedit -text {Edit Name} -command {
       makeNameEditor
       setNameEditorType player
       set editName $playerInfoName

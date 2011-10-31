@@ -33,8 +33,6 @@ namespace eval uci {
     global ::uci::uciInfo
     set uciInfo(depth$n)    0
     set uciInfo(seldepth$n) 0
-    set uciInfo(time$n)     0
-    set uciInfo(nodes$n)    0
     set uciInfo(pv$n)      ""
     set uciInfo(multipv$n) ""
     set uciInfo(tmp_score$n) ""
@@ -47,6 +45,8 @@ namespace eval uci {
 
   proc resetUciInfo2 {n} {
     global ::uci::uciInfo
+    set uciInfo(nodes$n)    0
+    set uciInfo(time$n)     0
     set uciInfo(nps$n) 0
     set uciInfo(hashfull$n) ----
     set uciInfo(tbhits$n) ----
@@ -186,7 +186,7 @@ namespace eval uci {
           if { $analysis(fen$n) == "" } {
             set side [string index [sc_pos side] 0]
           } else {
-            set side [lindex [split $analysis(fen$n)] 1]
+            set side [lindex $analysis(fen$n) 1]
           }
           if { $side == "b"} {
             set uciInfo(tmp_score$n) [ expr 0.0 - $uciInfo(tmp_score$n) ]
@@ -274,7 +274,7 @@ namespace eval uci {
 	}
         set analysis(moves$n) $uciInfo(pv$n)
         set analysis(time$n) [expr {double($uciInfo(time$n)) / 1000.0} ]
-        set analysis(nodes$n) [calculateNodes $uciInfo(nodes$n) ]
+        set analysis(nodes$n) [calculateNodes $uciInfo(nodes$n)]
       }
       
       set pvRaw $uciInfo(pv$n)

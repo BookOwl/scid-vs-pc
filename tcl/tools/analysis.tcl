@@ -55,7 +55,7 @@ proc resetEngine {n} {
   set analysis(prevmoves$n) {}        ;# Immediately previous best line out from engine
   set analysis(nodes$n) 0             ;# Number of (kilo)nodes searched
   set analysis(depth$n) 0             ;# Depth in ply
-  set analysis(prevdepth$n) 0        ;# Previous depth
+  set analysis(prevdepth$n) 0         ;# Previous depth
   set analysis(time$n) 0              ;# Time in centisec (or sec; see below)
   set analysis(moves$n) {}            ;# PV (best line) output from engine
   set analysis(seldepth$n) 0
@@ -1199,9 +1199,7 @@ proc storeScore {name text} {
     }
 }
 
-################################################################################
-#
-################################################################################
+
 proc addAnnotation {} {
   global analysis annotateMoves annotateBlunders annotateEngine blunderThreshold prevNag
 
@@ -1476,18 +1474,18 @@ proc popAnalysisData {n} {
   # the start of analysis is in the middle of a variation
   if {[llength $::stack] == 0} {
     set analysis(prevscore$n) 0
-    set analysis(score$n) 0
+    set analysis(score$n)     0
     set analysis(prevmoves$n) {}
-    set analysis(moves$n) {}
+    set analysis(moves$n)     {}
     set lastVar 0
     return
   }
   set tmp [lindex $::stack end]
   set analysis(prevscore$n) [lindex $tmp 0]
-  set analysis(score$n) [lindex $tmp 1]
+  set analysis(score$n)     [lindex $tmp 1]
   set analysis(prevmoves$n) [lindex $tmp 2]
-  set analysis(moves$n) [lindex $tmp 3]
-  set lastVar [lindex $tmp 4]
+  set analysis(moves$n)     [lindex $tmp 3]
+  set lastVar               [lindex $tmp 4]
   set ::stack [lreplace $::stack end end]
   return $lastVar
 }
