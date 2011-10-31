@@ -1392,15 +1392,16 @@ proc releaseSquare { x y } {
 # removed by S.A. Use ::move::Back instead
 
 ##
-## Auto-playing of moves:
+## Auto-playing of moves including lots of Annotation stuff
 ##
+
 set autoplayMode 0
 
 set tempdelay 0
 trace variable tempdelay w {::utils::validate::Regexp {^[0-9]*\.?[0-9]*$}}
-# ################################################################################
-# Set the delay between moves in options menu
-################################################################################
+
+### Set the delay between moves in options menu
+
 proc setAutoplayDelay {} {
   global autoplayDelay tempdelay
   set tempdelay [expr {$autoplayDelay / 1000.0}]
@@ -1432,8 +1433,6 @@ proc setAutoplayDelay {} {
   focus $w.spDelay
 }
 
-
-
 proc toggleAutoplay {} {
   global autoplayMode
   if {$autoplayMode == 0} {
@@ -1445,7 +1444,7 @@ proc toggleAutoplay {} {
   }
 }
 
-### Automatically move thorugh a games moves at a certain speed.
+### Automatically move through a games moves at a certain speed.
 
 proc autoplay {} {
   global autoplayDelay autoplayMode annotateEngine analysis
@@ -1559,12 +1558,14 @@ proc nextgameAutoplay {n} {
     updateStatusBar
     updateTitle
     updateBoard -pgn
-    addAnnotation
+    ### this seems wrong.. it adds a score/var before the book
+    # addAnnotation
 
     set ::stack {}
     set analysis(prevscore$n) 0
-    set analysis(score$n) 0
-    set analysis(prevmoves$n) 0
+    set analysis(score$n)     0
+    set analysis(prevmoves$n) {}
+    set analysis(moves$n)     {}
     set analysis(prevdepth$n) 0
 
     toggleEngineAnalysis $n 1
