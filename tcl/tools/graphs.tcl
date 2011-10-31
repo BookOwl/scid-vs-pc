@@ -505,9 +505,10 @@ proc ::tools::graphs::score::Move {xc} {
 
 
 set ::tools::graphs::rating::year 1900
+set ::tools::graphs::rating::elo 0
 set ::tools::graphs::rating::type both
 set ::tools::graphs::rating::players {} 
-set ::tools::graphs::rating::colors {steelblue seagreen rosybrown violet skyblue red}
+set ::tools::graphs::rating::colors {steelblue seagreen rosybrown violet sandybrown skyblue indianred slateblue orange}
 
 ### Rating graph
 
@@ -533,11 +534,19 @@ proc ::tools::graphs::rating::Refresh {{player {}}} {
     $w.menu.file add separator
     $w.menu.file add command -label GraphFileClose -command "destroy $w"
 
-    $w.menu add cascade -label GraphOptions -menu $w.menu.options
+    $w.menu add cascade -label {Start Year} -menu $w.menu.options
     menu $w.menu.options
     foreach i {1900 1980 1985 1990 1995 2000 2005 2010 2015 } {
       $w.menu.options add radiobutton -label "Since $i" \
         -variable ::tools::graphs::rating::year -value $i \
+        -command ::tools::graphs::rating::Refresh
+    }
+
+    $w.menu add cascade -label {Start ELO} -menu $w.menu.elo
+    menu $w.menu.elo
+    foreach i {0 500 1000 1500 1800 2000 2200 2300 2400 2500 2600} {
+      $w.menu.elo add radiobutton -label "Elo $i" \
+        -variable ::tools::graphs::rating::elo -value $i \
         -command ::tools::graphs::rating::Refresh
     }
 
@@ -589,12 +598,18 @@ proc ::tools::graphs::rating::Refresh {{player {}}} {
   # append title player-names ?
 
   set year $::tools::graphs::rating::year
+  set elo $::tools::graphs::rating::elo
 
-  if {$player == {both} && $::tools::graphs::rating::players == {}} {
-    set ::tools::graphs::rating::players [list [sc_game info white] [sc_game info black]]
+  if {($player == {both} || $player == {}) && $::tools::graphs::rating::players == {}} {
+    set players {}
+    set p1 [sc_game info white]
+    if {$p1 != {?}} {lappend players $p1}
+    set p2 [sc_game info black]
+    if {$p2 != {?}} {lappend players $p2}
+    set ::tools::graphs::rating::players $players
   }
 
-  if {$player != {}} {
+  if {$player != {} && $player != {both}} {
     # player already in graph ?
     set i [lsearch $::tools::graphs::rating::players $player]
 
@@ -617,7 +632,7 @@ proc ::tools::graphs::rating::Refresh {{player {}}} {
     catch {
       ::utils::graph::data ratings d$i -color $color -points 1 -lines 1 \
 	       -linewidth $lwidth -radius $psize -outline $color \
-	       -key $key -coords [sc_name info -ratings:$year $p]
+	       -key $key -coords [sc_name info -ratings:$year -elo:$elo $p]
     }
     incr i
   }
@@ -635,7 +650,7 @@ proc ::tools::graphs::rating::ConfigMenus {{lang ""}} {
   if {! [winfo exists .rgraph]} { return }
   if {$lang == ""} { set lang $::language }
   set m .rgraph.menu
-  foreach idx {0 1} tag {File Options} {
+  foreach idx {0} tag {File} {
     configMenuText $m $idx Graph$tag $lang
   }
   foreach idx {0 1 3} tag {Color Grey Close} {

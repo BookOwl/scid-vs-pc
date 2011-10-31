@@ -665,7 +665,11 @@ trace variable editNameNew w { editNameNewProc .nedit.g.list "" 9 }
 set nameEditorWin 0
 
 proc makeNameEditor {} {
-  if {! [winfo exists .nedit]} { nameEditor }
+  if {[winfo exists .nedit]} {
+    raiseWin .nedit
+  } else {
+    nameEditor
+  }
 }
 
 proc setNameEditorType {type} {

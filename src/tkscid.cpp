@@ -11702,12 +11702,14 @@ int
 sc_name_info (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
 {
     static char * lastPlayerName = NULL;
-    const char * usageStr = "Usage: sc_name info [-ratings|-htext] <player>";
+    // this needs overhauling S.A
+    const char * usageStr = "Usage: sc_name info [-ratings[:YEAR] -elo:ELO|-htext] <player> ";
     uint startYear = 1900;
+    uint startElo = 0;
     extern spellingT countryTable[];
     extern spellingT titleTable[];
 
-    if (argc != 3  &&  argc != 4) { return errorResult (ti, usageStr); }
+    if (argc != 3  &&  argc != 4 && argc != 5) { return errorResult (ti, usageStr); }
     if (!db->inUse) {
         return errorResult (ti, errMsgNotOpen(ti));
     }
@@ -11723,9 +11725,20 @@ sc_name_info (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
         { false, false, false, false }
     };
 
-    if (argc == 4) {
-        const char * opt = argv[2];
+    if (argc == 4 || argc == 5) {
+        char * opt;
+        if (argc == 5) {
+            // minimum ELO
+            opt = (char*) argv[3];
+            if (strIsPrefix ("-elo:", opt)) {
+                startElo = strGetUnsigned (opt + 5);
+            } else {
+                return errorResult (ti, usageStr);
+            }
+        }
+	opt = (char*) argv[2];
         if (strIsPrefix ("-r", opt)) {
+            // minimum YEAR
             ratingsOnly = true;
             if (strIsPrefix ("-ratings:", opt)) {
                 startYear = strGetUnsigned (opt + 9);
@@ -11959,7 +11972,7 @@ sc_name_info (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
         }
 
         // Track Elo ratings by month:
-        if (elo != 0) {
+        if (elo >= startElo) {
             uint year = date_GetYear (date);
             if (year > YEAR_MAX) { year = 0; }
             uint month = date_GetMonth (date);
