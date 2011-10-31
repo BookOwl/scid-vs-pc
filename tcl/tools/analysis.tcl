@@ -107,10 +107,8 @@ resetEngines
 set annotateEngine -1		; # $n of engine annotating
 set annotateButton 0	; # annotate checkbutton value
 
-################################################################################
-# calculateNodes:
-#   Divides string-represented node count by 1000
-################################################################################
+### Divides string-represented node count by 1000
+
 proc calculateNodes {{n}} {
   set len [string length $n]
   if { $len < 4 } {
@@ -128,6 +126,7 @@ proc calculateNodes {{n}} {
 #
 proc resetAnalysis {{n 0}} {
   global analysis
+
   set analysis(score$n) 0
   set analysis(scoremate$n) 0
   set analysis(nodes$n) 0
@@ -148,7 +147,7 @@ set engines(list) {}
 # engine:
 #   Global procedure to add an engine to the engine list.
 #   Called from the "engines.dat" configuration file
-#
+
 proc engine {arglist} {
   global engines
   array set newEngine {}
@@ -2819,42 +2818,45 @@ proc updateAnalysisText {n} {
     return
   }
 
-  set nps 0
   if {$analysis(currmovenumber$n) > $analysis(maxmovenumber$n) } {
     set analysis(maxmovenumber$n) $analysis(currmovenumber$n)
   }
+
   if {$analysis(time$n) > 0.0} {
     set nps [expr {round($analysis(nodes$n) / $analysis(time$n))} ]
+  } else {
+    set nps 0
   }
+
   set score $analysis(score$n)
 
   set t .analysisWin$n.text
-  set h .analysisWin$n.hist.text
 
-  $t configure -state normal
-  $t delete 0.0 end
+  if {$analysis(showEngineInfo$n)} {
 
-  if { $analysis(uci$n) } {
-    if { [expr abs($score)] >= 327.0 } {
-      if { [catch { set tmp [format "M%d" $analysis(scoremate$n)]} ] } {
-        set tmp [format "%+.2f " $score]
+    $t configure -state normal
+    $t delete 0.0 end
+
+    if { $analysis(uci$n) } {
+      if { [expr abs($score)] >= 327.0 } {
+	if { [catch { set tmp [format "M%d" $analysis(scoremate$n)]} ] } {
+	  set tmp [format "%+.2f " $score]
+	}
+      } else {
+	set tmp [format "%+.2f " $score]
       }
-    } else {
-      set tmp [format "%+.2f " $score]
-    }
-    $t insert end "\[$tmp\]  "
+      $t insert end "\[$tmp\]  "
 
-    $t insert end "[tr Depth]: "
-    if {$analysis(showEngineInfo$n) && $analysis(seldepth$n) != 0} {
-      $t insert end [ format "%2u/%u  " $analysis(depth$n) $analysis(seldepth$n)]
-    } else {
-      $t insert end [ format "%2u  " $analysis(depth$n) ]
-    }
-    $t insert end "[tr Nodes]: "
-    $t insert end [ format "%6uK (%u kn/s) " $analysis(nodes$n) $nps ]
-    $t insert end "[tr Time]: "
-    $t insert end [ format "%6.2f s" $analysis(time$n) ]
-    if {$analysis(showEngineInfo$n)} {
+      $t insert end "[tr Depth]: "
+      if {$analysis(showEngineInfo$n) && $analysis(seldepth$n) != 0} {
+	$t insert end [ format "%2u/%u  " $analysis(depth$n) $analysis(seldepth$n)]
+      } else {
+	$t insert end [ format "%2u  " $analysis(depth$n) ]
+      }
+      $t insert end "[tr Nodes]: "
+      $t insert end [ format "%6uK (%u kn/s) " $analysis(nodes$n) $nps ]
+      $t insert end "[tr Time]: "
+      $t insert end [ format "%6.2f s" $analysis(time$n) ]
       $t insert end \n
       $t insert end "NPS: [format "%u " $analysis(nps$n)] "
       $t insert end "Hash: $::uci::uciInfo(hashfull$n)  "
@@ -2862,12 +2864,12 @@ proc updateAnalysisText {n} {
       $t insert end "TB hits: $::uci::uciInfo(tbhits$n) "
       $t insert end "[tr Current]: "
       $t insert end [ format "%s (%s/%s) " [::trans $analysis(currmove$n)] $analysis(currmovenumber$n) $analysis(maxmovenumber$n)]
+    } else {
+      set newStr [format "Depth:   %6u      Nodes: %6uK (%u kn/s)\n" $analysis(depth$n) $analysis(nodes$n) $nps]
+      append newStr [format "Score: %+8.2f      Time: %9.2f seconds\n" $score $analysis(time$n)]
+      $t insert 1.0 $newStr
     }
-  } else {
-    set newStr [format "Depth:   %6u      Nodes: %6uK (%u kn/s)\n" $analysis(depth$n) $analysis(nodes$n) $nps]
-    append newStr [format "Score: %+8.2f      Time: %9.2f seconds\n" $score $analysis(time$n)]
-    $t insert 1.0 $newStr
-  }
+  } ; #  if {showEngineInfo}
 
   if {$analysis(automove$n)} {
     if {$analysis(automoveThinking$n)} {
@@ -2889,6 +2891,8 @@ proc updateAnalysisText {n} {
   } else  {
     set moves $analysis(moves$n)
   }
+
+  set h .analysisWin$n.hist.text
 
   $h configure -state normal
   set cleared 0
