@@ -137,8 +137,9 @@ set ::tools::graphs::absfilter::type year
 set ::tools::graphs::filter::type year
 set ::addAnnotatorTag 1
 set ::annotateMoves all
-set ::annotateBlunders blundersonly
-set ::annotateType score
+set ::annotateWithVars blunders
+set ::annotateWithScore allmoves
+set ::useAnalysisBook 0
 set ::isAnnotateVar 0
 set ::addAnnotatorComment 0
 set ::maintFlag W
