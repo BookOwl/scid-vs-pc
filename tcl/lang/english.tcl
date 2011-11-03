@@ -1448,7 +1448,7 @@ translate E MultiPV {Multiple variations}
 translate E Hash {Hash memory}
 translate E OwnBook {Use engine book}
 translate E BookFile {Opening book}
-translate E AnnotateVariations {Process variations}
+translate E AnnotateVariations {Process sub-variations}
 translate E ShortAnnotations {Short annotations}
 translate E addAnnotatorTag {Add annotator tag}
 translate E AddScoreToShortAnnotations {Add score to annotations}

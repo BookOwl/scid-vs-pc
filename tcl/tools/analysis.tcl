@@ -856,10 +856,10 @@ proc initAnnotation {n} {
   ### Annotate Variations
 
   label $w.anlabel -text {Add Variations}
-  radiobutton $w.none -text $tr(No) -variable annotateWithVars -value no -anchor w -command checkBlunderState
   radiobutton $w.notbest -text $tr(AnnotateNotBest) -variable annotateWithVars -value notbest -anchor w -command checkBlunderState
   radiobutton $w.blunders -text $tr(AnnotateBlundersOnly) -variable annotateWithVars -value blunders -anchor w -command checkBlunderState
   radiobutton $w.allmoves -text $tr(AnnotateAllMoves) -variable annotateWithVars -value allmoves -anchor w -command checkBlunderState
+  radiobutton $w.none -text $tr(No) -variable annotateWithVars -value no -anchor w -command checkBlunderState
 
   frame $w.blunderbox
 
@@ -870,11 +870,11 @@ proc initAnnotation {n} {
   checkBlunderState
 
   pack $w.anlabel -side top
-  pack $w.none $w.notbest $w.blunders -side top -fill x
+  pack $w.notbest $w.blunders -side top -fill x
   pack $w.blunderbox -side top -padx 10 
   pack $w.blunderbox.label -side left -padx 5
   pack $w.blunderbox.spBlunder -side right -padx 5
-  pack $w.allmoves -side top -fill x
+  pack $w.allmoves $w.none -side top -fill x
 
   addHorizontalRule $w
 
@@ -1193,9 +1193,10 @@ proc addScore {n text {novar 0}} {
       return
     }
 
-    if {$::addAnnotatorComment } {
-      # to parse scores if the engine's name contains - or + chars (see sc_game_scores)
-      set name  [string map {- { } + { }} $analysis(name$n)]
+    # Add engine name to score if desired and it contains a "/"
+    if {$::addAnnotatorComment && [string match {*/*} $text]} {
+      # To parse scores if the engine's name contains - or + chars (see sc_game_scores)
+      set name  [string map {- { } + { }} $::analysis(name$n)]
       sc_pos setComment "[sc_pos getComment] $name: $text"
     } else {
       sc_pos setComment "[sc_pos getComment] $text"
@@ -1256,7 +1257,10 @@ proc addAnnotation {} {
     if {$move1 == $move2} {
       set analysis(prevscore$n) $analysis(score$n)
       set analysis(prevmoves$n) $analysis(moves$n)
-      addScore $n [format "%+.2f" $analysis(score$n)] 1
+      if {$annotateWithScore == "allmoves"} {
+	addScore $n [format "%+.2f" $analysis(score$n)] 1
+      }
+      updateBoard -pgn
       return
     }
   }
@@ -1266,7 +1270,6 @@ proc addAnnotation {} {
   sc_info preMoveCmd {}
 
   set score $analysis(score$n)
-  set text [format "%+.2f" $score]
   set prevscore $analysis(prevscore$n)
 
   set deltamove [expr {$score - $prevscore}]
@@ -1291,17 +1294,17 @@ proc addAnnotation {} {
   }
 
   if {$annotateWithVars == "no"} {
-
     ### Scores only
 
-    if {$annotateWithScore == "allmoves" ||
-        ($annotateWithScore == "blunders" && $isBlunder )} {
-      addScore $n $text
+    if {$annotateWithScore == "allmoves"} {
+      addScore $n [format "%+.2f" $score]
+    } elseif { $annotateWithScore == "blunders" && $isBlunder } {
+      addScore $n [format "%+.2f / %+.2f" $prevscore $score]
     }
 
   } elseif {$annotateWithVars == "allmoves"} {
 
-    addScore $n $text
+    addScore $n [format "%+.2f" $score]
 
     set absdeltamove [expr { abs($deltamove) } ]
     if { $deltamove < [expr 0.0 - $blunderThreshold] && $tomove == {black} || \
