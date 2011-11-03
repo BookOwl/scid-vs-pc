@@ -84,6 +84,7 @@ namespace eval pgn {
       return
     }
     toplevel $w
+    wm minsize $w 18 4
     setWinLocation $w
     setWinSize $w
 
