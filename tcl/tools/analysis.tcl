@@ -1178,6 +1178,7 @@ proc addScore {n type {novar 0}} {
 
     if {$annotateWithScore == "no" || \
         ($annotateWithScore == "var" && $novar) || \
+        ($annotateWithScore == "blunders" && $novar) || \
         [sc_pos isAt vstart]} {
       return
     }
