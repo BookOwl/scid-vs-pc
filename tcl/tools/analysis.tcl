@@ -2164,9 +2164,9 @@ proc makeAnalysisWin {{n 0}} {
   pack $w.hist.text -side left -expand 1 -fill both
 
   bind $w.hist.text <ButtonPress-3> "toggleMovesDisplay $n"
-  $w.text tag configure blue -foreground blue
-  $w.hist.text tag configure blue -foreground blue -lmargin2 [font measure font_Fixed "xxxxxxxxxxxx"]
-  $w.hist.text tag configure gray -foreground gray
+  $w.text tag configure blue -foreground blue ; # this only seems used in toggleAutomove ???
+  $w.hist.text tag configure gray -foreground grey50 -lmargin2 [font measure font_Small xxxxxxxxxxxxxxxxxx]
+  $w.hist.text tag configure blue -foreground darkblue
   $w.text insert end "Please wait a few seconds for engine initialisation \
       (with some engines, you will not see any analysis until the board \
       changes. So if you see this message, try changing the board \
@@ -2916,7 +2916,10 @@ proc updateAnalysisText {n} {
     set line {}
 
     if { $analysis(uci$n) } {
-      if {$cleared} { set analysis(multiPV$n) {} ; set analysis(multiPVraw$n) {} }
+      if {$cleared} {
+        set analysis(multiPV$n) {}
+        set analysis(multiPVraw$n) {}
+      }
       if {$analysis(multiPVCount$n) == 1} {
 	set newhst [format {%2d [%s]  %s} \
 		  $analysis(depth$n) \
@@ -2932,16 +2935,16 @@ proc updateAnalysisText {n} {
 	set pv [lindex $analysis(multiPV$n) 0]
 	catch { set newStr [format "%2d \[%s\]  " [lindex $pv 0] [scoreToMate $score [lindex $pv 2] $n] ] }
 	
-	$h insert end {1 } gray
+	$h insert end {1. } blue
 	append newStr "[addMoveNumbers $n [::trans [lindex $pv 2]]]\n"
-	$h insert end $newStr blue
+	$h insert end $newStr indent
 	
 	set lineNumber 1
 	foreach pv $analysis(multiPV$n) {
 	  if {$lineNumber == 1} { incr lineNumber ; continue }
-	  $h insert end "$lineNumber " gray
+	  $h insert end "$lineNumber. " blue
 	  set score [scoreToMate [lindex $pv 1] [lindex $pv 2] $n]
-	  $h insert end [format "%2d \[%s\]  %s\n" [lindex $pv 0] $score [addMoveNumbers $n [::trans [lindex $pv 2]]] ] indent
+	  $h insert end [format "%2d \[%s\]  %s\n" [lindex $pv 0] $score [addMoveNumbers $n [::trans [lindex $pv 2]]] ] gray
 	  incr lineNumber
 	}
       }
@@ -3433,7 +3436,7 @@ proc setAutomoveTime {{n 0}} {
   return 1
 }
 
-proc toggleAutomove {{n 1}} {
+proc toggleAutomove {n} {
   global analysis
   if {! $analysis(automove$n)} {
     cancelAutomove $n
@@ -3447,14 +3450,14 @@ proc toggleAutomove {{n 1}} {
   }
 }
 
-proc cancelAutomove {{n 0}} {
+proc cancelAutomove {n} {
   global analysis
   set analysis(automove$n) 0
   after cancel "automove $n"
   after cancel "automove_go $n"
 }
 
-proc automove {{n 0}} {
+proc automove {n} {
   global analysis autoplayDelay
   if {! $analysis(automove$n)} { return }
   after cancel "automove $n"
@@ -3462,7 +3465,7 @@ proc automove {{n 0}} {
   after $analysis(automoveTime$n) "automove_go $n"
 }
 
-proc automove_go {{n 0}} {
+proc automove_go {n} {
   global analysis
   if {$analysis(automove$n)} {
     if {[makeAnalysisMove $n]} {

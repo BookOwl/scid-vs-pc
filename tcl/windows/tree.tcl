@@ -378,6 +378,8 @@ proc ::tree::refreshTraining { baseNumber } {
 ################################################################################
 proc ::tree::doTraining { { n 0 } } {
   global tree
+
+  # uses engines 1 and 2 (note: engines start at 0)
   if {$n != 1  &&  [winfo exists .analysisWin1]  &&  $::analysis(automove1)} {
     automove 1
     return
