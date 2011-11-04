@@ -784,17 +784,6 @@ proc  checkState {arg widget} {
   $widget configure -state $state
  }
 
-proc  checkBlunderState {} {
-  if {$::annotateWithVars == "blunders"} {
-    set state normal
-  } else {
-    set state disabled
-  }
-
- .configAnnotation.blunderbox.label configure -state $state
- .configAnnotation.blunderbox.spBlunder configure -state $state
-}
-
 ################################################################################
 # Annotation configuration widget
 # Most of the Annotation logic is in main.tcl::autoplay
@@ -829,13 +818,23 @@ proc initAnnotation {n} {
   ### Seconds per move
 
   frame $w.delay
-  pack $w.delay -side top -pady 3 
-
   label $w.delay.label -text $tr(SecondsPerMove)
   spinbox $w.delay.spDelay -width 4 -textvariable tempdelay -from 1 -to 300 -increment 1
 
+  pack $w.delay -side top -pady 3 
   pack $w.delay.label -side left -padx 5 
   pack $w.delay.spDelay -side right -padx 5 
+
+  ### Blunder Threshold
+
+  frame $w.blunderbox
+  label $w.blunderbox.label -text "$tr(Blunder) $tr(BlundersThreshold)"
+  spinbox $w.blunderbox.spBlunder -width 4 -textvariable blunderThreshold \
+      -from 0.1 -to 3.0 -increment 0.1
+
+  pack $w.blunderbox -side top -padx 10 
+  pack $w.blunderbox.label -side left -padx 5
+  pack $w.blunderbox.spBlunder -side right -padx 5
 
   addHorizontalRule $w
 
@@ -856,24 +855,13 @@ proc initAnnotation {n} {
   ### Annotate Variations
 
   label $w.anlabel -text {Add Variations}
-  radiobutton $w.notbest -text $tr(AnnotateNotBest) -variable annotateWithVars -value notbest -anchor w -command checkBlunderState
-  radiobutton $w.blunders -text $tr(AnnotateBlundersOnly) -variable annotateWithVars -value blunders -anchor w -command checkBlunderState
-  radiobutton $w.allmoves -text $tr(AnnotateAllMoves) -variable annotateWithVars -value allmoves -anchor w -command checkBlunderState
-  radiobutton $w.none -text $tr(No) -variable annotateWithVars -value no -anchor w -command checkBlunderState
-
-  frame $w.blunderbox
-
-  label $w.blunderbox.label -text "$tr(Blunder) $tr(BlundersThreshold)"
-  spinbox $w.blunderbox.spBlunder -width 4 -textvariable blunderThreshold \
-      -from 0.1 -to 3.0 -increment 0.1
-
-  checkBlunderState
+  radiobutton $w.notbest -text $tr(AnnotateNotBest) -variable annotateWithVars -value notbest -anchor w
+  radiobutton $w.blunders -text $tr(AnnotateBlundersOnly) -variable annotateWithVars -value blunders -anchor w
+  radiobutton $w.allmoves -text $tr(AnnotateAllMoves) -variable annotateWithVars -value allmoves -anchor w
+  radiobutton $w.none -text $tr(No) -variable annotateWithVars -value no -anchor w
 
   pack $w.anlabel -side top
   pack $w.notbest $w.blunders -side top -fill x
-  pack $w.blunderbox -side top -padx 10 
-  pack $w.blunderbox.label -side left -padx 5
-  pack $w.blunderbox.spBlunder -side right -padx 5
   pack $w.allmoves $w.none -side top -fill x
 
   addHorizontalRule $w
@@ -971,9 +959,9 @@ proc initAnnotation {n} {
 
   # Pack
 
-  grid $w.batch.cbOpeningOnly -column 0 -row 0 -sticky w -pady 2
-  grid $w.batch.spOpeningOnly -column 1 -row 0 -padx 5 -pady 2
-  grid $w.batch.lOpeningOnly -column 2 -row 0 -sticky e -pady 2
+  grid $w.batch.cbOpeningOnly -column 0 -row 0 -sticky w
+  grid $w.batch.spOpeningOnly -column 1 -row 0 -padx 5
+  grid $w.batch.lOpeningOnly -column 2 -row 0 -sticky e
 
   grid $w.batch.cbBatch -column 0 -row 1 -sticky w
   grid $w.batch.spBatchEnd -column 1 -row 1 -columnspan 2 -sticky e
