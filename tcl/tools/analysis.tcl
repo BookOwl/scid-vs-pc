@@ -1185,21 +1185,34 @@ proc markExercise { prevscore score } {
   updateBoard
 }
 
-proc addScore {n text {novar 0}} {
-    # annotateType var, both , score
-    if {$::annotateWithScore == "no" || \
-        ($::annotateWithScore == "var" && $novar) || \
+proc addScore {n type {novar 0}} {
+    global annotateWithScore analysis addAnnotatorComment
+
+    if {$annotateWithScore == "no" || \
+        ($annotateWithScore == "var" && $novar) || \
         [sc_pos isAt vstart]} {
       return
     }
 
-    # Add engine name to score if desired and it contains a "/"
-    if {$::addAnnotatorComment && [string match {*/*} $text]} {
+    switch $type {
+      single { set text [format "%+.2f" $analysis(score$n)] }
+      both   { set text [format "%+.2f / %+.2f" $analysis(prevscore$n) $analysis(score$n)] }
+      end    { set text [format "%+.2f (%+.2f)" $analysis(prevscore$n) $analysis(score$n)] }
+    }
+
+    # Add engine name to score if desired and not a single score
+    if {$addAnnotatorComment && $type != "single"} {
       # To parse scores if the engine's name contains - or + chars (see sc_game_scores)
-      set name  [string map {- { } + { }} $::analysis(name$n)]
-      sc_pos setComment "[sc_pos getComment] $name: $text"
+      set name  [string map {- { } + { }} $analysis(name$n)]
+      set text "$name: $text"
+    } 
+
+    set prev_comment [sc_pos getComment]
+
+    if {$prev_comment == ""} {
+      sc_pos setComment "$text"
     } else {
-      sc_pos setComment "[sc_pos getComment] $text"
+      sc_pos setComment "$prev_comment $text"
     }
 }
 
@@ -1233,7 +1246,7 @@ proc addAnnotation {} {
 
   # Cannot (yet) add a variation at the end of the game or a variation:
   if {[sc_pos isAt vend]} {
-      addScore $n [format "%+.2f" $analysis(score$n)] 1
+      addScore $n single 1
       updateBoard -pgn
       return
   }
@@ -1258,7 +1271,7 @@ proc addAnnotation {} {
       set analysis(prevscore$n) $analysis(score$n)
       set analysis(prevmoves$n) $analysis(moves$n)
       if {$annotateWithScore == "allmoves"} {
-	addScore $n [format "%+.2f" $analysis(score$n)] 1
+	addScore $n single 1
       }
       updateBoard -pgn
       return
@@ -1297,14 +1310,14 @@ proc addAnnotation {} {
     ### Scores only
 
     if {$annotateWithScore == "allmoves"} {
-      addScore $n [format "%+.2f" $score]
+      addScore $n single
     } elseif { $annotateWithScore == "blunders" && $isBlunder } {
-      addScore $n [format "%+.2f / %+.2f" $prevscore $score]
+      addScore $n both
     }
 
   } elseif {$annotateWithVars == "allmoves"} {
 
-    addScore $n [format "%+.2f" $score]
+    addScore $n single
 
     set absdeltamove [expr { abs($deltamove) } ]
     if { $deltamove < [expr 0.0 - $blunderThreshold] && $tomove == {black} || \
@@ -1347,8 +1360,7 @@ proc addAnnotation {} {
     # if the game was won and the score remains high, don't add comment
     if { $score > $::informant("++-") && $tomove == {black} || \
           $score < [expr 0.0 - $::informant("++-") ] && $tomove == {white} } {
-      set text [format "%+.2f (%+.2f)" $prevscore $score]
-      addScore $n $text
+      addScore $n end
     } else  {
       if {$absdeltamove > $::informant("?!") && $absdeltamove <= $::informant("?")} {
         sc_pos addNag "?!"
@@ -1360,9 +1372,7 @@ proc addAnnotation {} {
         markExercise $prevscore $score
       }
       
-      # set text [format "%s %+.2f / %+.2f" $::tr(Blunder) $prevscore $score]
-      set text [format "%+.2f / %+.2f" $prevscore $score]
-      addScore $n $text
+      addScore $n both
     }
 
     set nag [ scoreToNag $score ]
@@ -1390,7 +1400,7 @@ proc addAnnotation {} {
       }
     }
   } else {
-    addScore $n [format "%+.2f" $analysis(score$n)] 1
+    addScore $n single 1
   }
 
   set analysis(prevscore$n) $analysis(score$n)
