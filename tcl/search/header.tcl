@@ -64,6 +64,7 @@ proc checkDates {} {
   if {[string length $sDateMax] == 4} { append sDateMax ".12.31" }
   if {[string length $sDateMin] == 7} { append sDateMin ".??" }
   if {[string length $sDateMax] == 7} { append sDateMax ".31" }
+  if {[string match {*.01.01} $sDateMin]} { set sDateMin "[string range $sDateMin 0 end-6].??.??"}
 }
 
 proc ::search::header::defaults {} {
@@ -432,6 +433,7 @@ proc search::header {} {
   button $w.b.save -textvar ::tr(Save) -padx 20 -command ::search::header::save
   button $w.b.stop -textvar ::tr(Stop) -command sc_progressBar
   button $w.b.search -textvar ::tr(Search) -padx 20 -command {
+    checkDates
     ::utils::history::AddEntry HeaderSearchWhite $sWhite
     ::utils::history::AddEntry HeaderSearchBlack $sBlack
     ::utils::history::AddEntry HeaderSearchEvent $sEvent

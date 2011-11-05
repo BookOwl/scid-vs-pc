@@ -47,7 +47,7 @@ proc ::tourney::Open {} {
 
   bind $w <F1> {helpWindow Tmt}
   bind $w <Escape> "$w.b.close invoke"
-  bind $w <Return> ::tourney::refresh
+  bind $w <Return> "::tourney::check ; ::tourney::refresh"
   bind $w <Destroy> { set tourneyWin 0 }
   standardShortcuts $w
   bind $w <Up> "$w.t.text yview scroll -1 units"
@@ -188,7 +188,7 @@ proc ::tourney::Open {} {
   bindFocusColors $w.b.esize
 
   dialogbutton $w.b.defaults -textvar ::tr(Defaults) -command ::tourney::defaults
-  dialogbutton $w.b.update -textvar ::tr(Update) -command ::tourney::refresh
+  dialogbutton $w.b.update -textvar ::tr(Update) -command "::tourney::check ; ::tourney::refresh"
   dialogbutton $w.b.help -textvar ::tr(Help) -command {helpWindow Tmt}
   dialogbutton $w.b.close -textvar ::tr(Close) -command "destroy $w"
   pack $w.b -side bottom -fill x -pady 5
@@ -378,11 +378,12 @@ proc ::tourney::check {} {
   set start $::tourney::start
   set end $::tourney::end
   if {[string length $start] == 0} { set start "0000" }
-  if {[string length $end] == 0} { set end [sc_info limit year]}
+  if {[string length $end]   == 0} { set end [sc_info limit year]}
   if {[string length $start] == 4} { append start ".??.??" }
-  if {[string length $end] == 4} { append end ".12.31" }
+  if {[string length $end]   == 4} { append end ".12.31" }
   if {[string length $start] == 7} { append start ".??" }
-  if {[string length $end] == 7} { append end ".31" }
+  if {[string length $end]   == 7} { append end ".31" }
+  if {[string match {*.01.01} $start]} { set start "[string range $start 0 end-6].??.??"}
   set ::tourney::start $start
   set ::tourney::end $end
   if {$::tourney::minPlayers < 2} {set ::tourney::minPlayers 2}
