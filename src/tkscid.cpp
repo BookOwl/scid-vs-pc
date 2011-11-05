@@ -8852,6 +8852,7 @@ sc_game_strip (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
 
     // we need to switch off short header style or PGN parsing will not work
     uint  old_style = db->game->GetPgnStyle ();
+    uint  old_ply = db->game->GetCurrentPly ();
     if (old_style & PGN_STYLE_SHORT_HEADER)
       db->game->SetPgnStyle (PGN_STYLE_SHORT_HEADER, false);
 
@@ -8888,6 +8889,7 @@ sc_game_strip (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
     if (old_style & PGN_STYLE_SHORT_HEADER) 
       db->game->SetPgnStyle (PGN_STYLE_SHORT_HEADER, true);
 
+    db->game->MoveToPly (old_ply);
     db->gameAltered = true;
     language = old_lang;
     return TCL_OK;
