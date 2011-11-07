@@ -1241,7 +1241,7 @@ OpTable::PrintText (DString * dstr, const char * title, const char * comment,
     if (score % 2) { dstr->AddChar (DecimalChar); dstr->AddChar ('5'); }
     dstr->Append ("/", TheoryCount, ": ");
     dstr->Append ((TheoryPercent() + 5) / 10, "%)\n");
-    dstr->Append (hrule, "    ");
+    dstr->Append (hrule, "  ");
     for (i=0; i < OPTABLE_COLUMNS; i++) {
         sprintf (cell, " %3u     ", i + ((StartLength + 2) / 2));
         dstr->Append (cell);
