@@ -299,6 +299,12 @@ dmg: app
 mac_menus:
 	sed -i "" -e "s/Control-/Command-/g" -e "s/Ctrl+/Command-/g" tcl/menus.tcl
 
+mac_rename:
+	install_name_tool -change /Library/Frameworks/Tcl.framework/Versions/@TCL_VERSION@/Tcl \
+	@executable_path/../Frameworks/Versions/@TCL_VERSION@/Tcl.framework/Tcl tkscid
+	install_name_tool -change /Library/Frameworks/Tk.framework/Versions/@TCL_VERSION@/Tk \
+	@executable_path/../Frameworks/Tk.framework/Versions/@TCL_VERSION@/Tk tkscid
+
 sc_addmove: scripts/sc_addmove.tcl
 	cp scripts/sc_addmove.tcl ./sc_addmove
 	chmod +x sc_addmove

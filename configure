@@ -75,6 +75,10 @@ proc findDir {f path {exp ""}} {
     return $best
 }
 
+proc isDarwin {} {
+  return [string match Darwin* $::tcl_platform(os)]
+}
+
 # findTclTkPathsDarwin:
 #    Set-up paths using frameworks. Since frameworks are quite
 #    different, the UNIX search logic is not sharable:
@@ -137,7 +141,7 @@ proc findTclTkPaths {} {
     # upgrading manually must replace the framework, not just install a new
     # wish on the Unix tree. (Is this correct ?)
 
-    if {"$::tcl_platform(os)" == "Darwin" && [findTclTkPathsAqua]} {
+    if {[isDarwin] && [findTclTkPathsAqua]} {
         # Frameworks found, stop looking for paths:
         return 1
     }
@@ -378,7 +382,7 @@ proc writeMakefile {{type ""}} {
     global var defaultVar
   
     set Makefile_conf "Makefile.conf"
-    if {"$::tcl_platform(os)" == "Darwin" && [findTclTkPathsAqua]} {
+    if {[isDarwin] && [findTclTkPathsAqua]} {
         set Makefile_conf "Makefile.conf.darwin"
     }
     set default 0
@@ -412,7 +416,7 @@ proc writeMakefile {{type ""}} {
        exit 1
     }
 
-    if {"$::tcl_platform(os)" == "Darwin"} {
+    if {[isDarwin]} {
         set var(FONTDIR) /Library/Fonts/
     } else {
         # Just install fonts in to /usr irrespective of system prefix. /usr/local may not be active
