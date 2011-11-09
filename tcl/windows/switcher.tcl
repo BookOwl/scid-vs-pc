@@ -956,7 +956,7 @@ proc ::windows::switcher::Open {} {
     menu $f.menu -tearoff 0
     $f.menu add command -label [tr SearchReset] -command "::search::filter::reset $i"
 
-    $f.menu add command -label [tr FileReadOnly] -command "makeBaseReadOnlyGlist $i .glistWin.baseWin"
+    $f.menu add command -label [tr FileReadOnly] -command "makeBaseReadOnly .glistWin.baseWin $i"
 
     set closeLabel "[tr FileClose] [tr Database]"
     if {$i == [sc_info clipbase]} { set closeLabel [tr EditReset] }

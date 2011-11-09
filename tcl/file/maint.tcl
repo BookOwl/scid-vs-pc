@@ -1487,44 +1487,27 @@ proc sortDatabase {} {
   }
 }
 
-proc makeBaseReadOnlyGlist {base parent} {
+proc makeBaseReadOnly {{parent .} {base {}}} {
   set current [sc_base current]
-
-  if {$base == $current} {
-    makeBaseReadOnly $parent
-  } else {
-
-    sc_base switch $base
-
-    if {![sc_base inUse]}        {return}
-    if {[sc_base isReadOnly]}    {return}
-
-    set result [tk_messageBox -title "Scid: [tr FileReadOnly]" -parent $parent \
-	-icon question -type yesno -message "[file tail [sc_base filename]]:\n$::tr(ReadOnlyDialog)"]
-
-    if {$result != "yes"} {return}
-
-    sc_base isReadOnly set
-    sc_base switch $current
-    ::windows::switcher::Refresh
+  if {$base == {}} {
+    set base $current
   }
-}
 
-
-proc makeBaseReadOnly {{parent .}} {
-  if {! [sc_base inUse]} { return }
-  if {[sc_base isReadOnly]} { return }
+  if {![sc_base inUse $base]} { return }
+  if {[sc_base isReadOnly $base]} { return }
 
   set result [tk_messageBox -title "Scid: [tr FileReadOnly]" -parent $parent \
       -icon question -type yesno -message "[file tail [sc_base filename]]:\n$::tr(ReadOnlyDialog)"]
 
   if {$result == "yes"} {
-    sc_base isReadOnly set
-    updateMenuStates
-    if {[winfo exists .glistWin]} {
-      configDeleteButtons
+    sc_base isReadOnly set $base
+    if {$base == $current} {
+      updateMenuStates
+      if {[winfo exists .glistWin]} {
+	configDeleteButtons
+      }
+      updateStatusBar
     }
-    updateStatusBar
     ::windows::switcher::Refresh
   }
 }
