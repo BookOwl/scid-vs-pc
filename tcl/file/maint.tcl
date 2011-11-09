@@ -1497,7 +1497,7 @@ proc makeBaseReadOnly {{parent .} {base {}}} {
   if {[sc_base isReadOnly $base]} { return }
 
   set result [tk_messageBox -title "Scid: [tr FileReadOnly]" -parent $parent \
-      -icon question -type yesno -message "[file tail [sc_base filename]]:\n$::tr(ReadOnlyDialog)"]
+      -icon question -type yesno -message "[file tail [sc_base filename $base]]:\n$::tr(ReadOnlyDialog)"]
 
   if {$result == "yes"} {
     sc_base isReadOnly set $base
