@@ -956,13 +956,16 @@ proc ::windows::switcher::Open {} {
     menu $f.menu -tearoff 0
     $f.menu add command -label [tr SearchReset] -command "::search::filter::reset $i"
 
-    $f.menu add command -label "Change icon" -command "changeBaseType $i .glistWin"
+    $f.menu add command -label [tr FileReadOnly] -command "makeBaseReadOnlyGlist $i .glistWin.baseWin"
 
     set closeLabel "[tr FileClose] [tr Database]"
     if {$i == [sc_info clipbase]} { set closeLabel [tr EditReset] }
+
     $f.menu add command -label $closeLabel -command [list ::file::Close $i]
 
     $f.menu add separator
+
+    $f.menu add command -label {Change icon} -command "changeBaseType $i .glistWin"
 
     $f.menu add checkbutton -label {Show icons} -variable ::windows::switcher::icons \
       -command ::windows::switcher::Refresh
@@ -1045,6 +1048,15 @@ proc ::windows::switcher::Refresh {} {
         set name "[file tail [sc_base filename $i]]"
       }
       $w.c.f$i.name configure -background $color -text "$name ([filterText $i 100000])"
+
+      if {[sc_base isReadOnly $i]} {
+        $w.c.f$i.menu entryconfigure 1 -state disabled
+        $w.c.f$i.name configure -foreground gray70
+      } else {
+        $w.c.f$i.menu entryconfigure 1 -state normal
+        $w.c.f$i.name configure -foreground black
+      }
+
       $w.c itemconfigure tag$i -state normal
       $w.c coords tag$i [expr $x + 2] 2
       incr column

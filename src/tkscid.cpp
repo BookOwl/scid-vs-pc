@@ -924,20 +924,51 @@ sc_base (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
         return sc_base_inUse (cd, ti, argc, argv);
 
     case BASE_ISREADONLY:
-        if (argc == 3  &&  strEqual (argv[2], "set")) {
-            if (! db->inUse) {
+        // sc_base isReadOnly [set] [basenumber]
+        if (argc < 3 ) {
+	    return setBoolResult (ti, db->inUse && db->fileMode==FMODE_ReadOnly);
+        } else {
+            scidBaseT *basePtr = NULL;
+            int baseNum;
+
+	    if (argc == 3 && !strEqual (argv[2], "set")) {
+                // Querying if base argv[2] is read-only
+	        baseNum = strGetInteger (argv[2]);
+		if (baseNum < 1 || baseNum > MAX_BASES) {
+		    return errorResult (ti, "Invalid database number.");
+		}
+		basePtr = &(dbList[baseNum - 1]);
+
+		return setBoolResult (ti, basePtr->inUse && basePtr->fileMode==FMODE_ReadOnly);
+            }
+
+            // Querying over - now we want to set readonly flag
+
+	    if (argc == 3) {
+              basePtr = db;
+	    } else {
+              if (argc != 4 || !strEqual (argv[2], "set")) {
+		return errorResult (ti, "Usage: sc_base isReadOnly [set] [basenumber]");
+              }
+	      baseNum = strGetInteger (argv[3]);
+	      if (baseNum < 1 || baseNum > MAX_BASES) {
+	        return errorResult (ti, "Invalid database number.");
+	      }
+	      basePtr = &(dbList[baseNum - 1]);
+            }
+            
+            if (! basePtr->inUse) {
                 return errorResult (ti, errMsgNotOpen(ti));
             }
-            if (db->fileMode == FMODE_ReadOnly) {
+            if (basePtr->fileMode == FMODE_ReadOnly) {
                 return errorResult (ti, "This database is already read-only.");
             }
-            if (db->idx->SetReadOnly () != OK) {
+            if (basePtr->idx->SetReadOnly () != OK) {
                 return errorResult (ti, "Unable to make this database read-only.");
             }
-            db->fileMode = FMODE_ReadOnly;
+            basePtr->fileMode = FMODE_ReadOnly;
             return TCL_OK;
         }
-        return setBoolResult (ti, db->inUse && db->fileMode==FMODE_ReadOnly);
 
     case BASE_NUMGAMES:
         return sc_base_numGames (cd, ti, argc, argv);

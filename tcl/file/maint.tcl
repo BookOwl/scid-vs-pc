@@ -1487,12 +1487,36 @@ proc sortDatabase {} {
   }
 }
 
+proc makeBaseReadOnlyGlist {base parent} {
+  set current [sc_base current]
+
+  if {$base == $current} {
+    makeBaseReadOnly $parent
+  } else {
+
+    sc_base switch $base
+
+    if {![sc_base inUse]}        {return}
+    if {[sc_base isReadOnly]}    {return}
+
+    set result [tk_messageBox -title "Scid: [tr FileReadOnly]" -parent $parent \
+	-icon question -type yesno -message "[file tail [sc_base filename]]:\n$::tr(ReadOnlyDialog)"]
+
+    if {$result != "yes"} {return}
+
+    sc_base isReadOnly set
+    sc_base switch $current
+    ::windows::switcher::Refresh
+  }
+}
+
+
 proc makeBaseReadOnly {{parent .}} {
   if {! [sc_base inUse]} { return }
   if {[sc_base isReadOnly]} { return }
 
   set result [tk_messageBox -title "Scid: [tr FileReadOnly]" -parent $parent \
-      -icon question -type yesno -message $::tr(ReadOnlyDialog)]
+      -icon question -type yesno -message "[file tail [sc_base filename]]:\n$::tr(ReadOnlyDialog)"]
 
   if {$result == "yes"} {
     sc_base isReadOnly set
@@ -1500,6 +1524,8 @@ proc makeBaseReadOnly {{parent .}} {
     if {[winfo exists .glistWin]} {
       configDeleteButtons
     }
+    updateStatusBar
+    ::windows::switcher::Refresh
   }
 }
 
