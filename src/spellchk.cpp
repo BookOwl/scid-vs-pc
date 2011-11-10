@@ -579,7 +579,7 @@ SpellChecker::ReadSpellCheckFile (const char * filename, bool checkPlayerOrder)
                 node->correction = true;
                 node->nextHash = NULL;
                 node->eloData = NULL;
-                node->bioData = NULL;
+                node->bioData = lastCorrectNode->bioData;
                 node->renderName = lastRenderName;
                 byte b = (byte) *strippedName;
                 node->next = Names[b];
