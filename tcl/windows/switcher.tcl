@@ -1049,7 +1049,7 @@ proc ::windows::switcher::Refresh {} {
       }
       $w.c.f$i.name configure -background $color -text "$name ([filterText $i 100000])"
 
-      if {[sc_base isReadOnly $i]} {
+      if {[sc_base isReadOnly $i] && ![string match -nocase *pgn $name]} {
         $w.c.f$i.menu entryconfigure 1 -state disabled
         $w.c.f$i.name configure -foreground gray70
       } else {
