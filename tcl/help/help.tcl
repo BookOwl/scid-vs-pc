@@ -2356,7 +2356,7 @@ perform a Namebase <a Compact>Compaction</a>.
   The spellcheck file <b>spelling.ssp</b> contains information about Player Names, Titles, Birth & Death dates, and Country(s) of origin.
   <b>Please use with caution</b>. The names it contains may not be
   unique, and player initials may be incorrectly identified.
-  It is also possible to substitute the larger <b>ratings.ssp</b>, which additionally includes Elo ratings.
+  It is also possible to substitute the larger <b>ratings.ssp</b>, which additionally includes Elo ratings and FIDE Biographical data.
   </p>
   <p>
   The file should be loaded on startup, or can be <run
@@ -3232,7 +3232,10 @@ set helpText(PInfo) {<h1>Player Information</h1>
   <p><b>Please use with caution</b>. <i>The names it contains may not be
   unique, and player initials may be incorrectly identified. Mainline SCID uses a
   more specific name match algorithm - which is less useful - but also less likely
-  to make erroneous matches.</i></p>
+  to make erroneous matches.  The larger </i><b>ratings.ssp</b><i> file (which may be
+substituted), includes FIDE IDs and biographical data which help clarify unique
+players.
+</i></p>
 
   <p>Also displayed are statistics about
   success with white and black, favorite openings (by <a ECO>ECO code</a>),
@@ -3322,10 +3325,11 @@ set helpText(Graphs) {<h1>Graph Windows</h1>
 
   <h3><name Rating>Player Rating Graph</name></h3>
   <p>
-  The <green><run ::tools::graphs::rating::Refresh both>Rating Graph</run></green> shows the ELO history of one, or
-  both, players from the current game.  You can access the graph by pressing the
-  "Rating Graph" button in the <a PInfo>Player Information</a>
-  window, or by selecting "Rating Graph" from the Tools menu.
+  The <green><run ::tools::graphs::rating::Refresh both>Rating
+Graph</run></green> shows the ELO history of one, or many, players.
+You can access the graph by pressing the "Rating Graph" button
+in the <a PInfo>Player Information</a> window, or by selecting "Rating Graph"
+from the Tools menu.
   </p>
 
   <h3><name Score>Score Graph</name></h3>
