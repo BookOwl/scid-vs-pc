@@ -346,8 +346,8 @@ SpellChecker::GetComment (const char * name)
     while (node != NULL) {
         if (strIsPrefix (searchName, node->name)) {
             returnStr = node->comment;
-	// Comments looks like:
-	//   gm   URS/BLR/ISR [2737] 1968
+        // Comments looks like:
+        //   gm   URS/BLR/ISR [2737] 1968
         }
         // If the match is exact, return immediately:
         if (strEqual (searchName, node->name)) { break; }
@@ -579,29 +579,11 @@ SpellChecker::ReadSpellCheckFile (const char * filename, bool checkPlayerOrder)
                 node->correction = true;
                 node->nextHash = NULL;
                 node->eloData = NULL;
-
                 node->bioData = NULL;
-
-                // There's a bug in Scid's string comparisons. Because it removes ExtraChars (spaces, commas etc)
-                // names like this (with a very simliar alias) need to have the bioData duplicated to the alias
-                //   Zhong, Yan              #w   CHN [2113] 1981
-                //   %Bio FIDEID 8603111
-                //   = Zhong Yan
-
-                // Removing this strCompare would duplicate bioData to all aliases 
-
-                if (strCompare(lastCorrectNode->name, node->name)==0) {
-                  // Duplicate the bioData linked list
-                  bioNoteT *tmp = lastCorrectNode->bioData;
-                  while (tmp) {
-		    AddBioData (node, tmp->text);
-		    tmp = tmp->next;
-                  }
-                }
-
                 node->renderName = lastRenderName;
                 byte b = (byte) *strippedName;
                 node->next = Names[b];
+                node->alias = lastCorrectNode;
                 Names[b] = node;
                 IncorrectNameCount++;
             }
@@ -631,6 +613,7 @@ SpellChecker::ReadSpellCheckFile (const char * filename, bool checkPlayerOrder)
             node->bioData = NULL;
             byte b = (byte) *strippedName;
             node->next = Names[b];
+            node->alias = NULL; // node ??
             Names[b] = node;
             CorrectNameCount++;
 
@@ -729,7 +712,11 @@ SpellChecker::GetBioData (const char * name)
         if (strEqual (searchName, node->name)) { break; }
         node = node->next;
     }
-    return note;
+
+    if (node && node->alias && node->alias->bioData)
+        return node->alias->bioData;
+    else 
+        return note;
 }
 
 void
