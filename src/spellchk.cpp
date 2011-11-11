@@ -579,7 +579,26 @@ SpellChecker::ReadSpellCheckFile (const char * filename, bool checkPlayerOrder)
                 node->correction = true;
                 node->nextHash = NULL;
                 node->eloData = NULL;
-                node->bioData = lastCorrectNode->bioData;
+
+                node->bioData = NULL;
+
+                // There's a bug in Scid's string comparisons. Because it removes ExtraChars (spaces, commas etc)
+                // names like this (with a very simliar alias) need to have the bioData duplicated to the alias
+                //   Zhong, Yan              #w   CHN [2113] 1981
+                //   %Bio FIDEID 8603111
+                //   = Zhong Yan
+
+                // Removing this strCompare would duplicate bioData to all aliases 
+
+                if (strCompare(lastCorrectNode->name, node->name)==0) {
+                  // Duplicate the bioData linked list
+                  bioNoteT *tmp = lastCorrectNode->bioData;
+                  while (tmp) {
+		    AddBioData (node, tmp->text);
+		    tmp = tmp->next;
+                  }
+                }
+
                 node->renderName = lastRenderName;
                 byte b = (byte) *strippedName;
                 node->next = Names[b];

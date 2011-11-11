@@ -18,7 +18,7 @@ proc readSpellCheckFile {{message 1}} {
 
   set spellCheckFileExists 0
   set ftype { { "Scid Spellcheck files" {".ssp" ".ssp.gz"} } }
-  set fullname [tk_getOpenFile -initialdir [pwd] -filetypes $ftype -title "Open Spellcheck file"]
+  set fullname [tk_getOpenFile -initialdir [file dirname $spellCheckFile] -filetypes $ftype -title "Open Spellcheck file"]
   if {![string compare $fullname ""]} { return 0 }
 
   if {[catch {sc_name read $fullname} result]} {

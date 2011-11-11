@@ -3328,8 +3328,8 @@ set helpText(Graphs) {<h1>Graph Windows</h1>
   The <green><run ::tools::graphs::rating::Refresh both>Rating
 Graph</run></green> shows the ELO history of one, or many, players.
 You can access the graph by pressing the "Rating Graph" button
-in the <a PInfo>Player Information</a> window, or by selecting "Rating Graph"
-from the Tools menu.
+in the <a PInfo>Player Information</a> window, or by selecting "Player Ratings"
+from the Tools menu. Right-clicking the graph will refresh it.
   </p>
 
   <h3><name Score>Score Graph</name></h3>
