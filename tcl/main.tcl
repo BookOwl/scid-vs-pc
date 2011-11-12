@@ -1485,7 +1485,11 @@ proc autoplay {} {
 
   if {$n == -1} {
     ::move::Forward
-    after $autoplayDelay autoplay
+    if {[sc_pos isAt vend]} {
+      cancelAutoplay
+    } else {
+      after $autoplayDelay autoplay
+    }
     return
   }
 
