@@ -246,14 +246,6 @@ proc toggleCoords {} {
   ::board::coords .board
 }
 
-frame .button.space3 -width 4
-button .button.flip -image tb_flip -takefocus 0 \
-    -command "::board::flip .board"
-
-button .button.showmenu -image tb_showmenu -takefocus 0 -command toggleMenubar
-
-button .button.gameinfo -image tb_gameinfo -takefocus 0 -command toggleGameInfo
-
 image create photo autoplay_off -data {
 R0lGODlhHgAeAKU6AAAAAAUFBQcHBwkJCQ0NDRISEhgYGCIiIi4uLkBA/0FB
 /0ND/llZWUZG/khI/UtL/EtL/U1N/E5O/E9P+2JiYlBQ+1FR+2ZmZlZW+Wlp
@@ -279,6 +271,33 @@ mKMbhkaiowoUGZqmQqipmZumsLGkhrW2qqycobq/mr1Iub+ppUnExZjHw8qx
 q63IzsZNyanBUtYUj7jFzN2xGSDjrj+oFOjCrqjf5UIfjhsg7vRJQQA7
 }
 
+image create photo tb_windows -data {
+R0lGODlhHgAeAMZkAIKCgoeHh4iIiImJiYqKiouLi4yMjI6Ojo+Pj5CQkJKS
+kpSUlJWVlZeXl5iYmJmZmZqampubm5ycnJ2dnZ6enp+fn6CgoKGhoaKioqOj
+o6SkpKWlpaampqenp6qqqqurq6ysrK2tra6urq+vr7CwsLGxsbOzs7W1tbm5
+ubq6uru7u7y8vL29vb6+vr+/v8DAwMHBwcLCwsPDw8TExMXFxcbGxsfHx8jI
+yMnJycrKysvLy8zMzM3Nzc7Ozs/Pz9DQ0NHR0dLS0tPT09TU1NXV1dbW1tfX
+19jY2NnZ2dra2tvb29zc3N3d3d7e3t/f3+Dg4OHh4eLi4uPj4+Tk5OXl5ebm
+5ufn5+jo6Onp6erq6uvr6+zs7O3t7e7u7u/v7/Dw8PHx8fLy8vPz8/T09P//
+////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////yH5BAEKAH8A
+LAAAAAAeAB4AAAf+gH+Cg4SFhoeEAwECjAGOj5CLBYiDCxIeIyUkm5ydJCMf
+FQ6UfxUpRk9Qqk+srKtPTkcrF6QdO1RbWltbWVRQTsDBTUkvFKQeQ1ZaWVlX
+TzwyMdIx0TEwJhEAlB9FV7laVEEhFRocHRzo6BsYFhXuFBEMgyJHV1z3TjUr
+PFe6u9+6/PFysuKBIBFIsnRZmM+GEWYQs2DBEhGilBmj/oRIosWLxyc1ciTJ
+omUZxJLLUGq5KO+PiCRbvsgEqUNJll0q7wFcBuWFgoNKtoAB84XJjB1LburU
+5aWLzl1YmKg4IGjEEi5hwnw5AkMHky1cFt7j4tHp2CpFUFD9Q4JJlzD+YLgM
+aaGjCdmyCz02dYrFyQ8UCQSVaOIlTJcrQFjocNJFJt6FYrNEObIjxc8/JZx4
++ZJFyg8WO550Gfqli5aJE5tNUUKEx4oFghlzqSJFSAseULyA0ZqlCpUpwKVA
+YWKEyI8WLTPzokKlyIseUL7A5eKrlRMmS5AYMTIERgPBTCZasXIkho8ouw9D
+acJEyZIlSpQkSaLkCA0IgkgsuYKFf5IZP0gBhhdYSNHEe/MpwQR2TAxjA35/
+jICEMiUxUQMQAm5RxS9NsLcEE6w4kcoSN0AIQhBVjNWEDRge9psUUcSoShRS
+1CiFEzpIIIgEH8iwQw89yHCCDk/0d8UV441rxx8WVhyJxRQ+GCMIAwYIsEgA
+CLjgBEUVMVPSSVX8YAElBKiwBBb/pLkLF2vOxgMtlJQQhBa7DWXnUFll9YUU
+MYxJyQYsKCEFc4QWSugTQJAwASkUSDDBoxNQIOmkkz5KwaKkZKrpppz+EQgA
+Ow==
+}
+
 # image create photo finish_off -data ....
 # image create photo finish_on -data ....
 ### Replaced by autoplay_
@@ -295,11 +314,19 @@ if {0} {
   }
 }
 
+frame .button.space3 -width 4
+
+button .button.flip -image tb_flip -takefocus 0 -command "::board::flip .board"
+
+button .button.showmenu -image tb_showmenu -takefocus 0 -command toggleMenubar
+
+button .button.windows -image tb_windows -takefocus 0 -command raiseAllWindows
+
 button .button.autoplay -image autoplay_off -command toggleAutoplay
 button .button.trial -image tb_trial -command {setTrialMode toggle}
 
 foreach i {start back forward end intoVar exitVar addVar autoplay \
-      flip showmenu gameinfo trial} {
+      flip showmenu windows trial} {
   .button.$i configure -relief flat -border 1 -highlightthickness 0 \
       -takefocus 0
   # bind .button.$i <Any-Enter> "+.button.$i configure -relief groove"
@@ -307,10 +334,10 @@ foreach i {start back forward end intoVar exitVar addVar autoplay \
 }
 
 pack .button.start .button.back .button.forward .button.end \
-    .button.space .button.exitVar .button.intoVar .button.addVar .button.space2 \
-    .button.autoplay .button.trial .button.space3 .button.flip \
+    .button.space .button.exitVar .button.intoVar .button.addVar \
+    .button.autoplay .button.trial .button.flip .button.windows \
     -side left -pady 1 -padx 0 -ipadx 2 -ipady 2
-    # .button.space3 [flip] .button.showmenu .button.gameinfo 
+    # .button.space3 [flip] .button.showmenu 
 
 ############################################################
 ### The board:
