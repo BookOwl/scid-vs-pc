@@ -1413,42 +1413,42 @@ proc releaseSquare { x y } {
   set ::addVariationWithoutAsking 0
 }
 
+# backSquare: removed by S.A. Use ::move::Back instead
 
-# backSquare:
 
-# removed by S.A. Use ::move::Back instead
-
-##
-## Auto-playing of moves including lots of Annotation stuff
-##
+### Auto-playing of moves including lots of Annotation stuff
 
 set autoplayMode 0
-
 set tempdelay 0
 trace variable tempdelay w {::utils::validate::Regexp {^[0-9]*\.?[0-9]*$}}
 
-### Set the delay between moves in options menu
 
 proc setAutoplayDelay {} {
   global autoplayDelay tempdelay
-  set tempdelay [expr {$autoplayDelay / 1000.0}]
+
   set w .apdialog
-  if { [winfo exists $w] } { focus $w ; return }
+  if {[winfo exists $w]} {
+    focus $w
+    return
+  }
+  set tempdelay [expr {$autoplayDelay / 1000.0}]
+
   toplevel $w
-  wm title $w "Scid"
-  wm resizable $w 0 0
-  label $w.label -text $::tr(AnnotateTime:)
+  wm state $w withdrawn
+  wm title $w {Move Delay}
+
+  label $w.label -text $::tr(AnnotateTime)
   pack $w.label -side top -pady 5 -padx 5
   spinbox $w.spDelay  -width 4 -textvariable tempdelay -from 1 -to 300 -increment 1
   pack $w.spDelay -side top -pady 5
 
   set b [frame $w.buttons]
   pack $b -side top -fill x
-  button $b.cancel -text $::tr(Cancel) -command {
+  dialogbutton $b.cancel -text $::tr(Cancel) -command {
     destroy .apdialog
     focus .
   }
-  button $b.ok -text "OK" -command {
+  dialogbutton $b.ok -text "OK" -command {
     if {$tempdelay < 0.1} { set tempdelay 0.1 }
     set autoplayDelay [expr {int($tempdelay * 1000)}]
     destroy .apdialog
@@ -1457,6 +1457,9 @@ proc setAutoplayDelay {} {
   pack $b.cancel $b.ok -side right -padx 5 -pady 5
   bind $w <Escape> { .apdialog.buttons.cancel invoke }
   bind $w <Return> { .apdialog.buttons.ok invoke }
+
+  placeWinOverParent $w .
+  wm state $w normal
   focus $w.spDelay
 }
 
@@ -1479,7 +1482,9 @@ proc autoplay {} {
   ### autoplay had issues when not using book and moving from one game to the next
   # Hard to fix because of the (variation) stack
 
-  if {$autoplayMode == 0} { return }
+  if {$autoplayMode == 0} {
+    return
+  }
 
   set n $annotateEngine
 
