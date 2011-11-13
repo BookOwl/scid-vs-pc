@@ -26,19 +26,22 @@ contribution from Pascal Georges and others.
 
 <url url="http://scidvspc.sourceforge.net/" name="Scid vs. PC"> is a usability
 and bug-fix fork of Scid.  The project is maintained by <ref name="Stevenaaus"
-id="contact_">, and has been tested with the four million game ICOfY database.
+id="contact_">, and has been extensively tested with the Million Base and ICOfY databases.
 
 <sect> features <p>
 
 <em>See <ref name="changes" id="changes_"> for a comprehensive changelog</em>.
 
-<sect2>Improvements over Scid
+<sect2>New / Improved features over Scid
 
 <itemize>
-<item> A <bf>Computer Tournament</bf> feature.
+<item> <bf>Computer Tournaments</bf>.
 <item> Rewritten <bf>Gamelist</bf> widget: deleted items are greyed, a <bf>Compact</bf> button, <bf>Flag</bf> widgets, and the <bf>Database Switcher</bf> resides here.
 <item> Improved <bf>Tactical Game</bf> and <bf>FICs</bf> features.
 <item> Clickable <bf>Variation Arrows</bf>, and <bf>Paste Variation</bf> feature.
+<item> Improved Undo and <bf>Redo</bf> features
+<item> <bf>Ratings Graph</bf> can show multiple players
+<item> Book tuning <bf>Remove Move</bf> feature
 <item> Separate board sections are hideable via right-click.
 <item> A re-done <bf>Button Bar</bf> with nicer look and feel.
 <item> Restructured <bf>Analysis Engines</bf> widget. The function hotkeys can be set explicitly, Engine 1 can be docked into the Status Bar, and any number of engines may run at one time.
@@ -46,30 +49,26 @@ id="contact_">, and has been tested with the four million game ICOfY database.
 <item> The <bf>Setup Start Board</bf> has many fixes and improvements.  Annoyingly, if Scid uses a tiled theme, it's setup board is displayed a different colour.
 <item> The <bf>Help</bf> index is now meaningful to new users, with links to the game's main features.
 <item> A user friendly <bf>Annotation</bf> feature.
-<item> The <bf>Comment editor</bf> has been overhauled, and is much more stream-lined.
 
 </itemize>
 
 <sect2>Features not currently implemented
 
 <itemize>
-<item>Language translations need volunteers and updating.
+<item>Some language translations need volunteers and updating.
 <newline>
 <newline>
-<item> The <bf>Docked Mode</bf> and <bf>Theme</bf> features of Scid are not included.
-<newline>
-<newline>
-<item>Scid's bibliographic/player fide links.
+<item> SCID's <bf>Docked Mode</bf> has too many niggles and is not included.
 </itemize>
 
 <label id="download_">
 <sect> download <p>
 
-source <url url="https://sourceforge.net/project/downloading.php?group_id=263836&amp;filename=scid_vs_pc-4.5.tgz" name="scid_vs_pc-4.5.tgz">
+source <url url="https://sourceforge.net/project/downloading.php?group_id=263836&amp;filename=scid_vs_pc-4.6.tgz" name="scid_vs_pc-4.6.tgz">
 
-windows <url url="https://sourceforge.net/project/downloading.php?group_id=263836&amp;filename=scid_vs_pc-windows-4.5.zip" name="scid_vs_pc-windows-4.5.zip">
+windows <url url="https://sourceforge.net/project/downloading.php?group_id=263836&amp;filename=scid_vs_pc-windows-4.6.exe" name="scid_vs_pc-windows-4.6.exe">
 
-mac <url url="http://sourceforge.net/projects/scidvspc/files/mac/ScidvsMac-4.5.dmg/download" name="ScidvsMac-4.5.dmg">
+mac <url url="http://sourceforge.net/projects/scidvspc/files/mac/ScidvsMac-4.6.dmg/download" name="ScidvsMac-4.6.dmg">
 
 <url url="https://sourceforge.net/project/showfiles.php?group_id=263836" name="browse files">
 
@@ -84,13 +83,13 @@ It should work with 8.6 , but is untested.</em>
 <sect2> Linux , FreeBSD<p>
 
 Most Unices should have Tcl/Tk installed by default.
-To verify this, look for a command named <bf>wish</bf> or <bf>wish8.5</bf>.</em>
+To verify this, look for a command named <bf>wish</bf> or <bf>wish8.5</bf>. (Wish-8.5.10 is not recommended).
 To enable support for extra chess pieces (such as Berlin), you may need to install
 <url name="TkImg" url="https://sourceforge.net/project/downloading.php?group_id=263836&amp;filename=tkimg1.3.tar.bz2">.  
 Then, installing from source:
 <code>
-tar -xzf scid_vs_pc-4.5.tgz
-cd scid_vs_pc-4.5
+tar -xzf scid_vs_pc-4.6.tgz
+cd scid_vs_pc-4.6
 configure
 make install
 scid
@@ -102,11 +101,11 @@ This allows for parallel installation with mainline Scid, and is done by: <bf>./
 
 
 <sect2> Windows <p>
-First you must install <bf>Wish8.5</bf>. I recommend the excellent
-<url url="http://www.activestate.com/activetcl/downloads" name="Active State Tcl">.
+Windows installation simply requires downloading the <ref name="executable" id="download_">, and following the prompts.
 </p>
 <p>
-Then unzip <ref name="Scid vs. PC" id="download_">, browse to the <bf>Scid-vs-PC/bin</bf> directory and double click <bf>Scid.exe</bf>.
+To use the extra chess pieces, <bf>Wish8.5</bf> must be installed. I recommend the excellent
+<url url="http://www.activestate.com/activetcl/downloads" name="Active State Tcl">.
 </p>
 <p>
 The configuration files, <bf>including the chess engine list</bf>, are stored in the <bf>Scid-vs-PC/bin/config</bf> directory, and may be copied
@@ -118,18 +117,12 @@ If the PGN figurines (chess pieces) option is disabled, try grabbing the ttf fon
 
 <sect2> Mac OSX <p>
 
-The ScidvsMac-4.5 app in the <ref name="downloads" id="download_"> section
-should include everything you need. 
+The <ref name="ScidvsMac-4.6 app" id="download_"> should include everything you need. Simply drag and drop the App into /Applications (or similar).
 
-<em>Note: Users upgrading may have to remove (or edit) <bf>$HOME/.scidvspc/config/engines.dat</bf>
+<em>Users upgrading may have to remove (or edit) <bf>$HOME/.scidvspc/config/engines.dat</bf>
 to properly configure the chess engines.</em>
 
-To compile from source - once you have the developer tools installed from your
-OSX disk - following the Linux instructions should work. Additional make targets include <bf>app</bf> and <bf>mac_menus<bf>.
-
-<em>Tcl/Tk 8.5.7 from </em><bf>Snow Leopard</bf></em> <em>has bugs which
-break Scid vs. Mac when loading files. Users installing from source should
-upgrade their Tcl/Tk frameworks to 8.5.9 - built with</em> <bf>-arch i386</bf>
+To compile from source - once you have XCode installed - please read <bf>ScidvsMac-HowTo.rtfd</bf> in the source tarball.
 
 <sect> news <p>
 
@@ -224,6 +217,7 @@ set to "none"
 
 <itemize>
 <item> Using the '+' operator and clicking on 'Find' in the gamelist widget can be very slow. The code needs to be moved from gamelist.tcl to tkscid.cpp.
+<item> Wish-8.5.10 has nasty bugs (which affect the gamelist and setup board widgets) and is not recommended.
 <item> Windows only:
 <itemize>
 <item> Using "ALT+F"... etc key bindings to access the menus is badly broke. This is a Tcl/Tk issue.
@@ -290,6 +284,49 @@ Cramer from Germany, and many are looking forward to it's first release.</p>
 
 <label id="changes_">
 <sect> changes <p>
+
+<sect2> Scid vs. PC 4.6 <p>
+<itemize>
+<item>Undo and Redo features (partly from SCID)
+<item>Microsoft Windows has a proper installer
+<item>Always loads games at the correct game ply when using the tree and searches.
+<item>Ratings graph can show multiple players (and there's a minimum ELO feature)
+<item>Computer Tournament: Improvements for both Xboard and UCI engines, and implement the 50 move draw rule.
+<item>Auto-promote feature for FICs
+<item>Book tuning 'Remove move' feature
+<item>Autoraise button raises all windows
+<item>Annotation improvements, and it is now possible to score All moves while only annotating Blunders.
+
+<item>Known aliases Biographical data is shown in the player information window
+<item>The player info widget has buttons enabling quick player renames and look-up.
+<item>'Read-Only' context menu to the Database Switcher, and Read-Only bases are greyed out.
+<item>Fix bug in the opening/theory table
+<item>Remember game position when stripping comments and variations from PGN
+<item>Change analysis colors for MultiPV to black/grey instead of blue/black.
+<item>New 'Search in (other) Database' feature to the board search (from SCID)
+<item>Variation/Mainline arrows can have custom colours.
+<item>Crosstable can (optionally) show 3 points for a win
+<item>Fix sc_remote (which allows games to be opened in an already running Scid vs PC)
+<item>Phalanx tacgame bug-fixes (play brainy, and stop after the correct amount of time)
+<item>Tweak the best games widget (make fields line-up)
+<item>When handling Import PGN errors, show the game numbers as well as the line in file.
+<item>Catch a nasty wish8.5.10 bug with the gamelist (Wish-8.5.10 should be avoided)
+<item>Remove the broken integer field validation and replace it with something that allows backspace to work.
+<item>Bind Control-Tab to 'switch to next base', and Control-(quoteleft) to 'switch to clipbase'
+<item>Fix a couple of corner cases concerning dates and searches.
+<item>Analysis widget : small speed improvements , icon changes and bug-fixes
+<item>Add a help item for Maintenance 'Check Games' feature.
+<item>Swap around the 'Next Move' and 'Event' game-information lines.
+<item>New documentation about making Polyglot books.
+<item>Make the player Report config widget a bit easier to use.
+<item>Catch a nasty wish8.5.10 bug with the gamelist (Wish-8.5.10 should be avoided)
+<item>New OSX HowTo
+<item>Crosstable bugfix: the 'show white first' feature didn't work for two match rounds.
+<item>Update 'Tips'
+<item>Clarify Scid's maximum number of games
+<item>Update Spanish and Polish translations
+<item>Update FICs , PGN and Menu  language translations
+</itemize>
 
 <sect2> Scid vs. PC 4.5 <p>
 PGN Window:

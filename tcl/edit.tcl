@@ -270,6 +270,9 @@ proc validateFEN {fen} {
 
   set setupFen $fen
 
+  # todo: missing space (K1w) breaks it
+  # r1rbn1k1/2qb1p1p/3p4/5P2/p1p5/P1B4P/1PBQ1PP1/R3R1K1w KQkq - 0 1
+
   if {![validatePiece r 1 1]} {set c [string map {q {}} $c]}
   if {![validatePiece k 5 1]} {set c [string map {k {} q {}} $c]}
   if {![validatePiece r 8 1]} {set c [string map {k {}} $c]}

@@ -301,7 +301,7 @@ mac_menus:
 
 mac_rename:
 	install_name_tool -change /Library/Frameworks/Tcl.framework/Versions/@TCL_VERSION@/Tcl \
-	@executable_path/../Frameworks/Versions/@TCL_VERSION@/Tcl.framework/Tcl tkscid
+	@executable_path/../Frameworks/Tcl.framework/Versions/@TCL_VERSION@/Tcl tkscid
 	install_name_tool -change /Library/Frameworks/Tk.framework/Versions/@TCL_VERSION@/Tk \
 	@executable_path/../Frameworks/Tk.framework/Versions/@TCL_VERSION@/Tk tkscid
 

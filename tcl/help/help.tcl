@@ -5696,6 +5696,49 @@ set helpText(Sound) {<h1>Sound</h1>
 set helpTitle(Changelog) "Scid vs PC Changelog"
 set helpText(Changelog) {<h1>Scid vs. PC</h1>
 
+<h4>4.6 (November 20, 2011)</h4>
+<ul>
+<li>Undo and Redo features (partly from SCID)</li>
+<li>Microsoft Windows has a proper installer</li>
+<li>Always loads games at the correct game ply when using the tree and searches.</li>
+<li>Ratings graph can show multiple players (and there's a minimum ELO feature)</li>
+<li>Computer Tournament: Improvements for both Xboard and UCI engines, and implement the 50 move draw rule.</li>
+<li>Auto-promote feature for FICs</li>
+<li>Book tuning 'Remove move' feature</li>
+<li>Autoraise button raises all windows</li>
+<li>Annotation improvements, and it is now possible to score All moves while only annotating Blunders.</li>
+<br>
+<li>Biographical data for aliases is shown in the player information window</li>
+<li>The player info widget has buttons enabling quick player renames and look-up.</li>
+<li>'Read-Only' context menu in the Database Switcher, and Read-Only bases are greyed out.</li>
+<li>Fix bug in the opening/theory table</li>
+<li>Remember game position when stripping comments and variations from PGN</li>
+<li>Change analysis colors for MultiPV to black/grey instead of blue/black.</li>
+<li>New 'Search in (other) Database' feature to the board search (from SCID)</li>
+<li>Variation/Mainline arrows can have custom colours.</li>
+<li>Crosstable can (optionally) show 3 points for a win</li>
+<li>Fix sc_remote (which allows games to be opened in an already running Scid vs PC)</li>
+<li>Phalanx tacgame bug-fixes (play brainy, and stop after the correct amount of time)</li>
+<li>Tweak the best games widget (make fields line-up)</li>
+<li>When handling Import PGN errors, show the game numbers as well as the line in file.</li>
+<li>Catch a nasty wish8.5.10 bug with the gamelist (Wish-8.5.10 should be avoided)</li>
+<li>Remove the broken integer field validation and replace it with something that allows backspace to work.</li>
+<li>Bind Control-Tab to 'switch to next base', and Control-(quoteleft) to 'switch to clipbase'</li>
+<li>Fix a couple of corner cases concerning dates and searches.</li>
+<li>Analysis widget : small speed improvements , icon changes and bug-fixes</li>
+<li>Add a help item for Maintenance 'Check Games' feature.</li>
+<li>Swap around the 'Next Move' and 'Event' game-information lines.</li>
+<li>New documentation about making Polyglot books.</li>
+<li>Make the player Report config widget a bit easier to use.</li>
+<li>Catch a nasty wish8.5.10 bug with the gamelist (Wish-8.5.10 should be avoided)</li>
+<li>New OSX HowTo</li>
+<li>Crosstable bugfix: the 'show white first' feature didn't work for two match rounds.</li>
+<li>Update 'Tips'</li>
+<li>Clarify Scid's maximum number of games</li>
+<li>Update Spanish and Polish translations</li>
+<li>Update FICs , PGN and Menu  language translations</li>
+</ul>
+
 <h4>4.5 (August 10, 2011)</h4>
 <ul>
 <li>PGN chess font support (but font installation on Windows isn't great)</li>

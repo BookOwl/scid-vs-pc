@@ -578,7 +578,6 @@ namespace eval tacgame {
     # convert Elo = 1200 to level 100 up to Elo=2200 to level 0
     set easylevel [expr int(100-(100*($level-1200)/(2200-1200)))]
     append analysisArgs " -b+ -p- -l- -e $easylevel "
-puts "$analysisArgs"
 
     # If the analysis directory is not current dir, cd to it:
     set oldpwd ""
