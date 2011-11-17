@@ -56,21 +56,6 @@ if {[file isdirectory $::scidBooksDir]} {
   ::splash::add "scidBooksDir $scidBooksDir not found!" error
 }
 
-# Install windows fonts if applicable
-
-if {$windowsOS && [file exists "$scidShareDir/fonts/ScidChessBerin.ttf"]} {
-    set dest [file join $env(windir) fonts]
-    if {[catch {
-	foreach i [glob $scidShareDir/fonts/*] {
-	    file rename $i $dest
-        }
-    }]} {
-          ::splash::add "Failed to install PGN chess fonts" error
-    } else {
-          ::splash::add "Successfully installed PGN chess fonts"
-    }
-}
-
 ### Setup for truetype (and PGN figurine) support
 
 set graphFigurineFamily {}
