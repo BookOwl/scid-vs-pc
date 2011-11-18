@@ -404,7 +404,7 @@ src/tkscid.o: src/tkscid.cpp
 ### The endgame tablebase code in the egtb/ subdirectory (not written by me)
 
 src/probe.o: src/probe.cpp src/egtb/tbindex.cpp src/egtb/tbdecode.c
-	$(CXX) $(CXXFLAGS) $(TB) -o src/probe.o -c src/probe.cpp
+	$(CXX) @CXXFLAGS@ @CFLAGS@ $(DEBUG) $(SCIDFLAGS) $(TB) -o src/probe.o -c src/probe.cpp
 
 ### Generic rule for all other .cpp files:
 
