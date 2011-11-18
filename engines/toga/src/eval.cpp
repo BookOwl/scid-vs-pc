@@ -26,6 +26,7 @@
 // constants and variables
 
 const int KnightOutpostMatrix[2][64] = {
+  {
      0,	 0,   0,   0,   0,   0,   0,   0,
      0,	 0,   0,   0,   0,   0,   0,   0,
      0,	 0,   0,   0,   0,   0,   0,   0,
@@ -34,7 +35,8 @@ const int KnightOutpostMatrix[2][64] = {
      0,	 0,   4,   5,   5,   4,   0,   0,
      0,	 0,   0,   0,   0,   0,   0,   0,
      0,	 0,   0,   0,   0,   0,   0,   0,
-
+  },
+  {
      0,	 0,   0,   0,   0,   0,   0,   0,
      0,	 0,   0,   0,   0,   0,   0,   0,
      0,	 0,   4,   5,   5,   4,   0,   0,
@@ -43,6 +45,7 @@ const int KnightOutpostMatrix[2][64] = {
      0,	 0,   0,   0,   0,   0,   0,   0,
      0,	 0,   0,   0,   0,   0,   0,   0,
      0,	 0,   0,   0,   0,   0,   0,   0,
+  }
 };
 
 static int lazy_eval_cutoff = 200; /* Thomas */
