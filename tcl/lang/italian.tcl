@@ -783,7 +783,7 @@ menuText I CrosstabOpt "Visualizza" 0
 menuText I CrosstabOptAll "Girone all'italiana" 0
 menuText I CrosstabOptSwiss "Girone Svizzero" 0
 menuText I CrosstabOptKnockout "Knockout" 0
-enuText I CrosstabOptAuto "Auto" 0
+menuText I CrosstabOptAuto "Auto" 0
 # todo
 menuText I CrosstabOptThreeWin "3 Points for Win" 1
 menuText I CrosstabOptAges "Eta' in anni" 8

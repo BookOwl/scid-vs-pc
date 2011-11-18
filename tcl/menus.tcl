@@ -4,10 +4,11 @@
 ############################################################
 ###  Status bar help for menu items, buttons, etc:
 
+# Keep menus on right hand side (X11)
+catch {tk::classic::restore menu}
+
 array set helpMessage {}
 set showHelp 0
-# set showHelp 1
-set oldStatus ""
 
 # statusBarHelp:
 #   Called when a button or menu entry is entered to display

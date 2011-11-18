@@ -471,7 +471,7 @@ namespace eval tacgame {
 
     ### "Restart" starts a new computer game S.A.
 
-    button $w.fbuttons.restart -textvar ::tr(Restart) -command {
+    button $w.fbuttons.restart -text Restart -command {
 
       set ::tacgame::analysisCoach(paused) 0
       .coachWin.fbuttons.resume configure -state disabled
