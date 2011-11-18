@@ -802,8 +802,8 @@ set ::book::oppMovesVisible 0
 # Engines data:
 set engines(list) {}
 set engines(sort) Time
-set engines(F2)  2
-set engines(F3)  3
+set engines(F2)  1
+set engines(F3)  2
 set engines(F4)  {}
 set engineCoach1 {}
 set engineCoach2 {}
