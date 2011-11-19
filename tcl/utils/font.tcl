@@ -81,6 +81,7 @@ proc FontDialog {name {parent .}} {
   toplevel $w
   wm state $w withdrawn
   wm title $w "Scid: $name font"
+  wm minsize $w 400 200
   setWinSize $w
   setWinLocation $w
 
