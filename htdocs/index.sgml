@@ -111,9 +111,6 @@ To use the extra chess pieces, <bf>Wish8.5</bf> must be installed. I recommend t
 The configuration files, <bf>including the chess engine list</bf>, are stored in the <bf>Scid-vs-PC/bin/config</bf> directory, and may be copied
 over from old versions to make upgrading easier.
 </p>
-<p>
-If the PGN figurines (chess pieces) option is disabled, try grabbing the ttf fonts from the zip and installing them manually.
-</p>
 
 <sect2> Mac OSX <p>
 
