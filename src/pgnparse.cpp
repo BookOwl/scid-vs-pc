@@ -796,9 +796,10 @@ PgnParser::GetGameToken (char * buffer, uint bufSize)
     }
 
     // Now we check for other tokens.......
-    if (ch == ';'  ||  ch == '%') {
-        // LineComment.  "%" should only mark a comment if at the start of
-        // the line, but we allow it anywhere on a line.
+    if (ch == ';'  ||  ch == '%') { // LineComment.
+        // "%" should only mark a comment if at the start of the line, but we allow it anywhere on a line.
+        // S.A - There's a bug here with the parser, but not sure if it's fixable:
+        //       stray ';' before variations and/or comments SPLIT OVER MULTIPLE LINES cause chaos
         GetLine (buf, bufSize-1);
         return TOKEN_LineComment;
     }

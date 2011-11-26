@@ -2404,6 +2404,7 @@ Position::ReadMove (simpleMoveT * m, const char * str, tokenT token)
 
     // Pawn moves:
     if (token == TOKEN_Move_Pawn  ||  token == TOKEN_Move_Promote) {
+
         pieceT promo = EMPTY;
         if (token == TOKEN_Move_Promote) {
             // Last char must be Q/R/B/N.
@@ -2416,6 +2417,9 @@ Position::ReadMove (simpleMoveT * m, const char * str, tokenT token)
             }
             slen--;
             if (s[slen-1] == '=') { slen--; }
+
+            // in case of malformed moves
+	    if (slen < 2) return ERROR_InvalidMove;
         } else {
             // Check if it is a coordinates-style move, in which case it
             // could be any piece:
