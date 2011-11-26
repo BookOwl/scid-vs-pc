@@ -297,13 +297,15 @@ proc doPgnFileImport {fname text {multiple 0} } {
     pack $w.buttons.close $w.buttons.stop -side right -padx 5 -pady 5
 
     pack [frame $w.tf] -side top -expand yes -fill both
-    text $w.text -height 8 -width 60 -background gray90 \
-        -wrap none -cursor watch -setgrid 1 -yscrollcommand "$w.ybar set" -xscrollcommand "$w.xbar set"
-    scrollbar $w.xbar -command "$w.text xview" -orient horizontal
-    scrollbar $w.ybar -command "$w.text yview" -orient vertical
-    grid $w.text -row 0 -column 0 -in $w.tf -sticky nsew
-    grid $w.ybar -row 0 -column 1 -in $w.tf -sticky ns
-    grid $w.xbar -row 1 -column 0 -in $w.tf -sticky ew
+    text $w.tf.text -height 8 -width 60 -background gray90 \
+        -wrap none -cursor watch -setgrid 1 -yscrollcommand "$w.tf.ybar set" -xscrollcommand "$w.tf.xbar set"
+    scrollbar $w.tf.xbar -command "$w.tf.text xview" -orient horizontal
+    scrollbar $w.tf.ybar -command "$w.tf.text yview" -orient vertical
+    grid $w.tf.ybar -row 0 -column 1 -sticky ns
+    grid $w.tf.xbar -row 1 -column 0 -sticky ew
+    grid $w.tf.text -row 0 -column 0 -sticky nsew
+    grid columnconfigure $w.tf 0 -weight 1
+    grid rowconfigure $w.tf 0 -weight 1
     ::utils::win::Centre $w
   }
 
@@ -313,18 +315,18 @@ proc doPgnFileImport {fname text {multiple 0} } {
   catch {grab $w.buttons.stop}
   bind $w <Escape> "$w.buttons.stop invoke"
   $w.buttons.close configure -state disabled
-  $w.text insert end $text
-  $w.text insert end "Importing file $fname\n"
-  $w.text configure -state disabled
+  $w.tf.text insert end $text
+  $w.tf.text insert end "Importing file $fname\n"
+  $w.tf.text configure -state disabled
 
   set err [catch {sc_base import file $fname} result]
 
   unbusyCursor .
   set warnings ""
-  $w.text configure -state normal
-  $w.text configure -cursor top_left_arrow
+  $w.tf.text configure -state normal
+  $w.tf.text configure -cursor top_left_arrow
   if {$err} {
-    $w.text insert end $result
+    $w.tf.text insert end $result
   } else {
     set nImported [lindex $result 0]
     set warnings [lindex $result 1]
@@ -335,12 +337,12 @@ proc doPgnFileImport {fname text {multiple 0} } {
     } else {
       append str ":\n$warnings"
     }
-    $w.text insert end "$str\n"
+    $w.tf.text insert end "$str\n"
 
     ::recentFiles::add $fname
   }
 
-  $w.text configure -state disabled
+  $w.tf.text configure -state disabled
   $w.buttons.close configure -state normal
   $w.buttons.stop configure -state disabled
   catch {grab release $w.buttons.stop}
