@@ -35,6 +35,8 @@ proc compInit {} {
   wm title $w "Configure Tournament"
   setWinLocation $w
 
+  set comp(iconize) 1
+
   pack [frame $w.engines] -side top
   addHorizontalRule $w
   pack [frame $w.config] -fill x -expand 1
@@ -142,12 +144,11 @@ proc compInit {} {
   grid $w.config.verbosevalue -row $row -column 1 -padx 5 
 
   incr row
-  label $w.config.iconizelabel -text {Analysis starts Iconized}
-  checkbutton $w.config.iconizevalue -variable comp(iconize) 
-  set comp(iconize) 1
+  label $w.config.firstonlylabel -text {First engine plays others}
+  checkbutton $w.config.firstonlyvalue -variable comp(firstonly) 
 
-  grid $w.config.iconizelabel -row $row -column 0 -sticky w -padx 5 
-  grid $w.config.iconizevalue -row $row -column 1 -padx 5 
+  grid $w.config.firstonlylabel -row $row -column 0 -sticky w -padx 5 
+  grid $w.config.firstonlyvalue -row $row -column 1 -padx 5 
 
   incr row
   label $w.config.timeoutlabel -text {Time-out (seconds)}
@@ -201,7 +202,6 @@ proc compInit {} {
   bind $w <F1> {helpWindow Tourney}
   update
   wm state $w normal
-
 }
 
 proc checkTimeControl {} {
@@ -336,19 +336,23 @@ proc compOk {} {
 
   for {set i 0} {$i < $comp(count)} {incr i} {
     for {set j 0} {$j <= $i} {incr j} {
-      if {$i == $j} {continue}
-      for {set k 1} {$k <= $comp(rounds)} {incr k} {
-	compCueGame [lindex $players $j] [lindex $players $i] [lindex $names $j] [lindex $names $i] $k
-        incr k
-        if {$k <= $comp(rounds)} {
-	  compCueGame [lindex $players $i] [lindex $players $j] [lindex $names $i] [lindex $names $j] $k
-        }
+      if {$i != $j} {
+	for {set k 1} {$k <= $comp(rounds)} {incr k} {
+	  compCueGame [lindex $players $j] [lindex $players $i] [lindex $names $j] [lindex $names $i] $k
+	  incr k
+	  if {$k <= $comp(rounds)} {
+	    compCueGame [lindex $players $i] [lindex $players $j] [lindex $names $i] [lindex $names $j] $k
+	  }
+	}
       }
+      if {$comp(firstonly)} {break}
     }
   }
-  puts_ "CHECKING game count:"
-  set num_games [expr {$comp(count) * ($comp(count)-1) * $comp(rounds) / 2}]
-  puts_ "Length of cue is [llength $comp(games)], Calculated number of games is $num_games"
+
+  # This is no longer reliable because of comp(firstonly) option
+  # set num_games [expr {$comp(count) * ($comp(count)-1) * $comp(rounds) / 2}]
+  set num_games [llength $comp(games)]
+  puts_ "$num_games GAMES total: $comp(games)"
 
   ttk::progressbar $w.progress -mode determinate \
     -maximum $num_games -variable comp(current)
