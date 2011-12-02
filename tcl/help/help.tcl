@@ -53,13 +53,10 @@ sorts; but has evolved into a powerful general-purpose Chess Toolkit.
 </ul>
 <h3>Unsupported Features</h3>
 <ul>
-<li>Undo is still not tested or included.</li>
 <li>The Docked Mode and Theme features of SCID are not included.</li>
-<ul>
-<li>Docked mode enables all windows to be tiled into a single one. It is a nice idea, but blighted by too many bugs and focus issues.</li>
-<li>Wish 8.5 includes a basic implementation of themes, and the
+<li>* Docked mode enables all windows to be tiled into a single one. It is a nice idea, but blighted by too many bugs and focus issues.</li>
+<li>* Wish 8.5 includes a basic implementation of themes, and the
 widespread changes to SCID's tcl codebase are not justified for some trivial and hardly used eye candy.</li>
-</ul>
 </ul>
   <p><footer>Updated: Scid vs. PC 4.6 August 2011 </footer></p>
 }
