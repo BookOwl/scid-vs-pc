@@ -215,7 +215,7 @@ proc ::tree::make { { baseNumber -1 } } {
   $w.f.tl tag configure bluefg -foreground blue
   $w.f.tl tag configure greenfg -foreground SeaGreen
   $w.f.tl tag configure redfg -foreground red
-  $w.f.tl tag configure nextmove -background lemonchiffon
+  $w.f.tl tag configure nextmove -background lemonchiffon2
   #   $w.f.tl tag configure nextmove -foreground seagreen3
 
   canvas $w.progress -width 250 -height 15  -relief solid -border 1
@@ -477,8 +477,8 @@ proc ::tree::refresh {{ baseNumber {} }} {
     sc_tree search -cancel all
     for {set i 1} {$i <= [sc_base count total]} {incr i} {
       if {[winfo exists .treeWin$i]} {
-	# ::tree::dorefresh $i
-	if { [::tree::dorefresh $i] == "canceled" } { break }
+        # ::tree::dorefresh $i
+        if { [::tree::dorefresh $i] == "canceled" } { break }
       }
     }
   }
@@ -510,7 +510,7 @@ proc ::tree::dorefresh { baseNumber } {
   }
 
   set moves [sc_tree search -hide $tree(training$baseNumber) -sort $tree(order$baseNumber) -base $base \
-                            -fastmode $fastmode -mask $tree(adjustfilter$baseNumber) ]
+                            -fastmode $fastmode -adjust $tree(adjustfilter$baseNumber) ]
   # CVS: set moves [sc_tree search -hide $tree(training$baseNumber) -sort $tree(order$baseNumber) -base $base -fastmode $fastmode]
 
   catch {$w.f.tl itemconfigure 0 -foreground darkBlue}
@@ -542,7 +542,7 @@ proc ::tree::dorefresh { baseNumber } {
     ::tree::status "" $baseNumber
     sc_progressBar $w.progress bar 251 16
     set moves [sc_tree search -hide $tree(training$baseNumber) -sort $tree(order$baseNumber) -base $base -fastmode 0]
-    ### todo: should we have "-mask $tree(adjustfilter$baseNumber)"  here ?
+    ### todo: should we have "-adjust $tree(adjustfilter$baseNumber)"  here ?
 
     displayLines $baseNumber $moves
   }
@@ -629,11 +629,11 @@ proc ::tree::displayLines { baseNumber moves } {
         # color tag
         set color [::tree::mask::getColor $move]
         if {$color != "white"} {
-	  $w.f.tl tag configure color$i -background [::tree::mask::getColor $move]
-	  $w.f.tl insert end "  " color$i
+          $w.f.tl tag configure color$i -background [::tree::mask::getColor $move]
+          $w.f.tl insert end "  " color$i
         } else {
           # disabling color here kind-of depends on getColor returning {white} when it *should* return {White}
-	  $w.f.tl insert end "  " 
+          $w.f.tl insert end "  " 
         }
         # NAG tag
         $w.f.tl insert end [::tree::mask::getNag $move]
@@ -749,40 +749,32 @@ proc ::tree::displayLines { baseNumber moves } {
 # {} if there was a problem during parsing
 # 1: e4     B00     37752: 47.1%   54.7%  2474  2513  2002   37%
 ################################################################################
-proc ::tree::getLineValues { l } {
-  set ret {}
-  if {[scan [string range $l 14 24] "%d:" ngames] != 1} {
-    return {}
-  } else  {
-    lappend ret $ngames
-  }
+proc ::tree::getLineValues {l} {
 
-  if {[scan [string range $l 25 29] "%f%%" freq] != 1} {
-    return {}
-  } else  {
-    lappend ret $freq
-  }
+  #0         1         2         3         4         5         6
+  #0123456789012345678901234567890123456789012345678901234567890
+  # 1: Nf3    C34      5115: 77.3%   53.9%  2289  2335  1975   16%
+  # 3: Nc3    C33       128:  1.9%   46.8%  2287  2329  1981   23%
+  #                  ngames: freq% success%  elo  perf
 
-  if {[scan [string range $l 33 37] "%f%%" success] != 1} {
-    return {}
-  } else  {
-    lappend ret $success
-  }
+  if {[scan [string range $l 14 24] "%d:" ngames] != 1} { return {} }
 
-  if {[scan [string range $l 40 44] "%d" eloavg] != 1} {
-    return {}
-  } else  {
-    lappend ret $eloavg
-  }
 
-  if {[scan [string range $l 46 50] "%d" perf] != 1} {
-    return {}
-  } else  {
-    lappend ret $perf
-  }
+  if {[scan [string range $l 25 29] "%f%%" freq] != 1} { return {} }
 
-  return $ret
+
+  if {[scan [string range $l 33 37] "%f%%" success] != 1} { return {} }
+
+
+  if {[scan [string range $l 40 44] "%d" eloavg] != 1} { return {} }
+
+
+  if {[scan [string range $l 46 50] "%d" perf] != 1} { return {} }
+
+  return [list $ngames $freq $success $eloavg $perf]
+
 }
+
 ################################################################################
 # returns the color to use for score (red, green) or ""
 ################################################################################
@@ -1526,7 +1518,7 @@ proc ::tree::mask::askForSave {{parent .}} {
     }
 
     set answer [tk_messageBox -title Scid -icon warning -type yesno \
-	-message "[ tr DoYouWantToSaveFirst ]\n$::tree::mask::maskFile ?" -parent $parent]
+      -message "[ tr DoYouWantToSaveFirst ]\n$::tree::mask::maskFile ?" -parent $parent]
 
     if {$answer == "yes"} {
       ::tree::mask::save
@@ -2560,43 +2552,44 @@ image create photo ::tree::mask::imageBlack -data {
   AAM0SLrcrkOI8Ry4oDac9eKeEnCBJ3CXoJ2oqqHdyrnViJYPC+MbjDkDH4bC0PloCiMMGWok
   AAA7
 }
-image create photo ::tree::mask::imageMainLine -data {
-  R0lGODlhEQARAOfzAAAAAAIAAAMAAAYAAAUFBRIMCw4ODisLBBQUFCUSDiIXFR8fHygoKDg4
-  OE9BFVpQLlxQK2FWL2JWN2FXOGVZMGZaMrs3GWxfNGFhYWdjWcBGK8FGKm9rY8NMMd9CHsRU
-  O3R0cnV0cs9SNcdXPtxQMN9PLnx4b3p6d9xWOHx7echhSslkS4CAf4GAf4KBfuNdP4OCgN9f
-  QYODgYSDgYaFgt9jRsxtWIiIhZCKgeVpTuJrUN9yWNB4ZZOTkJSUkd94X916Y5qVipuVit96
-  YpuWipiXlJeXl5iXl52Xi5mYkeh5YJ2XjJmYl56Yjed7Y5uZl5+ZjZ+Zjpqal5qamZual5+a
-  jqCajpubmaGbj6GbkJycnKGckOeBa6OdkaOdkp6enp+enKOekueDbaSek5+fnqGfnKGgnaGh
-  oKGhodeQfaWjoKSko+qMd+KPfamppqqppquqp6urqqyrqKurq6yrqa2rqa2sqe2kPq+vrrCv
-  rbCvrrGwrrOyr+eejbOysfCpP7Ozs7SzsbSzsrS0steudLW0srW0s7W1s7W1tLW1tba1tLe2
-  tbi3tPOvQrm3tri4trm4uLm5ubq5t/SyRO+0Tbu7ufe1RPK2Tfe1Rb29vO6rm8C/vMDAwMPC
-  vsXEwcnJx8rKyM3LyPbSNs3My83Nzc/OytDOyvjYN9DQz9LRzdHR0dPSzvncONTTz9PT0tPT
-  09XTztbU0PnfOdfV0dfW0dbW1tjW0djW0tnX09nX1PrkOtrZ1dvZ1fvnO9za1tza2Nzb2Nzb
-  2fzpO9zc2t3c2N3c2t7d2fzrPd/e2uDe2t/f3eDf2+Hf2+Hf3OHg3ODg3+Hg3eLh3ePi4OTj
-  4OXj4OXk4eTk5Obl4ufm4+jn5Ofn5+np6evq6Ozr6e3s6u3t6+3t7e/v7vDw7vDw8PHw7vLy
-  8vPy8fTz8vT09Pb19Pb29vj39vj49/n5+Pn5+fr6+fv7+/z8+/7+/v//////////////////
-  /////////////////////////////////yH5BAEKAP8ALAAAAAARABEAAAj7AP8J/JdAwIAD
-  AxMOBPBKnaY+QFbUctdOm7UFCQGomyfmx44Rtea1w7MNUIOF8+ZxqVGjAxpOmdaMQzeHgEAA
-  KZV48GCBTKZMZxzNAADg5jx5OnmiWtfu2S8AvS4ZfccmRw4Vo86dMwcA04Wi/3CyY8ODh40p
-  jxAB0DWBqNFzAFgwAXBkEABKFZ6YAIvznLJP5IoFA3CKAgA7OPjOE4fokCBBAETdAQDCUxDF
-  3PboyUPHAVEXPXZlUYzt2jVqwAAUodJpFS4ofMFBc7bMWCo+m0LxwjULCV9VzJAZI5bLVCxe
-  vm7BEsI3SRgvXbZgsWIlC5QlRDKAVchdYUAAOw==
-}
 
-if {$png_image_support} {
-	image create photo ::tree::mask::imageMainLine -data {
-		iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABmJLR0QA/wD/AP+gvaeTAAAACXBI
-		WXMAAAsSAAALEgHS3X78AAAAB3RJTUUH0wkWEisFOaTQ6wAAAB10RVh0Q29tbWVudABDcmVhdGVk
-		IHdpdGggVGhlIEdJTVDvZCVuAAABqklEQVR42oWTz0sbQRTHP6alPy49BBfM0VuuvQiN6G5zlFIP
-		8Q/w0EPBsxbZP6B/gaciVbQklIoNHpdslkAOkUJLdSEHQeKyjI2HQjY1ypodD3a32bWuDx7z3sx7
-		n5n5MgP/TD4AmQH5CCR3+6uRHsZGAaeri1Ey8X6DIAhuFqTEcRw6nQ6qqgIsADsAGRI2aJkMWiYA
-		nufheR79fh/HcSgUClQqFYAv4UkekmKmaUZxEATouo4QAk3TsCxrDxhLBRSLxegKvV6PdruNbR9g
-		WVZY8joVUKvVYnk+n0fXdXwxzeB7lmdze9VUgKZpsTybzXJ1NoO//5ilD8fcq0G9Xo/iUqnE1a9p
-		/P0nLH/+zdbXQ4DnqQBVVZFSoigKl8cvuGg95d3ukLXNb2HJj8x9GiiKwvnPKc7tcd6uC9Y+mhiG
-		EdXcAkyaJxz98WMadI5mWfnksF21EULcuaEEZKPRiD3d+ZdKFJfLZem6rjQMI5yLizgcDul2uwgh
-		yOVyAFTrZ7iuG70HKWVs11sihkXJpmTjfwHNZhPf92Ow0TG0v3A7CVsi/Rsn/Q3ANdGG5Icao+xt
-		AAAAAElFTkSuQmCC
-	}
+if {!$png_image_support} {
+  image create photo ::tree::mask::imageMainLine -data {
+    R0lGODlhEQARAOfzAAAAAAIAAAMAAAYAAAUFBRIMCw4ODisLBBQUFCUSDiIXFR8fHygoKDg4
+    OE9BFVpQLlxQK2FWL2JWN2FXOGVZMGZaMrs3GWxfNGFhYWdjWcBGK8FGKm9rY8NMMd9CHsRU
+    O3R0cnV0cs9SNcdXPtxQMN9PLnx4b3p6d9xWOHx7echhSslkS4CAf4GAf4KBfuNdP4OCgN9f
+    QYODgYSDgYaFgt9jRsxtWIiIhZCKgeVpTuJrUN9yWNB4ZZOTkJSUkd94X916Y5qVipuVit96
+    YpuWipiXlJeXl5iXl52Xi5mYkeh5YJ2XjJmYl56Yjed7Y5uZl5+ZjZ+Zjpqal5qamZual5+a
+    jqCajpubmaGbj6GbkJycnKGckOeBa6OdkaOdkp6enp+enKOekueDbaSek5+fnqGfnKGgnaGh
+    oKGhodeQfaWjoKSko+qMd+KPfamppqqppquqp6urqqyrqKurq6yrqa2rqa2sqe2kPq+vrrCv
+    rbCvrrGwrrOyr+eejbOysfCpP7Ozs7SzsbSzsrS0steudLW0srW0s7W1s7W1tLW1tba1tLe2
+    tbi3tPOvQrm3tri4trm4uLm5ubq5t/SyRO+0Tbu7ufe1RPK2Tfe1Rb29vO6rm8C/vMDAwMPC
+    vsXEwcnJx8rKyM3LyPbSNs3My83Nzc/OytDOyvjYN9DQz9LRzdHR0dPSzvncONTTz9PT0tPT
+    09XTztbU0PnfOdfV0dfW0dbW1tjW0djW0tnX09nX1PrkOtrZ1dvZ1fvnO9za1tza2Nzb2Nzb
+    2fzpO9zc2t3c2N3c2t7d2fzrPd/e2uDe2t/f3eDf2+Hf2+Hf3OHg3ODg3+Hg3eLh3ePi4OTj
+    4OXj4OXk4eTk5Obl4ufm4+jn5Ofn5+np6evq6Ozr6e3s6u3t6+3t7e/v7vDw7vDw8PHw7vLy
+    8vPy8fTz8vT09Pb19Pb29vj39vj49/n5+Pn5+fr6+fv7+/z8+/7+/v//////////////////
+    /////////////////////////////////yH5BAEKAP8ALAAAAAARABEAAAj7AP8J/JdAwIAD
+    AxMOBPBKnaY+QFbUctdOm7UFCQGomyfmx44Rtea1w7MNUIOF8+ZxqVGjAxpOmdaMQzeHgEAA
+    KZV48GCBTKZMZxzNAADg5jx5OnmiWtfu2S8AvS4ZfccmRw4Vo86dMwcA04Wi/3CyY8ODh40p
+    jxAB0DWBqNFzAFgwAXBkEABKFZ6YAIvznLJP5IoFA3CKAgA7OPjOE4fokCBBAETdAQDCUxDF
+    3PboyUPHAVEXPXZlUYzt2jVqwAAUodJpFS4ofMFBc7bMWCo+m0LxwjULCV9VzJAZI5bLVCxe
+    vm7BEsI3SRgvXbZgsWIlC5QlRDKAVchdYUAAOw==
+  }
+} else {
+  image create photo ::tree::mask::imageMainLine -data {
+    iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABmJLR0QA/wD/AP+gvaeTAAAACXBI
+    WXMAAAsSAAALEgHS3X78AAAAB3RJTUUH0wkWEisFOaTQ6wAAAB10RVh0Q29tbWVudABDcmVhdGVk
+    IHdpdGggVGhlIEdJTVDvZCVuAAABqklEQVR42oWTz0sbQRTHP6alPy49BBfM0VuuvQiN6G5zlFIP
+    8Q/w0EPBsxbZP6B/gaciVbQklIoNHpdslkAOkUJLdSEHQeKyjI2HQjY1ypodD3a32bWuDx7z3sx7
+    n5n5MgP/TD4AmQH5CCR3+6uRHsZGAaeri1Ey8X6DIAhuFqTEcRw6nQ6qqgIsADsAGRI2aJkMWiYA
+    nufheR79fh/HcSgUClQqFYAv4UkekmKmaUZxEATouo4QAk3TsCxrDxhLBRSLxegKvV6PdruNbR9g
+    WVZY8joVUKvVYnk+n0fXdXwxzeB7lmdze9VUgKZpsTybzXJ1NoO//5ilD8fcq0G9Xo/iUqnE1a9p
+    /P0nLH/+zdbXQ4DnqQBVVZFSoigKl8cvuGg95d3ukLXNb2HJj8x9GiiKwvnPKc7tcd6uC9Y+mhiG
+    EdXcAkyaJxz98WMadI5mWfnksF21EULcuaEEZKPRiD3d+ZdKFJfLZem6rjQMI5yLizgcDul2uwgh
+    yOVyAFTrZ7iuG70HKWVs11sihkXJpmTjfwHNZhPf92Ow0TG0v3A7CVsi/Rsn/Q3ANdGG5Icao+xt
+    AAAAAElFTkSuQmCC
+  }
 }
 
 ### end of tree.tcl

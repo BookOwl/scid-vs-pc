@@ -1950,27 +1950,34 @@ it is best to close the Tree Window first.</i>
 
   <h3>Tree Statistics</h3>
   <p>
-  The tree window shows the <a ECO>ECO code</a> (if any), frequency,
-  and score of each move.
-  The <term>score</term> is always computed from the <b>White</b>
+  The tree window shows statistics about the next move as calulated from all games in the current base.
+  The columns are:
+  <ul><li><b>Move  ECO  Frequency Freq% Score% AvElo Perf AvYear Draws%</b>
+  </ul>
+  The Score is always computed from Whites
   perspective, so 100% means all White wins and 0% means all Black
-  wins. Scores are highlighted for moves that have good (green) or bad
-  (red) results. On average a move should score 53.8% for white,
-  highlighting appears if a move scores more than 3% better or worse
-  than this average and if at least 15 games are contained in the
-  database. The <term>AvElo</term> (average Elo) corresponds to the
-  player's on move and <term>Perf</term> (performance) represents the
-  opponent's strength. Additionally, <term>AvYear</term> shows the
-  average year of games played in this move and <term>%Draws</term>
-  gives the percentage of draws for the line displayed. All these
-  values are calculated for the database displayed in the tree, and
-  therefore depend of course on the games in this database.
+  wins.
+  </p>
+
+  <p>
+  Scores are highlighted <green>green</green>/<red>red</red> for moves that have good/bad
+  results: if at least 15 games are contained in the
+  database, and AvElo (average Elo) and Perf (performance) statistics are available.
+  On average a move should score 53.8% for white.
+  Highlighting appears if a move scores more than 3% better or worse
+  than this average.
+  Note: AvElo corresponds to the players on move and Perf represents the
+  opponent's strength.
+  </p>
+  <p>
+  <i>Note: these statistics are complicated by the Tree's cache, and both
+  SCID and Scid vs. PC have outstanding issues about game colour
+  highlighting.</i>
   </p>
   <p>
   The moves in the tree window can be sorted by move (alphabetically),
-  ECO code, frequency, or score. You can change the sort method using
-    the <menu>Sort</menu> menu.
-    </p>
+  ECO code, frequency, or score; as per the Sort menu.
+  </p>
   <h3>Tree Masks</h3>
   <p> Tree Masks
   provide additional information beyond pure statistical data, and can be
@@ -2024,7 +2031,7 @@ it is best to close the Tree Window first.</i>
 
   <h3><name Training>Training</name></h3>
   <p>
-  When the <term>Training</term> checkbox in the tree window is selected,
+  When the Training button <button tb_training> is selected,
   Scid will randomly make a move every time you add a move to the game.
   The move Scid chooses depends on database statistics, so a move played
   in 80% of database games will be chosen by Scid with 80% probability.

@@ -5819,7 +5819,7 @@ sc_filter_value (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
 void
 updateMainFilter( scidBaseT * dbase)
 {
-    // if (!maskMode)
+    // if (!adjustMode)
     //   return;
 
     // Clone
@@ -14102,7 +14102,7 @@ int
 sc_tree_search (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
 {
     static const char * usageStr =
-      "Usage: sc_tree search [-hideMoves <0|1>] [-sort alpha|eco|frequency|score] [-time <0|1>] [-epd <0|1>] [-list <0|1>] [-fastmode <0|1>] [-mask <0|1>]";
+      "Usage: sc_tree search [-hideMoves <0|1>] [-sort alpha|eco|frequency|score] [-time <0|1>] [-epd <0|1>] [-list <0|1>] [-fastmode <0|1>] [-adjust <0|1>]";
 
     // Sort options: these should match the moveSortE enumerated type.
     static const char * sortOptions[] = {
@@ -14127,7 +14127,7 @@ sc_tree_search (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
     bool showTimeStats = true;
     bool showEpdData = true;
     bool listMode = false;
-    bool maskMode = false;
+    bool adjustMode = false;
     bool fastMode = false;
     int sortMethod = SORT_FREQUENCY; // default move order: frequency
 
@@ -14157,8 +14157,8 @@ db->bbuf->Empty();
             showEpdData = strGetBoolean (argv[arg+1]);
         } else if (strIsPrefix (argv[arg], "-list")) {
             listMode = strGetBoolean (argv[arg+1]);
-        } else if (strIsPrefix (argv[arg], "-mask")) {
-            maskMode = strGetBoolean (argv[arg+1]);
+        } else if (strIsPrefix (argv[arg], "-adjust")) {
+            adjustMode = strGetBoolean (argv[arg+1]);
         } else if (strIsPrefix (argv[arg], "-fastmode")) {
             fastMode = strGetBoolean (argv[arg+1]);
         } else if (strIsPrefix (argv[arg], "-cancel")) {
@@ -14171,11 +14171,7 @@ db->bbuf->Empty();
     }
 
     if (sortMethod < 0) { return errorResult (ti, usageStr); }
-
-
-    if (!base->inUse) {
-        return setResult (ti, errMsgNotOpen(ti));
-    }
+    if (!base->inUse) { return setResult (ti, errMsgNotOpen(ti)); }
 
     search_pool.insert(&base);
 
@@ -14276,8 +14272,7 @@ db->bbuf->Empty();
 
             // if the game is not already in the filter, continue
             if (fastMode && base->treeFilter->isValidOldDataTree )
-               if ( oldFilterData[i] == 0)
-                   continue;
+               if ( oldFilterData[i] == 0) { continue; }
 #endif
 
     		IndexEntry* ie = base->idx->FetchEntry (i);
@@ -14407,7 +14402,7 @@ db->bbuf->Empty();
     }
 
     // Update the normal filter (if desired) S.A.
-    if (maskMode)
+    if (adjustMode)
       updateMainFilter(base);
     else 
       updateMainFilter2(base);
