@@ -1,7 +1,7 @@
 ###
 ### tacgame.tcl: part of Scid.
 ### Copyright (C) 2006  Pascal Georges
-###
+### Copyright (C) 2009- stevenaaus
 
 namespace eval tacgame {
   ######################################################################
@@ -96,7 +96,7 @@ namespace eval tacgame {
   # ======================================================================
   proc config {} {
 
-    global ::tacgame::configWin ::tacgame::analysisCoachCommand \
+    global ::tacgame::analysisCoachCommand \
     ::tacgame::analysisCoach engineCoach1 engineCoach2 ::tacgame::level \
     ::tacgame::levelFixed ::tacgame::isLimitedAnalysisTime ::tacgame::analysisTime \
     ::tacgame::index1 ::tacgame::index2 ::tacgame::chosenOpening 
@@ -135,7 +135,7 @@ namespace eval tacgame {
       return
     }
 
-    set w ".configWin"
+    set w .configWin
     if {[winfo exists $w]} {
       focus $w
       # wm attributes $w -topmost
@@ -343,8 +343,8 @@ namespace eval tacgame {
 	  ::tacgame::openingMovesHash ::tacgame::openingMoves \
 	  ::tacgame::outOfOpening ::tacgame::drawShown ::tacgame::resignShown ::tacgame::mateShown 
 
-    resetEngine 1
-    resetEngine 2
+    resetEngine $::tacgame::index1
+    resetEngine $::tacgame::index2
     catch { unset ::uci::uciInfo(score$::tacgame::index2) }
 
     set ::tacgame::lFen {}

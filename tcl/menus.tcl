@@ -1000,7 +1000,7 @@ $m add command -label OptionsSave -command {
     ::utils::sound::announceForward ::utils::sound::announceBack 
     ::tacgame::threshold ::tacgame::blunderwarning ::tacgame::blunderwarningvalue 
     ::tacgame::levelMin  ::tacgame::levelMax  ::tacgame::levelFixed ::tacgame::randomLevel 
-    ::tacgame::isLimitedAnalysisTime ::tacgame::showblunder ::tacgame::showblundervalue 
+    ::tacgame::showblunder ::tacgame::showblundervalue 
     ::tacgame::showblunderfound ::tacgame::showmovevalue ::tacgame::showevaluation 
     ::tacgame::isLimitedAnalysisTime ::tacgame::analysisTime ::tacgame::openingType 
     ::commenteditor::showBoard boardfile_lite boardfile_dark 

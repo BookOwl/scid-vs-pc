@@ -113,7 +113,6 @@ set ::tacgame::levelMin 1200
 set ::tacgame::levelMax 2200
 set ::tacgame::levelFixed 1500
 set ::tacgame::randomLevel 0
-set ::tacgame::isLimitedAnalysisTime 1
 set ::tacgame::showblunder 1
 set ::tacgame::showblundervalue 1
 set ::tacgame::showblunderfound 1
