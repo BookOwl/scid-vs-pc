@@ -751,7 +751,7 @@ namespace eval tacgame {
     global ::tacgame::analysisCoach ::tacgame::isLimitedAnalysisTime ::tacgame::analysisTime
 
     after cancel ::tacgame::stopAnalyze
-    ::uci::sendToEngine $::tacgame::index1 stop
+    ::uci::sendToEngine $::tacgame::index2 stop
   }
   ################################################################################
   # returns true if last move is a mate and stops clocks
@@ -1044,7 +1044,6 @@ namespace eval tacgame {
 
     # only update when it is human turn
     if { [getPhalanxColor] == [sc_pos side] } { return }
-
     catch {
       set sc1 $::uci::uciInfo(score$index2)
       set sc2 [lindex $lscore end]

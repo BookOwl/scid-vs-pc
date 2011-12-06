@@ -2242,6 +2242,7 @@ proc makeAnalysisWin {{n 0}} {
 
 proc addAnalysisMove {{n 0}} {
 
+  # todo : bug here 0 can be an engine &&&
   if {!$n} {
     set w [lsearch -glob -inline [ wm stackorder . ] {.analysisWin*}]
     if {[scan $w ".analysisWin\%d" n] != 1} {return}
