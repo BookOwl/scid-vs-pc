@@ -991,7 +991,7 @@ $m add command -label OptionsSave -command {
     gameInfo(fullComment) gameInfo(showMarks) gameInfo(showMenu) gameInfo(showTool) 
     gameInfo(showMaterial) gameInfo(showFEN) gameInfo(showButtons) gameInfo(showTB) 
     analysis(mini) engines(F2) engines(F3) engines(F4) 
-    engineCoach1 engineCoach2 scidBooksDir scidBasesDir 
+    scidBooksDir scidBasesDir 
     ::book::lastBook1 ::book::lastBook2 ::book::lastTuning ::book::sortAlpha 
     ::book::showTwo ::book::oppMovesVisible ::gbrowser::size 
     crosstab(type) crosstab(ages) crosstab(countries) crosstab(ratings) crosstab(titles) crosstab(breaks) 
