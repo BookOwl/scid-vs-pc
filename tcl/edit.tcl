@@ -337,7 +337,7 @@ set moveNum 1          ;# legal values are 1-999.
 set pawnNum 0
 set castling KQkq      ;# will be empty or some combination of KQkq letters.
 set toMove White       ;# side to move, "White" or "Black".
-set pastePiece K       ;# Piece being pasted, "K", "k", "Q", "q", etc.
+set pastePiece P       ;# Piece being pasted, "K", "k", "Q", "q", etc.
 
 # Traces to keep entry values sensible:
 
@@ -464,9 +464,6 @@ proc setupBoard {} {
   setBoard $sbd $setupBd $setupboardSize
 
   ### Piece Buttons
-
-  # set pastePiece P
-  # set toMove White
 
   set setupboardSize2 [boardSize_plus_n -4]
   foreach i {p n b r q k} {
