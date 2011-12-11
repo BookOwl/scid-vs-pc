@@ -191,12 +191,12 @@ menuText E ToolsOpenRecentBaseAsTree "Open Recent as Tree" 0   {Open a recent ba
 menuText E ToolsTracker "Piece Tracker"  6 {Open the Piece Tracker window}
 menuText E ToolsTraining "Training"  0 {Training tools (tactics, openings,...) }
 menuText E ToolsComp "Computer Tournament" 0 {Chess engine tournament}
-menuText E ToolsTacticalGame "Phalanx"  0 {Play a game with tactics}
-menuText E ToolsSeriousGame "Serious game"  0 {Play a serious game}
+menuText E ToolsTacticalGame "Computer - Phalanx"  0 {Play a game with tactics}
+menuText E ToolsSeriousGame "Computer - UCI Engine"  0 {Play against an UCI engine}
 menuText E ToolsTrainTactics "Mate in ..N.. Puzzle"  0 {Solve "Mate in" puzzles}
 menuText E ToolsTrainCalvar "Calculation of variations"  0 {Calculation of variations training}
 menuText E ToolsTrainFindBestMove "Find best move"  0 {Find best move}
-menuText E ToolsTrainFics "FICS (Internet)"  0 {Play on freechess.org}
+menuText E ToolsTrainFics "Internet (FICS)"  0 {Play on freechess.org}
 menuText E ToolsBookTuning "Book tuning" 0 {Book tuning}
 
 ### menuText E ToolsNovagCitrine "Novag Citrine" 0 {Novag Citrine}
@@ -1350,7 +1350,7 @@ translate E showblundervalue {show blunder value}
 translate E showscore {show score}
 translate E coachgame {coach game}
 translate E configurecoachgame {Configure Tactical game}
-translate E configuregame {Game configuration}
+translate E configuregame {Configure UCi game}
 translate E Phalanxengine {Phalanx engine}
 translate E Coachengine {Coach engine}
 translate E difficulty {difficulty}
@@ -1419,7 +1419,7 @@ translate E Thinking {Thinking}
 translate E AnalyzeDone {Analyze done}
 translate E WinWonGame {Win won game}
 translate E Lines {Lines}
-translate E ConfigureUCIengine {Configure UCI engine}
+translate E ConfigureUCIengine {Configure Engine}
 translate E SpecificOpening {Specific opening}
 translate E StartNewGame {Start new game}
 translate E FixedLevel {Fixed level}

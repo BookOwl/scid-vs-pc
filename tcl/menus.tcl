@@ -519,11 +519,14 @@ set helpMessage($m,[incr menuindex]) SearchUsing
 set menuindex -1
 set m .menu.play
 
+$m add command -label ToolsTrainFics -command ::fics::config
+set helpMessage($m,[incr menuindex]) ToolsTrainFics
+
 $m add command -label ToolsTacticalGame -command ::tacgame::config
 set helpMessage($m,[incr menuindex]) ToolsTacticalGame
 
-$m add command -label ToolsTrainFics -command ::fics::config
-set helpMessage($m,[incr menuindex]) ToolsTrainFics
+$m add command -label ToolsSeriousGame -command ::sergame::config
+set helpMessage($m,[incr menuindex]) ToolsSeriousGame
 
 $m add command -label ToolsComp -command {compInit}
 set helpMessage($m,[incr menuindex]) ToolsComp
@@ -533,9 +536,6 @@ set helpMessage($m,[incr menuindex]) ToolsTrainTactics
 
 $m add separator
 incr menuindex
-
-$m add command -label ToolsSeriousGame -command ::sergame::config
-set helpMessage($m,[incr menuindex]) ToolsSeriousGame
 
 # sub-menu for training
 menu $m.training
