@@ -234,9 +234,10 @@ namespace eval sergame {
 
     button $w.fbuttons.play -text $::tr(Play) -command {
       focus .
+      set sel [.configSerGameWin.fengines.fEnginesList.lbEngines curselection]
+      set ::sergame::engineName [.configSerGameWin.fengines.fEnginesList.lbEngines get $sel]
+      set n $::sergame::engineListBox($sel)
 
-      set n $::sergame::engineListBox([.configSerGameWin.fengines.fEnginesList.lbEngines curselection])
-      set ::sergame::engineName [.configSerGameWin.fengines.fEnginesList.lbEngines get $n]
       set ::sergame::chosenOpening [.configSerGameWin.fopening.fOpeningList.lbOpening curselection]
       if {$::sergame::useBook} {
         set ::sergame::bookToUse [.configSerGameWin.fbook.combo get]
@@ -255,6 +256,7 @@ namespace eval sergame {
       destroy .configSerGameWin
       ::sergame::play $n
     }
+    bind $w.fengines.fEnginesList.lbEngines <Double-Button-1> "$w.fbuttons.play invoke"
 
     button $w.fbuttons.cancel -textvar ::tr(Cancel) -command "focus .; destroy $w"
 
@@ -282,6 +284,7 @@ namespace eval sergame {
     ::uci::sendUCIoptions $n
 
     set ::uci::uciInfo(prevscore$n) 0.0
+    set ::uci::uciInfo(score$n) 0.0
     set ::uci::uciInfo(ponder$n) ""
 
     if {$::sergame::startFromCurrent} {
