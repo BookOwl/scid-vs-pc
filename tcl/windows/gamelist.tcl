@@ -410,12 +410,20 @@ proc ::windows::gamelist::Open {} {
     -command ::windows::gamelist::showCurrent
   set ::windows::gamelist::goto {}
 
-  button $w.b.negate -text Negate -font font_Small -relief flat -command {
-    # .glistWin.tree selection toggle [.glistWin.tree children {}]
-    sc_filter negate
-    ::windows::gamelist::Refresh
+  button $w.b.select -text Select -font font_Small -relief flat -command {
+    set items [.glistWin.tree selection]
+    if { "$items" == "" } {
+      bell
+    } else {
+      sc_filter reset
+      # remove the select items (Hmmm... will reset ply value though :-( )
+      foreach i $items {
+	sc_filter remove [.glistWin.tree set $i Number]
+      }
+      sc_filter negate
+      ::windows::gamelist::Refresh
+    }
   }
-
 
   ### Filter items. (Delete items is different)
   button $w.b.remove -textvar ::tr(GlistDeleteField) -font font_Small -relief flat -command {
@@ -467,7 +475,7 @@ proc ::windows::gamelist::Open {} {
   pack $w.b.findcase -side right
   pack $w.b.find -side right ; # -expand 1 -fill x
   pack $w.b.findlabel $w.b.filter $w.b.reset -side right
-  pack $w.b.gfirst $w.b.gprev $w.b.gnext $w.b.glast $w.b.current $w.b.negate $w.b.remove $w.b.removeabove $w.b.removebelow -side left
+  pack $w.b.gfirst $w.b.gprev $w.b.gnext $w.b.glast $w.b.current $w.b.select $w.b.remove $w.b.removeabove $w.b.removebelow -side left
 
   ### Bottom row of buttons , etc
 
@@ -873,13 +881,14 @@ proc ::windows::gamelist::SetStart {unit} {
 
 proc ::windows::gamelist::ToggleFlag {flag} {
 
-  set items [.glistWin.tree selection]
-  if { "$items" == "" } {
+  set sel [.glistWin.tree selection]
+  if { "$sel" == "" } {
     bell
   } else {
-    set sel [.glistWin.tree selection]
     foreach item $sel {
       # mark item as "flag"
+      # (very slow doing them one at a time)
+      # (todo: change sc_game_flag to allow multiple games (?))
       set number [.glistWin.tree set $item Number]
       catch {sc_game flag $flag $number invert}
 
@@ -930,6 +939,7 @@ proc removeFromFilter {dir} {
   set ::windows::gamelist::finditems {}
   setGamelistTitle
 }
+
 
 trace variable glexport w updateExportGList
 
