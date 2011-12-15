@@ -1568,8 +1568,8 @@ This can be done by the <b>Compact</b> button, or
 <li><img tb_gnext> - load next filter game</li>
 <li><img tb_glast> - load last filter game</li>
 <li><b>Current</b> - highlights the current game (if it has not been filtered)</li>
-<li><b>Negate </b> - toggle the filter.
-<li><b>Remove</b> - removes highlighted game(s) from filter</li>
+<li><b>Select </b> - set the filter to higlighted games</li>
+<li><b>Remove</b> - remove highlighted games from filter</li>
 <li><b>Rem <img arrow_up></b> - remove all games above</li>
 <li><b>Rem <img arrow_down></b> - remove all games below</li>
 <li><b>Reset</b> - resets game filter</li>
