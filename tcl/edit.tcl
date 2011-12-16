@@ -176,6 +176,12 @@ proc useBoardPiece { square } {
   set temp [string index $setupBd $square]
   if {$temp != "."} {
     set pastePiece $temp
+  } else {
+    if {[string is upper $pastePiece]} {
+      set pastePiece [string tolower $pastePiece]
+    } else {
+      set pastePiece [string toupper $pastePiece]
+    }
   }
 }
 
