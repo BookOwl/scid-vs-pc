@@ -410,7 +410,7 @@ proc ::windows::gamelist::Open {} {
     -command ::windows::gamelist::showCurrent
   set ::windows::gamelist::goto {}
 
-  button $w.b.select -text Select -font font_Small -relief flat -command {
+  button $w.b.select -textvar ::tr(SetFilter) -font font_Small -relief flat -command {
     set items [.glistWin.tree selection]
     if { "$items" == "" } {
       bell
@@ -421,6 +421,7 @@ proc ::windows::gamelist::Open {} {
 	sc_filter remove [.glistWin.tree set $i Number]
       }
       sc_filter negate
+      set glstart 1
       ::windows::gamelist::Refresh
     }
   }
@@ -448,7 +449,7 @@ proc ::windows::gamelist::Open {} {
   button $w.b.reset -text Reset -font font_Small -relief flat -command ::search::filter::reset
 
   ### Filter items against the find entry widget
-   button $w.b.filter -font font_Small -relief flat -text "Filter" \
+   button $w.b.filter -font font_Small -relief flat -textvar ::tr(Filter) \
     -command {::windows::gamelist::FilterText}
 
   button $w.b.findlabel -font font_Small -relief flat -textvar ::tr(GlistFindText) \
