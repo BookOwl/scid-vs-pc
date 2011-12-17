@@ -347,11 +347,11 @@ namespace eval fics {
 
     set row 0
     # silence button actually only affects tells now, so should be renamed chanoff.. but for compatibility has been left as-is
-    checkbutton $w.bottom.buttons.silence -text "Tells" -state disabled \
+    checkbutton $w.bottom.buttons.silence -text Tells -state disabled \
     -variable ::fics::silence -command {
       ::fics::writechan "set chanoff [expr !$::fics::silence]" noecho
     }
-    checkbutton $w.bottom.buttons.shouts -text "Shouts" -state disabled -variable ::fics::shouts -command {
+    checkbutton $w.bottom.buttons.shouts -text Shouts -state disabled -variable ::fics::shouts -command {
       ::fics::writechan "set shout $::fics::shouts" echo
       ::fics::writechan "set cshout $::fics::shouts" noecho
       # ::fics::writechan "set gin $::fics::gamerequests" echo
@@ -390,12 +390,12 @@ namespace eval fics {
     grid $w.bottom.buttons.font  -column 2 -row $row -sticky ew -padx 3 -pady 2
 
     incr row
-    button $w.bottom.buttons.draw   -text {Offer Draw} -command { ::fics::writechan draw }
-    button $w.bottom.buttons.resign -text Resign       -command { ::fics::writechan resign }
-    button $w.bottom.buttons.abort  -text Rematch      -command { ::fics::writechan rematch }
-    grid $w.bottom.buttons.draw   -column 0 -row $row -sticky ew -padx 3 -pady 2
-    grid $w.bottom.buttons.resign -column 1 -row $row -sticky ew -padx 3 -pady 2
-    grid $w.bottom.buttons.abort  -column 2 -row $row -sticky ew -padx 3 -pady 2
+    button $w.bottom.buttons.draw    -text {Offer Draw} -command {::fics::writechan draw}
+    button $w.bottom.buttons.resign  -text Resign       -command {::fics::writechan resign}
+    button $w.bottom.buttons.rematch -text Rematch      -command {::fics::writechan rematch}
+    grid $w.bottom.buttons.draw     -column 0 -row $row -sticky ew -padx 3 -pady 2
+    grid $w.bottom.buttons.resign   -column 1 -row $row -sticky ew -padx 3 -pady 2
+    grid $w.bottom.buttons.rematch  -column 2 -row $row -sticky ew -padx 3 -pady 2
 
     incr row
     button $w.bottom.buttons.takeback  -text $tr(FICSTakeback) -command {
@@ -407,20 +407,22 @@ namespace eval fics {
       ::fics::writechan {takeback 2}
       catch { ::commenteditor::appendComment "$::fics::reallogin requests takeback $::fics::playerslastmove" }
     }
-    button $w.bottom.buttons.help    -text $tr(Help) -command {helpWindow FICS}
+    button $w.bottom.buttons.abort  -textvar ::tr(Abort) -command {::fics::writechan abort}
     grid $w.bottom.buttons.takeback  -column 0 -row $row -sticky ew -padx 3 -pady 2
     grid $w.bottom.buttons.takeback2 -column 1 -row $row -sticky ew -padx 3 -pady 2
-    grid $w.bottom.buttons.help      -column 2 -row $row -sticky ew -padx 3 -pady 2
+    grid $w.bottom.buttons.abort     -column 2 -row $row -sticky ew -padx 3 -pady 2
 
     incr row
     frame $w.bottom.buttons.space -height 2 -borderwidth 0
     grid  $w.bottom.buttons.space -column 0 -row $row -columnspan 3 -sticky ew -pady 3
 
     incr row
-    button $w.bottom.buttons.findopp -text $tr(FICSFindOpponent) -command { ::fics::findOpponent }
-    button $w.bottom.buttons.cancel -text {Quit FICs} -command { ::fics::close }
+    button $w.bottom.buttons.findopp -textvar ::tr(FICSFindOpponent) -command {::fics::findOpponent}
+    button $w.bottom.buttons.quit    -text {Quit FICs} -command {::fics::close}
+    button $w.bottom.buttons.help    -textvar ::tr(Help) -command {helpWindow FICS}
     grid $w.bottom.buttons.findopp -column 0 -row $row -sticky ew -padx 3 -pady 2
-    grid $w.bottom.buttons.cancel -column 2 -row $row -sticky ew -padx 3 -pady 2
+    grid $w.bottom.buttons.help    -column 1 -row $row -sticky ew -padx 3 -pady 2
+    grid $w.bottom.buttons.quit    -column 2 -row $row -sticky ew -padx 3 -pady 2
 
     bind $w <Control-q> ::fics::close
     bind $w <Destroy>   ::fics::close
@@ -834,7 +836,7 @@ namespace eval fics {
       label $w.bottom.game$game.b.black -text {} -font font_Small
       label $w.bottom.game$game.b.result -text {} -font font_Small
 
-      button $w.bottom.game$game.w.close -image arrow_down -font font_Small -relief flat -command "
+      button $w.bottom.game$game.w.close -image arrow_close -font font_Small -relief flat -command "
 	bind .fics <Destroy> {}
 	destroy .fics.bottom.game$game
 	bind .fics <Destroy> ::fics::close
@@ -859,12 +861,12 @@ namespace eval fics {
 
       pack $w.bottom.game$game.b  -side top -anchor w -expand 1 -fill x
       pack $w.bottom.game$game.b.black -side left -anchor w
-      pack [frame $w.bottom.game$game.b.space -width 20] \
+      pack [frame $w.bottom.game$game.b.space -width 24] \
            $w.bottom.game$game.b.result -side right
       pack $w.bottom.game$game.bd -side top
       pack $w.bottom.game$game.w -side top -expand 1 -fill x
       pack $w.bottom.game$game.w.white -side left -anchor w
-      pack [frame $w.bottom.game$game.w.space -width 20] \
+      pack [frame $w.bottom.game$game.w.space -width 24] \
            $w.bottom.game$game.w.close $w.bottom.game$game.w.load -side right 
       ### ::board::material needs fixing before it can display material ???
       ### must "unobserve" when playing a new game! ???
@@ -1391,7 +1393,6 @@ namespace eval fics {
 
     # if playername is not white or black, then we unobserve game, as its not in $observedGames
     if {$::fics::reallogin != $white && $::fics::reallogin != $black && $gameNumber != $::fics::mainGame} {
-      puts CLEANUP
       ::fics::writechan "unobserve $gameNumber"
       return
     }
@@ -1508,16 +1509,14 @@ namespace eval fics {
     }
 
     if {$fen != [sc_pos fen]} {
-      ### If player makes a move after his time has expired, we end up here. Bad.
-      # error Error reading move(s): Ke6
-      # Debug fen
-      # 6k1/1p6/p3K3/P1p3p1/2Pq1p2/8/8/8 b - - 2 46
-      # 6k1/1p4q1/p3K3/P1p3p1/2P2p2/8/8/8 w - - 3 47
 
       ### Game out of sync, probably due to player takeback request (or opponent take back 2).
+      # (also used to load observed games)
       # After player takeback, game gets reconstructed, comments are zeroed. Opponents takeback is handled better elsewhere.
       # Fics doesn't give much warning that take back was succesful, only the uncertain "Takeback request sent."
       # So just save previous (unfinished) game.
+
+      ### If player makes a move after his time has expired, we end up here. Bad.
 
       # Todo: Before starting new game, try to move backwards in game.
 
@@ -1527,24 +1526,26 @@ namespace eval fics {
       sc_game new
       set ::fics::playing 1
       
-      set ::fics::waitForRating "wait"
+      ### These 2000 usecond waits don't always work on slow connections
+
+      set ::fics::waitForRating wait
       writechan "finger $white /s"
-      vwaitTimed ::fics::waitForRating 2000 "nowarn"
-      if {$::fics::waitForRating == "wait"} { set ::fics::waitForRating "0" }
+      vwaitTimed ::fics::waitForRating 2000 nowarn
+      if {$::fics::waitForRating == "wait"} {set ::fics::waitForRating 0}
       sc_game tags set -white $white
       sc_game tags set -whiteElo $::fics::waitForRating
       
-      set ::fics::waitForRating "wait"
+      set ::fics::waitForRating wait
       writechan "finger $black /s"
-      vwaitTimed ::fics::waitForRating 2000 "nowarn"
-      if {$::fics::waitForRating == "wait"} { set ::fics::waitForRating "0" }
+      vwaitTimed ::fics::waitForRating 2000 nowarn
+      if {$::fics::waitForRating == "wait"} {set ::fics::waitForRating 0}
       sc_game tags set -black $black
       sc_game tags set -blackElo $::fics::waitForRating
       sc_game tags set -date [::utils::date::today]
       
       set ::fics::waitForRating ""
       
-      sc_game tags set -event "Fics game $gameNumber $initialTime/$increment"
+      sc_game tags set -event "FICs Game $gameNumber $initialTime/$increment"
       
       # try to get first moves of game
       writechan "moves $gameNumber"

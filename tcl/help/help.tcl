@@ -85,6 +85,8 @@ To start FICS use <run ::fics::config><green>Play--<gt>FICS (Internet)</green></
 <br>
 <li><a FICSfindopp>Finding an Opponent</a></li>
 <br>
+<li><a FICSobserve>Observing Games</a></li>
+<br>
 <li><a FICScommands>Fics Commands and Variables</a></li>
 <br>
 <li><a FICStraining>Other Features</a></li>
@@ -5431,6 +5433,12 @@ Scid does not support any of these variations.
 </i></p>
 
   <p><footer>Updated: Scid vs. PC 3.4.1, September 2010</footer></p>
+}
+# FICS Find Opponent
+set helpTitle(FICSobserve) "Observing Games"
+set helpText(FICSobserve) {<h1>Observing Games</h1>
+  <p>
+  </p>
 }
 
 set helpTitle(FICSwidget) "Fics: Play on the Internet"

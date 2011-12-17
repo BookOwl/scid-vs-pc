@@ -666,6 +666,11 @@ R0lGODlhCgAKAIABAAAAAP///yH5BAEKAAEALAAAAAAKAAoAAAIPjI+pa+D/
 GnRoqrgA26wAADs=
 }
 
+image create photo arrow_close -format gif -data {
+R0lGODlhDAAMAIABAAAAAP///yH5BAEKAAEALAAAAAAMAAwAAAIVjI+pCQjt
+4FtvrmBp1SYf2IHXSI4FADs=
+}
+
 ### Array recording which databases have been sorted, and which field and order
 
 array set glistSortColumn {}
