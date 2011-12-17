@@ -8,8 +8,10 @@ namespace eval fics {
   set server "freechess.org"
   set sockchan 0
   set seeklist {}
-  set observedGame -1
+  set mainGame -1
+  set observedGames {}
   set playing 0
+  set opponent {}
   set waitForRating ""
   set waitForMoves ""
   set sought 0
@@ -274,7 +276,6 @@ namespace eval fics {
     frame $w.bottom.buttons
     frame $w.bottom.clocks
     frame $w.bottom.graph 
-
     pack $w.bottom.clocks -side left -padx 10 -pady 5
 
     label $w.bottom.clocks.ping -textvar ::fics::ping
@@ -340,8 +341,8 @@ namespace eval fics {
     focus $w.command.entry
 
     # clock 1 is white
-    ::gameclock::new $w.bottom.clocks 1 100 0
-    ::gameclock::new $w.bottom.clocks 2 100 0
+    ::gameclock::new $w.bottom.clocks 2 100 0 vertical
+    ::gameclock::new $w.bottom.clocks 1 100 0 vertical
     set ::fics::playing 0
 
     set row 0
@@ -421,8 +422,8 @@ namespace eval fics {
     grid $w.bottom.buttons.findopp -column 0 -row $row -sticky ew -padx 3 -pady 2
     grid $w.bottom.buttons.cancel -column 2 -row $row -sticky ew -padx 3 -pady 2
 
-    bind $w <Control-q> "::fics::close"
-    bind $w <Destroy>   "::fics::close"
+    bind $w <Control-q> ::fics::close
+    bind $w <Destroy>   ::fics::close
     bind $w <Configure> "::fics::recordFicsSize $w"
 
     bind $w <F1> {helpWindow FICS}
@@ -543,7 +544,7 @@ namespace eval fics {
       return
     }
     writechan $l "echo"
-    # &&& for TESTING comment above
+
     lappend ::fics::history $l
     set ::fics::history_pos [llength $::fics::history]
     $w.console.text yview moveto 1
@@ -719,10 +720,6 @@ namespace eval fics {
   ################################################################################
   proc parseSoughtLine { l } {
     global ::fics::offers_minelo ::fics::offers_maxelo ::fics::offers_mintime ::fics::offers_maxtime
-    # it seems that the first offer starts with a prompt
-    if {[string match "fics% *" $l]} {
-      set l [string range $l 6 end]
-    }
 
     if { [ catch { if {[llength $l] < 8} { return 0} } ] } { return 0}
 
@@ -767,7 +764,13 @@ namespace eval fics {
   proc readparse {line} {
     variable logged
 
-    if {$line == "" || $line == "fics% "} {return}
+    # what is the significance of the fics prompt "fics%"
+    if {[string match {fics% *} $line]} {
+	set line [string range $line 6 end]
+    }
+
+    if {$line == ""} {return}
+
     if { $::fics::sought } {
       if {[string match "* ad* displayed." $line]} {
         set ::fics::sought 0
@@ -793,14 +796,17 @@ namespace eval fics {
       set logged 1
       return
     }
+
     if {[string match "<sc>*" $line]} {
       set ::fics::seeklist {}
       return
     }
+
     if {[string match "<s>*" $line]} {
       parseSeek $line
       return
     }
+
     if {[string match "<sr>*" $line]} {
       removeSeek $line
       return
@@ -811,8 +817,69 @@ namespace eval fics {
       return
     }
 
-    # puts "readparse->$line"
     updateConsole $line
+
+    if { [string match "You are now observing game*" $line] } {
+      scan $line "You are now observing game %d." game
+      set w .fics
+      lappend ::fics::observedGames $game
+
+      frame $w.bottom.game$game
+      ::board::new $w.bottom.game$game.bd 30 1
+      # At bottom we have White and Buttons
+      frame $w.bottom.game$game.w
+      label $w.bottom.game$game.w.white -text {} -font font_Small
+      # At top we have Black and Result
+      frame $w.bottom.game$game.b 
+      label $w.bottom.game$game.b.black -text {} -font font_Small
+      label $w.bottom.game$game.b.result -text {} -font font_Small
+
+      button $w.bottom.game$game.w.close -image arrow_down -font font_Small -relief flat -command "
+	bind .fics <Destroy> {}
+	destroy .fics.bottom.game$game
+	bind .fics <Destroy> ::fics::close
+
+	set i \[lsearch -exact \$::fics::observedGames $game\]
+	if {\$i > -1} {
+	      set ::fics::observedGames \[lreplace \$::fics::observedGames \$i \$i\]
+	}"
+
+      button $w.bottom.game$game.w.load -image arrow_up -font font_Small -relief flat -command "
+	set ::fics::mainGame $game
+	$w.bottom.game$game.w.close invoke
+      "
+
+      # button $w.bottom.game$game.w.flip -text flip -font font_Small -relief flat -command ""
+
+    if {[catch {
+	pack $w.bottom.game$game -side left -before $w.bottom.clocks 
+	}]} {
+	pack $w.bottom.game$game -side left -before $w.bottom.graph
+      }
+
+      pack $w.bottom.game$game.b  -side top -anchor w -expand 1 -fill x
+      pack $w.bottom.game$game.b.black -side left -anchor w
+      pack [frame $w.bottom.game$game.b.space -width 20] \
+           $w.bottom.game$game.b.result -side right
+      pack $w.bottom.game$game.bd -side top
+      pack $w.bottom.game$game.w -side top -expand 1 -fill x
+      pack $w.bottom.game$game.w.white -side left -anchor w
+      pack [frame $w.bottom.game$game.w.space -width 20] \
+           $w.bottom.game$game.w.close $w.bottom.game$game.w.load -side right 
+      ### ::board::material needs fixing before it can display material ???
+      ### must "unobserve" when playing a new game! ???
+      return
+    }
+
+    ### Removing game 393 from observation list.
+    if { [string match "Removing game *" $line] } {
+      scan $line "Removing game %d from observation list." game
+      set i [lsearch -exact $::fics::observedGames $game]
+      if {$i > -1} {
+	    set ::fics::observedGames [lreplace $::fics::observedGames $i $i]
+      }
+      return
+    }
 
     if {[string match "Creating: *" $line]} {
       catch {destroy .ficsOffers}
@@ -838,7 +905,6 @@ namespace eval fics {
       if { $whiteElo == "++++"} { set whiteElo 0 }
       if { $blackElo == "++++"} { set blackElo 0 }
 
-
       if { [ string match -nocase $white $::fics::reallogin ] } {
 	### 1 = game_start/my move, 0 = not playing, -1 = opponents move
 	set ::fics::playing 1
@@ -851,6 +917,15 @@ namespace eval fics {
       sc_game tags set -black $black
       sc_game tags set -blackElo $blackElo
       sc_game tags set -date [::utils::date::today]
+
+      if {$::fics::reallogin == $white} {
+        set ::fics::opponent $black 
+      } elseif {$::fics::reallogin == $black} {
+        set ::fics::opponent $white
+      } else {
+        set ::fics::opponent {}
+      }
+        
       
       # line: "Creating: hruvulum (1079) stevenaaus (1148) rated blitz 2 18"
       # resumed game line is different though
@@ -872,7 +947,7 @@ namespace eval fics {
       showGraph
 
       # display the win / draw / loss score
-      ::fics::writechan "assess" "noecho"
+      ::fics::writechan assess noecho
       set ::fics::ignore_abort 0
       set ::fics::ignore_takeback 0
       set ::fics::ignore_draw 0
@@ -882,10 +957,13 @@ namespace eval fics {
       return
     }
 
+    # {Game 331 (AmorVerus vs. killerbie) killerbie checkmated} 1-0
+
     if {[string match "\{Game *" $line]} {
       set num [lindex [lindex $line 0] 1]
       set res [lindex $line end]
-      if {$num == $::fics::observedGame} {
+
+      if {$num == $::fics::mainGame} {
         if {[string match "1/2*" $res]} {
           tk_messageBox -title "Game result" -icon info -type ok -message "Draw"
         } else {
@@ -906,15 +984,16 @@ namespace eval fics {
         catch {sc_game save [sc_game number]}
         updateBoard -pgn
         set ::fics::playing 0
-        set ::fics::observedGame -1
+        set ::fics::mainGame -1
         set ::pause 0
         updateBoard -pgn
-      }
+      } else {
+         # Add result to black label
+         catch {
+	  .fics.bottom.game$num.b.result configure -text $res
+         }
+      } 
       return
-    }
-
-    if { [string match "You are now observing game*" $line] } {
-      scan $line "You are now observing game %d." ::fics::observedGame
     }
 
     if {[string match "*Starting FICS session*" $line]} {
@@ -1077,15 +1156,13 @@ namespace eval fics {
 
     # colors defined line 281
 
-    if {[string match {fics% *} $line]} {
-	set line [string range $line 6 end]
-    }
-
     switch -glob $line {
 	{\{Game *\}}	{ $t insert end "$line\n" game }
 	{\{Game *\} *}	{ $t insert end "$line\n" gameresult
                           if {[regexp {.* ([^ ]*) forfeits on time*} $line t1 t2]} {
-                              ::commenteditor::appendComment "$t2 forfeits on time"
+                              if {$t2 == [sc_game tags get Black] || $t2 == [sc_game tags get White]} {
+				::commenteditor::appendComment "$t2 forfeits on time"
+                              }
                           } 
                         }
 	{Auto-flagging*} {$t insert end "$line\n"
@@ -1290,10 +1367,35 @@ namespace eval fics {
 
     # todo: use little boards for following
     # <12> r-----k- p----ppp ---rq--- --R-p--- -------- ------PP --R--P-- ------K- W -1 0 0 0 0 2 182 stevenaaus DRSlay 1 5 12 13 24 84 28 32 Q/e7-e6 (0:40) Qe6 0 1 77
+
     set color [lindex $line 9]
     set gameNumber [lindex $line 16]
+
+    ### Observed games are a row of small boards down the bottom left 
+    if {[lsearch -exact $::fics::observedGames $gameNumber] > -1} {
+      if {$color == "W"} {
+	.fics.bottom.game$gameNumber.w.white configure -text "[lindex $line 17] ([lindex $line 24] secs) X"
+	.fics.bottom.game$gameNumber.b.black configure -text "[lindex $line 18] ([lindex $line 25] secs)"
+      } else {
+	.fics.bottom.game$gameNumber.w.white configure -text "[lindex $line 17] ([lindex $line 24] secs)"
+	.fics.bottom.game$gameNumber.b.black configure -text "[lindex $line 18] ([lindex $line 25] secs) X"
+      }
+      set moves [lreverse [lrange $line 1 8]]
+      set boardmoves [string map { "-" "." " " "" } $moves]
+      ::board::update .fics.bottom.game$gameNumber.bd $boardmoves 1
+      return
+    }
+
     set white [lindex $line 17]
     set black [lindex $line 18]
+
+    # if playername is not white or black, then we unobserve game, as its not in $observedGames
+    if {$::fics::reallogin != $white && $::fics::reallogin != $black && $gameNumber != $::fics::mainGame} {
+      puts CLEANUP
+      ::fics::writechan "unobserve $gameNumber"
+      return
+    }
+
     set relation [lindex $line 19]
     set initialTime [lindex $line 20]
     set increment [lindex $line 21]
@@ -1312,7 +1414,7 @@ namespace eval fics {
       # -1 I am playing, it is my opponent's move
       #  1 I am playing and it is my move
       #  0 I am observing a game being played
-    set ::fics::observedGame $gameNumber
+    set ::fics::mainGame $gameNumber
 
     ::gameclock::setSec 1 [ expr 0 - $whiteRemainingTime ]
     ::gameclock::setSec 2 [ expr 0 - $blackRemainingTime ]
@@ -1438,6 +1540,7 @@ namespace eval fics {
       if {$::fics::waitForRating == "wait"} { set ::fics::waitForRating "0" }
       sc_game tags set -black $black
       sc_game tags set -blackElo $::fics::waitForRating
+      sc_game tags set -date [::utils::date::today]
       
       set ::fics::waitForRating ""
       
@@ -1643,17 +1746,7 @@ namespace eval fics {
     $w.c raise game_$idx
 
   }
-  ################################################################################
-  # hmmm.. not very  unique procname S.A.
-  ################################################################################
-  proc play {index} {
-    writechan "play $index"
-    # set ::fics::playing 1
-    set ::fics::observedGame $index
-  }
-  ################################################################################
-  #
-  ################################################################################
+
   proc writechan {line {echo "noecho"}} {
     after cancel ::fics::stayConnected
     if {[eof $::fics::sockchan]} {
@@ -1704,7 +1797,7 @@ namespace eval fics {
       }
     }
     set ::fics::playing 0
-    set ::fics::observedGame -1
+    set ::fics::mainGame -1
     # Hmmm... why do we need to catch these ?
     catch { ::close $::fics::sockchan }
     catch { ::close $::fics::sockping }

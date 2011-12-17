@@ -435,7 +435,7 @@ namespace eval gameclock {
 	  pack $data(id$n) -side right -padx 10 -pady 10
       }
     } else {
-      pack $data(id$n) -side top -anchor center
+      pack $data(id$n) -side top -anchor center -pady 5
     }
 
     ### Draw digits 1 to 12 (tagged with "clock")
