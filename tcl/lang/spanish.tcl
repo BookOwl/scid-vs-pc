@@ -1517,7 +1517,7 @@ translate S KingsIndianMainLine {Linea Principal India de Rey}
 
 #fics
 translate S ConfigureFics {Configurar FICS}
-translate S FICSLogin {Usuario}
+translate S FICSLogin {Autentificar}
 translate S FICSGuest {Autentificación como invitado}
 translate S FICSServerPort {Puerto del servidor}
 translate S FICSServerAddress {Dirección IP}
