@@ -5458,12 +5458,15 @@ where the options are:
   One can also browse all current games using the <b>games</b> command, and type <b>unobserve</b> to stop following all games.
   </p>
   <p>
-  Observed games are shown as small boards in Scid's FICS widget. These boards also have two small buttons.
+  Observed games are shown as small boards in Scid's FICS widget. The boards' size is controlled by a slider,
+  and they have two small buttons:
   <ul>
   <li><img arrow_up> will load the game into Scid's main board, allowing analysis and saving of the game.
   <i>Note: Doing this with blitz games on slow internet connections can be
   troublesome, and it is disabled for </i><b>variants</b>.</li>
   <li><img arrow_close> Closes the game.</li>
+  </ul>
+  
   </p>
 
   <h3>Discussion</h3>

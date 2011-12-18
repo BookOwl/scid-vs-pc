@@ -32,6 +32,7 @@ namespace eval fics {
   variable logged 0
   set consolewidth 40
   set consoleheight 10
+  set size 30
 
   set ignore_abort 0
   set ignore_adjourn 0
@@ -276,6 +277,10 @@ namespace eval fics {
     frame $w.bottom.buttons
     frame $w.bottom.clocks
     frame $w.bottom.graph 
+    scale $w.bottom.scale -orient vertical -from 45 -to 25 -showvalue 0 -resolution 5 \
+      -variable ::fics::size -command ::fics::changeScaleSize -relief flat
+
+    pack $w.bottom.scale -side left -padx 5 -pady 20 -expand 1 -fill y
     pack $w.bottom.clocks -side left -padx 10 -pady 5
 
     label $w.bottom.clocks.ping -textvar ::fics::ping
@@ -485,6 +490,12 @@ namespace eval fics {
     if { ! $::windowsOS } {
       initPing
     }
+  }
+
+  proc changeScaleSize {size} {
+      foreach game $::fics::observedGames {
+        ::board::resize .fics.bottom.game$game.bd $size
+      }
   }
 
   proc recordFicsSize {w} {
@@ -836,7 +847,7 @@ namespace eval fics {
       lappend ::fics::observedGames $game
 
       frame $w.bottom.game$game
-      ::board::new $w.bottom.game$game.bd 30 1
+      ::board::new $w.bottom.game$game.bd $::fics::size 1
       # At bottom we have White and Buttons
       frame $w.bottom.game$game.w
       label $w.bottom.game$game.w.white -text {} -font font_Small
@@ -871,11 +882,7 @@ namespace eval fics {
 
       # button $w.bottom.game$game.w.flip -text flip -font font_Small -relief flat -command ""
 
-    if {[catch {
-	pack $w.bottom.game$game -side left -before $w.bottom.clocks 
-	}]} {
-	pack $w.bottom.game$game -side left -before $w.bottom.graph
-      }
+      pack $w.bottom.game$game -side left -before $w.bottom.scale 
 
       pack $w.bottom.game$game.b  -side top -anchor w -expand 1 -fill x
       pack $w.bottom.game$game.b.black -side left -anchor w
