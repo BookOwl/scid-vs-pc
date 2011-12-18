@@ -766,63 +766,72 @@ namespace eval fics {
   proc readparse {line} {
     variable logged
 
-    # what is the significance of the fics prompt "fics%"
+    ### what is the significance of the fics prompt "fics%" &&&
     if {[string match {fics% *} $line]} {
 	set line [string range $line 6 end]
     }
 
-    if {$line == ""} {return}
-
     if { $::fics::sought } {
       if {[string match "* ad* displayed." $line]} {
-        set ::fics::sought 0
-        catch { displayGraph }
-        return
+	set ::fics::sought 0
+	catch { displayGraph }
+	return
       }
       # lappend ::fics::soughtlist $line
       if { [ parseSoughtLine $line ] } {
+	return
+      }
+    }
+
+    switch -glob $line {
+      {} {return}
+
+      {login: } {
+	writechan $::fics::reallogin
+	if { [string match -nocase guest $::fics::reallogin ] } {
+	  set logged 1
+	}
+	return
+      }
+
+      {password: } {
+	writechan $::fics::password
+	set logged 1
+	return
+      }
+
+      {<sc>*} {
+	set ::fics::seeklist {}
+	return
+      }
+
+      {<s>*} {
+	parseSeek $line
+	return
+      }
+
+      {<sr>*} {
+	removeSeek $line
+	return
+      }
+
+      {<12>*} {
+	parseStyle12 $line
+	return
+      }
+
+      {<b1>*} {
+        # variants info lines
         return
       }
-    }
-
-    if {[string match "login: " $line]} {
-      writechan $::fics::reallogin
-      if { [string match -nocase guest $::fics::reallogin ] } {
-        set logged 1
-      }
-      return
-    }
-
-    if {[string match "password: " $line]} {
-      writechan $::fics::password
-      set logged 1
-      return
-    }
-
-    if {[string match "<sc>*" $line]} {
-      set ::fics::seeklist {}
-      return
-    }
-
-    if {[string match "<s>*" $line]} {
-      parseSeek $line
-      return
-    }
-
-    if {[string match "<sr>*" $line]} {
-      removeSeek $line
-      return
-    }
-
-    if {[string match "<12>*" $line]} {
-      parseStyle12 $line
-      return
     }
 
     updateConsole $line
 
     if { [string match "You are now observing game*" $line] } {
       scan $line "You are now observing game %d." game
+      ## if it's the mainGame, we'll load it later.
+      if {$game == $::fics::mainGame} {return}
       set w .fics
       lappend ::fics::observedGames $game
 
@@ -847,8 +856,17 @@ namespace eval fics {
 	}"
 
       button $w.bottom.game$game.w.load -image arrow_up -font font_Small -relief flat -command "
-	set ::fics::mainGame $game
-	$w.bottom.game$game.w.close invoke
+        if {\[lsearch -exact \$::fics::observedGames $game\] > -1} {
+	  set ::fics::mainGame $game
+	  ::fics::writechan \"unobserve $game\"
+	  $w.bottom.game$game.w.close invoke
+	  ::fics::writechan \"observe $game\"
+        } else {
+          # close game if it is finished
+          bind .fics <Destroy> {}
+	  destroy .fics.bottom.game$game
+	  bind .fics <Destroy> ::fics::close
+        }
       "
 
       # button $w.bottom.game$game.w.flip -text flip -font font_Small -relief flat -command ""
@@ -913,6 +931,7 @@ namespace eval fics {
       } else {
 	set ::fics::playing -1
       }
+      set ::fics::mainGame -1 ; # to nix any previous observed games in the main window
 
       sc_game tags set -white $white
       sc_game tags set -whiteElo $whiteElo
@@ -992,10 +1011,35 @@ namespace eval fics {
       } else {
          # Add result to black label
          catch {
-	  .fics.bottom.game$num.b.result configure -text $res
+	  .fics.bottom.game$num.b.result configure -text \
+          "[.fics.bottom.game$num.b.result cget -text] ($res)"
+         }
+         # remove game from observedGames
+	 set i [lsearch -exact $::fics::observedGames $num]
+	 if {$i > -1} {
+	   set ::fics::observedGames [lreplace $::fics::observedGames $i $i]
          }
       } 
       return
+    }
+
+    if {[string match "Game * rated *" $line]} {
+      ### get observed game rating info
+      # Game 237: impeybarbicane (1651) bust (1954) rated crazyhouse 5 0
+      if {[scan $line {Game %d: %s} g tmp]} {
+	set i [string last rated $line]
+        set rated [string range $line $i+6 end]
+        catch {
+	  .fics.bottom.game$g.b.result configure -text $rated
+        }
+        # disable load button if non-standard game
+        set rated [lindex $rated 0]
+        if {$rated != {} && $rated != {blitz} && $rated != {lightning} && $rated != {standard}} {
+	  catch {
+	    pack forget .fics.bottom.game$g.w.load
+	  }
+        }
+      }
     }
 
     if {[string match "*Starting FICS session*" $line]} {
@@ -1372,7 +1416,6 @@ namespace eval fics {
 
     set color [lindex $line 9]
     set gameNumber [lindex $line 16]
-
     ### Observed games are a row of small boards down the bottom left 
     if {[lsearch -exact $::fics::observedGames $gameNumber] > -1} {
       if {$color == "W"} {
@@ -1507,6 +1550,9 @@ namespace eval fics {
     } else {
       set ::fics::playerslastmove $moveSan
     }
+# update
+# hm.... we arent quick enough
+# && and we end up saving game at each fail! bad
 
     if {$fen != [sc_pos fen]} {
 
@@ -1522,7 +1568,9 @@ namespace eval fics {
 
       puts "Debug fen \n$fen\n[sc_pos fen]"
       
-      catch {sc_game save [sc_game number]}
+      if {$white == $::fics::reallogin || $black == $::fics::reallogin} {
+	catch {sc_game save [sc_game number]}
+      }
       sc_game new
       set ::fics::playing 1
       

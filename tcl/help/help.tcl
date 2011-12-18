@@ -43,7 +43,7 @@ sorts; but has evolved into a powerful general-purpose Chess Toolkit.
 <li>Rewritten Gamelist with improved functionality and the Database Switcher incorporated.</li>
 <li>The Options widgets have been totally overhauled with new colours, tile themes and pieces.</li>
 <li>A right-click menu for hiding/unhiding any part of the main window.</li>
-<li>Improved Tactical Game and FICs features.</li>
+<li>Improved Tactical Game and FICS features.</li>
 <li>Chess figurines in the PGN window.</li>
 <li>Clickable Variation Arrows, and Paste Variation feature.</li>
 <li>Redone Button bar, Toolbar and Icons.</li>
@@ -61,8 +61,8 @@ widespread changes to SCID's tcl codebase are not justified for some trivial and
   <p><footer>Updated: Scid vs. PC 4.6 August 2011 </footer></p>
 }
 
-set helpTitle(FICS) "Fics"
-set helpText(FICS) {<h1>Fics</h1>
+set helpTitle(FICS) "FICS"
+set helpText(FICS) {<h1>FICS</h1>
 <ul>
 <p>
 The Free Internet Chess Server (FICS) is a web portal where people from
@@ -81,15 +81,13 @@ To start FICS use <run ::fics::config><green>Play--<gt>FICS (Internet)</green></
 
 <li><a FICSlogin>Logging In</a>
 <br>
-<li><a FICSwidget>The Fics Widget</a></li>
+<li><a FICSwidget>The FICS Widget</a></li>
 <br>
 <li><a FICSfindopp>Finding an Opponent</a></li>
 <br>
-<li><a FICSobserve>Observing Games</a></li>
+<li><a FICSobserve>Observing Games</a> and other features</li>
 <br>
-<li><a FICScommands>Fics Commands and Variables</a></li>
-<br>
-<li><a FICStraining>Other Features</a></li>
+<li><a FICScommands>FICS Commands and Variables</a></li>
 </ul>
 <br>
   <p><footer>Updated: Scid vs. PC 3.4.1, September 2010</footer></p>
@@ -423,7 +421,6 @@ set helpText(Index) {<h1>Scid Help Index</h1>
   <li><a Tourney>Tournament</a>of Chess Engines</li>
   <li><a Tmt>Tournament finder</a></li>
   <li><a FindBestMove>Training: Find best move</a></li>
-  <li><a FICStraining>Training: FICS lectures</a></li>
   <li><a Tree>Tree window</a></li>
   <li><a Moves Trial>Trial mode</a></li>
   <li><a Maintenance Twins>Twin (duplicate) games</a></li>
@@ -438,6 +435,7 @@ set helpText(Index) {<h1>Scid Help Index</h1>
   <h3><name V>V</name></h3>
   <ul>
   <li><a Variations>Variations</a></li>
+  <li><a FICSobserve>Variants</a> on FICS</li>
   </ul>
 
   <h3><name W>W</name></h3>
@@ -4170,8 +4168,8 @@ set helpText(Related) {<h1>Related Links</h1>
   <br>
   <li>Scid <url http://scid.sourceforge.net/>http://scid.sourceforge.net/</url></li>
   <li>Scid mailing list  <url http://sourceforge.net/mailarchive/forum.php?forum_name=scid-users>http://sourceforge.net/mailarchive/forum.php...</url></li>
-  <li>Fics homepage  <url http://www.freechess.org>www.freechess.org</url></li>
-  <li>Fics games <url http://ficsgames.com>http://ficsgames.com</url></li>
+  <li>FICS homepage  <url http://www.freechess.org>www.freechess.org</url></li>
+  <li>FICS games <url http://ficsgames.com>http://ficsgames.com</url></li>
   <li>Player Information resources  <url http://linweb.ris.at/~nagl/index.html>http://linweb.ris.at/~nagl</url></li>
   <li>Professional quality chess icons  <url www.virtualpieces.net>www.virtualpieces.net</url></li>
   <li>Tango Icons <url http://tango.freedesktop.org/Tango_Desktop_Project>http://tango.freedesktop.org/Tango_Desktop_Project</url></li>
@@ -5331,14 +5329,14 @@ set helpText(FindBestMove) {<h1>Training: Find Best Move</h1>
 }
 
 # FICS Login
-set helpTitle(FICSlogin) "Fics Login"
-set helpText(FICSlogin) {<h1>Fics Login</h1>
+set helpTitle(FICSlogin) "FICS Login"
+set helpText(FICSlogin) {<h1>FICS Login</h1>
 
-<p><i>Fics supports anonymous login, but you'll find more people to play if you visit
+<p><i>FICS supports anonymous login, but you'll find more people to play if you visit
 <url http://www.freechess.org>www.freechess.org</url> first and create an account.
 If you're having problems logging in, try deselecting "timeseal".</i></p>
   <ul>
-      <li><term>Username</term> This is your login name on the Fics
+      <li><term>Username</term> This is your login name on the FICS
       server. To login anonymously, use the "Login as guest" button </li>
       <li><term>Password:</term> Note: this password is not displayed when you type,
       but it is <b>stored in plain text</b> within Scids configuration. If you are
@@ -5346,7 +5344,7 @@ If you're having problems logging in, try deselecting "timeseal".</i></p>
       proper rights to Scids config directory.
       </li>
       <li><term>Time seal</term> If checked, all connections to the
-      Fics server are routed through the (optional) timeseal
+      FICS server are routed through the (optional) timeseal
 program. Its purpose is to cope with network lags and keep the clocks in
 correct order, which can otherwise create problems on slow network
 connections.
@@ -5395,7 +5393,7 @@ Options:
       <li><term>Confirm manually</term> Allows you to confirm or deny a challenge.</li>
       <li><term>Color</term> Select whether to play White or Black or Auto.</li>
       <li><term>Limit rating between</term> Only play those with a given rating interval.</li>
-      <li><term>Filter with formula</term> On Fics every player can
+      <li><term>Filter with formula</term> On FICS every player can
       set a formula that describes what challenges will be denied
       automatically. This formula can be enabled by checking this box.
       </li>
@@ -5407,7 +5405,7 @@ Options:
     <p>The <term>Offers graph</term> shows all current game offers. Hovering
 your mouse over a node will show it's details, and clicking a node will
 (attempt to) start a new game. Sometimes you'll have to be quick though, as
-Fics can be quite busy.</p>
+FICS can be quite busy.</p>
 
 <p> On the graph itself, The y-axis shows the ELO rating of the opponent -
 higher number means stronger player , while x-axis of the graph plots the time
@@ -5428,8 +5426,8 @@ Additionally, the offers use the following coding:
 
 <p>
 <i>
-Note Fics also offers a bunch of chess variants like bughouse or crazyhouse but
-Scid does not support any of these variations.
+Note FICS also offers a bunch of chess variants like bughouse or crazyhouse.
+Playing these games is not supported, but they can be oberved using the </b>observe</b> command.
 </i></p>
 
   <p><footer>Updated: Scid vs. PC 3.4.1, September 2010</footer></p>
@@ -5438,22 +5436,91 @@ Scid does not support any of these variations.
 set helpTitle(FICSobserve) "Observing Games"
 set helpText(FICSobserve) {<h1>Observing Games</h1>
   <p>
+  FICS has many powerful commands. The format for observing other games is
+<b>observe player | game | /l | /b | /s | /S | /w | /z | /B | /L | /x</b>
+<br>
+where the options are:
+<ul>
+<li>game:   Observe the given game number</li>
+<li>player: Observe the given players game</li>
+<li>/l:     Observe the highest rated lightning game</li>
+<li>/b:     Observe the highest rated blitz game</li>
+<li>/s:     Observe the highest rated standard game</li>
+<li>/S:     Observe the highest rated suicide game</li>
+<li>/w:     Observe the highest rated wild game</li>
+<li>/z:     Observe the highest rated crazyhouse game</li>
+<li>/B:     Observe the highest rated bughouse game</li>
+<li>/L:     Observe the highest rated losers game</li>
+<li>/x:     Observe the highest rated atomic game </li>
+</ul>
   </p>
+  <p>
+  One can also browse all current games using the <b>games</b> command, and type <b>unobserve</b> to stop following all games.
+  </p>
+  <p>
+  Observed games are shown as small boards in Scid's FICS widget. These boards also have two small buttons.
+  <ul>
+  <li><img arrow_up> will load the game into Scid's main board, allowing analysis and saving of the game.
+  <i>Note: Doing this with blitz games on slow internet connections can be
+  troublesome, and it is disabled for </i><b>variants</b>.</li>
+  <li><img arrow_close> Closes the game.</li>
+  </p>
+
+  <h3>Discussion</h3>
+  <p>
+  For discussing the game with other observers,
+  <b>whisper</b> and <b>kibitz</b> can be used. Please
+  refer to the online help of these commands. All these conversations
+  can be read in the console.
+  </p>
+
+  <h3>Relays</h3>
+  <p>
+  From time to time FICS <b>relays</b> major events in
+  international chess. In these cases one can observe the games life
+  on the server and discuss them with other users on FICS. To find out
+  what games are currently relayed (if any) one can ask the relay for
+  a list by <b>relay listgames</b>. As FICS expects the terminal
+  to have 80 chars width it might be necessary to resize Scids FICS
+  window to get a nice table. The entries in the table are, first the
+  game number, colon, than the opponents, the result of the game (*
+  signifying an ongoing game as usual) and the <a ECO>ECO code</a> of
+  the opening. 
+  </p>
+
+  <h3>Lectures</h3>
+
+  <p>
+  FICS offers several options for chess training. One of the more
+  prominent once are the lecture bots <b>LectureBot</b> and
+  <b>WesBot</b>. They run all the time on FICS and offer various
+  training sessions that can be visited using Scid. The start of each
+  session is announced on <b>Channel 67</b> of FICS. Therefore,
+  to see these announcements one should first add this channel to the
+  personal observation list. This can be done by <b>+channel
+  67</b> (it can be removed again by <b>-channel 67</b>).
+  Once e.g. LectureBot announces a training session, one can take part
+  by issuing <b>observe lecturebot</b>. Please refer to the
+  online documentation of FICS for additional features of the Bots and
+  also other bots available.
+  </p>
+
+  <p><footer>Updated: Scid vs. PC 4.7 December 2011</footer></p>
 }
 
-set helpTitle(FICSwidget) "Fics: Play on the Internet"
-set helpText(FICSwidget) {<h1>Using Fics</h1>
+set helpTitle(FICSwidget) "FICS: Play on the Internet"
+set helpText(FICSwidget) {<h1>Using FICS</h1>
   <p>
-Once you have <a FICSlogin>logged in</a>, the main Fics widget shows a
+Once you have <a FICSlogin>logged in</a>, the main FICS widget shows a
 console window, some command buttons, and clocks.</p>
 
-  <h3>Fics Console</h3>
+  <h3>FICS Console</h3>
   <p>
-  This is the main interface with the Fics server.
+  This is the main interface with the FICS server.
 
 <p> Interaction is via commands entered in the entry box, or by 
 the Command Buttons. For an outline of popular commands see the
-<a FICScommands><term>Commands</term></a> section.</p>
+<a FICScommands>Commands</a> section.</p>
 
   <h3>Console Colours</h3>
 <p>
@@ -5484,11 +5551,11 @@ Opponent</term> and <term>Offers Graph</term></a> buttons. Other buttons include
   <p><footer>Updated: Scid vs. PC 3.4.1, September 2010</footer></p>
 }
 
-set helpTitle(FICScommands) {Fics Commands and Variables}
-set helpText(FICScommands) {<h1>Fics Commands and Variables</h1>
+set helpTitle(FICScommands) {FICS Commands and Variables}
+set helpText(FICScommands) {<h1>FICS Commands and Variables</h1>
 
 <p>
-Fics' command line interface is fairly confusing,
+FICS' command line interface is fairly confusing,
 but below you'll find an outline of popular commands and
 variables.
 </p>
@@ -5514,7 +5581,7 @@ for info about specific commands and variables.
     <li><term>=channel</term>   Show channels player is listening to</li>
     <li><term>+channel</term> NUMBER - Listen to channel NUMBER</li>
     <li><term>-channel</term> NUMBER - Stop listening to channel</li>
-    <li><term>news</term>   Show Fics news</li>
+    <li><term>news</term>   Show FICS news</li>
     <li><term>seek</term>   Seek a new game</li>
     <li><term>=notify</term> - Display the player names of whom you are automatically notified.</li>
     <li><term>+notify</term> PLAYER - Add player to your notify list</li>
@@ -5562,55 +5629,6 @@ or
 <url http://www.freechess.org/Help/HelpFiles/commands.html>Commands</url>
 <br>
   <p><footer>Updated: Scid vs. PC 3.4.1, September 2010</footer></p>
-}
-
-set helpTitle(FICStraining) {Fics: Other Features}
-set helpText(FICStraining) {<h1>Other Fics Features</h1>
-
-  <h3><name Observe>Observing Games</h3>
-
-  <p>
-  From time to time FICS <term>relays</term> major events in
-  international chess. In these cases one can observe the games life
-  on the server and discuss them with other users on FICS. To find out
-  what games are currently relayed (if any) one can ask the relay for
-  a list by <term>relay listgames</term>. As FICS expects the terminal
-  to have 80 chars width it might be necessary to resize Scids FICS
-  window to get a nice table. The entries in the table are, first the
-  game number, colon, than the opponents, the result of the game (*
-  signifying an ongoing game as usual) and the <a ECO>ECO code</a> of
-  the opening. To observe a specific game one can just <term>observe
-  gamenumber</term>. Scid will then display the current board
-  position, the clocks will display the proper values sent by the
-  relay and it will fetch all moves of the game so far plus the usual
-  PGN header fields. If a player moves this move is performed in Scid
-  as usual. For discussing the game with other observers,
-  <term>whisper</term> and <term>kibitz</term> can be used. Please
-  refer to the online help of these commands. All these conversations
-  can be read in the console.
-  </p>
-  <p>
-  Note that only one game can be observed within Scid.
-  </p>
-
-  <h3>Lectures</h3>
-
-  <p>
-  FICS offers several options for chess training. One of the more
-  prominent once are the lecture bots <term>LectureBot</term> and
-  <term>WesBot</term>. They run all the time on FICS and offer various
-  training sessions that can be visited using Scid. The start of each
-  session is announced on <term>Channel 67</term> of FICS. Therefore,
-  to see these announcements one should first add this channel to the
-  personal observation list. This can be done by <term>+channel
-  67</term> (it can be removed again by <term>-channel 67</term>).
-  Once e.g. LectureBot announces a training session, one can take part
-  by issuing <term>observe lecturebot</term>. Please refer to the
-  online documentation of FICS for additional features of the Bots and
-  also other bots available.
-  </p>
-
-  <p><footer>Updated: Scid vs. PC 3.6.26.9, April 2010</footer></p>
 }
 
 # Book tuning
@@ -5715,7 +5733,7 @@ set helpText(Changelog) {<h1>Scid vs. PC</h1>
 <li>Always loads games at the correct game ply when using the tree and searches.</li>
 <li>Ratings graph can show multiple players (and there's a minimum ELO feature)</li>
 <li>Computer Tournament: Improvements for both Xboard and UCI engines, and implement the 50 move draw rule.</li>
-<li>Auto-promote feature for FICs</li>
+<li>Auto-promote feature for FICS</li>
 <li>Book tuning 'Remove move' feature</li>
 <li>Autoraise button raises all windows</li>
 <li>Annotation improvements, and it is now possible to score All moves while only annotating Blunders.</li>
@@ -5748,7 +5766,7 @@ set helpText(Changelog) {<h1>Scid vs. PC</h1>
 <li>Update 'Tips'</li>
 <li>Clarify Scid's maximum number of games</li>
 <li>Update Spanish and Polish translations</li>
-<li>Update FICs , PGN and Menu  language translations</li>
+<li>Update FICS , PGN and Menu  language translations</li>
 </ul>
 
 <h4>4.5 (August 10, 2011)</h4>
@@ -5768,7 +5786,7 @@ set helpText(Changelog) {<h1>Scid vs. PC</h1>
 <li>Tournament Finder is more readable</li>
 <li>Restore PGN scrollbar (pgn option)</li>
 <li>Phalanx now reads enpassant and 50 move field from FEN (thanks Bernhard Prümmer)</li>
-<li>FICs console fg and bg colours are now configurable</li>
+<li>FICS console fg and bg colours are now configurable</li>
 <li>Name Editor tidy up and documentation review</li>
 <li>Player Info: add a 'Refine Filter' result group</li>
 <li>Typing 'OO' castles (previously only 'OK','OQ')</li>
@@ -5830,7 +5848,7 @@ set helpText(Changelog) {<h1>Scid vs. PC</h1>
 <li>Opening Book and Book Tuning overhaul - allow two books to be opened with side-by-side sorting, and various interface improvements</li>
 <li>Overhaul Annotate widget - allow choice of scores/variation/both and remember annotation options </li>
 <li>Crosstable sort by Country feature</li>
-<li>Update Fics to allow for different Port/IP Address (using SCID code)</li>
+<li>Update FICS to allow for different Port/IP Address (using SCID code)</li>
 <li>Graph changes - remember widget settings, change colours+dot size, fix up half-move bug and a title misallignment, add 2010 decade</li>
 <li>Fix up the progress window grab when opening bases</li>
 <li>Add "Half moves" (moves since capture or pawn move) to setup board</li>
@@ -5867,9 +5885,9 @@ set helpText(Changelog) {<h1>Scid vs. PC</h1>
 <li> Database Switcher has been moved to the Gamelist Widget (and has some new icons)</li>
 <li> Gamelist can now perform logical ANDs in the search widget using "+", and include the date</li>
 <li> Gamelist now has remove-above and remove-below buttons.</li>
-<li> FICs improvements, including a ping feature to indicate network health (*nix only), and player communications are saved as PGN comments.</li>
-<li> FICs bug-fix: don't automatically accept rematches</li>
-<li> FICs "Opponent Info" button</li>
+<li> FICS improvements, including a ping feature to indicate network health (*nix only), and player communications are saved as PGN comments.</li>
+<li> FICS bug-fix: don't automatically accept rematches</li>
+<li> FICS "Opponent Info" button</li>
 <li> New Toolbar buttons: "Load First Game" , "Load Last Game"</li>
 <li> Bookmark Widget has been overhauled</li>
 <li> Analysis Engine's move history doesn't get spammed by "Mate in 1" (for eg) messages</li>
@@ -5914,7 +5932,7 @@ set helpText(Changelog) {<h1>Scid vs. PC</h1>
 
 <h4>4.1 (October 10, 2010)</h4>
 <ul>
-<li> Quite a few FICs tweaks, including new help pages and D.O.S. attack fixes</li>
+<li> Quite a few FICS tweaks, including new help pages and D.O.S. attack fixes</li>
 <li> Numerous Gamelist improvements (see below)</li>
 <li> Tree widget improvements: next move is highlighted, main filter is now independant of Tree filter, wheel mouse bindings.</li>
 <li> Tactics feature fixed up: Renamed "Puzzle" , and Problem Solutions can now be browsed in-game</li>
@@ -5996,7 +6014,7 @@ set helpText(Changelog) {<h1>Scid vs. PC</h1>
 <li>Small bugfix: variation pop-up could previously throw errors if moving through movs fast</li>
 <li>F1 *toggles* help window</li>
 <li>[Remove space-only lines from project - they mess up vim's paragraph traversal feature]</li>
-<li>Fics "withdraws offer" fix</li>
+<li>FICS "withdraws offer" fix</li>
 <li>Toolbar icons tweak</li>
 <li>Allow databses to have "." in their name</li>
 <li>Tactical Game stores game result</li>
@@ -6020,10 +6038,10 @@ set helpText(Changelog) {<h1>Scid vs. PC</h1>
 <li> Crosstable: make options persistant, tweak menus, fix html export blank fields </li>
 <li> Crosstable: allow spelling.ssp to match initalized christian names, include a Font button, fix parenting </li>
 <li> Change the toplevel "wm title" to show "White v. Black [database]" </li>
-<li> Fics: Make a new Received Offers dialog which allows for proper handling of multiple challenges </li> </li>
-<li> Fics: Tweak the Make Offer dialog </li>
-<li> Fics: update help files, and add a Font button </li>
-<li> Fics: some fixes from SCID </li>
+<li> FICS: Make a new Received Offers dialog which allows for proper handling of multiple challenges </li> </li>
+<li> FICS: Tweak the Make Offer dialog </li>
+<li> FICS: update help files, and add a Font button </li>
+<li> FICS: some fixes from SCID </li>
 <li> Move the side-to-move  indicator to left of main board </li>
 <li> Make font dialogs resizable, add a "default" feature, a new "fixed" default, and small overhaul (hard work!) </li>
 <li> (Add a "Font" button to the help and crosstable widgets) </li>
@@ -6044,24 +6062,24 @@ set helpText(Changelog) {<h1>Scid vs. PC</h1>
 
 <h4>3.6.26.8 (December 19, 2009)</h4>
 <ul>
-<li> The Fics widgets have been redone, including buttons, the graph and labels, config windows, and console tweaks</li>
+<li> The FICS widgets have been redone, including buttons, the graph and labels, config windows, and console tweaks</li>
 <li> Made a few friendly help menus, as well as adding a "Forward" button to the help interface</li>
 <li> Fixed up the "Show Material" widget. It can now be flipped and resized, and draws pieces either side of halfway according to colour </li>
 <li> The main board area has a modest new right click menu for configuring a few Game Info items</li>
 <li> Configure Informant Values widget reniced</li>
 <li> Tacgame now has a "Stalemate" dialog</li>
-<li> Fics now show a warning when game board is out of sync</li>
-<li> A few fixes from Scid; not duplicating variations unnecessarily; Fics socket fixes; Uci responsiveness at game end </li>
+<li> FICS now show a warning when game board is out of sync</li>
+<li> A few fixes from Scid; not duplicating variations unnecessarily; FICS socket fixes; Uci responsiveness at game end </li>
 <li> The analysis engines now support RobboLito, and an unlimited number of engines</li>
 <li> The File::Open menus have had quite a bit of debugging </li>
 <li> Some new tile themes </li>
-<li> The pause mechanism for tacgame has be restructured to allow for use with Fics too</li>
+<li> The pause mechanism for tacgame has be restructured to allow for use with FICS too</li>
 <li> Some optimisations to the oft used tcl in htext.tcl</li>
 <li> The piece and size menus in the Options widget have been replaced by text buttons (and the merida2 pieces removed)</li>
 <li> Bugfixes:</li>
 <li> A hack to fix wayward comments (Scid)</li>
 <li> Don't let fischer chess (try to) castle </li>
-<li> Don't raise all windows with double click... (Very bad for Fics blitz) </li>
+<li> Don't raise all windows with double click... (Very bad for FICS blitz) </li>
 <li> Minor PGN window/comment strip fix </li>
 <li> Some widget reparenting </li>
 </ul>
@@ -6069,7 +6087,7 @@ set helpText(Changelog) {<h1>Scid vs. PC</h1>
 <h4>3.6.26.7 (October 25, 2009)</h4>
 <ul>
 <li> Include a mac configuration patch </li>
-<li> Back out broken Fics autoflag code </li>
+<li> Back out broken FICS autoflag code </li>
 <li> Fix sometime-issue with material widget outline </li>
 <li> Small change to Tacgame about getMyPlayerName </li>
 </ul>
@@ -6150,8 +6168,8 @@ tiles) and has improved functionality.  It also properly inits the
      Changes are now made dynamically to the main board.  </li>
 <li> Tweaked the pgn save menu, included a "Save Pgn" menu item in the
      "File" menu, and other pgn window bindings.  </li>
-<li> Added a Fics autoflag option (for logging in as guest), and other
-     Fics tweaks.  </li>
+<li> Added a FICS autoflag option (for logging in as guest), and other
+     FICS tweaks.  </li>
 <li> Don't allow null entry of "Elo" field in analysis engine customisation.</li>
 </ul>
 
@@ -6159,11 +6177,11 @@ tiles) and has improved functionality.  It also properly inits the
 <ul>
 <li> Game info panel restructured ;> </li>
 <li> New Berlin, Spatial chess pieces </li>
-<li> Fics and Fischer chess changes </li>
+<li> FICS and Fischer chess changes </li>
 <li> Overhauled comment editor widget, including key bindings </li>
 <li> More tacgame bug-fixes.  </li>
 <li> Removed the right_click::take_back_move... This is just too
-     dangerous for Fics (which really gets stuffed up). Mouse wheel
+     dangerous for FICS (which really gets stuffed up). Mouse wheel
      bindings remain.  </li>
 <li> Fixed more bugs in the tactical game feature.  </li>
 <li> Allow the main window to use wish-8.5 native fullscreen mode.  </li>
