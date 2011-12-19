@@ -11,6 +11,7 @@ namespace eval fics {
   set mainGame -1
   set observedGames {}
   set playing 0
+  set debug 0
   set opponent {}
   set waitForRating ""
   set waitForMoves ""
@@ -991,15 +992,6 @@ namespace eval fics {
       set res [lindex $line end]
 
       if {$num == $::fics::mainGame} {
-        if {[string match "1/2*" $res]} {
-          tk_messageBox -title "Game result" -icon info -type ok -message "Draw"
-        } else {
-          if {[regexp {.* ([^ ]*) resigns.*} $line t1 t2]} {
-	    ::commenteditor::appendComment "$t2 resigns"
-          }
-
-          tk_messageBox -title "Game result" -icon info -type ok -message "$res"
-        }
         # Game is over. Set result and save game
         ::gameclock::stop 1
         ::gameclock::stop 2
@@ -1013,7 +1005,15 @@ namespace eval fics {
         set ::fics::playing 0
         set ::fics::mainGame -1
         set ::pause 0
-        updateBoard -pgn
+        if {[string match "1/2*" $res]} {
+          tk_messageBox -title "Game result" -icon info -type ok -message "Draw"
+        } else {
+          if {[regexp {.* ([^ ]*) resigns.*} $line t1 t2]} {
+	    ::commenteditor::appendComment "$t2 resigns"
+          }
+
+          tk_messageBox -title "Game result" -icon info -type ok -message "$res"
+        }
       } else {
          # Add result to black label
          catch {
@@ -1050,7 +1050,7 @@ namespace eval fics {
 	      ::fics::writechan \"unobserve \$::fics::mainGame\"
 	      set ::fics::mainGame $g
 	      .fics.bottom.game$g.w.close invoke
-	      ::fics::parseStyle12 \"LoadObservedGame $white $whiteElo $black $blackElo\"
+	      ::fics::parseStyle12 \"LoadObservedGame $g $white $whiteElo $black $blackElo\"
 	    } else {
 	      # close game if it is finished
 	      bind .fics <Destroy> {}
@@ -1442,16 +1442,20 @@ namespace eval fics {
     # todo: use little boards for following
     # <12> r-----k- p----ppp ---rq--- --R-p--- -------- ------PP --R--P-- ------K- W -1 0 0 0 0 2 182 stevenaaus DRSlay 1 5 12 13 24 84 28 32 Q/e7-e6 (0:40) Qe6 0 1 77
  
+
     if {[string match LoadObservedGame* $line]} {
       ### Game handed over from observed games
+      set gameNumber [lindex $line 1]
       set LoadObservedGame $line
-      set line $::fics::lastline
+      set line [set ::fics::lastline$gameNumber]
     } else {
       set LoadObservedGame {}
-      set ::fics::lastline $line
+      set gameNumber [lindex $line 16]
+      set ::fics::lastline$gameNumber $line
     }
+
     set color [lindex $line 9]
-    set gameNumber [lindex $line 16]
+
     ### Observed games are a row of small boards down the bottom left 
     if {[lsearch -exact $::fics::observedGames $gameNumber] > -1} {
       if {$color == "W"} {
@@ -1589,6 +1593,10 @@ namespace eval fics {
     if {$fen == [sc_pos fen]} {
       updateBoard -pgn -animate
     } else {
+      if {$::fics::debug} {
+        return
+      }
+      set ::fics::debug 1
 
       ### Game out of sync, probably due to player takeback request (or opponent take back 2).
       ### (But this is also used to load observed games)
@@ -1606,7 +1614,7 @@ namespace eval fics {
 	catch {sc_game save [sc_game number]}
       }
       sc_game new
-      set ::fics::playing 1
+      # set ::fics::playing 1 ; Not right!
 
       if {$LoadObservedGame == {}} {
         ### Normal resumed game
@@ -1628,10 +1636,10 @@ namespace eval fics {
 	set ::fics::waitForRating ""
       } else {
         ### Game handed over from observed games
-	sc_game tags set -white    [lindex $LoadObservedGame 1]
-	sc_game tags set -whiteElo [lindex $LoadObservedGame 2]
-	sc_game tags set -black    [lindex $LoadObservedGame 3]
-	sc_game tags set -blackElo [lindex $LoadObservedGame 4]
+	sc_game tags set -white    [lindex $LoadObservedGame 2]
+	sc_game tags set -whiteElo [lindex $LoadObservedGame 3]
+	sc_game tags set -black    [lindex $LoadObservedGame 4]
+	sc_game tags set -blackElo [lindex $LoadObservedGame 5]
       }
       sc_game tags set -date [::utils::date::today]
 
@@ -1649,6 +1657,7 @@ namespace eval fics {
       }
       updateBoard -pgn -animate
     }
+    set ::fics::debug 0
   }
 
 
