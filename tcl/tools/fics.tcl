@@ -1033,8 +1033,10 @@ namespace eval fics {
       ### Get observed game Info
 
       # Game 237: impeybarbicane (1651) bust (1954) rated crazyhouse 5 0
-
-      if {[scan $line {Game %d: %s (%d) %s (%d) %s %s %d %d} g white whiteElo black blackElo dummy gametype t1 t2]} {
+puts $line
+      if {[scan $line {Game %d: %s %s %s %s %s %s %d %d} g white whiteElo black blackElo dummy gametype t1 t2]} {
+          set whiteElo [string range $whiteElo 1 end-1]
+          set blackElo [string range $blackElo 1 end-1]
 	  .fics.bottom.game$g.w.white configure -text $white
 	  .fics.bottom.game$g.w.whiteElo configure -text $whiteElo
 	  .fics.bottom.game$g.b.black configure -text $black
