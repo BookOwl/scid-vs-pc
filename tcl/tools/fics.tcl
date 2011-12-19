@@ -1018,7 +1018,8 @@ namespace eval fics {
          # Add result to black label
          catch {
 	  .fics.bottom.game$num.b.result configure -text \
-          "[.fics.bottom.game$num.b.result cget -text] ($res)"
+	    "[.fics.bottom.game$num.b.result cget -text] ($res)"
+          pack forget .fics.bottom.game$num.w.load
          }
          # remove game from observedGames
 	 set i [lsearch -exact $::fics::observedGames $num]
@@ -1033,7 +1034,6 @@ namespace eval fics {
       ### Get observed game Info
 
       # Game 237: impeybarbicane (1651) bust (1954) rated crazyhouse 5 0
-puts $line
       if {[scan $line {Game %d: %s %s %s %s %s %s %d %d} g white whiteElo black blackElo dummy gametype t1 t2]} {
           set whiteElo [string range $whiteElo 1 end-1]
           set blackElo [string range $blackElo 1 end-1]
