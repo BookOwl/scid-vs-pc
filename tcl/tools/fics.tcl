@@ -841,21 +841,30 @@ namespace eval fics {
     updateConsole $line
 
     if { [string match "You are now observing game*" $line] } {
+      # You are now observing game 193.
+      # Game 193: franky (1758) homeomorphism (1722) rated lightning 1 0
+
       scan $line "You are now observing game %d." game
-      ## if it's the mainGame, we'll load it later.
-      if {$game == $::fics::mainGame} {return}
+
+      ## if it's the mainGame, we'll load it later. (edit: not used now)
+      ## if {$game == $::fics::mainGame} {return}
+
       set w .fics
       lappend ::fics::observedGames $game
 
       frame $w.bottom.game$game
       ::board::new $w.bottom.game$game.bd $::fics::size 1
       # At bottom we have White and Buttons
+      # (note whiteElo, blackElo labels are not packed, only used for data should we load game
+      # data for these labels is read next line from fics
       frame $w.bottom.game$game.w
-      label $w.bottom.game$game.w.white -text {} -font font_Small
+      label $w.bottom.game$game.w.white  -font font_Small
+      label $w.bottom.game$game.w.whiteElo -font font_Small
       # At top we have Black and Result
       frame $w.bottom.game$game.b 
-      label $w.bottom.game$game.b.black -text {} -font font_Small
-      label $w.bottom.game$game.b.result -text {} -font font_Small
+      label $w.bottom.game$game.b.black -font font_Small
+      label $w.bottom.game$game.b.blackElo -font font_Small
+      label $w.bottom.game$game.b.result -font font_Small
 
       button $w.bottom.game$game.w.close -image arrow_close -font font_Small -relief flat -command "
 	bind .fics <Destroy> {}
@@ -867,19 +876,8 @@ namespace eval fics {
 	      set ::fics::observedGames \[lreplace \$::fics::observedGames \$i \$i\]
 	}"
 
-      button $w.bottom.game$game.w.load -image arrow_up -font font_Small -relief flat -command "
-        if {\[lsearch -exact \$::fics::observedGames $game\] > -1} {
-	  set ::fics::mainGame $game
-	  ::fics::writechan \"unobserve $game\"
-	  $w.bottom.game$game.w.close invoke
-	  ::fics::writechan \"observe $game\"
-        } else {
-          # close game if it is finished
-          bind .fics <Destroy> {}
-	  destroy .fics.bottom.game$game
-	  bind .fics <Destroy> ::fics::close
-        }
-      "
+      button $w.bottom.game$game.w.load -image arrow_up -font font_Small -relief flat 
+      # command done later
 
       # button $w.bottom.game$game.w.flip -text flip -font font_Small -relief flat -command ""
 
@@ -892,8 +890,8 @@ namespace eval fics {
       pack $w.bottom.game$game.bd -side top
       pack $w.bottom.game$game.w -side top -expand 1 -fill x
       pack $w.bottom.game$game.w.white -side left -anchor w
-      pack [frame $w.bottom.game$game.w.space -width 24] \
-           $w.bottom.game$game.w.close $w.bottom.game$game.w.load -side right 
+      pack [frame $w.bottom.game$game.w.space -width 20] \
+           $w.bottom.game$game.w.close $w.bottom.game$game.w.load -side right -padx 4
       ### ::board::material needs fixing before it can display material ???
       ### must "unobserve" when playing a new game! ???
       return
@@ -1031,22 +1029,42 @@ namespace eval fics {
       return
     }
 
-    if {[string match "Game * rated *" $line]} {
-      ### get observed game rating info
+    if {[string match "Game *rated *" $line]} {
+      ### Get observed game Info
+
       # Game 237: impeybarbicane (1651) bust (1954) rated crazyhouse 5 0
-      if {[scan $line {Game %d: %s} g tmp]} {
-	set i [string last rated $line]
-        set rated [string range $line $i+6 end]
-        catch {
-	  .fics.bottom.game$g.b.result configure -text $rated
-        }
-        # disable load button if non-standard game
-        set rated [lindex $rated 0]
-        if {$rated != {} && $rated != {blitz} && $rated != {lightning} && $rated != {standard}} {
-	  catch {
-	    pack forget .fics.bottom.game$g.w.load
+
+      if {[scan $line {Game %d: %s (%d) %s (%d) %s %s %d %d} g white whiteElo black blackElo dummy gametype t1 t2]} {
+	  .fics.bottom.game$g.w.white configure -text $white
+	  .fics.bottom.game$g.w.whiteElo configure -text $whiteElo
+	  .fics.bottom.game$g.b.black configure -text $black
+	  .fics.bottom.game$g.b.blackElo configure -text $blackElo
+	  .fics.bottom.game$g.b.result configure -text "$gametype $t1 $t2"
+	  .fics.bottom.game$g.w.load configure -command "
+	    if {\[lsearch -exact \$::fics::observedGames $g\] > -1} {
+	      ### Restart parseStyle12 with extra args and this game removed from observedGames
+	      ### (We *could* wait for hte next style12 line, but in slow games, this can take a long time)
+              # in case we're already observing a game
+	      ::fics::writechan \"unobserve \$::fics::mainGame\"
+	      set ::fics::mainGame $g
+	      .fics.bottom.game$g.w.close invoke
+	      ::fics::parseStyle12 \"LoadObservedGame $white $whiteElo $black $blackElo\"
+	    } else {
+	      # close game if it is finished
+	      bind .fics <Destroy> {}
+	      destroy .fics.bottom.game$g
+	      bind .fics <Destroy> ::fics::close
+	    }
+	  "
+
+	  # disable load button if non-standard game
+	  if {$gametype != {untimed} && $gametype != {blitz} && $gametype != {lightning} && $gametype != {standard}} {
+	    catch {
+	      pack forget .fics.bottom.game$g.w.load
+	    }
 	  }
-        }
+      } else {
+        updateConsole "Error parsing Game line \"$line\""
       }
     }
 
@@ -1421,7 +1439,15 @@ namespace eval fics {
 
     # todo: use little boards for following
     # <12> r-----k- p----ppp ---rq--- --R-p--- -------- ------PP --R--P-- ------K- W -1 0 0 0 0 2 182 stevenaaus DRSlay 1 5 12 13 24 84 28 32 Q/e7-e6 (0:40) Qe6 0 1 77
-
+ 
+    if {[string match LoadObservedGame* $line]} {
+      ### Game handed over from observed games
+      set LoadObservedGame $line
+      set line $::fics::lastline
+    } else {
+      set LoadObservedGame {}
+      set ::fics::lastline $line
+    }
     set color [lindex $line 9]
     set gameNumber [lindex $line 16]
     ### Observed games are a row of small boards down the bottom left 
@@ -1540,8 +1566,8 @@ namespace eval fics {
       # first check side's coherency
       if { ([sc_pos side] == "white" && $color == "B") || ([sc_pos side] == "black" && $color == "W") } {
         # puts "sc_move addSan $moveSan"
-        ::utils::sound::PlaySound sound_move
-        ::utils::sound::AnnounceNewMove $moveSan
+        # ::utils::sound::PlaySound sound_move
+        # ::utils::sound::AnnounceNewMove $moveSan
         set ::fics::lastmove $moveSan ; # remember last opponenets move for takeback comment
         if { [catch { sc_move addSan $moveSan } err ] } {
           puts "error $err"
@@ -1552,20 +1578,18 @@ namespace eval fics {
             set m [string map { "-" "" "=" "" } $m]
             ::novag::addMove $m
           }
-          updateBoard -pgn -animate
         }
       }
     } else {
       set ::fics::playerslastmove $moveSan
     }
-# update
-# hm.... we arent quick enough
-# && and we end up saving game at each fail! bad
 
-    if {$fen != [sc_pos fen]} {
+    if {$fen == [sc_pos fen]} {
+      updateBoard -pgn -animate
+    } else {
 
       ### Game out of sync, probably due to player takeback request (or opponent take back 2).
-      # (also used to load observed games)
+      ### (But this is also used to load observed games)
       # After player takeback, game gets reconstructed, comments are zeroed. Opponents takeback is handled better elsewhere.
       # Fics doesn't give much warning that take back was succesful, only the uncertain "Takeback request sent."
       # So just save previous (unfinished) game.
@@ -1575,40 +1599,48 @@ namespace eval fics {
       # Todo: Before starting new game, try to move backwards in game.
 
       puts "Debug fen \n$fen\n[sc_pos fen]"
-      
+
       if {$white == $::fics::reallogin || $black == $::fics::reallogin} {
 	catch {sc_game save [sc_game number]}
       }
       sc_game new
       set ::fics::playing 1
-      
-      ### These 2000 usecond waits don't always work on slow connections
 
-      set ::fics::waitForRating wait
-      writechan "finger $white /s"
-      vwaitTimed ::fics::waitForRating 2000 nowarn
-      if {$::fics::waitForRating == "wait"} {set ::fics::waitForRating 0}
-      sc_game tags set -white $white
-      sc_game tags set -whiteElo $::fics::waitForRating
-      
-      set ::fics::waitForRating wait
-      writechan "finger $black /s"
-      vwaitTimed ::fics::waitForRating 2000 nowarn
-      if {$::fics::waitForRating == "wait"} {set ::fics::waitForRating 0}
-      sc_game tags set -black $black
-      sc_game tags set -blackElo $::fics::waitForRating
+      if {$LoadObservedGame == {}} {
+        ### Normal resumed game
+        ### Todo : parse the resume game statment, and do away with these extra Elo vwaits
+	set ::fics::waitForRating wait
+	writechan "finger $white /s"
+	vwaitTimed ::fics::waitForRating 2000 nowarn
+	if {$::fics::waitForRating == "wait"} {set ::fics::waitForRating 0}
+	sc_game tags set -white $white
+	sc_game tags set -whiteElo $::fics::waitForRating
+
+	set ::fics::waitForRating wait
+	writechan "finger $black /s"
+	vwaitTimed ::fics::waitForRating 2000 nowarn
+	if {$::fics::waitForRating == "wait"} {set ::fics::waitForRating 0}
+	sc_game tags set -black $black
+	sc_game tags set -blackElo $::fics::waitForRating
+
+	set ::fics::waitForRating ""
+      } else {
+        ### Game handed over from observed games
+	sc_game tags set -white    [lindex $LoadObservedGame 1]
+	sc_game tags set -whiteElo [lindex $LoadObservedGame 2]
+	sc_game tags set -black    [lindex $LoadObservedGame 3]
+	sc_game tags set -blackElo [lindex $LoadObservedGame 4]
+      }
       sc_game tags set -date [::utils::date::today]
-      
-      set ::fics::waitForRating ""
-      
+
       sc_game tags set -event "FICs Game $gameNumber $initialTime/$increment"
-      
+
       # try to get first moves of game
       writechan "moves $gameNumber"
       set ::fics::waitForMoves $fen
-      vwaitTimed ::fics::waitForMoves 2000 "nowarn"
+      vwaitTimed ::fics::waitForMoves 2000 nowarn
       set ::fics::waitForMoves ""
-      
+
       # Did not manage to reconstruct the game, just set its position
       if {$fen != [sc_pos fen]} {
         sc_game startBoard $fen
@@ -1616,9 +1648,8 @@ namespace eval fics {
       updateBoard -pgn -animate
     }
   }
-  ################################################################################
-  #
-  ################################################################################
+
+
   proc parseSeek {line} {
     array set seekelt {}
     set seekelt(index) [lindex $line 1]
