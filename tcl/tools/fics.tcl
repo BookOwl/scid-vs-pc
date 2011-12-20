@@ -847,8 +847,9 @@ namespace eval fics {
 
       scan $line "You are now observing game %d." game
 
-      ## if it's the mainGame, we'll load it later. (edit: not used now)
-      ## if {$game == $::fics::mainGame} {return}
+      ## if it's the mainGame, we'll load it later (in parseStyle12)
+
+      if {$game == $::fics::mainGame} {return}
 
       set w .fics
       lappend ::fics::observedGames $game
@@ -860,11 +861,9 @@ namespace eval fics {
       # data for these labels is read next line from fics
       frame $w.bottom.game$game.w
       label $w.bottom.game$game.w.white  -font font_Small
-      label $w.bottom.game$game.w.whiteElo -font font_Small
       # At top we have Black and Result
       frame $w.bottom.game$game.b 
       label $w.bottom.game$game.b.black -font font_Small
-      label $w.bottom.game$game.b.blackElo -font font_Small
       label $w.bottom.game$game.b.result -font font_Small
 
       button $w.bottom.game$game.w.close -image arrow_close -font font_Small -relief flat -command "
@@ -877,8 +876,28 @@ namespace eval fics {
 	      set ::fics::observedGames \[lreplace \$::fics::observedGames \$i \$i\]
 	}"
 
-      button $w.bottom.game$game.w.load -image arrow_up -font font_Small -relief flat 
-      # command done later
+      button $w.bottom.game$game.w.load -image arrow_up -font font_Small -relief flat -command "
+	if {\[lsearch -exact \$::fics::observedGames $game\] > -1} {
+	  ### In case we're already observing a game
+	  if {\$::fics::mainGame > -1} {
+	    ::fics::writechan \"unobserve \$::fics::mainGame\"
+	  }
+	  set i \[lsearch -exact \$::fics::observedGames $game\]
+	  if {\$i > -1} {
+	      set ::fics::observedGames \[lreplace \$::fics::observedGames \$i \$i\]
+          }
+	  ### Restarting observe ensures we get a parseStyle12 line straight away
+	  ::fics::writechan \"unobserve $game\"
+	  set ::fics::mainGame $game
+	  ::fics::writechan \"observe $game\"
+	  .fics.bottom.game$game.w.close invoke
+	} else {
+	  # close game if it is finished
+	  bind .fics <Destroy> {}
+	  destroy .fics.bottom.game$game
+	  bind .fics <Destroy> ::fics::close
+	}
+      "
 
       # button $w.bottom.game$game.w.flip -text flip -font font_Small -relief flat -command ""
 
@@ -1005,15 +1024,17 @@ namespace eval fics {
         set ::fics::playing 0
         set ::fics::mainGame -1
         set ::pause 0
-        if {[string match "1/2*" $res]} {
-          tk_messageBox -title "Game result" -icon info -type ok -message "Draw"
-        } else {
-          if {[regexp {.* ([^ ]*) resigns.*} $line t1 t2]} {
-	    ::commenteditor::appendComment "$t2 resigns"
-          }
+	if {$::fics::reallogin == [sc_game tags get Black] || $::fics::reallogin == [sc_game tags get White]} {
+	  if {[string match "1/2*" $res]} {
+	    tk_messageBox -title "Game result" -icon info -type ok -message "Draw"
+	  } else {
+	    if {[regexp {.* ([^ ]*) resigns.*} $line t1 t2]} {
+	      ::commenteditor::appendComment "$t2 resigns"
+	    }
 
-          tk_messageBox -title "Game result" -icon info -type ok -message "$res"
-        }
+	    tk_messageBox -title "Game result" -icon info -type ok -message "$res"
+	  }
+	}
       } else {
          # Add result to black label
          catch {
@@ -1035,36 +1056,17 @@ namespace eval fics {
 
       # Game 237: impeybarbicane (1651) bust (1954) rated crazyhouse 5 0
       if {[scan $line {Game %d: %s %s %s %s %s %s %d %d} g white whiteElo black blackElo dummy gametype t1 t2]} {
-          set whiteElo [string range $whiteElo 1 end-1]
-          set blackElo [string range $blackElo 1 end-1]
-	  .fics.bottom.game$g.w.white configure -text $white
-	  .fics.bottom.game$g.w.whiteElo configure -text $whiteElo
-	  .fics.bottom.game$g.b.black configure -text $black
-	  .fics.bottom.game$g.b.blackElo configure -text $blackElo
-	  .fics.bottom.game$g.b.result configure -text "$gametype $t1 $t2"
-	  .fics.bottom.game$g.w.load configure -command "
-	    if {\[lsearch -exact \$::fics::observedGames $g\] > -1} {
-	      ### Restart parseStyle12 with extra args and this game removed from observedGames
-	      ### (We *could* wait for hte next style12 line, but in slow games, this can take a long time)
-              # in case we're already observing a game
-	      ::fics::writechan \"unobserve \$::fics::mainGame\"
-	      set ::fics::mainGame $g
-	      .fics.bottom.game$g.w.close invoke
-	      ::fics::parseStyle12 \"LoadObservedGame $g $white $whiteElo $black $blackElo\"
-	    } else {
-	      # close game if it is finished
-	      bind .fics <Destroy> {}
-	      destroy .fics.bottom.game$g
-	      bind .fics <Destroy> ::fics::close
-	    }
-	  "
-
-	  # disable load button if non-standard game
-	  if {$gametype != {untimed} && $gametype != {blitz} && $gametype != {lightning} && $gametype != {standard}} {
-	    catch {
+          set ::fics::elo($white) [string range $whiteElo 1 end-1]
+          set ::fics::elo($black) [string range $blackElo 1 end-1]
+          if {[winfo exists .fics.bottom.game$g]} {
+	    .fics.bottom.game$g.w.white configure -text $white
+	    .fics.bottom.game$g.b.black configure -text $black
+	    .fics.bottom.game$g.b.result configure -text "$gametype $t1 $t2"
+	    # disable load button if non-standard game
+	    if {$gametype != {untimed} && $gametype != {blitz} && $gametype != {lightning} && $gametype != {standard}} {
 	      pack forget .fics.bottom.game$g.w.load
 	    }
-	  }
+          }
       } else {
         updateConsole "Error parsing Game line \"$line\""
       }
@@ -1443,17 +1445,7 @@ namespace eval fics {
     # <12> r-----k- p----ppp ---rq--- --R-p--- -------- ------PP --R--P-- ------K- W -1 0 0 0 0 2 182 stevenaaus DRSlay 1 5 12 13 24 84 28 32 Q/e7-e6 (0:40) Qe6 0 1 77
  
 
-    if {[string match LoadObservedGame* $line]} {
-      ### Game handed over from observed games
-      set gameNumber [lindex $line 1]
-      set LoadObservedGame $line
-      set line [set ::fics::lastline$gameNumber]
-    } else {
-      set LoadObservedGame {}
-      set gameNumber [lindex $line 16]
-      set ::fics::lastline$gameNumber $line
-    }
-
+    set gameNumber [lindex $line 16]
     set color [lindex $line 9]
 
     ### Observed games are a row of small boards down the bottom left 
@@ -1616,31 +1608,16 @@ namespace eval fics {
       sc_game new
       # set ::fics::playing 1 ; Not right!
 
-      if {$LoadObservedGame == {}} {
-        ### Normal resumed game
-        ### Todo : parse the resume game statment, and do away with these extra Elo vwaits
-	set ::fics::waitForRating wait
-	writechan "finger $white /s"
-	vwaitTimed ::fics::waitForRating 2000 nowarn
-	if {$::fics::waitForRating == "wait"} {set ::fics::waitForRating 0}
-	sc_game tags set -white $white
-	sc_game tags set -whiteElo $::fics::waitForRating
-
-	set ::fics::waitForRating wait
-	writechan "finger $black /s"
-	vwaitTimed ::fics::waitForRating 2000 nowarn
-	if {$::fics::waitForRating == "wait"} {set ::fics::waitForRating 0}
-	sc_game tags set -black $black
-	sc_game tags set -blackElo $::fics::waitForRating
-
-	set ::fics::waitForRating ""
-      } else {
-        ### Game handed over from observed games
-	sc_game tags set -white    [lindex $LoadObservedGame 2]
-	sc_game tags set -whiteElo [lindex $LoadObservedGame 3]
-	sc_game tags set -black    [lindex $LoadObservedGame 4]
-	sc_game tags set -blackElo [lindex $LoadObservedGame 5]
+      ### Game handed over from observed games
+      sc_game tags set -white    $white
+      sc_game tags set -black    $black
+      if {[info exists ::fics::elo($white)]} {
+	sc_game tags set -whiteElo $::fics::elo($white)
       }
+      if {[info exists ::fics::elo($black)]} {
+	sc_game tags set -blackElo $::fics::elo($black)
+      }
+
       sc_game tags set -date [::utils::date::today]
 
       sc_game tags set -event "FICs Game $gameNumber $initialTime/$increment"
