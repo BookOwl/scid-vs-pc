@@ -11,14 +11,14 @@ namespace eval fics {
   set mainGame -1
   set observedGames {}
   set playing 0
-  set debug 0
   set opponent {}
   set waitForRating ""
   set waitForMoves ""
   set sought 0
   set soughtlist {}
   set graphwidth 300
-  set graphheight 200 ; # fine tuned to be the same height as clocks S.A.
+  # Fine tuned to be the same height as clocks , but needs re-tuning after making the observed games windgets
+  set graphheight 200 
   set graphoff 15 ;# axis offset
   set graphon 0
   set timeseal_pid 0
@@ -42,9 +42,7 @@ namespace eval fics {
 
   set ping {}
 
-  ################################################################################
-  #
-  ################################################################################
+
   proc config {} {
     variable logged
     global ::fics::sockChan tr
@@ -309,7 +307,7 @@ namespace eval fics {
     pack $w.console.scroll -side right -fill y 
     pack $w.console.text -side left -fill both -expand 1
 
-    # define colors for console
+    ### Console colours
     $w.console.text tag configure seeking -foreground grey
     $w.console.text tag configure tells -foreground coral
     $w.console.text tag configure command -foreground skyblue
@@ -317,14 +315,13 @@ namespace eval fics {
     $w.console.text tag configure gameresult -foreground SlateBlue1
     $w.console.text tag configure channel -foreground rosybrown
 
-    entry $w.command.entry -insertofftime 0 -bg grey75 -font font_Large -state disabled
-    button $w.command.send -text $tr(FICSSend) -command ::fics::cmd
+    entry $w.command.entry -insertofftime 0 -bg grey75 -font font_Large
+    button $w.command.send -text $tr(FICSSend) 
     button $w.command.clear -text $tr(Clear) -command "
       $w.console.text delete 0.0 end
       $w.console.text insert 0.0 \"FICs ($::scidName $::scidVersion)\n\"
     "
     button $w.command.next -text $tr(Next) -command {::fics::writechan next echo}
-    bind $w.command.entry <Return> { ::fics::cmd }
     bind $w.command.entry <Up> { ::fics::cmdHistory up }
     bind $w.command.entry <Down> { ::fics::cmdHistory down }
     bind $w.command.entry <Alt-BackSpace> { 
@@ -495,8 +492,10 @@ namespace eval fics {
   }
 
   proc changeScaleSize {size} {
-      foreach game $::fics::observedGames {
-        ::board::resize .fics.bottom.game$game.bd $size
+      foreach w [winfo children .fics.bottom] {
+        if {[string match .fics.bottom.game* $w]} {
+	  ::board::resize $w.bd $size
+        }
       }
   }
 
@@ -891,6 +890,7 @@ namespace eval fics {
 	  set ::fics::mainGame $game
 	  ::fics::writechan \"observe $game\"
 	  .fics.bottom.game$game.w.close invoke
+          raiseWin .
 	} else {
 	  # close game if it is finished
 	  bind .fics <Destroy> {}
@@ -1006,7 +1006,15 @@ namespace eval fics {
 
     # {Game 331 (AmorVerus vs. killerbie) killerbie checkmated} 1-0
 
+    # Creating: Libertie (1263) stevenaaus (1092) rated blitz 6 12
+    # {Game 112 (Libertie vs. stevenaaus) Creating rated blitz match.}
+
     if {[string match "\{Game *" $line]} {
+      if {[string match {* Creating *} $line]} {
+	scan $line "\{Game %d %s" num tmp
+        set ::fics::mutex($num) 0
+        return
+      }
       set num [lindex [lindex $line 0] 1]
       set res [lindex $line end]
 
@@ -1055,9 +1063,11 @@ namespace eval fics {
       ### Get observed game Info
 
       # Game 237: impeybarbicane (1651) bust (1954) rated crazyhouse 5 0
+
       if {[scan $line {Game %d: %s %s %s %s %s %s %d %d} g white whiteElo black blackElo dummy gametype t1 t2]} {
           set ::fics::elo($white) [string range $whiteElo 1 end-1]
           set ::fics::elo($black) [string range $blackElo 1 end-1]
+          set ::fics::mutex($g) 0
           if {[winfo exists .fics.bottom.game$g]} {
 	    .fics.bottom.game$g.w.white configure -text $white
 	    .fics.bottom.game$g.b.black configure -text $black
@@ -1098,7 +1108,8 @@ namespace eval fics {
       .fics.bottom.buttons.offers       configure -state normal
       .fics.bottom.buttons.silence      configure -state normal
       .fics.bottom.buttons.shouts	configure -state normal
-      .fics.command.entry		configure -state normal
+      bind .fics.command.entry <Return> ::fics::cmd
+      .fics.command.send configure -command ::fics::cmd
       return
     }
 
@@ -1441,56 +1452,54 @@ namespace eval fics {
   ################################################################################
   proc parseStyle12 {line} {
 
-    # todo: use little boards for following
-    # <12> r-----k- p----ppp ---rq--- --R-p--- -------- ------PP --R--P-- ------K- W -1 0 0 0 0 2 182 stevenaaus DRSlay 1 5 12 13 24 84 28 32 Q/e7-e6 (0:40) Qe6 0 1 77
- 
+    # <12> r-----k- p----ppp ---rq--- --R-p--- -------- ------PP --R--P-- ------K-
+    #      W -1 0 0 0 0 2 182 stevenaaus DRSlay 1 5 12 13 24 84 28 32 Q/e7-e6 (0:40) Qe6 0 1 77
 
-    set gameNumber [lindex $line 16]
+    set game  [lindex $line 16]
     set color [lindex $line 9]
 
     ### Observed games are a row of small boards down the bottom left 
-    if {[lsearch -exact $::fics::observedGames $gameNumber] > -1} {
+    if {[lsearch -exact $::fics::observedGames $game] > -1} {
       if {$color == "W"} {
-	.fics.bottom.game$gameNumber.w.white configure -text "[lindex $line 17] ([lindex $line 24] secs) X"
-	.fics.bottom.game$gameNumber.b.black configure -text "[lindex $line 18] ([lindex $line 25] secs)"
+	.fics.bottom.game$game.w.white configure -text "[lindex $line 17] ([lindex $line 24] secs) X"
+	.fics.bottom.game$game.b.black configure -text "[lindex $line 18] ([lindex $line 25] secs)"
       } else {
-	.fics.bottom.game$gameNumber.w.white configure -text "[lindex $line 17] ([lindex $line 24] secs)"
-	.fics.bottom.game$gameNumber.b.black configure -text "[lindex $line 18] ([lindex $line 25] secs) X"
+	.fics.bottom.game$game.w.white configure -text "[lindex $line 17] ([lindex $line 24] secs)"
+	.fics.bottom.game$game.b.black configure -text "[lindex $line 18] ([lindex $line 25] secs) X"
       }
       set moves [lreverse [lrange $line 1 8]]
       set boardmoves [string map { "-" "." " " "" } $moves]
-      ::board::update .fics.bottom.game$gameNumber.bd $boardmoves 1
+      ::board::update .fics.bottom.game$game.bd $boardmoves 1
       return
     }
 
     set white [lindex $line 17]
     set black [lindex $line 18]
 
-    # if playername is not white or black, then we unobserve game, as its not in $observedGames
-    if {$::fics::reallogin != $white && $::fics::reallogin != $black && $gameNumber != $::fics::mainGame} {
-      ::fics::writechan "unobserve $gameNumber"
+    # If playername is not white or black, then we unobserve game, as its not in $observedGames (???)
+    if {$::fics::reallogin != $white && $::fics::reallogin != $black && $game != $::fics::mainGame} {
+      ::fics::writechan "unobserve $game"
       return
     }
 
-    set relation [lindex $line 19]
-    set initialTime [lindex $line 20]
-    set increment [lindex $line 21]
+    set initialTime   [lindex $line 20]
+    set increment     [lindex $line 21]
     set whiteMaterial [lindex $line 22]
     set blackMaterial [lindex $line 23]
-    set whiteRemainingTime  [lindex $line 24]
-    set blackRemainingTime  [lindex $line 25]
-    set moveNumber [lindex $line 26]
-    set verbose_move [lindex $line 27]
-    set moveTime [lindex $line 28]
-    set moveSan [lindex $line 29]
-    set ::fics::playing $relation
+    set whiteRemainingTime [lindex $line 24]
+    set blackRemainingTime [lindex $line 25]
+    set moveNumber      [lindex $line 26]
+    set verbose_move    [lindex $line 27]
+    set moveTime        [lindex $line 28]
+    set moveSan         [lindex $line 29]
+    set ::fics::playing [lindex $line 19]
       # -3 isolated position, such as for "ref 3" or the "sposition" command
       # -2 I am observing game being examined
       #  2 I am the examiner of this game
       # -1 I am playing, it is my opponent's move
       #  1 I am playing and it is my move
       #  0 I am observing a game being played
-    set ::fics::mainGame $gameNumber
+    set ::fics::mainGame $game
 
     ::gameclock::setSec 1 [ expr 0 - $whiteRemainingTime ]
     ::gameclock::setSec 2 [ expr 0 - $blackRemainingTime ]
@@ -1561,9 +1570,10 @@ namespace eval fics {
 
     # try to play the move and check if fen corresponds. If not this means the position needs to be set up.
     if {$moveSan != "none" && $::fics::playing != -1} {
-      # first check side's coherency
+      ## Move to game end incase user was messing around with the game
+      sc_move end
+
       if { ([sc_pos side] == "white" && $color == "B") || ([sc_pos side] == "black" && $color == "W") } {
-        # puts "sc_move addSan $moveSan"
         # ::utils::sound::PlaySound sound_move
         # ::utils::sound::AnnounceNewMove $moveSan
         set ::fics::lastmove $moveSan ; # remember last opponenets move for takeback comment
@@ -1585,30 +1595,32 @@ namespace eval fics {
     if {$fen == [sc_pos fen]} {
       updateBoard -pgn -animate
     } else {
-      if {$::fics::debug} {
-        return
-      }
-      set ::fics::debug 1
-
       ### Game out of sync, probably due to player takeback request (or opponent take back 2).
       ### (But this is also used to load observed games)
       # After player takeback, game gets reconstructed, comments are zeroed. Opponents takeback is handled better elsewhere.
       # Fics doesn't give much warning that take back was succesful, only the uncertain "Takeback request sent."
-      # So just save previous (unfinished) game.
-
-      ### If player makes a move after his time has expired, we end up here. Bad.
-
+      # If player makes a move after his time has expired, we end up here. Bad.
       # Todo: Before starting new game, try to move backwards in game.
 
+      # To solve the problem of concurrent processing of parseStyle12 lines, we have to have mutexs on this proc
+
+      while {$::fics::mutex($game)} {
+        vwait ::fics::mutex($game)
+      }
+      set ::fics::mutex($game) 1
+
       puts "Debug fen \n$fen\n[sc_pos fen]"
+
+      ### Save previous (unfinished?) game.
+      # ideally we can save observed games too, but only after we have the "Debug fen" working 100%
 
       if {$white == $::fics::reallogin || $black == $::fics::reallogin} {
 	catch {sc_game save [sc_game number]}
       }
+
       sc_game new
       # set ::fics::playing 1 ; Not right!
 
-      ### Game handed over from observed games
       sc_game tags set -white    $white
       sc_game tags set -black    $black
       if {[info exists ::fics::elo($white)]} {
@@ -1617,24 +1629,24 @@ namespace eval fics {
       if {[info exists ::fics::elo($black)]} {
 	sc_game tags set -blackElo $::fics::elo($black)
       }
-
       sc_game tags set -date [::utils::date::today]
+      sc_game tags set -event "FICs Game $game $initialTime/$increment"
 
-      sc_game tags set -event "FICs Game $gameNumber $initialTime/$increment"
+      ### Try to get first moves of game
 
-      # try to get first moves of game
-      writechan "moves $gameNumber"
+      writechan "moves $game"
       set ::fics::waitForMoves $fen
       vwaitTimed ::fics::waitForMoves 2000 nowarn
       set ::fics::waitForMoves ""
 
-      # Did not manage to reconstruct the game, just set its position
       if {$fen != [sc_pos fen]} {
+        # Did not manage to reconstruct the game, just set its position
+        # (But this never works !? &&& )
         sc_game startBoard $fen
       }
       updateBoard -pgn -animate
     }
-    set ::fics::debug 0
+    set ::fics::mutex($game) 0
   }
 
 
@@ -1656,9 +1668,10 @@ namespace eval fics {
     }
     lappend ::fics::seeklist [array get seekelt]
   }
-  ################################################################################
-  #
-  ################################################################################
+
+
+  # Unused
+
   proc redim {} {
     set w .fics
     update
@@ -1666,15 +1679,11 @@ namespace eval fics {
     set y [winfo reqheight $w]
     wm geometry $w ${x}x${y}
   }
-  ################################################################################
-  #
-  ################################################################################
+  
   proc showGraph {} {
-
     set w .fics.bottom
 
-    # I think it's ok to show clock ~or~ offers graph
-    # , which also does away with packing/config issues - S.A
+    ### Either the clock or offers graph are shown at any one time
 
     if { $::fics::graphon } {
       pack forget $w.clocks
@@ -1685,13 +1694,13 @@ namespace eval fics {
       pack forget $w.graph
       pack $w.clocks -side left -padx 10 -pady 5
     }
-    # Repacking can make the console suspend, so seek to console end now
+
+    ### Repacking can make the console suspend, so seek to console end 
     update
     .fics.console.text yview moveto 1
   }
-  ################################################################################
-  #
-  ################################################################################
+
+
   proc updateGraph { } {
     set ::fics::sought 1
     set ::fics::soughtlist {}
@@ -1703,9 +1712,8 @@ namespace eval fics {
       after 3000 ::fics::updateGraph
     }
   }
-  ################################################################################
-  #
-  ################################################################################
+
+
   proc displayGraph { } {
     global ::fics::graphwidth ::fics::graphheight ::fics::graphoff \
         ::fics::offers_minelo ::fics::offers_maxelo ::fics::offers_mintime ::fics::offers_maxtime
