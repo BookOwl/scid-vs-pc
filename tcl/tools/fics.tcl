@@ -1644,9 +1644,10 @@ namespace eval fics {
         # (But this never works !? &&& )
         sc_game startBoard $fen
       }
+
+      set ::fics::mutex($game) 0
       updateBoard -pgn -animate
     }
-    set ::fics::mutex($game) 0
   }
 
 

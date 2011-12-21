@@ -1163,7 +1163,7 @@ proc ::board::san {sqno} {
 #   in Scid (see the boardSizes variable in start.tcl).
 #   The showmat parameter adds a frame to display material balance
 #
-proc ::board::new {w {psize 40} {showmat "nomat"} } {
+proc ::board::new {w {psize 40} {showmat 0} } {
   if {[winfo exists $w]} { return }
 
   set ::board::_size($w) $psize
@@ -1175,7 +1175,7 @@ proc ::board::new {w {psize 40} {showmat "nomat"} } {
   set ::board::_showMarks($w) 0
   set ::board::_mark($w) {}
   set ::board::_drag($w) -1
-  set ::board::_showmat($w) [expr {"$showmat" != "nomat"}]
+  set ::board::_showmat($w) $showmat
 
   set border $::board::_border($w)
   set bsize [expr {$psize * 8 + $border * 9} ]
@@ -1222,22 +1222,20 @@ proc ::board::new {w {psize 40} {showmat "nomat"} } {
   # Set up side-to-move icons:
   frame $w.stmgap -width 3
   frame $w.stm
-  # frame $w.mat
   frame $w.wtm -background white -relief solid -borderwidth 1
   frame $w.btm -background black -relief solid -borderwidth 1
   grid $w.stmgap -row 1 -column 1
   grid $w.stm -row 2 -column 0 -rowspan 5 -padx 2
 
   # Material canvas init
-  set ::materialwidth [boardSize_plus_n -7]
+  set ::board::_matwidth($w) [boardSize_plus_n -7 $w]
   if {$::board::_showmat($w)} {
-    canvas $w.mat -width $::materialwidth -height [expr $::board::_size($w) * 8] \
+    canvas $w.mat -width $::board::_matwidth($w) -height [expr $::board::_size($w) * 8] \
       -insertborderwidth 0 -borderwidth 0 -highlightthickness 0
   }
 
-  if {$w == {.board}} {
-    set ::board::_showmat($w) $::gameInfo(showMaterial)
-  }
+  ### Hmm... is this correct ? &&&
+  set ::board::_showmat($w) [expr $::gameInfo(showMaterial) && $::board::_showmat($w)]
 
   grid $w.wtm -row 8 -column 0
   grid $w.btm -row 1 -column 0
@@ -1362,9 +1360,9 @@ proc ::board::resize2 {w psize} {
 
   # resize the material canvas &
   if {$::board::_showmat($w)} {
-    set ::materialwidth [boardSize_plus_n -7]
+    set ::board::_matwidth($w) [boardSize_plus_n -7 $w]
     $w.mat configure -height [expr $::board::_size($w) * 8]
-    $w.mat configure -width $::materialwidth
+    $w.mat configure -width $::board::_matwidth($w)
     ::board::material $w
   }
 
@@ -2176,6 +2174,7 @@ proc ::board::isFlipped {w} {
 # ::board::flip
 #   Rotate the board 180 degrees.
 
+# ::board::flip .gb$n.bd
 proc ::board::flip {w {newstate -1}} {
   if {! [info exists ::board::_flip($w)]} { return }
   if {$newstate == $::board::_flip($w)} { return }
@@ -2213,40 +2212,38 @@ proc ::board::flip {w {newstate -1}} {
     }
   }
   ::board::update $w
-  if {$w == ".board"} {::board::togglematerial}
+  ::board::togglematerial $w
   return $w
 }
 
-proc ::board::togglematerial {} {
+proc ::board::togglematerial {{w .board}} {
   # Called to display material widget (Doesn't actually toggle anything)
   # gameInfo(showMaterial) is specifically for the .board, 
   # while ::board::_showmat($w) is window specific.
 
   if {$::gameInfo(showMaterial)} {
-    grid configure .board.mat -row 1 -column 12 -rowspan 8
-    ::board::material .board
+    grid configure $w.mat -row 1 -column 12 -rowspan 8
+    ::board::material $w
   } else {
-    grid remove .board.mat
+    grid remove $w.mat
   }
 }
 
 
-################################################################################
-# ::board::material
-# displays material balance
-################################################################################
-proc ::board::material {w} {
+### Display material difference between black and white
 
+proc ::board::material {w} {
   set f $w.mat
 
-  if {![winfo exists $f]} {
+  if {![winfo exists $f] || ! $::gameInfo(showMaterial)} {
     return
   }
 
   $f delete material
 
-  if {! $::gameInfo(showMaterial)} { return }
-  set fen [lindex [sc_pos fen] 0]
+  ### Not a fen anymore ;>
+  # set fen [lindex [sc_pos fen] 0]
+  set fen [lindex $::board::_data($w) 0]
 
   # Evaluate piece differences
   # Negative values mean black is ahead
@@ -2278,7 +2275,7 @@ proc ::board::material {w} {
 
   ### Display material
 
-  set width $::materialwidth
+  set width $::board::_matwidth($w)
   set h [$f cget -height]
   set x [expr {$width / 2}]
 

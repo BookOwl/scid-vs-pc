@@ -39,12 +39,12 @@ proc ::gbrowser::new {base gnum {ply -1} {w {}}} {
 
     pack [frame $w.b] -side bottom -fill x
 
-    ::board::new $w.bd $::gbrowser::size
-    $w.bd configure -relief solid -borderwidth 1
+    ::board::new $w.bd $::gbrowser::size 1
+    # $w.bd configure -relief solid -borderwidth 1
     pack $w.bd -side left -padx 4 -pady 4
 
     autoscrollframe $w.t text $w.t.text \
-      -foreground black  -wrap word \
+      -foreground black  -wrap word -relief flat \
       -width 40 -height 12 -font font_Small -setgrid 1
     pack $w.t -side right -fill both -expand yes
 

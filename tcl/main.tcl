@@ -339,10 +339,9 @@ pack .button.start .button.back .button.forward .button.end \
     -side left -pady 1 -padx 0 -ipadx 2 -ipady 2
     # .button.space3 [flip] .button.showmenu 
 
-############################################################
 ### The board:
 
-::board::new .board $boardSize "showmat"
+::board::new .board $boardSize 1
 #.board.bd configure -relief solid -border 2
 ::board::showMarks .board 1
 if {$boardCoords} {
