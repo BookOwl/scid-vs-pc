@@ -12,7 +12,7 @@ namespace eval fics {
   set observedGames {}
   set playing 0
   set opponent {}
-  set waitForRating ""
+  set mutex 0
   set waitForMoves ""
   set sought 0
   set soughtlist {}
@@ -277,10 +277,10 @@ namespace eval fics {
     frame $w.bottom.buttons
     frame $w.bottom.clocks
     frame $w.bottom.graph 
-    scale $w.bottom.scale -orient vertical -from 45 -to 25 -showvalue 0 -resolution 5 \
+    scale $w.bottom.scale -orient vertical -from 45 -to 25 -showvalue 0 -resolution 5 -length 240 \
       -variable ::fics::size -command ::fics::changeScaleSize -relief flat
 
-    pack $w.bottom.scale -side left -padx 5 -pady 20 -expand 1 -fill y
+    pack $w.bottom.scale -side left -padx 5 -pady 20
     pack $w.bottom.clocks -side left -padx 10 -pady 5
 
     label $w.bottom.clocks.ping -textvar ::fics::ping
@@ -901,15 +901,15 @@ namespace eval fics {
 
       # button $w.bottom.game$game.w.flip -text flip -font font_Small -relief flat -command ""
 
-      pack $w.bottom.game$game -side left -before $w.bottom.scale 
+      pack $w.bottom.game$game -side left -before $w.bottom.scale -padx 3 -pady 3
 
       pack $w.bottom.game$game.b  -side top -anchor w -expand 1 -fill x
-      pack $w.bottom.game$game.b.black -side left -anchor w
+      pack $w.bottom.game$game.b.black -side left 
       pack [frame $w.bottom.game$game.b.space -width 24] \
            $w.bottom.game$game.b.result -side right
       pack $w.bottom.game$game.bd -side top
       pack $w.bottom.game$game.w -side top -expand 1 -fill x
-      pack $w.bottom.game$game.w.white -side left -anchor w
+      pack $w.bottom.game$game.w.white -side left 
       pack [frame $w.bottom.game$game.w.space -width 20] \
            $w.bottom.game$game.w.close $w.bottom.game$game.w.load -side right -padx 4
       ### ::board::material needs fixing before it can display material ???
@@ -1012,7 +1012,6 @@ namespace eval fics {
     if {[string match "\{Game *" $line]} {
       if {[string match {* Creating *} $line]} {
 	scan $line "\{Game %d %s" num tmp
-        set ::fics::mutex($num) 0
         return
       }
       set num [lindex [lindex $line 0] 1]
@@ -1067,7 +1066,6 @@ namespace eval fics {
       if {[scan $line {Game %d: %s %s %s %s %s %s %d %d} g white whiteElo black blackElo dummy gametype t1 t2]} {
           set ::fics::elo($white) [string range $whiteElo 1 end-1]
           set ::fics::elo($black) [string range $blackElo 1 end-1]
-          set ::fics::mutex($g) 0
           if {[winfo exists .fics.bottom.game$g]} {
 	    .fics.bottom.game$g.w.white configure -text $white
 	    .fics.bottom.game$g.b.black configure -text $black
@@ -1111,17 +1109,6 @@ namespace eval fics {
       bind .fics.command.entry <Return> ::fics::cmd
       .fics.command.send configure -command ::fics::cmd
       return
-    }
-
-    if { $::fics::waitForRating == "wait" } {
-      if {[catch {set val [lindex $line 0]}]} {
-        return
-      } else  {
-        if {[lindex $line 0] == "Standard"} {
-          set ::fics::waitForRating [lindex $line 1]
-          return
-        }
-      }
     }
 
     if { $::fics::waitForMoves != "" } {
@@ -1603,11 +1590,13 @@ namespace eval fics {
       # Todo: Before starting new game, try to move backwards in game.
 
       # To solve the problem of concurrent processing of parseStyle12 lines, we have to have mutexs on this proc
+      # ... for some reason using individual mutexs for each game doesnt work properly &&&
+      # while {$::fics::mutex($num)} {vwait ::fics::mutex($num)}
 
-      while {$::fics::mutex($game)} {
-        vwait ::fics::mutex($game)
+      if {$::fics::mutex} {
+        return
       }
-      set ::fics::mutex($game) 1
+      set ::fics::mutex 1
 
       puts "Debug fen \n$fen\n[sc_pos fen]"
 
@@ -1645,7 +1634,7 @@ namespace eval fics {
         sc_game startBoard $fen
       }
 
-      set ::fics::mutex($game) 0
+      set ::fics::mutex 0
       updateBoard -pgn -animate
     }
   }
