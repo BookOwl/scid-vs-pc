@@ -21,6 +21,7 @@ set analysis(logMax) 5000
 
 # Should Scid <-> Engine communication log messages be echoed to stdout
 set analysis(log_stdout) 0
+set analysis(log_auto) 0
 
 set analysisBookSlot 1
 set useAnalysisBookName ""
@@ -395,14 +396,15 @@ proc ::enginelist::choose {} {
   button $w.buttons.uci  -image uci           -command {
     ::uci::uciConfigN [lindex [.enginelist.list.list curselection] 0] .enginelist
   }
+  button $w.buttons.log  -image tb_annotate   -command {engineShowLog [lindex [.enginelist.list.list curselection] 0]}
 
-  dialogbutton $w.buttons.delete -text $::tr(Delete) -command {
+  dialogbutton $w.buttons.delete -textvar ::tr(Delete) -command {
     ::enginelist::delete [lindex [.enginelist.list.list curselection] 0]
   }
 
   label $w.buttons.sep -text "   "
 
-  dialogbutton $w.buttons2.start -text $::tr(Start) -command {
+  dialogbutton $w.buttons2.start -textvar ::tr(Start) -command {
     makeAnalysisWin [lindex [.enginelist.list.list curselection] 0]
   }
 
@@ -410,7 +412,7 @@ proc ::enginelist::choose {} {
     destroy .enginelist
   }
 
-  pack $w.buttons.up $w.buttons.down $w.buttons.uci $w.buttons.add $w.buttons.edit $w.buttons.copy $w.buttons.delete -side left -expand yes
+  pack $w.buttons.up $w.buttons.down $w.buttons.uci $w.buttons.log $w.buttons.add $w.buttons.edit $w.buttons.copy $w.buttons.delete -side left -expand yes
 
   pack $w.buttons2.start $w.buttons2.close -side left -expand yes -pady 12 -padx 10 
 
@@ -1743,18 +1745,6 @@ proc makeAnalysisMove {n} {
   } else {
     updateBoard -pgn -animate
   }  
-
-  # if {!$analysis(has_setboard$comp(nextmove))} {}
-  if {0} {
-    # No setboard... but time controls are awful, so don't use it
-    puts "SENDING OTHER sendToEngine $comp(nextmove) \"move $move\""
-    sendToEngine $comp(nextmove) "move $move"
-    if {![string compare [sc_pos side] "black"]} {
-      sendToEngine $comp(nextmove) "black"
-    } else {
-      sendToEngine $comp(nextmove) "white"
-    }
-  }
 
   ::utils::sound::AnnounceNewMove $move
   return $res
@@ -3708,4 +3698,69 @@ gYQCTqOFLjxwUAhAhBU0PuS8hy9CBIlcZeYLS7ZRIAA7
 image creat photo tb_info -data {
 R0lGODlhHgAeAIABACUhIf///yH5BAEKAAEALAAAAAAeAB4AAAIwjI+py+0P
 o5y02osn2Flt0IXimH0c+ZFBip4j+7oiPMshfdsdvuulbzEBVcSisVEAADs=
+}
+
+proc engineShowLog {n} {
+    if {$n == {}} {
+      return
+    }
+    set ::::analysis(logfile) $n
+
+    set w .enginelog
+
+    if {[winfo exists $w]} {
+      $w.log delete 1.0 end
+    } else {
+      toplevel $w
+      wm minsize $w 250 150
+      setWinLocation $w
+      setWinSize $w
+
+      frame $w.buttons
+      pack $w.buttons -side bottom 
+
+      autoscrollframe $w.frame text $w.log -width 80 -height 40 -font font_small -wrap none 
+      pack $w.frame -side top -fill both -expand yes
+      
+      dialogbutton $w.buttons.update -textvar ::tr(Update) -command engineUpdateLog
+      dialogbutton $w.buttons.ok -textvar ::tr(Close) -command "destroy $w"
+      checkbutton $w.buttons.auto -text Auto -variable ::analysis(log_auto) -command engineAutoLog
+
+      pack $w.buttons.auto $w.buttons.update -padx 15 -side left
+      pack $w.buttons.ok -padx 15 -side right
+
+      bind $w <Configure> "recordWinSize $w"
+    }
+    wm title $w "Engine Log: [lindex [lindex $::engines(list) $n] 0]"
+    engineAutoLog
+    bind $w <Escape> "destroy $w"
+    bind $w <F1> { helpWindow Index }
+    $w.buttons.update invoke
+    .enginelog.log see 0.0
+  }
+
+proc engineUpdateLog {} {
+  ### Open the log file for reading
+  ### $analysis(log$n) may already be open... but we'll ignore this fil descriptor and creat our own i think
+
+  set n $::analysis(logfile)
+  if {$n == {}} {return}
+  .enginelog.log delete 1.0 end
+  if {! [catch {open [file join $::scidLogDir engine$n.log] r} fd]} {
+    # while {![eof $fd]} 
+    while {[gets $fd line] >= 0 && ![eof $fd]} {
+      .enginelog.log insert end "$line\n"
+    }
+    close $fd
+  }
+  .enginelog.log see end
+}
+
+proc engineAutoLog {} {
+  if {[winfo exists .enginelog] && $::analysis(log_auto)} {
+    .enginelog.buttons.update invoke
+    after 1000 engineAutoLog
+  } else {
+    after cancel engineAutoLog
+  }
 }

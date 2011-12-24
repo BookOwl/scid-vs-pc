@@ -873,8 +873,11 @@ proc drawCombos {} {
     button $l.$i.configure -image uci -width 24 -height 24 -command "
       ::uci::uciConfigN \[ $l.$i.combo current \] .comp
     "
+    button $l.$i.log -image tb_annotate -width 24 -height 24 -command "
+      engineShowLog  \[ $l.$i.combo current \]
+    "
 
-    pack $l.$i.configure $l.$i.combo -side left -padx 10
+    pack $l.$i.configure $l.$i.log $l.$i.combo -side left -padx 7
 
     if {[info exists comp(players)]} {
       # Set the combo boxes to the previous players if we can
