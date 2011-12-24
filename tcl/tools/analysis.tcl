@@ -339,7 +339,7 @@ proc ::enginelist::choose {} {
   bind $w <F3> "startAnalysisWin F3"
   bind $w <F4> "startAnalysisWin F4"
 
-  label $w.flabel -text $::tr(EngineList) -font font_Large
+  label $w.flabel -textvar ::tr(EngineList) -font font_Large
   pack $w.flabel -side top -pady 5
 
   frame $w.buttons
@@ -380,9 +380,9 @@ proc ::enginelist::choose {} {
   pack $w.list.list -side top -fill both -expand yes
   $w.list.list selection set 0
 
-  dialogbutton $w.buttons.add -text $::tr(EngineNew) -command {::enginelist::edit -1}
+  dialogbutton $w.buttons.add -textvar ::tr(EngineNew) -command {::enginelist::edit -1}
 
-  dialogbutton $w.buttons.edit -text $::tr(EngineEdit) -command {
+  dialogbutton $w.buttons.edit -textvar ::tr(EngineEdit) -command {
     ::enginelist::edit [lindex [.enginelist.list.list curselection] 0]
   }
 
@@ -526,7 +526,7 @@ proc ::enginelist::edit {index {copy {}}} {
   foreach i {Name Cmd Dir Args URL} {
     label $f.l$i -text $i
     if {[info exists ::tr(Engine$i)]} {
-      $f.l$i configure -text $::tr(Engine$i)
+      $f.l$i configure -textvar ::tr(Engine$i)
     }
     entry $f.e$i -textvariable engines(new$i) -width 22
     bindFocusColors $f.e$i
@@ -535,7 +535,7 @@ proc ::enginelist::edit {index {copy {}}} {
 
     # Browse button for choosing an executable file:
     if {$i == "Cmd"} {
-      button $f.b$i -text Browse... -command {
+      button $f.b$i -textvar ::tr(Browse) -command {
         if {$::windowsOS} {
           set scid_temp(filetype) {
             {"Applications" {".bat" ".exe"} }
@@ -578,7 +578,7 @@ proc ::enginelist::edit {index {copy {}}} {
 
     if {$i == "URL"} {
       $f.l$i configure -text Webpage
-      button $f.bURL -text [tr FileOpen] -command {
+      button $f.bURL -textvar ::tr(FileOpen) -command {
         if {$engines(newURL) != ""} { openURL $engines(newURL) }
       }
       grid $f.bURL -row $row -column 2 -sticky we -pady 1 -padx 3
@@ -597,7 +597,7 @@ proc ::enginelist::edit {index {copy {}}} {
     -command "checkState ::engines(newUCI) $f.bUCI"
   pack $f.rb.uci -side left
   pack $f.rb.xboard -side right
-  button $f.bUCI -text Configure -command "
+  button $f.bUCI -textvar ::tr(GlistEditField) -command "
     ::uci::uciConfig $index  \$engines(newName) \[toAbsPath \$engines(newCmd)\] \$engines(newArgs) \
                        \[toAbsPath \$engines(newDir)\] \$engines(newUCIoptions)
   "
@@ -609,7 +609,7 @@ proc ::enginelist::edit {index {copy {}}} {
   $f.lDir configure -font font_Bold
   $f.lUCI configure -font font_Bold
 
-  label $f.lElo -text $::tr(EngineElo)
+  label $f.lElo -textvar ::tr(EngineElo)
   entry $f.eElo -textvariable engines(newElo) -width 22
   bindFocusColors $f.eElo
   grid $f.lElo -row $row -column 0 -sticky w -pady 1 -padx 3
@@ -621,15 +621,15 @@ proc ::enginelist::edit {index {copy {}}} {
   grid $f.bUCI -row $row -column 2 -sticky w -pady 1 -padx 3
   incr row
 
-  label $f.lTime -text $::tr(EngineTime)
+  label $f.lTime -textvar ::tr(EngineTime)
   label $f.eTime -textvariable engines(newDate) -anchor w -width 1
   grid $f.lTime -row $row -column 0 -sticky w -pady 1 -padx 3
   grid $f.eTime -row $row -column 1 -sticky we -pady 1 -padx 3
-  button $f.clearTime -text $::tr(Clear) -command {
+  button $f.clearTime -textvar ::tr(Clear) -command {
     set engines(newTime) 0
     set engines(newDate) $::tr(None)
   }
-  button $f.nowTime -text $::tr(Update) -command {
+  button $f.nowTime -textvar ::tr(Update) -command {
     set engines(newTime) [clock seconds]
     set engines(newDate) [::enginelist::date $engines(newTime)]
   }
@@ -656,7 +656,7 @@ proc ::enginelist::edit {index {copy {}}} {
   pack $w.radio.label -side left
   pack $w.radio.f2 $w.radio.f3 $w.radio.f4 $w.radio.none -side left -padx 5
 
-  pack [label $w.required -font font_Small -text $::tr(EngineRequired)] -side top
+  pack [label $w.required -font font_Small -textvar ::tr(EngineRequired)] -side top
 
   addHorizontalRule $w
   set f [frame $w.buttons]
@@ -700,8 +700,8 @@ proc ::enginelist::edit {index {copy {}}} {
       ::enginelist::write
     }
   }
-  dialogbutton $f.help -text $::tr(Help) -command {helpWindow Analysis List}
-  dialogbutton $f.cancel -text $::tr(Cancel) -command "destroy $w"
+  dialogbutton $f.help -textvar ::tr(Help) -command {helpWindow Analysis List}
+  dialogbutton $f.cancel -textvar ::tr(Cancel) -command "destroy $w"
   pack $f -side bottom
   pack $f.cancel -side right -padx 20 -pady 5
   pack $f.help -side right -padx 20 -pady 5
@@ -820,7 +820,7 @@ proc initAnnotation {n} {
   ### Seconds per move
 
   frame $w.delay
-  label $w.delay.label -text $tr(SecondsPerMove)
+  label $w.delay.label -textvar ::tr(SecondsPerMove)
   spinbox $w.delay.spDelay -width 4 -textvariable tempdelay -from 1 -to 300 -increment 1
 
   pack $w.delay -side top -pady 3 
@@ -843,10 +843,10 @@ proc initAnnotation {n} {
   ### Annotate Scores
 
   label $w.scoreslabel -text {Add Scores}
-  radiobutton $w.scores_allmoves -text $tr(AnnotateAllMoves) -variable annotateWithScore -value allmoves -anchor w
+  radiobutton $w.scores_allmoves -textvar ::tr(AnnotateAllMoves) -variable annotateWithScore -value allmoves -anchor w
   radiobutton $w.scores_blunders -text {Blunders/Not Best} -variable annotateWithScore -value blunders -anchor w
-  radiobutton $w.scores_var -text $tr(GlistVars) -variable annotateWithScore -value var -anchor w
-  radiobutton $w.scores_none -text $tr(No) -variable annotateWithScore -value no -anchor w
+  radiobutton $w.scores_var -textvar ::tr(GlistVars) -variable annotateWithScore -value var -anchor w
+  radiobutton $w.scores_none -textvar ::tr(No) -variable annotateWithScore -value no -anchor w
   # previously  annotateType
 
   pack $w.scoreslabel -side top
@@ -857,10 +857,10 @@ proc initAnnotation {n} {
   ### Annotate Variations
 
   label $w.anlabel -text {Add Variations}
-  radiobutton $w.notbest -text $tr(AnnotateNotBest) -variable annotateWithVars -value notbest -anchor w
-  radiobutton $w.blunders -text $tr(AnnotateBlundersOnly) -variable annotateWithVars -value blunders -anchor w
-  radiobutton $w.allmoves -text $tr(AnnotateAllMoves) -variable annotateWithVars -value allmoves -anchor w
-  radiobutton $w.none -text $tr(No) -variable annotateWithVars -value no -anchor w
+  radiobutton $w.notbest -textvar ::tr(AnnotateNotBest) -variable annotateWithVars -value notbest -anchor w
+  radiobutton $w.blunders -textvar ::tr(AnnotateBlundersOnly) -variable annotateWithVars -value blunders -anchor w
+  radiobutton $w.allmoves -textvar ::tr(AnnotateAllMoves) -variable annotateWithVars -value allmoves -anchor w
+  radiobutton $w.none -textvar ::tr(No) -variable annotateWithVars -value no -anchor w
 
   pack $w.anlabel -side top
   pack $w.notbest $w.blunders -side top -fill x
@@ -870,10 +870,10 @@ proc initAnnotation {n} {
 
   ### Which side
 
-  label $w.avlabel -text $tr(AnnotateWhich)
-  radiobutton $w.all -text $tr(AnnotateAll) -variable annotateMoves -value all -anchor w
-  radiobutton $w.white -text $tr(AnnotateWhite) -variable annotateMoves -value white -anchor w
-  radiobutton $w.black -text $tr(AnnotateBlack) -variable annotateMoves -value black -anchor w
+  label $w.avlabel -textvar ::tr(AnnotateWhich)
+  radiobutton $w.all -textvar ::tr(AnnotateAll) -variable annotateMoves -value all -anchor w
+  radiobutton $w.white -textvar ::tr(AnnotateWhite) -variable annotateMoves -value white -anchor w
+  radiobutton $w.black -textvar ::tr(AnnotateBlack) -variable annotateMoves -value black -anchor w
 
   pack $w.avlabel -side top
   pack $w.all $w.white $w.black -side top -fill x
@@ -882,9 +882,9 @@ proc initAnnotation {n} {
 
   ### General options frame
 
-  checkbutton $w.cbAnnotateVar  -text $tr(AnnotateVariations) -variable ::isAnnotateVar -anchor w
-  checkbutton $w.cbAddAnnotatorComment  -text $tr(AnnotateComment) -variable ::addAnnotatorComment -anchor w
-  checkbutton $w.cbAddAnnotatorTag  -text $tr(addAnnotatorTag) -variable ::addAnnotatorTag -anchor w
+  checkbutton $w.cbAnnotateVar  -textvar ::tr(AnnotateVariations) -variable ::isAnnotateVar -anchor w
+  checkbutton $w.cbAddAnnotatorComment  -textvar ::tr(AnnotateComment) -variable ::addAnnotatorComment -anchor w
+  checkbutton $w.cbAddAnnotatorTag  -textvar ::tr(addAnnotatorTag) -variable ::addAnnotatorTag -anchor w
   pack $w.cbAnnotateVar $w.cbAddAnnotatorComment $w.cbAddAnnotatorTag -anchor w
 
   # Book
@@ -892,7 +892,7 @@ proc initAnnotation {n} {
   frame $w.usebook
   pack  $w.usebook -side top -fill x
 
-  checkbutton $w.usebook.cbBook  -text $tr(UseBook) -variable ::useAnalysisBook -command "
+  checkbutton $w.usebook.cbBook  -textvar ::tr(UseBook) -variable ::useAnalysisBook -command "
     if {!\$::useAnalysisBook} {
       set ::isOpeningOnly 0
     }
@@ -933,7 +933,7 @@ proc initAnnotation {n} {
   pack $w.batch -side top -fill x
   set to [sc_base numGames]
   if {$to <1} { set to 1}
-  checkbutton $w.batch.cbBatch -text $tr(AnnotateSeveralGames) -variable ::isBatch \
+  checkbutton $w.batch.cbBatch -textvar ::tr(AnnotateSeveralGames) -variable ::isBatch \
     -command "checkState ::isBatch $w.batch.spBatchEnd"
 
   spinbox $w.batch.spBatchEnd -width 6 -textvariable ::batchEnd \
@@ -944,13 +944,13 @@ proc initAnnotation {n} {
 
   # Opening Errors Only
 
-  checkbutton $w.batch.cbOpeningOnly -text $tr(FindOpeningErrors) -variable ::isOpeningOnly \
+  checkbutton $w.batch.cbOpeningOnly -textvar ::tr(FindOpeningErrors) -variable ::isOpeningOnly \
      -command "checkState ::isOpeningOnly $w.batch.spOpeningOnly"
 
   spinbox $w.batch.spOpeningOnly -width 2 -textvariable ::isOpeningOnlyMoves \
       -from 5 -to 20 -increment 1 -validate all -vcmd {string is int %P}
 
-  label $w.batch.lOpeningOnly -text $tr(moves)
+  label $w.batch.lOpeningOnly -textvar ::tr(moves)
 
   checkState ::useAnalysisBook $w.usebook.comboBooks
   checkState ::useAnalysisBook $w.batch.cbOpeningOnly
@@ -969,7 +969,7 @@ proc initAnnotation {n} {
   grid $w.batch.spBatchEnd -column 1 -row 1 -columnspan 2 -sticky e
   set ::batchEnd $to
 
-  checkbutton $w.batch.cbMarkTactics -text $tr(MarkTacticalExercises) -variable ::markTacticalExercises
+  checkbutton $w.batch.cbMarkTactics -textvar ::tr(MarkTacticalExercises) -variable ::markTacticalExercises
   grid $w.batch.cbMarkTactics -column 0 -row 2 -sticky w
   if {! $::analysis(uci$n)} {
     set ::markTacticalExercises 0
@@ -979,13 +979,13 @@ proc initAnnotation {n} {
   addHorizontalRule $w
   frame $w.buttons
   pack $w.buttons -side top -fill x
-  dialogbutton $w.buttons.cancel -text $tr(Cancel) -command {
+  dialogbutton $w.buttons.cancel -textvar ::tr(Cancel) -command {
     bind .configAnnotation <Destroy> {}
     destroy .configAnnotation
     set annotateEngine -1
     set annotateButton 0
   }
-  dialogbutton $w.buttons.help -text $tr(Help) -command {helpWindow Analysis Annotating}
+  dialogbutton $w.buttons.help -textvar ::tr(Help) -command {helpWindow Analysis Annotating}
   dialogbutton $w.buttons.ok -text "OK" -command "okAnnotation $n"
 
   pack $w.buttons.cancel $w.buttons.help $w.buttons.ok -side right -padx 5 -pady 5
@@ -3396,7 +3396,7 @@ proc setAutomoveTime {{n 0}} {
   set dialogResult {}
   set b [frame $w.buttons]
   pack $b -side top -fill x
-  dialogbutton $b.cancel -text $::tr(Cancel) -command {
+  dialogbutton $b.cancel -textvar ::tr(Cancel) -command {
     focus .
     catch {grab release .apdialog}
     destroy .apdialog
