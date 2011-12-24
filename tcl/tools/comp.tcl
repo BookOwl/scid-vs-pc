@@ -870,10 +870,10 @@ proc drawCombos {} {
 
     ttk::combobox  $l.$i.combo -width 20 -state readonly -values $values
 
-    button $l.$i.configure -image uci -width 24 -height 24 -command "
+    button $l.$i.configure -image uci -command "
       ::uci::uciConfigN \[ $l.$i.combo current \] .comp
     "
-    button $l.$i.log -image tb_annotate -width 24 -height 24 -command "
+    button $l.$i.log -image tb_annotate -command "
       engineShowLog  \[ $l.$i.combo current \]
     "
 

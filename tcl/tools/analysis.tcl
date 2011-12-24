@@ -412,7 +412,7 @@ proc ::enginelist::choose {} {
     destroy .enginelist
   }
 
-  pack $w.buttons.up $w.buttons.down $w.buttons.uci $w.buttons.log $w.buttons.add $w.buttons.edit $w.buttons.copy $w.buttons.delete -side left -expand yes
+  pack $w.buttons.up $w.buttons.down $w.buttons.uci $w.buttons.log $w.buttons.edit $w.buttons.add $w.buttons.copy $w.buttons.delete -side left -expand yes
 
   pack $w.buttons2.start $w.buttons2.close -side left -expand yes -pady 12 -padx 10 
 
@@ -3585,30 +3585,35 @@ QgE8FiAACTrsEUssvJjUgQM5nJBBEnuIokssoxRpEoNgQMKJKJzYYsuUXBoUEAA7
 }
 
 image create photo tb_annotate -data {
-R0lGODlhGAAYAOfzAAAAAAIAAAMAAAYAAAUFBRIMCw4ODisLBBQUFCUSDiIXFR8fHygoKDg4
-OE9BFVpQLlxQK2FWL2JWN2FXOGVZMGZaMrs3GWxfNGFhYWdjWcBGK8FGKm9rY8NMMd9CHsRU
-O3R0cnV0cs9SNcdXPtxQMN9PLnx4b3p6d9xWOHx7echhSslkS4CAf4GAf4KBfuNdP4OCgN9f
-QYODgYSDgYaFgt9jRsxtWIiIhZCKgeVpTuJrUN9yWNB4ZZOTkJSUkd94X916Y5qVipuVit96
-YpuWipiXlJeXl5iXl52Xi5mYkeh5YJ2XjJmYl56Yjed7Y5uZl5+ZjZ+Zjpqal5qamZual5+a
-jqCajpubmaGbj6GbkJycnKGckOeBa6OdkaOdkp6enp+enKOekueDbaSek5+fnqGfnKGgnaGh
-oKGhodeQfaWjoKSko+qMd+KPfamppqqppquqp6urqqyrqKurq6yrqa2rqa2sqe2kPq+vrrCv
-rbCvrrGwrrOyr+eejbOysfCpP7Ozs7SzsbSzsrS0steudLW0srW0s7W1s7W1tLW1tba1tLe2
-tbi3tPOvQrm3tri4trm4uLm5ubq5t/SyRO+0Tbu7ufe1RPK2Tfe1Rb29vO6rm8C/vMDAwMPC
-vsXEwcnJx8rKyM3LyPbSNs3My83Nzc/OytDOyvjYN9DQz9LRzdHR0dPSzvncONTTz9PT0tPT
-09XTztbU0PnfOdfV0dfW0dbW1tjW0djW0tnX09nX1PrkOtrZ1dvZ1fvnO9za1tza2Nzb2Nzb
-2fzpO9zc2t3c2N3c2t7d2fzrPd/e2uDe2t/f3eDf2+Hf2+Hf3OHg3ODg3+Hg3eLh3ePi4OTj
-4OXj4OXk4eTk5Obl4ufm4+jn5Ofn5+np6evq6Ozr6e3s6u3t6+3t7e/v7vDw7vDw8PHw7vLy
-8vPy8fTz8vT09Pb19Pb29vj39vj49/n5+Pn5+fr6+fv7+/z8+/7+/v//////////////////
-/////////////////////////////////yH5BAEKAP8ALAAAAAAYABgAAAj+AP8JHJhAQIAB
-BwYqXKgQgEMdKEigEOGwogEGGBj+A/BKHQBNfdoAWQGglrt27bRZI7WAIQB18wCI+TFkx4gC
-tea1C4dn2zxADRYCmBeTS40YNToUQMMpU6I14+ahm0OgIVEATkpo3aDAFbx25b5UdGg1phIP
-aC0AIJMpU6QzjmTMIDtwqDwAZ9MCQLWunblnvz4B6HUJQN158RCwecH4AwAtlSAtUmQIwDFL
-EAwLHPoOAJscoFUgGHWutDkAwjBd0Lx5HjvPPADwsIFgyiNEgQDomjSBbut0ANIAiANAAwBQ
-5LwBkNVIAgAOrDfOOzcFAAsjTAC0ODIIACtKFQDYPDERfeg5c8o+DSNXTFIwAKf+UABwxQ6O
-8vPEIUJ0qJAgQX4AIModDwAAAgyeBIHfN9504yA32UgDACERACDFG520EgV+3Oyxhx555EEH
-AA44FIILPZixSxb4YXPNi9VQA4xDRVABRyer4IILFOW5Mw0dctRhhxtg3HBCCjT4UIYaatzS
-RHngQNOMM8tEY0wqjPCxSSix8IKLLbMgUZ4qzCSDjDHLEJNLKaZ0yYsvt9ACixDlJRHGGF50
-4cUWWFRhhRVZQAHFEksQkUF0G42l6KK+aeToowEBADs=
+R0lGODlhGgAaAOfoAE9BFUdGRk9PT1pQLlxQK2FWL2JWN2FXOGVZMGZaMrs3
+GWxfNGFhYWdjWcBGK8FGKmpqam9rY8NMMd9CHsRUO3R0cnV0cs9SNcdXPtxQ
+MN9PLnx4b3p6d9xWOHx7echhSslkS4CAf4GAf4KBfuNdP4OCgN9fQYODgYSD
+gYaFgt9jRsxtWIiIhZCKgeVpTuJrUN9yWNB4ZZOTkJSUkd94X916Y5qVipuV
+it96YpuWipiXlJeXl5iXl52Xi5mYkeh5YJ2XjJmYl56Yjed7Y5uZl5+ZjZ+Z
+jpqal5qamZual5+ajqCajpubmaGbj6GbkJycnKGckOeBa6OdkaOdkp6enp+e
+nKOekueDbaSek5+fnqGfnKGgnaGhoKGhodeQfaWjoKSko+qMd+KPfamppqqp
+pquqp6urqqyrqKurq6yrqa2rqa2sqe2kPq+vrrCvrbCvrrGwrrOyr+eejbOy
+sfCpP7Ozs7SzsbSzsrS0steudLW0srW0s7W1s7W1tLW1tba1tLe2tbi3tPOv
+Qrm3tri4trm4uLm5ubq5t/SyRO+0Tbu7ufe1RPK2Tfe1Rb29vO6rm8C/vMDA
+wMPCvsXEwcnJx8rKyM3LyPbSNs3My83Nzc/OytDOyvjYN9DQz9LRzdHR0dPS
+zvncONTTz9PT0tPT09XTztbU0PnfOdfV0dfW0dbW1tjW0djW0tnX09nX1Prk
+OtrZ1dvZ1fvnO9za1tza2Nzb2Nzb2fzpO9zc2t3c2N3c2t7d2fzrPd/e2uDe
+2t/f3eDf2+Hf2+Hf3OHg3ODg3+Hg3eLh3ePi4OTj4OXj4OXk4eTk5Obl4ufm
+4+jn5Ofn5+np6evq6Ozr6e3s6u3t6+3t7e/v7vDw7vDw8PHw7vLy8vPy8fTz
+8vT09Pb19Pb29vj39vj49/n5+Pn5+fr6+fv7+/z8+/7+/v//////////////
+////////////////////////////////////////////////////////////
+/////////////////////yH5BAEKAP8ALAAAAAAaABoAAAj+AP8JHEiwoMGD
+BSEoVIiw4b+FLzpk6HBh4UIBDBpCIPUNwiM5YmqAgKBqnDhxz5ZlgoAQwjd0
+EK7QwAEDQwBV6MRZawMNXR2WBiGggxlFhQkVEgJ0ieTIDxhs6LqhAUpQKMwh
+GrI+gDCqnDhtVCxSHWgVwo8JaBVAyOLIkSEug06gYJgQ3TmzaCeo7QRO3DZi
+tChBkMVo7EN05iCEIcGYAoQnigoB+rMHAq9FBAwLJafYhecPEDBxG70Nwq1G
+CwwfDqc4BoQYKyAgIdTHDoRXiA7QrYrOGwQvEMxAcAChUrZpEE4JMgAhgmqh
+3JBACLEjCAQRPPBACJUoAQQiG57Uo+O27RclXNl0HbIFgRMdBBCYrGkh/lqf
+Pnz03LkzB8IlNgNAUEEJk9ggHjXTSKNgNM4cA0EeBUBwBBmSiGKEeNHAAccb
+briRBgQAKGTBCDJsAYsT4jXDzIrKJFOLQjokUYYkoLTSShHPjYNMGmeoscYY
+VbDAgQcpzKDFF1+wIsRz1RQjzDDAGLOLJ4HEAYklpsTSyiqo9PDcJ8H40ssu
+wOTiiiabZBnLLKykUsoNz/lgBRZTSDEFFE0oscQSThRRBBBA5NCAag+JZaih
+DiWq6KIOBQQAOw==
 }
 
 image create photo tb_play -data {
@@ -3678,21 +3683,21 @@ GzBWpChBoUDL/wAG+FBAADs=
 }
 
 image create photo uci -data {
-R0lGODlhGAAYAMZaACBKhzRlpF9fXlhthEVxqVtxiU50pGB2j2B3kVR8rmN7
-lVl9q3l4dHx8fH19fX9/f2WErGyFoYaGhoeHh4GKlXWQroGTqZGRkYKXso2Y
-pYSctpmZmZ6enp+fnpCmvpGmvpeltqenppmtw6SttqKuvK2trZ2wyq+vr6ex
-vaG0yJ22zp240rW1taS60Lu7u7vByMHBwbDG28zMzM/NysDR4tjY19zc3NPf
-6t/f39fi7ePi4ePj4uTj4d/n8Ofm5Ojn5Ojn5urp6Ovp5+rq6uzq6O3r6e3r
-6vDw8O3y9vLx7+7z9vPy8fPz8vD09/T09Pb29fj39vj49/j4+Pn49/n59/n5
+R0lGODlhGAAYAMZLACBKhzRlpF9fXmpnZ1hthEVxqVtxiU50pGB2j2B3kVR8
+rmN7lVl9q39/f2WErGyFoYGKlXWQroGTqYKXso2YpYSctpCmvpGmvpeltpmt
+w6SttqKuvJ2wyq+vr6exvaG0yJ22zp240qS60LvByMHBwbDG28zMzM/NysDR
+4tjY19zc3NPf6t/f39fi7ePi4ePj4uTj4d/n8Ofm5Ojn5Ovp5+rq6uzq6O3r
+6e3r6u3y9vLx7+7z9vPy8fPz8vD09/T09Pb29fj39vj49/j4+Pn49/n59/n5
 +Pr6+fr6+vv7+/7+/v//////////////////////////////////////////
 ////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////yH5BAEKAH8A
-LAAAAAAYABgAAAf0gH+Cg4SFhoeCDw+IjIQPQVU1i42MD1BLkogYAY0PRFWT
-hQFaBpyDDYqCLkaghqMyJxCOP0MPJTtEVgyuNiemgxtASUVEQsatgwFXAb+E
-EzNRVVRVxlOTAVnNhhyKDyxVxU8dAVLalA9VPi8ETuaUfw8mATgLIe+EAPkB
-TgkjWKGUAFRo4QFAABQwdGQBiEjgDRIqFAB4kMXYwkYANOTIoGAFAgDwshS7
-eAiAiB4WBqyoUABkSIsSDAFIocTCgZUtHWXhIYCkIAAfmoC4ydKlTiZHAAKI
-gYQCTqOFLjxwUAhAhBU0PuS8hy9CBIlcZeYLS7ZRIAA7
+LAAAAAAYABgAAAfvgH+Cg4SFhoeCAwOIjIQDJEYNi42MA0E8KZOGEwGNAzZG
+moQBSwedg4qTDTihhqQmHQ6OMzWKLzZHooIBKh2ngw0kOjc2NMatgwFIAb+E
+DSdCRkVGxkSTAUrNhpKKDUbFQA0BQ9qU3jIjBT/llH8DHAEsDA3thAD3AT8K
+Gkm6jAARRFgAEMADCRdK/BkCuGIDiAUABigxlrARgAotKCwIkQCAOyXFKh4C
+kCGGBAIhIhjw+JGiPwAfdkhAkHKlIyUwBIgUBOCCDww0VbK82YOEKAAlckCo
+ObRQqkIAHoRAccFmPXsPHkC8uvAe16+NAgEAOw==
 }
 
 image creat photo tb_info -data {

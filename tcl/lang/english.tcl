@@ -189,10 +189,10 @@ menuText E ToolsOpReport "Opening Report" 0 {Generate an opening report for the 
 menuText E ToolsOpenBaseAsTree "Open Base as Tree" 13   {Open a base and use it in Tree window}
 menuText E ToolsOpenRecentBaseAsTree "Open Recent as Tree" 0   {Open a recent base and use it in Tree window}
 menuText E ToolsTracker "Piece Tracker"  6 {Open the Piece Tracker window}
-menuText E ToolsTraining "Training"  0 {Training tools (tactics, openings,...) }
-menuText E ToolsComp "Computer Tournament" 0 {Chess engine tournament}
+menuText E ToolsTraining "Training"  7 {Training tools (tactics, openings,...) }
+menuText E ToolsComp "Computer Tournament" 9 {Chess engine tournament}
 menuText E ToolsTacticalGame "Computer - Phalanx"  0 {Play a game with tactics}
-menuText E ToolsSeriousGame "Computer - UCI Engine"  0 {Play against an UCI engine}
+menuText E ToolsSeriousGame "Computer - UCI Engine"  11 {Play against an UCI engine}
 menuText E ToolsTrainTactics "Mate in ..N.. Puzzle"  0 {Solve "Mate in" puzzles}
 menuText E ToolsTrainCalvar "Calculation of variations"  0 {Calculation of variations training}
 menuText E ToolsTrainFindBestMove "Find best move"  0 {Find best move}
