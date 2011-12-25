@@ -317,10 +317,9 @@ proc ::enginelist::listEngines {{focus 0}} {
   $w.title configure -state disabled
 }
 
-################################################################################
-#   Configure chess engines
-#   rewritten by S.A. July 7 2009  (and beyond :>)
-################################################################################
+###  Main Engine Configuration widget
+###  rewritten by S.A. July 7 2009  (and beyond :>)
+
 proc ::enginelist::choose {} {
   global engines
   set w .enginelist
@@ -405,7 +404,7 @@ proc ::enginelist::choose {} {
   label $w.buttons.sep -text "   "
 
   dialogbutton $w.buttons2.start -textvar ::tr(Start) -command {
-    makeAnalysisWin [lindex [.enginelist.list.list curselection] 0]
+    makeAnalysisWin [lindex [.enginelist.list.list curselection] 0] settime
   }
 
   dialogbutton $w.buttons2.close -textvar ::tr(Close) -command {
@@ -1931,7 +1930,7 @@ proc toggleMini {} {
 
 ### makeAnalysisWin: toggle analysis engine n
 
-proc makeAnalysisWin {{n 0}} {
+proc makeAnalysisWin {{n 0} {settime 0}} {
   global analysisWin$n font_Analysis analysisCommand analysis annotateButton annotateEngine
 
   set w .analysisWin$n
@@ -1962,8 +1961,14 @@ proc makeAnalysisWin {{n 0}} {
     set analysisWin$n 0
     return
   }
-  ::enginelist::setTime $n
-  catch {::enginelist::write}
+
+  # Only update engine's time when it was chosen in the engines dialog box
+
+  if {$settime != 0} {
+    ::enginelist::setTime $n
+    catch {::enginelist::write}
+  }
+
   set engineData [lindex $::engines(list) $n]
   set analysisName [lindex $engineData 0]
   set analysisCommand [ toAbsPath [lindex $engineData 1] ]
@@ -2488,7 +2493,7 @@ proc processAnalysisInput {n} {
 
   # Check for "feature" commands so we can determine if the engine
   # has the setboard and analyze commands:
-  #
+
   if {[string match {feature*} $line]} {
     if {[string match {*analyze=1*} $line]} { set analysis(has_analyze$n) 1 }
     if {[string match {*setboard=1*} $line]} { set analysis(has_setboard$n) 1 }
@@ -2496,7 +2501,12 @@ proc processAnalysisInput {n} {
     if {[string match {*usermove=1*} $line]} { set analysis(wants_usermove$n) 1 }
     if {[string match {*sigint=1*} $line]} { set analysis(send_sigint$n) 1 }
     if {[string match {*myname=*} $line] } {
-      if { !$analysis(wbEngineDetected$n) } { detectWBEngine $n $line  }
+      if { !$analysis(wbEngineDetected$n) } {
+        detectWBEngine $n $line
+      }
+      # No need to further process detectWBEngine
+      set analysis(wbEngineDetected$n) 1 
+
       if { [regexp "myname=\"(\[^\"\]*)\"" $line dummy name]} {
         catch {wm title .analysisWin$n "Scid: $name"}
       }
@@ -2504,35 +2514,14 @@ proc processAnalysisInput {n} {
     return
   }
 
-
-  # hack to quit processAnalysisInput when playing a comp
+  ### Quit processAnalysisInput when playing a computer tournament
+  # Hmmm... stops proper detecting of winboard engines if they don't have protover 2
   if {$comp(playing)} {
     return
   }
 
   # Check for a line starting with "Crafty", so Scid can work well
   # with older Crafty versions that do not recognize "protover"
-
-  if {[string match {Crafty*} $line]} {
-    logEngineNote $n {Seen "Crafty"; assuming analyze and setboard commands.}
-    set major 0
-    if {[scan $line "Crafty v%d.%d" major minor] == 2  &&  $major >= 18} {
-      logEngineNote $n {Crafty version is >= 18.0; assuming scores are from White perspective.}
-      set analysis(invertScore$n) 0
-    }
-    # Turn off crafty logging, to reduce number of junk files:
-    sendToEngine $n {log off}
-    # Set a fairly low noise value so Crafty is responsive to board changes,
-    # but not so low that we get lots of short-ply search data:
-    # "noise 0" "will produce output starting with iteration 1"
-    sendToEngine $n {noise 1000}
-    sendToEngine $n {egtb off} ; # turn off end game table book
-    sendToEngine $n {resign 0} ; # turn off alarm (resigning ?)
-    set analysis(isCrafty$n) 1
-    set analysis(has_setboard$n) 1
-    set analysis(has_analyze$n) 1
-    return
-  }
 
   # Scan the line from the engine for the analysis data
 
@@ -2588,16 +2577,13 @@ proc processAnalysisInput {n} {
   # Check for other engine-specific lines:
   # The following checks are intended to make Scid work with
   # various WinBoard engines that are not properly configured
-  # by the "feature" line checking code above.
-  #
-  # Many thanks to Allen Lake for testing Scid with many
-  # WinBoard engines and providing this code and the detection
-  # code in wbdetect.tcl
+  # by the "feature" line checking code above (probably because the do not have protover 2 support)
   if { !$analysis(wbEngineDetected$n) } {
     detectWBEngine $n $line
   }
 
 }
+
 ################################################################################
 # Returns 0 if engine died abruptly or 1 otherwise
 # - this procedure is duplicated(?) in uci.tcl
@@ -3706,43 +3692,44 @@ o5y02osn2Flt0IXimH0c+ZFBip4j+7oiPMshfdsdvuulbzEBVcSisVEAADs=
 }
 
 proc engineShowLog {n} {
-    if {$n == {}} {
-      return
-    }
-    set ::::analysis(logfile) $n
-
-    set w .enginelog
-
-    if {[winfo exists $w]} {
-      $w.log delete 1.0 end
-    } else {
-      toplevel $w
-      wm minsize $w 250 150
-      setWinLocation $w
-      setWinSize $w
-
-      frame $w.buttons
-      pack $w.buttons -side bottom 
-
-      autoscrollframe $w.frame text $w.log -width 80 -height 40 -font font_small -wrap none 
-      pack $w.frame -side top -fill both -expand yes
-      
-      dialogbutton $w.buttons.update -textvar ::tr(Update) -command engineUpdateLog
-      dialogbutton $w.buttons.ok -textvar ::tr(Close) -command "destroy $w"
-      checkbutton $w.buttons.auto -text Auto -variable ::analysis(log_auto) -command engineAutoLog
-
-      pack $w.buttons.auto $w.buttons.update -padx 15 -side left
-      pack $w.buttons.ok -padx 15 -side right
-
-      bind $w <Configure> "recordWinSize $w"
-    }
-    wm title $w "Engine Log: [lindex [lindex $::engines(list) $n] 0]"
-    engineAutoLog
-    bind $w <Escape> "destroy $w"
-    bind $w <F1> { helpWindow Index }
-    $w.buttons.update invoke
-    .enginelog.log see 0.0
+  if {$n == {}} {
+    return
   }
+  set ::::analysis(logfile) $n
+
+  set w .enginelog
+
+  if {[winfo exists $w]} {
+    $w.log delete 1.0 end
+    raiseWin $w
+  } else {
+    toplevel $w
+    wm minsize $w 250 150
+    setWinLocation $w
+    setWinSize $w
+
+    frame $w.buttons
+    pack $w.buttons -side bottom 
+
+    autoscrollframe $w.frame text $w.log -width 80 -height 40 -font font_small -wrap none 
+    pack $w.frame -side top -fill both -expand yes
+    
+    dialogbutton $w.buttons.update -textvar ::tr(Update) -command engineUpdateLog
+    dialogbutton $w.buttons.ok -textvar ::tr(Close) -command "destroy $w"
+    checkbutton $w.buttons.auto -text Auto -variable ::analysis(log_auto) -command engineAutoLog
+
+    pack $w.buttons.auto $w.buttons.update -padx 15 -side left
+    pack $w.buttons.ok -padx 15 -side right
+
+    bind $w <Configure> "recordWinSize $w"
+  }
+  wm title $w "Engine Log: [lindex [lindex $::engines(list) $n] 0]"
+  engineAutoLog
+  bind $w <Escape> "destroy $w"
+  bind $w <F1> { helpWindow Index }
+  $w.buttons.update invoke
+  .enginelog.log see 0.0
+}
 
 proc engineUpdateLog {} {
   ### Open the log file for reading

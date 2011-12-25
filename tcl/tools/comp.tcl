@@ -454,7 +454,12 @@ proc compNM {n m k} {
   if {[winfo exists .analysisWin$n]} "destroy .analysisWin$n"
   if {[winfo exists .analysisWin$m]} "destroy .analysisWin$m"
 
+  ### makeAnalysisWin creates a toplevel widget to run an engine but we don't really need a toplevel %<
+  # The problem is that only UCI has a procedure for running an engine without a toplevel (uci::startEngine).
+  # There is currently no equivalent for xboard engines
+
   makeAnalysisWin $n
+
   if {![winfo exists .analysisWin$n]} {
     puts_ ".analysisWin$n dead, exitting Tournament"
     set comp(games) {}

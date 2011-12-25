@@ -779,10 +779,10 @@ namespace eval uci {
     }
 }
 
-  ################################################################################
-  # The engine replied readyok, so it's time to configure it (sends the options to the engine)
-  # It seems necessary to ask first if engine is ready
-  ################################################################################
+
+  ### The engine replied readyok, so it's time to configure it (sends the options to the engine)
+  ### It seems necessary to ask first if engine is ready
+
   proc sendUCIoptions {n} {
     global analysis
     set engineData [ lindex $::engines(list) $n ]
@@ -796,10 +796,10 @@ namespace eval uci {
       ::sendToEngine $n "setoption name $name value $value"
     }
   }
-  ################################################################################
-  # Start an engine for playing (not analysis)
-  # - called by tcl/tools/calvar.tcl tcl/tools/sergame.tcl tcl/tools/tactics.tcl tcl/tools/tacgame.tcl
-  ################################################################################
+
+  ### Start an engine silently (for playing, not analysis)
+  ### Called by calvar.tcl sergame.tcl tactics.tcl and tacgame.tcl
+
   proc startEngine {n} {
 
     global ::uci::uciInfo
@@ -853,16 +853,17 @@ namespace eval uci {
       after 100
     }
   }
-  ################################################################################
-  #
-  ################################################################################
+
+  ### ::uci::sendToEngine
+
   proc sendToEngine {n text} {
     logEngine $n "Scid  : $text"
     catch {puts $::uci::uciInfo(pipe$n) $text}
   }
-  ################################################################################
-  # returns 0 if engine died abruptly or 1 otherwise
-  ################################################################################
+
+  ### ::uci::checkEngineIsAlive
+  ### returns 0 if engine died abruptly or 1 otherwise
+
   proc checkEngineIsAlive { n } {
     global ::uci::uciInfo
 
