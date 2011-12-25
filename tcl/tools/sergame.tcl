@@ -14,16 +14,11 @@ namespace eval sergame {
   set openingMovesHash {}
   set openingMoves ""
   set outOfOpening 0
-  set useBook 1
-  set bookToUse ""
   array set engineListBox {}
-  set startFromCurrent 0
   set coachIsWatching 0
   set engineName ""
   set bookSlot 2
-  set timeMode movetime
   set depth 0
-  set movetime 0
   set nodes 0
   set ponder 0
 
@@ -117,28 +112,29 @@ namespace eval sergame {
 
     $w.fengines.fEnginesList.lbEngines selection set 0
 
-    # load book names
+    ### Book checkbutton and combobox
+
     checkbutton $w.fbook.cbUseBook -text $::tr(UseBook) -variable ::sergame::useBook
     set bookPath $::scidBooksDir
     set bookList [ lsort -dictionary [ glob -nocomplain -directory $bookPath *.bin ] ]
+    set tmp {}
+    ttk::combobox $w.fbook.combo -width 12
     if { [llength $bookList] == 0 } {
       $w.fbook.cbUseBook configure -state disabled
       set ::sergame::useBook 0
-    }
-    set i 0
-    set idx 0
-    set tmp {}
-    foreach file  $bookList {
-      lappend tmp [ file tail $file ]
-      if { $::sergame::bookToUse == [ file tail $file ]} {
-        set idx $i
+    } else {
+      set i 0
+      set idx 0
+      foreach file  $bookList {
+	lappend tmp [ file tail $file ]
+	if { $::sergame::bookToUse == [ file tail $file ]} {
+	  set idx $i
+	}
+	incr i
       }
-      incr i
+      $w.fbook.combo configure -values $tmp
+      $w.fbook.combo current $idx 
     }
-
-    ttk::combobox $w.fbook.combo -width 12 -values $tmp
-    # todo : fix this and rememember user prefs
-    $w.fbook.combo current $idx 
 
     set row 0
 
@@ -200,8 +196,8 @@ namespace eval sergame {
     grid $w.ftime.nodesvalue -row 2 -column 1 -sticky w
 
     radiobutton $w.ftime.movetimebutton -text $::tr(SecondsPerMove) -value "movetime" -variable ::sergame::timeMode
-    spinbox $w.ftime.movetimevalue  -width 4 -from 1 -to 120 -increment 1 -validate all -vcmd {string is int %P}
-    $w.ftime.movetimevalue set 5
+    spinbox $w.ftime.movetimevalue  -width 4 -from 1 -to 120 -increment 1 -validate all -vcmd {string is int %P} -textvariable ::sergame::movetime
+    # $w.ftime.movetimevalue set $movetime
 
     grid $w.ftime.movetimebutton -row 3 -column 0 -sticky w
     grid $w.ftime.movetimevalue -row 3 -column 1 -sticky w

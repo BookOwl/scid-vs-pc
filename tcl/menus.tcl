@@ -1003,6 +1003,7 @@ $m add command -label OptionsSave -command {
     ::tacgame::showblunder ::tacgame::showblundervalue 
     ::tacgame::showblunderfound ::tacgame::showmovevalue ::tacgame::showevaluation 
     ::tacgame::isLimitedAnalysisTime ::tacgame::analysisTime ::tacgame::openingType 
+    ::sergame::bookToUse ::sergame::useBook ::sergame::startFromCurrent ::sergame::timeMode ::sergame::movetime
     ::commenteditor::showBoard boardfile_lite boardfile_dark 
     ::file::finder::data(dir) ::file::finder::data(sort) ::file::finder::data(recurse) 
     ::file::finder::data(Scid) ::file::finder::data(PGN) 

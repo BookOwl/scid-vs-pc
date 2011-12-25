@@ -855,8 +855,12 @@ namespace eval uci {
   }
 
   ### ::uci::sendToEngine
+  # Wtf is the difference between ::checkEngineIsAlive and ::uci::checkEngineIsAlive
+  # and between ::sendToEngine $n "uci" and ::uci::sendToEngine $n "uci"
+  # Friggin' idiot Pascal
 
   proc sendToEngine {n text} {
+
     logEngine $n "Scid  : $text"
     catch {puts $::uci::uciInfo(pipe$n) $text}
   }
@@ -865,6 +869,7 @@ namespace eval uci {
   ### returns 0 if engine died abruptly or 1 otherwise
 
   proc checkEngineIsAlive { n } {
+
     global ::uci::uciInfo
 
     if {![eof $uciInfo(pipe$n)]} {

@@ -121,6 +121,11 @@ set ::tacgame::showevaluation 1
 set ::tacgame::isLimitedAnalysisTime 1
 set ::tacgame::analysisTime 10
 set ::tacgame::openingType new
+set ::sergame::bookToUse {}
+set ::sergame::useBook 1
+set ::sergame::startFromCurrent 0
+set ::sergame::timeMode movetime
+set ::sergame::movetime 6
 set ::commenteditor::showBoard 0
 set ::windows::gamelist::widths {}
 set ::windows::gamelist::findcase 1
