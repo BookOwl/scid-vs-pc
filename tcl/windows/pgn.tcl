@@ -343,10 +343,11 @@ namespace eval pgn {
     $mctxt add command -label [tr EditFirst] -state $state -command "::pgn::firstVar $varnum"
     $mctxt add command -label [tr EditMain] -state $state -command "::pgn::mainVar $varnum"
     $mctxt add separator
+    $mctxt add command -label "[tr Delete] [tr EditStripBegin]" -command ::game::TruncateBegin
+    $mctxt add command -label "[tr Delete] [tr EditStripEnd]" -command ::game::Truncate
+    $mctxt add separator
     $mctxt add command -label "[tr EditStrip] [tr EditStripComments]" -command {::game::Strip comments .pgnWin}
     $mctxt add command -label "[tr EditStrip] [tr EditStripVars]" -command {::game::Strip variations .pgnWin}
-    $mctxt add command -label "[tr EditStrip] [tr EditStripBegin]" -command ::game::TruncateBegin
-    $mctxt add command -label "[tr EditStrip] [tr EditStripEnd]" -command ::game::Truncate
     $mctxt add separator
     $mctxt add command -label "[tr WindowsComment]" -command ::commenteditor::Open
 
