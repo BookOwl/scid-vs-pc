@@ -376,10 +376,16 @@ proc ::tree::refreshTraining { baseNumber } {
 }
 
 ################################################################################
-proc ::tree::doTraining { { n 0 } } {
+
+### This proc is used by the training features in TREE , ANALYSIS ENGINES, and TABLEBASE
+### and isn't exclusive to the tree at all
+### The training features probably only work with engines 1 and 2 (not 0, 3, 4, 5 etc)
+### (Wheres the doco !? Pascal was a f-ing shocker).
+
+proc ::tree::doTraining {{n 0}} {
   global tree
 
-  # uses engines 1 and 2 (note: engines start at 0)
+  # uses engines 1 and 2 (todo: make work with all engines)
   if {$n != 1  &&  [winfo exists .analysisWin1]  &&  $::analysis(automove1)} {
     automove 1
     return
@@ -392,8 +398,14 @@ proc ::tree::doTraining { { n 0 } } {
     ::tb::move
     return
   }
-  if {! [winfo exists .treeWin$::tree::trainingBase]} { return }
-  if { $::tree::trainingBase == 0 } { return }
+
+  if {! [winfo exists .treeWin$::tree::trainingBase]} {
+    return
+  }
+
+  if { $::tree::trainingBase == 0 } {
+    return
+  }
 
   # Before issuing a training move, annotate player's move
   if { $::tree::mask::maskFile != ""  } {
@@ -421,8 +433,8 @@ proc ::tree::doTraining { { n 0 } } {
         set nag_order { "??" " ?" "?!" $::tree::mask::emptyNag "!?" " !" "!!"}
         set txt ""
         foreach elt $moves {
-          set n [lindex $elt 1]
-          if { [lsearch $nag_order $nag_played] < [lsearch $nag_order $n]} {
+          set N [lindex $elt 1]
+          if { [lsearch $nag_order $nag_played] < [lsearch $nag_order $N]} {
             append txt "[::trans [lindex $elt 0]][lindex $elt 1] "
           }
         }

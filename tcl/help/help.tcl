@@ -2731,9 +2731,10 @@ set helpText(Analysis) {<h1>Analysis Windows</h1>
 
   <h3>Training</h3>
   <p>
-  With the <b>Training</b> button <button tb_training>, you can play moves against the Analysis
-  Engine. The time for each move is fixed, and the analysis results are
-  not shown when training mode is on.
+  The Training Button <button tb_training> is only available for engines 1 and 2, and allows
+  one to play against the engine.  The engine moves first (from the current position) and may be stopped
+  by pressing the Training Button again.
+  The time for each move is fixed, and analysis results are not updated while the training mode is on.
   </p>
 
   <h2><name List>Configuring Engines</name></h2>

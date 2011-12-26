@@ -75,7 +75,7 @@ proc resetEngine {n} {
   set analysis(invertScore$n) 1       ;# Score is for side to move, not white
   set analysis(automove$n) 0
   set analysis(automoveThinking$n) 0
-  set analysis(automoveTime$n) 4000
+  set analysis(automoveTime$n) 3000
   set analysis(lastClicks$n) 0
   set analysis(after$n) {}
   set analysis(log$n) {}              ;# Log file channel
@@ -2124,7 +2124,13 @@ proc makeAnalysisWin {{n 0} {settime 0}} {
 
   pack $w.b.startStop $w.b.move $w.b.line $w.b.alllines \
        $w.b.multipv $w.b.lockengine $w.b.showinfo $w.b.priority $w.b.annotate $w.b.showboard \
-       $w.b.update $w.b.finishGame $w.b.automove -side left -pady 2 -padx 1
+       $w.b.update $w.b.finishGame -side left -pady 2 -padx 1
+
+  if {$n == 1 || $n == 2} {
+    # training only works with engines 1 and 2
+    pack $w.b.automove -side left -pady 2 -padx 1
+  }
+
   pack $w.b.help -side right -pady 2 -padx 1
 
   # pack  $w.b.showinfo 
