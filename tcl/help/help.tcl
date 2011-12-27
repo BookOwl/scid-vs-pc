@@ -2580,17 +2580,21 @@ set helpText(Flags) {<h1>Game Flags</h1>
 set helpTitle(Analysis) "Analysis window"
 set helpText(Analysis) {<h1>Analysis Windows</h1>
 
-  <p>
-  Scid vs. PC allows for one (or many) <b>Chess Engines</b> to run at any time.
-  A few engines come preinstalled, and others can be added via
-  the <a Analysis List>Engine Configuration</a> window. For troubleshooting, see the <a Analysis Debugging>Debugging</a> section.
-  </p>
+  <p> Scid vs. PC has powerful chess analysis features. Multiple engines can be
+run at any one time; they can be matched against each other in <a
+Tourney>Computer Tournaments</a></ht>, and log files can be browsed from within the app -
+making for easier <a Analysis Debugging>Debugging</a>.
+</p>
 
   <h3>Getting Started</h3>
-  <p>Engines can be started in various way.
+
+  <p>A few engines come preinstalled, while others can be added via the <a
+  Analysis List>Engine Configuration</a> window.</p>
+
+  <p>Starting them can be done in various ways
   By <run ::startAnalysisWin F2><green>pressing F2</green></run>
-  , F3 or F4, from the Configuration Widget, or the Tools menu.
-  Additionally, <b>Engine 1</b> can be start/stopped by <b>double-clicking the statusbar</b>.
+  , F3 or F4 from the Configuration Widget, or via the <b>Tools--<gt>Start Engine</b> menu.
+  Additionally, Engine 1 can be start/stopped by <b>double-clicking the statusbar</b>.
   Right-clicking the Statusbar will dock/undock the engine,
   which, when running docked, will run at low CPU priority.<p>
 
@@ -2789,22 +2793,17 @@ engines support both formats.
 
   <p>
   UCI Engines can be configured by pressing <button uci> or <b>Configure</b> in the Edit Window, whence
-  a dialog with the engines parameters will be shown. Gilles will write a big help section here;<gt>
+  a dialog with the engines parameters will be shown. Gilles will write a big help section here ;<gt>
   </p>
 
   <h2><name Debugging>Debugging Engine Crashes</name></h2>
   <p>
-  If an engine fails to start or crashes, one may examine the engines <b>log
-file</b>.  These files are kept in the user log directory. On
-Unix systems this should be <b>$HOME/.scidvspc</b>, and Windows it will be
-<b>Scid-vs-PC/bin/log</b>. In this directory you'll find files numbered
-<b>engine1.log, engine2.log</b>, etc. These numbers correspond to the engines
-position in the <run ::enginelist::choose><green>Tools--<gt>Analysis
-Engines</green></run>.
-  widget
+  If an engine fails to start, or crashes, one may examine it's log file.
+  These are kept in the Scidvspc's log directory and can be viewed
+via the <button tb_annotate> button in the <run ::enginelist::choose><green>engine configuration</green></run> widget.
   </p>
 
-  <p><footer>Updated: Scid vs. PC 4.4, May 2011</footer></p>
+  <p><footer>Updated: Scid vs. PC 4.7, December 2011</footer></p>
 }
 
 set helpTitle(Tourney) "Computer Tournament"
@@ -4233,19 +4232,25 @@ See the polyglot documentation for more options.
 }
 
 # Tactical game window help
-set helpTitle(TacticalGame) "Tactical Game Window"
-set helpText(TacticalGame) {<h1>Tactical Game</h1>
+set helpTitle(TacticalGame) "Playing the Computer"
+set helpText(TacticalGame) {<h1>Playing the Computer</h1>
 
 <p> Scid offers several ways to play the computer at chess. The most convenient
-is the <run ::tacgame::config><green>Play--<gt>Phalanx</green></run> menu item. Here you'll find the option to start a new game (or Fischer Chess game), against a flexible computer opponent whose skill you can select. Skill levels vary between 1200 (a bright teenager with some experience), to 2200 (a National Master).
+is the <run ::tacgame::config><green>Play--<gt>Phalanx</green></run>
+menu item. Here you'll be able to start a game of Normal, Fischer, or Random Pawns Chess.
+<i>(though Fischer castling is not supported)</i>.
 </p><p>
-Your opponent is played by the <b>Phalanx</b> engine, and there is also a
-computer coach (<b>Toga II</b>) watching the game who will indicate any
-blunders Phalanx makes.  </p>
+Your opponent is the <b>Phalanx</b> engine. It's skill levels vary
+between 1200 (a bright teenager with some experience), to 2200 (a National
+Master). But Phalanx is really not too strong. It is programmed to make "human" like errors, and experienced
+players should have no trouble beating it.  There is also a computer coach
+(<b>Toga II</b>) watching the game who will indicate any blunders Phalanx
+makes.
+</p>
 
 <p>
 <i>Other computer opponents can be found in the
-<a SeriousGame>Serious Game</a> and <a Analysis>Analysis</a> features</i>.
+<a SeriousGame>UCI Game</a> and <a Analysis>Analysis</a> features</i>.
 </p>
 
 <h3>Starting the Game</h3>
@@ -4278,7 +4283,7 @@ our game.</li>
   limited the coach is allowed to think in the background.</li>
   </ul>
 
-<p><footer>Updated: Scid vs. PC 4.0, May 2010</footer></p>
+<p><footer>Updated: Scid vs. PC 4.7, December 2011</footer></p>
 }
 
 set helpTitle(Correspondence) "Correspondence Chess"
@@ -5130,21 +5135,18 @@ are lost, the old setup stays in place.
 }
 
 # Serious game window help
-set helpTitle(SeriousGame) "Serious Game"
-set helpText(SeriousGame) {<h1>Serious Game</h1>
+set helpTitle(SeriousGame) "UCI Game"
+set helpText(SeriousGame) {<h1>UCI Game</h1>
   <p>
-  Serious games can be played against any <term>UCI</term> engine set
-  up for the usage with Scid. A list of all possible opponents is
-  given on top of the <term>Game configuration</term> window. The
-  button <term>Configure UCI engine</term> additionally gives access
-  to the engines parameters. By default, they are set such as in the
-  <a Analysis List>engine configuration</a>.
+  Tougher games can be played against any installed UCI Engine (including Toga).
+  From the <run ::sergame::config><green>Game Configuration</green></run> window, 
+  a list of possible opponents is shown.
   </p>
   <p>
+  The <term>Configure</term> button gives access to the engines' parameters.
   Next, the book that should be used can be chosen from those opening
-  books available to Scid. Unchecking the <term>Use book</term> box
-  will disable the use of an opening book and the engine will start
-  calculating moves right from the beginning.
+  books available to Scid. Unchecking <term>Use book</term> will disable the use
+  of an opening book and the engine will start calculating moves right from the beginning.
   </p>
   <p>
   The section <term>Time mode</term> allows to set the timing used for
