@@ -250,6 +250,13 @@ proc ::windows::gamelist::Open {} {
   bind $w <F1> { helpWindow GameList }
   bind $w <Destroy> { ::windows::gamelist::Close }
   bind $w <Control-Tab> {::file::SwitchToNextBase ; break}
+  catch {
+    if {$::windowsOS} {
+      bind $w <Shift-Tab> {::file::SwitchToNextBase -1 ; break}
+    } else {
+      bind $w <ISO_Left_Tab> {::file::SwitchToNextBase -1 ; break}
+    }
+  }
   bind $w <Control-Key-quoteleft> {::file::SwitchToBase 9}
   bind $w <Escape> "destroy $w"
 

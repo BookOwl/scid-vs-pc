@@ -1341,6 +1341,13 @@ proc updateMenuStates {} {
   }
   bind . <Control-Key-quoteleft> "::file::SwitchToBase 9"
   bind . <Control-Tab> ::file::SwitchToNextBase
+  catch {
+    if {$windowsOS} {
+      bind . <Shift-Tab> {::file::SwitchToNextBase -1} 
+    } else {
+      bind . <ISO_Left_Tab> {::file::SwitchToNextBase -1} 
+    }
+  }
 
   foreach i {Compact Delete} {
     $m.file.utils entryconfig [tr FileMaint$i] -state disabled
