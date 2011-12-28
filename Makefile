@@ -1,7 +1,5 @@
 ##### Makefile for Scid for Unix operating systems.
 
-# This file overwritten by configure
-
 CXX = g++
 CC = gcc
 LINK = g++
@@ -26,9 +24,9 @@ TCL_VERSION = 8.5
 #
 # The settings determined by "./configure" are:
 
-TCL_INCLUDE = -I/usr/local/include
-TCL_LIBRARY = -L/usr/local/lib -ltcl$(TCL_VERSION)
-TK_LIBRARY  = $(TCL_LIBRARY) -ltk$(TCL_VERSION) -L/usr/lib -lX11
+TCL_INCLUDE = -I/usr/include
+TCL_LIBRARY = -L/usr/lib64 -ltcl$(TCL_VERSION)
+TK_LIBRARY  = $(TCL_LIBRARY) -ltk$(TCL_VERSION) -lX11
 
 ### Solaris:
 # TCL_INCLUDE = -I /usr/local/tcl/include
@@ -403,7 +401,7 @@ src/tkscid.o: src/tkscid.cpp
 ### The endgame tablebase code in the egtb/ subdirectory (not written by me)
 
 src/probe.o: src/probe.cpp src/egtb/tbindex.cpp src/egtb/tbdecode.c
-	$(CXX) -fno-rtti -O2 -fno-exceptions $(DEBUG) $(SCIDFLAGS) $(TB) -o src/probe.o -c src/probe.cpp
+	$(CXX) $(CXXFLAGS) -Wno-missing-braces $(TB) -o src/probe.o -c src/probe.cpp
 
 ### Generic rule for all other .cpp files:
 

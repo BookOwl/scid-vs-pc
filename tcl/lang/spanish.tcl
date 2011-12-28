@@ -110,7 +110,7 @@ menuText S GameReplace "Reemplazar Partida" 6 \
 menuText S GameAdd "Añadir Partida" 0 \
   {Guarda esta partida como una nueva partida en la base de datos}
 menuText S GameInfo "Juego Set de Información" 0
-menuText S GameBrowse "Hojear Partidas" 0
+menuText S GameBrowse "Examinar Partidas" 0
 menuText S GameList "Listar Todas las Partidas" 0
 menuText S GameDeepest "Identificar apertura" 0 \
   {Va a la posición más avanzada de la partida según el libro ECO}
@@ -354,7 +354,7 @@ helpMsg S .button.autoplay {Automovimiento de los movimientos  (Tecla: Ctrl+Z)}
 
 # General buttons:
 translate S Back {Atrás}
-translate S Browse {Hojear}
+translate S Browse {Examinar}
 translate S Cancel {Cancelar}
 translate S Continue {Continuar}
 translate S Clear {Limpiar}
@@ -367,7 +367,7 @@ translate S Help {Ayuda}
 translate S Import {Importar}
 translate S Index {Índice}
 translate S LoadGame {Cargar}
-translate S BrowseGame {Hojear}
+translate S BrowseGame {Examinar}
 translate S MergeGame {Mezclar o fundir}
 translate S MergeGames {Mezclar o fusionar partidas}
 translate S Preview {Vista previa}
