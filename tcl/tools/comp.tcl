@@ -140,8 +140,12 @@ proc compInit {} {
   grid $w.config.verboselabel -row $row -column 0 -sticky w -padx 5 
   grid $w.config.verbosevalue -row $row -column 1 -padx 5 
 
-  grid $w.config.verboselabel -row $row -column 0 -sticky w -padx 5 
-  grid $w.config.verbosevalue -row $row -column 1 -padx 5 
+  incr row
+  label $w.config.loglabel -text {Log Engines}
+  checkbutton $w.config.logvalue -variable analysis(logEngines)
+
+  grid $w.config.loglabel -row $row -column 0 -sticky w -padx 5 
+  grid $w.config.logvalue -row $row -column 1 -padx 5 
 
   incr row
   label $w.config.firstonlylabel -text {First engine plays others}
