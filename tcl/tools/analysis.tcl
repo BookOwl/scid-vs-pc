@@ -16,7 +16,10 @@
 # Removed sorting functionality
 # Other performance tweaks.
 
+set analysis(logEngines) 0
+
 # Maximum number of lines to be saved in a log file
+# (setting it to 0 also stops log file being created)
 set analysis(logMax) 5000
 
 # Should Scid <-> Engine communication log messages be echoed to stdout
@@ -281,25 +284,36 @@ proc ::enginelist::listEngines {{focus 0}} {
     set time [lindex $engine 5]
     set uci  [lindex $engine 7]
     set date [::enginelist::date $time]
-    set text [format "%-19s " $name]
-    set eloText "    "
-    if {$elo > 0} { set eloText [format "%4u" $elo] }
-    append text $eloText
+    set text [format "%-18s" [string range $name 0 17]]
 
     # display any hot key bindings
     if {$engines(F2) == $count} {
-      append text "  F2 "
+      append text " F2  "
     } elseif {$engines(F3) == $count} {
-      append text "  F3 "
+      append text " F3  "
     } elseif {$engines(F4) == $count} {
-      append text "  F4 "
+      append text " F4  "
     } else {
       append text "     "
     }
 
-    set timeText "  "
-    if {$time > 0} { set timeText "  $date" }
-    append text $timeText
+    if {$uci} {
+      append text "uci    "
+    } else {
+      append text "xboard "
+    }
+
+    if {$elo > 0} {
+      append text [format "%4u" $elo]
+    } else {
+      append text "    "
+    }
+
+    if {$time > 0} {
+      append text "  $date"
+    } else {
+      append text "  "
+    }
     $f insert end $text
 
     incr count
@@ -348,19 +362,20 @@ proc ::enginelist::choose {} {
       -cursor top_left_arrow -background gray95
 
   $w.title insert end $::tr(EngineName) Name
-  for {set i [string length $::tr(EngineName)]} {$i < 19} { incr i } {
+  for {set i [string length $::tr(EngineName)]} {$i < 18} { incr i } {
     $w.title insert end " "
   }
-  $w.title insert end "  "
+
+
+  $w.title insert end " Key Type    "
 
   $w.title insert end $::tr(EngineElo) Elo
   for {set i [string length $::tr(EngineElo)]} {$i < 4} { incr i } {
     $w.title insert end " "
   }
 
-  $w.title insert end " Key "
-  $w.title insert end "         "
-  $w.title insert end "$::tr(EngineTime)" Time
+  $w.title insert end "      $::tr(EngineTime)" Time
+
   $w.title configure -state disabled
   pack $w.title -side top -fill x
 
@@ -411,7 +426,7 @@ proc ::enginelist::choose {} {
     destroy .enginelist
   }
 
-  pack $w.buttons.up $w.buttons.down $w.buttons.uci $w.buttons.log $w.buttons.edit $w.buttons.add $w.buttons.copy $w.buttons.delete -side left -expand yes
+  pack $w.buttons.up $w.buttons.down $w.buttons.log $w.buttons.uci $w.buttons.edit $w.buttons.add $w.buttons.copy $w.buttons.delete -side left -expand yes
 
   pack $w.buttons2.start $w.buttons2.close -side left -expand yes -pady 12 -padx 10 
 
@@ -1854,7 +1869,7 @@ proc sendMoveToEngine {n move} {
 
 # logEngine:
 #   Log Scid-Engine communication.
-#
+
 proc logEngine {n text} {
   global analysis
 
@@ -2010,7 +2025,7 @@ proc makeAnalysisWin {{n 0} {settime 0}} {
 
   # Open log file if applicable:
   set analysis(log$n) {}
-  if {$analysis(logMax) > 0} {
+  if {$analysis(logMax) > 0 && $analysis(logEngines) } {
     if {! [catch {open [file join $::scidLogDir "engine$n.log"] w} log]} {
       set analysis(log$n) $log
       logEngine $n "Scid-Engine communication log file"
@@ -3698,6 +3713,8 @@ lI+py+0Po5y02osn2Flt0IXimH3cGHxkeoosiKpxG76r7OK13tkznKOVTECS
 8Yi0FAAAOw==
 }
 
+### Make a little toplevel text widget to display an engine log
+
 proc engineShowLog {n} {
   if {$n == {}} {
     return
@@ -3738,9 +3755,10 @@ proc engineShowLog {n} {
   .enginelog.log see 0.0
 }
 
+### Open the log file for reading
+### $analysis(log$n) may already be open... but we'll ignore this fil descriptor and creat our own i think
+
 proc engineUpdateLog {} {
-  ### Open the log file for reading
-  ### $analysis(log$n) may already be open... but we'll ignore this fil descriptor and creat our own i think
 
   set n $::analysis(logfile)
   if {$n == {}} {return}
@@ -3754,6 +3772,10 @@ proc engineUpdateLog {} {
   }
   .enginelog.log see end
 }
+
+### Automatically refreshes the engine log window
+# (Note it rereads the whole file every update. Obviously would be better
+# to run a tail on it, and probably not hard to do under Linux)
 
 proc engineAutoLog {} {
   if {[winfo exists .enginelog] && $::analysis(log_auto)} {
