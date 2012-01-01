@@ -593,6 +593,18 @@ image create photo tb_tree -data {
   WheK5kZm4BpywSXC7EC7pXlm6U3HtlwKXnafnnH08tQ8RCEquVk+lT0mlCf9ebaCCqUAADs=
 }
 
+image create photo tb_book -data {
+R0lGODlhFAAUAKU4AAAAAAgICA0NDRERERISEhMTExgYGBsbGxwcHB0dHSMj
+IwAngYsAACoqKiwsLC0tLTc3Nz8/P0BAQEdHR0pKSktLS09PT1NTU1ZWVlpa
+WjZki1xcXF1dXV9fX2JiYmRkZGZmZm5ubnJycnh4eH5+fn9/f4CAgIeHh5GR
+kaOjo7Ozs7y8vMLCwsPDw83NzdXV1d7e3uPj4+Xl5efn5+np6fDw8Pb29v39
+/f///////////////////////////////yH5BAEKAD8ALAAAAAAUABQAAAaV
+wJ9wSCwWF8ikcslsOp9QJm5K7Vip2Cky25nZTp0sdVv14mJhMY6M61JjrHSW
+3LVlL+pt2J5tYayAawttMGIpNTeJNzRhdIVUKS4yUzYxKo2DbSqPOCs1VDYu
+YIJVmzgpMpM3NjCXWpltKCoqL1SJLiRpbG0hJzI0OIk1rq9cFy0uLzA2LyZy
+u1NWFdPTcqRq2K9RTkEAOw==
+}
+
 image create photo tb_engine -data {
   R0lGODdhFAAUAMIAANnZ2QAngf///7i4uAAAAAAAAAAAAAAAACwAAAAAFAAUAAADUwi63B0w
   ykmrvZiKzcXooAB1Q/mdnveNnLmZpSoGHGGHISvcOKjbwKCQ8BsaibSdDTYIwljHIzQ6hMKW
@@ -680,6 +692,7 @@ button .tb.comment -image tb_comment -command makeCommentWin
 button .tb.maint -image tb_maint -command ::maint::OpenClose
 button .tb.eco -image tb_eco -command ::windows::eco::OpenClose
 button .tb.tree -image tb_tree -command ::tree::make
+button .tb.book -image tb_book -command ::book::OpenClose
 button .tb.crosst -image tb_crosst -command ::crosstab::OpenClose
 button .tb.engine -image tb_engine -command {startAnalysisWin F2 force}
 
@@ -691,7 +704,7 @@ foreach {b m} {
   newgame GameNew copy EditCopy paste EditPaste
   hsearch SearchHeader bsearch SearchCurrent msearch SearchMaterial rfilter SearchReset 
   glist WindowsGList pgn WindowsPGN comment WindowsComment
-  maint WindowsMaint eco WindowsECO tree WindowsTree crosst WindowsCross tmt WindowsTmt 
+  maint WindowsMaint eco WindowsECO tree WindowsTree book WindowsBook crosst WindowsCross tmt WindowsTmt 
   engine ToolsAnalysis
 } {
   set helpMessage(.tb.$b) $m
@@ -701,7 +714,7 @@ set helpMessage(.button.addVar) EditAdd
 set helpMessage(.button.trial) EditTrial
 
 foreach i {new open save close finder bkm newgame copy paste gprev gnext gfirst glast \
-      rfilter hsearch bsearch msearch glist pgn comment maint eco tree crosst tmt engine} {
+      rfilter hsearch bsearch msearch glist pgn comment maint eco tree book crosst tmt engine} {
   .tb.$i configure -relief flat -border 1 -highlightthickness 0 -anchor n -takefocus 0
   ::utils::tooltip::Set .tb.$i [tr $::helpMessage(.tb.$i)]
 }
@@ -768,7 +781,7 @@ proc configToolbar {} {
   }
 
   pack [frame $w.f5] -side top -fill x
-  foreach i {glist pgn comment maint eco tree crosst tmt engine} {
+  foreach i {glist pgn comment maint eco tree book crosst tmt engine} {
     eval checkbutton $w.f5.$i -image tb_$i -variable toolbar_temp($i) $button_options
     eval pack $w.f5.$i $pack_options
     bindToolbarRadio f5 $i
@@ -839,7 +852,7 @@ proc redrawToolbar {} {
   }
   if {$seen} { pack .tb.space4 -side left }
   set seen 0
-  foreach i {glist pgn comment maint eco tree crosst tmt engine} {
+  foreach i {glist pgn comment maint eco tree book crosst tmt engine} {
     if {$toolbar($i)} {
       set seen 1
       pack .tb.$i -side left -pady 1 -padx 0 -ipadx 0 -pady 0 -ipady 0

@@ -344,7 +344,7 @@ focus .
         if {[string length $y] < 3} {set y " $y"}
 	if {$x == $nextmove} {
 	  ### (why do i have to configure this here and not above ?)
-	  .bookWin.$z.booktext tag configure nextmove -background lemonchiffon
+	  .bookWin.$z.booktext tag configure nextmove -background lemonchiffon2
 	  .bookWin.$z.booktext insert end [format "%5s %3s\n" [::trans $x] $y] nextmove
 	} else {
 	  .bookWin.$z.booktext insert end [format "%5s %3s\n" [::trans $x] $y]
