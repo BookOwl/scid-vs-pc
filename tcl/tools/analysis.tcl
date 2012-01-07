@@ -2349,8 +2349,11 @@ proc setAnalysisPriority {n} {
   if {$::windowsOS} {
     catch {sc_info priority $pid $analysis(priority$n)}
   } else {
-    set priority 0
-    if {$analysis(priority$n) == {idle}} { set priority 15 }
+    if {$analysis(priority$n) == {idle}} {
+      set priority 15
+    } else {
+      set priority 0
+    }
     catch {sc_info priority $pid $priority}
   }
 
@@ -2878,6 +2881,7 @@ proc updateAnalysisText {n} {
   } ; #  if {showEngineInfo}
 
   if {$analysis(automove$n)} {
+    # todo : hmmm S.A &&&
     if {$analysis(automoveThinking$n)} {
       set moves {   Thinking..... }
     } else {

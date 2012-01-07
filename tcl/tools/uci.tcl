@@ -131,9 +131,9 @@ namespace eval uci {
     ### Parse info line
 
     if {[string match "info*" $line]} {
-      if {!$::analysis(movesDisplay$n)} {
-        return
-      }
+      # For a speed bump, ignore info lines if no display...
+      # But the "Add move" button no longer works, so leave this line out i think
+      # if {!$::analysis(movesDisplay$n)} { return }
 
       # keep UI responsive when engine outputs lots of info (garbage ?)
       update idletasks

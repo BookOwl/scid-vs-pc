@@ -1123,9 +1123,8 @@ proc confirmReplaceMove {} {
   return cancel
 }
 
-proc addNullMove {} {
-  addMove null null
-}
+# unused S.A.
+# proc addNullMove {} { addMove null null }
 
 # addMove:
 #   Adds the move indicated by sq1 and sq2 if it is legal. If the move
@@ -1203,6 +1202,7 @@ proc addMove { sq1 sq2 {animate ""}} {
   }
 
   if {$nullmove} {
+    # todo: catch entering a null move while in check, which currently causes an error and wrecks the game
     sc_move addSan null
   } else {
     # if {[winfo exists .commentWin]} { .commentWin.cf.text delete 0.0 end }
