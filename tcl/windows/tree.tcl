@@ -379,8 +379,9 @@ proc ::tree::refreshTraining { baseNumber } {
 
 ### This proc is used by the training features in TREE , ANALYSIS ENGINES, and TABLEBASE
 ### and isn't exclusive to the tree at all
-### The training features probably only work with engines 1 and 2 (not 0, 3, 4, 5 etc)
-### (Wheres the doco !? Pascal was a f-ing shocker).
+### The engine training only works with engines 1 and 2 (not 0, 3, 4, 5 etc)
+### and tablebase and tree training may well be the same &&&
+### ... Bit of a fucking undocumented hack mess actually
 
 proc ::tree::doTraining {{n 0}} {
   global tree

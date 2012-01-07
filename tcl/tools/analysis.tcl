@@ -2106,9 +2106,9 @@ proc makeAnalysisWin {{n 0} {settime 0}} {
   button $w.b.showboard -image tb_coords -command "toggleAnalysisBoard $n" -relief $relief
   ::utils::tooltip::Set $w.b.showboard $::tr(ShowAnalysisBoard)
 
-  checkbutton $w.b.automove -image tb_training  -indicatoron false -width 32 -height 32 \
+  checkbutton $w.b.training -image tb_training  -indicatoron false -width 32 -height 32 \
     -command "toggleAutomove $n" -variable analysis(automove$n) -relief $relief
-  ::utils::tooltip::Set $w.b.automove $::tr(Training)
+  ::utils::tooltip::Set $w.b.training $::tr(Training)
 
   if {!$annotateButton} {
     checkbutton $w.b.annotate -image tb_annotate -indicatoron false -width 32 -height 32 \
@@ -2145,7 +2145,7 @@ proc makeAnalysisWin {{n 0} {settime 0}} {
 
   if {$n == 1 || $n == 2} {
     # training only works with engines 1 and 2
-    pack $w.b.automove -side left -pady 2 -padx 1
+    pack $w.b.training -side left -pady 2 -padx 1
   }
 
   pack $w.b.help -side right -pady 2 -padx 1
@@ -2812,7 +2812,7 @@ proc toggleLockEngine {n} {
     $w.b.multipv configure -state $state
   }
   $w.b.alllines configure -state $state
-  $w.b.automove configure -state $state
+  $w.b.training configure -state $state
   $w.b.annotate configure -state $state
   $w.b.finishGame configure -state $state
   updateAnalysis $n
