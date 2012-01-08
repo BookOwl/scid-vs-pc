@@ -83,6 +83,8 @@ proc ::move::Back {{count 1}} {
   ### if playing, remove this move from hash array S.A
 
   set ::tacgame::lFen [lrange $::tacgame::lFen 0 end-$count]
+  set ::sergame::lFen [lrange $::sergame::lFen 0 end-[expr {$count+1}]]
+  # Hmmm... not sure why this is different. Game logic may need checking
 
   set ::pause 1
 

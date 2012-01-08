@@ -22,7 +22,7 @@ namespace eval sergame {
   set nodes 0
   set ponder 0
 
-  # list of fen positions played to detect 3 fold repetition
+  # list of fen positions played to detect 3 fold checkRepetition
   set lFen {}
   set lastPlayerMoveUci ""
 
@@ -268,13 +268,27 @@ namespace eval sergame {
     wm minsize $w 45 0
   }
 
+  trace add variable ::pause write ::sergame::pauseGame
+
+  proc pauseGame {args} {
+    if {[winfo exists .serGameWin]} {
+      set ::sergame::paused 1
+      .serGameWin.fbuttons.resume configure -state normal
+      after cancel ::sergame::engineGo
+      ### Should we mess with game clocks ?
+    }
+  }
+
   ### ::sergame::play
 
   proc play {n} {
     global ::sergame::chosenOpening ::sergame::isOpening ::tacgame::openingList ::sergame::openingMovesList \
         ::sergame::openingMovesHash ::sergame::openingMoves ::sergame::outOfOpening
 
+    set ::sergame::engine $n
+
     set ::sergame::lFen {}
+    set ::sergame::drawShown 0
 
     ::uci::startEngine $n
     ::uci::sendUCIoptions $n
@@ -321,11 +335,15 @@ namespace eval sergame {
     if {!$::sergame::startFromCurrent} {
       # create a new game if a DB is opened
       sc_game new
-      sc_game tags set -event "Serious game"
+      sc_game tags set -event "UCI Game"
+      set player_name [getMyPlayerName]
+      if {$player_name == ""} {set player_name {?}}
       if { [::board::isFlipped .board] } {
         sc_game tags set -white "$::sergame::engineName"
+	sc_game tags set -black $player_name
       } else  {
         sc_game tags set -black "$::sergame::engineName"
+	sc_game tags set -white $player_name
       }
       sc_game tags set -date [::utils::date::today]
       if {[sc_base inUse [sc_base current]]} { catch {sc_game save 0}  }
@@ -339,7 +357,6 @@ namespace eval sergame {
     if {[winfo exists $w]} {
       focus .
       destroy $w
-      return
     }
 
     toplevel $w
@@ -356,12 +373,27 @@ namespace eval sergame {
     ::gameclock::reset 1
     ::gameclock::start 1
 
-    button $w.fbuttons.abort -textvar ::tr(Abort) -command "::sergame::abortGame $n"
-    pack $w.fbuttons.abort -expand yes -fill both
+    set ::sergame::paused 0
+
+    button $w.fbuttons.resume -state disabled -textvar ::tr(Resume) -command {
+      set ::sergame::paused 0
+      .serGameWin.fbuttons.resume configure -state disabled
+      ::sergame::engineGo
+    }
+    pack $w.fbuttons.resume -expand yes -fill both -padx 10 -pady 2
+
+    button $w.fbuttons.restart -text Restart -command {
+      ::sergame::abortGame
+      ::sergame::play $::sergame::engine
+    }
+    pack $w.fbuttons.restart -expand yes -fill both -padx 10 -pady 2
+
+    button $w.fbuttons.abort -textvar ::tr(Abort) -command ::sergame::abortGame
+    pack $w.fbuttons.abort -expand yes -fill both -padx 10 -pady 2
 
     bind $w <F1> { helpWindow TacticalGame }
-    bind $w <Destroy> "::sergame::abortGame $n"
-    bind $w <Escape> "::sergame::abortGame $n"
+    bind $w <Destroy> ::sergame::abortGame
+    bind $w <Escape> ::sergame::abortGame
     bind $w <Configure> "recordWinSize $w"
     wm minsize $w 45 0
 
@@ -375,13 +407,15 @@ namespace eval sergame {
     }
 
     set ::sergame::wentOutOfBook 0
-    ::sergame::engineGo $n
+    ::sergame::engineGo
   }
 
-  proc abortGame {n} {
+  proc abortGame {} {
+    set n $::sergame::engine
+
     set ::sergame::lFen {}
     if { $::uci::uciInfo(pipe$n) == ""} { return }
-    after cancel ::sergame::engineGo $n
+    after cancel ::sergame::engineGo
     ::uci::closeUCIengine $n
     ::gameclock::stop 1
     ::gameclock::stop 2
@@ -400,26 +434,66 @@ namespace eval sergame {
   ################################################################################
   # returns true if last move is a mate and stops clocks
   ################################################################################
+
   proc endOfGame {} {
-    set move_done [sc_game info previousMove]
-    if { [string index [sc_game info previousMove] end ] == "#"} {
+    # Use score to check for stalemate, checkmate.
+    # sc_pos analyze -time 50 (50 milliseconds) returns two args, a score and the best move.
+    # Score 32000 represents Inifity , {} represents "no move"
+
+    # Hmmmm... can cause core dumps! &&&
+    set score [sc_pos analyze -time 50]
+
+    if { $score == {0 {}}} {
       ::gameclock::stop 1
       ::gameclock::stop 2
+      sc_game tags set -result =
+      tk_messageBox -type ok -message {Stalemate} -parent .board -icon info -title {Game Over}
+      return 1
+    }
+
+    # if { [string index [sc_game info previousMove] end ] == "#"}
+    if { $score == {-32000 {}}} {
+      ::gameclock::stop 1
+      ::gameclock::stop 2
+      # if {!$::tacgame::mateShown} 
+      if {1} {
+        # mate dialog
+        if { [::sergame::getEngineColor] == [sc_pos side] } {
+          set side Player
+        } else {
+          set side $::sergame::engineName
+        }
+        if {[sc_pos side] == {black}} {
+          sc_game tags set -result 1
+        } else {
+          sc_game tags set -result 0
+        }
+        updateBoard -pgn
+
+        tk_messageBox -type ok -message "$side Wins" -parent .board -icon info -title Checkmate
+      }
       return 1
     }
     return 0
   }
 
-  proc engineGo { n } {
-    global ::sergame::isOpening ::sergame::openingMovesList ::sergame::openingMovesHash ::sergame::openingMoves \
-        ::sergame::timeMode ::sergame::outOfOpening
+  proc engineGo {} {
+    global ::sergame::isOpening ::sergame::openingMovesList ::sergame::openingMovesHash \
+           ::sergame::openingMoves ::sergame::timeMode ::sergame::outOfOpening
 
-    after cancel ::sergame::engineGo $n
+   set n $::sergame::engine
 
-    if { [::sergame::endOfGame] } { return }
+    after cancel ::sergame::engineGo
+
+    if { [::sergame::endOfGame] } {
+      catch {sc_game save [sc_game number]}
+      return
+    }
+
+    ### every second check if it's computers turn yet
 
     if { [sc_pos side] != [::sergame::getEngineColor] } {
-      after 1000 ::sergame::engineGo $n
+      after 1000 ::sergame::engineGo
       return
     }
 
@@ -433,7 +507,9 @@ namespace eval sergame {
     }
     ::gameclock::stop 1
     ::gameclock::start 2
-    repetition
+    if {[checkRepetition]} {
+      return
+    }
 
     # make a move corresponding to a specific opening, (it is engine's turn)
     if {$isOpening && !$outOfOpening} {
@@ -453,7 +529,7 @@ namespace eval sergame {
             updateBoard -pgn
             ::gameclock::stop 2
             ::gameclock::start 1
-            after 1000 ::sergame::engineGo $n
+            after 1000 ::sergame::engineGo
             return
           }  else  {
             set outOfOpening 1
@@ -488,13 +564,15 @@ namespace eval sergame {
           updateBoard -pgn -animate
           ::gameclock::stop 2
           ::gameclock::start 1
-          repetition
-          if { [::sergame::getEngineColor] == "white" } {
-            ::gameclock::add 2 [expr $::uci::uciInfo(winc$n)/1000]
-          } else  {
-            ::gameclock::add 2 [expr $::uci::uciInfo(binc$n)/1000]
+          if {[checkRepetition]} {
+            return
           }
-          after 1000 ::sergame::engineGo $n
+	  if { [::sergame::getEngineColor] == "white" } {
+	    ::gameclock::add 2 [expr $::uci::uciInfo(winc$n)/1000]
+	  } else  {
+	    ::gameclock::add 2 [expr $::uci::uciInfo(binc$n)/1000]
+	  }
+	  after 1000 ::sergame::engineGo
           return
         }
       }
@@ -513,15 +591,17 @@ namespace eval sergame {
         updateBoard -pgn -animate
         ::gameclock::stop 2
         ::gameclock::start 1
-        repetition
-        if {$timeMode == "timebonus"} {
-          if { [::sergame::getEngineColor] == "white" } {
-            ::gameclock::add 2 [expr $::uci::uciInfo(winc$n)/1000]
-          } else  {
-            ::gameclock::add 2 [expr $::uci::uciInfo(binc$n)/1000]
-          }
+        if {[checkRepetition]} {
+	  return
         }
-        after 1000 ::sergame::engineGo $n
+	if {$timeMode == "timebonus"} {
+	  if { [::sergame::getEngineColor] == "white" } {
+	    ::gameclock::add 2 [expr $::uci::uciInfo(winc$n)/1000]
+	  } else  {
+	    ::gameclock::add 2 [expr $::uci::uciInfo(binc$n)/1000]
+	  }
+	}
+	after 1000 ::sergame::engineGo
         return
       }
     }
@@ -595,7 +675,7 @@ namespace eval sergame {
           updateBoard -pgn
           ::gameclock::stop 2
           ::gameclock::start 1
-          after 1000 ::sergame::engineGo $n
+          after 1000 ::sergame::engineGo
           return
         }
       }
@@ -610,7 +690,9 @@ namespace eval sergame {
     ::utils::sound::AnnounceNewMove $::uci::uciInfo(bestmove$n)
     set ::uci::uciInfo(prevscore$n) $::uci::uciInfo(score$n)
     updateBoard -pgn -animate
-    repetition
+    if {[checkRepetition]} {
+      return
+    }
 
     # add time after a move played
     if {$timeMode == "timebonus"} {
@@ -644,17 +726,17 @@ namespace eval sergame {
       }
     }
 
-    after 1000 ::sergame::engineGo $n
+    after 1000 ::sergame::engineGo
   }
 
-  ################################################################################
-  #   add current position for 3fold repetition detection and returns 1 if
-  # the position is a repetion
-  ################################################################################
-  proc repetition {} {
+  ### Add current position, and check for 3 fold repetition
+
+  proc checkRepetition {} {
     set elt [lrange [split [sc_pos fen]] 0 2]
     lappend ::sergame::lFen $elt
-    if { [llength [lsearch -all $::sergame::lFen $elt] ] >=3 } {
+    if { [llength [lsearch -all $::sergame::lFen $elt] ] >=3 && ! $::sergame::drawShown } {
+      set ::sergame::drawShown 1
+      ::sergame::pauseGame
       tk_messageBox -type ok -message $::tr(Draw) -parent .board -icon info
       puts $::sergame::lFen
       return 1

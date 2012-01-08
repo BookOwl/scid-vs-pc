@@ -264,7 +264,7 @@ namespace eval tacgame {
 
   proc check_Fischer_Game {} {
     if {$::tacgame::openingType == "fischer"} {
-      sc_game tags set -event "Tactical game, Fischer chess"
+      sc_game tags set -event "Tactical Game, Fischer chess"
       set fen {r n b q k b n r}
       for {set i 50} {$i > 0} {incr i -1} {
         set i1 [expr int(rand()*8)]
@@ -318,7 +318,7 @@ namespace eval tacgame {
       set fen [join $fen {}]
       sc_game startBoard "$fen/pppppppp/8/8/8/8/PPPPPPPP/[string toupper $fen] w - - 0 1"
     } elseif {$::tacgame::openingType == "pawn" } {
-      sc_game tags set -event "Tactical game, Random Pawns"
+      sc_game tags set -event "Tactical Game, Random Pawns"
       set row2 {}
       set row3 {}
       for {set i 0} {$i < 8} {incr i} {
@@ -343,8 +343,7 @@ namespace eval tacgame {
       ::tacgame::level ::tacgame::levelFixed ::tacgame::phalanx ::tacgame::toga \
       ::tacgame::chosenOpening ::tacgame::openingType \
       ::tacgame::openingList ::tacgame::openingMovesList \
-      ::tacgame::openingMovesHash ::tacgame::openingMoves \
-      ::tacgame::outOfOpening ::tacgame::drawShown ::tacgame::resignShown ::tacgame::mateShown 
+      ::tacgame::openingMovesHash ::tacgame::openingMoves ::tacgame::outOfOpening
 
     resetEngine $::tacgame::phalanx
     resetEngine $::tacgame::toga
@@ -520,7 +519,7 @@ namespace eval tacgame {
 
   proc initTacgame {} {
     sc_game new
-    sc_game tags set -event "Tactical game"
+    sc_game tags set -event "Tactical Game"
 
     set player_name [getMyPlayerName]
     if {$player_name == ""} {set player_name {?}}
@@ -765,7 +764,7 @@ namespace eval tacgame {
       # if {!$::tacgame::mateShown} 
       if {1} {
         # mate dialog
-        set ::tacgame::mateShown 1
+        # set ::tacgame::mateShown 1
         if { [getPhalanxColor] == [sc_pos side] } {
           set side Player
         } else {
