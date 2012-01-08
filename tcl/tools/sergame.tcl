@@ -275,7 +275,6 @@ namespace eval sergame {
       set ::sergame::paused 1
       .serGameWin.fbuttons.resume configure -state normal
       after cancel ::sergame::engineGo
-      ### Should we mess with game clocks ?
     }
   }
 
@@ -368,8 +367,17 @@ namespace eval sergame {
     frame $w.fbuttons
     pack $w.fclocks $w.fbuttons -side top -expand yes -fill both
 
-    ::gameclock::new $w.fclocks 2 80 1
-    ::gameclock::new $w.fclocks 1 80 1
+    if {$::sergame::timeMode == "timebonus"} {
+      ::gameclock::new $w.fclocks 2 80 1
+      ::gameclock::new $w.fclocks 1 80 1
+    } else {
+      # dont call flag when playing seconds per move
+      ::gameclock::new $w.fclocks 2 80 0
+      ::gameclock::new $w.fclocks 1 80 0
+    }
+    # These are broken for flipped games. (Tacgame too)
+    ::gameclock::setColor 1 white
+    ::gameclock::setColor 2 black
     ::gameclock::reset 1
     ::gameclock::start 1
 
@@ -398,12 +406,14 @@ namespace eval sergame {
     wm minsize $w 45 0
 
     # setup clocks
-    if { [::sergame::getEngineColor] == "white" } {
-      ::gameclock::setSec 2 [expr 0 - $::uci::uciInfo(wtime$n)/1000]
-      ::gameclock::setSec 1 [expr 0 - $::uci::uciInfo(btime$n)/1000]
-    } else  {
-      ::gameclock::setSec 1 [expr 0 - $::uci::uciInfo(wtime$n)/1000]
-      ::gameclock::setSec 2 [expr 0 - $::uci::uciInfo(btime$n)/1000]
+    if {$::sergame::timeMode == "timebonus"} {
+      if { [::sergame::getEngineColor] == "white" } {
+	::gameclock::setSec 2 [expr 0 - $::uci::uciInfo(wtime$n)/1000]
+	::gameclock::setSec 1 [expr 0 - $::uci::uciInfo(btime$n)/1000]
+      } else  {
+	::gameclock::setSec 1 [expr 0 - $::uci::uciInfo(wtime$n)/1000]
+	::gameclock::setSec 2 [expr 0 - $::uci::uciInfo(btime$n)/1000]
+      }
     }
 
     set ::sergame::wentOutOfBook 0
@@ -499,10 +509,12 @@ namespace eval sergame {
 
     # The player moved : add clock time
     if {!([::sergame::getEngineColor] == "black" && [sc_pos moveNumber] == 1)} {
-      if { [::sergame::getEngineColor] == "white" } {
-        ::gameclock::add 1 [expr $::uci::uciInfo(binc$n)/1000]
-      } else  {
-        ::gameclock::add 1 [expr $::uci::uciInfo(winc$n)/1000]
+      if {$::sergame::timeMode == "timebonus"} {
+	if { [::sergame::getEngineColor] == "white" } {
+	  ::gameclock::add 1 [expr $::uci::uciInfo(binc$n)/1000]
+	} else  {
+	  ::gameclock::add 1 [expr $::uci::uciInfo(winc$n)/1000]
+	}
       }
     }
     ::gameclock::stop 1
@@ -567,10 +579,12 @@ namespace eval sergame {
           if {[checkRepetition]} {
             return
           }
-	  if { [::sergame::getEngineColor] == "white" } {
-	    ::gameclock::add 2 [expr $::uci::uciInfo(winc$n)/1000]
-	  } else  {
-	    ::gameclock::add 2 [expr $::uci::uciInfo(binc$n)/1000]
+	  if {$::sergame::timeMode == "timebonus"} {
+	    if { [::sergame::getEngineColor] == "white" } {
+	      ::gameclock::add 2 [expr $::uci::uciInfo(winc$n)/1000]
+	    } else  {
+	      ::gameclock::add 2 [expr $::uci::uciInfo(binc$n)/1000]
+	    }
 	  }
 	  after 1000 ::sergame::engineGo
           return
@@ -605,8 +619,8 @@ namespace eval sergame {
         return
       }
     }
-    # -------------------------------------------------------------
-    # check if the engine pondered on the right move
+
+    ### check if the engine pondered on the right move
 
     if { $::sergame::ponder && $::uci::uciInfo(ponder$n) == $::sergame::lastPlayerMoveUci} {
       ::sergame::sendToEngine $n "ponderhit"
@@ -737,6 +751,7 @@ namespace eval sergame {
     if { [llength [lsearch -all $::sergame::lFen $elt] ] >=3 && ! $::sergame::drawShown } {
       set ::sergame::drawShown 1
       ::sergame::pauseGame
+      sc_game tags set -result =
       tk_messageBox -type ok -message $::tr(Draw) -parent .board -icon info
       puts $::sergame::lFen
       return 1
