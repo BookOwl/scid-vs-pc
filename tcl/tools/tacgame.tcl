@@ -23,7 +23,6 @@ namespace eval tacgame {
   set resignCount 0
 
   # if true, follow a specific opening
-  set chosenOpening ""
   set openingMovesList {}
   set openingMovesHash {}
   set openingMoves ""
@@ -169,7 +168,8 @@ namespace eval tacgame {
     pack $w.flevel.diff_random -side top
     pack $w.flevel.space -side bottom
     pack $w.fopening  -side top -fill both -expand 1
-    pack $w.flimit $w.fbuttons -side top -fill x
+    pack $w.flimit -side top -fill x
+    pack $w.fbuttons -side top -fill x -pady 3
 
     radiobutton $w.flevel.diff_random.cb -text $::tr(RandomLevel) -variable ::tacgame::randomLevel -value 1 -width 15  -anchor w
     scale $w.flevel.diff_random.lMin -orient horizontal -from 1200 -to 2200 -length 100 -variable ::tacgame::levelMin -tickinterval 0 -resolution 50
@@ -216,12 +216,15 @@ namespace eval tacgame {
 
     frame $w.fopening.fOpeningList
     listbox $w.fopening.fOpeningList.lbOpening -yscrollcommand "$w.fopening.fOpeningList.ybar set" \
-        -height 5 -width 40 -list ::tacgame::openingList
+        -height 5 -width 40 -list ::tacgame::openingList -font font_Small
     $w.fopening.fOpeningList.lbOpening selection set 0
     scrollbar $w.fopening.fOpeningList.ybar -command "$w.fopening.fOpeningList.lbOpening yview"
     pack $w.fopening.fOpeningList.lbOpening -side right -fill both -expand 1
     pack $w.fopening.fOpeningList.ybar  -side right -fill y
     pack $w.fopening.fOpeningList -expand yes -fill both -side top -expand 1
+
+    $w.fopening.fOpeningList.lbOpening selection set $::tacgame::chosenOpening
+    $w.fopening.fOpeningList.lbOpening see $::tacgame::chosenOpening
 
     # Time limit per move
 
@@ -229,20 +232,21 @@ namespace eval tacgame {
     scale $w.flimit.analysisTime -orient horizontal -from 1 -to 30 -length 200 -label $::tr(seconds) -variable ::tacgame::analysisTime -resolution 1
     pack $w.flimit.blimit $w.flimit.analysisTime -side left -expand yes -pady 5
 
-    button $w.fbuttons.close -text $::tr(Play) -command {
+    dialogbutton $w.fbuttons.play -text $::tr(Play) -command {
       focus .
       set ::tacgame::chosenOpening [.configWin.fopening.fOpeningList.lbOpening curselection]
       destroy .configWin
       ::tacgame::play
     }
 
-    button $w.fbuttons.cancel -textvar ::tr(Cancel) -command "focus .; destroy $w"
+    dialogbutton $w.fbuttons.help   -textvar ::tr(Help) -command { helpWindow TacticalGame }
+    dialogbutton $w.fbuttons.cancel -textvar ::tr(Cancel) -command "destroy $w"
 
-    pack $w.fbuttons.close $w.fbuttons.cancel -expand yes -side left -padx 20 -pady 2
-    focus $w.fbuttons.close
+    pack $w.fbuttons.play $w.fbuttons.help $w.fbuttons.cancel -expand yes -side left -padx 20 -pady 2
+    focus $w.fbuttons.play
 
     bind $w <Escape> { .configWin.fbuttons.cancel invoke }
-    bind $w <Return> { .configWin.fbuttons.close invoke }
+    bind $w <Return> { .configWin.fbuttons.play invoke }
     bind $w <F1> { helpWindow TacticalGame }
     bind $w <Destroy> {}
     bind $w <Configure> "recordWinSize $w"

@@ -9,7 +9,6 @@ namespace eval sergame {
 
   # if true, follow a specific opening
   set isOpening 0
-  set chosenOpening ""
   set openingMovesList {}
   set openingMovesHash {}
   set openingMoves ""
@@ -51,27 +50,29 @@ namespace eval sergame {
     bind $w <F1> { helpWindow SeriousGame }
 
     frame $w.fengines -relief groove -borderwidth 1
-    frame $w.fbook -relief groove -borderwidth 1
     frame $w.ftime -relief groove -borderwidth 1
-    frame $w.fconfig -relief groove -borderwidth 1
+    frame $w.fconfig -borderwidth 1
+    frame $w.fbook -relief groove -borderwidth 1
     frame $w.fopening -relief groove -borderwidth 1
     frame $w.fbuttons
 
-    pack $w.fengines $w.fbook $w.ftime $w.fconfig -side top -fill x
+    pack $w.fengines $w.ftime $w.fconfig $w.fbook -side top -fill x
     pack $w.fopening -side top -fill both -expand 1
     pack $w.fbuttons -side top -fill x
 
-    ### Build the UCI engine list
+    set row 0
+
+    ### UCI engine listbox
 
     label $w.fengines.label -text $::tr(Engine)
     frame $w.fengines.fEnginesList -relief raised -borderwidth 1
     listbox $w.fengines.fEnginesList.lbEngines -yscrollcommand "$w.fengines.fEnginesList.ybar set" \
-        -height 5 -width 50 -exportselection 0
+        -height 5 -width 50 -exportselection 0 -font font_Small
     scrollbar $w.fengines.fEnginesList.ybar -command "$w.fengines.fEnginesList.lbEngines yview"
     pack $w.fengines.label -side top
     pack $w.fengines.fEnginesList.ybar -side left -fill y
     pack $w.fengines.fEnginesList.lbEngines -side left -fill both -expand yes
-    pack $w.fengines.fEnginesList -expand yes -fill both -side top
+    pack $w.fengines.fEnginesList -expand yes -fill both -side top -padx 3
     set i 0
     set idx 0
     foreach e $::engines(list) {
@@ -86,6 +87,16 @@ namespace eval sergame {
       incr i
       incr idx
     }
+
+    # if no engines defined, bail out
+    if {$i == 0} {
+      tk_messageBox -type ok -message "No UCI engines found" -icon error -parent .
+      destroy $w
+      return
+    }
+
+    $w.fengines.fEnginesList.lbEngines selection set $::sergame::current
+    $w.fengines.fEnginesList.lbEngines see $::sergame::current
 
     ### Engine config button (limit strength for example)
 
@@ -103,51 +114,14 @@ namespace eval sergame {
 
     pack $w.fengines.bEngineConfig -side top
 
-    # if no engines defined, bail out
-    if {$i == 0} {
-      tk_messageBox -type ok -message "No UCI engines found" -icon error -parent .
-      destroy $w
-      return
-    }
-
-    $w.fengines.fEnginesList.lbEngines selection set 0
-
-    ### Book checkbutton and combobox
-
-    checkbutton $w.fbook.cbUseBook -text $::tr(UseBook) -variable ::sergame::useBook
-    set bookPath $::scidBooksDir
-    set bookList [ lsort -dictionary [ glob -nocomplain -directory $bookPath *.bin ] ]
-    set tmp {}
-    ttk::combobox $w.fbook.combo -width 12
-    if { [llength $bookList] == 0 } {
-      $w.fbook.cbUseBook configure -state disabled
-      set ::sergame::useBook 0
-    } else {
-      set i 0
-      set idx 0
-      foreach file  $bookList {
-	lappend tmp [ file tail $file ]
-	if { $::sergame::bookToUse == [ file tail $file ]} {
-	  set idx $i
-	}
-	incr i
-      }
-      $w.fbook.combo configure -values $tmp
-      $w.fbook.combo current $idx 
-    }
-
-    set row 0
-
-    pack $w.fbook.cbUseBook -side left
-    pack $w.fbook.combo -side right -expand yes -fill both
-
     # Time bonus frame
     frame $w.ftime.timebonus
+
     grid  $w.ftime.timebonus -row 0 -column 0 -columnspan 2
 
-    label $w.ftime.timebonus.label -text $::tr(TimeMode)
-    grid $w.ftime.timebonus.label -row $row -column 2 -columnspan 2
-    incr row
+    # label $w.ftime.timebonus.label -text $::tr(TimeMode)
+    # grid $w.ftime.timebonus.label -row $row -column 2 -columnspan 2
+    # incr row
 
     radiobutton $w.ftime.timebonus.rb1 -text $::tr(TimeBonus) -value "timebonus" -variable ::sergame::timeMode
     grid $w.ftime.timebonus.rb1 -row $row -column 0 -sticky w -rowspan 2
@@ -206,31 +180,63 @@ namespace eval sergame {
     checkbutton $w.fconfig.cbPosition -text $::tr(StartFromCurrentPosition) -variable ::sergame::startFromCurrent
     pack $w.fconfig.cbPosition  -side top -anchor w
 
-    # ponder
+    # Permanent thinking
     checkbutton $w.fconfig.cbPonder -text $::tr(Ponder) -variable ::sergame::ponder
     pack $w.fconfig.cbPonder  -side top -anchor w
 
-    # Warn if the user makes weak/bad moves
+    # Coach is watching (warn if the user makes weak/bad moves)
     checkbutton $w.fconfig.cbCoach -text $::tr(CoachIsWatching) -variable ::sergame::coachIsWatching
     pack $w.fconfig.cbCoach -side top -anchor w
 
-    # choose a specific opening
+    # Book checkbutton and combobox
+
+    checkbutton $w.fbook.cbUseBook -text $::tr(UseBook) -variable ::sergame::useBook
+    set bookPath $::scidBooksDir
+    set bookList [ lsort -dictionary [ glob -nocomplain -directory $bookPath *.bin ] ]
+    set tmp {}
+    ttk::combobox $w.fbook.combo -width 12
+    if { [llength $bookList] == 0 } {
+      $w.fbook.cbUseBook configure -state disabled
+      set ::sergame::useBook 0
+    } else {
+      set i 0
+      set idx 0
+      foreach file  $bookList {
+	lappend tmp [ file tail $file ]
+	if { $::sergame::bookToUse == [ file tail $file ]} {
+	  set idx $i
+	}
+	incr i
+      }
+      $w.fbook.combo configure -values $tmp
+      $w.fbook.combo current $idx 
+    }
+
+    pack $w.fbook.cbUseBook -side left -pady 3
+    pack $w.fbook.combo -side right -expand yes -fill both -padx 10 -pady 3
+
+    # Choose a specific opening
+
     checkbutton $w.fopening.cbOpening -text $::tr(SpecificOpening) -variable ::sergame::isOpening
     frame $w.fopening.fOpeningList -relief raised -borderwidth 1
     listbox $w.fopening.fOpeningList.lbOpening -yscrollcommand "$w.fopening.fOpeningList.ybar set" \
-        -height 5 -width 50 -list ::tacgame::openingList -exportselection 0
-    $w.fopening.fOpeningList.lbOpening selection set 0
+        -height 5 -width 50 -list ::tacgame::openingList -exportselection 0 -font font_Small
+
+    $w.fopening.fOpeningList.lbOpening selection set $::sergame::chosenOpening
+    $w.fopening.fOpeningList.lbOpening see $::sergame::chosenOpening
+
     scrollbar $w.fopening.fOpeningList.ybar -command "$w.fopening.fOpeningList.lbOpening yview"
     pack $w.fopening.fOpeningList.lbOpening -side right -fill both -expand 1
     pack $w.fopening.fOpeningList.ybar -side right -fill y
     pack $w.fopening.cbOpening -fill x -side top
-    pack $w.fopening.fOpeningList -expand yes -fill both -side top -expand 1
+    pack $w.fopening.fOpeningList -expand yes -fill both -side top -expand 1 -padx 3
 
     bind $w.fopening.fOpeningList.lbOpening <Button-1> {set ::sergame::isOpening 1}
 
-    button $w.fbuttons.play -text $::tr(Play) -command {
+    dialogbutton $w.fbuttons.play -text $::tr(Play) -command {
       focus .
       set sel [.configSerGameWin.fengines.fEnginesList.lbEngines curselection]
+      set ::sergame::current $sel
       set ::sergame::engineName [.configSerGameWin.fengines.fEnginesList.lbEngines get $sel]
       set n $::sergame::engineListBox($sel)
 
@@ -254,9 +260,10 @@ namespace eval sergame {
     }
     bind $w.fengines.fEnginesList.lbEngines <Double-Button-1> "$w.fbuttons.play invoke"
 
-    button $w.fbuttons.cancel -textvar ::tr(Cancel) -command "focus .; destroy $w"
+    dialogbutton $w.fbuttons.help -textvar ::tr(Help) -command {helpWindow SeriousGame}
+    dialogbutton $w.fbuttons.cancel -textvar ::tr(Cancel) -command "destroy $w"
 
-    pack $w.fbuttons.play $w.fbuttons.cancel -expand yes -side left
+    pack $w.fbuttons.play $w.fbuttons.help $w.fbuttons.cancel -expand yes -side left -pady 3
 
     bind $w <Escape> { .configSerGameWin.fbuttons.cancel invoke }
     bind $w <Return> { .configSerGameWin.fbuttons.play invoke }

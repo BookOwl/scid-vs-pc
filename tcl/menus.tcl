@@ -1002,8 +1002,9 @@ $m add command -label OptionsSave -command {
     ::tacgame::levelMin  ::tacgame::levelMax  ::tacgame::levelFixed ::tacgame::randomLevel 
     ::tacgame::showblunder ::tacgame::showblundervalue 
     ::tacgame::showblunderfound ::tacgame::showmovevalue ::tacgame::showevaluation 
-    ::tacgame::isLimitedAnalysisTime ::tacgame::analysisTime ::tacgame::openingType 
-    ::sergame::bookToUse ::sergame::useBook ::sergame::startFromCurrent ::sergame::timeMode ::sergame::movetime
+    ::tacgame::isLimitedAnalysisTime ::tacgame::analysisTime ::tacgame::openingType ::tacgame::chosenOpening
+    ::sergame::bookToUse ::sergame::useBook ::sergame::startFromCurrent
+    ::sergame::timeMode ::sergame::movetime ::sergame::current ::sergame::chosenOpening
     ::commenteditor::showBoard boardfile_lite boardfile_dark 
     ::file::finder::data(dir) ::file::finder::data(sort) ::file::finder::data(recurse) 
     ::file::finder::data(Scid) ::file::finder::data(PGN) 
