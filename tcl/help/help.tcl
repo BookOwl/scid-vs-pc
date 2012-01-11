@@ -137,70 +137,69 @@ back to PGN.
 
 set helpTitle(Scid) {General Use}
 set helpText(Scid) {<h1>Databases and General Use</h1>
-  <p><i>
-  Scid is a chess database application; with it you can browse databases of
-  chess games, perform searches, view best lines, and other
-  statistics.</i></p>
-  <p>
-  Databases are implemented via a fast <a Formats>three file format</a>, and populated by importing PGN archives or other databases using the <a Clipbase>Clipbase</a> as a cut and paste tool.
-  </p>
 
-  <h4>Starting Out</h4>
+  <h4>The GUI</h4>
   <ul>
   <li><a MainWindow>The <b>Main Window</b></a></li>
-  <li><a Menus><b>Menus</b></a></li>
+  <li><a Menus><b>Main Menus</b></a></li>
   <li><a Moves>Entering <b>Moves</b></a></li>
-  <li><a ComputerGame><b>Playing</b> a Game</a></li>
-  <li><a Clipbase>Using the Default Database (<b>Clipbase</b>)</a></li>
-  <li><a Searches><b>Searches</b></a></li>
-  <li><a Hints><b>Hints</b></a></li>
   </ul>
 
-  <h4>Scid Windows</h4>
+  <h4>Using Databases</h4>
+  <p> <i>Databases are implemented via a fast <a Formats>three file format</a>,
+  and populated by importing PGN archives or other databases using the <a
+  Clipbase>Clipbase</a> as a cut and paste tool.</i>
+  </p>
   <ul>
-  <li><a Analysis><b>Analysis</b> window</a></li>
-  <li><a Book><b>Book</b> window</a></li>
-  <li><a CalVar><b>Calculation of variations</b> window</a></li>
-  <li><a Comment><b>Comment Editor</b> window</a></li>
-  <li><a Crosstable><b>Crosstable</b> window</a></li>
-  <li><a Switcher><b>Database Switcher</b> window</a></li>
-  <li><a Email><b>Email</b> chess manager window</a></li>
-  <li><a Finder><b>File Finder</b> window</a></li>
-  <li><a GameList><b>Game List</b> window</a></li>
-  <li><a Import><b>Import game</b> window</a></li>
+  <li><a Clipbase><b>Clipbase</b> - the default database</a></li>
+  <li><a Sorting><b>Sorting</b> databases</a></li>
+  <li><a Flags><b>Game Flags</b></a></li>
+  <li><a Searches><b>Searches</b></a></li>
   <li><a Reports><b>Reports</b></a></li>
-  <li><a PGN><b>PGN</b> (game text) window</a></li>
-  <li><a PTracker><b>Piece Tracker</b></a></li>
-  <li><a PList><b>Player Finder</b> window</a></li>
-  <li><a PInfo><b>Player Info</b> window</a></li>
-  <li><a Tmt><b>Tournament Finder</b> window</a></li>
-  <li><a Tree><b>Tree</b> window</a></li>
-  <li><a Graphs><b>Graph</b> windows</a></li>
-  <li><a TB>Using <b>Tablebases</b> in Scid</a></li>
+  <li><a Formats><b>Database</b> file formats</a></li>
+  </ul>
+
+  <h4>Main Features/Windows</h4>
+  <ul>
+  <li><a Analysis><b>Analysis</b> Window</a></li>
+  <li><a Book><b>Book</b> Window</a></li>
+  <li><a Comment><b>Comment Editor</b></a></li>
+  <li><a Crosstable>The <b>Crosstable</b></a></li>
+  <li><a Finder>The <b>File Finder</b></a></li>
+  <li><a GameList><b>Game List</b> Window</a></li>
+  <li><a PGN><b>PGN (Moves)</b> Window</a></li>
+  <li><a PList><b>Player Finder</b> Window</a></li>
+  <li><a PInfo><b>Player Info</b> Window</a></li>
+  <li><a Tmt><b>Tournament Finder</b> Window</a></li>
+  <li><a Tree><b>Tree</b> Window</a></li>
+  <li><a Graphs><b>Graph</b> Windows</a></li>
   </ul>
 
   <h4>Other Utilities and Information</h4>
   <ul>
   <li><a Analysis Annotating>Annotating games</a> automatically</li>
   <li><a Bookmarks><b>Bookmarks</b></a></li>
+  <li><a CalVar><b>Calculation of Variations</b> training</a></li>
   <li><a Cmdline><b>Command-line</b> options</a></li>
   <li><a Compact><b>Compacting</b> a database</a></li>
   <li><a Correspondence>Correspondence Chess</a></li>
   <li><a Maintenance><b>Database maintenance</b> tools</a></li>
   <li><a ECO><b>ECO</b> codes</a></li>
+  <li><a Email><b>Email</b> Chess Manager</a></li>
   <li><a EPD><b>EPD</b> files</a></li>
   <li><a Export><b>Exporting</b> games</a></li>
-  <li><a Flags>Game <b>Flags</b></a></li>
+  <li><a Import><b>Import game</b> Window</a></li>
   <li><a LaTeX>Using <b>LaTeX</b> with Scid</a></li>
   <li><a Options><b>Options</b> and preferences</a></li>
-  <li><a Sorting><b>Sorting</b> a database</a></li>
+  <li><a PTracker><b>Piece Tracker</b></a></li>
   <li><a Pgnscid><b>Pgnscid</b>: converting PGN files</a></li>
   <li><a NAGs>Standard <b>NAG</b> annotation values</a></li>
-  <li><a Formats>Scid Database <b>file formats</b></a></li>
-  <li><a Author>Contact information</a></li>
+  <li><a TB><b>Tablebases</b></a></li>
   </ul>
 
-  <p><footer>Updated: Scid vs. PC 4.1, September 2010</footer></p>
+  <h2><a Hints>Hints</a></h2>
+
+  <p><footer>Updated: Scid vs. PC 4.7, January 2012</footer></p>
 }
 
 set helpTitle(Index) "Scid Help Topic Index"
@@ -558,8 +557,11 @@ set helpText(MainWindow) {<h1>Scid Main Window</h1>
   Separate help pages describe the <a Menus>menus</a> and ways to
   <a Moves>enter chess moves</a>.
   </p>
+  <p>
+  <i>Right clicking the main board shows a menu which enables hiding/unhiding of Board components.</i>
+  </p>
 
-  <h4>Game navigation buttons</h4>
+  <h4>Game Navigation Buttons</h4>
   <p>
   The navigation buttons above the board have the following meanings [and key bindings].
   <ul>
@@ -570,56 +572,41 @@ set helpText(MainWindow) {<h1>Scid Main Window</h1>
   <li> <button tb_invar> Move into a <a Variations>variation</a>  [v] </li>
   <li> <button tb_outvar> Move out of the current variation  [z] </li>
   <li> <button tb_addvar> Add a new variation  [control+a]</li>
-  <li> <button autoplay_off> Start/stop <a MainWindow Autoplay>autoplay mode</a> [control+z] </li>
-  <li> <button tb_trial> Start/stop <a Moves Trial>trial mode</a> [control+space] </li>
+  <li> <button autoplay_off> Start/stop <a MainWindow Autoplay>Autoplay mode</a> [control+z] </li>
+  <li> <button tb_trial> Start/stop <a Moves Trial>Trial mode</a> [control+space] </li>
   <li> <button tb_flip> Flip the board [control+f]</li>
+  <li> <button tb_windows> Raise open windows [Tab]</li>
   </ul>
 
-  <h4><name GameInfo>Game Information Widget</name></h4>
+  <h4><name GameInfo>Game Information Area</name></h4>
   <p>
-  The area below the chessboard shows general information about the current game. 
-  (Display options for this widget are found in the <b>Options-<gt>Game Information</b> menu).
+  Below the Chessboard is general information about the current game. 
+  It includes the <b>Player Names</b> and <b>Ratings</b>,
+  <b>Event</b> and <b>Site</b> fields, and <b>ECO</b> codes.
+  The <b>Game Number</b> (and any flags) show specific info about this games in the database.
   </p>
   <p>
-  The first line shows the <b>Player Names</b> (and ranks).
-  Then the <b>Moves</b> and any <b>Comments</b>,
-  and the <b>Event</b> and <b>Site</b> fields.
+  If Scid can find a suitable <b>photo file</b> (FIDE.spf, either in ~/.scidvspc or Scid's
+  share directory) then photos will appear. Clicking on photos minimizes them.
   </p>
   <p>
-  Below follows the Game number (and any flags), Result, Material evaluation,
-   and <a ECO>ECO</a> (Encyclopedia of Chess
-  Openings) code for the current position (if appearing in the current ECO file).
+  The game information area also displays <b>Tablebase Results</b> whenever the
+  position is known in the <a TB>tablebase</a>.
   </p>
   <p>
-  If Scid can find a suitable FIDE.spf photo file (either in <b>~/.scidvspc</b> or Scid's
-  share directory) these photos will appear. Clicking on the photos minimizes them.
+  <i>Display options for this window are found in <green>Options-<gt>Game Information</green>.</i>
   </p>
 
-  <h4>Game Context Menu</h4>
-  <p>
-  Right clicking the main board shows a menu with commonly used options.
-  </p>
   <h4>Material Values</h4>
   <p>
-  On the right hand side of the board the material balance can be
-  displayed by small piece symbols. They repesent the piece <b>difference</b>
-  between black and white.
-  </p>
-
-  <h4>Tablebases</h4>
-  <p>
-  The game information area also displays tablebase results whenever the
-  displayed position reaches a material configuration found in a
-  tablebase file. See the <a TB>tablebases</a> help page for details.
+  On the right hand side of the board the <b>material</b> balance is displayed by small chess pieces.
   </p>
 
   <h4>The Status Bar</h4>
   <p>
-  The status bar shows information about the current database.
-  The first field indicates the game status: <b>XX</b> means it has been
-  altered and not yet saved, while <b>--</b> means it is unchanged,
-  and <b>%%</b> indicates the database is read-only (not alterable).
-  Also shown is how many games are currently in the game <a Filter>filter</a>.
+  The status bar shows information about the current database. This includes
+  how many games are currently in the <a Filter>filter</a>, and whether the base is Read-Only.
+  When <b>entering moves with the keyboard</b>, allowable matching moves are displayed here.
   </p>
 
   <h4><name Autoplay>Autoplay Mode</name></h4>
@@ -678,6 +665,7 @@ set helpText(Menus) {<h1>Scid Menus</h1>
   <ul>
   <li><menu>Setup Board</menu>: Set a (non-standard) start position for the current game.</li>
   <li><menu>Copy FEN</menu>: Set the clipboard to the FEN representing current position.</li>
+  <li><menu>Copy PGN</menu>: Set the clipboard to the game PGN.</li>
   <li><menu>Paste FEN</menu>: Set-up board according to FEN in clipboard.</li>
   <li><menu>Paste PGN</menu>: Import a game from PGN in clipboard.</li>
   <br>
@@ -1168,7 +1156,7 @@ set helpText(Clipbase) {<h1>The Default Database</h1>
   to emptying it with <green>Edit--<gt>Empty Clipbase</green>.
   </p>
   <p>
-  Games in the Clipbase consume RAM, as they exist in memory only. So please consider this when copying a large number of games.
+  Games in the Clipbase consume your computers memory. So please consider this when copying a large number of games.
   </p>
 
   <p><footer>Updated: Scid vs. PC 4.5 July 2010</footer></p>
