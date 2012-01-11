@@ -47,7 +47,7 @@ namespace eval sergame {
     wm state $w withdrawn
     wm title $w "$::tr(configuregame)"
 
-    bind $w <F1> { helpWindow SeriousGame }
+    bind $w <F1> {helpWindow ComputerGame UCIGame}
 
     frame $w.fengines -relief groove -borderwidth 1
     frame $w.ftime -relief groove -borderwidth 1
@@ -95,8 +95,10 @@ namespace eval sergame {
       return
     }
 
-    $w.fengines.fEnginesList.lbEngines selection set $::sergame::current
-    $w.fengines.fEnginesList.lbEngines see $::sergame::current
+    catch {
+      $w.fengines.fEnginesList.lbEngines selection set $::sergame::current
+      $w.fengines.fEnginesList.lbEngines see $::sergame::current
+    }
 
     ### Engine config button (limit strength for example)
 
@@ -222,8 +224,10 @@ namespace eval sergame {
     listbox $w.fopening.fOpeningList.lbOpening -yscrollcommand "$w.fopening.fOpeningList.ybar set" \
         -height 5 -width 50 -list ::tacgame::openingList -exportselection 0 -font font_Small
 
-    $w.fopening.fOpeningList.lbOpening selection set $::sergame::chosenOpening
-    $w.fopening.fOpeningList.lbOpening see $::sergame::chosenOpening
+    catch {
+      $w.fopening.fOpeningList.lbOpening selection set $::sergame::chosenOpening
+      $w.fopening.fOpeningList.lbOpening see $::sergame::chosenOpening
+    }
 
     scrollbar $w.fopening.fOpeningList.ybar -command "$w.fopening.fOpeningList.lbOpening yview"
     pack $w.fopening.fOpeningList.lbOpening -side right -fill both -expand 1
@@ -260,14 +264,14 @@ namespace eval sergame {
     }
     bind $w.fengines.fEnginesList.lbEngines <Double-Button-1> "$w.fbuttons.play invoke"
 
-    dialogbutton $w.fbuttons.help -textvar ::tr(Help) -command {helpWindow SeriousGame}
+    dialogbutton $w.fbuttons.help -textvar ::tr(Help) -command {helpWindow ComputerGame UCIGame}
     dialogbutton $w.fbuttons.cancel -textvar ::tr(Cancel) -command "destroy $w"
 
     pack $w.fbuttons.play $w.fbuttons.help $w.fbuttons.cancel -expand yes -side left -pady 3
 
     bind $w <Escape> { .configSerGameWin.fbuttons.cancel invoke }
     bind $w <Return> { .configSerGameWin.fbuttons.play invoke }
-    bind $w <F1> { helpWindow SeriousGame }
+    bind $w <F1> {helpWindow ComputerGame UCIGame}
     bind $w <Destroy> ""
     update
     placeWinOverParent $w .
@@ -406,7 +410,7 @@ namespace eval sergame {
     button $w.fbuttons.abort -textvar ::tr(Abort) -command ::sergame::abortGame
     pack $w.fbuttons.abort -expand yes -fill both -padx 10 -pady 2
 
-    bind $w <F1> { helpWindow TacticalGame }
+    bind $w <F1> {helpWindow ComputerGame UCIGame}
     bind $w <Destroy> ::sergame::abortGame
     bind $w <Escape> ::sergame::abortGame
     bind $w <Configure> "recordWinSize $w"

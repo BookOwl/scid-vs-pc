@@ -1366,7 +1366,7 @@ translate E blunder {blunder}
 translate E Noinfo {-- No info --}
 translate E PhalanxOrTogaMissing {To play Tactical Games, both Phalanx and Toga engines must be configured in the Tools->Analysis menu}
 translate E moveblunderthreshold {move is a blunder if loss is greater than}
-translate E limitanalysis {Engine analysis time}
+translate E limitanalysis {Coach's analysis time}
 translate E seconds {seconds}
 translate E Abort {Abort}
 translate E Resume {Resume}

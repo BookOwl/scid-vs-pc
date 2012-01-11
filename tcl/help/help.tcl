@@ -6,7 +6,7 @@ append helpText(Contents) {
 
   <ht><img icon></ht>
   <ht><a Intro>Introduction</a></ht>
-  <ht><a TacticalGame>Playing against the Computer</a></ht>
+  <ht><a ComputerGame>Playing against the Computer</a></ht>
   <ht><a FICS>Playing on the Internet (FICS)</a></ht>
   <ht><a BrowsingPGN>PGN Files and Scid</a></ht>
   <ht><a Analysis>Running Chess Engines</a></ht>
@@ -150,7 +150,7 @@ set helpText(Scid) {<h1>Databases and General Use</h1>
   <li><a MainWindow>The <b>Main Window</b></a></li>
   <li><a Menus><b>Menus</b></a></li>
   <li><a Moves>Entering <b>Moves</b></a></li>
-  <li><a TacticalGame><b>Playing</b> a Game</a></li>
+  <li><a ComputerGame><b>Playing</b> a Game</a></li>
   <li><a Clipbase>Using the Default Database (<b>Clipbase</b>)</a></li>
   <li><a Searches><b>Searches</b></a></li>
   <li><a Hints><b>Hints</b></a></li>
@@ -243,6 +243,7 @@ set helpText(Index) {<h1>Scid Help Index</h1>
   <li><a Analysis Debugging>Chess Engine</a>  debugging</li>
   <li><a Cmdline>Command-line options</a></li>
   <li><a Comment>Comment Editor</a></li>
+  <li><a ComputerGame>Computer Game</a></li>
   <li><a Tourney>Computer Tournament</a></li>
   <li><a Compact>Compacting a database</a></li>
   <li><a Correspondence>Correspondence Chess</a></li>
@@ -378,8 +379,7 @@ set helpText(Index) {<h1>Scid Help Index</h1>
   <li><a PInfo Photos>Player Photos</a></li>
   <li>Spell Checking <a Maintenance Spellcheck>Player Names</a></li>
   <li><a Reports Player>Player Report</a> window</li>
-  <li><a TacticalGame>Play Tactical game</a></li>
-  <li><a SeriousGame>Play Serious game</a></li>
+  <li><a ComputerGame>Play against the Computer</a></li>
   <li><a Book Polyglot>Polyglot</a></li>
   <li><a TacticsTrainer>Puzzles</a> - Mate in ... </li>
   </ul>
@@ -401,7 +401,6 @@ set helpText(Index) {<h1>Scid Help Index</h1>
   <li><a Graphs Score>Score Graph</a></li>
   <li><a Searches>Searches</a></li>
   <li><a Menus Search>Search menu</a></li>
-  <li><a SeriousGame>Play serious game</a></li>
   <li><a ShortCuts>Shortcuts</a></li>
   <li><a ShortCuts alpha>Shortcuts (alphabetical)</a></li>
   <li><a Formats>si4</a> database format</li>
@@ -416,7 +415,6 @@ set helpText(Index) {<h1>Scid Help Index</h1>
   <h3><name T>T</name></h3>
   <ul>
   <li><a TB>Tablebases</a></li>
-  <li><a TacticalGame>Tactical game</a></li>
   <li><a Menus Tools>Tools menu</a></li>
   <li><a Tourney>Tournament</a>of Chess Engines</li>
   <li><a Tmt>Tournament finder</a></li>
@@ -4232,58 +4230,72 @@ See the polyglot documentation for more options.
 }
 
 # Tactical game window help
-set helpTitle(TacticalGame) "Playing the Computer"
-set helpText(TacticalGame) {<h1>Playing the Computer</h1>
+set helpTitle(ComputerGame) "Playing the Computer"
+set helpText(ComputerGame) {<h1>Playing the Computer</h1>
 
-<p> Scid offers several ways to play the computer at chess. The most convenient
-is the <run ::tacgame::config><green>Play--<gt>Phalanx</green></run>
-menu item. Here you'll be able to start a game of Normal, Fischer, or Random Pawns Chess.
-<i>(though Fischer castling is not supported)</i>.
-</p><p>
-Your opponent is the <b>Phalanx</b> engine. It's skill levels vary
-between 1200 (a bright teenager with some experience), to 2200 (a National
-Master). But Phalanx is really not too strong. It is programmed to make "human" like errors, and experienced
-players should have no trouble beating it.  There is also a computer coach
-(<b>Toga II</b>) watching the game who will indicate any blunders Phalanx
-makes.
+<p> Scid offers two ways to play a Computer Opponent. They are against <a ComputerGame PhalanxGame>Phalanx</a>,
+or any installed <a ComputerGame UCIGame>UCI Engine</a>.
 </p>
-
 <p>
 <i>Other computer opponents can be found in the
-<a SeriousGame>UCI Game</a> and <a Analysis>Analysis</a> features</i>.
+training features of <a Analysis>Engine Analysis</a>, <a TB>Tablebases</a> and <a Tree>Tree</a></i>.
 </p>
 
-<h3>Starting the Game</h3>
+<h2><name PhalanxGame>Playing Phalanx</name></h2>
+<p>
+<run ::tacgame::config><green>Phalanx</green></run> is an old xboard engine written by Dusan Dobes.
+With it one may play a game of Normal, Fischer (castling not supported), or Random Pawns Chess.
+</p><p>
+It is not a strong chess engine by modern standards, and - even more - it is programmed to make "human" like errors.
+It's level can be adjusted roughly between 1200 (a bright teenager with some experience), to 2200 (a National
+Master).  There is also a computer coach (Toga II) watching, which will indicate when Phalanx has made a blunder.
+</p>
+<p><b>Coach's analysis time</b> <i>is the allowable time for the
+coach to check the players moves for errors. If this time is not
+limited the coach is allowed to think in the background.</i></p>
+</ul>
+
+<h2><name UCIGame>Playing an UCI Engine</name></h2>
+
   <p>
-  The following parameters must be configured :
+  Stronger opponents can be found against any installed
+  <run ::sergame::config><green>UCI Engine</green></run>.
+  By default, this only includes Toga - but users may wish to <a Analysis List>install others</a>.
+  Stockfish is a good alternative, as it has an adjustable "Skill Level" feature.
+  </p>
+  <p>
+  Engine parameters may be configured - to tune performance or utilize engine features.
+  <b>Opening Books</b> and <b>Specific Openings</b> to follow can also be selected.
+  </p>
+  <p>
+  Other configuration items are straight forward except:
+  </p>
   <ul>
-  <li><term>Fixed level</term>: sets a fixed ELO rating for the opponent</li>
-  <li><term>Random level</term>: chooses a random level between the
-  minimum and maximum level specified by the left and right slider
-  respectively.
-  </li>
-  <li><term>Opening:</term>
-  <ul>
-     <li><term>Start new game</term>: starts a new game choosing a
-     random opening.</li>
-     <li><term>Start from current position</term>: let the game begin
-     with the current board position.</li>
-     <li><term>Play Fischer Chess</term>: Fischer Chess is a variant (named
-for Bobby Fischer) where the first and last rows of pieces are
-pseudo-randomnly arranged. Scid vs. PC does not properly implement a few
-rules.. notably, castling <b>is</b> allowed in Fischer Chess, but not in
-our game.</li>
-     <li><term>Random Pawns</term>: will randomly place pawns on the second and third ranks.</li>
-     <li><term>Specific opening</term>: the opponent will play a
-     specific opening, that can be chosen from the list below. This is
-     useful for opening training.</li>
-  </ul>
-  <li><term>Limit engine analysis time</term> allows to limit the time used by the
-  coach to check the players moves for errors. If this time is not
-  limited the coach is allowed to think in the background.</li>
+     <li><b>Fixed depth</b> does not set the time per game but
+     the depth the engine will calculate in half moves. As this
+     disables the ability to calculate deeper if necessary, the
+     computer will not see certain mates and combinations, the engine
+     may play weaker and thus offer a better partner for training
+     purposes.
+     </li>
+
+     <li><b>Nodes</b> is similar to limiting the search depth,
+     but here the engine has to move after the evaluation of a certain
+     number of positions. (The default is 10,000.)
+     </li>
+
+  <li><b>Permanent thinking</b> (sometimes also called ponder)
+  allows the engine to calculate on the players time. If unchecked, the
+  engine will stop analysing the position if the player has the move.
+  If the game is set for a fixed time per move, this will weaken the
+  engine. On the other hand, the engine might move immediately, if the
+  player made the move it was analysing on the players time.</li>
+  <li><b>Coach is Watching</b> will open a dialogue offering to take
+  back a move if the player made a blunder (due to the engines
+  evaluation of his last move).</li>
   </ul>
 
-<p><footer>Updated: Scid vs. PC 4.7, December 2011</footer></p>
+  <p><footer>Updated: Scid vs. PC 4.7 January 2012</footer></p>
 }
 
 set helpTitle(Correspondence) "Correspondence Chess"
@@ -5132,102 +5144,6 @@ are lost, the old setup stays in place.
 </p>
 
 <p><footer>Updated: Scid 3.6.24, May 2008</footer></p>
-}
-
-# Serious game window help
-set helpTitle(SeriousGame) "UCI Game"
-set helpText(SeriousGame) {<h1>UCI Game</h1>
-  <p>
-  Tougher games can be played against any installed UCI Engine (including Toga).
-  From the <run ::sergame::config><green>Game Configuration</green></run> window, 
-  a list of possible opponents is shown.
-  </p>
-  <p>
-  The <term>Configure</term> button gives access to the engines' parameters.
-  Next, the book that should be used can be chosen from those opening
-  books available to Scid. Unchecking <term>Use book</term> will disable the use
-  of an opening book and the engine will start calculating moves right from the beginning.
-  </p>
-  <p>
-  The section <term>Time mode</term> allows to set the timing used for
-  the engine. Various settings are possible here:
-  <ul>
-     <li><term>Time + bonus</term> specifies the time for the whole
-     game and a possible increment per move (Fisher clock). The
-     default is set to 5 minutes per game and 10 seconds increment per
-     move which is a usual setting for Blitz games. Note, that the
-     times for Black and White can be set independently. This allows
-     to set a short amount of time for the engine and give a longer
-     time of thinking to the player, and thus strengthening the
-     players analysing possibilities while weakening the engines
-     abilities in case of <term>Permanent thinking</term> is off (see
-     below).
-     </li>
-
-     <li><term>Fixed depth</term> does not set the time per game but
-     the depth the engine will calculate in half moves. As this
-     disables the ability to calculate deeper if necessary, the
-     computer will not see certain mates and combinations, the engine
-     may play weaker and thus offer a better partner for training
-     purposes.
-     <p>
-     <b>Note</b>: some, especially commercial, engines also offer to
-     weaken their strength in ELO units. Most likely this will offer a
-     more suitable algorithm than limiting the search depth. In Scid,
-     such games are also offered as <a TacticalGame>Tactical games</a>
-     against the free Phalanx engine.
-     </p>
-     </li>
-
-     <li><term>Nodes</term> is similar to limiting the search depth,
-     but here the engine has to move after the evaluation of a certain
-     number of positions. (The default is 10,000.)
-     </li>
-
-     <li><term>Seconds per move</term> allows the engine to spend a
-     certain amount of time at maximum for a given position. Some
-     engines will move faster in certain circumstances, but they will
-     not exceed the time limit set here. As <term>Fixed depth</term>
-     and <term>Nodes</term> this also limits the engines playing
-     strength, but also gives a pretty responsive game play.
-     </li>
-  </ul>
-  </p>
-  <p>
-  Serious games can start from the current board position if the box
-  <term>Start from current position</term> is checked. This allows
-  e.g. to play out defined middle game positions that arise from an
-  opening.
-  </p>
-  <p>
-  <term>Permanent thinking</term> (sometimes also called ponder)
-  allows the engine to calculate on the players time. If unchecked, the
-  engine will stop analysing the position if the player has the move.
-  If the game is set for a fixed time per move, this will weaken the
-  engine. On the other hand, the engine might move immediately, if the
-  player made the move it was analysing on the players time.
-  </p>
-  <p>
-  <term>Coach is watching</term> will open a dialogue offering to take
-  back a move if the player made a blunder (due to the engines
-  evaluation of his last move).
-  </p>
-  <p>
-  For training of openings <term>Specific opening</term> can be
-  checked. In the list below one can choose the opening to play. The
-  player then should follow the line chosen, otherwise Scid will ask
-  if the move should be taken back.
-  </p>
-
-  <p>
-  After setting all parameters of the game and hitting the Play
-  button, Scid will set up the opponent engine show the clocks and
-  start the game. The player must not make a move till the clocks
-  appear. Note that it might take some time for the chess engine to
-  start up and initialise properly.
-  </p>
-
-  <p><footer>Updated: Scid 3.6.26, October 2008</footer></p>
 }
 
 # Tactics Trainer

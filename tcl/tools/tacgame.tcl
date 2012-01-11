@@ -150,7 +150,7 @@ namespace eval tacgame {
     wm state $w withdrawn
     wm title $w "$::tr(configurecoachgame)"
 
-    bind $w <F1> { helpWindow TacticalGame }
+    bind $w <F1> { helpWindow ComputerGame PhalanxGame}
 
     frame $w.flevel -relief raised -borderwidth 1
     frame $w.flevel.diff_fixed
@@ -223,8 +223,10 @@ namespace eval tacgame {
     pack $w.fopening.fOpeningList.ybar  -side right -fill y
     pack $w.fopening.fOpeningList -expand yes -fill both -side top -expand 1
 
-    $w.fopening.fOpeningList.lbOpening selection set $::tacgame::chosenOpening
-    $w.fopening.fOpeningList.lbOpening see $::tacgame::chosenOpening
+    catch {
+      $w.fopening.fOpeningList.lbOpening selection set $::tacgame::chosenOpening
+      $w.fopening.fOpeningList.lbOpening see $::tacgame::chosenOpening
+    }
 
     # Time limit per move
 
@@ -239,7 +241,7 @@ namespace eval tacgame {
       ::tacgame::play
     }
 
-    dialogbutton $w.fbuttons.help   -textvar ::tr(Help) -command { helpWindow TacticalGame }
+    dialogbutton $w.fbuttons.help   -textvar ::tr(Help) -command { helpWindow ComputerGame PhalanxGame}
     dialogbutton $w.fbuttons.cancel -textvar ::tr(Cancel) -command "destroy $w"
 
     pack $w.fbuttons.play $w.fbuttons.help $w.fbuttons.cancel -expand yes -side left -padx 20 -pady 2
@@ -247,7 +249,7 @@ namespace eval tacgame {
 
     bind $w <Escape> { .configWin.fbuttons.cancel invoke }
     bind $w <Return> { .configWin.fbuttons.play invoke }
-    bind $w <F1> { helpWindow TacticalGame }
+    bind $w <F1> { helpWindow ComputerGame PhalanxGame}
     bind $w <Destroy> {}
     bind $w <Configure> "recordWinSize $w"
     wm minsize $w 45 0
@@ -508,7 +510,7 @@ namespace eval tacgame {
     ::tacgame::resetValues
     updateAnalysisText
 
-    bind $w <F1> { helpWindow TacticalGame }
+    bind $w <F1> { helpWindow ComputerGame PhalanxGame}
     bind $w <Escape> ::tacgame::abortGame
     bind $w <Configure> "recordWinSize $w"
     wm minsize $w 45 0
