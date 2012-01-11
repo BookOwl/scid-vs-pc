@@ -2,13 +2,10 @@
 ### calvar.tcl: part of Scid.
 ### Copyright (C) 2007  Pascal Georges
 ###
-################################################################################
-# The number used for the engine playing a serious game is 4
-################################################################################
 
 namespace eval calvar {
   # DEBUG
-  set ::uci::uciInfo(log_stdout4) 1
+  # &&& set ::uci::uciInfo(log_stdout4) 1
 
   array set engineListBox {}
   ### This seems unused, and for some reason interferes with annotation S.A
@@ -141,7 +138,9 @@ namespace eval calvar {
   ################################################################################
   #
   ################################################################################
-  proc start { engine { n 4 } } {
+  proc start {engine} {
+
+    set n $::calvar::engineListBox($engine)
 
     ::calvar::reset
 
@@ -190,7 +189,7 @@ namespace eval calvar {
     set f $w.fbuttons
     frame $f
     pack $f
-    button $w.fbuttons.stop -textvar ::tr(Stop) -command "::calvar::stop"
+    button $w.fbuttons.stop -textvar ::tr(Stop) -command "::calvar::stop $n"
     pack $w.fbuttons.stop -expand yes -side left -padx 20 -pady 2
 
     bind $w <Escape> { .calvarWin.fbuttons.stop invoke }
@@ -199,9 +198,9 @@ namespace eval calvar {
     wm minsize $w 45 0
 
     # start engine and set MultiPV to 10
-    ::uci::startEngine $::calvar::engineListBox($engine) $n
-
+    ::uci::startEngine $n
     set ::analysis(multiPVCount$n) 10
+
     ::uci::sendToEngine $n "setoption name MultiPV value $::analysis(multiPVCount$n)"
     set ::calvar::suggestMoves_old $::suggestMoves
     set ::calvar::hideNextMove_old $::gameInfo(hideNextMove)
@@ -212,14 +211,14 @@ namespace eval calvar {
 
     # fill initPosAnalysis for the current position
     set ::calvar::working 1
-    ::calvar::startAnalyze "" "" [sc_pos fen]
+    ::calvar::startAnalyze "" "" [sc_pos fen] $n
 
-    set ::calvar::afterIdPosition [after [expr $::calvar::thinkingTimePosition * 1000] { ::calvar::stopAnalyze "" "" "" ; ::calvar::addLineToCompute "" }]
+    set ::calvar::afterIdPosition [after [expr $::calvar::thinkingTimePosition * 1000] { ::calvar::stopAnalyze "" "" "" $n ; ::calvar::addLineToCompute "" $n}]
   }
   ################################################################################
   #
   ################################################################################
-  proc stop { {n  4 } } {
+  proc stop {n} {
     after cancel $::calvar::afterIdPosition
     after cancel $::calvar::afterIdLine
     ::uci::closeUCIengine $n
@@ -268,15 +267,15 @@ namespace eval calvar {
     set newline [list $::calvar::currentListMoves $n [sc_pos fen]]
     lappend ::calvar::lines $newline
     incr ::calvar::currentLine
-    addLineToCompute $newline
+    addLineToCompute $newline $n
     set ::calvar::currentListMoves {}
   }
   ################################################################################
   #
   ################################################################################
-  proc addLineToCompute {line {n 4} } {
+  proc addLineToCompute {line n} {
     global ::calvar::analysisQueue
-    puts "====>>> addLineToCompute $line"
+    puts "====>>> addLineToCompute $line $n"
     if {$line != ""} {
       lappend analysisQueue $line
     }
@@ -285,25 +284,25 @@ namespace eval calvar {
     while { [llength $analysisQueue] != 0 } {
       set line [lindex $analysisQueue 0]
       set analysisQueue [lreplace analysisQueue 0 0]
-      computeLine $line
+      computeLine $line $n
     }
   }
   ################################################################################
   #
   ################################################################################
-  proc computeLine {line {n 4} } {
+  proc computeLine {line n} {
     set ::calvar::working 1
-    puts "---->>>> computeLine $line"
+    puts "---->>>> computeLine $line $n"
     set moves [ lindex $line 0 ]
     set nag [ lindex $line 1 ]
     set fen [ lindex $line 2 ]
-    startAnalyze $moves $nag $fen
-    set ::calvar::afterIdLine [after [expr $::calvar::thinkingTimePerLine * 1000] "::calvar::stopAnalyze [list $moves $nag $fen]"]
+    startAnalyze $moves $nag $fen $n
+    set ::calvar::afterIdLine [after [expr $::calvar::thinkingTimePerLine * 1000] "::calvar::stopAnalyze [list $moves $nag $fen $n]"]
   }
   ################################################################################
   # we suppose FEN has not changed !
   ################################################################################
-  proc handleResult {moves nag fen {n 4} } {
+  proc handleResult {moves nag fen n} {
     set comment ""
 
     # append first move to the variations
@@ -456,7 +455,7 @@ namespace eval calvar {
   # startAnalyze:
   #   Put the engine in analyze mode.
   ################################################################################
-  proc startAnalyze {moves nag fen {n 4}} {
+  proc startAnalyze {moves nag fen n} {
     global analysis
 
     # Check that the engine has not already had analyze mode started:
@@ -475,18 +474,18 @@ namespace eval calvar {
   ################################################################################
   # stopAnalyzeMode
   ################################################################################
-  proc stopAnalyze { moves nag fen {n 4} } {
+  proc stopAnalyze { moves nag fen n} {
     if {! $::analysis(analyzeMode$n)} { return }
     set ::analysis(analyzeMode$n) 0
     ::uci::sendToEngine $n "stop"
 
     if { [llength $moves] > 0 } {
-      handleResult $moves $nag $fen
+      handleResult $moves $nag $fen $n
     } else {
       set ::calvar::initPosAnalysis $::analysis(multiPV$n)
     }
     set ::calvar::working 0
-    addLineToCompute ""
+    addLineToCompute "" $n
   }
 
 }
