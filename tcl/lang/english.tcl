@@ -194,8 +194,8 @@ menuText E ToolsComp "Computer Tournament" 9 {Chess engine tournament}
 menuText E ToolsTacticalGame "Computer - Phalanx"  0 {Play a game with tactics}
 menuText E ToolsSeriousGame "Computer - UCI Engine"  11 {Play against an UCI engine}
 menuText E ToolsTrainTactics "Mate in ..N.. Puzzle"  0 {Solve "Mate in" puzzles}
-menuText E ToolsTrainCalvar "Calculation of variations"  0 {Calculation of variations training}
-menuText E ToolsTrainFindBestMove "Find best move"  0 {Find best move}
+menuText E ToolsTrainCalvar "Calculation of Variations"  0 {Stoyko Exercise}
+menuText E ToolsTrainFindBestMove "Find Best Move"  0 {Find best move}
 menuText E ToolsTrainFics "Internet (FICS)"  0 {Play on freechess.org}
 menuText E ToolsBookTuning "Book tuning" 0 {Book tuning}
 

@@ -1,7 +1,16 @@
 ###
 ### calvar.tcl: part of Scid.
 ### Copyright (C) 2007  Pascal Georges
-###
+
+### Tidied up by S.A., but still fairly raw.
+
+# I released a new version rc8 with the Stoyko exercise (see in the 
+# training section). It is certainly buggy and unpolished, but the 
+# features are there. There is some help by pressing F1.
+# Feedbacks, suggestions and comments are welcome.
+# Pascal
+
+# Known issues - doesnt work at atsrt and end of game ? S.A.
 
 namespace eval calvar {
   # DEBUG
@@ -32,7 +41,8 @@ namespace eval calvar {
   #
   ################################################################################
   proc traceWorking {a b c} {
-    set widget .calvarWin.fCommand.bDone
+    set widget .calvarWin.buttons.bDone
+
     if {$::calvar::working} {
       $widget configure -state disabled
     } else {
@@ -52,29 +62,26 @@ namespace eval calvar {
       .calvarWin.fText.t delete 1.0 end
     }
   }
-  ################################################################################
-  #
-  ################################################################################
+
+  ### Initial configuration
+
   proc config {} {
 
-    # check if game window is already opened. If yes abort previous game
-    set w ".calvarWin"
-    if {[winfo exists $w]} {
-      focus .calvarWin
+    if {[winfo exists .calvarWin]} {
+      raiseWin .calvarWin
       return
     }
 
-    set w ".configCalvarWin"
+    set w .configCalvarWin
+
     if {[winfo exists $w]} {
-      focus $w
+      raiseWin $w
       return
     }
 
     toplevel $w
+    wm state $w withdrawn
     wm title $w [::tr "ConfigureCalvar"]
-
-    bind $w <F1> { helpWindow CalVar }
-    setWinLocation $w
 
     # builds the list of UCI engines
     frame $w.fengines -relief raised -borderwidth 1
@@ -109,35 +116,41 @@ namespace eval calvar {
     # label $f.lThreshold -text "Threshold"
     # spinbox $f.sbThreshold  -width 3 -textvariable ::calvar::blunderThreshold -from 0.1 -to 1.5 -increment 0.1
     # pack $f.lThreshold $f.sbThreshold -side left
-    label $f.lTime -text "Move thinking time"
-    spinbox $f.sbTime  -width 3 -textvariable ::calvar::thinkingTimePerLine -from 5 -to 120 -increment 5 -validate all -vcmd {string is int %P}
-    pack $f.lTime $f.sbTime -side left
-    label $f.lTime2 -text "Position thinking time"
+
+    label $f.lTime2 -text "Initial thinking time"
     spinbox $f.sbTime2  -width 3 -textvariable ::calvar::thinkingTimePosition -from 5 -to 300 -increment 5 -validate all -vcmd {string is int %P}
     pack $f.lTime2 $f.sbTime2 -side left
 
+    label $f.lTime -text "Variation thinking time"
+    spinbox $f.sbTime  -width 3 -textvariable ::calvar::thinkingTimePerLine -from 5 -to 120 -increment 5 -validate all -vcmd {string is int %P}
+    pack $f.lTime $f.sbTime -side left
+
     frame $w.fbuttons
     pack $w.fbuttons
-    button $w.fbuttons.start -text Start -command {
+    dialogbutton $w.fbuttons.start -text Start -command {
       focus .
       set chosenEngine [.configCalvarWin.fengines.lbEngines curselection]
       set ::calvar::engineName [.configCalvarWin.fengines.lbEngines get $chosenEngine]
       destroy .configCalvarWin
       ::calvar::start $chosenEngine
     }
-    button $w.fbuttons.cancel -textvar ::tr(Cancel) -command "focus .; destroy $w"
+    dialogbutton $w.fbuttons.help -textvar ::tr(Help) -command { helpWindow CalVar }
+    dialogbutton $w.fbuttons.cancel -textvar ::tr(Cancel) -command "destroy $w"
 
-    pack $w.fbuttons.start $w.fbuttons.cancel -expand yes -side left -padx 20 -pady 2
+    pack $w.fbuttons.start $w.fbuttons.help $w.fbuttons.cancel -expand yes -side left -padx 20 -pady 2
 
     bind $w <Escape> { .configCalvarWin.fbuttons.cancel invoke }
     bind $w <Return> { .configCalvarWin.fbuttons.start invoke }
-    bind $w <Destroy> ""
-    bind $w <Configure> "recordWinSize $w"
+    bind $w <F1> {helpWindow CalVar}
+
+    update
+    placeWinOverParent $w .
+    wm state $w normal
     wm minsize $w 45 0
   }
-  ################################################################################
-  #
-  ################################################################################
+
+  ### Main window
+
   proc start {engine} {
 
     ::calvar::reset
@@ -145,21 +158,24 @@ namespace eval calvar {
     set n $::calvar::engineListBox($engine)
     set ::calvar::engine $n
 
-    set w ".calvarWin"
+    set w .calvarWin
+
     if {[winfo exists $w]} {
-      focus .calvarWin
+      raiseWin .calvarWin
       return
     }
+
     toplevel $w
-    wm title $w [::tr "Calvar"]
+    wm title $w [::tr Calvar]
     bind $w <F1> { helpWindow CalVar }
     setWinLocation $w
 
     set f $w.fNag
     frame $f
+    set width [expr {$::windowsOS ? 2 : 1}]
     set i 0
     foreach nag { "=" "+=" "+/-" "+-" "=+" "-/+" "-+" } {
-      button $f.nag$i -text $nag -command "::calvar::nag $nag"
+      button $f.nag$i -text $nag -command "::calvar::nag $nag" -width $width -height 1
       pack $f.nag$i -side left
       incr i
     }
@@ -181,19 +197,17 @@ namespace eval calvar {
     }
     pack $f
 
-    set f $w.fCommand
-    frame $f
+    set f $w.buttons
+    pack [frame $f]
+
     button $f.bDone -text [::tr "DoneWithPosition"] -command ::calvar::positionDone
-    pack $f.bDone
-    pack $f
+    button $f.help -textvar ::tr(Help) -command { helpWindow CalVar }
+    button $f.stop -textvar ::tr(Close) -command ::calvar::stop
 
-    set f $w.fbuttons
-    frame $f
-    pack $f
-    button $w.fbuttons.stop -textvar ::tr(Stop) -command ::calvar::stop
-    pack $w.fbuttons.stop -expand yes -side left -padx 20 -pady 2
+    pack $f.bDone -side left -padx 8 -pady 3
+    pack $f.help $f.stop -side left -padx 8 -pady 3
 
-    bind $w <Escape> { .calvarWin.fbuttons.stop invoke }
+    bind $w <Escape> { .calvarWin.buttons.stop invoke }
     bind $w <Destroy> ""
     bind $w <Configure> "recordWinSize $w"
     wm minsize $w 45 0
@@ -215,7 +229,9 @@ namespace eval calvar {
     ::calvar::startAnalyze "" "" [sc_pos fen]
 
     set ::calvar::afterIdPosition [after [expr $::calvar::thinkingTimePosition * 1000] { ::calvar::stopAnalyze "" "" "" ; ::calvar::addLineToCompute "" }]
+
   }
+
   ################################################################################
   #
   ################################################################################
@@ -436,7 +452,7 @@ namespace eval calvar {
       set res 0
       set firsteng [lindex $engmoves 0]
       foreach userLine $::calvar::lines {
-        set usermoves [::uci::formatPv [lindex $userLine 0]]
+        set usermoves [::uci::formatPv [lindex $userLine 0] ""]
         set firstuser [lindex $usermoves 0]
         if {$firstuser == $firsteng} { return 1 }
       }
@@ -479,7 +495,7 @@ namespace eval calvar {
     } else {
       ::uci::sendToEngine $n "position fen $fen"
     }
-    ::uci::sendToEngine $n "go infinite ponder"
+    ::uci::sendToEngine $n "go infinite"
   }
   ################################################################################
   # stopAnalyzeMode

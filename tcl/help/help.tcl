@@ -408,6 +408,7 @@ set helpText(Index) {<h1>Scid Help Index</h1>
   <li><a Maintenance Spellfile>Spellcheck File</a></li>
   <li><a Maintenance Spellcheck>Spellchecking</a> names</li>
   <li>Editing Name <a Maintenance Editing>Spelling</a></li>
+  <li><a CalVar>Stoyko Exercise</a></li>
   <li><a Switcher>Switcher</a> window</li>
   </ul>
 
@@ -415,9 +416,10 @@ set helpText(Index) {<h1>Scid Help Index</h1>
   <ul>
   <li><a TB>Tablebases</a></li>
   <li><a Menus Tools>Tools menu</a></li>
-  <li><a Tourney>Tournament</a>of Chess Engines</li>
+  <li><a Tourney>Tournament</a> of Chess Engines</li>
   <li><a Tmt>Tournament finder</a></li>
   <li><a FindBestMove>Training: Find best move</a></li>
+  <li><a CalVar>Training: Calculation of Variations</a></li>
   <li><a Tree>Tree window</a></li>
   <li><a Moves Trial>Trial mode</a></li>
   <li><a Maintenance Twins>Twin (duplicate) games</a></li>
@@ -2896,46 +2898,41 @@ Faile seems not to issue "move" under some circumstances, despite being in xboar
 }
 
 set helpTitle(CalVar) "Calculation of variation"
-set helpText(CalVar) {<h1>The Calculation of Variation Window</h1>
+set helpText(CalVar) {<h1>Calculation of Variations</h1>
   <p>
-   This training exercise is also known as the Stoyko exercise.  Its
-   purpose is to analyse a complex position and evaluate as many sound
-   lines as possible, and give a correct evaluation for each of them.
+   This training exercise (also known as the <b>Stoyko Exercise</b>)
+   involves analysing a complex position, to find and evaluate as many sound
+   lines as possible.
   </p> 
-  <h3>Configuration</h3></p>
   <p>
-  Three parameters are set :
+  Configuration is fairly straight-forward, and involves
   <ul>
-     <li>The UCI engine that will analyse various lines</li>
-     <li>The time, in seconds, the engine will use to analyse the position</li>
-     <li>The time, in seconds, the engine will use to analyse each line entered by the user</li>
+     <li>* The UCI engine to use</li>
+     <li>* <b>Initial thinking time</b> - seconds for the engine to analyse the position</li>
+     <li>* <b>Variation thinking time</b> - seconds for the engine to analyse each variation entered by the user</li>
   </ul>
+  Clicking Start begins the exercise.
   </p>
 
-  <h3>Entering lines</h3></p>
   <p>
-  Moves are entered as usual with mouse clicks on the board but they
-  will not be displayed. At the end of a line the user needs to provide
-  an evaluation by clicking on one of the buttons with NAG codes.
+  After the engine's initial thinking time, the "Done with Position" button will become active,
+  and the player should click on the board to enter a variation.
+  <i>The board is not responsive, but moves are instead entered into the text widget.</i>
   </p>
 
-  <h3>Evaluation verification</h3>
   <p>
-  Each time an evaluation is given to a line the engine calculates its
-  value and append the line and score just below the user ones.
+  To finalise the move, one should click one of the NAG codes buttons.
+  The engine will evaluate the move, after which the user may enter more good moves.
+  When the user has finished entering thier best moves, click
+  <b>Done with position</b>. The engine will append (any) misssed lines to the game PGN.
+  </p>
+  <h4>Bugs</h4>
+  <p>This feature does not work from within an existing variation, of at the end of a game.
+  Program flow probably needs refining too.
   </p>
 
-  <h3>Done with position</h3>
-  <p>
-   When  the user thinks he found all best lines, pressing <term>Done with
-   position</term> will append to the game (with the comment <term>Missed
-   line</term>), the lines that have a score higher than the best line
-   entered by the user.
-  </p>
-
-  <p><footer>Updated: Scid 3.6.21, December 2007</footer></p>
+  <p><footer>Updated: Scid vs. PC 4.7, January 2012</footer></p>
 }
-
 
 set helpTitle(EPD) "EPD files"
 set helpText(EPD) {<h1>EPD Files</h1>
