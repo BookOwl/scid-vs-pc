@@ -258,16 +258,6 @@ namespace eval tacgame {
     wm state $w normal
   }
 
-  trace add variable ::pause write ::tacgame::pauseGame
-
-  proc pauseGame {args} {
-    if {[winfo exists .coachWin]} {
-      set ::tacgame::paused 1
-      .coachWin.fbuttons.resume configure -state normal
-      ### Should we mess with game clocks ?
-    }
-  }
-
   proc check_Fischer_Game {} {
     if {$::tacgame::openingType == "fischer"} {
       sc_game tags set -event "Tactical Game, Fischer chess"

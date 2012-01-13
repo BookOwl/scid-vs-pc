@@ -1107,7 +1107,7 @@ proc confirmReplaceMove {} {
   option add *Dialog.msg.wrapLength 5i interactive
   # option add *Dialog.msg.font {Helvetica 10}
   # Can't bind <Escape> inside tk_dialog.
-  # WTF does the #3 button have two outlines &&&
+
   catch {tk_dialog .dialog "Scid: $::tr(ReplaceMove)?" \
         $::tr(ReplaceMoveMessage) {} 2 \
         $::tr(ReplaceMove) $::tr(NewMainLine) \
@@ -1644,5 +1644,21 @@ proc setTrialMode {mode} {
   }
   updateBoard -pgn
 }
+
+### Pause UCI and Phalanx games when an out of order move is made
+
+proc pauseGame {args} {
+  if {[winfo exists .coachWin]} {
+    set ::tacgame::paused 1
+    .coachWin.fbuttons.resume configure -state normal
+  }
+  if {[winfo exists .serGameWin]} {
+    set ::sergame::paused 1
+    .serGameWin.fbuttons.resume configure -state normal
+    after cancel ::sergame::engineGo
+  }
+}
+
+trace add variable ::pause write pauseGame
 
 

@@ -229,16 +229,6 @@ namespace eval fics {
     unbusyCursor .
   }
 
-  proc pauseGame {args} {
-    if {[winfo exists .fics]} {
-      after 200 {
-	if {![sc_pos isAt end] && $::fics::playing} { 
-          warnStatusBar "Fics: Warning, board doesn't show current game position"
-	}
-      }
-    }
-  }
-
   ################################################################################
   #
   ################################################################################

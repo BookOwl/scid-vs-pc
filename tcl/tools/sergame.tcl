@@ -279,15 +279,6 @@ namespace eval sergame {
     wm minsize $w 45 0
   }
 
-  trace add variable ::pause write ::sergame::pauseGame
-
-  proc pauseGame {args} {
-    if {[winfo exists .serGameWin]} {
-      set ::sergame::paused 1
-      .serGameWin.fbuttons.resume configure -state normal
-      after cancel ::sergame::engineGo
-    }
-  }
 
   ### ::sergame::play
 
