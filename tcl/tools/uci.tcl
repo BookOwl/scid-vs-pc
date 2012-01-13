@@ -1002,6 +1002,33 @@ namespace eval uci {
 
     return $tmp
   }
+
+  ### Format a line starting at current position where <moves> were played (in San notation)
+  ### only used by calvar.tcl
+
+  proc formatPvAfterMoves { played_moves moves } {
+      sc_info preMoveCmd {}
+      sc_game push copyfast
+      sc_move addSan $played_moves
+      
+      set tmp ""
+      foreach m $moves {
+	  if { [sc_move_add $m] == 1 } {
+	      break
+	  }
+	  set prev [sc_game info previousMoveNT]
+	  append tmp " $prev"
+      }
+      set tmp [string trim $tmp]
+      
+      # Pop the temporary game:
+      sc_game pop
+      # Restore pre-move command:
+      sc_info preMoveCmd preMoveCommand
+      
+      return $tmp
+  }
+
 }
 ###
 ### End of file: uci.tcl

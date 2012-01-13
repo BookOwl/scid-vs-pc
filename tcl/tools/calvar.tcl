@@ -5,7 +5,7 @@
 
 namespace eval calvar {
   # DEBUG
-  # &&& set ::uci::uciInfo(log_stdout4) 1
+  # set ::uci::uciInfo(log_stdout$n) 1
 
   array set engineListBox {}
   ### This seems unused, and for some reason interferes with annotation S.A
@@ -140,9 +140,10 @@ namespace eval calvar {
   ################################################################################
   proc start {engine} {
 
-    set n $::calvar::engineListBox($engine)
-
     ::calvar::reset
+
+    set n $::calvar::engineListBox($engine)
+    set ::calvar::engine $n
 
     set w ".calvarWin"
     if {[winfo exists $w]} {
@@ -189,7 +190,7 @@ namespace eval calvar {
     set f $w.fbuttons
     frame $f
     pack $f
-    button $w.fbuttons.stop -textvar ::tr(Stop) -command "::calvar::stop $n"
+    button $w.fbuttons.stop -textvar ::tr(Stop) -command ::calvar::stop
     pack $w.fbuttons.stop -expand yes -side left -padx 20 -pady 2
 
     bind $w <Escape> { .calvarWin.fbuttons.stop invoke }
@@ -199,8 +200,8 @@ namespace eval calvar {
 
     # start engine and set MultiPV to 10
     ::uci::startEngine $n
-    set ::analysis(multiPVCount$n) 10
 
+    set ::analysis(multiPVCount$n) 10
     ::uci::sendToEngine $n "setoption name MultiPV value $::analysis(multiPVCount$n)"
     set ::calvar::suggestMoves_old $::suggestMoves
     set ::calvar::hideNextMove_old $::gameInfo(hideNextMove)
@@ -211,16 +212,18 @@ namespace eval calvar {
 
     # fill initPosAnalysis for the current position
     set ::calvar::working 1
-    ::calvar::startAnalyze "" "" [sc_pos fen] $n
+    ::calvar::startAnalyze "" "" [sc_pos fen]
 
-    set ::calvar::afterIdPosition [after [expr $::calvar::thinkingTimePosition * 1000] { ::calvar::stopAnalyze "" "" "" $n ; ::calvar::addLineToCompute "" $n}]
+    set ::calvar::afterIdPosition [after [expr $::calvar::thinkingTimePosition * 1000] { ::calvar::stopAnalyze "" "" "" ; ::calvar::addLineToCompute "" }]
   }
   ################################################################################
   #
   ################################################################################
-  proc stop {n} {
+  proc stop {} {
     after cancel $::calvar::afterIdPosition
     after cancel $::calvar::afterIdLine
+    set n $::calvar::engine
+
     ::uci::closeUCIengine $n
     focus .
     destroy .calvarWin
@@ -267,15 +270,16 @@ namespace eval calvar {
     set newline [list $::calvar::currentListMoves $n [sc_pos fen]]
     lappend ::calvar::lines $newline
     incr ::calvar::currentLine
-    addLineToCompute $newline $n
+    addLineToCompute $newline
     set ::calvar::currentListMoves {}
   }
   ################################################################################
   #
   ################################################################################
-  proc addLineToCompute {line n} {
+  proc addLineToCompute {line} {
     global ::calvar::analysisQueue
-    puts "====>>> addLineToCompute $line $n"
+
+    puts "====>>> addLineToCompute $line"
     if {$line != ""} {
       lappend analysisQueue $line
     }
@@ -284,60 +288,63 @@ namespace eval calvar {
     while { [llength $analysisQueue] != 0 } {
       set line [lindex $analysisQueue 0]
       set analysisQueue [lreplace analysisQueue 0 0]
-      computeLine $line $n
+      computeLine $line
     }
   }
   ################################################################################
   #
   ################################################################################
-  proc computeLine {line n} {
+  proc computeLine {line} {
     set ::calvar::working 1
-    puts "---->>>> computeLine $line $n"
+    puts "---->>>> computeLine $line"
     set moves [ lindex $line 0 ]
     set nag [ lindex $line 1 ]
     set fen [ lindex $line 2 ]
-    startAnalyze $moves $nag $fen $n
-    set ::calvar::afterIdLine [after [expr $::calvar::thinkingTimePerLine * 1000] "::calvar::stopAnalyze [list $moves $nag $fen $n]"]
+    startAnalyze $moves $nag $fen
+    set ::calvar::afterIdLine [after [expr $::calvar::thinkingTimePerLine * 1000] "::calvar::stopAnalyze [list $moves $nag $fen]"]
   }
   ################################################################################
   # we suppose FEN has not changed !
   ################################################################################
-  proc handleResult {moves nag fen n} {
+  proc handleResult {moves nag fen} {
     set comment ""
+    set n $::calvar::engine
 
+    set usermoves [::uci::formatPv $moves $fen]
+    set firstmove [lindex $usermoves 0]
+    
+    # format engine's output
     # append first move to the variations
-    set firstmove [lindex $moves 0]
-    for {set i 0 } {$i < [llength $::uci::uciInfo(pvlist$n)]} {incr i} {
-      set elt [lindex $::uci::uciInfo(pvlist$n) $i]
-      set m [linsert [lindex $elt 2] 0 $firstmove]
-      set m [::uci::formatPv $m]
-      set elt [list [lindex $elt 0] [lindex $elt 1] $m ]
-      lset ::uci::uciInfo(pvlist$n) $i $elt
+    set ::analysis(multiPV$n) {}
+    for {set i 0 } {$i < [llength $::analysis(multiPVraw$n)]} {incr i} {
+      set elt [lindex $::analysis(multiPVraw$n) $i ]
+      set line [::uci::formatPvAfterMoves $firstmove [lindex $elt 2] ]
+      set line "$firstmove $line"
+      lappend ::analysis(multiPV$n) [list [lindex $elt 0] [lindex $elt 1] $line [lindex $elt 3]]
+
     }
+    
     puts "==================================="
-    puts "handleResult $::uci::uciInfo(pvlist$n)"
+    puts "handleResult $::analysis(multiPV$n)"
     puts "==================================="
-
-    set usermoves [::uci::formatPv $moves]
-    puts "usermoves $usermoves moves (avant format) $moves"
-
+    
     if { [llength $moves] != [llength $usermoves]} {
       set comment " error in user moves [lrange $moves [llength $usermoves] end ]"
       puts $comment
     }
-    foreach pv $::uci::uciInfo(pvlist$n) {
+    
+    set pv [ lindex $::analysis(multiPV$n) 0 ]
+    if { [ llength $pv ] == 4 } {
       set engmoves [lindex $pv 2]
       # score is computed for the opposite side, so invert it
       set engscore [expr - 1.0 * [lindex $pv 1] ]
       set engdepth [lindex $pv 0]
-      # find a line with the same first move
-      if {[lindex $usermoves 0] == [lindex $engmoves 0]} {
-        addVar $moves $engmoves $nag $comment $engscore
-        break
-      }
+      addVar $usermoves $engmoves $nag $comment $engscore
+    } else  {
+      puts "Error pv = $pv"
     }
-
   }
+
   ################################################################################
   # will add a variation at current position.
   # Try to merge the variation with an existing one.
@@ -455,11 +462,14 @@ namespace eval calvar {
   # startAnalyze:
   #   Put the engine in analyze mode.
   ################################################################################
-  proc startAnalyze {moves nag fen n} {
+  proc startAnalyze {moves nag fen} {
     global analysis
+
+    set n $::calvar::engine
 
     # Check that the engine has not already had analyze mode started:
     if {$analysis(analyzeMode$n)} { return }
+
     set analysis(analyzeMode$n) 1
     set analysis(waitForReadyOk$n) 1
     ::uci::sendToEngine $n "isready"
@@ -474,18 +484,20 @@ namespace eval calvar {
   ################################################################################
   # stopAnalyzeMode
   ################################################################################
-  proc stopAnalyze { moves nag fen n} {
+  proc stopAnalyze { moves nag fen} {
+    set n $::calvar::engine
+
     if {! $::analysis(analyzeMode$n)} { return }
     set ::analysis(analyzeMode$n) 0
     ::uci::sendToEngine $n "stop"
 
     if { [llength $moves] > 0 } {
-      handleResult $moves $nag $fen $n
+      handleResult $moves $nag $fen
     } else {
       set ::calvar::initPosAnalysis $::analysis(multiPV$n)
     }
     set ::calvar::working 0
-    addLineToCompute "" $n
+    addLineToCompute ""
   }
 
 }
