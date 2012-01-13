@@ -169,7 +169,7 @@ menuText C ToolsOpenRecentBaseAsTree "Open recent base as tree" 0   {Open a rece
 menuText C ToolsTracker "Stopaø figur"  0 {Otevøít okno stopaøe figur}
 # ====== TODO To be translated ======
 menuText C ToolsTraining "Training"  0 {Training tools (tactics, openings,...) }
-menuText C ToolsComp "Computer Tournament" 2 {Chess engine tournament}
+menuText C ToolsComp "Tournament" 2 {Chess engine tournament}
 # ====== TODO To be translated ======
 menuText C ToolsTacticalGame "Tactical game"  0 {Play a game with tactics}
 # ====== TODO To be translated ======

@@ -190,7 +190,7 @@ menuText E ToolsOpenBaseAsTree "Open Base as Tree" 13   {Open a base and use it 
 menuText E ToolsOpenRecentBaseAsTree "Open Recent as Tree" 0   {Open a recent base and use it in Tree window}
 menuText E ToolsTracker "Piece Tracker"  6 {Open the Piece Tracker window}
 menuText E ToolsTraining "Training"  7 {Training tools (tactics, openings,...) }
-menuText E ToolsComp "Computer Tournament" 9 {Chess engine tournament}
+menuText E ToolsComp "Tournament" 9 {Chess engine tournament}
 menuText E ToolsTacticalGame "Computer - Phalanx"  0 {Play a game with tactics}
 menuText E ToolsSeriousGame "Computer - UCI Engine"  11 {Play against an UCI engine}
 menuText E ToolsTrainTactics "Mate in ..N.. Puzzle"  0 {Solve "Mate in" puzzles}

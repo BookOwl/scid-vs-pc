@@ -168,7 +168,7 @@ menuText I ToolsOpenBaseAsTree "Apri come albero..." 0   {Apre un database nella
 menuText I ToolsOpenRecentBaseAsTree "Apri recente come albero" 0   {Apre un database recente nella finestra per l'albero}
 menuText I ToolsTracker "Dislocazione dei Pezzi"  0 {Apre/chiude la finestra con la traccia sulla dislocazione dei pezzi}
 menuText I ToolsTraining "Allenamento"  0 {Strumenti per l'allenamento (tattica, aperture,...) }
-menuText I ToolsComp "Computer Tournament" 2 {Chess engine tournament}
+menuText I ToolsComp "Tournament" 2 {Chess engine tournament}
 menuText I ToolsTacticalGame "Partita tattica"  0 {Gioca una partita con le tattiche}
 menuText I ToolsSeriousGame "Partita seria"  0 {Gioca una partita seria}
 menuText I ToolsTrainTactics "Tattiche"  0 {Risolvi problemi tattici}

@@ -193,7 +193,7 @@ menuText D ToolsOpenRecentBaseAsTree "Letzte DB als Baum" 0   {Öffne zuletzt ver
 menuText D ToolsTracker "Figurenverteilung"  7 \
   {Figurenverteilungsfenster öffnen}
 menuText D ToolsTraining "Training"  0 {Trainingswerkzeuge (Taktik, Eröffnungen,...) }
-menuText D ToolsComp "Computer Tournament" 2 {Chess engine tournament}
+menuText D ToolsComp "Tournament" 2 {Chess engine tournament}
 menuText D ToolsTacticalGame "Trainingspartie"  0 {Trainingspartie spielen}
 menuText D ToolsSeriousGame "Ernste Partie"  0 {Ernste Partie spielen}
 menuText D ToolsTrainTactics "Taktik"  0 {Taktische Stellungen lösen}
