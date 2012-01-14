@@ -22,7 +22,7 @@ namespace eval sergame {
   set ponder 0
 
   # list of fen positions played to detect 3 fold checkRepetition
-  set lFen {}
+  set ::lFen {}
   set lastPlayerMoveUci ""
 
   ################################################################################
@@ -288,8 +288,8 @@ namespace eval sergame {
 
     set ::sergame::engine $n
 
-    set ::sergame::lFen {}
-    set ::sergame::drawShown 0
+    set ::lFen {}
+    set ::drawShown 0
 
     ::uci::startEngine $n
     ::uci::sendUCIoptions $n
@@ -383,10 +383,10 @@ namespace eval sergame {
     ::gameclock::reset 1
     ::gameclock::start 1
 
-    set ::sergame::paused 0
+    set ::paused 0
 
     button $w.fbuttons.resume -state disabled -textvar ::tr(Resume) -command {
-      set ::sergame::paused 0
+      set ::paused 0
       .serGameWin.fbuttons.resume configure -state disabled
       ::sergame::engineGo
     }
@@ -425,7 +425,7 @@ namespace eval sergame {
   proc abortGame {} {
     set n $::sergame::engine
 
-    set ::sergame::lFen {}
+    set ::lFen {}
     if { $::uci::uciInfo(pipe$n) == ""} { return }
     after cancel ::sergame::engineGo
     ::uci::closeUCIengine $n
@@ -743,22 +743,6 @@ namespace eval sergame {
     }
 
     after 1000 ::sergame::engineGo
-  }
-
-  ### Add current position, and check for 3 fold repetition
-
-  proc checkRepetition {} {
-    set elt [lrange [split [sc_pos fen]] 0 2]
-    lappend ::sergame::lFen $elt
-    if { [llength [lsearch -all $::sergame::lFen $elt] ] >=3 && ! $::sergame::drawShown } {
-      set ::sergame::drawShown 1
-      ::sergame::pauseGame
-      sc_game tags set -result =
-      tk_messageBox -type ok -message $::tr(Draw) -parent .board -icon info
-      puts $::sergame::lFen
-      return 1
-    }
-    return 0
   }
 
   proc getEngineColor {} {

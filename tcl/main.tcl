@@ -1119,7 +1119,6 @@ proc confirmReplaceMove {} {
   if {$answer == 2} { return var }
   if {$answer == 3} { setTrialMode 1; return replace }
 
-  set ::pause 1
   return cancel
 }
 
@@ -1648,17 +1647,31 @@ proc setTrialMode {mode} {
 ### Pause UCI and Phalanx games when an out of order move is made
 
 proc pauseGame {args} {
+  set ::paused 1
   if {[winfo exists .coachWin]} {
-    set ::tacgame::paused 1
     .coachWin.fbuttons.resume configure -state normal
+    after cancel ::tacgame::phalanxGo
   }
   if {[winfo exists .serGameWin]} {
-    set ::sergame::paused 1
     .serGameWin.fbuttons.resume configure -state normal
     after cancel ::sergame::engineGo
   }
 }
 
-trace add variable ::pause write pauseGame
+### Add current position, and check for 3 fold repetition
 
+proc checkRepetition {} {
+  set elt [lrange [split [sc_pos fen]] 0 2]
+  lappend ::lFen $elt
+  if { [llength [lsearch -all $::lFen $elt] ] >=3 && ! $::drawShown } {
+    set ::drawShown 1
+    pauseGame
+    sc_game tags set -result =
+    tk_messageBox -type ok -message $::tr(Draw) -parent .board -icon info
+    puts $::lFen
+    catch {sc_game save [sc_game number]}
+    return 1
+  }
+  return 0
+}
 

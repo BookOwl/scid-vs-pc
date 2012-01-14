@@ -29,7 +29,8 @@ namespace eval tacgame {
   set outOfOpening 0
 
   # list of fen positions played to detect 3 fold repetition
-  set lFen {}
+  set ::lFen {}
+  set ::paused 0
 
   set lastblundervalue 0.0
   set prev_lastblundervalue 0.0
@@ -46,7 +47,6 @@ namespace eval tacgame {
   set currentPosHash 0
   set lscore {}
 
-  set paused 0
 
   # Resets all blunders data.
   # (See also tcl/start.tcl)
@@ -59,7 +59,8 @@ namespace eval tacgame {
     set ::tacgame::currentPosHash [sc_pos hash]
     set ::tacgame::lscore {}
     set ::tacgame::resignCount 0
-    set ::tacgame::drawShown 0
+    set ::drawShown 0
+    set ::lFen {}
     set ::tacgame::mateShown 0
     set ::tacgame::resignShown 0
   }
@@ -345,7 +346,7 @@ namespace eval tacgame {
     resetEngine $::tacgame::toga
     catch { unset ::uci::uciInfo(score$::tacgame::toga) }
 
-    set ::tacgame::lFen {}
+    set ::lFen {}
 
     if {$::tacgame::randomLevel} {
       if {$::tacgame::levelMax < $::tacgame::levelMin} {
@@ -459,19 +460,18 @@ namespace eval tacgame {
 
     ### "Resume" restarts paused computer (while player moves forward/back in history) S.A
 
-    set ::tacgame::paused 0
+    set ::paused 0
     button $w.fbuttons.resume -state disabled -textvar ::tr(Resume) -command {
-      set ::tacgame::paused 0
+      set ::paused 0
       .coachWin.fbuttons.resume configure -state disabled
       ::tacgame::phalanxGo
     }
     pack $w.fbuttons.resume -expand yes -fill both -padx 10 -pady 2
 
     button $w.fbuttons.restart -text Restart -command {
-      set ::tacgame::paused 0
+      set ::paused 0
       .coachWin.fbuttons.resume configure -state disabled
-
-      set ::tacgame::lFen {}
+      set ::lFen {}
       ::tacgame::initTacgame
 
       # todo: reset hash tables too
@@ -482,9 +482,9 @@ namespace eval tacgame {
       ::gameclock::draw 2
       ::gameclock::start 1
       ::tacgame::resetValues
-      ::tacgame::phalanxGo
       updateBoard -pgn
       ::tacgame::updateAnalysisText
+      ::tacgame::phalanxGo
     }
 
     pack $w.fbuttons.restart -expand yes -fill both -padx 10 -pady 2
@@ -790,7 +790,7 @@ namespace eval tacgame {
 
     after cancel ::tacgame::phalanxGo
 
-    if {$::tacgame::paused} {
+    if {$::paused} {
       .coachWin.fbuttons.resume configure -state normal
       return
     }
@@ -884,23 +884,6 @@ namespace eval tacgame {
     sendToEngine $phalanx "setboard [sc_pos fen]"
     sendToEngine $phalanx "go"
     after 1000 ::tacgame::phalanxGo
-  }
-
-  ### Add current position, and check for 3 fold repetition
-
-  proc checkRepetition {} {
-    set elt [lrange [split [sc_pos fen]] 0 2]
-    lappend ::tacgame::lFen $elt
-    if { [llength [lsearch -all $::tacgame::lFen $elt] ] >=3 \
-      && ! $::tacgame::drawShown } {
-      ::tacgame::pauseGame
-      set ::tacgame::drawShown 1
-      sc_game tags set -result =
-      tk_messageBox -type ok -message $::tr(Draw) -parent .board -icon info
-      catch {sc_game save [sc_game number]}
-      return 1
-    }
-    return 0
   }
 
 
