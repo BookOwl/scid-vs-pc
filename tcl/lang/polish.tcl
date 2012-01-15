@@ -124,8 +124,8 @@ menuText P GameNovelty "Znajd¼ nowinkê..." 7 \
 menuText P Search "Szukaj" 0
 menuText P SearchReset "Resetuj filtr" 0 \
   {Wstaw wszystkie partie do filtra}
-menuText P SearchNegate "Odwróæ filtr" 0 \
-  {Zamieñ partie w filtrze i poza nim}
+menuText P SearchNegate "Odwróæ filtr" 0 {Zamieñ partie w filtrze i poza nim}
+menuText P SearchEnd "Przejdz do ostatniego filtra" 0
 menuText P SearchCurrent "Aktualna pozycja..." 0 \
   {Szukaj aktualnej pozycji}
 menuText P SearchHeader "Nag³ówek..." 0 \

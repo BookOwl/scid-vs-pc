@@ -44,14 +44,23 @@ proc ::search::filter::reset {{base {}}} {
   updateMenuStates
 }
 
-# ::search::filter::negate
-#
-#   Negates the filter, to include only excluded games.
-#
+### Negate filter
+
 proc ::search::filter::negate {} {
-  global glstart
   sc_filter negate
   set glstart 1
+  ::windows::gamelist::Refresh
+  ::windows::stats::Refresh
+  updateMenuStates
+}
+
+#  Sets all filter games to end (move 255)
+#  and move current game to end
+
+proc ::search::filter::end {} {
+  global glstart
+  sc_filter end
+  ::move::End
   ::windows::gamelist::Refresh
   ::windows::stats::Refresh
   updateMenuStates

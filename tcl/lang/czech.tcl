@@ -123,6 +123,7 @@ menuText C GameNovelty "Hledat novinku..." 0 \
 menuText C Search "Hledat" 0
 menuText C SearchReset "Vyèistit filtr" 0 {Vyèistit filtr - vybrány budou v¹echny partie}
 menuText C SearchNegate "Negace filtru" 0 {Negace filtru -  vybrány budou pouze partie vyòaté pøedcházejícím filtrem}
+menuText C SearchEnd "Presun na poslední filtr" 0
 menuText C SearchCurrent "Aktuální pozice..." 0 {Hledat aktuální pozici}
 menuText C SearchHeader "Hlavièka..." 0 {Hledat podle hlavièky partie (hráè, turnaj apod.)}
 menuText C SearchMaterial "Materiál/Vzor..." 0 {Hledat podle materiálu nebo podle vzoru}

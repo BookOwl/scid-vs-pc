@@ -123,8 +123,8 @@ menuText S GameNovelty "Encontrar Novedad" 7 \
 menuText S Search "Buscar" 0
 menuText S SearchReset "Poner a cero el filtro" 0 \
   {Poner a cero el filtro para que todas la partidas estén incluidas}
-menuText S SearchNegate "Invertir filtro" 0 \
-  {Invierte el filtro para sólo incluir las partidas excluidas}
+menuText S SearchNegate "Invertir filtro" 0 {Invierte el filtro para sólo incluir las partidas excluidas}
+menuText S SearchEnd "Mover a último filtro" 0
 menuText S SearchCurrent "Tablero actual..." 0 \
   {Busca por la posición actual del tablero}
 menuText S SearchHeader "Encabezamiento..." 0 \

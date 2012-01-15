@@ -476,6 +476,9 @@ $m  add command -label SearchNegate -acc "Ctrl+Shift+N" \
 bind . <Control-N> ::search::filter::negate
 set helpMessage($m,[incr menuindex]) SearchNegate
 
+$m  add command -label SearchEnd -command ::search::filter::end
+set helpMessage($m,[incr menuindex]) SearchEnd
+
 $m  add separator
 incr menuindex
 
@@ -1423,19 +1426,10 @@ proc updateMenuStates {} {
     }
     $m.game entryconfig [tr GameReplace] -state $state
 
-    # Searching:
-    foreach i {Reset Negate} {
-      $m.search entryconfig [tr Search$i] -state normal
-    }
-    #$m.windows entryconfig [tr WindowsTree] -state normal
-
-    # Tools:
-    $m.tools entryconfig [tr ToolsEmail] -state normal
-    $m.tools entryconfig [tr ToolsOpReport] -state normal
-    $m.tools entryconfig [tr ToolsPlayerReport] -state normal
-
   } else {
     # Base is not in use:
+    # (Is this ever used ? S.A)
+
     $m.file entryconfig [tr FileClose] -state disabled
 
     foreach i {Replace Add First Prev Reload Next Last Random Number Info Browse List} {
@@ -1443,17 +1437,6 @@ proc updateMenuStates {} {
     }
     # .tb.gprev configure -state disabled
     # .tb.gnext configure -state disabled
-
-    # search:
-    foreach i {Reset Negate} {
-      $m.search entryconfig [tr Search$i] -state disabled
-    }
-    #$m.windows entryconfig [tr WindowsTree] -state disabled
-
-    # tools:
-    $m.tools entryconfig [tr ToolsEmail] -state disabled
-    $m.tools entryconfig [tr ToolsOpReport] -state disabled
-    $m.tools entryconfig [tr ToolsPlayerReport] -state disabled
   }
 
   if {[sc_base numGames] == 0} {
@@ -1537,7 +1520,7 @@ proc setLanguageMenus {{lang ""}} {
     configMenuText .menu.edit.strip [tr EditStrip$tag $oldLang] \
         EditStrip$tag $lang
   }
-  foreach tag {Reset Negate Material Current Header Using} {
+  foreach tag {Reset Negate End Material Current Header Using} {
     configMenuText .menu.search [tr Search$tag $oldLang] Search$tag $lang
   }
   # These two items still appear in windows menu

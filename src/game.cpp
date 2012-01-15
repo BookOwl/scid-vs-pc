@@ -33,11 +33,12 @@
 #endif
 
 // Piece letters translation
+
 int language = 0; // default to english
 //  0 = en, 
-//  1 = fr, 2 = es, 3 = de, 4 = it, 5 = ne, 6 = cz
+//  1 = fr, 2 = es, 3 = de,
+//  4 = it, 5 = ne, 6 = cz
 //  7 = hu, 8 = no, 9 = sw
-//  TODO Piece translations for greek
 const char * langPieces[] = { "", 
 "PPKRQDRTBFNC", "PPKRQDRTBANC", "PBKKQDRTBLNS", 
 "PPKRQDRTBANC", "PpKKQDRTBLNP", "PPKKQDRVBSNJ",

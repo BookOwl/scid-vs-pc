@@ -125,6 +125,7 @@ menuText B GameNovelty "Pesquisa Novidade..." 7 \
 menuText B Search "Pesquisa" 0
 menuText B SearchReset "Limpar Filtragem" 0 {Limpa o criterio de pesquisa para incluir todos os jogos}
 menuText B SearchNegate "Inverter Filtragem" 0 {Inverte o criterio de pesquisa para incluir apenas os jogos que nao atendem o criterio}
+menuText B SearchEnd "Mova para Filter Ultima" 0
 menuText B SearchCurrent "Posicao Atual..." 0 {Pesquisa a posicao atual do tabuleiro}
 menuText B SearchHeader "Cabecalho..." 0 {Pesquisa por cabecalho (jogador, evento, etc)}
 menuText B SearchMaterial "Material/Padrao..." 0 {Pesquisa por material ou padrao de posicao}

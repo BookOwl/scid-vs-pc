@@ -126,6 +126,7 @@ menuText O GameNovelty "Finn avvik..." 0 \
 menuText O Search "Søk" 0
 menuText O SearchReset "Nullstill filter" 0 {Nullstill filteret til å inneholde alle partier}
 menuText O SearchNegate "Snu filter" 0 {Reverserer filteret til å kun inneholde eksluderte partier}
+menuText O SearchEnd "Flytt til Siste Filter" 0
 menuText O SearchCurrent "Stilling..." 0 {Søk etter denne stillingen}
 menuText O SearchHeader "Header..." 0 {Søk etter Header (partier, turnering etc) informasjon}
 menuText O SearchMaterial "Kvalitet/stilling..." 0 {Søk på kvalitet eller stilling}

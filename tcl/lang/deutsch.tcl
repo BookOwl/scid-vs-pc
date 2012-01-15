@@ -144,8 +144,8 @@ menuText D GameNovelty "Finde Neuerung..." 0 \
 menuText D Search "Suchen" 0
 menuText D SearchReset "Filter zurücksetzen" 0 \
   {Alle Partien in den Filter einschließen}
-menuText D SearchNegate "Filter invertieren" 7 \
-  {Alle ausgeschlossenen Partien in den Filter nehmen}
+menuText D SearchNegate "Filter invertieren" 7 {Alle ausgeschlossenen Partien in den Filter nehmen}
+menuText D SearchEnd "Umzug nach Last-Filter" 0
 menuText D SearchCurrent "Brett..." 0 \
   {Aktuelle Brettposition suchen}
 menuText D SearchHeader "Partiedaten..." 0 \

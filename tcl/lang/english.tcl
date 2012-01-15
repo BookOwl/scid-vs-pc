@@ -153,6 +153,7 @@ menuText E GameNovelty "Find Novelty" 7 {Find the first move of this game that h
 menuText E Search "Search" 0
 menuText E SearchReset "Reset Filter" 0 {Reset the filter so all games are included}
 menuText E SearchNegate "Negate Filter" 0 {Negate the filter to only include excluded games}
+menuText E SearchEnd "Filter to Last Move" 15 {All filter games load at the end position}
 menuText E SearchHeader "General" 0 {Search by Header (player, event, etc) information}
 menuText E SearchCurrent "Current Board" 0 {Search for the current board position}
 menuText E SearchMaterial "Material/Pattern" 0 {Search for material or board patterns}
@@ -190,7 +191,7 @@ menuText E ToolsOpenBaseAsTree "Open Base as Tree" 13   {Open a base and use it 
 menuText E ToolsOpenRecentBaseAsTree "Open Recent as Tree" 0   {Open a recent base and use it in Tree window}
 menuText E ToolsTracker "Piece Tracker"  6 {Open the Piece Tracker window}
 menuText E ToolsTraining "Training"  7 {Training tools (tactics, openings,...) }
-menuText E ToolsComp "Tournament" 9 {Chess engine tournament}
+menuText E ToolsComp "Tournament" 0 {Chess engine tournament}
 menuText E ToolsTacticalGame "Computer - Phalanx"  0 {Play a game with tactics}
 menuText E ToolsSeriousGame "Computer - UCI Engine"  11 {Play against an UCI engine}
 menuText E ToolsTrainTactics "Mate in ..N.. Puzzle"  0 {Solve "Mate in" puzzles}

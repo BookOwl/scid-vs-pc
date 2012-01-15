@@ -124,6 +124,7 @@ menuText H GameNovelty "Újítás keresése..." 2 \
 menuText H Search "Keresés" 0
 menuText H SearchReset "Szûrõ törlése" 6 {Alaphelyzetbe hozza a szûrõt, hogy az összes játszma benne legyen.}
 menuText H SearchNegate "Szûrõ negálása" 6 {Negálja a szûrõt, hogy csak a kizárt játszmák legyenek benne.}
+menuText H SearchEnd "Áthelyezés Utolsó Filter" 0
 menuText H SearchCurrent "Aktuális állás..." 0 {A táblán lévõ állást keresi.}
 menuText H SearchHeader "Fejléc..." 0 {Keresés fejléc (játékos, esemény, stb.) alapján}
 menuText H SearchMaterial "Anyag/szerkezet..." 6 {Keresés anyag vagy állásszerkezet alapján}

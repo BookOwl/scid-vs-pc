@@ -127,6 +127,8 @@ menuText R GameNovelty "Найти новинку..." 2 \
 menuText R Search "Поиск" 0
 menuText R SearchReset "Сбросить фильтр" 0 {Сбросить фильтр, теперь все партии включены}
 menuText R SearchNegate "Обратить фильтр" 0 {Обратить фильтр,  включить только исключенные партии}
+#todo
+menuText R SearchEnd "Filter to Last Move" 0
 menuText R SearchCurrent "Текущая позиция..." 0 {Поиск текущей позиции}
 menuText R SearchHeader "Заголовок..." 0 {Поиск по заголовку (игрок, турнир, и т.д.)}
 menuText R SearchMaterial "Материал/Образ..." 0 {Поиск по материалу или образцам позиции}

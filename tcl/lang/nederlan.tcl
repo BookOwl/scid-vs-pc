@@ -132,8 +132,8 @@ menuText N GameNovelty "Vind nieuwtje..." 7 \
 menuText N Search "Selecteren" 0
 menuText N SearchReset "Alle partijen" 0 \
   {Reset filter en toon alle partijen}
-menuText N SearchNegate "Selectie omdraaien" 9 \
-  {Draai filter om en toon de andere partijen uit de databse}
+menuText N SearchNegate "Selectie omdraaien" 9 {Draai filter om en toon de andere partijen uit de databse}
+menuText N SearchEnd "Ga naar laatste Filter" 0
 menuText N SearchCurrent "Zoek huidige stelling" 5 \
   {Zoek in database naar huidige stelling}
 menuText N SearchHeader "Partijgegevens..." 5 \

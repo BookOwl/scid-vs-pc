@@ -124,6 +124,8 @@ menuText Y GameNovelty "Pronaði novost..." 8 \
 menuText Y Search "Pretra¾i" 3
 menuText Y SearchReset "Resetuj filter" 0 {Resetuj filter da bi sve partije bile ukljuèene}
 menuText Y SearchNegate "Invertuj filter" 0 {Invertuj filter da ukljuèi samo iskljuèene partije}
+# todo
+menuText Y SearchEnd "Filter to Last Move" 0
 menuText Y SearchCurrent "Tekuæa pozicija..." 0 {Pretra¾uj prema tekuæoj poziciji na tabli}
 menuText Y SearchHeader "Zaglavlje..." 0 {Pretra¾uj prema informacijama iz zaglavlja (igraè, turnir, itd)}
 menuText Y SearchMaterial "Materijal/Pozicije..." 0 {Pretra¾uj prema materijalu i poziciji}

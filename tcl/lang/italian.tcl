@@ -127,6 +127,7 @@ menuText I GameNovelty "Trova Novita'..." 7 \
 menuText I Search "Cerca" 0
 menuText I SearchReset "Annulla il filtro" 0 {Annulla il filtro per includere tutte le partite}
 menuText I SearchNegate "Filtro Negato" 0 {Nega il filtro per comprendere solo partite escluse}
+menuText I SearchEnd "Sposta ultimo filtro" 0
 menuText I SearchCurrent "Posizione attuale..." 0 {Cerca la attuale posizione}
 menuText I SearchHeader "Intestazione..." 0 {Ricerca per intestazione (giocatore, evento, etc)}
 menuText I SearchMaterial "Materiale/Schema..." 0 {Ricerca per materiale o schema posizionale}

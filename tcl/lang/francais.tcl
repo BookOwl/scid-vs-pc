@@ -122,8 +122,8 @@ menuText F GameNovelty "Trouver la nouveauté..." 7 \
 menuText F Search "Rechercher" 0
 menuText F SearchReset "Réinitialiser le filtre" 0 \
   {Remettre à zéro le filtre (inclusion de toutes les parties)}
-menuText F SearchNegate "Inverser le filtre" 0 \
-  {Inverser le filtre}
+menuText F SearchNegate "Inverser le filtre" 0 {Inverser le filtre}
+menuText F SearchEnd "Déplacer vers le dernier filtre" 0
 menuText F SearchCurrent "Position..." 0 \
   {Rechercher la position en cours}
 menuText F SearchHeader "Entête..." 0 \

@@ -5071,13 +5071,13 @@ sc_filter (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
     static const char * options [] = {
         "copy", "count", "first", "frequency",
         "index", "last", "locate", "negate",
-	"next", "previous", "remove", "reset",
+	"next", "previous", "remove", "reset", "end",
 	"size", "stats", "textfind", "textfilter", "value", "clear", NULL
     };
     enum {
         FILTER_COPY, FILTER_COUNT, FILTER_FIRST, FILTER_FREQ,
         FILTER_INDEX, FILTER_LAST, FILTER_LOCATE, FILTER_NEGATE,
-        FILTER_NEXT, FILTER_PREV, FILTER_REMOVE, FILTER_RESET,
+        FILTER_NEXT, FILTER_PREV, FILTER_REMOVE, FILTER_RESET, FILTER_END, 
         FILTER_SIZE, FILTER_STATS, FILTER_TEXTFIND, FILTER_TEXTFILTER, FILTER_VALUE,
         FILTER_CLEAR
     };
@@ -5117,6 +5117,9 @@ sc_filter (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
 
     case FILTER_RESET:
         return sc_filter_reset (cd, ti, argc, argv);
+
+    case FILTER_END:
+        return sc_filter_end (cd, ti, argc, argv);
 
     case FILTER_REMOVE:
         return sc_filter_remove (cd, ti, argc, argv);
@@ -5562,6 +5565,32 @@ sc_filter_reset (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
 
     filter_reset (basePtr, 1);
     updateMainFilter(basePtr);
+    return TCL_OK;
+}
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// sc_filter_end:
+//    Set all filter games to move 255
+//    its filter to include all games.
+int
+sc_filter_end (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
+{
+
+    scidBaseT * basePtr = db;
+    if (argc > 2) {
+        int baseNum = strGetInteger (argv[2]);
+        if (baseNum < 1 || baseNum > MAX_BASES) {
+            return errorResult (ti, "Invalid database number.");
+        }
+        basePtr = &(dbList[baseNum - 1]);
+    }
+
+    for (uint i=0; i < basePtr->numGames; i++)
+    {
+	if( basePtr->filter->Get(i) > 0)
+	    basePtr->filter->Set(i,255);
+    }
+
     return TCL_OK;
 }
 

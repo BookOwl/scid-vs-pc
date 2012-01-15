@@ -126,6 +126,7 @@ menuText W GameNovelty "Hitta nyhet..." 7 \
 menuText W Search "Sök" 0
 menuText W SearchReset "Återställ sökfilter" 0 {Återställ sökfiltret så att alla partiet ingår}
 menuText W SearchNegate "Omvänt filter" 0 {Ta med partier som utesluts av filtret}
+menuText W SearchEnd "Flytta till sista filter" 0
 menuText W SearchCurrent "Aktuell position..." 8 {Sök partier med aktuell position på brädet}
 menuText W SearchHeader "I huvud..." 2 {Använd fast information (spelare, evenemang, plats, mm)}
 menuText W SearchMaterial "Material/ställning..." 0 {Sökning baserad på material eller ställning}
