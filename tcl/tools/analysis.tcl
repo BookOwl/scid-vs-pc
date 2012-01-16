@@ -2170,8 +2170,8 @@ proc makeAnalysisWin {{n 0} {settime 0}} {
   frame $w.hist
   # This "-height 5" is here to facilitate pack/forgeting of $w.text widget
   # and for initial size
-  text $w.hist.text -font font_Small -height 5 \
-      -wrap word -setgrid 1 -yscrollcommand "$w.hist.ybar set"
+  text $w.hist.text -font font_Fixed -height 5 \
+      -wrap none -setgrid 1 -yscrollcommand "$w.hist.ybar set"
   $w.hist.text tag configure indent -lmargin2 [font measure font_Small xxxxxxxxxxxxxxxxxx]
   scrollbar $w.hist.ybar -command "$w.hist.text yview" -takefocus 0
   if { $analysis(showEngineInfo$n) } {
