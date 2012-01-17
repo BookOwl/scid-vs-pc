@@ -354,14 +354,8 @@ if {$boardSTM} {
 # .gameInfo is the game information widget:
 
 autoscrollframe .gameInfoFrame text .gameInfo
-.gameInfo configure -width 20 -height [expr 5 + $gameInfo(showFEN)] -wrap none \
-    -state disabled -cursor top_left_arrow -setgrid 1
 
-if { $macOS } {
-  # OSX seems to refresh button bars very slowly, so to limit occasions this
-  # happens, leave a little extra room down below
-  .gameInfo configure -height 6
-}
+.gameInfo configure -width 20 -wrap none -state disabled -cursor top_left_arrow -setgrid 1
 
 ::htext::init .gameInfo
 
@@ -395,10 +389,7 @@ menu .gameInfo.menu -tearoff 0 -background gray90
     -variable ::highlightLastMove -offvalue 0 -onvalue 1 -command updateBoard
 
 .gameInfo.menu add checkbutton -label GInfoFEN \
-    -variable gameInfo(showFEN) -offvalue 0 -onvalue 1 -command {
-       if {!$macOS} {.gameInfo configure -height [expr 5 + $gameInfo(showFEN)]}
-       updateBoard
-}
+    -variable gameInfo(showFEN) -offvalue 0 -onvalue 1 -command checkGameInfoHeight
 
 .gameInfo.menu add checkbutton -label GInfoHideNext \
     -variable gameInfo(hideNextMove) -offvalue 0 -onvalue 1 -command updateBoard
@@ -869,6 +860,18 @@ proc updateGameinfo {} {
   }
   .gameInfo configure -state disabled
 }
+
+proc checkGameInfoHeight {{init 0}} {
+  ### only called when showFEN or showTB is changed
+  # OSX seems to refresh button bars very slowly, so to limit occasions this
+  # happens, leave a little extra room down below
+   .gameInfo configure -height [expr {5 + $::gameInfo(showFEN) + ($::gameInfo(showTB) ? 1 : 0) + $::macOS}]
+   if {!$init} {
+     updateBoard
+   }
+}
+
+checkGameInfoHeight 1
 
 # Set up player photos:
 

@@ -1104,10 +1104,7 @@ $m.ginfo add checkbutton -label GInfoMaterial \
 $m.ginfo add checkbutton -label {Show Side to Move} \
     -variable boardSTM -offvalue 0 -onvalue 1 -command {::board::togglestm .board}
 $m.ginfo add checkbutton -label GInfoFEN \
-    -variable gameInfo(showFEN) -offvalue 0 -onvalue 1 -command {
-	if {!$::macOS} {.gameInfo configure -height [expr 5 + $gameInfo(showFEN)]}
-	updateBoard
-}
+    -variable gameInfo(showFEN) -offvalue 0 -onvalue 1 -command checkGameInfoHeight
 $m.ginfo add checkbutton -label GInfoMarks \
     -variable gameInfo(showMarks) -offvalue 0 -onvalue 1 -command updateBoard
 $m.ginfo add checkbutton -label GInfoWrap \
@@ -1120,11 +1117,11 @@ $m.ginfo add checkbutton -label GInfoPhotos \
 $m.ginfo add command -label {Toggle Coords} -command toggleCoords
 $m.ginfo add separator
 $m.ginfo add radiobutton -label GInfoTBNothing \
-    -variable gameInfo(showTB) -value 0 -command updateBoard
+    -variable gameInfo(showTB) -value 0 -command checkGameInfoHeight
 $m.ginfo add radiobutton -label GInfoTBResult \
-    -variable gameInfo(showTB) -value 1 -command updateBoard
+    -variable gameInfo(showTB) -value 1 -command checkGameInfoHeight
 $m.ginfo add radiobutton -label GInfoTBAll \
-    -variable gameInfo(showTB) -value 2 -command updateBoard
+    -variable gameInfo(showTB) -value 2 -command checkGameInfoHeight
 $m.ginfo add separator
 $m.ginfo add command -label GInfoInformant -command configInformant
 
