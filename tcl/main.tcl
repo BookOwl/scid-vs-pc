@@ -862,13 +862,11 @@ proc updateGameinfo {} {
 }
 
 proc checkGameInfoHeight {{init 0}} {
-  ### only called when showFEN or showTB is changed
+  ### only called at init and when showFEN or showTB is changed
   # OSX seems to refresh button bars very slowly, so to limit occasions this
   # happens, leave a little extra room down below
-   .gameInfo configure -height [expr {5 + $::gameInfo(showFEN) + ($::gameInfo(showTB) ? 1 : 0) + $::macOS}]
-   if {!$init} {
-     updateBoard
-   }
+  .gameInfo configure -height [expr {5 + $::gameInfo(showFEN) + ($::gameInfo(showTB) ? 1 : 0) + $::macOS}]
+  if {!$init} { updateBoard }
 }
 
 checkGameInfoHeight 1
