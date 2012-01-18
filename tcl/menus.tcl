@@ -860,15 +860,17 @@ if {![sc_info tb]} { $m entryconfigure 13 -state disabled }
 # setTableBaseDir:
 #    Prompt user to select a tablebase file; all the files in its
 #    directory will be used.
-#
+
 proc setTableBaseDir {} {
   global initialDir tempDir
   set ftype { { "Tablebase files" {".emd" ".nbw" ".nbb"} } }
 
   set w .tbDialog
   toplevel $w
-  wm title $w Scid
-  label $w.title -text "Select up to 4 table base directories:"
+  wm state $w withdrawn
+  wm title $w Tablebases
+
+  label $w.title -text "Select up to 4 tablebase directories:"
   pack $w.title -side top
   foreach i {1 2 3 4} {
     set tempDir(tablebase$i) $initialDir(tablebase$i)
@@ -881,14 +883,15 @@ proc setTableBaseDir {} {
   }
   addHorizontalRule $w
   pack [frame $w.b] -side top -fill x
-  button $w.b.ok -text "OK" \
-      -command "catch {grab release $w; destroy $w}; openTableBaseDirs"
-  button $w.b.cancel -text $::tr(Cancel) \
-      -command "catch {grab release $w; destroy $w}"
-  pack $w.b.cancel $w.b.ok -side right -padx 2
+  dialogbutton $w.b.ok -text OK -command "destroy $w ; openTableBaseDirs"
+  dialogbutton $w.b.help -textvar ::tr(Help) -command "helpWindow TB"
+  dialogbutton $w.b.cancel -textvar ::tr(Cancel) -command "destroy $w"
+  pack $w.b.cancel $w.b.help $w.b.ok -side right -padx 5 -pady 3
   bind $w <Escape> "$w.b.cancel invoke"
-  wm resizable $w 1 0
-  grab $w
+
+  update
+  placeWinOverParent $w .
+  wm state $w normal
 }
 
 proc openTableBaseDirs {} {
@@ -907,12 +910,9 @@ proc openTableBaseDirs {} {
     set initialDir(tablebase$i) $tempDir(tablebase$i)
   }
   if {$npieces == 0} {
-    set msg "No tablebases were found."
+    set msg "No tablebases found."
   } else {
-    set msg "Tablebases with up to $npieces pieces were found.\n\n"
-    append msg "If you want these tablebases be used whenever\n"
-    append msg "you start Scid, select \"Save Options\" from the\n"
-    append msg "Options menu before you exit Scid."
+    set msg "Tablebases with up to $npieces pieces found.\n\nTo use these tablebases whenever you start Scid, select \"Save Options\" from the Options menu."
   }
   tk_messageBox -type ok -icon info -title "Scid: Tablebase results" \
       -message $msg
@@ -925,11 +925,11 @@ proc chooseTableBaseDir {i} {
   set idir $tempDir(tablebase$i)
   if {$idir == ""} { set idir [pwd] }
 
-  set fullname [tk_getOpenFile -initialdir $idir -filetypes $ftype \
-      -title "Scid: Select a Tablebase file"]
+  set fullname [tk_chooseDirectory -mustexist 1 -initialdir $idir -parent .tbDialog \
+      -title "Select a Tablebase directory"]
   if {$fullname == ""} { return }
 
-  set tempDir(tablebase$i) [file dirname $fullname]
+  set tempDir(tablebase$i) $fullname
 }
 
 $m add command -label OptionsSounds -command ::utils::sound::OptionsDialog

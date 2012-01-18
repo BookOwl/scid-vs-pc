@@ -3361,59 +3361,58 @@ set helpTitle(TB) "Tablebases"
 set helpText(TB) {<h1>Tablebases</h1>
 
   <p>
-  A <term>tablebase</term> is a file containing the perfect result
-  information about all positions of a particular material setup,
+  <i>A Tablebase is a file containing the </i><b>perfect result
+  information</b><i> about all positions of a particular material setup,
   such as King and Rook versus King and Pawn. Tablebases for all
-  material situations up to five men (including the Kings) have been
-  generated, and some simple 6-men tablebases are also available.
+  positions up to five pieces (including the Kings) have been
+  generated, and some simple six piece tablebases are also available.</i>
   </p>
   <p>
-  Scid can use Nalimov-format tablebases that are used by many modern
-  chess engines. These often end with the file suffix <b>.nbw.emd</b>
-  or <b>.nbb.emd</b>. All 3-, 4- and 5-men Nalimov tablebases can be
+  Scid uses <b>Nalimov</b> tablebases, which are also used by many
+  chess engines. The filenames often end with the suffix <b>.nbw.emd</b>
+  or <b>.nbb.emd</b>. All 3, 4 and 5 piece Nalimov tablebases can be
   used in Scid.
-  </p>
-
-  <h3>Using Tablebases in Scid</h3>
-  <p>
-  To use tablebase files in Scid, simply set their directories by
-  selecting <b>Tablebase directory...</b> from the <menu>Options</menu> menu.
-  You can select up to 4 directories where your tablebase files are stored.
-  You can press a <b>...</b> button to the right of an entry to choose a
-  file, to specify that the directory of that file should be used.
   </p>
   <p>
   When a position found in a tablebase file is reached, the game information
-  area (below the chessboard) will show tablebase information. You can
-  configure the amount of information shown by clicking the right-mouse
-  button in that area or selecting <b>Game information</b> from the
-  <menu>Options</menu> menu. Selecting the "result and best moves" option
-  gives the most useful information, but is much often slower than
-  the "result only" option.
+  window (below the chessboard) will show the relevant information.
   </p>
 
-  <h3>The Tablebase window</h3>
+  <h3>Configuration</h3>
   <p>
-  You can get even more tablebase information about the current position
-  by opening the <term>Tablebase window</term> (<menu>Windows</menu> menu,
-  shortcut: Ctrl+Shift+=). This window shows the result with perfect play
+  To load the tablebases, select their directory(s) via
+  the <b>Options--<gt>Tablebase Directory</b> menu item.
+  Up to 4 directories may be selected.
+  </p>
+  <p>You can configure the amount of information shown via the 
+  <b>Options--<gt>Game Information</b> menus.
+  Selecting <b>Result and Best Moves</b> 
+  gives the most information, but is often much slower than
+  <b>Result Only</b>.
+  </p>
+
+  <h3>The Tablebase Window</h3>
+  <p>
+  You can get more comprehensive information 
+  from the <green><run ::tb::OpenClose>Tablebase Window</run></green>
+  (Control - "="). This shows the result with perfect play
   of all legal moves from the current position.
   </p>
   <p>
-  The window has two main parts. The summary frame (on the left) shows
-  which tablebases Scid found on your computer and a summary for each
-  tablebase. The results frame (on the right) shows optimal results for
+  The window has two main parts. The Summary Frame (on the left) shows
+  which tablebases Scid has found, and a summary for each
+  tablebase. The Results Frame (on the right) shows optimal results for
   all moves from the current position displayed in the main window.
   </p>
 
-  <h4>The summary frame</h4>
+  <h4>The Summary Frame</h4>
   <p>
   The top part of the summary frame lets you select a particular
-  tablebase. Those you have available are shown in blue and unavailable
-  tablebases are shown in gray, but you can select any tablebase.
-  The lower part of the summary frame shows summary information for the
-  selected tablebase. (Not all tablebases have a summary recorded in
-  Scid yet.)
+  tablebase. Those available are shown in blue, those unavailable
+  in gray, but you can select any tablebase.
+  The lower part shows summary information for the
+  selected tablebase. <i>Not all tablebases have a summary recorded in
+  Scid yet.</i>
   </p>
   <p>
   The summary includes the frequency (how many games per million reach a
@@ -3435,16 +3434,16 @@ set helpText(TB) {<h1>Tablebases</h1>
   the <b>Random</b> button.
   </p>
 
-  <h4>The results frame</h4>
+  <h4>The Results Frame</h4>
   <p>
-  The results frame is updated whenever the chessboard in the main window
+  The results frame is updated whenever the main chessboard
   changes. The first line shows how many moves win (+), draw (=), lose (-),
   or have an unknown result (?). The rest of the frame gives a more detailed
   list of results, ranking them from shortest to longest mates, then draws,
   then longest to shortest losses. All distances are to checkmate.
   </p>
 
-  <h4>The results board</h4>
+  <h4>The Results Board</h4>
   <p>
   In a tablebase position, it is often useful what the tablebase results
   would be if all the pieces in the current position were on their
@@ -3474,13 +3473,13 @@ set helpText(TB) {<h1>Tablebases</h1>
   tablebase file is not available.
   </p>
 
-  <h3>Obtaining Tablebase files</h3>
+  <h3>Obtaining Tablebase Files</h3>
   <p>
-  See the <a Related>related links</a> section for help on finding
-  tablebase files on the Internet.
+  Play With Arena distribute the 
+<url http://www.playwitharena.de/download/4-pieces-tbs.zip>4 piece tablebases</url>
   </p>
 
-  <p><footer>Updated: Scid 3.6.2, December 2006</footer></p>
+  <p><footer>Updated: Scid vs. PC 4.7, January 2012</footer></p>
 }
 
 set helpTitle(Bookmarks) "Bookmarks"
