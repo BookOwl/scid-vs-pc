@@ -6825,7 +6825,7 @@ probe_tablebase (Tcl_Interp * ti, int mode, DString * dstr)
 
     if (fullReport) {
         char tempStr [80];
-        sprintf (tempStr, "+:%u  =:%u  -:%u  ?:%u",
+        sprintf (tempStr, "Won %u  Drawn %u  Loss %u  ? %u",
                  winCount, drawCount, lossCount, unknownCount);
         dstr->Append (tempStr);
         int prevScore = -9999999;   // Lower than any possible TB score
@@ -6870,7 +6870,7 @@ probe_tablebase (Tcl_Interp * ti, int mode, DString * dstr)
                 } else {
                     tag = "DrawingMoves"; msg = "Drawing moves";
                 }
-                dstr->Append ("\n", translate(ti, tag, msg), ":");
+                dstr->Append ("\n", translate(ti, tag, msg));
             }
             if (bestScore != prevScore) {
                 if (bestScore > 0) {
@@ -6890,7 +6890,7 @@ probe_tablebase (Tcl_Interp * ti, int mode, DString * dstr)
         if (unknownCount > 0) {
             dstr->Append ("\n\n");
             dstr->Append (translate (ti, "UnknownMoves", "Unknown-result moves"));
-            dstr->Append (":\n ?      ");
+            dstr->Append ("\n ?      ");
             bool firstUnknown = true;
             while (1) {
                 bool found = false;

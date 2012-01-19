@@ -125,6 +125,7 @@ proc ::tb::isopen {} {
 
 proc ::tb::OpenClose {} {
   global tbInfo
+
   set w .tbWin
   if {[winfo exists $w]} {
     destroy $w
@@ -135,53 +136,72 @@ proc ::tb::OpenClose {} {
   setWinLocation $w
 
   wm title $w "Scid: [tr WindowsTB]"
-  pack [frame $w.b] -side bottom -fill x
-  pack [frame $w.info] -side left -fill y
-  addVerticalRule $w
-  pack [frame $w.pos] -side right -fill both -expand yes
+  pack [frame $w.b] -side bottom -fill x ;# buttons
+  pack [frame $w.info] -side left -fill y ;# summary
+  pack [frame $w.pos] -side left -fill both -expand yes -padx 5 -pady 3 ;# results
 
-  # Left frame: tablebase browser and summary info
+  ### Tablebase browser and Summary
 
   set f $w.info
-  pack [frame $f.sec] -side top -fill x
+  pack [frame $f.sec] -side top -pady 3
+
+  label $f.sec.label -text Summary
+  menubutton $f.sec.menu -text {2-1} -menu $f.sec.menu.m -relief raised -indicatoron 1 
+  menu $f.sec.menu.m -tearoff 0
   foreach i $tbInfo(sections) {
     set name "[string index $i 0]-[string index $i 1]"
-    radiobutton $f.sec.b$i -text " $name " \
-        -variable tbInfo(section) -value $i \
-        -indicatoron 0 -command "::tb::section $i"
-    pack $f.sec.b$i -side left -pady 1 -padx 1
+    $f.sec.menu.m add command -label $name -command "
+      $f.sec.menu configure -text $name
+      set tbInfo(section) $i
+      ::tb::section $i
+    "
   }
+  pack $f.sec.label $f.sec.menu -side left -pady 1 -padx 10
+
   autoscrollframe $f.list text $f.list.text \
       -width 35 -height 7 -font font_Fixed -wrap none \
       -foreground black  -cursor top_left_arrow
+  $f.list configure -relief flat
   pack $f.list -side top
-  pack [frame $f.separator -height 2]
+
+  # pack [frame $f.separator -height 2]
   # addHorizontalRule $f
 
   autoscrollframe $f.data text $f.data.text \
       -width 35 -height 0 -font font_Fixed -wrap none \
       -foreground black  -cursor top_left_arrow
+  $f.data configure -relief flat
   pack $f.data -side top -fill y -expand yes
 
   $f.list.text tag configure avail -foreground blue
   $f.list.text tag configure unavail -foreground gray40
   $f.data.text tag configure fen -foreground blue
 
-  # Right frame: tablebase results for current position
+  ### Results for current position
 
   set f $w.pos
-  autoscrollframe $f text $f.text -width 30 -height 20 -font font_Small \
+
+  # label $f.label -text Results
+  # pack $f.label -side top -pady 3
+  
+  autoscrollframe $f text $f.text -width 30 -height 20 -font font_Fixed \
       -wrap word -foreground black  -setgrid 1
   $f.text tag configure indent -lmargin2 [font measure font_Fixed  "        "]
+  $f.text tag configure title -font font_Regular -justify center
 
-  ::board::new $f.board 25
-  $f.board configure -relief solid -borderwidth 1
-  for {set i 0} {$i < 64} {incr i} {
-    ::board::bind $f.board $i <Button-1> [list ::tb::resultsBoard $i]
-  }
+  ### Board
+
+  ::board::new $w.board 25
+  $w.board configure -relief solid -borderwidth 1
   if {$::tbBoard} {
-    grid $f.board -row 0 -column 2 -rowspan 2
+    pack $w.board -side right
   }
+
+  for {set i 0} {$i < 64} {incr i} {
+    ::board::bind $w.board $i <Button-1> [list ::tb::resultsBoard $i]
+  }
+
+  ### Buttons
 
   checkbutton $w.b.training -text $::tr(Training) -variable tbTraining -command ::tb::training -relief raised -padx 4 -pady 5
   # button $w.b.online -text Online -command ::tb::updateOnline -relief raised -padx 4 -pady 5
@@ -213,26 +233,24 @@ proc ::tb::OpenClose {} {
   wm state $w normal
 }
 
-# ::tb::showBoard
-#   Toggles the results board.
-#
+###  Toggle the results board.
+
 proc ::tb::showBoard {} {
   global tbBoard
-  set f .tbWin.pos
+  set f .tbWin
   if {$tbBoard} {
     set tbBoard 0
-    grid forget $f.board
+    pack forget $f.board
   } else {
     set tbBoard 1
-    grid $f.board -row 0 -column 2 -rowspan 2
+    pack $f.board -side right
   }
 }
 
-# ::tb::resultsBoard
-#   Updates theresultsBoard board for a particular square.
-#
+### Updates the resultsBoard board for a particular square.
+
 proc ::tb::resultsBoard {sq} {
-  set f .tbWin.pos
+  set f .tbWin
   set board [sc_pos board]
   # If selected square is empty, take no action:
   if {[string index $board $sq] == "."} { return }
@@ -264,9 +282,8 @@ proc ::tb::resultsBoard {sq} {
   unbusyCursor .
 }
 
-# ::tb::name
-#   Converts a material string like "kqkr" or "KQKR" to "KQ-KR".
-#
+### Converts a material string like "kqkr" or "KQKR" to "KQ-KR".
+
 proc ::tb::name {s} {
   set s [string toupper $s]
   set idx [string last "K" $s]
@@ -276,9 +293,8 @@ proc ::tb::name {s} {
   return $new
 }
 
-# ::tb::section
-#   Updates the tablebase list for the specified section.
-#
+### Updates the tablebase list for the specified section.
+
 proc ::tb::section {{sec 0}} {
   global tbInfo
   set w .tbWin
@@ -293,6 +309,7 @@ proc ::tb::section {{sec 0}} {
   set count 0
   set linecount 1
   foreach tb $tbInfo($sec) {
+    if {$count == 5} { set count 0; incr linecount; $t insert end "\n" }
     if {$tb == "-"} {
       $t insert end [format "%-7s" ""]
     } else {
@@ -306,22 +323,21 @@ proc ::tb::section {{sec 0}} {
       $t insert end " "
       # Bind tags for enter/leave/buttonpress on this tb:
       $t tag bind $tb <Any-Enter> \
-          [list $t tag configure $tb -foreground yellow -background darkBlue]
+          [list $t tag configure $tb -background grey]
       $t tag bind $tb <Any-Leave> \
-          [list $t tag configure $tb -foreground {} -background {}]
+          [list $t tag configure $tb -background {}]
       $t tag bind $tb <ButtonPress-1> [list ::tb::summary $tb]
     }
     incr count
-    if {$count == 5} { set count 0; incr linecount; $t insert end "\n" }
   }
+
   if {$linecount > 10} { set linecount 10 }
   $t configure -height $linecount
   $t configure -state disabled
 }
 
-# ::tb::summary
-#   Shows the tablebase information for the specified tablebase.
-#
+### Shows the tablebase information for the specified tablebase.
+
 proc ::tb::summary {{material ""}} {
   global tbInfo tbs
   set w .tbWin
@@ -332,7 +348,7 @@ proc ::tb::summary {{material ""}} {
   set t $w.info.data.text
   $t configure -state normal
   $t delete 1.0 end
-  $t insert end [format "%-6s" [::tb::name $material]]
+  $t insert end [format "%-6s" [::tb::name $material]] fen
   if {! [info exists tbs($material)]} {
     $t insert end "\nNo summary for this tablebase."
     $t configure -state disabled
@@ -357,9 +373,9 @@ proc ::tb::summary {{material ""}} {
     append fen " w"
     $t insert end [format "%3s" $len] [list fen $fen]
     $t tag bind $fen <Any-Enter> \
-        [list $t tag configure $fen -foreground yellow -background darkBlue]
+        [list $t tag configure $fen -background grey]
     $t tag bind $fen <Any-Leave> \
-        [list $t tag configure $fen -foreground {} -background {}]
+        [list $t tag configure $fen -background {}]
     $t tag bind $fen <ButtonPress-1> [list ::tb::setFEN $fen]
   } else {
     $t insert end [format "%3s" $len]
@@ -379,9 +395,9 @@ proc ::tb::summary {{material ""}} {
     append fen " b"
     $t insert end [format "%3s" $len] [list fen $fen]
     $t tag bind $fen <Any-Enter> \
-        [list $t tag configure $fen -foreground yellow -background darkBlue]
+        [list $t tag configure $fen -background grey]
     $t tag bind $fen <Any-Leave> \
-        [list $t tag configure $fen -foreground {} -background {}]
+        [list $t tag configure $fen -background {}]
     $t tag bind $fen <ButtonPress-1> [list ::tb::setFEN $fen]
   } else {
     $t insert end [format "%3s" $len]
@@ -450,9 +466,9 @@ proc ::tb::summary {{material ""}} {
           append fen " $tomove"
           $t insert end [format "%2d" [expr $count + 1]] [list fen $fen]
           $t tag bind $fen <Any-Enter> \
-          [list $t tag configure $fen -foreground yellow -background darkBlue]
+          [list $t tag configure $fen -background grey]
           $t tag bind $fen <Any-Leave> \
-          [list $t tag configure $fen -foreground {} -background {}]
+          [list $t tag configure $fen -background {}]
           $t tag bind $fen <ButtonPress-1> [list ::tb::setFEN $fen]
         }
       }
@@ -460,22 +476,22 @@ proc ::tb::summary {{material ""}} {
   $t configure -state disabled
 }
 
-# ::tb::results
-#   Called when the main window board changes, to display tablebase
-#   results for all moves from the current position.
-#
+### Called when the main window board changes, to display tablebase
+### results for all moves from the current position.
+
 proc ::tb::results {} {
   global tbTraining
   set w .tbWin
   if {! [winfo exists $w]} { return }
 
   # Reset results board:
-  ::board::clearText $w.pos.board
-  ::board::update $w.pos.board [sc_pos board]
+  ::board::clearText $w.board
+  ::board::update $w.board [sc_pos board]
 
   # Update results panel:
   set t $w.pos.text
   $t delete 1.0 end
+  $t insert end "Results\n\n" title
   if {$tbTraining} {
     $t insert end "\n (Training mode; results are hidden)"
   } else {
