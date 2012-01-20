@@ -36,8 +36,8 @@ proc ::tourney::Open {} {
 
   if {! [info exists ::tourney::_defaults]} { ::tourney::defaults }
 
-  # Override the defaults for start-up window
-  set ::tourney::start "[expr [::utils::date::today year] - 3].01.01"
+  # Override the defaults for start-up window. "-10" represents last ten years
+  set ::tourney::start "[expr [::utils::date::today year] - 10].01.01"
   set ::tourney::minGames 4
 
   toplevel $w
