@@ -6746,6 +6746,13 @@ probe_tablebase (Tcl_Interp * ti, int mode, DString * dstr)
     bool optimalMoves = false;
     colorT toMove = db->game->GetCurrentPos()->GetToMove();
 
+/*
+#define PROBE_NONE    0
+#define PROBE_RESULT  1
+#define PROBE_SUMMARY 2   these three from the gameinfo widget
+#define PROBE_REPORT  3   tablebase window
+#define PROBE_OPTIMAL 4   do training in tree.tcl
+*/
     switch (mode) {
     case PROBE_RESULT:
         showResult = true;
@@ -6947,7 +6954,7 @@ probe_tablebase (Tcl_Interp * ti, int mode, DString * dstr)
                 dstr->Append (" ", translate (ti, "withAllMoves"));
             } else if (drawcount == 1) {
                 dstr->Append (" ", translate (ti, "with"));
-                dstr->Append (" ", drawlist[0]);
+                dstr->Append (" <blue><run addSanMove ",drawlist[0]," -animate>",drawlist[0],"</run></blue>");
             } else if (drawcount+1 == moveList.Size() && losscount==1) {
                 dstr->Append (" ", translate (ti, "withAllButOneMove"));
             } else if (drawcount > 0) {
@@ -6963,7 +6970,7 @@ probe_tablebase (Tcl_Interp * ti, int mode, DString * dstr)
                 for (uint m=0; m < drawcount; m++) {
                     if (m < 3) {
                         if (m > 0) { dstr->Append (", "); }
-                        dstr->Append (drawlist[m]);
+                        dstr->Append ("<blue><run addSanMove ",drawlist[m]," -animate>",drawlist[m],"</run></blue>");
                     }
                 }
                 if (drawcount > 3) { dstr->Append (", ..."); }
@@ -6974,7 +6981,8 @@ probe_tablebase (Tcl_Interp * ti, int mode, DString * dstr)
                     if (losscount+drawcount == moveList.Size()) {
                         dstr->Append (translate (ti, "only"), " ");
                     }
-                    dstr->Append (losslist[0], " ", translate (ti, "loses"));
+                    dstr->Append ("<blue><run addSanMove ",losslist[0]," -animate>",losslist[0],"</run></blue> ");
+                    dstr->Append (translate (ti, "loses"));
                 } else if (drawcount < 4  &&
                            drawcount+losscount == moveList.Size()) {
                     dstr->Append (translate (ti, "allOthersLose"));
@@ -6984,7 +6992,7 @@ probe_tablebase (Tcl_Interp * ti, int mode, DString * dstr)
                     for (uint m=0; m < losscount; m++) {
                         if (m < 3) {
                             if (m > 0) { dstr->Append (", "); }
-                            dstr->Append (losslist[m]);
+                            dstr->Append ("<blue><run addSanMove ",losslist[m]," -animate>",losslist[m],"</run></blue>");
                         }
                     }
                     if (losscount > 3) { dstr->Append (", ..."); }
@@ -7021,7 +7029,7 @@ probe_tablebase (Tcl_Interp * ti, int mode, DString * dstr)
                     } else {
                         dstr->Append (", ");
                     }
-                    dstr->Append (sanList.list[i]);
+                    dstr->Append ("<blue><run addSanMove ",sanList.list[i]," -animate>",sanList.list[i],"</run></blue>");
                 }
             }
         }
@@ -7060,7 +7068,7 @@ probe_tablebase (Tcl_Interp * ti, int mode, DString * dstr)
                     if (count == 1) {
                         dstr->Append (translate (ti, "longest"), ": ");
                     }
-                    dstr->Append (sanList.list[i]);
+                    dstr->Append ("<blue><run addSanMove ",sanList.list[i]," -animate>",sanList.list[i],"</run></blue>");
                 }
             }
         }
@@ -7285,7 +7293,7 @@ sc_game_info (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
     sprintf (temp, "<br>%c%s: %u", toupper(gameStr[0]), gameStr + 1, db->gameNumber + 1);
     Tcl_AppendResult (ti, temp, NULL);
 
-    /*** flags ***/
+    /*** Flags ***/
 
     if (db->gameNumber >= 0) {
         // Is this game deleted or have other user-settable flags 
@@ -7564,13 +7572,12 @@ sc_game_info (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
         }
     }
 
-    // Probe tablebases:
+    /*** Tablebases and FEN ***/
 
     if (!hideNextMove) {
         DString * tbStr = new DString;
         if (probe_tablebase (ti, showTB, tbStr)) {
-            Tcl_AppendResult (ti, "<br>TB: <blue><run ::tb::open>",
-                              tbStr->Data(), "</run></blue>", NULL);
+            Tcl_AppendResult (ti, "<br>TB: ",tbStr->Data(), NULL);
         }
         delete tbStr;
     }
