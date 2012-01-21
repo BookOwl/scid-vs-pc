@@ -6981,8 +6981,7 @@ probe_tablebase (Tcl_Interp * ti, int mode, DString * dstr)
                     if (losscount+drawcount == moveList.Size()) {
                         dstr->Append (translate (ti, "only"), " ");
                     }
-                    dstr->Append ("<blue><run addSanMove ",losslist[0]," -animate>",losslist[0],"</run></blue> ");
-                    dstr->Append (translate (ti, "loses"));
+                    dstr->Append (losslist[0], " ", translate (ti, "loses"));
                 } else if (drawcount < 4  &&
                            drawcount+losscount == moveList.Size()) {
                     dstr->Append (translate (ti, "allOthersLose"));
@@ -6992,7 +6991,7 @@ probe_tablebase (Tcl_Interp * ti, int mode, DString * dstr)
                     for (uint m=0; m < losscount; m++) {
                         if (m < 3) {
                             if (m > 0) { dstr->Append (", "); }
-                            dstr->Append ("<blue><run addSanMove ",losslist[m]," -animate>",losslist[m],"</run></blue>");
+                            dstr->Append (losslist[m]);
                         }
                     }
                     if (losscount > 3) { dstr->Append (", ..."); }
