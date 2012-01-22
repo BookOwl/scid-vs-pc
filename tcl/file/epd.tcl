@@ -407,8 +407,9 @@ proc epd_clearEpdFields {id} {
 #
 ################################################################################
 proc epd_LaunchAnalysis {id textwidget} {
-  if {! [winfo exists .analysisWin1]} {
-    makeAnalysisWin
+  ### todo: make epd annotation work with a specified engine (instead of engine 0)
+  if {! [winfo exists .analysisWin0]} {
+    makeAnalysisWin 0
   }
   epd_clearEpdFields $id
   set w .epd$id
@@ -423,7 +424,7 @@ proc epd_LaunchAnalysis {id textwidget} {
     vwait ::epdTimer($id)
     epd_pasteAnalysis $textwidget
     saveEpdWin $id
-    if {! [winfo exists .analysisWin1]} {
+    if {! [winfo exists .analysisWin0]} {
       break
     }
   }
@@ -437,7 +438,7 @@ proc epd_pasteAnalysis {textwidget} {
   global analysis
   if {! [winfo exists $textwidget]} { return }
 
-  set win 0
+  set win -1
   # find an open analysis window
   for {set i 0} {$i < [llength $::engines(list)]} {incr i} {
     if {[winfo exists .analysisWin$i]} {
@@ -445,7 +446,7 @@ proc epd_pasteAnalysis {textwidget} {
       break
     }
   }
-  if {!$win} {
+  if {$win == -1} {
     return
   }
 
