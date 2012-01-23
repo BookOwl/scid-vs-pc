@@ -3370,7 +3370,8 @@ set helpText(TB) {<h1>Tablebases</h1>
   <p>
   Scid uses <b>Nalimov</b> tablebases, which are also used by many
   chess engines. The filenames often end with the suffix <b>.nbw.emd</b>
-  or <b>.nbb.emd</b>. All 3, 4 and 5 piece Nalimov tablebases can be
+  or <b>.nbb.emd</b> (for <b>N</b>alimov <b>B</b>ases <b>W</b>hite/<b>B</b>lack).
+  All 3, 4 and 5 piece Nalimov tablebases can be
   used in Scid.
   </p>
   <p>
@@ -3475,8 +3476,13 @@ set helpText(TB) {<h1>Tablebases</h1>
 
   <h3>Obtaining Tablebase Files</h3>
   <p>
-  Play With Arena distribute the 
-<url http://www.playwitharena.de/download/4-pieces-tbs.zip>4 piece tablebases</url>
+  The tablebases are available from 
+<url ftp://ftp.cis.uab.edu/pub/hyatt/TB/3-4-5/>Bob Hyatt's Ftp</url>
+and
+<url http://folk.uib.no/pfvaf/chesslib/Nalimov.htm>Chesslib</url>.
+<br>
+  Play With Arena distribute the 4 piece tablebases as a 
+<url http://www.playwitharena.de/download/4-pieces-tbs.zip>single file</url>
   </p>
 
   <p><footer>Updated: Scid vs. PC 4.7, January 2012</footer></p>

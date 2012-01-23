@@ -314,6 +314,7 @@ proc ::tb::section {{sec 0}} {
     if {$tb == "-"} {
       $t insert end [format "%-7s" ""]
     } else {
+      # This doesn't test that *both* the white and black tb files are available
       set avail [sc_info tb available $tb]
       if {$avail} {
         set taglist [list avail $tb]
@@ -609,7 +610,7 @@ proc ::tb::random {} {
 #   Called when an item in the Tablebase info browser with an
 #   associated FEN position is selected with the left mouse button,
 #   causing the position to be set in the main window.
-#
+
 proc ::tb::setFEN {fen} {
   if {[catch {sc_game startBoard $fen} err]} {
     tk_messageBox -title "Scid" -icon info -type ok -message $err

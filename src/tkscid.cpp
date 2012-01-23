@@ -1408,9 +1408,8 @@ sc_createbase (Tcl_Interp * ti, const char * filename, scidBaseT * base,
     return TCL_OK;
 }
 
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// sc_base_create:
-//    Creates a new empty database.
+//    Create a new empty database from a pgn(?) file
+
 int
 sc_base_create (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
 {
@@ -1425,7 +1424,7 @@ sc_base_create (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
 
     // Check that this base is not already opened:
     if (base_opened (argv[2]) >= 0) {
-        return errorResult (ti, "The database you selected is already opened; close it first.");
+        return errorResult (ti, "The database you selected is already opened.");
     }
 
     // Find another slot if current slot is used:
@@ -1442,7 +1441,16 @@ sc_base_create (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
         return TCL_ERROR;
     }
     currentBase = newBaseNum;
+
     db = baseptr;
+
+    // strCopy (db->fileName, argv[2]);
+    // (in sc_base_open, this only differs by *not* having the si4 extension)
+
+    // setting realFileName for pgn files also has the effect that they (now) can't be deleted if open.
+    strCopy (db->realFileName, argv[2]);
+    db->inUse = true;
+
     return setIntResult (ti, newBaseNum + 1);
 }
 

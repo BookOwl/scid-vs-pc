@@ -1510,7 +1510,7 @@ update idle
 # Try to find tablebases:
 if {$loadAtStart(tb)} {
   if {[sc_info tb]} {
-    ::splash::add "Checking for endgame tablebase files..."
+    ::splash::add "Checking for endgame tablebase files."
     set tbDirs {}
     foreach i {1 2 3 4} {
       if {$initialDir(tablebase$i) != ""} {
@@ -1518,8 +1518,9 @@ if {$loadAtStart(tb)} {
         append tbDirs [file nativename $initialDir(tablebase$i)]
       }
     }
-    set result 0
-    if {$tbDirs != ""} {
+    if {$tbDirs == ""} {
+      set result 0
+    } else {
       set result [sc_info tb $tbDirs]
     }
     if {$result == 0} {

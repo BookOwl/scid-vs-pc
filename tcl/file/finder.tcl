@@ -257,7 +257,7 @@ proc ::file::finder::Refresh {{newdir ""}} {
       set fullpath $data(dir)/$dir/$tail
     }
 
-    $t tag bind f$pathtag <Double-Button-1> "::file::Open [list $fullpath]"
+    $t tag bind f$pathtag <Double-Button-1> "::file::Open [list $fullpath] $w"
     # Bind right button to popup a contextual menu:
     $t tag bind f$pathtag <ButtonPress-3> "::file::finder::contextMenu .finder.t.text [list $fullpath] %x %y %X %Y"
 
@@ -297,7 +297,7 @@ proc ::file::finder::contextMenu {win fullPath x y xc yc} {
 
   menu $mctxt
   # context menus
-  $mctxt add command -label [tr FinderCtxOpen ] -command "::file::Open [list $fullPath]"
+  $mctxt add command -label [tr FinderCtxOpen ] -command "::file::Open [list $fullPath] .finder"
   $mctxt add command -label [tr FinderCtxBackup ] -command "::file::finder::backup [list $fullPath]"
   $mctxt add command -label [tr FinderCtxCopy ] -command "::file::finder::copy [list $fullPath]"
   $mctxt add command -label [tr FinderCtxMove ] -command "::file::finder::move [list $fullPath]"
