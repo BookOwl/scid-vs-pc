@@ -685,7 +685,7 @@ proc ::tree::displayLines { baseNumber moves } {
     set wonx [expr {$success * $notdrawn * 3.0/500} + 1] ; # 3/500 is 1/100 * 60(pixels) / 100
     set lossx [expr {61 - ((100 - $success) * $notdrawn * 3.0/500)}]
     
-    $w.f.tl window create end-32c -create [list createCanvas %W.g$i $wonx $lossx]
+    $w.f.tl window create end-32c -create [list createCanvas %W.g$i $wonx $lossx $baseNumber $move]
 
 
     if {$move != {} && $move != {---} && $move != {[end]} && $i != $len-2 && $i != 0} {
@@ -770,13 +770,17 @@ proc ::tree::displayLines { baseNumber moves } {
   $w.f.tl configure -state disabled
 
 }
-proc createCanvas {w wonx lossx} {
+proc createCanvas {w wonx lossx baseNumber move} {
   canvas $w -width 60 -height 12 -bg grey75
+
+  # duplicate the binding for this line
+  bind $w <Button-1> "::tree::selectCallback $baseNumber $move ; break"
+
   # 0 to $wonx   is coloured white
   # $lossx to 61 is coloured black
   # (There's some +/- 1 to acount for widget borders)
-  $w create rectangle 0 0 $wonx 13 -fill white -width 0
-  $w create rectangle $lossx 0 61 13 -fill grey10 -width 0
+  $w create rectangle 0 0 $wonx 13 -fill white -width 0 ;# limegreen
+  $w create rectangle $lossx 0 61 13 -fill grey10 -width 0 ;# indianred3
   return $w
 }
 
