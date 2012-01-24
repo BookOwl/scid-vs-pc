@@ -524,6 +524,7 @@ proc ::file::openBaseAsTree { { fName "" } } {
   if {[file extension $fName] == ".si4"} {
     set fName [file rootname $fName]
     if {[catch {openBase $fName} result]} {
+      unbusyCursor .
       set err 1
       tk_messageBox -icon warning -type ok -parent . -title "Scid: Error opening file" -message $result
       return
@@ -537,6 +538,7 @@ proc ::file::openBaseAsTree { { fName "" } } {
     set result "This file is not readable."
     if {(![file readable $fName])  || \
           [catch {sc_base create $fName true} result]} {
+      unbusyCursor .
       set err 1
       tk_messageBox -icon warning -type ok -parent . -title "Scid: Error opening file" -message $result
       return
