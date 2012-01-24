@@ -1,22 +1,12 @@
-
-############################################################
-### TREE window
-### (C) 2007 Pascal Georges : multiple Tree windows support
-
 ### tree.tcl
-### Originally authored by Shane Hudson.
-### All Mask features by Pascal Georges [S.A.]
 
-# ::tree::displayLines populates tree widget
+### (C) 2007 Pascal Georges : multiple Tree windows support
+### Originally authored by Shane Hudson. All Mask features by Pascal Georges [S.A.]
+### Three coloured bar graphs and other code by Stevenaaus
 
-namespace eval ::tree {
-  set trainingBase 0
-  array set cachesize {}
-  set scoreHighlight_MinGames 15
-  set scoreHighlight_WhiteExpectedScoreBonus 3.8 ; # on average white achieves a score of 53.8
-  set scoreHighlight_Margin 3.0 ; # if +/- this value, something special happened
-}
-# ################################################################################
+set ::tree::trainingBase 0
+array set ::tree::cachesize {}
+
 proc ::tree::doConfigMenus { baseNumber  { lang "" } } {
   if {! [winfo exists .treeWin$baseNumber]} { return }
   if {$lang == ""} { set lang $::language }
@@ -615,21 +605,19 @@ proc ::tree::displayLines { baseNumber moves } {
   }
   $w.f.tl insert end "[lindex $moves 0]\n" tagclick0
 
-  ### Hmmm - some of the markers might be 17 or 18 width, and they make the bargraph stick out a little
-  ### todo - resize all markers to 16
+  ### Hmmm - some of the markers (images) might be 17 or 18 width, and they make the
+  ### bargraph stick out a little. todo - resize all markers to 16
 
+  # blank bargraph in title
   $w.f.tl window create end-33c -create "canvas %W.g -width 60 -height 12 -highlightthickness 0"
   
-  # Display the lines of the tree
+  ### Main Display the lines of the tree
+
   for { set i 1 } { $i < [expr $len - 3 ] } { incr i } {
     set line [lindex $moves $i]
-    # &&& 
     if {$line == ""} { continue }
-    set move [lindex $line 1]
-    set move [::untrans $move]
+    set move [::untrans [lindex $line 1]]
     lappend lMoves $move
-    # set colorScore [::tree::getColorScore $line]
-    # if { $move == "\[end\]" } { set colorScore "" }
 
     set tagfg {}
 
@@ -671,21 +659,21 @@ proc ::tree::displayLines { baseNumber moves } {
       lappend tags nextmove
     }
 
-    ### Dont' need the coloured lines with bar graphs
+    # Colour every second line grey
     # if {$i % 2 && $i < $len - 3} { lappend tags greybg } else  { lappend tags whitebg }
 
     $w.f.tl insert end $line $tags
 
-    # if {$colorScore != {}} { $w.f.tl tag add $colorScore end-30c end-26c }
+    ### In each line create a canvas for a little tri-coloured bargraph
 
-    ### Create the small green/white/red bar graph
     scan [string range $line 33 37] "%f%%" success
     scan [string range $line 59 end] "%f%%" draw
     set wonx  [expr {($success - $draw/2)*0.6 + 1}] ; # win = success - drawn/2
     set lossx [expr {($success + $draw/2)*0.6 + 1}] ; # loss = 100 - win - drawn
     
-    # In each, line create a canvas for a little tri-coloured bargraph
     $w.f.tl window create end-32c -create [list createCanvas %W.g$i $wonx $lossx $baseNumber $move]
+
+    ### Mouse bindings
 
     if {$move != {} && $move != {---} && $move != {[end]} && $i != $len-2 && $i != 0} {
       $w.f.tl tag bind tagclick$i <Button-1> "::tree::selectCallback $baseNumber $move ; break"
@@ -775,73 +763,40 @@ proc createCanvas {w wonx lossx baseNumber move} {
   # duplicate the binding for this line
   bind $w <Button-1> "::tree::selectCallback $baseNumber $move ; break"
 
+  ### There is a 60x13 bargraph coloured white , (grey - canvas bg) and black
   # 0 to $wonx   is coloured white
   # $lossx to 61 is coloured black
   # (There's some +/- 1 to acount for widget borders)
+
   $w create rectangle 0 0 $wonx 13 -fill white -width 0 ;# limegreen
   $w create rectangle $lossx 0 61 13 -fill grey10 -width 0 ;# indianred3
   return $w
 }
 
-################################################################################
-# returns a list with (ngames freq success eloavg perf) or
-# {} if there was a problem during parsing
-# 1: e4     B00     37752: 47.1%   54.7%  2474  2513  2002   37%
-################################################################################
+### Currently unused (previously used by getColorScore)
+
 proc ::tree::getLineValues {l} {
+
+  # Returns a list with "ngames freq success eloavg perf" or
+  # {} if there was a problem during parsing
 
   #0         1         2         3         4         5         6
   #0123456789012345678901234567890123456789012345678901234567890
   # 1: Nf3    C34      5115: 77.3%   53.9%  2289  2335  1975   16%
-  # 3: Nc3    C33       128:  1.9%   46.8%  2287  2329  1981   23%
+  # 1: e4     B00     37752: 47.1%   54.7%  2474  2513  2002   37%
+  # 3: Nc3    C33       128:  1.9%   46.8%  2287  2329  1981  100%
   #                  ngames: freq% success%  elo  perf
 
-  if {[scan [string range $l 14 24] "%d:" ngames] != 1} { return {} }
-
-
-  if {[scan [string range $l 25 29] "%f%%" freq] != 1} { return {} }
-
-
-  if {[scan [string range $l 33 37] "%f%%" success] != 1} { return {} }
-
-
-  if {[scan [string range $l 40 44] "%d" eloavg] != 1} { return {} }
-
-
-  if {[scan [string range $l 46 50] "%d" perf] != 1} { return {} }
+  if {[scan [string range $l 14 24] %d:  ngames]  != 1} {return {}}
+  if {[scan [string range $l 25 29] %f%% freq]    != 1} {return {}}
+  if {[scan [string range $l 33 37] %f%% success] != 1} {return {}}
+  if {[scan [string range $l 40 44] %d   eloavg]  != 1} {return {}}
+  if {[scan [string range $l 46 50] %d   perf]    != 1} {return {}}
 
   return [list $ngames $freq $success $eloavg $perf]
-
 }
 
-################################################################################
-# Returns the color to use for score (red, green) or ""
-# (Currently unused as replaced by the bar graphs)
-################################################################################
-proc ::tree::getColorScore { line } {
-  set data [::tree::getLineValues $line]
-  if { $data == {} } { return "" }
-  set ngames [lindex $data 0]
-  set freq [lindex $data 1]
-  set success [lindex $data 2]
-  set eloavg [lindex $data 3]
-  set perf [lindex $data 4]
-  if { $ngames < $::tree::scoreHighlight_MinGames } {
-    return ""
-  }
-  set wavg [ expr 50 + $::tree::scoreHighlight_WhiteExpectedScoreBonus ]
-  set bavg [ expr 50 - $::tree::scoreHighlight_WhiteExpectedScoreBonus ]
-  if { [sc_pos side] == "white" && $success > [ expr $wavg + $::tree::scoreHighlight_Margin ] || \
-        [sc_pos side] == "black" && $success < [ expr $wavg - $::tree::scoreHighlight_Margin ] } {
-    return greenfg
-  }
-  if { [sc_pos side] == "white" && $success < [ expr $wavg - $::tree::scoreHighlight_Margin ] || \
-        [sc_pos side] == "black" && $success > [ expr $wavg + $::tree::scoreHighlight_Margin ] } {
-    return redfg
-  }
-  return ""
-}
-################################################################################
+
 proc ::tree::status { msg baseNumber } {
 
   global tree
