@@ -1913,58 +1913,49 @@ set helpText(Tree) {<h1>Tree Window</h1>
   is an powerful Scid feature. It shows the most successful moves continuing from the current position.
   </p>
   <p>
-  The Tree is updated whenever the
-  main board changes. This can stress the CPU
-  and be slow for large databases, but dynamic updates
-  can be disabled by de-selecting the <b>Refresh</b> check-box.
-  </p>
-  <p>
   The <a Filter>Filter</a> behaviour is changed by the <b>Adjust Filter</b> check-box.
-  If checked, only games containing the current position will be shown in the filter.
+  If checked, only games matching the current position will be shown in the filter.
 </p>
   <p>
   Clicking the left mouse button on a move in the tree window adds
   that move to the game.
   </p>
-<p>
-  <i>Be wary of doing filter operations while the Tree Window is open,
-  as <b>THE TREE MAY OVERRIDE THE FILTER</b>. To perform searches, and open new bases,
+  <p><i>
+  The Tree is updated whenever the main board changes. This can stress the CPU
+  and be slow for large databases, but dynamic updates can be disabled by de-selecting the "Refresh" check-box.
+  </i></p>
+  <p><i>Be wary of doing filter operations while the Tree Window is open,
+  as </i><b>the tree may override the filter</b>.<i> To perform searches, and open new bases,
 it is best to close the Tree Window first.</i>
   </p>
-  <h3>Opening a Tree</h3>
-  <p>To open the Tree Window one can open a database and then choose <b>Windows--<gt>Tree Window</b> menu,
-  use the <b>Control-t</b> short-cut, or <b>Open Base as Tree</b> right from the file menu.
-  This last method means games in Database A can be examined with the tree from a different database.</p>
 
-  <h3>Tree Statistics</h3>
+  <h3>Opening a Tree</h3>
+  <p>To open the Tree Window one can open a database and then select <b>Windows--<gt>Tree Window</b>,
+  use the <b>Control-T</b> short-cut, or <b>Open Base as Tree</b> from the file menu.
+  This last method means games in one database can be examined via the tree from a different database.</p>
+
+  <h3>Statistics</h3>
   <p>
-  The tree window shows statistics about the next move as calulated from all games in the current base.
+  The Tree Window shows statistics about the next move, as calulated from all games in the current base.
   The columns are:
-  <ul><li><b>Move  ECO  Frequency Freq% Score% AvElo Perf AvYear Draws%</b>
-  </ul>
-  The Score is always computed from Whites
-  perspective, so 100% means all White wins and 0% means all Black
+  <br>
+  <b>Move  ECO  Frequency Freq% Score% AvElo Perf AvYear Draw%</b>
+  <br>
+  The Score is always computed from white's perspective, so 100% means all White wins and 0% means all black
   wins.
   </p>
+  <p>
+  <i>Currently, games with no result are treated as drawn for the purpose of statistics. This may change in future.</i>
+  </p>
 
   <p>
-  Scores are highlighted <green>green</green>/<red>red</red> for moves that have good/bad
-  results: if at least 15 games are contained in the
-  database, and AvElo (average Elo) and Perf (performance) statistics are available.
-  On average a move should score 53.8% for white.
-  Highlighting appears if a move scores more than 3% better or worse
-  than this average.
-  Note: AvElo corresponds to the players on move and Perf represents the
-  opponent's strength.
+  Scid vs. PC has a small tri-coloured graph for each move.
+  The three parts - white, grey and black - represent the proportion of games won by white, drawn, and won by black.
   </p>
+
   <p>
-  <i>Note: these statistics are complicated by the Tree's cache, and both
-  SCID and Scid vs. PC have outstanding issues about game colour
-  highlighting.</i>
-  </p>
-  <p>
-  The moves in the tree window can be sorted by move (alphabetically),
-  ECO code, frequency, or score; as per the Sort menu.
+  The moves in the tree window can be sorted by
+  Move (alphabetically), ECO code, Frequency, or Score. This is done via the Sort menu.
   </p>
   <h3>Tree Masks</h3>
   <p> Tree Masks
@@ -1980,25 +1971,6 @@ it is best to close the Tree Window first.</i>
   </p>
   <p>
   You can restrict the list to show games with a particular result.
-  </p>
-
-  <h3><name Graph>Tree Graph Window</name></h3>
-  <p>
-  The <b>Tree Graph</b> <button b_bargraph> presents a graphical display of the
-  performance of each move in the current tree.
-  </p>
-  <p>
-  Only moves that have been played at least 1% of the time, and on 5 occasions,
-  are displayed.  Percentage scores are always from White's
-  perspective even when it is Black to move. The graphs can be saved
-  in PostScript format via the file menu.
-  </p>
-  <p>
-  In the tree graph, a red line is plotted showing the mean over all games
-  from the current position, and the area between 50 and 55% (where most
-  standard openings are expected to score) is colored blue
-  to assist comparison of moves. Note that white usually scores around 55%
-  in master level chess.
   </p>
 
   <h3><name Lock>Locking the Tree Window</name></h3>
@@ -2077,7 +2049,7 @@ it is best to close the Tree Window first.</i>
   adding or replacing a game, or sorting the database.
   </p>
 
-  <p><footer>Updated: Scid vs. PC 4.3, January 2011</footer></p>
+  <p><footer>Updated: Scid vs. PC 4.7, January 2012</footer></p>
 }
 
 set helpTitle(TreeMasks) "Tree Masks"
@@ -3344,14 +3316,6 @@ from the Tools menu. Right-clicking the graph will refresh it.
   choose the perspective to use from the options menu to correct for
   this.
   # todo: Checking both
-  </p>
-
-  <h3><name Tree>Tree Graph window</name></h3>
-  <p>
-  The <term>Tree Graph</b> window is available from the tree
-  window. It shows the performance of the most popular moves from the
-  current position. More information is available from the
-  <a Tree Graph>Tree</a> help page.
   </p>
 
   <p><footer>Updated: Scid vs. PC 4.4 April 2011</footer></p>

@@ -412,14 +412,14 @@ set glistSelectPly 80
 
 # Default window locations:
 foreach i {. .pgnWin .helpWin .crosstabWin .treeWin .commentWin .glist \
-      .playerInfoWin .baseWin .treeBest .treeGraph .tourney .finder \
+      .playerInfoWin .baseWin .treeBest .tourney .finder \
       .ecograph .statsWin .glistWin .maintWin .nedit} {
   set winX($i) -1
   set winY($i) -1
 }
 
 for {set b 1} {$b<=[sc_base count total]} {incr b} {
-  foreach i { .treeWin .treeBest .treeGraph } {
+  foreach i {.treeWin .treeBest} {
     set winX($i$b) -1
     set winY($i$b) -1
   }

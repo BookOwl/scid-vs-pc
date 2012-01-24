@@ -14,10 +14,10 @@ proc ::tree::doConfigMenus { baseNumber  { lang "" } } {
   foreach idx {0 1 2 3 4} tag {File Mask Sort Opt Help} {
     configMenuText $m $idx Tree$tag $lang
   }
-  foreach idx {0 1 2 3 4 5 7 8 10 12} tag {Save Fill FillWithBase FillWithGame SetCacheSize CacheInfo Best Graph Copy Close} {
+  foreach idx {0 1 2 3 4 5 7 9 11} tag {Save Fill FillWithBase FillWithGame SetCacheSize CacheInfo Best Copy Close} {
     configMenuText $m.file $idx TreeFile$tag $lang
   }
-foreach idx {0 1 2 3 4 5 6 7 8 9} tag {New Open OpenRecent Save Close FillWithGame FillWithBase Search Info Display} {
+  foreach idx {0 1 2 3 4 5 6 7 8 9} tag {New Open OpenRecent Save Close FillWithGame FillWithBase Search Info Display} {
     configMenuText $m.mask $idx TreeMask$tag $lang
   }
   foreach idx {0 1 2 3} tag {Alpha ECO Freq Score } {
@@ -126,10 +126,8 @@ proc ::tree::make { { baseNumber -1 } } {
   $w.menu.file add separator
   $w.menu.file add command -label TreeFileBest -command "::tree::best $baseNumber"
   set helpMessage($w.menu.file,7) TreeFileBest
-
-  $w.menu.file add command -label TreeFileGraph -command "::tree::graph $baseNumber"
-  set helpMessage($w.menu.file,8) TreeFileGraph
   $w.menu.file add separator
+
   $w.menu.file add command -label TreeFileCopy -command "::tree::menuCopyToSelection $baseNumber"
   set helpMessage($w.menu.file,10) TreeFileCopy
   $w.menu.file add separator
@@ -237,7 +235,6 @@ proc ::tree::make { { baseNumber -1 } } {
   pack $w.f -side top -expand 1 -fill both
 
   button $w.buttons.best -image b_list -command "::tree::toggleBest $baseNumber"
-  button $w.buttons.graph -image b_bargraph -command "::tree::toggleGraph $baseNumber"
   button $w.buttons.training -image tb_training -command "::tree::toggleTraining $baseNumber"
   # add a button to start/stop tree refresh &&&
   # button $w.buttons.bStartStop -image engine_on -command "::tree::toggleRefresh $baseNumber" ;# -relief flat
@@ -248,7 +245,7 @@ proc ::tree::make { { baseNumber -1 } } {
 
   # bStartStop TreeOptStartStop
   foreach {b t} {
-    best TreeFileBest graph TreeFileGraph training TreeOptTraining
+    best TreeFileBest training TreeOptTraining
   } {
     set helpMessage($w.buttons.$b) $t
   }
@@ -256,7 +253,7 @@ proc ::tree::make { { baseNumber -1 } } {
   dialogbutton $w.buttons.stop -textvar ::tr(Stop) -command { sc_progressBar }
   dialogbutton $w.buttons.close -textvar ::tr(Close) -command "::tree::closeTree $baseNumber"
 
-  pack $w.buttons.best $w.buttons.graph $w.buttons.training $w.buttons.refresh $w.buttons.adjust \
+  pack $w.buttons.best $w.buttons.training $w.buttons.refresh $w.buttons.adjust \
       -side left -padx 3 -pady 2
 
   packbuttons right $w.buttons.close $w.buttons.stop
@@ -320,9 +317,6 @@ proc ::tree::closeTree {baseNumber} {
   if {$::tree(locked$baseNumber)} {
     ::file::Close $baseNumber
   } else {
-    if {[winfo exists .treeGraph$baseNumber]} {
-      destroy .treeGraph$baseNumber
-    }
     if {[winfo exists .treeBest$baseNumber]} {
       destroy .treeBest$baseNumber
     }
@@ -496,7 +490,7 @@ proc ::tree::dorefresh { baseNumber } {
 
   # busyCursor .
   sc_progressBar $w.progress bar 251 16
-  foreach button {best graph training close} {
+  foreach button {best training close} {
     $w.buttons.$button configure -state disabled
   }
   $w.buttons.stop configure -state normal
@@ -518,7 +512,7 @@ proc ::tree::dorefresh { baseNumber } {
 
   catch {$w.f.tl itemconfigure 0 -foreground darkBlue}
 
-  foreach button {best graph training close} {
+  foreach button {best training close} {
     $w.buttons.$button configure -state normal
   }
   $w.buttons.stop configure -state disabled -relief raised
@@ -538,7 +532,6 @@ proc ::tree::dorefresh { baseNumber } {
   displayLines $baseNumber $moves
 
   if {[winfo exists .treeBest$baseNumber]} {::tree::best $baseNumber}
-  if {[winfo exists .treeGraph$baseNumber]} {::tree::graph $baseNumber}
 
   # ========================================
   if { $tree(fastmode$baseNumber) == 2 } {
@@ -1108,159 +1101,8 @@ proc ::tree::bestPgn { baseNumber } {
   if {[catch {sc_filter value $base $g} ply]} { return }
 }
 
-################################################################################
-# ::tree::graph
-#   Create / Update the tree graph window
-#
-
-proc ::tree::toggleGraph { baseNumber } {
-  set w .treeGraph$baseNumber
-  if {[winfo exists $w]} {
-    destroy $w 
-  } else {
-    ::tree::graph $baseNumber
-  }
-}
-
 ### todo - fix the multiple tree windows, esp. when switching between bases S.A.
 
-proc ::tree::graph { baseNumber } {
-  set w .treeGraph$baseNumber
-  if {! [winfo exists .treeWin$baseNumber]} { return }
-  if {! [winfo exists $w]} {
-    toplevel $w
-    setWinLocation $w
-    setWinSize $w
-    bind $w <Escape> "destroy $w"
-    bind $w <F1> {helpWindow Tree Graph}
-
-    menu $w.menu
-    $w configure -menu $w.menu
-    $w.menu add cascade -label GraphFile -menu $w.menu.file
-    menu $w.menu.file
-    # saveGraph isn't written yet! S.A.
-    $w.menu.file add command -label GraphFileColor -command "::tools::graphs::Save color $w.c" 
-    $w.menu.file add command -label GraphFileGrey -command "::tools::graphs::Save gray $w.c" 
-    $w.menu.file add separator
-    $w.menu.file add command -label GraphFileClose -command "destroy $w"
-
-    canvas $w.c -width 500 -height 300
-    pack $w.c -side top -fill both -expand yes
-    $w.c create text 25 10 -tag text -justify center -width 1 -font font_Regular -anchor n
-    update
-    bind $w.c <Button-1> "::tree::graph $baseNumber"
-    wm title $w "Scid: Tree Graph [file tail [sc_base filename $baseNumber]]"
-
-    standardShortcuts $w
-    ::tree::configGraphMenus {} $baseNumber
-    bind $w <Configure> "
-      ::tree::graph $baseNumber
-      recordWinSize $w
-    "
-  } ; # end widget create
-
-  ### Refresh Widget
-
-  $w.c itemconfigure text -width [expr {[winfo width $w.c] - 50}]
-  $w.c coords text [expr {[winfo width $w.c] / 2}] 10
-  set height [expr {[winfo height $w.c] - 100}]
-  set width [expr {[winfo width $w.c] - 50}]
-  ::utils::graph::create tree$baseNumber -width $width -height $height -xtop 25 -ytop 60 \
-      -xmin 0.5 -xtick 1 -ytick 5 -font font_Small -canvas $w.c
-
-  set data {}
-  set xlabels {}
-  set othersCount 0
-  set numOthers 0
-  set othersName "..."
-  set count 0
-  set othersScore 0.0
-  set mean 50.0
-  set totalGames 0
-  set treeData [subst $[subst {::tree::treeData$baseNumber} ] ]
-  # [.treeWin$baseNumber.f.tl get 0 end]
-
-  set numTreeLines [llength $treeData]
-  set totalLineIndex [expr $numTreeLines - 2]
-
-  for {set i 0} {$i < [llength $treeData]} {incr i} {
-    # Extract info from each line of the tree window:
-    # Note we convert "," decimal char back to "." where necessary.
-    set line [lindex $treeData $i]
-    set mNum [string trim [string range $line  0  1]]
-    set freq [string trim [string range $line 17 23]]
-    set fpct [string trim [string range $line 25 29]]
-    regsub -all {,} $fpct . fpct
-    set move [string trim [string range $line  4 9]]
-    set score [string trim [string range $line 33 37]]
-    regsub -all {,} $score . score
-    if {$score > 99.9} { set score 99.9 }
-    # Check if this line is "TOTAL:" line:
-    if {$i == $totalLineIndex} {
-      set mean $score
-      set totalGames $freq
-    }
-    # Add info for this move to the graph if necessary:
-    if {[string index $line 2] == ":"  &&  [string compare "<end>" $move]} {
-      if {$fpct < 1.0  ||  $freq < 5  ||  $i > 5} {
-        incr othersCount $freq
-        incr numOthers
-        set othersScore [expr {$othersScore + (double($freq) * $score)}]
-        set m $move
-        if {$numOthers > 1} { set m "..." }
-      } else {
-        incr count
-        lappend data $count
-        lappend data $score
-        lappend xlabels [list $count "$move ([expr round($score)]%)\n$freq: [expr round($fpct)]%"]
-      }
-    }
-  }
-
-  # Add extra bar for other moves if necessary:
-  if {$numOthers > 0  &&  $totalGames > 0} {
-    incr count
-    set fpct [expr {double($othersCount) * 100.0 / double($totalGames)}]
-    set sc [expr {round($othersScore / double($othersCount))}]
-    set othersName "$m ($sc%)\n$othersCount: [expr round($fpct)]%"
-    lappend data $count
-    lappend data [expr {$othersScore / double($othersCount)}]
-    lappend xlabels [list $count $othersName]
-  }
-
-  # Plot fake bounds data so graph at least shows range 40-65:
-  ::utils::graph::data tree$baseNumber bounds -points 0 -lines 0 -bars 0 -coords {1 41 1 64}
-
-  # Replot the graph:
-  ::utils::graph::data tree$baseNumber data -color lemonchiffon -points 0 -lines 0 -bars 1 \
-      -barwidth 0.75 -outline black -coords $data
-  ::utils::graph::configure tree$baseNumber -xlabels $xlabels -xmax [expr {$count + 0.5}] \
-      -hline [list {gray80 1 each 5} {gray50 1 each 10} {black 2 at 50} \
-      {black 1 at 55} [list red 2 at $mean]] \
-      -brect [list [list 0.5 55 [expr {$count + 0.5}] 50 LightSkyBlue1]]
-
-  ::utils::graph::redraw tree$baseNumber
-  set moves ""
-  catch {set moves [sc_game firstMoves 0 -1]}
-  if {[string length $moves] == 0} { set moves $::tr(StartPos) }
-  set label "$moves ([::utils::thousands $totalGames] $::tr(games))"
-  $w.c itemconfigure text -text $label
-}
-
-################################################################################
-proc ::tree::configGraphMenus { lang baseNumber } {
-  if {! [winfo exists .treeGraph$baseNumber]} { return }
-  if {$lang == ""} { set lang $::language }
-  set m .treeGraph$baseNumber.menu
-  foreach idx {0} tag {File} {
-    configMenuText $m $idx Graph$tag $lang
-  }
-  foreach idx {0 1 3} tag {Color Grey Close} {
-    configMenuText $m.file $idx GraphFile$tag $lang
-  }
-}
-
-# ################################################################################
 proc ::tree::toggleRefresh { baseNumber } {
   global tree
 
@@ -1268,15 +1110,11 @@ proc ::tree::toggleRefresh { baseNumber } {
     ::tree::refresh $baseNumber
   }
 }
-################################################################################
-#
-################################################################################
+
 proc ::tree::setCacheSize { base size } {
   sc_tree cachesize $base $size
 }
-################################################################################
-#
-################################################################################
+
 proc ::tree::getCacheInfo { base } {
   set ci [sc_tree cacheinfo $base]
   tk_messageBox -title "Scid" -type ok -icon info \
