@@ -680,13 +680,12 @@ proc ::tree::displayLines { baseNumber moves } {
 
     ### Create the small green/white/red bar graph
     scan [string range $line 33 37] "%f%%" success
-    scan [string range $line 60 end] "%f%%" draw
-    set notdrawn [expr {100-$draw}]
-    set wonx [expr {$success * $notdrawn * 3.0/500} + 1] ; # 3/500 is 1/100 * 60(pixels) / 100
-    set lossx [expr {61 - ((100 - $success) * $notdrawn * 3.0/500)}]
+    scan [string range $line 59 end] "%f%%" draw
+    set wonx  [expr {($success - $draw/2)*0.6 + 1}] ; # win = success - drawn/2
+    set lossx [expr {($success + $draw/2)*0.6 + 1}] ; # loss = 100 - win - drawn
     
+    # In each, line create a canvas for a little tri-coloured bargraph
     $w.f.tl window create end-32c -create [list createCanvas %W.g$i $wonx $lossx $baseNumber $move]
-
 
     if {$move != {} && $move != {---} && $move != {[end]} && $i != $len-2 && $i != 0} {
       $w.f.tl tag bind tagclick$i <Button-1> "::tree::selectCallback $baseNumber $move ; break"
