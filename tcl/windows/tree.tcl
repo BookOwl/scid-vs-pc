@@ -614,16 +614,22 @@ proc ::tree::displayLines { baseNumber moves } {
     $w.f.tl tag bind tagclick0 <Button-2> "::tree::mask::contextMenu $w.f.tl dummy %x %y %X %Y ; break"
   }
   $w.f.tl insert end "[lindex $moves 0]\n" tagclick0
+
+  ### Hmmm - some of the markers might be 17 or 18 width, and they make the bargraph stick out a little
+  ### todo - resize all markers to 16
+
+  $w.f.tl window create end-33c -create "canvas %W.g -width 60 -height 12 -highlightthickness 0"
   
   # Display the lines of the tree
   for { set i 1 } { $i < [expr $len - 3 ] } { incr i } {
     set line [lindex $moves $i]
+    # &&& 
     if {$line == ""} { continue }
     set move [lindex $line 1]
     set move [::untrans $move]
     lappend lMoves $move
-    set colorScore [::tree::getColorScore $line]
-    if { $move == "\[end\]" } { set colorScore "" }
+    # set colorScore [::tree::getColorScore $line]
+    # if { $move == "\[end\]" } { set colorScore "" }
 
     set tagfg {}
 
@@ -664,17 +670,24 @@ proc ::tree::displayLines { baseNumber moves } {
     if {$move == $nextmove} {
       lappend tags nextmove
     }
-    if {$i % 2 && $i < $len - 3} {
-      lappend tags greybg
-    } else  {
-      lappend tags whitebg
-    }
+
+    ### Dont' need the coloured lines with bar graphs
+    # if {$i % 2 && $i < $len - 3} { lappend tags greybg } else  { lappend tags whitebg }
 
     $w.f.tl insert end $line $tags
 
-    if {$colorScore != {}} {
-      $w.f.tl tag add $colorScore end-30c end-26c
-    }
+    # if {$colorScore != {}} { $w.f.tl tag add $colorScore end-30c end-26c }
+
+    ### Create the small green/white/red bar graph
+    scan [string range $line 33 37] "%f%%" success
+    scan [string range $line 60 end] "%f%%" draw
+    set notdrawn [expr {100-$draw}]
+    set wonx [expr {$success * $notdrawn * 3.0/500} + 1] ; # 3/500 is 1/100 * 60(pixels) / 100
+    set lossx [expr {61 - ((100 - $success) * $notdrawn * 3.0/500)}]
+    
+    $w.f.tl window create end-32c -create [list createCanvas %W.g$i $wonx $lossx]
+
+
     if {$move != {} && $move != {---} && $move != {[end]} && $i != $len-2 && $i != 0} {
       $w.f.tl tag bind tagclick$i <Button-1> "::tree::selectCallback $baseNumber $move ; break"
       if { $maskFile != {}} {
@@ -757,6 +770,16 @@ proc ::tree::displayLines { baseNumber moves } {
   $w.f.tl configure -state disabled
 
 }
+proc createCanvas {w wonx lossx} {
+  canvas $w -width 60 -height 12 -bg grey75
+  # 0 to $wonx   is coloured white
+  # $lossx to 61 is coloured black
+  # (There's some +/- 1 to acount for widget borders)
+  $w create rectangle 0 0 $wonx 13 -fill white -width 0
+  $w create rectangle $lossx 0 61 13 -fill grey10 -width 0
+  return $w
+}
+
 ################################################################################
 # returns a list with (ngames freq success eloavg perf) or
 # {} if there was a problem during parsing
@@ -789,7 +812,8 @@ proc ::tree::getLineValues {l} {
 }
 
 ################################################################################
-# returns the color to use for score (red, green) or ""
+# Returns the color to use for score (red, green) or ""
+# (Currently unused as replaced by the bar graphs)
 ################################################################################
 proc ::tree::getColorScore { line } {
   set data [::tree::getLineValues $line]
