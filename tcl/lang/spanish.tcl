@@ -24,7 +24,7 @@ menuText S FileBookmarksList "Mostrar partidas favoritas" 0 {Muestrar las carpet
 menuText S FileBookmarksSub "Mostrar partidas marcadas con submenus" 0 {Muestrar las carpetas de favoritas como submenus, no una sola lista}
 menuText S FileMaint "Mantenimiento" 0 \
   {Herramientas de mantenimiento de la base de datos Scid}
-menuText S FileMaintWin "Ventana de mantenimiento" 0 \
+menuText S FileMaintWin "Mantenimiento" 0 \
   {Abre/cierra la ventana de mantenimiento de la base de datos Scid}
 menuText S FileMaintCompact "Compactar base de datos..." 0 \
   {Compacta los archivos de la base de datos, quitando partidas borradas y nombres no usados}
@@ -34,10 +34,10 @@ menuText S FileMaintSort "Ordenar base de datos..." 0 \
   {Ordena todas las partidas de la base de datos}
 menuText S FileMaintDelete "Borrar partidas dobles..." 0 \
   {Encuentra partidas dobles y las coloca para ser borradas}
-menuText S FileMaintTwin "Ventana de inspección de dobles" 11 \
+menuText S FileMaintTwin "Inspección de dobles" 11 \
   {Abre/actualiza la ventana de inspección de dobles}
 menuText S FileMaintName "Ortografía de nombres" 0 {Herramientas de ortografía y edición de nombres}
-menuText S FileMaintNameEditor "Ventana de edición de nombres" 0 \
+menuText S FileMaintNameEditor "Edición de nombres" 0 \
   {Abrir/Cerrar la ventana de edición de nombres}
 menuText S FileMaintNamePlayer "Corrección de nombres de jugadores" 11 \
   {Comprobación ortográfica de jugadores usando archivo de comprobación ortográfica}
@@ -147,16 +147,16 @@ menuText S WindowsPList "Buscador de jugadores" 2 {Abre/cierra el buscador de ju
 menuText S WindowsTmt "Visor de Torneos" 9 {Abre/cierra el visor de torneos}
 menuText S WindowsSwitcher "Intercambiador de bases de datos" 0 \
   {Abre/cierra la ventana del intercambiador de bases de datos}
-menuText S WindowsMaint "Ventana de mantenimiento" 11 \
+menuText S WindowsMaint "Mantenimiento" 11 \
   {Abre/cierra la ventana de mantenimiento}
 menuText S WindowsECO "Buscador ECO" 0 {Abre/cierra la ventana del buscador ECO}
-menuText S WindowsStats "Ventana de estadísticas" 12 \
+menuText S WindowsStats "Estadísticas" 12 \
   {Abre/cierra la ventana de estadísticas del filtro}
-menuText S WindowsTree "Ventana de Árbol de Aperturas" 6 {Abre/cierra la ventana de Árbol de Aperturas (Book)}
-menuText S WindowsTB "Ventana de Tablas de  Finales (TBs)" 8 \
+menuText S WindowsTree "Árbol de Aperturas" 6 {Abre/cierra la ventana de Árbol de Aperturas (Book)}
+menuText S WindowsTB "Tablas de  Finales (TBs)" 8 \
   {Abre/cierra la ventana de TBs}
-menuText S WindowsBook "Ventana de Libros de Aperturas (Book)" 0 {Abrir/Cerrar la ventana de Libros de Aperturas (Book)}
-menuText S WindowsCorrChess "Ventana de Correo" 0 {Abrir/Cerrar la ventra de Correo}
+menuText S WindowsBook "Libros de Aperturas (Book)" 0 {Abrir/Cerrar la ventana de Libros de Aperturas (Book)}
+menuText S WindowsCorrChess "Correo electrónico" 0 {Abrir/Cerrar la ventra de Correo}
 
 # Tools menu:
 menuText S Tools "Herramientas" 0
@@ -501,7 +501,7 @@ menuText S TreeFileFill "Construir archivo caché" 2 \
   {Construye archivo caché con posiciones de apertura comunes}
 menuText S TreeFileBest "Lista de mejores partidas" 9 \
   {Muestra la lista del árbol de mejores partidas}
-menuText S TreeFileGraph "Ventana del gráfico" 0 \
+menuText S TreeFileGraph "Gráfico" 0 \
   {Muestra el gráfico para esta rama del árbol}
 menuText S TreeFileCopy "Copiar texto del árbol al portapapeles" 1 \
   {Copia texto del árbol al portapapeles}
