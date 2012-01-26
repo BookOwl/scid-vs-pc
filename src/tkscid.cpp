@@ -1974,8 +1974,16 @@ sc_base_import (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
 
     while (parser.ParseGame (scratchGame) != ERROR_NotFound) {
         if (sc_savegame (ti, scratchGame, 0, db) != TCL_OK) {
-            pgnFile.Close();
-            return errorResult (ti, "Error saving game in database.\n");
+          // quick and nasty cleanup aka below
+          db->gfile->FlushAll();
+          pgnFile.Close();
+          db->idx->WriteHeader();
+          if (! db->memoryOnly) db->nb->WriteNameFile();
+          recalcFlagCounts (db);
+          if (! db->memoryOnly) removeFile (db->fileName, TREEFILE_SUFFIX);
+
+          Tcl_AppendResult (ti, "Error saving game in database.\n", NULL);
+          return TCL_ERROR;
         }
         // Update the progress bar:
         gamesSeen++;
@@ -7739,15 +7747,14 @@ sc_game_load (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
 
     // We number games from 0 internally, so subtract one:
     gnum--;
-    const char * corruptMsg = "Sorry, this game appears to be corrupt.";
 
     IndexEntry * ie = db->idx->FetchEntry (gnum);
-//     printf("length = %d\n", ie->GetLength());
+
     if (db->gfile->ReadGame (db->bbuf,ie->GetOffset(),ie->GetLength()) != OK) {
-        return errorResult (ti, corruptMsg);
+        return errorResult (ti, "Sorry, this game appears to be corrupt.");
     }
     if (db->game->Decode (db->bbuf, GAME_DECODE_ALL) != OK) {
-        return errorResult (ti, corruptMsg);
+        return errorResult (ti, "Sorry, this game appears to be corrupt.");
     }
 
     if (db->filter->Get(gnum) > 0) {
@@ -8495,7 +8502,8 @@ sc_savegame (Tcl_Interp * ti, Game * game, gameNumberT gnum, scidBaseT * base)
     // WHITE:
     s = game->GetWhiteStr();  if (!s) { s = "?"; }
     if (base->nb->AddName (NAME_PLAYER, s, &id) == ERROR_NameBaseFull) {
-        Tcl_AppendResult (ti, "Too many player names.", NULL);
+        snprintf (temp, sizeof(temp), "Player Name limit of %u exceeded\n", NAME_MAX_ID [NAME_PLAYER]);
+        Tcl_AppendResult (ti, temp, NULL);
         return TCL_ERROR;
     }
     base->nb->IncFrequency (NAME_PLAYER, id, 1);
@@ -8504,7 +8512,8 @@ sc_savegame (Tcl_Interp * ti, Game * game, gameNumberT gnum, scidBaseT * base)
     // BLACK:
     s = game->GetBlackStr();  if (!s) { s = "?"; }
     if (base->nb->AddName (NAME_PLAYER, s, &id) == ERROR_NameBaseFull) {
-        Tcl_AppendResult (ti, "Too many player names.", NULL);
+        snprintf (temp, sizeof(temp), "Player Name limit of %u exceeded\n", NAME_MAX_ID [NAME_PLAYER]);
+        Tcl_AppendResult (ti, temp, NULL);
         return TCL_ERROR;
     }
     base->nb->IncFrequency (NAME_PLAYER, id, 1);
@@ -8513,7 +8522,8 @@ sc_savegame (Tcl_Interp * ti, Game * game, gameNumberT gnum, scidBaseT * base)
     // EVENT:
     s = game->GetEventStr();  if (!s) { s = "?"; }
     if (base->nb->AddName (NAME_EVENT, s, &id) == ERROR_NameBaseFull) {
-        Tcl_AppendResult (ti, "Too many event names.", NULL);
+        snprintf (temp, sizeof(temp), "Event Name limit of %u exceeded\n", NAME_MAX_ID [NAME_EVENT]);
+        Tcl_AppendResult (ti, temp, NULL);
         return TCL_ERROR;
     }
     base->nb->IncFrequency (NAME_EVENT, id, 1);
@@ -8522,7 +8532,8 @@ sc_savegame (Tcl_Interp * ti, Game * game, gameNumberT gnum, scidBaseT * base)
     // SITE:
     s = game->GetSiteStr();  if (!s) { s = "?"; }
     if (base->nb->AddName (NAME_SITE, s, &id) == ERROR_NameBaseFull) {
-        Tcl_AppendResult (ti, "Too many site names.", NULL);
+        snprintf (temp, sizeof(temp), "Site Name limit of %u exceeded\n", NAME_MAX_ID [NAME_SITE]);
+        Tcl_AppendResult (ti, temp, NULL);
         return TCL_ERROR;
     }
     base->nb->IncFrequency (NAME_SITE, id, 1);
@@ -8531,7 +8542,8 @@ sc_savegame (Tcl_Interp * ti, Game * game, gameNumberT gnum, scidBaseT * base)
     // ROUND:
     s = game->GetRoundStr();  if (!s) { s = "?"; }
     if (base->nb->AddName (NAME_ROUND, s, &id) == ERROR_NameBaseFull) {
-        Tcl_AppendResult (ti, "Too many round names.", NULL);
+        snprintf (temp, sizeof(temp), "Round Name limit of %u exceeded\n", NAME_MAX_ID [NAME_ROUND]);
+        Tcl_AppendResult (ti, temp, NULL);
         return TCL_ERROR;
     }
     base->nb->IncFrequency (NAME_ROUND, id, 1);
