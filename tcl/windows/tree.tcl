@@ -761,8 +761,12 @@ proc createCanvas {w wonx lossx baseNumber move} {
   # $lossx to 61 is coloured black
   # (There's some +/- 1 to acount for widget borders)
 
-  $w create rectangle 0 0 $wonx 12 -fill white -width 0 ;# limegreen
-  $w create rectangle $lossx 0 61 12 -fill grey10 -outline grey10 ;# indianred3
+  if {$wonx > 0.1} {
+    $w create rectangle 0 0 $wonx 12 -fill white -width 0 ;# limegreen
+  }
+  if {$lossx < 60.9} {
+    $w create rectangle $lossx 0 61 12 -fill grey10 ;# indianred3
+  }
   return $w
 }
 
