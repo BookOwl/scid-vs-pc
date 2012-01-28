@@ -100,6 +100,14 @@ proc playerInfo {{player ""} {raise 0}} {
   #raiseWin $w
 }
 
+# Refresh after hyperlinks in the playerinfo widget are clicked
+# eg: <run sc_name info -oaA {}; ::playerInfoRefresh>GAMES</run>
+
+proc playerInfoRefresh {} {
+  set ::glstart 1
+  ::windows::stats::Refresh
+}
+
 ###
 ### end of pinfo.tcl
 ###
