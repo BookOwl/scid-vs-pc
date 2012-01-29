@@ -88,13 +88,13 @@ proc openSpellCheckWin {type {parent .}} {
   bind $w <Configure> "recordWinSize $w"
 
   set f [frame $w.buttons]
-  pack $f -side bottom -ipady 1 -fill x
+  pack $f -side bottom -ipady 1 -fill x -pady 3
 
-  checkbutton $f.ambig -variable spellcheckAmbiguous -relief raised \
+  checkbutton $f.ambig -variable spellcheckAmbiguous \
     -text "Ambiguous" -command "updateSpellCheckWin $type"
   pack $f.ambig -side left -padx 2 -ipady 2 -ipadx 3
   if {$type == "Player"} {
-    checkbutton $f.surnames -variable spellcheckSurnames -relief raised \
+    checkbutton $f.surnames -variable spellcheckSurnames \
       -text "Surnames" -command "updateSpellCheckWin Player"
     pack $f.surnames -side left -padx 2 -ipady 2 -ipadx 3
   }

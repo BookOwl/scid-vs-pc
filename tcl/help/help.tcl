@@ -247,6 +247,7 @@ set helpText(Index) {<h1>Scid Help Index</h1>
   <li><a Compact>Compacting a database</a></li>
   <li><a Correspondence>Correspondence Chess</a></li>
   <li><a CCIcons>Correspondence Chess Icons</a></li>
+  <li><a Import CCRL>CCRL game imports</a></li>
   <li><a Author>Contact information</a></li>
   <li><a Contents>Contents</a></li>
   <li><a Crosstable>Crosstable</a></li>
@@ -392,6 +393,7 @@ set helpText(Index) {<h1>Scid Help Index</h1>
   <li><a Graphs Rating>Rating graph</a></li>
   <li><a Moves Undo>Redo</a></li>
   <li><a Repertoire>Repertoire editor</a></li>
+  <li><a Import CCRL>Round Name</a> problems</li>
   </ul>
 
   <h3><name S>S</name></h3>
@@ -1626,7 +1628,7 @@ set helpText(Import) {<h1>The Import Window</h1>
   , and click <b>Import</b> when done.
   </p>
 
-  <h3>Note</h3>
+  <h3>Notes</h3>
   <p>
   Scid expects to see PGN header tags such as
   <ul>
@@ -1637,6 +1639,21 @@ set helpText(Import) {<h1>The Import Window</h1>
   <li> <b>1.e4 e5 2.Bc4 Bc5 3.Qh5?! Nf6?? 4.Qxf7# 1-0</b> </li>
   </ul>
   (without any header tags) is generally ok.
+  </p>
+
+  <h3><name CCRL>CCRL Imports</name></h3>
+  <p>
+  The Computer Chess Rating Lists distributes PGN archives which can cause Scid problems.
+  They use the Round field to represent unique game numbers, and Scid only supports 262,143 Round Names.
+  You may wish to replace the "Round" field with "Rd", or some other tag.
+  </p>
+  <p>
+  This can be achieved using the <b>sed</b> utility and the command
+  <ul><li>sed -e "s/\[Round/\[Rd/" <gt> CCRL.pgn <lt> new.pgn</li></ul>
+  Sed comes with Linux and OSX, but Windows users may wish to try this version.
+  <url http://sed.sourceforge.net/grabbag/ssed/sed-3.59.zip>http://sed.sourceforge.net/grabbag/ssed/sed-3.59.zip</url>.
+</p>
+
   </p>
 
   <p><footer>Updated: Scid vs. PC 4.3, February 2011</footer></p>
@@ -1909,53 +1926,47 @@ Simlilar and more powerful features are available in the <a TreeMasks>Tree Masks
 set helpTitle(Tree) "Tree Window"
 set helpText(Tree) {<h1>Tree Window</h1>
   <p>
-  The <run ::tree::make><green>Tree Window</green></run>
-  is an powerful Scid feature. It shows the most successful moves continuing from the current position.
+  The <run ::tree::make><green>Tree Window</green></run> is an powerful Scid
+  feature. It shows the success rates of moves from the current
+  position; in the form of statistics, and a tri-coloured graph representing
+  white-wins, draws, and black-wins.
   </p>
-  <p>
-  The <a Filter>Filter</a> behaviour is changed by the <b>Adjust Filter</b> check-box.
-  If checked, only games matching the current position will be shown in the filter.
-</p>
-  <p>
-  Clicking the left mouse button on a move in the tree window adds
-  that move to the game.
-  </p>
-  <p><i>
-  The Tree is updated whenever the main board changes. This can stress the CPU
-  and be slow for large databases, but dynamic updates can be disabled by de-selecting the "Refresh" check-box.
-  </i></p>
-  <p><i>Be wary of doing filter operations while the Tree Window is open,
-  as </i><b>the tree may override the filter</b>.<i> To perform searches, and open new bases,
-it is best to close the Tree Window first.</i>
-  </p>
-
   <h3>Opening a Tree</h3>
-  <p>To open the Tree Window one can open a database and then select <b>Windows--<gt>Tree Window</b>,
+  <p>One can open a database and then select <b>Windows--<gt>Tree Window</b>,
   use the <b>Control-T</b> short-cut, or <b>Open Base as Tree</b> from the file menu.
   This last method means games in one database can be examined via the tree from a different database.</p>
+  <h3>General Use</h3>
+  <p>
+  Clicking on a move adds that move to the game.
+  </p>
+  <p>
+  The moves in the tree window can be sorted by
+  Move (alphabetically), ECO code, Frequency, or Score.
+  </p>
+  <p>
+  The "Adjust Filter" check-box will alter the gamelist so that only games matching the current position are displayed therein.
+</p>
+  <p><i>
+  The Tree is updated whenever the main board changes. This can stress the CPU
+  and be slow for large databases, but dynamic updates can be disabled by deselecting the "Refresh" check-box.
+  </i></p>
+  <p><i>Be wary of doing filter operations while the Tree Window is open,
+  as the tree may override the filter. To perform searches, and open new bases,
+it is best to close the Tree Window first.</i>
+  </p>
 
   <h3>Statistics</h3>
   <p>
   The Tree Window shows statistics about the next move, as calulated from all games in the current base.
   The columns are:
   <br>
-  <b>Move  ECO  Frequency Freq% Score% AvElo Perf AvYear Draw%</b>
+  <b>Move ECO Frequency Score AvElo Perf AvYear Draws</b>
   <br>
   The Score is always computed from white's perspective, so 100% means all White wins and 0% means all black
   wins.
   </p>
   <p>
-  <i>Currently, games with no result are treated as drawn for the purpose of statistics. This may change in future.</i>
-  </p>
-
-  <p>
-  Scid vs. PC has a small tri-coloured graph for each move.
-  The three parts - white, grey and black - represent the proportion of games won by white, drawn, and won by black.
-  </p>
-
-  <p>
-  The moves in the tree window can be sorted by
-  Move (alphabetically), ECO code, Frequency, or Score. This is done via the Sort menu.
+  <i>Games with no result do not contribute to the percentage drawn, but as half-won/half-loss.</i>
   </p>
   <h3>Tree Masks</h3>
   <p> Tree Masks
