@@ -24,9 +24,9 @@ TCL_VERSION = 8.5
 #
 # The settings determined by "./configure" are:
 
-TCL_INCLUDE = -I/usr/include
-TCL_LIBRARY = -L/usr/lib64 -ltcl$(TCL_VERSION)
-TK_LIBRARY  = $(TCL_LIBRARY) -ltk$(TCL_VERSION) -lX11
+TCL_INCLUDE = -I/usr/local/include
+TCL_LIBRARY = -L/usr/local/lib -ltcl$(TCL_VERSION)
+TK_LIBRARY  = $(TCL_LIBRARY) -ltk$(TCL_VERSION) -L/usr/lib -lX11
 
 ### Solaris:
 # TCL_INCLUDE = -I /usr/local/tcl/include
