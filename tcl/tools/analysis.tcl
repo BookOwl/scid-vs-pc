@@ -2171,16 +2171,17 @@ proc makeAnalysisWin {{n 0} {settime 0}} {
   # This "-height 5" is here to facilitate pack/forgeting of $w.text widget
   # and for initial size
   text $w.hist.text -font font_Fixed -height 5 \
-      -wrap none -setgrid 1 -yscrollcommand "$w.hist.ybar set"
+      -wrap none -setgrid 1 -yscrollcommand "$w.hist.ybar set" -xscrollcommand "$w.hist.xbar set"
   $w.hist.text tag configure indent -lmargin2 [font measure font_Small xxxxxxxxxxxxxxxxxx]
   scrollbar $w.hist.ybar -command "$w.hist.text yview" -takefocus 0
+  scrollbar $w.hist.xbar -command "$w.hist.text xview" -orient horizontal
   if { $analysis(showEngineInfo$n) } {
     pack $w.text -side bottom -fill both 
   }
   pack $w.hist -side top -expand 1 -fill both
   pack $w.hist.ybar -side right -fill y
+  pack $w.hist.xbar -side bottom -expand 0 -fill x
   pack $w.hist.text -side left -expand 1 -fill both
-
   bind $w.hist.text <ButtonPress-3> "toggleMovesDisplay $n"
   $w.text tag configure blue -foreground blue ; # this only seems used in toggleAutomove ???
   $w.hist.text tag configure gray -foreground grey50 -lmargin2 [font measure font_Small xxxxxxxxxxxxxxxxxx]
