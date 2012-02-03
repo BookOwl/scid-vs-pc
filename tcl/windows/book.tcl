@@ -1,9 +1,7 @@
 ###
 ### book.tcl: part of Scid.
-### Copyright (C) 2007  Pascal Georges
+### Copyright (C) 2007  Pascal Georges, Stevenaaus
 ###
-######################################################################
-### Book window
 
 namespace eval book {
   set isOpen 0
@@ -278,15 +276,18 @@ focus .
     set height 0
     set nextmove [sc_game info nextMove]
 
+    set moves1 [sc_book moves $::book::bookSlot1]
+
     if {$::book::showTwo} {
       # Two books !
       set games {1 2}
+      # this can be slow, so only do it if necessary
+      set moves2 [sc_book moves $::book::bookSlot2]
     } else {
       set games 1
+      set moves2 {}
     }
 
-    set moves1 [sc_book moves $::book::bookSlot1]
-    set moves2 [sc_book moves $::book::bookSlot2]
     if {$::book::sortAlpha} {
       if {$::book::showTwo} {
 	### Parse the moves to insert empty lines and make the moves line up
@@ -382,7 +383,7 @@ focus .
       }
 
       .bookWin.$z.opptext configure -state disabled
-togglePositionsDisplay
+      togglePositionsDisplay
     }
     set height [expr $height / 4]
     .bookWin.1.booktext configure -state disabled -height $height
