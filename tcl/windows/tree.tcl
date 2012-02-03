@@ -992,10 +992,7 @@ proc ::tree::prime { baseNumber } {
   ::tree::refresh $baseNumber
 }
 
-################################################################################
-# ::tree::best
-#   Updates the window of best (highest-rated) tree games.
-#
+### Update the window of best (highest-rated) tree games.
 
 proc ::tree::toggleBest { baseNumber } {
   set w .treeBest$baseNumber
@@ -1026,7 +1023,6 @@ proc ::tree::best { baseNumber } {
     listbox $w.blist.list  -yscrollcommand "$w.blist.ybar set" -font font_Fixed
     pack $w.blist.ybar -side right -fill y
     pack $w.blist.list -side left -fill both -expand yes
-    bind $w.blist.list <<ListboxSelect>> "::tree::bestPgn $baseNumber"
     bind $w.blist.list <Double-Button-1> "::tree::bestBrowse $baseNumber"
 
     label $w.b.result -text " $::tr(Result:)" -font font_Small
@@ -1056,50 +1052,62 @@ proc ::tree::best { baseNumber } {
     $w.blist.list insert end "  $line"
     lappend tree(bestList$baseNumber) $idx
   }
-  ::tree::bestPgn $baseNumber
 }
 
-################################################################################
+
 proc ::tree::bestLoad { baseNumber } {
   global tree
-  if {[catch {set sel [.treeBest$baseNumber.blist.list curselection]}]} { return }
-  if {[catch {set g [lindex $tree(bestList$baseNumber) $sel]}]} { return }
+
+  set gnum [::tree::bestGetCurrent $baseNumber]
+  if {$gnum < 0} {
+    return
+  }
+
   # if {$tree(locked$baseNumber)} { sc_base switch $tree(base$baseNumber) }
   sc_base switch $tree(base$baseNumber)
-  ::game::Load $g
+  ::game::Load $gnum
 }
 
-################################################################################
+
 proc ::tree::bestMerge { baseNumber } {
   global tree
-  if {[catch {set sel [.treeBest$baseNumber.blist.list curselection]}]} { return }
-  if {[catch {set gnum [lindex $tree(bestList$baseNumber) $sel]}]} { return }
-  set base $baseNumber
-  if {$tree(locked$baseNumber)} { set base $tree(base$baseNumber) }
+
+  set gnum [::tree::bestGetCurrent $baseNumber]
+  if {$gnum < 0} {
+    return
+  }
+
+  if {$tree(locked$baseNumber)} {
+    set base $tree(base$baseNumber)
+  } else {
+    set base $baseNumber
+  }
   mergeGame $base $gnum
 }
 
-################################################################################
+
 proc ::tree::bestBrowse { baseNumber } {
   global tree
-  if {[catch {set sel [.treeBest$baseNumber.blist.list curselection]}]} { return }
-  if {[catch {set gnum [lindex $tree(bestList$baseNumber) $sel]}]} { return }
-  set base $baseNumber
-  if {$tree(locked$baseNumber)} { set base $tree(base$baseNumber) }
+
+  set gnum [::tree::bestGetCurrent $baseNumber]
+  if {$gnum < 0} {
+    return
+  }
+
+  if {$tree(locked$baseNumber)} {
+    set base $tree(base$baseNumber)
+  } else {
+    set base $baseNumber
+  }
   ::gbrowser::new $base $gnum
 }
 
-################################################################################
-proc ::tree::bestPgn { baseNumber } {
-  global tree
-  if {[catch {set sel [.treeBest$baseNumber.blist.list curselection]}]} { return }
-  if {[catch {set g [lindex $tree(bestList$baseNumber) $sel]}]} { return }
-
-  set base $baseNumber
-
-  if {[catch {sc_game summary -base $base -game $g header} header]} { return }
-  if {[catch {sc_game summary -base $base -game $g moves} moves]} { return }
-  if {[catch {sc_filter value $base $g} ply]} { return }
+proc ::tree::bestGetCurrent {baseNumber} {
+  # If the listbox doesn't have a highlighted game, use game 0
+  if {[catch {set sel [.treeBest$baseNumber.blist.list curselection]}]} {return -1}
+  if {$sel == {}} { set sel 0 }
+  if {[catch {set gnum [lindex $::tree(bestList$baseNumber) $sel]}]} {return -1}
+  return $gnum
 }
 
 ### todo - fix the multiple tree windows, esp. when switching between bases S.A.
