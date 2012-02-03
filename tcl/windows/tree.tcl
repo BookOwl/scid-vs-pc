@@ -50,9 +50,9 @@ proc ::tree::treeFileSave {base} {
   }
   unbusyCursor .
 }
-################################################################################
+
 proc ::tree::make { { baseNumber -1 } } {
-  global tree treeWin highcolor geometry helpMessage
+  global tree helpMessage
 
   if {$baseNumber == -1} {set baseNumber [sc_base current]}
 
@@ -194,15 +194,13 @@ proc ::tree::make { { baseNumber -1 } } {
 
   ::tree::doConfigMenus $baseNumber
 
-  autoscrollframe $w.f text $w.f.tl -width $::winWidth(.treeWin) -height $::winHeight(.treeWin) \
-    -wrap none -selectbackground lightgrey -selectforeground black \
-    -font font_Fixed -foreground black  -setgrid 1 -exportselection 1
-  #define default tags
+  # Main move widget
+  autoscrollframe $w.f text $w.f.tl -wrap none -font font_Fixed -setgrid 1 -exportselection 1 -height 5
+
+  # default tags
   $w.f.tl tag configure greybg -background #fa1cfa1cfa1c
   $w.f.tl tag configure whitebg 
   $w.f.tl tag configure bluefg -foreground blue
-  $w.f.tl tag configure greenfg -foreground SeaGreen
-  $w.f.tl tag configure redfg -foreground red
   $w.f.tl tag configure nextmove -background lemonchiffon2
   #   $w.f.tl tag configure nextmove -foreground seagreen3
 
@@ -1031,7 +1029,7 @@ proc ::tree::best { baseNumber } {
     bind $w.blist.list <<ListboxSelect>> "::tree::bestPgn $baseNumber"
     bind $w.blist.list <Double-Button-1> "::tree::bestBrowse $baseNumber"
 
-    label $w.b.lres -text " $::tr(Result:)" -font font_Small
+    label $w.b.result -text " $::tr(Result:)" -font font_Small
     tk_optionMenu $w.b.res tree(bestRes$baseNumber) All 1-0 0-1 {1-0 0-1} {1/2-1/2}
     $w.b.res configure -font font_Small -relief ridge -borderwidth 0 -direction right
 
@@ -1042,7 +1040,7 @@ proc ::tree::best { baseNumber } {
     foreach i {browse load merge close} { $w.b.$i configure -font font_Small }
     pack $w.b.browse $w.b.load $w.b.merge -side left -padx 5 -pady 5
     pack $w.b.close -side right -padx 5 -pady 5
-    pack $w.b.lres $w.b.res -side left -padx 5 -pady 5
+    pack $w.b.result $w.b.res -side left -padx 5 -pady 5
     bind $w <Configure> "recordWinSize $w"
     focus $w.blist.list
   }
@@ -1058,7 +1056,6 @@ proc ::tree::best { baseNumber } {
     $w.blist.list insert end "  $line"
     lappend tree(bestList$baseNumber) $idx
   }
-  catch {$w.blist.list selection set 0}
   ::tree::bestPgn $baseNumber
 }
 
