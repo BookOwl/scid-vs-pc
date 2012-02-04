@@ -2586,10 +2586,9 @@ making for easier <a Analysis Debugging>Debugging</a>.
   to restart their analysis, forgetting previous lines.
   Only few engines are able to reuse the
   results they have calculated till the analysis was stopped.</i> </li>
-  <li> <button tb_lockengine 32> <b>Lock Analysis</b> lock analysis to a certain position.
-  <i>This also sets <a Moves Trial>Trial mode</a>.
-  Then, to add the this analysis as a variation, first press the <b>Pause</b>
-  button, then <b>Add Varation</b></i>.</li>
+  <li> <button tb_lockengine 32> <b>Lock Analysis</b> to a certain position.
+  After a while, to add this analysis to game, return to the locked position, 
+  press Pause, Unlock, and Add Variation.</li>
 
   <li> <button tb_addmove 32> <b>Add Move</b> 
   adds the engine's best move to the current game.</li>

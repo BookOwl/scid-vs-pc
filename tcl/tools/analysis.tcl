@@ -2727,16 +2727,10 @@ proc toggleEngineAnalysis {n {force 0}} {
     stopAnalyzeMode $n
     $b configure -image tb_play
     ::utils::tooltip::Set $b "$::tr(StartEngine)"
-    # reset lock mode and disable lock button
-    set analysis(lockEngine$n) 0
-    toggleLockEngine $n
-    .analysisWin$n.b.lockengine configure -state disabled
   } else  {
     startAnalyzeMode $n
     $b configure -image tb_pause
     ::utils::tooltip::Set $b "$::tr(StopEngine)"
-    # enable lock button
-    .analysisWin$n.b.lockengine configure -state normal
   }
 }
 ################################################################################
@@ -2792,18 +2786,7 @@ proc toggleLockEngine {n} {
     set state disabled
     set analysis(lockN$n) [sc_pos moveNumber]
     set analysis(lockSide$n) [sc_pos side]
-
-    ### You can now lock the engine position, press "pause", and then
-    # "add variation" to add the analysis of the locked position
-    # NB. If trial mode is already set, locking the engine will lose previous position
-
-    if  {$::trialMode} {
-      setTrialMode update
-    } else {
-      setTrialMode 1
-    }
   } else {
-    setTrialMode 0
     set state normal
   }
   set w .analysisWin$n
