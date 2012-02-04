@@ -19,21 +19,6 @@
 #include "mfile.h"
 #include <ctype.h>
 
-static const uint ELO_YEAR_FIRST = 1970;
-static const uint ELO_YEAR_LAST  = 2010;
-static const uint ELO_YEAR_RANGE = ELO_YEAR_LAST + 1 - ELO_YEAR_FIRST;
-static const uint ELO_RATINGS_PER_YEAR = 4;
-static const uint ELO_FIRST_QUARTERLY_YEAR = 2001;
-static const uint ELO_ARRAY_SIZE = ELO_YEAR_RANGE * ELO_RATINGS_PER_YEAR;
-static const uint ELO_MONTH_TO_QUARTER[13] = {
-    0,         // Unknown month
-    0, 0, 0,   // Jan, Feb, Mar
-    1, 1, 1,   // Apr, May, Jun
-    2, 2, 2,   // Jul, Aug, Sep
-    3, 3, 3    // Oct, Nov, Dec
-};
-
-
 inline uint
 spellHash (const char * str)
 {
@@ -201,6 +186,7 @@ SpellChecker::RenderName (const char * name) {
     return name;
 }
 
+
 // This data has been imported from spelling.ssp comment fields by S.A.
 // use: grep '^#   [[:upper:]][[:upper:]][[:upper:]]  ' spelling.ssp
 
@@ -346,8 +332,6 @@ SpellChecker::GetComment (const char * name)
     while (node != NULL) {
         if (strIsPrefix (searchName, node->name)) {
             returnStr = node->comment;
-        // Comments looks like:
-        //   gm   URS/BLR/ISR [2737] 1968
         }
         // If the match is exact, return immediately:
         if (strEqual (searchName, node->name)) { break; }
@@ -513,8 +497,8 @@ SpellChecker::ReadSpellCheckFile (const char * filename, bool checkPlayerOrder)
         fp.ReadLine (line, 1024);
         if (fp.EndOfFile()) { break; }
 
-        char * name;
-        char * comment;
+        char * name = NULL;
+        char * comment = NULL;
         getNameAndComment (line, &name, &comment);
 
         // Now s contains just the name, no extra space or comment.
@@ -712,13 +696,84 @@ SpellChecker::GetBioData (const char * name)
         if (strEqual (searchName, node->name)) { break; }
         node = node->next;
     }
-
     if (node && node->alias && node->alias->bioData)
         return node->alias->bioData;
-    else 
+    else
         return note;
 }
 
+
+static const uint ELO_YEAR_LAST  = 2015; // end of current ELO scheme, could be increased in case the rating period does not change
+static const uint ELO_YEAR_FIRST = 1970;
+
+static const uint ELO_YEAR_RANGE = ELO_YEAR_LAST + 1 - ELO_YEAR_FIRST;
+
+static const uint ELO_RATINGS_PER_YEAR = 6;
+
+static const uint ELO_ARRAY_SIZE = ELO_YEAR_RANGE * ELO_RATINGS_PER_YEAR;
+
+// Half-year lists
+static const uint ELO_MONTH_TO_SEMESTER[13] = {
+    0,
+    0, 0, 0, 0, 0, 0, // Jan - Jun
+    1, 1, 1, 1, 1, 1  // Jul - Dec
+};
+
+
+// Start of years with quarterly lists
+static const uint ELO_FIRST_QUARTERLY_YEAR = 2001;
+
+// Quarterly lists
+static const uint ELO_MONTH_TO_QUARTER[13] = {
+    0,         // Unknown month
+    0, 0, 0,   // Jan, Feb, Mar
+    1, 1, 1,   // Apr, May, Jun
+    2, 2, 2,   // Jul, Aug, Sep
+    3, 3, 3    // Oct, Nov, Dec
+};
+
+
+// Year of 3 quarters and 2 bi-monthlies 
+static const uint ELO_TRANSITIONAL_YEAR    = 2009;
+
+// Transitional period
+static const uint ELO_MONTH_TO_TRANSITIONAL[13] = {
+    0,         // Unknown month
+    0, 0, 0,   // Jan, Feb, Mar
+    1, 1, 1,   // Apr, May, Jun
+    2, 2,      // Jul, Aug
+    3, 3,      // Sep, Oct
+    4, 4       // Nov, Dec
+};
+
+
+// Start of years with bi-monthly lists
+static const uint ELO_FIRST_BIMONTHLY_YEAR = 2010;
+
+// Bi-monthly lists
+static const uint ELO_MONTH_TO_BIMONTHLY[13] = {
+    0,         // Unknown month
+    0, 0,      // Jan, Feb
+    1, 1,      // Mar, Apr
+    2, 2,      // May, Jun
+    3, 3,      // Jul, Aug
+    4, 4,      // Sep, Oct
+    5, 5       // Nov, Dec
+};
+
+
+// Retrieve the list of Rating figures for given player (aka node) from the given (ssp) string
+// The string is formatted as:
+// [%Elo ]<year>:<<rating>|?>,...,<<rating>|?> [<year>:<<rating>|?>,...,<<rating>|?>...]
+//
+// The ratings are stored in a rating array for this player, in the order of appearance
+// and without any assumption on the period that the rating refers to.
+// This is accomplished by assuming that for all years the same number of rating figures
+// could be given (see ELO_RATINGS_PER_YEAR above).
+//
+// The (external) algorithm to map ratings to actual periods must be able to cope with
+// the holes that - as a consequence - will appear in the rating graph constructed here!
+//
 void
 SpellChecker::AddEloData (spellCheckNodeT * node, const char * str)
 {
@@ -733,8 +788,15 @@ SpellChecker::AddEloData (spellCheckNodeT * node, const char * str)
             node->eloData[i] = 0;
         }
     }
+
+    // Skip the %Elo prefix. TODO: Apparently it may or may not be there....
+    //
     if (strIsPrefix ("%Elo ", str)) { str += 4; }
+    
+    
     while (1) {
+        // Get the year in which the rating figures to follow were published
+        //
         str = strTrimLeft (str);
         if (! isdigit (*str)) { break; }
         uint year = strGetUnsigned (str);
@@ -743,7 +805,8 @@ SpellChecker::AddEloData (spellCheckNodeT * node, const char * str)
         str++;
 
         // Now read all the ratings for this year:
-        uint quarter = 0;
+        //
+        uint yIndex = 0;
         uint elo = 0;
         while (1) {
             if (isdigit (*str)) {
@@ -759,42 +822,71 @@ SpellChecker::AddEloData (spellCheckNodeT * node, const char * str)
                 return;
             }
 
-            SetElo (node, year, quarter, elo);
-            if (year >= ELO_FIRST_QUARTERLY_YEAR) {
-                quarter++;
-            } else {
-                SetElo (node, year, quarter+1, elo);
-                quarter += 2;
-            }
+            SetElo (node, year, yIndex, elo);
+            yIndex++;
+
             if (*str == ',') { str++; }
         }
     }
 }
 
+
+
 void
 SpellChecker::SetElo (spellCheckNodeT * node,
-                      uint year, uint quarter, eloT elo)
+                      uint year, uint yIndex, eloT elo)
 {
-    if (year < ELO_YEAR_FIRST  ||  year > ELO_YEAR_LAST) { return; }
-    if (quarter >= ELO_RATINGS_PER_YEAR) { return; }
+    // Monitor array bounds
+    //
+    if ( year < ELO_YEAR_FIRST  ||  year > ELO_YEAR_LAST ) { return; }
+    if ( yIndex >= ELO_RATINGS_PER_YEAR ) { return; }
     uint index = (year - ELO_YEAR_FIRST) * ELO_RATINGS_PER_YEAR;
-    index += quarter;
+    index += yIndex;
     ASSERT (index < ELO_ARRAY_SIZE);
     node->eloData[index] = elo;
 }
 
+
+// Find the rating for given player name applicable to given date
+// Main purpose of the function is to map this date on the (assumed)
+// release schedule of the ratings
+//
+// The release schedule hard-coded implemented here is the schedule
+// that FIDE has applied over the years for the ELO rating.
+//
 eloT
 SpellChecker::GetElo (const char * name, dateT date, bool exact)
 {
     uint year = date_GetYear (date);
     uint month = date_GetMonth (date);
-    if (month > 12) { month = 1; }
-    uint quarter = ELO_MONTH_TO_QUARTER[month];
-    if (year < ELO_YEAR_FIRST  ||  year > ELO_YEAR_LAST) { return 0; }
+    
+    // Month overflow protection. TODO: Should it be mapped to "no month" (zero)?
+    if ( month > 12 ) { month = 1; }
+    
+    // Year overflow protection
+    //
+    if ( year < ELO_YEAR_FIRST  ||  year > ELO_YEAR_LAST ) { return 0; }
 
+    // Now find the index for the given year
+    // It depends on the year itself
+    
+    uint yIndex;
+    if ( year >= ELO_FIRST_BIMONTHLY_YEAR ) {
+        yIndex = ELO_MONTH_TO_BIMONTHLY[month];
+    }
+    else if ( year >= ELO_TRANSITIONAL_YEAR ) {
+        yIndex = ELO_MONTH_TO_TRANSITIONAL[month];
+    }
+    else if ( year >= ELO_FIRST_QUARTERLY_YEAR ) {
+        yIndex = ELO_MONTH_TO_QUARTER[month];
+    }
+    else {
+        yIndex = ELO_MONTH_TO_SEMESTER[month];
+    }
+    
     uint index = (year - ELO_YEAR_FIRST) * ELO_RATINGS_PER_YEAR;
     uint indexStartOfYear = index;
-    index += quarter;
+    index += yIndex;
     ASSERT (index < ELO_ARRAY_SIZE);
 
     char searchName [512];
@@ -824,6 +916,7 @@ SpellChecker::GetElo (const char * name, dateT date, bool exact)
     // If we reach here, no exact name match with Elo data was found:
     return 0;
 }
+
 
 void
 SpellChecker::Dump (FILE * fp)

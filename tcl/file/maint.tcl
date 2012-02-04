@@ -1580,8 +1580,10 @@ proc doAllocateRatings {} {
 
     ### There is an issue with the pgn not getting updated
     ### This fixes, and may be necessary in other maintenance routines
-    sc_game load [sc_game number]
-    updateBoard -pgn
+    catch {
+      sc_game load [sc_game number]
+      updateBoard -pgn
+    }
 
     tk_messageBox -type ok -icon info -parent . \
         -title "Scid" -message [subst $::tr(AddedRatings)]
