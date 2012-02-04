@@ -1527,6 +1527,8 @@ proc allocateRatings {{parent .}} {
   set w .ardialog
   toplevel $w
   wm title $w "Scid"
+  wm withdraw $w
+
   label $w.lab -wraplength 3i -justify left -text $::tr(AllocRatingDescription)
   pack $w.lab -side top
   addHorizontalRule $w
@@ -1552,6 +1554,9 @@ proc allocateRatings {{parent .}} {
   button $w.b.cancel -text $::tr(Cancel) \
       -command "catch {grab release $w}; destroy $w"
   pack $w.b.cancel $w.b.ok -side right -padx 3 -pady 3
+  placeWinOverParent $w .maintWin
+  wm state $w normal
+
   catch {grab $w}
   focus $w.b.ok
 }
@@ -1572,6 +1577,12 @@ proc doAllocateRatings {} {
     closeProgressWindow
     set r [::utils::thousands [lindex $result 0]]
     set g [::utils::thousands [lindex $result 1]]
+
+    ### There is an issue with the pgn not getting updated
+    ### This fixes, and may be necessary in other maintenance routines
+    sc_game load [sc_game number]
+    updateBoard -pgn
+
     tk_messageBox -type ok -icon info -parent . \
         -title "Scid" -message [subst $::tr(AddedRatings)]
   }
