@@ -847,7 +847,7 @@ proc ::windows::gamelist::Refresh {{see {}}} {
 
   for {set line $glistEnd} {$line >= $glstart} {incr line -1} {
     incr i -1
-    set values [lindex $VALUES $i]
+    set values [encoding convertfrom [lindex $VALUES $i]]
 
     if {[catch {set thisindex [lindex $values 0]}]} {
       ### Mismatched brace in game values. Bad!
