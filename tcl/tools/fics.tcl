@@ -547,7 +547,18 @@ namespace eval fics {
       }
       return
     }
-    writechan $l "echo"
+
+    if {$c == "smoves"} {
+      sc_game new
+
+      ### smoves recreates a game without any further announcment
+      writechan $l "echo"
+      set ::fics::waitForMoves no_meaning
+      vwaitTimed ::fics::waitForMoves 2000 nowarn
+      updateBoard -pgn -animate
+    } else {
+      writechan $l "echo"
+    }
 
     lappend ::fics::history $l
     set ::fics::history_pos [llength $::fics::history]
@@ -767,7 +778,6 @@ namespace eval fics {
   ################################################################################
   proc readparse {line} {
     variable logged
-
     ### what is the significance of the fics prompt "fics%" &&&
     if {[string match {fics% *} $line]} {
 	set line [string range $line 6 end]
@@ -1111,12 +1121,41 @@ namespace eval fics {
         puts "Exception $err llength $line"
         return
       }
-      if {[llength $line ] == 5 && [scan $line "%d. %s (%d:%d) %s (%d:%d)" t1 m1 t2 t3 m2 t4 t5] != 7} {
+
+      set length [llength $line ]
+
+      if {$length == 5 && [scan $line "%d. %s (%d:%d) %s (%d:%d)" t1 m1 t2 t3 m2 t4 t5] != 7} {
         return
       }
-      if {[llength $line ] == 3 && [scan $line "%d. %s (%d:%d)" t1 m1 t2 t3] != 4} {
+      if {$length == 3 && [scan $line "%d. %s (%d:%d)" t1 m1 t2 t3] != 4} {
         return
       }
+      if {$length == 12 && [scan $line {%s %s %s %s %s} t1 t2 t3 t4 t5] == 5} {
+	# ImaGumby (1280) vs. Kaitlin (1129) --- Sat Feb  4, 02:12 PST 2012
+
+        if {$t3 == "vs."} {
+	  sc_game tags set -white    $t1
+	  sc_game tags set -black    $t4
+          sc_game tags set -whiteElo [string range $t2 1 end-1]
+          sc_game tags set -blackElo [string range $t5 1 end-1]
+          # todo
+	  # sc_game tags set -date [::utils::date::today]
+	  # sc_game tags set -event "FICs Game $game $initialTime/$increment"
+
+        }
+        return
+      }
+      if {$length == 2 && [string match {\{*\} *} $line]} {
+	# {White forfeits on time} 1-0
+        ::commenteditor::appendComment [lindex $line 0]
+	sc_game tags set -result [lindex $line 1]
+        return
+      }
+
+      # Add this move
+      # 1.  d4      (0:00)     d6      (0:00)
+      # 2.  c4      (0:25)     Bf5     (0:01)
+
       catch { sc_move addSan $m1 }
       if {$m2 != ""} {
         catch { sc_move addSan $m2 }

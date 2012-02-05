@@ -85,7 +85,7 @@ To start FICS use <run ::fics::config><green>Play--<gt>FICS (Internet)</green></
 <br>
 <li><a FICSfindopp>Finding an Opponent</a></li>
 <br>
-<li><a FICSobserve>Observing Games</a> and other features</li>
+<li><a FICSobserve>Observing and Examining Games</a>, and other features</li>
 <br>
 <li><a FICScommands>FICS Commands and Variables</a></li>
 </ul>
@@ -5328,8 +5328,9 @@ Playing these games is not supported, but they can be oberved using the </b>obse
   <p><footer>Updated: Scid vs. PC 3.4.1, September 2010</footer></p>
 }
 # FICS Find Opponent
-set helpTitle(FICSobserve) "Observing Games"
-set helpText(FICSobserve) {<h1>Observing Games</h1>
+set helpTitle(FICSobserve) "Other Features Games"
+set helpText(FICSobserve) {<h1>Other Features</h1>
+<h3>Observing Games</h3>
   <p>
   FICS has many powerful commands. The format for observing other games is
 <b>observe player | game | /l | /b | /s | /S | /w | /z | /B | /L | /x</b>
@@ -5361,7 +5362,18 @@ where the options are:
   troublesome, and it is disabled for </i><b>variants</b>.</li>
   <li><img arrow_close> Closes the game.</li>
   </ul>
-  
+  </p>
+
+  <h3>Examining Games</h3>
+  <p>
+  The FICS "examine" command is not supported, but analysing played games can be done by
+  </p>
+  <p>
+  <b>smoves PlayerA</b> [<b>PlayerB</b>] [journal_slot]
+  </p>
+  <p>
+  This command loads a previously played or suspended game into the main board.
+  Type "help smoves" for more info.
   </p>
 
   <h3>Discussion</h3>
@@ -5480,6 +5492,7 @@ for info about specific commands and variables.
     <li><term>+channel</term> NUMBER - Listen to channel NUMBER</li>
     <li><term>-channel</term> NUMBER - Stop listening to channel</li>
     <li><term>news</term>   Show FICS news</li>
+    <li><term>smoves</term> print out moves from a previously played game</li>
     <li><term>seek</term>   Seek a new game</li>
     <li><term>=notify</term> - Display the player names of whom you are automatically notified.</li>
     <li><term>+notify</term> PLAYER - Add player to your notify list</li>
