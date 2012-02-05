@@ -904,7 +904,7 @@ translate E SortDatabase {Sort database}
 translate E AddEloRatings {Add Elo ratings}
 translate E AutoloadGame {Autoload game}
 translate E StripTags {Strip PGN tags}
-translate E StripTag {Strip tag}
+translate E StripTag {Strip Tag}
 translate E CheckGames {Check games}
 translate E Cleaner {Cleaner}
 translate E CleanerHelp {

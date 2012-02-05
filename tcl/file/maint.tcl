@@ -1554,6 +1554,7 @@ proc allocateRatings {{parent .}} {
   button $w.b.cancel -text $::tr(Cancel) \
       -command "catch {grab release $w}; destroy $w"
   pack $w.b.cancel $w.b.ok -side right -padx 3 -pady 3
+
   placeWinOverParent $w .maintWin
   wm state $w normal
 
@@ -1578,8 +1579,7 @@ proc doAllocateRatings {} {
     set r [::utils::thousands [lindex $result 0]]
     set g [::utils::thousands [lindex $result 1]]
 
-    ### There is an issue with the pgn not getting updated
-    ### This fixes, and may be necessary in other maintenance routines
+    # Update pgn for the current game (if any)
     catch {
       sc_game load [sc_game number]
       updateBoard -pgn
@@ -1601,7 +1601,7 @@ proc stripTags {{parent .}} {
   global stripTagChoice stripTagCount
   set w .striptags
   if {[winfo exists $w]} {
-    raise $w
+    raiseWin $w
     return
   }
   set stripTagList {}
@@ -1636,6 +1636,9 @@ proc stripTags {{parent .}} {
 
   toplevel $w
   wm title $w "Scid: $::tr(StripTags)"
+  wm withdraw $w
+  bind $w <F1> {helpWindow Maintenance Tags}
+
   label $w.title -text "Extra PGN tags" -font font_Bold
   pack $w.title -side top
   pack [frame $w.f] -side top -fill x
@@ -1653,19 +1656,20 @@ proc stripTags {{parent .}} {
     incr row
   }
   button $w.b.find -text $::tr(SetFilter) -command findStripTags
-  button $w.b.strip -text $::tr(StripTag...) -command {
+  button $w.b.strip -text $::tr(StripTag) -command {
     set removed [doStripTags .striptags]
     set stripTagCount($stripTagChoice) \
         [expr {$stripTagCount($stripTagChoice) - $removed} ]
     .striptags.f.c$stripTagChoice configure -text \
         [::utils::thousands $stripTagCount($stripTagChoice)]
   }
-  button $w.b.cancel -text $::tr(Cancel) \
-      -command "catch {grab release $w}; destroy $w"
+  button $w.b.cancel -text $::tr(Cancel) -command "destroy $w"
   pack $w.b.cancel $w.b.strip $w.b.find -side right -padx 2 -pady 2
-  wm resizable $w 0 0
+
+  raise $parent 
+  placeWinOverParent $w $parent
+  wm state $w normal
   update
-  catch {grab $w}
 }
 
 proc doStripTags {{parent .}} {
@@ -1702,6 +1706,7 @@ proc findStripTags {} {
   set err [catch {sc_base tag find $stripTagChoice} result]
   unbusyCursor .
   closeProgressWindow
+  ::windows::gamelist::Refresh
   ::windows::stats::Refresh
 }
 

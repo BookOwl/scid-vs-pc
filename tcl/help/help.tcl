@@ -2370,14 +2370,19 @@ perform a Namebase <a Compact>Compaction</a>.
   <p>
   The <b>Add Elo ratings</b> button (Maintenance window) searches for games with null player ratings.
   If the spellcheck file has an ELO rating for the
-  player - at the date of the game - Scid will add such ratings
-  to the database.
+  player - at the date of the game - Scid will add such ratings to the database.
   </p>
   <p>
   The <a Maintenance Spellfile>spellcheck file</a> provided with Scid does not contain
   the Elo rating information needed for this function. Instead,
-  the larger "ratings.ssp" file should be used.
+  the larger <b>ratings.ssp</b> file should be used.
   </p>
+  <p>
+  <i>Ratings are not added to games with known aliases.
+  One may wish to run the Spell Checker first, which changes names using player aliases.
+  </i>
+  </p>
+
 
   <h3><name Cleaner>The Cleaner</name></h3>
   <p>
@@ -2393,6 +2398,13 @@ perform a Namebase <a Compact>Compaction</a>.
   When a database is opened, one may automatically load a particular game
   using the Maintenance <b>Autoload game</b> feature. 
   <i>Note: Because of design of si4 header, this number's upper limit is 16,777,214 (Approximately 2^(8*3)).</i>
+  </p>
+
+  <h3><name Tags>Strip PGN Tags</name></h3>
+  <p>
+  This feature scans the database for extra PGN tags (such as "Annotator").
+  Then, one may strip these tags from the base, or set the filter to
+  show the matching games.
   </p>
 
   <h3><name Check>Check Games</name></h3>
