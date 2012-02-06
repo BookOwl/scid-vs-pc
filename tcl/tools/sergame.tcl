@@ -493,7 +493,7 @@ namespace eval sergame {
     global ::sergame::isOpening ::sergame::openingMovesList ::sergame::openingMovesHash \
            ::sergame::openingMoves ::sergame::timeMode ::sergame::outOfOpening
 
-   set n $::sergame::engine
+    set n $::sergame::engine
 
     after cancel ::sergame::engineGo
 
@@ -502,9 +502,9 @@ namespace eval sergame {
       return
     }
 
-    ### every second check if it's computers turn yet
 
     if { [sc_pos side] != [::sergame::getEngineColor] } {
+      # Not computers turn, come back in 1  second
       after 1000 ::sergame::engineGo
       return
     }
@@ -747,10 +747,10 @@ namespace eval sergame {
 
   proc getEngineColor {} {
     # Engine always plays for the upper side
-    if { [::board::isFlipped .board] == 0 } {
-      return "black"
+    if {[::board::isFlipped .board]} {
+      return white
     } else  {
-      return "white"
+      return black
     }
   }
 

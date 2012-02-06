@@ -1664,6 +1664,8 @@ proc pauseGame {args} {
 
 proc checkRepetition {} {
   set elt [lrange [split [sc_pos fen]] 0 2]
+  if {$elt == [lindex $::lFen end]} {return}
+
   lappend ::lFen $elt
   if { [llength [lsearch -all $::lFen $elt] ] >=3 && ! $::drawShown } {
     set ::drawShown 1
