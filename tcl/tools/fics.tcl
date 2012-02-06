@@ -511,9 +511,7 @@ namespace eval fics {
     }
   }
 
-  ################################################################################
-  #
-  ################################################################################
+
   proc cmd {} {
     set w .fics
 
@@ -549,24 +547,30 @@ namespace eval fics {
     }
 
     if {$c == "smoves"} {
+      # smoves recreates a game without any further announcment
+
+      set confirm [::game::ConfirmDiscard2]
+      if {$confirm == 2} {return}
+      if {$confirm == 0} {sc_game save [sc_game number]}
       sc_game new
 
-      ### smoves recreates a game without any further announcment
       writechan $l "echo"
+
       set ::fics::waitForMoves no_meaning
       vwaitTimed ::fics::waitForMoves 2000 nowarn
       updateBoard -pgn -animate
     } else {
+
       writechan $l "echo"
+
     }
 
     lappend ::fics::history $l
     set ::fics::history_pos [llength $::fics::history]
     $w.console.text yview moveto 1
   }
-  ################################################################################
-  #
-  ################################################################################
+
+
   proc cmdHistory { action } {
     set t .fics.command.entry
 
@@ -1062,10 +1066,12 @@ namespace eval fics {
       ### Get observed game Info
 
       # Game 237: impeybarbicane (1651) bust (1954) rated crazyhouse 5 0
+      # Game 237: impeybarbicane ( 649) bust ( 987) rated crazyhouse 5 0
+      # note - the stray '(' in the line below seems to make matching the elo easier
 
-      if {[scan $line {Game %d: %s %s %s %s %s %s %d %d} g white whiteElo black blackElo dummy gametype t1 t2]} {
-          set ::fics::elo($white) [string range $whiteElo 1 end-1]
-          set ::fics::elo($black) [string range $blackElo 1 end-1]
+      if {[scan $line {Game %d: %s (%s %s (%s %s %s %d %d} g white whiteElo black blackElo dummy gametype t1 t2] == 9} {
+          set ::fics::elo($white) [string range $whiteElo 0 end-1]
+          set ::fics::elo($black) [string range $blackElo 0 end-1]
           if {[winfo exists .fics.bottom.game$g]} {
 	    .fics.bottom.game$g.w.white configure -text $white
 	    .fics.bottom.game$g.b.black configure -text $black
@@ -1130,14 +1136,14 @@ namespace eval fics {
       if {$length == 3 && [scan $line "%d. %s (%d:%d)" t1 m1 t2 t3] != 4} {
         return
       }
-      if {$length == 12 && [scan $line {%s %s %s %s %s} t1 t2 t3 t4 t5] == 5} {
+      if {$length == 12 && [scan $line {%s (%s %s (%s %s} t1 t2 t3 t4 t5] == 5} {
 	# ImaGumby (1280) vs. Kaitlin (1129) --- Sat Feb  4, 02:12 PST 2012
 
         if {$t3 == "vs."} {
 	  sc_game tags set -white    $t1
 	  sc_game tags set -black    $t4
-          sc_game tags set -whiteElo [string range $t2 1 end-1]
-          sc_game tags set -blackElo [string range $t5 1 end-1]
+          sc_game tags set -whiteElo [string range $t2 0 end-1]
+          sc_game tags set -blackElo [string range $t5 0 end-1]
           # todo
 	  # sc_game tags set -date [::utils::date::today]
 	  # sc_game tags set -event "FICs Game $game $initialTime/$increment"

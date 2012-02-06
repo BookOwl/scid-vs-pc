@@ -85,12 +85,12 @@ To start FICS use <run ::fics::config><green>Play--<gt>FICS (Internet)</green></
 <br>
 <li><a FICSfindopp>Finding an Opponent</a></li>
 <br>
-<li><a FICSobserve>Observing and Examining Games</a>, and other features</li>
+<li><a FICSobserve>Observing, Examining Games</a> and other features</li>
 <br>
 <li><a FICScommands>FICS Commands and Variables</a></li>
 </ul>
 <br>
-  <p><footer>Updated: Scid vs. PC 3.4.1, September 2010</footer></p>
+  <p><footer>Updated: Scid vs. PC 4.7 Febuary 2012</footer></p>
 }
 
 set helpTitle(BrowsingPGN) "PGN"
@@ -5415,7 +5415,7 @@ where the options are:
   also other bots available.
   </p>
 
-  <p><footer>Updated: Scid vs. PC 4.7 December 2011</footer></p>
+  <p><footer>Updated: Scid vs. PC 4.7 Febuary 2012</footer></p>
 }
 
 set helpTitle(FICSwidget) "FICS: Play on the Internet"
@@ -5492,7 +5492,7 @@ for info about specific commands and variables.
     <li><term>+channel</term> NUMBER - Listen to channel NUMBER</li>
     <li><term>-channel</term> NUMBER - Stop listening to channel</li>
     <li><term>news</term>   Show FICS news</li>
-    <li><term>smoves</term> print out moves from a previously played game</li>
+    <li><term>smoves</term> Display moves from a previously played game</li>
     <li><term>seek</term>   Seek a new game</li>
     <li><term>=notify</term> - Display the player names of whom you are automatically notified.</li>
     <li><term>+notify</term> PLAYER - Add player to your notify list</li>
