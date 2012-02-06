@@ -1182,9 +1182,8 @@ proc baseIsCompactable {} {
   return 1
 }
 
-# makeCompactWin:
-# Opens the database compaction dialog box.
-#
+# Database Compaction (name and game files)
+
 proc makeCompactWin {{parent .}} {
   if {! [baseIsCompactable]} { return }
   set w .compactWin
@@ -1252,8 +1251,7 @@ proc makeCompactWin {{parent .}} {
   button $w.buttons.n -text $::tr(CompactNames) -command compactNames
   button $w.buttons.g -text $::tr(CompactGames) -command "compactGames $w"
   button $w.buttons.help -text $::tr(Help) -command {helpWindow Compact}
-  button $w.buttons.cancel -text $::tr(Cancel) \
-      -command "focus . ; destroy $w"
+  button $w.buttons.cancel -text $::tr(Close) -command "focus . ; destroy $w"
   pack $w.buttons.cancel $w.buttons.help -side right -padx 5 -pady 2
   pack $w.buttons.n $w.buttons.g -side left -padx 5 -pady 2
 
