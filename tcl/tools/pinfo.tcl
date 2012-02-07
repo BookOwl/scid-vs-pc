@@ -87,8 +87,10 @@ proc playerInfo {{player ""} {raise 0}} {
     place forget $w.photo
   }
 
-  ### update text window contents
+  ### Make FIDEID open relevant url
+  regsub {FIDEID ([0-9]+)} $pinfo {<run openURL http://ratings.fide.com/card.phtml?event=%\1 ; ::windows::stats::Refresh>FIDEID \1</run>} pinfo
 
+  ### update main window
   $w.text configure -state normal
   $w.text delete 1.0 end
   ::htext::display $w.text $pinfo
