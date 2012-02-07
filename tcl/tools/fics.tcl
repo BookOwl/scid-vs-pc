@@ -558,7 +558,7 @@ namespace eval fics {
 
       set ::fics::waitForMoves no_meaning
       vwaitTimed ::fics::waitForMoves 2000 nowarn
-      updateBoard -pgn -animate
+      updateBoard -pgn
     } else {
 
       writechan $l "echo"
@@ -1670,7 +1670,7 @@ namespace eval fics {
       }
 
       set ::fics::mutex 0
-      updateBoard -pgn -animate
+      updateBoard -pgn
     }
   }
 
@@ -1863,7 +1863,14 @@ namespace eval fics {
       ::fics::close error
       return
     }
+
+    if {$::fics::use_timeseal} {
+      # Remove non-ascii chars. They cause timeseal to die and give a network error
+      set line [regsub -all {[\u0080-\uffff]} $line ?]
+    }
+
     puts $::fics::sockchan $line
+
     if {$echo != "noecho"} {
       updateConsole "->>$line"
     }
