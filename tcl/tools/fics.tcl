@@ -1,8 +1,8 @@
 ###
 ### fics.tcl: part of Scid.
-### Copyright (C) 2007  Pascal Georges
 ###
-### Reorganised by stevenaaus, with a new Offers widget 2010
+### Copyright (C) 2007  Pascal Georges
+### Copyright Stevenaaus 2010-2012
 
 namespace eval fics {
   set server "freechess.org"

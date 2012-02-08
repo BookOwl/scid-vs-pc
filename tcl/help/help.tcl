@@ -417,6 +417,7 @@ set helpText(Index) {<h1>Scid Help Index</h1>
   <h3><name T>T</name></h3>
   <ul>
   <li><a TB>Tablebases</a></li>
+  <li>Finding extra PGN <a Maintenance Tags>Tags</a>
   <li><a Menus Tools>Tools menu</a></li>
   <li><a Tourney>Tournament</a> of Chess Engines</li>
   <li><a Tmt>Tournament finder</a></li>
@@ -968,32 +969,30 @@ set helpText(Searches) {<h1>Searches in Scid</h1>
   <p>
   Scid can perform several different types of searches. The main ones are:
   <ul>
-  <li><b>General</b> (or Header) searches - such as Players, Result or Date</li>
-  <li><b>Game Positions</b> - matching the Current Board</li>
-  <li><b>Material and Piece Pattern</b> searches.</li>
-  </ul></p>
-  <p>
-  <i>Positional Searches can also be performed automatically, by the <a Tree>Tree Window</a>.</i>
+  <li><a Searches Header>General</a> (or Header) searches - such as Players, Result or Date</li>
+  <li><a Searches Board>Game Positions</a> - matching the Current Board</li>
+  <li><a Searches Material>Material and Piece Pattern</a> searches.</li>
   </p>
   <p>
   Searches display their results by adjusting the <a Filter>Filter</a> with matching games.
-  </p>
-  <p>
-  By default they will <b>Reset</b> the Filter (searching the whole database). But one may also
+  By default they will <b>Reset</b> the Filter (ie - search the whole database). But one may also
   <b>Add to</b>, or <b>Restrict</b> the Filter, allowing complex searches to be built up.
   </p>
   <p>
   With Position, Tree, and Material/Pattern searches, when you load a matching game
-  it will automatically show the relevent game position.
+  it will automatically show the relevant game position.
   </p>
   <p>
   <i>Most searches only apply to the Main Line of a game, and not to Variations</i>.
+  <br>
+  <br>
+  <i>Positional Searches can also be performed by the <a Tree>Tree Window</a>.</i>
   </p>
 
   <h3><name Header>General (Header) Searches</name></h3>
   <p>
   This search is for game information stored
-  in the game header such as Player Names, Date, Result, Flags and Ratings.
+  in the game header (Player Names, Date etc) or PGN text of a game.
   For a successful match, <b>all fields must match</b>.
   </p>
   <p>
@@ -1038,6 +1037,10 @@ set helpText(Searches) {<h1>Searches in Scid</h1>
   <i>Note - if a search by <a ECO>ECO</a> code is performed, games
   that have no ECO code attached are ignored</i>.
   </p>
+  <p>
+  <i>Searching for extra PGN tags (such as "Annotator") can be done 
+  within the <a Maintenance Tags>Maintenance Strip Tags</a> feature.
+  </p>
 
   <h3><name Board>Current Board Searches</name></h3>
   <p>
@@ -1070,11 +1073,11 @@ set helpText(Searches) {<h1>Searches in Scid</h1>
   is large with many games and variations.
   </p>
 
-  <h3><name Material>Material/Pattern Searches</name></h3>
+  <h3><name Material>Material / Pattern Searches</name></h3>
   <p>
   This powerful feature is useful for finding end-game or middle-game themes.
   You can specify minimum and maximum amounts of each type of material,
-  and patterns such as a Bishop on f7, or a pawn on the f-file.
+  and patterns such as a bishop on f7, or a pawn on the f-file.
   </p>
   <p>
   A number of common material and pattern settings are provided, such
@@ -3688,7 +3691,7 @@ set helpText(Formats) {<h1>Scid File Formats</h1>
   <a Searches Material>material/pattern</a> search settings.
   </p>
 
-  <h3><name Fast>Fast searches in Scid</name></h3>
+  <h3><name Fast>Fast Searches in Scid</name></h3>
   <p>
   The Index File stores some redundant but useful
   information about each game to speed up position or material searches.
