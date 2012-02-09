@@ -974,43 +974,42 @@ proc openExportGList {} {
   toplevel $w
   wm title $w "Scid: Save Game List"
 
-  label $w.lfmt -text "Format:" -font font_Bold
+  label $w.lfmt -text "Format" -font font_Bold
   pack $w.lfmt -side top
-  entry $w.fmt -textvar glexport  -fg black -font font_Fixed
+  entry $w.fmt -textvar glexport -font font_Fixed
   pack $w.fmt -side top -fill x
-  text $w.tfmt -width 1 -height 5 -font font_Fixed -fg black \
-    -wrap none -font font_Small -relief flat
+  text $w.tfmt -width 1 -height 5 -font font_Fixed -wrap none -relief flat
   pack $w.tfmt -side top -fill x
-  $w.tfmt insert end "w: White            b: Black            "
-  $w.tfmt insert end "W: White Elo        B: Black Elo        \n"
-  $w.tfmt insert end "m: Moves count      r: Result           "
-  $w.tfmt insert end "y: Year             d: Date             \n"
-  $w.tfmt insert end "e: Event            s: Site             "
-  $w.tfmt insert end "n: Round            o: ECO code         \n"
-  $w.tfmt insert end "g: Game number      f: Filtered number  "
-  $w.tfmt insert end "F: Final material   S: Non-std start pos\n"
-  $w.tfmt insert end "D: Deleted flag     U: User flags       "
-  $w.tfmt insert end "C: Comments flag    V: Variations flag  \n"
+  $w.tfmt insert end "w White            b Black            "
+  $w.tfmt insert end "W White Elo        B Black Elo        \n"
+  $w.tfmt insert end "m Moves count      r Result           "
+  $w.tfmt insert end "y Year             d Date             \n"
+  $w.tfmt insert end "e Event            s Site             "
+  $w.tfmt insert end "n Round            o ECO code         \n"
+  $w.tfmt insert end "g Game number      f Filtered number  "
+  $w.tfmt insert end "F Final material   S Non-std start pos\n"
+  $w.tfmt insert end "D Deleted flag     U User flags       "
+  $w.tfmt insert end "C Comments flag    V Variations flag  \n"
   $w.tfmt configure -cursor top_left_arrow -state disabled
   addHorizontalRule $w
-  label $w.lpreview -text $::tr(Preview:) -font font_Bold
+  label $w.lpreview -text $::tr(Preview) -font font_Bold
   pack $w.lpreview -side top
-  text $w.preview -width 80 -height 5 -font font_Fixed -bg gray95 -fg black \
+  text $w.preview -width 80 -height 5 -font font_Fixed \
     -wrap none -setgrid 1 -xscrollcommand "$w.xbar set"
   scrollbar $w.xbar -orient horizontal -command "$w.preview xview"
   pack $w.preview -side top -fill x
   pack $w.xbar -side top -fill x
   addHorizontalRule $w
   pack [frame $w.b] -side bottom -fill x
-  button $w.b.default -text "Default" -command {set glexport $glexportDefault}
-  button $w.b.ok -text "OK" -command saveExportGList
-  button $w.b.close -textvar ::tr(Cancel) -command "focus .; grab release $w; destroy $w"
-  pack $w.b.close $w.b.ok -side right -padx 2 -pady 2
-  pack $w.b.default -side left -padx 2 -pady 2
+  dialogbutton $w.b.default -text "Default" -command {set glexport $glexportDefault}
+  dialogbutton $w.b.ok -text "OK" -command saveExportGList
+  dialogbutton $w.b.close -textvar ::tr(Cancel) -command "focus . ; destroy $w"
+  pack $w.b.close $w.b.ok -side right -padx 5 -pady 2
+  pack $w.b.default -side left -padx 5 -pady 2
   wm resizable $w 1 0
   focus $w.fmt
+  $w.fmt icursor end
   updateExportGList
-  grab $w
 }
 
 proc updateExportGList {args} {
