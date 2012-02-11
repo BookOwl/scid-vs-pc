@@ -60,14 +60,20 @@ void printit(int x)
   printf("%8i%10i%7i%%",
           games,positions,I*100/Asize);
   fflush(stdout);
+
+#if defined(__GNUC__) && !defined(__MINGW32__)
   signal(SIGALRM,printit); alarm(5);
+#endif
+ 
 }
 
 void compress(void)
 {
 	int i1, i2;
 	printit(0);
+	#if defined(__GNUC__) && !defined(__MINGW32__)
 	alarm(0);
+	#endif
 	printf("\nsorting buffer ............ ");
 
 	qsort( A, I, sizeof(tb), bsortkey );
@@ -139,8 +145,9 @@ void compress(void)
 	}
 
 	I=0;
-
+    #if defined(__GNUC__) && !defined(__MINGW32__)
 	alarm(5);
+    #endif
 }
 
 int bpoints, wpoints;
@@ -334,13 +341,18 @@ int bcreate( int argc, char ** argv )
   puts(  "-----------------------------");
   puts(  "   games positions buffer%");
   puts(  "-----------------------------");
+  #if defined(__GNUC__) && !defined(__MINGW32__)
   signal(SIGALRM,printit); alarm(5);
+  #endif
   while( findgame() )
   { parsegame(); games++; }
   printf("end of file, parsed %i positions in %i games\n",positions,games);
   if( games == 0 )
   { puts("opening book not created"); return 0; }
-  compress(); alarm(0);
+  compress(); 
+  #if defined(__GNUC__) && !defined(__MINGW32__)
+  alarm(0);
+  #endif
 
  stage_2:;
 

@@ -278,6 +278,8 @@ if( ( Nodes % timeslice ) == 0 && !Flag.analyze )
 
 if(Flag.polling)
 {
+
+#if defined(__GNUC__) && !defined(__MINGW32__)
   static fd_set readfds;
   static struct timeval tv;
   int data;
@@ -289,6 +291,46 @@ if(Flag.polling)
   select(16, &readfds, 0, 0, &tv);
   data=FD_ISSET(fileno(stdin), &readfds);
   if(data) interrupt(0);
+
+#else
+
+ /* Credit here goes to Dr Oliver Brausch for the code from his
+  * program Olithink.  Some rewriting has been done by CMF, but not much
+  * as I have absolutely no idea whatsoever what this does.
+  * I think the original code is from Crafty by Prof. Robert Hyatt. [JA] */
+
+  static int init = 0, pipe;
+  static HANDLE inh;
+  DWORD dw;
+
+  /* If we're running under XBoard then we can't use _kbhit() as the input commands
+   * are sent to us directly over the internal pipe */
+  if (Flag.xboard) {
+#if defined(FILE_CNT)
+    if (stdin->_cnt > 0) return stdin->_cnt;
+#endif
+    if (!init) {
+      init = 1;
+      inh = GetStdHandle(STD_INPUT_HANDLE);
+      pipe = !GetConsoleMode(inh, &dw);
+      if (!pipe) {
+        SetConsoleMode(inh, dw & ~(ENABLE_MOUSE_INPUT | ENABLE_WINDOW_INPUT));
+        FlushConsoleInputBuffer(inh);
+      }
+    }
+    if (pipe) {
+      if (!PeekNamedPipe(inh, NULL, 0, NULL, &dw, NULL)) return 1;
+      return dw;
+    }
+    else {
+      GetNumberOfConsoleInputEvents(inh, &dw);
+      return dw <= 1 ? 0 : dw;
+    }
+  }
+  else return _kbhit();
+
+#endif
+
 }
 
 /*
