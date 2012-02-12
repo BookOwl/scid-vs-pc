@@ -5640,6 +5640,42 @@ set helpText(Sound) {<h1>Sound</h1>
 set helpTitle(Changelog) "Scid vs PC Changelog"
 set helpText(Changelog) {<h1>Scid vs. PC</h1>
 
+<h4>4.7 (January 20, 2012)</h4>
+<ul>
+<li>Tree: Add coloured bargraphs representing win/draw/loss (and remove the old tree graph)</li>
+<li>Tablebases: Make best tablebase moves clickable.</li>
+<li>Tablebases: tidy up config , main window and help items.</li>
+<li>FICs: Can now play and watch (observe) multiple games at the same time.</li>
+<li>FICS: Support loading old/interupted games for analysis (using 'smoves' command)</li>
+<li>FICs: Add an Abort button. Other minor fixes.</li>
+<li>Serious Game  overhaul (though still has minor issues) Add pause, resume features and mate, game drawn dialogs.</li>
+<li>Computer Tournament: Add  'first engine only' feature for testing a single engine against others.</li>
+<li>Enable material difference display for game browser and fics observerd games</li>
+<li>Analysis: View engine logs from within Scid, and can also disable logging.</li>
+<li>Analysis no longer word wraps, and uses fixed font.</li>
+<li>Analysis: add a xboard/uci protocol column to the engine list.</li>
+<li>Include updates to SCID's spellchk.c, improving the ELO add-ratings feature.</li>
+<li>Update spelling.ssp file to Jan 2012, and include with windows</li>
+<li>Player info: clicking FIDE ID opens relevant url.</li>
+<li>New feature: 'Search-<gt>Filter to Last Move'. All filter games will load at the last move (end of game).</li>
+<li>Refine the Calculation of Variation (Stoyko Exercise) feature and Help.</li>
+<li>Toolbar has a 'book window' icon.</li>
+<li>Tweak PGN context menu: reorder the Strip/Delete move items.</li>
+<li>Gamelist: replace the Negate button with a Select button.</li>
+<li>Tree: Include a patch for embedding the Best Games into the Tree window.</li>
+<li></li>
+<li>Bugfixes</li>
+<li>Importing PGN, check that Promotion Moves are long enough (otherwise can segfault).</li>
+<li>Document CCRL pgn round name problem, and handle errors better when Name limits hit.</li>
+<li>FICS: remove non-ascii chars from commands if using timeseal.</li>
+<li>Gamelist: To display unusual characters, conver to unicode before displaying games.</li>
+<li>Sync html bitmaps with SCID.</li>
+<li>Book: Only do the second book move lookup if we have too. (slight performance boost)</li>
+<li>EPD: Quick fix for epd analysis annotation bug..</li>
+<li>Hungarian, Swedish and Potugese Spanish were broken if Piece translation enabled (which was default). Fixed.</li>
+<li>Fix up Tacgame score-isn't-updated bug</li>
+</ul>
+
 <h4>4.6 (November 20, 2011)</h4>
 <ul>
 <li>Undo and Redo features (partly from SCID)</li>

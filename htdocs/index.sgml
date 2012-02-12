@@ -66,9 +66,9 @@ id="contact_">, and has been extensively tested with the Million Base and ICOfY 
 <label id="download_">
 <sect> download <p>
 
-source <url url="https://sourceforge.net/project/downloading.php?group_id=263836&amp;filename=scid_vs_pc-4.6.tgz" name="scid_vs_pc-4.6.tgz">
+source <url url="https://sourceforge.net/project/downloading.php?group_id=263836&amp;filename=scid_vs_pc-4.7.tgz" name="scid_vs_pc-4.7.tgz">
 
-windows <url url="http://sourceforge.net/projects/scidvspc/files/windows/Scid%20vs%20PC-4.6.exe/download" name="Scid vs PC-4.6.exe">
+windows <url url="http://sourceforge.net/projects/scidvspc/files/windows/Scid%20vs%20PC-4.7.exe/download" name="Scid vs PC-4.7.exe">
 
 mac <url url="http://sourceforge.net/projects/scidvspc/files/mac/ScidvsMac-4.6.dmg/download" name="ScidvsMac-4.6.dmg">
 
@@ -90,8 +90,8 @@ To enable support for extra chess pieces (such as Berlin), you may need to insta
 <url name="TkImg" url="https://sourceforge.net/project/downloading.php?group_id=263836&amp;filename=tkimg1.3.tar.bz2">.  
 Then, installing from source:
 <code>
-tar -xzf scid_vs_pc-4.6.tgz
-cd scid_vs_pc-4.6
+tar -xzf scid_vs_pc-4.7.tgz
+cd scid_vs_pc-4.7
 configure
 make install
 scid
@@ -283,6 +283,43 @@ Cramer from Germany, and many are looking forward to it's first release.</p>
 
 <label id="changes_">
 <sect> changes <p>
+
+<sect2> Scid vs. PC 4.7 <p>
+<itemize>
+<item>Tree: Add coloured bargraphs representing win/draw/loss (and remove the old tree graph)
+<item>Tablebases: Make best tablebase moves clickable.
+<item>Tablebases: tidy up config , main window and help items.
+<item>FICs: Can now play and watch (observe) multiple games at the same time.
+<item>FICS: Support loading old/interupted games for analysis (using 'smoves' command)
+<item>FICs: Add an Abort button. Other minor fixes.
+<item>Serious Game  overhaul (though still has minor issues) Add pause, resume features and mate, game drawn dialogs.
+<item>Computer Tournament: Add  'first engine only' feature for testing a single engine against others.
+<item>Enable material difference display for game browser and fics observerd games
+<item>Analysis: View engine logs from within Scid, and can also disable logging.
+<item>Analysis no longer word wraps, and uses fixed font.
+<item>Analysis: add a xboard/uci protocol column to the engine list.
+<item>Include updates to SCID's spellchk.c, improving the ELO add-ratings feature.
+<item>Update spelling.ssp file to Jan 2012, and include with windows
+<item>Player info: clicking FIDE ID opens relevant url.
+<item>New feature: 'Search-<gt>Filter to Last Move'. All filter games will load at the last move (end of game).
+<item>Refine the Calculation of Variation (Stoyko Exercise) feature and Help.
+<item>Toolbar has a 'book window' icon.
+<item>Tweak PGN context menu: reorder the Strip/Delete move items.
+<item>Gamelist: replace the Negate button with a Select button.
+<item>Tree: Include a patch for embedding the Best Games into the Tree window.
+<item>Analysis: Revert Lock engine changes. Previously, lock engine would also start Trial Mode
+<newline><newline>
+Bugfixes
+<item>Importing PGN, check that Promotion Moves are long enough (otherwise can segfault).
+<item>Document CCRL pgn round name problem, and handle errors better when Name limits hit.
+<item>FICS: remove non-ascii chars from commands if using timeseal.
+<item>Gamelist: To display unusual characters, convert to unicode before displaying games.
+<item>Sync html bitmaps with SCID.
+<item>Book: Only do the second book move lookup if we have too. (slight performance boost)
+<item>EPD: Quick fix for epd analysis annotation bug..
+<item>Hungarian, Swedish and Potugese Spanish were broken if Piece translation enabled (which was default). Fixed.
+<item>Fix up Tacgame score-isn't-updated bug
+</itemize>
 
 <sect2> Scid vs. PC 4.6 <p>
 <itemize>

@@ -1,7 +1,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
 <HTML>
 <HEAD>
- <META NAME="GENERATOR" CONTENT="LinuxDoc-Tools 0.9.66">
+ <META NAME="GENERATOR" CONTENT="LinuxDoc-Tools 0.9.21">
  <TITLE>Scid vs. PC</TITLE>
 </HEAD>
 <BODY>
@@ -12,8 +12,7 @@
 <IMG SRC="images/logo.png">
 </FIGURE>
 <BR>
-<H2></H2>
-<P>
+<H2></H2><P>
 <PRE>
 </PRE>
 </P>
@@ -111,9 +110,9 @@ and bug-fix fork of Scid.  The project is maintained by
 
 
 <P>source 
-<A HREF="https://sourceforge.net/project/downloading.php?group_id=263836&amp;filename=scid_vs_pc-4.6.tgz">scid_vs_pc-4.6.tgz</A></P>
+<A HREF="https://sourceforge.net/project/downloading.php?group_id=263836&amp;filename=scid_vs_pc-4.7.tgz">scid_vs_pc-4.7.tgz</A></P>
 <P>windows 
-<A HREF="http://sourceforge.net/projects/scidvspc/files/windows/Scid%20vs%20PC-4.6.exe/download">Scid vs PC-4.6.exe</A></P>
+<A HREF="http://sourceforge.net/projects/scidvspc/files/windows/Scid%20vs%20PC-4.7.exe/download">Scid vs PC-4.7.exe</A></P>
 <P>mac 
 <A HREF="http://sourceforge.net/projects/scidvspc/files/mac/ScidvsMac-4.6.dmg/download">ScidvsMac-4.6.dmg</A></P>
 <P>
@@ -138,8 +137,8 @@ To enable support for extra chess pieces (such as Berlin), you may need to insta
 Then, installing from source:
 <HR>
 <PRE>
-tar -xzf scid_vs_pc-4.6.tgz
-cd scid_vs_pc-4.6
+tar -xzf scid_vs_pc-4.7.tgz
+cd scid_vs_pc-4.7
 configure
 make install
 scid
@@ -212,15 +211,13 @@ files in the downloads section. My project is fairly modest fork of Scid
 <P>
 <DL>
 
-<DT><B>Playing against the Computer</B><DD>
-<P>The main Computer vs. Player feature is accessed from <B>Play->Tactical
+<DT><B>Playing against the Computer</B><DD><P>The main Computer vs. Player feature is accessed from <B>Play->Tactical
 Game</B>.  Here you'll find the option to start a new game (or Fischer
 Chess game), against a flexible computer opponent whose skill you can
 select.  Skill levels vary between 1200 (a bright teenager with some
 experience), to 2200 (a National Master).</P>
 
-<DT><B>Playing on the Internet</B><DD>
-<P>Playing on the Internet is done via the the
+<DT><B>Playing on the Internet</B><DD><P>Playing on the Internet is done via the the
 <B>Play->Internet</B> menu item. I recommend visiting the 
 <A HREF="http://www.freechess.org">Fics</A> website to create a user
 account, but it is also possible to play anonymously. To start a game,
@@ -328,6 +325,46 @@ Cramer from Germany, and many are looking forward to it's first release.</P>
 <H2><A NAME="s7">7.</A> <A HREF="#toc7">changes </A></H2>
 
 
+<P>
+<H3>Scid vs. PC 4.7 </H3>
+
+<P>
+<UL>
+<LI>Tree: Add coloured bargraphs representing win/draw/loss (and remove the old tree graph)</LI>
+<LI>Tablebases: Make best tablebase moves clickable.</LI>
+<LI>Tablebases: tidy up config , main window and help items.</LI>
+<LI>FICs: Can now play and watch (observe) multiple games at the same time.</LI>
+<LI>FICS: Support loading old/interupted games for analysis (using 'smoves' command)</LI>
+<LI>FICs: Add an Abort button. Other minor fixes.</LI>
+<LI>Serious Game  overhaul (though still has minor issues) Add pause, resume features and mate, game drawn dialogs.</LI>
+<LI>Computer Tournament: Add  'first engine only' feature for testing a single engine against others.</LI>
+<LI>Enable material difference display for game browser and fics observerd games</LI>
+<LI>Analysis: View engine logs from within Scid, and can also disable logging.</LI>
+<LI>Analysis no longer word wraps, and uses fixed font.</LI>
+<LI>Analysis: add a xboard/uci protocol column to the engine list.</LI>
+<LI>Include updates to SCID's spellchk.c, improving the ELO add-ratings feature.</LI>
+<LI>Update spelling.ssp file to Jan 2012, and include with windows</LI>
+<LI>Player info: clicking FIDE ID opens relevant url.</LI>
+<LI>New feature: 'Search-Filter to Last Move'. All filter games will load at the last move (end of game).
+<LI>Refine the Calculation of Variation (Stoyko Exercise) feature and Help.</LI>
+<LI>Toolbar has a 'book window' icon.</LI>
+<LI>Tweak PGN context menu: reorder the Strip/Delete move items.</LI>
+<LI>Gamelist: replace the Negate button with a Select button.</LI>
+<LI>Tree: Include a patch for embedding the Best Games into the Tree window.</LI>
+<LI>Analysis: Revert Lock engine changes. Previously, lock engine would also start Trial Mode<BR><BR>
+Bugfixes</LI>
+<LI>Importing PGN, check that Promotion Moves are long enough (otherwise can segfault).</LI>
+<LI>Document CCRL pgn round name problem, and handle errors better when Name limits hit.</LI>
+<LI>FICS: remove non-ascii chars from commands if using timeseal.</LI>
+<LI>Gamelist: To display unusual characters, convert to unicode before displaying games.</LI>
+<LI>Sync html bitmaps with SCID.</LI>
+<LI>Book: Only do the second book move lookup if we have too. (slight performance boost)</LI>
+<LI>EPD: Quick fix for epd analysis annotation bug..</LI>
+<LI>Hungarian, Swedish and Potugese Spanish were broken if Piece translation enabled (which was default). Fixed.</LI>
+<LI>Fix up Tacgame score-isn't-updated bug</LI>
+</LI>
+</UL>
+</P>
 <P>
 <H3>Scid vs. PC 4.6 </H3>
 
@@ -885,6 +922,7 @@ Fics (which really gets stuffed up). Mouse wheel bindings remain.</LI>
 </P>
 <P>
 <A NAME="contact_"></A> </P>
+</P>
 </P>
 </P>
 </P>
