@@ -5655,7 +5655,7 @@ set helpText(Changelog) {<h1>Scid vs. PC</h1>
 <li>Analysis no longer word wraps, and uses fixed font.</li>
 <li>Analysis: add a xboard/uci protocol column to the engine list.</li>
 <li>Include updates to SCID's spellchk.c, improving the ELO add-ratings feature.</li>
-<li>Update spelling.ssp file to Jan 2012, and include with windows</li>
+<li>Update spelling.ssp file to Jan 2012</li>
 <li>Player info: clicking FIDE ID opens relevant url.</li>
 <li>New feature: 'Search-<gt>Filter to Last Move'. All filter games will load at the last move (end of game).</li>
 <li>Refine the Calculation of Variation (Stoyko Exercise) feature and Help.</li>

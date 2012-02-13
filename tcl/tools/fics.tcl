@@ -1136,9 +1136,9 @@ namespace eval fics {
       if {$length == 3 && [scan $line "%d. %s (%d:%d)" t1 m1 t2 t3] != 4} {
         return
       }
-      if {$length == 12 && [scan $line {%s (%s %s (%s %s} t1 t2 t3 t4 t5] == 5} {
+      if {$length == 12 && [scan $line {%s (%s %s %s (%s} t1 t2 t3 t4 t5] == 5} {
 	# ImaGumby (1280) vs. Kaitlin (1129) --- Sat Feb  4, 02:12 PST 2012
-
+        # stevenaaus (1157) vs. Abatwa (1103) --- Sun Feb  5, 23:13 PST 2012
         if {$t3 == "vs."} {
 	  sc_game tags set -white    $t1
 	  sc_game tags set -black    $t4
