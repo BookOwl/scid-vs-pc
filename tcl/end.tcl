@@ -421,7 +421,7 @@ proc exportOptions {exportType} {
 
   # Extra option for HTML format: diagram image set
   if {$exportType == "HTML"} {
-    label $w.o.space -text ""
+    label $w.o.space2 -text ""
     label $w.o.hdiag -text "Diagram"
     radiobutton $w.o.hb0 -text "bitmaps" \
         -variable exportFlags(htmldiag) -value 0
@@ -429,7 +429,7 @@ proc exportOptions {exportType} {
         -variable exportFlags(htmldiag) -value 1
     label $w.o.hl0 -image htmldiag0
     label $w.o.hl1 -image htmldiag1
-    grid $w.o.space -row 8 -column 0
+    grid $w.o.space2 -row 8 -column 0
     grid $w.o.hdiag -row 9 -column 0 -sticky w
     grid $w.o.hb0 -row 9 -column 1 -sticky w
     grid $w.o.hb1 -row 9 -column 2 -sticky w
