@@ -312,6 +312,7 @@ if {$windowsOS} {
   set analysisChoices {crafty}
 }
 set analysis(mini) 0
+set analysis(logEngines) 1
 
 # Colors: dark and lite are square colors
 #   whitecolor/blackcolor are piece colors (unused)

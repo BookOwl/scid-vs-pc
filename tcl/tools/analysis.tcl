@@ -16,8 +16,6 @@
 # Removed sorting functionality
 # Other performance tweaks.
 
-set analysis(logEngines) 0
-
 # Maximum number of lines to be saved in a log file
 # (setting it to 0 also stops log file being created)
 set analysis(logMax) 5000

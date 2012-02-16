@@ -1248,8 +1248,8 @@ translate E Unused {Unused}
 translate E SizeKb {Size (kb)}
 translate E CurrentState {Current State}
 translate E AfterCompaction {After compaction}
-translate E CompactNames {Compact name file}
-translate E CompactGames {Compact game file}
+translate E CompactNames {Compact Name file}
+translate E CompactGames {Compact Game file}
 translate E NoUnusedNames "There are no unused names, so the name file is already fully compacted."
 translate E NoUnusedGames "The game file is already fully compacted."
 translate E NameFileCompacted {The name file for the database "[file tail [sc_base filename]]" was compacted.}
