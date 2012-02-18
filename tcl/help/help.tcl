@@ -5642,7 +5642,7 @@ set helpText(Changelog) {<h1>Scid vs. PC</h1>
 
 <h4>4.7 (January 20, 2012)</h4>
 <ul>
-<li>Tree: Add coloured bargraphs representing win/draw/loss (and remove the old tree graph)</li>
+<li>Tree: Add coloured bar-graphs representing win/draw/loss (and remove the old tree graph)</li>
 <li>Tablebases: Make best tablebase moves clickable.</li>
 <li>Tablebases: tidy up config , main window and help items.</li>
 <li>FICs: Can now play and watch (observe) multiple games at the same time.</li>
@@ -5650,7 +5650,7 @@ set helpText(Changelog) {<h1>Scid vs. PC</h1>
 <li>FICs: Add an Abort button. Other minor fixes.</li>
 <li>Serious Game  overhaul (though still has minor issues) Add pause, resume features and mate, game drawn dialogs.</li>
 <li>Computer Tournament: Add  'first engine only' feature for testing a single engine against others.</li>
-<li>Enable material difference display for game browser and fics observerd games</li>
+<li>Enable material difference display for game browser and fics observed games</li>
 <li>Analysis: View engine logs from within Scid, and can also disable logging.</li>
 <li>Analysis no longer word wraps, and uses fixed font.</li>
 <li>Analysis: add a xboard/uci protocol column to the engine list.</li>
@@ -5668,7 +5668,7 @@ set helpText(Changelog) {<h1>Scid vs. PC</h1>
 <li>Importing PGN, check that Promotion Moves are long enough (otherwise can segfault).</li>
 <li>Document CCRL pgn round name problem, and handle errors better when Name limits hit.</li>
 <li>FICS: remove non-ascii chars from commands if using timeseal.</li>
-<li>Gamelist: To display unusual characters, conver to unicode before displaying games.</li>
+<li>Gamelist: To display unusual characters, convert to unicode before displaying games.</li>
 <li>Sync html bitmaps with SCID.</li>
 <li>Book: Only do the second book move lookup if we have too. (slight performance boost)</li>
 <li>EPD: Quick fix for epd analysis annotation bug..</li>
