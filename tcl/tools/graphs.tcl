@@ -149,7 +149,6 @@ proc configureFilterGraph {parent} {
 ### Filter graph window
 
 # ::tools::graphs::filter::type  can be "decade", "year" or "elo" , "move"
-
 proc tools::graphs::filter::Open {} {
 
   global filterGraph
@@ -164,6 +163,7 @@ proc tools::graphs::filter::Open {} {
 
   toplevel $w
   wm title $w $::tr(TitleFilterGraph)
+  wm minsize $w 300 300
   wm withdraw $w
 
   set filterGraph 1
@@ -184,17 +184,6 @@ proc tools::graphs::filter::Open {} {
   ::utils::graph::create filter
 
   bind $w <F1> {helpWindow Graphs Filter}
-  bind $w <Configure> {
-    .fgraph.c itemconfigure title -width [expr {[winfo width .fgraph.c] - 50}]
-    .fgraph.c coords title [expr {[winfo width .fgraph.c] / 2}] 10
-    .fgraph.c itemconfigure type -width [expr {[winfo width .fgraph.c] - 50}]
-    .fgraph.c coords type [expr {[winfo width .fgraph.c] / 2}] \
-      [expr {[winfo height .fgraph.c] - 10}]
-    ::utils::graph::configure filter -height [expr {[winfo height .fgraph.c] - 80}]
-    ::utils::graph::configure filter -width [expr {[winfo width .fgraph.c] - 60}]
-    ::utils::graph::redraw filter
-    recordWinSize .fgraph
-  }
   # bind $w.c <1> tools::graphs::filter::Switch
   bind $w.c <3> ::tools::graphs::filter::Refresh
   bind $w <Escape> "destroy $w"
@@ -215,6 +204,17 @@ proc tools::graphs::filter::Open {} {
   setWinLocation $w
   setWinSize $w
   wm deiconify $w
+  bind $w <Configure> {
+    .fgraph.c itemconfigure title -width [expr {[winfo width .fgraph.c] - 50}]
+    .fgraph.c coords title [expr {[winfo width .fgraph.c] / 2}] 10
+    .fgraph.c itemconfigure type -width [expr {[winfo width .fgraph.c] - 50}]
+    .fgraph.c coords type [expr {[winfo width .fgraph.c] / 2}] \
+      [expr {[winfo height .fgraph.c] - 10}]
+    ::utils::graph::configure filter -height [expr {[winfo height .fgraph.c] - 80}]
+    ::utils::graph::configure filter -width [expr {[winfo width .fgraph.c] - 60}]
+    ::utils::graph::redraw filter
+    recordWinSize .fgraph
+  }
 }
 
 proc tools::graphs::filter::Switch {} {
@@ -677,8 +677,9 @@ proc tools::graphs::absfilter::Open {} {
   }
   toplevel $w
   wm withdraw $w
-
   wm title $w $::tr(TitleFilterGraph)
+  wm minsize $w 300 300
+
   set absfilterGraph 1
   bind $w <Destroy> {set absfilterGraph 0}
   bind $w <Control-J> tools::graphs::absfilter::Open
@@ -698,17 +699,6 @@ proc tools::graphs::absfilter::Open {} {
   ::utils::graph::create absfilter
 
   bind $w <F1> {helpWindow Graphs Filter}
-  bind $w <Configure> {
-    .afgraph.c itemconfigure title -width [expr {[winfo width .afgraph.c] - 50}]
-    .afgraph.c coords title [expr {[winfo width .afgraph.c] / 2}] 10
-    .afgraph.c itemconfigure type -width [expr {[winfo width .afgraph.c] - 50}]
-    .afgraph.c coords type [expr {[winfo width .afgraph.c] / 2}] \
-      [expr {[winfo height .afgraph.c] - 10}]
-    ::utils::graph::configure absfilter -height [expr {[winfo height .afgraph.c] - 80}]
-    ::utils::graph::configure absfilter -width [expr {[winfo width .afgraph.c] - 60}]
-    ::utils::graph::redraw absfilter
-    recordWinSize .afgraph
-  }
   # bind $w.c <1> tools::graphs::absfilter::Switch
   bind $w.c <3> ::tools::graphs::absfilter::Refresh
   bind $w <Escape> "destroy $w"
@@ -728,6 +718,17 @@ proc tools::graphs::absfilter::Open {} {
   setWinLocation $w
   setWinSize $w
   wm deiconify $w
+  bind $w <Configure> {
+    .afgraph.c itemconfigure title -width [expr {[winfo width .afgraph.c] - 50}]
+    .afgraph.c coords title [expr {[winfo width .afgraph.c] / 2}] 10
+    .afgraph.c itemconfigure type -width [expr {[winfo width .afgraph.c] - 50}]
+    .afgraph.c coords type [expr {[winfo width .afgraph.c] / 2}] \
+      [expr {[winfo height .afgraph.c] - 10}]
+    ::utils::graph::configure absfilter -height [expr {[winfo height .afgraph.c] - 80}]
+    ::utils::graph::configure absfilter -width [expr {[winfo width .afgraph.c] - 60}]
+    ::utils::graph::redraw absfilter
+    recordWinSize .afgraph
+  }
 }
 
 proc tools::graphs::absfilter::Switch {} {
