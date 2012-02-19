@@ -2398,7 +2398,7 @@ proc checkAnalysisStarted {n} {
   } else  {
     sendToEngine $n xboard
     sendToEngine $n "protover 2"
-    sendToEngine $n "ponder off"
+    sendToEngine $n "easy"
     sendToEngine $n post
     # Prevent some engines from making an immediate "book"
     # reply move as black when position is sent later:
@@ -2468,7 +2468,7 @@ proc processAnalysisInput {n} {
     logEngineNote $n {First line from engine seen; sending it initial commands now.}
     sendToEngine $n xboard
     sendToEngine $n {protover 2}
-    sendToEngine $n {ponder off}
+    sendToEngine $n {easy}
     sendToEngine $n post
   }
   }

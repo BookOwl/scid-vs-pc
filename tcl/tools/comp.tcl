@@ -526,7 +526,7 @@ proc compNM {n m k} {
         }
 
 	sendToEngine $current_engine "protover 2"
-	sendToEngine $current_engine "ponder on"
+	sendToEngine $current_engine "hard"
 	sendToEngine $current_engine "bk off"
 
 	# done later
@@ -534,7 +534,7 @@ proc compNM {n m k} {
 
 	### Hacks
 
-	if {1} {
+	if {0} {
 	  # Sjeng or Chen run too fast unless "hard" is issued
 	  if {[regexp -nocase arasan $analysis(name$current_engine)]} {
 	    puts_ {Hack: Arasan detected. Issuing "hard"}
