@@ -546,7 +546,7 @@ namespace eval fics {
       return
     }
 
-    if {$c == "smoves"} {
+    if {$c == "smoves" || $c == "smove"} {
       # smoves recreates a game without any further announcment
 
       set confirm [::game::ConfirmDiscard2]
