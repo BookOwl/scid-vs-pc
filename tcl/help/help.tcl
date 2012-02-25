@@ -1263,6 +1263,7 @@ set helpText(Comment) {<h1>The Comment Editor</h1>
   the Control-A, Control-Z and Control-Y shortcuts can be used to
   manipulate text and undo changes).
   Comments are <b>automatically stored</b> whenever you move to another position in the game.
+  Control-Enter saves the comment and closes the window.
   </p>
 
   <p>
