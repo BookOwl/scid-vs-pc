@@ -54,8 +54,10 @@ trace variable pMax w checkPieceCounts
 
 proc makeBoolMenu {w varName} {
   upvar #0 $varName var
-  if {![info exists var]} { set var "Yes" }
-  menubutton $w -textvariable $varName -indicatoron 0 -menu $w.menu \
+  if {![info exists var]} {
+    set var Yes
+  }
+  menubutton $w -indicatoron 0 -menu $w.menu \
       -relief raised -bd 2 -highlightthickness 0 -anchor w -image ""
   menu $w.menu -tearoff 0
   $w.menu add radiobutton -label Yes -image ::rep::_tick \
@@ -70,12 +72,14 @@ proc makeBoolMenu {w varName} {
 proc makePieceMenu {w varName} {
   global dark
   upvar #0 $varName var
-  if {![info exists var]} { set var "?" }
-  menubutton $w -textvariable $varName -indicatoron 0 -menu $w.menu \
+  if {![info exists var]} {
+    set var ?
+  }
+  menubutton $w -indicatoron 0 -menu $w.menu \
       -relief raised -bd 1 -highlightthickness 0 -anchor w -image {}
   menu $w.menu -tearoff 0
-  $w.menu add radiobutton -label " ? " -variable $varName -value "?" \
-      -command "$w configure -image e20" -hidemargin 1
+  $w.menu add radiobutton -label " ? " -image q20 -variable $varName -value ? \
+      -command "$w configure -image q20 -width 18 -height 23" -hidemargin 1
   foreach i {wk wq wr wb wn wp bk bq br bb bn bp} {
     $w.menu add radiobutton -label $i -image ${i}20 -value $i \
         -variable $varName \
@@ -97,7 +101,7 @@ proc updatePatternImages {} {
       .sm.mp.patt.grid.b$i configure -image ::rep::_cross
     }
     if {$pattPiece($i) == "?"} {
-      .sm.mp.patt.grid.p$i configure -image e20
+      .sm.mp.patt.grid.p$i configure -image q20 -width 18 -height 23 ;# matches the neighoburing widget
     } else {
       .sm.mp.patt.grid.p$i configure -image "$pattPiece($i)20"
     }
@@ -219,9 +223,15 @@ proc ::search::material {} {
     pack $f.b0 $f.b1 $f.b2 $f.ba $f.b1p $f.bi $f.bmin $f.bto $f.bmax -side left -pady 1
 
     foreach b {0 1 2 a 1p} {
-      $f.w$b configure -width 2 -pady 0 -padx 1 -takefocus 0 -font $small
-      $f.b$b configure -width 2 -pady 0 -padx 1 -takefocus 0 -font $small
+      $f.w$b configure -width 2 -takefocus 0 -font $small
+      $f.b$b configure -width 2 -takefocus 0 -font $small
+      if {!$::macOS} {
+	$f.w$b configure -pady 1 -padx 1
+	$f.b$b configure -pady 1 -padx 1
+      }
     }
+
+
     foreach widget {wmin wmax bmin bmax} {
       bindFocusColors $f.$widget
     }
@@ -346,16 +356,19 @@ proc ::search::material {} {
       -justify right
   bindFocusColors $f.max
   label $f.sep2 -text " " -font $small
-  button $f.any -textvar ::tr(Any) -font $small -padx 1 -pady 1 \
-      -command {set minMatDiff -40; set maxMatDiff +40}
-  button $f.w1 -text " + " -font $small -padx 1 -pady 1 \
-      -command {set minMatDiff +1; set maxMatDiff +40}
-  button $f.equal -text " = " -font $small -padx 1 -pady 1 \
-      -command {set minMatDiff 0; set maxMatDiff 0}
-  button $f.b1 -text " - " -font $small -padx 1 -pady 1 \
-      -command {set minMatDiff -40; set maxMatDiff -1}
+  button $f.any -textvar ::tr(Any) -font $small -command {set minMatDiff -40; set maxMatDiff +40}
+  button $f.w1    -text " + " -font $small -command {set minMatDiff +1; set maxMatDiff +40}
+  button $f.equal -text " = " -font $small -command {set minMatDiff 0; set maxMatDiff 0}
+  button $f.b1    -text " - " -font $small -command {set minMatDiff -40; set maxMatDiff -1}
+  if {!$::macOS} {
+    $f.any   configure -pady 1 -padx 1
+    $f.w1    configure -pady 1 -padx 3
+    $f.equal configure -pady 1 -padx 3
+    $f.b1    configure -pady 1 -padx 3
+  }
+
   pack $f.label $f.min $f.sep $f.max -side left
-  pack $f.sep2 $f.any $f.w1 $f.equal $f.b1 -side left
+  pack $f.sep2 $f.any $f.w1 $f.equal $f.b1 -side left -padx 2
   set f [frame $w.mp.material.mdiff2]
   pack $f -side top
   label $f.explan -font $small \
@@ -374,8 +387,8 @@ proc ::search::material {} {
   for { set i 1 } { $i <= $nPatterns } { incr i } {
     makeBoolMenu $f.grid.b$i pattBool($i)
     set menuPiece1 [ makePieceMenu $f.grid.p$i pattPiece($i) ]
-    tk_optionMenu $f.grid.f$i pattFyle($i) "?" a b c d e f g h
-    tk_optionMenu $f.grid.r$i pattRank($i) "?" 1 2 3 4 5 6 7 8
+    tk_optionMenu $f.grid.f$i pattFyle($i) ? a b c d e f g h
+    tk_optionMenu $f.grid.r$i pattRank($i) ? 1 2 3 4 5 6 7 8
     $f.grid.b$i configure -indicatoron 0 ;# -width 4
     $f.grid.f$i configure -indicatoron 0 -width 1 -pady 0
     $f.grid.r$i configure -indicatoron 0 -width 1 -pady 0
@@ -396,7 +409,7 @@ proc ::search::material {} {
   ### Buttons that manipulate patterns:
   set f .sm.mp.patt.b2
   frame $f
-  dialogbutton $f.clearPat -textvar ::tr(Clear) -command clearPatterns
+  dialogbutton $f.clearPat -textvar ::tr(Clear) -command clearPatterns -font $small
   menubutton $f.common -textvar ::tr(CommonPatterns) \
       -menu $f.common.m -relief raised -font $small
   menu $f.common.m -font $small
