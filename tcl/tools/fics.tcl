@@ -361,7 +361,7 @@ namespace eval fics {
     incr row
     button $w.bottom.buttons.info2 -text "Opponent Info" -command {
       set t1 [sc_game tags get Black]
-      if {$::fics::reallogin ==  $t1} {
+      if {[string match -nocase $::fics::reallogin $t1]} {
 	set t1 [sc_game tags get White]
       }
       if {$t1 != {} && $t1 != {?}} {
@@ -969,9 +969,9 @@ namespace eval fics {
       sc_game tags set -blackElo $blackElo
       sc_game tags set -date [::utils::date::today]
 
-      if {$::fics::reallogin == $white} {
+      if {[string match -nocase $::fics::reallogin $white]} {
         set ::fics::opponent $black 
-      } elseif {$::fics::reallogin == $black} {
+      } elseif {[string match -nocase $::fics::reallogin $black]} {
         set ::fics::opponent $white
       } else {
         set ::fics::opponent {}
@@ -1035,7 +1035,8 @@ namespace eval fics {
         set ::fics::playing 0
         set ::fics::mainGame -1
         set ::pause 0
-	if {$::fics::reallogin == [sc_game tags get Black] || $::fics::reallogin == [sc_game tags get White]} {
+	if {[string match -nocase $::fics::reallogin [sc_game tags get Black]] ||
+            [string match -nocase $::fics::reallogin [sc_game tags get White]]} {
 	  if {[string match "1/2*" $res]} {
 	    tk_messageBox -title "Game result" -icon info -type ok -message "Draw"
 	  } else {
@@ -1499,7 +1500,9 @@ namespace eval fics {
     set black [lindex $line 18]
 
     # If playername is not white or black, then we unobserve game, as its not in $observedGames (???)
-    if {$::fics::reallogin != $white && $::fics::reallogin != $black && $game != $::fics::mainGame} {
+    if { ! [string match -nocase $white $::fics::reallogin] &&
+         ! [string match -nocase $black $::fics::reallogin] &&
+           ($game != $::fics::mainGame)} {
       ::fics::writechan "unobserve $game"
       return
     }
@@ -1638,15 +1641,16 @@ namespace eval fics {
       ### Save previous (unfinished?) game.
       # ideally we can save observed games too, but only after we have the "Debug fen" working 100%
 
-      if {$white == $::fics::reallogin || $black == $::fics::reallogin} {
+      if {[string match -nocase $white $::fics::reallogin] ||
+          [string match -nocase $black $::fics::reallogin]} {
 	catch {sc_game save [sc_game number]}
       }
 
       sc_game new
       # set ::fics::playing 1 ; Not right!
 
-      sc_game tags set -white    $white
-      sc_game tags set -black    $black
+      sc_game tags set -white $white
+      sc_game tags set -black $black
       if {[info exists ::fics::elo($white)]} {
 	sc_game tags set -whiteElo $::fics::elo($white)
       }
