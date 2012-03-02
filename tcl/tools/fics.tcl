@@ -309,9 +309,9 @@ namespace eval fics {
     button $w.command.send -text $tr(FICSSend) 
     button $w.command.clear -text $tr(Clear) -command "
       $w.console.text delete 0.0 end
-      $w.console.text insert 0.0 \"FICs ($::scidName $::scidVersion)\n\"
+      $w.console.text insert 0.0 \"FICS ($::scidName $::scidVersion)\n\"
     "
-    button $w.command.next -text $tr(Next) -command {::fics::writechan next echo}
+    button $w.command.next -textvar ::tr(Next) -command {::fics::writechan next echo}
     bind $w.command.entry <Up> { ::fics::cmdHistory up }
     bind $w.command.entry <Down> { ::fics::cmdHistory down }
     bind $w.command.entry <Alt-BackSpace> { 
@@ -371,7 +371,7 @@ namespace eval fics {
     button $w.bottom.buttons.info  -text Info -command {
       ::fics::writechan finger
       ::fics::writechan "inchannel $::fics::reallogin"
-      ::fics::writechan history
+      # ::fics::writechan history
     }
     button $w.bottom.buttons.font -text Font -command {
       set fontOptions(temp) [FontDialog Fixed .fics]
@@ -412,7 +412,7 @@ namespace eval fics {
 
     incr row
     button $w.bottom.buttons.findopp -textvar ::tr(FICSFindOpponent) -command {::fics::findOpponent}
-    button $w.bottom.buttons.quit    -text {Quit FICs} -command {::fics::close}
+    button $w.bottom.buttons.quit    -text {Quit FICS} -command {::fics::close}
     button $w.bottom.buttons.help    -textvar ::tr(Help) -command {helpWindow FICS}
     grid $w.bottom.buttons.findopp -column 0 -row $row -sticky ew -padx 3 -pady 2
     grid $w.bottom.buttons.help    -column 1 -row $row -sticky ew -padx 3 -pady 2
@@ -528,7 +528,7 @@ namespace eval fics {
     if {$c == "fg" || $c == "foreground"} {
       set fg [lindex $l 1]
       if {$fg == {}} {
-        set fg [tk_chooseColor -initialcolor $::fics::consolefg -title {FICs Background} -parent $w]
+        set fg [tk_chooseColor -initialcolor $::fics::consolefg -title {FICS Background} -parent $w]
       }
       if {![catch {$w.console.text configure -fg $fg}]} {
 	set ::fics::consolefg $fg
@@ -538,7 +538,7 @@ namespace eval fics {
     if {$c == "bg" || $c == "background"} {
       set bg [lindex $l 1]
       if {$bg == {}} {
-        set bg [tk_chooseColor -initialcolor $::fics::consolebg -title {FICs Background} -parent $w]
+        set bg [tk_chooseColor -initialcolor $::fics::consolebg -title {FICS Background} -parent $w]
       }
       if {![catch {$w.console.text configure -bg $bg}]} {
 	set ::fics::consolebg $bg
@@ -560,9 +560,7 @@ namespace eval fics {
       vwaitTimed ::fics::waitForMoves 2000 nowarn
       updateBoard -pgn
     } else {
-
       writechan $l "echo"
-
     }
 
     lappend ::fics::history $l
@@ -850,74 +848,11 @@ namespace eval fics {
 
       scan $line "You are now observing game %d." game
 
-      ## if it's the mainGame, we'll load it later (in parseStyle12)
-
-      if {$game == $::fics::mainGame} {return}
-
-      set w .fics
-      lappend ::fics::observedGames $game
-
-      frame $w.bottom.game$game
-      ::board::new $w.bottom.game$game.bd $::fics::size 1
-      # At bottom we have White and Buttons
-      # (note whiteElo, blackElo labels are not packed, only used for data should we load game
-      # data for these labels is read next line from fics
-      frame $w.bottom.game$game.w
-      label $w.bottom.game$game.w.white  -font font_Small
-      # At top we have Black and Result
-      frame $w.bottom.game$game.b 
-      label $w.bottom.game$game.b.black -font font_Small
-      label $w.bottom.game$game.b.result -font font_Small
-
-      button $w.bottom.game$game.w.close -image arrow_close -font font_Small -relief flat -command "
-	bind .fics <Destroy> {}
-	destroy .fics.bottom.game$game
-	bind .fics <Destroy> ::fics::close
-
-	set i \[lsearch -exact \$::fics::observedGames $game\]
-	if {\$i > -1} {
-	      set ::fics::observedGames \[lreplace \$::fics::observedGames \$i \$i\]
-	}"
-
-      button $w.bottom.game$game.w.load -image arrow_up -font font_Small -relief flat -command "
-	if {\[lsearch -exact \$::fics::observedGames $game\] > -1} {
-	  ### In case we're already observing a game
-	  if {\$::fics::mainGame > -1} {
-	    ::fics::writechan \"unobserve \$::fics::mainGame\"
-	  }
-	  set i \[lsearch -exact \$::fics::observedGames $game\]
-	  if {\$i > -1} {
-	      set ::fics::observedGames \[lreplace \$::fics::observedGames \$i \$i\]
-          }
-	  ### Restarting observe ensures we get a parseStyle12 line straight away
-	  ::fics::writechan \"unobserve $game\"
-	  set ::fics::mainGame $game
-	  ::fics::writechan \"observe $game\"
-	  .fics.bottom.game$game.w.close invoke
-          raiseWin .
-	} else {
-	  # close game if it is finished
-	  bind .fics <Destroy> {}
-	  destroy .fics.bottom.game$game
-	  bind .fics <Destroy> ::fics::close
-	}
-      "
-
-      # button $w.bottom.game$game.w.flip -text flip -font font_Small -relief flat -command ""
-
-      pack $w.bottom.game$game -side left -before $w.bottom.scale -padx 3 -pady 3
-
-      pack $w.bottom.game$game.b  -side top -anchor w -expand 1 -fill x
-      pack $w.bottom.game$game.b.black -side left 
-      pack [frame $w.bottom.game$game.b.space -width 24] \
-           $w.bottom.game$game.b.result -side right
-      pack $w.bottom.game$game.bd -side top
-      pack $w.bottom.game$game.w -side top -expand 1 -fill x
-      pack $w.bottom.game$game.w.white -side left 
-      pack [frame $w.bottom.game$game.w.space -width 20] \
-           $w.bottom.game$game.w.close $w.bottom.game$game.w.load -side right -padx 4
-      ### ::board::material needs fixing before it can display material ???
-      ### must "unobserve" when playing a new game! ???
+      # Only setup a new little board if its not the mainGame
+      # mainGame gets loaded later (in parseStyle12)
+      if {$game != $::fics::mainGame} {
+	addObservedGame $game
+      }
       return
     }
 
@@ -936,6 +871,12 @@ namespace eval fics {
       # Setting this, stops automatically accepting rematches. (But algorythm needs fixing a little)
       set ::fics::findopponent(manual) manual
       after cancel ::fics::updateGraph
+
+      # Move a previously observed game back to the fics widget
+      if {$::fics::mainGame > -1} {
+	::fics::addObservedGame $::fics::mainGame
+	set ::fics::mainGame -1
+      }
 
       sc_game new
 
@@ -961,7 +902,6 @@ namespace eval fics {
       } else {
 	set ::fics::playing -1
       }
-      set ::fics::mainGame -1 ; # to nix any previous observed games in the main window
 
       sc_game tags set -white $white
       sc_game tags set -whiteElo $whiteElo
@@ -1147,7 +1087,7 @@ namespace eval fics {
           sc_game tags set -blackElo [string range $t5 0 end-1]
           # todo
 	  # sc_game tags set -date [::utils::date::today]
-	  # sc_game tags set -event "FICs Game $game $initialTime/$increment"
+	  # sc_game tags set -event "FICS Game $game $initialTime/$increment"
 
         }
         return
@@ -1257,9 +1197,80 @@ namespace eval fics {
 
   }
 
-  ################################################################################
-  #
-  ################################################################################
+  ### Make a new small board in the fics widget to observe a game
+
+  proc addObservedGame {game} {
+      set w .fics
+
+      if {[lsearch -exact $::fics::observedGames $game] == -1} {
+	lappend ::fics::observedGames $game
+      }
+
+      frame $w.bottom.game$game
+      ::board::new $w.bottom.game$game.bd $::fics::size 1
+      # At bottom we have White and Buttons
+      # (note whiteElo, blackElo labels are not packed, only used for data should we load game
+      # data for these labels is read next line from fics
+      frame $w.bottom.game$game.w
+      label $w.bottom.game$game.w.white  -font font_Small
+      # At top we have Black and Result
+      frame $w.bottom.game$game.b 
+      label $w.bottom.game$game.b.black -font font_Small
+      label $w.bottom.game$game.b.result -font font_Small
+
+      button $w.bottom.game$game.w.close -image arrow_close -font font_Small -relief flat -command "
+	bind .fics <Destroy> {}
+	destroy .fics.bottom.game$game
+	bind .fics <Destroy> ::fics::close
+
+	set i \[lsearch -exact \$::fics::observedGames $game\]
+	if {\$i > -1} {
+	      set ::fics::observedGames \[lreplace \$::fics::observedGames \$i \$i\]
+	}"
+
+      button $w.bottom.game$game.w.load -image arrow_up -font font_Small -relief flat -command "
+	if {\[lsearch -exact \$::fics::observedGames $game\] > -1} {
+          if {\$::fics::playing != 0} {
+            return
+          }
+	  ### If we're already observing a game, move it back to a small board
+	  if {\$::fics::mainGame > -1} {
+	    ::fics::addObservedGame \$::fics::mainGame
+	  }
+	  set i \[lsearch -exact \$::fics::observedGames $game\]
+	  if {\$i > -1} {
+	      set ::fics::observedGames \[lreplace \$::fics::observedGames \$i \$i\]
+          }
+	  ### Restarting observe ensures we get a parseStyle12 line straight away
+	  ::fics::writechan \"unobserve $game\"
+	  set ::fics::mainGame $game
+	  ::fics::writechan \"observe $game\"
+	  .fics.bottom.game$game.w.close invoke
+          raiseWin .
+	} else {
+          ### should never get here
+	  # close game if it is finished
+	  bind .fics <Destroy> {}
+	  destroy .fics.bottom.game$game
+	  bind .fics <Destroy> ::fics::close
+	}
+      "
+
+      # button $w.bottom.game$game.w.flip -text flip -font font_Small -relief flat -command ""
+
+      pack $w.bottom.game$game -side left -before $w.bottom.scale -padx 3 -pady 3
+
+      pack $w.bottom.game$game.b  -side top -anchor w -expand 1 -fill x
+      pack $w.bottom.game$game.b.black -side left 
+      pack [frame $w.bottom.game$game.b.space -width 24] \
+           $w.bottom.game$game.b.result -side right
+      pack $w.bottom.game$game.bd -side top
+      pack $w.bottom.game$game.w -side top -expand 1 -fill x
+      pack $w.bottom.game$game.w.white -side left 
+      pack [frame $w.bottom.game$game.w.space -width 20] \
+           $w.bottom.game$game.w.close $w.bottom.game$game.w.load -side right -padx 4
+  }
+
   proc updateConsole {line} {
 
     set t .fics.console.text
@@ -1504,6 +1515,7 @@ namespace eval fics {
          ! [string match -nocase $black $::fics::reallogin] &&
            ($game != $::fics::mainGame)} {
       ::fics::writechan "unobserve $game"
+      # todo: make a "follow!" command that autoloads games into the main widget and saves them as each game finishes &&&
       return
     }
 
@@ -1658,7 +1670,7 @@ namespace eval fics {
 	sc_game tags set -blackElo $::fics::elo($black)
       }
       sc_game tags set -date [::utils::date::today]
-      sc_game tags set -event "FICs Game $game $initialTime/$increment"
+      sc_game tags set -event "FICS Game $game $initialTime/$increment"
 
       ### Try to get first moves of game
 
