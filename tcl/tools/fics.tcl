@@ -559,6 +559,7 @@ namespace eval fics {
       set ::fics::waitForMoves no_meaning
       vwaitTimed ::fics::waitForMoves 2000 nowarn
       updateBoard -pgn
+      updateTitle
     } else {
       writechan $l "echo"
     }
@@ -1687,6 +1688,7 @@ namespace eval fics {
 
       set ::fics::mutex 0
       updateBoard -pgn
+      updateTitle
     }
   }
 
