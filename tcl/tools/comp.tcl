@@ -657,6 +657,7 @@ proc compNM {n m k} {
 	sendToEngine $current_engine "go"
       } else {
 	if {$comp(timecontrol) != "permove"} {
+          # Should we only send time, otim if has "time" as a feature &&&
           if {$comp(white) == $current_engine} {
 	    sendToEngine $current_engine "time [expr $comp(wtime)/10]"
 	    sendToEngine $current_engine "otim [expr $comp(btime)/10]"
@@ -665,7 +666,7 @@ proc compNM {n m k} {
 	    sendToEngine $current_engine "otim [expr $comp(wtime)/10]"
           }
 	} else {
-          ### permove time contorl doesn't need reissuing
+          ### permove time control doesn't need reissuing
 	  # sendToEngine $current_engine "st $comp(seconds)"
 	}
       }

@@ -45,7 +45,7 @@ proc pasteFEN {} {
     }
     set fenStr [string map {\n { }} $fenStr]
 
-    set msg "\"$fenStr\" is not a valid FEN.\n\n $fenExplanation"
+    set msg "\"$fenStr\"\nis not a valid FEN.\n\n $fenExplanation"
 
     fenErrorDialog $msg
     return
