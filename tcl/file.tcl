@@ -243,6 +243,7 @@ proc refreshWindows {} {
   updateTitle
   updateStatusBar
   refreshCustomFlags
+  refreshSearchDBs
 }
 
 ### Update a few widgets with the Custom Flags
@@ -330,11 +331,30 @@ proc refreshCustomFlags {} {
 
       $w.c.title configure -text "$flagname"
   }
+}
 
+proc refreshSearchDBs {} {
   ### header search
-
+  #   (todo)
   set w .sh
   if {[winfo exists $w]} {
+  }
+
+  ### board search
+  set w .sb
+  if {[winfo exists $w]} {
+      set ::listbases {}
+
+      # populate the combobox
+      for {set i 1} {$i <= [sc_base count total]} {incr i} {
+	if {[sc_base inUse $i]} {
+	  lappend ::listbases [file tail [sc_base filename $i]]
+	}
+      }
+      $w.refdb.lb configure -values $::listbases
+      $w.refdb.lb current 0
+
+      checkState ::searchRefBase $w.refdb.lb
   }
 }
 

@@ -54,8 +54,7 @@ proc ::search::board {} {
   # populate the combobox
   for {set i 1} {$i <= [sc_base count total]} {incr i} {
     if {[sc_base inUse $i]} {
-      set fname [file tail [sc_base filename $i]]
-      lappend ::listbases $fname
+      lappend ::listbases [file tail [sc_base filename $i]]
     }
   }
   ttk::combobox $w.refdb.lb -textvariable refDatabase -values $::listbases
@@ -102,8 +101,7 @@ proc ::search::board {} {
       set base  9 ; # this line not really needed
       for {set i 1} {$i <= [sc_base count total]} {incr i} {
 	if {[sc_base inUse $i]} {
-	  set fname [file tail [sc_base filename $i]]
-	  if {$fname == $refDatabase} {
+	  if {[file tail [sc_base filename $i]] == $refDatabase} {
 	    set base $i
 	    set found 1
 	    break
