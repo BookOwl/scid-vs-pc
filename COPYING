@@ -41,9 +41,10 @@ Crafty engine : Robert Hyatt (thanks to him for authorizing the bundling of Craf
 
 Before re-using the files above for *any* purpose please contact respective authors first.
 
-The base64 encoded data of the piece set "eboard" was generated using files taken from chessx, modified for use in Scid with Gimp, and seems to have i
-ts origins in the eboard project(probable authors : Pulga --> Felipe Bergo <bergo@seul.org>,Gorgonian --> Phillip Watts <pwatts14@yahoo.com>). Please
-refer to this last project for more details (both are GPL projects).
+The base64 encoded data of the piece set "eboard" was generated using files taken from chessx,
+modified for use in Scid with Gimp, and seems to have its origins in the eboard project
+(probable authors : Pulga --> Felipe Bergo <bergo@seul.org>,Gorgonian --> Phillip Watts <pwatts14@yahoo.com>).
+Please refer to this last project for more details (both are GPL projects).
 
 This copyright notice applies to all the files contained in this
 distribution of Scid except for the files listed above.
@@ -58,13 +59,13 @@ Scid vs. PC Copyright Notice
 Additional Chess Pieces and fonts are taken from http://www.enpassant.dk/chess/fonteng.htm
 Additional tile images from Chessx http://chessx.sourceforge.net
 Additional icons from the Tango Icon Project http://tango.freedesktop.org/Tango_Desktop_Project
-under the creative commons license,
-and from Peter Wong's Chess Icon project www.virtualpieces.net, used by permission.
+(under the creative commons license), and from Peter Wong's Chess Icon project
+www.virtualpieces.net, used by permission.
 
 Scid Addendums: Polyglot 1.4 has been modified and included with Scid since version scid-3.6.1-pg.18
 It is Copyright 2004-2006 Fabien Letouzey and released under the GPL version 2,
 
-2008-2011 Steven Atkinson (stevenaaus@yahoo.com)
+2008-2012 Steven Atkinson (stevenaaus@yahoo.com)
 
 ---------------------------------------------------------------------------
 
