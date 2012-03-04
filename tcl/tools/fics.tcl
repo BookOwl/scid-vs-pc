@@ -270,8 +270,8 @@ namespace eval fics {
     scale $w.bottom.scale -orient vertical -from 45 -to 25 -showvalue 0 -resolution 5 -length 240 \
       -variable ::fics::size -command ::fics::changeScaleSize -relief flat
 
-    pack $w.bottom.scale -side left -padx 5 -pady 20
     pack $w.bottom.clocks -side left -padx 10 -pady 5
+    pack $w.bottom.scale -side left -padx 5 -pady 20
 
     label $w.bottom.clocks.ping -textvar ::fics::ping
     pack $w.bottom.clocks.ping -side bottom
@@ -1005,11 +1005,16 @@ namespace eval fics {
     }
 
     if {[string match "Game *rated *" $line]} {
-      ### Get observed game Info
 
+      # Game notification: Kaitlin ( 696) vs. leilatov (1186) rated bughouse 2 0: Game 335
+      if {[string match "Game notification*" $line]} {
+        return
+      }
+
+      ### Get observed game Info
       # Game 237: impeybarbicane (1651) bust (1954) rated crazyhouse 5 0
       # Game 237: impeybarbicane ( 649) bust ( 987) rated crazyhouse 5 0
-      # note - the stray '(' in the line below seems to make matching the elo easier
+      # note - the stray '('s in the line below seems to make matching the elo easier
 
       if {[scan $line {Game %d: %s (%s %s (%s %s %s %d %d} g white whiteElo black blackElo dummy gametype t1 t2] == 9} {
           set ::fics::elo($white) [string range $whiteElo 0 end-1]
@@ -1206,7 +1211,12 @@ namespace eval fics {
       if {[lsearch -exact $::fics::observedGames $game] == -1} {
 	lappend ::fics::observedGames $game
       }
-
+      if {[winfo exists $w.bottom.game$game]} {
+        # Check for clash between finished games and new games
+	bind .fics <Destroy> {}
+        destroy $w.bottom.game$game
+        bind .fics <Destroy> ::fics::close
+      }
       frame $w.bottom.game$game
       ::board::new $w.bottom.game$game.bd $::fics::size 1
       # At bottom we have White and Buttons
@@ -1541,6 +1551,8 @@ namespace eval fics {
 
     ::gameclock::setSec 1 [ expr 0 - $whiteRemainingTime ]
     ::gameclock::setSec 2 [ expr 0 - $blackRemainingTime ]
+    # Show time remaining in titlebar ?
+    # wm title . "$::scidName: $white ($whiteRemainingTime) - $black ($blackRemainingTime)"
     if {$color == "W"} {
       ::gameclock::start 1
       ::gameclock::stop 2
@@ -1909,9 +1921,10 @@ namespace eval fics {
   ################################################################################
   proc close {{mode {}}} {
     variable logged
-    # stop recursive call
+
     bind .fics <Destroy> {}
 
+    # Unused
     if {$mode == "safe"} {
       set ans [tk_dialog .fics_dialog Abort "You are playing a game\nDo you want to exit ?" question {} Exit Cancel ]
       if {$ans == 1} {
@@ -1939,7 +1952,7 @@ namespace eval fics {
     if { ! $::windowsOS } { catch { exec -- kill -s INT [ $::fics::timeseal_pid ] }  }
 
     catch {destroy .ficsOffers}
-    destroy .fics
+    catch {destroy .fics}
   }
 
 
