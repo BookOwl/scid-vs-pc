@@ -2499,13 +2499,18 @@ proc processAnalysisInput {n} {
 	sc_pos setComment "Black resigns "
       }
       set comp(playing) 0
-      set analysis(waitForBestMove$n) 0
+
+      ### We have to send signals to both engines
+      # This is to handle the case where engines move then resign/declare draw immediately,
+      # eg Engine: move g2g3
+      #    Engine: 1/2-1/2 {Insufficient material}
+      # as we set comp(playing) to 0, and the other engines final move is never processed
+
+      # set analysis(waitForBestMove$n) 0
+      set analysis(waitForBestMove$comp(move)) 0
+      set analysis(waitForBestMove$comp(nextmove)) 0
     }
 
-    # There's a bug here. Xboard engines make a move then declare draw, but breaks program algorithm somehow
-    # (Maybe it's only when starting with blacks move first?)
-    # Engine: move g2g3
-    # Engine: 1/2-1/2 {Insufficient material}
     #
     # (Other)
     # Scid  : g2g3
@@ -2521,7 +2526,10 @@ proc processAnalysisInput {n} {
         sc_pos setComment "Black declares draw. "
       }
       set comp(playing) 0
-      set analysis(waitForBestMove$n) 0
+
+      # set analysis(waitForBestMove$n) 0
+      set analysis(waitForBestMove$comp(move)) 0
+      set analysis(waitForBestMove$comp(nextmove)) 0
    }
 
   }
