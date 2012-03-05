@@ -14811,7 +14811,6 @@ sc_search (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
     if (!db->inUse) {
         return errorResult (ti, errMsgNotOpen(ti));
     }
-    // &&& initDbFilter (db);
 
     switch (index) {
     case OPT_BOARD:

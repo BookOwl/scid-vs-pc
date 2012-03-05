@@ -2502,6 +2502,16 @@ proc processAnalysisInput {n} {
       set analysis(waitForBestMove$n) 0
     }
 
+    # There's a bug here. Xboard engines make a move then declare draw, but breaks program algorithm somehow
+    # (Maybe it's only when starting with blacks move first?)
+    # Engine: move g2g3
+    # Engine: 1/2-1/2 {Insufficient material}
+    #
+    # (Other)
+    # Scid  : g2g3
+    # Scid  : go
+    # Engine: Error (command not legal now): g2g3
+
     if {[string match {1/2-1/2*} $line]} {
       puts_ "DRAW (engine $n)"
       sc_game tags set -result =

@@ -643,14 +643,6 @@ proc compNM {n m k} {
     } else {
       ### Xboard main loop
 
-      ### Send the previous move to engine
-      # (protocol 2 can also use "usermove MOVE")
-
-      set lastmove [lindex $movehistory end]
-      if {$lastmove != {}} {
-	sendToEngine $current_engine $lastmove
-      }
-
       set nummoves [llength $comp(fen)]
       if {$nummoves == 0 || $nummoves == 1 && $comp(startpos) != "startpos"} {
         ### If only one or two moves, complete initialisation
@@ -669,6 +661,14 @@ proc compNM {n m k} {
           ### permove time control doesn't need reissuing
 	  # sendToEngine $current_engine "st $comp(seconds)"
 	}
+      }
+
+      ### Send the previous move to engine
+      # (protocol 2 can also use "usermove MOVE")
+
+      set lastmove [lindex $movehistory end]
+      if {$lastmove != {}} {
+	sendToEngine $current_engine $lastmove
       }
 
       vwait analysis(waitForBestMove$current_engine)
