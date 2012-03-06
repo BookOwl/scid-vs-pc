@@ -2493,10 +2493,10 @@ proc processAnalysisInput {n} {
       puts_ "RESIGNS (engine $n)"
       if {$n == $comp(white)} {
 	sc_game tags set -result 0
-	sc_pos setComment "White resigns "
+	sc_pos setComment "White resigns"
       } else {
 	sc_game tags set -result 1
-	sc_pos setComment "Black resigns "
+	sc_pos setComment "Black resigns"
       }
       set comp(playing) 0
 
@@ -2521,9 +2521,9 @@ proc processAnalysisInput {n} {
       puts_ "DRAW (engine $n)"
       sc_game tags set -result =
       if {$n == $comp(white)} {
-        sc_pos setComment "White declares draw. "
+        sc_pos setComment "White declares draw"
       } else {
-        sc_pos setComment "Black declares draw. "
+        sc_pos setComment "Black declares draw"
       }
       set comp(playing) 0
 

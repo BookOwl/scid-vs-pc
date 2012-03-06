@@ -643,32 +643,37 @@ proc compNM {n m k} {
     } else {
       ### Xboard main loop
 
-      set nummoves [llength $comp(fen)]
-      if {$nummoves == 0 || $nummoves == 1 && $comp(startpos) != "startpos"} {
-        ### If only one or two moves, complete initialisation
-	sendToEngine $current_engine "go"
-      } else {
-	if {$comp(timecontrol) != "permove"} {
-          # Should we only send time, otim if has "time" as a feature &&&
-          if {$comp(white) == $current_engine} {
-	    sendToEngine $current_engine "time [expr $comp(wtime)/10]"
-	    sendToEngine $current_engine "otim [expr $comp(btime)/10]"
-          } else {
-	    sendToEngine $current_engine "time [expr $comp(btime)/10]"
-	    sendToEngine $current_engine "otim [expr $comp(wtime)/10]"
-          }
+      # Setup times
+
+      if {$comp(timecontrol) != "permove"} {
+	# Should we only send time, otim if has "time" as a feature &&&
+	if {$comp(white) == $current_engine} {
+	  sendToEngine $current_engine "time [expr $comp(wtime)/10]"
+	  sendToEngine $current_engine "otim [expr $comp(btime)/10]"
 	} else {
-          ### permove time control doesn't need reissuing
-	  # sendToEngine $current_engine "st $comp(seconds)"
+	  sendToEngine $current_engine "time [expr $comp(btime)/10]"
+	  sendToEngine $current_engine "otim [expr $comp(wtime)/10]"
 	}
+      } else {
+	### permove time control doesn't need reissuing ?
+	# sendToEngine $current_engine "st $comp(seconds)"
       }
 
-      ### Send the previous move to engine
-      # (protocol 2 can also use "usermove MOVE")
+      # Setup move
 
-      set lastmove [lindex $movehistory end]
-      if {$lastmove != {}} {
-	sendToEngine $current_engine $lastmove
+      set nummoves [llength $comp(fen)]
+      if {$nummoves == 0 } {
+        sendToEngine $current_engine "go"
+      } elseif {$nummoves == 1 && $comp(startpos) != "startpos"} {
+	sendToEngine $current_engine "setboard [sc_pos fen]"
+	sendToEngine $current_engine "go"
+      } else {
+	### Send the previous move to engine
+	# (protocol 2 can also use "usermove MOVE")
+	set lastmove [lindex $movehistory end]
+	if {$lastmove != {}} {
+	  sendToEngine $current_engine $lastmove
+	} ; # else "go" ?
       }
 
       vwait analysis(waitForBestMove$current_engine)
@@ -707,6 +712,7 @@ proc compNM {n m k} {
       if { $score == {0 {}}} {
 	### stalemate
 	sc_game tags set -result =
+	sc_pos setComment Stalemate
 	puts_ Stalemate
 	break
       } elseif { $score == {-32000 {}}} {
@@ -723,6 +729,11 @@ proc compNM {n m k} {
 	set f [lindex $fen 0]
 	lappend comp(fen) $f
 	if {[llength [lsearch -all $comp(fen) $f]] > 2 || [lindex $fen 4] > 99} {
+          if {[lindex $fen 4] > 99} {
+	    sc_pos setComment "50 move rule"
+          } else {
+	    sc_pos setComment "3 fold repetition"
+          }
 	  sc_game tags set -result =
 	  ### draw
 	  puts_ Draw
@@ -805,7 +816,12 @@ proc compNM {n m k} {
   }
 
   if {$comp(timecontrol) == "pergame"} {
-    sc_pos setComment "[sc_pos getComment]$::tr(White) $::tr(Time) $comp(wtime), $::tr(Black) $::tr(Time) $comp(btime)"
+    set comment [sc_pos getComment]
+    if {$comment == {}} {
+      sc_pos setComment "$::tr(White) $::tr(Time) $comp(wtime), $::tr(Black) $::tr(Time) $comp(btime)"
+    } else {
+      sc_pos setComment "$comment. $::tr(White) $::tr(Time) $comp(wtime), $::tr(Black) $::tr(Time) $comp(btime)"
+    }
   }
 
   if {![sc_base isReadOnly]} {
@@ -914,7 +930,7 @@ proc compTimeout {} {
     global analysis comp
 
     puts_ "!!! Move timed out, starting next game"
-    sc_pos setComment {Game timed out. }
+    sc_pos setComment {Game timed out}
 
     set comp(playing) 0
     set analysis(waitForReadyOk$comp(move)) 1
@@ -931,7 +947,7 @@ proc compGameEnd {result} {
     }
     set comp(playing) 0
     set comp(result) $result
-    sc_pos setComment {Manual adjudication. }
+    sc_pos setComment {Manual adjudication}
 
     set analysis(waitForReadyOk$comp(move)) 1
     set analysis(waitForBestMove$comp(move)) 1

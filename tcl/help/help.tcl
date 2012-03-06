@@ -2801,7 +2801,7 @@ set helpText(Tourney) {<h1>Computer Tournament</h1>
   <a Analysis List>Analysis Engines</a> widget.
   </p>
   <p>
-  <i>Support for different engines is good, but many old and/or less-well-known engines won't work.
+  <i>Support for different engines is good, but some older xboard engines don't work well.
   For more information about engine compatibility, see below.
   </i></p>
 
@@ -2828,7 +2828,7 @@ set helpText(Tourney) {<h1>Computer Tournament</h1>
   The "Pause Game" button does not take effect instantaneously, but first waits for the current move to be made before pausing further progress.
   </p>
   <p>
-  Though there's been some testing, it's still possible for less well-known engines to hang.
+  Though there's been much testing, it's still possible for less well-known engines to hang under some circumstances.
   To address this, set the <b>Seconds for Time-out</b> value to the maximum time
   that any move should take. <b>0 seconds</b> disables this feature, and is the default.
   If the game ~does~ get timed-out, the game is saved, and the result may be edited later.
@@ -2859,39 +2859,40 @@ The author has tested quite a few engines under Linux, and a lesser number with 
 <br>
 <br>
 Arasanx<br>
+Chenard<br>
 Crafty<br>
 Critter<br>
 Faile<br>
+Gaviota<br>
 Glaurung<br>
 Gnu Chess 5<br>
+Gully<br>
 Hoi Chess<br>
 Homer<br>
 Komodo<br>
+Marvin<br>
+OliThink<br>
 Phalanx<br>
 RobboLito<br>
 Scidlet<br>
 Scorpio<br>
 Shredder Classic 4<br>
 Sjeng<br>
+Sloppy<br>
 Spike<br>
 Stockfish<br>
 Toga (Fruit)<br>
-XChenard<br>
 Umko 1.1<br>
 Zct<br>
 <br>
 Komodo performs well, but some versions have broken time-per-move time control.
-Arasan, Spike, Sjeng, Homer and XChenard have issues relating to time control.
-Sjeng and XChenard are issued the "hard" command, and seem to work.
-Umko 1.1 seems to have occasional end-of-game fails, which have been worked around.
-Gaviota-0.74 runs in analysis/xboard mode, but will not play tournaments.
 Pervious versions of Phalanx had no time control, but it now works well.
 Gnu Chess needs the "-x" parameter, and only versions > 5.07 will properly handle
 time-per-game time control.
 Faile seems not to issue "move" under some circumstances, despite being in xboard mode.
 </p>
 
-<p><footer>Updated: Scid vs. PC 4.5, June 2011</footer></p>
+<p><footer>Updated: Scid vs. PC 4.8, March 2012</footer></p>
 
 }
 
