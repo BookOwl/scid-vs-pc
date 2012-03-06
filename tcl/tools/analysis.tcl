@@ -3741,8 +3741,21 @@ proc engineShowLog {n} {
     frame $w.buttons
     pack $w.buttons -side bottom 
 
-    autoscrollframe $w.frame text $w.log -width 80 -height 40 -font font_small -wrap none 
+    # autoscroll can bug out with this big text file, so don't use it.
+    frame $w.frame
+    text $w.log -width 80 -height 40 -font font_small -wrap none \
+      -yscrollcommand "$w.ybar set" -xscrollcommand "$w.xbar set"
+    scrollbar $w.ybar -command "$w.log yview"
+    scrollbar $w.xbar -command "$w.log xview" -orient horizontal
+
     pack $w.frame -side top -fill both -expand yes
+    grid $w.log  -in $w.frame -row 0 -column 0 -sticky news
+    grid $w.ybar -in $w.frame -row 0 -column 1 -sticky ns
+    grid $w.xbar -in $w.frame -row 1 -column 0 -sticky we
+    grid rowconfigures   $w.frame 0 -weight 1
+    grid columnconfigure $w.frame 0 -weight 1
+    grid rowconfigures   $w.frame 1 -weight 0
+    grid columnconfigure $w.frame 1 -weight 0
     
     dialogbutton $w.buttons.update -textvar ::tr(Update) -command engineUpdateLog
     dialogbutton $w.buttons.ok -textvar ::tr(Close) -command "destroy $w"
