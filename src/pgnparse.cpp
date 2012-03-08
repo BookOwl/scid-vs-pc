@@ -617,6 +617,10 @@ PgnParser::GetRestOfPawnMove (char * buffer)
     int ch;
     bool seenDigit = false;
 
+    // allows for using lowercase 'b' for bishop promotion
+    // eg. OliThink uses a7b8b for FEN "1q6/P6k/8/5N1K/8/8/8/8 w - - 0 1"
+    bool pawn2seen = false;
+
     // First, check for "ep" or "e.p." on its own, not a move at all:
     if (*(buffer-1) == 'e') {
         ch = GetChar ();
@@ -647,7 +651,8 @@ PgnParser::GetRestOfPawnMove (char * buffer)
             ADDCHAR (buffer, ch);
             continue;
         }
-        if (ch >= 'a'  &&  ch <= 'h') {
+        if (ch >= 'a'  &&  ch <= 'h' && !pawn2seen) {
+            pawn2seen = true;
             ADDCHAR (buffer, ch);
             continue;
         }
