@@ -3489,7 +3489,7 @@ proc automove_go {n} {
 # returns the error caught by catch
 ################################################################################
 proc sc_move_add { moves n } {
-  if { [info exists ::analysis(uci$n)] && $::analysis(uci$n) } {
+  if { $::analysis(uci$n) } {
     return [::uci::sc_move_add $moves]
   } else  {
     return [ catch { sc_move addSan $moves } ]
@@ -3752,9 +3752,9 @@ proc engineShowLog {n} {
     grid $w.log  -in $w.frame -row 0 -column 0 -sticky news
     grid $w.ybar -in $w.frame -row 0 -column 1 -sticky ns
     grid $w.xbar -in $w.frame -row 1 -column 0 -sticky we
-    grid rowconfigures   $w.frame 0 -weight 1
+    grid rowconfigure    $w.frame 0 -weight 1
     grid columnconfigure $w.frame 0 -weight 1
-    grid rowconfigures   $w.frame 1 -weight 0
+    grid rowconfigure    $w.frame 1 -weight 0
     grid columnconfigure $w.frame 1 -weight 0
     
     dialogbutton $w.buttons.update -textvar ::tr(Update) -command engineUpdateLog
