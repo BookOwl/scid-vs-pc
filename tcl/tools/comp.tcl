@@ -514,6 +514,8 @@ proc compNM {n m k} {
 	sendToEngine $current_engine ucinewgame
 	sendToEngine $current_engine "isready"
 	vwait analysis(waitForReadyOk$current_engine)
+	# todo - enable ponder on/off
+	sendToEngine $current_engine "ponder off"
 	# if {!$comp(playing)} {break}
 	# sendToEngine $current_engine {debug off}
     } else {
@@ -526,7 +528,8 @@ proc compNM {n m k} {
         }
 
 	sendToEngine $current_engine "protover 2"
-	sendToEngine $current_engine "hard"
+	# todo - enable ponder on/off
+	sendToEngine $current_engine "easy"
 	sendToEngine $current_engine "bk off"
 
 	# done later

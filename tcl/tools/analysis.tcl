@@ -1802,14 +1802,16 @@ proc destroyAnalysisWin {n} {
     return
   }
 
+  set pid [pid $analysis(pipe$n)]
+
   # Send interrupt signal if the engine wants it:
   if {(!$windowsOS)  &&  $analysis(send_sigint$n)} {
-  puts_ "killing $analysis(pipe$n), [pid $analysis(pipe$n)]"
-    catch {exec -- kill -s INT [pid $analysis(pipe$n)]}
+    puts_ "killing $analysis(pipe$n), $pid"
+    catch {exec -- kill -s INT $pid}
   }
 
   # Some engines in analyze mode may not react as expected to "quit"
-  # so ensure the engine exits analyze mode first:
+  # so ensure the engine exits analyze mode first
   if {$analysis(uci$n)} {
     sendToEngine $n stop
     sendToEngine $n quit
@@ -1826,8 +1828,8 @@ proc destroyAnalysisWin {n} {
   # Close the engine, ignoring any errors since nothing can really
   # be done about them anyway -- maybe should alert the user with
   # a message box?
+  # catch {close $analysis(pipe$n)}
   close $analysis(pipe$n)
-  #catch {close $analysis(pipe$n)}
 
   if {$analysis(log$n) != {}} {
     catch {close $analysis(log$n)}
@@ -1835,6 +1837,13 @@ proc destroyAnalysisWin {n} {
   }
   set analysis(pipe$n) {}
   set ::analysisWin$n 0
+
+  # Large tournaments can get wrecked by undead processes, so kill it to be sure
+  if {(!$windowsOS)} {
+    after 100 "catch {exec -- kill -s KILL $pid}"
+  } else {
+    # todo
+  }
 }
 
 ###  Send a command to a running analysis engine
