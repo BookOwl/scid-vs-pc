@@ -15,12 +15,8 @@ namespace eval uci {
   set oldOptions ""
   array set check ""
 
-  # The list of token that comes with info
-  # set infoToken { depth seldepth time nodes pv multipv score cp mate lowerbound upperbound \
-        currmove currmovenumber hashfull nps tbhits sbhits cpuload string refutation currline }
-  # This was previously used in limiting the data to "pv" infos.
-  # but in my testing "pv" infos are always *last*
-  # so infoToken is unused now.
+  # infoToken contains a list of known info tokens (used to find the end of "pv" tokens)
+  set infoToken {depth seldepth time nodes pv multipv score cp mate lowerbound upperbound currmove currmovenumber hashfull nps tbhits sbhits cpuload string refutation currline}
 
   set optionToken {name type default min max var }
   set optionImportant { MultiPV Hash OwnBook BookFile UCI_LimitStrength UCI_Elo }
@@ -154,10 +150,18 @@ namespace eval uci {
         if { $t == "nodes" } { incr i ; set uciInfo(nodes$n) [ lindex $data $i ] ; continue }
         if { $t == "pv" } {
           incr i
-          set uciInfo(pv$n) [lrange $data $i end]
+          while { [ lsearch -exact $::uci::infoToken [ lindex $data $i ] ] == -1 && $i < $length } {
+            lappend uciInfo(pv$n) [lindex $data $i]
+            incr i
+          }
           set toBeFormatted 1
-          # Assume "pv" infos are always last
-          break
+          incr i -1
+          continue
+
+          # Assuming "pv" infos are always last gains ~ 100usecs but is against UCI standard
+          # set uciInfo(pv$n) [lrange $data $i end]
+          # set toBeFormatted 1
+          # break
         }
         if { $t == "multipv" } { incr i ; set uciInfo(multipv$n) [ lindex $data $i ] ; continue }
         if { $t == "score" } {
