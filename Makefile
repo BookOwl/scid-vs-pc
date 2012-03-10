@@ -236,6 +236,10 @@ install_engines: engines
 	install -m 644 ./engines/toga/readme.txt $(SHAREDIR)/engines/toga
 	install ./engines/toga/src/fruit $(BINDIR)
 
+install_gui: scid
+	install -m 755 scid $(BINDIR)
+	scid
+
 uninstall:
 	rm -rf $(SHAREDIR)/engines
 	rm -rf $(SHAREDIR)/books
