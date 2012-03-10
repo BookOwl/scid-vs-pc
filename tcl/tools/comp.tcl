@@ -45,13 +45,11 @@ proc compInit {} {
 
   ### Engines
 
-  pack [label $w.engines.label -text "Number of Engines"] -side top -padx 5 -pady 5
-
-  pack [frame $w.engines.top] -side top -expand 1 -fill x
-  pack [spinbox $w.engines.top.count -textvariable comp(count) -from 2 -to [llength $engines(list)] -width 5] \
-    -side left -padx 5
+  pack [frame $w.engines.top] -side top -expand 1 -fill x -pady 5
+  grid [label $w.engines.top.label -text "Number of Engines"] -row 0 -column 0 -sticky w
+  grid [spinbox $w.engines.top.count -textvariable comp(count) -from 2 -to [llength $engines(list)] -width 4 -highlightthickness 0] -row 0 -column 1  -padx 15
   dialogbutton $w.engines.top.update -text $::tr(Update) -command drawCombos
-  pack $w.engines.top.update -side right -padx 5
+  grid $w.engines.top.update -row 0 -column 2 -sticky e
 
   set comp(countcombos) $comp(count)
   drawCombos
@@ -121,10 +119,12 @@ proc compInit {} {
 
   checkTimeControl
 
-  ### separator
-
   incr row
-  grid  [frame $w.config.line -height 2 -borderwidth 2 -relief sunken] -pady 5 -sticky ew -row $row -column 0 -columnspan 2
+  label $w.config.ponderlabel -text {Permanent Thinking}
+  checkbutton $w.config.pondervalue -variable comp(ponder) 
+
+  grid $w.config.ponderlabel -row $row -column 0 -sticky w -padx 5 
+  grid $w.config.pondervalue -row $row -column 1 -padx 5 
 
   incr row
   label $w.config.animatelabel -text {Animate Moves}
@@ -160,10 +160,6 @@ proc compInit {} {
 
   grid $w.config.timeoutlabel -row $row -column 0 -sticky w -padx 5 
   grid $w.config.timeoutvalue -row $row -column 1 -sticky w -padx 5 
-
-  incr row
-  label $w.config.start_title -text {Start Position}
-  grid $w.config.start_title -row $row -column 0 -columnspan 2
 
   incr row
   label $w.config.start1label -text {All games from start position}
@@ -265,7 +261,7 @@ proc compOk {} {
 
   if {$comp(timecontrol) == "permove"} {
     set comp(time) [expr $comp(seconds) * 1000]
-    puts_ "Move delay is $comp(time) seconds"
+    puts "Move delay is $comp(time) seconds"
   } 
 
   for {set i 0} {$i < $comp(count)} {incr i} {
@@ -281,9 +277,8 @@ proc compOk {} {
       -message {Duplicate engines not supported}
     return
   }
-
   foreach i $players j $names {
-    puts_ "player $i is $j"
+    puts "player $i is $j"
   }
 
   ### Reconfigure init widget for pausing
@@ -356,7 +351,7 @@ proc compOk {} {
   # This is no longer reliable because of comp(firstonly) option
   # set num_games [expr {$comp(count) * ($comp(count)-1) * $comp(rounds) / 2}]
   set num_games [llength $comp(games)]
-  puts_ "$num_games GAMES total: $comp(games)"
+  puts "$num_games GAMES total: $comp(games)"
 
   ttk::progressbar $w.progress -mode determinate \
     -maximum $num_games -variable comp(current)
@@ -374,7 +369,7 @@ proc compOk {} {
     set name2 [lindex $thisgame 3]
     set k     [lindex $thisgame 4]
     if {$n != {} && $m != {}} {
-      puts_ "Game [expr $comp(current) + 1]: $name1 vs. $name2"
+      puts "Game [expr $comp(current) + 1]: $name1 vs. $name2"
       incr comp(current)
       compNM $n $m $k
     }
@@ -383,7 +378,7 @@ proc compOk {} {
 
   ### Comp over
 
-  puts_ {Comp finished}
+  puts {Comp finished}
   set comp(iconize) 0
   if {[winfo exists .comp]} {
     bind .comp <Destroy> {}
@@ -432,8 +427,6 @@ proc compNM {n m k} {
       }
       set timecontrol $mins:$secs
     }
-
-    puts_ "Game period is $comp(wtime) seconds"
 
     if {$comp(showclock) && $comp(timecontrol) == "pergame"} {
       ::gameclock::setSec 1 [ expr -int($comp(minutes)*60) ]
@@ -514,8 +507,11 @@ proc compNM {n m k} {
 	sendToEngine $current_engine ucinewgame
 	sendToEngine $current_engine "isready"
 	vwait analysis(waitForReadyOk$current_engine)
-	# todo - enable ponder on/off
-	sendToEngine $current_engine "ponder off"
+        if {$comp(ponder)} {
+	  sendToEngine $current_engine "setoption name Ponder value true"
+        } else {
+	  sendToEngine $current_engine "setoption name Ponder value false"
+        } 
 	# if {!$comp(playing)} {break}
 	# sendToEngine $current_engine {debug off}
     } else {
@@ -528,8 +524,11 @@ proc compNM {n m k} {
         }
 
 	sendToEngine $current_engine "protover 2"
-	# todo - enable ponder on/off
-	sendToEngine $current_engine "easy"
+        if {$comp(ponder)} {
+	  sendToEngine $current_engine "hard"
+        } else {
+	  sendToEngine $current_engine "easy"
+        }
 	sendToEngine $current_engine "bk off"
 
 	# done later
@@ -619,6 +618,7 @@ proc compNM {n m k} {
     set comp(lasttime) [clock clicks -milli]
     set comp(move) $current_engine
     set comp(nextmove) $other_engine
+    set lastmove [lindex $movehistory end]
 
     if {$::analysis(uci$current_engine)} {
       ### UCI main loop
@@ -635,7 +635,6 @@ proc compNM {n m k} {
 	sendToEngine $current_engine "go wtime $comp(wtime) btime $comp(btime) winc $incr binc $incr"
       }
 
-      
       # set analysis(fen$current_engine) [sc_pos fen]
       set analysis(maxmovenumber$current_engine) 0
 
@@ -673,7 +672,6 @@ proc compNM {n m k} {
       } else {
 	### Send the previous move to engine
 	# (protocol 2 can also use "usermove MOVE")
-	set lastmove [lindex $movehistory end]
 	if {$lastmove != {}} {
 	  sendToEngine $current_engine $lastmove
 	} ; # else "go" ?
@@ -821,9 +819,9 @@ proc compNM {n m k} {
   if {$comp(timecontrol) == "pergame"} {
     set comment [sc_pos getComment]
     if {$comment == {}} {
-      sc_pos setComment "$::tr(White) $::tr(Time) $comp(wtime), $::tr(Black) $::tr(Time) $comp(btime)"
+      sc_pos setComment "wtime $comp(wtime), btime $comp(btime)"
     } else {
-      sc_pos setComment "$comment. $::tr(White) $::tr(Time) $comp(wtime), $::tr(Black) $::tr(Time) $comp(btime)"
+      sc_pos setComment "$comment.\n$::tr(White) $::tr(Time) $comp(wtime), $::tr(Black) $::tr(Time) $comp(btime)"
     }
   }
 
@@ -892,10 +890,13 @@ proc drawCombos {} {
     lappend values [lindex $e 0]
   }
 
-
   for {set i 0} {$i < $comp(count)} {incr i} {
 
-    pack [frame $l.$i] -side top -pady 3
+    frame $l.$i
+    # Only pack so many
+    if {$i < 10} {
+      pack $l.$i -side top
+    }
 
     ttk::combobox  $l.$i.combo -width 20 -state readonly -values $values
 
@@ -906,7 +907,7 @@ proc drawCombos {} {
       engineShowLog  \[ $l.$i.combo current \]
     "
 
-    pack $l.$i.configure $l.$i.log $l.$i.combo -side left -padx 7
+    pack $l.$i.log $l.$i.configure $l.$i.combo -side left -padx 7
 
     if {[info exists comp(players)]} {
       # Set the combo boxes to the previous players if we can

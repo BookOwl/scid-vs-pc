@@ -48,6 +48,7 @@ namespace eval uci {
     set uciInfo(tbhits$n) ----
     set uciInfo(sbhits$n) ----
     set uciInfo(cpuload$n) ----
+    set uciInfo(ponder$n) {}
     ### these three are unused
     # set uciInfo(string$n) ""
     # set uciInfo(refutation$n) ""
