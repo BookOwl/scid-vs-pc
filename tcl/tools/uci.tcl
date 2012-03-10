@@ -53,8 +53,7 @@ namespace eval uci {
     # set uciInfo(string$n) ""
     # set uciInfo(refutation$n) ""
     # set uciInfo(currline$n) ""
-
-    # set uciInfo(bestmove$n) ""
+    set uciInfo(bestmove$n) ""
   }
 
   ################################################################################
@@ -105,6 +104,11 @@ namespace eval uci {
     logEngine $n "Engine: $line"
 
     if {[string match "bestmove*" $line]} {
+      if {$uciInfo(bestmove$n) == "stop"} {
+        # Ponder miss. Discard this bestmove
+        set uciInfo(bestmove$n) {}
+        return
+      }
       set data [split $line]
       set uciInfo(bestmove$n) [lindex $data 1]
 

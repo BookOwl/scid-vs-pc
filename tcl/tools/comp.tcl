@@ -261,7 +261,7 @@ proc compOk {} {
 
   if {$comp(timecontrol) == "permove"} {
     set comp(time) [expr $comp(seconds) * 1000]
-    puts "Move delay is $comp(time) seconds"
+    puts "Move delay is $comp(time) milliseconds"
   } 
 
   for {set i 0} {$i < $comp(count)} {incr i} {
@@ -408,7 +408,7 @@ proc compOk {} {
 }
 
 proc compNM {n m k} {
-  global analysis comp
+  global analysis comp ::uci::uciInfo
 
   set comp(result) {}
 
@@ -505,13 +505,13 @@ proc compNM {n m k} {
         # fulvio issues isready every move ??
 	set analysis(waitForReadyOk$current_engine) 1
 	sendToEngine $current_engine ucinewgame
-	sendToEngine $current_engine "isready"
-	vwait analysis(waitForReadyOk$current_engine)
         if {$comp(ponder)} {
 	  sendToEngine $current_engine "setoption name Ponder value true"
         } else {
 	  sendToEngine $current_engine "setoption name Ponder value false"
         } 
+	sendToEngine $current_engine "isready"
+	vwait analysis(waitForReadyOk$current_engine)
 	# if {!$comp(playing)} {break}
 	# sendToEngine $current_engine {debug off}
     } else {
@@ -622,17 +622,51 @@ proc compNM {n m k} {
 
     if {$::analysis(uci$current_engine)} {
       ### UCI main loop
+
+      ### position
+
+      set hit 0
+      set other [expr {$comp(ponder) && ($uciInfo(ponder$other_engine) != "")}]
+
       if {$movehistory == {}} {
 	sendToEngine $current_engine "position $comp(startpos)"
-      } else {
+      } elseif {!$comp(ponder)} {
 	sendToEngine $current_engine "position $comp(startpos) moves $movehistory"
+      } else {
+        if {$other} {
+	  sendToEngine $other_engine "position startpos moves $movehistory $uciInfo(ponder$other_engine)"
+        }
+        if {$uciInfo(ponder$current_engine) == $lastmove && $lastmove != {}} {
+	  sendToEngine $current_engine "ponderhit"
+          set hit 1
+        } else {
+          if {[llength $movehistory] > 1} {
+	    sendToEngine $current_engine "stop"
+	    set uciInfo(bestmove$current_engine) stop
+          }
+	  sendToEngine $current_engine "position $comp(startpos) moves $movehistory"
+        }
       }
 
+      # go
+
       if {$comp(timecontrol) == "permove"} {
-	sendToEngine $current_engine "go movetime $comp(time)"
+        if {!$hit} {
+	  sendToEngine $current_engine "go movetime $comp(time)"
+        }
+
+        if {$other} {
+          sendToEngine $other_engine "go ponder movetime $comp(time)"
+        }
       } else {
         set incr [expr $comp(incr) * 1000]
-	sendToEngine $current_engine "go wtime $comp(wtime) btime $comp(btime) winc $incr binc $incr"
+	if {!$hit} {
+	  sendToEngine $current_engine "go wtime $comp(wtime) btime $comp(btime) winc $incr binc $incr"
+        }
+
+        if {$other} {
+          sendToEngine $other_engine "go ponder wtime $comp(wtime) btime $comp(btime) winc $incr binc $incr"
+        }
       }
 
       # set analysis(fen$current_engine) [sc_pos fen]
