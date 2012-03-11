@@ -626,21 +626,18 @@ proc compNM {n m k} {
       ### position
 
       set hit 0
-      set other [expr {$comp(ponder) && ($uciInfo(ponder$other_engine) != "")}]
+      set incr [expr $comp(incr) * 1000]
 
       if {$movehistory == {}} {
 	sendToEngine $current_engine "position $comp(startpos)"
       } elseif {!$comp(ponder)} {
 	sendToEngine $current_engine "position $comp(startpos) moves $movehistory"
       } else {
-        if {$other} {
-	  sendToEngine $other_engine "position startpos moves $movehistory $uciInfo(ponder$other_engine)"
-        }
         if {$uciInfo(ponder$current_engine) == $lastmove && $lastmove != {}} {
 	  sendToEngine $current_engine "ponderhit"
           set hit 1
         } else {
-          if {[llength $movehistory] > 1} {
+          if {[llength $movehistory] > 1 && $uciInfo(ponder$current_engine) != {}} {
 	    sendToEngine $current_engine "stop"
 	    set uciInfo(bestmove$current_engine) stop
           }
@@ -648,24 +645,15 @@ proc compNM {n m k} {
         }
       }
 
-      # go
+      ### go
 
       if {$comp(timecontrol) == "permove"} {
         if {!$hit} {
 	  sendToEngine $current_engine "go movetime $comp(time)"
         }
-
-        if {$other} {
-          sendToEngine $other_engine "go ponder movetime $comp(time)"
-        }
       } else {
-        set incr [expr $comp(incr) * 1000]
 	if {!$hit} {
 	  sendToEngine $current_engine "go wtime $comp(wtime) btime $comp(btime) winc $incr binc $incr"
-        }
-
-        if {$other} {
-          sendToEngine $other_engine "go ponder wtime $comp(wtime) btime $comp(btime) winc $incr binc $incr"
         }
       }
 
@@ -714,6 +702,23 @@ proc compNM {n m k} {
       vwait analysis(waitForBestMove$current_engine)
 
       if {!$comp(playing)} {break}
+    }
+
+    if {$::analysis(uci$other_engine) && $comp(ponder) && ($uciInfo(ponder$other_engine) != "")} {
+      ### UCI other engine
+
+      # position
+      if {$movehistory != {}} {
+	sendToEngine $other_engine "position startpos moves $movehistory $uciInfo(ponder$other_engine)"
+      }
+
+      # go
+      if {$comp(timecontrol) == "permove"} {
+	sendToEngine $other_engine "go ponder movetime $comp(time)"
+      } else {
+	sendToEngine $other_engine "go ponder wtime $comp(wtime) btime $comp(btime) winc $incr binc $incr"
+      }
+
     }
 
     if {[makeAnalysisMove $current_engine]} {
@@ -836,7 +841,6 @@ proc compNM {n m k} {
   ### This game is over
 
   after cancel compTimeout
-  puts_ "Game $n - $m is over"
 
   if {$comp(showclock) && $comp(timecontrol) == "pergame"} {
     ::gameclock::stop 1
@@ -850,6 +854,8 @@ proc compNM {n m k} {
     sc_game tags set -result $comp(result)
   }
 
+  puts "Game $n - $m is over. Result [sc_game tags get Result]"
+
   if {$comp(timecontrol) == "pergame"} {
     set comment [sc_pos getComment]
     if {$comment == {}} {
@@ -860,7 +866,6 @@ proc compNM {n m k} {
   }
 
   if {![sc_base isReadOnly]} {
-  puts_ {saving game}
     sc_game save [sc_game number]
     ::windows::gamelist::Refresh
     ::crosstab::Refresh
@@ -1013,7 +1018,6 @@ proc compClose {} {
     # Close all games,  called when game is inactive
     global analysis comp
 
-    puts_ compClose
     compDestroy
 }
 
