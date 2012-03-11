@@ -203,10 +203,10 @@ proc _autoscroll {bar args} {
         set _autoscroll(time:$bar) [clock clicks -milli]
       }
     } else {
-      # if {[clock clicks -milli] > [expr {$_autoscroll(time:$bar) + 100}]} 
-
-      grid remove $bar
-      set _autoscroll($bar) 0
+      if {[clock clicks -milli] > [expr {$_autoscroll(time:$bar) + 100}]} {
+	grid remove $bar
+	set _autoscroll($bar) 0
+      }
     }
     # update idletasks
   }
