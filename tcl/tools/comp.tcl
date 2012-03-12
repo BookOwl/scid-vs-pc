@@ -980,7 +980,7 @@ proc compTimeout {} {
     set analysis(waitForBestMove$comp(move)) 1
 }
 
-proc compGameEnd {result} {
+proc compGameEnd {result {comment {Manual adjudication}}} {
     global analysis comp
  
     puts_ compGameEnd
@@ -990,7 +990,7 @@ proc compGameEnd {result} {
     }
     set comp(playing) 0
     set comp(result) $result
-    sc_pos setComment {Manual adjudication}
+    sc_pos setComment $comment
 
     set analysis(waitForReadyOk$comp(move)) 1
     set analysis(waitForBestMove$comp(move)) 1

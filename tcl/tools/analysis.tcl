@@ -2634,8 +2634,8 @@ proc processAnalysisInput {n} {
 # Returns 0 if engine died abruptly or 1 otherwise
 # - this procedure is duplicated(?) in uci.tcl
 ################################################################################
-proc checkEngineIsAlive { {n 0} } {
-  global analysis
+proc checkEngineIsAlive {n} {
+  global analysis comp
 
   if {![eof $analysis(pipe$n)]} {
     return 1
@@ -2645,28 +2645,16 @@ proc checkEngineIsAlive { {n 0} } {
   catch {close $analysis(pipe$n)}
   set analysis(pipe$n) {}
   logEngineNote $n {Engine terminated without warning.}
-  if {$::comp(playing)} {
-    set ::comp(move) $n
-    compAbort
-  } else {
-    catch {destroy .analysisWin$n}
-  }
 
-  if {[winfo exists .comp]} {
-    set parent .comp
-  } elseif {[winfo exists .enginelist]} {
-    set parent .enginelist
-  } else {
-    set parent .
-  }
+  catch {destroy .analysisWin$n}
 
-  tk_messageBox -type ok -icon info -parent $parent -title Scid -message \
+  if {[winfo exists .comp] && $comp(playing)} {
+    puts "Engine $n terminated without warning. Game over"
+    compGameEnd [expr {!($n == $comp(white))}] {Engine crashed}
+  } else {
+    tk_messageBox -type ok -icon info -parent $parent -title Scid -message \
     "Analysis engine $analysis(name$n) terminated without warning. \
      It probably crashed, had an internal errors, or is misconfigured."
-  if {[winfo exists .comp]} {
-    puts_ "Engine failed... destroying .analysisWin$n, comp widget"
-    compDestroy
-    destroy .analysisWin$n
   }
   return 0
 }
