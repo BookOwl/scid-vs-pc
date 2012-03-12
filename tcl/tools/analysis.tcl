@@ -2646,15 +2646,15 @@ proc checkEngineIsAlive {n} {
   set analysis(pipe$n) {}
   logEngineNote $n {Engine terminated without warning.}
 
-  catch {destroy .analysisWin$n}
-
   if {[winfo exists .comp] && $comp(playing)} {
     puts "Engine $n terminated without warning. Game over"
     compGameEnd [expr {!($n == $comp(white))}] {Engine crashed}
   } else {
+    catch {destroy .analysisWin$n}
+
     tk_messageBox -type ok -icon info -parent $parent -title Scid -message \
-    "Analysis engine $analysis(name$n) terminated without warning. \
-     It probably crashed, had an internal errors, or is misconfigured."
+      "Analysis engine $analysis(name$n) terminated without warning. \
+       It probably crashed, had an internal error, or is misconfigured."
   }
   return 0
 }

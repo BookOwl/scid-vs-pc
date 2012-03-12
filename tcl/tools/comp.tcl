@@ -872,10 +872,8 @@ proc compNM {n m k} {
   }
   ::pgn::Refresh 1
 
-  # Destroy analysis windgets
-
-  destroy .analysisWin$n
-  destroy .analysisWin$m
+  catch {destroy .analysisWin$n}
+  catch {destroy .analysisWin$m}
 }
 
 proc compPause {} {
