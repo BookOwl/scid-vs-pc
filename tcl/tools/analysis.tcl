@@ -2859,7 +2859,7 @@ proc updateAnalysisText {n} {
       $t insert end [ format "%6.2f s" $analysis(time$n) ]
       $t insert end \n
       $t insert end "NPS: [format "%u " $analysis(nps$n)] "
-      at inert end "Hash: $::uci::uciInfo(hashfull$n)  "
+      $t insert end "Hash: $::uci::uciInfo(hashfull$n)  "
       $t insert end "Load: $::uci::uciInfo(cpuload$n) "
       $t insert end "TB hits: $::uci::uciInfo(tbhits$n) "
       $t insert end "[tr Current]: "
