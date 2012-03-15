@@ -98,13 +98,16 @@ proc compInit {} {
   incr row
   frame $w.config.timegame 
     # hack to stop the spinbox from zeroing floating point values for minutes time
-    set temp $comp(minutes)
+  set temp $comp(minutes)
   label $w.config.timegame.label -text {Time per Game}
   spinbox $w.config.timegame.mins -textvariable comp(minutes) -from 0 -to 40 -width 4
-    set comp(minutes) $temp
+  set comp(minutes) $temp
+
+  set temp $comp(incr)
   label $w.config.timegame.label2 -text mins
   spinbox $w.config.timegame.incr -textvariable comp(incr) -from 0 -to 60 -width 4
   label $w.config.timegame.label3 -text secs
+  set comp(incr) $temp
 
   pack $w.config.timegame.label -side left
   pack $w.config.timegame.label3 $w.config.timegame.incr $w.config.timegame.label2 $w.config.timegame.mins -side right
@@ -447,6 +450,7 @@ proc compNM {n m k} {
   set comp(paused) 0
   set comp(white) $n
   set comp(fen) {}
+  set incr [expr int($comp(incr) * 1000)]
 
   if {[winfo exists .analysisWin$n]} "destroy .analysisWin$n"
   if {[winfo exists .analysisWin$m]} "destroy .analysisWin$m"
@@ -626,7 +630,6 @@ proc compNM {n m k} {
       ### position
 
       set hit 0
-      set incr [expr $comp(incr) * 1000]
 
       if {$movehistory == {}} {
 	sendToEngine $current_engine "position $comp(startpos)"
@@ -792,7 +795,7 @@ proc compNM {n m k} {
             break
           }
           # add time increment
-          incr comp(btime) [expr $comp(incr) * 1000]
+          incr comp(btime) $incr
 	  if {$comp(showclock) && $comp(timecontrol) == "pergame"} {
 	    ::gameclock::setSec 2 [ expr -int($comp(btime)/1000) ]
 	  }
@@ -810,7 +813,7 @@ proc compNM {n m k} {
             break
           }
           # add time increment
-          incr comp(wtime) [expr $comp(incr) * 1000]
+          incr comp(wtime) $incr
 	  if {$comp(showclock) && $comp(timecontrol) == "pergame"} {
 	    ::gameclock::setSec 1 [ expr -int($comp(wtime)/1000) ]
 	  }
