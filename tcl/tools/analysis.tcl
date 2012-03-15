@@ -2037,6 +2037,7 @@ proc makeAnalysisWin {{n 0} {settime 0}} {
       logEngine $n "Scid-Engine communication log file"
       logEngine $n "Engine: $analysisName"
       logEngine $n "Command: $analysisCommand"
+      logEngine $n "Directory: $analysisDir"
       logEngine $n "Date: [clock format [clock seconds]]"
       logEngine $n ""
     }
