@@ -157,12 +157,12 @@ proc compInit {} {
   grid $w.config.firstonlylabel -row $row -column 0 -sticky w -padx 5 
   grid $w.config.firstonlyvalue -row $row -column 1 -padx 5 
 
-  incr row
-  label $w.config.timeoutlabel -text {Time-out (seconds)}
-  spinbox $w.config.timeoutvalue -textvariable comp(timeout) -from 0 -to 300 -width 9
+  # incr row
+  # label $w.config.timeoutlabel -text {Time-out (seconds)}
+  # spinbox $w.config.timeoutvalue -textvariable comp(timeout) -from 0 -to 300 -width 9
 
-  grid $w.config.timeoutlabel -row $row -column 0 -sticky w -padx 5 
-  grid $w.config.timeoutvalue -row $row -column 1 -sticky w -padx 5 
+  # grid $w.config.timeoutlabel -row $row -column 0 -sticky w -padx 5
+  # grid $w.config.timeoutvalue -row $row -column 1 -sticky w -padx 5
 
   incr row
   label $w.config.start1label -text {All games from start position}
@@ -495,8 +495,6 @@ proc compNM {n m k} {
   updateTitle
   update
 
-  if {$comp(timeout) > 0} { after [expr $comp(timeout) * 1000] compTimeout } 
-
   ### Thanks to HGM and Talkchess for help with UCI/Xboard protocols
 
   ### Initialisation
@@ -601,6 +599,12 @@ proc compNM {n m k} {
     set other_engine $n
   }
 
+  
+  # Automatically set a timeout value
+  set comp(timeout) 0
+  if {$comp(timeout) > 0} {
+    after $comp(timeout) compTimeout
+  } 
 
   ### Main control loop
   # Thanks to Fulvio for inspiration to rewrite this properly :>
@@ -747,7 +751,9 @@ proc compNM {n m k} {
 	puts_ "UNPAUSED at [clock format [clock seconds]]"
       }
 
-      if {$comp(timeout) > 0} { after [expr $comp(timeout) * 1000] compTimeout }
+      if {$comp(timeout) > 0} {
+        after $comp(timeout) compTimeout
+      }
 
       ### Check if game is over
 
@@ -791,7 +797,8 @@ proc compNM {n m k} {
 	  set comp(btime) [expr $comp(btime) - $expired]
           if {$comp(btime) < 0} {
             sc_game tags set -result 1
-            puts_ {Black forfeits on time}
+            puts_ {Black loses on time}
+	    sc_pos setComment {Black loses on time}
             break
           }
           # add time increment
@@ -809,7 +816,8 @@ proc compNM {n m k} {
 	  set comp(wtime) [expr $comp(wtime) - $expired]
           if {$comp(wtime) < 0} {
             sc_game tags set -result 0
-            puts_ {White forfeits on time}
+            puts_ {White loses on time}
+	    sc_pos setComment {White loses on time}
             break
           }
           # add time increment
@@ -864,7 +872,7 @@ proc compNM {n m k} {
     if {$comment == {}} {
       sc_pos setComment "wtime $comp(wtime), btime $comp(btime)"
     } else {
-      sc_pos setComment "$comment.\n$::tr(White) $::tr(Time) $comp(wtime), $::tr(Black) $::tr(Time) $comp(btime)"
+      sc_pos setComment "$comment.\nwtime $comp(wtime), btime $comp(btime)"
     }
   }
 
@@ -974,7 +982,7 @@ proc compTimeout {} {
     global analysis comp
 
     puts_ "!!! Move timed out, starting next game"
-    sc_pos setComment {Game timed out}
+    sc_pos setComment {Timed out}
 
     set comp(playing) 0
     set analysis(waitForReadyOk$comp(move)) 1
