@@ -18,6 +18,7 @@ set comp(games) {}
 set comp(iconize) 0 ; # needs to be zero for normal analysis
 set comp(count) 2 ; # number of computer players
 set comp(start) 0 ; # "Start at position" radiobutton
+set comp(delta) 2000; # 2 seconds is the time
 
 ### Non-transient options are set in start.tcl
 
@@ -263,7 +264,7 @@ proc compOk {} {
   set comp(current) 0
 
   if {$comp(timecontrol) == "permove"} {
-    set comp(time) [expr $comp(seconds) * 1000]
+    set comp(time) [expr {int($comp(seconds) * 1000)}]
     puts "Move delay is $comp(time) milliseconds"
   } 
 
@@ -591,20 +592,21 @@ proc compNM {n m k} {
     }
   }
 
-  if {[sc_pos side] == {white}} {
+  if {[sc_pos side] == "white"} {
     set current_engine $n
     set other_engine $m
   } else {
     set current_engine $m
     set other_engine $n
   }
-
   
-  # Automatically set a timeout value
-  set comp(timeout) 0
-  if {$comp(timeout) > 0} {
-    after $comp(timeout) compTimeout
-  } 
+  # Automatically set a timeout value &&&
+  if {$comp(timecontrol) == "permove"} {
+    # Automatically time-out comp in $movetime + 2 secs
+    after [expr {$comp(time) + $comp(delta)}] compTimeout
+  } else {
+    after [expr {$comp(wtime) + $comp(delta)}] compTimeout
+  }
 
   ### Main control loop
   # Thanks to Fulvio for inspiration to rewrite this properly :>
@@ -751,10 +753,6 @@ proc compNM {n m k} {
 	puts_ "UNPAUSED at [clock format [clock seconds]]"
       }
 
-      if {$comp(timeout) > 0} {
-        after $comp(timeout) compTimeout
-      }
-
       ### Check if game is over
 
       set score [sc_pos analyze -time 50]
@@ -806,7 +804,11 @@ proc compNM {n m k} {
 	  if {$comp(showclock) && $comp(timecontrol) == "pergame"} {
 	    ::gameclock::setSec 2 [ expr -int($comp(btime)/1000) ]
 	  }
-
+          # In case white hangs, automatically time-out comp in $wtime + 2 secs
+          after [expr {$comp(wtime) + $comp(delta)}] compTimeout
+        } else {
+          # Automatically time-out comp in $movetime + 2 secs
+	  after [expr {$comp(time) + $comp(delta)}] compTimeout
         }
         # Now its whites turn
 	set current_engine $n
@@ -825,6 +827,11 @@ proc compNM {n m k} {
 	  if {$comp(showclock) && $comp(timecontrol) == "pergame"} {
 	    ::gameclock::setSec 1 [ expr -int($comp(wtime)/1000) ]
 	  }
+          # In case black hangs, automatically time-out comp in $wtime + 2 secs
+	  after [expr {$comp(btime) + $comp(delta)}] compTimeout
+        } else {
+          # Automatically time-out comp in $movetime + 2 secs
+	  after [expr {$comp(time) + $comp(delta)}] compTimeout
         }
         # Now its blacks turn
 	set current_engine $m
@@ -843,7 +850,10 @@ proc compNM {n m k} {
 	vwait comp(paused)
 	puts_ "UNPAUSED at [clock format [clock seconds]]"
 
-	if {$comp(timeout) > 0} { after [expr $comp(timeout) * 1000] compTimeout }
+	# todo - handle wtime/btime
+	if {$comp(timecontrol) == "pergame"} {
+	  after [expr {$comp(time) + $comp(delta)}] compTimeout
+        }
       }
     }
 
@@ -881,7 +891,8 @@ proc compNM {n m k} {
     ::windows::gamelist::Refresh
     ::crosstab::Refresh
   }
-  ::pgn::Refresh 1
+  # ::pgn::Refresh 1
+  updateBoard -pgn
 
   catch {destroy .analysisWin$n}
   catch {destroy .analysisWin$m}
@@ -981,12 +992,28 @@ proc compCueGame {n m name1 name2 k} {
 proc compTimeout {} {
     global analysis comp
 
-    puts_ "!!! Move timed out, starting next game"
-    sc_pos setComment {Timed out}
+    puts "Timed out"
 
-    set comp(playing) 0
-    set analysis(waitForReadyOk$comp(move)) 1
-    set analysis(waitForBestMove$comp(move)) 1
+    set expired [expr [clock clicks -milli] - $comp(lasttime)]
+    if {[sc_pos side] == "white"} {
+      if {$comp(timecontrol) == "pergame"} {
+	set comp(wtime) [expr $comp(wtime) - $expired]
+        set comment {Timed out}
+      } else {
+        set comment "White movetime [expr $expired / 1000]secs"
+      }
+      set result 0
+    } else {
+      if {$comp(timecontrol) == "pergame"} {
+	set comp(btime) [expr $comp(btime) - $expired]
+        set comment {Timed out}
+      } else {
+        set comment "Black movetime [expr $expired / 1000]secs"
+      }
+      set result 1
+    }
+
+    compGameEnd $result $comment
 }
 
 proc compGameEnd {result {comment {Manual adjudication}}} {
