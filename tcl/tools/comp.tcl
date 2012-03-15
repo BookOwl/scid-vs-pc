@@ -19,6 +19,7 @@ set comp(iconize) 0 ; # needs to be zero for normal analysis
 set comp(count) 2 ; # number of computer players
 set comp(start) 0 ; # "Start at position" radiobutton
 set comp(delta) 2000; # 2 seconds is the time
+set comp(permoveleeway) 1.75 ;# 175% is the max allowed
 
 ### Non-transient options are set in start.tcl
 
@@ -713,6 +714,9 @@ proc compNM {n m k} {
       if {!$comp(playing)} {break}
     }
 
+    set expired [expr [clock clicks -milli] - $comp(lasttime)]
+    puts_ "Time expired $expired"
+
     if {$::analysis(uci$other_engine) && $comp(ponder) && ($uciInfo(ponder$other_engine) != "")} {
       ### UCI other engine
 
@@ -732,9 +736,6 @@ proc compNM {n m k} {
 
     if {[makeAnalysisMove $current_engine]} {
       ### Move success
-
-      set expired [expr [clock clicks -milli] - $comp(lasttime)]
-      puts_ "Time expired $expired"
 
       after cancel compTimeout
 
@@ -807,6 +808,12 @@ proc compNM {n m k} {
           # In case white hangs, automatically time-out comp in $wtime + 2 secs
           after [expr {$comp(wtime) + $comp(delta)}] compTimeout
         } else {
+          if {$expired > $comp(permoveleeway)*$comp(time)} {
+            sc_game tags set -result 1
+            puts_ "Black move takes $expired secs"
+	    sc_pos setComment "Blacks move takes $expired secs"
+            break
+          }
           # Automatically time-out comp in $movetime + 2 secs
 	  after [expr {$comp(time) + $comp(delta)}] compTimeout
         }
@@ -830,6 +837,12 @@ proc compNM {n m k} {
           # In case black hangs, automatically time-out comp in $wtime + 2 secs
 	  after [expr {$comp(btime) + $comp(delta)}] compTimeout
         } else {
+          if {$expired > $comp(permoveleeway)*$comp(time)} {
+            sc_game tags set -result 0
+            puts_ "Whites move takes $expired secs"
+	    sc_pos setComment "Whites move takes $expired secs"
+            break
+          }
           # Automatically time-out comp in $movetime + 2 secs
 	  after [expr {$comp(time) + $comp(delta)}] compTimeout
         }
@@ -1000,7 +1013,7 @@ proc compTimeout {} {
 	set comp(wtime) [expr $comp(wtime) - $expired]
         set comment {Timed out}
       } else {
-        set comment "White movetime [expr $expired / 1000]secs"
+        set comment "White movetime [expr $expired / 1000.0] secs"
       }
       set result 0
     } else {
@@ -1008,7 +1021,7 @@ proc compTimeout {} {
 	set comp(btime) [expr $comp(btime) - $expired]
         set comment {Timed out}
       } else {
-        set comment "Black movetime [expr $expired / 1000]secs"
+        set comment "Black movetime [expr $expired / 1000.0] secs"
       }
       set result 1
     }
