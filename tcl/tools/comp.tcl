@@ -15,7 +15,6 @@
 set comp(playing) 0
 set comp(current) 0
 set comp(games) {}
-set comp(iconize) 0 ; # needs to be zero for normal analysis
 set comp(count) 2 ; # number of computer players
 set comp(start) 0 ; # "Start at position" radiobutton
 set comp(delta) 2000; # 2 seconds is the time
@@ -36,8 +35,6 @@ proc compInit {} {
   wm state $w withdrawn
   wm title $w "Configure Tournament"
   setWinLocation $w
-
-  set comp(iconize) 1
 
   pack [frame $w.engines] -side top
   addHorizontalRule $w
@@ -384,7 +381,6 @@ proc compOk {} {
   ### Comp over
 
   puts {Comp finished}
-  set comp(iconize) 0
   if {[winfo exists .comp]} {
     bind .comp <Destroy> {}
     # voodoo that you do
@@ -395,20 +391,17 @@ proc compOk {} {
     # So better make sure this window gets closed
 
     .comp.buttons.ok configure -text [tr Restart] -command {
-       grab release .comp
        compDestroy
        update
        compInit
     }
     .comp.buttons.cancel configure -text [tr Close] -command {
-       grab release .comp
        compDestroy
     }
     foreach i [winfo children $w.say] {
       catch {$i configure -state disabled}
     }
     raiseWin .comp
-    grab .comp
   }
 }
 
@@ -909,6 +902,7 @@ proc compNM {n m k} {
 
   catch {destroy .analysisWin$n}
   catch {destroy .analysisWin$m}
+  set comp(playing) 0
 }
 
 proc compPause {} {
@@ -1080,7 +1074,6 @@ proc compDestroy {} {
     # destroy  .comp.engines.list.$i
     # }
 
-    set comp(iconize) 0
     set comp(games) {}
     set comp(playing) 0
     bind .comp <Destroy> {}

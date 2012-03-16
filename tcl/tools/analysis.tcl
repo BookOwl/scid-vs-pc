@@ -2059,7 +2059,7 @@ proc makeAnalysisWin {{n 0} {settime 0}} {
   }
 
   bind $w <F1> { helpWindow Analysis }
-  if {$::comp(iconize) && ![winfo exists .enginelist]} {
+  if {$::comp(playing)} {
     wm iconify $w
   }
 
@@ -2467,14 +2467,14 @@ proc processAnalysisInput {n} {
 
   if {! $analysis(seen$n)} {
     set analysis(seen$n) 1
-  if {!$comp(playing)} {
-    # First line of output from the program, so send initial commands:
-    logEngineNote $n {First line from engine seen; sending it initial commands now.}
-    sendToEngine $n xboard
-    sendToEngine $n {protover 2}
-    sendToEngine $n {easy}
-    sendToEngine $n post
-  }
+    if {!$comp(playing)} {
+      # First line of output from the program, so send initial commands:
+      logEngineNote $n {First line from engine seen; sending it initial commands now.}
+      sendToEngine $n xboard
+      sendToEngine $n {protover 2}
+      sendToEngine $n {easy}
+      sendToEngine $n post
+    }
   }
 
   if {$comp(playing)} {
