@@ -472,8 +472,10 @@ namespace eval uci {
     set line [string trim [gets $::uci::uciInfo(pipe$n)] ]
     # end of options
     if {$line == "uciok"} {
-      # we got all options, stop engine
-      closeUCIengine $n 1
+      # we got all options
+      # but keep engine open to process button events.
+      # We'll stop engine when we close .uciConfigWin
+      after cancel "::uci::closeUCIengine $n 0"
       uciConfigWin $n 
     }
     # get options
@@ -710,7 +712,8 @@ namespace eval uci {
         grid $w.fopt.opt$optnbr -row $row -column $col -sticky w
       }
       if { $elt(type) == "button"} {
-        button $w.fopt.opt$optnbr -text "$name$default"
+        button $w.fopt.opt$optnbr -text "$name$default" \
+          -command "::uci::sendToEngine $n \"setoption name $elt(name)\" "
         grid $w.fopt.opt$optnbr -row $row -column $col -sticky w
       }
       if { $elt(type) == "string"} {
@@ -730,17 +733,17 @@ namespace eval uci {
 
     dialogbutton $w.buttons.save -text $::tr(Save) -command "
       ::uci::saveConfig $n
-      destroy .uciConfigWin
-    "
+      destroy .uciConfigWin"
 
     dialogbutton $w.buttons.help -text $::tr(Help) -command {helpWindow Analysis UCI}
-    dialogbutton $w.buttons.cancel -text $::tr(Cancel) -command "destroy .uciConfigWin"
+    dialogbutton $w.buttons.cancel -text $::tr(Cancel) -command {destroy .uciConfigWin}
 
     pack $w.buttons.save $w.buttons.help $w.buttons.cancel -side left -expand yes -fill both -padx 20 -pady 2
 
     # bind $w <Return> "$w.buttons.save invoke"
 
-    bind $w <Escape> "destroy .uciConfigWin"
+    bind $w <Destroy>   "bind $w <Destroy> {} ; ::uci::closeUCIengine $n 1"
+    bind $w <Escape>    {destroy .uciConfigWin}
     bind $w <Configure> "recordWinSize $w"
     bind $w <F1> {helpWindow Analysis UCI}
 
@@ -767,9 +770,10 @@ namespace eval uci {
       if { $elt(type) == "spin" || $elt(type) == "combo" || $elt(type) == "string" } {
         set value [$w.fopt.opt$optnbr get]
       }
-      if { $elt(type) == "button" } { set value "" }
-      
-      lappend newOptions [ list $elt(name)  $value ]
+      # Buttons are now handled properly in uciConfigWin
+      if { $elt(type) != "button" } { 
+	lappend newOptions [ list $elt(name)  $value ]
+      }
       incr optnbr
     }
 
@@ -910,7 +914,6 @@ namespace eval uci {
     # Check the pipe is not already closed:
     if {$pipe == ""} { return }
 
-    after cancel "::uci::closeUCIengine $n 0"
     fileevent $pipe readable {}
 
     if {! $uciok } {
