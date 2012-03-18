@@ -98,7 +98,7 @@ proc compInit {} {
   frame $w.config.timegame 
     # hack to stop the spinbox from zeroing floating point values for minutes time
   set temp $comp(minutes)
-  label $w.config.timegame.label -text {Time per Game}
+  label $w.config.timegame.label -text {Time per game (base/incr)}
   spinbox $w.config.timegame.mins -textvariable comp(minutes) -from 0 -to 40 -width 4
   set comp(minutes) $temp
 
