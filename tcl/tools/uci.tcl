@@ -105,7 +105,7 @@ namespace eval uci {
 
     if {[string match "bestmove*" $line]} {
       if {$uciInfo(bestmove$n) == "stop"} {
-        # Ponder miss. Discard this bestmove
+        # Ponder miss as set by comp.tcl. Discard this bestmove
         set uciInfo(bestmove$n) {}
         return
       }

@@ -471,7 +471,8 @@ proc compNM {n m k} {
   }
   toggleMovesDisplay $m
 
-  #Stop all engines
+  # Stop all engines
+  # (Is this necessary ? We are sending a "stop" straight away. &&&)
   if {$analysis(analyzeMode$n)} { toggleEngineAnalysis $n 1 }
   if {$analysis(analyzeMode$m)} { toggleEngineAnalysis $m 1 }
   

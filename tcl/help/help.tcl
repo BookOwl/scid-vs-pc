@@ -2810,28 +2810,37 @@ set helpText(Tourney) {<h1>Computer Tournament</h1>
   <p>
   First, select the details of your tournament. Configurable items include:
   the <b>Number of Competitors</b>, <b>Tournament Name</b>, <b>Time-Control Method</b> and <b>Period</b>.
-  If using the per-game time-control, <b>Show Clocks</b> will display the engines remaining time.
+  If using the per-game time control, <b>Show Clocks</b> will display the engine's remaining time.
 </p>
 <p>
-  The Tournament currently doesn't support Scid's opening books, though any
-  engine's personal opening book may be enabled manually if desired. To address
-  this, it is possible to run tournaments from a particular position. 
+  <b>Time per Game</b> is the best time control method.
+  The minutes spinbox is the base time for the game, while the seconds spinbox
+  is the increment. For example, to play a 10 second game with .1 sec increment, the values are
+  .17 minutes and .1 seconds.
+</p>
+<p>
+  <b>Time per Move</b> games allow a generous time slice, and only forfeits an engine if it takes over 175%
+  of its nominal move period.
+</p>
+<p>
+  <b>Permanent Thinking</b> allows engines to play at their strongest.
+  For UCI engines, it enables pondering, and sets Xboard engines to hard mode.
+</p>
+<p>
+  Scid's GUI does use more resources than other tournament managers, so, for short time controlled games,
+  it is good practice to disable engine logs, move animations, and to hide the clocks, gameinfo and pgn windows.
+</p>
+<p>
+  The Tournament currently doesn't support opening books - though many
+  engines enable private opening books (unless disabled via the UCI config widget).
   </p>
   <p>
   Games are <b>saved after each is completed</b>, so open an appropriate base, or just
   use the Clipbase. When the tournament is over, press "Close".
   </p>
   <p>
-  If a game drags on for any reason, three buttons allow for <b>manual adjudication</b> of a game.
-  </p>
-  <p>
-  The "Pause Game" button does not take effect instantaneously, but first waits for the current move to be made before pausing further progress.
-  </p>
-  <p>
-  Though there's been much testing, it's still possible for less well-known engines to hang under some circumstances.
-  To address this, set the <b>Seconds for Time-out</b> value to the maximum time
-  that any move should take. <b>0 seconds</b> disables this feature, and is the default.
-  If the game ~does~ get timed-out, the game is saved, and the result may be edited later.
+  If a game drags on for any reason, three buttons allow for <b>manual adjudication</b>.
+  The <b>Pause Game</b> button does not take effect instantaneously, but first waits for the current move to be made before pausing further progress.
   </p>
   <p><i>
   Once the tournament is completed, be sure to have a look at the 
@@ -2842,16 +2851,11 @@ set helpText(Tourney) {<h1>Computer Tournament</h1>
   <h3>Notes</h3>
 <br>
   * Updating Scid's interface does take some CPU activity, but effort is made to not include this time in each engine's time-slice.
-  Additionally, the <b>Clock Widgets</b> take a small CPU slice - around .0005 seconds per move on my 2600MHz Core2Quad.
-<br>
-  * <b>Xboard/Winboard protocol</b> support is not as solid as for UCI (see below).
-  The xboard "Resign" request is supported.
-<br>
-  * In the uncommon event of a game engine crashing (unfortunately) the tournament will be ended.
+  Additionally, the Clock Widgets> take a small CPU slice - around .0005 seconds per move on my 2600MHz Core2Quad.
 <br>
   <h3>Todo</h3>
 <br>
-  * Some engines - perhaps only Crafty - declare draws with "Engine says: 1/2 - 1/2 {Insufficient material}"
+  * Enable use of polyglot books
 <br>
   <h3>Engines</h3>
 <p>
@@ -2869,10 +2873,12 @@ Gnu Chess 5<br>
 Gully<br>
 Hoi Chess<br>
 Homer<br>
+Ivanhoe<br>
 Komodo<br>
 Marvin<br>
 OliThink<br>
 Phalanx<br>
+Red Queen<br>
 RobboLito<br>
 Scidlet<br>
 Scorpio<br>
@@ -2881,15 +2887,17 @@ Sjeng<br>
 Sloppy<br>
 Spike<br>
 Stockfish<br>
+Strelka 5<br>
 Toga (Fruit)<br>
 Umko 1.1<br>
 Zct<br>
 <br>
 Komodo performs well, but some versions have broken time-per-move time control.
 Pervious versions of Phalanx had no time control, but it now works well.
-Gnu Chess needs the "-x" parameter, and only versions > 5.07 will properly handle
-time-per-game time control.
-Faile seems not to issue "move" under some circumstances, despite being in xboard mode.
+Gnuchess may need the "-x" parameter to work in xboard mode (but recent versions also support UCI),
+and only versions > 5.07 will properly handle time-per-game time control.
+Faile seems not to work well with time-per-move.
+Arasanx UCI <lt>= 14.1 does not work with Permanent Thinking.
 </p>
 
 <p><footer>Updated: Scid vs. PC 4.8, March 2012</footer></p>
