@@ -393,7 +393,7 @@ namespace eval uci {
     }
     set engineData [lindex $engines(list) $n]
     if {![lindex $engineData 7]} {
-      tk_messageBox -title Oops -icon warning -type ok -message {Engine is not UCI} -parent $parent
+      tk_messageBox -title "Engine Error" -icon warning -type ok -message {Engine is not UCI} -parent $parent
       return
     }
     set name [lindex $engineData 0]
@@ -923,8 +923,8 @@ namespace eval uci {
 	  set parent $pparent
 	}
       }
-      tk_messageBox -title "Error closing UCI engine" -icon warning -type ok \
-                    -message "Not an UCI engine" -parent $parent
+      tk_messageBox -title "Engine Error" -icon warning -type ok \
+                    -message "File not executable,\nor not an UCI engine." -parent $parent
     }
 
     # Some engines in analyze mode may not react as expected to "quit"
