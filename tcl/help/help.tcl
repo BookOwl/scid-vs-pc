@@ -3743,9 +3743,13 @@ set helpText(Options) {<h1>Options and Preferences</h1>
   <h3><name MyPlayerNames>My Player Names</name></h3>
   <p>
   <green><run editMyPlayerNames>My Player Names</run></green> allows one to
-  select one, or man,  special Player Names. These are used by the Player vs.
-  Computer feature, and also cause the board to flip automatically when a game
-  featuring such a name (as black) is loaded.
+  take note of special player names.
+  </p><p>
+  Every time a game with a name in the list is loaded, the main chessboard
+  will be flipped (if necessary) to show the game from that players perspective.
+  </p>
+  <p>
+  The first "My Player Name" is also used by the Player vs. Computer feature.
   </p>
   <p>
   My Player Names are entered one per-line, and may contain the

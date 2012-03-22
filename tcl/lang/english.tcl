@@ -1338,11 +1338,9 @@ Do you want to upgrade this database now?
 translate E RecentFilesMenu {Number of files in File menu}
 translate E RecentFilesExtra {Number of files in Sub menu}
 
-# My Player Names options:
 translate E MyPlayerNamesDescription {
-Enter a list of preferred player names below, one name per line. Wildcards (e.g. "?" for any single character, "*" for any sequence of characters) are permitted.
-
-Every time a game with a player in the list is loaded, the main window chessboard will be rotated if necessary to show the game from that players perspective.
+Enter preferred player names below, one name per line.
+Every time a game with a player in the list is loaded, the main chessboard will be flipped if necessary.
 }
 
 #Coach
