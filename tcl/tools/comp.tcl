@@ -156,13 +156,6 @@ proc compInit {} {
   grid $w.config.firstonlylabel -row $row -column 0 -sticky w -padx 5 
   grid $w.config.firstonlyvalue -row $row -column 1 -padx 5 
 
-  # incr row
-  # label $w.config.timeoutlabel -text {Time-out (seconds)}
-  # spinbox $w.config.timeoutvalue -textvariable comp(timeout) -from 0 -to 300 -width 9
-
-  # grid $w.config.timeoutlabel -row $row -column 0 -sticky w -padx 5
-  # grid $w.config.timeoutvalue -row $row -column 1 -sticky w -padx 5
-
   incr row
   label $w.config.start1label -text {All games from start position}
   radiobutton $w.config.start1button -variable comp(start) -value 0
@@ -232,6 +225,13 @@ proc compOk {} {
   set w .comp
 
   set comp(startfen) [sc_pos fen]
+
+  # make sure decimals have a leading 0
+  catch {
+    set comp(incr) [expr $comp(incr)]
+    set comp(minutes) [expr $comp(minutes)]
+    set comp(seconds) [expr $comp(seconds)]
+  }
 
   if {$comp(count) != $comp(countcombos)} {
     drawCombos
