@@ -244,7 +244,8 @@ proc detectWBEngine {n engineOutput} {
   }
 
   # Scorpio supports "analyze" and "setboard".
-  if {[string match -nocase "*Scorpio*" $engineOutput] } {
+  # some engines report feature 'egt="scorpio"'
+  if {[string match "*Scorpio*" $engineOutput] } {
     logEngineNote $n {Seen "Scorpio"; assuming analyze command.}
     set analysis(has_analyze$n) 1
     set analysis(wbEngineDetected$n) 1
