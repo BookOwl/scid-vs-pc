@@ -997,8 +997,7 @@ namespace eval fics {
         ::gameclock::stop 2
         set t1 [::gameclock::getSec 1]
         set t2 [::gameclock::getSec 2]
-	::commenteditor::appendComment "Whiteclock [expr $t1 / 60]:[format {%02i} [expr $t1 % 60]]"
-	::commenteditor::appendComment "Blackclock [expr $t2 / 60]:[format {%02i} [expr $t2 % 60]]"
+	::commenteditor::appendComment "Whiteclock [expr $t1 / 60]:[format {%02i} [expr $t1 % 60]] Blackclock [expr $t2 / 60]:[format {%02i} [expr $t2 % 60]]"
         sc_game tags set -result $res
         catch {sc_game save [sc_game number]}
         updateBoard -pgn
