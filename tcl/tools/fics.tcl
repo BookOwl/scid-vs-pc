@@ -26,6 +26,8 @@ namespace eval fics {
   set history {}
   set history_pos 0
   set history_current {}
+  set tells {}
+  set tellindex 0
   set offers_minelo 1000
   set offers_maxelo 2500
   set offers_mintime 0
@@ -62,9 +64,7 @@ namespace eval fics {
     toplevel $w
     wm state $w withdrawn
     wm title $w "Configure Fics"
-#### Benigno
     label $w.lLogin -text "$tr(CCDlgLoginName)"
-####
     entry $w.login -width 20 -textvariable ::fics::login
     label $w.lPwd -text [::tr "CCDlgPassword"]
     entry $w.passwd -width 20 -textvariable ::fics::password -show "*"
@@ -326,6 +326,16 @@ namespace eval fics {
     # i cant think how to separate the entry and console bind for 'Home' and 'End'
     # bind $w <Home>  "$w.console.text yview moveto 0"
     bind $w <End>   "$w.console.text yview moveto 1"
+    bind $w <F9> {
+      .fics.command.entry delete 0 end
+      if {$::fics::tellindex >= [llength $::fics::tells]} {
+	.fics.command.entry insert 0 "tell "
+        set ::fics::tellindex 0
+      } else {
+	.fics.command.entry insert 0 "tell [lindex $::fics::tells $::fics::tellindex] "
+	incr ::fics::tellindex
+      }
+    }
 
 
     # steer focus into the command entry, as typing into the text widget is pointless
@@ -836,7 +846,26 @@ namespace eval fics {
       }
 
       {<b1>*} {
-        # variants info lines
+        ### variants info lines
+        # When showing positions from bughouse games, a second line showing piece
+        # holding is given, with "<b1>" at the beginning, for example:
+        # <b1> game 6 white [PNBBB] black [PNB]
+        # .fics.bottom.game$game.w.white configure -text "[lindex $line 17] ([lindex $line 24] secs) X"
+	if { [scan $line "<b1> game %d white %s black %s" game piecesw piecesb] == 3} {
+          catch {
+            if {$piecesw == {[]}} {set piecesw {}}
+            if {$piecesb == {[]}} {set piecesb {}}
+	    set tempw [.fics.bottom.game$game.w.white cget -text]
+	    set tempb [.fics.bottom.game$game.b.black cget -text]
+	    if {[string index $tempw end] == "X"} {
+              .fics.bottom.game$game.w.white configure -text "[string range $tempw 0 end-2] $piecesw X"
+              .fics.bottom.game$game.b.black configure -text "$tempb $piecesb"
+            } else {
+              .fics.bottom.game$game.w.white configure -text "$tempw $piecesw"
+              .fics.bottom.game$game.b.black configure -text "[string range $tempb 0 end-2] $piecesb X"
+            }
+          }
+        }
         return
       }
     }
@@ -1302,7 +1331,20 @@ namespace eval fics {
                         }
 	{* tells you:*}	{ $t insert end "$line\n" tells 
 			  if {[regexp {(.*) tells you:(.*$)} $line t1 t2 t3]} {
-			    ::commenteditor::appendComment "\[$t2\] $t3"
+                            if {[string match mamer* $t2]} {
+			      tk_messageBox -title Mamer -icon info -type ok -parent .fics -message "$t2 tells you" -detail $t3
+			    } else {
+                              if {$::fics::playing != 0} {
+				::commenteditor::appendComment "\[$t2\] $t3"
+                              }
+			      # Add this person to tells
+			      set i [lsearch -exact $::fics::tells $t2]
+			      if {$i > -1} {
+				set ::fics::tells [lreplace $::fics::tells $i $i]
+			      }
+			      set ::fics::tells [linsert $::fics::tells 0 $t2]
+			      set ::fics::tellindex 0
+                            }
 			  }
 			}
 	{* seeking *}	{ $t insert end "$line\n" seeking }
