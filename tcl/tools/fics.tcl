@@ -327,6 +327,7 @@ namespace eval fics {
     # bind $w <Home>  "$w.console.text yview moveto 0"
     bind $w <End>   "$w.console.text yview moveto 1"
     bind $w <F9> {
+      # F9 recalls a "tell" history 
       .fics.command.entry delete 0 end
       if {$::fics::tellindex >= [llength $::fics::tells]} {
 	.fics.command.entry insert 0 "tell "
@@ -336,6 +337,7 @@ namespace eval fics {
 	incr ::fics::tellindex
       }
     }
+    bind $w <Escape> "$w.command.entry delete 0 end"
 
 
     # steer focus into the command entry, as typing into the text widget is pointless
@@ -1330,6 +1332,9 @@ namespace eval fics {
                         }
 	{* tells you:*}	{ $t insert end "$line\n" tells 
 			  if {[regexp {(.*) tells you:(.*$)} $line t1 t2 t3]} {
+                            if {[set temp [string first {(} $t2]] > -1} {
+                              set t2 [string range $t2 0 $temp-1]
+                            }
                             if {[string match mamer* $t2]} {
 			      tk_messageBox -title Mamer -icon info -type ok -parent .fics -message "$t2 tells you" -detail $t3
 			    } else {
