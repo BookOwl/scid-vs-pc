@@ -2477,67 +2477,6 @@ proc processAnalysisInput {n} {
     }
   }
 
-  if {$comp(playing)} {
-
-    ### Should be careful not to use $line as a list as it can contain funny chars
-
-    # match "my move is", "My move is:"
-    if {[string match "*y move is*" $line]} {
-      set analysis(moves$n) [lrange $line 3 end]
-      set analysis(waitForBestMove$n) 0
-    }
-    if {[string match {move *} $line]} {
-      set analysis(moves$n) [lrange $line 1 end]
-      set analysis(waitForBestMove$n) 0
-    }
-
-    if {[string match {1-0*} $line] || \
-	[string match {0-1*} $line] || \
-	[string match {resign*} $line]} {
-      puts_ "RESIGNS (engine $n)"
-      if {$n == $comp(white)} {
-	sc_game tags set -result 0
-	sc_pos setComment "White resigns"
-      } else {
-	sc_game tags set -result 1
-	sc_pos setComment "Black resigns"
-      }
-      set comp(playing) 0
-
-      ### We have to send signals to both engines
-      # This is to handle the case where engines move then resign/declare draw immediately,
-      # eg Engine: move g2g3
-      #    Engine: 1/2-1/2 {Insufficient material}
-      # as we set comp(playing) to 0, and the other engines final move is never processed
-
-      # set analysis(waitForBestMove$n) 0
-      set analysis(waitForBestMove$comp(move)) 0
-      set analysis(waitForBestMove$comp(nextmove)) 0
-    }
-
-    #
-    # (Other)
-    # Scid  : g2g3
-    # Scid  : go
-    # Engine: Error (command not legal now): g2g3
-
-    if {[string match {1/2-1/2*} $line]} {
-      puts_ "DRAW (engine $n)"
-      sc_game tags set -result =
-      if {$n == $comp(white)} {
-        sc_pos setComment "White declares draw"
-      } else {
-        sc_pos setComment "Black declares draw"
-      }
-      set comp(playing) 0
-
-      # set analysis(waitForBestMove$n) 0
-      set analysis(waitForBestMove$comp(move)) 0
-      set analysis(waitForBestMove$comp(nextmove)) 0
-   }
-
-  }
-
   # Check for "feature" commands so we can determine if the engine
   # has the setboard and analyze commands:
 
@@ -2561,10 +2500,71 @@ proc processAnalysisInput {n} {
     return
   }
 
-  ### Quit processAnalysisInput when playing a computer tournament
-  # Hmmm... stops proper detecting of winboard engines if they don't have protover 2
   if {$comp(playing)} {
+
+    ### Should be careful not to use $line as a list as it can contain funny chars
+
+    switch -glob $line {
+      {*y move is*} {
+		 # "my move is", "My move is:"
+		 set analysis(moves$n) [lrange $line 3 end]
+		 set analysis(waitForBestMove$n) 0
+               }
+      {move *} {
+		 set analysis(moves$n) [lrange $line 1 end]
+		 set analysis(waitForBestMove$n) 0
+	       }
+      {* mates*} {
+		 # 1-0 {White mates}
+		 # Ooops!
+               }
+      {1-0*} - {0-1*} - {resign*} {
+		puts_ "RESIGNS (engine $n)"
+		if {$n == $comp(white)} {
+		  sc_game tags set -result 0
+		  sc_pos setComment "White resigns"
+		} else {
+		  sc_game tags set -result 1
+		  sc_pos setComment "Black resigns"
+		}
+		set comp(playing) 0
+
+		### We have to send signals to both engines
+		# This is to handle the case where engines move then resign/declare draw immediately,
+		# eg Engine: move g2g3
+		#    Engine: 1/2-1/2 {Insufficient material}
+		# as we set comp(playing) to 0, and the other engines final move is never processed
+
+		# set analysis(waitForBestMove$n) 0
+		set analysis(waitForBestMove$comp(move)) 0
+		set analysis(waitForBestMove$comp(nextmove)) 0
+	      }
+
+      {1/2-1/2*} {
+                puts_ "DRAW (engine $n)"
+		sc_game tags set -result =
+		if {$n == $comp(white)} {
+		  sc_pos setComment "White declares draw"
+		} else {
+		  sc_pos setComment "Black declares draw"
+		}
+		set comp(playing) 0
+
+		# set analysis(waitForBestMove$n) 0
+		set analysis(waitForBestMove$comp(move)) 0
+		set analysis(waitForBestMove$comp(nextmove)) 0
+	      }
+    }
+
+    # (Other)
+    # Scid  : g2g3
+    # Scid  : go
+    # Engine: Error (command not legal now): g2g3
+
+    ### Quit processAnalysisInput when playing a computer tournament
+    ### Hmmm... stops proper detecting of winboard engines if they don't have protover 2
     return
+
   }
 
   # Check for a line starting with "Crafty", so Scid can work well
@@ -2605,7 +2605,7 @@ proc processAnalysisInput {n} {
 
 
   # Check for a "stat01:" line, the reply to the "." command:
-  #
+
   if {! [string compare [string range $line 0 6] "stat01:"]} {
     if {[scan $line "%s %d %s %d" \
           dummy temp_time temp_nodes temp_depth] == 4} {
