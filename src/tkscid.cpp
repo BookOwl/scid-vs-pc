@@ -10955,11 +10955,11 @@ sc_pos_matchMoves (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
           }
         }
 
-        if (str1 && strIsPrefix (prefix, str1)) {
+        if (*str1 && strIsPrefix (prefix, str1)) {
             Tcl_AppendElement (ti, str1);
             str1[0]=0;
         }
-        if (str2 && strIsPrefix (prefix, str2)) {
+        if (*str2 && strIsPrefix (prefix, str2)) {
             Tcl_AppendElement (ti, str2);
             str2[0]=0;
         }
