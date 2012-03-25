@@ -2652,6 +2652,11 @@ proc checkEngineIsAlive {n} {
     compGameEnd [expr {!($n == $comp(white))}] {Engine crashed}
   } else {
     catch {destroy .analysisWin$n}
+    if {[winfo exists .enginelist]} {
+      set parent .enginelist
+    } else {
+      set parent .
+    }
 
     tk_messageBox -type ok -icon info -parent $parent -title Scid -message \
       "Analysis engine $analysis(name$n) terminated without warning. \
