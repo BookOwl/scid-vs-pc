@@ -1,11 +1,3 @@
-THR_SUPPORT = -DDONT_USE_SYNC_BUILTIN
-HAVE_XFT		= -DHAVE_XFT
-
-AR          = ar
-ARFLAGS     = rc
-RANLIB      = ranlib
-X_INCLUDE	= 
-
 .PHONY : clean
 .PRECIOUS:
 
@@ -19,12 +11,11 @@ CFLAGS	+= $(OPTIMIZE) $(C_DEBUG) $(PROFILING)
 
 SRC	= unix/TkDND_XDND.c
 OBJS	= $(SRC:.c=.o)
-LIB	= libtkDnd
 
-all: $(LIB).a
+all: unix/TkDND_XDND.o
 
 clean:
-	@rm -f $(LIB).a TkDND_XDND.o
+	@rm -f TkDND_XDND.o
 
 depend:
 #	makedepend -fMakefile -Y -- -I../tk$(TCL_VERSION) -- -w1 $(SRC) 2>/dev/null
@@ -32,11 +23,6 @@ depend:
 #		cp Makefile Makefile.bak; \
 #		mv Makefile.bak Makefile; \
 #	fi
-
-$(LIB).a: $(OBJS)
-	@echo "Building $(LIB).a"
-	@$(AR) $(ARFLAGS) $(LIB).a TkDND_XDND.o
-	@$(RANLIB) $(LIB).a
 
 .c.o:
 	@echo "Compiling `awk 'BEGIN { printf "%-30s", "$<" }'`  [$(CFLAGS:  = )]"

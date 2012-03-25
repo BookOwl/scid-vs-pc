@@ -382,10 +382,10 @@ scidt: src/scidt.o $(OBJS)
 	$(LINK) $(LDFLAGS) -o scidt src/scidt.o $(OBJS) $(ZLIB)
 
 tkscid: src/tkscid.o $(OBJS) src/tree.o src/filter.o src/pbook.o src/crosstab.o src/spellchk.o \
-        src/probe.o src/optable.o src/engine.o src/recog.o src/tkdnd/libtkDnd.a src/tk_selection.o
+        src/probe.o src/optable.o src/engine.o src/recog.o src/tkdnd/TkDND_XDND.o src/tk_selection.o
 	$(LINK) $(LDFLAGS) -o tkscid src/tkscid.o $(OBJS) src/tree.o \
         src/filter.o src/pbook.o src/crosstab.o src/spellchk.o src/probe.o src/optable.o \
-        src/engine.o src/recog.o src/tkdnd/libtkDnd.a src/tk_selection.o $(ZLIB) $(TK_LIBRARY)
+        src/engine.o src/recog.o src/tkdnd/TkDND_XDND.o src/tk_selection.o $(ZLIB) $(TK_LIBRARY)
 
 tcscid: src/tcscid.o $(OBJS) src/tree.o src/filter.o src/pbook.o src/crosstab.o \
         src/spellchk.o src/probe.o src/optable.o src/engine.o src/recog.o
@@ -421,7 +421,7 @@ src/probe.o: src/probe.cpp src/egtb/tbindex.cpp src/egtb/tbdecode.c
 src/zlib/%.o: src/zlib/%.c
 	$(CC) $(CFLAGS) -o $@ -c $<
 
-src/tkdnd/libtkDnd.a: src/tkdnd/unix/TkDND_XDND.c src/tkdnd/TkDND_XDND.o
+src/tkdnd/TkDND_XDND.o: src/tkdnd/unix/TkDND_XDND.c
 	$(MAKE) -C src/tkdnd/ -f Makefile CC="$(CC)" LINK="$(LINK)" CFLAGS="$(CFLAGS)" \
 	       LDFLAGS="$(LDFLAGS)" TCL_VERSION="$(TCL_VERSION)" TCL_INCLUDE="$(TCL_INCLUDE)" \
 	       TCL_LIBRARY="$(TCL_LIBRARY)" TK_INCLUDE="$(TK_INCLUDE)" TK_LIBRARY="$(TK_LIBRARY)"
