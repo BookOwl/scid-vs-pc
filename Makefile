@@ -159,7 +159,7 @@ TCLS= \
     tcl/tools/reper.tcl tcl/tools/graphs.tcl tcl/tools/tablebase.tcl tcl/tools/ptracker.tcl \
   tcl/help/help.tcl tcl/help/tips.tcl \
   tcl/menus.tcl tcl/board.tcl tcl/move.tcl tcl/main.tcl tcl/tools/correspondence.tcl \
-    tcl/lang/english.tcl $(LANGUAGES) \
+    tcl/lang/english.tcl $(LANGUAGES)  tcl/dnd/tkdnd.tcl tcl/dnd/tkdnd_unix.tcl \
   tcl/end.tcl tcl/tools/tacgame.tcl tcl/tools/sergame.tcl tcl/tools/calvar.tcl tcl/tools/fics.tcl tcl/tools/tactics.tcl \
   tcl/tools/uci.tcl tcl/tools/novag.tcl tcl/misc/flags.tcl tcl/tools/inputengine.tcl
 
@@ -288,6 +288,7 @@ clean:
 	rm -f game.* tkscid.so tkscid.dll position.* src/*.o src/zlib/*.o src/zlib/*.a src/polyglot/*.o $(EXECS) scid $(SCRIPTS)
 	cd engines/phalanx/ && make clean && cd ../../
 	cd engines/toga/src/ && make clean && cd ../../../
+	cd src/tkdnd/ && make clean && cd ../..
 
 strip:
 	strip $(EXECS)
@@ -366,27 +367,30 @@ twic2pgn: scripts/twic2pgn.py
 	chmod +x twic2pgn
 
 scmerge: src/scmerge.o src/misc.o src/index.o src/date.o src/namebase.o \
-          src/gfile.o src/bytebuf.o src/textbuf.o src/myassert.o \
-          src/stralloc.o src/position.o
+         src/gfile.o src/bytebuf.o src/textbuf.o src/myassert.o \
+         src/stralloc.o src/position.o
 	$(LINK) $(LDFLAGS) -o scmerge src/scmerge.o $(OBJS) $(ZLIB)
 
 pgnscid: src/pgnscid.o $(OBJS)
 	$(LINK) $(LDFLAGS) -o pgnscid src/pgnscid.o $(OBJS) $(ZLIB)
 
 scidlet: src/scidlet.o src/engine.o src/recog.o src/misc.o src/position.o \
-          src/dstring.o src/movelist.o src/myassert.o
+         src/dstring.o src/movelist.o src/myassert.o
 	$(LINK) $(LDFLAGS) -o scidlet src/scidlet.o src/engine.o src/recog.o src/misc.o src/position.o src/movelist.o src/dstring.o src/myassert.o
 
 scidt: src/scidt.o $(OBJS)
 	$(LINK) $(LDFLAGS) -o scidt src/scidt.o $(OBJS) $(ZLIB)
 
-tkscid: src/tkscid.o $(OBJS) src/tree.o src/filter.o src/pbook.o src/crosstab.o \
-          src/spellchk.o src/probe.o src/optable.o src/engine.o src/recog.o
-	$(LINK) $(LDFLAGS) -o tkscid src/tkscid.o $(OBJS) src/tree.o src/filter.o src/pbook.o src/crosstab.o src/spellchk.o src/probe.o src/optable.o src/engine.o src/recog.o $(ZLIB) $(TK_LIBRARY)
+tkscid: src/tkscid.o $(OBJS) src/tree.o src/filter.o src/pbook.o src/crosstab.o src/spellchk.o \
+        src/probe.o src/optable.o src/engine.o src/recog.o src/tkdnd/libtkDnd.a src/tk_selection.o
+	$(LINK) $(LDFLAGS) -o tkscid src/tkscid.o $(OBJS) src/tree.o \
+        src/filter.o src/pbook.o src/crosstab.o src/spellchk.o src/probe.o src/optable.o \
+        src/engine.o src/recog.o src/tkdnd/libtkDnd.a src/tk_selection.o $(ZLIB) $(TK_LIBRARY)
 
 tcscid: src/tcscid.o $(OBJS) src/tree.o src/filter.o src/pbook.o src/crosstab.o \
-          src/spellchk.o src/probe.o src/optable.o src/engine.o src/recog.o
-	$(LINK) $(LDFLAGS) -o tcscid src/tcscid.o $(OBJS) src/tree.o src/filter.o src/pbook.o src/crosstab.o src/spellchk.o src/probe.o src/optable.o src/engine.o src/recog.o $(ZLIB) $(TCL_LIBRARY)
+        src/spellchk.o src/probe.o src/optable.o src/engine.o src/recog.o
+	$(LINK) $(LDFLAGS) -o tcscid src/tcscid.o $(OBJS) src/tree.o src/filter.o src/pbook.o \
+        src/crosstab.o src/spellchk.o src/probe.o src/optable.o src/engine.o src/recog.o $(ZLIB) $(TCL_LIBRARY)
 
 # eco2epd is now optional extra program NOT compiled by default, since
 # scid now reads the .eco file format directly.
@@ -416,5 +420,10 @@ src/probe.o: src/probe.cpp src/egtb/tbindex.cpp src/egtb/tbdecode.c
 
 src/zlib/%.o: src/zlib/%.c
 	$(CC) $(CFLAGS) -o $@ -c $<
+
+src/tkdnd/libtkDnd.a: src/tkdnd/unix/TkDND_XDND.c src/tkdnd/TkDND_XDND.o
+	$(MAKE) -C src/tkdnd/ -f Makefile CC="$(CC)" LINK="$(LINK)" CFLAGS="$(CFLAGS)" \
+	       LDFLAGS="$(LDFLAGS)" TCL_VERSION="$(TCL_VERSION)" TCL_INCLUDE="$(TCL_INCLUDE)" \
+	       TCL_LIBRARY="$(TCL_LIBRARY)" TK_INCLUDE="$(TK_INCLUDE)" TK_LIBRARY="$(TK_LIBRARY)"
 
 ### End of Makefile

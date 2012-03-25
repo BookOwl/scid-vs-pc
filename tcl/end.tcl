@@ -1731,6 +1731,14 @@ setWinLocation .
 wm deiconify .
 wm protocol . WM_DELETE_WINDOW { ::file::Exit }
 
+### Must be done after the toplevel window has been mapped
+
+after idle [namespace code {RegisterDropEvents .statusbar}]
+after idle [namespace code {RegisterDropEvents .gameInfoFrame}]
+
+### Only works on the vacant realestate on the left of board
+# after idle [namespace code {RegisterDropEvents .board}]
+
 # Init start-up windows
 foreach {type action} {
   switcher	::windows::switcher::Open

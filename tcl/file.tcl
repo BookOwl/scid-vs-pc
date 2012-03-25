@@ -1,11 +1,11 @@
 
-# ::file::Exit
-#
-#    Prompt for confirmation then exit.
+### file.tcl
+
+# Get confirmation then exit.
 
 proc ::file::Exit {}  {
 
-  # sanity check in case of errant multiple call
+  # sanity check in case of errant multiple calls
   if {[winfo exists .unsaved]} {return}
 
   # is OSX recursively calling this proc when tk_dialog exits ?
@@ -578,4 +578,144 @@ proc ::file::openBaseAsTree { { fName "" } } {
 
   ::file::SwitchToBase $oldbase
 }
+
+### Scidb's Drag and Drop by Gregor Cramer
+#   ported by Stevenaaus
+
+namespace eval ::mc {
+set CannotOpenUri	"Cannot open the following URI:"
+set InvalidUri	"Drop content is not a valid URI list."
+set UriRejected	"The following files are rejected:"
+set UriRejectedDetail "Only Scidb databases can be opened:"
+set EmptyUriList	"Drop content is empty."
+set SelectionOwnerDidntRespond   "Timeout during drop action: selection owner didn't respond."
+}
+
+proc RegisterDropEvents {target} {
+  ::tkdnd::drop_target register $target DND_Files
+  bind $target <<DropEnter>> [namespace code { HandleDropEvent enter %t }]
+  bind $target <<DropLeave>> [namespace code { HandleDropEvent leave %t }]
+  bind $target <<Drop>> [namespace code { HandleDropEvent %D %t }]
+}
+
+proc HandleDropEvent {action types} {
+  variable Defaults
+
+  switch $action {
+    enter  {}
+    leave  {}
+    default {
+      # It is important that HandleDropEvent is returning as fast as possible.
+      after idle [namespace code [list OpenUri $action]]
+    }
+  }
+
+  return copy
+}
+
+proc OpenUri {uriFiles} {
+  # FIXME: Why do we have to discard the last two chars ?
+  set uriFiles [string range $uriFiles 0 end-2]
+
+  set errorList {}
+  set rejectList {}
+  set databaseList {}
+
+  foreach file [split $uriFiles \n] {
+    set uri [string trimright $file]
+    set file $uri
+    if {[string length $file]} {
+      if {[string equal -length 5 $file "file:"]} {
+        if {[string equal -length 17 $file "file://localhost/"]} {
+          # correct implementation
+          set file [string range $file 16 end]
+        } elseif {[string equal -length 8 $file "file:///"]} {
+          # no hostname, but three slashes - nearly correct
+          set file [string range $file 7 end]
+        } elseif {[string index $file 5] eq "/"} {
+          # theoretically, the hostname should be the first, but no one implements it
+          set file [string range $uri 5 end]
+          for {set n 1} {$n < 5} {incr n} { if {[string index $file $n] eq "/"} { break } }
+          set file [string range $uri [expr {$n - 1}] end]
+          
+          if {![file exists $file]} {
+            # perhaps a correct implementation with hostname?
+            set i [string first "/" $file 1]
+            if {$i >= 0} {
+              set f [string range $file $i end]
+              if {[file exists $f]} {
+                # it seems so
+                set file $f
+              }
+            }
+          }
+        } else {
+          # no slash after "file:" - what is that for a crappy program?
+          set file [string range $file 5 end]
+        }
+      }
+
+      set file [file normalize $file]
+
+    }
+        if {[file exists $file]} { lappend databaseList $file }
+
+  }
+
+  foreach file $databaseList {
+    ::file::Open $file
+  }
+
+  if {[llength $errorList]} {
+    if {[string match file:* $uriFiles] && [llength $databaseList] == 0} {
+      set message $::mc::CannotOpenUri
+      if {[llength $errorList] > 10} {
+        append message \n\n [join [lrange $errorList 0 9] \n]
+        append message \n...
+      } else {
+        append message \n\n [join $errorList \n]
+      }
+    } else {
+      set message $::mc::InvalidUri
+    }
+    tk_messageBox -icon warning -type ok -parent . -message $message
+  }
+
+  if {[llength $rejectList]} {
+    set message $::mc::UriRejected
+    if {[llength $rejectList] > 10} {
+      append message \n\n [join [lrange $rejectList 0 9] \n]
+      append message \n...
+    } else {
+      append message \n\n [join $rejectList \n]
+    }
+    set detail $::mc::UriRejectedDetail
+    append detail " .sci, .si4, .si3, .cbh, .pgn, .pgn.gz, .zip"
+    tk_messageBox -icon info -type ok -parent . -message $message -detail $detail
+  }
+  
+  if {[llength $databaseList] + [llength $rejectList] + [llength $errorList] == 0} {
+    set message $::mc::EmptyUriList
+    tk_messageBox -icon info -type ok -parent . -message $message
+  }
+}
+
+
+proc bgerror {err} {
+       if {$err eq "selection owner didn't respond"} {
+      set parent [::tkdnd::get_drop_target]
+      if {[llength $parent] == 0} { set parent .application }
+      after idle [list tk_messageBox -icon error \
+         -parent $parent \
+         -message $::mc::SelectionOwnerDidntRespond \
+      ]
+       } elseif {[string match {*selection doesn't exist*} $err]} {
+               # ignore this stupid message. this message appears
+               # in case of empty strings. this is not an error!
+       } else {
+               ::tk::dialog::error::bgerror $err
+       }
+}
+
+### end of file.tcl
 

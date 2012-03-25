@@ -975,6 +975,9 @@ proc ::windows::switcher::Open {} {
     }
   }
 
+  # Doesn't work ?
+  # namespace code {RegisterDropEvents .glistWin.baseWin.c}
+
   ::windows::switcher::Refresh
 }
 

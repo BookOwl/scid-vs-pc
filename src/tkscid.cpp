@@ -4,12 +4,11 @@
 //              Scid extensions to Tcl/Tk interpreter
 //
 //  Part of:    Scid (Shane's Chess Information Database)
-//  Version:    3.6.4
+//  Version:    4.7
 //
 //  Notice:     Copyright (c) 1999-2004 Shane Hudson.  All rights reserved.
 //              Copyright (c) 2006-2007 Pascal Georges
-//
-//  Author:     Shane Hudson (sgh@users.sourceforge.net)
+//              Copyright (c) 2009-2012 Stevenaaus
 //
 //////////////////////////////////////////////////////////////////////
 
@@ -445,6 +444,13 @@ Tkscid_Init (Tcl_Interp * ti)
     }
 // ==============================================================
 #else
+#ifndef TCL_ONLY 
+#ifndef WIN32
+extern "C" int Tkdnd_Init (Tcl_Interp*);
+extern int Tk_Selection_Init (Tcl_Interp*);
+#endif
+#endif
+
 int
 scid_InitTclTk (Tcl_Interp * ti)
 {
@@ -568,6 +574,14 @@ scid_InitTclTk (Tcl_Interp * ti)
 
     // Set preMoveCommand to empty command:
     preMoveCommand = strDuplicate ("");
+
+#ifndef TCL_ONLY
+#ifndef WIN32
+    // Drag and Drop init
+    Tkdnd_Init (ti);
+    Tk_Selection_Init (ti);
+#endif
+#endif
 
     return TCL_OK;
 }
