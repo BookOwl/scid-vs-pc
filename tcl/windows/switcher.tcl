@@ -931,9 +931,7 @@ proc ::windows::switcher::Open {} {
   bind   $w.bookmarks <ButtonPress-1> "tk_popup .tb.bkm.menu %X %Y ; break"
   grid $w.bookmarks -row 0 -column 0 -padx 5
 
-
-  # how do i get this thing *flat* ? &&&
-  canvas $w.c 
+  canvas $w.c -borderwidth 0 -highlightthickness 0 
 
   grid $w.c -row 0 -column 1 -sticky ew
   grid columnconfigure $w 1 -weight 1
@@ -975,10 +973,8 @@ proc ::windows::switcher::Open {} {
     }
   }
 
-  # Doesn't work ?
-  # namespace code {RegisterDropEvents .glistWin.baseWin.c}
-
   ::windows::switcher::Refresh
+  after idle [namespace code "RegisterDropEvents $w.c"]
 }
 
 proc ::windows::switcher::Refresh {} {
