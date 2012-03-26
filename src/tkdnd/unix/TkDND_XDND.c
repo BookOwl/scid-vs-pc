@@ -45,6 +45,7 @@
 #include <X11/X.h>
 #include <X11/Xatom.h>
 #include <X11/keysym.h>
+#include <string.h>
 
 #ifdef HAVE_LIMITS_H
 #include "limits.h"

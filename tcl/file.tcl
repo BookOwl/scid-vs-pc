@@ -614,8 +614,6 @@ proc HandleDropEvent {action types} {
 }
 
 proc OpenUri {uriFiles} {
-  # FIXME: Why do we have to discard the last two chars ?
-  set uriFiles [string range $uriFiles 0 end-2]
 
   set errorList {}
   set rejectList {}
@@ -693,7 +691,7 @@ proc OpenUri {uriFiles} {
     append detail " .sci, .si4, .si3, .cbh, .pgn, .pgn.gz, .zip"
     tk_messageBox -icon info -type ok -parent . -message $message -detail $detail
   }
-  
+
   if {[llength $databaseList] + [llength $rejectList] + [llength $errorList] == 0} {
     set message $::mc::EmptyUriList
     tk_messageBox -icon info -type ok -parent . -message $message
