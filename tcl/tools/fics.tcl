@@ -330,10 +330,10 @@ namespace eval fics {
       # F9 recalls a "tell" history 
       .fics.command.entry delete 0 end
       if {$::fics::tellindex >= [llength $::fics::tells]} {
-	.fics.command.entry insert 0 "tell "
+	# .fics.command.entry insert 0 "tell "
         set ::fics::tellindex 0
       } else {
-	.fics.command.entry insert 0 "tell [lindex $::fics::tells $::fics::tellindex] "
+	.fics.command.entry insert 0 "xtell [lindex $::fics::tells $::fics::tellindex] "
 	incr ::fics::tellindex
       }
     }
