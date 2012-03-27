@@ -592,6 +592,7 @@ set SelectionOwnerDidntRespond   "Timeout during drop action: selection owner di
 }
 
 proc RegisterDropEvents {target} {
+  if {$::macOS || $::windowsOS} {return}
   ::tkdnd::drop_target register $target DND_Files
   bind $target <<DropEnter>> [namespace code { HandleDropEvent enter %t }]
   bind $target <<DropLeave>> [namespace code { HandleDropEvent leave %t }]
