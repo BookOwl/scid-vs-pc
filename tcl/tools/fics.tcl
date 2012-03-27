@@ -43,7 +43,12 @@ namespace eval fics {
   set ignore_takeback 0
 
   set ping {}
-
+  array set shorttype {
+    crazyhouse crazy
+    bughouse bug
+    standard normal
+    lightning light
+  }
 
   proc config {} {
     variable logged
@@ -1052,7 +1057,9 @@ namespace eval fics {
           if {[winfo exists .fics.bottom.game$g]} {
 	    .fics.bottom.game$g.w.white configure -text $white
 	    .fics.bottom.game$g.b.black configure -text $black
-	    .fics.bottom.game$g.b.result configure -text "$gametype $t1 $t2"
+            set type $gametype
+            catch {set type $::fics::shorttype($gametype)}
+	    .fics.bottom.game$g.b.result configure -text "$type $t1 $t2"
 	    # disable load button if non-standard game
 	    if {$gametype != {untimed} && $gametype != {blitz} && $gametype != {lightning} && $gametype != {standard}} {
 	      pack forget .fics.bottom.game$g.w.load
