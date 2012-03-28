@@ -421,12 +421,16 @@ namespace eval gameclock {
 
   proc new { parent n { size 100 } {showfall 0} {aspect horizontal} {type both}} {
   # n is either 1 or 2, but extra clocks could be numbered 3,4 (for eg)
-  # type can be analog, digital or both (unimplemented)
+  # type can be analog, digital or both 
     global ::gameclock::data
     set data(showfallen$n) $showfall
     set data(id$n) $parent.clock$n
     set data(type$n) $type
-    canvas $data(id$n) -height $size -width $size
+    if {$data(type$n) == "digital"} {
+      canvas $data(id$n) -height [expr $size/3] -width $size
+    } else {
+      canvas $data(id$n) -height $size -width $size
+    }
 
     if {$aspect == "horizontal"} {
       if { $n % 2 } {
@@ -438,27 +442,29 @@ namespace eval gameclock {
       pack $data(id$n) -side top -anchor center -pady 5
     }
 
-    ### Draw digits 1 to 12 (tagged with "clock")
-    # The hands and digitalcounter are drawn in {proc draw}, and tagged "aig"
-    # Initially they are both neutral colour, and are given white/black by {proc setColor}
+    if {$data(type$n) != "digital"} {
+      ### Draw digits 1 to 12 (tagged with "clock")
+      # The hands and digitalcounter are drawn in {proc draw}, and tagged "aig"
+      # Initially they are both neutral colour, and are given white/black by {proc setColor}
 
-    for {set i 1} {$i<13} {incr i} {
-      set a [expr {$i/6.*acos(-1)}]
-      set x [expr { ($size/2 + (($size-15)/2)*sin($a) ) }]
-      set y [expr { ($size/2 - (($size-15)/2)*cos($a) ) }]
-      $data(id$n) create text $x $y -text $i -tag clock -font font_Small
+      for {set i 1} {$i<13} {incr i} {
+	set a [expr {$i/6.*acos(-1)}]
+	set x [expr { ($size/2 + (($size-15)/2)*sin($a) ) }]
+	set y [expr { ($size/2 - (($size-15)/2)*cos($a) ) }]
+	$data(id$n) create text $x $y -text $i -tag clock -font font_Small
+      }
     }
     set data(fg$n) "black"
     set data(running$n) 0
-    set data(digital$n) 1
     ::gameclock::reset $n
     ::gameclock::draw $n
     bind $data(id$n) <Button-1> "::gameclock::toggleClock $n"
   }
-  ################################################################################
+
   proc draw { n } {
     global ::gameclock::data
     if {! [winfo exists $data(id$n)]} { return }
+
     $data(id$n) delete aig
 
     set w [$data(id$n) cget -width ]
@@ -480,21 +486,30 @@ namespace eval gameclock {
 
     if {$color == "white"} {set fg "black"} else {set fg "white"}
 
-    foreach divisor {30 1800 21600} length "[expr $size/2 * 0.8] [expr $size/2 * 0.7] [expr $size/2 * 0.4]" \
-        width {1 2 3} {
-          set angle [expr {$sec * acos(-1) / $divisor}]
-          set x [expr {$cx + $length * sin($angle)}]
-          set y [expr {$cy - $length * cos($angle)}]
-          $data(id$n) create line $cx $cy $x $y -width $width -tags aig -fill $color
-        }
-    # draw a digital clock
-    if {$data(digital$n)} {
+    # Analog hands
+    if {$data(type$n) != "digital"} {
+      foreach divisor {30 1800 21600} length "[expr $size/2 * 0.8] [expr $size/2 * 0.7] [expr $size/2 * 0.4]" \
+	  width {1 2 3} {
+	    set angle [expr {$sec * acos(-1) / $divisor}]
+	    set x [expr {$cx + $length * sin($angle)}]
+	    set y [expr {$cy - $length * cos($angle)}]
+	    $data(id$n) create line $cx $cy $x $y -width $width -tags aig -fill $color
+	  }
+    }
+
+    # Digital
+    if {$data(type$n) != "analog"} {
       set m [format "%02d" [expr abs($sec) / 60] ]
       set s [format "%02d" [expr abs($sec) % 60] ]
-      $data(id$n) create text $cx [expr $cy + $size/4 ] -text "$m:$s" -anchor center -fill $color -tag aig
+      if {$data(type$n) == "both"} {
+        set y [expr $cy + $size/4]
+      } else {
+        set y $cy
+      }
+      $data(id$n) create text $cx $y -text "$m:$s" -anchor center -fill $color -tag aig
     }
   }
-  ################################################################################
+
   proc every {ms body n} {
     incr ::gameclock::data(counter$n)
     eval $body
@@ -502,40 +517,39 @@ namespace eval gameclock {
       set ::gameclock::after$n [after $ms [info level 0]]
     }
   }
-  ################################################################################
+
   proc getSec { n } {
     return [expr 0 - $::gameclock::data(counter$n)]
   }
-  ################################################################################
+
   proc setSec { n value } {
     set ::gameclock::data(counter$n) $value
     ::gameclock::draw $n
   }
-  ################################################################################
+
   proc add { n value } {
     set ::gameclock::data(counter$n) [ expr $::gameclock::data(counter$n) - $value ]
     ::gameclock::draw $n
   }
 
-  ################################################################################
   proc reset { n } {
     ::gameclock::stop $n
     set ::gameclock::data(counter$n) 0
   }
-  ################################################################################
+
   proc start { n } {
     if {$::gameclock::data(running$n)} { return }
     set ::gameclock::data(running$n) 1
 
     set ::gameclock::after$n [after 1000 "::gameclock::every 1000 \"draw $n\" $n"]
   }
-  ################################################################################
+
   proc stop { n } {
     if {! $::gameclock::data(running$n)} { return }
     set ::gameclock::data(running$n) 0
     after cancel [set ::gameclock::after$n]
   }
-  ################################################################################
+
   proc toggleClock { n } {
     if { $::gameclock::data(running$n) } {
       stop $n
@@ -543,7 +557,9 @@ namespace eval gameclock {
       start $n
     }
   }
-  ################################################################################
+
+  # Should this be in ::clock::new ?
+
   proc setColor { n color } {
     if {$color == "white"} {
       set fg "black"
@@ -558,6 +574,7 @@ namespace eval gameclock {
     $::gameclock::data(id$n) itemconfigure aig -fill $fg
   }
 }
+
 ################################################################################
 # html generation
 ################################################################################
