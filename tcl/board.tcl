@@ -2226,6 +2226,7 @@ proc ::board::flip {w {newstate -1}} {
   }
   ::board::update $w
   ::board::togglematerial $w
+  ::board::ficslabels $w
   return $w
 }
 
@@ -2239,6 +2240,26 @@ proc ::board::togglematerial {{w .board}} {
     ::board::material $w
   } else {
     grid remove $w.mat
+  }
+  ::board::ficslabels $w
+}
+
+proc ::board::ficslabels {{w .board}} {
+  # Update the board time labels for FICS
+  if {$w != ".board" || ![winfo exists .fics]} {
+    return
+  }
+  if {$::gameInfo(showMaterial)} {
+    if {$::board::_flip(.board)} {
+      grid configure .board.clock1 -row 1 -column 12 -sticky ne
+      grid configure .board.clock2 -row 8 -column 12 -sticky se
+    } else {
+      grid configure .board.clock2 -row 1 -column 12 -sticky ne
+      grid configure .board.clock1 -row 8 -column 12 -sticky se
+    }
+  } else {
+    grid remove .board.clock2
+    grid remove .board.clock1
   }
 }
 

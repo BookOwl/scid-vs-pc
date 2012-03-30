@@ -351,9 +351,15 @@ namespace eval fics {
     pack $w.command.next $w.command.clear $w.command.send -side right -padx 3 -pady 2
     focus $w.command.entry
 
-    # clock 1 is white
+    # black
     ::gameclock::new $w.bottom.clocks 2 100 0 vertical
+    # white
     ::gameclock::new $w.bottom.clocks 1 100 0 vertical
+
+    label .board.clock2 -textvar ::gameclock::data(time2)
+    label .board.clock1 -textvar ::gameclock::data(time1)
+    ::board::ficslabels
+
     set ::fics::playing 0
 
     set row 0
@@ -1976,6 +1982,8 @@ namespace eval fics {
     variable logged
 
     bind .fics <Destroy> {}
+    destroy .board.clock2
+    destroy .board.clock1
 
     # Unused
     if {$mode == "safe"} {
