@@ -863,7 +863,7 @@ proc gameSave {gnum {focus {}}} {
   }
 
   if {[sc_base isReadOnly]} {
-    tk_messageBox -type ok -icon error -title "Scid: Error" \
+    tk_messageBox -type ok -icon error -title "Scid: Oops" \
       -message "Database \"[file tail [sc_base filename]]\" is read-only."
     return
   }
@@ -1707,7 +1707,7 @@ while {$argc > 0} {
       ### Umm... they are. ? S.A.
       set errMessage "$errMessage\nCould not open database \"$startbase\""
       ::splash::add $errMessage error
-      tk_messageBox -title "Scid: Error" -type ok -icon error -message $errMessage
+      tk_messageBox -title "Scid: Oops" -type ok -icon error -message $errMessage
     } else {
       ::splash::add "   Database \"$startbase\" opened: [sc_base numGames] games."
       set initialDir(base) [file dirname $startbase]
