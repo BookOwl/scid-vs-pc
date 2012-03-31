@@ -413,13 +413,15 @@ proc ::tools::graphs::score::Refresh {} {
     $w.menu.file add command -label GraphFileClose -command "destroy $w"
 
     $w.menu add cascade -label GraphOptions -menu $w.menu.options
-#Klimmek: Checkbuttons for Invert white/black Score in Score graph
+    #Klimmek: Checkbuttons for Invert white/black Score in Score graph
     menu $w.menu.options
     foreach i {White Black} {
       $w.menu.options add checkbutton -label GraphOptions$i \
-        -variable ::tools::graphs::score::$i -offvalue "0" -onvalue "1" \
-        -command "::tools::graphs::score::Refresh"
+        -variable ::tools::graphs::score::$i  -command ::tools::graphs::score::Refresh
     }
+
+    $w.menu.options add checkbutton -label {Show Dots} \
+      -variable ::tools::graphs::score::dots -command ::tools::graphs::score::Refresh
 
     $w.menu add cascade -label $::tr(Help) -menu $w.menu.help -underline 0
     menu $w.menu.help
@@ -469,9 +471,9 @@ proc ::tools::graphs::score::Refresh {} {
   $w.c itemconfigure text -text "[sc_game info white]$whiteelo - [sc_game info black]$blackelo\n[sc_game info site]  [sc_game info date]"
   busyCursor $w
   update
-#Klimmek: Invert white/black Score in Score graph
+  #Klimmek: Invert white/black Score in Score graph
   catch {::utils::graph::data score data -color $linecolor -points 1 -lines 1 \
-             -linewidth $linewidth -radius $psize -outline $linecolor \
+             -linewidth $linewidth -radius $psize -outline $linecolor -points $::tools::graphs::score::dots \
              -coords [sc_game scores $::tools::graphs::score::White $::tools::graphs::score::Black]}
   ::utils::graph::redraw score
   unbusyCursor $w

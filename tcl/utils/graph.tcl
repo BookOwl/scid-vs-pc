@@ -389,9 +389,8 @@ proc ::utils::graph::plot_axes {graph} {
   }
 }
 
-# plot_data:
 #    Plot the lines/points/bars for each data set in the graph.
-#
+
 proc ::utils::graph::plot_data {graph} {
   variable _data
   set canvas $_data($graph,canvas)

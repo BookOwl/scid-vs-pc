@@ -142,6 +142,7 @@ set ::file::finder::data(EPD) 1
 set ::file::finder::data(Old) 1
 set ::tools::graphs::absfilter::type year
 set ::tools::graphs::filter::type year
+set ::tools::graphs::score::dots 1
 set ::addAnnotatorTag 1
 set ::annotateMoves all
 set ::annotateWithVars blunders
