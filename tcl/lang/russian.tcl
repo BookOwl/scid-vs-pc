@@ -726,7 +726,7 @@ translate R GraphFilterTitle "Фильтр графики: частота на 1000 партий"
 # ====== TODO To be translated ======
 translate R GraphAbsFilterTitle "Filter Graph: frequency of the games"
 # ====== TODO To be translated ======
-translate R ConfigureFilter {Configure X-Axes for Year, Rating and Moves}
+translate R ConfigureFilter {Configure X Axis}
 # ====== TODO To be translated ======
 translate R FilterEstimate "Estimate"
 # ====== TODO To be translated ======

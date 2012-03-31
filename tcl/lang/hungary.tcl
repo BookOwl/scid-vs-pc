@@ -686,7 +686,7 @@ translate H GraphFilterTitle "Szûrõgrafikon: gyakoriság 1000 játszmánként"
 # ====== TODO To be translated ======
 translate H GraphAbsFilterTitle "Filter Graph: frequency of the games"
 # ====== TODO To be translated ======
-translate H ConfigureFilter {Configure X-Axes for Year, Rating and Moves}
+translate H ConfigureFilter {Configure X Axis}
 # ====== TODO To be translated ======
 translate H FilterEstimate "Estimate"
 # ====== TODO To be translated ======

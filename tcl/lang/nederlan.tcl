@@ -698,7 +698,7 @@ translate N GraphFilterTitle "Filtergrafiek: frequentie per 1000 partijen"
 # ====== TODO To be translated ======
 translate N GraphAbsFilterTitle "Filter Graph: frequency of the games"
 # ====== TODO To be translated ======
-translate N ConfigureFilter {Configure X-Axes for Year, Rating and Moves}
+translate N ConfigureFilter {Configure X Axis}
 # ====== TODO To be translated ======
 translate N FilterEstimate "Estimate"
 # ====== TODO To be translated ======

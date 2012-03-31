@@ -98,11 +98,11 @@ proc configureFilterGraph {parent} {
   set row 0
     #Create input for each configurationvalue
     foreach { i n } { Year Year Elo Rating Moves moves} {
-      label $w.filter.label$i -text $::tr($n) -font font_Bold
+      label $w.filter.label$i -text [string totitle $::tr($n)] -font font_Regular
       grid $w.filter.label$i -row $row -column $col -sticky w
       incr col
       foreach {j k} { FilterMin "  " FilterMax " - " FilterStep "  Interval"} {
-	  label $w.filter.label$j$i -text $k
+	  label $w.filter.label$j$i -text $k -font font_Regular
 	  entry $w.filter.i$j$i -textvariable $j$i -justify right -width 5 -validate all -vcmd { regexp {^[0-9]{0,4}$} %P }
 	  grid $w.filter.label$j$i -row $row -column $col -sticky w -padx 3 -pady 3
 	  incr col

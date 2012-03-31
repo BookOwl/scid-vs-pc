@@ -682,7 +682,7 @@ translate C GraphFilterTitle "Graf filtru: èetnost na 1000 partií"
 # ====== TODO To be translated ======
 translate C GraphAbsFilterTitle "Filter Graph: frequency of the games"
 # ====== TODO To be translated ======
-translate C ConfigureFilter {Configure X-Axes for Year, Rating and Moves}
+translate C ConfigureFilter {Configure X Axis}
 # ====== TODO To be translated ======
 translate C FilterEstimate "Estimate"
 # ====== TODO To be translated ======

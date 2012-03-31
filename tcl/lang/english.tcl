@@ -648,7 +648,7 @@ menuText E GraphOptionsBoth "Both" 1
 menuText E GraphOptionsPInfo "Player Info player" 0
 translate E GraphFilterTitle "Frequency per 1000 Games"
 translate E GraphAbsFilterTitle "Game Frequency"
-translate E ConfigureFilter "Configure X-Axes for Year, Rating and Moves"
+translate E ConfigureFilter "Configure X Axis"
 translate E FilterEstimate "Estimate"
 translate E TitleFilterGraph "Scid: Filter Graph"
 

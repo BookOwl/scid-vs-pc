@@ -722,7 +722,7 @@ translate O GraphFilterTitle "Filtergraf: hyppighet per 1000 partier"
 # ====== TODO To be translated ======
 translate O GraphAbsFilterTitle "Filter Graph: frequency of the games"
 # ====== TODO To be translated ======
-translate O ConfigureFilter {Configure X-Axes for Year, Rating and Moves}
+translate O ConfigureFilter {Configure X Axis}
 # ====== TODO To be translated ======
 translate O FilterEstimate "Estimate"
 # ====== TODO To be translated ======

@@ -683,7 +683,7 @@ translate B GraphFilterTitle "Filter graph: frequency per 1000 games" ;# ***
 # ====== TODO To be translated ======
 translate B GraphAbsFilterTitle "Filter Graph: frequency of the games"
 # ====== TODO To be translated ======
-translate B ConfigureFilter {Configure X-Axes for Year, Rating and Moves}
+translate B ConfigureFilter {Configure X Axis}
 # ====== TODO To be translated ======
 translate B FilterEstimate "Estimate"
 # ====== TODO To be translated ======
