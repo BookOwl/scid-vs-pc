@@ -1016,7 +1016,7 @@ $m add command -label OptionsSave -command {
     FilterMaxYear FilterMinYear FilterStepYear FilterGuessELO
     ::comp(timecontrol) ::comp(seconds) ::comp(minutes) ::comp(incr) ::comp(timeout) ::comp(name)
     ::comp(rounds) ::comp(showclock) ::comp(debug) ::comp(animate) ::comp(firstonly) ::comp(ponder)
-    ::tools::graphs::filter::type  ::tools::graphs::absfilter::type ::tools::graphs::score::dots
+    ::tools::graphs::filter::type  ::tools::graphs::absfilter::type ::tools::graphs::showpoints
     ::maintFlag glistFlag ::useGraphFigurine} {
 
       puts $optionF "set $i [list [set $i]]"

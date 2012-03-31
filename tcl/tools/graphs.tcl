@@ -369,7 +369,7 @@ proc ::tools::graphs::filter::Refresh {} {
   # Create fake dataset with bounds so we see 0.0::
   #::utils::graph::data decade bounds -points 0 -lines 0 -bars 0 -coords {1 0.0 1 0.0}
 
-  ::utils::graph::data filter data -color steelblue -points 1 -lines 1 -bars 0 \
+  ::utils::graph::data filter data -color steelblue -points $::tools::graphs::showpoints -lines 1 -bars 0 \
     -linewidth 2 -radius 2 -outline steelblue -coords $dlist
   ::utils::graph::configure filter -xlabels $xlabels -ytick $ytick \
     -hline $hlines -ymin 0 -xmin 0.5 -xmax [expr {$count + 0.5}]
@@ -421,7 +421,7 @@ proc ::tools::graphs::score::Refresh {} {
     }
 
     $w.menu.options add checkbutton -label {Show Dots} \
-      -variable ::tools::graphs::score::dots -command ::tools::graphs::score::Refresh
+      -variable ::tools::graphs::showpoints -command ::tools::graphs::score::Refresh
 
     $w.menu add cascade -label $::tr(Help) -menu $w.menu.help -underline 0
     menu $w.menu.help
@@ -472,8 +472,8 @@ proc ::tools::graphs::score::Refresh {} {
   busyCursor $w
   update
   #Klimmek: Invert white/black Score in Score graph
-  catch {::utils::graph::data score data -color $linecolor -points 1 -lines 1 \
-             -linewidth $linewidth -radius $psize -outline $linecolor -points $::tools::graphs::score::dots \
+  catch {::utils::graph::data score data -color $linecolor -points $::tools::graphs::showpoints -lines 1 \
+             -linewidth $linewidth -radius $psize -outline $linecolor \
              -coords [sc_game scores $::tools::graphs::score::White $::tools::graphs::score::Black]}
   ::utils::graph::redraw score
   unbusyCursor $w
@@ -632,7 +632,7 @@ proc ::tools::graphs::rating::Refresh {{player {}}} {
     set key [::utils::string::Surname $p]
     set color [lindex $::tools::graphs::rating::colors [expr ($i - 1) % [llength $::tools::graphs::rating::colors]]]
     catch {
-      ::utils::graph::data ratings d$i -color $color -points 1 -lines 1 \
+      ::utils::graph::data ratings d$i -color $color -points $::tools::graphs::showpoints -lines 1 \
 	       -linewidth $lwidth -radius $psize -outline $color \
 	       -key $key -coords [sc_name info -ratings:$year -elo:$elo $p]
     }
@@ -897,7 +897,7 @@ proc ::tools::graphs::absfilter::Refresh {} {
   # Create fake dataset with bounds so we see 0.0::
   #::utils::graph::data decade bounds -points 0 -lines 0 -bars 0 -coords {1 0.0 1 0.0}
 
-  ::utils::graph::data absfilter data -color steelblue -points 1 -lines 1 -bars 0 \
+  ::utils::graph::data absfilter data -color steelblue -points $::tools::graphs::showpoints -lines 1 -bars 0 \
     -linewidth 2 -radius 2 -outline steelblue -coords $dlist
   ::utils::graph::configure absfilter -xlabels $xlabels -ytick $ytick \
     -hline $hlines -ymin 0 -xmin 0.5 -xmax [expr {$count + 0.5}]

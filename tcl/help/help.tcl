@@ -3274,8 +3274,11 @@ To disable them, unselect <green>Options--<gt>Game Information--<gt>Show Photos<
 set helpTitle(Graphs) "Graph windows"
 set helpText(Graphs) {<h1>Graph Windows</h1>
   <p>
-  Scid has a number of graph features, displaying information about player ratings, the tree, and game frequencies.
+  Scid has a number of graph features, displaying information about Player Ratings, Game Frequencies and Score Evaluation.
   </p>
+  <p><i>
+  Line graphs can be shown with or without dots for vertices. This is configured in the Score Graph options menu.
+  </i></p>
 
   <h3><name Filter>Filter Graph Windows</name></h3>
 <p>
