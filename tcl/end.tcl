@@ -1824,8 +1824,9 @@ proc getTopLevel {{type {}}} {
 
   ### Place .glistWin, .pgnWin last so raiseAllWindows places them on top. Side effects ?
 
-  foreach win {.pgnWin .glistWin}  {
+  foreach win {.pgnWin .glistWin .analysisWin*}  {
     set pos [lsearch $topl $win]
+    set win [lindex $topl $pos] ; #defrefence globbing for analysisWinN
     if {$pos >=0} {
       set topl [lreplace $topl $pos $pos]
       lappend topl $win
