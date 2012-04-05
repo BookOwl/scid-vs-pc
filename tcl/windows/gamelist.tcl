@@ -311,6 +311,7 @@ proc ::windows::gamelist::Open {} {
     scale  $w.vsb -from 1 -orient vertical -variable glstart -showvalue 0 -command ::windows::gamelist::SetStart -bigincrement $glistSize -relief flat
   } else {
     ttk::scale $w.vsb -orient vertical -command ::windows::gamelist::SetStart -from 1 -variable glstart
+    # -sliderlength 200  ; It'd be nice to make the slider big sometimes, but unsupported in ttk::scale
   }
 
   # -borderwidth 0
@@ -875,7 +876,11 @@ proc ::windows::gamelist::Refresh {{see {}}} {
 
   setGamelistTitle
 
-  $w.vsb configure -to [expr $totalSize - $glistSize]
+  set to [expr $totalSize - $glistSize]
+  if {$to < 1} {
+    set to 1
+  }
+  $w.vsb configure -to $to
 
   configDeleteButtons
   ::windows::switcher::Refresh
