@@ -445,11 +445,9 @@ Tkscid_Init (Tcl_Interp * ti)
 // ==============================================================
 #else
 #ifndef TCL_ONLY 
-#ifndef WIN32
 #ifndef __APPLE__
 extern "C" int Tkdnd_Init (Tcl_Interp*);
 extern int Tk_Selection_Init (Tcl_Interp*);
-#endif
 #endif
 #endif
 
@@ -578,12 +576,10 @@ scid_InitTclTk (Tcl_Interp * ti)
     preMoveCommand = strDuplicate ("");
 
 #ifndef TCL_ONLY
-#ifndef WIN32
 #ifndef __APPLE__
     // Drag and Drop init
     Tkdnd_Init (ti);
     Tk_Selection_Init (ti);
-#endif
 #endif
 #endif
 

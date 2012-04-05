@@ -36,6 +36,7 @@
 # MODIFICATIONS.
 #
 
+namespace eval tkdnd {
 namespace eval olednd {
   variable _types {}
   variable _typelist {}
@@ -266,7 +267,7 @@ proc olednd::_GetDroppedData {  } {
   foreach type $_common_drag_source_types {
     if {![catch {
       return [selection get -displayof $_drop_target -selection XdndSelection \
-                            -type $type] result options]} {
+                            -type $type] result options}]} {
       return $result
     }
   }
@@ -379,4 +380,4 @@ proc olednd::_supported_type { type } {
   return 0
 }; # olednd::_supported_type
 
-# vi:set ts=2 sw=2 et:
+};# namespace tkdnd

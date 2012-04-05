@@ -111,7 +111,7 @@ TCLS= \
     tcl/tools/reper.tcl tcl/tools/graphs.tcl tcl/tools/tablebase.tcl tcl/tools/ptracker.tcl \
   tcl/help/help.tcl tcl/help/tips.tcl \
   tcl/menus.tcl tcl/board.tcl tcl/move.tcl tcl/main.tcl tcl/tools/correspondence.tcl \
-    tcl/lang/english.tcl $(LANGUAGES) \
+    tcl/lang/english.tcl $(LANGUAGES) tcl/dnd/tkdnd.tcl tcl/dnd/tkdnd_windows.tcl \
   tcl/end.tcl tcl/tools/tacgame.tcl tcl/tools/sergame.tcl tcl/tools/calvar.tcl tcl/tools/fics.tcl tcl/tools/tactics.tcl tcl/tools/uci.tcl tcl/tools/novag.tcl tcl/misc/flags.tcl tcl/tools/inputengine.tcl
 
 
@@ -143,21 +143,13 @@ scidlet.exe: src/scidlet.o src/engine.o src/recog.o $(OBJS)
 
 scid.exe: src/scid.o $(OBJS) src/tree.o src/filter.o \
             src/pbook.o src/crosstab.o src/spellchk.o src/probe.o \
-            src/optable.o src/engine.o src/recog.o scid.coff
+            src/optable.o src/engine.o src/recog.o scid.coff src/tkdnd/TkDND_OleDND.o src/tk_selection.o
 	$(LINK) -o scid.exe src/scid.o $(OBJS) \
             src/tree.o src/filter.o src/pbook.o \
             src/crosstab.o src/spellchk.o src/probe.o \
-            src/optable.o src/engine.o src/recog.o scid.coff \
+            src/optable.o src/engine.o src/recog.o scid.coff src/tkdnd/TkDND_OleDND.o src/tk_selection.o \
+	    $(MINGW_DIR)/lib/libole32.a $(MINGW_DIR)/lib/libuuid.a \
             -L$(TCL_LIB) -ltk$(TCL_VERSION) -ltcl$(TCL_VERSION) -mwindows
-
-tkscid.exe: src/tkscid.o $(OBJS) src/tree.o src/filter.o \
-            src/pbook.o src/crosstab.o src/spellchk.o src/probe.o \
-            src/optable.o src/engine.o src/recog.o
-	$(LINK) $(LDFLAGS)  -o tkscid.exe src/tkscid.o $(OBJS) \
-            src/tree.o src/filter.o src/pbook.o \
-            src/crosstab.o src/spellchk.o src/probe.o \
-            src/optable.o src/engine.o src/recog.o \
-            -L$(TCL_LIB) -ltk$(TCL_VERSION) -ltcl$(TCL_VERSION)
 
 tcscid.exe: src/tcscid.o $(OBJS) src/tree.o src/filter.o \
             src/pbook.o src/crosstab.o src/spellchk.o src/probe.o \
@@ -202,3 +194,7 @@ src/probe.o: src/probe.cpp src/egtb/tbindex.cpp src/egtb/tbdecode.c
 %.o: %.c
 	$(CC) $(CFLAGS) -c $< -o ./$@
 
+src/tkdnd/TkDND_OleDND.o: src/tkdnd/win/TkDND_OleDND.cpp
+	$(MAKE) -C src/tkdnd/ -f Makefile.mingwx CC="$(CC)" LINK="$(LINK)" CFLAGS="$(CFLAGS)" \
+               LDFLAGS="$(LDFLAGS)" TCL_VERSION="$(TCL_VERSION)" TCL_INCLUDE="$(TCL_INCLUDE)" \
+               TCL_LIBRARY="$(TCL_LIBRARY)" TK_INCLUDE="$(TK_INCLUDE)" TK_LIBRARY="$(TK_LIBRARY)"

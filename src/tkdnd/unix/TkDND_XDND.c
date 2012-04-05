@@ -139,6 +139,10 @@ CoordsToWindow(int rootX, int rootY, Tk_Window tkwin) {
   int childX, childY;
 
   tkwin = GetWmFrameChild(tkwin);
+
+  if (Tk_PathName(tkwin) == NULL)
+    return NULL; /* something was going wrong */
+
   Tk_GetRootCoords(tkwin, &childX, &childY);
   rootX -= childX;
   rootY -= childY;
@@ -152,17 +156,20 @@ CoordsToWindow(int rootX, int rootY, Tk_Window tkwin) {
     for ( ; winPtr != NULL; winPtr = winPtr->nextPtr) {
       if (!(winPtr->flags & TK_ANONYMOUS_WINDOW)) {
         Tk_Window child = (Tk_Window)winPtr;
-        int x = Tk_X(child);
-        int y = Tk_Y(child);
-        int width = Tk_Width(child);
-        int height = Tk_Height(child);
 
-        if (x <= rootX && y <= rootY && rootX < x + width && rootY < y + height) {
-          tkwin = child;
-          mouse_tkwin = child;
-          rootX -= x;
-          rootY -= y;
-          break;
+        if (Tk_IsMapped(winPtr)) {
+          int x = Tk_X(child);
+          int y = Tk_Y(child);
+          int width = Tk_Width(child);
+          int height = Tk_Height(child);
+
+          if (x <= rootX && y <= rootY && rootX < x + width && rootY < y + height) {
+            tkwin = child;
+            mouse_tkwin = child;
+            rootX -= x;
+            rootY -= y;
+            break;
+          }
         }
       }
     }
@@ -171,9 +178,6 @@ CoordsToWindow(int rootX, int rootY, Tk_Window tkwin) {
     Tcl_Obj* objv[3];
     Tcl_Obj* result;
     int length, i;
-
-    if (!Tk_PathName(tkwin))
-      return NULL;
 
     objv[0] = Tcl_NewStringObj("winfo", -1);
     objv[1] = Tcl_NewStringObj("children", -1);
@@ -195,7 +199,7 @@ CoordsToWindow(int rootX, int rootY, Tk_Window tkwin) {
         if (Tcl_ListObjIndex(interp, result, i, &path) == TCL_OK) {
           child = Tk_NameToWindow(interp, Tcl_GetString(path), mouse_tkwin);
 
-          if (child != NULL) {
+          if (child != NULL && Tk_IsMapped(child)) {
             x = Tk_X(child);
             y = Tk_Y(child);
             width = Tk_Width(child);
@@ -315,16 +319,16 @@ int TkDND_HandleXdndEnter(Tk_Window tkwin, XClientMessageEvent cm) {
     Atom actualType = None;
     int actualFormat;
     unsigned long itemCount, remainingBytes;
-    Atom *data;
+    unsigned char *data;
     XGetWindowProperty(cm.display, drag_source,
                        Tk_InternAtom(tkwin, "XdndTypeList"), 0,
                        LONG_MAX, False, XA_ATOM, &actualType, &actualFormat,
-                       &itemCount, &remainingBytes, (unsigned char **) &data);
+                       &itemCount, &remainingBytes, &data);
     typelist = (Atom *) Tcl_Alloc(sizeof(Atom)*(itemCount+1));
     if (typelist == NULL) return False;
-    for (i=0; i<itemCount; i++) { typelist[i] = data[i]; }
+    for (i=0; i<itemCount; i++) { typelist[i] = ((Atom*)data)[i]; }
     typelist[itemCount] = None;
-    if (data) XFree((unsigned char*)data);
+    if (data) XFree(data);
   } else {
     typelist = (Atom *) Tcl_Alloc(sizeof(Atom)*4);
     if (typelist == NULL) return False;

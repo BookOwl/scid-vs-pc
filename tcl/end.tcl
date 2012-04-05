@@ -1731,6 +1731,9 @@ setWinLocation .
 wm deiconify .
 wm protocol . WM_DELETE_WINDOW { ::file::Exit }
 
+# wm focusmodel . active
+# Trying to grab focus from the windowmanager after a drop event, but this doesnt work
+
 ### Must be done after the toplevel window has been mapped
 
 after idle [namespace code {RegisterDropEvents .statusbar}]

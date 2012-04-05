@@ -1,7 +1,7 @@
 .PHONY : clean
 .PRECIOUS:
 
-EXTRA_CFLAGS  	= -pipe -Wno-format-security -fno-stack-protector
+EXTRA_CFLAGS  	= -pipe -Wno-format-security #-fno-stack-protector
 
 .SUFFIXES: .c
 .PRECIOUS:

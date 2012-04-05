@@ -592,14 +592,14 @@ set SelectionOwnerDidntRespond   "Timeout during drop action: selection owner di
 }
 
 proc RegisterDropEvents {target} {
-  if {$::macOS || $::windowsOS} {return}
+  if {$::macOS} {return}
   ::tkdnd::drop_target register $target DND_Files
-  bind $target <<DropEnter>> [namespace code { HandleDropEvent enter %t }]
-  bind $target <<DropLeave>> [namespace code { HandleDropEvent leave %t }]
-  bind $target <<Drop>> [namespace code { HandleDropEvent %D %t }]
+  bind $target <<DropEnter>> [namespace code { HandleDropEvent enter %W}]
+  bind $target <<DropLeave>> [namespace code { HandleDropEvent leave %W}]
+  bind $target <<Drop>> [namespace code { HandleDropEvent %D %W}]
 }
 
-proc HandleDropEvent {action types} {
+proc HandleDropEvent {action window} {
   variable Defaults
 
   switch $action {
@@ -607,7 +607,14 @@ proc HandleDropEvent {action types} {
     leave  {}
     default {
       # It is important that HandleDropEvent is returning as fast as possible.
-      after idle [namespace code [list OpenUri $action]]
+      after idle "
+        [namespace code [list OpenUri $action]]
+        if {[string match .glistWin* $window]} {
+          raiseWin .glistWin
+        } else {
+          raiseWin .
+        }
+      "
     }
   }
 
@@ -620,7 +627,13 @@ proc OpenUri {uriFiles} {
   set rejectList {}
   set databaseList {}
 
-  foreach file [split $uriFiles \n] {
+  if {$::windowsOS} {
+    set filelist $uriFiles
+  } else {
+    set filelist [split $uriFiles \n]
+  }
+
+  foreach file $filelist {
     set uri [string trimright $file]
     set file $uri
     if {[string length $file]} {
