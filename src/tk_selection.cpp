@@ -67,7 +67,7 @@ selectionGet(Tcl_Interp* ti, Tk_Window tkwin, Atom selection, Atom target, unsig
 					{
 						Tcl_UniChar buffer[1024];
 
-                  if (int len = DragQueryFileW(hdrop, i, (WCHAR*) buffer, sizeof(buffer)/sizeof(buffer[0])))
+						if (int len = DragQueryFileW(hdrop, i, (WCHAR*) buffer, sizeof(buffer)/sizeof(buffer[0])))
 						{
 							Tcl_UniChar const* s = buffer;
 							Tcl_UniChar const* e = s + len;
