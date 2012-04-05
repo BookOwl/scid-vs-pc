@@ -1030,11 +1030,11 @@ namespace eval fics {
 	  }
 	}
       } else {
-         # Add result to black label
+         # Add result to white label
          catch {
-	  .fics.bottom.game$num.b.result configure -text \
-	    "[.fics.bottom.game$num.b.result cget -text] ($res)"
-          pack forget .fics.bottom.game$num.w.load
+	  .fics.bottom.game$num.w.result configure -text \
+	    "[.fics.bottom.game$num.w.result cget -text] ($res)"
+          pack forget .fics.bottom.game$num.b.load
          }
          # remove game from observedGames
 	 set i [lsearch -exact $::fics::observedGames $num]
@@ -1065,10 +1065,10 @@ namespace eval fics {
 	    .fics.bottom.game$g.b.black configure -text $black
             set type $gametype
             catch {set type $::fics::shorttype($gametype)}
-	    .fics.bottom.game$g.b.result configure -text "$type $t1 $t2"
+	    .fics.bottom.game$g.w.result configure -text "$type $t1 $t2"
 	    # disable load button if non-standard game
 	    if {$gametype != {untimed} && $gametype != {blitz} && $gametype != {lightning} && $gametype != {standard}} {
-	      pack forget .fics.bottom.game$g.w.load
+	      pack forget .fics.bottom.game$g.b.load
 	    }
           }
       } else {
@@ -1267,12 +1267,12 @@ namespace eval fics {
       # data for these labels is read next line from fics
       frame $w.bottom.game$game.w
       label $w.bottom.game$game.w.white  -font font_Small
-      # At top we have Black and Result
+      label $w.bottom.game$game.w.result -font font_Small
+      # At top we have Black and Buttons
       frame $w.bottom.game$game.b 
       label $w.bottom.game$game.b.black -font font_Small
-      label $w.bottom.game$game.b.result -font font_Small
 
-      button $w.bottom.game$game.w.close -image arrow_close -font font_Small -relief flat -command "
+      button $w.bottom.game$game.b.close -image arrow_close -font font_Small -relief flat -command "
 	bind .fics <Destroy> {}
 	destroy .fics.bottom.game$game
 	bind .fics <Destroy> ::fics::close
@@ -1282,7 +1282,7 @@ namespace eval fics {
 	      set ::fics::observedGames \[lreplace \$::fics::observedGames \$i \$i\]
 	}"
 
-      button $w.bottom.game$game.w.load -image arrow_up -font font_Small -relief flat -command "
+      button $w.bottom.game$game.b.load -image arrow_up -font font_Small -relief flat -command "
 	if {\[lsearch -exact \$::fics::observedGames $game\] > -1} {
           if {\$::fics::playing != 0} {
             return
@@ -1299,7 +1299,7 @@ namespace eval fics {
 	  ::fics::writechan \"unobserve $game\"
 	  set ::fics::mainGame $game
 	  ::fics::writechan \"observe $game\"
-	  .fics.bottom.game$game.w.close invoke
+	  .fics.bottom.game$game.b.close invoke
           raiseWin .
 	} else {
           ### should never get here
@@ -1317,12 +1317,12 @@ namespace eval fics {
       pack $w.bottom.game$game.b  -side top -anchor w -expand 1 -fill x
       pack $w.bottom.game$game.b.black -side left 
       pack [frame $w.bottom.game$game.b.space -width 24] \
-           $w.bottom.game$game.b.result -side right
+           $w.bottom.game$game.b.close $w.bottom.game$game.b.load -side right
       pack $w.bottom.game$game.bd -side top
       pack $w.bottom.game$game.w -side top -expand 1 -fill x
       pack $w.bottom.game$game.w.white -side left 
       pack [frame $w.bottom.game$game.w.space -width 20] \
-           $w.bottom.game$game.w.close $w.bottom.game$game.w.load -side right -padx 4
+           $w.bottom.game$game.w.result -side right
   }
 
   proc updateConsole {line} {
