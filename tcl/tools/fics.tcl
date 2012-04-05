@@ -1065,7 +1065,7 @@ namespace eval fics {
 	    .fics.bottom.game$g.b.black configure -text $black
             set type $gametype
             catch {set type $::fics::shorttype($gametype)}
-	    .fics.bottom.game$g.w.result configure -text "$type $t1 $t2"
+	    .fics.bottom.game$g.w.result configure -text "$type"
 	    # disable load button if non-standard game
 	    if {$gametype != {untimed} && $gametype != {blitz} && $gametype != {lightning} && $gametype != {standard}} {
 	      pack forget .fics.bottom.game$g.b.load
