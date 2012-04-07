@@ -820,8 +820,8 @@ set helpMessage($m,[incr menuindex]) {Board Screenshot}
 ### Options menu:
 
 set m .menu.options
-set optMenus {entry fonts ginfo startup language numbers windows export}
-set optLabels {Moves Fonts GInfo Startup Language Numbers Windows Export}
+set optMenus {entry fonts ginfo fics startup language numbers windows export}
+set optLabels {Moves Fonts GInfo Fics Startup Language Numbers Windows Export}
 set menuindex 0
 
 $m add command -label OptionsBoard -command chooseBoardColors
@@ -982,7 +982,7 @@ $m add command -label OptionsSave -command {
     ecoFile suggestMoves showVarPopup showVarArrows glistSize glexport 
     blunderThreshold addAnnotatorTag annotateMoves annotateWithVars annotateWithScore useAnalysisBook isAnnotateVar addAnnotatorComment
     autoplayDelay animateDelay boardCoords boardSTM 
-    moveEntry(AutoExpand) moveEntry(Coord) moveEntry(AutoPromote)
+    moveEntry(AutoExpand) moveEntry(Coord)
     translatePieces highlightLastMove highlightLastMoveWidth highlightLastMoveColor 
     askToReplaceMoves ::windows::switcher::icons locale(numeric) 
     spellCheckFile ::splash::keepopen autoRaise autoIconify 
@@ -1080,7 +1080,7 @@ $m add command -label OptionsSave -command {
     puts $optionF ""
 
     # save FICS config
-    foreach i { use_timeseal timeseal_exec port_fics port_timeseal login password consolebg consolefg silence shouts server_ip consolebg consolefg} {
+    foreach i { use_timeseal timeseal_exec port_fics port_timeseal login password consolebg consolefg silence shouts server_ip consolebg consolefg autopromote smallclocks} {
       puts $optionF "set ::fics::$i [list [set ::fics::$i]]"
     }
     foreach i [lsort [array names ::fics::findopponent]] {
@@ -1193,8 +1193,6 @@ $m.entry add checkbutton -label OptionsMovesTranslatePieces \
     -variable ::translatePieces -offvalue 0 -onvalue 1 -command setLanguage
 set helpMessage($m.entry,8) OptionsMovesTranslatePieces
 
-$m.entry add checkbutton -label {Fics Autopromote Queen} -variable moveEntry(AutoPromote)
-
 proc updateLocale {} {
   global locale
   sc_info decimal $locale(numeric)
@@ -1214,6 +1212,12 @@ foreach numeric {".,"   ". "   "."   ",."   ", "   ","} \
       -underline $underline \
       -variable locale(numeric) -value $numeric -command updateLocale
     }
+
+
+set m .menu.options.fics
+menu $m -tearoff 1
+$m add checkbutton -label {Autopromote Queen} -variable ::fics::autopromote
+$m add checkbutton -label {Digital Clock} -variable ::fics::smallclocks -command ::fics::showClocks
 
 set m .menu.options.export
 menu $m -tearoff -1
@@ -1547,7 +1551,7 @@ proc setLanguageMenus {{lang ""}} {
   foreach tag {ToolsExpFilterPGN ToolsExpFilterHTML ToolsExpFilterHTMLJS ToolsExpFilterLaTeX} {
     configMenuText .menu.tools.exportfilter [tr $tag $oldLang] $tag $lang
   }
-  foreach tag {Board Colour Toolbar Names Recent Fonts GInfo Moves Startup Language
+  foreach tag {Board Colour Toolbar Names Recent Fonts GInfo Fics Moves Startup Language
     Numbers Windows Export ECO Spell Table BooksDir TacticsBasesDir Sounds Save AutoSave} {
     configMenuText .menu.options [tr Options$tag $oldLang] Options$tag $lang
   }

@@ -272,6 +272,7 @@ menuText H OptionsFontsMenu "Menü" 0 {A menük karakterkészletének a változtatása
 menuText H OptionsFontsSmall "Kisbetûs" 0 {A kisbetûs karakterkészlet változtatása}
 menuText H OptionsFontsFixed "Rögzített" 0 {A rögzített szélességû karakterkészlet változtatása}
 menuText H OptionsGInfo "Játszmainformáció" 0 {Játszmainformáció változtatása}
+menuText H OptionsFics "FICS" 0
 menuText H OptionsLanguage "Nyelv" 0 {A menü nyelvének kiválasztása}
 # ====== TODO To be translated ======
 menuText H OptionsMovesTranslatePieces "Translate pieces" 0 {Translate first letter of pieces}

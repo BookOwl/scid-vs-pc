@@ -275,11 +275,8 @@ namespace eval fics {
     scale $w.bottom.scale -orient vertical -from 45 -to 25 -showvalue 0 -resolution 5 -length 240 \
       -variable ::fics::size -command ::fics::changeScaleSize -relief flat
 
-    pack $w.bottom.clocks -side left -padx 10 -pady 5
+    showClocks
     pack $w.bottom.scale -side left -padx 5 -pady 20
-
-    label $w.bottom.clocks.ping -textvar ::fics::ping
-    pack $w.bottom.clocks.ping -side bottom
 
     pack $w.bottom.buttons -side right -padx 10 -pady 20 -anchor center
     # Pack graph when "Offers graph" clicked
@@ -440,6 +437,10 @@ namespace eval fics {
     grid $w.bottom.buttons.findopp -column 0 -row $row -sticky ew -padx 3 -pady 2
     grid $w.bottom.buttons.help    -column 1 -row $row -sticky ew -padx 3 -pady 2
     grid $w.bottom.buttons.quit    -column 2 -row $row -sticky ew -padx 3 -pady 2
+
+    incr row
+    label $w.bottom.buttons.ping -textvar ::fics::ping -font font_Small
+    grid $w.bottom.buttons.ping -column 1 -row $row
 
     bind $w <Control-q> ::fics::close
     bind $w <Destroy>   ::fics::close
@@ -1800,18 +1801,29 @@ namespace eval fics {
     ### Either the clock or offers graph are shown at any one time
 
     if { $::fics::graphon } {
-      pack forget $w.clocks
+      showClocks
       pack $w.graph -side left
       updateGraph
     } else {
       after cancel ::fics::updateGraph
       pack forget $w.graph
-      pack $w.clocks -side left -padx 10 -pady 5
+      showClocks
     }
 
     ### Repacking can make the console suspend, so seek to console end 
     update
     .fics.console.text yview moveto 1
+  }
+
+  proc showClocks {} {
+    set w .fics.bottom
+
+    if {$::fics::graphon || $::fics::smallclocks} {
+      pack forget $w.clocks
+    } else {
+      pack $w.clocks -side left -padx 10 -pady 5
+    }
+    catch ::board::ficslabels
   }
 
 

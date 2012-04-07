@@ -1056,7 +1056,7 @@ proc getPromoPiece {} {
 
   set w .promoWin
   set ::result 2 ; # queen
-  if {$::fics::playing && $::moveEntry(AutoPromote)} {
+  if {$::fics::playing && $::fics::autopromote} {
      return $::result
   }
   set ::selectedSq -1

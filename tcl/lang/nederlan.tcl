@@ -281,6 +281,7 @@ menuText N OptionsFontsMenu "Menu" 0 {Wijzig het menu lettertype}
 menuText N OptionsFontsSmall "Klein" 0 {Wijzig het kleine lettertype}
 menuText N OptionsFontsFixed "Vaste grootte" 0 {Wijzig dit lettertype}
 menuText N OptionsGInfo "Partij Informatie" 0 {Parij-informatie opties}
+menuText N OptionsFics "FICS" 0
 menuText N OptionsLanguage "Kies taal" 5 {Kies taal}
 # ====== TODO To be translated ======
 menuText N OptionsMovesTranslatePieces "Translate pieces" 0 {Translate first letter of pieces}

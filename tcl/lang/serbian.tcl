@@ -287,6 +287,7 @@ menuText Y OptionsFontsMenu "Menu" 0 {Change the menu font} ;# ***
 menuText Y OptionsFontsSmall "Mali" 0 {Promeni mali font}
 menuText Y OptionsFontsFixed "Neproporcionalni" 0 {Promeni neproporcionalni font}
 menuText Y OptionsGInfo "Informacije o Partiji" 0 {Opcije informacija o partiji}
+menuText Y OptionsFics "FICS" 0
 menuText Y OptionsLanguage "Jezik" 0 {Izaberi jezik}
 # ====== TODO To be translated ======
 menuText Y OptionsMovesTranslatePieces "Translate pieces" 0 {Translate first letter of pieces}

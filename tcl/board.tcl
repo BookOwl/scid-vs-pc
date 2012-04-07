@@ -2249,7 +2249,7 @@ proc ::board::ficslabels {{w .board}} {
   if {$w != ".board" || ![winfo exists .fics]} {
     return
   }
-  if {$::gameInfo(showMaterial)} {
+  if {$::gameInfo(showMaterial) && $::fics::smallclocks} {
     if {$::board::_flip(.board)} {
       grid configure .board.clock1 -row 1 -column 12 -sticky ne
       grid configure .board.clock2 -row 8 -column 12 -sticky se

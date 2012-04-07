@@ -266,6 +266,7 @@ menuText C OptionsFontsMenu "Menu" 1 {Zmìnit font pro menu}
 menuText C OptionsFontsSmall "Malé" 0 {Zmìnit malý font}
 menuText C OptionsFontsFixed "Fixní" 0 {Zmìnit font fixní ¹íøky}
 menuText C OptionsGInfo "Informace o partii" 0 {Volby pro informace o partii}
+menuText C OptionsFics "FICS" 0
 menuText C OptionsLanguage "Jazyk" 0 {Vybrat jazyk menu}
 # ====== TODO To be translated ======
 menuText C OptionsMovesTranslatePieces "Translate pieces" 0 {Translate first letter of pieces}

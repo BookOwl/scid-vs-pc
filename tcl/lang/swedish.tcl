@@ -289,6 +289,7 @@ menuText W OptionsFontsMenu "Menu" 0 {Ändra menytypsnittet}
 menuText W OptionsFontsSmall "Liten" 0 {Ändra det lilla typsnittet}
 menuText W OptionsFontsFixed "Fixerad" 0 {Ändra det fixerade typsnittet}
 menuText W OptionsGInfo "Partiinformation" 0 {Alternativ för partiinformation}
+menuText W OptionsFics "FICS" 0
 menuText W OptionsLanguage "Språk" 0 {Välj språk}
 # ====== TODO To be translated ======
 menuText W OptionsMovesTranslatePieces "Översätt pjäser" 0 {Översätt första bokstaven för pjäser}

@@ -288,6 +288,7 @@ menuText O OptionsFontsMenu "Menu" 0 {Change the menu font} ;# ***
 menuText O OptionsFontsSmall "Liten" 0 {Endre den lille skrifttypen}
 menuText O OptionsFontsFixed "Fastbredde" 0 {Endre fastbreddeskrifttypen}
 menuText O OptionsGInfo "Partiinformasjon" 0 {Informasjonsinnstillinger}
+menuText O OptionsFics "FICS" 0
 menuText O OptionsLanguage "Språk" 0 {Velg menyspråk}
 # ====== TODO To be translated ======
 menuText O OptionsMovesTranslatePieces "Translate pieces" 0 {Translate first letter of pieces}

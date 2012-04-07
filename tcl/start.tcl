@@ -384,6 +384,8 @@ set ::fics::consolefg	LimeGreen
 set ::fics::silence	1
 set ::fics::shouts	1
 set ::fics::server_ip   0.0.0.0
+set ::fics::autopromote 0
+set ::fics::smallclocks 0
 
 # Defaults for initial directories:
 set initialDir(base) "."
@@ -536,7 +538,6 @@ set showVarArrows 1
 set moveEntry(On) 1
 set moveEntry(AutoExpand) 0
 set moveEntry(Coord) 1
-set moveEntry(AutoPromote) 0
 
 # Autoplay and animation delays in milliseconds:
 set autoplayDelay 5000

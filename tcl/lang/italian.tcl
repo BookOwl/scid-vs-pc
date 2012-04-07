@@ -256,6 +256,7 @@ menuText I OptionsFontsMenu "Menu" 0 {Cambia il font dei menu}
 menuText I OptionsFontsSmall "Piccolo" 0 {Cambia il font 'small'}
 menuText I OptionsFontsFixed "Fisso" 0 {Cambia il font di larghezza fissa}
 menuText I OptionsGInfo "Informazioni sulla partita" 0 {Opzioni sulle informazioni della partita}
+menuText I OptionsFics "FICS" 0
 menuText I OptionsLanguage "Lingua" 0 {Sceglie una nuova lingua di menu}
 menuText I OptionsMovesTranslatePieces "Traduci i pezzi" 0 {Traduce la prima lettera dei pezzi}
 # ====== TODO To be translated ======

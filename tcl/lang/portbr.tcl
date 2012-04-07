@@ -269,6 +269,7 @@ menuText B OptionsFontsMenu "Menu" 0 {Change the menu font} ;# ***
 menuText B OptionsFontsSmall "Pequeno" 0 {Fonte pequeno}
 menuText B OptionsFontsFixed "Fixo" 0 {Fonte de largura fixa}
 menuText B OptionsGInfo "Informacoes do Jogo" 0 {Opcoes de informacao do jogo}
+menuText B OptionsFics "FICS" 0
 menuText B OptionsLanguage "Linguagem" 0 {Menu de selecao de linguagem}
 # ====== TODO To be translated ======
 menuText B OptionsMovesTranslatePieces "Translate pieces" 0 {Translate first letter of pieces}

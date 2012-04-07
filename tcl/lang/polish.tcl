@@ -251,6 +251,7 @@ menuText P OptionsFontsMenu "Menu" 0 {Zmieñ czcionkê menu}
 menuText P OptionsFontsSmall "Ma³a" 0 {Zmieñ ma³± czcionkê}
 menuText P OptionsFontsFixed "Sta³a" 0 {Zmieñ czcionkê sta³ej szeroko¶ci}
 menuText P OptionsGInfo "Informacje o partii" 0 {Sposób wy¶wietlania informacji o partii}
+menuText P OptionsFics "FICS" 0
 menuText P OptionsLanguage "Jêzyk" 0 {Wybierz jêzyk}
 menuText P OptionsMovesTranslatePieces "T³umacz oznaczenia figur" 0 {T³umacz pierwsze litery figur}
 menuText P OptionsMovesHighlightLastMove "Pod¶wietl ostatnie posuniêcie" 0 {Pod¶wietl ostatnie posuniêcie}

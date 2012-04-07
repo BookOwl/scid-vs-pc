@@ -290,6 +290,7 @@ menuText R OptionsFontsMenu "Меню" 0 {Изменить шрифты меню}
 menuText R OptionsFontsSmall "Малые" 1 {Изменить малые шрифты}
 menuText R OptionsFontsFixed "Фиксированный" 0 {Изменить фиксированные шрифты}
 menuText R OptionsGInfo "Информация о партии" 0 {Установки информации о партии}
+menuText R OptionsFics "FICS" 0
 menuText R OptionsLanguage "Язык" 0 {Меню выбора языка}
 # ====== TODO To be translated ======
 menuText R OptionsMovesTranslatePieces "Translate pieces" 0 {Translate first letter of pieces}

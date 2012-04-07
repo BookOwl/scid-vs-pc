@@ -271,6 +271,7 @@ menuText D OptionsFontsMenu "Menü" 0 {Schriftart für Menüs}
 menuText D OptionsFontsSmall "Klein" 0 {Kleine Zeichen}
 menuText D OptionsFontsFixed "Fest" 0 {Schriftart mit fester Breite (nicht-proportional)}
 menuText D OptionsGInfo "Partieinformation" 0 {Optionen für Informationsbereich}
+menuText D OptionsFics "FICS" 0
 menuText D OptionsLanguage "Sprache" 0 {Sprache wählen}
 menuText D OptionsMovesTranslatePieces "Figurennamen übersetzen" 0 {Übersetze den ersten Buchstaben der Figurenbezeichnung}
 menuText D OptionsMovesHighlightLastMove "Letzen Zug hervorheben" 0 {Rahmt Start- und Zielfeld des letzten Zuges farbig ein}
