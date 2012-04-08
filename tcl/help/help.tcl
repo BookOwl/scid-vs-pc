@@ -1443,27 +1443,23 @@ operations.
   </p>
 
   <p>
-  Clicking on a file will open it, while right-click will
-  show a <b>context menu</b> from which you can perform
+  Double clicking a file will open it, while right-click will
+  show a context menu from which you can perform
   various file operations:
 
   <ul>
-      <li><term>Open</term>	Open the file in question.
-      The same as left-clicking the file.</li>
-      <li><term>Backup</term>	Makes a copy of the file
-      with the current date and time appended to its name.</li>
-      <li><term>Copy</term>	Copy the selected database to a new
-      location.</li>
-      <li><term>Move</term>	Move the selected database to a new
-      location.</li>
-      <li><term>Delete</term>	Delete the selected database.</li>
+  <li><term>Open</term>	Open the file.
+  <li><term>Backup</term>	Makes a copy of the file with the current date and time appended to its name.</li>
+  <li><term>Copy</term>	Copy the selected database to a new location.</li>
+  <li><term>Move</term>	Move the selected database to a new location.</li>
+  <li><term>Rename</term>	Rename the selected database.</li>
+  <li><term>Delete</term>	Delete the selected database.</li>
    </ul>
   <p>
-   These functions are especially helpful for Scid
-databases, which consist of several files.
+   These functions are especially useful for si4 databases, which consist of three files.
   </p>
 
-  <h3>Looking in Subdirectories</h3>
+  <h3>Look in Subdirectories</h3>
   <p>
   This checkbox makes Scid recursively examine subdirectories for compatible
   files.  This, however, can take a long time, so you may not
@@ -1473,18 +1469,17 @@ databases, which consist of several files.
 
   <h3>Games Field</h3>
   <p>
-  The meaning of this field depends on the file type;
-  For Databases and PGN files it is the number of games, and for EPD files the number of
+  The meaning of this field depends on the file type.
+  For Databases and PGN files, it is the number of games, and for EPD files the number of
   positions.
   </p>
   <p>
-  For all file types except Scid Databases, the file size is
-  an <b>estimate</b> taken by examining only the first 64 kilobytes
-  of the file, and is represented by a tilde (~).
+  For all file types except Scid Databases, the games field is only
+  an estimate (represented by '~'), read from the first 64 Kilobytes.
   </p>
 
 
-  <p><footer>Updated: Scid vs. PC 4.1, August 2010</footer></p>
+  <p><footer>Updated: Scid vs. PC 4.8, April 2012</footer></p>
 }
 
 set helpTitle(Tmt) "Tournament Finder window"

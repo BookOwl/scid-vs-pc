@@ -18,6 +18,7 @@ proc ::file::finder::Open {} {
   wm title $w "Scid: $::tr(FileFinder)"
   bind $w <F1> {helpWindow Finder}
   setWinLocation $w
+  setWinSize $w
   bind $w <Configure> "recordWinSize $w"
 
   menu $w.menu
