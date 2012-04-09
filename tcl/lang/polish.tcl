@@ -69,6 +69,7 @@ menuText P EditStrip "Usuñ" 2 \
   {Usuñ komentatarze i warianty}
 # ====== TODO To be translated ======
 menuText P EditUndo "Undo" 0 {Undo last game change}
+menuText P EditRedo "Redo" 0
 menuText P EditStripComments "Komentarze" 0 \
   {Usuñ wszystkie komentarze z aktualnej partii}
 menuText P EditStripVars "Warianty" 0 \

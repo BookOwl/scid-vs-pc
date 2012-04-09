@@ -104,14 +104,15 @@ menuText E EditMain "Promote Variation" 21 \
   {Promote a variation to be the main line}
 menuText E EditTrial "Try Variation" 0 \
   {Start/stop trial mode, for testing an idea on the board}
-menuText E EditStrip "Strip" 2 {Strip comments or variations from this game}
+menuText E EditStrip "Strip" 0 {Strip comments or variations from this game}
 menuText E EditUndo "Undo" 0 {Undo last game change}
+menuText E EditRedo "Redo" 0 {Redo last game change}
 menuText E EditStripComments "Comments" 0 \
   {Strip all comments and annotations from this game}
 menuText E EditStripVars "Variations" 0 {Strip all variations from this game}
-menuText E EditStripBegin "Moves from Start" 1 \
+menuText E EditStripBegin "Moves from Start" 11 \
   {Strip moves from the beginning of the game}
-menuText E EditStripEnd "Moves to End" 0 \
+menuText E EditStripEnd "Moves to End" 9 \
   {Strip moves to the end of the game}
 menuText E EditReset "Empty Clipbase" 0 \
   {Reset the clipbase to be completely empty}
@@ -121,7 +122,7 @@ menuText E EditPaste "Paste from Clipbase" 1 \
   {Paste the active Clipbase game here}
 menuText E EditPastePGN "Paste PGN" 0 \
   {Interpret the clipboard text as PGN and paste it here}
-menuText E EditSetup "Setup Board" 0 \
+menuText E EditSetup "Setup Board" 6 \
   {Set the start position for this game}
 menuText E EditCopyBoard "Copy FEN" 5 \
   {Copy the current board in FEN notation to the text selection (clipboard)}

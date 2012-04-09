@@ -69,6 +69,8 @@ menuText S EditTrial "Probar variación" 1 \
 menuText S EditStrip "Eliminar" 2 \
   {Eliminar comentarios o variaciones de esta partida}
 menuText S EditUndo "Deshacer" 0 {Deshace el último cambio en la partida}
+# todo
+menuText S EditRedo "Redo" 0
 menuText S EditStripComments "Comentarios" 0 \
   {Quita todos los comentarios y variaciones de esta partida}
 menuText S EditStripVars "Variaciones" 0 {Quita todas las variaciones de esta partida}

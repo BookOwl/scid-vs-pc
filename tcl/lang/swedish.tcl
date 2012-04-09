@@ -71,6 +71,8 @@ menuText W EditTrial "Testa variant" 6 \
   {Starta/ stoppa testläge, undersök en idé på brädet}
 menuText W EditStrip "Ta bort" 3 {Avlägsna kommentarer eller varianter från partiet}
 menuText W EditUndo "Ångra" 0 {Ångra senaste ändring i parti}
+# todo
+menuText W EditRedo "Redo" 0
 menuText W EditStripComments "Kommentarer" 0 \
   {Avlägsna alla kommentarer och noteringar från partiet}
 menuText W EditStripVars "Varianter" 0 {Avlägsna alla varianter från partiet}
