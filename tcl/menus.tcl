@@ -362,15 +362,14 @@ bind . <Control-space> { setTrialMode toggle }
 set helpMessage($m,[incr menuindex]) EditTrial
 
 menu $m.strip
-$m.strip add command -label EditStripComments -command {::game::Strip comments}
-set helpMessage($m.strip,0) EditStripComments
-$m.strip add command -label EditStripVars -command {::game::Strip variations}
-set helpMessage($m.strip,1) EditStripVars
 $m.strip add command -label EditStripBegin -command {::game::TruncateBegin}
 set helpMessage($m.strip,2) EditStripBegin
 $m.strip add command -label EditStripEnd -command {::game::Truncate}
 set helpMessage($m.strip,3) EditStripEnd
-
+$m.strip add command -label EditStripComments -command {::game::Strip comments}
+set helpMessage($m.strip,0) EditStripComments
+$m.strip add command -label EditStripVars -command {::game::Strip variations}
+set helpMessage($m.strip,1) EditStripVars
 
 
 ### Game menu:
