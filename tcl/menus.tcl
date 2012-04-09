@@ -328,6 +328,16 @@ set helpMessage($m,[incr menuindex]) EditPaste
 $m add separator
 incr menuindex
 
+$m add cascade -label EditStrip -menu $m.strip
+set helpMessage($m,[incr menuindex]) EditStrip
+
+$m add command -label EditUndo -command {sc_game undo ; updateBoard -pgn}
+set helpMessage($m,[incr menuindex]) EditUndo
+$m add command -label Redo -command {sc_game redo ; updateBoard -pgn}
+
+$m add separator
+incr menuindex
+
 $m add command -label EditAdd -accel "Ctrl+A" -command {sc_var create; updateBoard -pgn}
 set helpMessage($m,[incr menuindex]) EditAdd
 
@@ -350,13 +360,6 @@ $m add checkbutton -label EditTrial -variable trialMode \
     -accelerator "Ctrl+space" -command {setTrialMode update}
 bind . <Control-space> { setTrialMode toggle }
 set helpMessage($m,[incr menuindex]) EditTrial
-
-$m add cascade -label EditStrip -menu $m.strip
-set helpMessage($m,[incr menuindex]) EditStrip
-
-$m add command -label EditUndo -command {sc_game undo ; updateBoard -pgn}
-set helpMessage($m,[incr menuindex]) EditUndo
-$m add command -label Redo -command {sc_game redo ; updateBoard -pgn}
 
 menu $m.strip
 $m.strip add command -label EditStripComments -command {::game::Strip comments}
