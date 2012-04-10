@@ -584,6 +584,10 @@ namespace eval fics {
       vwaitTimed ::fics::waitForMoves 2000 nowarn
       updateBoard -pgn
       updateTitle
+    } elseif {[string match unob* $c] && $::fics::playing == 0 && ($l == $c || [lindex $l 1] == $::fics::mainGame)} {
+      # unobserve main game
+      set ::fics::mainGame -1
+      writechan $l "echo"
     } else {
       writechan $l "echo"
     }
