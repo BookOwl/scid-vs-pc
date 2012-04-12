@@ -28,16 +28,6 @@ TCL_INCLUDE = -I/usr/local/include
 TCL_LIBRARY = -L/usr/local/lib -ltcl$(TCL_VERSION)
 TK_LIBRARY  = $(TCL_LIBRARY) -ltk$(TCL_VERSION) -L/usr/lib -lX11
 
-### Solaris:
-# TCL_INCLUDE = -I /usr/local/tcl/include
-# TCL_LIBRARY = -L /usr/local/tcl/lib -ltcl$(TCL_VERSION) -ldl
-# TK_LIBRARY  = $(TCL_LIBRARY) -ltk$(TCL_VERSION)
-
-### FreeBSD:
-# TCL_INCLUDE = -I /usr/local/include/tcl8.0 -I /usr/local/include/tk8.0
-# TCL_LIBRARY = -L /usr/local/lib -ltcl80 -ldl
-# TK_LIBRARY  = $(TCL_LIBRARY) -ltk80 -L /usr/X11/lib -lX11
-
 ### Nalimov tablebases
 # TB =                   for no tablebase support
 # TB = -DSCID_USE_TB     for tablebase support
@@ -58,9 +48,6 @@ SCIDFLAGS =
 #       a little faster with assertions turned off.
 
 DEBUG = #-DASSERTIONS
-
-### WARNINGS: I always compile with all warnings on (-Wall), and all the
-#       files should compile warning-free using g++.
 
 WARNINGS = -Wall
 

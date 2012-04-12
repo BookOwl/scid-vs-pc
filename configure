@@ -47,7 +47,7 @@ set var(ZLIB) -lz
 set defaultVar(TCL_INCLUDE) {-I/usr/include}
 set defaultVar(TCL_LIBRARY) {-L/usr/lib -ltcl$(TCL_VERSION)}
 set defaultVar(TK_LIBRARY) \
-    {$(TCL_LIBRARY) -ltk$(TCL_VERSION) -L/usr/X11R6/lib -lX11}
+    {$(TCL_LIBRARY) -ltk$(TCL_VERSION) -L/usr/lib -lX11}
 
 # findDir:
 #    Returns the first directory in the list "path" that contains a
@@ -402,7 +402,9 @@ proc writeMakefile {{type ""}} {
     }
 
     foreach name {TCL_INCLUDE TCL_LIBRARY TK_LIBRARY} {
-        if {! [info exists var($name)]} { set var($name) $defaultVar($name) }
+        if {! [info exists var($name)]} {
+          set var($name) $defaultVar($name)
+        }
     }
 
     checkZlib
@@ -453,16 +455,19 @@ proc writeMakefile {{type ""}} {
 
     # Summary info
 
+    puts {}
     if {$default} {
         puts {The default Makefile was written.}
     } elseif {$success} {
         puts {The Makefile configured for your system was written.}
         puts {Now type "make" to compile Scid.}
     } else {
-        puts {Not all settings could be determined!}
+        puts {Not all settings could be determined! See above for details.}
+        puts {}
         puts {The default Makefile was written.}
         puts {You will need to edit it before you can compile Scid.}
     }
+    puts {}
 }
 
 
@@ -545,6 +550,11 @@ set tclv_nodot [expr round($tclv * 10)]
 
 puts "    Tcl/Tk version: $tclv"
 puts "    Your operating system is: $tcl_platform(os) $tcl_platform(osVersion)"
+if {[string match -nocase Linux $tcl_platform(os)]} {
+  catch {
+    puts "      [eval exec cat [glob /etc/*-release] | uniq]"
+  }
+}
 
 writeMakefile
 

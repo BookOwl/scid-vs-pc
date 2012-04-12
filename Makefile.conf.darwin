@@ -60,9 +60,6 @@ SCIDFLAGS = @SCIDFLAGS@
 
 DEBUG = @DEBUG@
 
-### WARNINGS: I always compile with all warnings on (-Wall), and all the
-#       files should compile warning-free using g++.
-
 WARNINGS = @WARNINGS@
 
 #      On some systems, adding "-fno-rtti" and "-fno-exceptions" produces
