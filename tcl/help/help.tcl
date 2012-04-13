@@ -370,6 +370,7 @@ set helpText(Index) {<h1>Scid Help Index</h1>
   <li><a PGN>PGN</a> window</li>
   <li><a Export Null>PGN and Scid</a> (exporting)</li>
   <li><a Variations Paste>Paste variation</a></li>
+  <li><a Export PDF>PDF</a> support</li>
   <li><a Pgnscid>Pgnscid</a></li>
   <li><a PInfo Photos>Photos</a></li>
   <li><a FICS>Play on the Internet (FICS)</a></li>
@@ -1658,29 +1659,58 @@ set helpText(Import) {<h1>The Import Window</h1>
   <p><footer>Updated: Scid vs. PC 4.3, February 2011</footer></p>
 }
 
-set helpTitle(Export) "Exporting games"
+set helpTitle(Export) "Exporting Games"
 set helpText(Export) {<h1>Exporting Games</h1>
   <p>
-  You can use commands under the <b>Tools Menu</b> to export
-  games to a text file.
-  </p>
-  <p>
-  Four file formats are available: <a PGN>PGN</a> (portable game
-  notation), <b>HTML</b> for web pages, <b>HTML and JavaScript</b> for
-  interactive web pages, and <b>LaTeX</b> (a popular typesetting system).
-  </p>
-  <p>
-  One may export a single game or all filter games, and to create a new file or append
-  to an existing one.
+  Commands to export games to other formats are found in the <b>Tools</b> menu.
+  Four file formats are supported:
+  <ul>
+  <li><a PGN>PGN</a> The default chess game format</li>
+  <li><term>HTML</term> for web pages</li>
+  <li><term>HTML and JavaScript</term> for interactive web pages</li>
+  <li><term>LaTeX</term> a popular typesetting system</li>
+  </ul>
+  Additionally, on Unix systems, LaTeX can be converted to <a Export PDF>PDF</a>.
   </p>
 
-  <h3>Diagrams</h3>
-  <p>
-  When exporting in HTML or LaTeX format, Scid will automatically add
-  a diagram wherever a diagram <a NAGs>nag</a> <b>D</b> or a <a
-  Comment>comment</a> starting with <b>#</b> appears.
-  In this case, Scid's <b>bitmaps</b> directory should be placed alongside your exported file.
+<p>
+  Diagrams are drawn (in HTML or LaTeX formats),
+  wherever a <b>D</b> nag, or a comment (starts with <b>#</b>) appears.
+  In the case of HTML, Scid's bitmaps directory should be placed alongside your exported file.
   </p>
+
+  <h3>HTML with JavaScript</h3>
+  <p>
+  While the HTML export generates a static file that may contain
+  static board diagrams, this format offers dynamic HTML, that allows
+  to move through the game interactively with the mouse.
+  </p>
+  <p>
+  This format consists of several files that need to be stored in a
+  specific structure. Therefore, it is advisable to first generate a
+  empty folder that will contain these files. The name of the main
+  file can be specified and it will get the extension html (e.g.
+  mygame.html). This file should be loaded by the web browser. The
+  other files are required to exist in exactly the position the export
+  filter places them. However, the whole folder can easily be uploaded
+  to some web server.
+  </p>
+
+  <h3>LaTeX</h3>
+  <p>
+  Scid can export games to a LaTeX file.  Games are printed two columns
+  to a page, and moves are in figurine algebraic notation with proper
+  translation of the nag symbols. </p>
+  <p>
+  See <a LaTeX>Using LaTeX with Scid</a> for more information.
+  </p>
+  <h3><name PDF>Converting LaTeX to PDF</name></h3>
+<p>
+  can be achieved on Unix systems with the <b>pdflatex</b> command.
+  A quick conversion is of the form:
+<br>
+<ul><li>pdflatex -interaction batchmode mytexfile.tex</li></ul>
+</p>
 
   <h3><name Null>PGN Compatability Issues</name></h3>
   <p>
@@ -1698,57 +1728,49 @@ set helpText(Export) {<h1>Exporting Games</h1>
   For compatability, <b>Symbolic annotation style</b> should be set to <b>$2 $14</b>.
   </p>
 
-  <h3>HTML with JavaScript Export</h3>
-  <p>
-  While the HTML export generates a static file that may contain
-  static board diagrams, this format offers dynamic HTML, that allows
-  to move through the game interactively with the mouse.
-  </p>
-  <p>
-  This format consists of several files that need to be stored in a
-  specific structure. Therefore, it is advisable to first generate a
-  empty folder that will contain these files. The name of the main
-  file can be specified and it will get the extension html (e.g.
-  mygame.html). This file should be loaded by the web browser. The
-  other files are required to exist in exactly the position the export
-  filter places them. However, the whole folder can easily be uploaded
-  to some web server.
-  </p>
-
-  <h3>LaTeX Export</h3>
-  <p>
-  Scid can export games to a LaTeX file.  Games be printed two columns
-  to a page and moves are in figurine algebraic notation with proper
-  translation of the NAG symbols. Diagrams are added whenever a
-  <term>D</term> comment is found.
-  </p>
-  <p>
-  See the <a LaTeX>Using LaTeX with Scid</a> help page for more information.
-  </p>
-
-  <p><footer>Updated: Scid vs. PC 4.5 July 2011</footer></p>
+  <p><footer>Updated: Scid vs. PC 4.8 April 2012</footer></p>
 }
 
 set helpTitle(LaTeX) "Scid and LaTeX"
 set helpText(LaTeX) {<h1>Using LaTeX with Scid</h1>
   <p>
-  Scid can save games and opening reports to files in LaTeX format.
   LaTeX is an extension to TeX, a popular typesetting system.
+  Scid can export games and Opening Reports to the LaTeX format.
   </p>
+  <h2>Installing Chess12 Font</h2>
   <p>
-  To typeset the LaTeX files produced by Scid, you must have
-  LaTeX (of course) and have the "chess12" chess font package installed.
-  This font package is usually not part of standard LaTeX installations,
-  so even if you have LaTeX, you may not have the chess font.
+  To typeset the LaTeX files produced by Scid, in addtion to LaTex
+  one must have the Chess12 font package installed.  Shane prepared a 
+  <url http://scid.sourceforge.net/download/chess12.tar.gz>custom chess12</url>
+  font package. He notes:
   </p>
-  <p>
-  For information about downloading and installing the LaTeX chess font,
-  visit the
-  <url http://scid.sourceforge.net/latex.html>Using LaTeX with Scid</url>
-  page at the <url http://scid.sourceforge.net/>Scid website</url>.
+  <p><i>
+It should (hopefully!) work on most systems where dvips is the standard
+tool used to produce PostScript files from DVI files.
+
+After downloading and extracting chess12.tar.gz, you will need to set up some
+environment variables so the programs latex, xdvi and dvips know where to find
+the chess font files </i></p>
+<p> You will need something like this in your ~/.bashrc file:
+<br>
+<br>
+    CHESSFONT="/usr/local/share/scid/chess12" (for example)
+<br>
+    TEXINPUTS="${CHESSFONT}/inputs:"
+<br>
+    TEXFONTS="${CHESSFONT}/fonts:"
+<br>
+    XDVIFONTS="${CHESSFONT}/pkfonts:"
+<br>
+    MFINPUTS="${CHESSFONT}/mf:"
+<br>
+    PKFONTS="${CHESSFONT}/pkfonts:"
+<br>
+    export CHESSFONT TEXINPUTS TEXFONTS XDVIFONTS MFINPUTS PKFONTS
+<br>
   </p>
 
-  <p><footer>Updated: Scid 3.6.2, December 2006</footer></p>
+  <p><footer>Updated: Scid vs. PC 4.8, April 2011</footer></p>
 }
 
 set helpTitle(PGN) "PGN"
