@@ -46,6 +46,7 @@ set ::optable::_docStart(latex) {\documentclass[10pt,a4paper]{article}
   \usepackage{a4wide}
   \usepackage{chess}
   \usepackage[T1]{fontenc}
+  \usepackage{latexsym}
 
   \setlength{\columnsep}{1cm}
   \setlength{\parindent}{0pt}

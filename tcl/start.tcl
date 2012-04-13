@@ -672,6 +672,7 @@ set default_exportStartFile(LaTeX) {\documentclass[10pt,twocolumn]{article}
   \usepackage{a4wide}
   \usepackage{chess}
   \usepackage[T1]{fontenc}
+  \usepackage{latexsym}
 
   \setlength{\columnsep}{7mm}
   \setlength{\parindent}{0pt}
