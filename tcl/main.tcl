@@ -1125,7 +1125,7 @@ proc confirmReplaceMove {} {
   return cancel
 }
 
-# unused S.A.
+### unused S.A.
 # proc addNullMove {} { addMove null null }
 
 # addMove:
@@ -1133,13 +1133,14 @@ proc confirmReplaceMove {} {
 #   is a promotion, getPromoPiece will be called to get the promotion
 #   piece from the user.
 #   If the optional parameter is "-animate", the move will be animated.
-#
+
 proc addMove { sq1 sq2 {animate ""}} {
   if { $::fics::playing == -1} { return } ;# not player's turn
 
   global EMPTY
-  set nullmove 0
-  if {$sq1 == "null"  &&  $sq2 == "null"} { set nullmove 1 }
+
+  set nullmove [expr {$sq1 == "null"  &&  $sq2 == "null"}]
+
   if {!$nullmove  &&  [sc_pos isLegal $sq1 $sq2] == 0} {
     # Illegal move, but if it is King takes king then treat it as
     # entering a null move:
@@ -1152,14 +1153,15 @@ proc addMove { sq1 sq2 {animate ""}} {
       return
     }
   }
-  set promo $EMPTY
+
   if {[sc_pos isPromotion $sq1 $sq2] == 1} {
     # sometimes, addMove is triggered twice
     if { [winfo exists .promoWin] } { return }
     set promo [getPromoPiece]
+  } else {
+    set promo $EMPTY
   }
 
-  set promoLetter ""
   switch -- $promo {
     2 { set promoLetter "q"}
     3 { set promoLetter "r"}
@@ -1223,14 +1225,11 @@ proc addMove { sq1 sq2 {animate ""}} {
     after idle [list ::utils::sound::AnnounceNewMove $san]
   }
 
-  if {[winfo exists .fics]} {
-
-    if { $::fics::playing == 1} {
+  if {$::fics::playing == 1 && [winfo exists .fics]} {
       if { $promo != $EMPTY } {
         ::fics::writechan "promote $promoLetter"
       }
       ::fics::writechan [ string range [sc_game info previousMoveUCI] 0 3 ]
-    }
   }
 
   if {$::novag::connected} {
