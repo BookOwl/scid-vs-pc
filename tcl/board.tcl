@@ -2251,11 +2251,11 @@ proc ::board::ficslabels {{w .board}} {
   }
   if {$::gameInfo(showMaterial) && $::fics::smallclocks} {
     if {$::board::_flip(.board)} {
-      grid configure .board.clock1 -row 1 -column 12 -sticky ne
-      grid configure .board.clock2 -row 8 -column 12 -sticky se
+      grid configure .board.clock1 -row 1 -column 0 -sticky ne
+      grid configure .board.clock2 -row 8 -column 0 -sticky se
     } else {
-      grid configure .board.clock2 -row 1 -column 12 -sticky ne
-      grid configure .board.clock1 -row 8 -column 12 -sticky se
+      grid configure .board.clock2 -row 1 -column 0 -sticky ne
+      grid configure .board.clock1 -row 8 -column 0 -sticky se
     }
   } else {
     grid remove .board.clock2
