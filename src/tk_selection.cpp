@@ -112,6 +112,7 @@ selectionGet(Tcl_Interp* ti, Tk_Window tkwin, Atom selection, Atom target, unsig
 	return done;
 }
 
+
 static int
 selEventProc(Tk_Window, XEvent*)
 {
@@ -141,26 +142,18 @@ unescapeChars(char* s, char const* e)
 
 	while (s < e)
 	{
-		if (*s == '%')
+		if (*s != '%')
 		{
-			if (s[1] == '%')
-			{
-				*p++ = '%';
-				s += 2;
-			}
-			else if (isxdigit(s[1]) && isxdigit(s[2]))
-			{
-				*p++ = (xdigitToVal(s[1]) << 4) + xdigitToVal(s[2]);
-				s += 3;
-			}
-			else
-			{
-				// Ooops, this shouldn't happen.
-				*p++ = *s++;
-			}
+			*p++ = *s++;
+		}
+		else if (isxdigit(s[1]) && isxdigit(s[2]))
+		{
+			*p++ = (xdigitToVal(s[1]) << 4) + xdigitToVal(s[2]);
+			s += 3;
 		}
 		else
 		{
+			// Ooops, this shouldn't happen.
 			*p++ = *s++;
 		}
 	}
@@ -270,6 +263,16 @@ selectionGet(Tcl_Interp* ti, Tk_Window tkwin, Atom selection, Atom target, unsig
 # endif // __unix__
 
 static int
+handleSelection(ClientData clientData, XEvent* eventPtr)
+{
+	if (eventPtr->type == SelectionNotify)
+		return selEventProc(Tk_IdToWindow(eventPtr->xany.display, eventPtr->xany.window), eventPtr);
+
+	return 0;
+}
+
+
+static int
 selGet(Tcl_Interp* ti, int objc, Tcl_Obj* const objv[])
 {
 	Tcl_Obj* const* objs = objv + 2;
@@ -352,7 +355,11 @@ selGet(Tcl_Interp* ti, int objc, Tcl_Obj* const objv[])
 	else if (targetName)
 		target = Tk_InternAtom(tkwin, targetName);
 
-	return selectionGet(ti, tkwin, Tk_InternAtom(tkwin, selName), target, timestamp);
+	Tk_CreateGenericHandler(handleSelection, 0);
+	int rc = selectionGet(ti, tkwin, Tk_InternAtom(tkwin, selName), target, timestamp);
+	Tk_DeleteGenericHandler(handleSelection, 0);
+
+	return rc;
 }
 
 
@@ -366,16 +373,6 @@ selCmd(ClientData, Tcl_Interp *ti, int objc, Tcl_Obj* const objv[])
 }
 
 
-static int
-handleSelection(ClientData clientData, XEvent* eventPtr)
-{
-	if (eventPtr->type == SelectionNotify)
-		return selEventProc(Tk_IdToWindow(eventPtr->xany.display, eventPtr->xany.window), eventPtr);
-
-	return 0;
-}
-
-
 void
 Tk_Selection_Init(Tcl_Interp* ti)
 {
@@ -384,7 +381,6 @@ Tk_Selection_Init(Tcl_Interp* ti)
 	Tcl_IncrRefCount(m_renamedCmd = Tcl_NewStringObj("__selection__x11_", -1));
 	TclRenameCommand(ti, "selection", Tcl_GetString(m_renamedCmd));
 	Tcl_CreateObjCommand(ti, "selection", selCmd, 0, 0);
-	Tk_CreateGenericHandler(handleSelection, 0);
 }
 
 #else
