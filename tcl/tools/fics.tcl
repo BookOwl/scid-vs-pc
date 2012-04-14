@@ -584,7 +584,7 @@ namespace eval fics {
       vwaitTimed ::fics::waitForMoves 2000 nowarn
       updateBoard -pgn
       updateTitle
-    } elseif {[string match unob* $c] && $::fics::playing == 0 && ($l == $c || [lindex $l 1] == $::fics::mainGame)} {
+    } elseif {[string match unob* $c] && $::fics::playing != 1 && $::fics::playing != -1 && ($l == $c || [lindex $l 1] == $::fics::mainGame)} {
       # unobserve main game
       set ::fics::mainGame -1
       writechan $l "echo"
@@ -1288,8 +1288,9 @@ namespace eval fics {
 	}"
 
       button $w.bottom.game$game.b.load -image arrow_up -font font_Small -relief flat -command "
+
 	if {\[lsearch -exact \$::fics::observedGames $game\] > -1} {
-          if {\$::fics::playing != 0} {
+          if {\$::fics::playing == -1 || \$::fics::playing == 1} {
             return
           }
 	  ### If we're already observing a game, move it back to a small board
@@ -1838,7 +1839,7 @@ namespace eval fics {
     ### This vwait cause f-ing headaches.
     # ... so don't update graph if playing
     vwaitTimed ::fics::sought 5000 "nowarn"
-    if {$::fics::playing == 0 && $::fics::graphon && [winfo exists .fics]} {
+    if {$::fics::playing != 1 && $::fics::playing != -1 && $::fics::graphon && [winfo exists .fics]} {
       after 3000 ::fics::updateGraph
     }
   }
