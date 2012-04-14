@@ -112,13 +112,6 @@ selectionGet(Tcl_Interp* ti, Tk_Window tkwin, Atom selection, Atom target, unsig
 	return done;
 }
 
-
-static int
-selEventProc(Tk_Window, XEvent*)
-{
-	return 0; // no action required
-}
-
 # elif defined(__unix__)
 
 #  include <X11/Xatom.h>
@@ -246,23 +239,6 @@ selTimeoutProc(ClientData clientData)
 
 
 static int
-selectionGet(Tcl_Interp* ti, Tk_Window tkwin, Atom selection, Atom target, unsigned long timestamp)
-{
-	XConvertSelection(Tk_Display(tkwin), selection, target, selection, Tk_WindowId(tkwin), timestamp);
-
-	Tcl_TimerToken timeout = Tcl_CreateTimerHandler(500, selTimeoutProc, ti);
-	m_selectionRetrieved = m_timeOut = false;
-	while (!m_timeOut)
-		Tcl_DoOneEvent(0);
-	Tcl_DeleteTimerHandler(timeout);
-	m_timeOut = true;
-
-	return m_selectionRetrieved ? TCL_OK : TCL_ERROR;
-}
-
-# endif // __unix__
-
-static int
 handleSelection(ClientData clientData, XEvent* eventPtr)
 {
 	if (eventPtr->type == SelectionNotify)
@@ -271,6 +247,26 @@ handleSelection(ClientData clientData, XEvent* eventPtr)
 	return 0;
 }
 
+
+static int
+selectionGet(Tcl_Interp* ti, Tk_Window tkwin, Atom selection, Atom target, unsigned long timestamp)
+{
+	XConvertSelection(Tk_Display(tkwin), selection, target, selection, Tk_WindowId(tkwin), timestamp);
+	Tk_CreateGenericHandler(handleSelection, 0);
+
+	Tcl_TimerToken timeout = Tcl_CreateTimerHandler(500, selTimeoutProc, ti);
+	m_selectionRetrieved = m_timeOut = false;
+	while (!m_timeOut)
+		Tcl_DoOneEvent(0);
+	Tcl_DeleteTimerHandler(timeout);
+	m_timeOut = true;
+
+	Tk_DeleteGenericHandler(handleSelection, 0);
+
+	return m_selectionRetrieved ? TCL_OK : TCL_ERROR;
+}
+
+# endif // __unix__
 
 static int
 selGet(Tcl_Interp* ti, int objc, Tcl_Obj* const objv[])
@@ -355,11 +351,7 @@ selGet(Tcl_Interp* ti, int objc, Tcl_Obj* const objv[])
 	else if (targetName)
 		target = Tk_InternAtom(tkwin, targetName);
 
-	Tk_CreateGenericHandler(handleSelection, 0);
-	int rc = selectionGet(ti, tkwin, Tk_InternAtom(tkwin, selName), target, timestamp);
-	Tk_DeleteGenericHandler(handleSelection, 0);
-
-	return rc;
+	return selectionGet(ti, tkwin, Tk_InternAtom(tkwin, selName), target, timestamp);
 }
 
 
