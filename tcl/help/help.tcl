@@ -262,6 +262,7 @@ set helpText(Index) {<h1>Scid Help Index</h1>
   <li><a Switcher>Database switcher</a> window</li>
   <li><a Maintenance Twins>Deleting twin games</a></li>
   <li><a Comment Diagrams>Diagrams</a></li>
+  <li><a Switcher draganddrop>Drag and Drop</a></li>
   </ul>
 
   <h3><name E>E</name></h3>
@@ -359,7 +360,7 @@ set helpText(Index) {<h1>Scid Help Index</h1>
 
   <h3><name O>O</name></h3>
   <ul>
-  <li><a Book>Opening books</a></li>
+  <li><a Book>Opening Books</a></li>
   <li><a ECO>Opening classification (ECO)</a></li>
   <li><a Reports Opening>Opening report</a> window</li>
   <li><a Options>Options</a></li>
@@ -1413,25 +1414,32 @@ green</b>, and an option for <b>3 Points for a Win</b>.  </p>
 
 
 set helpTitle(Switcher) "Database Switcher"
-set helpText(Switcher) {<h1>The Database Switcher Window</h1>
+set helpText(Switcher) {<h1>The Database Switcher</h1>
   <p>
-  The Database Switcher, located at the bottom of the <a GameList>Game List</a> widget,
+  The Database Switcher, located at the bottom of the <a GameList>Game List</a>,
   gives visual feedback on open databases. 
-  The name, <a Filter>filter</a> state and icon
+  The name, <a Filter>filter</a> state, and icon
   of each database is displayed, and the active database is highlighted
-  with a white background. At the left most is a <a Bookmarks>bookmark</a> button.
+  with a yellow background. At the left most is a <a Bookmarks>bookmark</a> button.
   </p>
   <p>
-  Using "Drag and Drop", it is easy to copy the filtered games from one database to another.
+  Right-clicking a database produces a popup menu
+  from which one can reset its <a Filter>filter</a>, mark base as Read-Only or
+  close the database. It is also possible to change the base's icon, or
+  hide them altogether.
   </p>
+  <h2><name draganddrop>Drag and Drop</name></h2>
   <p>
-  Pressing right mouse button over a database produces a popup menu
-  from which you can change the icon, reset its <a Filter>filter</a>, or
-close the database. It is also possible to
-  show or hide database icons.
+  Two separate forms of Drag and Drop are enabled.
+  <br> <br>
+  * Files can be opened from the Windows, KDE or Gnome file managers by dropping
+  them onto the Switcher at the bottom of the Game List. Files can also be dropped to the Gameinfo widget in the main board.
+  <br> <br>
+  * Dragging within the Switcher from one base to another, copies filtered games.
+  This is an important way to manage and copy games within databases.
   </p>
 
-  <p><footer>Updated: Scid 4.3 January 2011</footer></p>
+  <p><footer>Updated: Scid 4.8 April 2012</footer></p>
 }
 
 
@@ -1578,6 +1586,7 @@ This can be done by the <b>Compact</b> button, or
 <li>Load games by double-clicking.</li>
 <li>Multiple games can be selected by using Shift or Control while single clicking. <lt>Control+A<gt> selects all visible games.</li>
 <li>Resize column widths by dragging the column edge.</li>
+<li>Drag and Drop files to the switcher (from Windows/KDE/Gnome).</li>
 </ul>
 
   <h3><name Browsing>Browsing and Merging Games</name></h3>
