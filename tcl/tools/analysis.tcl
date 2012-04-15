@@ -96,7 +96,7 @@ proc resetEngine {n} {
   set analysis(waitForBestMove$n) 0
   set analysis(waitForReadyOk$n) 0
   set analysis(waitForUciOk$n) 0
-  set analysis(movesDisplay$n) 1      ;# if false, hide engine lines, only display scores
+  set analysis(movesDisplay$n) 1      ;# 0 hide engine lines, 1 no word wrap, 2 word wrap
   set analysis(lastHistory$n) {}      ;# last best line
   set analysis(maxmovenumber$n) 0     ;# the number of moves in this position
   set analysis(lockEngine$n) 0        ;# the engine is locked to current position
@@ -2275,17 +2275,23 @@ proc addAnalysisMove {{n 0}} {
   }
 }
 
-### Toggle whether Move History is shown
+### Toggle whether Move History is shown (now also controls line wrap)
 
 proc toggleMovesDisplay {n} {
+  global analysis
 
-  set ::analysis(movesDisplay$n) [expr 1 - $::analysis(movesDisplay$n)]
+  set analysis(movesDisplay$n) [expr {($analysis(movesDisplay$n) + 1) % 3}]
   set h .analysisWin$n.hist.text
   $h configure -state normal
   $h delete 1.0 end
   $h configure -state disabled
 
-  if {$::analysis(movesDisplay$n)} {
+  if {$analysis(movesDisplay$n)} {
+    if {$analysis(movesDisplay$n) == 2} {
+      $h configure -wrap word
+    } else {
+      $h configure -wrap none
+    }
     updateAnalysisText $n
   } else {
     $h configure -state normal

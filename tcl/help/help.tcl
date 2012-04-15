@@ -2608,6 +2608,11 @@ making for easier <a Analysis Debugging>Debugging</a>.
   and at the bottom is some <a Analysis Info>Extra Information</a> (which may be hidden).
   </p>
 
+  <p>
+  <i>The analysis output has three modes: No wrap, Word wrap, and Hidden.
+  These are toggled between by right-clicking the analysis window.</i>
+  </p>
+
   <h3><name Buttons>Buttons</h3>
   <p>
   At the top you'll find many cryptic buttons...
@@ -2656,12 +2661,6 @@ making for easier <a Analysis Debugging>Debugging</a>.
   box can be used to set the number of principal variations shown.  In this case,
   instead of the calculation history, only the resulting principal lines are
   shown. The spin box is disabled if an engine does offer this feature.
-  </p>
-
-  <p>
-  <i>The output of the current analysis can be hidden/shown
-  by clicking with the right mouse button into the analysis window. In
-  this mode only the current evaluation is shown in the status line.</i>
   </p>
 
   <h3><name Info>Extra Information</h3>
