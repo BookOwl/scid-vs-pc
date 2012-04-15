@@ -302,10 +302,10 @@ Ow==
 # image create photo finish_on -data ....
 ### Replaced by autoplay_
 
-# Double size the toolbar buttons
-image create photo tempimage
+# Double size the toolbar buttons (disabled)
+# image create photo tempimage
 if {0} {
-  foreach i {tb_flip tb_showmenu tb_gameinfo autoplay_off autoplay_on tb_trial \
+  foreach i {tb_flip tb_gameinfo autoplay_off autoplay_on tb_trial \
          tb_trial_on tb_start tb_prev tb_next tb_end tb_invar tb_outvar tb_addvar} {
     tempimage blank
     tempimage copy $i -zoom 2
@@ -316,30 +316,23 @@ if {0} {
 
 frame .button.space3 -width 4
 
-button .button.flip -image tb_flip -takefocus 0 -command "::board::flip .board"
-
-button .button.showmenu -image tb_showmenu -takefocus 0 -command toggleMenubar
-
-button .button.windows -image tb_windows -takefocus 0 -command raiseAllWindows
-
+button .button.flip     -image tb_flip      -command {::board::flip .board}
+button .button.windows  -image tb_windows   -command raiseAllWindows
 button .button.autoplay -image autoplay_off -command toggleAutoplay
-button .button.trial -image tb_trial -command {setTrialMode toggle}
+button .button.trial    -image tb_trial     -command {setTrialMode toggle}
 
-foreach i {start back forward end intoVar exitVar addVar autoplay \
-      flip showmenu windows trial} {
-  .button.$i configure -relief flat -border 1 -highlightthickness 0 \
-      -takefocus 0
+foreach i {start back forward end intoVar exitVar addVar autoplay flip windows trial} {
+  .button.$i configure -relief flat -border 1 -highlightthickness 0 -takefocus 0
   # bind .button.$i <Any-Enter> "+.button.$i configure -relief groove"
   # bind .button.$i <Any-Leave> "+.button.$i configure -relief flat; statusBarRestore %W; break"
 }
 
 pack .button.start .button.back .button.forward .button.end \
-    .button.space .button.exitVar .button.intoVar .button.addVar \
-    .button.autoplay .button.trial .button.flip .button.windows \
-    -side left -pady 1 -padx 0 -ipadx 2 -ipady 2
-    # .button.space3 [flip] .button.showmenu 
+     .button.space .button.exitVar .button.intoVar .button.addVar \
+     .button.autoplay .button.trial .button.flip .button.windows \
+        -side left -pady 1 -padx 0 -ipadx 2 -ipady 2
 
-### The board:
+### Main Board Init
 
 ::board::new .board $boardSize 1
 #.board.bd configure -relief solid -border 2
@@ -351,7 +344,7 @@ if {$boardSTM} {
   ::board::togglestm .board
 }
 
-# .gameInfo is the game information widget:
+### Game Information Widget Init
 
 autoscrollframe .gameInfoFrame text .gameInfo
 
@@ -359,9 +352,8 @@ autoscrollframe .gameInfoFrame text .gameInfo
 
 ::htext::init .gameInfo
 
-################################################################################
-# Context menu for main board
-################################################################################
+### Context menu for main board
+### allows customisation of board, gameinfo and a couple of windows
 
 menu .gameInfo.menu -tearoff 0 -background gray90
 

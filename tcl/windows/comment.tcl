@@ -355,19 +355,12 @@ proc ::commenteditor::SetMarkType {board type} {
   set State(markType) $type
 }
 
-# ::commenteditor::InsertMark --
-#
 #	Called when a square is selected on the insert board.
 #
-# Arguments:
 #	board	The frame variable of the board.
-#	from	Number (0-63) of the selected square
+#	square	Number (0-63) of the selected square
 #		(+64 if right mouse button used).
-#	to	Number of destination square (0-63) if an
-#		arrow is to be drawn (+64 if right mouse button).
-# Results:
-#	TODO
-#
+
 proc ::commenteditor::InsertMark {board square} {
   variable State
   set textwin .commentWin.cf.text
@@ -453,7 +446,7 @@ proc ::commenteditor::ClearComments {win} {
 proc ::commenteditor::ButtonReleased {board button x_root y_root} {
   set square [::board::getSquare $board $x_root $y_root]
   if {$square < 0}  {
-    set $State(pending) ""
+    set State(pending) ""
     return
   }
   if {$button != 1} {set square [expr {$square + 64}]}
