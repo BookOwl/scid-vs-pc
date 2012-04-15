@@ -1253,6 +1253,7 @@ proc addAnnotation {} {
   if {[sc_pos isAt vend]} {
       addScore $n single 1
       updateBoard -pgn
+      ::tools::graphs::score::Refresh
       return
   }
 
@@ -1279,6 +1280,7 @@ proc addAnnotation {} {
 	addScore $n single 1
       }
       updateBoard -pgn
+      ::tools::graphs::score::Refresh
       return
     }
   }
@@ -1414,8 +1416,7 @@ proc addAnnotation {} {
   # Restore the pre-move command:
   sc_info preMoveCmd preMoveCommand
   updateBoard -pgn
-  # Update score graph if it is open:
-  if {[winfo exists .sgraph]} { ::tools::graphs::score::Refresh }
+  ::tools::graphs::score::Refresh
 }
 
 proc scoreToNag {score} {
@@ -1601,10 +1602,8 @@ proc addAnalysisVariation {n} {
   # Restore the pre-move command:
   sc_info preMoveCmd preMoveCommand
 
-  if {[winfo exists .pgnWin]} { ::pgn::Refresh 1 }
-
-  # Update score graph if it is open:
-  if {[winfo exists .sgraph]} { ::tools::graphs::score::Refresh }
+  ::pgn::Refresh 1
+  ::tools::graphs::score::Refresh
 }
 ################################################################################
 #
@@ -1665,10 +1664,10 @@ proc addAllVariations {{n 1}} {
   # Restore the pre-move command:
   sc_info preMoveCmd preMoveCommand
 
-  if {[winfo exists .pgnWin]} { ::pgn::Refresh 1 }
-  # Update score graph if it is open:
-  if {[winfo exists .sgraph]} { ::tools::graphs::score::Refresh }
+  ::pgn::Refresh 1 
+  ::tools::graphs::score::Refresh
 }
+
 ################################################################################
 #
 ################################################################################
@@ -1703,6 +1702,7 @@ proc addAnalysisToComment {line {n 1}} {
   }
   ::pgn::Refresh 1
 }
+
 ################################################################################
 #
 ################################################################################

@@ -387,15 +387,27 @@ set ::tools::graphs::score::Black 0
 
 ### Game Score graph
 
-proc ::tools::graphs::score::Refresh {} {
+proc ::tools::graphs::score::Toggle {} {
+  set w .sgraph
+  if {[winfo exists $w]} {
+    destroy $w
+  } else {
+    ::tools::graphs::score::Refresh 1
+  }
+}
+
+proc ::tools::graphs::score::Refresh {{init 0}} {
+  set w .sgraph
+
+  if {![winfo exists $w] && ! $init} {
+    return
+  }
 
   set linecolor steelblue
   set linewidth 2
   set psize 2
 
-  set w .sgraph
-
-  if {! [winfo exists $w]} {
+  if {![winfo exists $w]} {
     toplevel $w
     wm withdraw $w
     setWinLocation $w

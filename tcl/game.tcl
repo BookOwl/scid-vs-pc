@@ -271,10 +271,8 @@ proc ::game::Load { selection {update 1} {raise 1}} {
       ![winfo exists .sm] } {
     raiseWin .
   }
-  if {[winfo exists .sgraph]} {
-    ::tools::graphs::score::Refresh
-  }
-    ::windows::gamelist::Refresh
+  ::tools::graphs::score::Refresh
+  ::windows::gamelist::Refresh
 }
 
 # ::game::LoadMenu

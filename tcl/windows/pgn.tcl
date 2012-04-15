@@ -485,7 +485,9 @@ namespace eval pgn {
   proc Refresh {{pgnNeedsUpdate 0}} {
 	 global useGraphFigurine
 
-    if {![winfo exists .pgnWin]} { return }
+    if {![winfo exists .pgnWin]} {
+      return
+    }
 
     set format plain
     if {$::pgn::showColor} {set format color}

@@ -2595,7 +2595,7 @@ set helpText(Analysis) {<h1>Analysis Windows</h1>
 
   <p> Scid vs. PC has powerful chess analysis features. Multiple engines can be
 run at any one time; they can be matched against each other in <a
-Tourney>Computer Tournaments</a></ht>, and log files can be browsed from within the app -
+Tourney>Computer Tournaments</a>, and log files can be browsed from within the app -
 making for easier <a Analysis Debugging>Debugging</a>.
 </p>
 
@@ -3356,10 +3356,10 @@ from the Tools menu. Right-clicking the graph will refresh it.
 
   <h3><name Score>Score Graph</name></h3>
   <p>
-  The <b>Score Graph</b> window shows the numeric evaluations (scores)
-  stored in the comments of the current game as a graph.
-  You can click the left mouse button anywhere in the score graph to go to the
-  corresponding position in the game.
+  The <green><run ::tools::graphs::score::Toggle>Score Graph</run></green> (Control-Shift-Z)
+  shows the numeric evaluations stored in the comments of the current
+  game as a graph.  You can click the left mouse button anywhere in the score
+  graph to go to the corresponding position in the game.
   </p>
   <p>
   Two types of evaluation comment are recognized: those produced by
@@ -6239,6 +6239,7 @@ The window manager may interfere with some shortcuts.
 <li><b>control-X</b> - Crosstable</li>
 <li><b>control-S</b> - Setup board</li>
 <li><b>control-b</b> - Book window</li>
+<li><b>control-Z</b> - Score graph</li>
 <li><b>escape</b> - Close window</li>
 </ul>
 
@@ -6296,6 +6297,7 @@ The window manager may interfere with some shortcuts.
 <li><b>control-P</b> - Player finder</li>
 <li><b>control-T</b> - Tournament finder</li>
 <li><b>control-Y</b> - Find novelty</li>
+<li><b>control-Z</b> - Score graph</li>
 </ul>
 
 -------------------------------------------------------------------------
