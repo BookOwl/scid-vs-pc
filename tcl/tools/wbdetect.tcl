@@ -25,6 +25,8 @@ proc detectWBEngine {n engineOutput} {
 
   global analysis
 
+  # Check for a line starting with "Crafty", so Scid can work well
+  # with older Crafty versions that do not recognize "protover"
 
   if {[string match {*Crafty*} $engineOutput]} {
     # Engine: Crafty v23.4 JA (1 cpus)

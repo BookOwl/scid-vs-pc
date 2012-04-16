@@ -717,10 +717,10 @@ menu $m.pinfo
 $m add cascade -label ToolsPInfo -menu $m.pinfo
 set helpMessage($m,[incr menuindex]) ToolsPInfo
 $m.pinfo add command -label White -underline 0 -command {
-  playerInfo [sc_game info white]
+  playerInfo [sc_game info white] 1
 }
 $m.pinfo add command -label Black -underline 0 -command {
-  playerInfo [sc_game info black]
+  playerInfo [sc_game info black] 1
 }
 
 # Connect Hardware

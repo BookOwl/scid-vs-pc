@@ -1876,7 +1876,6 @@ proc sendMoveToEngine {n move} {
   }
 }
 
-# logEngine:
 #   Log Scid-Engine communication.
 
 proc logEngine {n text} {
@@ -2034,7 +2033,7 @@ proc makeAnalysisWin {{n 0} {settime 0}} {
   if {$analysis(logMax) > 0 && $analysis(logEngines) } {
     if {! [catch {open [file join $::scidLogDir "engine$n.log"] w} log]} {
       set analysis(log$n) $log
-      logEngine $n "Scid-Engine communication log file"
+      logEngine $n "$::scidName <--> Engine communication log file"
       logEngine $n "Engine: $analysisName"
       logEngine $n "Command: $analysisCommand"
       logEngine $n "Directory: $analysisDir"
@@ -2572,9 +2571,6 @@ proc processAnalysisInput {n} {
     return
 
   }
-
-  # Check for a line starting with "Crafty", so Scid can work well
-  # with older Crafty versions that do not recognize "protover"
 
   # Scan the line from the engine for the analysis data
 
