@@ -2708,7 +2708,7 @@ making for easier <a Analysis Debugging>Debugging</a>.
   To cancel annotation at any time, turn off Autoplay Mode
   </p>
   <p><i>
-  The <b>Annotate</b> feature of Scid vs. PC can be used with any engine,
+  The Annotate feature of Scid vs. PC can be used with any engine,
   but be sure not to open other Analysis Windows while annotation is in progress.
   </i></p>
 
@@ -3357,31 +3357,29 @@ from the Tools menu. Right-clicking the graph will refresh it.
   <h3><name Score>Score Graph</name></h3>
   <p>
   The <green><run ::tools::graphs::score::Toggle>Score Graph</run></green> (Control-Shift-Z)
-  shows the numeric evaluations stored in the comments of the current
-  game as a graph.  You can click the left mouse button anywhere in the score
-  graph to go to the corresponding position in the game.
-  </p>
+  shows the move evaluations (stored as comments in the current game) as a graph. </p>
   <p>
-  Two types of evaluation comment are recognized: those produced by
-  the Scid <a Analysis>Analysis Window</a> (which have the format
+  The first step in using the Score Graph is to add scores to a game with Scid's <a Analysis Annotating>annotation feature</a>
+  These scores have the format:
   <ul>
   <li><b>1.e4 {"+0.25 ...."}</b></li>
   </ul>
-  and are always scores from White's perspective) and those produced
-  by the Crafty annotate command (which have the format
+  Alternatively scores created by Crafty's annotate command are also recognised. These have the format:
   <ul>
   <li><b>1.e4 ({9:+0.25} ....)</b></li>
   </ul>
-  and are also scores from White's perspective).
+  Both formats are represented from White's perspective.
+  In cases when the scores are not from whites perspective, one can select an option
+  (in the Options Menu) for a correct perspective.
   </p>
+  <h4>Features</h4>
   <p>
-  In case the scores are not given from whites perspective, one can
-  choose the perspective to use from the options menu to correct for
-  this.
-  # todo: Checking both
-  </p>
+  Left Click positionally in the graph to go to the corresponding move.
+<br>
+  Right Clicking anywhere in the score graph will perform a refresh.</p>
+  
 
-  <p><footer>Updated: Scid vs. PC 4.4 April 2011</footer></p>
+  <p><footer>Updated: Scid vs. PC 4.8 April 2012</footer></p>
 }
 
 set helpTitle(TB) "Tablebases"
