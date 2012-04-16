@@ -584,8 +584,10 @@ namespace eval fics {
       vwaitTimed ::fics::waitForMoves 2000 nowarn
       updateBoard -pgn
       updateTitle
-    } elseif {[string match unob* $c] && $::fics::playing != 1 && $::fics::playing != -1 && ($l == $c || [lindex $l 1] == $::fics::mainGame)} {
-      # unobserve main game
+    } elseif {([string match unob* $c]||[string match unex* $c])  && \
+               $::fics::playing != 1 && $::fics::playing != -1 && \
+               ($l == $c || [lindex $l 1] == $::fics::mainGame)} {
+      # unobserve/unexamine main game
       set ::fics::mainGame -1
       writechan $l "echo"
     } else {
@@ -1080,6 +1082,8 @@ namespace eval fics {
         updateConsole "Error parsing Game line \"$line\""
       }
     }
+
+    # "Movelist for game *:" (unhandled)
 
     if {[string match "*Starting FICS session*" $line]} {
       # mandatory init commands
@@ -1585,11 +1589,10 @@ namespace eval fics {
 
     set white [lindex $line 17]
     set black [lindex $line 18]
+    set state [lindex $line 19]
 
-    # If playername is not white or black, then we unobserve game, as its not in $observedGames (???)
-    if { ! [string match -nocase $white $::fics::reallogin] &&
-         ! [string match -nocase $black $::fics::reallogin] &&
-           ($game != $::fics::mainGame)} {
+    # If not playing and not examiner (state 1, -1, 2), then we unobserve game, as its not in $observedGames
+    if { $state != -1 && $state != 1 && $state != 2 && ($game != $::fics::mainGame) } {
       ::fics::writechan "unobserve $game"
       # todo: make a "follow!" command that autoloads games into the main widget and saves them as each game finishes &&&
       return
@@ -1737,8 +1740,6 @@ namespace eval fics {
       }
 
       sc_game new
-      # set ::fics::playing 1 ; Not right!
-
       sc_game tags set -white $white
       sc_game tags set -black $black
       if {[info exists ::fics::elo($white)]} {
@@ -1757,7 +1758,9 @@ namespace eval fics {
       vwaitTimed ::fics::waitForMoves 2000 nowarn
       set ::fics::waitForMoves ""
 
-      if {$fen != [sc_pos fen]} {
+      # After the 2 second time period, we can decide to give up and just set the FEN,
+      # but this leaves the game without it's move history, and is hence disabled.
+      if { 0 && $fen != [sc_pos fen]} {
         # Did not manage to reconstruct the game, just set its position
         # (But this never works !? &&& )
         sc_game startBoard $fen
