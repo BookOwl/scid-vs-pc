@@ -594,7 +594,9 @@ namespace eval fics {
       writechan $l "echo"
     }
 
-    lappend ::fics::history $l
+    if {[lindex $::fics::history end] != $l} {
+      lappend ::fics::history $l
+    }
     set ::fics::history_pos [llength $::fics::history]
     $w.console.text yview moveto 1
   }
@@ -1950,7 +1952,7 @@ namespace eval fics {
     $w.c delete status
   }
 
-  proc showGraphText { idx x y {exit 0}} {
+  proc showGraphText {idx x y {exit 0}} {
 
     set w .fics.bottom.graph
 
@@ -1958,8 +1960,9 @@ namespace eval fics {
     set gl [lindex $::fics::soughtlist $idx]
     if { $gl == "" } { return }
     array set l [lindex $::fics::soughtlist $idx]
-    set m "$l(game) $l(name)($l(elo)) $l(time_init)/$l(time_inc) $l(rated) $l(type) $l(color) $l(start)"
+    set m "$l(name)($l(elo)) $l(time_init)/$l(time_inc) $l(rated) $l(type) $l(color) $l(start)"
     
+    $w.c delete status
     $w.c create text 35 0 -tags status -text "$m" -font font_Regular -anchor nw
     $w.c raise game_$idx
 
