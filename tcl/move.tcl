@@ -90,9 +90,8 @@ proc ::move::Back {{count 1}} {
   if {[sc_pos isAt start]} {
     if {$::fics::playing == 2} {
       ::fics::writechan backward noecho 
-    } else {
-      return
     }
+    return
   }
   if {[sc_pos isAt vstart]} { ::move::ExitVar; return }
 
@@ -119,9 +118,8 @@ proc ::move::Forward {{count 1}} {
   if {[sc_pos isAt end]  ||  [sc_pos isAt vend]} {
     if {$::fics::playing == 2} {
       ::fics::writechan forward noecho 
-    } else {
-      return
     }
+    return
   }
   set ::pause 1
   set bArrows [::move::drawVarArrows]
