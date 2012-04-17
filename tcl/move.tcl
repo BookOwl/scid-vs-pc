@@ -55,6 +55,10 @@ proc ::move::showVarArrows {} {
 }
 
 proc ::move::Start {} {
+  if {$::fics::playing == 2} {
+      ::fics::writechan {backward 256} noecho
+      return
+  }
   set ::pause 1
   sc_move start
   updateBoard  -pgn
@@ -63,6 +67,10 @@ proc ::move::Start {} {
 }
 
 proc ::move::End {} {
+  if {$::fics::playing == 2} {
+      ::fics::writechan {forward 256} noecho
+      return
+  }
   set ::pause 1
   sc_move end
   updateBoard
@@ -76,8 +84,16 @@ proc ::move::ExitVar {} {
   if {[::move::drawVarArrows]} { ::move::showVarArrows }
 }
 
+set ::fics::playing 0 ; # predefine
+
 proc ::move::Back {{count 1}} {
-  if {[sc_pos isAt start]} { return }
+  if {[sc_pos isAt start]} {
+    if {$::fics::playing == 2} {
+      ::fics::writechan backward noecho 
+    } else {
+      return
+    }
+  }
   if {[sc_pos isAt vstart]} { ::move::ExitVar; return }
 
   ### if playing, remove this move from hash array S.A
@@ -100,7 +116,13 @@ proc ::move::Back {{count 1}} {
 proc ::move::Forward {{count 1}} {
   global autoplayMode
 
-  if {[sc_pos isAt end]  ||  [sc_pos isAt vend]} { return }
+  if {[sc_pos isAt end]  ||  [sc_pos isAt vend]} {
+    if {$::fics::playing == 2} {
+      ::fics::writechan forward noecho 
+    } else {
+      return
+    }
+  }
   set ::pause 1
   set bArrows [::move::drawVarArrows]
 

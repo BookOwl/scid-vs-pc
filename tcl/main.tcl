@@ -784,6 +784,15 @@ proc updateBoard2 {} {
     .menu.edit entryconfig [tr EditFirst] -state normal
     .menu.edit entryconfig [tr EditMain] -state normal
   }
+
+  # FICS examine mode 
+  if {$::fics::playing == 2} {
+    .button.back    configure -state normal
+    .button.forward configure -state normal
+    .button.start   configure -state normal
+    .button.end     configure -state normal
+  }
+
   updateVarMenus
   if {[sc_var level] == 0} {
     .button.exitVar configure -state disabled
@@ -817,7 +826,7 @@ proc updateBoard3 {pgnNeedsUpdate} {
   moveEntry_Clear
 
   # Show a warning message in the statusbar if Fics is playing
-  if {[winfo exists .fics] && ![sc_pos isAt end] && $::fics::playing} {
+  if {[winfo exists .fics] && ![sc_pos isAt end] && ($::fics::playing==1 || $::fics::playing==-1)} {
     set ::statusBar "Fics: warning, board doesn't show current game position"
     .statusbar configure -foreground red3
   } else {

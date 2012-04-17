@@ -572,12 +572,21 @@ namespace eval fics {
 
     if {$c == "smoves" || $c == "smove"} {
       # smoves recreates a game without any further announcment
+      if {$::fics::playing == 1 || $::fics::playing == -1} {
+        updateConsole "Scid: smoves disabled while playing a game"
+        return
+      }
 
       set confirm [::game::ConfirmDiscard2]
       if {$confirm == 2} {return}
       if {$confirm == 0} {sc_game save [sc_game number]}
       sc_game new
+      set ::fics::mainGame -1
+      set ::fics::playing 0
+      updateBoard -pgn
+      updateTitle
 
+      writechan $l "unexamine"
       writechan $l "echo"
 
       set ::fics::waitForMoves no_meaning
@@ -589,6 +598,11 @@ namespace eval fics {
                ($l == $c || [lindex $l 1] == $::fics::mainGame)} {
       # unobserve/unexamine main game
       set ::fics::mainGame -1
+      if {[string match unex* $c]} {
+	set ::fics::playing 0
+	updateBoard -pgn
+	updateTitle
+      }
       writechan $l "echo"
     } else {
       writechan $l "echo"
@@ -1623,12 +1637,14 @@ namespace eval fics {
     ::gameclock::setSec 2 [ expr 0 - $blackRemainingTime ]
     # Show time remaining in titlebar ?
     # wm title . "$::scidName: $white ($whiteRemainingTime) - $black ($blackRemainingTime)"
-    if {$color == "W"} {
-      ::gameclock::start 1
-      ::gameclock::stop 2
-    } else {
-      ::gameclock::start 2
-      ::gameclock::stop 1
+    if {$fics::playing == 1 || $fics::playing == -1} {
+      if {$color == "W"} {
+	::gameclock::start 1
+	::gameclock::stop 2
+      } else {
+	::gameclock::start 2
+	::gameclock::stop 1
+      }
     }
 
     ### Constrct fen from [lrange $line 1 8] lines of the game. Slow!
@@ -1684,6 +1700,16 @@ namespace eval fics {
     if {$castle == ""} {set castle "-"}
 
     append fen " $castle $enpassant [lindex $line 15] $moveNumber"
+
+    if {$::fics::playing == 2} {
+      # examining game
+      sc_game startBoard $fen
+      sc_game tags set -white $white
+      sc_game tags set -black $black
+      updateBoard -pgn
+      wm title . "$::scidName: FICS (Examine Mode)"
+      return
+    }
 
     # puts $verbose_move
     # puts $moveSan
