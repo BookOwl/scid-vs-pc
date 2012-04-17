@@ -35,7 +35,6 @@ namespace eval fics {
   variable logged 0
   set consolewidth 40
   set consoleheight 10
-  set size 30
 
   set ignore_abort 0
   set ignore_adjourn 0
