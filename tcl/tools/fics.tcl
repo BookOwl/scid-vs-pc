@@ -586,11 +586,11 @@ namespace eval fics {
       updateBoard -pgn
       updateTitle
 
-      writechan $l "unexamine"
+      writechan unexamine noecho
       writechan $l "echo"
 
       set ::fics::waitForMoves no_meaning
-      vwaitTimed ::fics::waitForMoves 2000 nowarn
+      vwaitTimed ::fics::waitForMoves 5000 nowarn
       updateBoard -pgn
       updateTitle
     } elseif {([string match unob* $c]||[string match unex* $c])  && \
@@ -1170,6 +1170,7 @@ namespace eval fics {
 	# {White forfeits on time} 1-0
         ::commenteditor::appendComment [lindex $line 0]
 	sc_game tags set -result [lindex $line 1]
+        set ::fics::waitForMoves ""
         return
       }
 
@@ -1783,10 +1784,10 @@ namespace eval fics {
 
       writechan "moves $game"
       set ::fics::waitForMoves $fen
-      vwaitTimed ::fics::waitForMoves 2000 nowarn
+      vwaitTimed ::fics::waitForMoves 5000 nowarn
       set ::fics::waitForMoves ""
 
-      # After the 2 second time period, we can decide to give up and just set the FEN,
+      # After the 5 second time period, we could decide to give up and just set the FEN,
       # but this leaves the game without it's move history, and is hence disabled.
       if { 0 && $fen != [sc_pos fen]} {
         # Did not manage to reconstruct the game, just set its position
