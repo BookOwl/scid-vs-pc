@@ -85,7 +85,7 @@ To start FICS use <run ::fics::config><green>Play--<gt>FICS (Internet)</green></
 <br>
 <li><a FICSfindopp>Finding an Opponent</a></li>
 <br>
-<li><a FICSobserve>Observing, Examining Games</a> and other features</li>
+<li><a FICSobserve>Observing Games, International Events</a> and other features</li>
 <br>
 <li><a FICScommands>FICS Commands and Variables</a></li>
 </ul>
@@ -439,7 +439,7 @@ set helpText(Index) {<h1>Scid Help Index</h1>
   <h3><name V>V</name></h3>
   <ul>
   <li><a Variations>Variations</a></li>
-  <li><a FICSobserve>Variants</a> on FICS</li>
+  <li><a FICSobserve exam>Variants</a> on FICS</li>
   </ul>
 
   <h3><name W>W</name></h3>
@@ -5305,20 +5305,17 @@ Timeseal is available from the
 set helpTitle(FICSfindopp) "Finding an Opponent"
 set helpText(FICSfindopp) {<h1>Finding an Opponent</h1>
   <p>
-  There are several ways to start playing. The two easiest are the
-<b>Find Opponent</b>
-  and
-<b>Offers Graph</b>
-widgets.
+  There are several ways to start playing. The easiest are the <b>Find Opponent</b>
+  and <b>Offers Graph</b> widgets.
   </p>
 
   <h3>Find Opponent</h3>
 
   <p>
-  Click on the <b>Find Opponent</b> button, and you'll see a dialogue from
+  Click on the <b>Find Opponent</b> button and you'll see a dialogue from
   which you can challenge other players for a game.
   Select how long you'd like to play for, and other options, then 
-  press the <term>Make Offer</term> button.
+  press the <b>Make Offer</b> button.
 
 Options:
   <br>
@@ -5340,9 +5337,9 @@ Options:
 
   <h3>Offers Graph</h3>
 
-    <p>The <term>Offers graph</term> shows all current game offers. Hovering
+    <p>The <b>Offers Graph</b> button shows all current game offers. Hovering
 your mouse over a node will show it's details, and clicking a node will
-(attempt to) start a new game. Sometimes you'll have to be quick though, as
+request a new game. Sometimes you'll have to be quick though, as
 FICS can be quite busy.</p>
 
 <p> On the graph itself, The y-axis shows the ELO rating of the opponent -
@@ -5368,14 +5365,25 @@ Note FICS also offers a bunch of chess variants like bughouse or crazyhouse.
 Playing these games is not supported, but they can be oberved using the </b>observe</b> command.
 </i></p>
 
-  <p><footer>Updated: Scid vs. PC 3.4.1, September 2010</footer></p>
+  <p><footer>Updated: Scid vs. PC 4.8 April 2012</footer></p>
 }
 # FICS Find Opponent
-set helpTitle(FICSobserve) "Other Features Games"
+set helpTitle(FICSobserve) "Other Features"
 set helpText(FICSobserve) {<h1>Other Features</h1>
+
+  <h3>Live International Events</h3>
+  <p>
+  From time to time FICS broadcasts major events in
+  international chess, whence one can observe the games live.
+  These events are handled by the special account, Relay.
+  To find out what games are currently relayed , use
+  <b>tell relay listgames</b>. Relay will reply with a table of current games.
+Use <b>tell relay notify</b> if you want to be told what tournaments are being relayed when you login.
+  </p>
+
 <h3>Observing Games</h3>
   <p>
-  FICS has many powerful commands. The format for observing other games is
+  The format for observing other games is
 <b>observe player | game | /l | /b | /s | /S | /w | /z | /B | /L | /x</b>
 <br>
 where the options are:
@@ -5392,8 +5400,6 @@ where the options are:
 <li>/L:     Observe the highest rated losers game</li>
 <li>/x:     Observe the highest rated atomic game </li>
 </ul>
-  </p>
-  <p>
   One can also browse all current games using the <b>games</b> command, and type <b>unobserve</b> to stop following all games.
   </p>
   <p>
@@ -5407,39 +5413,29 @@ where the options are:
   </ul>
   </p>
 
-  <h3>Examining Games</h3>
-  <p>
-  The FICS "examine" command is not supported, but analysing played games can be done by
-  </p>
-  <p>
-  <b>smoves PlayerA</b> [<b>PlayerB</b>] [journal_slot]
-  </p>
-  <p>
-  This command loads a previously played or suspended game into the main board.
-  Type "help smoves" for more info.
-  </p>
-
   <h3>Discussion</h3>
   <p>
   For discussing the game with other observers,
-  <b>whisper</b> and <b>kibitz</b> can be used. Please
-  refer to the online help of these commands. All these conversations
-  can be read in the console.
+  <b>whisper</b> and <b>kibitz</b> can be used. All these conversations can be read in the console.
   </p>
 
-  <h3>Relays</h3>
+  <h3><name exam>Examining and Loading Games</name></h3>
+
   <p>
-  From time to time FICS <b>relays</b> major events in
-  international chess. In these cases one can observe the games life
-  on the server and discuss them with other users on FICS. To find out
-  what games are currently relayed (if any) one can ask the relay for
-  a list by <b>relay listgames</b>. As FICS expects the terminal
-  to have 80 chars width it might be necessary to resize Scids FICS
-  window to get a nice table. The entries in the table are, first the
-  game number, colon, than the opponents, the result of the game (*
-  signifying an ongoing game as usual) and the <a ECO>ECO code</a> of
-  the opening. 
+  FICS and Scid vs. PC offer two ways to analyze games. Smoves and Examine.
   </p>
+  <p>
+  The FICS "examine" command is now well supported, and is a convenient way
+  for groups or friends to analyze games. After issuing  "examine GMShort -1" (for eg),
+  Scid's large move buttons are bound to the FICS "forward" and "back" commands.
+  </p>
+  <p>
+  The "smoves" command loads a previously played or suspended game into the main board.
+  Using "smoves GMShort -1" (for eg) is better in that the whole game is loaded to Scid, and 
+  it can thus have variations added, and the game saved.
+  </p>
+  <p>
+  <i>Crazyhouse and Bughouse games can only be observed or examined. They cannot be loaded into the main board with "smoves" because of limitations in Scid.</i></p>
 
   <h3>Lectures</h3>
 
@@ -5458,7 +5454,7 @@ where the options are:
   also other bots available.
   </p>
 
-  <p><footer>Updated: Scid vs. PC 4.7 Febuary 2012</footer></p>
+  <p><footer>Updated: Scid vs. PC 4.8 April 2012</footer></p>
 }
 
 set helpTitle(FICSwidget) "FICS: Play on the Internet"
@@ -5521,25 +5517,28 @@ for info about specific commands and variables.
 
 <h3>Commands</h3>
 <ul>
-    <li><term>match</term> PLAYER - Issue game request to a specific person</li>
     <li><term>finger</term> PLAYER - Get info about a specific person</li>
-    <li><term>play</term> GAMENUMBER - Respond to a game request from another player</li>
     <li><term>resume</term>   Issue challenges to users with whom you have a stored or interupted game</li>
     <li><term>abort</term> Request game abort, with result set to "no result"</li>
     <li><term>tell</term> CHANNEL MESSAGE - Send a message to chat channel</li>
     <li><term>tell</term> PLAYER  MESSAGE - Send a message to a specific person</li>
+    <li><term>.</term> MESSAGE - Send a message to the same person</li>
     <li><term>say</term> MESSAGE - Send a message to opponent</li>
-    <li><term>shout</term> MESSAGE - Shout message</li>
+    <li><term>shout</term> MESSAGE - Shout message to everyone</li>
     <li><term>flag</term>   Call time if your opponent has run out of time, and autoflag is disabled</li>
     <li><term>=channel</term>   Show channels player is listening to</li>
     <li><term>+channel</term> NUMBER - Listen to channel NUMBER</li>
     <li><term>-channel</term> NUMBER - Stop listening to channel</li>
     <li><term>news</term>   Show FICS news</li>
-    <li><term>smoves</term> Display moves from a previously played game</li>
-    <li><term>seek</term>   Seek a new game</li>
+    <li><term>observe</term> ID - Load a game into the main board in examine mode</li>
+    <li><term>smoves</term> ID - Load moves from a previously played game into Scid</li>
     <li><term>=notify</term> - Display the player names of whom you are automatically notified.</li>
     <li><term>+notify</term> PLAYER - Add player to your notify list</li>
     <li><term>-notify</term> PLAYER - Remove player to your notify list</li>
+    <li><term>examine</term> GAME/PLAYER - Load a game into the main board in examine mode</li>
+    <li><term>play</term> GAMENUMBER - Respond to a game request from another player</li>
+    <li><term>match</term> PLAYER - Issue game request to a specific person</li>
+    <li><term>seek</term>   Seek a new game</li>
 </ul>
 
 <h3>Variables</h3>
@@ -5571,6 +5570,7 @@ for info about specific commands and variables.
 <li><term>f</term>	finger</li>
 <li><term>n</term>	next</li>
 <li><term>t</term>	tell</li>
+<li><term>o</term>	observe</li>
 </ul>
 
 
