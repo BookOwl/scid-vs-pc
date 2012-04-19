@@ -924,10 +924,7 @@ namespace eval fics {
     ### Removing game 393 from observation list.
     if { [string match "Removing game *" $line] } {
       scan $line "Removing game %d from observation list." game
-      set i [lsearch -exact $::fics::observedGames $game]
-      if {$i > -1} {
-	    set ::fics::observedGames [lreplace $::fics::observedGames $i $i]
-      }
+      remove_observedGame $game
       return
     }
 
@@ -1058,11 +1055,7 @@ namespace eval fics {
 	    "[.fics.bottom.game$num.w.result cget -text] ($res)"
           pack forget .fics.bottom.game$num.b.load
          }
-         # remove game from observedGames
-	 set i [lsearch -exact $::fics::observedGames $num]
-	 if {$i > -1} {
-	   set ::fics::observedGames [lreplace $::fics::observedGames $i $i]
-         }
+         ::fics::remove_observedGame $num
       } 
       return
     }
@@ -1298,14 +1291,10 @@ namespace eval fics {
       label $w.bottom.game$game.b.black -font font_Small
 
       button $w.bottom.game$game.b.close -image arrow_close -font font_Small -relief flat -command "
-	bind .fics <Destroy> {}
-	destroy .fics.bottom.game$game
-	bind .fics <Destroy> ::fics::close
-
-	set i \[lsearch -exact \$::fics::observedGames $game\]
-	if {\$i > -1} {
-	      set ::fics::observedGames \[lreplace \$::fics::observedGames \$i \$i\]
-	}"
+        bind .fics <Destroy> {}
+        destroy .fics.bottom.game$game
+        bind .fics <Destroy> ::fics::close
+        ::fics::unobserveGame $game"
 
       button $w.bottom.game$game.b.load -image arrow_up -font font_Small -relief flat -command "
 
@@ -1317,15 +1306,13 @@ namespace eval fics {
 	  if {\$::fics::mainGame > -1} {
 	    ::fics::addObservedGame \$::fics::mainGame
 	  }
-	  set i \[lsearch -exact \$::fics::observedGames $game\]
-	  if {\$i > -1} {
-	      set ::fics::observedGames \[lreplace \$::fics::observedGames \$i \$i\]
-          }
 	  ### Restarting observe ensures we get a parseStyle12 line straight away
-	  ::fics::writechan \"unobserve $game\"
+	  ::fics::unobserveGame $game
 	  set ::fics::mainGame $game
 	  ::fics::writechan \"observe $game\"
-	  .fics.bottom.game$game.b.close invoke
+	  bind .fics <Destroy> {}
+	  destroy .fics.bottom.game$game
+	  bind .fics <Destroy> ::fics::close
           raiseWin .
 	} else {
           ### should never get here
@@ -1349,6 +1336,18 @@ namespace eval fics {
       pack $w.bottom.game$game.w.white -side left 
       pack [frame $w.bottom.game$game.w.space -width 20] \
            $w.bottom.game$game.w.result -side right
+  }
+
+  proc unobserveGame {game} {
+    ::fics::remove_observedGame $game
+    ::fics::writechan "unobserve $game"
+  }
+
+  proc remove_observedGame {game} {
+    set i [lsearch -exact $::fics::observedGames $game]
+    if {$i > -1} {
+	  set ::fics::observedGames [lreplace $::fics::observedGames $i $i]
+    }
   }
 
   proc updateConsole {line} {
@@ -1607,10 +1606,12 @@ namespace eval fics {
     set black [lindex $line 18]
     set state [lindex $line 19]
 
+    # todo: make a "follow!" command that autoloads games into the main widget and saves them as each game finishes &&&
+
     # If not playing and not examiner (state 1, -1, 2), then we unobserve game, as its not in $observedGames
     if { $state != -1 && $state != 1 && $state != 2 && ($game != $::fics::mainGame) } {
+      # Is "unobserve" really necessary now. This code *can* be reached, but an unobserve has been queued already
       ::fics::writechan "unobserve $game"
-      # todo: make a "follow!" command that autoloads games into the main widget and saves them as each game finishes &&&
       return
     }
 
