@@ -7314,7 +7314,7 @@ sc_game_info (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
         Tcl_AppendResult (ti, "   <blue><run ::windows::eco::Refresh ", basicEcoStr, ">", fullEcoStr, "</run></blue>", NULL);
     }
 
-    /*** Game number + flags + Result + Eco line ***/
+    /*** Game number + flags + Eco line ***/
 
     const char * gameStr = translate (ti, "game");
 
@@ -7376,17 +7376,6 @@ sc_game_info (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
         }
     }
 
-    if (hideNextMove) {
-        // sprintf (temp, "(%s: %s)", translate (ti, "Result"), translate (ti, "hidden"));
-    } else {
-        sprintf (temp, "   %s: %s   %s: %u",
-	  translate (ti, "Result"),
-	  RESULT_LONGSTR[db->game->GetResult()],
-	  translate (ti, "Length"),
-	  (db->game->GetNumHalfMoves() + 1) / 2);
-        Tcl_AppendResult (ti, temp, NULL);
-    }
-
     if (showMaterialValue) {
         uint mWhite = db->game->GetCurrentPos()->MaterialValue (WHITE);
         uint mBlack = db->game->GetCurrentPos()->MaterialValue (BLACK);
@@ -7424,7 +7413,19 @@ sc_game_info (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
         }
     }
 
-    /*** Move line ****/
+    /*** Result + Move line ****/
+
+    if (hideNextMove) {
+        // sprintf (temp, "(%s: %s)", translate (ti, "Result"), translate (ti, "hidden"));
+        Tcl_AppendResult (ti, "<br>", NULL);
+    } else {
+        sprintf (temp, "<br>%s: <blue>%s</blue>   %s: %u   ",
+	  translate (ti, "Result"),
+	  RESULT_LONGSTR[db->game->GetResult()],
+	  translate (ti, "Length"),
+	  (db->game->GetNumHalfMoves() + 1) / 2);
+        Tcl_AppendResult (ti, temp, NULL);
+    }
 
     char san [20];
     byte *nags;
@@ -7453,7 +7454,7 @@ sc_game_info (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
     // Tcl_AppendResult (ti, "<br>", translate (ti, "Move", "Move"), ":  ", NULL);
 
     // if (san[0] != 0) 
-    Tcl_AppendResult (ti, "<br>Move:  ", temp, NULL);
+    Tcl_AppendResult (ti, "Move:  ", temp, NULL);
 
     nags = db->game->GetNags();
     if (printNags  &&  *nags != 0 ) {
