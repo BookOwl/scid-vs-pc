@@ -1339,14 +1339,18 @@ namespace eval fics {
   }
 
   proc unobserveGame {game} {
-    ::fics::remove_observedGame $game
-    ::fics::writechan "unobserve $game"
+    if {[::fics::remove_observedGame $game]} {
+      ::fics::writechan "unobserve $game"
+    }
   }
 
   proc remove_observedGame {game} {
     set i [lsearch -exact $::fics::observedGames $game]
     if {$i > -1} {
-	  set ::fics::observedGames [lreplace $::fics::observedGames $i $i]
+      set ::fics::observedGames [lreplace $::fics::observedGames $i $i]
+      return 1
+    } else {
+      return 0
     }
   }
 
@@ -1703,11 +1707,22 @@ namespace eval fics {
     append fen " $castle $enpassant [lindex $line 15] $moveNumber"
 
     if {$::fics::playing == 2} {
-      # examining game
-      sc_game startBoard $fen
+      # Examining game
       sc_game tags set -white $white
       sc_game tags set -black $black
-      updateBoard -pgn
+      if {[catch {sc_game startBoard $fen}]} {
+	# Hmm - pawn and piece counts get verified in Position::ReadFromFEN, but crazyhouse often has more than 8 pawns.
+	updateGameinfo
+	set moves [lreverse [lrange $line 1 8]]
+	set boardmoves [string map { "-" "." " " "" } $moves]
+	::board::update .board $boardmoves 1
+	.button.back    configure -state normal
+	.button.forward configure -state normal
+	.button.start   configure -state normal
+	.button.end     configure -state normal
+      } else {
+	updateBoard -pgn
+      }
       wm title . "$::scidName: FICS (Examine Mode)"
       return
     }

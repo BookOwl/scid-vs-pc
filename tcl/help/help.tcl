@@ -5362,7 +5362,7 @@ Additionally, the offers use the following coding:
 <p>
 <i>
 Note FICS also offers a bunch of chess variants like bughouse or crazyhouse.
-Playing these games is not supported, but they can be oberved using the </b>observe</b> command.
+Playing these games is not supported, but they can be <a FICSobserve exam>observed and examined</a>.
 </i></p>
 
   <p><footer>Updated: Scid vs. PC 4.8 April 2012</footer></p>
@@ -5435,7 +5435,10 @@ where the options are:
   it can thus have variations added, and the game saved.
   </p>
   <p>
-  <i>Crazyhouse and Bughouse games can only be observed or examined. They cannot be loaded into the main board with "smoves" because of limitations in Scid.</i></p>
+  <i>Crazyhouse and Bughouse games can only be observed or examined. They cannot be loaded
+  into the main board with "smoves" because of limitations in Scid. Additionally, some 
+crazyhouse positions have illegal FEN (for eg - because of more than 8 pawns)
+and trying to run engines against such positions is not recommended.</i></p>
 
   <h3>Lectures</h3>
 
