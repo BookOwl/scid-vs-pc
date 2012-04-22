@@ -725,10 +725,10 @@ namespace eval fics {
       }
 
       # can't use a blank value in radiobuttons/checkbuttons... they look stupid
-	set color $::fics::findopponent(color)
-	if {$::fics::findopponent(color) == "auto"} { set color {} }
-	set formula $::fics::findopponent(formula)
-	if {$::fics::findopponent(formula) == "none"} { set formula {} }
+      set color $::fics::findopponent(color)
+      if {$::fics::findopponent(color) == "auto"} { set color {} }
+      set formula $::fics::findopponent(formula)
+      if {$::fics::findopponent(formula) == "none"} { set formula {} }
 
       set cmd "seek $::fics::findopponent(initTime) $::fics::findopponent(incTime) \
                $::fics::findopponent(rated) $color \
@@ -786,6 +786,11 @@ namespace eval fics {
 
     if { [ catch { if {[llength $l] < 8} { return 0} } ] } { return 0}
 
+    # 72 ++++ GuestIEEE           1  10 unrated blitz      [white]     0-9999 m
+    # auto/manual     indicates whether a game will start automatically when 
+    #                 abbreviated by "a" and "m" [default: auto start]
+    # formula         indicates whether your formula will used to screen , abbreviated by "f"
+
     array set ga {}
 
     set offset 0
@@ -806,7 +811,8 @@ namespace eval fics {
         
     set ga(type) [lindex $l 6]
     if { $ga(type) != "untimed" && $ga(type) != "blitz" && $ga(type) != "standard" && $ga(type) != "lightning" } {
-      return 0
+      # this line can now be ignored
+      return 2
     }
     set ga(color) ""
     if { [lindex $l 7] == "\[white\]" || [lindex $l 7] == "\[black\]" } {
@@ -821,9 +827,7 @@ namespace eval fics {
     lappend ::fics::soughtlist [array get ga]
     return 1
   }
-  ################################################################################
-  #
-  ################################################################################
+
   proc readparse {line} {
     variable logged
     ### what is the significance of the fics prompt "fics%" &&&
@@ -837,7 +841,6 @@ namespace eval fics {
 	catch { displayGraph }
 	return
       }
-      # lappend ::fics::soughtlist $line
       if { [ parseSoughtLine $line ] } {
 	return
       }
@@ -2005,7 +2008,7 @@ namespace eval fics {
     set m "$l(name)($l(elo)) $l(time_init)/$l(time_inc) $l(rated) $l(type) $l(color) $l(start)"
     
     $w.c delete status
-    $w.c create text 35 0 -tags status -text "$m" -font font_Regular -anchor nw
+    $w.c create text 20 0 -tags status -text "$m" -font font_Regular -anchor nw
     $w.c raise game_$idx
 
   }
