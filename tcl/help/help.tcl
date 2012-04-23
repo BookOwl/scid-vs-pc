@@ -271,6 +271,7 @@ set helpText(Index) {<h1>Scid Help Index</h1>
   <li><a ECO Browser>ECO Browser</a> window</li>
   <li><a ECO Codes>ECO codes specification</a></li>
   <li><a Menus Edit>Edit menu</a></li>
+  <li>Adding <a Maintenance Ratings>Elo Ratings</a></li>
   <li><a Email>Email manager</a> window</li>
   <li><a CCeMailChess>Email Chess</a></li>
   <li><a Analysis>Engines, Chess</a></li>

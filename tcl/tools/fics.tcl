@@ -1423,6 +1423,9 @@ namespace eval fics {
 	{*[A-Za-z]\(*\): *} { $t insert end "$line\n" channel }
         {Finger of *}   { $t insert end "$line\n" seeking }
         {History of *}  { $t insert end "$line\n" seeking }
+        {Present company includes *} { $t insert end "$line\n" command }
+        {* goes forward [0-9]* move*} {}
+        {* backs up [0-9]* move*} {}
 	{Width set *}	{}
 	{Height set *}	{}
 	default		{ $t insert end "$line\n" }
