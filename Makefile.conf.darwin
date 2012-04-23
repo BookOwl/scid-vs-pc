@@ -286,7 +286,7 @@ app: all_scid engines
 	install -m 644 Info.plist dist/ScidvsMac.app/Contents/
 	cp -r ./html/* dist/ScidvsMac.app/Contents/Resources/html/
 
-app_install: app
+mac_install: app
 	install -m 755 -d /Applications/ScidvsMac.app
 	cp -rp dist/ScidvsMac.app/* /Applications/ScidvsMac.app
 
@@ -305,6 +305,8 @@ mac_rename:
 	@executable_path/../Frameworks/Tcl.framework/Versions/@TCL_VERSION@/Tcl tkscid
 	install_name_tool -change /Library/Frameworks/Tk.framework/Versions/@TCL_VERSION@/Tk \
 	@executable_path/../Frameworks/Tk.framework/Versions/@TCL_VERSION@/Tk tkscid
+mac_buttons:
+	patch -p0 scid <patches/swap_buttons-2-3.patch
 
 sc_addmove: scripts/sc_addmove.tcl
 	cp scripts/sc_addmove.tcl ./sc_addmove
