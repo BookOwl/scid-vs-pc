@@ -315,6 +315,7 @@ namespace eval fics {
     button $w.command.next -textvar ::tr(Next) -command {::fics::writechan next echo}
     bind $w.command.entry <Up> { ::fics::cmdHistory up }
     bind $w.command.entry <Down> { ::fics::cmdHistory down }
+    bind $w.command.entry <Control-c> {.fics.command.entry delete 0 end}
     bind $w.command.entry <Alt-BackSpace> { 
       # bash like delete last word on command line
       set i [string last { } [.fics.command.entry get] ]
@@ -544,76 +545,88 @@ namespace eval fics {
       ::fics::close
       return
     }
-    if {[string trim $l] == ""} {
-      return
-    }
-    set c [lindex $l 0]
-    if {$c == "fg" || $c == "foreground"} {
-      set fg [lindex $l 1]
-      if {$fg == {}} {
-        set fg [tk_chooseColor -initialcolor $::fics::consolefg -title {FICS Background} -parent $w]
-      }
-      if {![catch {$w.console.text configure -fg $fg}]} {
-	set ::fics::consolefg $fg
-      }
-      return
-    }
-    if {$c == "bg" || $c == "background"} {
-      set bg [lindex $l 1]
-      if {$bg == {}} {
-        set bg [tk_chooseColor -initialcolor $::fics::consolebg -title {FICS Background} -parent $w]
-      }
-      if {![catch {$w.console.text configure -bg $bg}]} {
-	set ::fics::consolebg $bg
-      }
-      return
-    }
 
-    if {$c == "smoves" || $c == "smove"} {
-      # smoves recreates a game without any further announcment
-      if {$::fics::playing == 1 || $::fics::playing == -1} {
-        updateConsole "Scid: smoves disabled while playing a game"
-        return
-      }
+    if {![catch {set c [lindex $l 0]}]} {
+      switch -glob [string trim $c] {
+        {}  {
+            updateConsole {}
+            return
+            }
+	fg - foreground {
+	    set fg [lindex $l 1]
+	    if {$fg == {}} {
+	      set fg [tk_chooseColor -initialcolor $::fics::consolefg -title {FICS Background} -parent $w]
+	    }
+	    if {![catch {$w.console.text configure -fg $fg}]} {
+	      set ::fics::consolefg $fg
+	    }
+	    ::fics::addHistory $l
+            return
+	}
+	bg - background {
+	    set bg [lindex $l 1]
+	    if {$bg == {}} {
+	      set bg [tk_chooseColor -initialcolor $::fics::consolebg -title {FICS Background} -parent $w]
+	    }
+	    if {![catch {$w.console.text configure -bg $bg}]} {
+	      set ::fics::consolebg $bg
+	    }
+	    ::fics::addHistory $l
+            return
+	}
 
-      set confirm [::game::ConfirmDiscard2]
-      if {$confirm == 2} {return}
-      if {$confirm == 0} {sc_game save [sc_game number]}
-      sc_game new
-      set ::fics::mainGame -1
-      set ::fics::playing 0
-      updateBoard -pgn
-      updateTitle
+	smoves - smove {
+	    # smoves recreates a game without any further announcment
+	    if {$::fics::playing == 1 || $::fics::playing == -1} {
+	      updateConsole "Scid: smoves disabled while playing a game"
+	      return
+	    }
 
-      writechan unexamine noecho
-      writechan $l "echo"
+	    set confirm [::game::ConfirmDiscard2]
+	    if {$confirm == 2} {return}
+	    if {$confirm == 0} {sc_game save [sc_game number]}
+	    sc_game new
+	    set ::fics::mainGame -1
+	    set ::fics::playing 0
+	    updateBoard -pgn
+	    updateTitle
 
-      set ::fics::waitForMoves no_meaning
-      vwaitTimed ::fics::waitForMoves 5000 nowarn
-      updateBoard -pgn
-      updateTitle
-    } elseif {([string match unob* $c]||[string match unex* $c])  && \
-               $::fics::playing != 1 && $::fics::playing != -1 && \
-               ($l == $c || [lindex $l 1] == $::fics::mainGame)} {
-      # unobserve/unexamine main game
-      set ::fics::mainGame -1
-      if {[string match unex* $c]} {
-	set ::fics::playing 0
-	updateBoard -pgn
-	updateTitle
-      }
-      writechan $l "echo"
-    } else {
-      writechan $l "echo"
-    }
+	    writechan unexamine noecho
+	    writechan $l echo
+	    ::fics::addHistory $l
 
+	    set ::fics::waitForMoves no_meaning
+	    vwaitTimed ::fics::waitForMoves 5000 nowarn
+	    updateBoard -pgn
+	    updateTitle
+            return
+	} 
+	default {
+            if {([string match unob* $c]||[string match unex* $c])  && \
+		 $::fics::playing != 1 && $::fics::playing != -1 && \
+		 ($l == $c || [lindex $l 1] == $::fics::mainGame)} {
+	      # unobserve/unexamine main game
+	      set ::fics::mainGame -1
+	      if {[string match unex* $c]} {
+		set ::fics::playing 0
+		updateBoard -pgn
+		updateTitle
+	      }
+	    }
+	}
+      } ; # switch
+      ::fics::addHistory $l
+    } ; # catch 
+    writechan $l echo
+    $w.console.text yview moveto 1
+  }
+
+  proc addHistory { l } {
     if {[lindex $::fics::history end] != $l} {
       lappend ::fics::history $l
     }
     set ::fics::history_pos [llength $::fics::history]
-    $w.console.text yview moveto 1
   }
-
 
   proc cmdHistory { action } {
     set t .fics.command.entry
@@ -1423,7 +1436,7 @@ namespace eval fics {
 	{*[A-Za-z]\(*\): *} { $t insert end "$line\n" channel }
         {Finger of *}   { $t insert end "$line\n" seeking }
         {History of *}  { $t insert end "$line\n" seeking }
-        {Present company includes *} { $t insert end "$line\n" command }
+        {Present company includes: *} { $t insert end "$line\n" command }
         {* goes forward [0-9]* move*} {}
         {* backs up [0-9]* move*} {}
 	{Width set *}	{}
