@@ -1876,6 +1876,9 @@ namespace eval fics {
   proc showClocks {} {
     set w .fics.bottom
 
+    if {![winfo exists .fics]} {
+      return
+    }
     if {$::fics::graphon || $::fics::smallclocks} {
       pack forget $w.clocks
     } else {

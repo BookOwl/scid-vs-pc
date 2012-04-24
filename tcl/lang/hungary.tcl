@@ -274,6 +274,8 @@ menuText H OptionsFontsSmall "Kisbetûs" 0 {A kisbetûs karakterkészlet változtatá
 menuText H OptionsFontsFixed "Rögzített" 0 {A rögzített szélességû karakterkészlet változtatása}
 menuText H OptionsGInfo "Játszmainformáció" 0 {Játszmainformáció változtatása}
 menuText H OptionsFics "FICS" 0
+menuText H OptionsFicsAuto "Autopromote Királyno" 0
+menuText H OptionsFicsClock "Digitális Óra" 0
 menuText H OptionsLanguage "Nyelv" 0 {A menü nyelvének kiválasztása}
 # ====== TODO To be translated ======
 menuText H OptionsMovesTranslatePieces "Translate pieces" 0 {Translate first letter of pieces}
@@ -444,6 +446,8 @@ translate H SearchResults {A keresés eredménye}
 translate H OpeningTheDatabase {Adatbázis megnyitása}
 translate H Database {Adatbázis}
 translate H Filter {Szûrõ}
+# todo
+translate H IgnoreCase {Ignore Case}
 translate H noGames {Nincs találat}
 translate H allGames {Összes játszma}
 translate H empty {üres}

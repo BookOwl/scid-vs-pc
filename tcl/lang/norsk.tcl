@@ -290,6 +290,9 @@ menuText O OptionsFontsSmall "Liten" 0 {Endre den lille skrifttypen}
 menuText O OptionsFontsFixed "Fastbredde" 0 {Endre fastbreddeskrifttypen}
 menuText O OptionsGInfo "Partiinformasjon" 0 {Informasjonsinnstillinger}
 menuText O OptionsFics "FICS" 0
+# todo
+menuText O OptionsFicsAuto "Autopromote Queen" 0
+menuText O OptionsFicsClock "Digital klokke" 0
 menuText O OptionsLanguage "Språk" 0 {Velg menyspråk}
 # ====== TODO To be translated ======
 menuText O OptionsMovesTranslatePieces "Translate pieces" 0 {Translate first letter of pieces}
@@ -462,6 +465,7 @@ translate O SearchResults {Søk i resultater}
 translate O OpeningTheDatabase {Åpningsdatabase}
 translate O Database {Database}
 translate O Filter {Filter}
+translate O IgnoreCase {Ignorer sak}
 translate O noGames {ingen partier}
 translate O allGames {alle partier}
 translate O empty {tom}

@@ -269,6 +269,8 @@ menuText C OptionsFontsSmall "Malé" 0 {Zmìnit malý font}
 menuText C OptionsFontsFixed "Fixní" 0 {Zmìnit font fixní ¹íøky}
 menuText C OptionsGInfo "Informace o partii" 0 {Volby pro informace o partii}
 menuText C OptionsFics "FICS" 0
+menuText C OptionsFicsAuto "Autopromote královna" 0
+menuText C OptionsFicsClock "Digitální hodiny" 0
 menuText C OptionsLanguage "Jazyk" 0 {Vybrat jazyk menu}
 # ====== TODO To be translated ======
 menuText C OptionsMovesTranslatePieces "Translate pieces" 0 {Translate first letter of pieces}
@@ -440,6 +442,7 @@ translate C SearchResults {Hledat výsledky}
 translate C OpeningTheDatabase {Databáze zahájení}
 translate C Database {Databáze}
 translate C Filter {Filtr}
+translate C IgnoreCase {Ignorovat Pouzdro}
 translate C noGames {¾ádné partie}
 translate C allGames {v¹echny partie}
 translate C empty {prázdná}

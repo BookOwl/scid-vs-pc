@@ -274,6 +274,8 @@ menuText D OptionsFontsSmall "Klein" 0 {Kleine Zeichen}
 menuText D OptionsFontsFixed "Fest" 0 {Schriftart mit fester Breite (nicht-proportional)}
 menuText D OptionsGInfo "Partieinformation" 0 {Optionen für Informationsbereich}
 menuText D OptionsFics "FICS" 0
+menuText D OptionsFicsAuto "Autopromote Königin" 0
+menuText D OptionsFicsClock "Digitale Uhr" 0
 menuText D OptionsLanguage "Sprache" 0 {Sprache wählen}
 menuText D OptionsMovesTranslatePieces "Figurennamen übersetzen" 0 {Übersetze den ersten Buchstaben der Figurenbezeichnung}
 menuText D OptionsMovesHighlightLastMove "Letzen Zug hervorheben" 0 {Rahmt Start- und Zielfeld des letzten Zuges farbig ein}
@@ -432,6 +434,7 @@ translate D SearchResults {Suchergebnisse}
 translate D OpeningTheDatabase {Datenbank öffnen}
 translate D Database {Datenbank}
 translate D Filter {Filter}
+translate D IgnoreCase {Ignoriert Groß}
 translate D noGames {keine Partien}
 translate D allGames {alle Partien}
 translate D empty {leer}

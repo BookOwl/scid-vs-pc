@@ -1219,8 +1219,8 @@ foreach numeric {".,"   ". "   "."   ",."   ", "   ","} \
 
 set m .menu.options.fics
 menu $m -tearoff 1
-$m add checkbutton -label {Autopromote Queen} -variable ::fics::autopromote
-$m add checkbutton -label {Digital Clock} -variable ::fics::smallclocks -command ::fics::showClocks
+$m add checkbutton -label  OptionsFicsAuto -variable ::fics::autopromote
+$m add checkbutton -label OptionsFicsClock -variable ::fics::smallclocks -command ::fics::showClocks
 
 set m .menu.options.export
 menu $m -tearoff -1
@@ -1574,11 +1574,15 @@ proc setLanguageMenus {{lang ""}} {
         GInfo$tag $lang
   }
   configMenuText .menu.options.entry [tr OptionsShowVarPopup $oldLang] OptionsShowVarPopup $lang
-  # S.A. here's how to fix these f-ing menus.
+  # S.A. here's how to fix these f-ing menus. &&&
   foreach tag {Ask Animate Delay Suggest Key Coord Space TranslatePieces HighlightLastMove ShowVarArrows} {
     configMenuText .menu.options.entry [tr OptionsMoves$tag $oldLang] \
         OptionsMoves$tag $lang
   }
+
+  configMenuText .menu.options.fics [tr OptionsFicsAuto $oldLang] OptionsFicsAuto $lang
+  configMenuText .menu.options.fics [tr OptionsFicsClock $oldLang] OptionsFicsClock $lang
+
   foreach tag { Color Width Display } {
     configMenuText .menu.options.entry.highlightlastmove [tr OptionsMovesHighlightLastMove$tag $oldLang] OptionsMovesHighlightLastMove$tag $lang
   }

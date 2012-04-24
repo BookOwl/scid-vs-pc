@@ -282,6 +282,9 @@ menuText E OptionsFontsSmall "Small" 0 {Change the small font}
 menuText E OptionsFontsFixed "Fixed" 0 {Change the fixed-width font}
 menuText E OptionsGInfo "Game Information" 0 {Game information options}
 menuText E OptionsFics "FICS" 0 {Free Chess Internet Server}
+menuText E OptionsFicsAuto "Autopromote Queen" 0
+menuText E OptionsFicsClock "Digital Clock" 0
+
 menuText E OptionsLanguage "Language" 0 {Select menu language}
 menuText E OptionsMovesTranslatePieces "Translate Pieces" 0 {Translate first letter of pieces}
 menuText E OptionsMovesHighlightLastMove "Highlight Last Move" 0 {Highlight last move}
@@ -441,6 +444,7 @@ translate E SearchResults {Search Results}
 translate E OpeningTheDatabase {Opening database}
 translate E Database {Database}
 translate E Filter {Filter}
+translate E IgnoreCase {Ignore case}
 translate E noGames {empty}
 translate E allGames {all}
 translate E empty {empty}

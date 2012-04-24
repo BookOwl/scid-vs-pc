@@ -258,6 +258,8 @@ menuText I OptionsFontsSmall "Piccolo" 0 {Cambia il font 'small'}
 menuText I OptionsFontsFixed "Fisso" 0 {Cambia il font di larghezza fissa}
 menuText I OptionsGInfo "Informazioni sulla partita" 0 {Opzioni sulle informazioni della partita}
 menuText I OptionsFics "FICS" 0
+menuText I OptionsFicsAuto "Autopromozione Regina" 0
+menuText I OptionsFicsClock "Orologio Digitale" 0
 menuText I OptionsLanguage "Lingua" 0 {Sceglie una nuova lingua di menu}
 menuText I OptionsMovesTranslatePieces "Traduci i pezzi" 0 {Traduce la prima lettera dei pezzi}
 # ====== TODO To be translated ======
@@ -421,6 +423,7 @@ translate I SearchResults {Risultati della ricerca}
 translate I OpeningTheDatabase {Database di aperture}
 translate I Database {Database}
 translate I Filter {Filtro}
+translate I IgnoreCase {Ignora Maiuscole}
 translate I noGames {no partite}
 translate I allGames {tutte le partite}
 translate I empty {vuoto}

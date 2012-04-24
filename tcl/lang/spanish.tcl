@@ -268,6 +268,8 @@ menuText S OptionsFontsSmall "Pequeña" 0 {Cambia la fuente pequeña}
 menuText S OptionsFontsFixed "Fijada" 0 {Cambia la anchura fijada de la fuente}
 menuText S OptionsGInfo "Información de la partida" 0 {Información de la partida}
 menuText S OptionsFics "FICS" 0
+menuText S OptionsFicsAuto "Autopromoción Reina" 0
+menuText S OptionsFicsClock "Reloj Digital" 0
 menuText S OptionsLanguage "Lenguaje" 0 {Selecciona el lenguaje del menú}
 menuText S OptionsMovesTranslatePieces "Traducir piezas" 0 {Traducir la primera letra de las piezas}
 menuText S OptionsMovesHighlightLastMove "Resalta última jugada" 0 {Resalta la última jugada}
@@ -430,6 +432,7 @@ translate S SearchResults {Buscar resultados}
 translate S OpeningTheDatabase {Abriendo base de datos}
 translate S Database {Base de datos}
 translate S Filter {Filtro}
+translate S IgnoreCase {Ignorar el Asunto}
 translate S noGames {no hay partidas}
 translate S allGames {todas las partidas}
 translate S empty {vacía}

@@ -289,6 +289,9 @@ menuText Y OptionsFontsSmall "Mali" 0 {Promeni mali font}
 menuText Y OptionsFontsFixed "Neproporcionalni" 0 {Promeni neproporcionalni font}
 menuText Y OptionsGInfo "Informacije o Partiji" 0 {Opcije informacija o partiji}
 menuText Y OptionsFics "FICS" 0
+# todo
+menuText Y OptionsFicsAuto "Autopromote Queen" 0
+menuText Y OptionsFicsClock "Digital Clock" 0
 menuText Y OptionsLanguage "Jezik" 0 {Izaberi jezik}
 # ====== TODO To be translated ======
 menuText Y OptionsMovesTranslatePieces "Translate pieces" 0 {Translate first letter of pieces}
@@ -461,6 +464,8 @@ translate Y SearchResults {Tra¾i rezultate}
 translate Y OpeningTheDatabase {Otvaranje baze}
 translate Y Database {Baza}
 translate Y Filter {Filter}
+# todo
+translate Y IgnoreCase {Ignore Case}
 translate Y noGames {ni jedna partija}
 translate Y allGames {sve partije}
 translate Y empty {prazno}

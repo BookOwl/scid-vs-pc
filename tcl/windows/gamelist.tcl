@@ -478,7 +478,7 @@ proc ::windows::gamelist::Open {} {
   bind $w.b.find <Home> "$w.b.find icursor 0; break"
   bind $w.b.find <End> "$w.b.find icursor end; break"
 
-  checkbutton $w.b.findcase -text "Ignore Case" -font font_Small \
+  checkbutton $w.b.findcase -textvar ::tr(IgnoreCase) -font font_Small \
     -variable ::windows::gamelist::findcase -onvalue 1 -offvalue 0
 
   pack $w.b.findcase -side right

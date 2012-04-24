@@ -253,6 +253,8 @@ menuText P OptionsFontsSmall "Ma³a" 0 {Zmieñ ma³± czcionkê}
 menuText P OptionsFontsFixed "Sta³a" 0 {Zmieñ czcionkê sta³ej szeroko¶ci}
 menuText P OptionsGInfo "Informacje o partii" 0 {Sposób wy¶wietlania informacji o partii}
 menuText P OptionsFics "FICS" 0
+menuText P OptionsFicsAuto "Autopromote Królowa" 0
+menuText P OptionsFicsClock "Zegar Cyfrowy" 0
 menuText P OptionsLanguage "Jêzyk" 0 {Wybierz jêzyk}
 menuText P OptionsMovesTranslatePieces "T³umacz oznaczenia figur" 0 {T³umacz pierwsze litery figur}
 menuText P OptionsMovesHighlightLastMove "Pod¶wietl ostatnie posuniêcie" 0 {Pod¶wietl ostatnie posuniêcie}
@@ -415,6 +417,8 @@ translate P SearchResults {Wyniki wyszukiwania}
 translate P OpeningTheDatabase "Otwieranie bazy"
 translate P Database {Bazy}
 translate P Filter {Filtr}
+# todo
+translate P IgnoreCase {Ignorowac Case}
 translate P noGames {brak partii}
 translate P allGames {wszystkie partie}
 translate P empty {brak}
