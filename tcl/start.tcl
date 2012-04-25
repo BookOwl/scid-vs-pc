@@ -387,6 +387,7 @@ set ::fics::server_ip   0.0.0.0
 set ::fics::autopromote 0
 set ::fics::smallclocks 1
 set ::fics::size        30
+set ::fics::sound	0
 
 # Defaults for initial directories:
 set initialDir(base) "."

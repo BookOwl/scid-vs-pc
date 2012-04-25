@@ -844,8 +844,8 @@ namespace eval fics {
   proc readparse {line} {
     variable logged
     ### what is the significance of the fics prompt "fics%" &&&
-    if {[string match {fics% *} $line]} {
-	set line [string range $line 6 end]
+    if {[string match {fics%*} $line]} {
+	set line [string trim [string range $line 5 end]]
     }
 
     if { $::fics::sought } {
@@ -1009,7 +1009,9 @@ namespace eval fics {
       updateBoard -pgn -animate
       updateTitle
 
-      ::utils::sound::PlaySound sound_move
+      if {$::fics::sound} {
+	::utils::sound::PlaySound sound_move
+      }
 
       ### hide offers graph ; sometime ::fics::updateGraph doesn't get cancelled though !?^&$%!
       set ::fics::graphon 0
@@ -1410,10 +1412,12 @@ namespace eval fics {
 			  }
 			}
 	{* seeking *}	{ $t insert end "$line\n" seeking }
-	{->>say *}	{ $t insert end "$line\n" tells 
-                          # if {$::fics::playing} 
-			  if {[regexp -- {->>say (.*$)} $line t1 t2]} {
-			    ::commenteditor::appendComment "\[$::fics::reallogin\] $t2"
+	{->>say *} - {->>. *}	{
+                          $t insert end "$line\n" tells 
+                          if {$::fics::playing == 1 || $::fics::playing == -1}  {
+			    if {[regexp -- {->>say (.*$)} $line t1 t2]} {
+			      ::commenteditor::appendComment "\[$::fics::reallogin\] $t2"
+			    }
                           }
 			}
 	{* says: *}	{ $t insert end "$line\n" tells 
@@ -1751,12 +1755,16 @@ namespace eval fics {
 
     # try to play the move and check if fen corresponds. If not this means the position needs to be set up.
     if {$moveSan != "none" && $::fics::playing != -1} {
-      ## Move to game end incase user was messing around with the game
+      # Process opponents move
+      # Move to game end incase user was messing around with the game
       sc_move end
 
+      # Why is this check necessary ?
       if { ([sc_pos side] == "white" && $color == "B") || ([sc_pos side] == "black" && $color == "W") } {
-        # ::utils::sound::PlaySound sound_move
-        # ::utils::sound::AnnounceNewMove $moveSan
+        if {$::fics::sound} {
+	  ::utils::sound::PlaySound sound_move
+	  # ::utils::sound::AnnounceNewMove $moveSan
+        }
         set ::fics::lastmove $moveSan ; # remember last opponenets move for takeback comment
         if { [catch { sc_move addSan $moveSan } err ] } {
           puts "error $err"
