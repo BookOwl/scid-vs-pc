@@ -1762,8 +1762,11 @@ namespace eval fics {
       # Why is this check necessary ?
       if { ([sc_pos side] == "white" && $color == "B") || ([sc_pos side] == "black" && $color == "W") } {
         if {$::fics::sound} {
-	  ::utils::sound::PlaySound sound_move
-	  # ::utils::sound::AnnounceNewMove $moveSan
+          if {$::utils::sound::announceNew} {
+	    ::utils::sound::AnnounceMove $moveSan
+          } else {
+	    ::utils::sound::PlaySound sound_move
+          }
         }
         set ::fics::lastmove $moveSan ; # remember last opponenets move for takeback comment
         if { [catch { sc_move addSan $moveSan } err ] } {
