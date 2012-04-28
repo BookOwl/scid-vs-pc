@@ -951,10 +951,8 @@ namespace eval fics {
       after cancel ::fics::updateGraph
 
       # Move a previously observed game back to the fics widget
-      if {$::fics::mainGame > -1} {
-	::fics::addObservedGame $::fics::mainGame
-	set ::fics::mainGame -1
-      }
+      ::fics::demote_mainGame 
+      set ::fics::mainGame -1 ; # reset to this new game with first style12 
 
       sc_game new
 
@@ -1321,9 +1319,7 @@ namespace eval fics {
             return
           }
 	  ### If we're already observing a game, move it back to a small board
-	  if {\$::fics::mainGame > -1} {
-	    ::fics::addObservedGame \$::fics::mainGame
-	  }
+	  ::fics::demote_mainGame 
 	  ### Restarting observe ensures we get a parseStyle12 line straight away
 	  ::fics::unobserveGame $game
 	  set ::fics::mainGame $game
@@ -1369,6 +1365,14 @@ namespace eval fics {
       return 1
     } else {
       return 0
+    }
+  }
+
+  proc demote_mainGame {} {
+    if {$::fics::mainGame > -1} {
+      ::fics::writechan "unobserve $::fics::mainGame"
+      ::fics::writechan "observe $::fics::mainGame"
+      ::fics::addObservedGame $::fics::mainGame
     }
   }
 
@@ -1665,7 +1669,7 @@ namespace eval fics {
     ::gameclock::setSec 2 [ expr 0 - $blackRemainingTime ]
     # Show time remaining in titlebar ?
     # wm title . "$::scidName: $white ($whiteRemainingTime) - $black ($blackRemainingTime)"
-    if {$fics::playing == 1 || $fics::playing == -1} {
+    if {$fics::playing == 1 || $fics::playing == -1 ||  $fics::playing == 0} {
       if {$color == "W"} {
 	::gameclock::start 1
 	::gameclock::stop 2
