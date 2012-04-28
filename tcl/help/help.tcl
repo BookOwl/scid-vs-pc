@@ -983,7 +983,8 @@ set helpText(Searches) {<h1>Searches in Scid</h1>
   </p>
   <p>
   With Position, Tree, and Material/Pattern searches, when you load a matching game
-  it will automatically show the relevant game position.
+  it will automatically show the relevant game position, (except
+  - in the unlikely event - that the position occurred after move 255 which causes a byte overflow).
   </p>
   <p>
   <i>Most searches only apply to the Main Line of a game, and not to Variations</i>.

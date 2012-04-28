@@ -78,7 +78,6 @@ proc ::crosstab::Open {} {
   toplevel $w
   wm title $w "Scid: [tr WindowsCross]"
   wm minsize $w 10 5
-  wm withdraw $w
   setWinLocation $w
   setWinSize $w
 
@@ -338,7 +337,6 @@ proc ::crosstab::Open {} {
 
   bind $w <Configure> "recordWinSize $w"
   update
-  wm deiconify $w
 }
 
 proc ::crosstab::Refresh {} {
