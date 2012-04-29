@@ -1515,9 +1515,7 @@ proc popAnalysisData {n} {
   return $lastVar
 }
 
-################################################################################
-#
-################################################################################
+
 proc addAnalysisVariation {n} {
   global analysis
 
@@ -2085,6 +2083,7 @@ proc makeAnalysisWin {{n 0} {settime 0}} {
 
   button $w.b.move -image tb_addmove -command "makeAnalysisMove $n" -relief $relief
   ::utils::tooltip::Set $w.b.move $::tr(AddMove)
+  bind $w.b.move <Button-3> "addAnalysisScore $n"
 
   button $w.b.line -image tb_addvar -command "addAnalysisVariation $n" -relief $relief
   ::utils::tooltip::Set $w.b.line $::tr(AddVariation)
@@ -2272,6 +2271,20 @@ proc addAnalysisMove {{n 0}} {
     makeAnalysisMove $n
     # .analysisWin$n.b.move invoke
   }
+}
+
+proc addAnalysisScore {n} {
+  global analysis
+
+  if {$analysis(uci$n)} {
+    set tmp_moves [ lindex [ lindex $analysis(multiPV$n) 0 ] 2 ]
+    set text [format "\[%s: %s\]" $analysis(name$n) [scoreToMate $analysis(score$n) $tmp_moves $n]]
+  } else  {
+    set text [format "\[%s: %+.2f\]" $analysis(name$n) $analysis(score$n)]
+  }
+  sc_game undoPoint
+  sc_pos setComment "$text [sc_pos getComment]"
+  updateBoard -pgn
 }
 
 ### Toggle whether Move History is shown (now also controls line wrap)
