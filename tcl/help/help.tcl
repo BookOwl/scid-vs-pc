@@ -5404,7 +5404,7 @@ where the options are:
 </ul>
   One can also browse all current games using the <b>games</b> command, and type <b>unobserve</b> to stop following all games.
   </p>
-  <p>
+  <br>
   Observed games are shown as small boards in Scid's FICS widget. The boards' size is controlled by a slider,
   and they have two small buttons:
   <ul>
@@ -5413,11 +5413,9 @@ where the options are:
   troublesome, and it is disabled for </i><b>variants</b>.</li>
   <li><img arrow_close> Closes the game.</li>
   </ul>
-  </p>
 
-  <h3>Discussion</h3>
   <p>
-  For discussing the game with other observers,
+  For discussing games with other observers,
   <b>whisper</b> and <b>kibitz</b> can be used. All these conversations can be read in the console.
   </p>
 
@@ -5427,12 +5425,12 @@ where the options are:
   FICS and Scid vs. PC offer two ways to analyze games. Smoves and Examine.
   </p>
   <p>
-  The FICS "examine" command is now well supported, and is a convenient way
+  The FICS <b>examine</b> command is now well supported, and is a convenient way
   for groups or friends to analyze games. After issuing  "examine GMShort -1" (for eg),
-  Scid's large move buttons are bound to the FICS "forward" and "back" commands.
+  Scid's large move buttons are bound to the FICS <b>forward</b> and <b>back</b> commands.
   </p>
   <p>
-  The "smoves" command loads a previously played or suspended game into the main board.
+  The <b>smoves</b> command loads a previously played or suspended game into the main board.
   Using "smoves GMShort -1" (for eg) is better in that the whole game is loaded to Scid, and 
   it can thus have variations added, and the game saved.
   </p>
@@ -5441,6 +5439,12 @@ where the options are:
   into the main board with "smoves" because of limitations in Scid. Additionally, some 
 crazyhouse positions have illegal FEN (for eg - because of more than 8 pawns)
 and trying to run engines against such positions is not recommended.</i></p>
+
+  <h3>Downloading Games</h3>
+  <p>
+  To download more than a handful of games, 
+  <url http://www.ficsgames.com/>www.ficsgames.com</url> is a great resource.
+  </p>
 
   <h3>Lectures</h3>
 
