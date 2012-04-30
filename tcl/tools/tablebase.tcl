@@ -6,11 +6,10 @@ set tbTraining 0
 set tbBoard 0
 set tbStatus ""
 
-if { [catch {package require http} ] } {
-  set ::tb::online_available 0
-} else  {
-  set ::tb::online_available 1
-}
+### Currently broken/unfinsihed
+
+set ::tb::online_available 0
+# set ::tb::online_available [expr ! [catch {package require http} ] ]
 
 namespace eval ::tb {
   set url "http://k4it.de/egtb/fetch.php"
@@ -204,10 +203,6 @@ proc ::tb::OpenClose {} {
   ### Buttons
 
   checkbutton $w.b.training -text $::tr(Training) -variable tbTraining -command ::tb::training -relief raised -padx 4 -pady 5
-  # button $w.b.online -text Online -command ::tb::updateOnline -relief raised -padx 4 -pady 5
-  if { !$::tb::online_available } {
-    catch { $w.b.online configure -state disabled }
-  }
   button $w.b.random -text "Random" -command ::tb::random
   button $w.b.showboard -image tb_coords -command ::tb::showBoard
   dialogbutton $w.b.help -text $::tr(Help) -command { helpWindow TB }
@@ -216,7 +211,13 @@ proc ::tb::OpenClose {} {
       -relief flat -anchor w -height 0
   packbuttons right $w.b.close $w.b.help
   pack $w.b.training -side left -padx 2 -pady 2
-  catch { pack $w.b.online -side left -padx 2 -pady 2 }
+
+  ### Currently broken/unfinsihed
+  if { $::tb::online_available } {
+    button $w.b.online -text Online -command ::tb::updateOnline -relief raised -padx 4 -pady 5
+    pack $w.b.online -side left -padx 2 -pady 2
+  }
+
   pack $w.b.random $w.b.showboard -side left -padx 2 -pady 2
   pack $w.b.status -side left -fill x -expand yes
   bind $w <Destroy> {set ::tb::isOpen 0; set tbTraining 0}
@@ -501,93 +502,90 @@ proc ::tb::results {} {
   }
 }
 
-################################################################################
-#
-################################################################################
-proc ::tb::updateOnline {} {
-  global tbTraining
-  set w .tbWin
-  if {! [winfo exists $w]} { return }
 
-  # proxy configuration - needs UI
-  # ::http::config -proxyhost $::tb::proxyhost -proxyport $::tb::proxyport
+### Currently broken/unfinsihed
 
-  set t $w.pos.text
-  if { ! $tbTraining } {
-    set query [ ::http::formatQuery hook null action egtb fen [sc_pos fen] ]
-    ::http::geturl $::tb::url -timeout 5000 -query $query -command { ::tb::httpCallback }
-  }
-}
-################################################################################
-#
-################################################################################
-proc ::tb::httpCallback { token } {
+if { $::tb::online_available } {
+  proc ::tb::updateOnline {} {
+    global tbTraining
+    set w .tbWin
+    if {! [winfo exists $w]} { return }
 
-  upvar #0 $token state
+    # proxy configuration - needs UI
+    # ::http::config -proxyhost $::tb::proxyhost -proxyport $::tb::proxyport
 
-  set w .tbWin
-  if {! [winfo exists $w]} { return }
-  set t $w.pos.text
-
-  # delete previous online output
-  foreach tag {tagonline} {
-    while {1} {
-      set del [$t tag nextrange $tag 1.0]
-      if {$del == ""} {break}
-      catch {$t delete [lindex $del 0] [lindex $del 1]}
+    set t $w.pos.text
+    if { ! $tbTraining } {
+      set query [ ::http::formatQuery hook null action egtb fen [sc_pos fen] ]
+      ::http::geturl $::tb::url -timeout 5000 -query $query -command { ::tb::httpCallback }
     }
   }
 
-  if {$state(status) != "ok"} {
-    $t insert end $state(status) tagonline
-    return
-  }
+  proc ::tb::httpCallback { token } {
 
-  set b $state(body)
-  set result ""
+    upvar #0 $token state
 
-  if {[sc_pos side] == "black"} {
-    set tmp ""
-    set found 0
+    set w .tbWin
+    if {! [winfo exists $w]} { return }
+    set t $w.pos.text
+
+    # delete previous online output
+    foreach tag {tagonline} {
+      while {1} {
+	set del [$t tag nextrange $tag 1.0]
+	if {$del == ""} {break}
+	catch {$t delete [lindex $del 0] [lindex $del 1]}
+      }
+    }
+
+    if {$state(status) != "ok"} {
+      $t insert end $state(status) tagonline
+      return
+    }
+
+    set b $state(body)
+    set result ""
+
+    if {[sc_pos side] == "black"} {
+      set tmp ""
+      set found 0
+      foreach line [split $b "\n" ] {
+	if {$line == "NEXTCOLOR"} {
+	  set found 1
+	  continue
+	}
+	if {$found} {
+	  append tmp "$line\n"
+	}
+      }
+      set b $tmp
+    }
+
     foreach line [split $b "\n" ] {
       if {$line == "NEXTCOLOR"} {
-        set found 1
-        continue
+	break
       }
-      if {$found} {
-        append tmp "$line\n"
+      if { $line == "No information available" } {
+	append result "$line\n"
+      }
+      if {[string match "hook|null|value|*" $line]} {
+	append result "Online : [string range $line 16 end ]\n"
+	continue
+      }
+      if {[scan $line "%d-%d:%s" sq1 sq2 tmp] == 3} {
+	set p1 [ string toupper [string index [sc_pos board] $sq1 ] ]
+	set p2 [string index [sc_pos board] $sq2 ]
+	set take ""
+	if {$p2 != "."} {
+	  set take "x"
+	}
+	append result "$p1[::board::san $sq1]$take[::board::san $sq2] [string range $line [string first : $line] end]\n"
       }
     }
-    set b $tmp
+    ::http::cleanup state
+    $t insert end $result tagonline
   }
-
-  foreach line [split $b "\n" ] {
-    if {$line == "NEXTCOLOR"} {
-      break
-    }
-    if { $line == "No information available" } {
-      append result "$line\n"
-    }
-    if {[string match "hook|null|value|*" $line]} {
-      append result "Online : [string range $line 16 end ]\n"
-      continue
-    }
-    if {[scan $line "%d-%d:%s" sq1 sq2 tmp] == 3} {
-      set p1 [ string toupper [string index [sc_pos board] $sq1 ] ]
-      set p2 [string index [sc_pos board] $sq2 ]
-      set take ""
-      if {$p2 != "."} {
-        set take "x"
-      }
-      append result "$p1[::board::san $sq1]$take[::board::san $sq2] [string range $line [string first : $line] end]\n"
-    }
-  }
-  ::http::cleanup state
-  $t insert end $result tagonline
 }
-################################################################################
-#
-################################################################################
 
 # ::tb::random
 #   Sets up a random position with the material of the tablebase
