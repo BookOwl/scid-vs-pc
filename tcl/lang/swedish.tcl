@@ -250,7 +250,7 @@ menuText W OptionsFontsSmall "Liten" 0 {Ändra det lilla typsnittet}
 menuText W OptionsFontsFixed "Fixerad" 0 {Ändra det fixerade typsnittet}
 menuText W OptionsGInfo "Partiinformation" 0 {Alternativ för partiinformation}
 menuText W OptionsFics "FICS" 0
-menuText W OptionsFicsAuto "Autopromote Drottningen" 0
+menuText W OptionsFicsAuto "Autopronomera Drottningen" 0
 menuText W OptionsFicsClock "Digital Klocka" 0
 menuText W OptionsLanguage "Språk" 0 {Välj språk}
 menuText W OptionsMovesTranslatePieces "Översätt pjäser" 0 {Översätt första bokstaven för pjäser}
@@ -411,7 +411,7 @@ translate W SearchResults {Sökresultat}
 translate W OpeningTheDatabase {Öppnar databas}
 translate W Database {Databas}
 translate W Filter {Filter}
-translate W IgnoreCase {Ignorera Case}
+translate W IgnoreCase {Ignorera textstorlek}
 translate W noGames {inga partier}
 translate W allGames {alla partier}
 translate W empty {tom}
