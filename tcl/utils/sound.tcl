@@ -143,7 +143,9 @@ proc ::utils::sound::CancelSounds {} {
 ################################################################################
 proc ::utils::sound::PlaySound {sound} {
   if {! $::utils::sound::hasSnackPackage} { return }
-  lappend ::utils::sound::soundQueue $sound
+  if {$sound != [lindex $::utils::sound::soundQueue end]} {
+    lappend ::utils::sound::soundQueue $sound
+  }
   after idle ::utils::sound::CheckSoundQueue
 }
 
