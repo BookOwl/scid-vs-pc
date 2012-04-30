@@ -1769,7 +1769,10 @@ namespace eval fics {
 	  ::utils::sound::AnnounceMove $moveSan
 	} else {
 	  if {$::fics::sound} {
-	    ::utils::sound::PlaySound sound_move
+	    # ::utils::sound::CancelSounds
+	    if {[lindex $::utils::sound::soundQueue end] != "sound_move"} {
+	      ::utils::sound::PlaySound sound_move
+            }
 	  }
         }
         set ::fics::lastmove $moveSan ; # remember last opponenets move for takeback comment
@@ -1837,8 +1840,8 @@ namespace eval fics {
       set ::fics::waitForMoves ""
 
       # After the 5 second time period, we could decide to give up and just set the FEN,
-      # but this leaves the game without it's move history, and is hence disabled.
-      if { 0 && $fen != [sc_pos fen]} {
+      # but this leaves the game without it's move history
+      if {$fen != [sc_pos fen]} {
         # Did not manage to reconstruct the game, just set its position
         # (But this never works !? &&& )
         sc_game startBoard $fen
