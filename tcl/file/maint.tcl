@@ -965,7 +965,7 @@ proc updateTwinChecker {} {
     frame $w.f.right
     pack $w.f.right -side right -fill both -expand yes
 
-    foreach i {left right} {
+    foreach i {left right} width {20 24} {
       set f $w.f.$i
       pack [frame $f.title] -side top -fill x
       label $f.title.label -font font_Bold -text [concat $::tr(game) " 0 "]
@@ -976,9 +976,9 @@ proc updateTwinChecker {} {
       pack $f.title.note $f.title.d -side right -padx 3
       label $f.tmt -font font_Small -text "" -anchor w -width 1 -relief sunken
       pack $f.tmt -side bottom -fill x
-      autoscrollframe $f.t text $f.t.text \
-          -height 16 -width 20  \
-          -takefocus 0 -wrap word
+      autoscrollframe $f.t text $f.t.text -height 16 -width $width -takefocus 0 -wrap word
+      # hmmm - for some packing reason the left and right widgets are different widths &&&
+      # and it depends on the font's width ^%&^%@. Perhaps autoscroll's fault ?
 
       $f.t.text tag configure h -background lightSteelBlue
       pack $f.t -side top -fill both -expand yes
@@ -1013,11 +1013,12 @@ proc updateTwinChecker {} {
     bind $w <KeyPress-1> "$w.f.left.title.d invoke"
     bind $w <KeyPress-2> "$w.f.right.title.d invoke"
     bind $w <KeyPress-s> "$w.b.share invoke"
+    bind $w <KeyPress-t> "$w.f.left.title.d invoke ; $w.f.right.title.d invoke"
     bind $w <KeyPress-u> {
       if {$twincheck(left)} {.twinchecker.f.left.title.d invoke}
       if {$twincheck(right)} {.twinchecker.f.right.title.d invoke}
     }
-    wm resizable $w 0 1
+    # wm resizable $w 0 1
     wm title $w $::tr(TwinChecker)
     bind $w <Configure> "recordWinSize $w"
   }
@@ -1127,13 +1128,13 @@ proc updateTwinChecker {} {
 
 }
 
-proc dualscroll {a b} {
-  _autoscroll .twinchecker.f.left.t.ybar $a $b
-  _autoscroll .twinchecker.f.right.t.ybar $a $b
+proc dualscroll {args} {
+  eval _autoscroll .twinchecker.f.left.t.ybar $args
+  eval _autoscroll .twinchecker.f.right.t.ybar $args
 }
-proc dualshow {a b} {
-  .twinchecker.f.right.t.text yview $a $b
-  .twinchecker.f.left.t.text yview $a $b
+proc dualshow {args} {
+  eval .twinchecker.f.right.t.text yview $args
+  eval .twinchecker.f.left.t.text yview $args
 }
 proc dualplus {n side} {
   # the wheel mouse automatically scrolls one side, so over compensate other side

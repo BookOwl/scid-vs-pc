@@ -2339,8 +2339,8 @@ set helpText(Maintenance) {<h1>Database Maintenance</h1>
   the Delete Twins dialog box, the filter will contain all
   deleted games, and you can browse through them (using the
   arrow keys) with the <term>twins checker</term> window.
-  Use the "1", "2" and "u" keys to
-  toggle the delete fields of one or both games.
+  Use the "1", "2" and "t" keys to
+  toggle the delete fields of one or both games, and "u" to undelete them.
   </p>
 
   <h3><name Editing>Editing Names</name></h3>
