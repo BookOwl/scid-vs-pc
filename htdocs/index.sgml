@@ -39,9 +39,10 @@ id="contact_">, and has been extensively tested with the Million Base and ICOfY 
 <itemize>
 <item> <bf>Computer Tournaments</bf>.
 <item> Rewritten <bf>Gamelist</bf> widget: deleted items are greyed, a <bf>Compact</bf> button, <bf>Flag</bf> widgets, and the <bf>Database Switcher</bf> resides here.
-<item> Improved <bf>Tactical Game</bf> and <bf>FICs</bf> features.
+<item> Improved <bf>Computer Game</bf> and <bf>FICs</bf> features.
 <item> Clickable <bf>Variation Arrows</bf>, and <bf>Paste Variation</bf> feature.
 <item> Improved Undo and <bf>Redo</bf> features
+<item> Tri-coloured <bf>tree bar-graphs</bf> alongside statistics.
 <item> <bf>Ratings Graph</bf> can show multiple players
 <item> Book tuning <bf>Remove Move</bf> feature
 <item> Separate board sections are hideable via right-click.
@@ -70,7 +71,7 @@ source <url url="https://sourceforge.net/project/downloading.php?group_id=263836
 
 windows <url url="http://sourceforge.net/projects/scidvspc/files/windows/Scid%20vs%20PC-4.7.exe/download" name="Scid vs PC-4.7.exe">
 
-mac <url url="http://sourceforge.net/projects/scidvspc/files/mac/ScidvsMac-4.6.dmg/download" name="ScidvsMac-4.6.dmg">
+mac <url url="http://sourceforge.net/projects/scidvspc/files/mac/ScidvsMac-4.7.dmg/download" name="ScidvsMac-4.7.dmg">
 
 <url url="https://sourceforge.net/project/showfiles.php?group_id=263836" name="browse files">
 
@@ -116,7 +117,7 @@ over from old versions to make upgrading easier.
 
 <sect2> Mac OSX <p>
 
-The <ref name="ScidvsMac-4.6 app" id="download_"> should include everything you need. Simply drag and drop the App into /Applications (or similar).
+The <ref name="ScidvsMac-4.7 app" id="download_"> should include everything you need. Simply drag and drop the App into /Applications (or similar).
 
 <em>Users upgrading may have to remove (or edit) <bf>$HOME/.scidvspc/config/engines.dat</bf>
 to properly configure the chess engines.</em>
@@ -124,6 +125,11 @@ to properly configure the chess engines.</em>
 To compile from source - once you have XCode installed - please read <bf>ScidvsMac-HowTo.rtfd</bf> in the source tarball.
 
 <sect> news <p>
+
+<bf> March 2012 </bf>
+
+Big effort by Gregor to write Drag and Drop support for
+Scidb and ScidvsPC ! Thanks. FICS is looking great too.
 
 <bf> September 29, 2011 </bf>
 
@@ -230,18 +236,19 @@ to create large databases from pgn. Typing "pgnscid somefile.pgn" creates a new 
 
 <sect1> thanks <p>
 
-Thanks to <url url="http://scidb.sf.net" name="Gregor Cramer"> for his technical support and the PGN figurines code.
+Thanks to <url url="http://scidb.sf.net" name="Gregor Cramer"> for the PGN figurines and Drag and Drop features, and technical support.
 
-For Gilles and Dorothy for OSX packages, and Jiri Pavlovsky for the windows installer.
+For Gilles and Dorothy for OSX packages, Jiri Pavlovsky for the windows installer, and all Scid vs. PC testers.
 
 <url url="http://sourceforge.net" name="Sourceforge.net"> for their great hosting,
 
+Pascal Georges for his many technical contributions.
+
+Fulvio and Gerd for their much appreciated contributions to  mainline Scid.
+
 <url url="http://chessx.sf.net" name="Michal Rudolf"> and Alex Wagner for initial feedback and bug-reports,
 
-Fulvio and Gerd for their much appreciated contributions to <url
-url="http://scid.sf.net" name="Scid">.
-
-and the authors of Tcl and Tk.
+and of course Shane Hudson, and the authors of <url url="http://tcl.tk" name="Tcl/Tk">
 
 </p>
 
