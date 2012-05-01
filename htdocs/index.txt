@@ -308,12 +308,17 @@
   6.3.  bugs
 
 
+  o  Wish-8.5.10 has nasty bugs (which affect the gamelist and setup
+     board widgets) and is not recommended.
+
+  o  Importing huge PGN archives can sometimes fail. The command line
+     utility pgnscid is a more reliable way to create large databases
+     from pgn. Typing "pgnscid somefile.pgn" creates the somefile.si4
+     database.
+
   o  Using the '+' operator and clicking on 'Find' in the gamelist
      widget can be very slow. The code needs to be moved from
      gamelist.tcl to tkscid.cpp.
-
-  o  Wish-8.5.10 has nasty bugs (which affect the gamelist and setup
-     board widgets) and is not recommended.
 
   o  Windows only:
 
@@ -367,11 +372,11 @@
   released his own tree, Scid-pg, which included UCI support and
   numerous Player versus Computer features.
 
+
   But subtley, and with some controversy, he began to adopt the name
   Scid as his own. Some people objected, especially Dr. Kirby, with whom
   a flame war began, but Pascal's efforts to gain ownership of the
   Sourceforge Scid project eventually succeeded.
-
 
   Under Pascal, and with the help of numerous contributors, Scid again
   strode forward. Pascal wrote a Tree Mask feature, and in 2009 he
@@ -437,7 +442,6 @@
 
   o  Analysis: add a xboard/uci protocol column to the engine list.
 
-
   o  Include updates to SCID's spellchk.c, improving the ELO add-ratings
      feature.
 
@@ -500,7 +504,6 @@
 
   o  Ratings graph can show multiple players (and there's a minimum ELO
      feature)
-
   o  Computer Tournament: Improvements for both Xboard and UCI engines,
      and implement the 50 move draw rule.
 
@@ -569,7 +572,6 @@
 
   o  Make the player Report config widget a bit easier to use.
 
-
   o  Catch a nasty wish8.5.10 bug with the gamelist (Wish-8.5.10 should
      be avoided)
 
@@ -636,6 +638,7 @@
 
   o  Improve ./configure and Makefile, and CC FLAGS are propagated to
      all targets
+
   o  Game Save autocomplete now uses mouse instead of clumsy keyboard
      bindings
 
@@ -700,7 +703,6 @@
   o  Fix nasty flicker bug when board is flipped
 
   o  Fix fics bug that graph sometimes doesn't stop when new game starts
-
 
   o  Add Burnett chess pieces
 
@@ -831,8 +833,8 @@
 
   o  Some Tree Search optimisations from SCID
 
-  o  Sort by number of Variations and Comments from Gerd
 
+  o  Sort by number of Variations and Comments from Gerd
 
   o  Help Widget has a search entrybox
 

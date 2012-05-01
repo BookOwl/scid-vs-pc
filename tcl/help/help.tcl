@@ -96,15 +96,17 @@ To start FICS use <run ::fics::config><green>Play--<gt>FICS (Internet)</green></
 set helpTitle(BrowsingPGN) "PGN"
 set helpText(BrowsingPGN) {<h1>PGN Files and Scid</h1>
 
-<p>PGN is the standard format for Chess Games, and Scid will happily open and display large PGN files.</p>
+<p>PGN is the standard format for chess games, and Scid will happily open and display large game archives.
+<i>But PGN is not the native format of Scid's Databases.</i></p>
 
-<p><i>But PGN is not the native format of Scid's Databases.</i></p>
+<p>To open files, use the <run ::file::Open><green>File-<gt>Open</green></run> dialog,
+<a Switcher draganddrop>Drag and Drop</a>, or the
+<a Pgnscid>Pgnscid</a> utility for quick imports and troubleshooting.</p>
 
-<h3>Opening and Viewing Games</h3>
 
-<p>Once you have loaded a game from the command line or the 
-<run ::file::Open><green>File-<gt>Open</green></run> dialog,
-open the <a PGN>PGN Window</a>
+<h3>Viewing Games</h3>
+
+<p>Once you have loaded a game, open the <a PGN>PGN Window</a>
 to browse the game. Clicking on moves will advance the game, or 
 use the wheel-mouse in the main window. Clicking on <a Comment>comments</a>
 allows you to edit them.</p>
@@ -115,9 +117,8 @@ the tournament and how the player performed. This is the start of Scid's
 database capabilities.</p>
 
 <p>If you have opened a multigame PGN, the <a GameList>Game List</a>
-widget allows you to browse the games and select those of interest.</p>
-
-<p><i>The Gamelist also serves to select and delete games from Scid's
+widget allows you to browse the games and select those of interest.
+<i>The Gamelist also serves to select and delete games from Scid's
 databases.</i></p>
 
 <h3>Editing Games</h3>
@@ -132,7 +133,7 @@ After making changes in the Clipbase, then use <a Export>Export</a> to write the
 back to PGN.
 </p>
 
-<p><footer>Updated: Scid vs. PC 4.5 July 2011</footer></p>
+<p><footer>Updated: Scid vs. PC 4.8 May 2012</footer></p>
 }
 
 set helpTitle(Scid) {General Use}
@@ -1627,8 +1628,9 @@ set helpText(Import) {<h1>The Import Window</h1>
 
   <p>
   <i>Scid provides several ways to access games in PGN. As well as the Import
-  Window, games can be opened via <run ::file::Open><green>File-<gt>Open</green></run>,
-  or converted directly to a database via the <a Pgnscid>Pgnscid</a> utility</i>
+  Window, games can be opened via <run ::file::Open><green>File-<gt>Open</green></run>.
+  Large PGN archives can sometimes give Scid problems. A more reliable import method is the
+  <a Pgnscid>Pgnscid</a> utility</i>
   </p>
 
   <h3>Editing the Current Game</h3>
@@ -3605,67 +3607,60 @@ set helpText(Cmdline) {<h1>Command-line Options</h1>
 set helpTitle(Pgnscid) "Pgnscid"
 set helpText(Pgnscid) {<h1>Pgnscid</h1>
   <p>
-  <term>Pgnscid</term> is the separate program that you need to use to
-  convert PGN (portable game notation) files into Scid Databases.
+  Pgnscid is a command line utility (included with Scid) to convert PGN files to si4 databases.
+  It's main advantage over Scid Imports is that it is <b>more reliable</b> for large PGN imports.
   </p>
   <p>
-  To convert a file named <i>myfile.pgn</i>, simply type:
+  To convert a file named "myfile.pgn", simply type:
   <ul>
   <li> <b>pgnscid myfile.pgn</b> </li>
   </ul>
-  and the scid database (consisting of <i>myfile.si4</i>, <i>myfile.sg4</i>
-  and <i>myfile.sn4</i>) will be created.
-  Any errors or warnings will be written to the file <i>myfile.err</i>.
+  and a Scid database (consisting of "myfile.si4", "myfile.sg4"
+  and "myfile.sn4") is created, with errors and warnings written to "myfile.err".
   </p>
   <p>
-  If you want the database to be created in a different directory or have
-  a different name, you can add the database name to the command line,
-  for example:
+  To create the database in a different directory, or with a different name,
+  one may add the database name to the command line. For eg:
   <ul>
   <li> <b>pgnscid myfile.pgn mybase</b> </li>
   </ul>
-  will create a database consisting of the files <i>mybase.si4</i>,
-  <i>mybase.sg4</i> and <i>mybase.sn4</i>.
+  creates a database consisting of the files "mybase.si4",
+  "mybase.sg4" and "mybase.sn4".
   </p>
   <p>
-  Note that pgnscid (and scid) can read Gzipped PGN files
-  (e.g. <b>mybase.pgn.gz</b>)
-  directly, so if you have a large PGN file compressed with Gzip to save
-  disk space, you do not have to un-gzip it first.
+  Scid and Pgnscid can also read <b>gzipped</b> PGN files directly.
+  So large files compressed with gzip (such as "mybase.pgn.gz"),
+  do not have to be gunzipped first.
   </p>
 
   <h3>Options</h3>
   <p>
-  There are two optional arguments pgnscid can accept before the filename:
-  <b>-f</b> and <b>-x</b>.
+  There are two options that may occur before the filename:
   </p>
   <p>
-  The <b>-f</b> option forces overwriting of an existing database; by
-  default, pgnscid will not convert to a database that already exists.
+  <b>-f</b> forces overwriting of an existing database.
+  (By default, pgnscid will not overwrite a database that already exist).
   </p>
   <p>
-  The <b>-x</b> option causes pgnscid to ignore all text between games.
-  By default, text between games is stored as a pre-game comment of the
-  game that follows. This option only affects text between games; standard
-  comments inside each game are still converted and stored.
+  <b>-x</b> causes pgnscid to ignore all comments/text <b>between games</b>.
+  (By default, text between games is stored as a pre-game comment).
   </p>
 
-  <h3>Formatting player names</h3>
+  <h3>Player Name Formatting</h3>
   <p>
-  To reduce the number of multiple spellings of names that refer to the
-  same player, some basic formatting of player names is done by pgnscid.
-  For example, the number of spaces after each comma is standardized to one,
-  any spaces at the start and end of a name are removed, and a dot at the
-  end of a name is removed.
-  Dutch prefixes such as "van den" and "Van Der" are also normalized to have
-  a capital V and small d.
+  Some commonsense formatting of Player Names is done automatically.
+  These include: the number of spaces following a comma is standardized to one.
+  Spaces at the start and end of names, and trailing dots, are removed.
+  And Dutch prefixes such as "van den" and "Van Der" are normalized to have
+  a capital "V" and small "d".
   </p>
   <p>
-  You can edit (and even spellcheck) player, event, site and round names in
-  Scid; see the <a Maintenance Editing>Maintenance</a> help page for details.
+  Of course, one may manually <a Maintenance Editing>edit and spellcheck</a>
+Player, Event, Site and Round Names via the Scid Maintenance Window once games
+are imported.
   </p>
 
-  <p><footer>Updated: Scid 3.6.2, December 2006</footer></p>
+  <p><footer>Updated: Scid vs. PC 4.8 May 2012</footer></p>
 }
 
 

@@ -252,15 +252,19 @@ set to "none"</LI>
 
 <P>
 <UL>
+<LI> <B>Tcl/Tk 8.5.10</B> has nasty bugs (which affect the gamelist and setup board
+widgets) and is not recommended.  </LI>
+<LI> Importing huge PGN archives can
+sometimes fail. The command line utility <B>pgnscid</B> is a more reliable way
+to create large databases from pgn. Typing "pgnscid somefile.pgn" creates a new database
+"somefile.si4".</LI>
 <LI> Using the '+' operator and clicking on 'Find' in the gamelist widget can be very slow. The code needs to be moved from gamelist.tcl to tkscid.cpp.</LI>
-<LI> Wish-8.5.10 has nasty bugs (which affect the gamelist and setup board widgets) and is not recommended.</LI>
 <LI> Windows only:
 <UL>
 <LI> Using "ALT+F"... etc key bindings to access the menus is badly broke. This is a Tcl/Tk issue.</LI>
 <LI> Window focus/raise issues, another Tcl/Tk issue. </LI>
 </UL>
 </LI>
-<LI> There is no drag-and-drop file opening.</LI>
 </UL>
 </P>
 
