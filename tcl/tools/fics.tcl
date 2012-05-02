@@ -546,77 +546,77 @@ namespace eval fics {
       return
     }
 
-    if {![catch {set c [lindex $l 0]}]} {
-      switch -glob [string trim $c] {
-        {}  {
-            updateConsole {}
-            return
-            }
-	fg - foreground {
-	    set fg [lindex $l 1]
-	    if {$fg == {}} {
-	      set fg [tk_chooseColor -initialcolor $::fics::consolefg -title {FICS Background} -parent $w]
-	    }
-	    if {![catch {$w.console.text configure -fg $fg}]} {
-	      set ::fics::consolefg $fg
-	    }
-	    ::fics::addHistory $l
-            return
-	}
-	bg - background {
-	    set bg [lindex $l 1]
-	    if {$bg == {}} {
-	      set bg [tk_chooseColor -initialcolor $::fics::consolebg -title {FICS Background} -parent $w]
-	    }
-	    if {![catch {$w.console.text configure -bg $bg}]} {
-	      set ::fics::consolebg $bg
-	    }
-	    ::fics::addHistory $l
-            return
-	}
+    set c [lindex [split $l] 0]
+    switch -glob [string trim $c] {
+      {}  {
+	  updateConsole {}
+	  return
+	  }
+      fg - foreground {
+	  set fg [lindex $l 1]
+	  if {$fg == {}} {
+	    set fg [tk_chooseColor -initialcolor $::fics::consolefg -title {FICS Background} -parent $w]
+	  }
+	  if {![catch {$w.console.text configure -fg $fg}]} {
+	    set ::fics::consolefg $fg
+	  }
+	  ::fics::addHistory $l
+	  return
+      }
+      bg - background {
+	  set bg [lindex $l 1]
+	  if {$bg == {}} {
+	    set bg [tk_chooseColor -initialcolor $::fics::consolebg -title {FICS Background} -parent $w]
+	  }
+	  if {![catch {$w.console.text configure -bg $bg}]} {
+	    set ::fics::consolebg $bg
+	  }
+	  ::fics::addHistory $l
+	  return
+      }
 
-	smoves - smove {
-	    # smoves recreates a game without any further announcment
-	    if {$::fics::playing == 1 || $::fics::playing == -1} {
-	      updateConsole "Scid: smoves disabled while playing a game"
-	      return
-	    }
+      smoves - smove {
+	  # smoves recreates a game without any further announcment
+	  if {$::fics::playing == 1 || $::fics::playing == -1} {
+	    updateConsole "Scid: smoves disabled while playing a game"
+	    return
+	  }
 
-	    set confirm [::game::ConfirmDiscard2]
-	    if {$confirm == 2} {return}
-	    if {$confirm == 0} {sc_game save [sc_game number]}
-	    sc_game new
+	  set confirm [::game::ConfirmDiscard2]
+	  if {$confirm == 2} {return}
+	  if {$confirm == 0} {sc_game save [sc_game number]}
+	  sc_game new
+	  set ::fics::mainGame -1
+	  set ::fics::playing 0
+	  updateBoard -pgn
+	  updateTitle
+
+	  writechan unexamine noecho
+	  writechan $l echo
+	  ::fics::addHistory $l
+
+	  set ::fics::waitForMoves no_meaning
+	  vwaitTimed ::fics::waitForMoves 5000 nowarn
+	  updateBoard -pgn
+	  updateTitle
+	  return
+      } 
+      default {
+	  if {([string match unob* $c]||[string match unex* $c])  && \
+	       $::fics::playing != 1 && $::fics::playing != -1 && \
+	       ($l == $c || [lindex $l 1] == $::fics::mainGame)} {
+	    # unobserve/unexamine main game
 	    set ::fics::mainGame -1
-	    set ::fics::playing 0
-	    updateBoard -pgn
-	    updateTitle
-
-	    writechan unexamine noecho
-	    writechan $l echo
-	    ::fics::addHistory $l
-
-	    set ::fics::waitForMoves no_meaning
-	    vwaitTimed ::fics::waitForMoves 5000 nowarn
-	    updateBoard -pgn
-	    updateTitle
-            return
-	} 
-	default {
-            if {([string match unob* $c]||[string match unex* $c])  && \
-		 $::fics::playing != 1 && $::fics::playing != -1 && \
-		 ($l == $c || [lindex $l 1] == $::fics::mainGame)} {
-	      # unobserve/unexamine main game
-	      set ::fics::mainGame -1
-	      if {[string match unex* $c]} {
-		set ::fics::playing 0
-		updateBoard -pgn
-		updateTitle
-	      }
+	    if {[string match unex* $c]} {
+	      set ::fics::playing 0
+	      updateBoard -pgn
+	      updateTitle
 	    }
-	}
-      } ; # switch
-      ::fics::addHistory $l
-    } ; # catch 
+	  }
+      }
+    } ; # switch
+    ::fics::addHistory $l
+
     writechan $l echo
     $w.console.text yview moveto 1
   }
@@ -1490,11 +1490,10 @@ namespace eval fics {
   ### Add Offer
 
   proc addOffer {line} {
-
+    # Challenge: GuestYGTD (----) stevenaaus (1670) unrated standard 15 1
     if {![winfo exists .ficsOffers]} {
 	::fics::initOffers
     }
-
 
     set PLAYER [lindex [split $line] 1]
     set player [string tolower $PLAYER]
@@ -1795,7 +1794,7 @@ namespace eval fics {
       updateBoard -pgn -animate
     } else {
       ### Game out of sync, probably due to player takeback request (or opponent take back 2).
-      ### (But this is also used to load observed games)
+      ### But also used to load observed games
       # After player takeback, game gets reconstructed, comments are zeroed. Opponents takeback is handled better elsewhere.
       # Fics doesn't give much warning that take back was succesful, only the uncertain "Takeback request sent."
       # If player makes a move after his time has expired, we end up here. Bad.
@@ -1850,6 +1849,9 @@ namespace eval fics {
       set ::fics::mutex 0
       updateBoard -pgn
       updateTitle
+      if {$::fics::playing != 1 && $::fics::playing != -1} {
+        writechan "primary $game"
+      }
     }
   }
 
