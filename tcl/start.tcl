@@ -1211,6 +1211,10 @@ if {(! $windowsOS)  &&  (! $unixOS)} {
   ::splash::add "Operating System may not be supported"
 }
 
+catch {
+  ::splash::add "LANG environment var is $::env(LANG)"
+}
+
 ### Workaround a bug in Wish 8.5.10 ttk::scale.
 # To trigger, press Control-l three times and try to move y scrollbar
 
