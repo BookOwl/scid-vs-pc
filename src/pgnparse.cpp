@@ -615,7 +615,7 @@ tokenT
 PgnParser::GetRestOfPawnMove (char * buffer)
 {
     int ch;
-    bool seenDigit = false;
+    byte seenDigit = 0;
 
     // allows for using lowercase 'b' for bishop promotion
     // eg. OliThink uses a7b8b for FEN "1q6/P6k/8/5N1K/8/8/8/8 w - - 0 1"
@@ -635,7 +635,13 @@ PgnParser::GetRestOfPawnMove (char * buffer)
         ch = GetChar ();
         if (charIsSpace (ch)) {
             UnGetChar (ch);
-            return TOKEN_Move_Pawn;
+            if (seenDigit == '1' || seenDigit == '8') {
+              LogError ("Warning: unspecified promotion","");
+              ADDCHAR (buffer, 'Q');
+              return TOKEN_Move_Promote;
+            } else {
+              return TOKEN_Move_Pawn;
+            }
         }
         // Check for "ep" or "e.p." after a digit:
         if (seenDigit) {
@@ -647,7 +653,7 @@ PgnParser::GetRestOfPawnMove (char * buffer)
             if (ch == 'p'  ||  ch == '.') { continue; }
         }
         if (ch >= '1'  &&  ch <= '8') {
-            seenDigit = true;
+            seenDigit = ch;
             ADDCHAR (buffer, ch);
             continue;
         }
