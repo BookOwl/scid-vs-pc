@@ -1849,7 +1849,7 @@ namespace eval fics {
       set ::fics::mutex 0
       updateBoard -pgn
       updateTitle
-      if {$::fics::playing != 1 && $::fics::playing != -1} {
+      if {$::fics::playing != 1 && $::fics::playing != -1 && $::fics::observedGames != {}} {
         writechan "primary $game"
       }
     }

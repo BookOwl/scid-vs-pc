@@ -57,8 +57,8 @@ proc SetBoardTextures {} {
     # create lite and dark squares
     image create photo bgl$size -width $size -height $size
     image create photo bgd$size -width $size -height $size
-    bgl$size copy $boardfile_lite -from 0 0 $size $size
-    bgd$size copy $boardfile_dark -from 0 0 $size $size
+    bgl$size copy $boardfile_lite ;# -from 0 0 $size $size  ; from doesn't work with mis-sized source images
+    bgd$size copy $boardfile_dark ;# -from 0 0 $size $size
   }
 }
 
@@ -207,6 +207,7 @@ proc initBoardColors {} {
 
   setWinLocation $w
   bind $w <Configure> "recordWinSize $w"
+  bind $w <F1> {helpWindow Board}
 
   ### Main widgets ordered here ###
 

@@ -224,6 +224,7 @@ set helpText(Index) {<h1>Scid Help Index</h1>
   <h3><name B>B</name></h3>
   <ul>
   <li><a Finder>Backups</a></li>
+  <li>Custom <a Board Textures>background images</a></li>
   <li><a Tree Best>Best games</a> window</li>
   <li><a Searches Board>Board searches</a></li>
   <li><a Book>Book</a> window</li>
@@ -422,6 +423,7 @@ set helpText(Index) {<h1>Scid Help Index</h1>
   <ul>
   <li><a TB>Tablebases</a></li>
   <li>Finding extra PGN <a Maintenance Tags>Tags</a>
+  <li>Custom board <a Board Textures>textures</a></li>
   <li><a Menus Tools>Tools menu</a></li>
   <li><a Tourney>Tournament</a> of Chess Engines</li>
   <li><a Tmt>Tournament finder</a></li>
@@ -6374,4 +6376,28 @@ The window manager may interfere with some shortcuts.
 
 </ul>
 <p><footer>Updated:</b> - Scid vs. PC 4.4 April 2011</footer></p>
+}
+
+set helpTitle(Board) "Board Options"
+set helpText(Board) {<h1>Board Options</h1>
+<p>
+   Tk (and Scid) only support the GIF image format by default -
+   but PNG and JPG images (and pieces) are supported by the TkImg
+   package. TkImg is included with Activestate Tcl on Windows, and can be compiled
+   from the
+   <url https://sourceforge.net/project/downloading.php?group_id=263836&filename=tkimg1.3.tar.bz2>source tarball</url>
+   on Linux (if not already installed).
+</p>
+<h3><name Textures>Custom Textures</name></h3>
+<p>
+   Up to ten custom board textures can be loaded.
+   These must be placed in the directory <b>Scid vs PC/bin/textures</b> (windows) or <b>$HOME/.scidvspc/textures</b>,
+   and be of the form <b>wood_l.gif</b> / <b>wood_d.gif</b>  or <b>steel_l.png</b> / <b>steel_d.png</b> , for example.
+</p>
+<p>
+   Examine <green>Help--<gt>StartUp</green> for the status of loading user textures.
+</p>
+
+</p>
+<p><footer>Updated:</b> - Scid vs. PC 4.8 April 2012</footer></p>
 }
