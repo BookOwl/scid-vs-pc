@@ -123,15 +123,14 @@ and bug-fix fork of Scid.  The project is maintained by
 <H2><A NAME="s4">4.</A> <A HREF="#toc4">installation </A></H2>
 
 
-<P><EM>Scid vs. PC requires 
-<A HREF="http://tcl.tk">Tcl/Tk</A> 8.5.
-It should work with 8.6 , but is untested.</EM></P>
-
 <P>
 <H3>Linux , FreeBSD</H3>
 
 
-<P>Most Unices should have Tcl/Tk installed by default.
+<P>Scid vs. PC requires 
+<A HREF="http://tcl.tk">Tcl/Tk</A> 8.5.</P>
+<P><EM>Tcl/Tk 8.5.10 has nasty bugs and should be avoided. 8.6 appears to work fine, but is not thoroughly tested.</EM>,</P>
+Most Unices should have Tcl/Tk installed by default.
 To verify this, look for a command named <B>wish</B> or <B>wish8.5</B>. (Wish-8.5.10 is not recommended).
 To enable support for extra chess pieces (such as Berlin), you may need to install
 <A HREF="https://sourceforge.net/project/downloading.php?group_id=263836&amp;filename=tkimg1.3.tar.bz2">TkImg</A>.  
@@ -155,8 +154,6 @@ Scid's multi-language support can cause problems. Chinese (and other) users shou
 
 <P>Windows installation simply requires downloading the 
 <A HREF="#download_">executable</A>, and following the prompts.</P>
-<P>To use the extra chess pieces, <B>Wish8.5</B> must be installed. I recommend the excellent
-<A HREF="http://www.activestate.com/activetcl/downloads">Active State Tcl</A>.</P>
 <P>The configuration files, <B>including the chess engine list</B>, are stored in the <B>Scid-vs-PC/bin/config</B> directory, and may be copied
 over from old versions to make upgrading easier.</P>
 <H3>Mac OSX </H3>
@@ -169,13 +166,12 @@ to properly configure the chess engines.</EM></P>
 <P>To compile from source - once you have XCode installed - please read <B>ScidvsMac-HowTo.rtfd</B> in the source tarball.</P>
 
 </P>
-</P>
 <H2><A NAME="s5">5.</A> <A HREF="#toc5">news </A></H2>
 
 
 <P><B> March 2012 </B></P>
 <P>Big effort by Gregor to write Drag and Drop support for
-Scidb and ScidvsPC ! Thanks. FICS is looking great too.</P>
+Scidb and ScidvsPC. Thanks. FICS is looking great too.</P>
 <P><B> September 29, 2011 </B></P>
 <P>Jiri Pavlovsky has made a windows installer. It's a nice piece of software :)
 Big thank-you. And we now have undo and redo features.</P>

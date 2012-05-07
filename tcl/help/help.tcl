@@ -27,38 +27,35 @@ set helpText(Intro) {<h1>Introduction</h1>
 <url http://scidvspc.sourceforge.net/>Scid vs. PC</url>
 is a usability and bug-fix fork of <b>Shane's Chess Information Database</b>. With
 it you can play chess online or against the computer, browse tournaments
-downloaded in pgn format, and create huge chess databases.</p>
+downloaded in pgn format, create huge chess databases, and generate opening and player reports.
 
-<p><i>
-Chess is a very technical thing. A single game can be analysed through and
-through, openings can fill volumes, and tournaments are full of statistics
-about winners, losers and openings played. Scid is a program whose original
-purpose was to combine this information into databases of various
-sorts; but has evolved into a powerful general-purpose Chess Toolkit.
-</i></p>
-
-<h3>Improvements over Scid</h3>
+<h3>Features</h3>
 <ul>
-<li>A Computer Tournament feature.</li>
-<li>Rewritten Gamelist with improved functionality and the Database Switcher incorporated.</li>
-<li>The Options widgets have been totally overhauled with new colours, tile themes and pieces.</li>
-<li>A right-click menu for hiding/unhiding any part of the main window.</li>
-<li>Improved Tactical Game and FICS features.</li>
-<li>Chess figurines in the PGN window.</li>
+<li>Computer Tournaments.</li>
+<li>Rewritten Gamelist widget: deleted items are greyed, a Compact button, Flag widgets, and the Database Switcher resides here.</li>
+<li>Improved Computer Game and FICS features.</li>
 <li>Clickable Variation Arrows, and Paste Variation feature.</li>
-<li>Redone Button bar, Toolbar and Icons.</li>
-<li>Rewritten Help contents.</li>
-<li>Restructured Analysis Engines widget. The function key bindings can be set explicitly.</li>
-<li>Many other improved interfaces and bug-fixes.</li>
+<li>Improved Undo and Redo features</li>
+<li>Tri-coloured tree bar-graphs alongside statistics.</li>
+<li>Ratings Graph can show multiple players</li>
+<li>Improved Book windows, including book compare, and remove move features</li>
+<li>Separate board sections are hideable via right-click.</li>
+<li>A re-done Button Bar with nicer look and feel.</li>
+<li>Restructured Analysis Engines widget. The function hotkeys can be set explicitly, Engine 1 can be docked into the Status Bar, and any number of engines may run at one time.</li>
+<li>The Chessboard/Pieces config widget has been overhauled, and includes support for custom tiles.</li>
+<li>Setup Board has many fixes and improvements.</li>
+<li>The Help index is now meaningful to new users, with links to the game's main features.</li>
+<li>A user friendly Annotation feature. </li>
+<li>Drag and Drop.</li>
 </ul>
 <h3>Unsupported Features</h3>
 <ul>
 <li>The Docked Mode and Theme features of SCID are not included.</li>
-<li>* Docked mode enables all windows to be tiled into a single one. It is a nice idea, but blighted by too many bugs and focus issues.</li>
-<li>* Wish 8.5 includes a basic implementation of themes, and the
-widespread changes to SCID's tcl codebase are not justified for some trivial and hardly used eye candy.</li>
+<li>* Scid's docked mode mostly works, but has bugs and focus issues.</li>
+<li>* Wish 8.5 includes a basic implementation of themes, but the
+widespread changes to SCID's codebase are not justified.</li>
 </ul>
-  <p><footer>Updated: Scid vs. PC 4.6 August 2011 </footer></p>
+  <p><footer>Updated: Scid vs. PC 4.8 May 2012</footer></p>
 }
 
 set helpTitle(FICS) "FICS"
@@ -6383,7 +6380,7 @@ set helpText(Board) {<h1>Board Options</h1>
 <p>
    Tk (and Scid) only support the GIF image format by default -
    but PNG and JPG images (and pieces) are supported by the TkImg
-   package. TkImg is included with Activestate Tcl on Windows, and can be compiled
+   package. TkImg is included with  Windows, and can be compiled
    from the
    <url https://sourceforge.net/project/downloading.php?group_id=263836&filename=tkimg1.3.tar.bz2>source tarball</url>
    on Linux (if not already installed).

@@ -142,17 +142,16 @@
   4.  installation
 
 
-  Scid vs. PC requires Tcl/Tk <http://tcl.tk> 8.5.  It should work with
-  8.6 , but is untested.
-
-
   4.0.1.  Linux , FreeBSD
 
 
-  Most Unices should have Tcl/Tk installed by default.  To verify this,
-  look for a command named wish or wish8.5. (Wish-8.5.10 is not
-  recommended).  To enable support for extra chess pieces (such as
-  Berlin), you may need to install TkImg
+  Scid vs. PC requires Tcl/Tk <http://tcl.tk> 8.5.
+
+  Tcl/Tk 8.5.10 has nasty bugs and should be avoided. 8.6 appears to
+  work fine, but is not thoroughly tested.,Most Unices should have
+  Tcl/Tk installed by default.  To verify this, look for a command named
+  wish or wish8.5. (Wish-8.5.10 is not recommended).  To enable support
+  for extra chess pieces (such as Berlin), you may need to install TkImg
   <https://sourceforge.net/project/downloading.php?group_id=263836&filename=tkimg1.3.tar.bz2>.
   Then, installing from source:
 
@@ -178,14 +177,10 @@
   Windows installation simply requires downloading the ``executable'',
   and following the prompts.
 
-  To use the extra chess pieces, Wish8.5 must be installed. I recommend
-  the excellent Active State Tcl
-  <http://www.activestate.com/activetcl/downloads>.
-
-
   The configuration files, including the chess engine list, are stored
   in the Scid-vs-PC/bin/config directory, and may be copied over from
   old versions to make upgrading easier.
+
 
   4.0.3.  Mac OSX
 
@@ -207,7 +202,7 @@
    March 2012
 
   Big effort by Gregor to write Drag and Drop support for Scidb and
-  ScidvsPC ! Thanks. FICS is looking great too.
+  ScidvsPC. Thanks. FICS is looking great too.
 
    September 29, 2011
 
@@ -253,7 +248,6 @@
 
   3.6.26.5 - New Gamelist widget, and re-fashioned main buttons.
   Project's looking quite solid :->
-
    June 23, 2009
 
   The monkey on my back has really been having a good time.  This
@@ -377,6 +371,7 @@
   dormancy, and because of disagreements with ChessDB's author, Pascal
   released his own tree, Scid-pg, which included UCI support and
   numerous Player versus Computer features.
+
 
   But subtley, and with some controversy, he began to adopt the name
   Scid as his own. Some people objected, especially Dr. Kirby, with whom
@@ -506,9 +501,9 @@
 
   o  Always loads games at the correct game ply when using the tree and
      searches.
+
   o  Ratings graph can show multiple players (and there's a minimum ELO
      feature)
-
   o  Computer Tournament: Improvements for both Xboard and UCI engines,
      and implement the 50 move draw rule.
 
@@ -570,7 +565,6 @@
      fixes
 
   o  Add a help item for Maintenance 'Check Games' feature.
-
 
   o  Swap around the 'Next Move' and 'Event' game-information lines.
 
@@ -703,7 +697,6 @@
 
   o  Theory table incorrectly started from start position.
 
-
   7.0.4.  Scid vs. PC 4.4.1
 
 
@@ -770,6 +763,7 @@
 
   o  A nice PGN/htext performance tweak that smooths out large game
      edits
+
   o  When using "-fast", perform fast database opens also. Otherwise,
      update the progressbar to show "Calculating name
      frequencies"(todo?)
@@ -836,7 +830,9 @@
 
   o  Other SCID C++ changes from Gerd and Fulvio, including "Don't
      decode games when copying games"
+
   o  Some Tree Search optimisations from SCID
+
 
   o  Sort by number of Variations and Comments from Gerd
 
@@ -901,6 +897,7 @@
   o  Header search widget tidy
 
   o  New icon
+
 
   7.0.8.  Scid vs. PC 4.1
 
