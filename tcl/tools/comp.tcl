@@ -192,7 +192,7 @@ proc compInit {} {
   pack $w.buttons.cancel -side right -padx 5
 
   bind $w <Configure> "recordWinSize $w"
-  bind $w <Destroy> compClose
+  wm protocol $w WM_DELETE_WINDOW compClose
   bind $w <Escape> compClose
   bind $w <F1> {helpWindow Tourney}
   update
@@ -299,7 +299,6 @@ proc compOk {} {
   $w.buttons.cancel configure -text {End Comp} -command compAbort -state normal
   wm title $w {Scid Tournament}
   focus $w.buttons.ok
-  bind $w <Destroy> compAbort
 
   ### Clocks
 
@@ -382,7 +381,6 @@ proc compOk {} {
 
   puts {Comp finished}
   if {[winfo exists .comp]} {
-    bind .comp <Destroy> {}
     # voodoo that you do
     wm geometry .comp [wm geometry .comp]
     pack forget .comp.buttons.help
@@ -945,9 +943,7 @@ proc drawCombos {} {
   set w .comp
   set l $w.engines.list
 
-  bind $w <Destroy> {} ; # stupid thing!
   if {[winfo exists $l]} {destroy $l}
-  bind $w <Destroy> compClose
 
   pack [frame $l] -side top -padx 5 -pady 2
 
@@ -1059,9 +1055,16 @@ proc compAbort {} {
 }
 
 proc compClose {} {
-    # Close all games,  called when game is inactive
     global analysis comp
+    if {[.comp.buttons.cancel cget -text] == {End Comp}} {
+      # comp is running. Double check before exitting
+      set msg {A Computer Tournament is running.}
 
+      set answer [tk_dialog .unsaved "Scid: Confirm Quit" $msg question {} "   [tr FileExit]   " [tr Cancel]]
+      if {$answer != 0} {
+	return
+      }
+    }
     compDestroy
 }
 
@@ -1077,7 +1080,6 @@ proc compDestroy {} {
 
     set comp(games) {}
     set comp(playing) 0
-    bind .comp <Destroy> {}
     update idletasks
     destroy .comp
 }
