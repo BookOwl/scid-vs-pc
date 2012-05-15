@@ -1816,9 +1816,10 @@ proc getTopLevel {{type {}}} {
     if { $c != [winfo toplevel $c] } { continue }
     # Tk report .__tk_filedialog as toplevel window even if the window has been closed
     if { [ lsearch $topl $c ] == -1 && [ lsearch $exclude $c ] == -1 && ![string match "\.__tk*" $c] } {
-      ### Dont deiconify analysis widgets if tournament is running
-      if {!($type == "deiconify" && [winfo exists .comp] && [string match .analysisWin* $c])} {
-	lappend topl $c
+      ### Dont deiconify analysis widgets if tournament is running, or engine1 is in docked mode
+      if {!($type == "deiconify" && [winfo exists .comp] && [string match .analysisWin* $c]) &&
+          ($c != ".analysisWin1" || !$::analysis(mini))} {
+	  lappend topl $c
       }
     }
   }
