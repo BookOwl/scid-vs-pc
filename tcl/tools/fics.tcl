@@ -582,16 +582,20 @@ namespace eval fics {
 	    return
 	  }
 
-	  set confirm [::game::ConfirmDiscard2]
-	  if {$confirm == 2} {return}
-	  if {$confirm == 0} {sc_game save [sc_game number]}
+          if {$::fics::playing == 2} {
+	    writechan unexamine noecho
+          } else {
+	    ::fics::demote_mainGame 
+	    set confirm [::game::ConfirmDiscard2]
+	    if {$confirm == 2} {return}
+	    if {$confirm == 0} {sc_game save [sc_game number]}
+          }
 	  sc_game new
 	  set ::fics::mainGame -1
 	  set ::fics::playing 0
 	  updateBoard -pgn
 	  updateTitle
 
-	  writechan unexamine noecho
 	  writechan $l echo
 	  ::fics::addHistory $l
 
@@ -1444,7 +1448,7 @@ namespace eval fics {
 	{*[A-Za-z]\(*\): *} { $t insert end "$line\n" channel }
         {Finger of *}   { $t insert end "$line\n" seeking }
         {History of *}  { $t insert end "$line\n" seeking }
-        {Present company includes: *} { $t insert end "$line\n" command }
+        {Present company includes: *} { $t insert end "$line\n" gameresult }
         {* goes forward [0-9]* move*} {}
         {* backs up [0-9]* move*} {}
 	{Width set *}	{}
