@@ -215,8 +215,8 @@ install_engines: engines
 	install ./engines/toga/src/fruit $(SHAREDIR)/engines/toga/
 
 install_gui: scid
-	install -m 755 scid $(BINDIR)
-	scid
+	install -m 755 scid /Applications/ScidvsMac.app/Contents/MacOS/
+	/Applications/ScidvsMac.app/Contents/MacOS/scid
 
 uninstall:
 	rm -rf $(SHAREDIR)/engines
