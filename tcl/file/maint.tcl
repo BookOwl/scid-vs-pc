@@ -1384,11 +1384,16 @@ proc makeSortWin {{parent .}} {
   label $w.tadd -textvar ::tr(AddCriteria) -font font_Bold
   pack $w.tadd -side top
   pack [frame $w.add] -side top -fill x
+
+  # naughty translation hack... Brilliant :)
+  set ::tr(Random) [lindex $::tr(RandomLevel) 0]
   foreach b {Date Year Month Event Site Country Round Result Length
-    White Black Rating ECO Deleted EventDate Variations Comments} {
+    White Black Rating ECO Deleted EventDate Variations Comments Random} {
     set n [string tolower $b]
     button $w.add.$n -textvar ::tr($b) -command "addSortCriteria $b"
   }
+    # Random has no (proper) translation, so handle separately
+
   grid $w.add.date -row 0 -column 0 -sticky we
   grid $w.add.year -row 0 -column 1 -sticky we
   grid $w.add.month -row 0 -column 2 -sticky we
@@ -1406,6 +1411,7 @@ proc makeSortWin {{parent .}} {
   grid $w.add.eventdate -row 4 -column 2 -sticky we
   grid $w.add.variations -row 5 -column 0 -sticky we
   grid $w.add.comments -row 5 -column 1 -sticky we
+  grid $w.add.random -row 5 -column 2 -sticky we
 
 
   for {set i 0} {$i < 3} {incr i} {

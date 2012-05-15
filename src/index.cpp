@@ -42,7 +42,7 @@ static const char * sortCriteriaNames[] = {
     "Date", "Year", "Event", "Site", "Round",
     "White", "Black", "Eco", "Result", "Length",
     "Rating", "WElo", "BElo", "Country", "Month",
-    "Deleted", "Eventdate", "Variations", "Comments", NULL
+    "Deleted", "Eventdate", "Variations", "Comments", "Random", NULL
 
 };
 
@@ -50,7 +50,7 @@ enum {
     SORT_date, SORT_year, SORT_event, SORT_site, SORT_round,
     SORT_white, SORT_black, SORT_eco, SORT_result, SORT_moveCount,
     SORT_avgElo, SORT_WElo, SORT_BElo, SORT_country, SORT_month,
-    SORT_deleted, SORT_eventdate, SORT_variations, SORT_comments, SORT_sentinel
+    SORT_deleted, SORT_eventdate, SORT_variations, SORT_comments, SORT_random, SORT_sentinel
 };
 
 
@@ -784,6 +784,10 @@ IndexEntry::Compare (IndexEntry * ie, int * fields, NameBase * nb)
 
         case SORT_comments:
             res = (int)ie->GetCommentCount() - (int)GetCommentCount();
+            break;
+
+        case SORT_random:
+            res = (random32()&2) - 1;
             break;
 
         default:    // Should never happen:
