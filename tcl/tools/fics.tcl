@@ -582,10 +582,8 @@ namespace eval fics {
 	    return
 	  }
 
-          if {$::fics::playing == 2} {
-	    writechan unexamine noecho
-          } else {
-	    ::fics::demote_mainGame 
+	  ::fics::demote_mainGame 
+          if {$::fics::playing != 2} {
 	    set confirm [::game::ConfirmDiscard2]
 	    if {$confirm == 2} {return}
 	    if {$confirm == 0} {sc_game save [sc_game number]}
@@ -617,6 +615,12 @@ namespace eval fics {
 	      updateTitle
 	    }
 	  }
+          # Problems with doing this 
+          # if exam game, ob (load) another game, exam newgame - gets confused :(
+          # if {[string match {tell gamebot exam*} $l] ||
+          #    [string match {exam*} $c]} {
+	  #  ::fics::demote_mainGame 
+          #}
       }
     } ; # switch
     ::fics::addHistory $l
@@ -1373,7 +1377,7 @@ namespace eval fics {
   }
 
   proc demote_mainGame {} {
-    if {$::fics::mainGame > -1} {
+    if {$::fics::mainGame > -1 && $::fics::playing != 2} {
       ::fics::writechan "unobserve $::fics::mainGame"
       ::fics::writechan "observe $::fics::mainGame"
       ::fics::addObservedGame $::fics::mainGame
