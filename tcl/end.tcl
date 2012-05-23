@@ -1085,11 +1085,11 @@ proc gameSave {gnum {focus {}}} {
   }
 
   dialogbutton $w.buttons.cancel -textvar ::tr(Cancel) -command "destroy $w"
-  pack $w.buttons -side bottom -pady 10 -fill x
+  pack $w.buttons -side bottom -pady 8
   if {$gnum == 0} {
     #pack .save.buttons.prev -side left -padx 10
   }
-  packbuttons right $w.buttons.cancel $w.buttons.save
+  pack $w.buttons.cancel $w.buttons.save -side right -padx 20
 
   bind $w <Alt-s> {
     set extraTags [.save.g.extratext get 1.0 end-1c]
