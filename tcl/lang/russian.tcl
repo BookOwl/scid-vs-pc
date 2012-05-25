@@ -601,7 +601,7 @@ translate R TreeBestGames {Дерево лучших партий}
 # Note: the next message is the tree window title row. After editing it,
 # check the tree window to make sure it lines up with the actual columns.
 translate R TreeTitleRow \
-  {    Ход    ECO       Частота     Счет   СрElo Прзв СрГод  %Ничьих}
+  {    Ход       Частота     Счет   СрElo Прзв СрГод  Ничьих ECO}
 translate R TreeTotal {TOTAL}
 # ====== TODO To be translated ======
 translate R DoYouWantToSaveFirst {Do you want to save first}

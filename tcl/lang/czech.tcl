@@ -555,7 +555,7 @@ translate C TreeBestGames {Nejlep¹í partie stromu}
 # Note: the next message is the tree window title row. After editing it,
 # check the tree window to make sure it lines up with the actual columns.
 translate C TreeTitleRow \
-  {    Tah    ECO       Frekvence    Skóre  PrElo Perf  PrRok %remíz}
+  {    Tah       Frekvence    Skóre  PrElo Perf  PrRok remíz ECO}
 translate C TreeTotal {CELKEM}
 # ====== TODO To be translated ======
 translate C DoYouWantToSaveFirst {Do you want to save first}

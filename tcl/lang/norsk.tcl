@@ -595,8 +595,9 @@ translate O TreeBest {Beste}
 translate O TreeBestGames {Idealtrepartier}
 # Note: the next message is the tree window title row. After editing it,
 # check the tree window to make sure it lines up with the actual columns.
+# todo
 translate O TreeTitleRow \
-  {    Move   ECO       Frequency    Score  AvElo Perf AvYear %Draws} ;# ***
+  {    Move      Frequency    Score  AvElo Perf AvYear Draws ECO}
 translate O TreeTotal {SAMMENLAGT}
 # ====== TODO To be translated ======
 translate O DoYouWantToSaveFirst {Do you want to save first}

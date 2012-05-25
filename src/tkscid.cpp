@@ -14195,7 +14195,7 @@ sc_tree_search (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
     bool hideMoves = false;
     bool showTimeStats = true;
     bool showEpdData = true;
-    bool listMode = false;
+    bool listMode = false; // now unused, previously used by ./pocket/ui.tcl
     bool adjustMode = false;
     bool fastMode = false;
     int sortMethod = SORT_FREQUENCY; // default move order: frequency
@@ -14520,7 +14520,8 @@ db->bbuf->Empty();
     char temp [200];
     if (! listMode) {
         const char * titleRow =
-            "      Move   ECO       Frequency    Score  AvElo Perf AvYear %Draws";
+            "      Move        Xrequency    Score  AvElo Perf AvYear %Draws ECO ";
+        // Above row sets line length only.
         titleRow = translate (ti, "TreeTitleRow", titleRow);
         output->Append (titleRow);
         if (showEpdData) {
@@ -14569,10 +14570,9 @@ db->bbuf->Empty();
 
         if (listMode) {
             if (ecoStr[0] == 0) { strCopy (ecoStr, "{}"); }
-            sprintf (temp, "%2u %-6s %-5s %7u %3d%c%1d %3d%c%1d",
+            sprintf (temp, "%2u %-6s%7u %3d%c%1d %3d%c%1d",
                      count + 1,
                      hideMoves ? "---" : tempTrans,//node->san,
-                     hideMoves ? "{}" : ecoStr,
                      node->total,
                      100 * node->total / tree->totalCount,
                      decimalPointChar,
@@ -14582,10 +14582,9 @@ db->bbuf->Empty();
                      node->score % 10);
             output->Append (temp);
         } else {
-            sprintf (temp, "\n%2u: %-6s %-5s %7u:%3d%c%1d%%  %3d%c%1d%%",
+            sprintf (temp, "\n%2u: %-6s%7u:%3d%c%1d%%  %3d%c%1d%%",
                      count + 1,
                      hideMoves ? "---" : tempTrans,//node->san,
-                     hideMoves ? "" : ecoStr,
                      node->total,
                      100 * node->total / tree->totalCount,
                      decimalPointChar,
@@ -14602,6 +14601,7 @@ db->bbuf->Empty();
             sprintf (temp, "  %4u", avgElo);
         }
         output->Append (temp);
+
         if (perf == 0) {
             strCopy (temp, listMode ? " {}" : "      ");
         } else {
@@ -14615,7 +14615,7 @@ db->bbuf->Empty();
         }
         output->Append (temp);
         uint pctDraws = node->freq[RESULT_Draw] * 1000 / node->total;
-        sprintf (temp, "  %3d%%", (pctDraws + 5) / 10);
+        sprintf (temp, " %3d%%", (pctDraws + 5) / 10);
         output->Append (temp);
 
         if (showEpdData && !listMode) {
@@ -14637,6 +14637,9 @@ db->bbuf->Empty();
                 }
             }
         }
+
+	sprintf (temp, " %-5s", hideMoves ? "{}" : ecoStr);
+        output->Append (temp);
 
         if (listMode) {
             Tcl_AppendElement (ti, (char *) output->Data());
@@ -14683,7 +14686,8 @@ db->bbuf->Empty();
         }
 
         if (listMode) {
-            sprintf (temp, "%2u %-6s %-5s %7u %3d%c%1d %3d%c%1d",
+            // malformed but unused
+            sprintf (temp, "%2u %-6s%7u %3d%c%1d %3d%c%1d",
                      0,
                      "TOTAL",
                      "{}",
@@ -14693,8 +14697,8 @@ db->bbuf->Empty();
             output->Append (temp);
         } else {
             const char * totalString = translate (ti, "TreeTotal:", "TOTAL:");
-            output->Append ("\n_______________________________________________________________\n");
-            sprintf (temp, "%-12s     %7u:100%c0%%  %3d%c%1d%%",
+            output->Append ("\n__________________________________________________________________\n");
+            sprintf (temp, "%-10s%7u:100%c0%%  %3d%c%1d%%",
                      totalString, tree->totalCount, decimalPointChar,
                      totalScore / 10, decimalPointChar, totalScore % 10);
             output->Append (temp);
@@ -14718,7 +14722,7 @@ db->bbuf->Empty();
             output->Append (temp);
         }
         uint pctDraws = nDraws * 1000 / tree->totalCount;
-        sprintf (temp, "  %3d%%", (pctDraws + 5) / 10);
+        sprintf (temp, " %3d%%", (pctDraws + 5) / 10);
         output->Append (temp);
         if (listMode) {
             Tcl_AppendElement (ti, (char *) output->Data());

@@ -560,7 +560,7 @@ translate H TreeLocked {rögzítve}
 translate H TreeBest {Legjobb}
 translate H TreeBestGames {A fa legjobb játszmái}
 translate H TreeTitleRow \
-  {    Lépés  ECO       Gyakoriság  Eredm. ÁtlÉlõ Telj. Átl.év}
+  {    Lépés     Gyakoriság  Eredm. ÁtlÉlõ Telj. Átl.év ECO}
 translate H TreeTotal {ÖSSZESEN}
 # ====== TODO To be translated ======
 translate H DoYouWantToSaveFirst {Do you want to save first}

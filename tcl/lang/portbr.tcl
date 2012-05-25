@@ -558,8 +558,9 @@ translate B TreeBest {Melhor}
 translate B TreeBestGames {Melhores jogos da arvore}
 # Note: the next message is the tree window title row. After editing it,
 # check the tree window to make sure it lines up with the actual columns.
+# todo
 translate B TreeTitleRow \
-  {    Move   ECO       Frequency    Score  AvElo Perf AvYear %Draws} ;# ***
+  {    Move      Frequency    Score  AvElo Perf AvYear Draws ECO}
 translate B TreeTotal {TOTAL}
 # ====== TODO To be translated ======
 translate B DoYouWantToSaveFirst {Do you want to save first}

@@ -312,7 +312,6 @@ menuText N OptionsMovesSuggest "Toon hint" 0 \
 menuText N OptionsShowVarPopup "Show Variation Window" 0 {Turn on/off the display of a variations window} 
 # ====== TODO To be translated ======
 menuText N OptionsMovesSpace "Add spaces after move number" 0 {Add spaces after move number}  
-menuText E OptionsMovesSpace "Add spaces after move number" 0 {Add spaces after move number}   
 menuText N OptionsMovesKey "Auto-aanvullen" 0 \
   {Aan/uitschakelen van toetsenbordzet auto-aanvullen}
 menuText N OptionsMovesShowVarArrows "Toon Pijlen voor Varianten" 0 {Zet aan/af pijlen om variantenzetten te tonen}
@@ -572,7 +571,7 @@ translate N TreeBestGames {Boom Beste partijen}
 # Note: the next message is the tree window title row. After editing it,
 # check the tree window to make sure it lines up with the actual columns.
 translate N TreeTitleRow \
-  {    Zet   ECO       Frekwentie    Score  GemElo Prest GemJaar %Remises} ;
+  {    Zet      Frekwentie    Score  GemElo Prest GemJaar Remises ECO}
 translate N TreeTotal {TOTAAL}
 # ====== TODO To be translated ======
 translate N DoYouWantToSaveFirst {Do you want to save first}

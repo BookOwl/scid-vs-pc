@@ -551,7 +551,7 @@ translate I TreeBestGames {Migliori partite}
 # Note: the next message is the tree window title row. After editing it,
 # check the tree window to make sure it lines up with the actual columns.
 translate I TreeTitleRow \
-  {    Mossa  ECO       Frequenza    Punt.  AvElo Perf AvAnno %Patta}
+  {    Mossa     Frequenza    Punt.  AvElo Perf AvAnno Patta ECO}
 translate I TreeTotal {TOTALE}
 # ====== TODO To be translated ======
 translate I DoYouWantToSaveFirst {Do you want to save first}

@@ -600,7 +600,7 @@ proc ::tree::displayLines { baseNumber moves } {
   ### bargraph stick out a little. todo - resize all markers to 16
 
   # blank bargraph in title
-  $w.f.tl window create end-33c -create "canvas %W.g -width 60 -height 12 -highlightthickness 0"
+  $w.f.tl window create end-36c -create "canvas %W.g -width 60 -height 12 -highlightthickness 0"
   
   ### Main Display the lines of the tree
 
@@ -657,12 +657,12 @@ proc ::tree::displayLines { baseNumber moves } {
 
     ### In each line create a canvas for a little tri-coloured bargraph
 
-    scan [string range $line 33 37] "%f%%" success
-    scan [string range $line 59 end] "%f%%" draw
+    scan [string range $line 26 30] "%f%%" success
+    scan [string range $line 51 end-5] "%f%%" draw
     set wonx  [expr {($success - $draw/2)*0.6 + 1}] ; # win = success - drawn/2
     set lossx [expr {($success + $draw/2)*0.6 + 1}] ; # loss = 100 - win - drawn
     
-    $w.f.tl window create end-32c -create [list createCanvas %W.g$i $wonx $lossx $baseNumber $move]
+    $w.f.tl window create end-37c -create [list createCanvas %W.g$i $wonx $lossx $baseNumber $move]
 
     ### Mouse bindings
 
@@ -694,7 +694,7 @@ proc ::tree::displayLines { baseNumber moves } {
     $w.f.tl insert end "\n"
   } ;# end for loop
  
-  # Display the last lines (total)
+  # Display the last two lines  - hypens and total
   for { set i [expr $len - 3 ] } { $i < [expr $len - 1 ] } { incr i } {
     if { $maskFile != "" } {
       $w.f.tl image create end -image ::tree::mask::emptyImage -align center
@@ -703,6 +703,9 @@ proc ::tree::displayLines { baseNumber moves } {
     }
     $w.f.tl insert end "[lindex $moves $i]\n"
   }
+
+  # blank bargraph in total
+  $w.f.tl window create end-32c -create "canvas %W.h -width 60 -height 12 -highlightthickness 0"
 
   # Add moves present in Mask and not in Tree
   set idx $len
