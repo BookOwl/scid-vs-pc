@@ -360,10 +360,9 @@ namespace eval fics {
     set ::fics::playing 0
 
     set row 0
-    # silence button actually only affects tells now, so should be renamed chanoff.. but for compatibility has been left as-is
-    checkbutton $w.bottom.buttons.silence -text Tells -state disabled \
-    -variable ::fics::silence -command {
-      ::fics::writechan "set chanoff [expr !$::fics::silence]" noecho
+    checkbutton $w.bottom.buttons.tells -text Tells -state disabled \
+    -variable ::fics::chanoff -command {
+      ::fics::writechan "set chanoff [expr !$::fics::chanoff]" noecho
     }
     checkbutton $w.bottom.buttons.shouts -text Shouts -state disabled -variable ::fics::shouts -command {
       ::fics::writechan "set shout $::fics::shouts" echo
@@ -374,7 +373,7 @@ namespace eval fics {
     checkbutton $w.bottom.buttons.offers -text "$tr(FICSOffers) $tr(Graph)" -variable ::fics::graphon -command ::fics::showGraph -width 10 -state disabled
     # -state disabled ; enable for testing S.A. &&&
 
-    grid $w.bottom.buttons.silence      -column 0 -row $row -sticky w
+    grid $w.bottom.buttons.tells      -column 0 -row $row -sticky w
     grid $w.bottom.buttons.shouts	-column 1 -row $row -sticky w
     grid $w.bottom.buttons.offers       -column 2 -row $row -sticky w -padx 2 -pady 2
 
@@ -1129,20 +1128,20 @@ namespace eval fics {
       # writechan "set seek $::fics::gamerequests"
       # writechan "set gin  $::fics::gamerequests"
       writechan "set gin  0"
-      writechan "set silence 1"
+      # writechan "set silence 1"
       writechan "set echo 1"
       writechan "set seek 0"
       # pychess sets this bloody thing
       writechan "set availinfo off"
-      writechan "set chanoff [expr !$::fics::silence]"
+      writechan "set chanoff [expr !$::fics::chanoff]"
       writechan "set cshout $::fics::shouts"
       writechan "set shout $::fics::shouts"
 
       # What is this ? S.A. writechan "iset nowrap 1"
       writechan "iset nohighlight 1"
-      .fics.bottom.buttons.offers       configure -state normal
-      .fics.bottom.buttons.silence      configure -state normal
-      .fics.bottom.buttons.shouts	configure -state normal
+      .fics.bottom.buttons.offers  configure -state normal
+      .fics.bottom.buttons.tells   configure -state normal
+      .fics.bottom.buttons.shouts  configure -state normal
       bind .fics.command.entry <Return> ::fics::cmd
       .fics.command.send configure -command ::fics::cmd
       return
