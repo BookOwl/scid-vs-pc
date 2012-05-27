@@ -201,8 +201,8 @@ set helpText(Scid) {<h1>Databases and General Use</h1>
 }
 
 set helpTitle(Index) "Scid Help Topic Index"
-set helpText(Index) {<h1>Scid Help Index</h1>
-
+set helpText(Index) "<h1>$::scidName Help Index</h1>"
+append helpText(Index) {
 <br>
 <a Index A>  A</a> <a Index B>  B</a> <a Index C>  C</a> <a Index D>  D</a> <a Index  E> E</a> <a Index F>  F</a> <a Index G>  G</a> <a Index H>  H</a> <a Index I>  I</a> <a Index  J> J</a> <a Index K>  K</a> <a Index L>  L</a> <a Index M>  M</a> <a Index N>  N</a> <a Index O>  O</a> <a Index P>  P</a> <a Index Q>  Q</a> <a Index R>  R</a> <a Index S>  S</a> <a Index T>  T</a> <a Index U>  U</a> <a Index V>  V</a> <a Index W>  W</a> <a Index X>  X</a> <a Index Y>  Y</a> <a Index Z>  Z</a>
 <br>
