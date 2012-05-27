@@ -318,7 +318,6 @@ append helpText(Index) {
   <ul>
   <li><a Import>Import</a> window</li>
   <li><a Moves Informant>Informant Symbols</a></li>
-  <li><a CCGameListIcons>Icons for Correspondence Chess</a></li>
   <li><a FICS>Internet play</a></li>
   </ul>
 
@@ -4577,8 +4576,8 @@ associated flag, if the server provides that information. For eMail
 based games this can be achieved by adding additional PGN tags for
 <i>whiteCountry</i> and <i>blackCountry</i>, each followed by the
 international three letter country code according to ISO 3166-1
-(e.g. "EUR" <button flag_eur>, "USA" <button flag_usa>, "GBR" <button
-flag_gbr>, "FRA" <button flag_fra>, "RUS" <button flag_rus>, "CHN"
+(e.g. "EUR" <button flag_eur>, "USA" <button flag_usa>, "GBR"
+<button flag_gbr>, "FRA" <button flag_fra>, "RUS" <button flag_rus>, "CHN"
 <button flag_chn>...).
 </p>
 
@@ -4636,8 +4635,8 @@ Notes:
 </ul>
 <p>
 Xfcc always retrieves all games hosted on a specified server for your
-user ID at once. To retrieve the games just press the <button
-tb_CC_Retrieve> icon or select <menu>Retrieve Games</menu> from the
+user ID at once. To retrieve the games just press the
+<button tb_CC_Retrieve> icon or select <menu>Retrieve Games</menu> from the
 <menu>Correspondence Chess</menu> menu. As a server connection is
 required to fetch new games be sure that the system has network
 access. Scid will call the fetch tool configured in the <a
@@ -4819,13 +4818,13 @@ Games</menu> or the <button tb_CC_Retrieve> button or
 <menu>Process Inbox</menu>. The difference between the two is that
 the first one will also fetch and populate the Inbox additionally with
 games from another source (say Xfcc) by either the internal Xfcc
-support or an external fetch tool called. Hence <button
-tb_CC_Retrieve> is the most convenient way if you use both types of
+support or an external fetch tool called. Hence
+<button tb_CC_Retrieve> is the most convenient way if you use both types of
 correspondence chess games.
 </p>
 <p>
-<b>Note</b> The <menu>Retrieve Games</menu> menu or the <button
-tb_CC_Retrieve> button do <b>not</b> fetch your eMail messages! You
+<b>Note</b> The <menu>Retrieve Games</menu> menu or the
+<button tb_CC_Retrieve> button do <b>not</b> fetch your eMail messages! You
 have to save your PGN files to Scids Inbox by hand. Probably this can
 be automatised by your eMail program (on Un*x systems setting up a
 mime handler is easy enough by means of <term>.mailcap</term>).
