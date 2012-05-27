@@ -1839,16 +1839,19 @@ proc getTopLevel {{type {}}} {
 
 ### Hack to extract gif images out of Scid
 
-proc dumpGifImages {dir} {
+proc dumpImagesBase64 {dir} {
   package require base64
   file mkdir $dir
   set images [image names]
+  puts "dumpImagesBase64: found images $images"
+
   foreach i $images {
     set data [string trim [$i cget -data]]
     if {$data == ""} { continue }
     if {[catch {set d [::base64::decode $data]}]} { continue }
     regsub -all {:} $i {_} i
     set fname [file join $dir $i.gif]
+  puts "Dumping image $i into file $fname"
     set f [open $fname w]
     fconfigure $f -translation binary -encoding binary
     puts -nonewline $f $d
@@ -1856,10 +1859,30 @@ proc dumpGifImages {dir} {
   }
 }
 
+proc dumpImages {dir} {
+  file mkdir $dir
+  set images [image names]
+  puts "dumpImagesGif: found images $images"
+  foreach i $images {
+    set fname [file join $dir $i.gif]
+    if {[catch {$i write $fname -format gif}]} {
+      file delete $fname
+      set fname [file join $dir $i.png]
+     $i write $fname -format png
+    }
+  }
+}
+
 # hmm... Control-Shift-F7 doesn't work for me ???
 bind . <Control-F7> {
+    puts "Dumping images as base64 to /tmp/ScidImages"
+    dumpImagesBase64 /tmp/ScidImages
+    exit
+}
+
+bind . <Control-F8> {
     puts "Dumping images to /tmp/ScidImages"
-    dumpGifImages /tmp/ScidImages
+    dumpImages /tmp/ScidImages
     exit
 }
 
