@@ -9207,8 +9207,15 @@ sc_game_tags_get (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
         if (!strEqual (argv[3], "-last")) { return errorResult (ti, usage); }
         tagName = argv[4];
         if (db->numGames > 0) {
+            gameNumberT prevgame;
+            // db->gameNumber is set to -1 for a new game, and it is (int) when perhaps it should be (uint)
+            if (db->gameNumber == 0 || db->gameNumber > db->numGames) {
+              prevgame = db->numGames - 1;
+            } else {
+              prevgame = db->gameNumber - 1;
+            }
             g = scratchGame;
-            IndexEntry * ie = db->idx->FetchEntry (db->numGames - 1);
+            IndexEntry * ie = db->idx->FetchEntry (prevgame);
             if (db->gfile->ReadGame (db->bbuf, ie->GetOffset(),
                                      ie->GetLength()) != OK) {
                 return errorResult (ti, "Error reading game file.");

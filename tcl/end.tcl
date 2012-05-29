@@ -1052,9 +1052,9 @@ proc gameSave {gnum {focus {}}} {
     .save.g.extratext delete 1.0 end
     .save.g.extratext insert 1.0 $extraTags
   }
-  if {$gnum == 0} {
-    grid $f.extrabutton -row 10 -column 9 -sticky ew -pady 3
-  }
+
+  # if {$gnum == 0} 
+  grid $f.extrabutton -row 10 -column 9 -sticky ew -pady 3
 
   # <Return> invokes "save"
 

@@ -156,7 +156,7 @@ struct scidStatsT {
 // Scid database structure:
 //
 // Might be usefull to have a "last sorted" field
-// Should gameNumber be uint ?
+//   wtf isn't gameNumber uint ? Changing it thus cause coredumps &&&
 struct scidBaseT {
     Index *      idx;           // the Index file in memory for this base.
     NameBase *   nb;            // the NameBase file in memory.

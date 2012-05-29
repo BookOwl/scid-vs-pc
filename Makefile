@@ -26,7 +26,7 @@ TCL_VERSION = 8.5
 
 TCL_INCLUDE = -I/usr/local/include
 TCL_LIBRARY = -L/usr/local/lib -ltcl$(TCL_VERSION)
-TK_LIBRARY  = $(TCL_LIBRARY) -ltk$(TCL_VERSION) -L/usr/lib -lX11
+TK_LIBRARY  = $(TCL_LIBRARY) -ltk$(TCL_VERSION) -L/usr/lib64 -lX11
 
 ### Nalimov tablebases
 # TB =                   for no tablebase support
