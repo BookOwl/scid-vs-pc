@@ -154,6 +154,17 @@ proc ::commenteditor::Open {} {
   bind $w <Control-Left>  {::commenteditor::storeComment; ::move::Back}
   bind $w <Control-Right> {::commenteditor::storeComment; ::move::Forward}
 
+  # MouseWheel bindings:
+  if {$::windowsOS || $::macOS} {
+    bind $w <MouseWheel> {
+      if {[expr -%D] < 0} { ::move::Back }
+      if {[expr -%D] > 0} { ::move::Forward }
+    }
+  } else {
+    bind $w <Button-4> ::move::Back
+    bind $w <Button-5> ::move::Forward
+  }
+
   bind $w.cf.text <Control-z> {catch {.commentWin.cf.text edit undo} ; break}; # seems automatic anyway
   bind $w.cf.text <Control-y> {catch {.commentWin.cf.text edit redo} ; break}
   bind $w.cf.text <Control-r> {catch {.commentWin.cf.text edit redo} ; break}

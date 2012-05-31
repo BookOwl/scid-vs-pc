@@ -1261,8 +1261,8 @@ set helpText(Comment) {<h1>The Comment Editor</h1>
 
   <h3>Comments</h3>
   <p>
-  Comments are text strings associated with individual moves.
-  You can add comments by typing them in the main text box (where
+  Comments are text associated with individual moves.
+  You can add comments by typing them in the entry box (where
   the Control-A, Control-Z and Control-Y shortcuts can be used to
   manipulate text and undo changes).
   Comments are <b>automatically stored</b> whenever you move to another position in the game.
@@ -1275,6 +1275,8 @@ set helpText(Comment) {<h1>The Comment Editor</h1>
   go to the first var move and hit the left arrow key before adding 
   the comment.
   </p>
+
+  <p><i>You can move the game forward and back by using the wheel mouse, or control+left/right keys.</i></p>
 
   <h3>Annotation Symbols</h3>
   <p>
