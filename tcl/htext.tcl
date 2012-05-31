@@ -129,7 +129,7 @@ proc updateHelpWindow {name {heading {}}} {
 
     ### Help Widget Find
 
-    $w.text tag configure Highlight -background gray85
+    $w.text tag configure Highlight -background orange
 
     entry $w.b.find -width 10 -textvariable ::helpWin(find)
     set ::helpWin(findprev) {}
