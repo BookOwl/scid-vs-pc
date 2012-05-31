@@ -641,12 +641,10 @@ proc ::windows::gamelist::SetSize {} {
   set w .glistWin.tree
   if {![winfo exists $w]} {return}
 
+if {0} {
   if {![info exists glFontHeight]} {
-
     set fontspace [font metrics [ttk::style lookup [$w cget -style] -font] -linespace]
-
     # Nasty hack to make things work
-
     if {$::windowsOS} {
       set glFontHeight [expr $fontspace*125/72]
     } elseif {$::macOS} {
@@ -657,7 +655,10 @@ proc ::windows::gamelist::SetSize {} {
   }
   # $glFontHeight ~ 22 linux
 
-  set glistSize [expr {[winfo height $w] / $glFontHeight +([winfo height $w]-300)/200}]
+  # set glistSize [expr {[winfo height $w] / $glFontHeight +([winfo height $w]-300)/200}]
+}
+  # hardcoded in ttkTreeview.c to (20 pixels high + 1 pixel padding ) - 1 row for title.
+  set glistSize [expr {int([winfo height $w] / 21)-1}]
 
   # debugging voodoo
   # puts "glistSize $glistSize , winfo height [winfo height $w]"
