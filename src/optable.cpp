@@ -1899,7 +1899,7 @@ OpTable::TopEcoCodes (DString * dstr, uint count)
             }
         }
         if (maxFreq > 0) {
-            char ecoStr[4];
+            char ecoStr[8];
             strCopy (ecoStr, "A00-E99");
             ecoStr[0] = (ecoClass / 10) + 'A';
             ecoStr[1] = (ecoClass % 10) + '0';
