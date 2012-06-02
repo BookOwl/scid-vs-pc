@@ -1054,9 +1054,17 @@ namespace eval fics {
         # Game is over. Set result and save game
         ::gameclock::stop 1
         ::gameclock::stop 2
+
+	# {Game 331 (AmorVerus vs. killerbie) killerbie ran out of time and Oli has no material to mate} 1/2-1/2
+	set resultcomment [lrange [lindex $line 0] 2 end]
+	set t1 [string first {)} $resultcomment]
+	if {$t1 > -1} {
+	  set resultcomment [string range $resultcomment $t1+2 end]
+	}
+
         set t1 [::gameclock::getSec 1]
         set t2 [::gameclock::getSec 2]
-	::commenteditor::appendComment "Whiteclock [expr $t1 / 60]:[format {%02i} [expr $t1 % 60]] Blackclock [expr $t2 / 60]:[format {%02i} [expr $t2 % 60]]"
+	::commenteditor::appendComment "$resultcomment\nWhiteclock [expr $t1 / 60]:[format {%02i} [expr $t1 % 60]] Blackclock [expr $t2 / 60]:[format {%02i} [expr $t2 % 60]]"
         sc_game tags set -result $res
         catch {sc_game save [sc_game number]}
         updateBoard -pgn
@@ -1395,13 +1403,7 @@ namespace eval fics {
 
     switch -glob $line {
 	{\{Game *\}}	{ $t insert end "$line\n" game }
-	{\{Game *\} *}	{ $t insert end "$line\n" gameresult
-                          if {[regexp {.* ([^ ]*) forfeits on time*} $line t1 t2]} {
-                              if {$t2 == [sc_game tags get Black] || $t2 == [sc_game tags get White]} {
-				::commenteditor::appendComment "$t2 forfeits on time"
-                              }
-                          } 
-                        }
+	{\{Game *\} *}	{ $t insert end "$line\n" gameresult }
 	{Auto-flagging*} {$t insert end "$line\n"
                           # ::commenteditor::appendComment "Loses on time" ; # recorded above
                         }
