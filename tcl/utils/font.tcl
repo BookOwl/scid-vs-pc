@@ -405,4 +405,17 @@ proc FontBiggerSmaller {incr} {
   set fontOptions(Regular) [lreplace $fontOptions(Regular) 1 1 $fd_size]
 }
 
+proc bindWheeltoFont {w} {
+  if {$::windowsOS || $::macOS} {
+    # Control-MouseWheel binding is (generally) grabbed on OSX and doesn't work
+    bind $w <Control-MouseWheel> {
+      if {[expr -%D] < 0} {FontBiggerSmaller 1 ; break}
+      if {[expr -%D] > 0} {FontBiggerSmaller -1 ; break}
+    }
+  } else {
+    bind $w <Control-Button-4> {FontBiggerSmaller 1 ; break}
+    bind $w <Control-Button-5> {FontBiggerSmaller -1 ; break}
+  }
+}
+
 ### End of file: font.tcl

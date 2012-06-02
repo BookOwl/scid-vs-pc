@@ -211,15 +211,7 @@ namespace eval pgn {
     # Add variation navigation bindings:
     bind $w <KeyPress-v> [bind . <KeyPress-v>]
     bind $w <KeyPress-z> [bind . <KeyPress-z>]
-    if {$::windowsOS} {
-      bind $w <Control-MouseWheel> {
-	if {[expr -%D] < 0} {FontBiggerSmaller 1 ; break}
-	if {[expr -%D] > 0} {FontBiggerSmaller -1 ; break}
-      }
-    } else {
-      bind $w <Control-Button-4> {FontBiggerSmaller 1 ; break}
-      bind $w <Control-Button-5> {FontBiggerSmaller -1 ; break}
-    }
+    bindWheeltoFont $w
     bind $w <Configure> "recordWinSize $w"
 
     $w.text tag add Current 0.0 0.0

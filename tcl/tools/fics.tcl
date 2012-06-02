@@ -851,6 +851,10 @@ namespace eval fics {
   proc readparse {line} {
     variable logged
     ### what is the significance of the fics prompt "fics%" &&&
+
+    # Many lines have trailing spaces, so best not to do this
+    # if {$logged} {set line [string trim $line]}
+
     if {[string match {fics%*} $line]} {
 	set line [string trim [string range $line 5 end]]
     }

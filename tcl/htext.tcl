@@ -214,17 +214,7 @@ proc updateHelpWindow {name {heading {}}} {
   bind $w <Alt-Right> "$w.b.forward invoke"
   # bind $w <Key-i> "$w.b.index invoke"
 
-  if {$::windowsOS || $::macOS} {
-    # Control-MouseWheel binding is (generally) grabbed on OSX and doesn't work
-    bind $w <Control-MouseWheel> {
-      if {[expr -%D] < 0} {FontBiggerSmaller 1 ; break}
-      if {[expr -%D] > 0} {FontBiggerSmaller -1 ; break}
-    }
-  } else {
-    bind $w <Control-Button-4> {FontBiggerSmaller 1 ; break}
-    bind $w <Control-Button-5> {FontBiggerSmaller -1 ; break}
-  }
-
+  bindWheeltoFont $w
   ::htext::display $w.text $helptext $heading 0
   focus $w
 }
