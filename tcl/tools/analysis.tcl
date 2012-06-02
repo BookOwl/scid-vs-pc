@@ -466,7 +466,7 @@ proc ::enginelist::delete {index} {
   set e [lindex $engines(list) $index]
   set msg "Name: [lindex $e 0]
 Command: [lindex $e 1]\n
-Confirm delete engine\n"
+Confirm delete\n"
   set answer [tk_messageBox -title Scid -icon question -type okcancel \
       -message $msg -parent .enginelist]
   if {$answer == "ok"} {

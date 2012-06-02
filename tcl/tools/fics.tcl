@@ -320,9 +320,23 @@ namespace eval fics {
     bind $w.command.entry <Control-c> {.fics.command.entry delete 0 end}
     bind $w.command.entry <Alt-BackSpace> { 
       # bash like delete last word on command line
-      set i [string last { } [.fics.command.entry get] ]
-      incr i 1
-      .fics.command.entry delete $i end
+      set entry [.fics.command.entry get]
+      # break line into two parts (before/after cursor)
+      set i [.fics.command.entry index insert]
+      set t1 [string range $entry 0 $i-1]
+      set t2 [string range $entry $i end]
+      if {[string is space [string index $t1 end]]} {
+        while {[string is space [string index $t1 end]]} {
+          set t1 [string range $t1 0 end-1]
+        }
+      } else {
+	set j [string last { } $t1]
+	set t1 [string range $t1 0 $j]
+      }
+      .fics.command.entry delete 0 end
+      .fics.command.entry insert end $t1$t2
+      .fics.command.entry icursor [string length $t1]
+      break ; # avoid doing a backspace
     }
     bind $w <Control-p> ::pgn::OpenClose
     bind $w <Prior> "$w.console.text yview scroll -1 page"
@@ -540,7 +554,7 @@ namespace eval fics {
   proc cmd {} {
     set w .fics
 
-    set l [$w.command.entry get]
+    set l [string trim [$w.command.entry get]]
     $w.command.entry delete 0 end
     if {$l == "quit" || $l == "exit"} {
       ::fics::close
