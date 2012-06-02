@@ -309,6 +309,8 @@ namespace eval fics {
     entry $w.command.entry -insertofftime 0 -bg grey75 -font font_Large
     button $w.command.send -text $tr(FICSSend) 
     button $w.command.clear -text $tr(Clear) -command "
+      $w.command.entry delete 0 end"
+    button $w.command.clearall -text "$tr(Clear) All" -command "
       $w.console.text delete 0.0 end
       $w.console.text insert 0.0 \"FICS ($::scidName $::scidVersion)\n\"
     "
@@ -345,7 +347,7 @@ namespace eval fics {
     # steer focus into the command entry, as typing into the text widget is pointless
     bind $w.console.text <FocusIn> "focus $w.command.entry"
     pack $w.command.entry -side left -fill x -expand 1 -padx 3 -pady 2
-    pack $w.command.next $w.command.clear $w.command.send -side right -padx 3 -pady 2
+    pack $w.command.next $w.command.clearall $w.command.clear $w.command.send -side right -padx 3 -pady 2
     focus $w.command.entry
 
     # black
@@ -1076,10 +1078,6 @@ namespace eval fics {
 	  if {[string match "1/2*" $res]} {
 	    tk_messageBox -title "Game result" -icon info -type ok -message "Draw"
 	  } else {
-	    if {[regexp {.* ([^ ]*) resigns.*} $line t1 t2]} {
-	      ::commenteditor::appendComment "$t2 resigns"
-	    }
-
 	    tk_messageBox -title "Game result" -icon info -type ok -message "$res"
 	  }
 	}
