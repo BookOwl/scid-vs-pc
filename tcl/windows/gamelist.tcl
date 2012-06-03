@@ -392,9 +392,15 @@ proc ::windows::gamelist::Open {} {
       if {[expr -%D] < 0} { ::windows::gamelist::Scroll -1}
       if {[expr -%D] > 0} { ::windows::gamelist::Scroll 1}
     }
+    bind $w <Control-MouseWheel> {
+      if {[expr -%D] < 0} { ::windows::gamelist::Scroll -$glistSize}
+      if {[expr -%D] > 0} { ::windows::gamelist::Scroll $glistSize}
+    }
   } else {
     bind $w <Button-4> {::windows::gamelist::Scroll -1}
     bind $w <Button-5> {::windows::gamelist::Scroll 1}
+    bind $w <Control-Button-4> {::windows::gamelist::Scroll -$glistSize}
+    bind $w <Control-Button-5> {::windows::gamelist::Scroll $glistSize}
   }
 
   bind $w <Control-F> ::search::filter::reset
