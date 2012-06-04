@@ -2264,7 +2264,14 @@ proc addAnalysisMove {{n 0}} {
   # todo : bug here 0 can be an engine &&&
   if {!$n} {
     set w [lsearch -glob -inline [ wm stackorder . ] {.analysisWin*}]
-    if {[scan $w ".analysisWin\%d" n] != 1} {return}
+    if {[scan $w ".analysisWin\%d" n] != 1} {
+      # Engine 1 can run iconified in statusbar, so check for it
+      if {[winfo exists .analysisWin1]} {
+        set n 1
+      } else {
+	return
+      }
+    }
   }
 
   if {$::analysis(analyzeMode$n)} {
