@@ -86,8 +86,16 @@ proc ::utils::sound::ReadFolder {} {
 proc ::utils::sound::AnnounceMove {move} {
   variable hasSnackPackage
   variable soundMap
+  variable announceTock
 
   if {! $hasSnackPackage} { return }
+
+  if {$move != "U" && $announceTock} {
+    if {[lindex $::utils::sound::soundQueue end] != "sound_move"} {
+      ::utils::sound::PlaySound sound_move
+    }
+    return
+  }
 
   if {[string range $move 0 4] == "O-O-O"} { set move q }
   if {[string range $move 0 2] == "O-O"} { set move k }
@@ -111,7 +119,6 @@ proc ::utils::sound::AnnounceMove {move} {
 proc ::utils::sound::AnnounceNewMove {move} {
   if {$::utils::sound::announceNew} { AnnounceMove $move }
 }
-
 
 proc ::utils::sound::AnnounceForward {move} {
   if {$::utils::sound::announceForward} { AnnounceMove $move }
@@ -176,14 +183,18 @@ proc ::utils::sound::CheckSoundQueue {} {
 proc ::utils::sound::OptionsDialog {} {
   set w .soundOptions
 
-  foreach v {soundFolder announceNew announceForward announceBack} {
+  if {[winfo exists $w]} {
+    raiseWin $w
+    return
+  }
+
+  foreach v {soundFolder announceNew announceForward announceBack announceTock} {
     set ::utils::sound::${v}_temp [set ::utils::sound::$v]
   }
 
   toplevel $w
   wm title $w "Scid: Sound Options"
   # wm transient $w .
-
 
   label $w.status -text ""
   if {! $::utils::sound::hasSnackPackage} {
@@ -236,6 +247,11 @@ proc ::utils::sound::OptionsDialog {} {
   grid $f.announceBack -row $r -column 0 -columnspan 2 -sticky w
   incr r
 
+  checkbutton $f.announceTock -text {Play Tick-Tock sound instead of move} \
+      -variable ::utils::sound::announceTock_temp
+  grid $f.announceTock -row $r -column 0 -columnspan 2 -sticky w
+  incr r
+
   dialogbutton $w.b.ok -text OK -command ::utils::sound::OptionsDialogOK
   dialogbutton $w.b.help -text $::tr(Help) -command {helpWindow Sound}
   dialogbutton $w.b.cancel -text $::tr(Cancel) -command [list destroy $w]
@@ -274,7 +290,7 @@ proc ::utils::sound::OptionsDialogOK {} {
   set isNewSoundFolder [expr {$soundFolder != $::utils::sound::soundFolder_temp}]
 
   # Update the user-settable sound variables:
-  foreach v {soundFolder announceNew announceForward announceBack} {
+  foreach v {soundFolder announceNew announceForward announceBack announceTock} {
     set ::utils::sound::$v [set ::utils::sound::${v}_temp]
   }
 

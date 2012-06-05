@@ -1002,7 +1002,7 @@ $m add command -label OptionsSave -command {
     ::book::showTwo ::book::oppMovesVisible ::gbrowser::size 
     crosstab(type) crosstab(ages) crosstab(countries) crosstab(ratings) crosstab(titles) crosstab(breaks) 
     crosstab(deleted) crosstab(colors) crosstab(cnumbers) crosstab(groups) crosstab(sort) 
-    ::utils::sound::soundFolder ::utils::sound::announceNew 
+    ::utils::sound::soundFolder ::utils::sound::announceNew ::utils::sound::announceTock
     ::utils::sound::announceForward ::utils::sound::announceBack 
     ::tacgame::threshold ::tacgame::blunderwarning ::tacgame::blunderwarningvalue 
     ::tacgame::levelMin  ::tacgame::levelMax  ::tacgame::levelFixed ::tacgame::randomLevel 

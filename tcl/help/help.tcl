@@ -5666,8 +5666,9 @@ set helpText(Sound) {<h1>Sound</h1>
    Scid has limited sound capabilities.
    </p>
    <p>
-   The feature relies on a poorly maintained Tcl package, <b>Snack</b>,
-   which should be installed by default on Windows and OSX.
+   The feature relies on a slow and poorly maintained Tcl package, <b>Snack</b>,
+   which should be installed by default on Windows and OSX. On Linux this package
+   is known as "libsnack" and "tcl-snack".
    </p>
    <p>
    To see if sound is enabled, examine the Start-up Window.
@@ -5676,9 +5677,15 @@ set helpText(Sound) {<h1>Sound</h1>
    </p>
    <p>
    Sound may be disabled by selecting an invalid folder.
-
    </p>
-   <p><footer>Updated: Scid vs. PC 4.5 July 2011</footer></p>
+   <h2>Snack Issues</h2><p>
+   If Scid only plays every second move, you may have a buggy
+   libsnack. You may try compiling snack-2.2.10 from source.
+   It should be installed in the same lib as tcl/tk (generally /usr/lib or /usr/local/lib).
+   If you get a compilation error in file generic/jkFormatMP3.c,
+   move the "#include <lt>math.h<gt>" line in this file to above "#define roundf(x)".
+   </p>
+   <p><footer>Updated: Scid vs. PC 4.8 June 2012</footer></p>
 }
 
 set helpTitle(Changelog) "Scid vs PC Changelog"
