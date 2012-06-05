@@ -5663,7 +5663,9 @@ set helpText(Novag) {<h1>Connecting the Novag Citrine Chess Board</h1>
 set helpTitle(Sound) "Sound"
 set helpText(Sound) {<h1>Sound</h1>
    <p>
-   Scid has limited sound capabilities.
+   Scid vs PC has limited sound capabilities, It can speak moves in English,
+   or play a tock sound with every move. Alternatively, <a FICS>FICS</a> can 
+   also play a tock sound to announce your opponents move.
    </p>
    <p>
    The feature relies on a slow and poorly maintained Tcl package, <b>Snack</b>,

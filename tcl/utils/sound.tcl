@@ -40,14 +40,14 @@ proc ::utils::sound::Setup {} {
   variable soundFiles
   variable soundFolder
 
-  ::splash::add "Setting up audio move announcement..."
+  ::splash::add "Initializing Sound..."
   if {[catch {package require snack 2.0}]} {
     set hasSnackPackage 0
-    ::splash::add "   Move speech disabled - Snack sound package not found"
+    ::splash::add "   Snack sound package not found." 
     return
   }
 
-  ::splash::add "   Move speech enabled - Snack sound package found"
+  ::splash::add "   Snack sound package found: Move speech enabled."
   set hasSnackPackage 1
 
   # Set up sounds. Each sound will be empty until a WAV file for it is found.

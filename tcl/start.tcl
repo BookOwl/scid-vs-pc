@@ -1195,7 +1195,7 @@ proc ::splash::add {text {tag {indent}}} {
 ::splash::add "$::scidName $::scidVersion ($::scidVersionDate)."
 ::splash::add "http://scidvspc.sourceforge.net"
 ::splash::add ""
-::splash::add "(C) 2008-2011 Steven Atkinson (stevenaaus@yahoo.com)"
+::splash::add "(C) 2008-2012 Steven Atkinson (stevenaaus@yahoo.com)"
 ::splash::add "(C) 2006-2008 Pascal Georges"
 ::splash::add "(C) 1999-2004 Shane Hudson"
 ::splash::add ""
