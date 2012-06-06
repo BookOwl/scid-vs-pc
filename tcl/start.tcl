@@ -1208,14 +1208,22 @@ foreach line $::splash::cache {
 # A lot of code assumes tcl_platform is either windows or unix, so
 # lotsa stuff may break if this is not the case.
 
-::splash::add "Using Tcl/Tk version: [info patchlevel] , \"$tcl_platform(platform)\" operating system."
+::splash::add "Using Tcl/Tk version: [info patchlevel]"
+::splash::add "$tcl_platform(os) operating system, version $tcl_platform(osVersion)"
 if {(! $windowsOS)  &&  (! $unixOS)} {
   ::splash::add "Operating System may not be supported"
+}
+if {[string match -nocase Linux $tcl_platform(os)]} {
+  catch {
+    ::splash::add "[eval exec cat [glob /etc/*-release] | uniq]"
+  }
 }
 
 catch {
   ::splash::add "LANG environment var is $::env(LANG)"
 }
+
+::splash::add ""
 
 ### Workaround a bug in Wish 8.5.10 ttk::scale.
 # To trigger, press Control-l three times and try to move y scrollbar
