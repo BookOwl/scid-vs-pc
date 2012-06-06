@@ -90,10 +90,9 @@ proc ::utils::sound::AnnounceMove {move} {
 
   if {! $hasSnackPackage} { return }
 
-  if {$move != "U" && $announceTock} {
-    if {[lindex $::utils::sound::soundQueue end] != "sound_move"} {
-      ::utils::sound::PlaySound sound_move
-    }
+  if {$announceTock} {
+    CancelSounds
+    PlaySound sound_move
     return
   }
 

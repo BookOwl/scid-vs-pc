@@ -1793,10 +1793,8 @@ namespace eval fics {
 	  ::utils::sound::AnnounceMove $moveSan
 	} else {
 	  if {$::fics::sound} {
-	    # ::utils::sound::CancelSounds
-	    if {[lindex $::utils::sound::soundQueue end] != "sound_move"} {
-	      ::utils::sound::PlaySound sound_move
-            }
+	    ::utils::sound::CancelSounds
+	    ::utils::sound::PlaySound sound_move
 	  }
         }
         set ::fics::lastmove $moveSan ; # remember last opponenets move for takeback comment
