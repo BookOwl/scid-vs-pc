@@ -670,7 +670,11 @@ proc OpenUri {uriFiles} {
       set file [file normalize $file]
 
     }
-        if {[file exists $file]} { lappend databaseList $file }
+        if {[file exists $file]} {
+          lappend databaseList $file
+        } else {
+          puts "Dnd: no such file $file"
+        }
 
   }
 

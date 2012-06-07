@@ -2173,7 +2173,6 @@ proc ::board::isFlipped {w} {
   return $::board::_flip($w)
 }
 
-# ::board::flip
 #   Rotate the board 180 degrees.
 
 # ::board::flip .gb$n.bd
@@ -2228,7 +2227,7 @@ proc ::board::togglematerial {{w .board}} {
     grid configure $w.mat -row 1 -column 12 -rowspan 8
     ::board::material $w
   } else {
-    grid remove $w.mat
+    catch {grid remove $w.mat}
   }
   ::board::ficslabels $w
 }

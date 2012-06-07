@@ -87,7 +87,7 @@ proc ::optable::ConfigMenus {{lang ""}} {
     configMenuText $m.favorites $idx OprepFavorites$tag $lang
   }
   foreach idx {0 1} tag {Report Index} {
-    configMenuText $m.helpmenu $idx OprepHelp$tag $lang
+    configMenuText $m.help $idx OprepHelp$tag $lang
   }
 }
 
@@ -159,15 +159,17 @@ proc ::optable::makeReportWin {args} {
   if {[lsearch -exact $args "-nodisplay"] >= 0} { return }
 
   set w .oprepWin
-  if {![winfo exists $w]} {
+  if {[winfo exists $w]} {
+    raiseWin $w
+  } else {
     toplevel $w
     wm title $w "Scid: [tr ToolsOpReport]"
     menu $w.menu
     $w configure -menu $w.menu
     $w.menu add cascade -label OprepFile -menu $w.menu.file
     $w.menu add cascade -label OprepFavorites -menu $w.menu.favorites
-    $w.menu add cascade -label OprepHelp -menu $w.menu.helpmenu
-    foreach i {file favorites helpmenu} {
+    $w.menu add cascade -label OprepHelp -menu $w.menu.help
+    foreach i {file favorites help} {
       menu $w.menu.$i -tearoff 0
     }
     $w.menu.file add command -label OprepFileText \
@@ -189,9 +191,9 @@ proc ::optable::makeReportWin {args} {
     $w.menu.favorites add command -label OprepFavoritesGenerate \
         -command ::optable::generateFavoriteReports
     $w.menu.favorites add separator
-    $w.menu.helpmenu add command -label OprepHelpReport \
+    $w.menu.help add command -label OprepHelpReport \
         -accelerator F1 -command {helpWindow Reports Opening}
-    $w.menu.helpmenu add command -label OprepHelpIndex \
+    $w.menu.help add command -label OprepHelpIndex \
         -command {helpWindow Index}
     ::optable::updateFavoritesMenu
 
@@ -320,8 +322,14 @@ proc ::optable::resizeBoard {} {
 
 proc ::optable::setOptions {} {
   set w .oprepOptions
-  if {[winfo exists $w]} { return }
+
+  if {[winfo exists $w]} {
+    raiseWin $w
+    return
+  }
   toplevel $w
+  placeWinOverParent $w .oprepWin
+
   pack [frame $w.f] -side top -fill x -padx 5 -pady 5
   set row 0
   foreach i {Stats Popular AvgPerf Results MovesFrom Themes Endgames} {
@@ -412,7 +420,7 @@ proc ::optable::setOptions {} {
 # previewLaTeX:
 #   Saves the report to a temporary file, runs latex on it, then
 #   "dvips" to produce PostScript, and "ghostview" to display it.
-#
+
 proc ::optable::previewLaTeX {} {
   busyCursor .
   set tmpdir $::scidLogDir
@@ -421,7 +429,7 @@ proc ::optable::previewLaTeX {} {
   catch {exec /bin/sh -c "rm $fname.*" }
   if {[catch {set tempfile [open $fname.tex w]}]} {
     tk_messageBox -title "Scid: Error writing report" -type ok -icon warning \
-        -message "Unable to write the file: $fname.tex"
+        -message "Unable to write the file: $fname.tex" -parent .oprepWin
   }
   # Add the "batchmode" command to the top of the file to prevent latex
   # pausing for input on errors:
@@ -430,18 +438,18 @@ proc ::optable::previewLaTeX {} {
   close $tempfile
   if {! [catch {exec /bin/sh -c "cd $tmpdir; latex '$tmpfile.tex'" >& /dev/null}]} {
     if {[catch {exec /bin/sh -c "cd $tmpdir; dvips '$tmpfile.dvi'" >& /dev/null}]} {
-      tk_messageBox -title "Scid" -icon warning -type ok \
+      tk_messageBox -title "Scid Error" -icon warning -type ok -parent .oprepWin \
           -message "Unable to run \"dvips\" to convert the report to PostScript."
     } else {
       if {[catch {exec /bin/sh -c "ghostview '$fname.ps'" >& /dev/null &}]} {
-        tk_messageBox -title "Scid" -icon warning -type ok \
+        tk_messageBox -title "Scid Error" -icon warning -type ok -parent .oprepWin \
             -message "Unable to run \"xdvi\" to view the report."
       }
     }
   } else {
-    tk_messageBox -title "Scid: Errors producing report" -type ok \
-        -icon warning \
-        -message "Errors running latex on the file: $fname.tex\n\nSee $fname.log for details."
+    tk_messageBox -title "Scid Error" -type ok -icon warning -parent .oprepWin \
+        -message "Error(s) running latex on the file: $fname.tex\n\nSee $fname.log for details."
+    # todo: $fname.log (TempOpeningReport.log) doesn't exist
   }
   unbusyCursor .
 }
@@ -449,7 +457,7 @@ proc ::optable::previewLaTeX {} {
 # previewHTML:
 #   Saves the report to a temporary file, and invokes the user's web
 #   browser to display it.
-#
+
 proc ::optable::previewHTML {} {
   busyCursor .
   set tmpdir $::scidLogDir

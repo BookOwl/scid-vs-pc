@@ -17,6 +17,11 @@ set ::preport::_clipbase 0
 
 proc ::preport::preportDlg {{player {}}} {
 
+  if {[sc_base numGames] == 0} {
+    tk_messageBox -title "Scid" -type ok -icon warning -message "No games in current base"
+    return
+  }
+
   if {$player != {}} {
     set ::preport::_player $player
     if {$player == [sc_game info white]} {
@@ -231,6 +236,7 @@ proc ::preport::makeReportWin {args} {
     $w.menu.file add separator
     $w.menu.file add command -label Close \
       -command "$w.b.close invoke"
+    # todo: this help menu item gets changed to Opening Report Help &&&
     $w.menu.help add command -label "Player Report Help" \
       -accelerator F1 -command {helpWindow Reports Player}
     $w.menu.help add command -label "Index" \

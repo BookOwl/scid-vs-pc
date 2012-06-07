@@ -28,6 +28,7 @@ set helpText(Intro) {<h1>Introduction</h1>
 is a usability and bug-fix fork of <b>Shane's Chess Information Database</b>. With
 it you can play chess online or against the computer, browse tournaments
 downloaded in pgn format, create huge chess databases, and generate opening and player reports.
+</p>
 
 <h3>Features</h3>
 <ul>
@@ -41,7 +42,7 @@ downloaded in pgn format, create huge chess databases, and generate opening and 
 <li>Improved Book windows, including book compare, and remove move features</li>
 <li>Separate board sections are hideable via right-click.</li>
 <li>A re-done Button Bar with nicer look and feel.</li>
-<li>Restructured Analysis Engines widget. The function hotkeys can be set explicitly, Engine 1 can be docked into the Status Bar, and any number of engines may run at one time.</li>
+<li>Restructured Analysis Engines widget. The function hot-keys can be explicitly set, Engine 1 can be docked into the Status Bar, and any number of engines may run at one time.</li>
 <li>The Chessboard/Pieces config widget has been overhauled, and includes support for custom tiles.</li>
 <li>Setup Board has many fixes and improvements.</li>
 <li>The Help index is now meaningful to new users, with links to the game's main features.</li>
@@ -64,13 +65,13 @@ set helpText(FICS) {<h1>FICS</h1>
 <p>
 The Free Internet Chess Server (FICS) is a web portal where people from
 all over the world play chess.  Features include a player rating system,
-international tournaments and the ability to follow and discuss other peoples
+international tournaments and the ability to follow and discuss other people's
 games.</p>
 
 <p>
-To create a user account, visit <url http://www.freechess.org>www.freechess.org</url>;
-though it is also possible to play anonymously. Existing players may peruse their games
-at <url http://ficsgames.com>http://ficsgames.com</url>.
+Though it is possible to play anonymously, to create a user account
+visit <url http://www.freechess.org>www.freechess.org</url>.
+Players may peruse their games at <url http://ficsgames.com>http://ficsgames.com</url>.
 </p>
 <p>
 To start FICS use <run ::fics::config><green>Play--<gt>FICS (Internet)</green></run>.
@@ -220,8 +221,8 @@ append helpText(Index) {
 
   <h3><name B>B</name></h3>
   <ul>
-  <li><a Finder>Backups</a></li>
   <li>Custom <a Board Textures>background images</a></li>
+  <li><a Finder>Backups</a></li>
   <li><a Tree Best>Best games</a> window</li>
   <li><a Searches Board>Board searches</a></li>
   <li><a Book>Book</a> window</li>
@@ -233,12 +234,12 @@ append helpText(Index) {
 
   <h3><name C>C</name></h3>
   <ul>
-  <li><a Maintenance Cleaner>Cleaner</a></li>
-  <li><a Clipbase>Clipbase</a></li>
   <li><a Changelog>Changelog</a></li>
   <li><a Analysis>Chess Engines</a></li>
   <li><a Analysis List>Chess Engine</a> configuration</li>
   <li><a Analysis Debugging>Chess Engine</a>  debugging</li>
+  <li><a Maintenance Cleaner>Cleaner</a></li>
+  <li><a Clipbase>Clipbase</a></li>
   <li><a Cmdline>Command-line options</a></li>
   <li><a Comment>Comment Editor</a></li>
   <li><a ComputerGame>Computer Game</a></li>
@@ -246,7 +247,7 @@ append helpText(Index) {
   <li><a Compact>Compacting a database</a></li>
   <li><a Correspondence>Correspondence Chess</a></li>
   <li><a CCIcons>Correspondence Chess Icons</a></li>
-  <li><a Import CCRL>CCRL game imports</a></li>
+  <li><a Import CCRL>Computer Chess (CCRL) game imports</a></li>
   <li><a Author>Contact information</a></li>
   <li><a Contents>Contents</a></li>
   <li><a Crosstable>Crosstable</a></li>
@@ -286,12 +287,12 @@ append helpText(Index) {
   <ul>
   <li><a FICS>FICS</a> (Free Internet Chess Server)</li>
   <li><a Finder>File Finder</a></li>
-  <li><a FindBestMove>Training: Find best move</a></li>
   <li><a Formats>File formats</a></li>
   <li><a Menus File>File menu</a></li>
   <li><a Filter>Filter</a></li>
   <li><a Export>Filter, exporting</a></li>
   <li><a Graphs Filter>Filter graph</a></li>
+  <li>Training: <a FindBestMove>Find best move</a></li>
   <li><a Finder>Finder</a></li>
   <li><a Flags>Flags</a></li>
   <li><a Options Fonts>Fonts</a></li>
@@ -351,17 +352,17 @@ append helpText(Index) {
 
   <h3><name N>N</name></h3>
   <ul>
+  <li><a NAGs>NAG annotation values</a></li>
   <li><a Maintenance Editing>Names, editing</a></li>
   <li><a Maintenance Spellcheck>Names, spellchecking</a></li>
-  <li><a NAGs>NAG annotation values</a></li>
   <li><a Variations Null>Null moves</a></li>
   </ul>
 
   <h3><name O>O</name></h3>
   <ul>
   <li><a Book>Opening Books</a></li>
-  <li><a ECO>Opening classification (ECO)</a></li>
-  <li><a Reports Opening>Opening report</a> window</li>
+  <li><a ECO>Opening classification</a> (ECO)</li>
+  <li><a Reports Opening>Opening Reports</a></li>
   <li><a Options>Options</a></li>
   </ul>
 
@@ -379,7 +380,7 @@ append helpText(Index) {
   <li><a PInfo>Player Information</a> </li>
   <li><a PInfo Photos>Player Photos</a></li>
   <li>Spell Checking <a Maintenance Spellcheck>Player Names</a></li>
-  <li><a Reports Player>Player Report</a> window</li>
+  <li><a Reports Player>Player Reports</a></li>
   <li><a ComputerGame>Play against the Computer</a></li>
   <li><a Book Polyglot>Polyglot</a></li>
   <li><a TacticsTrainer>Puzzles</a> - Mate in ... </li>
@@ -394,6 +395,7 @@ append helpText(Index) {
   <li><a Graphs Rating>Rating graph</a></li>
   <li><a Moves Undo>Redo</a></li>
   <li><a Repertoire>Repertoire editor</a></li>
+  <li><a Reports>Reports</a></li>
   <li><a Import CCRL>Round Name</a> problems</li>
   </ul>
 
@@ -1137,8 +1139,8 @@ set helpText(Clipbase) {<h1>The Default Database</h1>
   <p>
   In addition to physical databases existing on disk, Scid provides
   a transient one known as the <b>Clipbase</b>. It is opened by default, and
-  used to cut and paste games between other bases (using the <a
-  Switcher>Database Switcher</a>). Additionally, each base has a game numbered 0
+  used to cut and paste games between other bases via the <a
+  Switcher>Database Switcher</a>. Additionally, each base has a game numbered 0
   which also acts as a scratch game.
   </p>
 <h3>Use</h3>
@@ -2338,7 +2340,7 @@ set helpText(Maintenance) {<h1>Database Maintenance</h1>
   When you have identified twins, it is a good idea to
   <b>confirm each game</b> really is a copy of another.  By
   selecting the "Set filter to all deleted games" option in
-  the Delete Twins dialog box, the filter will contain all
+  the Delete Twins dialog-box, the filter will contain all
   deleted games, and you can browse through them (using the
   arrow keys) with the <term>twins checker</term> window.
   Use the "1", "2" and "t" keys to
@@ -3116,26 +3118,14 @@ set helpText(Email) {<h1>The Email Window</h1>
 set helpTitle(Reports) "Reports"
 set helpText(Reports) {<h1>Reports</h1>
   <p>
-  A <term>Report</term> in Scid is a document containing information about
-  a particular position and/or player. There are two types of report Scid can
-  generate: Opening Reports and Player Reports.
+  Scid can generate two types of reports: Opening and <a Reports Player>Player Reports</a>.
   </p>
 
   <h3><name Opening>Opening Reports</name></h3>
   <p>
-  Scid can produce an <term>opening report</term> that displays interesting
-  facts about an opening position. To generate an opening report, first make
-  sure the displayed position is the one you want a report for, then select
-  <b>Opening Report</b> from the <b>Tools</b> menu.
-  </p>
-  <p>
-  The <term>Opening Report</term> window displays the results of the report
-  Scid generated. The <b>File</b> menu has commands to save the report
-  to a file in plain text, HTML or <a LaTeX>LaTeX</a> format.
-  </p>
-  <p>
-  The first sections of the report present information on the games that
-  reach the report position, and moves played from the position. You can
+  Scid's <run ::optable::makeReportWin><green>Opening Report</green></run> display interesting facts about the current position.
+  The first sections of the report have information on games
+  matching the position, and moves played thereafter. One can
   see if the opening is becoming more popular, if it has many short draws,
   and what move orders (transpositions) are used to reach it.
   </p>
@@ -3149,42 +3139,35 @@ set helpText(Reports) {<h1>Reports</h1>
   Queen pawn which is quickly captured) distorting results.
   </p>
   <p>
-  The final and largest part of the report is the theory table. When saving
-  the report to a file, you can choose to save just the theory table, a compact
-  report without the theory table, or the whole report.
+  The final and largest part of the report is the Theory Table. When saving
+  the report to a file, you can choose to save just the table, a compact
+  report without the table, or the whole report.
   </p>
   <p>
-  Almost all the report sections can be turned on or off or adjusted in
-  the opening report options, so you can customize a report to only show
+  Almost all the report sections can be turned on or off, or adjusted, in
+  the Opening Report Options. So you can customize a report to only show
   the information that interests you.
   </p>
   <p>
-  Most items of information in the report window that are shown in color,
-  invoke some action when selected with the left mouse button. For example,
-  you can click on a game reference to load that game, or click on a
-  positional theme to set the filter to contain only the report games where
-  that theme occurred.
+  Most coloured items in the report window are clickable, and
+  invoke some relevant action. For example; clicking a game reference
+  will load that game, or clicking a positional theme will set the filter
+  to contain only the report games where that theme occurred.
   </p>
   <p>
-  Choosing <term>Merge Games</term> will merge the games from the
-  opening report into the currently displayed game. This merges in
-  the whole games as variations to the game, including the full
-  reference.
+  The <b>Merge Games</b> button merges all games from the
+  Opening Report into the current game as variations, including the full reference.
   </p>
 
   <h4>Favorites</h4>
   <p>
-  The <menu>Favorites</menu> menu in the report window lets you maintain a
-  collection of favorite opening report positions and generate the opening
-  reports for all those positions easily. Selecting "Add Report..." from
-  the Favorites menu will add the current position as a favorite report
-  position; you will be prompted to enter a name that will be used as
-  the filename when favorite reports are generated.
+  The Favorites Menu in the Report Window allows one to maintain a
+  collection of favorite opening positions.
   </p>
   <p>
-  Select "Generate Reports..." from the Favorites menu to generate a report
-  for each of your favorite reports using the current database. A dialog
-  box will appear allowing you to specify the report type and format, and
+  The <b>Generate Reports</b> menu will generate a report
+  for each of your favorite reports, using the current database. A dialog-box
+  will appear allowing you to specify the report type and format, and
   a directory where report files will be saved. A suitable suffix for the
   format you selected (e.g. ".html" for HTML format) will be added to each
   report file name.
@@ -3192,15 +3175,16 @@ set helpText(Reports) {<h1>Reports</h1>
 
   <h3><name Player>Player Reports</name></h3>
   <p>
-  A <term>Player Report</term> is very similar to an opening report, but it
-  contains information about the games of a single player with the white or
-  black pieces. You can generate a player report from the Tools menu, or from
-  the <a PInfo>Player Info</a> window.
+  Player Reports are very similar to
+  <a Reports Opening>Opening Reports</a>, but 
+  contain information about the games of a single player - with the white or
+  black pieces. One can generate a Player Report from
+  <run ::preport::preportDlg><green>Tools-<gt>Player Report</green></run>
+  or from the <a PInfo>Player Info</a> window.
   </p>
   <p>
-  A player report can be generated either for all games by the specified player
-  with the specified pieces, or for only the subset of those games which reach
-  the current position on the main window chessboard.
+  Player Reports can be generated for all games (with the specified player and pieces),
+  or for games matching the current position.
   </p>
 
   <h3>Limits</h3>
@@ -3210,13 +3194,13 @@ set helpText(Reports) {<h1>Reports</h1>
   be slightly incorrect.
   </p>
   <p>
-  Also, there is a limit of 500 games for the theory table. If the report
-  position occurs in more than 500 games, only the 500 games with the highest
-  average Elo rating are used to generate the theory table. You can adjust the
-  number of games used to generate the theory table in the Report options.
+  Additionally, there is a limit of 500 games for the Theory Table. If the report
+  position occurs in more than 500 games, only 500 games with the highest
+  average Elo are used to generate the Theory Table. You can adjust the
+  number of games used to generate the table, in the Report Options.
   </p>
 
-  <p><footer>Updated: Scid 3.6.26, October 2008</footer></p>
+  <p><footer>Updated: Scid vs. PC 4.8, June 2012</footer></p>
 }
 
 
@@ -3315,7 +3299,7 @@ set helpText(Graphs) {<h1>Graph Windows</h1>
   <p>
   The <green><run ::tools::graphs::filter::Open>Relative Filter Graph</run></green> shows trends by Date,
   Elo Rating or Moves for games in the current filter compared to the
-  entire database. For example, when the <a Tree>tree</a>
+  entire database. For example; when the <a Tree>tree</a>
   is open it shows how the current opening has changed
   in popularity in recent years, or whether it is especially
   popular among higher-rated players.
