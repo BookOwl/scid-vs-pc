@@ -838,6 +838,8 @@ menuText N CrosstabOptAuto "Auto" 0
 menuText N CrosstabOptThreeWin "3 Points for Win" 1
 menuText N CrosstabOptAges "Leeftijd in jaren" 8
 menuText N CrosstabOptNats "Nationaliteiten" 1
+# todo
+menuText N CrosstabOptTallies "Win/Loss/Draw" 0
 menuText N CrosstabOptRatings "Elo" 0
 menuText N CrosstabOptTitles "Titels" 0
 menuText N CrosstabOptBreaks "Tie-break scores" 4

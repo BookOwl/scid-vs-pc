@@ -140,7 +140,7 @@ Crosstable::Init ()
     FirstDate = ZERO_DATE;
     for (resultT r = 0; r < NUM_RESULT_TYPES; r++) { ResultCount[r] = 0; }
     SpellCheck = NULL;
-    ShowTitles = ShowElos = ShowCountries = SwissColors = ShowAges = true;
+    ShowTitles = ShowElos = ShowCountries = ShowTallies = SwissColors = ShowAges = true;
     ShowTiebreaks = false;
     SortOption = CROSSTABLE_SortScore;
     OutputFormat = CROSSTABLE_Plain;
@@ -499,6 +499,7 @@ Crosstable::PrintTable (DString * dstr, crosstableModeT mode, uint playerLimit, 
     PrintCountries = false;
     PrintAges = false;
     PrintTiebreaks = true;
+    PrintTallies = true;
     for (player = 0; player < PlayerCount; player++) {
         playerDataT * pd = PlayerData[player];
         if (pd->elo > 0) { PrintRatings = true; }
@@ -517,6 +518,7 @@ Crosstable::PrintTable (DString * dstr, crosstableModeT mode, uint playerLimit, 
     if (! ShowElos) { PrintRatings = false; }
     if (! ShowTitles) { PrintTitles = false; }
     if (! ShowCountries) { PrintCountries = false; }
+    if (! ShowTallies) { PrintTallies = false; }
     if (! ShowAges) { PrintAges = false; }
     if (! ShowTiebreaks) { PrintTiebreaks = false; }
     if (mode == CROSSTABLE_Knockout) { PrintTiebreaks = false; }
@@ -813,6 +815,9 @@ Crosstable::PrintAllPlayAll (DString * dstr, uint playerLimit)
     if (PrintRatings) {
         dstr->Append ("   ", StartBoldCol, "Perf Chg", EndBoldCol);
     }
+    if (PrintTallies && OutputFormat == CROSSTABLE_Html) {
+        dstr->Append ("   ", StartBoldCol, "+/-/=", EndBoldCol);
+    }
     dstr->Append (EndRow, NewLine);
 
     PrintDashesLine (dstr);
@@ -860,12 +865,14 @@ Crosstable::PrintAllPlayAll (DString * dstr, uint playerLimit)
             dstr->Append (StartRightCol, stemp, EndRightCol);
         }
 
+        uint r_won = 0, r_loss = 0, r_draw = 0;
         for (uint oppCount = 0; oppCount < playerLimit; oppCount++) {
             if (playerLimit == 2  &&  oppCount == player) { continue; }
             uint opp = SortedIndex[oppCount];
             dstr->AddChar (' ');
             dstr->Append (StartCol);
             clashT * clash = pdata->firstClash[opp];
+
             for (uint count = 0; count < MaxClashes; count++) {
                 if (clash != NULL) {
                     if (OutputFormat == CROSSTABLE_Hypertext) {
@@ -881,6 +888,14 @@ Crosstable::PrintAllPlayAll (DString * dstr, uint playerLimit)
                     } else {
                         dstr->AddChar (RESULT_CHAR[clash->result]);
                     }
+		    switch (clash->result) {
+		      case 1:
+			  r_won++; break;
+		      case 2:
+			  r_loss++; break;
+		      case 3:
+			  r_draw++; break;
+		    }
                     clash = clash->next;
                 } else {
                     dstr->AddChar (index == opp ? 'X' : '.');
@@ -890,6 +905,14 @@ Crosstable::PrintAllPlayAll (DString * dstr, uint playerLimit)
         }
 
         PrintPerformance (dstr, pdata);
+
+        if (PrintTallies) {
+	  dstr->Append (StartCol);
+	  sprintf (stemp, "  (+%u -%u =%u)", r_won, r_loss, r_draw);
+	  dstr->Append (stemp);
+	  dstr->Append (EndCol);
+        }
+
         dstr->Append (EndRow, NewLine);
     }
     PrintDashesLine (dstr);
@@ -976,6 +999,9 @@ Crosstable::PrintSwiss (DString * dstr, uint playerLimit)
     if (PrintRatings) {
         dstr->Append ("   ", StartBoldCol, "Perf Chg", EndBoldCol);
     }
+    if (PrintTallies && OutputFormat == CROSSTABLE_Html) {
+        dstr->Append ("   ", StartBoldCol, "+/-/=", EndBoldCol);
+    }
     dstr->Append (EndRow, NewLine);
 
     PrintDashesLine (dstr);
@@ -1023,6 +1049,7 @@ Crosstable::PrintSwiss (DString * dstr, uint playerLimit)
             dstr->Append (StartRightCol, stemp, EndRightCol);
         }
 
+        uint r_won = 0, r_loss = 0, r_draw = 0;
         for (uint round = 1; round <= MaxRound; round++) {
             clashT * clash = pdata->roundClash[round];
             dstr->AddChar (' ');
@@ -1056,11 +1083,26 @@ Crosstable::PrintSwiss (DString * dstr, uint playerLimit)
                     else
                       dstr->Append ("</g></blue>");
                 }
+                switch (clash->result) {
+		  case 1:
+		      r_won++; break;
+		  case 2:
+		      r_loss++; break;
+		  case 3:
+		      r_draw++; break;
+                }
             }
             dstr->Append (EndCol);
         }
-
         PrintPerformance (dstr, pdata);
+
+        if (PrintTallies) {
+	  dstr->Append (StartCol);
+	  sprintf (stemp, "  (+%u -%u =%u)", r_won, r_loss, r_draw);
+	  dstr->Append (stemp);
+	  dstr->Append (EndCol);
+        }
+
         dstr->Append (EndRow, NewLine);
     }
 

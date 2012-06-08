@@ -1,12 +1,11 @@
 
-######################################################################
-### Crosstable window
+### crosstab.tcl
 
 namespace eval ::crosstab {}
 
 ### some vars are now stored on exit (in menus.tcl) S.A.
-foreach var   {sort type ages colors ratings countries titles groups breaks deleted cnumbers text} \
-        value {score auto +ages +colors +ratings +countries +titles -groups -breaks -deleted -numcolumns hypertext} {
+foreach var   {sort type ages colors ratings countries tallies titles groups breaks deleted cnumbers text} \
+        value {score auto +ages +colors +ratings +countries +tallies +titles -groups -breaks -deleted -numcolumns hypertext} {
   if {![info exists crosstab($var)]} {
     set crosstab($var) $value
   }
@@ -27,9 +26,9 @@ proc ::crosstab::ConfigMenus {{lang ""}} {
   foreach idx {0 1 2} tag {Event Site Date} {
     configMenuText $m.edit $idx CrosstabEdit$tag $lang
   }
-  # foreach idx {0 1 2 3 5 6 7 8 9  10 12 13 15} must change because of tearoff
+  # foreach idx {0 1 2 3 5 6 7 8 9 10 12 13 15} must change because of tearoff
   # Scid menus are the biggest steaming pile of shit S.A
-  foreach idx   {1 2 3 4 6 8 9 10 11 12 13 15 16 18} tag {All Swiss Knockout Auto ThreeWin Ages Nats Ratings Titles Breaks Deleted Colors ColumnNumbers Group} {
+  foreach idx   {1 2 3 4 6 8 9 10 11 12 13 14 16 17 19} tag {All Swiss Knockout Auto ThreeWin Ages Nats Tallies Ratings Titles Breaks Deleted Colors ColumnNumbers Group} {
     configMenuText $m.opt $idx CrosstabOpt$tag $lang
   }
 
@@ -124,7 +123,7 @@ proc ::crosstab::Open {} {
           -message "Unable to save the file: $fname\n\n"
       } else {
         catch {sc_game crosstable html $crosstab(sort) $crosstab(type) \
-                 $crosstab(ratings) $crosstab(countries) $crosstab(titles) \
+                 $crosstab(ratings) $crosstab(countries) $crosstab(tallies) $crosstab(titles) \
                  $crosstab(colors) $crosstab(groups) $crosstab(ages) \
                  $crosstab(breaks) $crosstab(cnumbers) $crosstab(deleted) $crosstab(threewin)} \
           result
@@ -146,7 +145,7 @@ proc ::crosstab::Open {} {
           -message "Unable to save the file: $fname\n\n"
       } else {
         catch {sc_game crosstable latex $crosstab(sort) $crosstab(type) \
-                 $crosstab(ratings) $crosstab(countries) $crosstab(titles) \
+                 $crosstab(ratings) $crosstab(countries) $$crosstab(tallies) $crosstab(titles) \
                  $crosstab(colors) $crosstab(groups) $crosstab(ages) \
                  $crosstab(breaks) $crosstab(cnumbers) $crosstab(deleted) $crosstab(threewin)} \
           result
@@ -205,6 +204,9 @@ proc ::crosstab::Open {} {
   $w.menu.opt add checkbutton -label CrosstabOptNats \
     -variable crosstab(countries) -onvalue "+countries" \
     -offvalue "-countries" -command ::crosstab::Refresh
+  $w.menu.opt add checkbutton -label CrosstabOptTallies \
+    -variable crosstab(tallies) -onvalue "+tallies" \
+    -offvalue "-tallies" -command ::crosstab::Refresh
   $w.menu.opt add checkbutton -label CrosstabOptRatings \
     -variable crosstab(ratings) -onvalue "+ratings" -offvalue "-ratings" \
     -command ::crosstab::Refresh
@@ -364,7 +366,7 @@ proc ::crosstab::Refresh {} {
   catch {grab $w.b.stop}
   update
   catch {sc_game crosstable $crosstab(text) $crosstab(sort) $crosstab(type) \
-         $crosstab(ratings) $crosstab(countries) $crosstab(titles) \
+         $crosstab(ratings) $crosstab(countries) $crosstab(tallies) $crosstab(titles) \
          $crosstab(colors) $crosstab(groups) $crosstab(ages) \
          $crosstab(breaks) $crosstab(cnumbers) $crosstab(deleted) $crosstab(threewin)} result
   $w.f.text configure -state normal
@@ -389,3 +391,4 @@ proc ::crosstab::Refresh {} {
   $w.f.text configure -state disabled
 }
 
+### end of crosstable.tcl

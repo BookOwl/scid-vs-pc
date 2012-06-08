@@ -92,6 +92,7 @@ class Crosstable
     bool         ShowTitles;
     bool         ShowElos;
     bool         ShowCountries;
+    bool         ShowTallies;
     bool         ShowAges;
     bool         ShowTiebreaks;
     bool         SwissColors;  // If true, show colors in Swiss tables.
@@ -111,6 +112,7 @@ class Crosstable
     bool         PrintTitles;
     bool         PrintRatings;
     bool         PrintCountries;
+    bool         PrintTallies;
     bool         PrintAges;
     bool         PrintTiebreaks;
     const char * StartTable;
@@ -184,6 +186,7 @@ class Crosstable
     void   SetTitles (bool b) { ShowTitles = b; }
     void   SetElos (bool b) { ShowElos = b; }
     void   SetCountries (bool b) { ShowCountries = b; }
+    void   SetTallies (bool b) { ShowTallies = b; }
     void   SetTiebreaks (bool b) { ShowTiebreaks = b; }
     void   SetSwissColors (bool b) { SwissColors = b; }
     void   SetSeparateScoreGroups (bool b) { SeparateScoreGroups = b; }

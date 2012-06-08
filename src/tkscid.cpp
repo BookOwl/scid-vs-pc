@@ -6208,7 +6208,7 @@ sc_game_crosstable (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv
     int option = -1;
 
     const char * usageMsg =
-        "Usage: sc_game crosstable plain|html|hypertext|filter|count [name|rating|score|country] [allplay|swiss] [(+|-)(colors|countries|ratings|titles|groups|breaks|numcolumns)]";
+        "Usage: sc_game crosstable plain|html|hypertext|filter|count [name|rating|score|country] [allplay|swiss] [(+|-)(colors|countries|tallies|ratings|titles|groups|breaks|numcolumns)]";
 
     static const char * extraOptions [] = {
         "allplay", "knockout", "swiss", "auto",
@@ -6217,6 +6217,7 @@ sc_game_crosstable (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv
         "-breaks", "+breaks",           // Show tiebreak scores
         "-colors", "+colors",           // Show game colors in Swiss table
         "-countries", "+countries",     // Show current countries
+        "-tallies", "+tallies",
         "-ratings", "+ratings",         // Show Elo ratings
         "-titles", "+titles",           // Show FIDE titles
         "-groups", "+groups",           // Separate players into score groups
@@ -6233,6 +6234,7 @@ sc_game_crosstable (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv
         EOPT_BREAKS_OFF, EOPT_BREAKS_ON,
         EOPT_COLORS_OFF, EOPT_COLORS_ON,
         EOPT_COUNTRIES_OFF, EOPT_COUNTRIES_ON,
+        EOPT_TALLIES_OFF, EOPT_TALLIES_ON,
         EOPT_RATINGS_OFF, EOPT_RATINGS_ON,
         EOPT_TITLES_OFF, EOPT_TITLES_ON,
         EOPT_GROUPS_OFF, EOPT_GROUPS_ON,
@@ -6247,6 +6249,7 @@ sc_game_crosstable (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv
     bool showAges = true;
     bool showColors = true;
     bool showCountries = true;
+    bool showTallies = true;
     bool showRatings = true;
     bool showTitles = true;
     bool showBreaks = false;
@@ -6279,6 +6282,8 @@ sc_game_crosstable (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv
             case EOPT_COLORS_ON:      showColors = true;       break;
             case EOPT_COUNTRIES_OFF:  showCountries = false;   break;
             case EOPT_COUNTRIES_ON:   showCountries = true;    break;
+            case EOPT_TALLIES_OFF:    showTallies = false;     break;
+            case EOPT_TALLIES_ON:     showTallies = true;      break;
             case EOPT_RATINGS_OFF:    showRatings = false;     break;
             case EOPT_RATINGS_ON:     showRatings = true;      break;
             case EOPT_TITLES_OFF:     showTitles = false;      break;
@@ -6361,6 +6366,7 @@ sc_game_crosstable (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv
     ctable->SetSwissColors (showColors);
     ctable->SetAges (showAges);
     ctable->SetCountries (showCountries);
+    ctable->SetTallies (showTallies);
     ctable->SetElos (showRatings);
     ctable->SetTitles (showTitles);
     ctable->SetTiebreaks (showBreaks);
@@ -7814,7 +7820,7 @@ sc_game_merge (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
 
     // Check that the specified game can be merged:
     if (base == db  &&  (int)gnum == db->gameNumber) {
-        return errorResult (ti, "This game cannot be merged into itself.");
+        return errorResult (ti, "Game cannot be merged into itself.");
     }
     if (db->game->AtStart()  &&  db->game->AtEnd()) {
         return errorResult (ti, "The current game has no moves.");

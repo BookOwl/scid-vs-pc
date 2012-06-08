@@ -827,6 +827,8 @@ menuText C CrosstabOptAuto "Auto" 0
 menuText C CrosstabOptThreeWin "3 Points for Win" 1
 menuText C CrosstabOptAges "Vìk" 0
 menuText C CrosstabOptNats "Národnost" 0
+# todo
+menuText C CrosstabOptTallies "Win/Loss/Draw" 0
 menuText C CrosstabOptRatings "Rating" 0
 menuText C CrosstabOptTitles "Titul" 0
 menuText C CrosstabOptBreaks "Výsledky tie-breaku" 10

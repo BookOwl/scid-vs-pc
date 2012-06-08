@@ -740,6 +740,8 @@ menuText P CrosstabOptAuto "Automatycznie" 0
 menuText P CrosstabOptThreeWin "3 Points for Win" 1
 menuText P CrosstabOptAges "Wiek" 0
 menuText P CrosstabOptNats "Narodowo¶æ" 0
+# todo
+menuText P CrosstabOptTallies "Win/Loss/Draw" 0
 menuText P CrosstabOptRatings "Ranking" 0
 menuText P CrosstabOptTitles "Tytu³" 0
 menuText P CrosstabOptBreaks "Punkty pomocnicze" 1

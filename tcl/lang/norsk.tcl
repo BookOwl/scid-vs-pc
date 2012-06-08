@@ -868,6 +868,8 @@ menuText O CrosstabOptAuto "Auto" 0
 menuText O CrosstabOptThreeWin "3 Points for Win" 1
 menuText O CrosstabOptAges "Aldre i år" 0
 menuText O CrosstabOptNats "Nasjonaliteter" 0
+# todo
+menuText O CrosstabOptTallies "Win/Loss/Draw" 0
 menuText O CrosstabOptRatings "Ratinger" 0
 menuText O CrosstabOptTitles "Titler" 0
 menuText O CrosstabOptBreaks "Poengfordel" 0

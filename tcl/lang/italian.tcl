@@ -794,6 +794,8 @@ menuText I CrosstabOptAuto "Auto" 0
 menuText I CrosstabOptThreeWin "3 Points for Win" 1
 menuText I CrosstabOptAges "Eta' in anni" 8
 menuText I CrosstabOptNats "Nazionalita'" 0
+# todo
+menuText I CrosstabOptTallies "Win/Loss/Draw" 0
 menuText I CrosstabOptRatings "Punteggi" 0
 menuText I CrosstabOptTitles "Titoli" 0
 menuText I CrosstabOptBreaks "Punteggi al Tie-break" 4

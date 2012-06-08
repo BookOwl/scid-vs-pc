@@ -765,6 +765,8 @@ menuText D CrosstabOptAuto "Automatisch" 1
 menuText D CrosstabOptThreeWin "3 Points for Win" 1
 menuText D CrosstabOptAges "Alter in Jahren" 0
 menuText D CrosstabOptNats "Nationalität" 0
+# todo
+menuText D CrosstabOptTallies "Win/Loss/Draw" 0
 menuText D CrosstabOptRatings "Elo" 0
 menuText D CrosstabOptTitles "Titel" 0
 menuText D CrosstabOptBreaks "Stichkampfpunkte" 10

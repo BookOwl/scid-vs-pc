@@ -868,6 +868,8 @@ menuText Y CrosstabOptAuto "Auto" 0 ;# ***
 menuText Y CrosstabOptThreeWin "3 Points for Win" 1
 menuText Y CrosstabOptAges "Starost u godinama" 10
 menuText Y CrosstabOptNats "Narodnost" 0
+# todo
+menuText Y CrosstabOptTallies "Win/Loss/Draw" 0
 menuText Y CrosstabOptRatings "Rejtinzi" 0
 menuText Y CrosstabOptTitles "Titule" 0
 menuText Y CrosstabOptBreaks "Tie-break rezultati" 4

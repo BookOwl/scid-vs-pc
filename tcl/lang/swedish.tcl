@@ -732,6 +732,8 @@ menuText W CrosstabOptAuto "Auto" 1
 menuText W CrosstabOptThreeWin "3 poäng för vinst" 1
 menuText W CrosstabOptAges "Ålder i år" 8
 menuText W CrosstabOptNats "Nationalitet" 0
+# todo
+menuText W CrosstabOptTallies "Win/Loss/Draw" 0
 menuText W CrosstabOptRatings "Rating" 0
 menuText W CrosstabOptTitles "Titlar" 0
 menuText W CrosstabOptBreaks "Tie-break poäng" 4

@@ -831,6 +831,8 @@ menuText B CrosstabOptAuto "Automatico" 0
 menuText B CrosstabOptThreeWin "3 Points for Win" 1
 menuText B CrosstabOptAges "Idade em anos" 0
 menuText B CrosstabOptNats "Nacionalidades" 0
+# todo
+menuText B CrosstabOptTallies "Win/Loss/Draw" 0
 menuText B CrosstabOptRatings "Ratings" 0
 menuText B CrosstabOptTitles "Titulos" 0
 menuText B CrosstabOptBreaks "Scores de desempate" 0

@@ -872,6 +872,8 @@ menuText R CrosstabOptAuto "Авто" 0
 menuText R CrosstabOptThreeWin "3 Points for Win" 1
 menuText R CrosstabOptAges "Возвраст в годах" 2
 menuText R CrosstabOptNats "Национальность" 2
+# todo
+menuText R CrosstabOptTallies "Win/Loss/Draw" 0
 menuText R CrosstabOptRatings "Рейтинг" 0
 menuText R CrosstabOptTitles "Титул" 0
 menuText R CrosstabOptBreaks "Счет тай-бреков" 0
