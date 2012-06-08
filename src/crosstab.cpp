@@ -723,7 +723,7 @@ Crosstable::PrintPerformance (DString * dstr, playerDataT * pdata)
                                        percentage, pdata->oppEloCount);
             sprintf (stemp, "%4d %+3d", performance, change);
         } else {
-            sprintf (stemp, "%4d", performance);
+            sprintf (stemp, "%4d    ", performance);
         }
         dstr->Append ("   ", StartRightCol, stemp, EndRightCol);
     }
@@ -870,7 +870,7 @@ Crosstable::PrintAllPlayAll (DString * dstr, uint playerLimit)
             if (playerLimit == 2  &&  oppCount == player) { continue; }
             uint opp = SortedIndex[oppCount];
             dstr->AddChar (' ');
-            dstr->Append (StartCol);
+            dstr->Append (StartRightCol);
             clashT * clash = pdata->firstClash[opp];
 
             for (uint count = 0; count < MaxClashes; count++) {
@@ -1053,7 +1053,7 @@ Crosstable::PrintSwiss (DString * dstr, uint playerLimit)
         for (uint round = 1; round <= MaxRound; round++) {
             clashT * clash = pdata->roundClash[round];
             dstr->AddChar (' ');
-            dstr->Append (StartCol);
+            dstr->Append (StartRightCol);
             if (clash == NULL) {
                 dstr->Append ("...");
                 if (PlayerNumWidth == 3) { dstr->AddChar ('.'); }
