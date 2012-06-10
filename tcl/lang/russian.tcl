@@ -1212,7 +1212,7 @@ translate R PasteFen {Вставить FEN}
 # ====== TODO To be translated ======
 translate R SaveAndContinue {Save and continue}
 # ====== TODO To be translated ======
-translate R DiscardChangesAndContinue {Discard changes\nand continue}
+translate R DiscardChangesAndContinue {Discard Changes}
 # ====== TODO To be translated ======
 translate R GoBack {Go back}
 

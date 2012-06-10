@@ -1078,7 +1078,7 @@ translate I EnPassantFile {Fila En Passant}
 translate I ClearFen {Annulla FEN}
 translate I PasteFen {Incolla FEN}
 translate I SaveAndContinue {Salava e continua}
-translate I DiscardChangesAndContinue {Scarta le modifiche\ne continua}
+translate I DiscardChangesAndContinue {Scarta le Modifiche}
 translate I GoBack {Indietro}
 
 # Replace move dialog:

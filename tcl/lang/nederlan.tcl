@@ -1150,7 +1150,7 @@ translate N PasteFen {FEN plakken}
 # ====== TODO To be translated ======
 translate N SaveAndContinue {Save and continue}
 # ====== TODO To be translated ======
-translate N DiscardChangesAndContinue {Discard changes\nand continue}
+translate N DiscardChangesAndContinue {Discard Changes}
 # ====== TODO To be translated ======
 translate N GoBack {Go back}
 

@@ -1,24 +1,24 @@
-
-# ::game::ConfirmDiscard
-#
-#   Prompts the user if they want to discard the changes to the
-#   current game. Returns 1 if they selected yes, 0 otherwise.
-#
+# game.tcl: part of Scid
 
 # ConfirmDiscard can sometimes be drawn underneath the comment editor 
 # It should be replaced by ConfirmDiscard2 anyway, which has a game save option. S.A.
 
+# Prompts the user if they want to discard the changes to the current game.
+# Returns 1 if they selected yes, 0 otherwise.
+
 proc ::game::ConfirmDiscard {} {
 
   # sanity check in case of errant multiple call
-  if {[winfo exists .cgDialog]} {return 0}
+  if {[winfo exists .cgDialog]} {
+    return 0
+  }
 
-  if {$::trialMode}		{return 1}
-  if {[sc_base isReadOnly]}	{return 1}
-  if {! [sc_game altered]}	{return 1}
+  if {$::trialMode || [sc_base isReadOnly] || ![sc_game altered]} {
+    return 1
+  }
 
   set answer [ tk_dialog .cgDialog "Scid: [tr GameNew]" $::tr(ClearGameDialog) {} {} \
-    [lindex [split $::tr(DiscardChangesAndContinue) "\n"] 0] $::tr(Cancel) ]
+    $::tr(DiscardChangesAndContinue) $::tr(Cancel) ]
 
   return [expr $answer == 0]
 }
@@ -35,9 +35,9 @@ proc ::game::ConfirmDiscard2 {} {
   # This should be rewritten with tk_dialog and "return answer"
   # rather than "::game::answer" S.A.
 
-  if {$::trialMode} { return 1 }
-  if {[sc_base isReadOnly]} { return 1 }
-  if {! [sc_game altered]} { return 1 }
+  if {$::trialMode || [sc_base isReadOnly] || ![sc_game altered]} {
+    return 1
+  }
 
   set w .confirmDiscard
   toplevel $w
@@ -54,8 +54,8 @@ proc ::game::ConfirmDiscard2 {} {
   label $w.top.txt -text "This game has been altered.\nDo you wish to save it?"
   pack $w.top.txt -padx 5 -pady 5 -side right
 
-  button $w.bottom.b1 -width 10 -text {Save} -command {destroy .confirmDiscard ; set ::game::answer 0}
-  button $w.bottom.b2 -width 10 -text {Don't Save} -command {destroy .confirmDiscard ; set ::game::answer 1}
+  button $w.bottom.b1 -width 10 -text {Save} -command        {destroy .confirmDiscard ; set ::game::answer 0}
+  button $w.bottom.b2 -width 10 -text {Don't Save} -command  {destroy .confirmDiscard ; set ::game::answer 1}
   button $w.bottom.b3 -width 10 -text $::tr(Cancel) -command {destroy .confirmDiscard ; set ::game::answer 2}
   pack $w.bottom.b1 $w.bottom.b2 $w.bottom.b3 -side left -padx 10 -pady 5
 
@@ -74,11 +74,9 @@ proc ::game::ConfirmDiscard2 {} {
   return $::game::answer
 }
 
-# ::game::Clear
-#
 #   Clears the active game, checking first if it is altered.
 #   Updates any affected windows.
-#
+
 proc ::game::Clear {} {
   set confirm [::game::ConfirmDiscard2]
   if {$confirm == 2} { return }
@@ -94,8 +92,6 @@ proc ::game::Clear {} {
   updateMenuStates
 }
 
-# ::game::Strip
-#
 #   Strips all comments or variations from a game
 
 proc ::game::Strip {type {parent .}} {
@@ -109,8 +105,6 @@ proc ::game::Strip {type {parent .}} {
   updateTitle
 }
 
-# ::game::TruncateBegin
-#
 proc ::game::TruncateBegin {} {
   sc_game undoPoint
 
@@ -122,8 +116,6 @@ proc ::game::TruncateBegin {} {
   updateTitle
 }
 
-# ::game::Truncate
-#
 proc ::game::Truncate {} {
   sc_game undoPoint
 
@@ -135,11 +127,9 @@ proc ::game::Truncate {} {
   updateTitle
 }
 
-# game::LoadNextPrev
-#
 #   Loads the next or previous filtered game in the database.
 #   The parameter <action> should be "previous" , "next", "first" or "last"
-#
+
 proc ::game::LoadNextPrev {action {raise 1}} {
   global pgnWin statusBar
   if {![sc_base inUse]} {
@@ -154,20 +144,16 @@ proc ::game::LoadNextPrev {action {raise 1}} {
   ::game::Load $number 1 $raise
 }
 
-# ::game::Reload
-#
 #   Reloads the current game.
-#
+
 proc ::game::Reload {} {
   if {![sc_base inUse]} { return }
   if {[sc_game number] < 1} { return }
   ::game::Load [sc_game number]
 }
 
-# ::game::LoadRandom
-#
 #   Loads a random game from the database.
-#
+
 proc ::game::LoadRandom {} {
   set ngames [sc_filter size]
   if {$ngames == 0} { return }
@@ -180,7 +166,7 @@ proc ::game::LoadRandom {} {
 # ::game::LoadNumber
 #
 #    Prompts for the number of the game to load.
-#
+
 set ::game::entryLoadNumber ""
 trace variable ::game::entryLoadNumber w {::utils::validate::Regexp {^[0-9]*$}}
 
@@ -237,10 +223,8 @@ proc ::game::LoadNumber {} {
   focus $w.entry
 }
 
-# ::game::Load
-#
 #   Loads a specified game from the active database.
-#
+
 proc ::game::Load { selection {update 1} {raise 1}} {
   # If an invalid game number, just return:
   if {$selection < 1} { return }
@@ -275,11 +259,9 @@ proc ::game::Load { selection {update 1} {raise 1}} {
   ::windows::gamelist::Refresh
 }
 
-# ::game::LoadMenu
-#
 #   Produces a popup dialog for loading a game or other actions
 #   such as merging it into the current game.
-#
+
 proc ::game::LoadMenu {w base gnum x y} {
   set m $w.gLoadMenu
   if {! [winfo exists $m]} {
@@ -300,14 +282,12 @@ proc ::game::LoadMenu {w base gnum x y} {
 # ::game::moveEntryNumber
 #
 #   Entry variable for GotoMoveNumber dialog.
-#
+
 set ::game::moveEntryNumber ""
 trace variable ::game::moveEntryNumber w {::utils::validate::Regexp {^[0-9]*$}}
 
-# ::game::GotoMoveNumber
-#
 #    Prompts for the move number to go to in the current game.
-#
+
 proc ::game::GotoMoveNumber {} {
   set ::game::moveEntryNumber ""
   set w [toplevel .mnumDialog]
@@ -346,3 +326,5 @@ proc ::game::GotoMoveNumber {} {
 
   focus $w.entry
 }
+
+### End of file: game.tcl

@@ -1183,7 +1183,7 @@ translate Y PasteFen {Prenesi FEN}
 # ====== TODO To be translated ======
 translate Y SaveAndContinue {Save and continue}
 # ====== TODO To be translated ======
-translate Y DiscardChangesAndContinue {Discard changes\nand continue}
+translate Y DiscardChangesAndContinue {Discard Changes}
 # ====== TODO To be translated ======
 translate Y GoBack {Go back}
 

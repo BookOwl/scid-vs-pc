@@ -1015,7 +1015,7 @@ translate W EnPassantFile {En Passant fil}
 translate W ClearFen {Rensa FEN}
 translate W PasteFen {Klistra in FEN}
 translate W SaveAndContinue {Spara och fortsätt}
-translate W DiscardChangesAndContinue {Ignorera ändringar\noch fortsätt}
+translate W DiscardChangesAndContinue {Ignorera Ändringar}
 translate W GoBack {Gå tillbaka}
 
 # Replace move dialog:

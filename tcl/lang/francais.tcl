@@ -1031,7 +1031,7 @@ translate F EnPassantFile {Prise en passant}
 translate F ClearFen {Effacer FEN}
 translate F PasteFen {Coller FEN}
 translate F SaveAndContinue {Enregistrer et continuer}
-translate F DiscardChangesAndContinue {Ignorer changements\net continuer}
+translate F DiscardChangesAndContinue {Ignorer Changements}
 translate F GoBack {Revenir}
 
 # Replace move dialog:

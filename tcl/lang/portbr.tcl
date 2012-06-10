@@ -1144,7 +1144,7 @@ translate B PasteFen {Colar FEN}
 # ====== TODO To be translated ======
 translate B SaveAndContinue {Save and continue}
 # ====== TODO To be translated ======
-translate B DiscardChangesAndContinue {Discard changes\nand continue}
+translate B DiscardChangesAndContinue {Discard Changes}
 # ====== TODO To be translated ======
 translate B GoBack {Go back}
 

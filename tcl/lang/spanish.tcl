@@ -1055,7 +1055,7 @@ translate S EnPassantFile {Columna al paso}
 translate S ClearFen {Quitar FEN}
 translate S PasteFen {Pegar FEN}
 translate S SaveAndContinue {Salvar (grabar) y continuar}
-translate S DiscardChangesAndContinue {Descartar \n cambios y continuar}
+translate S DiscardChangesAndContinue {Descartar Cambios}
 translate S GoBack {Volver atrás}
 
 # Replace move dialog:

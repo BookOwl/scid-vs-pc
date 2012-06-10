@@ -1147,7 +1147,7 @@ translate H PasteFen {FEN beillesztése}
 # ====== TODO To be translated ======
 translate H SaveAndContinue {Save and continue}
 # ====== TODO To be translated ======
-translate H DiscardChangesAndContinue {Discard changes\nand continue}
+translate H DiscardChangesAndContinue {Discard Changes}
 # ====== TODO To be translated ======
 translate H GoBack {Go back}
 

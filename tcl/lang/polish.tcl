@@ -1026,7 +1026,7 @@ translate P EnPassantFile {Bicie w przelocie}
 translate P ClearFen {Kopiuj FEN}
 translate P PasteFen {Wklej pozycjê FEN}
 translate P SaveAndContinue {Zapisz i kontynuuj}
-translate P DiscardChangesAndContinue {Porzuæ zmiany\ni kontynuuj}
+translate P DiscardChangesAndContinue {Porzuæ Zmiany}
 translate P GoBack {Anuluj}
 
 # Replace move dialog:

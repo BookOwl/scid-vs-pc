@@ -1183,7 +1183,7 @@ translate O PasteFen {Lim inn FEN}
 # ====== TODO To be translated ======
 translate O SaveAndContinue {Save and continue}
 # ====== TODO To be translated ======
-translate O DiscardChangesAndContinue {Discard changes\nand continue}
+translate O DiscardChangesAndContinue {Discard Changes}
 # ====== TODO To be translated ======
 translate O GoBack {Go back}
 

@@ -1058,7 +1058,7 @@ translate E ClearFen {Clear FEN}
 translate E PasteFen {Paste FEN}
 
 translate E SaveAndContinue {Save and continue}
-translate E DiscardChangesAndContinue {Discard changes\nand continue}
+translate E DiscardChangesAndContinue {Discard Changes}
 translate E GoBack {Go back}
 
 # Replace move dialog:

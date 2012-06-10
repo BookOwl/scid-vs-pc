@@ -1140,7 +1140,7 @@ translate C PasteFen {Vlo¾it FEN}
 # ====== TODO To be translated ======
 translate C SaveAndContinue {Save and continue}
 # ====== TODO To be translated ======
-translate C DiscardChangesAndContinue {Discard changes\nand continue}
+translate C DiscardChangesAndContinue {Discard Changes}
 # ====== TODO To be translated ======
 translate C GoBack {Go back}
 
