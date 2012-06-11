@@ -12134,7 +12134,7 @@ sc_name_info (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
 
     //// sprintf format to display won, drawn, lost statistics S.A 
 
-    const char * fmt = "%s  %-*s %3u%c%02u%%   +%s%4u%s  =%s%4u%s  -%s%4u%s  %4u%c%c /%s%4u%s";
+    const char * fmt = "%s  %-*s %3u%c%02u%%   +%s%4u%s  -%s%4u%s  =%s%4u%s  %4u%c%c /%s%4u%s";
 
     if (ratingsOnly) { goto doRatings; }
     Tcl_AppendResult (ti, startBold, playerName, endBold, newline, newline, NULL);
@@ -12308,13 +12308,13 @@ sc_name_info (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
 
     // Won , Drawn, Lost heading
     // (hmmm... no translations)
-    sprintf (temp, "%s%s%*s %7s %6s%s%s",
+    sprintf (temp, " %s%s%*s%7s %7s%s%s",
             startHeading,
 	    htextOutput ? "<tt>" : "",
 	    wbtWidth+18,
 	    "Won",
-	    "Drawn",
 	    "Lost",
+	    "Drawn",
 	    htextOutput ? "</tt>" : "",
             endHeading);
 
@@ -12343,11 +12343,11 @@ sc_name_info (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
              htextOutput ? "<green><run sc_name info -fw {}; ::playerInfoRefresh>" : "",
              whitescore[STATS_ALL][RESULT_White],
              htextOutput ? "</run></green>" : "",
-             htextOutput ? "<green><run sc_name info -fd {}; ::playerInfoRefresh>" : "",
-             whitescore[STATS_ALL][RESULT_Draw],
-             htextOutput ? "</run></green>" : "",
              htextOutput ? "<green><run sc_name info -fl {}; ::playerInfoRefresh>" : "",
              whitescore[STATS_ALL][RESULT_Black],
+             htextOutput ? "</run></green>" : "",
+             htextOutput ? "<green><run sc_name info -fd {}; ::playerInfoRefresh>" : "",
+             whitescore[STATS_ALL][RESULT_Draw],
              htextOutput ? "</run></green>" : "",
              score / 2, decimalPointChar, score % 2 ? '5' : '0',
              htextOutput ? "<green><run sc_name info -fa {}; ::playerInfoRefresh>" : "",
@@ -12370,11 +12370,11 @@ sc_name_info (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
              htextOutput ? "<green><run sc_name info -fW {}; ::playerInfoRefresh>" : "",
              blackscore[STATS_ALL][RESULT_White],
              htextOutput ? "</run></green>" : "",
-             htextOutput ? "<green><run sc_name info -fD {}; ::playerInfoRefresh>" : "",
-             blackscore[STATS_ALL][RESULT_Draw],
-             htextOutput ? "</run></green>" : "",
              htextOutput ? "<green><run sc_name info -fL {}; ::playerInfoRefresh>" : "",
              blackscore[STATS_ALL][RESULT_Black],
+             htextOutput ? "</run></green>" : "",
+             htextOutput ? "<green><run sc_name info -fD {}; ::playerInfoRefresh>" : "",
+             blackscore[STATS_ALL][RESULT_Draw],
              htextOutput ? "</run></green>" : "",
              score / 2, decimalPointChar, score % 2 ? '5' : '0',
              htextOutput ? "<green><run sc_name info -fA {}; ::playerInfoRefresh>" : "",
@@ -12397,11 +12397,11 @@ sc_name_info (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
              htextOutput ? "<green><run sc_name info -fwW {}; ::playerInfoRefresh>" : "",
              bothscore[STATS_ALL][RESULT_White],
              htextOutput ? "</run></green>" : "",
-             htextOutput ? "<green><run sc_name info -fdD {}; ::playerInfoRefresh>" : "",
-             bothscore[STATS_ALL][RESULT_Draw],
-             htextOutput ? "</run></green>" : "",
              htextOutput ? "<green><run sc_name info -flL {}; ::playerInfoRefresh>" : "",
              bothscore[STATS_ALL][RESULT_Black],
+             htextOutput ? "</run></green>" : "",
+             htextOutput ? "<green><run sc_name info -fdD {}; ::playerInfoRefresh>" : "",
+             bothscore[STATS_ALL][RESULT_Draw],
              htextOutput ? "</run></green>" : "",
              score / 2, decimalPointChar, score % 2 ? '5' : '0',
              htextOutput ? "<green><run sc_name info -faA {}; ::playerInfoRefresh>" : "",
@@ -12428,8 +12428,8 @@ sc_name_info (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
              trWhite,
              percent / 100, decimalPointChar, percent % 100,
              "", whitescore[STATS_FILTER][RESULT_White], "",
-             "", whitescore[STATS_FILTER][RESULT_Draw], "",
              "", whitescore[STATS_FILTER][RESULT_Black], "",
+             "", whitescore[STATS_FILTER][RESULT_Draw], "",
              score / 2, decimalPointChar, score % 2 ? '5' : '0',
              "", whitecount[STATS_FILTER],
              htextOutput ? "</tt>" : "");
@@ -12448,8 +12448,8 @@ sc_name_info (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
              trBlack,
              percent / 100, decimalPointChar, percent % 100,
              "", blackscore[STATS_FILTER][RESULT_White], "",
-             "", blackscore[STATS_FILTER][RESULT_Draw], "",
              "", blackscore[STATS_FILTER][RESULT_Black], "",
+             "", blackscore[STATS_FILTER][RESULT_Draw], "",
              score / 2, decimalPointChar, score % 2 ? '5' : '0',
              "", blackcount[STATS_FILTER],
              htextOutput ? "</tt>" : "");
@@ -12468,8 +12468,8 @@ sc_name_info (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
              trTotal,
              percent / 100, decimalPointChar, percent % 100,
              "", bothscore[STATS_FILTER][RESULT_White], "",
-             "", bothscore[STATS_FILTER][RESULT_Draw], "",
              "", bothscore[STATS_FILTER][RESULT_Black], "",
+             "", bothscore[STATS_FILTER][RESULT_Draw], "",
              score / 2, decimalPointChar, score % 2 ? '5' : '0',
              htextOutput ? "<green><run sc_name info -F {}; ::playerInfoRefresh>" : "",
              totalcount[STATS_FILTER],
@@ -12499,11 +12499,11 @@ sc_name_info (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
                  htextOutput ? "<green><run sc_name info -ow {}; ::playerInfoRefresh>" : "",
                  whitescore[STATS_OPP][RESULT_White],
                  htextOutput ? "</run></green>" : "",
-                 htextOutput ? "<green><run sc_name info -od {}; ::playerInfoRefresh>" : "",
-                 whitescore[STATS_OPP][RESULT_Draw],
-                 htextOutput ? "</run></green>" : "",
                  htextOutput ? "<green><run sc_name info -ol {}; ::playerInfoRefresh>" : "",
                  whitescore[STATS_OPP][RESULT_Black],
+                 htextOutput ? "</run></green>" : "",
+                 htextOutput ? "<green><run sc_name info -od {}; ::playerInfoRefresh>" : "",
+                 whitescore[STATS_OPP][RESULT_Draw],
                  htextOutput ? "</run></green>" : "",
                  score / 2, decimalPointChar, score % 2 ? '5' : '0',
                  htextOutput ? "<green><run sc_name info -oa {}; ::playerInfoRefresh>" : "",
@@ -12526,11 +12526,11 @@ sc_name_info (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
                  htextOutput ? "<green><run sc_name info -oW {}; ::playerInfoRefresh>" : "",
                  blackscore[STATS_OPP][RESULT_White],
                  htextOutput ? "</run></green>" : "",
-                 htextOutput ? "<green><run sc_name info -oD {}; ::playerInfoRefresh>" : "",
-                 blackscore[STATS_OPP][RESULT_Draw],
-                 htextOutput ? "</run></green>" : "",
                  htextOutput ? "<green><run sc_name info -oL {}; ::playerInfoRefresh>" : "",
                  blackscore[STATS_OPP][RESULT_Black],
+                 htextOutput ? "</run></green>" : "",
+                 htextOutput ? "<green><run sc_name info -oD {}; ::playerInfoRefresh>" : "",
+                 blackscore[STATS_OPP][RESULT_Draw],
                  htextOutput ? "</run></green>" : "",
                  score / 2, decimalPointChar, score % 2 ? '5' : '0',
                  htextOutput ? "<green><run sc_name info -oA {}; ::playerInfoRefresh>" : "",
@@ -12553,11 +12553,11 @@ sc_name_info (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
                  htextOutput ? "<green><run sc_name info -owW {}; ::playerInfoRefresh>" : "",
                  bothscore[STATS_OPP][RESULT_White],
                  htextOutput ? "</run></green>" : "",
-                 htextOutput ? "<green><run sc_name info -odD {}; ::playerInfoRefresh>" : "",
-                 bothscore[STATS_OPP][RESULT_Draw],
-                 htextOutput ? "</run></green>" : "",
                  htextOutput ? "<green><run sc_name info -olL {}; ::playerInfoRefresh>" : "",
                  bothscore[STATS_OPP][RESULT_Black],
+                 htextOutput ? "</run></green>" : "",
+                 htextOutput ? "<green><run sc_name info -odD {}; ::playerInfoRefresh>" : "",
+                 bothscore[STATS_OPP][RESULT_Draw],
                  htextOutput ? "</run></green>" : "",
                  score / 2, decimalPointChar, score % 2 ? '5' : '0',
                  htextOutput ? "<green><run sc_name info -oaA {}; ::playerInfoRefresh>" : "",
@@ -14699,7 +14699,8 @@ db->bbuf->Empty();
         }
 
         if (listMode) {
-            // malformed but unused
+            /* malformed but unused. (listMode is for pocket i think S.A.)
+
             sprintf (temp, "%2u %-6s%7u %3d%c%1d %3d%c%1d",
                      0,
                      "TOTAL",
@@ -14708,6 +14709,8 @@ db->bbuf->Empty();
                      100, decimalPointChar, 0,
                      totalScore / 10, decimalPointChar, totalScore % 10);
             output->Append (temp);
+
+            */
         } else {
             const char * totalString = translate (ti, "TreeTotal:", "TOTAL:");
             output->Append ("\n__________________________________________________________________\n");
