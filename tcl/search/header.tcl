@@ -343,10 +343,11 @@ proc search::header {} {
   entry $f.e2 -textvariable sPgntext(2) -width 15 -font $regular
   label $f.l3 -text { and } -font $regular
   entry $f.e3 -textvariable sPgntext(3) -width 15 -font $regular
+  checkbutton $f.case -textvar ::tr(IgnoreCase) -variable sPgncase -font $regular 
   bindFocusColors $f.e1
   bindFocusColors $f.e2
   bindFocusColors $f.e3
-  pack $f.l1 $f.e1 $f.l2 $f.e2 $f.l3 $f.e3 -side left
+  pack $f.l1 $f.e1 $f.l2 $f.e2 $f.l3 $f.e3 $f.case -side left
 
   addHorizontalRule $w
 
@@ -496,6 +497,7 @@ proc search::header {} {
 	-fCustom5 $sHeaderFlags(CustomFlag5) \
 	-fCustom6 $sHeaderFlags(CustomFlag6) \
         -pgn $sPgnlist -wtitles $wtitles -btitles $btitles \
+        -ignoreCase $sPgncase \
         ]
 
     grab release .sh.b.stop

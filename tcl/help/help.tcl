@@ -8,10 +8,10 @@ append helpText(Contents) {
   <ht><a Intro>Introduction</a></ht>
   <ht><a ComputerGame>Playing against the Computer</a></ht>
   <ht><a FICS>Playing on the Internet (FICS)</a></ht>
-  <ht><a BrowsingPGN>PGN Files and Scid</a></ht>
+  <ht><a BrowsingPGN>PGN files and Scid</a></ht>
   <ht><a Analysis>Running Chess Engines</a></ht>
-  <ht><a Tourney>Computer Tournaments</a></ht>
   <ht><a Scid>Databases and General Use</a></ht>
+  <ht><a Tourney>Computer Tournaments</a></ht>
   <ht><a TacticsTrainer>Mate in ..N.. Puzzles</a></ht>
   <br>
   <br>
@@ -35,9 +35,9 @@ downloaded in pgn format, create huge chess databases, and generate opening and 
 <li>Computer Tournaments.</li>
 <li>Rewritten Gamelist widget: deleted items are greyed, a Compact button, Flag widgets, and the Database Switcher resides here.</li>
 <li>Improved Computer Game and FICS features.</li>
-<li>Clickable Variation Arrows, and Paste Variation feature.</li>
+<li>Drag+Drop for ms windows and Xorg (Linux,BSD,etc).</li>
 <li>Improved Undo and Redo features</li>
-<li>Tri-coloured tree bar-graphs alongside statistics.</li>
+<li>Tri-coloured Tree bar-graphs alongside statistics.</li>
 <li>Ratings Graph can show multiple players</li>
 <li>Improved Book windows, including book compare, and remove move features</li>
 <li>Separate board sections are hideable via right-click.</li>
@@ -45,9 +45,9 @@ downloaded in pgn format, create huge chess databases, and generate opening and 
 <li>Restructured Analysis Engines widget. The function hot-keys can be explicitly set, Engine 1 can be docked into the Status Bar, and any number of engines may run at one time.</li>
 <li>The Chessboard/Pieces config widget has been overhauled, and includes support for custom tiles.</li>
 <li>Setup Board has many fixes and improvements.</li>
-<li>The Help index is now meaningful to new users, with links to the game's main features.</li>
+<li>The Help index is meaningful to new users, with links to the game's main features.</li>
+<li>Clickable Variation Arrows, and Paste Variation feature.</li>
 <li>A user friendly Annotation feature. </li>
-<li>Drag and Drop.</li>
 </ul>
 <h3>Unsupported Features</h3>
 <ul>
@@ -574,17 +574,17 @@ set helpText(MainWindow) {<h1>Scid Main Window</h1>
   <p>
   The navigation buttons above the board have the following meanings [and key bindings].
   <ul>
-  <li> <button tb_start> Move to the start of the game  [Home] </li>
-  <li> <button tb_prev> Move back one move  [Left] </li>
-  <li> <button tb_next> Move forward one move  [Right] </li>
-  <li> <button tb_end> Move to the end of the game  [End] </li>
+  <li> <button tb_start> Move to the start of the game  [home] </li>
+  <li> <button tb_prev> Move back one move  [left] </li>
+  <li> <button tb_next> Move forward one move  [right] </li>
+  <li> <button tb_end> Move to the end of the game  [end] </li>
   <li> <button tb_invar> Move into a <a Variations>variation</a>  [v] </li>
   <li> <button tb_outvar> Move out of the current variation  [z] </li>
   <li> <button tb_addvar> Add a new variation  [control+a]</li>
   <li> <button autoplay_off> Start/stop <a MainWindow Autoplay>Autoplay mode</a> [control+z] </li>
   <li> <button tb_trial> Start/stop <a Moves Trial>Trial mode</a> [control+space] </li>
   <li> <button tb_flip> Flip the board [control+f]</li>
-  <li> <button tb_windows> Raise open windows [Tab]</li>
+  <li> <button tb_windows> Raise open windows [tab]</li>
   </ul>
 
   <h4><name GameInfo>Game Information Area</name></h4>
@@ -1512,21 +1512,27 @@ set helpText(Tmt) {<h1>The Tournament Finder window</h1>
   Adjust these fields in the widget, and press <b>Update</b> to see the new results.
   </p>
   <p>
-  The results can be sorted by Date, Number of Players, Number
-  of Games, Mean Elo rating, Site, Event or the Winner by
-  selecting the category from the <b>Sort</b> menu, or clicking on a
-  Column Title.
-  </p>
-  <p>
   Clicking on a tournament loads its first game and updates the <a Crosstable>Crosstable</a> if it is open.
   Right-clicking loads the game, and automaticaly opens the Crosstable.
   </p>
-  <p><i>
-  To speed up tournament searches, select a fairly narrow Date range (a few years at most),
+  <h3>Sorting Tournaments</h3>
+  <p>
+  The results can be sorted by Date, Number of Players, Number
+  of Games, Mean Elo rating, Site, Event or the Winner by
+  <b>clicking on a column title</b>.
+  </p>
+  <p>
+  But sorting can be slightly misleading. For example, clicking the Games
+  column does not generally show *all* the tournaments with the greatest number of games.
+  Rather, it simply sorts the current 100 games (for example)
+  that are the first in the base to match the selection criteria.
+  </p>
+  <p>
+  To address this issue, and also speed up tournament searches, select a fairly narrow Date range (a few years at most),
   or select a particular country - by choosing (or entering) its three-letter standard code.
-  </i></p>
+  </p>
 
-  <p><footer>Updated: Scid vs. PC 4.5 June 2011</footer></p>
+  <p><footer>Updated: Scid vs. PC 4.8 June 2012</footer></p>
 }
 
 set helpTitle(GameList) "Game List window"
@@ -2563,7 +2569,7 @@ set helpText(Flags) {<h1>Game Flags</h1>
   <li>U - User-defined</li>
   </ul>
   <p>
-  The 6 custom flags (1 to 6) can be given any label up to eight characters long.
+  The 6 custom flags (1 to 6) can be given any lable up to eight characters long.
   </p>
 
   <p>
@@ -5667,10 +5673,14 @@ set helpText(Sound) {<h1>Sound</h1>
    <h2>Snack Issues</h2><p>
    If Scid only plays every second move, you may have a buggy
    libsnack. You may try compiling snack-2.2.10 from source.
-   It should be installed in the same lib as tcl/tk (generally /usr/lib or /usr/local/lib).
-   If you get a compilation error in file generic/jkFormatMP3.c,
-   move the "#include <lt>math.h<gt>" line in this file to above "#define roundf(x)".
    </p>
+   <ul>
+   <li>* It should be installed in the same lib as tcl/tk (generally /usr/lib or /usr/local/lib).</li>
+   <li>* If you get a compilation error in file generic/jkFormatMP3.c,
+   move the "#include <lt>math.h<gt>" line in this file to above "#define roundf(x)".</li>
+   <li>* You may try <b>configure --enable-alsa</b> for ALSA support.</li>
+   <li>* <url http://packages.debian.org/source/sid/snack>Debian's snack repo</url> may contain useful fixes.</li>
+   </ul>
    <p><footer>Updated: Scid vs. PC 4.8 June 2012</footer></p>
 }
 

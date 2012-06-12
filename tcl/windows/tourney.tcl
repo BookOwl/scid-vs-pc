@@ -31,7 +31,10 @@ proc ::tourney::toggle {} {
 proc ::tourney::Open {} {
   global tourneyWin
   set w .tourney
-  if {[winfo exists $w]} { return }
+  if {[winfo exists $w]} {
+    raiseWin $w
+    return
+  }
   set tourneyWin 1
 
   if {! [info exists ::tourney::_defaults]} { ::tourney::defaults }

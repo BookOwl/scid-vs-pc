@@ -15976,6 +15976,7 @@ sc_search_header (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
         
     int pgnTextCount = 0;
     char ** sPgnText = NULL;
+    bool ignoreCase = 0;
 
     const char * options[] = {
         "white", "black", "event", "site", "round",
@@ -15987,7 +15988,7 @@ sc_search_header (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
         "fMiddlegame", "fEndgame", "fNovelty", "fPawnStructure",
         "fTactics", "fKingside", "fQueenside", "fBrilliancy", "fBlunder",
         "fUser", "fCustom1" , "fCustom2" , "fCustom3" ,
-        "fCustom4" , "fCustom5" , "fCustom6" , "pgn", NULL
+        "fCustom4" , "fCustom5" , "fCustom6" , "pgn", "ignoreCase", NULL
     };
     enum {
         OPT_WHITE, OPT_BLACK, OPT_EVENT, OPT_SITE, OPT_ROUND,
@@ -15999,7 +16000,7 @@ sc_search_header (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
         OPT_FMIDDLEGAME, OPT_FENDGAME, OPT_FNOVELTY, OPT_FPAWNSTRUCT,
         OPT_FTACTICS, OPT_FKSIDE, OPT_FQSIDE, OPT_FBRILLIANCY, OPT_FBLUNDER,
         OPT_FUSER, OPT_FCUSTOM1, OPT_FCUSTOM2, OPT_FCUSTOM3,
-        OPT_FCUSTOM4,  OPT_FCUSTOM5, OPT_FCUSTOM6, OPT_PGN
+        OPT_FCUSTOM4,  OPT_FCUSTOM5, OPT_FCUSTOM6, OPT_PGN, OPT_PGNCASE
     };
 
     int arg = 2;
@@ -16140,6 +16141,10 @@ sc_search_header (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
                                (CONST84 char ***) &sPgnText) != TCL_OK) {
                 return TCL_ERROR;
             }
+            break;
+
+        case OPT_PGNCASE:
+            ignoreCase = strGetBoolean (value);
             break;
 
         default:
@@ -16509,9 +16514,14 @@ sc_search_header (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
                 scratchGame->SetPgnFormat (PGN_FORMAT_Plain);
                 scratchGame->WriteToPGN(db->tbuf);
                 const char * buf = db->tbuf->GetBuffer();
-                for (int m=0; m < pgnTextCount; m++) {
-                   if (match) { match = strContains (buf, sPgnText[m]); }
-                }
+                if (ignoreCase)
+		  for (int m=0; m < pgnTextCount; m++) {
+		     if (match) { match = strCaseContains (buf, sPgnText[m]); }
+		  }
+                else
+		  for (int m=0; m < pgnTextCount; m++) {
+		     if (match) { match = strContains (buf, sPgnText[m]); }
+		  }
             }
         }
 
