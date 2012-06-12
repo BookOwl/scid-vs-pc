@@ -233,9 +233,6 @@ namespace eval fics {
     unbusyCursor .
   }
 
-  ################################################################################
-  #
-  ################################################################################
   proc connect {{guest no}} {
     global ::fics::sockchan ::fics::seeklist ::fics::graphwidth ::fics::graphheight fontOptions tr
 
@@ -675,9 +672,7 @@ namespace eval fics {
       }
     }
   }
-  ################################################################################
-  #
-  ################################################################################
+
   proc findOpponent {} {
     global tr
 
@@ -788,9 +783,6 @@ namespace eval fics {
     wm state $w normal
   }
 
-  ################################################################################
-  #
-  ################################################################################
   proc readchan {} {
     variable logged
     if {[eof $::fics::sockchan]} {
@@ -813,10 +805,9 @@ namespace eval fics {
 
   }
 
-  ################################################################################
   # Appends an array to soughtlist if the parameter is correct
   # returns 0 if the line is not parsed and so it is still pending for use
-  ################################################################################
+
   proc parseSoughtLine { l } {
     global ::fics::offers_minelo ::fics::offers_maxelo ::fics::offers_mintime ::fics::offers_maxtime
 
@@ -964,10 +955,10 @@ namespace eval fics {
       return
     }
 
-    ### Removing game 393 from observation list.
     if { [string match "Removing game *" $line] } {
-      scan $line "Removing game %d from observation list." game
-      remove_observedGame $game
+      ### We cant rely on this to unobserve games.
+      # scan $line "Removing game %d from observation list." game
+      # remove_observedGame $game
       return
     }
 
@@ -1095,6 +1086,7 @@ namespace eval fics {
 	    tk_messageBox -title "Game result" -icon info -type ok -message "$res"
 	  }
 	}
+	# &&& do we need ::fics::remove_observedGame $num (todo check)
       } else {
          # Add result to white label
          catch {
@@ -1317,7 +1309,6 @@ namespace eval fics {
 
   proc addObservedGame {game} {
       set w .fics
-
       if {[lsearch -exact $::fics::observedGames $game] == -1} {
 	lappend ::fics::observedGames $game
       }
@@ -1346,7 +1337,6 @@ namespace eval fics {
         ::fics::unobserveGame $game"
 
       button $w.bottom.game$game.b.load -image arrow_up -font font_Small -relief flat -command "
-
 	if {\[lsearch -exact \$::fics::observedGames $game\] > -1} {
           if {\$::fics::playing == -1 || \$::fics::playing == 1} {
             return
@@ -1364,6 +1354,7 @@ namespace eval fics {
 	} else {
           ### should never get here
 	  # close game if it is finished
+	  puts {Bad FICS load}
 	  bind .fics <Destroy> {}
 	  destroy .fics.bottom.game$game
 	  bind .fics <Destroy> ::fics::close
@@ -1403,9 +1394,16 @@ namespace eval fics {
 
   proc demote_mainGame {} {
     if {$::fics::mainGame > -1 && $::fics::playing != 2} {
-      ::fics::writechan "unobserve $::fics::mainGame"
-      ::fics::writechan "observe $::fics::mainGame"
-      ::fics::addObservedGame $::fics::mainGame
+      set tmp $::fics::mainGame
+      ::fics::writechan "unobserve $tmp"
+
+      ::gameclock::stop 1
+      ::gameclock::stop 2
+      set ::gameclock::data(time2) 00:00
+      set ::gameclock::data(time1) 00:00
+
+      ::fics::writechan "observe $tmp"
+      ::fics::addObservedGame $tmp
     }
   }
 
@@ -1418,9 +1416,6 @@ namespace eval fics {
     switch -glob $line {
 	{\{Game *\}}	{ $t insert end "$line\n" game }
 	{\{Game *\} *}	{ $t insert end "$line\n" gameresult }
-	{Auto-flagging*} {$t insert end "$line\n"
-                          # ::commenteditor::appendComment "Loses on time" ; # recorded above
-                        }
 	{* tells you:*}	{ $t insert end "$line\n" tells 
 			  if {[regexp {(.*) tells you:(.*$)} $line t1 t2 t3]} {
                             if {[set temp [string first {(} $t2]] > -1} {
@@ -1469,13 +1464,14 @@ namespace eval fics {
     	{->>*}		{ $t insert end "$line\n" command }
 
 	{*[A-Za-z]\(*\): *} { $t insert end "$line\n" channel }
-        {Finger of *}   { $t insert end "$line\n" seeking }
-        {History of *}  { $t insert end "$line\n" seeking }
+        # {Finger of *}   { $t insert end "$line\n" seeking }
+        # {History of *}  { $t insert end "$line\n" seeking }
         {Present company includes: *} { $t insert end "$line\n" gameresult }
         {* goes forward [0-9]* move*} {}
         {* backs up [0-9]* move*} {}
 	{Width set *}	{}
 	{Height set *}	{}
+	{Game * relay has set *} {}
 	default		{ $t insert end "$line\n" }
       }
 
@@ -1485,9 +1481,7 @@ namespace eval fics {
     }
   }
 
-  ################################################################################
-  # New Fics Offer widgets S.A.
-  ################################################################################
+  ### New Fics Offer widgets S.A.
 
   ### Init 
 
@@ -2107,9 +2101,7 @@ namespace eval fics {
       after 2700000 ::fics::stayConnected
     }
   }
-  ################################################################################
-  #
-  ################################################################################
+
   proc close {{mode {}}} {
     variable logged
 
