@@ -47,6 +47,11 @@ foreach topic [array names helpText] {
   regsub -all {<run[^>]*>} $text {} text
   regsub -all {</run>} $text {} text
 
+  # puts $fd {<html><head>}
+  puts $fd {<a href="Index.htm">Index -</a>}
+  puts $fd {<a href="Contents.htm">Contents -</a>}
+  puts $fd {<a href="http://scidvspc.sf.net">Home</a>}
+  puts $fd {<hr>}
   puts $fd $text
   close $fd
 }
