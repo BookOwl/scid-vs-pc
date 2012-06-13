@@ -192,7 +192,11 @@ proc getScidList {} {
       puts "interps are $interps"
     }
     foreach i $interps {
-	if { [validScidInterp $i] } {
+	set result [validScidInterp $i]
+	if {$::debugging} {
+	  puts "Testing $i gives $result"
+	}
+	if { $result } {
 	    lappend ret $i
 	}
     }
@@ -208,6 +212,7 @@ proc getScidList {} {
 # succeed we assume we have a Scid.
 #
 proc validScidInterp { scid } {
+
     if { ! [string match "scid*" $scid] } {
 	return 0
 	# we "catch" the first [send] since we don't yet know if [send]
