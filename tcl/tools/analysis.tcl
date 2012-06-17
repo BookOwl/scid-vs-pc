@@ -89,7 +89,9 @@ proc resetEngine {n} {
   # UCI engine options in format ( name min max ). This is not engine config but its capabilities
   set analysis(uciOptions$n) {}
   # the number of lines in multiPV. If =1 then act the traditional way
-  set analysis(multiPVCount$n) 4      ;# number of N-best lines
+  # Sometime the info is processed before this line "set analysis(multiPVCount$n) $current",
+  # so we have to set multiPVCount to 1 by default, not 4
+  set analysis(multiPVCount$n) 1      ;# number of N-best lines
   set analysis(uciok$n) 0             ;# uciok sent by engine in response to uci command
   set analysis(name$n) {}             ;# engine name
   set analysis(processInput$n) 0      ;# the time of the last processed event
@@ -2658,14 +2660,21 @@ proc processAnalysisInput {n} {
 # - this procedure is duplicated(?) in uci.tcl
 ################################################################################
 proc checkEngineIsAlive {n} {
-  global analysis comp
+  global analysis comp errorCode
 
   if {![eof $analysis(pipe$n)]} {
     return 1
   }
 
   fileevent $analysis(pipe$n) readable {}
-  catch {close $analysis(pipe$n)}
+
+  set exit_status 0
+  if {[catch {close $analysis(pipe$n)}  standard_error] != 0} {
+    if {[lindex $errorCode 0] == "CHILDSTATUS"} {
+	set exit_status [lindex $errorCode 2]
+    }
+  }
+
   set analysis(pipe$n) {}
   logEngineNote $n {Engine terminated without warning.}
 
@@ -2679,10 +2688,16 @@ proc checkEngineIsAlive {n} {
     } else {
       set parent .
     }
+    if { $exit_status != 0 } {
+	logEngineNote $n {Engine terminated with exit code $exit_status: "\"$standard_error\""}
+	tk_messageBox -type ok -icon info -parent $parent -title "Scid" \
+		      -message "The analysis engine terminated with exit code $exit_status: \"$standard_error\""
+    } else {
+	logEngineNote $n {Engine terminated without exit code: "\"$standard_error\""}
+	tk_messageBox -type ok -icon info -parent $parent -title "Scid" \
+		      -message "The analysis engine terminated without exit code: \"$standard_error\""
+    }
 
-    tk_messageBox -type ok -icon info -parent $parent -title Scid -message \
-      "Analysis engine $analysis(name$n) terminated without warning. \
-       It probably crashed, had an internal error, or is misconfigured."
   }
   return 0
 }
@@ -2994,7 +3009,8 @@ proc updateAnalysisText {n} {
       $h yview moveto 1
     }
 
-  } ; # end skip
+  } else {
+}
 
   $h configure -state disabled
   set analysis(prevdepth$n) $analysis(depth$n)
