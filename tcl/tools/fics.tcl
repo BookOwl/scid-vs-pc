@@ -1178,6 +1178,8 @@ namespace eval fics {
 
       set length [llength $line ]
 
+      # Hmmm - moves over an hour break this
+      # 19.  Qe3     (1:02:38)   Be6     (8:06)  
       if {$length == 5 && [scan $line "%d. %s (%d:%d) %s (%d:%d)" t1 m1 t2 t3 m2 t4 t5] != 7} {
         return
       }
@@ -1467,6 +1469,8 @@ namespace eval fics {
         # {Finger of *}   { $t insert end "$line\n" seeking }
         # {History of *}  { $t insert end "$line\n" seeking }
         {Present company includes: *} { $t insert end "$line\n" gameresult }
+        {Game notification: *} { $t insert end "$line\n" gameresult }
+        {Notification: *}      { $t insert end "$line\n" gameresult }
         {* goes forward [0-9]* move*} {}
         {* backs up [0-9]* move*} {}
 	{Width set *}	{}
@@ -1485,10 +1489,11 @@ namespace eval fics {
 
   ### Init 
 
-  proc initOffers {} {
+  proc initOffers {{flag 0}} {
     set w .ficsOffers
 
     if {[winfo exists $w]} {return}
+    set ::fics::exitwithzero $flag
 
     toplevel $w
     wm state $w withdrawn
@@ -1513,7 +1518,7 @@ namespace eval fics {
   proc addOffer {line} {
     # Challenge: GuestYGTD (----) stevenaaus (1670) unrated standard 15 1
     if {![winfo exists .ficsOffers]} {
-	::fics::initOffers
+	::fics::initOffers 1
     }
 
     set PLAYER [lindex [split $line] 1]
@@ -1578,6 +1583,9 @@ namespace eval fics {
     incr ::fics::Offers $n
 
     if {$::fics::Offers <= 0} {
+      if {$n == -1 && $::fics::exitwithzero} {
+        destroy .ficsOffers
+      }
       if {$::fics::findopponent(manual) == {auto}} {
 	  pack [frame $f] -side top -padx 5 -pady 5
 	  pack [label $f.name -text "Awaiting offer" -width 20] -padx 10
@@ -1828,7 +1836,7 @@ namespace eval fics {
       }
       set ::fics::mutex 1
 
-      puts "Debug fen \n$fen\n[sc_pos fen]"
+      # puts "Debug fen \n$fen\n[sc_pos fen]"
 
       ### Save previous (unfinished?) game.
       # ideally we can save observed games too, but only after we have the "Debug fen" working 100%
