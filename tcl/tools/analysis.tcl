@@ -2157,7 +2157,7 @@ proc makeAnalysisWin {{n 0} {settime 0}} {
     $w.b.multipv configure -state readonly
     pack forget $w.b.update
     $w.b.update  configure -state disabled
-    text $w.text -height 2 -font font_Small -wrap word -bg gray95
+    text $w.text -height 2 -font font_Small -wrap none -bg gray95
   } else  {
     # pack forget $w.b.showinfo
     # $w.b.showinfo configure -state disabled
@@ -2166,7 +2166,7 @@ proc makeAnalysisWin {{n 0} {settime 0}} {
     pack forget $w.b.alllines
     $w.b.multipv configure -state disabled
     $w.b.alllines configure -state disabled
-    text $w.text -height 4 -font font_Small -wrap word -bg gray95
+    text $w.text -height 3 -font font_Small -wrap none -bg gray95
   }
 
   frame $w.hist
