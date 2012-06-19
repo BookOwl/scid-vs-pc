@@ -35,6 +35,7 @@ namespace eval fics {
   variable logged 0
   set consolewidth 40
   set consoleheight 10
+  set catchRemoving 0
 
   set ignore_abort 0
   set ignore_adjourn 0
@@ -616,7 +617,10 @@ namespace eval fics {
 	  return
       } 
       default {
-	  if {([string match unob* $c]||[string match unex* $c])  && \
+	  if {[string match uno* $c]} {
+	      set ::fics::catchRemoving 1
+          }
+	  if {([string match uno* $c]||[string match unex* $c])  && \
 	       $::fics::playing != 1 && $::fics::playing != -1 && \
 	       ($l == $c || [lindex $l 1] == $::fics::mainGame)} {
 	    # unobserve/unexamine main game
@@ -955,10 +959,14 @@ namespace eval fics {
       return
     }
 
-    if { [string match "Removing game *" $line] } {
-      ### We cant rely on this to unobserve games.
-      # scan $line "Removing game %d from observation list." game
-      # remove_observedGame $game
+    if { [string match "Removing game *" $line] && $::fics::catchRemoving } {
+      ### Only rely on this if catchRemoving set via 'cmd'
+      scan $line "Removing game %d from observation list." game
+      if {$game == $::fics::mainGame} {
+        set ::fics::mainGame -1
+      }
+      remove_observedGame $game
+      set ::fics::catchRemoving 0
       return
     }
 
@@ -1778,7 +1786,7 @@ namespace eval fics {
       } else {
 	updateBoard -pgn
       }
-      wm title . "$::scidName: FICS (Examine Mode)"
+      wm title . "$::scidName: $white - $black (examine mode)"
       return
     }
 
