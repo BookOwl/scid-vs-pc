@@ -755,7 +755,7 @@ proc setGamelistTitle {} {
 }
 
 proc setTitle {message} {
-  wm title .glistWin "Scid: $message"
+  wm title .glistWin "Gamelist: $message"
 }
 
 # called by file.tcl when db is changed

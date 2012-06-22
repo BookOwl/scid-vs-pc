@@ -155,7 +155,7 @@ proc ::gbrowser::new {base gnum {ply -1} {w {}}} {
     $w.b.merge configure -command "mergeGame $base $gnum"
   }
 
-  wm title $w "Scid:  $filename :  game $gnum"
+  wm title $w "game $gnum ($filename)"
   set ::gbrowser::boards($n) [sc_game summary -base $base -game $gnum boards]
   set moves [sc_game summary -base $base -game $gnum moves]
 

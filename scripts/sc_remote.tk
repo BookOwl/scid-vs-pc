@@ -218,6 +218,7 @@ proc validScidInterp { scid } {
 	# we "catch" the first [send] since we don't yet know if [send]
 	# works
     } elseif { [catch {send $scid sc_info version} res] } {
+        puts $res
 	return 0
     } elseif { ! [send $scid info exists scidExeDir] } {
 	return 0
@@ -507,6 +508,9 @@ while { [llength $toOpen] > 0 } {
 	# execute scid to open $next.  
 	dputs "Couldn't find any free slots, start a new interp for $next"
 	updateStatus $next "Done (Open new Scid)" green
+
+        # probably don't want to open a new scid S.A
+
 	eval {exec nohup $::SCID} $scidArgs {$next} &
 	# wait a short time for the new Scid to startup so that it 
 	# will show up in the updated slot list
