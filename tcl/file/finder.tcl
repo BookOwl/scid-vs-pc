@@ -15,7 +15,7 @@ proc ::file::finder::Open {} {
   }
 
   toplevel $w
-  wm title $w "Scid: $::tr(FileFinder)"
+  wm title $w "$::tr(FileFinder)"
   bind $w <F1> {helpWindow Finder}
   setWinLocation $w
   setWinSize $w

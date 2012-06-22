@@ -254,7 +254,7 @@ namespace eval fics {
 
     set w .fics
     toplevel $w
-    wm title $w "Free Internet Chess Server ($::fics::reallogin)"
+    wm title $w "FICS ($::fics::reallogin)"
     wm state $w withdrawn
 
     busyCursor .
@@ -1307,7 +1307,7 @@ namespace eval fics {
     if {[string match "Logging you in as*" $line]} {
       set line [string map {"\"" "" ";" ""} $line ]
       set ::fics::reallogin [lindex $line 4]
-      wm title .fics "Free Internet Chess Server ($::fics::reallogin)"
+      wm title .fics "FICS ($::fics::reallogin)"
     }
     if {[string match "Press return to enter the server as*" $line]} {
       writechan "\n"

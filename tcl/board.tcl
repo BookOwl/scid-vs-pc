@@ -202,7 +202,7 @@ proc initBoardColors {} {
   toplevel $w
   standardShortcuts $w
 
-  wm title $w "Scid: [tr OptionsBoard]"
+  wm title $w "[tr OptionsBoard]"
   wm resizable $w 0 0
 
   setWinLocation $w
@@ -745,7 +745,7 @@ proc configToolbar {} {
   }
   toplevel $w
   wm state $w withdrawn
-  wm title $w "Scid: [tr OptionsToolbar]"
+  wm title $w "[tr OptionsToolbar]"
 
   array set ::toolbar_temp [array get ::toolbar]
 
@@ -2666,7 +2666,7 @@ proc boardToFile { format filepath } {
 	-initialfile $filename.$format \
 	-initialdir $::env(HOME) \
 	-defaultextension .$format \
-	-title {Scid: Board Screenshot}]
+	-title {Board Screenshot}]
   }
 
   if {[llength $filename]} {

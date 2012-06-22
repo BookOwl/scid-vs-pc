@@ -602,7 +602,7 @@ proc editMyPlayerNames {} {
   if {[winfo exists $w]} { return }
   toplevel $w
   wm state $w withdrawn
-  wm title $w "$::scidName: [tr OptionsNames]"
+  wm title $w "[tr OptionsNames]"
   pack [frame $w.b] -side bottom -fill x
 
   frame $w.desc -borderwidth 0
@@ -1063,7 +1063,7 @@ proc getPromoPiece {} {
   set ::selectedSq -1
   toplevel $w
   wm transient $w .
-  wm title $w "Scid: Promotion"
+  wm title $w "Promotion"
   wm resizable $w 0 0
 
   set col "w"

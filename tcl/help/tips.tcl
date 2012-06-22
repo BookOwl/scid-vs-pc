@@ -7,7 +7,7 @@ proc ::tip::show {{n -1}} {
 
   if {! [winfo exists .tipsWin]} {
     toplevel $w
-    wm title $w "Scid: [tr HelpTip]"
+    wm title $w "[tr HelpTip]"
     pack [frame $w.b] -side bottom -fill x
     text $w.text -cursor top_left_arrow -width 40 -height 8 -setgrid 1 \
       -yscrollcommand "$w.ybar set" -wrap word

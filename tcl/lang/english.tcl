@@ -747,7 +747,7 @@ menuText E PgnColorNextMove "Next move" 0
 menuText E PgnHelp "Help" 0
 menuText E PgnHelpPgn "PGN Help" 0
 menuText E PgnHelpIndex "Index" 0
-translate E PgnWindowTitle {Game Notation - game %u}
+translate E PgnWindowTitle {PGN: game %u}
 
 # Crosstable window menus:
 menuText E CrosstabFile "Crosstable" 0

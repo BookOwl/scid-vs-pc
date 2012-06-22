@@ -819,7 +819,7 @@ proc changeBaseType {baseNum {parent .}} {
   set w .btypeWin
   toplevel $w
   wm withdraw $w
-  wm title $w "Scid: Choose database icon"
+  wm title $w "Choose database icon"
 
   text $w.t -yscrollcommand "$w.yscroll set" -font font_Regular \
     -height 25 -width 40  -wrap none -cursor top_left_arrow

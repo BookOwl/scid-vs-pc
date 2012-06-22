@@ -458,7 +458,7 @@ proc ::tools::graphs::score::Refresh {{init 0}} {
     bind $w <Escape> "destroy $w"
     bind $w <Control-Z> "destroy $w"
 
-    wm title $w "Scid: [tr ToolsScore]"
+    wm title $w "[tr ToolsScore]"
     ::tools::graphs::score::ConfigMenus
     wm deiconify $w
   }
@@ -535,7 +535,7 @@ proc ::tools::graphs::rating::Refresh {{player {}}} {
   } else {
     toplevel $w
     wm withdraw $w
-    wm title $w "Scid: [tr ToolsRating]"
+    wm title $w "[tr ToolsRating]"
 
     menu $w.menu
     $w configure -menu $w.menu

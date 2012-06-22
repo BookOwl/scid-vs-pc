@@ -294,7 +294,7 @@ proc ::bookmarks::Edit {} {
   set bookmarks(old) $bookmarks(data)
 
   toplevel $w
-  wm title $w "Scid: [tr FileBookmarksEdit]"
+  wm title $w "[tr FileBookmarksEdit]"
   setWinSize $w
   wm withdraw $w
   # wm transient $w .

@@ -21,7 +21,7 @@ proc ::search::board {} {
 
   toplevel $w
   wm withdraw $w
-  wm title $w "Scid: $::tr(BoardSearch)"
+  wm title $w "$::tr(BoardSearch)"
 
   bind $w <Escape> "$w.b.cancel invoke"
   bind $w <Return> "$w.b.search invoke"

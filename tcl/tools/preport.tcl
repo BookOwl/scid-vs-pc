@@ -37,7 +37,7 @@ puts RETURN
     return
   }
   toplevel $w
-  wm title $w "Scid: [tr ToolsPlayerReport]"
+  wm title $w "[tr ToolsPlayerReport]"
 
   pack [label $w.plabel -text "Generate Player Report"]
   pack [frame $w.space -height 10]
@@ -143,7 +143,7 @@ proc ::preport::makeReportWin {args} {
     set w .progress
     toplevel $w
     wm withdraw $w
-    wm title $w "Scid: [tr ToolsPlayerReport]"
+    wm title $w "[tr ToolsPlayerReport]"
     bind $w <Visibility> "raiseWin $w"
 
     pack [frame $w.b] -side bottom -fill x
@@ -216,7 +216,7 @@ proc ::preport::makeReportWin {args} {
   set w .preportWin
   if {![winfo exists $w]} {
     toplevel $w
-    wm title $w "Scid: $::tr(PReportTitle)"
+    wm title $w "$::tr(PReportTitle)"
     menu $w.menu
     $w configure -menu $w.menu
     $w.menu add cascade -label OprepFile -menu $w.menu.file
@@ -357,7 +357,7 @@ proc ::preport::setOptions {} {
 
   array set ::preport::backup [array get ::preport]
   wm resizable $w 0 0
-  wm title $w  "Scid: [tr ToolsPlayerReport]: [tr OprepFileOptions]"
+  wm title $w  "[tr ToolsPlayerReport]: [tr OprepFileOptions]"
   bind $w <Escape> "$w.b.cancel invoke"
 }
 
@@ -406,7 +406,7 @@ proc ::preport::saveReport {fmt} {
   }
 
   set fname [tk_getSaveFile -initialdir [pwd] -filetypes $ftype \
-               -defaultextension $default -title "Scid: Save opening report"]
+               -defaultextension $default -title "Save opening report"]
   if {$fname == ""} { return }
 
   busyCursor .

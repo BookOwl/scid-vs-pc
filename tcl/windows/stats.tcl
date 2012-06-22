@@ -13,7 +13,7 @@ proc ::windows::stats::Open {} {
     return
   }
   toplevel $w
-  wm title $w "Scid: Filter Statistics"
+  wm title $w "Filter Statistics"
   wm minsize $w 300 400
   setWinLocation $w
   setWinSize $w

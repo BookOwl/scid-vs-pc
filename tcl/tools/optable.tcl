@@ -101,7 +101,7 @@ proc ::optable::makeReportWin {args} {
     set w .progress
     toplevel $w
     wm withdraw $w
-    wm title $w "Scid: Generating Report"
+    wm title $w "Generating Report"
     bind $w <Visibility> "raiseWin $w"
 
     pack [frame $w.b] -side bottom -fill x
@@ -163,7 +163,7 @@ proc ::optable::makeReportWin {args} {
     raiseWin $w
   } else {
     toplevel $w
-    wm title $w "Scid: [tr ToolsOpReport]"
+    wm title $w "[tr ToolsOpReport]"
     menu $w.menu
     $w configure -menu $w.menu
     $w.menu add cascade -label OprepFile -menu $w.menu.file
@@ -413,7 +413,7 @@ proc ::optable::setOptions {} {
   packbuttons right $w.b.cancel $w.b.ok
   array set ::optable::backup [array get ::optable]
   wm resizable $w 0 0
-  wm title $w  "Scid: [tr ToolsOpReport]: [tr OprepFileOptions]"
+  wm title $w  "[tr ToolsOpReport]: [tr OprepFileOptions]"
   bind $w <Escape> "$w.b.cancel invoke"
 }
 
@@ -1201,7 +1201,7 @@ proc ::optable::favoriteReportNames {} {
 proc ::optable::addFavoriteDlg {} {
   set w .addFavoriteDlg
   toplevel $w
-  wm title $w "Scid: Add Opening Report Favorite"
+  wm title $w "Add Opening Report Favorite"
   label $w.name -text "Enter a name for the opening report of this position:"
   pack $w.name -side top
   # label $w.name2 -text "(Use letters, digits, spaces and undercores only)"
@@ -1263,7 +1263,7 @@ proc ::optable::editFavoritesDlg {} {
 
   set ::reportFavoritesTemp $::reportFavorites
   toplevel $w
-  wm title $w "Scid: [tr OprepFavoritesEdit]"
+  wm title $w "[tr OprepFavoritesEdit]"
   # wm transient $w .
   bind $w <F1> {helpWindow Reports Opening}
   entry $w.e -width 60 -foreground black  \
@@ -1431,7 +1431,7 @@ proc ::optable::generateFavoriteReports {} {
   set w .reportFavoritesDlg
   if {[winfo exists $w]} { return }
   toplevel $w
-  wm title $w "Scid: Generate Reports..."
+  wm title $w "Generate Reports..."
   pack [label $w.typelabel -text "Select the report type:" -font font_Bold] -side top
   pack [frame $w.type] -side top -padx 2
   radiobutton $w.type.full -text "Full" -variable reportType -value full
@@ -1481,7 +1481,7 @@ proc ::optable::reportFavoritesOK {} {
   set w .reportsProgress
   toplevel $w
   wm withdraw $w
-  wm title $w "Scid: Generating Reports"
+  wm title $w "Generating Reports"
   bind $w <Visibility> "raiseWin $w"
   pack [label $w.t -width 40 -text "Generating reports. Please wait..." -font font_Bold] -side top -pady 5
   pack [label $w.report] -side top -pady 5

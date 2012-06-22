@@ -380,7 +380,7 @@ proc setupBoard {} {
   if {[winfo exists .setup]} { return }
 
   toplevel .setup
-  wm title .setup "Scid: Setup Board"
+  wm title .setup "Setup Board"
   setWinLocation .setup
 
   set origFen [sc_pos fen]

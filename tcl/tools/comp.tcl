@@ -297,7 +297,7 @@ proc compOk {} {
   $w.buttons.ok configure -text Pause -command compPause -state normal
   pack forget $w.buttons.help
   $w.buttons.cancel configure -text {End Comp} -command compAbort -state normal
-  wm title $w {Scid Tournament}
+  wm title $w "$::scidName Tournament"
   focus $w.buttons.ok
 
   ### Clocks

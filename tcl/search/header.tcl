@@ -121,7 +121,7 @@ proc search::header {} {
 
   toplevel $w
   wm withdraw $w
-  wm title $w "Scid: $::tr(HeaderSearch)"
+  wm title $w "$::tr(HeaderSearch)"
   foreach frame {cWhite cBlack ignore tw tb eventsite dateround res gl ends eco} {
     frame $w.$frame
   }

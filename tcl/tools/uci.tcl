@@ -379,7 +379,7 @@ namespace eval uci {
       } else  {
         set uciInfo(name$n) $name
       }
-      catch {wm title .analysisWin$n "Scid: $name"}
+      catch {wm title .analysisWin$n "$name"}
     }
   }
 

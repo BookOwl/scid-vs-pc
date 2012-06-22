@@ -16,7 +16,7 @@ proc findNovelty {} {
     return
   }
   toplevel $w
-  wm title $w "Scid: $::tr(FindNovelty)"
+  wm title $w "$::tr(FindNovelty)"
 
   pack [frame $w.help] -side top -fill x
   text $w.help.text -width 1 -height 5 -wrap word \
@@ -127,7 +127,7 @@ proc mergeGame {{base 0} {gnum 0}} {
   set merge(gnum) $gnum
   set w .mergeDialog
   toplevel $w
-  wm title $w "Scid: $::tr(MergeGame)"
+  wm title $w "$::tr(MergeGame)"
   bind $w <Escape> "$w.b.cancel invoke"
   bind $w <F1> {helpWindow GameList Browsing}
   label $w.title -text $::tr(Preview:) -font font_Bold
@@ -216,7 +216,7 @@ proc setExportText {exportType} {
   set w .setExportText$exportType
   if {[winfo exists $w]} { return }
   toplevel $w
-  wm title $w "Scid: $title"
+  wm title $w "$title"
 
   frame $w.buttons
   pack $w.buttons -side bottom -fill x -anchor e
@@ -334,7 +334,7 @@ proc exportOptions {exportType} {
   set exportFlags(ok) -1
   toplevel $w
   wm withdraw $w
-  wm title $w "Scid: [tr OptionsExport]"
+  wm title $w "[tr OptionsExport]"
   wm transient $w .
   wm protocol $w WM_DELETE_WINDOW { }
   bind $w <Escape> "$w.b.cancel invoke"
@@ -687,7 +687,7 @@ proc nameEditor {} {
     return
   }
   toplevel $w
-  wm title $w "Scid: [tr FileMaintNameEditor]"
+  wm title $w "[tr FileMaintNameEditor]"
   set nameEditorWin 1
   setWinLocation $w
   bind $w <Configure> "recordWinSize $w"

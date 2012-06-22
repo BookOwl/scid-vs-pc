@@ -108,7 +108,7 @@ proc ::maint::OpenClose {} {
   set bold font_SmallBold
 
   toplevel $w
-  wm title $w "Scid: [tr FileMaint]"
+  wm title $w "[tr FileMaint]"
   setWinLocation $w
   wm resizable $w 0 0
   bind $w <F1> {helpWindow Maintenance}
@@ -322,7 +322,7 @@ proc ::maint::ChangeBaseDescription {} {
   set w .bdesc
   if {[winfo exists $w]} { return }
   toplevel $w
-  wm title $w "Scid: $::tr(Description): [file tail [sc_base filename]]"
+  wm title $w "$::tr(Description): [file tail [sc_base filename]]"
   wm withdraw $w
 
   set font font_Small
@@ -356,7 +356,7 @@ proc ::maint::ChangeCustomDescription {} {
   toplevel $w
   wm withdraw $w
   
-  wm title $w "Scid: $::tr(CustomFlags): [file tail [sc_base filename]]"
+  wm title $w "$::tr(CustomFlags): [file tail [sc_base filename]]"
   frame $w.a
   label $w.a.lb -text $::tr(CustomFlags)
   grid $w.a.lb -column 0 -row 0 -columnspan 12 -pady 2
@@ -774,7 +774,7 @@ proc checkAllGames {} {
   }
   toplevel $w
   wm withdraw $w
-  wm title $w "Scid: [tr CheckGamesWhich]"
+  wm title $w "[tr CheckGamesWhich]"
   
   pack [frame $w.f] -expand 1
   
@@ -849,7 +849,7 @@ proc makeClassifyWin {{parent .}} {
   }
   toplevel $w
   wm withdraw $w
-  wm title $w "Scid: [tr FileMaintClass]"
+  wm title $w "[tr FileMaintClass]"
   label $w.label -font font_Bold -textvar ::tr(ClassifyWhich)
   frame $w.g
   radiobutton $w.g.all -textvar ::tr(ClassifyAll) \
@@ -1265,8 +1265,7 @@ proc compactNames {} {
   set stats [sc_compact stats names]
   if {[lindex $stats 1] == 0  &&  [lindex $stats 3] == 0  && \
         [lindex $stats 5] == 0  &&  [lindex $stats 7] == 0} {
-    tk_messageBox -type ok -icon info -parent $w -title [concat "Scid: " $::tr(CompactNames)] \
-        -message $::tr(NoUnusedNames)
+    tk_messageBox -type ok -icon info -parent $w -title  "$::tr(CompactNames)" -message $::tr(NoUnusedNames)
     return
   }
   progressWindow "Scid" [concat $::tr(CompactNames) "..."]
@@ -1372,7 +1371,7 @@ proc makeSortWin {{parent .}} {
   }
   toplevel $w
   wm withdraw $w
-  wm title $w "Scid: [tr FileMaintSort]"
+  wm title $w "[tr FileMaintSort]"
   wm resizable $w 0 0
 
   label $w.torder -textvar ::tr(SortCriteria) -font font_Bold
@@ -1640,7 +1639,7 @@ proc stripTags {{parent .}} {
   }
 
   toplevel $w
-  wm title $w "Scid: $::tr(StripTags)"
+  wm title $w "$::tr(StripTags)"
   wm withdraw $w
   bind $w <F1> {helpWindow Maintenance Tags}
 
@@ -1736,7 +1735,7 @@ proc cleanerWin {} {
   if {[winfo exists $w]} { return }
 
   toplevel $w
-  wm title $w "Scid: $::tr(Cleaner)"
+  wm title $w "$::tr(Cleaner)"
   bind $w <F1> {helpWindow Maintenance Cleaner}
 
   pack [frame $w.help] -side top -fill x
@@ -1798,7 +1797,7 @@ proc doCleaner {} {
   set w .mtoolStatus
   if {! [winfo exists $w]} {
     toplevel $w
-    wm title $w "Scid: $::tr(Cleaner)"
+    wm title $w "$::tr(Cleaner)"
     pack [frame $w.b] -side bottom -fill x
     pack [frame $w.t] -side top -fill both -expand yes
     text $w.t.text -width 60 -height 10 -wrap none -setgrid 1 \

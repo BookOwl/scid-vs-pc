@@ -344,7 +344,7 @@ proc ::enginelist::choose {} {
   setWinLocation $w
   setWinSize $w
 
-  wm title $w "Scid: [tr ToolsAnalysis]"
+  wm title $w "[tr ToolsAnalysis]"
   wm protocol $w WM_DELETE_WINDOW "destroy $w"
   bind $w <F1> { helpWindow Analysis List }
   bind $w <Escape> "destroy $w"
@@ -533,7 +533,7 @@ proc ::enginelist::edit {index {copy {}}} {
   }
 
   toplevel $w
-  wm title $w {Scid: Configure Engine}
+  wm title $w {Configure Engine}
   wm state $w withdrawn
 
   set f [frame $w.frame]
@@ -2050,7 +2050,7 @@ proc makeAnalysisWin {{n 0} {settime 0}} {
   # Set up the  analysis window:
 
   toplevel $w
-  wm title $w "Scid: $analysisName"
+  wm title $w "$analysisName"
 
   if {$n == 1 && $analysis(mini)} {
     # Run engine in status bar. It is "niced" at procedure end.
@@ -2337,9 +2337,11 @@ proc changePVSize { n } {
   }
   if {$analysis(multiPVCount$n) == 1} {
     set h .analysisWin$n.hist.text
-    $h configure -state normal
-    $h delete 0.0 end
-    $h configure -state disabled
+    catch {
+      $h configure -state normal
+      $h delete 0.0 end
+      $h configure -state disabled
+    }
     set analysis(lastHistory$n) {}
   }
   if { $analysis(uci$n) } {
@@ -2521,7 +2523,7 @@ proc processAnalysisInput {n} {
       set analysis(wbEngineDetected$n) 1 
 
       if { [regexp "myname=\"(\[^\"\]*)\"" $line dummy name]} {
-        catch {wm title .analysisWin$n "Scid: $name"}
+        catch {wm title .analysisWin$n "$name"}
       }
     }
     return
@@ -3430,7 +3432,7 @@ proc setAutomoveTime {{n 0}} {
   toplevel $w
   #wm transient $w .analysisWin
   wm state $w withdrawn
-  wm title $w "Scid: Engine thinking time"
+  wm title $w "Engine thinking time"
   wm resizable $w 0 0
   label $w.label -text "Time per move (seconds)"
   pack $w.label -side top -pady 5 -padx 5

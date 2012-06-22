@@ -75,7 +75,7 @@ proc ::crosstab::Open {} {
 
   set crosstabWin 1
   toplevel $w
-  wm title $w "Scid: [tr WindowsCross]"
+  wm title $w "[tr WindowsCross]"
   wm minsize $w 10 5
   setWinLocation $w
   setWinSize $w

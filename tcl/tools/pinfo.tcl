@@ -13,7 +13,7 @@ proc playerInfo {{player ""} {raise 0}} {
   set w .playerInfoWin
   if {! [winfo exists $w]} {
     toplevel $w
-    wm title $w "Scid: [tr ToolsPInfo]"
+    wm title $w "[tr ToolsPInfo]"
     wm state $w withdrawn
     setWinLocation $w
     wm minsize $w 450 300

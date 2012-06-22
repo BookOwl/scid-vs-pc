@@ -134,7 +134,7 @@ proc ::tb::OpenClose {} {
   wm state $w withdrawn
   setWinLocation $w
 
-  wm title $w "Scid: [tr WindowsTB]"
+  wm title $w "[tr WindowsTB]"
   pack [frame $w.b] -side bottom -fill x ;# buttons
   pack [frame $w.info] -side left -fill y ;# summary
   pack [frame $w.pos] -side left -fill both -expand yes -padx 5 -pady 3 ;# results

@@ -198,7 +198,7 @@ proc updateHelpWindow {name {heading {}}} {
     $w.b.forward configure -state normal
   }
 
-  wm title $w "Scid Help: $title"
+  wm title $w "Help: $title"
   wm iconname $w "Scid help"
 
   $w.text delete 0.0 end

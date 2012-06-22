@@ -239,7 +239,7 @@ proc ::windows::gamelist::Open {} {
   }
 
   toplevel $w
-  wm iconname $w "Scid: [tr WindowsGList]"
+  wm iconname $w "[tr WindowsGList]"
   wm minsize $w 300 160
   wm withdraw $w
   setWinLocation $w
@@ -984,7 +984,7 @@ proc openExportGList {} {
     return
   }
   toplevel $w
-  wm title $w "Scid: Save Game List"
+  wm title $w "Save Game List"
 
   label $w.lfmt -text "Format" -font font_Bold
   pack $w.lfmt -side top
@@ -1042,7 +1042,7 @@ proc saveExportGList {} {
   global glexport env
   set ftypes {{"Text files" {.txt}} {"All files" *}}
   set fname [tk_getSaveFile -filetypes $ftypes -parent .glexport \
-               -title "Scid: Save Game List" -initialdir $env(HOME)]
+               -title "Save Game List" -initialdir $env(HOME)]
   if {$fname == ""} { return }
   set showProgress 0
   if {[sc_filter count] >= 20000} { set showProgress 1 }

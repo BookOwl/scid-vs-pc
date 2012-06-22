@@ -66,7 +66,7 @@ proc ::tree::make { { baseNumber -1 } } {
   setWinLocation $w
   setWinSize $w
 
-  wm title $w "Scid: [tr Tree] \[[file tail [sc_base filename $baseNumber]]\]"
+  wm title $w "[tr Tree] \[[file tail [sc_base filename $baseNumber]]\]"
   set ::treeWin$baseNumber 1
   set tree(training$baseNumber) 0
   set tree(autorefresh$baseNumber) 1
@@ -1014,7 +1014,7 @@ proc ::tree::best { baseNumber } {
   if {[winfo exists .variations]} { return }
   if {! [winfo exists $w]} {
     toplevel $w
-    wm title $w "Scid: $::tr(TreeBestGames) \[[file tail [sc_base filename $baseNumber]]\]"
+    wm title $w "$::tr(TreeBestGames) \[[file tail [sc_base filename $baseNumber]]\]"
     setWinLocation $w
     setWinSize $w
     bind $w <Escape> "destroy $w"

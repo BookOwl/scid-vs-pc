@@ -299,8 +299,8 @@ proc ::commenteditor::Open {} {
   # setWinSize $w
   # wm state $w normal
 
-  wm title $w "Scid: [tr {Comment editor}]"
-  wm iconname $w "Scid: [tr {Comment editor}]"
+  wm title $w "[tr {Comment editor}]"
+  wm iconname $w "[tr {Comment editor}]"
   ::commenteditor::Refresh
 
   focus $w.cf.text

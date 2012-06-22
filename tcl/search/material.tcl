@@ -176,7 +176,7 @@ proc ::search::material {} {
 
   toplevel $w
   wm withdraw $w
-  wm title $w "Scid: $::tr(MaterialSearch)"
+  wm title $w "$::tr(MaterialSearch)"
 
   bind $w <F1> { helpWindow Searches Material }
   bind $w <Escape> "$w.b3.cancel invoke"
