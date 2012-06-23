@@ -987,8 +987,15 @@ button .button.exitVar -image tb_outvar -command {
    updateBoard -animate
 }
 
-button .button.addVar -image tb_addvar \
-    -command {sc_var create; updateBoard -pgn -animate}
+button .button.addVar -image tb_addvar -command {
+    if {[sc_pos isAt vstart]  &&  [sc_pos isAt vend]} {
+      return
+    }
+    sc_game undoPoint
+    sc_var create
+    updateBoard -pgn
+}
+
 frame .button.space2 -width 15
 
 image create photo tb_flip -data {

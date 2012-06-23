@@ -588,8 +588,9 @@ proc enterVar {{n {}}} {
 ################################################################################
 # V and Z key bindings: move into/out of a variation.
 #
-bind . <KeyPress-v> { showVars }
+bind . <KeyPress-v> showVars
 bind . <KeyPress-z> {.button.exitVar invoke}
+bind . <Control-a> {.button.addVar invoke}
 
 # editMyPlayerNames
 #   Present the dialog box for editing the list of player
@@ -766,12 +767,10 @@ proc updateBoard2 {} {
     .menu.edit entryconfig [tr EditAdd] -state disabled
     .menu.edit entryconfig [tr EditPasteVar]  -state disabled
     .button.addVar configure -state disabled
-    bind . <Control-a> {}
   } else {
     .menu.edit entryconfig [tr EditAdd] -state normal
     .menu.edit entryconfig [tr EditPasteVar] -state normal
     .button.addVar configure -state normal
-    bind . <Control-a> {sc_var create; updateBoard -pgn}
   }
   if {[sc_var count] == 0} {
     .button.intoVar configure -state disabled

@@ -2338,6 +2338,7 @@ proc changePVSize { n } {
   if {$analysis(multiPVCount$n) == 1} {
     set h .analysisWin$n.hist.text
     catch {
+      # engine may not have a gui
       $h configure -state normal
       $h delete 0.0 end
       $h configure -state disabled

@@ -1212,20 +1212,14 @@ from a paused engine.
 
   <h4>Keyboard Shortcuts</h4>
   <p>
-  When a move has variations, they are shown in the game information
-  area. The first will be named <b>v1</b>, the second <b>v2</b>, etc.
-  You can click on a variation to enter it, or press "<b>v</b>". In
-  the latter case the <b>Variation Window</b> will pop up
-  allowing to select a variation using the cursor keys or mouse. Setting
-  Options / Moves / Show Variation Window will pop up this window
-  automatically every time a move with a variation is found while
-  navigating through the game using the cursor keys. In the variation
-  window one can enter the variation by selecting it with the up/down
-  cursor keys and hitting enter or clicking on it with the mouse. This
-  allows for navigation through the game with the cursor keys only.
-  To leave a variation, you can use the "<b>z</b>" shortcut key. At
-  the beginning of the variation, the up arrow can be used
-  alternatively.
+  When a move has variations they are shown in the game information
+  area. You can click on a variation to enter it, or press "v", whence
+  the <b>Variation Window</b> will pop up.
+  Setting Options-<gt>Moves-<gt>ShowVariationWindow will automatically show
+  this window when a variation is found.</p>
+  <p>In the variation window one can select a variation with the up/down
+  keys and then hitting enter. This allows for game navigation with keyboard only.
+  To leave a variation, use "z", or if at the beginning of the variation, the up arrow.
   </p>
 
   <h3><name Null>Null Moves</name></h3>
@@ -1251,7 +1245,7 @@ move</b>, then variations may be added. This note also applies to the <b>
 <b>Paste Variation</b> feature.
   </p>
 
-  <p><footer>Updated: Scid vs. PC 4.5 July 2011</footer></p>
+  <p><footer>Updated: Scid vs. PC 4.8 June 2012</footer></p>
 }
 
 set helpTitle(Comment) "Comment Editor"
@@ -6305,11 +6299,18 @@ The window manager may interfere with some shortcuts.
 <li><b>control-Z</b> - Score graph</li>
 </ul>
 
+<h4>Variations</h4>
+<ul>
+<li><b>control-a</b> - Add variation</li>
+<li><b>v</b> - Enter variation</li>
+<li><b>z</b> - Exit variation</li>
+</ul>
 -------------------------------------------------------------------------
 
 <h2><name alpha>Alphabetical</name></h2>
 <ul>
 
+<li><b>control-a</b> - Add variation</li>
 <li><b>control-A</b> - Analysis engines</li>
 <li><b>control-b</b> - Book window</li>
 <li><b>control-B</b> - Board search</li>
@@ -6348,6 +6349,8 @@ The window manager may interfere with some shortcuts.
 <li><b>control-/</b> - Finder</li>
 <li><b>control-?</b> - Load random game</li>
 <li><b>enter</b> - Add move from chess engine</li>
+<li><b>v</b> - Enter variation</li>
+<li><b>z</b> - Exit variation</li>
 <li></li>
 
 <li><b>control-1</b> - Switch to first open base</li>
