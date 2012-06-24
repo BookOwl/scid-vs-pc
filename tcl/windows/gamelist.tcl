@@ -751,11 +751,7 @@ proc setGamelistTitle {} {
     set fname "\[$fname\]"
   }
 
-  setTitle "$fname [sc_filter count]/[sc_base numGames] $::tr(games)" 
-}
-
-proc setTitle {message} {
-  wm title .glistWin "Gamelist: $message"
+  wm title .glistWin "Gamelist: $fname [sc_filter count]/[sc_base numGames] $::tr(games)" 
 }
 
 # called by file.tcl when db is changed

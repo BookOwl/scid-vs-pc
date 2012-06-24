@@ -1711,7 +1711,7 @@ namespace eval CorrespondenceChess {
 
 			if {[winfo exists $w]} { return }
 			toplevel $w
-			::setTitle $w [::tr "CCDlgConfigRelay"]
+			wm title $w [::tr "CCDlgConfigRelay"]
 
 			autoscrollframe $w.desc text $w.desc.text \
 					-background gray90 -foreground black \
