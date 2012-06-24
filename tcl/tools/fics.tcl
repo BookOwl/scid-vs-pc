@@ -1023,7 +1023,8 @@ namespace eval fics {
       # line: "Creating: hruvulum (1079) stevenaaus (1148) rated blitz 2 18"
       # resumed game line is different though
       if {[regexp {.*\) ([^\)]*$)} $line t1 t2]} {
-	sc_game tags set -event "Fics $t2"
+        sc_game tags set -event "FICS [lrange $line end-3 end-2]"
+        sc_game tags set -extra "{TimeControl \"[lindex $line end-1]/[lindex $line end]\"}"
       }
       if { [::board::isFlipped .board] } {
         if { [ string match -nocase $white $::fics::reallogin ] } { ::board::flip .board }
@@ -1202,11 +1203,14 @@ namespace eval fics {
 	  sc_game tags set -black    $t4
           sc_game tags set -whiteElo [string range $t2 0 end-1]
           sc_game tags set -blackElo [string range $t5 0 end-1]
-          # todo
-	  # sc_game tags set -date [::utils::date::today]
-	  # sc_game tags set -event "FICS Game $game $initialTime/$increment"
 
         }
+        return
+      }
+      if {[string match "Rated*" $line] || [string match Unrated* $line]} {
+	# Unrated blitz match, initial time: 3 minutes, increment: 0 seconds.
+	# Rated lightning match, initial time: 1 minutes, increment: 0 seconds.
+        sc_game tags set -event "FICS [string tolower [lrange $line 0 1]]"
         return
       }
       if {$length == 2 && [string match {\{*\} *} $line]} {
@@ -1811,7 +1815,8 @@ namespace eval fics {
         }
         set ::fics::lastmove $moveSan ; # remember last opponenets move for takeback comment
         if { [catch { sc_move addSan $moveSan } err ] } {
-          puts "error $err"
+          # This is a common occurence when moving observed games to the main board
+          # puts "error $err"
         } else {
           if { $::novag::connected } {
             set m $verbose_move
@@ -1864,7 +1869,7 @@ namespace eval fics {
 	sc_game tags set -blackElo $::fics::elo($black)
       }
       sc_game tags set -date [::utils::date::today]
-      sc_game tags set -event "FICS Game $game $initialTime/$increment"
+      sc_game tags set -extra "{TimeControl \"$initialTime/$increment\"}"
 
       ### Try to get first moves of game
 
