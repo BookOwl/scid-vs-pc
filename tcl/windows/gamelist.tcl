@@ -165,9 +165,10 @@ proc ::windows::gamelist::showNum {index {bell 1}} {
   if  { [sc_filter index $result] != $index \
      || $result < 1 \
      || $result > [sc_filter count]} {
-    if {$bell=={1}} {
+    if {$bell==1} {
       bell
     }
+    .glistWin.tree selection set {}
   } else {
     # See if it's already on the screen
     set found 0
@@ -300,6 +301,7 @@ proc ::windows::gamelist::Open {} {
   } else {
     $w.tree tag configure current -foreground skyblue2
   }
+  $w.tree tag configure currentred -foreground red
 
   # $w.tree tag configure colour -background $::defaultBackground
   # $w.tree tag bind click1 <Button-1> {}
@@ -860,7 +862,11 @@ proc ::windows::gamelist::Refresh {{see {}}} {
       $w.tree insert {} 0 -values [list $thisindex {Unmatched brace} {in game}] -tag [list click2 error]
     } else {
       if {$thisindex == "$current "} {
-	set current_item [$w.tree insert {} 0 -values $values -tag [list click2 current]]
+        if {[sc_game altered]} {
+	  set current_item [$w.tree insert {} 0 -values $values -tag [list click2 currentred]]
+        } else {
+	  set current_item [$w.tree insert {} 0 -values $values -tag [list click2 current]]
+        }
       } elseif {[lindex $values 12] == {D }} {
 	$w.tree insert {} 0 -values $values -tag [list click2 deleted] ;#treefont
       } else {
