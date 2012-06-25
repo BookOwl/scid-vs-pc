@@ -413,6 +413,7 @@ append helpText(Index) {
   <li><a Maintenance Spellfile>Spellcheck File</a></li>
   <li><a Maintenance Spellcheck>Spellchecking</a> names</li>
   <li>Editing Name <a Maintenance Editing>Spelling</a></li>
+  <li><a MainWindow Status>Status bar</a></li>
   <li><a CalVar>Stoyko Exercise</a></li>
   <li><a Switcher>Switcher</a> window</li>
   </ul>
@@ -567,7 +568,7 @@ set helpText(MainWindow) {<h1>Scid Main Window</h1>
   <a Moves>enter chess moves</a>.
   </p>
   <p>
-  <i>Right clicking the main board shows a menu which enables hiding/unhiding of Board components.</i>
+  <i>Right clicking the main board shows a menu which enables hiding/unhiding of most board components.</i>
   </p>
 
   <h4>Game Navigation Buttons</h4>
@@ -589,21 +590,20 @@ set helpText(MainWindow) {<h1>Scid Main Window</h1>
 
   <h4><name GameInfo>Game Information Area</name></h4>
   <p>
-  Below the Chessboard is general information about the current game. 
+  Below the chessboard is general information about the current game. 
   It includes the <b>Player Names</b> and <b>Ratings</b>,
   <b>Event</b> and <b>Site</b> fields, and <b>ECO</b> codes.
-  The <b>Game Number</b> (and any flags) show specific info about this games in the database.
+  The <b>Game Number</b> (and any flags) show specific info about this game in the database.
   </p>
   <p>
-  If Scid can find a suitable <b>photo file</b> (FIDE.spf, either in ~/.scidvspc or Scid's
-  share directory) then photos will appear. Clicking on photos minimizes them.
+  If Scid can find a suitable <a PInfo Photos>photo file</a>  then player photos will appear here. Clicking on them will make them smaller.
   </p>
   <p>
-  The game information area also displays <b>Tablebase Results</b> whenever the
-  position is known in the <a TB>tablebase</a>.
+  The game information area also displays <a PInfo Photos>player photos</a>
+  and <a TB>tablebase</a> results</b>.
   </p>
   <p>
-  <i>Display options for this window are found in <green>Options-<gt>Game Information</green>.</i>
+  Display options for this window are in <green>Options-<gt>Game Information</green>.
   </p>
 
   <h4>Material Values</h4>
@@ -611,11 +611,11 @@ set helpText(MainWindow) {<h1>Scid Main Window</h1>
   On the right hand side of the board the <b>material</b> balance is displayed by small chess pieces.
   </p>
 
-  <h4>The Status Bar</h4>
+  <h4><name Status>The Status Bar</name></h4>
   <p>
   The status bar shows information about the current database. This includes
-  how many games are currently in the <a Filter>filter</a>, and whether the base is Read-Only.
-  When <b>entering moves with the keyboard</b>, allowable matching moves are displayed here.
+  how many games are currently in the <a Filter>filter</a>, and whether the base is read-only.
+  When entering moves with the keyboard, matching moves are displayed here.
   </p>
 
   <h4><name Autoplay>Autoplay Mode</name></h4>
@@ -625,17 +625,12 @@ set helpText(MainWindow) {<h1>Scid Main Window</h1>
   be set from the <green>Options--<gt>Moves</green> menu
   </p>
   <p>
-  The shortcut key <b>control+z</b> starts or stops autoplay mode, and
-  you can also stop with <b>escape</b>.
-  </p>
-  <p>
   If you start autoplay mode when the <a Analysis>analysis window</a> is open,
-  the game is <term>annotated</term>: the score and analysis for each position
+  the game is <a Analysis Annotate>annotated</a>: the score and analysis for each position
   are added to the game as a new variation just before each move is made.
-  See the <a Analysis>analysis window</a> help page for details.
   </p>
 
-  <p><footer>Updated: Scid vs. PC 4.2 November 2010 </footer></p>
+  <p><footer>Updated: Scid vs. PC 4.8 June 2012 </footer></p>
 }
 
 
@@ -3266,22 +3261,19 @@ players.
   </p>
 
 <h3><name Photos>Player Photos</name></h3>
-<p>This feature also requires an extra file, which, because of its size, is not included.
-To enable player photos, download <b>FIDE.spf</b> from the Scid
-<url http://scid.sourceforge.net/download.html>download page</url>,
-and install it into the Scid User Directory.
-</p>
-<p><i>
-This directory is <b>$HOME/.scidvspc</b> on unix systems, or the application directory for Windows.
+<p>To enable player photos, download "FIDE.spf" from the 
+<url http://scid.sourceforge.net/download.html>Scid download page</url>,
+and install it into Scid vs. PC's user directory.
+On Linux and Macs this is "$HOME/.scidvspc", or the application directory on Windows.
 The <green>Help--<gt>Startup Window</green> will help you find it's location, and
 will also indicate if the photo file has been loaded correctly.
-</i></p>
-<p>Once installed, if player photos are available they will appear in the main game information panel.
-To disable them, unselect <green>Options--<gt>Game Information--<gt>Show Photos</green>.
+</p>
+<p>Once installed, available player photos are shown in the <a MainWindow GameInfo>game information</a> widget.
+Clicking on the photos makes them smaller. To disable them, deselect <green>Options--<gt>Game Information--<gt>Show Photos</green>.
 
 </p>
 
-  <p><footer>Updated: Scid vs. PC 4.6 October 2011</footer></p>
+  <p><footer>Updated: Scid vs. PC 4.8 June 2012</footer></p>
 }
 
 set helpTitle(Graphs) "Graph windows"
