@@ -1013,6 +1013,7 @@ proc ::windows::switcher::Refresh {} {
 
   set column 0
   set x 0
+  if {$icons} {set sep "\n"} else {set sep " "}
 
   ### Pack the clipbase (slot 9) on the left most
   # set numBases [sc_base count total]
@@ -1046,7 +1047,7 @@ proc ::windows::switcher::Refresh {} {
       } else {
         set name "[file tail [sc_base filename $i]]"
       }
-      $w.c.f$i.name configure -background $color -text "$name ([filterText $i 100000])"
+      $w.c.f$i.name configure -background $color -text "$name${sep}([filterText $i 100000])"
 
       if {[sc_base isReadOnly $i] && ![string match -nocase *pgn $name]} {
         $w.c.f$i.menu entryconfigure 1 -state disabled
