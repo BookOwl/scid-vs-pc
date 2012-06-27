@@ -155,6 +155,7 @@ proc ::gbrowser::new {base gnum {ply -1} {w {}}} {
     $w.b.merge configure -command "mergeGame $base $gnum"
   }
 
+  # The gnum is stored in title, and also used later 
   wm title $w "game $gnum ($filename)"
   set ::gbrowser::boards($n) [sc_game summary -base $base -game $gnum boards]
   set moves [sc_game summary -base $base -game $gnum moves]
@@ -258,7 +259,11 @@ proc ::gbrowser::load {w base gnum ply n} {
     set newgame $gnum
   }
 
-  ::gbrowser::new $base $newgame $ply $w
+  # Only load newgame if different to oldgame
+  # (old game number is stored in wm title)
+  if { [scan [wm title $w] {game %d}] != $newgame } {
+    ::gbrowser::new $base $newgame $ply $w
+  }
 }
 
 proc ::gbrowser::flip {n} {
@@ -270,8 +275,8 @@ proc ::gbrowser::update {n ply} {
   if {! [winfo exists $w]} { return }
   set oldply 0
   if {[info exists ::gbrowser::ply($n)]} { set oldply $::gbrowser::ply($n) }
-  if {$ply == "forward"} { set ply [expr {$oldply + 1} ] }
-  if {$ply == "back"} { set ply [expr {$oldply - 1} ] }
+  # if {$ply == "forward"} { set ply [expr {$oldply + 1} ] }
+  # if {$ply == "back"} { set ply [expr {$oldply - 1} ] }
   if {$ply == "start"} { set ply 0 }
   if {$ply == "end"} { set ply 9999 }
   if {[string index $ply 0] == "-"  ||  [string index $ply 0] == "+"} {
