@@ -62,19 +62,17 @@ widespread changes to SCID's codebase are not justified.</li>
 set helpTitle(FICS) "FICS"
 set helpText(FICS) {<h1>FICS</h1>
 <ul>
-<p>
-The Free Internet Chess Server (FICS) is a web portal where people from
+<p>The Free Internet Chess Server (FICS) is a web portal where people from
 all over the world play chess.  Features include a player rating system,
 international tournaments and the ability to follow and discuss other people's
 games.</p>
 
-<p>
-Though it is possible to play anonymously, to create a user account
+<p>Though it is possible to play anonymously, to create a user account
 visit <url http://www.freechess.org>www.freechess.org</url>.
-Players may peruse their games at <url http://ficsgames.com>http://ficsgames.com</url>.
+Players may peruse their games at <url http://ficsgames.org>http://ficsgames.org</url>.
 </p>
-<p>
-To start FICS use <run ::fics::config><green>Play--<gt>FICS (Internet)</green></run>.
+
+<p>To start FICS use <run ::fics::config><green>Play--<gt>Internet (FICS)</green></run>.
 </p>
 
 <li><a FICSlogin>Logging In</a>
@@ -87,7 +85,12 @@ To start FICS use <run ::fics::config><green>Play--<gt>FICS (Internet)</green></
 <br>
 <li><a FICScommands>FICS Commands and Variables</a></li>
 </ul>
-<br>
+
+<p><i>Scid vs. PC currently does not support the commercial ICC Chess Server,
+but could do so by tweaking the string matches in "fics.tcl". FICS and ICC have 
+<url http://www.edcollins.com/chess/fics-icc.htm>a shared history</url></i>.
+</p>
+
   <p><footer>Updated: Scid vs. PC 4.7 Febuary 2012</footer></p>
 }
 
@@ -4159,7 +4162,7 @@ set helpText(Related) {<h1>Related Links</h1>
   <li>Scid <url http://scid.sourceforge.net/>http://scid.sourceforge.net/</url></li>
   <li>Scid mailing list  <url http://sourceforge.net/mailarchive/forum.php?forum_name=scid-users>http://sourceforge.net/mailarchive/forum.php...</url></li>
   <li>FICS homepage  <url http://www.freechess.org>www.freechess.org</url></li>
-  <li>FICS games <url http://ficsgames.com>http://ficsgames.com</url></li>
+  <li>FICS games <url http://ficsgames.org>http://ficsgames.org</url></li>
   <li>Player Information resources  <url http://linweb.ris.at/~nagl/index.html>http://linweb.ris.at/~nagl</url></li>
   <li>Professional quality chess icons  <url www.virtualpieces.net>www.virtualpieces.net</url></li>
   <li>Tango Icons <url http://tango.freedesktop.org/Tango_Desktop_Project>http://tango.freedesktop.org/Tango_Desktop_Project</url></li>
@@ -5246,32 +5249,39 @@ set helpText(FICSlogin) {<h1>FICS Login</h1>
 <p><i>FICS supports anonymous login, but you'll find more people to play if you visit
 <url http://www.freechess.org>www.freechess.org</url> first and create an account.
 If you're having problems logging in, try deselecting "timeseal".</i></p>
-  <ul>
-      <li><term>Username</term> This is your login name on the FICS
-      server. To login anonymously, use the "Login as guest" button </li>
-      <li><term>Password:</term> Note: this password is not displayed when you type,
-      but it is <b>stored in plain text</b> within Scids configuration. If you are
-      using a publicly accessible system please make sure to assign
-      proper rights to Scids config directory.
-      </li>
-      <li><term>Time seal</term> If checked, all connections to the
-      FICS server are routed through the (optional) timeseal
+
+<ul>
+<li><term>Username</term> This is your login name on the FICS
+server. To login anonymously, use the "Login as guest" button.
+<i> .... It is also possible to login anonymously with a particular name. Enter
+you favourite name into the login field and clear the password field. If this
+name is not registered it will become yours for this session; otherwise please
+close FICS and try logging in again.</i></li>
+
+<li><term>Password</term> The password is not displayed when you type,
+but is stored in plain text within Scid's configuration files. If you are
+using a publicly accessible computer, please make sure to 
+restrict readability to these files, or clear password after FICS end.
+</li>
+
+<li><term>Timeseal</term> If checked, all connections to the
+FICS server are routed through the (optional) timeseal
 program. Its purpose is to cope with network lags and keep the clocks in
 correct order, which can otherwise create problems on slow network
 connections.
 
 Timeseal is available from the
 <url http://sourceforge.net/projects/scidvspc>Scid vs. PC project page</url>.
-  </li>
+</li>
 
-      <li><term>Server port</term> specifies the port on the server.
-      The default is 5000 and should be ok for almost all needs.</li>
-      <li><term>Timeseal port</term> specifies the port where the
-      <term>timeseal</term> program is listening. The default is 5001
-      and should be ok for almost all needs.</li>
-   </ul>
+<li><term>Server port</term> specifies the port on the server.
+The default is 5000 and should be ok for almost all needs.</li>
+<li><term>Timeseal port</term> specifies the port where the
+timeseal program is listening. The default is 5001
+and should be ok for almost all needs.</li>
+</ul>
 
-  <p><footer>Updated: Scid vs. PC 3.4.1, September 2010</footer></p>
+  <p><footer>Updated: Scid vs. PC 4.8 June 2012</footer></p>
 }
 
 # FICS Find Opponent
@@ -5414,7 +5424,14 @@ and trying to run engines against such positions is not recommended.</i></p>
   <h3>Downloading Games</h3>
   <p>
   To download more than a handful of games, 
-  <url http://www.ficsgames.com/>www.ficsgames.com</url> is a great resource.
+  <url http://www.ficsgames.org>www.ficsgames.org</url> is a great resource.
+  </p>
+
+  <h3>Statistics</h3>
+  <p>
+  tell babaschess stats
+  <br>
+  tell babaschess usageinfo Scid vs. PC
   </p>
 
   <h3>Lectures</h3>
@@ -5441,7 +5458,7 @@ set helpTitle(FICSwidget) "FICS: Play on the Internet"
 set helpText(FICSwidget) {<h1>Using FICS</h1>
   <p>
 Once you have <a FICSlogin>logged in</a>, the main FICS widget shows a
-console window, some command buttons, and clocks.</p>
+console window, entry widget, and some command buttons.</p>
 
   <h3>FICS Console</h3>
   <p>
@@ -5451,7 +5468,7 @@ console window, some command buttons, and clocks.</p>
 the Command Buttons. For an outline of popular commands see the
 <a FICScommands>Commands</a> section.</p>
 
-  <h3>Console Colours</h3>
+  <h4>Console Colours</h4>
 <p>
 Normal messages are written in green; messages from other
 players appear in red.  It can be a little confusing, but
@@ -5459,25 +5476,26 @@ toggling the <b>Tells</b> and <b>Shouts</b> boxes will make
 it quieter.
 </p>
 <p>
-Alternatively, one may <b>customize the colours</b> by entering "fg", "bg" for colour menus, or
-"fg COLOUR", or "bg COLOUR" for foreground and background colours. By default they are LimeGreen and grey35.
+One may also customize <b>the fore/background colours</b> by entering "fg", "bg" for colour menus, or
+"fg COLOUR", or "bg COLOUR". By default they are LimeGreen and grey35.
 </p>
 
   <h3>Buttons</h3>
   <p>
   On the right hand side of the clocks appear the command buttons. They are
-fairly self explanatory, the most notable being the <a FICSfindopp><term>Find
-Opponent</term> and <term>Offers Graph</term></a> buttons. Other buttons include:
+fairly self explanatory, the most notable being the <a FICSfindopp>Find
+Opponent and Offers Graph</a> buttons. Other buttons include:
   <br>
   <ul>
     <li><term>Tells</term> Show messages from channel tells</li>
     <li><term>Shouts</term> Show messages from shouts and cshouts</li>
-    <li><term>Clear</term> Clear console of previous messages</li>
+    <li><term>Clear All</term> Clear console of previous messages</li>
+    <li><term>Next</term> Send "next" for next page of help info</li>
     <li><term>Rematch</term> Request a rematch with previous opponent</li>
   </ul>
 
 <br>
-  <p><footer>Updated: Scid vs. PC 3.4.1, September 2010</footer></p>
+  <p><footer>Updated: Scid vs. PC 4.8 June 2012</footer></p>
 }
 
 set helpTitle(FICScommands) {FICS Commands and Variables}
@@ -5519,6 +5537,7 @@ for info about specific commands and variables.
     <li><term>play</term> GAMENUMBER - Respond to a game request from another player</li>
     <li><term>match</term> PLAYER - Issue game request to a specific person</li>
     <li><term>seek</term>   Seek a new game</li>
+    <li><term>help</term> TOPIC - Get help about some topic</li>
 </ul>
 
 <h3>Variables</h3>
