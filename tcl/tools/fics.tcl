@@ -1211,6 +1211,10 @@ namespace eval fics {
 	# Unrated blitz match, initial time: 3 minutes, increment: 0 seconds.
 	# Rated lightning match, initial time: 1 minutes, increment: 0 seconds.
         sc_game tags set -event "FICS [string tolower [lrange $line 0 1]]"
+        sc_game tags set -extra "{TimeControl \"[lindex $line end-4]/[lindex $line end-1]\"}"
+        # This is the download date - not the correct played date, which can be assembled from
+        # Kaitlin (1463) vs. PLAYERFOREVER (1808) --- Wed Jun 27, 02:54 PDT 2012
+	sc_game tags set -date [::utils::date::today]
         return
       }
       if {$length == 2 && [string match {\{*\} *} $line]} {
@@ -1597,6 +1601,7 @@ namespace eval fics {
     if {$::fics::Offers <= 0} {
       if {$n == -1 && $::fics::exitwithzero} {
         destroy .ficsOffers
+        return
       }
       if {$::fics::findopponent(manual) == {auto}} {
 	  pack [frame $f] -side top -padx 5 -pady 5
@@ -1777,6 +1782,7 @@ namespace eval fics {
       # Examining game
       sc_game tags set -white $white
       sc_game tags set -black $black
+      sc_game tags set -result *
       if {[catch {sc_game startBoard $fen}]} {
 	# Hmm - pawn and piece counts get verified in Position::ReadFromFEN, but crazyhouse often has more than 8 pawns.
 	updateGameinfo
