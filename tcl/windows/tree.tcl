@@ -207,7 +207,6 @@ proc ::tree::make { { baseNumber -1 } } {
   canvas $w.progress -width 250 -height 15  -relief solid -border 1
   $w.progress create rectangle 0 0 0 0 -fill $::progcolor -outline $::progcolor -tags bar
   selection handle $w.f.tl "::tree::copyToSelection $baseNumber"
-  bindMouseWheel $w $w.f.tl
 
   bind $w.f.tl <Destroy> {
     set win "%W"
@@ -224,6 +223,9 @@ proc ::tree::make { { baseNumber -1 } } {
   bind $w <Configure> "recordWinSize $w"
   bind $w <Button-4> ::move::Back
   bind $w <Button-5> ::move::Forward
+  bind $w.f.tl <Button-4> {::move::Back ; break}
+  bind $w.f.tl <Button-5> {::move::Forward ; break}
+  # bindMouseWheel $w $w.f.tl
 
   label $w.status -width 1 -anchor w -font font_Small \
       -relief sunken -textvar tree(status$baseNumber)
