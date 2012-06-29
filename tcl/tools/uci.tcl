@@ -57,18 +57,15 @@ namespace eval uci {
   }
 
   ################################################################################
-  # if analyze = 0 -> engine mode
-  # if analyze = 1 -> analysis mode
+  # if analyze = 0 -> engine mode,   pipe used is $uciInfo(pipe$n)
+  # if analyze = 1 -> analysis mode, pipe used is $analysis(pipe$n)
+  # This distinction in pipes seems to be a way of allowing TacGame and F2 to run at the same time
   ################################################################################
 
   # todo: sort out the analyze var with computer tournament feature &&&
 
   proc processAnalysisInput { { n 1 } { analyze 1 } } {
     global analysis ::uci::uciInfo ::uci::optionToken
-
-    ### Now this is f-ing good ! New too.
-    # Wtf is the difference between ::checkEngineIsAlive and ::uci::checkEngineIsAlive
-    # and the difference between ::sendToEngine $n "uci" and ::uci::sendToEngine $n "uci"
 
     if {$analyze} {
       set pipe $analysis(pipe$n)
@@ -868,9 +865,6 @@ namespace eval uci {
   }
 
   ### ::uci::sendToEngine
-  # Wtf is the difference between ::checkEngineIsAlive and ::uci::checkEngineIsAlive
-  # and between ::sendToEngine $n "uci" and ::uci::sendToEngine $n "uci"
-  # Friggin' idiot Pascal
 
   proc sendToEngine {n text} {
 

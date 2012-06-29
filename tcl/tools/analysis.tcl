@@ -1846,9 +1846,11 @@ proc destroyAnalysisWin {n} {
   }
 }
 
-###  Send a command to a running analysis engine
+### Send a command to a running analysis engine
+### this is used by all uci and xboard engines when open with their own window (eg F2, tourney)
 
 proc sendToEngine {n text} {
+
   logEngine $n "Scid  : $text"
   puts_ "$n $text"
   catch {puts $::analysis(pipe$n) $text}
@@ -2658,10 +2660,9 @@ proc processAnalysisInput {n} {
 
 }
 
-################################################################################
-# Returns 0 if engine died abruptly or 1 otherwise
-# - this procedure is duplicated(?) in uci.tcl
-################################################################################
+### Returns 0 if engine died abruptly or 1 otherwise
+### this is used by all uci and xboard engines when open with their own window (eg F2, tourney)
+
 proc checkEngineIsAlive {n} {
   global analysis comp errorCode
 
