@@ -357,7 +357,9 @@ namespace eval fics {
 
 
     # steer focus into the command entry, as typing into the text widget is pointless
-    bind $w.console.text <FocusIn> "focus $w.command.entry"
+    if {!$::macOS && !$::windowsOS} {
+           bind $w.console.text <FocusIn> "focus $w.command.entry"
+    }
     pack $w.command.entry -side left -fill x -expand 1 -padx 3 -pady 2
     pack $w.command.next $w.command.clearall $w.command.clear $w.command.send -side right -padx 3 -pady 2
     focus $w.command.entry
@@ -374,9 +376,13 @@ namespace eval fics {
     set ::fics::playing 0
 
     set row 0
+    # chanoff var is back to front with fics
     checkbutton $w.bottom.buttons.tells -text Tells -state disabled \
     -variable ::fics::chanoff -command {
       ::fics::writechan "set chanoff [expr !$::fics::chanoff]" noecho
+      if {$::fics::chanoff} {
+	::fics::writechan "set silence 0"
+      }
     }
     checkbutton $w.bottom.buttons.shouts -text Shouts -state disabled -variable ::fics::shouts -command {
       ::fics::writechan "set shout $::fics::shouts" echo

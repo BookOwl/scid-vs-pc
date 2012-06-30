@@ -2428,8 +2428,11 @@ proc checkAnalysisStarted {n} {
   if {$analysis(uci$n)} {
     # in order to get options
     sendToEngine $n uci
-    # egine should respond uciok
-    sendToEngine $n isready
+    # engine should respond uciok
+
+    ### Why does SCID send isready here ?
+    # sendToEngine $n isready
+
     set analysis(seen$n) 1
   } else  {
     sendToEngine $n xboard
