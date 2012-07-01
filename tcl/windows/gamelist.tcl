@@ -295,13 +295,7 @@ proc ::windows::gamelist::Open {} {
   # Hmm... seems no way to change the deafult blue bg colour for selected items
   # without using (extra) tags. So this colour must look ok with a blue background
 
-  if {$::macOS} {
-    # OSX treeview selection colour is different
-    $w.tree tag configure current -foreground steelblue3
-  } else {
-    $w.tree tag configure current -foreground skyblue2
-  }
-  $w.tree tag configure currentred -foreground red
+  ::windows::gamelist::checkAltered
 
   # $w.tree tag configure colour -background $::defaultBackground
   # $w.tree tag bind click1 <Button-1> {}
@@ -592,6 +586,23 @@ proc ::windows::gamelist::Configure {window} {
   }
 }
 
+proc ::windows::gamelist::checkAltered {} {
+  set w .glistWin.tree
+  if {![winfo exists $w]} {
+    return
+  }
+  if {[sc_game altered]} {
+    $w tag configure current -foreground red
+  } else {
+    if {$::macOS} {
+      # OSX treeview selection colour is different
+      $w tag configure current -foreground steelblue3
+    } else {
+      $w tag configure current -foreground skyblue2
+    }
+  }
+}
+
 proc configDeleteButtons {} {
   # also check the Flag button
   set w .glistWin
@@ -862,11 +873,7 @@ proc ::windows::gamelist::Refresh {{see {}}} {
       $w.tree insert {} 0 -values [list $thisindex {Unmatched brace} {in game}] -tag [list click2 error]
     } else {
       if {$thisindex == "$current "} {
-        if {[sc_game altered]} {
-	  set current_item [$w.tree insert {} 0 -values $values -tag [list click2 currentred]]
-        } else {
-	  set current_item [$w.tree insert {} 0 -values $values -tag [list click2 current]]
-        }
+	set current_item [$w.tree insert {} 0 -values $values -tag [list click2 current]]
       } elseif {[lindex $values 12] == {D }} {
 	$w.tree insert {} 0 -values $values -tag [list click2 deleted] ;#treefont
       } else {

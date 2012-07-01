@@ -231,6 +231,7 @@ proc updateStatusBar {} {
   append statusBar "  [filterText]"
 
   # if {[sc_game altered]} { append statusBar " (altered)" }
+  ::windows::gamelist::checkAltered
 }
 
 
@@ -822,15 +823,16 @@ proc updateBoard3 {pgnNeedsUpdate} {
   ::commenteditor::Refresh
   if {[::tb::isopen]} { ::tb::results }
   updateMenuStates
-  moveEntry_Clear
 
   # Show a warning message in the statusbar if Fics is playing
+  # The statusbar is updated by moveEntry_Clear
   if {[winfo exists .fics] && ![sc_pos isAt end] && ($::fics::playing==1 || $::fics::playing==-1)} {
+    moveEntry_Clear
     set ::statusBar "Fics: warning, board doesn't show current game position"
     .statusbar configure -foreground red3
   } else {
     .statusbar configure -foreground black
-    updateStatusBar 
+    moveEntry_Clear
   }
 
   if {[winfo exists .twinchecker]} { updateTwinChecker }
