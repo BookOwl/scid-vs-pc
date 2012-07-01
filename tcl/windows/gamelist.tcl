@@ -591,6 +591,9 @@ proc ::windows::gamelist::checkAltered {} {
   if {![winfo exists $w]} {
     return
   }
+  if {[sc_game number] == 0} {
+    $w tag remove current
+  }
   if {[sc_game altered]} {
     $w tag configure current -foreground red
   } else {
