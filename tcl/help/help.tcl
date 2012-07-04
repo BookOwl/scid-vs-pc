@@ -5427,11 +5427,16 @@ and trying to run engines against such positions is not recommended.</i></p>
   <url http://www.ficsgames.org>www.ficsgames.org</url> is a great resource.
   </p>
 
-  <h3>Statistics</h3>
+  <h3>Bots</h3>
   <p>
-  tell babaschess stats
-  <br>
-  tell babaschess usageinfo Scid vs. PC
+  Bots are special FICS accounts that gather statistics, give lectures puzzles and more.
+  A nice page can be found at 
+  <url http://antiseptic-freechess.blogspot.com.au/2012/04/favorite-fics-bots.html>www.antiseptic-freechess.blogspot.com.au</url>
+  <ul>
+    <li>tell babaschess usageinfo Scid vs. PC (Show Scid vs. PC usage stats)</li>
+    <li>tell relay games (List upcoming games)</li>
+    <li>tell chlog show shout -t 20 (Show the last 20 minutes of shouts)</li>
+  </ul>
   </p>
 
   <h3>Lectures</h3>
@@ -5539,6 +5544,7 @@ for info about specific commands and variables.
     <li><term>seek</term>   Seek a new game</li>
     <li><term>help</term> TOPIC - Get help about some topic</li>
 </ul>
+
 
 <h3>Variables</h3>
 <p><i>To change settings use <term>set</term> VARIABLE VALUE. Often VALUE is a boolean 1 or 0.</i></p>
