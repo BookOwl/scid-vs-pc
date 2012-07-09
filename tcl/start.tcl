@@ -1005,6 +1005,14 @@ if { $macOS } {
     after idle [list dragndrop $args]
   }
   rename tkOpenDocument ::tk::mac::OpenDocument
+
+  # Hack to allow focus and text copy from disabled text widgets on OSX
+  rename text ::tk::mac::text
+  proc text {w args} {
+    eval ::tk::mac::text $w $args
+    bind $w <1> "focus $w"
+    $w configure -highlightthickness 0
+  }
 }
 
 # Add empty updateStatusBar proc to avoid errors caused by early
