@@ -45,7 +45,10 @@ namespace eval tactics {
 
     set found 0
 
-    if {![sc_base inUse] || [sc_base numGames] == 0} { return }
+    if {![sc_base inUse] || [sc_base numGames] == 0} {
+      tk_messageBox -type ok -icon info -title "Scid" -message "No game with Tactics flag found"      
+      return
+    }
 
     # Try to find in current game, from current pos (exit vars first)
     if {[sc_game flag T [sc_game number]]} {
