@@ -1754,13 +1754,16 @@ proc makeAnalysisMove {n} {
     
   update idletasks ; # fixes tournament issues ?
 
-  if { $comp(playing) && !$comp(animate) } {
-    updateBoard -pgn
+  if {$comp(playing)} {
+    if {$comp(animate)} {
+      updateBoard -pgn -animate
+    } else {
+      updateBoard -pgn
+    }  
   } else {
     updateBoard -pgn -animate
-  }  
-
-  ::utils::sound::AnnounceNewMove $move
+    ::utils::sound::AnnounceNewMove $move
+  }
   return $res
 }
 

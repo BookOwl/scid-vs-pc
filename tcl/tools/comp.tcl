@@ -626,6 +626,15 @@ proc compNM {n m k} {
     if {$::analysis(uci$current_engine)} {
       ### UCI main loop
 
+set ::comp(bookmove) [ ::book::getMove Elo2400.bin [sc_pos fen] $::sergame::bookSlot]
+
+if {$::comp(bookmove) != ""} {
+
+  # set ::sergame::wentOutOfBook 1
+  puts "BOOKMOVE $::comp(bookmove)"
+
+} else {
+
       ### position
 
       set hit 0
@@ -664,11 +673,12 @@ proc compNM {n m k} {
 
       set analysis(waitForBestMove$current_engine) 1
       vwait analysis(waitForBestMove$current_engine)
+}
 
       if {!$comp(playing)} {break}
     } else {
       ### Xboard main loop
-
+set ::comp(bookmove) {}
       # Setup times
 
       if {$comp(timecontrol) != "permove"} {
@@ -726,7 +736,7 @@ proc compNM {n m k} {
 
     }
 
-    if {[makeAnalysisMove $current_engine]} {
+    if {[makeCompMove $current_engine]} {
       ### Move success
 
       after cancel compTimeout
@@ -902,6 +912,21 @@ proc compNM {n m k} {
   catch {destroy .analysisWin$n}
   catch {destroy .analysisWin$m}
   set comp(playing) 0
+}
+
+proc makeCompMove {current_engine} {
+  if {$::comp(bookmove) != {}} {
+    sc_move addSan $::comp(bookmove)
+
+    if { $::comp(animate) } {
+      updateBoard -pgn -animate
+    } else {
+      updateBoard -pgn 
+    }
+    return 1
+  } else {
+    return [makeAnalysisMove $current_engine]
+  }
 }
 
 proc compPause {} {

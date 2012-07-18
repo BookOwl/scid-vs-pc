@@ -65,6 +65,7 @@ namespace eval book {
   ################################################################################
   proc getMove {book fen slot {n 1}} {
     set tprob 0
+    ### Hmmm - why is book opened and closed every move ?
     ::book::scBookOpen $book $slot
     set bookmoves [sc_book moves $slot]
     if {[llength $bookmoves] == 0} {
