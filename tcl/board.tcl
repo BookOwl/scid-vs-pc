@@ -686,7 +686,7 @@ button .tb.bsearch -image tb_bsearch -command ::search::board
 button .tb.hsearch -image tb_hsearch -command ::search::header
 button .tb.msearch -image tb_msearch -command ::search::material
 frame .tb.space4 -width 12
-button .tb.glist -image tb_glist -command ::windows::gamelist::Open
+button .tb.glist -image tb_glist -command ::windows::gamelist::OpenClose
 button .tb.pgn -image tb_pgn -command ::pgn::OpenClose
 button .tb.tmt -image tb_tmt -command ::tourney::toggle
 button .tb.comment -image tb_comment -command makeCommentWin

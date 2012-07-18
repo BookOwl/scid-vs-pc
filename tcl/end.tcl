@@ -1744,7 +1744,7 @@ after idle [namespace code {RegisterDropEvents .gameInfo}]
 foreach {type action} {
   switcher	::windows::switcher::Open
   pgn		::pgn::OpenClose
-  gamelist	::windows::gamelist::Open
+  gamelist	::windows::gamelist::OpenClose
   tree		::tree::make
   stats		::windows::stats::Open
   crosstable	::crosstab::Open

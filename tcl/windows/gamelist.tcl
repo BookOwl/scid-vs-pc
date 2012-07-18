@@ -222,7 +222,7 @@ proc ::windows::gamelist::Close {} {
   recordWidths
 }
 
-proc ::windows::gamelist::Open {} {
+proc ::windows::gamelist::OpenClose {} {
 
   ### ttk::style theme use alt
   # default classic alt clam
@@ -555,11 +555,6 @@ proc ::windows::gamelist::Open {} {
   pack $w.c.close $w.c.help $w.c.export -side right -padx 3
   pack $w.c.flag $w.c.title $w.c.goto $w.c.browse $w.c.load $w.c.delete $w.c.empty -side left -padx 3
 
-  set ::windows::gamelist::goto 1
-  bind $w <Configure> {::windows::gamelist::Configure %W }
-
-  update
-
   if {$::windowsOS} {
     # cant focus entry combo on windows as it hogs the wheelmouse
     focus $w.tree
@@ -572,9 +567,25 @@ proc ::windows::gamelist::Open {} {
   bind  $w.b.find <Down> "focus $w.tree ; event generate $w.tree <Down> ; break"
   bind  $w.b.find <End>  "focus $w.tree ; event generate $w.tree <End> ; break"
 
+  # Try to show the current game if opening for the first time - but not working yet.
+  # (Also look at how bookmakrs are opened)
+  if {0} {
+    if {$::windows::gamelist::goto == {}} {
+      ::windows::gamelist::showCurrent
+    } else {
+      set ::windows::gamelist::goto 1
+    }
+  }
+
+  set ::windows::gamelist::goto 1
+
+  update
+
   ::windows::gamelist::Refresh
   ::windows::switcher::Open
   wm state $w normal
+
+  bind $w <Configure> {::windows::gamelist::Configure %W }
 }
 
 proc ::windows::gamelist::Configure {window} {

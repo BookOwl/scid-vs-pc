@@ -2927,7 +2927,7 @@ namespace eval CorrespondenceChess {
 			if {[winfo exists .glistWin]} {
 				raise .glistWin
 			} else {
-				::windows::gamelist::Open
+				::windows::gamelist::OpenClose
 			}
 			set Title [::tr CCDlgDuplicateGame]
 			set Error [::tr CCDlgDuplicateGameError]

@@ -397,7 +397,7 @@ set helpMessage($m,[incr menuindex]) GameInfo
 $m add command -label GameBrowse -command {::gbrowser::new [sc_base current] [sc_game number]}
 set helpMessage($m,[incr menuindex]) GameBrowse
 
-$m add command -label GameList -command ::windows::gamelist::Open 
+$m add command -label GameList -command ::windows::gamelist::OpenClose 
 set helpMessage($m,[incr menuindex]) GameList
 
 $m add separator
@@ -611,7 +611,7 @@ bind . <Control-e> makeCommentWin
 set helpMessage($m,[incr menuindex]) WindowsComment
 
 $m  add checkbutton -label WindowsGList \
-    -variable ::windows::gamelist::isOpen -command ::windows::gamelist::Open  -accelerator "Ctrl+L"
+    -variable ::windows::gamelist::isOpen -command ::windows::gamelist::OpenClose  -accelerator "Ctrl+L"
 set helpMessage($m,[incr menuindex]) WindowsGList
 
 $m  add checkbutton -label WindowsPGN \
@@ -1679,8 +1679,8 @@ proc standardShortcuts {w} {
   bind $w <Control-KeyPress-U> ::search:::usefile
   bind $w <Control-e> makeCommentWin
   bind $w <Control-b> ::book::OpenClose
-  bind $w <Control-l> ::windows::gamelist::Open
-  bind $w <Control-d> ::windows::gamelist::Open
+  bind $w <Control-l> ::windows::gamelist::OpenClose
+  bind $w <Control-d> ::windows::gamelist::OpenClose
   bind $w <Control-p> ::pgn::OpenClose
   bind $w <Control-T> ::tourney::toggle
   bind $w <Control-P> ::plist::toggle

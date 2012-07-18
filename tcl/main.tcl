@@ -360,7 +360,7 @@ menu .gameInfo.menu -tearoff 0 -background gray90
 
 .gameInfo.menu add checkbutton -label PGN -variable pgnWin -command ::pgn::OpenClose
 .gameInfo.menu add checkbutton -label {Game List} \
-   -variable ::windows::gamelist::isOpen -command ::windows::gamelist::Open
+   -variable ::windows::gamelist::isOpen -command ::windows::gamelist::OpenClose
 
 .gameInfo.menu add separator
 

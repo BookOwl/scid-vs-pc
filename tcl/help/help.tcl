@@ -1530,7 +1530,7 @@ set helpText(Tmt) {<h1>The Tournament Finder window</h1>
 set helpTitle(GameList) "Game List window"
 set helpText(GameList) {<h1>The Game List</h1>
 
-  <p> The <run ::windows::gamelist::Open><green>Game List</green></run>
+  <p> The <run ::windows::gamelist::OpenClose><green>Game List</green></run>
 widget allows easy perusal of all filtered games in the
 currently open Database / PGN archive. At the bottom of the widget you'll also find
 the <a Bookmarks>Bookmark</a> icon and <a Switcher>Database Switcher</a>.
@@ -4196,7 +4196,7 @@ set helpText(Book) {<h1>Book Window</h1>
 <h2>Features</h2>
   <p>
   In Scid vs. PC, two books can be viewed at once. Normally, moves are listed in order
-  of frequency, but selecting the <b>Alphabetical</b> box will sort them, placing
+  of frequency, but selecting the <b>Alphabetical</b> box will sort them; placing
   like moves side-by-side.
   </p>
 <p>Scid also has an Opponent's Book. [todo ???] and <a BookTuning>Book Tuning</a> feature.</p>
@@ -5175,7 +5175,7 @@ set helpText(TacticsTrainer) {<h1>Mate in ..N.. Puzzles</h1>
   <p>
   Clicking the <term>Next</term> button allows the user to skip any
   puzzle, and individual exercises can be opened via the
-<run ::windows::gamelist::Open><green>Game List</green></run> widget.
+<run ::windows::gamelist::OpenClose><green>Game List</green></run> widget.
   </p>
   <p>
   Some exercises do not end in a mate, with the
