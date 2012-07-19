@@ -2856,6 +2856,10 @@ set helpText(Tourney) {<h1>Computer Tournament</h1>
   For UCI engines, it enables pondering, and sets Xboard engines to hard mode.
 </p>
 <p>
+  <b>Use book</b> gives UCI engines access to polyglot opening books, enabling a greater variety
+  of play. Book moves are selected in frequency according to their weight.
+</p>
+<p>
   Scid's GUI does use more resources than other tournament managers, so, for short time controlled games,
   it is good practice to disable engine logs, move animations, and to hide the clocks, gameinfo and pgn windows.
 </p>

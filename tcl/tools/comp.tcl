@@ -174,6 +174,34 @@ proc compInit {} {
   grid $w.config.start3label -row $row -column 0 -sticky w -padx 5 
   grid $w.config.start3button -row $row -column 1 -padx 5 
 
+  incr row
+  frame $w.config.book
+  label $w.config.book.label -textvar ::tr(UseBook) 
+  checkbutton $w.config.book.value -variable comp(usebook)
+  set bookPath $::scidBooksDir
+  set bookList [ lsort -dictionary [ glob -nocomplain -directory $bookPath *.bin ] ]
+  set tmp {}
+  ttk::combobox $w.config.book.combo -width 12
+  if { [llength $bookList] == 0 } {
+    $w.config.book.value configure -state disabled
+    set comp(usebook) 0
+  } else {
+    set i 0
+    set idx 0
+    foreach file  $bookList {
+      lappend tmp [file tail $file]
+      if { $comp(book) == [file tail $file]} {
+	set idx $i
+      }
+      incr i
+    }
+    $w.config.book.combo configure -values $tmp
+    $w.config.book.combo current $idx
+  }
+  grid $w.config.book -row $row -column 0 -columnspan 2 -sticky ew
+  pack $w.config.book.label -side left -padx 10
+  pack $w.config.book.combo $w.config.book.value -side right -padx 10
+
   ### OK, Cancel Buttons
 
   if {$::windowsOS} {
@@ -260,6 +288,7 @@ proc compOk {} {
   set names {}
   set comp(games) {}
   set comp(current) 0
+  set comp(book) [.comp.config.book.combo get]
 
   if {$comp(timecontrol) == "permove"} {
     set comp(time) [expr {int($comp(seconds) * 1000)}]
@@ -289,7 +318,7 @@ proc compOk {} {
     $w.engines.list.$i.combo configure -state disabled ; # disable widgets too
     $w.engines.list.$i.configure configure -state disabled 
   }
-  foreach j {.comp.config .comp.engines .comp.engines.top .comp.config.control .comp.config.timesecs .comp.config.timegame} {
+  foreach j {.comp.config .comp.engines .comp.engines.top .comp.config.control .comp.config.timesecs .comp.config.timegame .comp.config.book} {
     foreach i [winfo children $j] {
       catch {$i configure -state disabled}
     }
@@ -444,6 +473,7 @@ proc compNM {n m k} {
   set comp(white) $n
   set comp(fen) {}
   set incr [expr int($comp(incr) * 1000)]
+  set comp(inbook) $comp(usebook)
 
   if {[winfo exists .analysisWin$n]} "destroy .analysisWin$n"
   if {[winfo exists .analysisWin$m]} "destroy .analysisWin$m"
@@ -622,63 +652,63 @@ proc compNM {n m k} {
     set comp(move) $current_engine
     set comp(nextmove) $other_engine
     set lastmove [lindex $movehistory end]
+    set comp(bookmove) {}
 
     if {$::analysis(uci$current_engine)} {
       ### UCI main loop
+      if {$comp(inbook) && $comp(book) != ""} {
+	set comp(bookmove) [::book::getMove $comp(book) [sc_pos fen] $::sergame::bookSlot]
+        if {$comp(bookmove) == ""} {
+          set comp(inbook) 0
+        }
+      }
 
-set ::comp(bookmove) [ ::book::getMove Elo2400.bin [sc_pos fen] $::sergame::bookSlot]
+      if {$comp(bookmove) == ""} {
 
-if {$::comp(bookmove) != ""} {
+	### position
 
-  # set ::sergame::wentOutOfBook 1
-  puts "BOOKMOVE $::comp(bookmove)"
+	set hit 0
 
-} else {
-
-      ### position
-
-      set hit 0
-
-      if {$movehistory == {}} {
-	sendToEngine $current_engine "position $comp(startpos)"
-      } elseif {!$comp(ponder)} {
-	sendToEngine $current_engine "position $comp(startpos) moves $movehistory"
-      } else {
-        if {$uciInfo(ponder$current_engine) == $lastmove && $lastmove != {}} {
-	  sendToEngine $current_engine "ponderhit"
-          set hit 1
-        } else {
-          if {[llength $movehistory] > 1 && $uciInfo(ponder$current_engine) != {}} {
-	    sendToEngine $current_engine "stop"
-	    set uciInfo(bestmove$current_engine) stop
-          }
+	if {$movehistory == {}} {
+	  sendToEngine $current_engine "position $comp(startpos)"
+	} elseif {!$comp(ponder)} {
 	  sendToEngine $current_engine "position $comp(startpos) moves $movehistory"
-        }
+	} else {
+	  if {$uciInfo(ponder$current_engine) == $lastmove && $lastmove != {}} {
+	    sendToEngine $current_engine "ponderhit"
+	    set hit 1
+	  } else {
+	    if {[llength $movehistory] > 1 && $uciInfo(ponder$current_engine) != {}} {
+	      sendToEngine $current_engine "stop"
+	      set uciInfo(bestmove$current_engine) stop
+	    }
+	    sendToEngine $current_engine "position $comp(startpos) moves $movehistory"
+	  }
+	}
+
+	### go
+
+	if {$comp(timecontrol) == "permove"} {
+	  if {!$hit} {
+	    sendToEngine $current_engine "go movetime $comp(time)"
+	  }
+	} else {
+	  if {!$hit} {
+	    sendToEngine $current_engine "go wtime $comp(wtime) btime $comp(btime) winc $incr binc $incr"
+	  }
+	}
+
+	# set analysis(fen$current_engine) [sc_pos fen]
+	set analysis(maxmovenumber$current_engine) 0
+
+	set analysis(waitForBestMove$current_engine) 1
+	vwait analysis(waitForBestMove$current_engine)
       }
-
-      ### go
-
-      if {$comp(timecontrol) == "permove"} {
-        if {!$hit} {
-	  sendToEngine $current_engine "go movetime $comp(time)"
-        }
-      } else {
-	if {!$hit} {
-	  sendToEngine $current_engine "go wtime $comp(wtime) btime $comp(btime) winc $incr binc $incr"
-        }
-      }
-
-      # set analysis(fen$current_engine) [sc_pos fen]
-      set analysis(maxmovenumber$current_engine) 0
-
-      set analysis(waitForBestMove$current_engine) 1
-      vwait analysis(waitForBestMove$current_engine)
-}
 
       if {!$comp(playing)} {break}
+
     } else {
       ### Xboard main loop
-set ::comp(bookmove) {}
       # Setup times
 
       if {$comp(timecontrol) != "permove"} {
@@ -918,7 +948,7 @@ proc makeCompMove {current_engine} {
   if {$::comp(bookmove) != {}} {
     sc_move addSan $::comp(bookmove)
 
-    if { $::comp(animate) } {
+    if {$::comp(animate)} {
       updateBoard -pgn -animate
     } else {
       updateBoard -pgn 
