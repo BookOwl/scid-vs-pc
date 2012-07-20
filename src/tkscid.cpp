@@ -515,8 +515,10 @@ scid_InitTclTk (Tcl_Interp * ti)
         db->game = new Game;
         for (int u = 0; u < UNDO_MAX; u++)
           db->undoGame[u] = NULL;
-        db->maxundoIndex = -1;
+        db->undoMax = -1;
         db->undoIndex = -1;
+        db->undoCurrent = -1;
+        db->undoFull = false;
         db->gameNumber = -1;
         db->gameAltered = false;
         db->gfile = new GFile;
@@ -1488,8 +1490,10 @@ sc_base_close (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
     }
 
     // reset undo data
-    basePtr->maxundoIndex = -1;
+    basePtr->undoMax = -1;
     basePtr->undoIndex = -1;
+    basePtr->undoCurrent = -1;
+    basePtr->undoFull = false;
     for (int u = 0; u < UNDO_MAX; u++) {
       if ( basePtr->undoGame[u] != NULL ) {
         delete basePtr->undoGame[u];
@@ -6103,10 +6107,10 @@ sc_game (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
 	    g = db->game;
             // Save this game for later redo
 	    db->game = db->undoGame[db->undoIndex];
-	    db->gameAltered = true;
 	    db->undoGame[db->undoIndex] = g;
 
 	    db->undoIndex--;
+	    db->gameAltered = (db->undoIndex != db->undoCurrent) || db->undoFull ;
         }
         break;
 
@@ -6114,7 +6118,7 @@ sc_game (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
 
 	// Delete any undo checkpoints getting discarded
 	i = db->undoIndex + 1;
-	while (i <= db->maxundoIndex) {
+	while (i <= db->undoMax) {
 	      delete db->undoGame[i];
 	      db->undoGame[i] = NULL;
 	     i++;
@@ -6129,10 +6133,16 @@ sc_game (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
 		db->undoGame[i] = db->undoGame[i+1];
 	    }
 	    db->undoIndex = UNDO_MAX-1;
-	    db->maxundoIndex = UNDO_MAX-1;
+	    db->undoMax = UNDO_MAX-1;
+
+	    // decrement undoCurrent and check if full
+	    if (db->undoCurrent-- < -1) {
+	      db->undoFull = true;
+	      db->undoCurrent = -1;
+	    }
 	}
 
-	db->maxundoIndex = db->undoIndex;
+	db->undoMax = db->undoIndex;
 
 	g = new Game;
 	db->undoGame[db->undoIndex] = g;
@@ -6154,13 +6164,14 @@ sc_game (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
         break;
 
     case GAME_REDO:
-        if (db->undoIndex < db->maxundoIndex) {
+        if (db->undoIndex < db->undoMax) {
 	    db->undoIndex++;
             // swap current game and undoGame[db->undoIndex]
 	    g = db->undoGame[db->undoIndex];
 	    db->undoGame[db->undoIndex] = db->game;
 
-	    db->gameAltered = true; //g->GetAltered();
+	    // db->gameAltered = true; //g->GetAltered();
+	    db->gameAltered = (db->undoIndex != db->undoCurrent) || db->undoFull ;
 	    db->game = g;
         }
         break;
@@ -8610,6 +8621,7 @@ sc_savegame (Tcl_Interp * ti, Game * game, gameNumberT gnum, scidBaseT * base)
             base->duplicates = NULL;
         }
     }
+    base->undoCurrent = base->undoIndex;
     return OK;
 }
 
@@ -9668,8 +9680,10 @@ sc_game_tags_share (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv
 //    resets data used for undos (for example after loading another game)
 
 void sc_game_undo_reset() {
-  db->maxundoIndex = -1;
+  db->undoMax = -1;
   db->undoIndex = -1;
+  db->undoCurrent = -1;
+  db->undoFull = false;
   for (int i = 0 ; i < UNDO_MAX ; i++) {
     if (db->undoGame[i] != NULL) {
       delete db->undoGame[i];
