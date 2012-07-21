@@ -1406,11 +1406,14 @@ proc ::tree::mask::close {{parent .}} {
   array unset ::tree::mask::mask
   array set ::tree::mask::mask {}
   set ::tree::mask::maskFile ""
+  catch {
+    .searchmask.f2.text configure -state normal
+    .searchmask.f2.text delete 1.0 end
+    .searchmask.f2.text configure -state disabled
+  }
   ::tree::refresh
 }
-################################################################################
-#
-################################################################################
+
 proc ::tree::mask::save {} {
   if {$::tree::mask::maskFile == ""} {return}
   set f [ ::open $::tree::mask::maskFile w ]
@@ -1418,11 +1421,9 @@ proc ::tree::mask::save {} {
   ::close $f
   set ::tree::mask::dirty 0
 }
-################################################################################
-#
-################################################################################
-proc ::tree::mask::contextMenu {win move x y xc yc} {
 
+
+proc ::tree::mask::contextMenu {win move x y xc yc} {
   update idletasks
   
   set mctxt $win.ctxtMenu
@@ -2177,9 +2178,8 @@ proc ::tree::mask::populateDisplayMask { moves parent fen fenSeen posComment} {
   }
   
 }
-################################################################################
-#
-################################################################################
+
+
 proc ::tree::mask::searchMask { baseNumber } {
   
   set w .searchmask
@@ -2187,12 +2187,16 @@ proc ::tree::mask::searchMask { baseNumber } {
     raiseWin $w
     return
   }
+
   toplevel $w
   wm title $w [::tr SearchMask]
   frame $w.f1
   frame $w.f2
   pack $w.f1 -side top -fill both -expand 1 -padx 10 -pady 3
   pack $w.f2 -side top -fill both -expand 1 -padx 10 -pady 3
+  
+  ttk::button $w.f1.search -text [tr Search] -command "::tree::mask::perfomSearch $baseNumber"
+  grid $w.f1.search -column 0 -row 0 -rowspan 2 -padx 5
   
   # NAG selection
   checkbutton $w.f1.nagl -text [tr Nag] -variable ::tree::mask::searchMask_usenag
@@ -2202,8 +2206,8 @@ proc ::tree::mask::searchMask { baseNumber } {
   foreach nag [ list "!!" " !" "!?" "?!" " ?" "??" " ~" [::tr "None"]  ] {
     $w.f1.nagmenu add command -label $nag -command "set ::tree::mask::searchMask_nag $nag"
   }
-  grid $w.f1.nagl -column 0 -row 0 -pady 2
-  grid $w.f1.nag -column 0 -row 1 -padx 2
+  grid $w.f1.nagl -column 1 -row 0 -pady 2
+  grid $w.f1.nag  -column 1 -row 1 -padx 2
   
   # Markers 1 & 2
   foreach j { 0 1 } {
@@ -2217,8 +2221,8 @@ proc ::tree::mask::searchMask { baseNumber } {
       $w.f1.menum$j add command -label [ tr $e ] -image $i -compound left \
           -command "set ::tree::mask::searchMask_trm$j \"[tr $e ]\" ; set ::tree::mask::searchMask_m$j $i"
     }
-    grid $w.f1.ml$j -column [expr 1 + $j] -row 0 -pady 2
-    grid $w.f1.m$j -column [expr 1 + $j] -row 1 -padx 2
+    grid $w.f1.ml$j -column [expr 2 + $j] -row 0 -pady 2
+    grid $w.f1.m$j  -column [expr 2 + $j] -row 1 -padx 2
   }
   
   # Color
@@ -2231,28 +2235,25 @@ proc ::tree::mask::searchMask { baseNumber } {
     $w.f1.colormenu add command -label [ tr "${c}Mark" ] \
         -command "set ::tree::mask::searchMask_trcolor [ tr ${c}Mark ] ; set ::tree::mask::searchMask_color $c"
   }
-  grid $w.f1.colorl -column 3 -row 0 -pady 2
-  grid $w.f1.color -column 3 -row 1 -padx 2
+  grid $w.f1.colorl -column 4 -row 0 -pady 2
+  grid $w.f1.color  -column 4 -row 1 -padx 2
   
   # Move annotation
   checkbutton $w.f1.movecommentl -text "Move comment" -variable ::tree::mask::searchMask_usemovecomment
   entry $w.f1.movecomment -textvariable ::tree::mask::searchMask_movecomment -width 12
-  grid $w.f1.movecommentl -column 4 -row 0 -padx 2 -pady 2
-  grid $w.f1.movecomment -column 4 -row 1 -padx 2
+  grid $w.f1.movecommentl -column 5 -row 0 -padx 2 -pady 2
+  grid $w.f1.movecomment  -column 5 -row 1 -padx 2
   
   # Position annotation
   checkbutton $w.f1.poscommentl -text "Position comment" -variable ::tree::mask::searchMask_useposcomment
   entry $w.f1.poscomment -textvariable ::tree::mask::searchMask_poscomment -width 12
-  grid $w.f1.poscommentl -column 5 -row 0 -padx 2 -pady 2
-  grid $w.f1.poscomment -column 5 -row 1 -padx 2
-  
-  ttk::button $w.f1.search -text [tr "Search"] -command " ::tree::mask::perfomSearch $baseNumber "
-  grid $w.f1.search -column 6 -row 0 -rowspan 2 -padx 10
+  grid $w.f1.poscommentl -column 6 -row 0 -padx 2 -pady 2
+  grid $w.f1.poscomment  -column 6 -row 1 -padx 2
   
   # display search result
-  text $w.f2.text -yscrollcommand "$w.f2.ybar set" -height 50
+  text $w.f2.text -yscrollcommand "$w.f2.ybar set" -height 50 -font font_Fixed -wrap none
   scrollbar $w.f2.ybar -command "$w.f2.text yview"
-  pack $w.f2.ybar -side left -fill y
+  pack $w.f2.ybar -side right -fill y
   pack $w.f2.text -side left -fill both -expand yes
   
   setWinLocation $w
@@ -2263,12 +2264,12 @@ proc ::tree::mask::searchMask { baseNumber } {
   bind $w <Configure> "recordWinSize $w"
   bind $w <F1> {helpWindow TreeMasks}
 }
-################################################################################
-#
-################################################################################
+
 proc  ::tree::mask::perfomSearch  { baseNumber } {
   global ::tree::mask::mask
   set t .searchmask.f2.text
+  $t configure -state normal
+
   # contains the search result (FEN)
   set res {}
   
@@ -2287,7 +2288,7 @@ proc  ::tree::mask::perfomSearch  { baseNumber } {
     set poscomment [ lindex $mask($fen) 1 ]
     if { $::tree::mask::searchMask_useposcomment  } {
       if { [string match -nocase "*$::tree::mask::searchMask_poscomment*"  $poscomment] } {
-        lappend res "$fen [string map {"\n" ""} $poscomment]"
+	lappend res [format "%6s %-20s %s" {} [string range [string map {"\n" ""} $poscomment] 0 19] $fen]
         incr pos_count
       } else  {
         continue
@@ -2334,7 +2335,7 @@ proc  ::tree::mask::perfomSearch  { baseNumber } {
         }
       }
       
-      lappend res "$fen [::trans [lindex $m 0]] [string map {"\n" ""} $movecomment]"
+      lappend res [format "%6s %-20s %s" [::trans [lindex $m 0]] [string range [string map {"\n" ""} $movecomment] 0 19] $fen]
       incr move_count
     }
   }
@@ -2344,10 +2345,10 @@ proc  ::tree::mask::perfomSearch  { baseNumber } {
     $t insert end "$l\n"
   }
   wm title .searchmask "[::tr SearchMask] [::tr Positions] $pos_count / $pos_total - [::tr moves] $move_count / $move_total"
+  $t configure -state disabled
 }
-################################################################################
-#
-################################################################################
+
+
 proc  ::tree::mask::searchClick {x y win baseNumber} {
   set idx [ $win index @$x,$y ]
   if { [ scan $idx "%d.%d" l c ] != 2 } {
@@ -2355,12 +2356,11 @@ proc  ::tree::mask::searchClick {x y win baseNumber} {
     return
   }
   set elt [$win get $l.0 $l.end]
-  
-  if {[llength $elt] < 4} {
+  set fen [string range $elt 28 end]
+
+  if {[llength $fen] < 4} {
     return
   }
-  
-  set fen [ lrange $elt 0 3 ]
   
   # load the position in a temporary game (in clipbase), update the Trees then switch to Tree's base
   sc_base switch clipbase
@@ -2379,19 +2379,18 @@ proc  ::tree::mask::searchClick {x y win baseNumber} {
   sc_info preMoveCmd preMoveCommand
   
   sc_base switch $baseNumber
-  # ::file::SwitchToBase $baseNumber
-  if {[sc_filter first != 0]} {
-    ::game::Load [sc_filter first]
+
+  # load the first best game 
+  set game [lindex [sc_tree best $baseNumber 1 All] 0]
+  if {[string is integer -strict $game]} {
+    ::game::Load $game
   } else  {
     updateBoard -pgn
   }
   
-  # updateBoard -pgn
-  
 }
-################################################################################
-#
-################################################################################
+
+
 image create photo ::tree::mask::emptyImage -data {
 R0lGODlhEAAQAIAAAP///////yH5BAEKAAEALAAAAAAQABAAAAIOjI+py+0P
 o5y02ouzPgUAOw==
