@@ -2381,7 +2381,7 @@ proc  ::tree::mask::searchClick {x y win baseNumber} {
     ### Scid actually updates all trees here, but it seems unneeded. S.A
     sc_tree search -cancel all : # sc_tree search -cancel $baseNumber
     sc_tree search -hide $tree(training$baseNumber) -sort $tree(order$baseNumber) -base $baseNumber \
-      -fastmode $tree(fastmode$baseNumber) -adjust $tree(adjustfilter$baseNumber)
+      -fastmode $tree(fastmode$baseNumber) -adjust 1
 
     # updateBoard -pgn
   }
@@ -2391,8 +2391,16 @@ proc  ::tree::mask::searchClick {x y win baseNumber} {
   sc_base switch $baseNumber
 
   # load the first best game 
-  set game [lindex [sc_tree best $baseNumber 1 All] 0]
-  if {[string is integer -strict $game]} {
+  if {[sc_filter first != 0]} {
+    ::game::Load [sc_filter first]
+  } else  {
+    updateBoard -pgn
+  }
+
+  set game [sc_filter first]
+  # set game [lindex [sc_tree best $baseNumber 1 All] 0]
+  # if {[string is integer -strict $game]}
+  if {$game != 0} {
     ::game::Load $game
   } else  {
     updateBoard -pgn
