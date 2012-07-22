@@ -12,6 +12,12 @@ proc importPgnGame {} {
     raiseWin $w
     return
   }
+  set confirm [::game::ConfirmDiscard2]
+  if {$confirm == 2} { return }
+  if {$confirm == 0} {
+    sc_game save [sc_game number]
+  }
+  setTrialMode 0
 
   toplevel $w
   wm state $w withdrawn
@@ -63,13 +69,6 @@ proc importPgnGame {} {
   }
 
   dialogbutton $w.b.import -text "$::tr(Import)" -command {
-    set confirm [::game::ConfirmDiscard2]
-    if {$confirm == 2} { return }
-    if {$confirm == 0} {
-      sc_game save [sc_game number]
-    }
-    setTrialMode 0
-    sc_game new
 
     set err \
       [catch {sc_game import [.importWin.pane.edit.text get 0.0 end]} result]
