@@ -498,15 +498,13 @@ proc ::tree::dorefresh { baseNumber } {
 
   update
 
-  set base $baseNumber
-
   if { $tree(fastmode$baseNumber) == 0 } {
     set fastmode 0
   } else {
     set fastmode 1
   }
 
-  set moves [sc_tree search -hide $tree(training$baseNumber) -sort $tree(order$baseNumber) -base $base \
+  set moves [sc_tree search -hide $tree(training$baseNumber) -sort $tree(order$baseNumber) -base $baseNumber \
                             -fastmode $fastmode -adjust $tree(adjustfilter$baseNumber) ]
   # CVS: set moves [sc_tree search -hide $tree(training$baseNumber) -sort $tree(order$baseNumber) -base $base -fastmode $fastmode]
 
@@ -537,7 +535,7 @@ proc ::tree::dorefresh { baseNumber } {
   if { $tree(fastmode$baseNumber) == 2 } {
     ::tree::status "" $baseNumber
     sc_progressBar $w.progress bar 251 16
-    set moves [sc_tree search -hide $tree(training$baseNumber) -sort $tree(order$baseNumber) -base $base -fastmode 0]
+    set moves [sc_tree search -hide $tree(training$baseNumber) -sort $tree(order$baseNumber) -base $baseNumber -fastmode 0]
     ### todo: should we have "-adjust $tree(adjustfilter$baseNumber)"  here ?
 
     displayLines $baseNumber $moves
@@ -1407,9 +1405,9 @@ proc ::tree::mask::close {{parent .}} {
   array set ::tree::mask::mask {}
   set ::tree::mask::maskFile ""
   catch {
-    .searchmask.f2.text configure -state normal
-    .searchmask.f2.text delete 1.0 end
-    .searchmask.f2.text configure -state disabled
+    # We have to close searchmask too
+    # It's possibel to leave open, but if we switch to another DB, then open tree and performa a searchmask, it uses the wrong base.
+    destroy .searchmask
   }
   ::tree::refresh
 }
@@ -2081,9 +2079,8 @@ proc ::tree::mask::trimToFirstLine {s} {
   set s [ lindex [ split $s "\n" ] 0 ]
   return $s
 }
-################################################################################
-#
-################################################################################
+
+
 proc ::tree::mask::populateDisplayMask { moves parent fen fenSeen posComment} {
   global ::tree::mask::mask
   
@@ -2184,16 +2181,16 @@ proc ::tree::mask::searchMask { baseNumber } {
   
   set w .searchmask
   if { [winfo exists $w] } {
-    raiseWin $w
-    return
+    # in case we are trying to open two search masks for different trees, bets close the old one first
+    destroy $w
   }
 
   toplevel $w
   wm title $w [::tr SearchMask]
   frame $w.f1
   frame $w.f2
-  pack $w.f1 -side top -fill both -expand 1 -padx 10 -pady 3
-  pack $w.f2 -side top -fill both -expand 1 -padx 10 -pady 3
+  pack $w.f1 -side top -fill both -expand 0 -padx 5 -pady 3
+  pack $w.f2 -side top -fill both -expand 1 -padx 2 -pady 3
   
   ttk::button $w.f1.search -text [tr Search] -command "::tree::mask::perfomSearch $baseNumber"
   grid $w.f1.search -column 0 -row 0 -rowspan 2 -padx 5
@@ -2218,8 +2215,12 @@ proc ::tree::mask::searchMask { baseNumber } {
     set ::tree::mask::searchMask_m$j $::tree::mask::marker2image(Include)
     foreach e { Include Exclude MainLine Bookmark White Black NewLine ToBeVerified ToTrain Dubious ToRemove } {
       set i $::tree::mask::marker2image($e)
-      $w.f1.menum$j add command -label [ tr $e ] -image $i -compound left \
-          -command "set ::tree::mask::searchMask_trm$j \"[tr $e ]\" ; set ::tree::mask::searchMask_m$j $i"
+      $w.f1.menum$j add command -label [ tr $e ] -image $i -compound left -command "
+         set ::tree::mask::searchMask_trm$j \"[tr $e ]\"
+         set ::tree::mask::searchMask_m$j $i
+      "
+      # I don't think menubuttons can use image AND text at the same time
+      # $w.f1.m$j configure -image $i
     }
     grid $w.f1.ml$j -column [expr 2 + $j] -row 0 -pady 2
     grid $w.f1.m$j  -column [expr 2 + $j] -row 1 -padx 2
@@ -2251,16 +2252,18 @@ proc ::tree::mask::searchMask { baseNumber } {
   grid $w.f1.poscomment  -column 6 -row 1 -padx 2
   
   # display search result
-  text $w.f2.text -yscrollcommand "$w.f2.ybar set" -height 50 -font font_Fixed -wrap none
+  text $w.f2.text -yscrollcommand "$w.f2.ybar set" -xscrollcommand "$w.f2.xbar set" -height 20 -font font_Fixed -wrap none
   scrollbar $w.f2.ybar -command "$w.f2.text yview"
+  scrollbar $w.f2.xbar -command "$w.f2.text xview" -orient horizontal
   pack $w.f2.ybar -side right -fill y
+  pack $w.f2.xbar -side bottom -fill x
   pack $w.f2.text -side left -fill both -expand yes
-  
+
   setWinLocation $w
   setWinSize $w
   
   bind $w.f2.text <ButtonPress-1> " ::tree::mask::searchClick %x %y %W $baseNumber "
-  bind $w <Escape> { destroy  .searchmask }
+  bind $w <Escape> {destroy .searchmask}
   bind $w <Configure> "recordWinSize $w"
   bind $w <F1> {helpWindow TreeMasks}
 }
@@ -2350,6 +2353,8 @@ proc  ::tree::mask::perfomSearch  { baseNumber } {
 
 
 proc  ::tree::mask::searchClick {x y win baseNumber} {
+  global tree
+
   set idx [ $win index @$x,$y ]
   if { [ scan $idx "%d.%d" l c ] != 2 } {
     # should never happen
@@ -2371,13 +2376,18 @@ proc  ::tree::mask::searchClick {x y win baseNumber} {
     puts "sc_game startBoard $fen => $err"
   } else  {
     # TODO : call sc_search board maybe wiser ?
-    ::tree::refresh
+    # ::tree::refresh
+
+    ### Scid actually updates all trees here, but it seems unneeded. S.A
+    sc_tree search -cancel all : # sc_tree search -cancel $baseNumber
+    sc_tree search -hide $tree(training$baseNumber) -sort $tree(order$baseNumber) -base $baseNumber \
+      -fastmode $tree(fastmode$baseNumber) -adjust $tree(adjustfilter$baseNumber)
+
     # updateBoard -pgn
   }
   
   sc_game pop
   sc_info preMoveCmd preMoveCommand
-  
   sc_base switch $baseNumber
 
   # load the first best game 
