@@ -557,9 +557,10 @@ translate E TreeTitleRow \
   {    Move      Frequency    Score  AvElo Perf AvYear Draw ECO}
 translate E TreeTotal {TOTAL}
 translate E DoYouWantToSaveFirst {Do you want to save first}
-# todo : update with Mask translations from Scid
 translate E AddToMask {Add to Mask}
 translate E RemoveFromMask {Remove from Mask}
+translate E SearchMask {Search in Mask}
+translate E DisplayMask {Display Mask}
 translate E Nag {Nag code}
 translate E Marker {Marker}
 translate E Include {Include}

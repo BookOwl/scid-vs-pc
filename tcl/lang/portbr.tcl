@@ -562,60 +562,36 @@ translate B TreeBestGames {Melhores jogos da arvore}
 translate B TreeTitleRow \
   {    Move      Frequency    Score  AvElo Perf AvYear Draws ECO}
 translate B TreeTotal {TOTAL}
-# ====== TODO To be translated ======
-translate B DoYouWantToSaveFirst {Do you want to save first}
-# ====== TODO To be translated ======
-translate B AddToMask {Add to Mask}
-# ====== TODO To be translated ======
-translate B RemoveFromMask {Remove from Mask}
-# ====== TODO To be translated ======
-translate B Nag {Nag code}
-# ====== TODO To be translated ======
-translate B Marker {Marker}
-# ====== TODO To be translated ======
-translate B Include {Include}
-# ====== TODO To be translated ======
-translate B Exclude {Exclude}
-# ====== TODO To be translated ======
-translate B MainLine {Main line}
-# ====== TODO To be translated ======
-translate B Bookmark {Bookmark}
-# ====== TODO To be translated ======
-translate B NewLine {New line}
-# ====== TODO To be translated ======
-translate B ToBeVerified {To be verified}
-# ====== TODO To be translated ======
-translate B ToTrain {To train}
-# ====== TODO To be translated ======
-translate B Dubious {Dubious}
-# ====== TODO To be translated ======
-translate B ToRemove {To remove}
-# ====== TODO To be translated ======
-translate B NoMarker {No marker}
-# ====== TODO To be translated ======
-translate B ColorMarker {Color}
-# ====== TODO To be translated ======
-translate B WhiteMark {White}
-# ====== TODO To be translated ======
-translate B GreenMark {Green}
-# ====== TODO To be translated ======
-translate B YellowMark {Yellow}
-# ====== TODO To be translated ======
-translate B BlueMark {Blue}
-# ====== TODO To be translated ======
-translate B RedMark {Red}
-# ====== TODO To be translated ======
-translate B CommentMove {Comment move}
-# ====== TODO To be translated ======
-translate B CommentPosition {Comment position}
-# ====== TODO To be translated ======
-translate B AddMoveToMaskFirst {Add move to mask first}
-# ====== TODO To be translated ======
-translate B OpenAMaskFileFirst {Open a mask file first}
-# ====== TODO To be translated ======
-translate B Positions {Positions}
-# ====== TODO To be translated ======
-translate B Moves {Moves}
+translate B DoYouWantToSaveFirst {Quer salvar primeiro?}
+translate B AddToMask {Adicionar à máscara}
+translate B RemoveFromMask {Remover da máscara}
+translate B AddThisMoveToMask {Adicionar este movimento à máscara}
+translate B SearchMask {Pesquisar na máscara}
+translate B DisplayMask {Mostrar máscara}
+translate B Nag {Código Nag}
+translate B Marker {Marcador}
+translate B Include {Incluir}
+translate B Exclude {Excluir}
+translate B MainLine {Linha Principal}
+translate B Bookmark {Marcador}
+translate B NewLine {Nova Linha}
+translate B ToBeVerified {Verificar}
+translate B ToTrain {Para treinar}
+translate B Dubious {Duvidoso}
+translate B ToRemove {Para remover}
+translate B NoMarker {Sem marcador}
+translate B ColorMarker {Cor}
+translate B WhiteMark {Branca}
+translate B GreenMark {Verde}
+translate B YellowMark {Amarela}
+translate B BlueMark {Azul}
+translate B RedMark {Vermelha}
+translate B CommentMove {Comentar movimento}
+translate B CommentPosition {Comentar posição}
+translate B AddMoveToMaskFirst {Adicionar movimento à máscara primeiro}
+translate B OpenAMaskFileFirst {Abrir uma máscara primeiro}
+translate B Positions {Posições}
+translate B Moves {Movimentos}
 
 # Finder window:
 menuText B FinderFile "Arquivo" 0

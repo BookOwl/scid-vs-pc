@@ -528,6 +528,8 @@ translate W TreeTotal {TOTALT}
 translate W DoYouWantToSaveFirst {Vill du spara först}
 translate W AddToMask {Lägg till i Sökmask}
 translate W RemoveFromMask {Ta bort från Sökmask}
+translate W SearchMask {Sök i sökmask}
+translate W DisplayMask {Visa sökmask}
 translate W Nag {NAG-kod}
 translate W Marker {Markera}
 translate W Include {Inkludera}

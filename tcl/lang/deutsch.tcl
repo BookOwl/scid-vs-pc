@@ -558,6 +558,8 @@ translate D TreeTotal {SUMME}
 translate D DoYouWantToSaveFirst {Soll zuerst gespeichert werden}
 translate D AddToMask {Addiere zu Maske}
 translate D RemoveFromMask {Entferne von Maske}
+translate D SearchMask {Suche in einer Maske}
+translate D DisplayMask {Maske als Zugbaum}
 translate D Nag {NAG Code}
 translate D Marker {Marker}
 translate D Include {Einbezogene Variante}

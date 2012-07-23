@@ -610,6 +610,10 @@ translate R AddToMask {Add to Mask}
 # ====== TODO To be translated ======
 translate R RemoveFromMask {Remove from Mask}
 # ====== TODO To be translated ======
+translate R SearchMask {Search in Mask}
+# ====== TODO To be translated ======
+translate R DisplayMask {Display Mask}
+# ====== TODO To be translated ======
 translate R Nag {Nag code}
 # ====== TODO To be translated ======
 translate R Marker {Marker}

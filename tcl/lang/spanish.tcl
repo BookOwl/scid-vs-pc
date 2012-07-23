@@ -565,6 +565,8 @@ translate S TreeTotal {TOTAL}
 translate S DoYouWantToSaveFirst {Quieres salvar primero}
 translate S AddToMask {Añadir a máscara}
 translate S RemoveFromMask {Elimina desde la máscara}
+translate S AddThisMoveToMask {Añadir este movimiento a la Máscara}
+translate S SearchMask {Buscar en máscara}
 translate S Nag {Código de regaño}
 translate S Marker {Marcador}
 translate S Include {Incluir}

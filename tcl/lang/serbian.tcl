@@ -606,6 +606,10 @@ translate Y AddToMask {Add to Mask}
 # ====== TODO To be translated ======
 translate Y RemoveFromMask {Remove from Mask}
 # ====== TODO To be translated ======
+translate Y SearchMask {Search in Mask}
+# ====== TODO To be translated ======
+translate Y DisplayMask {Display Mask}
+# ====== TODO To be translated ======
 translate Y Nag {Nag code}
 # ====== TODO To be translated ======
 translate Y Marker {Marker}

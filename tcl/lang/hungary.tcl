@@ -562,60 +562,38 @@ translate H TreeBestGames {A fa legjobb játszmái}
 translate H TreeTitleRow \
   {    Lépés     Gyakoriság  Eredm. ÁtlÉlõ Telj. Átl.év ECO}
 translate H TreeTotal {ÖSSZESEN}
+translate H DoYouWantToSaveFirst {Akarod elõbb menteni?}
+translate H AddToMask {Add hozzá a maszkhoz}
+translate H RemoveFromMask {Vedd ki a maszkból}
+translate H AddThisMoveToMask {Add hozzá ezt a lépést a maszkhoz}
 # ====== TODO To be translated ======
-translate H DoYouWantToSaveFirst {Do you want to save first}
+translate H SearchMask {Search in Mask}
 # ====== TODO To be translated ======
-translate H AddToMask {Add to Mask}
-# ====== TODO To be translated ======
-translate H RemoveFromMask {Remove from Mask}
-# ====== TODO To be translated ======
-translate H Nag {Nag code}
-# ====== TODO To be translated ======
-translate H Marker {Marker}
-# ====== TODO To be translated ======
-translate H Include {Include}
-# ====== TODO To be translated ======
-translate H Exclude {Exclude}
-# ====== TODO To be translated ======
-translate H MainLine {Main line}
-# ====== TODO To be translated ======
-translate H Bookmark {Bookmark}
-# ====== TODO To be translated ======
-translate H NewLine {New line}
-# ====== TODO To be translated ======
-translate H ToBeVerified {To be verified}
-# ====== TODO To be translated ======
-translate H ToTrain {To train}
-# ====== TODO To be translated ======
-translate H Dubious {Dubious}
-# ====== TODO To be translated ======
-translate H ToRemove {To remove}
-# ====== TODO To be translated ======
-translate H NoMarker {No marker}
-# ====== TODO To be translated ======
-translate H ColorMarker {Color}
-# ====== TODO To be translated ======
-translate H WhiteMark {White}
-# ====== TODO To be translated ======
-translate H GreenMark {Green}
-# ====== TODO To be translated ======
-translate H YellowMark {Yellow}
-# ====== TODO To be translated ======
-translate H BlueMark {Blue}
-# ====== TODO To be translated ======
-translate H RedMark {Red}
-# ====== TODO To be translated ======
-translate H CommentMove {Comment move}
-# ====== TODO To be translated ======
-translate H CommentPosition {Comment position}
-# ====== TODO To be translated ======
-translate H AddMoveToMaskFirst {Add move to mask first}
-# ====== TODO To be translated ======
-translate H OpenAMaskFileFirst {Open a mask file first}
-# ====== TODO To be translated ======
-translate H Positions {Positions}
-# ====== TODO To be translated ======
-translate H Moves {Moves}
+translate H DisplayMask {Display Mask}
+translate H Nag {NAG-kód}
+translate H Marker {Jelölés}
+translate H Include {Belevesz}
+translate H Exclude {Kizár}
+translate H MainLine {Fõváltozat}
+translate H Bookmark {Könyvjelzõ}
+translate H NewLine {Soremelés}
+translate H ToBeVerified {Ellenõrizni kell}
+translate H ToTrain {Gyakorolni kell}
+translate H Dubious {Kétes}
+translate H ToRemove {Törölni kell}
+translate H NoMarker {Nincs jelölés}
+translate H ColorMarker {Szín}
+translate H WhiteMark {Fehér}
+translate H GreenMark {Zöld}
+translate H YellowMark {Sárga}
+translate H BlueMark {Kék}
+translate H RedMark {Piros}
+translate H CommentMove {Lépés kommentálása}
+translate H CommentPosition {Állás kommentálása}
+translate H AddMoveToMaskFirst {Elõbb add hozzá a lépést a maszkhoz}
+translate H OpenAMaskFileFirst {Elõbb nyiss meg egy maszkfájlt}
+translate H Positions {Állások}
+translate H Moves {Lépések}
 
 # Finder window:
 menuText H FinderFile "Fájl" 0

@@ -1406,8 +1406,10 @@ proc ::tree::mask::close {{parent .}} {
   set ::tree::mask::maskFile ""
   catch {
     # We have to close searchmask too
-    # It's possibel to leave open, but if we switch to another DB, then open tree and performa a searchmask, it uses the wrong base.
+    # It's possible to leave open, but if we switch to another DB, then open tree and performa a searchmask, it uses the wrong base.
     destroy .searchmask
+    destroy .displaymask
+    destroy .treeMaskAddComment
   }
   ::tree::refresh
 }
@@ -1839,9 +1841,8 @@ proc ::tree::mask::addComment { { move "" } {parent .} } {
   pack  $w.ok -side bottom
   focus $w.f.e
 }
-################################################################################
-#
-################################################################################
+
+
 proc ::tree::mask::updateComment { { move "" } } {
   set e .treeMaskAddComment.f.e
   set newComment [$e get 1.0 end]
@@ -2181,12 +2182,13 @@ proc ::tree::mask::searchMask { baseNumber } {
   
   set w .searchmask
   if { [winfo exists $w] } {
-    # in case we are trying to open two search masks for different trees, bets close the old one first
+    # in case we are trying to open two search masks for different trees, best close the old one first
     destroy $w
   }
 
   toplevel $w
-  wm title $w [::tr SearchMask]
+  wm title $w "[::tr SearchMask] \[[file tail [sc_base filename $baseNumber]]\]"
+
   frame $w.f1
   frame $w.f2
   pack $w.f1 -side top -fill both -expand 0 -padx 5 -pady 3
@@ -2347,7 +2349,8 @@ proc  ::tree::mask::perfomSearch  { baseNumber } {
   foreach l $res {
     $t insert end "$l\n"
   }
-  wm title .searchmask "[::tr SearchMask] [::tr Positions] $pos_count / $pos_total - [::tr moves] $move_count / $move_total"
+  wm title .searchmask "[::tr SearchMask] \[[file tail [sc_base filename $baseNumber]]\] [::tr Positions] $pos_count/$pos_total - [::tr moves] $move_count/$move_total"
+
   $t configure -state disabled
 }
 
@@ -2375,11 +2378,10 @@ proc  ::tree::mask::searchClick {x y win baseNumber} {
   if {[catch {sc_game startBoard $fen} err]} {
     puts "sc_game startBoard $fen => $err"
   } else  {
-    # TODO : call sc_search board maybe wiser ?
-    # ::tree::refresh
+    # todo - call sc_search board maybe wiser ?
+    # was  ::tree::refresh
 
-    ### Scid actually updates all trees here, but it seems unneeded. S.A
-    sc_tree search -cancel all : # sc_tree search -cancel $baseNumber
+    sc_tree search -cancel all
     sc_tree search -hide $tree(training$baseNumber) -sort $tree(order$baseNumber) -base $baseNumber \
       -fastmode $tree(fastmode$baseNumber) -adjust 1
 

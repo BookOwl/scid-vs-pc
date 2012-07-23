@@ -560,6 +560,10 @@ translate I AddToMask {Add to Mask}
 # ====== TODO To be translated ======
 translate I RemoveFromMask {Remove from Mask}
 # ====== TODO To be translated ======
+translate I SearchMask {Search in Mask}
+# ====== TODO To be translated ======
+translate I DisplayMask {Display Mask}
+# ====== TODO To be translated ======
 translate I Nag {Nag code}
 # ====== TODO To be translated ======
 translate I Marker {Marker}

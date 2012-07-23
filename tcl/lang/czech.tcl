@@ -557,60 +557,36 @@ translate C TreeBestGames {Nejlep¹í partie stromu}
 translate C TreeTitleRow \
   {    Tah       Frekvence    Skóre  PrElo Perf  PrRok remíz ECO}
 translate C TreeTotal {CELKEM}
-# ====== TODO To be translated ======
-translate C DoYouWantToSaveFirst {Do you want to save first}
-# ====== TODO To be translated ======
-translate C AddToMask {Add to Mask}
-# ====== TODO To be translated ======
-translate C RemoveFromMask {Remove from Mask}
-# ====== TODO To be translated ======
-translate C Nag {Nag code}
-# ====== TODO To be translated ======
-translate C Marker {Marker}
-# ====== TODO To be translated ======
-translate C Include {Include}
-# ====== TODO To be translated ======
-translate C Exclude {Exclude}
-# ====== TODO To be translated ======
-translate C MainLine {Main line}
-# ====== TODO To be translated ======
-translate C Bookmark {Bookmark}
-# ====== TODO To be translated ======
-translate C NewLine {New line}
-# ====== TODO To be translated ======
-translate C ToBeVerified {To be verified}
-# ====== TODO To be translated ======
-translate C ToTrain {To train}
-# ====== TODO To be translated ======
-translate C Dubious {Dubious}
-# ====== TODO To be translated ======
-translate C ToRemove {To remove}
-# ====== TODO To be translated ======
-translate C NoMarker {No marker}
-# ====== TODO To be translated ======
-translate C ColorMarker {Color}
-# ====== TODO To be translated ======
-translate C WhiteMark {White}
-# ====== TODO To be translated ======
-translate C GreenMark {Green}
-# ====== TODO To be translated ======
-translate C YellowMark {Yellow}
-# ====== TODO To be translated ======
-translate C BlueMark {Blue}
-# ====== TODO To be translated ======
-translate C RedMark {Red}
-# ====== TODO To be translated ======
-translate C CommentMove {Comment move}
-# ====== TODO To be translated ======
-translate C CommentPosition {Comment position}
-# ====== TODO To be translated ======
-translate C AddMoveToMaskFirst {Add move to mask first}
-# ====== TODO To be translated ======
-translate C OpenAMaskFileFirst {Open a mask file first}
-# ====== TODO To be translated ======
-translate C Positions {Positions}
-# ====== TODO To be translated ======
-translate C Moves {Moves}
+translate C DoYouWantToSaveFirst {Chcete nejprve ulo¾it}
+translate C AddToMask {Pøidat do masky}
+translate C RemoveFromMask {Odstranit z masky}
+translate C AddThisMoveToMask {Pøidat tento tah do masky}
+translate C SearchMask {Hledat v masce}
+translate C DisplayMask {Zobrazit masku}
+translate C Nag {Nag kód}
+translate C Marker {Znaèka}
+translate C Include {Zahrnout}
+translate C Exclude {Vylouèit}
+translate C MainLine {Hlavní varianta}
+translate C Bookmark {Zálo¾ka}
+translate C NewLine {Nová varianta}
+translate C ToBeVerified {K provìøení}
+translate C ToTrain {Trénovat}
+translate C Dubious {Pochybné}
+translate C ToRemove {Odstranit}
+translate C NoMarker {®ádná znaèka}
+translate C ColorMarker {Barva}
+translate C WhiteMark {Bílá}
+translate C GreenMark {Zelená}
+translate C YellowMark {®lutá}
+translate C BlueMark {Modrá}
+translate C RedMark {Èervená}
+translate C CommentMove {Okomentovat tah}
+translate C CommentPosition {Okomentovat pozici}
+translate C AddMoveToMaskFirst {Nejprve pøidejte tah do masky}
+translate C OpenAMaskFileFirst {Nejprve otevøete soubor masky}
+translate C Positions {Pozice}
+translate C Moves {Tahy}
 
 # Finder window:
 menuText C FinderFile "Soubor" 0

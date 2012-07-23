@@ -606,6 +606,10 @@ translate O AddToMask {Add to Mask}
 # ====== TODO To be translated ======
 translate O RemoveFromMask {Remove from Mask}
 # ====== TODO To be translated ======
+translate O SearchMask {Search in Mask}
+# ====== TODO To be translated ======
+translate O DisplayMask {Display Mask}
+# ====== TODO To be translated ======
 translate O Nag {Nag code}
 # ====== TODO To be translated ======
 translate O Marker {Marker}

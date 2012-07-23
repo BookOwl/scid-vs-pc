@@ -534,6 +534,10 @@ translate P TreeTotal {RAZEM}
 translate P DoYouWantToSaveFirst {Zapisaæ najpierw}
 translate P AddToMask {Dodaj do maski}
 translate P RemoveFromMask {Usuñ z maski}
+# ====== TODO To be translated ======
+translate P SearchMask {Search in Mask}
+# ====== TODO To be translated ======
+translate P DisplayMask {Display Mask}
 translate P Nag {Kod NAG}
 translate P Marker {Znacznik}
 translate P Include {Do³±cz}
