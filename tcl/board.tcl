@@ -686,16 +686,16 @@ button .tb.bsearch -image tb_bsearch -command ::search::board
 button .tb.hsearch -image tb_hsearch -command ::search::header
 button .tb.msearch -image tb_msearch -command ::search::material
 frame .tb.space4 -width 12
-button .tb.glist -image tb_glist -command ::windows::gamelist::OpenClose
-button .tb.pgn -image tb_pgn -command ::pgn::OpenClose
-button .tb.tmt -image tb_tmt -command ::tourney::toggle
-button .tb.comment -image tb_comment -command makeCommentWin
-button .tb.maint -image tb_maint -command ::maint::OpenClose
-button .tb.eco -image tb_eco -command ::windows::eco::OpenClose
-button .tb.tree -image tb_tree -command ::tree::make
-button .tb.book -image tb_book -command ::book::OpenClose
-button .tb.crosst -image tb_crosst -command ::crosstab::OpenClose
-button .tb.engine -image tb_engine -command {startAnalysisWin F2 force}
+button .tb.glist   -image tb_glist   -command {::windows::gamelist::OpenClose 1}
+button .tb.pgn     -image tb_pgn     -command {::pgn::OpenClose 1}
+button .tb.tmt     -image tb_tmt     -command ::tourney::Open
+button .tb.comment -image tb_comment -command ::commenteditor::Open
+button .tb.maint   -image tb_maint   -command {::maint::OpenClose 1}
+button .tb.eco     -image tb_eco     -command {::windows::eco::OpenClose 1}
+button .tb.tree    -image tb_tree    -command {::tree::OpenClose 1}
+button .tb.book    -image tb_book    -command {::book::OpenClose 1}
+button .tb.crosst  -image tb_crosst  -command ::crosstab::Open
+button .tb.engine  -image tb_engine  -command {makeAnalysisWin -1}
 
 # Set toolbar help status messages:
 foreach {b m} {

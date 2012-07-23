@@ -6,9 +6,15 @@ set ::windows::eco::code ""
 set ::windows::eco::count 0
 set ::windows::eco::isOpen 0
 
-proc ::windows::eco::OpenClose {} {
-  if {[winfo exists .ecograph]} {
-    destroy .ecograph
+proc ::windows::eco::OpenClose {{openonly 0}} {
+  set w .ecograph
+
+  if {[winfo exists $w]} {
+    if {$openonly} {
+      raiseWin $w
+    } else {
+      destroy $w
+    }
   } else {
     ::windows::eco::Refresh
   }
@@ -22,6 +28,7 @@ proc ::windows::eco::OpenClose {} {
 #
 proc ::windows::eco::Refresh {{code "x"}} {
   set w .ecograph
+
   set graph $w.pane.graph
   set text $w.pane.text
   if {$code != "x"} { set ::windows::eco::code $code }

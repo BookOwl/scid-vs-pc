@@ -91,16 +91,19 @@ array set maintFlags {
 
 set maintWin 0
 
-# ::maint::OpenClose
-#
-#   Creates the database maintenance window.
-#
-proc ::maint::OpenClose {} {
+###   Database Maintenance window.
+
+proc ::maint::OpenClose {{openonly 0}} {
   global maintWin maintFlag maintFlags maintFlaglist
   set w .maintWin
+
   if {[winfo exists $w]} {
-    destroy $w
-    set maintWin 0
+    if {$openonly} {
+      raiseWin $w
+    } else {
+      destroy $w
+      set maintWin 0
+    }
     return
   }
   set maintWin 1

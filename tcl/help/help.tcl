@@ -1960,7 +1960,7 @@ Simlilar and more powerful features are available in the <a TreeMasks>Tree Masks
 set helpTitle(Tree) "Tree Window"
 set helpText(Tree) {<h1>Tree Window</h1>
   <p>
-  The <run ::tree::make><green>Tree Window</green></run> is an powerful Scid
+  The <run ::tree::OpenClose><green>Tree Window</green></run> is an powerful Scid
   feature. It shows the success rates of moves from the current
   position; in the form of statistics, and a tri-coloured graph representing
   white-wins, draws, and black-wins.

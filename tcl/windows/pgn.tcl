@@ -70,17 +70,20 @@ namespace eval pgn {
     }
     return [string map $substUnicode $str]
   }
-  ################################################################################
-  #
-  ################################################################################
-  proc OpenClose {} {
+
+
+  proc OpenClose {{openonly 0}} {
     global pgnWin pgnHeight pgnWidth pgnColor
     set w .pgnWin
 
     if {[winfo exists $w]} {
-      focus .
-      destroy $w
-      set pgnWin 0
+      if {$openonly} {
+	raiseWin $w
+      } else {
+	focus .
+	destroy $w
+	set pgnWin 0
+      }
       return
     }
     toplevel $w

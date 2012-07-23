@@ -51,23 +51,26 @@ proc ::tree::treeFileSave {base} {
   unbusyCursor .
 }
 
-proc ::tree::make { { baseNumber -1 } } {
+proc ::tree::OpenClose {{openonly 0}} {
   global tree helpMessage
 
-  if {$baseNumber == -1} {set baseNumber [sc_base current]}
+  set baseNumber [sc_base current]
+  set w .treeWin$baseNumber
 
-  if {[winfo exists .treeWin$baseNumber]} {
-    ::tree::closeTree $baseNumber
+  if {[winfo exists $w]} {
+    if {$openonly} {
+      raiseWin $w
+    } else {
+      ::tree::closeTree $baseNumber
+    }
     return
   }
 
-  set w .treeWin$baseNumber
   toplevel $w
   setWinLocation $w
   setWinSize $w
 
   wm title $w "[tr Tree] \[[file tail [sc_base filename $baseNumber]]\]"
-  set ::treeWin$baseNumber 1
   set tree(training$baseNumber) 0
   set tree(autorefresh$baseNumber) 1
   set tree(locked$baseNumber) 0
@@ -82,7 +85,6 @@ proc ::tree::make { { baseNumber -1 } } {
 
   bind $w <Destroy> "
     bind $w <Destroy> {}
-    set ::treeWin$baseNumber 0
     set tree(locked$baseNumber) 0 "
   bind $w <F1> {helpWindow Tree}
   bind $w <Escape> "$w.buttons.close invoke"
@@ -483,7 +485,7 @@ proc ::tree::refresh {{ baseNumber {} }} {
 
 proc ::tree::dorefresh { baseNumber } {
 
-  global tree treeWin glstart
+  global tree glstart
   set w .treeWin$baseNumber
 
   if { ! $tree(autorefresh$baseNumber) } { return }

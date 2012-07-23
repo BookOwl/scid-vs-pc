@@ -1742,14 +1742,14 @@ after idle [namespace code {RegisterDropEvents .gameInfo}]
 
 # Init start-up windows
 foreach {type action} {
-  switcher	::windows::switcher::Open
-  pgn		::pgn::OpenClose
-  gamelist	::windows::gamelist::OpenClose
-  tree		::tree::make
-  stats		::windows::stats::Open
-  crosstable	::crosstab::Open
-  finder	::file::finder::Open
-  book		::book::OpenClose
+  switcher   ::windows::switcher::Open
+  pgn        ::pgn::OpenClose
+  gamelist   ::windows::gamelist::OpenClose
+  tree       ::tree::OpenClose
+  stats      ::windows::stats::Open
+  crosstable ::crosstab::Open
+  finder     ::file::finder::Open
+  book       ::book::OpenClose
 } {
   if {$startup($type)} { $action }
 }

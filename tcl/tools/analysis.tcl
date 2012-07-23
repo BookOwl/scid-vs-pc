@@ -1913,52 +1913,38 @@ proc logEngineNote {n text} {
 # What a fucking mess this is. S.A.
 # Horrible hopeless design decisions meaning this code hasnt been touched since
 # - Sorry Shane ;> (mostly fixed now)
+# Hmmm ... Pascal's new features/hacks were the cuplrit
 
-proc startAnalysisWin { FunctionKey  {force {}}} {
+proc startAnalysisWin {FunctionKey} {
   global engines
-
-  if {$engines($FunctionKey) != {}} {
-    makeAnalysisWin $engines($FunctionKey)
-  } else {
-    if {$force != {}} {
-      # User pressed the engine toolbar. Should do something
-      makeAnalysisWin 0
-    }
-  }
+  set n $engines($FunctionKey)
+  if {$n != {}} {
+    makeAnalysisWin $n
+  } 
 }
 
-
-# Dock/undock Engine1 in statusbar
-proc toggleMini {} {
-
-  global analysisWin1 analysis
-
-  if {![winfo exists .analysisWin1]} { return }
-
-  set analysis(mini) [expr !$analysis(mini)]
-
-  if {$analysis(mini)} {
-    # make window small
-    wm state .analysisWin1 withdrawn
-    update
-    set analysis(priority1) idle ; # nice priority
-  } else {
-    # make window big
-    wm state .analysisWin1 normal
-    updateStatusBar
-    update
-    .analysisWin1.hist.text yview moveto 1
-    set analysis(priority1) normal ; # normal priority
-  }
-  setAnalysisPriority 1
-}
-
-### makeAnalysisWin: toggle analysis engine n
+### toggle analysis engine n
 
 proc makeAnalysisWin {{n 0} {settime 0}} {
   global analysisWin$n font_Analysis analysisCommand analysis annotateButton annotateEngine
 
   set w .analysisWin$n
+
+  if {$n == -1} {
+    ### Make sure an engine is opened (called by toolbar)
+    ### Try F2 , then engine 0
+    set n $::engines(F2)
+    if {$n == {}} {
+      set n 0
+    }
+    set w .analysisWin$n
+
+    if {[winfo exists $w]} {
+      raiseWin $w
+      return
+    } 
+  }
+
 
   if {[winfo exists $w]} {
     ### Stop engine and exit
@@ -2262,6 +2248,32 @@ proc makeAnalysisWin {{n 0} {settime 0}} {
     setAnalysisPriority $n
   }
   bind $w <Configure> "recordWinSize $w"
+}
+
+### Dock/undock Engine1 in statusbar
+
+proc toggleMini {} {
+
+  global analysisWin1 analysis
+
+  if {![winfo exists .analysisWin1]} { return }
+
+  set analysis(mini) [expr !$analysis(mini)]
+
+  if {$analysis(mini)} {
+    # make window small
+    wm state .analysisWin1 withdrawn
+    update
+    set analysis(priority1) idle ; # nice priority
+  } else {
+    # make window big
+    wm state .analysisWin1 normal
+    updateStatusBar
+    update
+    .analysisWin1.hist.text yview moveto 1
+    set analysis(priority1) normal ; # normal priority
+  }
+  setAnalysisPriority 1
 }
 
 ### Add move from first analysis n (or first analysis window, if any)

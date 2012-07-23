@@ -500,7 +500,7 @@ proc ::file::SwitchToNextBase {{dir 1}} {
   SwitchToBase $b
 }
 
-################################################################################
+
 proc ::file::openBaseAsTree { { fName "" } } {
   set oldbase [sc_base current]
 
@@ -573,7 +573,7 @@ proc ::file::openBaseAsTree { { fName "" } } {
   unbusyCursor .
 
   set current [sc_base current]
-  ::tree::make $current
+  ::tree::OpenClose
   set ::tree(locked$current) 1
 
   ::file::SwitchToBase $oldbase

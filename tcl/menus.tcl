@@ -651,7 +651,8 @@ bind . <Control-i> ::windows::stats::Open
 set helpMessage($m,[incr menuindex]) WindowsStats
 
 $m add checkbutton -label WindowsTree \
-    -variable treeWin -command ::tree::make -accelerator "Ctrl+T"
+    -variable treeWin -command ::tree::OpenClose -accelerator "Ctrl+T"
+# 'treeWin' is only used above, and is not very accurate because multiple trees can be open
 bind . <Control-t> { .menu.windows invoke [tr WindowsTree] }
 set helpMessage($m,[incr menuindex]) WindowsTree
 
@@ -1685,7 +1686,7 @@ proc standardShortcuts {w} {
   bind $w <Control-T> ::tourney::toggle
   bind $w <Control-P> ::plist::toggle
   bind $w <Control-i> ::windows::stats::Open
-  bind $w <Control-t> ::tree::make
+  bind $w <Control-t> ::tree::OpenClose
   bind $w <Control-A> ::enginelist::choose
   bind $w <Control-X> ::crosstab::OpenClose
   bind $w <Control-E> ::tools::email
