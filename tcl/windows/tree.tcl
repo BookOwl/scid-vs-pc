@@ -51,18 +51,14 @@ proc ::tree::treeFileSave {base} {
   unbusyCursor .
 }
 
-proc ::tree::OpenClose {{openonly 0}} {
+proc ::tree::OpenClose {} {
   global tree helpMessage
 
   set baseNumber [sc_base current]
   set w .treeWin$baseNumber
 
   if {[winfo exists $w]} {
-    if {$openonly} {
-      raiseWin $w
-    } else {
-      ::tree::closeTree $baseNumber
-    }
+    ::tree::closeTree $baseNumber
     return
   }
 

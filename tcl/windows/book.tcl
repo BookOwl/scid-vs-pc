@@ -101,18 +101,14 @@ namespace eval book {
   #  Open a window to select book and display book moves
   # arg name : gm2600.bin for example
   ################################################################################
-  proc OpenClose {{openonly 0}} {
+  proc OpenClose {} {
     global ::book::bookList ::book::bookPath ::book::currentBook1 ::book::currentBook2 ::book::isOpen ::book::lastBook1 ::book::lastBook2
 
     set w .bookWin
 
     if {[winfo exists $w]} {
-      if {$openonly} {
-        raiseWin $w
-      } else {
-	destroy $w
-	set ::book::isOpen 0
-      }
+      destroy $w
+      set ::book::isOpen 0
       return
     }
 

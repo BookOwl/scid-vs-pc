@@ -1938,11 +1938,6 @@ proc makeAnalysisWin {{n 0} {settime 0}} {
       set n 0
     }
     set w .analysisWin$n
-
-    if {[winfo exists $w]} {
-      raiseWin $w
-      return
-    } 
   }
 
 

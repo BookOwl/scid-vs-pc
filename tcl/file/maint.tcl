@@ -93,17 +93,13 @@ set maintWin 0
 
 ###   Database Maintenance window.
 
-proc ::maint::OpenClose {{openonly 0}} {
+proc ::maint::OpenClose {} {
   global maintWin maintFlag maintFlags maintFlaglist
   set w .maintWin
 
   if {[winfo exists $w]} {
-    if {$openonly} {
-      raiseWin $w
-    } else {
-      destroy $w
-      set maintWin 0
-    }
+    destroy $w
+    set maintWin 0
     return
   }
   set maintWin 1

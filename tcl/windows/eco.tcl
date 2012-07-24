@@ -6,15 +6,11 @@ set ::windows::eco::code ""
 set ::windows::eco::count 0
 set ::windows::eco::isOpen 0
 
-proc ::windows::eco::OpenClose {{openonly 0}} {
+proc ::windows::eco::OpenClose {} {
   set w .ecograph
 
   if {[winfo exists $w]} {
-    if {$openonly} {
-      raiseWin $w
-    } else {
-      destroy $w
-    }
+    destroy $w
   } else {
     ::windows::eco::Refresh
   }

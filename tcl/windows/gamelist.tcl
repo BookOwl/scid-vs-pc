@@ -222,7 +222,7 @@ proc ::windows::gamelist::Close {} {
   recordWidths
 }
 
-proc ::windows::gamelist::OpenClose {{openonly 0}} {
+proc ::windows::gamelist::OpenClose {} {
 
   ### ttk::style theme use alt
   # default classic alt clam
@@ -234,12 +234,8 @@ proc ::windows::gamelist::OpenClose {{openonly 0}} {
   set w .glistWin
 
   if {[winfo exists .glistWin]} {
-    if {$openonly} {
-      raiseWin $w
-    } else {
-      set ::windows::gamelist::isOpen 0
-      destroy $w
-    }
+    set ::windows::gamelist::isOpen 0
+    destroy $w
     return
   }
 

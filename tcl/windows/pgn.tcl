@@ -72,18 +72,14 @@ namespace eval pgn {
   }
 
 
-  proc OpenClose {{openonly 0}} {
+  proc OpenClose {} {
     global pgnWin pgnHeight pgnWidth pgnColor
     set w .pgnWin
 
     if {[winfo exists $w]} {
-      if {$openonly} {
-	raiseWin $w
-      } else {
-	focus .
-	destroy $w
-	set pgnWin 0
-      }
+      focus .
+      destroy $w
+      set pgnWin 0
       return
     }
     toplevel $w
