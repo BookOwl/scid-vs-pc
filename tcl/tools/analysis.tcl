@@ -2953,6 +2953,10 @@ proc updateAnalysisText {n} {
     set moves $analysis(moves$n)
   }
 
+  if {$moves == {}} {
+    return
+  }
+
   set h .analysisWin$n.hist.text
 
   $h configure -state normal
@@ -2965,7 +2969,7 @@ proc updateAnalysisText {n} {
 
   # Skip update if no change in movelist since last analysis (and no MultiPV)
 
-  if {($analysis(lastHistory$n) != $moves || $analysis(multiPVCount$n) != 1)} {
+  if {$analysis(lastHistory$n) != $moves || $analysis(multiPVCount$n) != 1} {
 
     set analysis(lastHistory$n) $moves
     set line {}
@@ -3027,7 +3031,7 @@ proc updateAnalysisText {n} {
     }
 
   } else {
-}
+  }
 
   $h configure -state disabled
   set analysis(prevdepth$n) $analysis(depth$n)
