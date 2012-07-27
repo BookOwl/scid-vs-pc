@@ -1026,6 +1026,11 @@ proc okAnnotation {n} {
     puts stderr "Scid: initAnnotation reports engine $annotateEngine already annotating"
     return
   }
+  if {$::isBatch && [sc_base isReadOnly]} {
+    set answer [tk_messageBox -title Tournanment -icon question -type okcancel \
+        -message "Database is read only, and batch annotations can't be saved.\n\nContinue ?" -parent .configAnnotation]
+    if {$answer != "ok"} {return}
+  }
   set ::useAnalysisBookName [.configAnnotation.usebook.comboBooks get]
   set ::wentOutOfBook 0
   set ::book::lastBook1 $::useAnalysisBookName
