@@ -603,7 +603,10 @@ proc ::windows::gamelist::checkAltered {} {
     return
   }
   if {[sc_game number] == 0} {
-    $w tag remove current
+    catch {
+      # wish <= 8.5.8 doesnt have treeview tag remove
+      $w tag remove current
+    }
   }
   if {[sc_game altered]} {
     $w tag configure current -foreground red

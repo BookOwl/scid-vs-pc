@@ -1444,8 +1444,12 @@ proc ::board::colorSquare {w i {color {}}} {
   set yc [lindex $midpoint 1]
   $w.bd delete br$i
   $w.bd create image $xc $yc -image $boc -tag br$i
-  # otherwise clicking 3 times on an empty square will prevent the binding to work
-  $w.bd lower br$i p$i
+
+  # wish 8.5.12 throws error if belowthis tag doesnt exist
+  catch {
+    # otherwise clicking 3 times on an empty square will prevent the binding to work
+    $w.bd lower br$i p$i
+  }
 
   set piece [string index $::board::_data($w) $i]
   if { $piece != "." } {
