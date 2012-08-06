@@ -67,11 +67,11 @@ id="contact_">, and has been extensively tested with the Million Base and ICOfY 
 <label id="download_">
 <sect> download <p>
 
-source <url url="https://sourceforge.net/project/downloading.php?group_id=263836&amp;filename=scid_vs_pc-4.7.tgz" name="scid_vs_pc-4.7.tgz">
+source <url url="https://sourceforge.net/project/downloading.php?group_id=263836&amp;filename=scid_vs_pc-4.8.tgz" name="scid_vs_pc-4.8.tgz">
 
-windows <url url="http://sourceforge.net/projects/scidvspc/files/windows/Scid%20vs%20PC-4.7.exe/download" name="Scid vs PC-4.7.exe">
+windows <url url="http://sourceforge.net/projects/scidvspc/files/windows/Scid%20vs%20PC-4.8.exe/download" name="Scid vs PC-4.8.exe">
 
-mac <url url="http://sourceforge.net/projects/scidvspc/files/mac/ScidvsMac-4.7.dmg/download" name="ScidvsMac-4.7.dmg">
+mac <url url="http://sourceforge.net/projects/scidvspc/files/mac/ScidvsMac-4.8.dmg/download" name="ScidvsMac-4.8.dmg">
 
 <url url="https://sourceforge.net/project/showfiles.php?group_id=263836" name="browse files">
 
@@ -91,8 +91,8 @@ To enable support for extra chess pieces (such as Berlin), you may need to insta
 <url name="TkImg" url="https://sourceforge.net/project/downloading.php?group_id=263836&amp;filename=tkimg1.3.tar.bz2">.  
 Then, installing from source:
 <code>
-tar -xzf scid_vs_pc-4.7.tgz
-cd scid_vs_pc-4.7
+tar -xzf scid_vs_pc-4.8.tgz
+cd scid_vs_pc-4.8
 configure
 make install
 scid
@@ -113,7 +113,7 @@ over from old versions to make upgrading easier.
 
 <sect2> Mac OSX <p>
 
-The <ref name="ScidvsMac-4.7 app" id="download_"> should include everything you need. Simply drag and drop the App into /Applications (or similar).
+The <ref name="ScidvsMac-4.8 app" id="download_"> should include everything you need. Simply drag and drop the App into /Applications (or similar).
 
 <em>Users upgrading may have to remove (or edit) <bf>$HOME/.scidvspc/config/engines.dat</bf>
 to properly configure the chess engines.</em>
@@ -182,11 +182,9 @@ files in the downloads section. My project is fairly modest fork of Scid
 <descrip>
 
 <tag/Playing against the Computer/
-The main Computer vs. Player feature is accessed from <bf>Play->Tactical
-Game</bf>.  Here you'll find the option to start a new game (or Fischer
-Chess game), against a flexible computer opponent whose skill you can
-select.  Skill levels vary between 1200 (a bright teenager with some
-experience), to 2200 (a National Master).
+The main Computer vs. Player feature is accessed from <bf>Play->Computer</bf>. Here
+you'll find options to play against Phalanx (a flexible computer opponent whose
+skill you can select), or any installed UCI engine.
 
 <tag/Playing on the Internet/
 Playing on the Internet is done via the the
@@ -289,6 +287,76 @@ Cramer from Germany, and many are looking forward to it's first release.</p>
 
 <label id="changes_">
 <sect> changes <p>
+
+<sect2> Scid vs. PC 4.8 <p>
+<itemize>
+<item>Drag and Drop file open(s) on Windows and Unix 
+<item>Custom background images (jpegs, gifs and pngs) 
+<item>Random sort pgn feature. 
+<item>Crosstable now have +/-/= subtotals 
+<item>(and Player Stats format changed from +/=/- to +/-/=). 
+<item>General PGN search has ignore case option 
+<item>Board Search gets it's combobox updated when DBs are opened and closed. 
+<item>Save game before PGN Import 
+<item>Save game: enable the use of 'prev game tags' for existing games. This allows easy addition of the same tags to consecutive existing games. 
+<item>Remove the 'Scid: ' prefix from several window titles 
+<item>Update some translations 
+<item>Show Linux version/distro in the startup window. 
+<item>Add a patch to make toolbar buttons raise only (instead of toggle open/shut) 
+<item>Add a patch for Chess960 support (from Ben Hague). Unfinished 
+ 
+<newline><newline>
+ Analysis  
+<item>UCI: properly handle UCI buttons. Previously they were invoked at every engine restart. 
+<item>Right clicking 'Add Var' button adds Engine Score comment only. 
+<item>Replace ponder on/off with hard/easy for xboard engines 
+<item>Super quick engine infos can happen before Scid's PV is inited properly. So we have to default to PV = 1 
+<item>Allow xboard engines to use lowercase 'b' for bishop promotion (eg a7b8b) 
+<item>Don't send an erroneous 'isready' (with 'uci') to quiet analysis engines 
+<item>Right clicking the widget allows to disable line wrapping 
+<item>Don't add a line to analysis history if moves are null 
+ 
+<newline><newline>
+ Tree  
+<item>Move ECO stats to the end of line. 
+<item>Several Mask refinements - notably Searches are much more readable and previously clicking on searched lines didn't work 
+<item>Fix up minor bugs about castling moves (OO, O-O, O-O-O) 
+ 
+<newline><newline>
+ Computer Tournament  
+<item>Computer Tournament Book feature 
+<item>Dont' kill tournament if engine crashes. 
+<item>Only pack the first 10 engine combos (which allows for big tournaments) 
+<item>Fix up Xboard time/move command order. Xboard engines should behave much better. 
+<item>Various other tweaks 
+ 
+<newline><newline>
+ Gamelist  
+<item>Show altered games in red. 
+<item>Control-wheelmouse scrolls up/down one page. 
+<item>Switcher now has text on two lines (if icons are shown). 
+ 
+<newline><newline>
+ FICS  
+<item>Digital clocks now (optionally) on the main board 
+<item>Better integration of FICS "examine" and "observe" features 
+<item>FICS has it's own options menu 
+<item>bind F9 to xtell instead of tell. 
+<item>Change the move.wav sound from tick-tock to a short click. 
+ 
+<newline><newline>
+ OS X  
+<item>Filter graph bugfix 
+<item>Material Search properly shows the little buttons 
+<item>Copy and Paste text from disabled OSX text widgets (engines, help, gameinfo) 
+<item>Buttons 2 and 3 are swapped around 
+ 
+<newline><newline>
+ General Bugs  
+<item>Work arounds for wish 8.5.12 and 8.5.8 issues 
+<item>Analysis logs can badly break autoscroll, so use normal frames and scrollbars. 
+<item>Handle PGN parsing of unspecified promotions (b8 becomes b8=Q , for eg). 
+</itemize>
 
 <sect2> Scid vs. PC 4.7 <p>
 <itemize>

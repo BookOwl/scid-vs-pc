@@ -115,11 +115,11 @@ and bug-fix fork of Scid.  The project is maintained by
 
 
 <P>source 
-<A HREF="https://sourceforge.net/project/downloading.php?group_id=263836&amp;filename=scid_vs_pc-4.7.tgz">scid_vs_pc-4.7.tgz</A></P>
+<A HREF="https://sourceforge.net/project/downloading.php?group_id=263836&amp;filename=scid_vs_pc-4.8.tgz">scid_vs_pc-4.8.tgz</A></P>
 <P>windows 
-<A HREF="http://sourceforge.net/projects/scidvspc/files/windows/Scid%20vs%20PC-4.7.exe/download">Scid vs PC-4.7.exe</A></P>
+<A HREF="http://sourceforge.net/projects/scidvspc/files/windows/Scid%20vs%20PC-4.8.exe/download">Scid vs PC-4.8.exe</A></P>
 <P>mac 
-<A HREF="http://sourceforge.net/projects/scidvspc/files/mac/ScidvsMac-4.7.dmg/download">ScidvsMac-4.7.dmg</A></P>
+<A HREF="http://sourceforge.net/projects/scidvspc/files/mac/ScidvsMac-4.8.dmg/download">ScidvsMac-4.8.dmg</A></P>
 <P>
 <A HREF="https://sourceforge.net/project/showfiles.php?group_id=263836">browse files</A></P>
 <P><EM>The latest code is available from subversion - </EM> <B>svn co https://scidvspc.svn.sourceforge.net/svnroot/scidvspc</B></P>
@@ -141,8 +141,8 @@ To enable support for extra chess pieces (such as Berlin), you may need to insta
 Then, installing from source:
 <HR>
 <PRE>
-tar -xzf scid_vs_pc-4.7.tgz
-cd scid_vs_pc-4.7
+tar -xzf scid_vs_pc-4.8.tgz
+cd scid_vs_pc-4.8
 configure
 make install
 scid
@@ -164,7 +164,7 @@ over from old versions to make upgrading easier.</P>
 
 
 <P>The 
-<A HREF="#download_">ScidvsMac-4.7 app</A> should include everything you need. Simply drag and drop the App into /Applications (or similar).</P>
+<A HREF="#download_">ScidvsMac-4.8 app</A> should include everything you need. Simply drag and drop the App into /Applications (or similar).</P>
 <P><EM>Users upgrading may have to remove (or edit) <B>$HOME/.scidvspc/config/engines.dat</B>
 to properly configure the chess engines.</EM></P>
 <P>To compile from source - once you have XCode installed - please read <B>ScidvsMac-HowTo.rtfd</B> in the source tarball.</P>
@@ -216,11 +216,9 @@ files in the downloads section. My project is fairly modest fork of Scid
 <DL>
 
 <DT><B>Playing against the Computer</B><DD>
-<P>The main Computer vs. Player feature is accessed from <B>Play->Tactical
-Game</B>.  Here you'll find the option to start a new game (or Fischer
-Chess game), against a flexible computer opponent whose skill you can
-select.  Skill levels vary between 1200 (a bright teenager with some
-experience), to 2200 (a National Master).</P>
+<P>The main Computer vs. Player feature is accessed from <B>Play->Computer</B>. Here
+you'll find options to play against Phalanx (a flexible computer opponent whose
+skill you can select), or any installed UCI engine.</P>
 
 <DT><B>Playing on the Internet</B><DD>
 <P>Playing on the Internet is done via the the
@@ -336,6 +334,72 @@ Cramer from Germany, and many are looking forward to it's first release.</P>
 <H2><A NAME="s7">7.</A> <A HREF="#toc7">changes </A></H2>
 
 
+<P>
+<H3>Scid vs. PC 4.8 </H3>
+
+<P>
+<UL>
+<LI>Drag and Drop file open(s) on Windows and Unix </LI>
+<LI>Custom background images (jpegs, gifs and pngs) </LI>
+<LI>Random sort pgn feature. </LI>
+<LI>Crosstable now have +/-/= subtotals </LI>
+<LI>(and Player Stats format changed from +/=/- to +/-/=). </LI>
+<LI>General PGN search has ignore case option </LI>
+<LI>Board Search gets it's combobox updated when DBs are opened and closed. </LI>
+<LI>Save game before PGN Import </LI>
+<LI>Save game: enable the use of 'prev game tags' for existing games. This allows easy addition of the same tags to consecutive existing games. </LI>
+<LI>Remove the 'Scid: ' prefix from several window titles </LI>
+<LI>Update some translations </LI>
+<LI>Show Linux version/distro in the startup window. </LI>
+<LI>Add a patch to make toolbar buttons raise only (instead of toggle open/shut) </LI>
+<LI>Add a patch for Chess960 support (from Ben Hague). Unfinished 
+ <BR><BR>
+Analysis  </LI>
+<LI>UCI: properly handle UCI buttons. Previously they were invoked at every engine restart. </LI>
+<LI>Right clicking 'Add Var' button adds Engine Score comment only. </LI>
+<LI>Replace ponder on/off with hard/easy for xboard engines </LI>
+<LI>Super quick engine infos can happen before Scid's PV is inited properly. So we have to default to PV = 1 </LI>
+<LI>Allow xboard engines to use lowercase 'b' for bishop promotion (eg a7b8b) </LI>
+<LI>Don't send an erroneous 'isready' (with 'uci') to quiet analysis engines </LI>
+<LI>Right clicking the widget allows to disable line wrapping </LI>
+<LI>Don't add a line to analysis history if moves are null 
+ <BR><BR>
+Tree  </LI>
+<LI>Move ECO stats to the end of line. </LI>
+<LI>Several Mask refinements - notably Searches are much more readable and previously clicking on searched lines didn't work </LI>
+<LI>Fix up minor bugs about castling moves (OO, O-O, O-O-O) 
+ <BR><BR>
+Computer Tournament  </LI>
+<LI>Computer Tournament Book feature </LI>
+<LI>Dont' kill tournament if engine crashes. </LI>
+<LI>Only pack the first 10 engine combos (which allows for big tournaments) </LI>
+<LI>Fix up Xboard time/move command order. Xboard engines should behave much better. </LI>
+<LI>Various other tweaks 
+ <BR><BR>
+Gamelist  </LI>
+<LI>Show altered games in red. </LI>
+<LI>Control-wheelmouse scrolls up/down one page. </LI>
+<LI>Switcher now has text on two lines (if icons are shown). 
+ <BR><BR>
+FICS  </LI>
+<LI>Digital clocks now (optionally) on the main board </LI>
+<LI>Better integration of FICS "examine" and "observe" features </LI>
+<LI>FICS has it's own options menu </LI>
+<LI>bind F9 to xtell instead of tell. </LI>
+<LI>Change the move.wav sound from tick-tock to a short click. 
+ <BR><BR>
+OS X  </LI>
+<LI>Filter graph bugfix </LI>
+<LI>Material Search properly shows the little buttons </LI>
+<LI>Copy and Paste text from disabled OSX text widgets (engines, help, gameinfo) </LI>
+<LI>Buttons 2 and 3 are swapped around 
+ <BR><BR>
+General Bugs  </LI>
+<LI>Work arounds for wish 8.5.12 and 8.5.8 issues </LI>
+<LI>Analysis logs can badly break autoscroll, so use normal frames and scrollbars. </LI>
+<LI>Handle PGN parsing of unspecified promotions (b8 becomes b8=Q , for eg). </LI>
+</UL>
+</P>
 <P>
 <H3>Scid vs. PC 4.7 </H3>
 
@@ -933,6 +997,7 @@ Fics (which really gets stuffed up). Mouse wheel bindings remain.</LI>
 </P>
 <P>
 <A NAME="contact_"></A> </P>
+</P>
 </P>
 </P>
 </P>

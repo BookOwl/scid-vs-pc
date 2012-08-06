@@ -5702,6 +5702,91 @@ set helpText(Sound) {<h1>Sound</h1>
 set helpTitle(Changelog) "Scid vs PC Changelog"
 set helpText(Changelog) {<h1>Scid vs. PC</h1>
 
+<h4>4.8 (August 12, 2012)</h4>
+<b>General</b>
+<ul>
+<li>Drag and Drop file open(s) on Windows and Unix</li>
+<li>Custom background images (jpegs, gifs and pngs)</li>
+<li>Random sort pgn feature.</li>
+<li>Crosstable now have +/-/= subtotals</li>
+<li>(and Player Stats format changed from +/=/- to +/-/=).</li>
+<li>General PGN search has ignore case option</li>
+<li>Board Search gets it's combobox updated when DBs are opened and closed.</li>
+<li>Save game before PGN Import</li>
+<li>Save game: enable the use of 'prev game tags' for existing games. This allows easy addition of the same tags to consecutive existing games.</li>
+<li>Remove the 'Scid: ' prefix from several window titles</li>
+<li>Update some translations</li>
+<li>Show Linux version/distro in the startup window.</li>
+<li>Add a patch to make toolbar buttons raise only (instead of toggle open/shut)</li>
+<li>Add a patch for Chess960 support (from Ben Hague). Unfinished</li>
+</ul>
+
+<br>
+<b>Analysis</b>
+<ul>
+<li>UCI: properly handle UCI buttons. Previously they were invoked at every engine restart.</li>
+<li>Right clicking 'Add Var' button adds Engine Score comment only.</li>
+<li>Replace ponder on/off with hard/easy for xboard engines</li>
+<li>Super quick engine infos can happen before Scid's PV is inited properly. So we have to default to PV = 1</li>
+<li>Allow xboard engines to use lowercase 'b' for bishop promotion (eg a7b8b)</li>
+<li>Don't send an erroneous 'isready' (with 'uci') to quiet analysis engines</li>
+<li>Right clicking the widget allows to disable line wrapping</li>
+<li>Don't add a line to analysis history if moves are null</li>
+</ul>
+
+<br>
+<b>Tree</b>
+<ul>
+<li>Move ECO stats to the end of line.</li>
+<li>Several Mask refinements - notably Searches are much more readable and previously clicking on searched lines didn't work</li>
+<li>Fix up minor bugs about castling moves (OO, O-O, O-O-O)</li>
+</ul>
+
+<br>
+<b>Computer Tournament</b>
+<ul>
+<li>Computer Tournament Book feature</li>
+<li>Dont' kill tournament if engine crashes.</li>
+<li>Only pack the first 10 engine combos (which allows for big tournaments)</li>
+<li>Fix up Xboard time/move command order. Xboard engines should behave much better.</li>
+<li>Various other tweaks</li>
+</ul>
+
+<br>
+<b>Gamelist</b>
+<ul>
+<li>Show altered games in red.</li>
+<li>Control-wheelmouse scrolls up/down one page.</li>
+<li>Switcher now has text on two lines (if icons are shown).</li>
+</ul>
+
+<br>
+<b>FICS</b>
+<ul>
+<li>Digital clocks now (optionally) on the main board</li>
+<li>Better integration of FICS "examine" and "observe" features</li>
+<li>FICS has it's own options menu</li>
+<li>bind F9 to xtell instead of tell.</li>
+<li>Change the move.wav sound from tick-tock to a short click.</li>
+</ul>
+
+<br>
+<b>OS X</b>
+<ul>
+<li>Filter graph bugfix</li>
+<li>Material Search properly shows the little buttons</li>
+<li>Copy and Paste text from disabled OSX text widgets (engines, help, gameinfo)</li>
+<li>Buttons 2 and 3 are swapped around</li>
+</ul>
+
+<br>
+<b>General Bugs</b>
+<ul>
+<li>Work arounds for wish 8.5.12 and 8.5.8 issues</li>
+<li>Analysis logs can badly break autoscroll, so use normal frames and scrollbars.</li>
+<li>Handle PGN parsing of unspecified promotions (b8 becomes b8=Q , for eg).</li>
+</ul>
+
 <h4>4.7 (January 20, 2012)</h4>
 <ul>
 <li>Tree: Add coloured bar-graphs representing win/draw/loss (and remove the old tree graph)</li>

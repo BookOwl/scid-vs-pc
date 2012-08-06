@@ -25,25 +25,26 @@
      6.5 scid's history
 
   7. changes
-        7..1 Scid vs. PC 4.7
-        7..2 Scid vs. PC 4.6
-        7..3 Scid vs. PC 4.5
-        7..4 Scid vs. PC 4.4.1
-        7..5 Scid vs. PC 4.4
-        7..6 Scid vs. PC 4.3
-        7..7 Scid vs. PC 4.2
-        7..8 Scid vs. PC 4.1
-        7..9 Scid vs. PC 4.0
-        7..10 Scid vs. PC 3.6.26.9
-        7..11 Scid vs. PC 3.6.26.8
-        7..12 Scid vs. PC 3.6.26.7
-        7..13 Scid vs. PC 3.6.26.6
-        7..14 Scid vs. PC 3.6.26.5
-        7..15 Scid vs. PC 3.6.26.4
-        7..16 Scid vs. PC 3.6.26.3
-        7..17 Scid vs. PC 3.6.26.2
-        7..18 Scid vs. PC 3.6.26.1
-        7..19 todo
+        7..1 Scid vs. PC 4.8
+        7..2 Scid vs. PC 4.7
+        7..3 Scid vs. PC 4.6
+        7..4 Scid vs. PC 4.5
+        7..5 Scid vs. PC 4.4.1
+        7..6 Scid vs. PC 4.4
+        7..7 Scid vs. PC 4.3
+        7..8 Scid vs. PC 4.2
+        7..9 Scid vs. PC 4.1
+        7..10 Scid vs. PC 4.0
+        7..11 Scid vs. PC 3.6.26.9
+        7..12 Scid vs. PC 3.6.26.8
+        7..13 Scid vs. PC 3.6.26.7
+        7..14 Scid vs. PC 3.6.26.6
+        7..15 Scid vs. PC 3.6.26.5
+        7..16 Scid vs. PC 3.6.26.4
+        7..17 Scid vs. PC 3.6.26.3
+        7..18 Scid vs. PC 3.6.26.2
+        7..19 Scid vs. PC 3.6.26.1
+        7..20 todo
 
   8. contact
   9. documentation
@@ -119,15 +120,13 @@
 
   3.  download
 
-  source scid_vs_pc-4.7.tgz
-  <https://sourceforge.net/project/downloading.php?group_id=263836&filename=scid_vs_pc-4.7.tgz>
+  source scid_vs_pc-4.8.tgz
+  <https://sourceforge.net/project/downloading.php?group_id=263836&filename=scid_vs_pc-4.8.tgz>
+  windows Scid vs PC-4.8.exe
+  <http://sourceforge.net/projects/scidvspc/files/windows/Scid%20vs%20PC-4.8.exe/download>
 
-
-  windows Scid vs PC-4.7.exe
-  <http://sourceforge.net/projects/scidvspc/files/windows/Scid%20vs%20PC-4.7.exe/download>
-
-  mac ScidvsMac-4.7.dmg
-  <http://sourceforge.net/projects/scidvspc/files/mac/ScidvsMac-4.7.dmg/download>
+  mac ScidvsMac-4.8.dmg
+  <http://sourceforge.net/projects/scidvspc/files/mac/ScidvsMac-4.8.dmg/download>
 
   browse files
   <https://sourceforge.net/project/showfiles.php?group_id=263836>
@@ -150,8 +149,8 @@
   Then, installing from source:
 
   ______________________________________________________________________
-  tar -xzf scid_vs_pc-4.7.tgz
-  cd scid_vs_pc-4.7
+  tar -xzf scid_vs_pc-4.8.tgz
+  cd scid_vs_pc-4.8
   configure
   make install
   scid
@@ -176,7 +175,7 @@
 
   4.0.3.  Mac OSX
 
-  The ``ScidvsMac-4.7 app'' should include everything you need. Simply
+  The ``ScidvsMac-4.8 app'' should include everything you need. Simply
   drag and drop the App into /Applications (or similar).
 
   Users upgrading may have to remove (or edit)
@@ -260,11 +259,9 @@
 
      Playing against the Computer
         The main Computer vs. Player feature is accessed from
-        Play->Tactical Game. Here you'll find the option to start a new
-        game (or Fischer Chess game), against a flexible computer
-        opponent whose skill you can select. Skill levels vary between
-        1200 (a bright teenager with some experience), to 2200 (a
-        National Master).
+        Play->Computer. Here you'll find options to play against Phalanx
+        (a flexible computer opponent whose skill you can select), or
+        any installed UCI engine.
 
      Playing on the Internet
         Playing on the Internet is done via the the Play->Internet menu
@@ -321,7 +318,6 @@
 
   For Gilles and Dorothy for OSX packages, Jiri Pavlovsky for the
   windows installer, and all Scid vs. PC testers.
-
   Sourceforge.net <http://sourceforge.net> for their great hosting,
 
   Pascal Georges for his many technical contributions.
@@ -385,15 +381,139 @@
   made to rewrite Scid, including Chessbase support. This project is
   Scidb, by Gregor Cramer from Germany, and many are looking forward to
   it's first release.
+
+
   7.  changes
 
-  7.0.1.  Scid vs. PC 4.7
+  7.0.1.  Scid vs. PC 4.8
+
+
+  o  Drag and Drop file open(s) on Windows and Unix
+
+  o  Custom background images (jpegs, gifs and pngs)
+
+  o  Random sort pgn feature.
+
+  o  Crosstable now have +/-/= subtotals
+
+  o  (and Player Stats format changed from +/=/- to +/-/=).
+
+  o  General PGN search has ignore case option
+
+  o  Board Search gets it's combobox updated when DBs are opened and
+     closed.
+
+  o  Save game before PGN Import
+
+  o  Save game: enable the use of 'prev game tags' for existing games.
+     This allows easy addition of the same tags to consecutive existing
+     games.
+
+  o  Remove the 'Scid: ' prefix from several window titles
+
+  o  Update some translations
+
+  o  Show Linux version/distro in the startup window.
+
+  o  Add a patch to make toolbar buttons raise only (instead of toggle
+     open/shut)
+
+  o  Add a patch for Chess960 support (from Ben Hague). Unfinished
+
+     Analysis
+
+  o  UCI: properly handle UCI buttons. Previously they were invoked at
+     every engine restart.
+
+  o  Right clicking 'Add Var' button adds Engine Score comment only.
+
+  o  Replace ponder on/off with hard/easy for xboard engines
+
+  o  Super quick engine infos can happen before Scid's PV is inited
+     properly. So we have to default to PV = 1
+
+  o  Allow xboard engines to use lowercase 'b' for bishop promotion (eg
+     a7b8b)
+
+  o  Don't send an erroneous 'isready' (with 'uci') to quiet analysis
+     engines
+
+  o  Right clicking the widget allows to disable line wrapping
+
+  o  Don't add a line to analysis history if moves are null
+
+     Tree
+
+  o  Move ECO stats to the end of line.
+
+  o  Several Mask refinements - notably Searches are much more readable
+     and previously clicking on searched lines didn't work
+
+  o  Fix up minor bugs about castling moves (OO, O-O, O-O-O)
+
+     Computer Tournament
+
+  o  Computer Tournament Book feature
+
+  o  Dont' kill tournament if engine crashes.
+
+  o  Only pack the first 10 engine combos (which allows for big
+     tournaments)
+
+  o  Fix up Xboard time/move command order. Xboard engines should behave
+     much better.
+
+  o  Various other tweaks
+
+     Gamelist
+
+  o  Show altered games in red.
+
+  o  Control-wheelmouse scrolls up/down one page.
+
+  o  Switcher now has text on two lines (if icons are shown).
+
+     FICS
+
+  o  Digital clocks now (optionally) on the main board
+
+  o  Better integration of FICS "examine" and "observe" features
+
+  o  FICS has it's own options menu
+
+  o  bind F9 to xtell instead of tell.
+
+  o  Change the move.wav sound from tick-tock to a short click.
+
+     OS X
+
+  o  Filter graph bugfix
+
+  o  Material Search properly shows the little buttons
+
+  o  Copy and Paste text from disabled OSX text widgets (engines, help,
+     gameinfo)
+
+  o  Buttons 2 and 3 are swapped around
+
+     General Bugs
+
+  o  Work arounds for wish 8.5.12 and 8.5.8 issues
+
+  o  Analysis logs can badly break autoscroll, so use normal frames and
+     scrollbars.
+
+  o  Handle PGN parsing of unspecified promotions (b8 becomes b8=Q , for
+     eg).
+
+  7.0.2.  Scid vs. PC 4.7
 
 
   o  Tree: Add coloured bargraphs representing win/draw/loss (and remove
      the old tree graph)
 
   o  Tablebases: Make best tablebase moves clickable.
+
 
   o  Tablebases: tidy up config , main window and help items.
 
@@ -450,7 +570,6 @@
   o  Importing PGN, check that Promotion Moves are long enough
      (otherwise can segfault).
 
-
   o  Document CCRL pgn round name problem, and handle errors better when
      Name limits hit.
 
@@ -460,6 +579,7 @@
      displaying games.
 
   o  Sync html bitmaps with SCID.
+
 
   o  Book: Only do the second book move lookup if we have too. (slight
      performance boost)
@@ -471,7 +591,7 @@
 
   o  Fix up Tacgame score-isn't-updated bug
 
-  7.0.2.  Scid vs. PC 4.6
+  7.0.3.  Scid vs. PC 4.6
 
 
   o  Undo and Redo features (partly from SCID)
@@ -516,7 +636,6 @@
   o  New 'Search in (other) Database' feature to the board search (from
      SCID)
 
-
   o  Variation/Mainline arrows can have custom colours.
 
   o  Crosstable can (optionally) show 3 points for a win
@@ -526,6 +645,7 @@
 
   o  Phalanx tacgame bug-fixes (play brainy, and stop after the correct
      amount of time)
+
 
   o  Tweak the best games widget (make fields line-up)
 
@@ -570,7 +690,7 @@
 
   o  Update FICs , PGN and Menu language translations
 
-  7.0.3.  Scid vs. PC 4.5
+  7.0.4.  Scid vs. PC 4.5
 
   PGN Window:
 
@@ -658,6 +778,7 @@
   o  PGN text tabstops are now dynamic to allow for correct column
      allignment in column mode
 
+
   o  Remember position of custom ecoFile if loaded
 
   o  Change the second book slot to avoid conflict with Annotation
@@ -678,7 +799,7 @@
 
   o  Theory table incorrectly started from start position.
 
-  7.0.4.  Scid vs. PC 4.4.1
+  7.0.5.  Scid vs. PC 4.4.1
 
 
   o  Fix nasty flicker bug when board is flipped
@@ -687,7 +808,7 @@
 
   o  Add Burnett chess pieces
 
-  7.0.5.  Scid vs. PC 4.4
+  7.0.6.  Scid vs. PC 4.4
 
 
   o  Implement SCID's interruptable tree processing
@@ -713,7 +834,6 @@
 
   o  Graph changes - remember widget settings, change colours+dot size,
      fix up half-move bug and a title misallignment, add 2010 decade
-
 
   o  Fix up the global grab for progressWindow (opening databases)
 
@@ -771,7 +891,7 @@
 
   o  Statusbar shows correct value after Crosstable update
 
-  7.0.6.  Scid vs. PC 4.3
+  7.0.7.  Scid vs. PC 4.3
 
 
   o  Clickable Variation arrows
@@ -789,6 +909,7 @@
   o  FICs improvements, including a ping feature to indicate network
      health (*nix only), and player communications are saved as PGN
      comments.
+
 
   o  FICs bug-fix: don't automatically accept rematches
 
@@ -838,14 +959,13 @@
 
   o  Tweak crosstable knock-out format
 
-  7.0.7.  Scid vs. PC 4.2
+  7.0.8.  Scid vs. PC 4.2
 
 
   o  New si4 database support
 
   o  Include tree and mask improvements from Scid (excepting Fulvio's
      delayed tree code, which has issues)
-
 
   o  Overhaul right-click menu and allow toolbar / menubar / statusbar
      to be hidden
@@ -855,6 +975,7 @@
   o  Easier 64 bit compilation
 
   o  Include Scid's correspondence feature
+
 
   o  Make analysis widget info properly hideable, and tweak buttons
 
@@ -879,7 +1000,7 @@
 
   o  New icon
 
-  7.0.8.  Scid vs. PC 4.1
+  7.0.9.  Scid vs. PC 4.1
 
 
   o  Quite a few FICs tweaks, including new help pages and D.O.S. attack
@@ -911,7 +1032,6 @@
   o  New marble tile theme and colour themes
 
   o  Some menu re-ordering
-
 
   o  Recent Files menu is basename only
 
@@ -987,7 +1107,8 @@
 
      o  Statistics window restructured
 
-  7.0.9.  Scid vs. PC 4.0
+
+  7.0.10.  Scid vs. PC 4.0
 
 
   o  Computer Chess tournament feature
@@ -1044,7 +1165,6 @@
 
   o  Fics "withdraws offer" fix
 
-
   o  Toolbar icons tweak
 
   o  Allow databses to have "." in their name
@@ -1052,6 +1172,7 @@
   o  Tactical Game stores game result
 
   o  Set Game Info widget includes Site field
+
 
   o  Small "update idletasks" in main.tcl improves main board
      responsiveness
@@ -1072,7 +1193,7 @@
 
   o  Perform a db refresh after importing PGN file(s)
 
-  7.0.10.  Scid vs. PC 3.6.26.9
+  7.0.11.  Scid vs. PC 3.6.26.9
 
 
   o  Added a random pawns feature to tacgame
@@ -1110,7 +1231,6 @@
 
   o  (Add a "Font" button to the help and crosstable widgets)
 
-
   o  Fix focus issues with the Set Game Info widget
 
   o  Reorganise Scid start-up (includes reading font info _before_
@@ -1146,7 +1266,7 @@
   o  (Promise to) fix the Gamelist widget , and add a Comp vs. Comp
      feature for next release
 
-  7.0.11.  Scid vs. PC 3.6.26.8
+  7.0.12.  Scid vs. PC 3.6.26.8
 
 
   o  The Fics widgets have been redone, including buttons, the graph and
@@ -1176,7 +1296,6 @@
 
   o  The File::Open menus have had quite a bit of debugging
 
-
   o  Some ne tile themes
 
   o  The pause mechanism for tacgame has be restructured to allow for
@@ -1201,7 +1320,7 @@
      o  Some widget reparenting
 
 
-  7.0.12.  Scid vs. PC 3.6.26.7
+  7.0.13.  Scid vs. PC 3.6.26.7
 
 
   o  Include a mac configuration patch
@@ -1212,7 +1331,7 @@
 
   o  Small change to Tacgame about getMyPlayerName
 
-  7.0.13.  Scid vs. PC 3.6.26.6
+  7.0.14.  Scid vs. PC 3.6.26.6
 
 
   o  The Setup Board widget now shows tiles (when the main board uses
@@ -1242,7 +1361,6 @@
 
   o  Add MyPlayerName info to Tacgame
 
-
   o  Tacgame show a modest checkmate widget when game is over (for the
      first time)
 
@@ -1252,6 +1370,7 @@
      the awful yellow highlighting
 
   o  Speed optimisations for updating main board
+
 
   o  Bug fix for  sometime  issue with gamelist widget initialisation
      (thanks Alex)
@@ -1267,7 +1386,7 @@
 
   o  Add Control-m binding for toggling the menubar
 
-  7.0.14.  Scid vs. PC 3.6.26.5
+  7.0.15.  Scid vs. PC 3.6.26.5
 
 
   o  Revamped the main button bar, making it a little larger too.
@@ -1288,7 +1407,7 @@
   o  Other minor changes: Control-WheelMouse == Sizeup/Sizedown,
      Variation buttons swap position, Spellcheck installation fix.
 
-  7.0.15.  Scid vs. PC 3.6.26.4
+  7.0.16.  Scid vs. PC 3.6.26.4
 
 
   o  New Gamelist widget. It's much more powerful than the old one, but
@@ -1318,7 +1437,8 @@
   o  Other minor changes to fics, -O2, "exec tkscid" correctness, font
      and menu tweaks
 
-  7.0.16.  Scid vs. PC 3.6.26.3
+
+  7.0.17.  Scid vs. PC 3.6.26.3
 
 
   o  Replaced most all of the old colour schemes and tiles.
@@ -1337,7 +1457,7 @@
   o  Don't allow null entry of "Elo" field in analysis engine
      customisation.
 
-  7.0.17.  Scid vs. PC 3.6.26.2
+  7.0.18.  Scid vs. PC 3.6.26.2
 
 
   o  Game info panel restructured ;>
@@ -1364,7 +1484,7 @@
 
   o  Gave the show_material canvas a little more space
 
-  7.0.18.  Scid vs. PC 3.6.26.1
+  7.0.19.  Scid vs. PC 3.6.26.1
 
 
   o  Overhauling the tactical game feature.
@@ -1383,9 +1503,10 @@
 
   o  Remember fics widget size.
 
+
   o  Last move displayed in bold.
 
-  7.0.19.  todo
+  7.0.20.  todo
 
 
   o  Language updates (volunteers welcome).
