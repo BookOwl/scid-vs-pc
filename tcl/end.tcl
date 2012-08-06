@@ -1864,26 +1864,33 @@ proc dumpImages {dir} {
   set images [image names]
   puts "dumpImagesGif: found images $images"
   foreach i $images {
-    set fname [file join $dir $i.gif]
+    if {$::windowsOS} {
+      # windows doesnt like stray ':' in filenames
+      set fname [file join $dir [string map {:: _} $i].gif]
+    } else {
+      set fname [file join $dir $i.gif]
+    }
     if {[catch {$i write $fname -format gif}]} {
       file delete $fname
-      set fname [file join $dir $i.png]
+      if {$::windowsOS} {
+        set fname [file join $dir [string map {:: _} $i].png]
+      } else {
+        set fname [file join $dir $i.png]
+      }
      $i write $fname -format png
     }
   }
 }
 
 # hmm... Control-Shift-F7 doesn't work for me ???
-bind . <Control-F7> {
+bind . <Control-Shift-F7> {
     puts "Dumping images as base64 to /tmp/ScidImages"
     dumpImagesBase64 /tmp/ScidImages
-    exit
 }
 
-bind . <Control-F8> {
+bind . <Control-Shift-F8> {
     puts "Dumping images to /tmp/ScidImages"
     dumpImages /tmp/ScidImages
-    exit
 }
 
 if {$startup(tip)} { ::tip::show }
