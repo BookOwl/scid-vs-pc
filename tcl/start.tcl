@@ -210,6 +210,8 @@ if {$scidExecutable == {}} {
 # This is "~/.scid" on Unix, and the Scid exectuable dir on Windows.
 if {$windowsOS} {
   set scidUserDir $scidExeDir
+  # need to cd here to open eco and spellfiles
+  cd $scidExeDir
 } else {
   set scidUserDir [file nativename "~/.scidvspc"]
 }
