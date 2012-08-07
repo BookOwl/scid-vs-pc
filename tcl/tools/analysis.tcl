@@ -1208,8 +1208,7 @@ proc addScore {n type {novar 0}} {
 
     switch $type {
       single { set text [format "%+.2f" $analysis(score$n)] }
-      both   { set text [format "%+.2f / %+.2f" $analysis(prevscore$n) $analysis(score$n)] }
-      end    { set text [format "%+.2f (%+.2f)" $analysis(prevscore$n) $analysis(score$n)] }
+      both - end  { set text [format "%+.2f / %+.2f" $analysis(score$n) $analysis(prevscore$n)] }
     }
 
     # Add engine name to score if desired and not a single score
