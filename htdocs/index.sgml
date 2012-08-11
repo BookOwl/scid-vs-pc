@@ -67,7 +67,7 @@ id="contact_">, and has been extensively tested with the Million Base and ICOfY 
 <label id="download_">
 <sect> download <p>
 
-source <url url="https://sourceforge.net/project/downloading.php?group_id=263836&amp;filename=scid_vs_pc-4.8.tgz" name="scid_vs_pc-4.8.tgz">
+source <url url="http://sourceforge.net/projects/scidvspc/files/source/scid_vs_pc-4.8.tgz/download" name="scid_vs_pc-4.8.tgz">
 
 windows <url url="http://sourceforge.net/projects/scidvspc/files/windows/Scid%20vs%20PC-4.8.exe/download" name="Scid vs PC-4.8.exe">
 
@@ -86,7 +86,7 @@ Scid vs. PC requires <url name="Tcl/Tk" url="http://tcl.tk"> 8.5.
 <em>Tcl/Tk 8.5.10 has nasty bugs and should be avoided. 8.6 appears to work fine, but is not thoroughly tested.</em>,</p>
 
 Most Unices should have Tcl/Tk installed by default.
-To verify this, look for a command named <bf>wish</bf> or <bf>wish8.5</bf>. (Wish-8.5.10 is not recommended).
+To verify this, look for a command named <bf>wish</bf> or <bf>wish8.5</bf>.
 To enable support for extra chess pieces (such as Berlin), you may need to install
 <url name="TkImg" url="https://sourceforge.net/project/downloading.php?group_id=263836&amp;filename=tkimg1.3.tar.bz2">.  
 Then, installing from source:

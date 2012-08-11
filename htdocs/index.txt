@@ -121,7 +121,7 @@
   3.  download
 
   source scid_vs_pc-4.8.tgz
-  <https://sourceforge.net/project/downloading.php?group_id=263836&filename=scid_vs_pc-4.8.tgz>
+  <http://sourceforge.net/projects/scidvspc/files/source/scid_vs_pc-4.8.tgz/download>
   windows Scid vs PC-4.8.exe
   <http://sourceforge.net/projects/scidvspc/files/windows/Scid%20vs%20PC-4.8.exe/download>
 
