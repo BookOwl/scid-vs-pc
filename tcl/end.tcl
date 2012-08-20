@@ -1160,15 +1160,15 @@ proc gsave { gnum } {
   updateTitle
 }
 
-# gameAdd:
-#   Calls gameSave with a game number of zero.
-#
-proc gameAdd {} { gameSave 0 }
+proc gameAdd {} {
+  gameSave 0
+}
 
-# gameReplace:
-#   Calls gameSave with the current game number, which should be nonzero.
+# current game number should be nonzero.
 
-proc gameReplace {} { gameSave [sc_game number] }
+proc gameReplace {} {
+  gameSave [sc_game number]
+}
 
 
 ############################################################
@@ -1328,7 +1328,7 @@ standardShortcuts .
 
 label .statusbar -textvariable statusBar -relief sunken -anchor w -width 1 -font font_Small
 
-# Left-click starts/stops engine 1
+# double-left-click starts/stops engine 1
 bind .statusbar <Double-Button-1> {
   makeAnalysisWin 1
   if {[winfo exists .analysisWin1] && $::analysis(mini)} {
@@ -1336,6 +1336,9 @@ bind .statusbar <Double-Button-1> {
     update
   }
 }
+
+# todo mac button patch
+bind .statusbar <Button-2> ::file::SwitchToNextBase
 
 # Right-click toggles window size
 bind .statusbar <Button-3>  {
