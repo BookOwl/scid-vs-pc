@@ -235,15 +235,17 @@ if {[llength $engines(list)] == 0} {
   # Engine directory names need updating properly
 
   if {$::windowsOS} {
-    set cmd [file join $::scidExeDir scidlet.exe]
-  } else {
-    set cmd scidlet
+    ### Windows comes with it's own custom engines.dat, so shoul dnever reach here.
+    tk_messageBox -type ok -icon info -title Scid \
+		  -message "No engines.dat found. Please reinstall or add engines manually."
+    return
   }
-  engine "Name Scidlet
-          Cmd  $cmd
-          Dir  ."
 
   if {$macApp} {
+    engine "Name Scidlet
+	    Cmd  $scidExeDir/scidlet
+	    Dir  $scidUserDir"
+
     engine "Name Toga
             Cmd  $scidShareDir/engines/toga/fruit
             Dir  $scidUserDir
@@ -252,6 +254,10 @@ if {[llength $engines(list)] == 0} {
             Cmd  $scidShareDir/engines/phalanx/phalanx
             Dir  $scidUserDir"
   } else {
+    engine "Name Scidlet
+	    Cmd  scidlet
+	    Dir  ."
+
     engine "Name Toga
             Cmd  fruit
             Dir  $scidUserDir
