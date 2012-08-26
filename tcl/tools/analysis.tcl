@@ -1555,7 +1555,7 @@ proc addAnalysisVariation {n} {
     set text [format "\[%s\] %d:%+.2f" $analysis(name$n) $analysis(depth$n) $analysis(score$n)]
   }
 
-  if { $isAt_vend} {
+  if {$isAt_vend} {
     # get the last move of the game
     set lastMove [sc_game info previousMoveUCI]
     # back one move
@@ -1614,10 +1614,13 @@ proc addAnalysisVariation {n} {
 
   ::pgn::Refresh 1
   ::tools::graphs::score::Refresh
+  if {$isAt_vend && ![sc_pos isAt vend]} {
+    # sucessfully extended variation
+    .button.forward configure -state normal
+  }
 }
-################################################################################
-#
-################################################################################
+
+
 proc addAllVariations {{n 1}} {
   global analysis
 
