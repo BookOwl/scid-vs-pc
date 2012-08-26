@@ -442,7 +442,8 @@ proc search::header {} {
 
     set sPgnlist {}
     foreach i {1 2 3} {
-      set temp [string trim $sPgntext($i)]
+      # dont trim string fields as searching for whitespace can be useful
+      set temp $sPgntext($i)
       if {$temp != ""} { lappend sPgnlist $temp }
     }
     busyCursor .
