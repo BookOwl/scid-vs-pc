@@ -484,8 +484,8 @@ proc ::tools::graphs::score::Refresh {{init 0}} {
   busyCursor $w
   update
   #Klimmek: Invert white/black Score in Score graph
-  catch {::utils::graph::data score data -color $linecolor -points $::tools::graphs::showpoints -lines 1 \
-             -linewidth $linewidth -radius $psize -outline $linecolor \
+  catch {::utils::graph::data score data -color $linecolor -points 0 -lines 0 -bars 1 \
+             -barwidth .7 -outline grey \
              -coords [sc_game scores $::tools::graphs::score::White $::tools::graphs::score::Black]}
   ::utils::graph::redraw score
   unbusyCursor $w
@@ -511,6 +511,9 @@ proc ::tools::graphs::score::ConfigMenus {{lang ""}} {
 
 proc ::tools::graphs::score::Move {xc} {
   set x [expr {round([::utils::graph::xunmap score $xc] * 2)} ]
+  if {![sc_game startBoard]} {
+    incr x -1
+  }
   sc_move start
   sc_move forward $x
   updateBoard

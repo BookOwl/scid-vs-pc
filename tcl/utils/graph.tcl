@@ -442,7 +442,13 @@ proc ::utils::graph::plot_data {graph} {
 
     # Plot bars:
     if {$_data($graph,$dataset,bars)} {
-      set base [ymap $graph $_data($graph,aymin)]
+      # only used by ECO and score graphs i think
+      if {$_data($graph,aymin) < 0} {
+        # set to zero allows minus values for the score graph
+	set base [ymap $graph 0]
+      } else {
+	set base [ymap $graph $_data($graph,aymin)]
+      }
       set hwidth [xmap $graph $_data($graph,$dataset,barwidth)]
       set hwidth [expr {$hwidth - [xmap $graph 0]}]
       set hwidth [expr {$hwidth / 2}]
