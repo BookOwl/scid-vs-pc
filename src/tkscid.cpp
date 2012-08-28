@@ -7471,10 +7471,11 @@ sc_game_info (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
     // Tcl_AppendResult (ti, "<br>", translate (ti, "Move", "Move"), ":  ", NULL);
 
     // if (san[0] != 0) 
-    Tcl_AppendResult (ti, "Move:  ", temp, NULL);
+    Tcl_AppendResult (ti, "Move:  ", temp, "</blue>", NULL);
 
     nags = db->game->GetNags();
     if (printNags  &&  *nags != 0 ) {
+	Tcl_AppendResult (ti, " <gray>",  NULL);
         for (uint nagCount = 0 ; nags[nagCount] != 0; nagCount++) {
 	  char nagstr[20];
 	  game_printNag (nags[nagCount], nagstr, true, PGN_FORMAT_Plain);
@@ -7483,8 +7484,11 @@ sc_game_info (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
 	  // }
 	  Tcl_AppendResult (ti, nagstr, NULL);
         }
+	Tcl_AppendResult (ti, "</gray>",  NULL);
     }  
-    Tcl_AppendResult (ti, "</blue></run>",  NULL);
+
+    Tcl_AppendResult (ti, "</run>",  NULL);
+
 
 
     /*** Comment ***/
