@@ -30,6 +30,7 @@ proc moveEntry_Clear {{escape 0}} {
 
   set moveEntry(Text) {}
   set moveEntry(List) {}
+  set ::startArrowSquare {}
   if {$escape && $::fics::playing} {
     set ::fics::premove {}
     sc_pos setComment {}
