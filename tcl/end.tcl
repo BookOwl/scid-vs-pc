@@ -1200,6 +1200,9 @@ proc drawArrow {sq color} {
   } else  {
     set oldComment [sc_pos getComment]
     set to [::board::san $sq]
+    if {$::fics::playing} {
+      set ::fics::premove ${startArrowSquare}${to}
+    }
     if {$startArrowSquare != $to } {
       set erase [regexp "\[\x5B\]%draw arrow,$startArrowSquare,$to,$color\[\x5D\]" $oldComment]
       regsub "\[\x5B\]%draw arrow,$startArrowSquare,$to,(green|yellow|red)\[\x5D\]" $oldComment "" newComment
@@ -1222,7 +1225,7 @@ for {set i 0} { $i < 64 } { incr i } {
   ::board::bind .board $i <Leave> "leaveSquare $i"
   ::board::bind .board $i <ButtonPress-1> "pressSquare $i 0"
   ::board::bind .board $i <ButtonPress-2> "pressSquare $i 1"
-  # ::board::bind .board $i <Control-ButtonPress-1> "drawArrow $i green"
+  ::board::bind .board $i <Control-ButtonPress-1> "drawArrow $i green"
   # ::board::bind .board $i <Control-ButtonPress-2> "drawArrow $i yellow"
   # ::board::bind .board $i <Control-ButtonPress-3> "drawArrow $i red"
   # ::board::bind .board $i <Shift-ButtonPress-1> "addMarker $i green"
@@ -1249,7 +1252,7 @@ foreach i {a b c d e f g h 1 2 3 4 5 6 7 8} {
 
 bind . <BackSpace> ::move::Back
 bind . <space>  moveEntry_Complete
-bind . <Escape> moveEntry_Clear
+bind . <Escape> "moveEntry_Clear 1"
 bind . <Tab> raiseAllWindows
 
 # bind . <BackSpace> moveEntry_Backspace

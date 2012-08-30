@@ -23,10 +23,18 @@ foreach key {a b c d e f g h i j k l m n o p q r s t u v w x y z} {
   bind . <Alt-$key> {}
 }
 
-proc moveEntry_Clear {} {
+set ::fics::premove {}
+
+proc moveEntry_Clear {{escape 0}} {
   global moveEntry
+
   set moveEntry(Text) {}
   set moveEntry(List) {}
+  if {$escape && $::fics::playing} {
+    set ::fics::premove {}
+    sc_pos setComment {}
+    updateBoard
+  }
   updateStatusBar
 }
 
@@ -1378,7 +1386,7 @@ proc pressSquare {square confirm} {
 #   If the square is different to that the button was pressed on, it
 #   is a dragged move; otherwise it is just selecting this square as
 #   part of a move.
-#
+
 proc releaseSquare { x y } {
 
   if { [winfo exists .calvarWin] } { return }

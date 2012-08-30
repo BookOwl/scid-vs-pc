@@ -36,6 +36,7 @@ namespace eval fics {
   set consolewidth 40
   set consoleheight 10
   set catchRemoving 0
+  set premove {}
 
   set ignore_abort 0
   set ignore_adjourn 0
@@ -1825,11 +1826,26 @@ namespace eval fics {
 	    ::utils::sound::PlaySound sound_move
 	  }
         }
-        set ::fics::lastmove $moveSan ; # remember last opponenets move for takeback comment
-        if { [catch { sc_move addSan $moveSan } err ] } {
+        set ::fics::lastmove $moveSan ; # remember last opponents move for takeback comment
+        if {[catch {sc_move addSan $moveSan } err]} {
           # This is a common occurence when moving observed games to the main board
           # puts "error $err"
         } else {
+	  ### Send premove 
+	  if {$::fics::premove != {}} {
+	    if {$fen == [sc_pos fen]} {
+	      updateBoard -pgn -animate
+              # should we use "proc addSanMove"
+              if { [catch {sc_move addSan $::fics::premove}]} {
+                puts "Premove $::fics::premove failed"
+              } else {
+		updateBoard -pgn -animate
+		::fics::writechan $::fics::premove
+              }
+	    }
+	    set ::fics::premove {}
+	    return
+	  } 
           if { $::novag::connected } {
             set m $verbose_move
             if { [string index $m 1] == "/" } { set m [string range $m 2 end] }
@@ -1840,6 +1856,7 @@ namespace eval fics {
       }
     } else {
       set ::fics::playerslastmove $moveSan
+      set ::fics::premove {}
     }
 
     if {$fen == [sc_pos fen]} {
