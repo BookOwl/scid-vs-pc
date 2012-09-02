@@ -312,9 +312,9 @@ Ow==
 # image create photo finish_on -data ....
 ### Replaced by autoplay_
 
-# Double size the toolbar buttons (disabled)
-# image create photo tempimage
+# Double size the buttonbar (disabled)
 if {0} {
+  image create photo tempimage
   foreach i {tb_flip tb_gameinfo autoplay_off autoplay_on tb_trial \
          tb_trial_on tb_start tb_prev tb_next tb_end tb_invar tb_outvar tb_addvar} {
     tempimage blank
@@ -714,7 +714,7 @@ proc updateBoard {args} {
   global boardSize
   set pgnNeedsUpdate 0
   set animate 0
-  # set ::selectedSq -1 # necessary for bugfix ?
+  set ::selectedSq -1 ; # necessary for bugfix ?
   foreach arg $args {
     if {! [string compare $arg "-pgn"]} { set pgnNeedsUpdate 1 }
     if {! [string compare $arg "-animate"]} { set animate 1 }

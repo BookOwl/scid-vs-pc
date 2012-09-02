@@ -1116,6 +1116,21 @@ wbQpDBc3OI3bhoCIsUPt3sW7WgifvgMptHAlVNAgi7GDVjhcwRUMlzBDX7K0
 mEG3RZYvYbiAmcXER5NETXwwmUXFyJEqVqgoVmylyhEjVGZFCWJkSJDLmIMM
 MRIkyiwsUKaIHk16ChQsaHsFAgA7}
 
+# Double size the toolbar buttons (disabled)
+if {0} {
+  image create photo tempimage
+  foreach i {glist pgn comment maint eco tree book crosst tmt engine
+    hsearch bsearch msearch rfilter newgame copy paste
+    gfirst gprev gnext glast new open save close finder bkm} {
+
+    tempimage blank
+    tempimage copy tb_$i -zoom 2
+    tb_$i blank
+    tb_$i copy tempimage
+  }
+}
+
+
 
 
 ##############################
