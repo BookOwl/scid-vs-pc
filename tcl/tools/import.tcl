@@ -69,13 +69,11 @@ proc importPgnGame {} {
   }
 
   dialogbutton $w.b.import -text "$::tr(Import)" -command {
+    sc_game new
+    catch {sc_game import [.importWin.pane.edit.text get 0.0 end]} result
+    updateBoard -pgn
+    updateTitle
 
-    set err \
-      [catch {sc_game import [.importWin.pane.edit.text get 0.0 end]} result]
-    if {! $err} {
-      updateBoard -pgn
-      updateTitle
-    }
     if {$result == {PGN text imported with no errors or warnings.}} {
       destroy .importWin; focus .
     } else {
