@@ -1133,6 +1133,8 @@ Position::MatchLegalMove (MoveList * mlist, pieceT mask, squareT target)
 errorT
 Position::MatchPawnMove (MoveList * mlist, fyleT fromFyle, squareT to, pieceT promote)
 {
+    pieceT promote2 = promote;
+
     mlist->Clear();
 
     sint diff = (int)square_Fyle(to) - (int)fromFyle;
@@ -1164,7 +1166,11 @@ Position::MatchPawnMove (MoveList * mlist, fyleT fromFyle, squareT to, pieceT pr
     // See if the promotion piece is valid:
 
     if (toRank == promoteRank) {
-        if (promote == EMPTY)  { return ERROR_InvalidMove; }
+        // if (promote == EMPTY)  { return ERROR_InvalidMove; }
+        if (promote == EMPTY)  {
+          // autopromote to queen
+          promote2 = (ToMove == WHITE ? WQ : BQ);
+        }
     } else {
         if (promote != EMPTY)  { return ERROR_InvalidMove; }
     }
@@ -1232,7 +1238,7 @@ Position::MatchPawnMove (MoveList * mlist, fyleT fromFyle, squareT to, pieceT pr
     }
 
     if (legal == 1) {
-        AddLegalMove (mlist, from, to, promote);
+        AddLegalMove (mlist, from, to, promote2);
         return OK;
     }
     return ERROR_InvalidMove;
