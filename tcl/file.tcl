@@ -220,6 +220,7 @@ proc ::file::Open {{fName ""} {parent .} {update 1}} {
   if {$err == 0} {
     catch {sc_game load auto}
     flipBoardForPlayerNames $::myPlayerNames
+    set ::glistFlipped([sc_base current]) $::flippedForPlayer
   }
   unbusyCursor .
   set glstart 1

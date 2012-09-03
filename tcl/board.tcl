@@ -2209,6 +2209,9 @@ proc ::board::flip {w {newstate -1}} {
   if {$newstate == $::board::_flip($w)} { return }
   set flip [expr {1 - $::board::_flip($w)} ]
   set ::board::_flip($w) $flip
+  if {$w == ".board"} {
+    set ::glistFlipped([sc_base current]) $flip
+  }
 
   # Swap squares:
   for {set i 0} {$i < 32} {incr i} {

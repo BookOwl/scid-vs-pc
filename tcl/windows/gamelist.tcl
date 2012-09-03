@@ -720,6 +720,8 @@ R0lGODlhDAAMAIABAAAAAP///yH5BAEKAAEALAAAAAAMAAwAAAIVjI+pCQjt
 
 array set glistSortColumn {}
 array set glistStart {}
+array set glistFlipped {} ; # should actually be named isFlipped... but is used similarly to glistStart
+set glistFlipped([sc_info clipbase]) 0
 
 # There is no other mechanism to remember last database sort, but there should
 # probably be one in "tkscid.h::struct scidBaseT".
@@ -793,6 +795,14 @@ proc ::windows::gamelist::Reload {} {
 
   if {[info exists ::glistStart($b)]} {
     set glstart $::glistStart($b)
+  }
+  if {[info exists ::glistFlipped($b)]} {
+    if {$::glistFlipped($b) != [::board::isFlipped .board]} {
+      ::board::flip .board
+    }
+  } else {
+    # should not happen
+    puts "Oops - glistFlipped($b) not intialised
   }
 
   set w .glistWin
