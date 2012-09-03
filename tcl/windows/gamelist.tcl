@@ -802,7 +802,7 @@ proc ::windows::gamelist::Reload {} {
     }
   } else {
     # should not happen
-    puts "Oops - glistFlipped($b) not intialised
+    puts "Oops - glistFlipped($b) not intialised"
   }
 
   set w .glistWin
