@@ -77,7 +77,7 @@ Players may peruse their games at <url http://ficsgames.org>http://ficsgames.org
 
 <li><a FICSlogin>Logging In</a>
 <br>
-<li><a FICSwidget>The FICS Widget</a></li>
+<li><a FICSwidget>Using FICS</a></li>
 <br>
 <li><a FICSfindopp>Finding an Opponent</a></li>
 <br>
@@ -265,6 +265,7 @@ append helpText(Index) {
   <li><a Switcher>Database switcher</a> window</li>
   <li><a Maintenance Twins>Deleting twin games</a></li>
   <li><a Comment Diagrams>Diagrams</a></li>
+  <li><a Comment Diagrams>Drawing arrows</a></li>
   <li><a Switcher draganddrop>Drag and Drop</a></li>
   </ul>
 
@@ -382,6 +383,7 @@ append helpText(Index) {
   <li><a PList>Player Finder</a> window</li>
   <li><a PInfo>Player Information</a> </li>
   <li><a PInfo Photos>Player Photos</a></li>
+  <li><a FICSwidget premove>Premove (FICS)</a></li>
   <li>Spell Checking <a Maintenance Spellcheck>Player Names</a></li>
   <li><a Reports Player>Player Reports</a></li>
   <li><a ComputerGame>Play against the Computer</a></li>
@@ -5431,18 +5433,6 @@ and trying to run engines against such positions is not recommended.</i></p>
   <url http://www.ficsgames.org>www.ficsgames.org</url> is a great resource.
   </p>
 
-  <h3>Bots</h3>
-  <p>
-  Bots are special FICS accounts that gather statistics, give lectures puzzles and more.
-  A nice page can be found at 
-  <url http://antiseptic-freechess.blogspot.com.au/2012/04/favorite-fics-bots.html>www.antiseptic-freechess.blogspot.com.au</url>
-  <ul>
-    <li>tell babaschess usageinfo Scid vs. PC (Show Scid vs. PC usage stats)</li>
-    <li>tell relay games (List upcoming games)</li>
-    <li>tell chlog show shout -t 20 (Show the last 20 minutes of shouts)</li>
-  </ul>
-  </p>
-
   <h3>Lectures</h3>
 
   <p>
@@ -5503,8 +5493,19 @@ Opponent and Offers Graph</a> buttons. Other buttons include:
     <li><term>Rematch</term> Request a rematch with previous opponent</li>
   </ul>
 
+<h3><name premove>Premove</name></h3>
+<p>
+Premove allows one to decide your next move before your opponent has moved,
+allowing for very quick play - essential for Blitz games.
+</p><p>
+In Scid vs. PC, premove is done by holding down the <b>Control</b> key and clicking
+on the FROM and TO squares. A coloured line will be drawn, and - if legal -
+this move will be played immediately your opponent has.
+To cancel premove, press the <b>Escape</b> key.
+</p>
+
 <br>
-  <p><footer>Updated: Scid vs. PC 4.8 June 2012</footer></p>
+  <p><footer>Updated: Scid vs. PC 4.9 September 2012</footer></p>
 }
 
 set helpTitle(FICScommands) {FICS Commands and Variables}
@@ -5562,6 +5563,18 @@ for info about specific commands and variables.
 <li><term>1</term>	Footnote 1 to player's personal information</li>
 <li><term>2</term>	Footnote 2 to player's personal information ....</li>
 </ul>
+
+<h3>Bots</h3>
+<p>
+Bots are special FICS accounts that gather statistics, give lectures puzzles and more.
+A nice page can be found at 
+<url http://antiseptic-freechess.blogspot.com.au/2012/04/favorite-fics-bots.html>www.antiseptic-freechess.blogspot.com.au</url>
+<ul>
+  <li>tell babaschess usageinfo Scid vs. PC (Show Scid vs. PC usage stats)</li>
+  <li>tell relay games (List upcoming games)</li>
+  <li>tell chlog show shout -t 20 (Show the last 20 minutes of shouts)</li>
+</ul>
+</p>
 
 <h3>Channels</h3>
 <p>Popular channels are:</p>
