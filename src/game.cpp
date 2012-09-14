@@ -1877,6 +1877,70 @@ Game::GetPartialMoveList (DString * outStr, uint plyCount)
     return OK;
 }
 
+
+// Search a game for matching move(s) 
+// (based on Game::GetPartialMoveList)
+
+bool
+Game::MoveMatch (int m_argc, char **m_argv, uint plyCount, bool wToMove, bool bToMove, int checkTest)
+{
+    MoveToPly(0);
+    for (uint i=0; i < plyCount; i++) {
+        moveT * m;
+        int j;
+
+        // todo: Assert end of game exists
+        if (CurrentMove->marker == END_MARKER) {
+	    return false;
+        }
+
+	if (CurrentPos->GetToMove() == WHITE) {
+            if (!wToMove) goto skipmove;
+        } else {
+            if (!bToMove) goto skipmove;
+        }
+
+        m = CurrentMove;
+        j = 1;
+
+        if (m->san[0] == 0) {
+            CurrentPos->MakeSANString(&(m->moveData), m->san, checkTest);
+        }
+        if (strcmp(m->san, m_argv[0]) == 0) {
+            bool found = 1;
+            // Examine following moves to see all match
+            while (j < m_argc) {
+              if (! m->next) {
+		  found = 0;
+                  break;
+              }
+              if (j == 1) SaveState();
+	      MoveForward();
+	      m = CurrentMove;
+	      if (m->san[0] == 0) {
+		  CurrentPos->MakeSANString(&(m->moveData), m->san, checkTest);
+	      }
+	      if (m_argv[j][0] != '?' && strcmp(m->san, m_argv[j]) != 0) {
+                  j++;
+		  found = 0;
+                  break;
+              } else {
+		  j++;
+              }
+            }
+	    if (j > 1) RestoreState();
+
+            if (found) {
+	      return true;
+           }
+        }
+skipmove:
+        MoveForward();
+    }
+
+    return false;
+}
+
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Game::GetSAN():
 //      Print the SAN representation of the current move to a string.

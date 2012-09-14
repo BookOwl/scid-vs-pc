@@ -131,6 +131,7 @@ menuText B SearchEnd "Mova para Filter Ultima" 0
 menuText B SearchCurrent "Posicao Atual..." 0 {Pesquisa a posicao atual do tabuleiro}
 menuText B SearchHeader "Cabecalho..." 0 {Pesquisa por cabecalho (jogador, evento, etc)}
 menuText B SearchMaterial "Material/Padrao..." 0 {Pesquisa por material ou padrao de posicao}
+menuText B SearchMoves {Movimentos} 0 {}
 menuText B SearchUsing "Usar arquivo de opcoes de filtro..." 0 {Pesquisa usando arquivo com opcoes de filtro}
 
 # Windows menu:

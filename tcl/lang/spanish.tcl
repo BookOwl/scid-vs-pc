@@ -133,6 +133,7 @@ menuText S SearchHeader "Encabezamiento..." 0 \
   {Busca por información de encabezamiento (jugador, evento, etc)}
 menuText S SearchMaterial "Material/Patrón..." 0 \
   {Busca por material o patrón del tablero}
+menuText S SearchMoves {Jugadas} 0 {}
 menuText S SearchUsing "Cargar archivo de búsqueda" 0 \
   {Busca usando un archivo de opciones de búsqueda}
 

@@ -449,6 +449,8 @@ class IndexEntry
     inline void SetStoredLineCode (byte b)    {
         FinalMatSig = u32_set_high_8 (FinalMatSig, b);
     }
+
+    // Unused ???
     inline void SetHomePawnData (byte * hpData) {
         for (uint i=0; i < HPSIG_SIZE; i++) { HomePawnData[i] = hpData[i]; }
     }

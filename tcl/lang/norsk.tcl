@@ -131,6 +131,7 @@ menuText O SearchEnd "Flytt til Siste Filter" 0
 menuText O SearchCurrent "Stilling..." 0 {Søk etter denne stillingen}
 menuText O SearchHeader "Header..." 0 {Søk etter Header (partier, turnering etc) informasjon}
 menuText O SearchMaterial "Kvalitet/stilling..." 0 {Søk på kvalitet eller stilling}
+menuText O SearchMoves {Moves} 0 {}
 menuText O SearchUsing "Bruk søkefil..." 0 {Søk vha lagrede søkevilkår}
 
 # Windows menu:

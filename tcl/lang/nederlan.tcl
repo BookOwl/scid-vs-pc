@@ -142,6 +142,7 @@ menuText N SearchHeader "Partijgegevens..." 5 \
   {Zoek op speciale informatie: speler, evenement enz.}
 menuText N SearchMaterial "Materiaal/Kenmerken..." 0 \
   {Zoek op patroon: bord, materiaal enz.}
+menuText N SearchMoves {Zetten} 0 {}
 menuText N SearchUsing "Zoekopties" 0 \
   {Zoek met gebruikmaking van opgeslagen opties}
 

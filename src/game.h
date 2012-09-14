@@ -537,6 +537,7 @@ public:
     uint      GetHtmlStyle () { return HtmlStyle; }
 
     errorT    GetPartialMoveList (DString * str, uint plyCount);
+    bool      MoveMatch (int m_argc, char ** m_argv, uint plyCount, bool wToMove, bool bToMove, int checkTest);
 
     errorT    Encode (ByteBuffer * buf, IndexEntry * ie);
     void      EncodeTags (ByteBuffer * buf);

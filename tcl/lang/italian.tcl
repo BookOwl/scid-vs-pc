@@ -132,6 +132,7 @@ menuText I SearchEnd "Sposta ultimo filtro" 0
 menuText I SearchCurrent "Posizione attuale..." 0 {Cerca la attuale posizione}
 menuText I SearchHeader "Intestazione..." 0 {Ricerca per intestazione (giocatore, evento, etc)}
 menuText I SearchMaterial "Materiale/Schema..." 0 {Ricerca per materiale o schema posizionale}
+menuText I SearchMoves {Moves} 0 {}
 menuText I SearchUsing "Uso del file di ricerca..." 0 {Ricerca mediante un file di Opzioni}
 
 # Windows menu:

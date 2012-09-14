@@ -129,6 +129,7 @@ menuText C SearchEnd "Presun na poslední filtr" 0
 menuText C SearchCurrent "Aktuální pozice..." 0 {Hledat aktuální pozici}
 menuText C SearchHeader "Hlavièka..." 0 {Hledat podle hlavièky partie (hráè, turnaj apod.)}
 menuText C SearchMaterial "Materiál/Vzor..." 0 {Hledat podle materiálu nebo podle vzoru}
+menuText C SearchMoves {Tahy} 0 {}
 menuText C SearchUsing "Hledat pomocí souboru voleb..." 14 {Hledat s pou¾itím voleb zapsaných v souboru}
 
 # Windows menu:

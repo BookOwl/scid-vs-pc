@@ -132,6 +132,7 @@ menuText F SearchHeader "Entête..." 0 \
   {Rechercher par entête (joueur, tournoi, etc) information}
 menuText F SearchMaterial "Motifs" 0 \
   {Rechercher des motifs ou un matériel particulier sur l'échiquier}
+menuText F SearchMoves {Coups} 0 {}
 menuText F SearchUsing "En utilisant un fichier d'options..." 0 \
   {Rechercher en utilisant un fichier d'options de recherche}
 

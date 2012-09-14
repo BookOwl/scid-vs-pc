@@ -500,6 +500,9 @@ $m  add command -label SearchMaterial \
 bind . <Control-M> ::search::material
 set helpMessage($m,[incr menuindex]) SearchMaterial
 
+$m add command -label SearchMoves -command ::search::moves
+set helpMessage($m,[incr menuindex]) SearchMoves
+
 $m  add separator
 incr menuindex
 
@@ -1526,9 +1529,10 @@ proc setLanguageMenus {{lang ""}} {
     configMenuText .menu.edit.strip [tr EditStrip$tag $oldLang] \
         EditStrip$tag $lang
   }
-  foreach tag {Reset Negate End Material Current Header Using} {
+  foreach tag {Reset Negate End Material Moves Current Header Using} {
     configMenuText .menu.search [tr Search$tag $oldLang] Search$tag $lang
   }
+  
   # These two items still appear in windows menu
   configMenuText .menu.search [tr WindowsPList $oldLang] WindowsPList $lang
   configMenuText .menu.search [tr WindowsTmt $oldLang] WindowsTmt $lang

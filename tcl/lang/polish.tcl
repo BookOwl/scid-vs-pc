@@ -133,6 +133,7 @@ menuText P SearchHeader "Nag³ówek..." 0 \
   {Szukaj informacji o nag³ówkach (nazwiska, nazwy turnieju itp.)}
 menuText P SearchMaterial "Materia³/wzorzec..." 0 \
   {Szukaj wed³ug materia³u lub wzorca}
+menuText P SearchMoves {Posuniêcia} 0 {}
 menuText P SearchUsing "Stosuj plik poszukiwania..." 0 \
   {Szukaj stosuj±c plik z opcjami poszukiwania}
 

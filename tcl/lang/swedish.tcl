@@ -130,6 +130,7 @@ menuText W SearchEnd "Flytta till sista filter" 0
 menuText W SearchCurrent "Aktuell position..." 8 {Sök partier med aktuell position på brädet}
 menuText W SearchHeader "I huvud..." 2 {Använd fast information (spelare, evenemang, plats, mm)}
 menuText W SearchMaterial "Material/ställning..." 0 {Sökning baserad på material eller ställning}
+menuText W SearchMoves {Drag} 0 {}
 menuText W SearchUsing "Använd sökfil..." 10 {Använd en fil med lagrade sökvillkor}
 
 # Windows menu:

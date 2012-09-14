@@ -348,6 +348,7 @@ append helpText(Index) {
   <li><a Maintenance>Maintenance tools</a></li>
   <li>Tree <a TreeMasks>Masks</a></li>
   <li><a Searches Material>Material/pattern searches</a></li>
+  <li><a Searches Move>Move searches</a></li>
   <li><a Formats>Maximum</a> number of games</li>
   <li><a Menus>Menus</a></li>
   <li><a GameList Browsing>Merging games</a></li>
@@ -1096,6 +1097,18 @@ set helpText(Searches) {<h1>Searches in Scid</h1>
   end in under 20 moves can be skipped</i>.
   </p>
 
+  <h3><name Move>Move Searches</name></h3>
+  <p>
+  Move Searches allow one to search for particular moves and combinations.
+  Enter the move(s) in the entry box, and matching positions will be 
+  found. Move combinations can extend unlimited, and to match any
+  move, use a '?' character.</p>
+  <p> For example, use <b>Rh8 ? R1h7</b> to find doubling of rooks on the H file.</p>
+  <p>The <b>Check Test</b> option allows one to input moves of the form <b>Qh7+</b>
+  (or <b>Rh8#</b>, but these checks slow the search down a little. Judicious
+use of <b>Side to Move</b> can speed up the search.</p>
+  </p>
+
   <h3><name Settings>Saving Search Settings</name></h3>
   <p>
   The Material/Pattern and Header Search windows provide a
@@ -1113,7 +1126,7 @@ set helpText(Searches) {<h1>Searches in Scid</h1>
   <a Formats>file formats</a> for more information.
   </p>
 
-  <p><footer>Updated: Scid vs. PC 4.6 October 2011</footer></p>
+  <p><footer>Updated: Scid vs. PC 4.9 September 2012</footer></p>
 }
 
 set helpTitle(Filter) "The Filter"

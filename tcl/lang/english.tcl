@@ -158,6 +158,7 @@ menuText E SearchEnd "Filter to Last Move" 15 {All filter games load at the end 
 menuText E SearchHeader "General" 0 {Search by Header (player, event, etc) information}
 menuText E SearchCurrent "Current Board" 0 {Search for the current board position}
 menuText E SearchMaterial "Material/Pattern" 0 {Search for material or board patterns}
+menuText E SearchMoves "Moves" 0 {}
 menuText E SearchUsing "Load Search File" 0 {Search using a SearchOptions file}
 
 # Windows menu:

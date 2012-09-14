@@ -133,6 +133,7 @@ menuText R SearchEnd "Filter to Last Move" 0
 menuText R SearchCurrent "Текущая позиция..." 0 {Поиск текущей позиции}
 menuText R SearchHeader "Заголовок..." 0 {Поиск по заголовку (игрок, турнир, и т.д.)}
 menuText R SearchMaterial "Материал/Образ..." 0 {Поиск по материалу или образцам позиции}
+menuText R SearchMoves {Moves} 0 {}
 menuText R SearchUsing "Используя файл поиска..." 0 {Поиск с использованием файла с установками поиска}
 
 # Windows menu:

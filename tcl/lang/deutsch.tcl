@@ -154,6 +154,7 @@ menuText D SearchHeader "Partiedaten..." 0 \
   {Partiedaten (Spieler, Turnier etc.) suchen}
 menuText D SearchMaterial "Material/Muster..." 0 \
   {Nach Material- oder Stellungsmustern suchen}
+menuText D SearchMoves {Züge} 0 {}
 menuText D SearchUsing "Mit Suchoptionsdatei..." 4 \
   {Mit Suchoptionsdatei suchen}
 
