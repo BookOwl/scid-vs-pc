@@ -309,6 +309,7 @@ append helpText(Index) {
   <li><a GameList>Game List</a> window</li>
   <li><a Menus Game>Game menu</a></li>
   <li><a Searches Header>General searches</a></li>
+  <li><a Maintenance Editing>Global substitutions</a></li>
   <li><a Graphs>Graph windows</a></li>
   </ul>
 
@@ -2370,6 +2371,13 @@ set helpText(Maintenance) {<h1>Database Maintenance</h1>
   Each unique name is only stored once in the <a Formats>name file</a>, so changing a name
   actually changes all occurrences of it. Similarly, some names in the name file may not actually be used. To remove such names, 
 perform a Namebase <a Compact>Compaction</a>.
+  </p>
+  <p>
+  An single asterisk '*' may be used to match <b>any</b> name. This global substitution is only available for 
+  the EVENT, SITE and ROUND names - not the PLAYER, ELO or DATE names.
+  </p>
+  <p>
+  DATE and EVENTDATE fields must be of the form YYYY.MM.DD (year, month, day)
   </p>
   <p>
   <i>Please take care when using the Name Editor. Changes are not properly undoable if the "With" name already exists.</i>

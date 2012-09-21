@@ -11638,7 +11638,10 @@ sc_name_edit (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
 
     // Find the existing name in the namebase:
     idNumberT oldID = 0;
-    if (option != OPT_DATE  &&  option != OPT_EVENTDATE) {
+
+    // skip this check is we are searching for "*" and the field is OPT_EVENT SITE or ROUND 
+    if (option != OPT_DATE  &&  option != OPT_EVENTDATE 
+        && !(oldName[0]=='*' && oldName[1]==0 && (option == OPT_EVENT || option == OPT_SITE || option == OPT_ROUND))) {
         if (db->nb->FindExactName (nt, oldName, &oldID) != OK) {
             Tcl_AppendResult (ti, "Sorry, the ", NAME_TYPE_STRING[nt],
                               " name \"", oldName, "\" does not exist.", NULL);
@@ -11697,6 +11700,9 @@ sc_name_edit (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
         newIE = *ie;
         int edits = 0;
 
+        // "*" will match anything in EVENT, SITE and a few others
+        bool glob = (oldName[0]=='*' && oldName[1]==0);
+
         switch (option) {
         case OPT_PLAYER:
             if (ie->GetWhite() == oldID) {
@@ -11710,21 +11716,21 @@ sc_name_edit (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
             break;
 
         case OPT_EVENT:
-            if (ie->GetEvent() == oldID) {
+            if (glob || ie->GetEvent() == oldID) {
                 newIE.SetEvent (newID);
                 edits++;
             }
             break;
 
         case OPT_SITE:
-            if (ie->GetSite() == oldID) {
+            if (glob || ie->GetSite() == oldID) {
                 newIE.SetSite (newID);
                 edits++;
             }
             break;
 
         case OPT_ROUND:
-            if (ie->GetRound() == oldID) {
+            if (glob || ie->GetRound() == oldID) {
                 newIE.SetRound (newID);
                 edits++;
             }
