@@ -255,13 +255,15 @@ namespace eval pgn {
       { "Text files" {".txt"} }
       { "All files"  {"*"}    }
     }
-    # -initialdir $env(HOME)
 
     ### Only suggest a filename if this is not a multiple pgn file
     if {[info exists ::initialDir(file)] && [sc_filter count] <= 1} {
       set tail $::initialDir(file)
     } else {
       set tail {}
+    }
+    if {! [file isdirectory $::initialDir(pgn)] } {
+      set ::initialDir(pgn) $::env(HOME)
     }
     set fname [tk_getSaveFile -parent $parent \
                  -initialdir $::initialDir(pgn) -initialfile $tail \

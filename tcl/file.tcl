@@ -88,6 +88,9 @@ proc ::file::New {} {
     { "Scid databases" {".si4"} }
     { "EPD files" {".epd"} }
   }
+  if {! [file isdirectory $::initialDir(base)] } {
+    set ::initialDir(base) $::env(HOME)
+  }
   set fName [tk_getSaveFile -initialdir $::initialDir(base) -filetypes $ftype -title "Create a Scid database"]
   if {$fName == {}} {
     return
@@ -524,6 +527,9 @@ proc ::file::openBaseAsTree { { fName "" } } {
         { "Scid databases" {".si4" ".si3"} }
         { "PGN files" {".pgn" ".PGN"} }
       }
+    }
+    if {! [file isdirectory $::initialDir(base)] } {
+      set ::initialDir(base) $::env(HOME)
     }
     set fName [tk_getOpenFile -initialdir $::initialDir(base) -filetypes $ftype -title "Open a Scid file"]
     if {$fName == ""} { return }
