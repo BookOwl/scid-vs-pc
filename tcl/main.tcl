@@ -1182,6 +1182,8 @@ proc addMove { sq1 sq2 {animate ""}} {
   }
 
   set moveUCI [::board::san $sq2][::board::san $sq1]$promoLetter
+  ### moveUCI seems to be used by serGame, novag *and* fics below, so standardise them a little S.A.
+
   set move [sc_game info nextMoveUCI]
   if { [ string compare -nocase $moveUCI $move] == 0 && ! $nullmove } {
        sc_move forward
@@ -1222,7 +1224,7 @@ proc addMove { sq1 sq2 {animate ""}} {
   } else {
     # if {[winfo exists .commentWin]} { .commentWin.cf.text delete 0.0 end }
     if {[winfo exists .serGameWin]} {
-      set ::sergame::lastPlayerMoveUci "[::board::san $sq2][::board::san $sq1]$promoLetter"
+      set ::sergame::lastPlayerMoveUci $moveUCI
     } else {
       set ::sergame::lastPlayerMoveUci ""
     }
@@ -1233,18 +1235,19 @@ proc addMove { sq1 sq2 {animate ""}} {
       sc_var promote [expr {[sc_var count] - 1}]
       sc_move forward 1
     }
+
+    if {$::fics::playing == 1 && [winfo exists .fics]} {
+	if { $promo != $EMPTY } {
+	  ::fics::writechan "promote $promoLetter"
+	}
+	::fics::writechan [string range $moveUCI 0 3 ]
+    }
+
+    if {$::novag::connected} {
+      ::novag::addMove $moveUCI
+    }
+
     after idle [list ::utils::sound::AnnounceNewMove $san]
-  }
-
-  if {$::fics::playing == 1 && [winfo exists .fics]} {
-      if { $promo != $EMPTY } {
-        ::fics::writechan "promote $promoLetter"
-      }
-      ::fics::writechan [ string range [sc_game info previousMoveUCI] 0 3 ]
-  }
-
-  if {$::novag::connected} {
-    ::novag::addMove "[::board::san $sq2][::board::san $sq1]$promoLetter"
   }
 
   moveEntry_Clear

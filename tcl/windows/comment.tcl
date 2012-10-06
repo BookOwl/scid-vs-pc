@@ -163,6 +163,9 @@ proc ::commenteditor::Open {} {
   } else {
     bind $w <Button-4> ::move::Back
     bind $w <Button-5> ::move::Forward
+    ### How do we unbind the forward/back from the text widget ?
+    # bind $w.cf.text "puts ok ; break"
+    # bind $w.cf.text "$w.cf.scroll scroll -1 units ; break"
   }
 
   bind $w.cf.text <Control-z> {catch {.commentWin.cf.text edit undo} ; break}; # seems automatic anyway
