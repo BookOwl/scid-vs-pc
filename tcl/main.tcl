@@ -82,22 +82,19 @@ proc moveEntry_Complete {} {
     }
 
     # Now send the move done to FICS and NOVAG Citrine
-    set promoletter ""
-    set moveuci [sc_game info previousMoveUCI]
-    if { [ string length $moveuci ] == 5 } {
-      set promoletter [ string tolower [ string index $moveuci end ] ]
-    }
+    set moveUCI [sc_game info previousMoveUCI]
     if { [winfo exists .fics] } {
       if { $::fics::playing == 1} {
-        if { $promoletter != "" } {
-          ::fics::writechan "promote $promoLetter"
-        }
-        ::fics::writechan [ string range $moveuci 0 3 ]
+	if { [ string length $moveUCI ] == 5 } {
+	  set promoletter [ string tolower [ string index $moveUCI end ] ]
+	  ::fics::writechan "promote $promoLetter"
+	}
+        ::fics::writechan [ string range $moveUCI 0 3 ]
       }
     }
 
     if {$::novag::connected} {
-      ::novag::addMove "[ string range $moveuci 0 3 ]$promoLetter"
+      ::novag::addMove $moveUCI
     }
 
     moveEntry_Clear
@@ -1223,17 +1220,21 @@ proc addMove { sq1 sq2 {animate ""}} {
     sc_move addSan null
   } else {
     # if {[winfo exists .commentWin]} { .commentWin.cf.text delete 0.0 end }
-    if {[winfo exists .serGameWin]} {
-      set ::sergame::lastPlayerMoveUci $moveUCI
-    } else {
-      set ::sergame::lastPlayerMoveUci ""
-    }
     sc_move add $sq1 $sq2 $promo
     set san [sc_game info previous]
     if {$action == "mainline"} {
       sc_var exit
       sc_var promote [expr {[sc_var count] - 1}]
       sc_move forward 1
+    }
+
+    ### We need to do this incase moveUCI move was back to front because of reverse order square presses (eg e4e2)
+    set moveUCI [sc_game info previousMoveUCI]
+
+    if {[winfo exists .serGameWin]} {
+      set ::sergame::lastPlayerMoveUci $moveUCI
+    } else {
+      set ::sergame::lastPlayerMoveUci ""
     }
 
     if {$::fics::playing == 1 && [winfo exists .fics]} {

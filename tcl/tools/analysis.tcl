@@ -1762,6 +1762,15 @@ proc makeAnalysisMove {n} {
     puts "Error adding move $move" ; # &&&
     set analysis(waitForBestMove$n) 1
   } else {
+    if {$::fics::playing == 1 && [winfo exists .fics]}  {
+      set moveUCI [sc_game info previousMoveUCI]
+      if { [ string length $moveUCI ] == 5 } {
+	set promoletter [ string tolower [ string index $moveUCI end ] ]
+	::fics::writechan "promote $promoLetter"
+      }
+      ::fics::writechan [string range $moveUCI 0 3 ]
+    }
+
     puts_ "ENGINE $n moves $move"
   }
     
