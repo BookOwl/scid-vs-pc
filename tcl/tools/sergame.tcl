@@ -151,10 +151,10 @@ namespace eval sergame {
     label $w.ftime.timebonus.blacklseconds -text $::tr(TimeSec)
     grid $w.ftime.timebonus.blacklseconds -row $row -column 5
 
-    $w.ftime.timebonus.whitespminutes set 5
-    $w.ftime.timebonus.whitespseconds set 10
-    $w.ftime.timebonus.blackspminutes set 5
-    $w.ftime.timebonus.blackspseconds set 10
+    $w.ftime.timebonus.whitespminutes set $::sergame::wtime
+    $w.ftime.timebonus.whitespseconds set $::sergame::winc
+    $w.ftime.timebonus.blackspminutes set $::sergame::btime
+    $w.ftime.timebonus.blackspseconds set $::sergame::binc
 
     # Fixed depth
     radiobutton $w.ftime.depthbutton -text $::tr(FixedDepth) -value "depth" -variable ::sergame::timeMode
@@ -172,8 +172,8 @@ namespace eval sergame {
     grid $w.ftime.nodesvalue -row 2 -column 1 -sticky w
 
     radiobutton $w.ftime.movetimebutton -text $::tr(SecondsPerMove) -value "movetime" -variable ::sergame::timeMode
-    spinbox $w.ftime.movetimevalue  -width 4 -from 1 -to 120 -increment 1 -validate all -vcmd {string is int %P} -textvariable ::sergame::movetime
-    # $w.ftime.movetimevalue set $movetime
+    spinbox $w.ftime.movetimevalue  -width 4 -from 1 -to 120 -increment 1 -validate all -vcmd {string is int %P}
+    $w.ftime.movetimevalue set $::sergame::movetime
 
     grid $w.ftime.movetimebutton -row 3 -column 0 -sticky w
     grid $w.ftime.movetimevalue -row 3 -column 1 -sticky w
@@ -251,13 +251,14 @@ namespace eval sergame {
           set ::sergame::useBook 0
         }
       }
-      set ::uci::uciInfo(wtime$n) [expr [.configSerGameWin.ftime.timebonus.whitespminutes get]*1000*60]
-      set ::uci::uciInfo(btime$n) [expr [.configSerGameWin.ftime.timebonus.blackspminutes get]*1000*60]
-      set ::uci::uciInfo(winc$n) [expr [.configSerGameWin.ftime.timebonus.whitespseconds get]*1000]
-      set ::uci::uciInfo(binc$n) [expr [.configSerGameWin.ftime.timebonus.blackspseconds get]*1000]
-      set ::uci::uciInfo(fixeddepth$n) [.configSerGameWin.ftime.depthvalue get]
-      set ::uci::uciInfo(fixednodes$n) [expr [.configSerGameWin.ftime.nodesvalue get]*1000]
-      set ::uci::uciInfo(movetime$n) [expr [.configSerGameWin.ftime.movetimevalue get]*1000]
+
+      set ::sergame::wtime [.configSerGameWin.ftime.timebonus.whitespminutes get]
+      set ::sergame::btime [.configSerGameWin.ftime.timebonus.blackspminutes get]
+      set ::sergame::winc [.configSerGameWin.ftime.timebonus.whitespseconds get]
+      set ::sergame::binc [.configSerGameWin.ftime.timebonus.blackspseconds get]
+      set ::sergame::fixeddepth [.configSerGameWin.ftime.depthvalue get]
+      set ::sergame::fixednodes [expr [.configSerGameWin.ftime.nodesvalue get]*1000]
+      set ::sergame::movetime [.configSerGameWin.ftime.movetimevalue get]
       
       destroy .configSerGameWin
       ::sergame::play $n
@@ -409,13 +410,8 @@ namespace eval sergame {
 
     # setup clocks
     if {$::sergame::timeMode == "timebonus"} {
-      if { [::sergame::getEngineColor] == "white" } {
-	::gameclock::setSec 2 [expr 0 - $::uci::uciInfo(wtime$n)/1000]
-	::gameclock::setSec 1 [expr 0 - $::uci::uciInfo(btime$n)/1000]
-      } else  {
-	::gameclock::setSec 1 [expr 0 - $::uci::uciInfo(wtime$n)/1000]
-	::gameclock::setSec 2 [expr 0 - $::uci::uciInfo(btime$n)/1000]
-      }
+      ::gameclock::setSec 1 [expr 0 - (60 * $::sergame::wtime)]
+      ::gameclock::setSec 2 [expr 0 - (60 * $::sergame::btime)]
     }
 
     set ::sergame::wentOutOfBook 0
@@ -510,17 +506,20 @@ namespace eval sergame {
     }
 
     # The player moved : add clock time
-    if {!([::sergame::getEngineColor] == "black" && [sc_pos moveNumber] == 1)} {
-      if {$::sergame::timeMode == "timebonus"} {
-	if { [::sergame::getEngineColor] == "white" } {
-	  ::gameclock::add 1 [expr $::uci::uciInfo(binc$n)/1000]
-	} else  {
-	  ::gameclock::add 1 [expr $::uci::uciInfo(winc$n)/1000]
-	}
+
+    if { [::sergame::getEngineColor] == "black" } {
+      if {$timeMode == "timebonus" } {
+        ::gameclock::add 1 $::sergame::winc
       }
+      ::gameclock::stop 1
+      ::gameclock::start 2
+    } else {
+      if {$timeMode == "timebonus" && [sc_pos moveNumber] != 1} {
+	::gameclock::add  2 $::sergame::binc
+      }
+      ::gameclock::stop 2
+      ::gameclock::start 1
     }
-    ::gameclock::stop 1
-    ::gameclock::start 2
     if {[checkRepetition]} {
       return
     }
@@ -541,8 +540,13 @@ namespace eval sergame {
           if {$answer == no} {
             sc_move back 1
             updateBoard -pgn
-            ::gameclock::stop 2
-            ::gameclock::start 1
+	    if { [::sergame::getEngineColor] == "black" } {
+	      ::gameclock::stop 2
+	      ::gameclock::start 1
+            } else {
+	      ::gameclock::stop 1
+	      ::gameclock::start 2
+            }
             after 1000 ::sergame::engineGo
             return
           }  else  {
@@ -576,18 +580,25 @@ namespace eval sergame {
           }
           
           updateBoard -pgn -animate
-          ::gameclock::stop 2
-          ::gameclock::start 1
+          # Computer moved
+	  if { [::sergame::getEngineColor] == "black" } {
+	    ::gameclock::stop 2
+	    if {$timeMode == "timebonus"} {
+	      # have to use gameclock::add for some syncing reason
+	      # incr ::gameclock::data(counter2) -[expr $::sergame::binc]
+              ::gameclock::add 2 $::sergame::binc
+	    }
+	    ::gameclock::start 1
+          } else {
+	    ::gameclock::stop 1
+	    if {$timeMode == "timebonus"} {
+              ::gameclock::add 1 $::sergame::winc
+	    }
+	    ::gameclock::start 2
+          }
           if {[checkRepetition]} {
             return
           }
-	  if {$::sergame::timeMode == "timebonus"} {
-	    if { [::sergame::getEngineColor] == "white" } {
-	      ::gameclock::add 2 [expr $::uci::uciInfo(winc$n)/1000]
-	    } else  {
-	      ::gameclock::add 2 [expr $::uci::uciInfo(binc$n)/1000]
-	    }
-	  }
 	  after 1000 ::sergame::engineGo
           return
         }
@@ -605,18 +616,22 @@ namespace eval sergame {
         # we made a book move so assume a score = 0
         set ::uci::uciInfo(prevscore$n) 0.0
         updateBoard -pgn -animate
-        ::gameclock::stop 2
-        ::gameclock::start 1
+	if { [::sergame::getEngineColor] == "black" } {
+	  ::gameclock::stop 2
+	  if {$timeMode == "timebonus"} {
+            ::gameclock::add 2 $::sergame::binc
+          }
+	  ::gameclock::start 1
+	} else {
+	  ::gameclock::stop 1
+	  if {$timeMode == "timebonus"} {
+	    ::gameclock::add 1 $::sergame::winc
+          }
+	  ::gameclock::start 2
+	}
         if {[checkRepetition]} {
 	  return
         }
-	if {$timeMode == "timebonus"} {
-	  if { [::sergame::getEngineColor] == "white" } {
-	    ::gameclock::add 2 [expr $::uci::uciInfo(winc$n)/1000]
-	  } else  {
-	    ::gameclock::add 2 [expr $::uci::uciInfo(binc$n)/1000]
-	  }
-	}
 	after 1000 ::sergame::engineGo
         return
       }
@@ -635,21 +650,16 @@ namespace eval sergame {
       ::sergame::sendToEngine $n "isready"
       vwait ::analysis(waitForReadyOk$n)
       ::sergame::sendToEngine $n "position fen [sc_pos fen]"
-      if { [::sergame::getEngineColor] == "white" } {
-        set wtime [expr [::gameclock::getSec 2] * 1000 ]
-        set btime [expr [::gameclock::getSec 1] * 1000 ]
-      } else  {
-        set wtime [expr [::gameclock::getSec 1] * 1000 ]
-        set btime [expr [::gameclock::getSec 2] * 1000 ]
-      }
+      set w1 [::gameclock::getSec 1]
+      set b1 [::gameclock::getSec 2]
       if {$timeMode == "timebonus"} {
-        ::sergame::sendToEngine $n "go wtime $wtime btime $btime winc $::uci::uciInfo(winc$n) binc $::uci::uciInfo(binc$n)"
+        ::sergame::sendToEngine $n "go wtime [expr {$w1*1000}] btime [expr {$b1*1000}] winc [expr {$::sergame::winc*1000}] binc [expr {$::sergame::binc*1000}]"
       } elseif {$timeMode == "depth"} {
-        ::sergame::sendToEngine $n "go depth $::uci::uciInfo(fixeddepth$n)"
+        ::sergame::sendToEngine $n "go depth $::sergame::fixeddepth"
       } elseif {$timeMode == "movetime"} {
-        ::sergame::sendToEngine $n "go movetime $::uci::uciInfo(movetime$n)"
+        ::sergame::sendToEngine $n "go movetime [expr $::sergame::movetime * 1000]"
       } elseif {$timeMode == "nodes"} {
-        ::sergame::sendToEngine $n "go nodes $::uci::uciInfo(fixednodes$n)"
+        ::sergame::sendToEngine $n "go nodes $::sergame::fixednodes"
       }
     }
 
@@ -689,8 +699,13 @@ namespace eval sergame {
         if {$answer == yes} {
           sc_move back 1
           updateBoard -pgn
-          ::gameclock::stop 2
-          ::gameclock::start 1
+	  if { [::sergame::getEngineColor] == "black" } {
+	    ::gameclock::stop 2
+	    ::gameclock::start 1
+	  } else {
+	    ::gameclock::stop 1
+	    ::gameclock::start 2
+	  }
           after 1000 ::sergame::engineGo
           return
         }
@@ -710,35 +725,36 @@ namespace eval sergame {
       return
     }
 
-    # add time after a move played
-    if {$timeMode == "timebonus"} {
-      if { [::sergame::getEngineColor] == "white" } {
-        ::gameclock::add 2 [expr $::uci::uciInfo(winc$n)/1000]
-      } else  {
-        ::gameclock::add 2 [expr $::uci::uciInfo(binc$n)/1000]
+    if { [::sergame::getEngineColor] == "black" } {
+      if {$timeMode == "timebonus"} {
+	# have to use gameclock::add even though it redraws clock too much
+	# incr ::gameclock::data(counter2) -[expr $::sergame::binc]
+        ::gameclock::add 2 $::sergame::binc
       }
+      ::gameclock::stop 2
+      ::gameclock::start 1
+    } else {
+      if {$timeMode == "timebonus"} {
+	# incr ::gameclock::data(counter1) -[expr $::sergame::winc]
+        ::gameclock::add 1 $::sergame::winc
+      }
+      ::gameclock::stop 1
+      ::gameclock::start 2
     }
-    ::gameclock::stop 2
-    ::gameclock::start 1
 
     # ponder mode (the engine just played its move)
     if {$::sergame::ponder && $::uci::uciInfo(ponder$n) != ""} {
       ::sergame::sendToEngine $n "position fen [sc_pos fen] moves $::uci::uciInfo(ponder$n)"
-      if { [::sergame::getEngineColor] == "white" } {
-        set wtime [expr [::gameclock::getSec 2] * 1000 ]
-        set btime [expr [::gameclock::getSec 1] * 1000 ]
-      } else  {
-        set wtime [expr [::gameclock::getSec 1] * 1000 ]
-        set btime [expr [::gameclock::getSec 2] * 1000 ]
-      }
+      set w1 [::gameclock::getSec 1]
+      set b1 [::gameclock::getSec 2]
       if {$timeMode == "timebonus"} {
-        ::sergame::sendToEngine $n "go ponder wtime $wtime btime $btime winc $::uci::uciInfo(winc$n) binc $::uci::uciInfo(binc$n)"
+        ::sergame::sendToEngine $n "go ponder wtime [expr {$w1*1000}] btime [expr {$b1*1000}] winc [expr {$::sergame::winc*1000}] binc [expr {$::sergame::binc*1000}]"
       } elseif {$timeMode == "depth"} {
-        ::sergame::sendToEngine $n "go ponder depth $::uci::uciInfo(fixeddepth$n)"
+        ::sergame::sendToEngine $n "go ponder depth $::sergame::fixeddepth"
       } elseif {$timeMode == "movetime"} {
-        ::sergame::sendToEngine $n "go ponder movetime $::uci::uciInfo(movetime$n)"
+        ::sergame::sendToEngine $n "go ponder movetime [expr $::sergame::movetime * 1000]"
       } elseif {$timeMode == "nodes"} {
-        ::sergame::sendToEngine $n "go ponder nodes $::uci::uciInfo(fixednodes$n)"
+        ::sergame::sendToEngine $n "go ponder nodes $::sergame::fixednodes"
       }
     }
 

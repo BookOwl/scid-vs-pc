@@ -8,21 +8,26 @@ proc fenErrorDialog {{msg {}}} {
 
 }
 
-# copyFEN
-#
 #   Copies the FEN of the current position to the text clipboard.
-#
+
 proc copyFEN {} {
   setClipboard [sc_pos fen]
 }
 
-# pasteFEN
-#
 #   Bypasses the board setup window and tries to paste the current
 #   text selection as the setup position, producing a message box
 #   if the selection does not appear to be a valid FEN string.
-#
+
 proc pasteFEN {} {
+
+  set confirm [::game::ConfirmDiscard2]
+  if {$confirm == 2} { return }
+  if {$confirm == 0} {
+    sc_game save [sc_game number]
+  }
+  setTrialMode 0
+  sc_game new
+
   set fenStr ""
   if {[catch {set fenStr [selection get -selection PRIMARY]} ]} {
     catch {set fenStr [selection get -selection CLIPBOARD]}
@@ -48,7 +53,6 @@ proc pasteFEN {} {
     set msg "\"$fenStr\"\nis not a valid FEN.\n\n $fenExplanation"
 
     fenErrorDialog $msg
-    return
   }
   updateBoard -pgn
 }

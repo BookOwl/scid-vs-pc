@@ -129,6 +129,11 @@ set ::sergame::timeMode movetime
 set ::sergame::movetime 6
 set ::sergame::current 0
 set ::sergame::chosenOpening 0
+set ::sergame::btime 300000
+set ::sergame::wtime 5
+set ::sergame::btime 5
+set ::sergame::winc 10
+set ::sergame::binc 10
 set ::commenteditor::showBoard 0
 set ::windows::gamelist::widths {}
 set ::windows::gamelist::findcase 1
