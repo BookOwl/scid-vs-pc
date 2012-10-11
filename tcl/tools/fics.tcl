@@ -1839,8 +1839,8 @@ namespace eval fics {
               if { [catch {sc_move addSan $::fics::premove}]} {
                 puts "Premove $::fics::premove failed"
               } else {
-		updateBoard -pgn -animate
 		::fics::writechan $::fics::premove
+		updateBoard -pgn -animate
               }
 	    }
 	    set ::fics::premove {}
