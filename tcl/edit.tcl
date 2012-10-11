@@ -43,16 +43,24 @@ proc pasteFEN {} {
     return
   }
 
-  # If the FEN appears truncated / not lowercase letter
-  # (eg 8/3r1pk1/2p1b3/2p3p1/2P1P3/1P3P2/4KB2/2R5 B)
-  # then lower the move letter, and add the rest "KQkq - 0 1"
+  ### If FEN is prepended "FEN:", then strip this prefix
+  if {[string match -nocase fen:* $fenStr]} {
+    set fenStr [string trim [string range $fenStr 4 end]]
+  }
+
+  ### If the first arg ends with "/", then remove it, Some people seem to use this
+  # (eg 8/3r1pk1/2p1b3/2p3p1/2P1P3/1P3P2/4KB2/2R5/ B)
+  # and lowercase the second letter.
   catch {
-    if {[llength $fenStr] == 2} {
-      set s [string tolower [lindex $fenStr 1]]
-      if {$s == "w" || $s == "b"} {
-        set fenStr "[lindex $fenStr 0] $s KQkq - 0 1"
+      set s1 [lindex $fenStr 0]
+      if {[string index $s1 end] == "/"} { 
+        set s1 [string range $s1 0 end-1]
       }
-    }
+      set s2 [lindex $fenStr 1]
+      if {$s2 == "W" || $s2 == "B"} {
+	set s2 [string tolower $s2]
+      }
+      set fenStr "$s1 $s2 [lrange $fenStr 2 end]"
   }
 
   if {[catch {sc_game startBoard $fenStr}]} {
