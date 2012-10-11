@@ -42,6 +42,19 @@ proc pasteFEN {} {
     fenErrorDialog $msg
     return
   }
+
+  # If the FEN appears truncated / not lowercase letter
+  # (eg 8/3r1pk1/2p1b3/2p3p1/2P1P3/1P3P2/4KB2/2R5 B)
+  # then lower the move letter, and add the rest "KQkq - 0 1"
+  catch {
+    if {[llength $fenStr] == 2} {
+      set s [string tolower [lindex $fenStr 1]]
+      if {$s == "w" || $s == "b"} {
+        set fenStr "[lindex $fenStr 0] $s KQkq - 0 1"
+      }
+    }
+  }
+
   if {[catch {sc_game startBoard $fenStr}]} {
     # Trim length, and remove newlines for error dialog
     if {[string length $fenStr] > 80} {
@@ -59,13 +72,12 @@ proc pasteFEN {} {
 
 proc setSetupBoardToFen {} {
   global setupFen
+  global setupboardSize setupBd
 
   # Called from ".setup.fencombo" FEN combo S.A
 
   # BUG: Once the FEN combo box in the Setup board widget is accessed, the original
   # game position can still be had, but game history is lost
-
-  global setupboardSize setupBd
 
   if {[catch {sc_game startBoard $setupFen} err]} {
     fenErrorDialog $err
