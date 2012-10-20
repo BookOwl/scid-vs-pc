@@ -299,6 +299,7 @@ class IndexEntry
 
     inline dateT   GetDate ()     { return u32_low_20(Dates); }
     inline uint    GetYear ()     { return date_GetYear (GetDate()); }
+    // these next two could be done in one step instead of calling GetDate() ??
     inline uint    GetMonth ()    { return date_GetMonth (GetDate()); }
     inline uint    GetDay ()      { return date_GetDay (GetDate()); }
     dateT          GetEventDate ();

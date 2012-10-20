@@ -6357,10 +6357,21 @@ sc_game_crosstable (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv
         return TCL_OK;
     }
 
-    // Restrict games in tournament to be current game date +/- 3 months:
-    dateT firstDate = date_AddMonths (g->GetDate(), -3);
-    dateT lastDate = date_AddMonths (g->GetDate(), 3);
+    dateT firstDate;
+    dateT lastDate;
     dateT eventDate = g->GetEventDate();
+
+    // If game date is a year only, then allow any game in this year to match
+    dateT monthDay = date_GetMonthDay (g->GetDate());
+
+    if (monthDay == 0) {
+      firstDate = g->GetDate();
+      lastDate = date_AddMonths (g->GetDate(), 12) - 1;
+    } else {
+      // Restrict games in tournament to be current game date +/- 3 months:
+      firstDate = date_AddMonths (g->GetDate(), -3);
+      lastDate = date_AddMonths (g->GetDate(), 3);
+    }
 
     dateT firstSeenDate = g->GetDate();
     dateT lastSeenDate = g->GetDate();
