@@ -434,9 +434,8 @@ proc openBase {name} {
 }
 
 
-# ::file::Close:
-#   Closes the active base.
-#
+#   Close the active base.
+
 proc ::file::Close {{base -1}} {
   # Remember the current base
   set current [sc_base current]
@@ -461,8 +460,11 @@ proc ::file::Close {{base -1}} {
       ::file::SwitchToBase $current
     }
 
-    # Need these here, as otherwise a db "open base as tree" window won't close. S.A.
+    ### Need these here, as otherwise a db "open base as tree" window won't close. S.A.
+
+    # (hmmm - this line is making us switch to empty base instead of clipbase when tree is closed and is locked)
     if {[winfo exists .treeWin$base]} { destroy .treeWin$base }
+    
     if {[winfo exists .emailWin]} { destroy .emailWin }
   } else {
     updateMenuStates

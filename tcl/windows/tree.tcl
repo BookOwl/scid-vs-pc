@@ -79,9 +79,10 @@ proc ::tree::OpenClose {} {
   set tree(bestRes$baseNumber) All
   trace variable tree(bestRes$baseNumber) w "::tree::doTrace bestRes"
 
-  bind $w <Destroy> "
-    bind $w <Destroy> {}
-    set tree(locked$baseNumber) 0 "
+  ### todo: fix this properly
+  # Destroy is handled by "bind $w.f.tl <Destroy>"
+  # as $w.f.tl.g (bar graph in text window) is generating Destroy(s)
+
   bind $w <F1> {helpWindow Tree}
   bind $w <Escape> "$w.buttons.close invoke"
 

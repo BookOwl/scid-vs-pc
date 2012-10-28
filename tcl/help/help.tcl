@@ -5226,9 +5226,9 @@ set helpText(TacticsTrainer) {<h1>Mate in ..N.. Puzzles</h1>
   <p>
   Unlike other bases, puzzle bases do not contain full games; only starting positions.
   Any puzzle book can be converted to a trainings base by setting up the
-  positions and storing the new database into
-  the <term>Bases</term> directory. (It is also recommended to set the new base type
-  to <term>Tactics</term>, by means of the <a Maintenance>Maintenance</a> window).
+  positions and storing the new database into the <term>Bases</term> directory. 
+  In the <a Maintenance>Maintenance</a> window, set the new base type to <term>Tactics</term>,
+  and edit the <term>Description</term> to give the database a name.
   </p>
   <p>
   To avoid cheating, it is advisable to close the PGN window and check
