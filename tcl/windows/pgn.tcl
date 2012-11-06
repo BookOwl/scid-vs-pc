@@ -204,6 +204,7 @@ namespace eval pgn {
       }
     }
     standardShortcuts $w
+    bind $w <Delete> ::game::Truncate
     bindMouseWheel $w $w.text
     bind $w <Control-s> "::pgn::savePgn $w"
 
