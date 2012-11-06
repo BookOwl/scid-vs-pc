@@ -503,6 +503,8 @@ proc usage {} {
     puts {  ./configure "CFLAGS=-march=core2" "LDFLAGS=-march=core2"}
     puts {Make a universal binary for OSX (i386 and PPC)}
     puts {  ./configure "CFLAGS=-arch i386 -arch ppc" "LDFLAGS=-arch i386 -arch ppc"}
+    puts {Compile with clang/clang++}
+    puts {  ./configure CXX=clang++ CC=clang LINK=clang++}
     puts {}
     exit 1
 }

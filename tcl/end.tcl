@@ -1255,9 +1255,6 @@ bind . <space>  moveEntry_Complete
 bind . <Escape> "moveEntry_Clear 1"
 bind . <Tab> raiseAllWindows
 
-# bind . <BackSpace> moveEntry_Backspace
-# bind . <Delete> moveEntry_Backspace
-
 ###  Other Key bindings:
 
 # Bindings for quick move annotation entry in the main window:

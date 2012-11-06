@@ -1791,7 +1791,8 @@ namespace eval fics {
       sc_game tags set -black $black
       sc_game tags set -result *
       if {[catch {sc_game startBoard $fen}]} {
-	# Hmm - pawn and piece counts get verified in Position::ReadFromFEN, but crazyhouse often has more than 8 pawns.
+	# Pawn and piece counts get verified in Position::ReadFromFEN, but crazyhouse often has more than 8 pawns.
+        # So we may have to setup board manually
 	updateGameinfo
 	set moves [lreverse [lrange $line 1 8]]
 	set boardmoves [string map { "-" "." " " "" } $moves]
