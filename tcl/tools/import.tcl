@@ -288,8 +288,8 @@ proc doPgnFileImport {fname text {multiple 0} } {
     wm title $w "Scid: Importing PGN file"
 
 
-    canvas $w.progress -width 350 -height 20  -relief solid 
-    $w.progress create rectangle 0 0 0 0 -fill rosybrown3 -outline rosybrown3 -tags bar
+    canvas $w.progress -width 350 -height 20 -relief solid -border 1
+    $w.progress create rectangle 0 0 0 0 -fill $::progcolor -outline $::progcolor -tags bar
     $w.progress create text 345 10 -anchor e -font font_Regular -tags time \
         -fill black -text "0:00 / 0:00"
 

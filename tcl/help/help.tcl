@@ -6359,6 +6359,7 @@ The window manager may interfere with some shortcuts.
 <li><b>control-f</b> - Flip Board</li>
 <li><b>escape</b> - Clear move entry</li>
 <li><b>enter</b> - Add move from chess engine</li>
+<li><b>delete</b> - Delete trailing moves from game or variation</li>
 <li></li>
 <li><b>F1</b> - Help</li>
 <li><b>control-F7</b> - Dump all Images and exit (developer only)</li>
@@ -6505,6 +6506,7 @@ The window manager may interfere with some shortcuts.
 <li><b>down</b> - Forward five moves</li>
 <li><b>home</b> - Goto start</li>
 <li><b>end</b> - Goto end</li>
+<li><b>delete</b> - Delete trailing moves from game or variation</li>
 <li><b>control-up</b> - Load previous game</li>
 <li><b>control-down</b> - Load next game</li>
 <li><b>control-home</b> - Load First game</li>

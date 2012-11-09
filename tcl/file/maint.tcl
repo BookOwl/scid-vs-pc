@@ -763,8 +763,8 @@ proc doMarkDups {{parent .}} {
 
 set checkOption(AllGames) all
 
-# CheckAllGames
-#  Decodes all games and tries to find errors
+### Decode games and try to find errors
+
 proc checkAllGames {} {
   set w .checkGames
   if {[winfo exists $w]} {
@@ -801,6 +801,9 @@ proc checkAllGames {} {
     } else {
       grab release .checkGames.f.b.cancel
       unbusyCursor .
+      .checkGames.f.progress delete time
+      .checkGames.f.progress create text 295 10 -anchor e -font font_Regular -tags time \
+      -fill black -text "[tr Game]s Ok"
     }
     .checkGames.f.b.cancel configure -command {focus .; destroy .checkGames}
     .checkGames.f.b.cancel configure -textvar ::tr(Close)
@@ -809,7 +812,7 @@ proc checkAllGames {} {
   dialogbutton $w.f.b.help   -textvar ::tr(Help) -command {helpWindow Maintenance Check}
   dialogbutton $w.f.b.cancel -textvar ::tr(Close) -command "focus .; destroy $w"
   canvas $w.f.progress -width 300 -height 20 -bg white -relief solid -border 1
-  $w.f.progress create rectangle 0 0 0 0 -fill blue -outline blue -tags bar
+  $w.f.progress create rectangle 0 0 0 0 -fill $::progcolor -outline $::progcolor -tags bar
   $w.f.progress create text 295 10 -anchor e -font font_Regular -tags time \
       -fill black -text "0:00 / 0:00"
   
@@ -818,6 +821,7 @@ proc checkAllGames {} {
   pack $w.f.b -side top -pady 5 -fill x
   pack $w.f.b.go -side left -pady 5 -padx 5
   pack $w.f.b.cancel $w.f.b.help -side right -pady 5 -padx 5
+
   wm resizable $w 0 0
   bind $w <F1> {helpWindow Maintenance Check}
   bind $w <Escape> "$w.f.b.cancel invoke"
