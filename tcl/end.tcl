@@ -1023,7 +1023,22 @@ proc gameSave {gnum {focus {}}} {
   # label $f.title -textvar ::tr(NameEditMatches) -font font_Italic
   # grid $f.title -row 7           -column 8 -columnspan 2 -sticky n -padx 10
 
-  grid $f.list -row 0 -rowspan 7 -column 8 -columnspan 2 -sticky nsew -padx 10
+  grid $f.list -row 0 -rowspan 6 -column 8 -columnspan 2 -sticky nsew -padx 10
+  # 6 rows seem enough to show the 9 autocompletions
+
+  # Extra tags label+button
+
+  label $f.extralabel -text {Extra tags (eg: Annotator "Anand")} -font font_Italic
+  grid $f.extralabel -row 6 -column 8  -sticky n -pady 3
+
+  ttk::button $f.extrabutton -text "Use prev tags" -command {
+    set extraTags [sc_game tag get -last Extra]
+    .save.g.extratext delete 1.0 end
+    .save.g.extratext insert 1.0 $extraTags
+  }
+
+  # if {$gnum == 0} 
+  grid $f.extrabutton -row 6 -column 9 -sticky ew -pady 3
 
   # Extra tags text widget+scrollbar (in frame)
 
@@ -1042,19 +1057,29 @@ proc gameSave {gnum {focus {}}} {
   pack $f.extratext   -in $f.extra -side left -fill both -expand 1
   pack $f.extrascroll -in $f.extra -side right -fill y
 
-  # Extra tags label+button (below)
+  ### Custom extratags combobox 
 
-  label $f.extralabel -text {Extra tags (eg: Annotator "Anand")} -font font_Italic
-  grid $f.extralabel -row 10 -column 8  -sticky n -pady 3
+  frame $f.custom
 
-  ttk::button $f.extrabutton -text "Use prev tags" -command {
-    set extraTags [sc_game tag get -last Extra]
-    .save.g.extratext delete 1.0 end
-    .save.g.extratext insert 1.0 $extraTags
+  ttk::combobox $f.custom.box -textvariable customTags -width 25
+  bind $f.custom.box <<ComboboxSelected>> {
+    # Move this tag to the history top
+    ::utils::history::AddEntry customTags $customTags
+  }
+  ::utils::history::SetCombobox customTags $f.custom.box
+  ::utils::history::SetLimit customTags  10
+  grid $f.custom      -row 10 -column 8 -columnspan 2 -padx 10 -pady 2 -sticky nsew
+  pack $f.custom.box -side left -padx 5
+
+  ttk::button $f.custom.ok -text Add -command {
+    catch {
+      .save.g.extratext insert end "$customTags\n"
+      .save.g.extratext see end
+      ::utils::history::AddEntry customTags $customTags
+    }
   }
 
-  # if {$gnum == 0} 
-  grid $f.extrabutton -row 10 -column 9 -sticky ew -pady 3
+  pack $f.custom.ok -side right -padx 5
 
   # <Return> invokes "save"
 
