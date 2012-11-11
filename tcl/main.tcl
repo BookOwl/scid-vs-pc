@@ -204,6 +204,8 @@ proc warnStatusBar {warning} {
 proc updateStatusBar {} {
   global statusBar moveEntry
 
+  ::windows::gamelist::checkAltered
+
   # Exit if engine 1 is running in status bar
   if {$::analysis(mini) && [winfo exists .analysisWin1]} {return}
 
@@ -237,7 +239,6 @@ proc updateStatusBar {} {
   append statusBar "  [filterText]"
 
   # if {[sc_game altered]} { append statusBar " (altered)" }
-  ::windows::gamelist::checkAltered
 }
 
 
