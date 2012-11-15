@@ -1832,8 +1832,8 @@ namespace eval fics {
           # This is a common occurence when moving observed games to the main board
           # puts "error $err"
         } else {
-	  ### Send premove 
 	  if {$::fics::premove != {}} {
+	    ### Send premove 
 	    if {$fen == [sc_pos fen]} {
 	      updateBoard -pgn -animate
               # should we use "proc addSanMove"
@@ -1841,6 +1841,12 @@ namespace eval fics {
                 puts "Premove $::fics::premove failed"
               } else {
 		::fics::writechan $::fics::premove
+		### Stop clock
+		if {[sc_pos side] == "white"} {
+		  ::gameclock::stop 2
+		} else {
+		  ::gameclock::stop 1
+		}
 		updateBoard -pgn -animate
               }
 	    }

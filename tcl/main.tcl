@@ -1243,6 +1243,12 @@ proc addMove { sq1 sq2 {animate ""}} {
 	  ::fics::writechan "promote $promoLetter"
 	}
 	::fics::writechan [string range $moveUCI 0 3 ]
+	### Stop clock
+	if {[sc_pos side] == "white"} {
+	  ::gameclock::stop 2
+	} else {
+	  ::gameclock::stop 1
+	}
     }
 
     if {$::novag::connected} {
