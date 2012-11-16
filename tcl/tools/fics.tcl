@@ -1529,11 +1529,12 @@ namespace eval fics {
         -fill x -expand 1 -side bottom -pady 2
 
     set ::fics::Offers 0
-    ::fics::checkZeroOffers 0
+    ::fics::checkZeroOffers 0 {}
 
     update
     placeWinOverParent $w .fics
     wm state $w normal
+    wm minsize $w [winfo reqwidth $w] [winfo reqheight $w]
   }
 
   ### Add Offer
@@ -1545,6 +1546,7 @@ namespace eval fics {
     }
 
     set PLAYER [lindex [split $line] 1]
+    set details [string range $line [expr {[string last ) $line] + 2}] end]
     set player [string tolower $PLAYER]
     # set elo [string trimright [lindex [split $line] 3] )]
     if { [regexp {\(----\).*([0-9][0-9][0-9])} $line ] || \
@@ -1564,17 +1566,17 @@ namespace eval fics {
 	return
     }
 
-    ::fics::checkZeroOffers +1
+    ::fics::checkZeroOffers +1 {}
 
+    # Do we have to catch this ?
     pack [frame $f] -side top -padx 5 -pady 5
-    pack [label $f.name -text "$PLAYER ($elo)" -width 20] -side left
+    pack [label $f.name -text "$PLAYER ($elo) $details" -width 40] -side left
     pack [button $f.decline -text "decline" \
-	-command "::fics::writechan \"decline $PLAYER\" ; destroy $f ; ::fics::checkZeroOffers -1" ] -side right -padx 5
+	-command "::fics::writechan \"decline $PLAYER\" ; ::fics::checkZeroOffers -1 $f" ] -side right -padx 5
     pack [button $f.accept -text "accept" \
-	-command "::fics::writechan \"accept $PLAYER\"  ; destroy $f ; ::fics::checkZeroOffers -1" ] -side right -padx 5
+	-command "::fics::writechan \"accept $PLAYER\"  ; ::fics::checkZeroOffers -1 $f" ] -side right -padx 5
     update
     raiseWin .ficsOffers
-
   }
 
   ### Delete Offer 
@@ -1592,14 +1594,17 @@ namespace eval fics {
     }
 
     if {[winfo exists .ficsOffers.$player]} { 
-	destroy .ficsOffers.$player
-	::fics::checkZeroOffers -1
+	::fics::checkZeroOffers -1 .ficsOffers.$player
     }
   }
 
   ### update the number of offers, and draw a blank frame if there's none
 
-  proc checkZeroOffers {n} {
+  proc checkZeroOffers {n destroyed} {
+
+    catch {
+      destroy $destroyed
+    }
 
     set f .ficsOffers.blank
 
@@ -1612,11 +1617,11 @@ namespace eval fics {
       }
       if {$::fics::findopponent(manual) == {auto}} {
 	  pack [frame $f] -side top -padx 5 -pady 5
-	  pack [label $f.name -text "Awaiting offer" -width 20] -padx 10
+	  pack [label $f.name -text "Awaiting offer" -width 40] -padx 10
       } else {
 	if {![winfo exists $f]} {
 	  pack [frame $f] -side top -padx 5 -pady 5
-	  pack [label $f.name -text "No offers" -state disabled -width 20] -side left 
+	  pack [label $f.name -text "No offers" -state disabled -width 40] -side left 
 	  pack [button $f.decline -text "decline" -state disabled ] -side right -padx 5
 	  pack [button $f.accept -text "accept" -state disabled ] -side right -padx 5
 	}
@@ -1624,7 +1629,6 @@ namespace eval fics {
     } else {
       destroy $f
     }
-    update
   }
 
   ################################################################################
