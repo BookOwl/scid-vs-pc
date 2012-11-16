@@ -1576,7 +1576,8 @@ namespace eval fics {
     pack [button $f.accept -text "accept" \
 	-command "::fics::writechan \"accept $PLAYER\"  ; ::fics::checkZeroOffers -1 $f" ] -side right -padx 5
     update
-    raiseWin .ficsOffers
+    ### Hmmmm  - accepting an offer can kill this window at any time... How best to handle it ? todo
+    catch {raiseWin .ficsOffers}
   }
 
   ### Delete Offer 
