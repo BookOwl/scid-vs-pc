@@ -2025,7 +2025,8 @@ proc makeAnalysisWin {{n 0} {settime 0}} {
     }
     tk_messageBox -title "Scid: error starting analysis" \
         -icon warning -type ok -parent $parent \
-        -message "Unable to start the program:\n$analysisCommand:\n$result"
+        -message "Unable to start the program:\n$analysisCommand $analysisArgs\n$result"
+
     set analysisWin$n 0
     resetEngine $n
     return
@@ -2044,6 +2045,7 @@ proc makeAnalysisWin {{n 0} {settime 0}} {
       logEngine $n "$::scidName <--> Engine communication log file"
       logEngine $n "Engine: $analysisName"
       logEngine $n "Command: $analysisCommand"
+      logEngine $n "Arguments:  $analysisArgs"
       logEngine $n "Directory: $analysisDir"
       logEngine $n "Date: [clock format [clock seconds]]"
       logEngine $n ""

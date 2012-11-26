@@ -432,7 +432,7 @@ namespace eval uci {
         set parent .
       }
       tk_messageBox -title "Error starting UCI engine" \
-          -icon warning -type ok -message "Unable to start program \n\"$cmd\"" -parent $parent
+          -icon warning -type ok -message "Unable to start program \n$cmd $arg" -parent $parent
       return
     }
 
