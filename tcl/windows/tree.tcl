@@ -931,11 +931,10 @@ set tree(standardLines) {
 set scidConfigFiles(treecache) "treecache.dat"
 catch {source [scidConfigFile treecache]}
 
-################################################################################
 # ::tree::prime
 #   Primes the tree for this database, filling it with a number of
 #   common opening positions.
-#
+
 proc ::tree::prime { baseNumber } {
   global tree
   if {! [winfo exists .treeWin$baseNumber]} { return }
@@ -967,7 +966,10 @@ proc ::tree::prime { baseNumber } {
     } else {
       changeProgressWindow "$text: start position"
     }
-    sc_tree search -base $base -fastmode 0
+
+    # sc_tree search -base $base -fastmode 0
+    ::tree::mutex_refresh
+
     updateProgressWindow $i $len
     incr i
     if {$::interrupt} {
@@ -1149,11 +1151,7 @@ proc ::tree::primeWithBase {base {fillMask 0}} {
   for {set g 1} { $g <= [sc_base numGames]} { incr g} {
     sc_game load $g
     ::tree::primeWithGame $fillMask
-    if {$::tree::cancelPrime || [::tree::isCacheFull $base] } {
-      if {[::tree::isCacheFull $base]} {
-	  tk_messageBox -title "Cache Full" -type ok -icon info \
-	      -message "Cache is full" -parent .treeWin$base
-      }
+    if {$::tree::cancelPrime } {
       return
     }
   }
