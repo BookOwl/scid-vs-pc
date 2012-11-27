@@ -106,7 +106,7 @@ proc ::tree::OpenClose {} {
   set helpMessage($w.menu.file,0) TreeFileSave
   $w.menu.file add command -label TreeFileFill -command "::tree::prime $baseNumber"
   set helpMessage($w.menu.file,1) TreeFileFill
-  $w.menu.file add command -label TreeFileFillWithBase -command "::tree::primeWithBase"
+  $w.menu.file add command -label TreeFileFillWithBase -command "::tree::primeWithBase $baseNumber"
   set helpMessage($w.menu.file,2) TreeFileFillWithBase
   $w.menu.file add command -label TreeFileFillWithGame -command "::tree::primeWithGame"
   set helpMessage($w.menu.file,3) TreeFileFillWithGame
@@ -151,7 +151,7 @@ proc ::tree::OpenClose {} {
   set helpMessage($w.menu.mask,4) TreeMaskClose
   $w.menu.mask add command -label TreeMaskFillWithGame -command "::tree::mask::fillWithGame"
   set helpMessage($w.menu.mask,5) TreeMaskFillWithGame
-  $w.menu.mask add command -label TreeMaskFillWithBase -command "::tree::mask::fillWithBase"
+  $w.menu.mask add command -label TreeMaskFillWithBase -command "::tree::mask::fillWithBase $baseNumber"
   set helpMessage($w.menu.mask,6) TreeMaskFillWithBase
   $w.menu.mask add command -label TreeMaskSearch -command "::tree::mask::searchMask $baseNumber"
   set helpMessage($w.menu.mask,7) TreeMaskSearch
@@ -525,6 +525,7 @@ proc ::tree::dorefresh { baseNumber } {
   if {$::tree(adjustfilter$baseNumber)} {::windows::gamelist::Refresh}
   updateTitle
 
+  # Only the most recent tree_search succeeds
   if { $moves == "canceled" } { return "canceled"}
   displayLines $baseNumber $moves
 
@@ -1128,26 +1129,36 @@ proc ::tree::setCacheSize { base size } {
 
 proc ::tree::getCacheInfo { base } {
   set ci [sc_tree cacheinfo $base]
-  tk_messageBox -title "Scid" -type ok -icon info \
+  tk_messageBox -title "Cache Info" -type ok -icon info \
       -message "Cache used : [lindex $ci 0] / [lindex $ci 1]" -parent .treeWin$base
 
 }
+
+proc ::tree::isCacheFull { base } {
+  set ci [sc_tree cacheinfo $base]
+  return [expr {[lindex $ci 0] == [lindex $ci 1]}]
+}
+
 ################################################################################
 # will go through all moves of all games of current base
 ################################################################################
 set ::tree::cancelPrime 0
 
-proc ::tree::primeWithBase {{ fillMask 0 }} {
+proc ::tree::primeWithBase {base {fillMask 0}} {
   set ::tree::cancelPrime 0
   for {set g 1} { $g <= [sc_base numGames]} { incr g} {
     sc_game load $g
     ::tree::primeWithGame $fillMask
-    if {$::tree::cancelPrime } { return }
+    if {$::tree::cancelPrime || [::tree::isCacheFull $base] } {
+      if {[::tree::isCacheFull $base]} {
+	  tk_messageBox -title "Cache Full" -type ok -icon info \
+	      -message "Cache is full" -parent .treeWin$base
+      }
+      return
+    }
   }
 }
-################################################################################
-#
-################################################################################
+
 proc ::tree::primeWithGame { { fillMask 0 } } {
   set ::tree::totalMoves [countBaseMoves "singleGame" ]
   sc_move start
@@ -1168,12 +1179,28 @@ proc ::tree::primeWithGame { { fillMask 0 } } {
   updateBoard -pgn
 }
 
+set processingTree 0
+
+proc ::tree::mutex_refresh {} {
+  global processingTree
+
+  while {$processingTree} {
+    vwait processingTree
+  }
+  set processingTree 1
+  ::tree::refresh
+  set processingTree 0
+}
+
 ################################################################################
 # parse one game and fill the list
 ################################################################################
 proc ::tree::parseGame {{ fillMask 0 }} {
+
   if {$::tree::cancelPrime } { return  }
-  ::tree::refresh
+
+  ::tree::mutex_refresh
+
   if {$::tree::cancelPrime } { return }
   while {![sc_pos isAt vend]} {
     updateProgressWindow $::tree::parsedMoves $::tree::totalMoves
@@ -1192,15 +1219,20 @@ proc ::tree::parseGame {{ fillMask 0 }} {
     # now treat the main line
     set fen [ sc_pos fen ]
     sc_move forward
+
+    ### In older Scids, tree was updated by updateBoard, but updateBoard (and tree refresh)
+    ### is now asynchronous/cancelled so we must update the tree manually after each move
+    ::tree::mutex_refresh
+
     if {$fillMask} { ::tree::mask::feedMask $fen }
     incr ::tree::parsedMoves
     if {$::tree::cancelPrime } { return }
     if {$::tree::cancelPrime } { return }
   }
 }
-################################################################################
-# parse recursively variants.
-################################################################################
+
+### Recursively parse vars
+
 proc ::tree::parseVar {{ fillMask 0 }} {
   while {![sc_pos isAt vend]} {
     # Go through all variants
@@ -1217,6 +1249,9 @@ proc ::tree::parseVar {{ fillMask 0 }} {
 
     set fen [ sc_pos fen ]
     sc_move forward
+
+    ::tree::mutex_refresh
+
     if {$fillMask} { ::tree::mask::feedMask $fen }
     incr ::tree::parsedMoves
     updateProgressWindow $::tree::parsedMoves $::tree::totalMoves
@@ -1868,12 +1903,12 @@ proc ::tree::mask::fillWithGame {} {
 ################################################################################
 #
 ################################################################################
-proc ::tree::mask::fillWithBase {} {
+proc ::tree::mask::fillWithBase {base} {
   if {$::tree::mask::maskFile == ""} {
     tk_messageBox -title "Scid" -type ok -icon warning -message [ tr OpenAMaskFileFirst]
     return
   }
-  ::tree::primeWithBase 1
+  ::tree::primeWithBase $base 1
   set ::tree::mask::dirty 1
 }
 ################################################################################
