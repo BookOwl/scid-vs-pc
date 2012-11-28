@@ -525,6 +525,10 @@ proc compNM {n m k} {
 
   puts_ "COMP Engine initialisation"
   foreach current_engine "$n $m" {
+    ### don't display engine output
+    set analysis(movesDisplay$current_engine) 2
+    toggleMovesDisplay $current_engine
+
     if {$::analysis(uci$current_engine)} {
         ### UCI initialisation
 
