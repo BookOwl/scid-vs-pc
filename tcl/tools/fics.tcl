@@ -1194,12 +1194,12 @@ namespace eval fics {
 
       set length [llength $line ]
 
-      # Hmmm - moves over an hour break this
+      # Hmmm - moves over an hour necessitate reading %d:%d or %d:%d:%d as string (%s
       # 19.  Qe3     (1:02:38)   Be6     (8:06)  
-      if {$length == 5 && [scan $line "%d. %s (%d:%d) %s (%d:%d)" t1 m1 t2 t3 m2 t4 t5] != 7} {
+      if {$length == 5 && [scan $line "%d. %s (%s %s (%s" t1 m1 t2 m2 t4] != 5} {
         return
       }
-      if {$length == 3 && [scan $line "%d. %s (%d:%d)" t1 m1 t2 t3] != 4} {
+      if {$length == 3 && [scan $line "%d. %s (%s" t1 m1 t3] != 3} {
         return
       }
       if {$length == 12 && [scan $line {%s (%s %s %s (%s} t1 t2 t3 t4 t5] == 5} {
