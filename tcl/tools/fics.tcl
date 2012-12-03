@@ -1182,69 +1182,94 @@ namespace eval fics {
     }
 
     if { $::fics::waitForMoves != "" } {
-      set m1 ""
-      set m2 ""
       set line [string trim $line]
 
       # Because some free text may be in the form (".)
-      if {[catch {llength $line} err]} {
+      if {[catch {set length [llength $line]} err]} {
         puts "Exception $err llength $line"
         return
       }
 
-      set length [llength $line ]
-
-      # Hmmm - moves over an hour necessitate reading %d:%d or %d:%d:%d as string (%s
+      # Moves over an hour necessitate reading %d:%d or %d:%d:%d as string (%s
       # 19.  Qe3     (1:02:38)   Be6     (8:06)  
-      if {$length == 5 && [scan $line "%d. %s (%s %s (%s" t1 m1 t2 m2 t4] != 5} {
-        return
-      }
-      if {$length == 3 && [scan $line "%d. %s (%s" t1 m1 t3] != 3} {
-        return
-      }
-      if {$length == 12 && [scan $line {%s (%s %s %s (%s} t1 t2 t3 t4 t5] == 5} {
-	# ImaGumby (1280) vs. Kaitlin (1129) --- Sat Feb  4, 02:12 PST 2012
-        # stevenaaus (1157) vs. Abatwa (1103) --- Sun Feb  5, 23:13 PST 2012
-        if {$t3 == "vs."} {
-	  sc_game tags set -white    $t1
-	  sc_game tags set -black    $t4
-          sc_game tags set -whiteElo [string range $t2 0 end-1]
-          sc_game tags set -blackElo [string range $t5 0 end-1]
 
+      switch $length {
+
+        3 - 5 {
+            # hmmm - we assume any line length 3 or 5 is a game moves line. ???
+
+            # set moves m1, m2 (todo: store times)
+            if {$length == "5"} {
+              if {[scan $line "%d. %s (%s %s (%s" t1 m1 t2 m2 t3] != 5} {
+                puts "waitForMoves failed processing: $line"
+                return
+              }
+            } else {
+	      # length = 3
+	      if {[scan $line "%d. %s (%s" t1 m1 t2] != 3} {
+                puts "waitForMoves failed processing: $line"
+                return
+              }
+              set m2 {}
+	    }
+
+	    # Add this move
+	    # 1.  d4      (0:00)     d6      (0:00)
+	    # 2.  c4      (0:25)     Bf5     (0:01)
+
+	    catch { sc_move addSan $m1 }
+	    if {$m2 != ""} {
+	      catch { sc_move addSan $m2 }
+	    }
+	    if {[sc_pos fen] == $::fics::waitForMoves } {
+              ### Game reconstructed successfully
+	      set ::fics::waitForMoves ""
+	    }
+            return
         }
-        return
-      }
-      if {[string match "Rated*" $line] || [string match Unrated* $line]} {
-	# Unrated blitz match, initial time: 3 minutes, increment: 0 seconds.
-	# Rated lightning match, initial time: 1 minutes, increment: 0 seconds.
-        sc_game tags set -event "FICS [string tolower [lrange $line 0 1]]"
-        sc_game tags set -extra "{TimeControl \"[lindex $line end-4]/[lindex $line end-1]\"}"
-        # This is the download date - not the correct played date, which can be assembled from
-        # Kaitlin (1463) vs. PLAYERFOREVER (1808) --- Wed Jun 27, 02:54 PDT 2012
-	sc_game tags set -date [::utils::date::today]
-        return
-      }
-      if {$length == 2 && [string match {\{*\} *} $line]} {
-	# {White forfeits on time} 1-0
-        ::commenteditor::appendComment [lindex $line 0]
-	sc_game tags set -result [lindex $line 1]
-        set ::fics::waitForMoves ""
-        return
-      }
 
-      # Add this move
-      # 1.  d4      (0:00)     d6      (0:00)
-      # 2.  c4      (0:25)     Bf5     (0:01)
+        12 {
+	      if {[scan $line {%s (%s %s %s (%s} t1 t2 t3 t4 t5] == 5} {
+		# ImaGumby (1280) vs. Kaitlin (1129) --- Sat Feb  4, 02:12 PST 2012
+		# stevenaaus (1157) vs. Abatwa (1103) --- Sun Feb  5, 23:13 PST 2012
+		if {$t3 == "vs."} {
+		  sc_game tags set -white    $t1
+		  sc_game tags set -black    $t4
+		  sc_game tags set -whiteElo [string range $t2 0 end-1]
+		  sc_game tags set -blackElo [string range $t5 0 end-1]
+		}
+		return
+	      }
+           }
 
-      catch { sc_move addSan $m1 }
-      if {$m2 != ""} {
-        catch { sc_move addSan $m2 }
-      }
-      
-      if {[sc_pos fen] == $::fics::waitForMoves } {
-        set ::fics::waitForMoves ""
-      }
-    }
+      2 {
+	  if {[string match {\{*\} *} $line]} {
+	    # {White forfeits on time} 1-0
+	    ::commenteditor::appendComment [lindex $line 0]
+	    sc_game tags set -result [lindex $line 1]
+	    set ::fics::waitForMoves ""
+	    return
+	  }
+        }
+
+      default {
+	  if {[string match "Rated*" $line] || [string match Unrated* $line]} {
+	    # Unrated blitz match, initial time: 3 minutes, increment: 0 seconds.
+	    # Rated lightning match, initial time: 1 minutes, increment: 0 seconds.
+	    sc_game tags set -event "FICS [string tolower [lrange $line 0 1]]"
+	    sc_game tags set -extra "{TimeControl \"[lindex $line end-4]/[lindex $line end-1]\"}"
+	    # This is the download date - not the correct played date, which can be assembled from
+	    # Kaitlin (1463) vs. PLAYERFOREVER (1808) --- Wed Jun 27, 02:54 PDT 2012
+	    sc_game tags set -date [::utils::date::today]
+	    return
+	  }
+
+          ### should we return ?
+	}
+
+      } ;# switch length
+
+    } ;# waitformoves
 
     if {[string match "Challenge:*" $line]} {
 	if {[winfo exists .ficsOffers] && $::fics::findopponent(manual) == {auto}} {
