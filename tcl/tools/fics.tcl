@@ -1201,13 +1201,15 @@ namespace eval fics {
             # set moves m1, m2 (todo: store times)
             if {$length == "5"} {
               if {[scan $line "%d. %s (%s %s (%s" t1 m1 t2 m2 t3] != 5} {
-                puts "waitForMoves failed processing: $line"
+                ### puts "waitForMoves failed processing: $line"
                 return
               }
             } else {
 	      # length = 3
 	      if {[scan $line "%d. %s (%s" t1 m1 t2] != 3} {
-                puts "waitForMoves failed processing: $line"
+                ### puts "waitForMoves failed processing: $line"
+		# waitForMoves failed processing: Move  BetoScaramal       mandre
+		# waitForMoves failed processing: ----  ----------------   ----------------
                 return
               }
               set m2 {}
