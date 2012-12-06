@@ -16938,9 +16938,9 @@ D96 "Grünfeld: Russian, 5...dxc4"
   1.d4 Nf6 2.c4 g6 3.Nc3 d5 4.Nf3 Bg7 5.Qb3 dxc4 *
 D96 "Grünfeld: Russian, 5...dxc4"
   1.d4 Nf6 2.c4 g6 3.Nc3 d5 4.Nf3 Bg7 5.Qb3 dxc4 6.Qxc4 *
-D96 "Grünfeld: Russian, 6...O-O"
-  1.d4 Nf6 2.c4 g6 3.Nc3 d5 4.Nf3 Bg7 5.Qb3 dxc4 6.Qxc4 a6 *
 D96 "Grünfeld: Russian, 6...a6"
+  1.d4 Nf6 2.c4 g6 3.Nc3 d5 4.Nf3 Bg7 5.Qb3 dxc4 6.Qxc4 a6 *
+D96 "Grünfeld: Russian, 6...O-O"
   1.d4 Nf6 2.c4 g6 3.Nc3 d5 4.Nf3 Bg7 5.Qb3 dxc4 6.Qxc4 O-O *
 D96 "Grünfeld: Russian, 7.Bf4"
   1.d4 Nf6 2.c4 g6 3.Nc3 d5 4.Nf3 Bg7 5.Qb3 dxc4 6.Qxc4 O-O 7.Bf4 *
