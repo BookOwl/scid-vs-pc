@@ -1314,6 +1314,9 @@ namespace eval fics {
 	    if {[regexp {(.*) would like to take back} $line t1 t2]} {
 	      ::commenteditor::appendComment "$t2 takes back move $::fics::lastmove"
 	    }
+	    # goodness knows whose go it is. Often players request takeback instead of takeback2, so just stop clocks now!
+	    ::gameclock::stop 1
+	    ::gameclock::stop 2
           }
         1 {writechan decline}
         2 {set ::fics::ignore_takeback 1}
@@ -1907,6 +1910,7 @@ namespace eval fics {
       # Fics doesn't give much warning that take back was succesful, only the uncertain "Takeback request sent."
       # If player makes a move after his time has expired, we end up here. Bad.
       # Todo: Before starting new game, try to move backwards in game.
+      # todo: should we stop clocks now ?
 
       # To solve the problem of concurrent processing of parseStyle12 lines, we have to have mutexs on this proc
       # ... for some reason using individual mutexs for each game doesnt work properly &&&
