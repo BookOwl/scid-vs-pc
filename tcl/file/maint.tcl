@@ -843,6 +843,7 @@ proc classifyAllGames {{parent .}} {
   makeClassifyWin $parent
 }
 
+
 proc makeClassifyWin {{parent .}} {
   global classifyOption
   set w .classify
@@ -1087,34 +1088,271 @@ proc updateTwinChecker {} {
     # Hesus!, this needs some comments
     # Done in two parts, but should be redone as a single diff loop 
 
-    for {set i 1} {$i < $rlen} {incr i} {
-      set line [$w.f.right.t.text get $i.0 "$i.0 lineend"]
-      set length [string length $line]
-      set max 0
-      for {set j 1} {$j < $llen} {incr j} {
-        set otherLine [$w.f.left.t.text get $j.0 "$j.0 lineend"]
-        set plen [strPrefixLen $line $otherLine] ; # length of the common text
-        if {$plen > $max} { set max $plen }
-      }
-      if {$max < $length} {
-        # highlight all of the string if a tag
-        if {[string match {\[*} $line]} {set max 0}
-        $w.f.right.t.text tag add h $i.$max "$i.0 lineend"
-      }
-    }
+    ### In-game diffing of variations/comments
+    # Adapted from Daniel South's (wildcard_25) slightly buggy patch
+    # http://sourceforge.net/tracker/?func=detail&aid=887616&group_id=26963&atid=389082
 
-    for {set i 1} {$i < $llen} {incr i} {
-      set line [$w.f.left.t.text get $i.0 "$i.0 lineend"]
-      set length [string length $line]
-      set max 0
-      for {set j 1} {$j < $rlen} {incr j} {
-        set otherLine [$w.f.right.t.text get $j.0 "$j.0 lineend"]
-        set plen [strPrefixLen $line $otherLine]
-        if {$plen > $max} { set max $plen }
-      }
-      if {$max < $length} {
-        if {[string match {\[*} $line]} {set max 0}
-	$w.f.left.t.text tag add h $i.$max "$i.0 lineend"
+    ### Loop through each side (to generate a diff we do two comparisons, though we should rewrite this for a single diff loop.
+    foreach side1 {left right} side2 {right left} {
+      set line_count1 [$w.f.$side1.t.text count -lines 1.0 end]
+      set line_count2 [$w.f.$side2.t.text count -lines 1.0 end]
+      for {set i 1} {$i < $line_count1} {incr i} {
+        set line1 [$w.f.$side1.t.text get $i.0 "$i.0 lineend"]
+        # Check for Header Tag matches
+        if {[string index $line1 0] == "\["} {
+          set token_match 0
+          for {set j 1} {$j < $line_count2} {incr j} {
+            set line2 [$w.f.$side2.t.text get $j.0 "$j.0 lineend"]
+            if {[string equal $line1 $line2]} {
+              set token_match 1
+              break
+            }
+          }
+          if {$token_match == 0} {
+            $w.f.$side1.t.text tag add h $i.0 "$i.0 lineend"
+          }
+        # Check for Move matches
+        } else {
+          for {set j 1} {$j < $line_count2} {incr j} {
+        # Check for Header Tag matches
+            set line2 [$w.f.$side2.t.text get $j.0 "$j.0 lineend"]
+            if {[string index $line2 0] != "\["} {
+              set char_count1 [string length $line1]
+              set char_count2 [string length $line2]
+              set token_match 0
+              set rav_count 0
+              set rav_index 0
+              set diff_start -1
+              set diff_end -1
+              set k1 0
+              set k2 0
+              while {$k1 < $char_count1 && $k2 < $char_count2} {
+                #Mark diff region
+                if {$token_match == 1} {
+                  if {[lindex $diff_start $rav_count] != -1} {
+                    $w.f.$side1.t.text tag add h \
+                     $i.[lindex $diff_start $rav_count] \
+                     $i.[lindex $diff_end $rav_count]+1c
+                    set diff_start [lreplace $diff_start $rav_count end -1]
+                  }
+                  set token_match 0
+                }
+                set char1 [string index $line1 $k1]
+                set char2 [string index $line2 $k2]
+                switch -regexp -- $char1$char2 {
+                  \{\{ {
+                  # Both have comments
+                    set token_end1 [string first "\}" $line1 $k1]
+                    set token1 [string range $line1 $k1 $token_end1]
+                    set token_end2 [string first "\}" $line2 $k2]
+                    set token2 [string range $line2 $k2 $token_end2]
+                    if {[string equal $token1 $token2]} {
+                        set token_match 1
+                    } else {
+                      if {[lindex $diff_start $rav_count] == -1} {
+                        set diff_start \
+                         [lreplace $diff_start $rav_count end $k1]
+                      }
+                      set diff_end \
+                       [lreplace $diff_end $rav_count end $token_end1]
+                    }
+                    set k1 [incr token_end1 2]
+                    set k2 [incr token_end2 2]
+                  }
+
+                  \{. {
+                  # Side1 has comment
+                    set token_end1 [string first "\}" $line1 $k1]
+                    if {[lindex $diff_start $rav_count] == -1} {
+                      set diff_start [lreplace $diff_start $rav_count end $k1]
+                    }
+                    set diff_end \
+                     [lreplace $diff_end $rav_count end $token_end1]
+                    set k1 [incr token_end1 2]
+                  }
+
+                  .\{ {
+                  #Side2 has comment
+                    set k2 [string first "\}" $line2 $k2]
+                    incr k2 2
+                  }
+
+                  [$][$] {
+                  #Both have NAGS
+                    set token_end1 [string first " " $line1 $k1]
+                    set token1 [string range $line1 $k1 $token_end1]
+                    set token_end2 [string first " " $line2 $k2]
+                    set token2 [string range $line2 $k2 $token_end2]
+                    if {[string equal $token1 $token2]} {
+                        set token_match 1
+                    } else {
+                      if {[lindex $diff_start $rav_count] == -1} {
+                        set diff_start \
+                         [lreplace $diff_start $rav_count end $k1]
+                      }
+                      set diff_end \
+                       [lreplace $diff_end $rav_count end \
+                       [expr {$token_end1 - 1}]]
+                    }
+                    set k1 [incr token_end1]
+                    set k2 [incr token_end2]
+                  }
+
+                  [$]. {
+                  # Side1 has NAG
+                    set token_end1 [string first " " $line1 $k1]
+                    if {[lindex $diff_start $rav_count] == -1} {
+                      set diff_start [lreplace $diff_start $rav_count end $k1]
+                    }
+                    set diff_end \
+                     [lreplace $diff_end $rav_count end \
+                     [expr {$token_end1 - 1}]]
+                    set k1 [incr token_end1]
+                  }
+
+                  .[$] {
+                  #Side2 has NAG
+                    set k2 [string first " " $line2 $k2]
+                    incr k2
+                  }
+
+                  [(][(] {
+                  #Both have variations
+                    incr rav_count
+                    lappend rav_index $k1
+                    lappend diff_start -1
+                    lappend diff_end -1
+                    incr k1 2
+                    incr k2 2
+                  }
+
+                  [(]. {
+                  #Side1 has variation
+                    if {[lindex $diff_start $rav_count] == -1} {
+                      set diff_start [lreplace $diff_start $rav_count end $k1]
+                    }
+                    set k1 [doRAVSkip $line1 $k1]
+                    set diff_end [lreplace $diff_end $rav_count end $k1]
+                    incr k1 2
+                  }
+
+                  .[(] {
+                  #Side2 has variation
+                    set k2 [doRAVSkip $line2 $k2]
+                    incr k2 2
+                  }
+
+                  [)][)] {
+                  #Both have variation ends
+                    if {[lindex $diff_start $rav_count] == -1} {
+                      set token_match 1
+                      set rav_index [lreplace $rav_index $rav_count end]
+                      set diff_start [lreplace $diff_start $rav_count end]
+                      set diff_end [lreplace $diff_end $rav_count end]
+                      incr rav_count -1
+                      incr k1 2
+                      incr k2 2
+                    } else {
+                      if {[lindex $diff_start $rav_count] \
+                       == [lindex $rav_index $rav_count] + 2 \
+                       && [lindex $diff_end $rav_count] + 2 == $k1} {
+                        incr rav_count -1
+                        if {[lindex $diff_start $rav_count] == -1} {
+                          set diff_start \
+                           [lreplace $diff_start $rav_count end \
+                           [lindex $rav_index [expr {$rav_count + 1}]]]
+                        } else {
+                          set diff_start [lreplace $diff_start end end]
+                        }
+                        set diff_end [lreplace $diff_end $rav_count end $k1]
+                        incr k1 2
+                        incr k2 2
+                      } else {
+                        set token_match 1
+                      }
+                    }
+                  }
+
+                  [)]. {
+                  #Side1 has variation end
+                    set k2 [doRAVSkip $line2 $k2]
+                  }
+
+                  .[(] {
+                  #Side2 has variation end
+                    if {[lindex $diff_start $rav_count] == -1} {
+                      set diff_start [lreplace $diff_start $rav_count end $k1]
+                    }
+                    set k1 [doRAVSkip $line1 $k1]
+                    set diff_end \
+                     [lreplace $diff_end $rav_count end [expr {$k1 - 2}]]
+                  }
+
+                  default {
+                  #Both have moves
+                    set token_end1 [string first " " $line1 $k1]
+                    if {$token_end1 == -1} {
+                      set token_end1 $char_count1
+                    }
+                    set token1 [string range $line1 $k1 $token_end1]
+
+                    set token_end2 [string first " " $line2 $k2]
+                    if {$token_end2 == -1} {
+                      set token_end2 $char_count2
+                    }
+                    set token2 [string range $line2 $k2 $token_end2]
+                    # Check for black move after comment/rav on one side
+                    if {[string first "..." $token1] == -1} {
+                      if {[string first "..." $token2] != -1} {
+                        set k2 [expr {$k2 + [string first "..." $token2]}]
+                        incr k2 3
+                        set token2 [string range $line2 $k2 $token_end2]
+                      }
+                    } else {
+                      if {[string first "..." $token2] == -1} {
+                        set k1 [expr {$k1 + [string first "..." $token1]}]
+                        incr k1 2
+                        set diff_end [lreplace $diff_end $rav_count end $k1]
+                        incr k1
+                        set token1 [string range $line1 $k1 $token_end1]
+                      }
+                    }
+                    if {[string equal $token1 $token2]} {
+                        set token_match 1
+                    } else {
+                      # move mismatch
+                      if {[lindex $diff_start $rav_count] == -1} {
+                        set diff_start [lreplace $diff_start $rav_count end $k1]
+                      }
+                      set diff_end \
+                       [lreplace $diff_end $rav_count end \
+                       [expr {$token_end1 - 1}]]
+                    }
+                    set k1 [incr token_end1]
+                    set k2 [incr token_end2]
+                  }
+                }
+              }
+              if {[lindex $diff_start $rav_count] != -1} {
+                if {$token_match == 1} {
+                  $w.f.$side1.t.text tag add h \
+                   $i.[lindex $diff_start $rav_count] \
+                   $i.[lindex $diff_end $rav_count]+1c
+                } else {
+                  # Make a hack to see if the results are the same
+                  # (must be an extra 2 chars trailing?)
+                  set t [expr {[string length $line1] - [string last { } $line1] - 2}]
+		  if {[string range $line1 end-$t end] == [string range $line2 end-$t end]} {
+                    incr t 4
+		    $w.f.$side1.t.text tag add h $i.[lindex $diff_start $rav_count] end-${t}c
+		  } else {
+		    $w.f.$side1.t.text tag add h $i.[lindex $diff_start $rav_count] end-2c
+                  }
+                }
+              }
+            }
+          }
+        }
       }
     }
   }
@@ -1129,6 +1367,72 @@ proc updateTwinChecker {} {
     $w.f.$side.t.text configure -state disabled
   }
 
+}
+
+# doRAVSkip:
+#   Skips RAVs for diff checking in Twin Checker Window
+
+proc doRAVSkip {line k} {
+  # What are we doing here ! Skipping variations ?
+  # Rewrite it a bit. Just don't get fooled by any braces ( or ) inside comments {}
+  set recurse 1
+  while {$recurse > 0} {
+    incr k
+    set rav_start [string first "(" $line $k]
+    set rav_end [string first ")" $line $k]
+    set comment_start [string first "\{" $line $k]
+    if {$rav_start == -1} {
+      # no more recursive vars
+      if {$comment_start == -1} {
+          # no comments
+          if {$rav_end == -1} {
+            # hmm - no matching close brace ). Should not happen
+            set k [string length $line]
+          } else {
+	    set k $rav_end
+          }
+	  incr recurse -1
+      } else {
+	  if {$rav_end < $comment_start} {
+	    set k $rav_end
+	    incr recurse -1
+	  } else {
+	    set k [string first "\}" $line $k]
+            if {$k == -1} {
+              # no close comment. should not happen
+	      set k [string length $line]
+	      incr recurse -1
+            }
+	  }
+       }
+    } else {
+      # we probably have to increase recurse and repeat
+      if {$rav_end == -1} {
+          # no matching var end. exit
+	  set k [string length $line]
+	  incr recurse -1
+      } else {
+	if {$rav_start < $rav_end} {
+	  if {$rav_start < $comment_start} {
+	    if {$recurse > 40} {
+	       # Better have a get out clause
+               set k [string length $line]
+               set recurse 0
+            } else {
+	      incr recurse
+	      set k $rav_start
+            }
+	  } else {
+	    set k [string first "\}" $line $k]
+	  }
+	} else {
+	  set k $rav_end
+	  incr recurse -1
+	}
+      }
+    }
+  }
+  return $k
 }
 
 proc dualscroll {args} {
