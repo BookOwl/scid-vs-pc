@@ -932,7 +932,7 @@ Are you sure you want to commence the maintenance functions you selected?
 translate E TwinCheckUndelete {to toggle)}
 translate E TwinCheckprevPair {Previous pair}
 translate E TwinChecknextPair {Next pair}
-translate E TwinChecker {Scid: Twin game checker}
+translate E TwinChecker {Twin Game Checker}
 translate E TwinCheckTournament {Games in tournament:}
 translate E TwinCheckNoTwin {No twin  }
 translate E TwinCheckNoTwinfound {No twin was detected for this game.\nTo show twins using this window, you must first use the "Delete twin games" function. }
@@ -1197,9 +1197,9 @@ translate E SelectTournamentGames {Only games in the current tournament}
 translate E SelectOlderGames {Only older games}
 
 # Delete Twins window:
-translate E TwinsNote {To be regarded as twins, games must have the same players, and other criteria as per below. Note - It is best to spellcheck the database before detecting twins. }
-translate E TwinsCriteria {Criteria: Twin games must have...}
-translate E TwinsWhich {Examine which games}
+translate E TwinsNote {To be marked as twins, games must have the same Players and other criteria, as per below. It is best to spellcheck the database before detecting twins. }
+translate E TwinsCriteria {Twin Game Criteria}
+translate E TwinsWhich {Examine All/Filter}
 translate E TwinsColors {Same player colors}
 translate E TwinsEvent {Same event}
 translate E TwinsSite {Same site}
@@ -1213,13 +1213,13 @@ translate E TwinsMoves {Same moves}
 translate E TwinsPlayers {Comparing player names}
 translate E TwinsPlayersExact {Exact match}
 translate E TwinsPlayersPrefix {First 4 letters only}
-translate E TwinsWhen {When deleting twin games}
-translate E TwinsSkipShort {Ignore all games under 5 moves long}
+translate E TwinsWhen {When deleting Twin Games}
+translate E TwinsSkipShort {Ignore games under 5 moves long}
 translate E TwinsUndelete {Undelete all games first}
 translate E TwinsSetFilter {Set filter to twins to be deleted}
 translate E TwinsComments {Always keep games with comments}
 translate E TwinsVars {Always keep games with variations}
-translate E TwinsDeleteWhich {Delete which game}
+translate E TwinsDeleteWhich {Delete which game ?}
 translate E TwinsDeleteShorter {Shorter game}
 translate E TwinsDeleteOlder {Lesser game number}
 translate E TwinsDeleteNewer {Greater game number}

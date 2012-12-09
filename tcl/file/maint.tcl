@@ -508,11 +508,8 @@ proc ::maint::SetAutoloadGame {{parent .}} {
   wm state $w normal
 }
 
-# markTwins:
-#   Finds twin games and marks them for deletion.
-#   Takes parent window as parameter since it can be the main window,
-#   or the maintenance window.
-#
+### Find twin games and (optionally) marks them for deletion.
+
 proc markTwins {{parent .}} {
   global twinSettings
 
@@ -643,7 +640,7 @@ proc markTwins {{parent .}} {
 
   frame $w.b
   pack $w.b -side bottom -fill x
-  button $w.b.defaults -textvar ::tr(Defaults) -command {
+  button $w.b.defaults -textvar ::tr(Defaults) -font $small -command {
     array set twinSettings [array get twinSettingsDefaults]
   }
   button $w.b.help -text $::tr(Help) -font $small \
@@ -951,6 +948,7 @@ proc updateTwinChecker {} {
   set w .twinchecker
   if {![winfo exists $w]} {
     toplevel $w
+    wm title $w $::tr(TwinChecker)
     setWinLocation $w
     setWinSize $w
 
@@ -995,6 +993,7 @@ proc updateTwinChecker {} {
       bind $f.t.text <ButtonPress-4> "dualplus -1 $i"
       bind $f.t.text <ButtonPress-5> "dualplus 1 $i"
     }
+
     # This hack makes the two widgets a similar width under X windows.
     # Problem is probably due to tk expanding unevenly
     pack $w.f.right.t -padx 14
@@ -1023,7 +1022,6 @@ proc updateTwinChecker {} {
       if {$twincheck(right)} {.twinchecker.f.right.title.d invoke}
     }
     # wm resizable $w 0 1
-    wm title $w $::tr(TwinChecker)
     bind $w <Configure> "recordWinSize $w"
   }
 
@@ -1381,6 +1379,10 @@ proc doRAVSkip {line k} {
     set rav_start [string first "(" $line $k]
     set rav_end [string first ")" $line $k]
     set comment_start [string first "\{" $line $k]
+
+    ### Impossible to easily parse comments with brackets i think {}
+    # if {$comment_start > -1 && ($comment_start < $rav_start || $rav_start == -1)} {} 
+
     if {$rav_start == -1} {
       # no more recursive vars
       if {$comment_start == -1} {

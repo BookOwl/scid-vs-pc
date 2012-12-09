@@ -245,6 +245,7 @@ append helpText(Index) {
   <li><a Clipbase>Clipbase</a></li>
   <li><a Cmdline>Command-line options</a></li>
   <li><a Comment>Comment Editor</a></li>
+  <li><a Maintenance Twins>Comparing games</a> with the Twin Game Checker</li>
   <li><a ComputerGame>Computer Game</a></li>
   <li><a Tourney>Computer Tournament</a></li>
   <li><a Compact>Compacting a database</a></li>
@@ -2338,27 +2339,32 @@ set helpText(Maintenance) {<h1>Database Maintenance</h1>
   </p>
   <h3><name Twins>Deleting Twin Games</name></h3>
   <p>
-  The Delete twin games feature enables removal of extra
-  copies - or twins - from the database.  It finds all pairs
-  that are twins and flags one as deleted.
+  The <run markTwins><green>Delete Twin Games</green></run>
+  feature facilitates removal of duplicate
+  games from the database.  It identifies twins
+  and flags one as deleted.
+  <i>To actually delete the games, you must compact the database.</i>
   </p>
   <p>
-  Two games are considered twins if their players, and
-  any other tags that you can optionally specify, exactly
-  match.  If you specify the <b>same moves</b> option (which
-  is strongly recommended), each pair of games must have the
-  same actual moves up to the length of the shorter game (or
-  move 60, whichever comes first) to be twins.
+  Two games are considered twins if their Players, and
+  any other tags that you specify, exactly match.
+  If you specify the "Same moves" option (strongly recommended)
+  each pair must have the
+  same moves; up to the length of the shorter game , or
+  60 moves maximum.
   </p>
   <p>
-  When you have identified twins, it is a good idea to
-  <b>confirm each game</b> really is a copy of another.  By
-  selecting the "Set filter to all deleted games" option in
-  the Delete Twins dialog-box, the filter will contain all
-  deleted games, and you can browse through them (using the
-  arrow keys) with the <term>twins checker</term> window.
-  Use the "1", "2" and "t" keys to
-  toggle the delete fields of one or both games, and "u" to undelete them.
+  When you have identified twins, it is good practise
+  to confirm they have been correctly marked.
+  Selecting "Set filter to twins to be deleted" 
+  ensures the filter contains the deleted games,
+  and you can browse through them  with the <b>Twin Game Checker</b> window,
+  (which automatically appears). Here, tag differences are highlighted, and
+  Scid vs. PC also shows a inline comparison of game variations and comments.
+  </p>
+  <p>
+  Use the Arrow Keys to progress through the games, "1", "2" and "t" keys to
+  toggle the Delete Fields, and "u" to Undelete both games.
   </p>
 
   <h3><name Editing>Editing Names</name></h3>
@@ -2490,7 +2496,7 @@ perform a Namebase <a Compact>Compaction</a>.
   back in a consistent and usable state.
   </p>
 
-  <p><footer>Updated: Scid vs. PC 4.5, August 2011</footer></p>
+  <p><footer>Updated: Scid vs. PC 4.9, December 2012</footer></p>
 }
 
 set helpTitle(Sorting) "Sorting a database"

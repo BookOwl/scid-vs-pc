@@ -601,11 +601,12 @@ set gameInfo(fullComment) 0
 set gameInfo(showTB) 0
 if {[sc_info tb]} { set gameInfo(showTB) 2 }
 
-# Twin deletion options:
+### Twin game checker options
+# "players" represents *exact* match or 4 chars only
 
 array set twinSettings {
-  players No
-  colors  No
+  players Yes
+  colors  Yes
   event   No
   site    Yes
   round   Yes
