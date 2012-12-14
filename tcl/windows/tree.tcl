@@ -1572,7 +1572,7 @@ proc ::tree::mask::removeFromMask { move {fen ""} } {
   set ::tree::mask::dirty 1
 
   set moves [ lindex $mask($fen) 0 ]
-  set idxm [lsearch -regexp $moves "^$move "]
+  set idxm [lsearch -regexp $moves "^$move\\+* +"]
   if { $idxm != -1} {
     set moves [lreplace $moves $idxm $idxm]
     lset mask($fen) 0 $moves
@@ -1596,7 +1596,7 @@ proc ::tree::mask::moveExists { move {fen ""} } {
   }
   set moves [ lindex $mask($fen) 0 ]
 
-  if {[lsearch -regexp $moves "^$move "] == -1} {
+  if {[lsearch -regexp $moves "^$move\\+* +"] == -1} {
     return 0
   }
   return 1
@@ -1625,7 +1625,7 @@ proc ::tree::mask::getColor { move {fen ""}} {
   }
 
   set moves [ lindex $mask($fen) 0 ]
-  set idxm [lsearch -regexp $moves "^$move "]
+  set idxm [lsearch -regexp $moves "^$move\\+* +"]
   if { $idxm == -1} {
     return $::tree::mask::defaultColor
   }
@@ -1647,7 +1647,7 @@ proc ::tree::mask::setColor { move color {fen ""}} {
   }
   set ::tree::mask::dirty 1
   set moves [ lindex $mask($fen) 0 ]
-  set idxm [lsearch -regexp $moves "^$move "]
+  set idxm [lsearch -regexp $moves "^$move\\+* +"]
   if { $idxm == -1} {
     tk_messageBox -title "Scid" -type ok -icon warning -message [ tr AddMoveToMaskFirst ]
     return
@@ -1669,7 +1669,7 @@ proc ::tree::mask::getNag { move { fen "" }} {
     return $emptyNag
   }
   set moves [ lindex $mask($fen) 0 ]
-  set idxm [lsearch -regexp $moves "^$move "]
+  set idxm [lsearch -regexp $moves "^$move\\+* +"]
   if { $idxm == -1} {
     return $emptyNag
   }
@@ -1698,7 +1698,7 @@ proc ::tree::mask::setNag { move nag {fen ""} } {
   }
   set ::tree::mask::dirty 1
   set moves [ lindex $mask($fen) 0 ]
-  set idxm [lsearch -regexp $moves "^$move "]
+  set idxm [lsearch -regexp $moves "^$move\\+* +"]
   if { $idxm == -1} {
     tk_messageBox -title "Scid" -type ok -icon warning -message [ tr AddMoveToMaskFirst ]
     return
@@ -1721,7 +1721,7 @@ proc ::tree::mask::getComment { move { fen "" } } {
   }
 
   set moves [ lindex $mask($fen) 0 ]
-  set idxm [lsearch -regexp $moves "^$move "]
+  set idxm [lsearch -regexp $moves "^$move\\+* +"]
   if { $idxm == -1} {
     return ""
   }
@@ -1747,7 +1747,7 @@ proc ::tree::mask::setComment { move comment { fen "" } } {
   }
   set ::tree::mask::dirty 1
   set moves [ lindex $mask($fen) 0 ]
-  set idxm [lsearch -regexp $moves "^$move "]
+  set idxm [lsearch -regexp $moves "^$move\\+* +"]
   if { $idxm == -1} {
     tk_messageBox -title "Scid" -type ok -icon warning -message [ tr AddMoveToMaskFirst ]
     return
@@ -1804,7 +1804,7 @@ proc ::tree::mask::setImage { move img nmr } {
   }
   set ::tree::mask::dirty 1
   set moves [ lindex $mask($fen) 0 ]
-  set idxm [lsearch -regexp $moves "^$move "]
+  set idxm [lsearch -regexp $moves "^$move\\+* +"]
   if { $idxm == -1} {
     tk_messageBox -title "Scid" -type ok -icon warning -message [ tr AddMoveToMaskFirst ]
     return
@@ -1827,7 +1827,7 @@ proc ::tree::mask::getImage { move nmr } {
     return ::tree::mask::emptyImage
   }
   set moves [ lindex $mask($fen) 0 ]
-  set idxm [lsearch -regexp $moves "^$move "]
+  set idxm [lsearch -regexp $moves "^$move\\+* +"]
   if { $idxm == -1} {
     return ::tree::mask::emptyImage
   }
