@@ -6,32 +6,15 @@
 ### add NOVAG board support
 
 namespace eval novag {
-  set serial "/dev/ttyUSB0"
   set fd ""
   set connected 0
   set waitBetweenMessages 0
 
   ##########################################################
-  proc config {} {
-    global ::novag::serial
-    set w .serialConfig
-    if { [winfo exists $w]} { return }
-    toplevel $w
-    wm title $w "Configure Serial port"
-    frame $w.f1
-    frame $w.f2
-    pack $w.f1 $w.f2
-    label $w.f1.l -text "enter the serial port\nLinux /dev/ttyS0, /dev/ttyUSB0, ...)\nWindows COM1, ..."
-    entry $w.f1.e -width 15 -textvariable ::novag::serial
-    pack $w.f1.l $w.f1.e
-    button $w.f2.bOk -text OK -command "destroy $w ; ::novag::connect"
-    button $w.f2.bCancel -text Cancel -command "destroy $w"
-    pack $w.f2.bOk $w.f2.bCancel -side left
-    bind $w <F1> { helpWindow Novag}
-  }
-  ##########################################################
   proc connect {} {
-    global ::novag::serial ::novag::fd
+    global ::novag::fd
+
+    set serial $::ExtHardware::port
 
     set w .novag
     toplevel $w
@@ -48,9 +31,15 @@ namespace eval novag {
     pack $w.output $w.input $w.send
     update
 
-    puts "connecting to $serial"
-    set fd [open $serial r+]
-    puts "fd $fd"
+    # Set button to "connection in progress"
+    ::ExtHardware::HWbuttonImg tb_eng_connecting
+    
+    if {[catch { set fd [open $serial r+ ] } err]} {
+        tk_messageBox -type ok -icon error -parent . -title "Novag Citrine" -message "Connection error for $serial \n $err"
+        destroy $w
+        return
+    }
+
     # 57600 bauds, no parity, 8 bits, 1 stop
     fconfigure $fd -mode 57600,n,8,1 -blocking 0 -buffering line
     fileevent $fd readable ::novag::recv

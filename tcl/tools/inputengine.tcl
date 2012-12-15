@@ -403,6 +403,7 @@ namespace eval ExtHardware {
     set w .exthardwareConfig
     if { [winfo exists $w]} { return }
     toplevel $w
+    wm state $w withdrawn
     wm title $w [::tr ExtHWConfigConnection]
 
     label $w.lport -text  [::tr ExtHWPort]
@@ -444,7 +445,6 @@ namespace eval ExtHardware {
     }
     button $w.bCancel -text [::tr Cancel] -command "::ExtHardware::HWbuttonImg tb_eng_disconnected ; destroy $w"
 
-
     grid $w.options    -stick ew    -row 0 -column 0
     grid $w.novag      -stick w     -row 0 -column 1
     grid $w.inputeng   -stick w     -row 1 -column 1
@@ -465,6 +465,9 @@ namespace eval ExtHardware {
 
     bind $w <F1> { helpWindow HardwareConfig}
 
+    update
+    placeWinOverParent $w .
+    wm state $w normal
   }
 
 }
