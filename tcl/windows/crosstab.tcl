@@ -295,12 +295,12 @@ proc ::crosstab::Open {} {
   button $w.b.setfilter -textvar ::tr(SetFilter) -command {
     ::search::filter::reset
     ::search::filter::negate
-    sc_game crosstable filter
+    sc_game crosstable filter $crosstab(deleted)
     ::windows::gamelist::Refresh
     updateStatusBar
   }
   button $w.b.addfilter -textvar ::tr(AddToFilter) -command {
-    sc_game crosstable filter
+    sc_game crosstable filter $crosstab(deleted)
     ::windows::gamelist::Refresh
     updateStatusBar
   }
