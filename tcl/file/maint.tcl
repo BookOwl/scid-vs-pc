@@ -544,6 +544,16 @@ proc markTwins {{parent .}} {
   label $w.tc -text $::tr(TwinsCriteria) -font font_Bold
   pack $w.tc -side top
 
+  frame $w.players
+  label $w.players.label -text $::tr(TwinsPlayers) -font $small
+  radiobutton $w.players.yes -variable twinSettings(players) -value Yes \
+      -text $::tr(TwinsPlayersExact) -font $small
+  radiobutton $w.players.no -variable twinSettings(players) -value No \
+      -text $::tr(TwinsPlayersPrefix) -font $small
+
+  pack $w.players -side top
+  pack $w.players.label $w.players.yes $w.players.no -side left
+
   frame $w.g
   pack $w.g -side top
   set row 0
@@ -561,15 +571,6 @@ proc markTwins {{parent .}} {
       incr col
     }
   }
-  frame $w.players
-  label $w.players.label -text $::tr(TwinsPlayers) -font $small
-  radiobutton $w.players.yes -variable twinSettings(players) -value Yes \
-      -text $::tr(TwinsPlayersExact) -font $small
-  radiobutton $w.players.no -variable twinSettings(players) -value No \
-      -text $::tr(TwinsPlayersPrefix) -font $small
-
-  pack $w.players -side top
-  pack $w.players.label $w.players.yes $w.players.no -side left
 
   addHorizontalRule $w
 
@@ -683,11 +684,10 @@ proc markTwins {{parent .}} {
 
 }
 
-# twinCriteriaOK:
 #   Check that the user specified at least three of the the same site,
 #   same round, and same year settings, since otherwise it is quite
 #   likely that actual games with simlar moves will be marked as twins:
-#
+
 proc twinCriteriaOK {{parent .}} {
   global twinSettings
 

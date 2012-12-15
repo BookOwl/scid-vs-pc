@@ -1210,9 +1210,9 @@ translate E TwinsDay {Same day}
 translate E TwinsResult {Same result}
 translate E TwinsECO {Same ECO code}
 translate E TwinsMoves {Same moves}
-translate E TwinsPlayers {Comparing player names}
+translate E TwinsPlayers {Player names}
 translate E TwinsPlayersExact {Exact match}
-translate E TwinsPlayersPrefix {First 4 letters only}
+translate E TwinsPlayersPrefix {First four letters only}
 translate E TwinsWhen {When deleting Twin Games}
 translate E TwinsSkipShort {Ignore games under 5 moves long}
 translate E TwinsUndelete {Undelete all games first}
