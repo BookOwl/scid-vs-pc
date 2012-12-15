@@ -2262,7 +2262,8 @@ proc makeAnalysisWin {{n 0} {settime 0}} {
     initialAnalysisStart $n
   }
   # necessary on windows because the UI sometimes starves, also keep latest priority setting
-  if {$::windowsOS || $analysis(priority$n) == {idle} || ($n==1 && $analysis(mini)) } {
+  # if ($::windowsOS)
+  if {$analysis(priority$n) == {idle} || ($n==1 && $analysis(mini)) } {
     set analysis(priority$n) idle
     setAnalysisPriority $n
   }
