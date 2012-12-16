@@ -2,8 +2,8 @@
 ### novag.tcl: part of Scid.
 ### Copyright (C) 2007  Pascal Georges
 ###
-######################################################################
-### add NOVAG board support
+
+### NOVAG board support
 
 namespace eval novag {
   set fd ""
@@ -35,14 +35,18 @@ namespace eval novag {
     ::ExtHardware::HWbuttonImg tb_eng_connecting
     
     if {[catch { set fd [open $serial r+ ] } err]} {
+	::ExtHardware::HWbuttonImg tb_eng_disconnected
         tk_messageBox -type ok -icon error -parent . -title "Novag Citrine" -message "Connection error for $serial \n $err"
         destroy $w
         return
     }
 
+    ### todo: make these options configurable ?
+
     # 57600 bauds, no parity, 8 bits, 1 stop
     fconfigure $fd -mode 57600,n,8,1 -blocking 0 -buffering line
     fileevent $fd readable ::novag::recv
+
     # human / human mode
     # get info
     ::novag::send "I"
@@ -54,6 +58,8 @@ namespace eval novag {
     wait 200
     ::novag::send "U ON"
     set ::novag::connected 1
+
+    ::ExtHardware::HWbuttonImg tb_eng_ok
   }
   ##########################################################
   proc disconnect {} {

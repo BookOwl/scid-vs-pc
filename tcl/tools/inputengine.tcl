@@ -11,9 +11,14 @@
 ###    Last change: <Mon, 2010/03/08 18:38:38 arwagner ingata>
 ###    Author     : Alexander Wagner
 ###    Language   : TCL
-###
-#----------------------------------------------------------------------
-# Toolbar icons to display current status to the user
+
+# Hacked by stevenaaus Dec, 2012;
+#
+# This file handles the configuration widgets for Novag and Input Engine
+# and also connect for the Input Engine. Namespaces 'ExtHardware' and 'inputengine'.
+# Connect and addMove for the Novag is handled in 'novag.tcl', namespace 'novag'
+# Configuration file 'hardware.dat' is written *only* when config widget is OK-ed
+# Todo: write a helpfile and properly test and sort this code out.
 
 # Engine is connecting (searching the board, initialising)
 image create photo tb_eng_connecting -data {
@@ -303,11 +308,9 @@ if {$png_image_support} {
 
 }
 
-#----------------------------------------------------------------------
-
-
 namespace eval ExtHardware {
 
+  # These defaults may be overwritten by reading hardware.dat (below)
   set engine     "dgtdrv2.i686";
   set port       "/dev/ttyUSB0"
   set param      "la"
@@ -320,9 +323,6 @@ namespace eval ExtHardware {
   set bindbutton "::novag::connect"
   set showbutton 0
 
-  #----------------------------------------------------------------------
-  # Save the hardware options
-  #----------------------------------------------------------------------
   proc saveHardwareOptions {} {
      set optionF ""
      if {[catch {open [scidConfigFile ExtHardware] w} optionF]} {
@@ -349,20 +349,23 @@ namespace eval ExtHardware {
      close $optionF
      set ::statusBar "External hardware options were saved to: [scidConfigFile correspondence]"
 
-     # Check if the hw connect button exists already. If not, add it.
      if { [winfo exists .button.exthardware]} { 
+        catch {
+        if { $::ExtHardware::showbutton} {
+	   pack .button.space4 .button.exthardware -side left -padx 2
+        } else {
+	   pack forget .button.space4 .button.exthardware
+        }
+        }
         return 
      } else {
         if { $::ExtHardware::showbutton == 1 } {
-
            frame .button.space4 -width 15
+
            button .button.exthardware -image tb_eng_disconnected
-           .button.exthardware configure -relief flat -border 1 -highlightthickness 0 \
-               -anchor n -takefocus 0
-           bind .button.exthardware <Any-Enter> "+.button.exthardware configure -relief groove"
-           bind .button.exthardware <Any-Leave> "+.button.exthardware configure -relief flat; statusBarRestore %W; break"
-           pack .button.space4 .button.exthardware -side left -pady 1 -padx 0 -ipadx 0 -pady 0 -ipady 0
-           pack .button.exthardware -side left -pady 1 -padx 0 -ipadx 0 -pady 0 -ipady 0
+           .button.exthardware configure -relief flat -border 1 -highlightthickness 0 -anchor n -takefocus 0
+
+           pack .button.space4 .button.exthardware -side left -padx 2
 
            .button.exthardware configure -command $::ExtHardware::bindbutton
         }
@@ -370,9 +373,8 @@ namespace eval ExtHardware {
 
   }
 
-  #----------------------------------------------------------------------
-  # Set the hardware connect button image
-  #----------------------------------------------------------------------
+  ### Set the hardware connect button image
+
   proc HWbuttonImg {img} {
 
     if { $::ExtHardware::showbutton == 1 } {
@@ -380,9 +382,8 @@ namespace eval ExtHardware {
     }
   }
 
-  #----------------------------------------------------------------------
-  # Set the hardware connect button command binding
-  #----------------------------------------------------------------------
+  ### Set the hardware connect button command binding
+
   proc HWbuttonBind {cmd} {
 
     if { $::ExtHardware::showbutton == 1 } {
@@ -390,11 +391,10 @@ namespace eval ExtHardware {
     }
   }
 
-  #----------------------------------------------------------------------
-  # config:
+  ###  Configure both novag and 'input engine'
   #    Opens the configuration dialog to input driver engines binary
   #    and parameters required to fire up the engine
-  #----------------------------------------------------------------------
+
   proc config {} {
     global ::ExtHardware::port ::ExtHardware::engine ::ExtHardware::param ::ExtHardware::hardware
 
@@ -407,61 +407,63 @@ namespace eval ExtHardware {
     wm title $w [::tr ExtHWConfigConnection]
 
     label $w.lport -text  [::tr ExtHWPort]
-    entry $w.eport -width 50 -textvariable ::ExtHardware::port
+    entry $w.eport -width 40 -textvariable ::ExtHardware::port
 
     label $w.lengine -text [::tr ExtHWEngineCmd]
-    entry $w.eengine -width 50 -textvariable ::ExtHardware::engine
+    entry $w.eengine -width 40 -textvariable ::ExtHardware::engine
 
     label $w.lparam -text  [::tr ExtHWEngineParam]
-    entry $w.eparam -width 50 -textvariable ::ExtHardware::param
+    entry $w.eparam -width 40 -textvariable ::ExtHardware::param
 
     label $w.options -text [::tr ExtHWHardware]
     
     checkbutton $w.showbutton -text [::tr ExtHWShowButton] -variable ::ExtHardware::showbutton
 
-    #--------------
     # Add a new radio button for subsequent new hardware here:
-    radiobutton $w.novag    -text [::tr ExtHWNovag]  -variable ::ExtHardware::hardware -value 1 -command { \
+
+    radiobutton $w.novag -text [::tr ExtHWNovag] -variable ::ExtHardware::hardware -value 1 -command {
        set ::ExtHardware::bindbutton "::novag::connect"
        .exthardwareConfig.eengine configure -state disabled
        .exthardwareConfig.eparam  configure -state disabled
     }
-    radiobutton $w.inputeng -text [::tr ExtHWInputEngine]   -variable ::ExtHardware::hardware -value 2 -command { \
+
+    radiobutton $w.inputeng -text [::tr ExtHWInputEngine] -variable ::ExtHardware::hardware -value 2 -command {
        set ::ExtHardware::bindbutton "::inputengine::connectdisconnect"
        .exthardwareConfig.eengine configure -state normal
        .exthardwareConfig.eparam  configure -state normal
     }
-    #--------------
 
     if { $::ExtHardware::hardware == 1 } {
        .exthardwareConfig.eengine configure -state disabled
        .exthardwareConfig.eparam  configure -state disabled
     }
 
-    button $w.bOk -text OK -command { ::ExtHardware::saveHardwareOptions
-       ::ExtHardware::HWbuttonBind $::ExtHardware::bindbutton
-       destroy .exthardwareConfig
-       $::ExtHardware::bindbutton
-    }
-    button $w.bCancel -text [::tr Cancel] -command "::ExtHardware::HWbuttonImg tb_eng_disconnected ; destroy $w"
-
     grid $w.options    -stick ew    -row 0 -column 0
     grid $w.novag      -stick w     -row 0 -column 1
     grid $w.inputeng   -stick w     -row 1 -column 1
 
     grid $w.lport      -stick ew    -row 2 -column 0 
-    grid $w.eport                   -row 2 -column 1
+    grid $w.eport                   -row 2 -column 1 -padx 10
 
     grid $w.lengine    -stick ew    -row 3 -column 0
-    grid $w.eengine                 -row 3 -column 1
+    grid $w.eengine                 -row 3 -column 1 -padx 10
 
     grid $w.lparam     -stick ew    -row 4 -column 0 
-    grid $w.eparam                  -row 4 -column 1
+    grid $w.eparam                  -row 4 -column 1 -padx 10
 
     grid $w.showbutton -stick w     -row 5 -column 1
 
-    grid $w.bOk        -stick e     -row 6 -column 0 
-    grid $w.bCancel    -stick w     -row 6 -column 1
+    grid [frame $w.buttons]         -row 6 -column 1 -pady 10 -sticky w
+
+    dialogbutton $w.buttons.ok -text OK -command {
+       ::ExtHardware::saveHardwareOptions
+       ::ExtHardware::HWbuttonBind $::ExtHardware::bindbutton
+       destroy .exthardwareConfig
+       $::ExtHardware::bindbutton
+    }
+    dialogbutton $w.buttons.cancel -text [::tr Cancel] -command "::ExtHardware::HWbuttonImg tb_eng_disconnected ; destroy $w"
+
+    pack $w.buttons.ok $w.buttons.cancel -side left -padx 20
 
     bind $w <F1> { helpWindow HardwareConfig}
 
@@ -471,12 +473,13 @@ namespace eval ExtHardware {
   }
 
 }
-  #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   # source the options file to overwrite the above setup
 
   set scidConfigFiles(ExtHardware) "hardware.dat"
   if {[catch {source [scidConfigFile ExtHardware]} ]} {
-    #::splash::add "Unable to find the options file: [file tail $optionsFile]"
+    ### don't spam splash because this file normally doesnt exist
+    # ::splash::add "Unable to read External Hardware options file: $scidConfigFiles(ExtHardware)"
   } else {
 
      # Add the button to connect the engine to the button bar
@@ -486,8 +489,6 @@ namespace eval ExtHardware {
         button .button.exthardware -image tb_eng_disconnected
         .button.exthardware configure -relief flat -border 1 -highlightthickness 0 \
             -anchor n -takefocus 0
-        bind .button.exthardware <Any-Enter> "+.button.exthardware configure -relief groove"
-        bind .button.exthardware <Any-Leave> "+.button.exthardware configure -relief flat; statusBarRestore %W; break"
         pack .button.space4 .button.exthardware -side left -pady 1 -padx 0 -ipadx 0 -pady 0 -ipady 0
         pack .button.exthardware -side left -pady 1 -padx 0 -ipadx 0 -pady 0 -ipady 0
 
@@ -496,10 +497,6 @@ namespace eval ExtHardware {
 
     ::splash::add "External hardware configuration was found and loaded."
   }
-
-
-
-#======================================================================
 
 namespace eval inputengine {
 
@@ -606,12 +603,6 @@ namespace eval inputengine {
     bind $w <F1> { helpWindow InputEngine}
   }
 
-  proc updateConsole {line} {
-    set t .inputengineconsole.console
-    $t insert end "$line\n"
-    $t yview moveto 1
-  }
-
   #----------------------------------------------------------------------
   # connectdisconnect()
   #   Connects or disconnects depending on the current status of the
@@ -641,6 +632,7 @@ namespace eval inputengine {
 
     set ::inputengine::port $::ExtHardware::port
     set ::inputengine::engine $::ExtHardware::engine
+
     ::ExtHardware::HWbuttonImg tb_eng_connecting
 
     if {[catch {set InputEngine(pipe) [open "| $engine $port $param" "r+"]} result]} {
@@ -673,24 +665,19 @@ namespace eval inputengine {
     }
   }
 
-  #----------------------------------------------------------------------
-  # logEngine
-  #    Simple log routine, ie. writing to stdout
-  #----------------------------------------------------------------------
   proc logEngine {msg} {
-      updateConsole "$msg"
+    set t .inputengineconsole.console
+    $t insert end "$line\n"
+    $t yview moveto 1
   }
 
-  #----------------------------------------------------------------------
-  # sendToEngine()
-  #    Send a string to the engine and log it by means of logEngine
-  #----------------------------------------------------------------------
   proc sendToEngine {msg} {
     global ::inputengine::InputEngine
     set pipe $::inputengine::InputEngine(pipe)
 
     ::inputengine::logEngine "> $msg"
     puts $pipe $msg
+    # todo: is flushing here necessary ?
     flush $pipe
   }
 
@@ -797,6 +784,7 @@ namespace eval inputengine {
     ::inputengine::sendToEngine "getclock"
   }
 
+  # unused. debugging only
   proc strreverse {str} {
      set res {}
      set i [string length $str]
@@ -811,8 +799,8 @@ namespace eval inputengine {
   #----------------------------------------------------------------------
   proc readFromEngine {} {
     global ::inputengine::InputEngine ::inputengine::connectimg
-    set pipe $::inputengine::InputEngine(pipe)
 
+    set pipe $::inputengine::InputEngine(pipe)
     set line     [string trim [gets $pipe] ]
 
     # Close the pipe in case the engine was stoped

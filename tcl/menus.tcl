@@ -733,12 +733,14 @@ menu $m.hardware
 $m add cascade -label ToolsConnectHardware -menu $m.hardware
 set helpMessage($m,[incr menuindex]) ToolsConnectHardware
 incr menuindex
+
   $m.hardware add command -label ToolsConnectHardwareConfigure -command ::ExtHardware::config
   set helpMessage($m.hardware,0) ToolsConnectHardwareConfigure
-  $m.hardware add command -label ToolsConnectHardwareInputEngineConnect -command ::inputengine::connectdisconnect
-  set helpMessage($m.hardware,1) ToolsConnectHardwareInputEngineConnect
+
   $m.hardware add command -label ToolsConnectHardwareNovagCitrineConnect -command ::novag::connect
-  set helpMessage($m.hardware,2) ToolsConnectHardwareNovagCitrineConnect
+  set helpMessage($m.hardware,1) ToolsConnectHardwareNovagCitrineConnect
+  $m.hardware add command -label ToolsConnectHardwareInputEngineConnect -command ::inputengine::connectdisconnect
+  set helpMessage($m.hardware,2) ToolsConnectHardwareInputEngineConnect
 
 $m add separator
 incr menuindex

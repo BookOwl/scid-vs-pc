@@ -1633,7 +1633,7 @@ translate E ExtHWConfigConnection {Configure external hardware}
 translate E ExtHWPort {Port}
 translate E ExtHWEngineCmd {Engine command}
 translate E ExtHWEngineParam {Engine parameter}
-translate E ExtHWShowButton {Show button}
+translate E ExtHWShowButton {Show button in main window}
 translate E ExtHWHardware {Hardware}
 translate E ExtHWNovag {Novag Citrine}
 translate E ExtHWInputEngine {Input Engine}
