@@ -81,7 +81,7 @@ Players may peruse their games at <url http://ficsgames.org>http://ficsgames.org
 <br>
 <li><a FICSfindopp>Finding an Opponent</a></li>
 <br>
-<li><a FICSobserve>Observing Games, International Events</a> and other features</li>
+<li><a FICSobserve>Observing/Examining Games, International Events</a> and other features</li>
 <br>
 <li><a FICScommands>FICS Commands and Variables</a></li>
 </ul>
@@ -5439,14 +5439,19 @@ where the options are:
   FICS and Scid vs. PC offer two ways to analyze games. Smoves and Examine.
   </p>
   <p>
+  The <b>smoves</b> command loads a previously played or suspended game into the main board.
+  Using "smoves GMShort -1" (for eg) is better in that the whole game is loaded to Scid, and 
+  it can thus have variations added, and the game saved.
+  </p>
+  <p>
   The FICS <b>examine</b> command is now well supported, and is a convenient way
   for groups or friends to analyze games. After issuing  "examine GMShort -1" (for eg),
   Scid's large move buttons are bound to the FICS <b>forward</b> and <b>back</b> commands.
   </p>
   <p>
-  The <b>smoves</b> command loads a previously played or suspended game into the main board.
-  Using "smoves GMShort -1" (for eg) is better in that the whole game is loaded to Scid, and 
-  it can thus have variations added, and the game saved.
+  One may upload a game to FICS using <b>upload</b>. This command sends the current game to FICS
+  as a scratch game in examine mode. Others can then examine your game, but <b>do not save</b>
+  the game to your database. Examine mode does not keep a move history.
   </p>
   <p>
   <i>Crazyhouse and Bughouse games can only be observed or examined. They cannot be loaded

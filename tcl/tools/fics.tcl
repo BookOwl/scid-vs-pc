@@ -567,6 +567,7 @@ namespace eval fics {
     }
 
     set c [lindex [split $l] 0]
+    ::fics::addHistory $l
     switch -glob [string trim $c] {
       {}  {
 	  updateConsole {}
@@ -580,7 +581,6 @@ namespace eval fics {
 	  if {![catch {$w.console.text configure -fg $fg}]} {
 	    set ::fics::consolefg $fg
 	  }
-	  ::fics::addHistory $l
 	  return
       }
       bg - background {
@@ -591,7 +591,6 @@ namespace eval fics {
 	  if {![catch {$w.console.text configure -bg $bg}]} {
 	    set ::fics::consolebg $bg
 	  }
-	  ::fics::addHistory $l
 	  return
       }
 
@@ -615,13 +614,51 @@ namespace eval fics {
 	  updateTitle
 
 	  writechan $l echo
-	  ::fics::addHistory $l
 
 	  set ::fics::waitForMoves no_meaning
 	  vwaitTimed ::fics::waitForMoves 5000 nowarn
 	  updateBoard -pgn
 	  updateTitle
 	  return
+      } 
+      upload {
+          # upload current game to examine mode
+          if {$::fics::playing == 2} {
+	    tk_messageBox -title "Oops" -icon info -type ok -message "You are already examining a game" -parent .fics
+            return
+          } 
+          if {[string first "\n1." [sc_game pgn]] == -1} {
+	    tk_messageBox -title "Oops" -icon info -type ok -message "This game has no moves" -parent .fics
+            return
+          } 
+	  set white [string trim [lindex [sc_game tags get White] 0] {,}]
+	  set black [string trim [lindex [sc_game tags get Black] 0] {,}]
+
+	  # set result [sc_game tags get Result]
+          # Hmmm - how to do this ? Result seems to be reset by "set fen"
+	  # sc_game tags set -result $result
+
+	  ::fics::writechan examine
+          ::fics::writechan "wname $white"
+          ::fics::writechan "bname $black"
+
+          sc_move start
+          while {[set moveUCI [sc_game info nextMoveUCI]] != {}} {
+
+	    # can't use because of ambiguous moves
+            # [set move [sc_game info nextMove]] != {}
+            # ::fics::writechan $move
+
+	    if { [ string length $moveUCI ] == 5 } {
+	      set promoletter [ string tolower [ string index $moveUCI end ] ]
+	      ::fics::writechan "promote $promoLetter"
+	    }
+	    ::fics::writechan [ string range $moveUCI 0 3 ]
+            sc_move forward   
+          }
+	  ::fics::writechan commit
+	  updateBoard -pgn
+          return
       } 
       default {
 	  if {[string match uno* $c]} {
@@ -646,7 +683,6 @@ namespace eval fics {
           #}
       }
     } ; # switch
-    ::fics::addHistory $l
 
     writechan $l echo
     $w.console.text yview moveto 1
