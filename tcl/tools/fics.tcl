@@ -634,6 +634,14 @@ namespace eval fics {
 	  set white [string trim [lindex [sc_game tags get White] 0] {,}]
 	  set black [string trim [lindex [sc_game tags get Black] 0] {,}]
 
+	  set confirm [::game::ConfirmDiscard2]
+	  if {$confirm == 2} {return}
+	  if {$confirm == 0} {sc_game save [sc_game number]}
+
+          sc_move end
+          set moves [sc_game moves c]
+          sc_game new
+
 	  # set result [sc_game tags get Result]
           # Hmmm - how to do this ? Result seems to be reset by "set fen"
 	  # sc_game tags set -result $result
@@ -642,19 +650,12 @@ namespace eval fics {
           ::fics::writechan "wname $white"
           ::fics::writechan "bname $black"
 
-          sc_move start
-          while {[set moveUCI [sc_game info nextMoveUCI]] != {}} {
-
-	    # can't use because of ambiguous moves
-            # [set move [sc_game info nextMove]] != {}
-            # ::fics::writechan $move
-
+          foreach moveUCI $moves {
 	    if { [ string length $moveUCI ] == 5 } {
 	      set promoletter [ string tolower [ string index $moveUCI end ] ]
 	      ::fics::writechan "promote $promoLetter"
 	    }
 	    ::fics::writechan [ string range $moveUCI 0 3 ]
-            sc_move forward   
           }
 	  ::fics::writechan commit
 	  updateBoard -pgn
@@ -1738,6 +1739,44 @@ namespace eval fics {
     # <12> r-----k- p----ppp ---rq--- --R-p--- -------- ------PP --R--P-- ------K-
     #      W -1 0 0 0 0 2 182 stevenaaus DRSlay 1 5 12 13 24 84 28 32 Q/e7-e6 (0:40) Qe6 0 1 77
 
+    # * the string "<12>" to identify this line.
+    # * eight fields representing the board position.  The first one is White's
+    #   8th rank (also Black's 1st rank), then White's 7th rank (also Black's 2nd),
+    #   etc, regardless of who's move it is.
+    # * color whose turn it is to move ("B" or "W")
+    # * -1 if the previous move was NOT a double pawn push, otherwise the chess 
+    #   board file  (numbered 0--7 for a--h) in which the double push was made
+    # * can White still castle short? (0=no, 1=yes)
+    # * can White still castle long?
+    # * can Black still castle short?
+    # * can Black still castle long?
+    # * the number of moves made since the last irreversible move.  (0 if last move
+    #   was irreversible.  If the value is >= 100, the game can be declared a draw
+    #   due to the 50 move rule.)
+    # * The game number
+    # * White's name
+    # * Black's name
+    # * my relation to this game:
+    #     -3 isolated position, such as for "ref 3" or the "sposition" command
+    #     -2 I am observing game being examined
+    #      2 I am the examiner of this game
+    #     -1 I am playing, it is my opponent's move
+    #      1 I am playing and it is my move
+    #      0 I am observing a game being played
+    # * initial time (in seconds) of the match
+    # * increment In seconds) of the match
+    # * White material strength
+    # * Black material strength
+    # * White's remaining time
+    # * Black's remaining time
+    # * the number of the move about to be made (standard chess numbering -- White's
+    #   and Black's first moves are both 1, etc.)
+    # * verbose coordinate notation for the previous move ("none" if there were
+    #   none) [note this used to be broken for examined games]
+    # * time taken to make previous move "(min:sec)".
+    # * pretty notation for the previous move ("none" if there is none)
+    # * flip field for board orientation: 1 = Black at bottom, 0 = White at bottom.
+
     set game  [lindex $line 16]
     set color [lindex $line 9]
 
@@ -1769,6 +1808,7 @@ namespace eval fics {
       return
     }
 
+    set ficsGameNum   [lindex $line 16]
     set initialTime   [lindex $line 20]
     set increment     [lindex $line 21]
     set whiteMaterial [lindex $line 22]
@@ -1780,12 +1820,6 @@ namespace eval fics {
     set moveTime        [lindex $line 28]
     set moveSan         [lindex $line 29]
     set ::fics::playing [lindex $line 19]
-      # -3 isolated position, such as for "ref 3" or the "sposition" command
-      # -2 I am observing game being examined
-      #  2 I am the examiner of this game
-      # -1 I am playing, it is my opponent's move
-      #  1 I am playing and it is my move
-      #  0 I am observing a game being played
     set ::fics::mainGame $game
 
     ::gameclock::setSec 1 [ expr 0 - $whiteRemainingTime ]
@@ -1861,6 +1895,13 @@ namespace eval fics {
       sc_game tags set -white $white
       sc_game tags set -black $black
       sc_game tags set -result *
+      if {$color == "W"} {
+        if {$moveNumber > 1} {
+	  sc_pos setComment "$moveNumber. ... $verbose_move"
+        }
+      } else {
+	sc_pos setComment "$moveNumber. $verbose_move"
+      }
       if {[catch {sc_game startBoard $fen}]} {
 	# Pawn and piece counts get verified in Position::ReadFromFEN, but crazyhouse often has more than 8 pawns.
         # So we may have to setup board manually
@@ -1875,7 +1916,7 @@ namespace eval fics {
       } else {
 	updateBoard -pgn
       }
-      wm title . "$::scidName: $white - $black (examine mode)"
+      wm title . "$::scidName: $white - $black (examining game $ficsGameNum)"
       return
     }
 

@@ -5450,8 +5450,7 @@ where the options are:
   </p>
   <p>
   One may upload a game to FICS using <b>upload</b>. This command sends the current game to FICS
-  as a scratch game in examine mode. Others can then examine your game, but <b>do not save</b>
-  the game to your database. Examine mode does not keep a move history.
+  as a scratch game in examine mode. Others can then examine your game. 
   </p>
   <p>
   <i>Crazyhouse and Bughouse games can only be observed or examined. They cannot be loaded
