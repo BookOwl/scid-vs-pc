@@ -557,7 +557,7 @@ translate E TreeBestGames {Best Games}
 translate E TreeTitleRow \
   {    Move      Frequency    Score  AvElo Perf AvYear Draw ECO}
 translate E TreeTotal {TOTAL}
-translate E DoYouWantToSaveFirst {Do you want to save first}
+translate E DoYouWantToSaveFirst {Do you want to save}
 translate E AddToMask {Add to Mask}
 translate E RemoveFromMask {Remove from Mask}
 translate E SearchMask {Search in Mask}

@@ -555,7 +555,7 @@ translate I TreeTitleRow \
   {    Mossa     Frequenza    Punt.  AvElo Perf AvAnno Patta ECO}
 translate I TreeTotal {TOTALE}
 # ====== TODO To be translated ======
-translate I DoYouWantToSaveFirst {Do you want to save first}
+translate I DoYouWantToSaveFirst {Do you want to save}
 # ====== TODO To be translated ======
 translate I AddToMask {Add to Mask}
 # ====== TODO To be translated ======

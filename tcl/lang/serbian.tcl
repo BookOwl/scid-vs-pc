@@ -601,7 +601,7 @@ translate Y TreeTitleRow \
   {    Move      Frequency    Score  AvElo Perf AvYear Draws ECO}
 translate Y TreeTotal {UKUPNO}
 # ====== TODO To be translated ======
-translate Y DoYouWantToSaveFirst {Do you want to save first}
+translate Y DoYouWantToSaveFirst {Do you want to save}
 # ====== TODO To be translated ======
 translate Y AddToMask {Add to Mask}
 # ====== TODO To be translated ======

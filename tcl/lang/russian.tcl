@@ -605,7 +605,7 @@ translate R TreeTitleRow \
   {    Ход       Частота     Счет   СрElo Прзв СрГод  Ничьих ECO}
 translate R TreeTotal {TOTAL}
 # ====== TODO To be translated ======
-translate R DoYouWantToSaveFirst {Do you want to save first}
+translate R DoYouWantToSaveFirst {Do you want to save}
 # ====== TODO To be translated ======
 translate R AddToMask {Add to Mask}
 # ====== TODO To be translated ======
