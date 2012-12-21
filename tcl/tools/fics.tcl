@@ -633,6 +633,7 @@ namespace eval fics {
           } 
 	  set white [string trim [lindex [sc_game tags get White] 0] {,}]
 	  set black [string trim [lindex [sc_game tags get Black] 0] {,}]
+	  set ::fics::uploadresult [sc_game tags get Result]
 
 	  set confirm [::game::ConfirmDiscard2]
 	  if {$confirm == 2} {return}
@@ -641,10 +642,6 @@ namespace eval fics {
           sc_move end
           set moves [sc_game moves c]
           sc_game new
-
-	  # set result [sc_game tags get Result]
-          # Hmmm - how to do this ? Result seems to be reset by "set fen"
-	  # sc_game tags set -result $result
 
 	  ::fics::writechan examine
           ::fics::writechan "wname $white"
@@ -1894,7 +1891,6 @@ namespace eval fics {
       # Examining game
       sc_game tags set -white $white
       sc_game tags set -black $black
-      sc_game tags set -result *
       if {$color == "W"} {
         if {$moveNumber > 1} {
 	  sc_pos setComment "$moveNumber. ... $verbose_move"
@@ -1905,6 +1901,7 @@ namespace eval fics {
       if {[catch {sc_game startBoard $fen}]} {
 	# Pawn and piece counts get verified in Position::ReadFromFEN, but crazyhouse often has more than 8 pawns.
         # So we may have to setup board manually
+	sc_game tags set -result $::fics::uploadresult
 	updateGameinfo
 	set moves [lreverse [lrange $line 1 8]]
 	set boardmoves [string map { "-" "." " " "" } $moves]
@@ -1914,6 +1911,7 @@ namespace eval fics {
 	.button.start   configure -state normal
 	.button.end     configure -state normal
       } else {
+	sc_game tags set -result $::fics::uploadresult
 	updateBoard -pgn
       }
       wm title . "$::scidName: $white - $black (examining game $ficsGameNum)"
