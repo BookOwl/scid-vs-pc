@@ -1617,7 +1617,10 @@ namespace eval CorrespondenceChess {
 	proc doConfigMenus { } {
 		set lang $::language
 
-		if {! [winfo exists .ccWindow]} { return }
+		if {! [winfo exists .ccWindow]} {
+			raiseWin .ccWindow
+			return
+		}
 
 		set m .ccWindow.menu
 
@@ -1696,6 +1699,24 @@ namespace eval CorrespondenceChess {
 	#----------------------------------------------------------------------
 	proc ConfigureRelay { } {
 		global ::CorrespondenceChess::RelayGames
+
+		puts stderr $::CorrespondenceChess::Connector
+		if {![file exists $::CorrespondenceChess::Connector]} {
+				if {[catch {open $::CorrespondenceChess::Connector w} connectF]} {
+
+				} else {
+					puts $connectF "<?xml version=\"1.0\" encoding=\"utf-8\"?>"
+					puts $connectF "<connector>";
+					puts $connectF "\t<server>";
+					puts $connectF "\t\t<name>ICCF</name>";
+					puts $connectF "\t\t<stripforid>http://www.iccf-webchess.com/MakeAMove.aspx\?id=</stripforid>";
+					puts $connectF "\t\t<pgnbaseurl>http://www.iccf-webchess.com/GetPGN.aspx?id=</pgnbaseurl>";
+					puts $connectF "\t\t<cmailprefix>game</cmailprefix>";
+					puts $connectF "\t</server>";
+					puts $connectF "</connector>";
+					close $connectF
+				}
+		}
 
 		if {[catch {open $::CorrespondenceChess::Connector r} connectF]} {
 				set Title "Error"
@@ -2333,7 +2354,10 @@ namespace eval CorrespondenceChess {
 	#----------------------------------------------------------------------
 	proc config {} {
 		set w .correspondenceChessConfig
-		if { [winfo exists $w]} { return }
+		if { [winfo exists $w]} { 
+			raiseWin $w
+			return
+		}
 		toplevel $w
 		wm title $w [::tr "CCDlgConfigureWindowTitle"]
 
@@ -3764,6 +3788,7 @@ namespace eval CorrespondenceChess {
 			set name      [lindex $IdList 0]
 			set gameid    [lindex $IdList 1]
 			set movecount [sc_pos moveNumber]
+			set ply       [sc_pos location]
 			set move      [sc_game info previousMoveNT]
 			set comment   [sc_pos getComment]
 			set Event     [sc_game tags get Event]
@@ -3789,6 +3814,19 @@ namespace eval CorrespondenceChess {
 			set DlgBoxText "[::tr CCDlgConfirmMoveText]\n\n$name-$gameid:\n\t$movecount. $move\n\t{$comment}"
 			if {$resign == 1} {
 				set DlgBoxText "$DlgBoxText\n\n[::tr CCResign]"
+				# When resigning usually no move is made before.
+				# Therefore, we have to increase the ply by one (faking a
+				# move) and recalculate the resulting move number if White
+				# is to move.
+				# This gives:
+				# 1. e4 <resign> => ply 2 => no ply increment => move
+				# number = 1, move number to send = 1
+				# 1. e4 e5 <resign> => increment ply => ply = 3 => move
+				# number = 1, move number to send = 2
+				if {[sc_pos side] == "white"} {
+					set movecount [expr {$ply / 2 + 1}]	
+					::CorrespondenceChess::updateConsole "info Increment ply $movecount"
+				}
 			} elseif {$acceptDraw == 1} {
 				set DlgBoxText "$DlgBoxText\n\n[::tr CCAcceptDraw]"
 			} elseif {$offerDraw  == 1} {
@@ -3864,22 +3902,23 @@ namespace eval CorrespondenceChess {
 	  ::splash::add "Correspondence Chess configuration was found and loaded."
 	}
 
-	if {[catch { package require http }]} {
+	if {[catch {set version [package require http]}]} {
 	  ::splash::add "http package not found, disabling internal Xfcc support"
 		set XfccInternal -1
 	} else {
+		::splash::add "http package $version found"
 		::http::config -useragent $::Xfcc::useragent
-	}
-
-	if {[catch {package require tdom}]} {
-		::splash::add "tDOM package not found, disabling internal Xfcc support"
-		set XfccInternal -1
+		if {[catch {set version [package require tdom]}]} {
+			::splash::add "tDOM package not found, disabling internal Xfcc support"
+			set XfccInternal -1
+		} else {
+			::splash::add "tDOM package $version found"
+		}
 	}
 
 	::CorrespondenceChess::checkInOutbox
 	::CorrespondenceChess::checkXfccrc
 	::CorrespondenceChess::checkCorrBase
-	#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 }
 
 
