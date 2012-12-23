@@ -37,6 +37,7 @@ namespace eval fics {
   set consoleheight 10
   set catchRemoving 0
   set premove {}
+  set examresult *
 
   set ignore_abort 0
   set ignore_adjourn 0
@@ -633,7 +634,7 @@ namespace eval fics {
           } 
 	  set white [string trim [lindex [sc_game tags get White] 0] {,}]
 	  set black [string trim [lindex [sc_game tags get Black] 0] {,}]
-	  set ::fics::uploadresult [sc_game tags get Result]
+	  set ::fics::examresult [sc_game tags get Result]
 
 	  set confirm [::game::ConfirmDiscard2]
 	  if {$confirm == 2} {return}
@@ -1893,15 +1894,15 @@ namespace eval fics {
       sc_game tags set -black $black
       if {$color == "W"} {
         if {$moveNumber > 1} {
-	  sc_pos setComment "$moveNumber. ... $verbose_move"
+	  sc_pos setComment "$moveNumber. ... $moveSan"
         }
       } else {
-	sc_pos setComment "$moveNumber. $verbose_move"
+	sc_pos setComment "$moveNumber. $moveSan"
       }
       if {[catch {sc_game startBoard $fen}]} {
 	# Pawn and piece counts get verified in Position::ReadFromFEN, but crazyhouse often has more than 8 pawns.
         # So we may have to setup board manually
-	sc_game tags set -result $::fics::uploadresult
+	sc_game tags set -result $::fics::examresult
 	updateGameinfo
 	set moves [lreverse [lrange $line 1 8]]
 	set boardmoves [string map { "-" "." " " "" } $moves]
@@ -1911,7 +1912,7 @@ namespace eval fics {
 	.button.start   configure -state normal
 	.button.end     configure -state normal
       } else {
-	sc_game tags set -result $::fics::uploadresult
+	sc_game tags set -result $::fics::examresult
 	updateBoard -pgn
       }
       wm title . "$::scidName: $white - $black (examining game $ficsGameNum)"
@@ -1937,6 +1938,11 @@ namespace eval fics {
 	    ::utils::sound::PlaySound sound_move
 	  }
         }
+	if {[wm state .] != {normal}} {
+	    wm deiconify .
+        }
+	raise .
+	focus .
         set ::fics::lastmove $moveSan ; # remember last opponents move for takeback comment
         if {[catch {sc_move addSan $moveSan } err]} {
           # This is a common occurence when moving observed games to the main board
