@@ -1276,6 +1276,7 @@ $m add checkbutton -label WindowsPGN -variable startup(pgn)
 $m add checkbutton -label WindowsStats -variable startup(stats)
 $m add checkbutton -label WindowsTree -variable startup(tree)
 $m add checkbutton -label WindowsBook -variable startup(book)
+$m add checkbutton -label FICS -variable startup(fics)
 
 bind . <Control-Shift-Left>  {::board::resize .board -1}
 bind . <Control-Shift-Right> {::board::resize .board +1}
@@ -1595,6 +1596,8 @@ proc setLanguageMenus {{lang ""}} {
         WindowsCross WindowsGList WindowsStats WindowsBook} {
     configMenuText .menu.options.startup [tr $tag $oldLang] $tag $lang
   }
+  # unhandled FICS
+
   foreach tag {Iconify Raise} {
     configMenuText .menu.options.windows [tr OptionsWindows$tag $oldLang] \
         OptionsWindows$tag $lang

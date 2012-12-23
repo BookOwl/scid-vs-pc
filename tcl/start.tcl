@@ -575,6 +575,7 @@ set startup(crosstable) 0
 set startup(gamelist) 0
 set startup(stats) 0
 set startup(book) 0
+set startup(fics) 0
 
 # myPlayerNames:
 #   List of player name patterns for which the chessboard should be

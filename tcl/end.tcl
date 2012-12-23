@@ -1778,6 +1778,7 @@ foreach {type action} {
   crosstable ::crosstab::Open
   finder     ::file::finder::Open
   book       ::book::OpenClose
+  fics       ::fics::config
 } {
   if {$startup($type)} { $action }
 }

@@ -1543,6 +1543,7 @@ translate D KingsIndianSamisch {Königsinsisch, Sämisch}
 translate D KingsIndianMainLine {Königsinsisch, Hauptvariante}
 
 translate D ConfigureFics {FICS Konfigurieren}
+translate D FICSLogin {Login}
 translate D FICSGuest {Gastlogin}
 translate D FICSServerPort {Serverport}
 translate D FICSServerAddress {IP Adresse}
