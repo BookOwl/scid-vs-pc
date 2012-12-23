@@ -1014,6 +1014,11 @@ namespace eval fics {
 
     if {[string match "Creating: *" $line]} {
       catch {destroy .ficsOffers}
+      if {[wm state .] != {normal}} {
+	  wm deiconify .
+      }
+      raise .
+      focus .
       # Setting this, stops automatically accepting rematches. (But algorythm needs fixing a little)
       set ::fics::findopponent(manual) manual
       after cancel ::fics::updateGraph
