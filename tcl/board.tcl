@@ -673,10 +673,8 @@ bind .tb.bkm <ButtonPress-1> "+.tb.bkm configure -relief flat"
 
 frame .tb.space1 -width 12
 button .tb.newgame -image tb_newgame -command ::game::Clear
-button .tb.copy -image tb_copy \
-    -command {catch {sc_clipbase copy}; updateBoard}
-button .tb.paste -image tb_paste \
-    -command {catch {sc_clipbase paste}; updateBoard -pgn}
+button .tb.copy -image tb_copy -command copyGame
+button .tb.paste -image tb_paste -command pasteGame
 frame .tb.space2 -width 12
 button .tb.gfirst -image tb_gfirst -command {::game::LoadNextPrev first}
 button .tb.gprev -image tb_gprev -command {::game::LoadNextPrev previous}

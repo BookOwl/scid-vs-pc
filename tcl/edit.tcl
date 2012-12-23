@@ -78,6 +78,22 @@ proc pasteFEN {} {
   updateBoard -pgn
 }
 
+proc copyGame {} {
+  catch {sc_clipbase copy}
+  set ::glistFlipped([sc_info clipbase]) [::board::isFlipped .board] 
+  # is updateBoard needed ?
+  updateBoard
+}
+
+
+proc pasteGame {} {
+  sc_clipbase paste
+  if {$::glistFlipped([sc_info clipbase]) != [::board::isFlipped .board]} { 
+    ::board::flip .board
+  } 
+  updateBoard -pgn
+}
+
 proc setSetupBoardToFen {} {
   global setupFen
   global setupboardSize setupBd

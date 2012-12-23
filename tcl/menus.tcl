@@ -311,18 +311,12 @@ $m add command -label EditReset -command {
 }
 set helpMessage($m,[incr menuindex]) EditReset
 
-$m add command -label EditCopy -accelerator "Ctrl+C" -command {
-  catch {sc_clipbase copy}
-  updateBoard
-}
-bind . <Control-c> {catch {sc_clipbase copy}; updateBoard}
+$m add command -label EditCopy -accelerator "Ctrl+C" -command copyGame
+bind . <Control-c> copyGame
 set helpMessage($m,[incr menuindex]) EditCopy
 
-$m add command -label EditPaste -accelerator "Ctrl+V" -command {
-  sc_clipbase paste
-  updateBoard -pgn
-}
-bind . <Control-v> {catch {sc_clipbase paste}; updateBoard -pgn}
+$m add command -label EditPaste -accelerator "Ctrl+V" -command pasteGame
+bind . <Control-v> pasteGame
 set helpMessage($m,[incr menuindex]) EditPaste
 
 $m add separator
@@ -1725,8 +1719,8 @@ proc standardShortcuts {w} {
   bind $w <F2> {::startAnalysisWin F2}
   bind $w <F3> {::startAnalysisWin F3}
   bind $w <F4> {::startAnalysisWin F4}
-  # bind $w <Control-c> {catch {sc_clipbase copy}; ::updateBoard}
-  # bind $w <Control-v> {catch {sc_clipbase paste}; ::updateBoard -pgn}
+  # bind $w <Control-c> copyGame
+  # bind $w <Control-v> pasteGame
   bind $w <Control-S> ::setupBoard
   bind $w <Control-C> ::copyFEN
   bind $w <Control-V> ::pasteFEN
