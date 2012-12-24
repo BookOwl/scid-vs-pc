@@ -1014,11 +1014,13 @@ namespace eval fics {
 
     if {[string match "Creating: *" $line]} {
       catch {destroy .ficsOffers}
-      if {[wm state .] != {normal}} {
-	  wm deiconify .
+      if {$::fics::autoraise} {
+	if {[wm state .] != {normal}} {
+	    wm deiconify .
+	}
+	raise .
+	focus .
       }
-      raise .
-      focus .
       # Setting this, stops automatically accepting rematches. (But algorythm needs fixing a little)
       set ::fics::findopponent(manual) manual
       after cancel ::fics::updateGraph
@@ -1943,11 +1945,13 @@ namespace eval fics {
 	    ::utils::sound::PlaySound sound_move
 	  }
         }
-	if {[wm state .] != {normal}} {
-	    wm deiconify .
+        if {$::fics::autoraise} {
+	  if {[wm state .] != {normal}} {
+	      wm deiconify .
+	  }
+	  raise .
+	  focus .
         }
-	raise .
-	focus .
         set ::fics::lastmove $moveSan ; # remember last opponents move for takeback comment
         if {[catch {sc_move addSan $moveSan } err]} {
           # This is a common occurence when moving observed games to the main board

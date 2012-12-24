@@ -1085,7 +1085,7 @@ $m add command -label OptionsSave -command {
     puts $optionF ""
 
     # save FICS config
-    foreach i { use_timeseal timeseal_exec port_fics port_timeseal login password consolebg consolefg chanoff shouts server_ip consolebg consolefg autopromote smallclocks size sound} {
+    foreach i { use_timeseal timeseal_exec port_fics port_timeseal login password consolebg consolefg chanoff shouts server_ip consolebg consolefg autopromote autoraise smallclocks size sound} {
       puts $optionF "set ::fics::$i [list [set ::fics::$i]]"
     }
     foreach i [lsort [array names ::fics::findopponent]] {
@@ -1224,6 +1224,7 @@ menu $m -tearoff 1
 $m add checkbutton -label  OptionsFicsAuto -variable ::fics::autopromote
 $m add checkbutton -label OptionsFicsClock -variable ::fics::smallclocks -command ::fics::showClocks
 $m add checkbutton -label OptionsSounds -variable ::fics::sound
+$m add checkbutton -label OptionsWindowsRaise -variable ::fics::autoraise
 
 set m .menu.options.export
 menu $m -tearoff -1
@@ -1588,6 +1589,7 @@ proc setLanguageMenus {{lang ""}} {
   configMenuText .menu.options.fics [tr OptionsFicsAuto $oldLang] OptionsFicsAuto $lang
   configMenuText .menu.options.fics [tr OptionsFicsClock $oldLang] OptionsFicsClock $lang
   configMenuText .menu.options.fics [tr OptionsSounds $oldLang] OptionsSounds $lang
+  configMenuText .menu.options.fics [tr OptionsWindowsRaise $oldLang] OptionsWindowsRaise $lang
 
   foreach tag { Color Width Display } {
     configMenuText .menu.options.entry.highlightlastmove [tr OptionsMovesHighlightLastMove$tag $oldLang] OptionsMovesHighlightLastMove$tag $lang
