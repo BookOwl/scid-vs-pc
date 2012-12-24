@@ -11650,6 +11650,12 @@ sc_name_edit (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
     // Find the existing name in the namebase:
     idNumberT oldID = 0;
 
+    // dont' allow globbing unless it is filter only.
+    if (oldName[0]=='*' && oldName[1]==0 && editSelection == EDIT_ALL) {
+      Tcl_AppendResult (ti, "Using '*' to match field names is potentially harmful, and not allowed with 'All games'.",NULL);
+      return TCL_ERROR;
+    }
+
     // skip this check is we are searching for "*" and the field is OPT_EVENT SITE or ROUND 
     if (option != OPT_DATE  &&  option != OPT_EVENTDATE 
         && !(oldName[0]=='*' && oldName[1]==0 && (option == OPT_EVENT || option == OPT_SITE || option == OPT_ROUND))) {
