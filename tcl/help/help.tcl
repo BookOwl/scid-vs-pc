@@ -2386,7 +2386,7 @@ perform a Namebase <a Compact>Compaction</a>.
   DATE and EVENTDATE fields must be of the form YYYY.MM.DD (year, month, day)
   </p>
   <p>
-  <i>Please take care when using the Name Editor. Changes are not properly undoable if the "With" name already exists.</i>
+  <i>Please take care when using the Name Editor. Changes are not properly undoable if the "With" name already exists. There is also a safety mechanism - Using '*' or '?' is not allowed with 'All games in database'.</i>
   </p>
 
   <h3><name Spellfile>Spell Check File</name></h3>
