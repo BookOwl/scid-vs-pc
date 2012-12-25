@@ -1,0 +1,136 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+ <META NAME="GENERATOR" CONTENT="LinuxDoc-Tools 0.9.66">
+ <TITLE>Phalanx</TITLE>
+</HEAD>
+<BODY>
+<H1>Phalanx<BR></H1>
+
+<H2></H2>
+<P>
+<PRE>
+</PRE>
+</P>
+
+<P>
+<H2><A NAME="toc1">1.</A> <A HREF="index.html#s1">introduction </A></H2>
+
+<P>
+<H2><A NAME="toc2">2.</A> <A HREF="index.html#s2">downloads </A></H2>
+
+<P>
+<H2><A NAME="toc3">3.</A> <A HREF="index.html#s3">todo </A></H2>
+
+<P>
+<H2><A NAME="toc4">4.</A> <A HREF="index.html#s4">changes </A></H2>
+
+<P>
+<H2><A NAME="toc5">5.</A> <A HREF="index.html#s5">historical </A></H2>
+
+<P>
+<H2><A NAME="toc6">6.</A> <A HREF="index.html#s6">author </A></H2>
+
+
+<HR>
+<H2><A NAME="s1">1.</A> <A HREF="#toc1">introduction </A></H2>
+
+
+<P>Phalanx is an old, popular chess engine, with an interesting 
+<A HREF="#history_">history</A>.</P>
+<P>The latest code can be obtained from subversion with
+<UL><B>svn co https://phalanx.svn.sourceforge.net/svnroot/phalanx</B></UL></P>
+<H2><A NAME="s2">2.</A> <A HREF="#toc2">downloads </A></H2>
+
+<P>source 
+<A HREF="http://sourceforge.net/projects/phalanx/files/Version%20XXIII%20Beta/phalanx-XXIII-beta.tgz/download">phalanx-XXIII-beta.tgz</A></P>
+<P>windows 
+<A HREF="http://sourceforge.net/projects/phalanx/files/Version%20XXIII%20Beta/phalanx-XXIII-win32-beta.tgz/download">phalanx-XXIII-win32-beta.tgz</A></P>
+<P>Jim Ablett's windows/android/linux binaries 
+<A HREF="http://sourceforge.net/projects/phalanx/files/JA/phalanx-xxiii-ja.zip/download">phalanx-xxiii-ja.zip</A></P>
+<P><EM>Unfortunately both windows versions above have minor bugs.
+Jim Ablett's version should be used for tournament matches.
+phalanx-XXIII-win32-beta should be used for Scid's analysis window.</EM></P>
+
+<H2><A NAME="s3">3.</A> <A HREF="#toc3">todo </A></H2>
+
+<P>
+<UL>
+<LI> Fix win32 related bugs
+<P>Currently win32 polling now works, but has a bug. It does not get updated when making a move in Scid.
+The issue is with the "interrupt" proc. This proc is getting called in Linux, but not in WIN32.
+I tried changing all Jim's "signal(SIGINT, handleSigint);" to "signal(SIGINT,interrupt);" but it
+didn't work, so i'm assuming that on WIN32, io.c::interrupt() is getting replaced by a system call. </P>
+</LI>
+<LI> Format C source code (with <B>indent</B> ?) , to allow for easy
+program diffing with the various phalanx forks still around.</LI>
+</UL>
+</P>
+
+<H2><A NAME="s4">4.</A> <A HREF="#toc4">changes </A></H2>
+
+<P>
+<UL>
+<LI>February 2012 : Code contributed by Jim Ablett (sourced from Olithink) to allow polling in win32
+, and also some (cross platform) time related fixes.</LI>
+<LI>August   2011 : Add enpassant and 50 rule parsing pf FEN, remove CC warnings and add protover command</LI>
+<LI>October  2010 : Added millisecond time control</LI>
+<LI>October  2010 : Windows binary compiled against cygwin-1.7.5-1</LI>
+<LI>October  2010 : Sync-ed with Scid vs. PC's phalanx (adding "st" command, and fixing illegal castling)</LI>
+<LI>October  2010 : Sourceforge Phalanx project now maintained by stevenaaus</LI>
+<LI>December 2006 : added setboard option - Pascal Georges</LI>
+</UL>
+</P>
+<P>
+<A NAME="history_"></A> </P>
+<H2><A NAME="s5">5.</A> <A HREF="#toc5">historical </A></H2>
+
+
+<P>
+<DL>
+<P><B>This is the old web page, by Phalanx Reborn's author - José de Paula.</B></P>
+<DT><B></B><DD>
+<P><B>Welcome to the new Phalanx Chess home</B></P>
+<P>This is the website for the Phalanx chess engine. It was created by a young Czech student, Dusan Dobes, but he vanished from the Internet around the year 2000. Luckily, he released Phalanx under the GPL license, so his work won't be forgotten; on the contrary, I hope that the community will help improve it and make it a worthy opponent to other chess engines.</P>
+<P>Phalanx's playing style is quite human-like; when it plays at full strength, it may be compared to a intermediate-to-strong club player; beginners will be right at home with it, too.</P>
+<P>I made some very little changes on Dobes's latest version of Phalanx so it could compile and run on any modern GNU/Linux system. The GCC compiler is required, as it uses some of its extensions. I plan to change that.</P>
+<P>You can download, report bugs, and discuss Phalanx on the Project page, or make any requests to me directly, espinafre at users dot sourceforge dot net.</P>
+<P><B>News</B></P>
+<P>2006-02-15 22:13 GMT -3:00 Windows version has a problem with Arena: phalanx seems to hang after the book moves. Currently known workaround is to pass the option '-o -' to Phalanx's command line. Thanks to Dario Zucco for reporting this!</P>
+</DL>
+</P>
+<P><B> Quotes</B>
+<DL>
+<DT><B>
+<A HREF="http://www.chessbase.com/support/support.asp?pid=100">Chessbase.com, May 28th, 2000</A></B><DD>
+<P>PhalanxXXII was the most interesting of the seven engines (in my opinion). I
+was looking forward to a wild sacrificial game against it (based on the
+engine's description at the ChessBase GmbH site), but Phalanx fooled me. I
+played a couple of games against it immediately after replaying a couple of
+Steinitz' games from Reti's book Masters of the Chessboard. Steinitz was the
+master of the pawn push. He often drove his pawns relentlessly forward to deny
+space to his opponent. To my surprise (I might even say "shock"), Phalanx does
+the same thing. Control of space is evidently given high priority in its
+evaluation algorithm. As I played against Phalanx, it seemed intent on
+throttling me ("python-like", to use the hoary old stereotype). I give this
+program high marks for positional play -- the pawn pushes it made were all
+strong ones, and it never gave my Knights a chance to exploit any holes it may
+have created. Despite the relatively low rating range in "Handicap and fun"
+mode (1150-1950), Phalanx was without question the most unique and interesting
+of the seven engines and I'm looking forward to my next game against it.</P>
+
+<DT><B>
+<A HREF="http://linux.about.com/cs/linux101/g/phalanx.htm">Juergen Haas, About.com</A></B><DD>
+<P>Definition: phalanx: Chess playing program. Phalanx is a simple chess playing program of conventional design. It is xboard compatible. The main aim is to write a slow thinker with a lot of chess specific knowledge. Current version plays risky, active chess and shows quite good tactical performance. </P>
+</DL>
+</P>
+
+<H2><A NAME="s6">6.</A> <A HREF="#toc6">author </A></H2>
+
+<P>Phalanx was nearly wholely written by a Czech student, Dusan Dobes.<BR><BR>
+This Sourceforge project is maintained by
+<A HREF="mailto:yahoo - dot - com - username - stevenaaus">Stevenaaus</A>.</P>
+
+</BODY>
+</HTML>
+<a href="http://sourceforge.net/projects/phalanx"><img src="http://sflogo.sourceforge.net/sflogo.php?group_id=149683&amp;type=12" width="120" height="30" alt="Get Phalanx at SourceForge.net. Fast, secure and Free Open Source software downloads" /></a>
