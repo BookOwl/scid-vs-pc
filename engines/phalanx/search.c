@@ -386,12 +386,22 @@ else
 
 	memset( Nod, 0, 256*sizeof(int) );
 
-	if( !Flag.polling ) signal(SIGINT,interrupt);
+	if( !Flag.polling )
+#if defined(_WIN32)
+		signal(SIGINT, handleSigint);
+#else
+		signal(SIGINT,interrupt);
+#endif 
 
 	Turns=n;
 
-	while(   ( Flag.ponder==2 || l_iterate() || Flag.analyze )
-	      && !Abort && Depth < MAXPLY*100      )
+#if defined (_WIN32)        // main fix to get ponder working in Windows
+	while(   (l_iterate() || Flag.analyze )
+		&& !Abort && Depth < MAXPLY*100      )
+#else
+	while(   (Flag.ponder==2 || l_iterate() || Flag.analyze )
+		&& !Abort && Depth < MAXPLY*100      )
+#endif
 	{
 		A_d++;
 		Turns=0;

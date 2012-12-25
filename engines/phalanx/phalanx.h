@@ -9,10 +9,17 @@
 #endif
 
 #ifdef _WIN32
-# include <windows.h>
-# include <io.h>
-# include <errno.h>
-# include <process.h>
+#include <windows.h>
+#include <io.h>
+#include <errno.h>
+#include <process.h>
+#include  <signal.h>
+#include  <stdio.h>
+static void handleSigint() {
+    exit(0);
+} 
+#else
+#include <sys/time.h>
 #endif
 
 #include <stdio.h>
