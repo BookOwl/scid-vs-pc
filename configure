@@ -5,13 +5,8 @@
 # for compiling Scid (such as where to find the Tcl/Tk header and library 
 # files), and creates the file "Makefile".
 
-# Which Tcl version to use
-#
-# The backslashes at the end of these lines are needed: \
-tclsh=tclsh8.5;
-
 # The backslash at the end of this line is needed: \
-exec $tclsh "$0" ${1+"$@"}
+exec tclsh "$0" ${1+"$@"}
 
 set var(CXX) g++
 set var(CC) gcc
