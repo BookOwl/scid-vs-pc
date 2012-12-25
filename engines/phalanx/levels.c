@@ -128,19 +128,19 @@ void l_startsearch(void)
 
 		if( Flag.increment==0 && Flag.level==timecontrol )
 		{
-			if( Time<1500 ) T2 -= T2/2;
-			else if( Time<6000 ) T2 -= T2/4;
+		   if( Time<150/*0*/ ) T2 -= T2/2;
+		   else if( Time<600/*0*/ ) T2 -= T2/4;
 		}
 
 		if( Flag.post && Flag.xboard<2 )
 		printf( "    -> soft time limit %g s\n",
-			((float)T2) / (float)100 );
+		   ((float)T2) / (float)100 );
 
 		/*** Now, set up the hard limit ***/
-		     if( Time < 1500) Flag.centiseconds = Time/(moves+1)*3;
-		else if( Time < 3000) Flag.centiseconds = Time/(moves+1)*6;
-		else if( Time < 6000) Flag.centiseconds = Time/(moves+1)*12;
-		else                  Flag.centiseconds = Time/(moves+1)*18;
+		     if( Time < 150/*0*/) Flag.centiseconds = Time/(moves+1)*3;
+		else if( Time < 300/*0*/) Flag.centiseconds = Time/(moves+1)*6;
+		else if( Time < 600/*0*/) Flag.centiseconds = Time/(moves+1)*12;
+		else                  Flag.centiseconds = Time/(moves+1)*18; 
 
 		Flag.centiseconds += 400*Flag.increment;
 
