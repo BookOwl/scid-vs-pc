@@ -1,7 +1,6 @@
 
 #include "phalanx.h"
 
-
 extern long Time;
 
 
@@ -1063,12 +1062,7 @@ void interrupt(int x)
 	while( command() ) {}
 
 	go_on:;
-	if( !Abort && !Flag.polling )
-#if defined(_WIN32)
-	signal(SIGINT, handleSigint);
-#else
-	signal(SIGINT,interrupt);
-#endif
+	if( !Abort && !Flag.polling ) signal(SIGINT,interrupt);
 }
 
 
@@ -1104,12 +1098,9 @@ int command(void)
 	   || strncmp(Inp,"exit",4) == 0
       )
 	{
-		if( Flag.ponder < 2 ) exit(0); //return 0;
+		if( Flag.ponder < 2 ) return 0;
 		else
-		{
-		  Abort = 1; 
-		  return 0; 
-		}
+		{ Abort = 1; return 0; }
 	}
 
 /* COMMAND: protover */
@@ -1123,9 +1114,6 @@ int command(void)
            "sigint=1 "
            "time=1 "
            "draw=0 "
-           "reuse=0 "
-
-
            );
 		Inp[0]='\0'; return 1;
 	}
@@ -1304,9 +1292,6 @@ int command(void)
 	 || strncmp( Inp, "name ", 5 ) == 0
 	 || strncmp( Inp, "random\n", 7 ) == 0
 	 || strncmp( Inp, "noise ", 6 ) == 0
-	 || strncmp( Inp, "accepted ", 9 ) == 0
-	 || strncmp( Inp, "rejected ", 9 ) == 0
-	 || strncmp( Inp, "computer\n", 10 ) == 0
 	 || strncmp( Inp, ".\n", 2 ) == 0
 	)
 	{ /* ignore */ Inp[0]='\0'; return 1; }

@@ -49,15 +49,12 @@
 
      Currently win32 polling now works, but has a bug. It does not get
      updated when making a move in Scid.  The issue is with the
-     "interrupt" proc. This proc is getting called in Linux, but not in
-     WIN32.  I tried changing all Jim's "signal(SIGINT, handleSigint);"
-     to "signal(SIGINT,interrupt);" but it didn't work, so i'm assuming
-     that on WIN32, io.c::interrupt() is getting replaced by a system
-     call.
+     io.c::interrupt proc. This proc is getting called in Linux, but not
+     in WIN32.  Perhaps this is relevant
+     <http://www.gnu.org/software/xboard/engine-intf.html#7>
 
   o  Format C source code (with indent ?) , to allow for easy program
      diffing with the various phalanx forks still around.
-
 
   4.  changes
 
