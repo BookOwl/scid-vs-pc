@@ -34,27 +34,35 @@ namespace eval tactics {
   # Don't try to find the exact best move but to win a won game (that is a mate in 5 is ok even if there was a pending mate in 2)
   set winWonGame 0
 
-  ################################################################################
-  # Current base must contain games with Tactics flag and **** markers
-  # for certain moves. The first var should contain the best move (the next best move
+
+  ### Current base must contain games with Tactics flag and special **** markers
+  # (as prepared by the Find Best Move in analysis annotation).
+  # The first var should contain the best move (the next best move
   # is at least 1.0 point away.
   # TODO preset the filter on flag == Tactics to speed up searching
-  ################################################################################
+
   proc findBestMove {} {
+    bind .board  <Double-Button-1> ::tactics::findBestMove
+    set ::gameInfo(hideNextMove) 1
+    if {$::pgnWin} {
+      ::pgn::OpenClose
+    }
     set old_game [sc_game number]
 
     set found 0
 
     if {![sc_base inUse] || [sc_base numGames] == 0} {
-      tk_messageBox -type ok -icon info -title "Scid" -message "No game with Tactics flag found"      
+      tk_messageBox -type ok -icon info -title {Find Best Move} -message "No games in database"      
       return
     }
 
     # Try to find in current game, from current pos (exit vars first)
-    if {[sc_game flag T [sc_game number]]} {
-      while {[sc_var level] != 0} { sc_var exit }
-      if {[llength [gotoNextTacticMarker] ] != 0} {
-        set found 1
+    catch { ;# if gamenumber == 0, sc_game flag T returns no boolean
+      if {[sc_game flag T [sc_game number]]} {
+	while {[sc_var level] != 0} { sc_var exit }
+	if {[llength [gotoNextTacticMarker] ] != 0} {
+	  set found 1
+	}
       }
     }
 
@@ -72,7 +80,7 @@ namespace eval tactics {
 
     if { ! $found } {
       sc_game load $old_game
-      tk_messageBox -type ok -icon info -title "Scid" -message "No game with Tactics flag\nor no tactics comment found"      
+      tk_messageBox -type ok -icon info -title {Find Best Move} -message "No (more) relevant games found."      
     } else  {
       sideToMoveAtBottom
     }
@@ -100,11 +108,9 @@ namespace eval tactics {
     }
     return {}
   }
-  ################################################################################
-  # Configuration dialog
-  # (Had some associated core dumps here,
-  #  possibly when scidBasesDir is wrongly set in config S.A)
-  ################################################################################
+
+  ### Configuration dialog for Mate in N puzzle
+  # (Had some associated core dumps here, possibly when scidBasesDir is wrongly set in config S.A)
 
   proc config {} {
     global ::tactics::basePath ::tactics::baseList ::tactics::baseDesc
@@ -144,7 +150,6 @@ namespace eval tactics {
         set wasOpened 1
       }
       
-      ###  Is there a quicker way to count solved instead of opening every game !? &&&
       set solvedCount 0
       for {set g 1 } { $g <= [sc_base numGames]} { incr g} {
         sc_game load $g

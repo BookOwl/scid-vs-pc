@@ -297,7 +297,7 @@ append helpText(Index) {
   <li><a Filter>Filter</a></li>
   <li><a Export>Filter, exporting</a></li>
   <li><a Graphs Filter>Filter graph</a></li>
-  <li>Training: <a FindBestMove>Find best move</a></li>
+  <li><a FindBestMove>Find Best Move</a> training</li>
   <li><a Finder>Finder</a></li>
   <li><a Flags>Flags</a></li>
   <li><a Options Fonts>Fonts</a></li>
@@ -2772,7 +2772,7 @@ making for easier <a Analysis Debugging>Debugging</a>.
      (up to the move specified).</li>
      <li><term>Mark tactical exercises</term> This can be used to
      generate exercises for the training function <a FindBestMove>Find
-     best move</a>. This option is only available for <term>UCI</term>
+     Best Move</a>. This option is only available for <term>UCI</term>
      engines.
      </li>
   </ul>
@@ -5243,36 +5243,31 @@ set helpText(TacticsTrainer) {<h1>Mate in ..N.. Puzzles</h1>
   <p><footer>Updated: Scid vs. PC 4.1, July 2010</footer></p>
 }
 
-# Find best move 
-set helpTitle(FindBestMove) "Training: Find best move"
-set helpText(FindBestMove) {<h1>Training: Find Best Move</h1>
+set helpTitle(FindBestMove) "Find best move"
+set helpText(FindBestMove) {<h1>Find Best Move</h1>
   <p>
-  When annotating games with a chess engine, the engine can search for
-  tactical opportunities within a game. This can be achieve by setting
-  <term>Mark Tactical Exercise</term> in the <a
-  Analysis>Annotation</a> window accessible from analysis. In case a
-  tactical opportunity is found, Scid will then flag the game with the
-  <term>T</term> flag (Tactics) and add a special comment that is
-  evaluated in this exercise.
+  The Find Best Move training excercise uses <b>specially prepared databases</b>
+  to train the player to find tactical shots (non-obvious and unique winning moves).
   </p>
   <p>
-  To use this training method, a properly prepared database is
-  required. This can be achieved by batch annotating a set of games or
-  one can just download them from the <url
-  http://scid.sourceforge.net/>Scid website</url>.
-  After opening a properly prepared database, just select Play /
-  Training / Find best move. Scid will then jump to the next location
-  of a tactical blow from the current game position. If necessary a
-  suitable new game will be loaded and Scid will display the critical
-  position. The user is now required to find the best continuation.
-  To jump to the next tactical position one can just right click on
-  the goto end of game button.
+  Scid will initially jump to the first relevant position in the current database,
+  allowing the player to study for the tactical shot. The PGN window will close, and Hide Next Move is enabled.
   </p>
   <p>
-  For this exercise it is advisable to close the PGN window and set
-  <term>Hide next move</term> from the status areas context menu.
+  Re-selecting the Play--<gt>Training--<gt>FindBestMove menu, or double clicking to the left of the board, 
+  will search for the next position/game.
   </p>
-  <p><footer>Updated: Scid 3.6.26, October 2008</footer></p>
+  <h2>Preparing Databases</h2>
+  <p>
+  Databases are prepared by <a Analysis Annotating>annotating games</a> with a UCI engine and enabling
+  "Mark tactical exercises". This marks relevant moves a special comment (beginning with <b>****D</b> and commented
+  in the analysis.tcl source file),  and tags the game with the tactics <b>T</b> flag.
+  </p>
+  <p>
+  Mainline Scid mentions the existence of an already prepared base of 1500 games, but
+  the author can't find this base.
+  </p>
+  <p><footer>Updated: Scid vs. PC 4.9 December 2012</footer></p>
 }
 
 # FICS Login

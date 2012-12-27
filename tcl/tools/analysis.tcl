@@ -1118,11 +1118,11 @@ proc bookAnnotation { {n 1} } {
   }
 }
 
-### Will add **** to any position considered as a tactical shot
-# (S.A. wtf!)
-# Mark tactical exercises This can be used to generate
-# exercises for the training function Find best move. This option is only
-# available for UCI engines
+### Only available for UCI engines
+#
+# Add a special comment (eg "****D1 0.1->2.9  +2.85 / +0.11") to any position considered as a tactical shot
+# Used to generate exercises for "Find best move".
+# Move criteria is below, but basically they are non-obvious, unique, winning moves.
 
 proc markExercise { prevscore score } {
   set n $::annotateEngine
@@ -1136,7 +1136,9 @@ proc markExercise { prevscore score } {
 
   set deltamove [expr {$score - $prevscore}]
   # filter tactics so only those with high gains are kept
-  if { [expr abs($deltamove)] < $::informant("+/-") } { return }
+  if { [expr abs($deltamove)] < $::informant("+/-") } {
+    return
+  }
   # dismiss games where the result is already clear (high score,and we continue in the same way)
   if { [expr $prevscore * $score] >= 0} {
     if { [expr abs($prevscore) ] > $::informant("++-") } { return }
@@ -1145,11 +1147,14 @@ proc markExercise { prevscore score } {
 
   # The best move is much better than others.
   if { [llength $::analysis(multiPV$n)] < 2 } {
-    puts "error, not enough PV"
+    puts "markExercise: error, not enough PV"
     return
   }
   set sc2 [lindex [ lindex $::analysis(multiPV$n) 1 ] 1]
-  if { [expr abs( $score - $sc2 )] < 1.5 } { return }
+  if { [expr abs( $score - $sc2 )] < 1.5 } {
+    puts "markExercise: < 1.5"
+    return
+  }
 
   # There is no other winning moves (the best move may not win, of course, but
   # I reject exercises when there are e.g. moves leading to +9, +7 and +5 scores)
@@ -1169,7 +1174,7 @@ proc markExercise { prevscore score } {
     set bm$depth [lindex $res 1]
   }
   if { $bm0 == $bm1 && $bm0 == $bm2 && $bm0 == $bm3 } {
-    puts "obvious move"
+    puts "markExercise: obvious move"
     return
   }
 
@@ -1196,7 +1201,7 @@ proc markExercise { prevscore score } {
 
   set difficulty [expr $t +2]
 
-  puts "flag T pour [sc_game number] difficulty $difficulty"
+  puts "markExercise: flag T pour [sc_game number] difficulty $difficulty"
   sc_game flag T [sc_game number] 1
   sc_pos setComment "****D${difficulty} [format %.1f $prevscore]->[format %.1f $score] [sc_pos getComment]"
   updateBoard
