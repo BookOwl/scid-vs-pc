@@ -2409,6 +2409,7 @@ proc changePVSize { n } {
 # setAnalysisPriority
 #   Sets the priority class (in Windows) or nice level (in Unix)
 #   of a running analysis engine.
+# Note: once a process is niced on Unix, a normal user can't renice it back to 0
 ################################################################################
 
 proc setAnalysisPriority {n} {
