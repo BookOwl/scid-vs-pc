@@ -349,6 +349,7 @@ append helpText(Index) {
   <li><a MainWindow>Main window</a></li>
   <li><a Maintenance>Maintenance tools</a></li>
   <li>Tree <a TreeMasks>Masks</a></li>
+  <li><a TacticsTrainer>Mate in ..N..</a> puzzle</li>
   <li><a Searches Material>Material/pattern searches</a></li>
   <li><a Searches Move>Move searches</a></li>
   <li><a Formats>Maximum</a> number of games</li>
@@ -5236,11 +5237,7 @@ set helpText(TacticsTrainer) {<h1>Mate in ..N.. Puzzles</h1>
   In the <a Maintenance>Maintenance</a> window, set the new base type to <term>Tactics</term>,
   and edit the <term>Description</term> to give the database a name.
   </p>
-  <p>
-  To avoid cheating, it is advisable to close the PGN window and check
-  <term>Hide Next Move</term> in Scid's right-click menu.
-  <p>
-  <p><footer>Updated: Scid vs. PC 4.1, July 2010</footer></p>
+  <p><footer>Updated: Scid vs. PC 4.9, december 2012</footer></p>
 }
 
 set helpTitle(FindBestMove) "Find best move"

@@ -232,6 +232,11 @@ namespace eval tactics {
     set desc [lindex $::tactics::baseDesc $current]
     destroy .configTactics
 
+    set ::gameInfo(hideNextMove) 1
+    if {$::pgnWin} {
+      ::pgn::OpenClose
+    }
+
     set ::tactics::lastGameLoaded 0
 
     if { ![::tactics::launchengine] } { return }
@@ -307,6 +312,8 @@ namespace eval tactics {
     set ::askToReplaceMoves $::tactics::askToReplaceMoves_old
     focus .
     destroy $w
+
+    set ::gameInfo(hideNextMove) 1
 
     catch { ::uci::closeUCIengine $::tactics::engineSlot }
   }
