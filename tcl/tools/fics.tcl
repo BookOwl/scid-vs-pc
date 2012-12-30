@@ -38,6 +38,7 @@ namespace eval fics {
   set catchRemoving 0
   set premove {}
   set examresult *
+  set entrytime 0
 
   set ignore_abort 0
   set ignore_adjourn 0
@@ -306,7 +307,10 @@ namespace eval fics {
     $w.console.text tag configure gameresult -foreground SlateBlue1
     $w.console.text tag configure channel -foreground rosybrown
 
-    entry $w.command.entry -insertofftime 0 -bg grey75 -font font_Large
+    entry $w.command.entry -insertofftime 0 -bg grey75 -font font_Large -validate key -vcmd {
+      set ::fics::entrytime [clock milli]
+      return 1
+    }
     button $w.command.send -text $tr(FICSSend) 
     button $w.command.clear -text $tr(Clear) -command "
       $w.command.entry delete 0 end"
@@ -1014,13 +1018,8 @@ namespace eval fics {
 
     if {[string match "Creating: *" $line]} {
       catch {destroy .ficsOffers}
-      if {$::fics::autoraise} {
-	if {[wm state .] != {normal}} {
-	    wm deiconify .
-	}
-	raise .
-	focus .
-      }
+      ::fics::checkRaise
+
       # Setting this, stops automatically accepting rematches. (But algorythm needs fixing a little)
       set ::fics::findopponent(manual) manual
       after cancel ::fics::updateGraph
@@ -1945,13 +1944,8 @@ namespace eval fics {
 	    ::utils::sound::PlaySound sound_move
 	  }
         }
-        if {$::fics::autoraise} {
-	  if {[wm state .] != {normal}} {
-	      wm deiconify .
-	  }
-	  raise .
-	  focus .
-        }
+        ::fics::checkRaise
+
         set ::fics::lastmove $moveSan ; # remember last opponents move for takeback comment
         if {[catch {sc_move addSan $moveSan } err]} {
           # This is a common occurence when moving observed games to the main board
@@ -2357,6 +2351,17 @@ namespace eval fics {
   proc clearPing {} {
     set ::fics::ping {ping ....}
   }
+
+  proc checkRaise {} {
+    # only autoraise if greater than 1.5 seconds since last entry keyboard input
+    if {$::fics::autoraise && [expr {[clock milli] - $::fics::entrytime > 1500}]} {
+      if {[wm state .] != {normal}} {
+	  wm deiconify .
+      }
+      raise .
+      focus .
+    }
+}
 
 
 }
