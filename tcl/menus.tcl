@@ -1225,6 +1225,8 @@ $m add checkbutton -label  OptionsFicsAuto -variable ::fics::autopromote
 $m add checkbutton -label OptionsFicsClock -variable ::fics::smallclocks -command ::fics::showClocks
 $m add checkbutton -label OptionsSounds -variable ::fics::sound
 $m add checkbutton -label OptionsWindowsRaise -variable ::fics::autoraise
+$m add command     -label {Text Colour} -command ::fics::setForeGround
+$m add command     -label OptionsColour -command ::fics::setBackGround
 
 set m .menu.options.export
 menu $m -tearoff -1
@@ -1590,6 +1592,8 @@ proc setLanguageMenus {{lang ""}} {
   configMenuText .menu.options.fics [tr OptionsFicsClock $oldLang] OptionsFicsClock $lang
   configMenuText .menu.options.fics [tr OptionsSounds $oldLang] OptionsSounds $lang
   configMenuText .menu.options.fics [tr OptionsWindowsRaise $oldLang] OptionsWindowsRaise $lang
+  # configMenuText .menu.options.fics [tr OptionsFG $oldLang] OptionsFG $lang
+  configMenuText .menu.options.fics [tr OptionsColour $oldLang] OptionsColour $lang
 
   foreach tag { Color Width Display } {
     configMenuText .menu.options.entry.highlightlastmove [tr OptionsMovesHighlightLastMove$tag $oldLang] OptionsMovesHighlightLastMove$tag $lang

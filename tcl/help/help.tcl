@@ -5480,17 +5480,20 @@ set helpTitle(FICSwidget) "FICS: Play on the Internet"
 set helpText(FICSwidget) {<h1>Using FICS</h1>
   <p>
 Once you have <a FICSlogin>logged in</a>, the main FICS widget shows a
-console window, entry widget, and some command buttons.</p>
+console window, entry widget, and some command buttons. Additionally, there
+are a few options in the main Options--<gt>FICS menu.</p>
 
-  <h3>FICS Console</h3>
-  <p>
-  This is the main interface with the FICS server.
+<h3>FICS Console</h3>
+<p>
+This is the main interface with the FICS server.
+</p>
 
-<p> Interaction is via commands entered in the entry box, or by 
+<p>
+Interaction is via commands entered in the entry box, or by 
 the Command Buttons. For an outline of popular commands see the
 <a FICScommands>Commands</a> section.</p>
 
-  <h4>Console Colours</h4>
+<h4>Console Colours</h4>
 <p>
 Normal messages are written in green; messages from other
 players appear in red.  It can be a little confusing, but
@@ -5498,8 +5501,8 @@ toggling the <b>Tells</b> and <b>Shouts</b> boxes will make
 it quieter.
 </p>
 <p>
-One may also customize <b>the fore/background colours</b> by entering "fg", "bg" for colour menus, or
-"fg COLOUR", or "bg COLOUR". By default they are LimeGreen and grey35.
+One may also customize <b>the fore/background colours</b> from the main Options--<gt>FICS menu.
+By default they are LimeGreen and grey35.
 </p>
 
   <h3>Buttons</h3>

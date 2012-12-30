@@ -578,26 +578,6 @@ namespace eval fics {
 	  updateConsole {}
 	  return
 	  }
-      fg - foreground {
-	  set fg [lindex $l 1]
-	  if {$fg == {}} {
-	    set fg [tk_chooseColor -initialcolor $::fics::consolefg -title {FICS Background} -parent $w]
-	  }
-	  if {![catch {$w.console.text configure -fg $fg}]} {
-	    set ::fics::consolefg $fg
-	  }
-	  return
-      }
-      bg - background {
-	  set bg [lindex $l 1]
-	  if {$bg == {}} {
-	    set bg [tk_chooseColor -initialcolor $::fics::consolebg -title {FICS Background} -parent $w]
-	  }
-	  if {![catch {$w.console.text configure -bg $bg}]} {
-	    set ::fics::consolebg $bg
-	  }
-	  return
-      }
 
       smoves - smove {
 	  # smoves recreates a game without any further announcment
@@ -2363,6 +2343,19 @@ namespace eval fics {
     }
 }
 
+  proc setForeGround {} {
+    set fg [tk_chooseColor -initialcolor $::fics::consolefg -title {FICS Text} -parent .]
+    if {![catch {.fics.console.text configure -fg $fg}]} {
+      set ::fics::consolefg $fg
+    }
+  }
+
+  proc setBackGround {} {
+    set bg [tk_chooseColor -initialcolor $::fics::consolebg -title {FICS Background} -parent .]
+    if {![catch {.fics.console.text configure -bg $bg}]} {
+      set ::fics::consolebg $bg
+    }
+  }
 
 }
 
