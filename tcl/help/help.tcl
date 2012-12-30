@@ -356,6 +356,7 @@ append helpText(Index) {
   <li><a Menus>Menus</a></li>
   <li><a GameList Browsing>Merging games</a></li>
   <li><a Moves>Move entry</a> and options</li>
+  <li><a Options MyPlayerNames>My Player Names</a>
   </ul>
 
   <h3><name N>N</name></h3>

@@ -600,15 +600,16 @@ bind . <KeyPress-v> showVars
 bind . <KeyPress-z> {.button.exitVar invoke}
 bind . <Control-a> {.button.addVar invoke}
 
-# editMyPlayerNames
-#   Present the dialog box for editing the list of player
-#   names from whose perspective the board should be shown
-#   whenever a game is loaded.
-#
+### Dialog box for editing "My Player Names"
+### to know when to flip the board
+
 proc editMyPlayerNames {} {
   global myPlayerNames
   set w .editMyPlayerNames
-  if {[winfo exists $w]} { return }
+  if {[winfo exists $w]} {
+    raiseWin $w
+    return
+  }
   toplevel $w
   wm state $w withdrawn
   wm title $w "[tr OptionsNames]"
