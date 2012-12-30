@@ -1620,7 +1620,7 @@ proc compactGames {parent} {
 
   set stats [sc_compact stats games]
   set numberDeleted [expr {[lindex $stats 0] - [lindex $stats 2]}]
-  if {[tk_messageBox -title "Scid: Compact" -parent $parent \
+  if {[tk_messageBox -title "$::tr(CompactDatabase): [file tail [sc_base filename]]" -parent $parent \
       -icon question -type yesno -message \
       "$numberDeleted games will be permanently deleted.\nAre you sure ?"] != {yes}} {
     return
