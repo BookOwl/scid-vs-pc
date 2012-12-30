@@ -570,13 +570,14 @@ set temp 0
 array set nameMatches {}
 set nameMatchCount 0
 
-# updateMatchList:
-#    Called from gameSave to update the matching name list as the user
-#    types a player/site/event/round name.
+### Called from gameSave (and name editor) to update the matching name list
+#   as the user types a player/site/event/round name.
+#   The el and op fields don't do anything but may be needed because of args being appended by a bind
 
 proc updateMatchList { tw nametype maxMatches name el op } {
   global nameMatches nameMatchCount
   global $name editNameType
+
   if {![winfo exists $tw]} return
 
   if {$nametype == ""} { set nametype $editNameType }
@@ -588,7 +589,7 @@ proc updateMatchList { tw nametype maxMatches name el op } {
   catch {set matches [sc_name match $nametype $val $maxMatches]}
 
 
-  ### Setup the autocomplete text button bindings
+  ### Set-up the autocomplete text button bindings
 
   set i 1
   # hmm... Unicode is broken for some reason (above also)
@@ -832,23 +833,10 @@ proc nameEditor {} {
   $w.typeButtons.$editNameType invoke
 }
 
-
-# addGameSaveEntry:
-#   used in gameSave for setting up the simpler labels and entry boxes.
-
-proc addGameSaveEntry { name row textname } {
-  label .save.g.label$name -textvar $textname
-  entry .save.g.entry$name -width 30  -relief sunken \
-      -textvariable $name
-  grid .save.g.label$name -row $row -column 0 -sticky w
-  grid .save.g.entry$name -row $row -column 1 -columnspan 7 -sticky w
-}
-
-# gameSave:
-#   The game save dialog. Used for adding and replacing games.
-#   gnum is zero == add a new game
-#   gnum >  zero == replace game number gnum.
-#   gnum <  zero == dont save game, merely change game info
+# Scid's main game save dialog - used for adding and replacing games.
+#   gnum == 0: add a new game
+#   gnum >  0: replace game number gnum.
+#   gnum <  0: dont save game, merely change game info
 
 proc gameSave {gnum {focus {}}} {
   global date year month day white black resultVal event site round
@@ -910,23 +898,19 @@ proc gameSave {gnum {focus {}}} {
   if {$emonth == 0} { set emonth "??" }
   if {$eday == 0} { set eday "??" }
 
-
-  addGameSaveEntry white 0 ::tr(White:)
-  addGameSaveEntry black 1 ::tr(Black:)
-  addGameSaveEntry event 2 ::tr(Event:)
-  addGameSaveEntry site  3 ::tr(Site:)
-  addGameSaveEntry round 4 ::tr(Round:)
+  addGameSaveEntry white 0 ::tr(White:) p
+  addGameSaveEntry black 1 ::tr(Black:) p
+  addGameSaveEntry event 2 ::tr(Event:) e
+  addGameSaveEntry site  3 ::tr(Site:)  s
+  addGameSaveEntry round 4 ::tr(Round:) r
 
   frame $f.dateframe
   label $f.datelabel -textvar ::tr(Date:)
-  entry $f.dateyear -width 6  -relief sunken \
-      -textvariable year -justify right
+  entry $f.dateyear -width 6  -relief sunken -textvariable year -justify right
   label $f.datedot1 -text "."
-  entry $f.datemonth -width 3  -relief sunken \
-      -textvariable month -justify right
+  entry $f.datemonth -width 3  -relief sunken -textvariable month -justify right
   label $f.datedot2 -text "."
-  entry $f.dateday -width 3  -relief sunken \
-      -textvariable day -justify right
+  entry $f.dateday -width 3  -relief sunken -textvariable day -justify right
   grid $f.datelabel -row 5 -column 0 -sticky w
   grid $f.dateframe -row 5 -column 1 -columnspan 5 -sticky w
   button $f.datechoose -image ::utils::date::calendar -command {
@@ -1149,12 +1133,25 @@ proc gameSave {gnum {focus {}}} {
   if {$gnum > 0} { focus .save.buttons.save }
 }
 
+# Used above for setting up the simpler labels and entry boxes.
+
+proc addGameSaveEntry {name row textname nametype} {
+  label .save.g.label$name -textvar $textname
+  entry .save.g.entry$name -width 30  -relief sunken -textvariable $name
+  grid .save.g.label$name -row $row -column 0 -sticky w
+  grid .save.g.entry$name -row $row -column 1 -columnspan 7 -sticky w
+
+  # New FocusIn binding for gameSave. Correct ??? S.A
+  bind .save.g.entry$name <FocusIn> "updateMatchList .save.g.list $nametype 9 $name {} {}"
+}
+
 # gsave:
 #    Called by gameSave when the user presses the "Save" button
 #    to save the game. Attempts to save and reports the result.
 #    (If gnum < 0 dont actually save game - just set game tags)
 
 proc gsave { gnum } {
+
   global date year month day white black resultVal event site round
   global whiteElo blackElo whiteRType blackRType eco extraTags
   global edate eyear emonth eday
@@ -1189,7 +1186,7 @@ proc gameAdd {} {
   gameSave 0
 }
 
-# current game number should be nonzero.
+# Current game number should be nonzero.
 
 proc gameReplace {} {
   gameSave [sc_game number]
