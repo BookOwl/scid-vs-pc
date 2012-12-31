@@ -1932,7 +1932,9 @@ namespace eval fics {
 	    ::utils::sound::PlaySound sound_move
 	  }
         }
-        ::fics::checkRaise
+        if {$::fics::playing == 1} {
+          ::fics::checkRaise
+        }
 
         set ::fics::lastmove $moveSan ; # remember last opponents move for takeback comment
         if {[catch {sc_move addSan $moveSan } err]} {
