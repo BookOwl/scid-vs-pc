@@ -1221,10 +1221,10 @@ foreach numeric {".,"   ". "   "."   ",."   ", "   ","} \
 
 set m .menu.options.fics
 menu $m -tearoff 1
+$m add checkbutton -label OptionsWindowsRaise -variable ::fics::autoraise
 $m add checkbutton -label  OptionsFicsAuto -variable ::fics::autopromote
 $m add checkbutton -label OptionsFicsClock -variable ::fics::smallclocks -command ::fics::showClocks
 $m add checkbutton -label OptionsSounds -variable ::fics::sound
-$m add checkbutton -label OptionsWindowsRaise -variable ::fics::autoraise
 $m add command     -label {Text Colour} -command ::fics::setForeGround
 $m add command     -label OptionsColour -command ::fics::setBackGround
 
@@ -1588,10 +1588,10 @@ proc setLanguageMenus {{lang ""}} {
         OptionsMoves$tag $lang
   }
 
+  configMenuText .menu.options.fics [tr OptionsWindowsRaise $oldLang] OptionsWindowsRaise $lang
   configMenuText .menu.options.fics [tr OptionsFicsAuto $oldLang] OptionsFicsAuto $lang
   configMenuText .menu.options.fics [tr OptionsFicsClock $oldLang] OptionsFicsClock $lang
   configMenuText .menu.options.fics [tr OptionsSounds $oldLang] OptionsSounds $lang
-  configMenuText .menu.options.fics [tr OptionsWindowsRaise $oldLang] OptionsWindowsRaise $lang
   # configMenuText .menu.options.fics [tr OptionsFG $oldLang] OptionsFG $lang
   configMenuText .menu.options.fics [tr OptionsColour $oldLang] OptionsColour $lang
 

@@ -5482,7 +5482,7 @@ set helpText(FICSwidget) {<h1>Using FICS</h1>
   <p>
 Once you have <a FICSlogin>logged in</a>, the main FICS widget shows a
 console window, entry widget, and some command buttons. Additionally, there
-are a few options in the main Options--<gt>FICS menu.</p>
+are a few options in a right-click menu.</p>
 
 <h3>FICS Console</h3>
 <p>

@@ -361,7 +361,6 @@ namespace eval fics {
     }
     bind $w <Escape> "$w.command.entry delete 0 end"
 
-
     # steer focus into the command entry, as typing into the text widget is pointless
     if {!$::macOS && !$::windowsOS} {
            bind $w.console.text <FocusIn> "focus $w.command.entry"
@@ -470,8 +469,17 @@ namespace eval fics {
     bind $w <Control-q> ::fics::close
     bind $w <Destroy>   ::fics::close
     bind $w <Configure> "::fics::recordFicsSize $w"
-
     bind $w <F1> {helpWindow FICS}
+    bind $w <Button-3> {
+      .menu.options.fics post [winfo pointerx .] [winfo pointery .]
+      # is there an easier way to unpost this thing !?
+      if {!($::windowsOS || $::macOS)} {
+	bind .fics <Button-1> {
+	  .menu.options.fics unpost
+	  bind .fics <Button-1> {}
+	}
+      }
+    }
 
     # needs a little voodoo to get minsize working properly with setWinSize
 
