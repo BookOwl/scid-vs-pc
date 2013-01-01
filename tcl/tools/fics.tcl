@@ -2367,6 +2367,25 @@ namespace eval fics {
     }
   }
 
+  ### Send the last move made (via book, tree, engine or main.tcl) to fics if playing
+
+  proc checkAdd {} {
+    if {$::fics::playing == 1 && [winfo exists .fics]}  {
+      set moveUCI [sc_game info previousMoveUCI]
+      if { [ string length $moveUCI ] == 5 } {
+        set promoletter [ string tolower [ string index $moveUCI end ] ]
+        ::fics::writechan "promote $promoLetter"
+      }
+      ::fics::writechan [string range $moveUCI 0 3 ]
+
+      ### Stop clock
+      if {[sc_pos side] == "white"} {
+	::gameclock::stop 2
+      } else {
+	::gameclock::stop 1
+      }
+    }
+  }
 }
 
 ###

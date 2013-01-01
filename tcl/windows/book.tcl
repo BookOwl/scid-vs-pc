@@ -402,6 +402,7 @@ focus .
 
     if {$action == "replace"} {
       sc_move addSan $move
+      ::fics::checkAdd
     } elseif {$action == "var"} {
       sc_var create
       sc_move addSan $move
