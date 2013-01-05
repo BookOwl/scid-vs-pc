@@ -543,8 +543,8 @@ proc exportGames {selection exportType} {
 }
 
 
-###########################################################################
-### Global variables used in gameSave:
+### Global variables used in gameSave
+
 set date 0; set year 0; set month 0; set day 0; set white 0; set black 0
 set resultVal 0; set event 0; set site 0; set round 0
 set whiteElo 0; set blackElo 0; set eco 0; set extraTags ""

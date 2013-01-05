@@ -81,13 +81,16 @@ proc setWinLocation {win} {
 
     set x [expr $mainx + $winX($win)]
     set y [expr $mainy + $winY($win)]
-    if { $x < 0 } { set x 0 }
-    if { $y < 0 } { set y 0 }
+    # these rqwidth etc are not getting set right, probably because of an update issue
+    set reqwidth [winfo reqwidth $win]
+    set reqheight [winfo reqheight $win]
     set max_x [expr [winfo screenwidth .]]
     set max_y [expr [winfo screenheight .]]
-    if { $x > $max_x } { set x [expr $max_x - [winfo reqwidth $win]] }
-    if { $y > $max_y } { set y [expr $max_y - [winfo reqheight $win]] }
 
+    if {[expr {$x + $reqwidth > $max_x}]} { set x [expr $max_x - $reqwidth] }
+    if {[expr {$y + $reqheight > $max_y}]} { set y [expr $max_y - $reqheight] }
+    if { $x < 0 } { set x 0 }
+    if { $y < 0 } { set y 0 }
     catch [list wm geometry $win "+$x+$y"]
   }
 }
@@ -105,6 +108,7 @@ proc setWinSize {win} {
 # (preferably in a withdrawn state) S.A
 
 proc placeWinOverParent {w parent {where 0}} {
+  # Where does not seem to be used anywhere
 
   set reqwidth [winfo reqwidth $w]
   set reqheight [winfo reqheight $w]
@@ -115,7 +119,15 @@ proc placeWinOverParent {w parent {where 0}} {
     } elseif {$where == "top"} {
       wm geometry $w "+[expr $x+($width-$reqwidth)/2]+$y"
     } else {
-      wm geometry $w "+[expr $x+($width-$reqwidth)/2]+[expr $y+($height-$reqheight)/3]"
+      set x [expr $x+($width-$reqwidth)/2]
+      set y [expr $y+($height-$reqheight)/3]
+      if { $x < 0 } { set x 0 }
+      if { $y < 0 } { set y 0 }
+      set max_x [expr [winfo screenwidth .]]
+      set max_y [expr [winfo screenheight .]]
+      if {[expr {$x + $reqwidth > $max_x}]} { set x [expr $max_x - $reqwidth] }
+      if {[expr {$y + $reqheight > $max_y}]} { set y [expr $max_y - $reqheight] }
+      wm geometry $w +$x+$y
     }
   } else {
     puts {placeWinOverParent: scan != 4}
