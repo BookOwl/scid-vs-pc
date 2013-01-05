@@ -81,7 +81,7 @@ proc setWinLocation {win} {
 
     set x [expr $mainx + $winX($win)]
     set y [expr $mainy + $winY($win)]
-    # these rqwidth etc are not getting set right, probably because of an update issue
+    # these reqwidth etc are not getting set right, probably because of an update issue
     set reqwidth [winfo reqwidth $win]
     set reqheight [winfo reqheight $win]
     set max_x [expr [winfo screenwidth .]]
@@ -121,12 +121,12 @@ proc placeWinOverParent {w parent {where 0}} {
     } else {
       set x [expr $x+($width-$reqwidth)/2]
       set y [expr $y+($height-$reqheight)/3]
-      if { $x < 0 } { set x 0 }
-      if { $y < 0 } { set y 0 }
       set max_x [expr [winfo screenwidth .]]
       set max_y [expr [winfo screenheight .]]
       if {[expr {$x + $reqwidth > $max_x}]} { set x [expr $max_x - $reqwidth] }
       if {[expr {$y + $reqheight > $max_y}]} { set y [expr $max_y - $reqheight] }
+      if { $x < 0 } { set x 0 }
+      if { $y < 0 } { set y 0 }
       wm geometry $w +$x+$y
     }
   } else {
