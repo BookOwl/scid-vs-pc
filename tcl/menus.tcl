@@ -1443,6 +1443,8 @@ proc updateMenuStates {} {
 
     $m.file entryconfig [tr FileClose] -state disabled
 
+    # This gets called occasionally after closing tree and others (?)
+    # but dont disable 'Info Browse List' as they never get re-enabled !
     foreach i {Replace Add First Prev Reload Next Last Random Number Info Browse List} {
       $m.game entryconfig [tr Game$i] -state disabled
     }
