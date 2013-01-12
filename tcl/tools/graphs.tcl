@@ -551,6 +551,11 @@ proc ::tools::graphs::rating::Refresh {{player {}}} {
     $w.menu.file add separator
     $w.menu.file add command -label GraphFileClose -command "destroy $w"
 
+    $w.menu add cascade -label GraphOptions -menu $w.menu.showdots
+    menu $w.menu.showdots
+    $w.menu.showdots add checkbutton -label {Show Dots} \
+      -variable ::tools::graphs::showpoints -command ::tools::graphs::rating::Refresh
+
     $w.menu add cascade -label {Start Year} -menu $w.menu.options
     menu $w.menu.options
     foreach i {1900 1980 1985 1990 1995 2000 2005 2010 2015 } {
@@ -670,6 +675,8 @@ proc ::tools::graphs::rating::ConfigMenus {{lang ""}} {
   foreach idx {0} tag {File} {
     configMenuText $m $idx Graph$tag $lang
   }
+  configMenuText $m 1 GraphOptions $lang
+
   foreach idx {0 1 3} tag {Color Grey Close} {
     configMenuText $m.file $idx GraphFile$tag $lang
   }

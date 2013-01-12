@@ -3319,9 +3319,6 @@ set helpText(Graphs) {<h1>Graph Windows</h1>
   <p>
   Scid has a number of graph features, displaying information about Player Ratings, Game Frequencies and Score Evaluation.
   </p>
-  <p><i>
-  Line graphs can be shown with or without dots for vertices. This is configured in the Score Graph options menu.
-  </i></p>
 
   <h3><name Filter>Filter Graph Windows</name></h3>
 <p>
@@ -5259,7 +5256,8 @@ set helpText(FindBestMove) {<h1>Find Best Move</h1>
   <p>
   Databases are prepared by <a Analysis Annotating>annotating games</a> with a UCI engine and enabling
   "Mark tactical exercises". This marks relevant moves a special comment (beginning with <b>****D</b> and commented
-  in the analysis.tcl source file),  and tags the game with the tactics <b>T</b> flag.
+  in the analysis.tcl source file),  and tags the game with the tactics <b>T</b> flag.</p>
+  <p><i>For a move to be regarded as a Tactical Shot, it must be a unique winning move, that is not obvious - ie found at depth <lt>= 3.</i></p>
   </p>
   <p>
   Mainline Scid mentions the existence of an already prepared base of 1500 games, but
