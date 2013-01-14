@@ -1165,9 +1165,9 @@ Game::Truncate (void)
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Game::TruncateAndFree():
-//      Truncate game at the current move.
-//      and free moves
-//
+//      Truncate game at the current move and free moves
+//      (unused)
+
 void
 Game::TruncateAndFree (void)
 {
@@ -1192,6 +1192,7 @@ Game::TruncateAndFree (void)
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Game::TruncateStart():
 //      Truncate all moves leading to current position.
+//      todo: copy comments (in WritePGN?)
 void
 Game::TruncateStart (void)
 {
