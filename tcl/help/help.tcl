@@ -619,6 +619,7 @@ set helpText(MainWindow) {<h1>Scid Main Window</h1>
   <h4>Material Values</h4>
   <p>
   On the right hand side of the board the <b>material</b> balance is displayed by small chess pieces.
+  One may also right-click the board and select 'Toggle Material' to display all taken pieces.
   </p>
 
   <h4><name Status>The Status Bar</name></h4>

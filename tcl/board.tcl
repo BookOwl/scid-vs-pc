@@ -2286,7 +2286,7 @@ proc ::board::ficslabels {{w .board}} {
 proc ::board::material {w} {
   set f $w.mat
 
-  if {![winfo exists $f] || ! $::gameInfo(showMaterial)} {
+  if {![winfo exists $f] || $::gameInfo(showMaterial) == 0} {
     return
   }
 
@@ -2296,30 +2296,45 @@ proc ::board::material {w} {
   # set fen [lindex [sc_pos fen] 0]
   set fen [lindex $::board::_data($w) 0]
 
-  # Evaluate piece differences
-  # Negative values mean black is ahead
-  # (Uppercase chars in fen are white)
-  set p [expr {[regexp -all P $fen] - [regexp -all p $fen]}]
-  set n [expr {[regexp -all N $fen] - [regexp -all n $fen]}]
-  set b [expr {[regexp -all B $fen] - [regexp -all b $fen]}]
-  set r [expr {[regexp -all R $fen] - [regexp -all r $fen]}]
-  set q [expr {[regexp -all Q $fen] - [regexp -all q $fen]}]
+  if {$::gameInfo(showMaterial) == 2} {
+    # Show all taken material
+    set    matwhite [string repeat {q } [expr {1 - [regexp -all Q $fen]}]]
+    append matwhite [string repeat {r } [expr {2 - [regexp -all R $fen]}]]
+    append matwhite [string repeat {b } [expr {2 - [regexp -all B $fen]}]]
+    append matwhite [string repeat {n } [expr {2 - [regexp -all N $fen]}]]
+    append matwhite [string repeat {p } [expr {8 - [regexp -all P $fen]}]]
+    set    matblack [string repeat {q } [expr {1 - [regexp -all q $fen]}]]
+    append matblack [string repeat {r } [expr {2 - [regexp -all r $fen]}]]
+    append matblack [string repeat {b } [expr {2 - [regexp -all b $fen]}]]
+    append matblack [string repeat {n } [expr {2 - [regexp -all n $fen]}]]
+    append matblack [string repeat {p } [expr {8 - [regexp -all p $fen]}]]
+  } else {
 
-  # Flesh out differences into white and black lists
-  set matwhite {}
-  set matblack {}
-  foreach piece {q r b n p} {
-    set c [expr abs($[set piece])]
-    set minus [expr $[set piece] < 0]
-    if {$minus} {
-      while {$c > 0} {
-        lappend matblack $piece
-        incr c -1
-      }
-    } else {
-      while {$c > 0} {
-        lappend matwhite $piece
-        incr c -1
+    # Evaluate piece differences
+    # Negative values mean black is ahead
+    # (Uppercase chars in fen are white)
+    set p [expr {[regexp -all P $fen] - [regexp -all p $fen]}]
+    set n [expr {[regexp -all N $fen] - [regexp -all n $fen]}]
+    set b [expr {[regexp -all B $fen] - [regexp -all b $fen]}]
+    set r [expr {[regexp -all R $fen] - [regexp -all r $fen]}]
+    set q [expr {[regexp -all Q $fen] - [regexp -all q $fen]}]
+
+    # Flesh out differences into white and black lists
+    set matwhite {}
+    set matblack {}
+    foreach piece {q r b n p} {
+      set c [expr abs($[set piece])]
+      set minus [expr $[set piece] < 0]
+      if {$minus} {
+	while {$c > 0} {
+	  lappend matblack $piece
+	  incr c -1
+	}
+      } else {
+	while {$c > 0} {
+	  lappend matwhite $piece
+	  incr c -1
+	}
       }
     }
   }
@@ -2330,35 +2345,45 @@ proc ::board::material {w} {
   set h [$f cget -height]
   set x [expr {$width / 2}]
 
-  if {[ ::board::isFlipped $w ]} {
-    set sign1 + ; set sign2 -
+  if {$::gameInfo(showMaterial) == 2} {
+    if {[ ::board::isFlipped $w ]} {
+      set sign1 - ; set sign2 +
+    } else {
+      set sign1 + ; set sign2 -
+    }
   } else {
-    set sign1 - ; set sign2 +
+    if {[ ::board::isFlipped $w ]} {
+      set sign1 + ; set sign2 -
+    } else {
+      set sign1 - ; set sign2 +
+    }
   }
+
 
   # Material is drawn either side of half-way unless one side has too much
   set halfway [expr {$h / 2}]
-  if {[expr {[llength $matblack] * $width > $halfway}]} {
-    if {[ ::board::isFlipped $w ]} {
-      set halfway [expr {$h - ([llength $matblack] * $width)}]
-      if {$halfway < 0} {set halfway 0}
+  if {$::gameInfo(showMaterial) == 1} {
+    if {[expr {[llength $matblack] * $width > $halfway}]} {
+      if {[ ::board::isFlipped $w ]} {
+	set halfway [expr {$h - ([llength $matblack] * $width)}]
+	if {$halfway < 0} {set halfway 0}
+      } else {
+	set halfway [expr {[llength $matblack] * $width}]
+	if {$halfway > $h} {set halfway $h}
+      }
     } else {
-      set halfway [expr {[llength $matblack] * $width}]
-      if {$halfway > $h} {set halfway $h}
-    }
-  } else {
-
-  if {[expr {[llength $matwhite] * $width > $halfway}]} {
-    if {[ ::board::isFlipped $w ]} {
-      set halfway [expr {[llength $matwhite] * $width}]
-      if {$halfway > $h} {set halfway $h}
-    } else {
-      set halfway [expr {$h - ([llength $matwhite] * $width)}]
-      if {$halfway < 0} {set halfway 0}
+      if {[expr {[llength $matwhite] * $width > $halfway}]} {
+	if {[ ::board::isFlipped $w ]} {
+	  set halfway [expr {[llength $matwhite] * $width}]
+	  if {$halfway > $h} {set halfway $h}
+	} else {
+	  set halfway [expr {$h - ([llength $matwhite] * $width)}]
+	  if {$halfway < 0} {set halfway 0}
+	}
+      }
     }
   }
 
-  }
   set offset [expr $halfway $sign1 $x ]
   foreach pi $matblack {
     $f create image $x $offset -image b${pi}$width -tag material

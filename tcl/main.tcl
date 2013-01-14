@@ -246,6 +246,13 @@ proc toggleCoords {} {
   ::board::coords .board
 }
 
+proc toggleMat {} {
+  global gameInfo
+  set gameInfo(showMaterial) [expr {1 + $gameInfo(showMaterial)} ]
+  if { $gameInfo(showMaterial) > 2 } { set gameInfo(showMaterial) 0 }
+  ::board::togglematerial
+}
+
 image create photo autoplay_off -data {
 R0lGODlhHgAeAKU6AAAAAAUFBQcHBwkJCQ0NDRISEhgYGCIiIi4uLkBA/0FB
 /0ND/llZWUZG/khI/UtL/EtL/U1N/E5O/E9P+2JiYlBQ+1FR+2ZmZlZW+Wlp
@@ -374,9 +381,6 @@ menu .gameInfo.menu -tearoff 0 -background gray90
 .gameInfo.menu add checkbutton -label {Side to Move} \
     -variable boardSTM -offvalue 0 -onvalue 1 -command {::board::togglestm .board}
 
-.gameInfo.menu add checkbutton -label GInfoMaterial \
-    -variable gameInfo(showMaterial) -offvalue 0 -onvalue 1 -command {::board::togglematerial }
-
 .gameInfo.menu add checkbutton -label {Highlight last move} \
     -variable ::highlightLastMove -offvalue 0 -onvalue 1 -command updateBoard
 
@@ -386,6 +390,7 @@ menu .gameInfo.menu -tearoff 0 -background gray90
 .gameInfo.menu add checkbutton -label GInfoHideNext \
     -variable gameInfo(hideNextMove) -offvalue 0 -onvalue 1 -command updateBoard
 
+.gameInfo.menu add command -label GInfoMaterial -command toggleMat
 .gameInfo.menu add command -label {Toggle Coords} -command toggleCoords
 
 

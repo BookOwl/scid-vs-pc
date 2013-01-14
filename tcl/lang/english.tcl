@@ -342,7 +342,7 @@ menuText E HelpAbout "About" 0 {Information about Scid Vs PC}
 
 # Game info box popup menu:
 menuText E GInfoHideNext "Hide Next Move" 0
-menuText E GInfoMaterial "Material Values" 0
+menuText E GInfoMaterial "Toggle Material" 7
 menuText E GInfoFEN "FEN" 5
 menuText E GInfoMarks "Show Colored Squares and Arrows" 5
 menuText E GInfoWrap "Wrap Long Lines" 0
