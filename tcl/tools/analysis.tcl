@@ -1217,6 +1217,13 @@ proc addScore {n type {novar 0}} {
       return
     }
 
+    if { [sc_pos moves] == {} && [sc_pos isAt end]} {
+      # Where is there getting called from ?. Hack to not display errant last mated score
+      ### Last move , don't attempt to score as it comes out wrong/negative and breaks the score graph
+      # But should we use scoreToMate and not score mating moves at all... but it's nice to see the graph maxed out
+      return
+    }
+
     switch $type {
       single { set text [format "%+.2f" $analysis(score$n)] }
       both - end  { set text [format "%+.2f / %+.2f" $analysis(score$n) $analysis(prevscore$n)] }
