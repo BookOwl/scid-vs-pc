@@ -8881,10 +8881,6 @@ int
 sc_game_scores (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
 {
     int moveCounter = 0;
-    // todo: bug here, under some circumstances, this has to be 1! (*&*(^$#@
-    // eg Rogers v Casey works ok with 0, but Perera v Yang needs 1
-    // to get the moves properly lined up
-    // int moveCounter = 1;
 
     float max = 10.0;
     float min = -max;
