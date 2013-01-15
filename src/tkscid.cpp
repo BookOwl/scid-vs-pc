@@ -8841,7 +8841,7 @@ addScoreToList (Tcl_Interp * ti, int moveCounter, const char * comment,
     if (*comment == '-' && isdigit(*(comment-1))) { return false; }
     // OK, now we have found "+[digit]" or "-[digit]" in the comment,
     // so extract its evaluation and add it to our list:
-    sprintf (buffer, "%.1f", (float)moveCounter * 0.5);
+    sprintf (buffer, "%.1f", (float)moveCounter * 0.5 + 0.5);
     Tcl_AppendElement (ti, buffer);
     float f;
     sscanf (comment, "%f", &f);
@@ -8877,6 +8877,8 @@ addScoreToList (Tcl_Interp * ti, int moveCounter, const char * comment,
 //    move (0.0 = start, 0.5 after White's first move, 1.0 after Black's
 //    first move, etc) and the second is the value found.
 //
+//    Note - This now gives 1.0 after whites first move, 1.5 after blacks first move
+//    so as to better work with the Score graph X axis. See svn revision 1345
 int
 sc_game_scores (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
 {

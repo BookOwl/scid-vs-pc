@@ -510,7 +510,7 @@ proc ::tools::graphs::score::ConfigMenus {{lang ""}} {
 }
 
 proc ::tools::graphs::score::Move {xc} {
-  set x [expr {round([::utils::graph::xunmap score $xc] * 2)} ]
+  set x [expr {round([::utils::graph::xunmap score $xc] * 2)-1} ]
   sc_move start
   sc_move forward $x
   updateBoard
