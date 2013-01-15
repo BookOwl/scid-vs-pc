@@ -8878,7 +8878,7 @@ addScoreToList (Tcl_Interp * ti, int moveCounter, const char * comment,
 //    first move, etc) and the second is the value found.
 //
 //    Note - This now gives 1.0 after whites first move, 1.5 after blacks first move
-//    so as to better work with the Score graph X axis. See svn revision 1345
+//    so as to better work with the Score graph X axis. See svn revision 1346
 int
 sc_game_scores (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
 {
