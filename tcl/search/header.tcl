@@ -388,6 +388,11 @@ proc search::header {} {
         -ind 0 -value both -text $::tr(Both) -padx 2 -pady 0 \
         -font font_Small] \
         -row $row -column $col
+    if {$::macOS} {
+       $w.flags.yes$var  configure -height 2 -width 4
+       $w.flags.no$var   configure -height 2 -width 4
+       $w.flags.both$var configure -height 2 -width 4
+    }
     incr count
     incr col -3
     incr row
@@ -417,6 +422,11 @@ proc search::header {} {
     incr col 2
     incr count
     if {$count == 4} { set col 0; set row 8 }
+    if {$::macOS} {
+       $w.flags.yes$var  configure -height 2 -width 4
+       $w.flags.no$var   configure -height 2 -width 4
+       $w.flags.both$var configure -height 2 -width 4
+    }
   }
 
   grid [label $w.flags.space -text "" -font $regular] -row 0 -column 4
