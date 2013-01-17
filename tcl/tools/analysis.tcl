@@ -3809,10 +3809,12 @@ lI+py+0Po5y02osn2Flt0IXimH3cGHxkeoosiKpxG76r7OK13tkznKOVTECS
 ### Make a little toplevel text widget to display an engine log
 
 proc engineShowLog {n} {
+  global analysis
+
   if {$n == {}} {
     return
   }
-  set ::analysis(logfile) $n
+  set analysis(logfile) $n
 
   set w .enginelog
 
@@ -3844,19 +3846,47 @@ proc engineShowLog {n} {
     grid rowconfigure    $w.frame 1 -weight 0
     grid columnconfigure $w.frame 1 -weight 0
     
+    checkbutton $w.buttons.auto -text Auto -variable analysis(log_auto) -command engineAutoLog
     dialogbutton $w.buttons.update -textvar ::tr(Update) -command engineUpdateLog
     dialogbutton $w.buttons.ok -textvar ::tr(Close) -command "destroy $w"
-    checkbutton $w.buttons.auto -text Auto -variable ::analysis(log_auto) -command engineAutoLog
+
+    entry $w.buttons.find -width 10 -textvariable analysis(find)
+
+    ### This code borrowed from htext.tcl::updateHelpWindow
+    $w.log tag configure Highlight -background orange
+
+    set analysis(findprev) {}
+    set analysis(findindex) 1.0
+
+    bind $w.buttons.find <Return> {
+      if {$analysis(findprev) != $analysis(find)} {
+        set analysis(findprev) $analysis(find)
+      }
+      .enginelog.log tag remove Highlight 1.0 end
+
+      set result [.enginelog.log search -nocase -- $::analysis(find) $::analysis(findindex)]
+      if {$result == {}} {
+        set ::analysis(findindex) 1.0
+        bell
+      } else {
+        if {[ regexp {(.*)\.(.*)} $result t1 line char]} {
+          .enginelog.log see $result
+          .enginelog.log tag add Highlight $result $line.[expr $char + [string length $::analysis(find)]]
+          set ::analysis(findindex) $line.[expr $char + 1]
+        } ;# should always succeed ?
+      }
+    }
+
 
     pack $w.buttons.auto $w.buttons.update -padx 15 -side left
-    pack $w.buttons.ok -padx 15 -side right
+    pack $w.buttons.ok $w.buttons.find -padx 15 -side right
 
     bind $w <Configure> "recordWinSize $w"
   }
   wm title $w "Engine Log: [lindex [lindex $::engines(list) $n] 0]"
   engineAutoLog
   bind $w <Escape> "destroy $w"
-  bind $w <F1> { helpWindow Index }
+  bind $w <F1> { helpWindow Analysis }
   $w.buttons.update invoke
   .enginelog.log see 0.0
 }
