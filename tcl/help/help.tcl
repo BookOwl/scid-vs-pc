@@ -17,8 +17,9 @@ append helpText(Contents) {
   <br>
   <ht><a Related>Links</a></ht>
   <ht><a Author>About</a></ht>
+  <ht><url http://scidvspc.sourceforge.net/doc/progref.html>Programmer's Reference</url></ht>
   <br>
-  <p><footer>Updated: Scid vs. PC 4.5, July 2011</footer></p>
+  <p><footer>Updated: Scid vs. PC 4.9, January 2013</footer></p>
 }
 set helpTitle(Intro) "$::scidName"
 set helpText(Intro) {<h1>Introduction</h1>

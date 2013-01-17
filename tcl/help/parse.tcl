@@ -8,8 +8,8 @@
 exec tclsh8.5 "$0" "$@"
 
 set ::scidName {Scid vs. PC}
-set ::scidVersion 4.7
-set ::scidVersionDate {May 27, 2012}
+set ::scidVersion 4.8
+set ::scidVersionDate {August 12, 2012}
 source help.tcl
 
 file mkdir doc
@@ -46,6 +46,9 @@ foreach topic [array names helpText] {
 
   regsub -all {<run[^>]*>} $text {} text
   regsub -all {</run>} $text {} text
+
+  regsub -all {<url ([^ ><]*)>} $text {<a href="\1">}  text
+  regsub -all {</url>} $text {</a>} text
 
   # puts $fd {<html><head>}
   puts $fd {<a href="Index.htm">Index</a> - }
