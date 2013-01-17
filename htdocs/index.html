@@ -70,8 +70,8 @@ Server. It was originally written by Shane Hudson , and has received strong
 contribution from Pascal Georges and others.</P>
 <P>
 <A HREF="http://scidvspc.sourceforge.net/">Scid vs. PC</A> is a usability
-and bug-fix fork of Scid.  The project is maintained by 
-<A HREF="#contact_">Stevenaaus</A>, and has been extensively tested with the Million Base and ICOfY databases.</P>
+and bug-fix fork of Scid with some new features.  The project is authored by 
+<A HREF="#contact_">Stevenaaus</A>, and has been extensively tested with the Million Base and other huge databases.</P>
 
 <H2><A NAME="s2">2.</A> <A HREF="#toc2">features </A></H2>
 
@@ -80,33 +80,34 @@ and bug-fix fork of Scid.  The project is maintained by
 <A HREF="#changes_">changes</A> for a comprehensive changelog, or the 
 <A HREF="https://sourceforge.net/apps/gallery/scidvspc/index.php">gallery</A> for some screenshots.</EM>.</P>
 <P>
-<H3>New / Improved features over Scid</H3>
+<H3>New and Improved features</H3>
 
 <UL>
 <LI> <B>Computer Tournaments</B>.</LI>
-<LI> Rewritten <B>Gamelist</B> widget: deleted items are greyed, a <B>Compact</B> button, <B>Flag</B> widgets, and the <B>Database Switcher</B> resides here.</LI>
+<LI> Rewritten <B>Gamelist</B> widget, with the incorporated <B>Database Switcher</B>.</LI>
 <LI> Improved <B>Computer Game</B> and <B>FICs</B> features.</LI>
 <LI> Clickable <B>Variation Arrows</B>, and <B>Paste Variation</B> feature.</LI>
-<LI> Improved Undo and <B>Redo</B> features</LI>
-<LI> Tri-coloured <B>tree bar-graphs</B> alongside statistics.</LI>
-<LI> <B>Ratings Graph</B> can show multiple players</LI>
-<LI> Book tuning <B>Remove Move</B> feature</LI>
+<LI> Improved Undo and <B>Redo</B>.</LI>
+<LI> Tri-coloured <B>Tree Bar-Graphs</B> alongside statistics.</LI>
+<LI> PGN can be shown as <B>chess figures</B>/fonts.</LI>
+<LI> <B>Ratings Graph</B> can show multiple players.</LI>
+<LI> Book tuning <B>Remove Move</B> feature.</LI>
 <LI> Separate board sections are hideable via right-click.</LI>
-<LI> A re-done <B>Button Bar</B> with nicer look and feel.</LI>
-<LI> Restructured <B>Analysis Engines</B> widget. The function hotkeys can be set explicitly, Engine 1 can be docked into the Status Bar, and any number of engines may run at one time.</LI>
-<LI> The Chessboard/Pieces config widget has been totally overhauled.  There are some <B>new colour and tile themes</B>, and <B>great piece set</B> available if the optional TkImg package is installed.</LI>
-<LI> The <B>Setup Start Board</B> has many fixes and improvements.  Annoyingly, if Scid uses a tiled theme, it's setup board is displayed a different colour.</LI>
+<LI> A redone <B>Button Bar</B> with improved look and feel.</LI>
+<LI> Restructured <B>Analysis Engines</B>. The function hotkeys can be set explicitly, Engine 1 can be docked into the Status Bar, and any number of engines may run at one time. <B>Engine Annotation</B> has also been rewritten, <B>Engine Logs</B> are viewable.</LI>
+<LI> The Chessboard/Pieces options have been totally overhauled.  There are some <B>new colour and tile themes</B>, and <B>great piece sets</B> available if the optional TkImg package is installed.</LI>
+<LI> The <B>Setup Start Board</B> has many fixes and improvements. </LI>
 <LI> The <B>Help</B> index is now meaningful to new users, with links to the game's main features.</LI>
-<LI> A user friendly <B>Annotation</B> feature.
+<LI> Countless bug-fixes.
 </LI>
 </UL>
 </P>
 <P>
-<H3>Features not currently implemented</H3>
+<H3>Missing Features</H3>
 
 <UL>
-<LI>Some language translations need volunteers and updating.<BR><BR></LI>
-<LI> SCID's <B>Docked Mode</B> has too many niggles and is not included.</LI>
+<LI> SCID's half-implemented <B>Docked Mode</B> is not included. It introduces quite a few bugs; keyboard input is mostly broken, and many windows just can't size properly.<BR><BR></LI>
+<LI>Some language translations need volunteers and updating.</LI>
 </UL>
 </P>
 <P>
@@ -132,10 +133,10 @@ and bug-fix fork of Scid.  The project is maintained by
 
 
 <P>Scid vs. PC requires 
-<A HREF="http://tcl.tk">Tcl/Tk</A> 8.5.</P>
-<P><EM>Tcl/Tk 8.5.10 has nasty bugs and should be avoided. 8.6 appears to work fine, but is not thoroughly tested.</EM>,</P>
+<A HREF="http://tcl.tk">Tcl/Tk</A> 8.5 or 8.6.
+<EM>Tcl/Tk 8.5.10 has nasty bugs and should be avoided.</EM></P>
 Most Unices should have Tcl/Tk installed by default.
-To verify this, look for a command named <B>wish</B> or <B>wish8.5</B>. (Wish-8.5.10 is not recommended).
+To verify this, look for a command named <B>wish</B> or <B>wish8.5</B>.
 To enable support for extra chess pieces (such as Berlin), you may need to install
 <A HREF="https://sourceforge.net/project/downloading.php?group_id=263836&amp;filename=tkimg1.3.tar.bz2">TkImg</A>.  
 Then, installing from source:
@@ -160,7 +161,7 @@ Scid's multi-language support can cause problems. Chinese (and other) users shou
 <A HREF="#download_">executable</A>, and following the prompts.</P>
 <P>The configuration files, <B>including the chess engine list</B>, are stored in the <B>Scid-vs-PC/bin/config</B> directory, and may be copied
 over from old versions to make upgrading easier.</P>
-<H3>Mac OSX </H3>
+<H3>Mac OS X </H3>
 
 
 <P>The 
@@ -168,6 +169,7 @@ over from old versions to make upgrading easier.</P>
 <P><EM>Users upgrading may have to remove (or edit) <B>$HOME/.scidvspc/config/engines.dat</B>
 to properly configure the chess engines.</EM></P>
 <P>To compile from source - once you have XCode installed - please read <B>ScidvsMac-HowTo.rtfd</B> in the source tarball.</P>
+<P><EM>OS X's Cocoa port of Wish is broken, with little chance of repair. Scid vs PC ships with a custom Carbon build of Wish.</EM></P>
 
 </P>
 <H2><A NAME="s5">5.</A> <A HREF="#toc5">news </A></H2>
@@ -321,14 +323,8 @@ with a strong community headed by a core group of programmers.</P>
 Germany, is a rewrite of Scid using the powerful libQT API, popularized by KDE-4.
 Originally called Newscid, Chessx still grows, but with a much smaller feature set,
 and lesser popularity than Scid.</P>
-<P>Scid vs. PC (by Steven Atkinson from Australia) began around mid 2009. It
-was started in response to Scid's poor User Interface and bloated design.
-Forked from Scid-3.6.26, it has some new features and regular updates from
-Scid, but is mostly an effort to tidy Shane's frenetic code base, improve the user interface
-, and add polish to Scid's rich feature set.</P>
-<P>But another chapter is yet to be written. A serious effort is being made to
-rewrite Scid, including Chessbase support. This project is Scidb, by Gregor
-Cramer from Germany, and many are looking forward to it's first release.</P>
+<P>Scid vs. PC (by Steven Atkinson from Australia) began around mid 2009. Forked from Scid-3.6.26, it began as an effort to tidy Shane's frenetic code base, improve the user interface , and add polish to Scid's rich feature set; but it is now probably the most mature fork. Unfortunately, the state of mainline SCID's git repository is not good. It has new features with many bugs, receives little or no updates, and a new release is not eminent.</P>
+<P>Another project is reaching its initial public release. Scidb, by Gregor Cramer from Germany, is a total rewrite of Scid. It thoroughly utilizes C++ and a heavily customized Tk interface, and includes Chessbase database support and Chess960/other variants among it's features.</P>
 <P>
 <A NAME="changes_"></A> </P>
 <H2><A NAME="s7">7.</A> <A HREF="#toc7">changes </A></H2>
