@@ -664,7 +664,7 @@ proc editMyPlayerNamesOK {} {
 
 proc getMyPlayerName {{n 0}} {
   global myPlayerNames
-  return [lindex $myPlayerNames $n]
+  return [string trim [lindex $myPlayerNames $n] {*?}]
 }
 
 # flipBoardForPlayerNames
