@@ -113,6 +113,7 @@ proc ::file::New {} {
   }
   ::recentFiles::add $fName
   refreshWindows
+  refreshSearchDBs
 }
 
 # ::file::Open
@@ -228,6 +229,7 @@ proc ::file::Open {{fName ""} {parent .} {update 1}} {
   set glstart 1
 
   refreshWindows
+  refreshSearchDBs
 
   if {$update} {
     updateBoard -pgn
@@ -246,7 +248,6 @@ proc refreshWindows {} {
   updateTitle
   updateStatusBar
   refreshCustomFlags
-  refreshSearchDBs
 }
 
 ### Update a few widgets with the Custom Flags
@@ -470,6 +471,7 @@ proc ::file::Close {{base -1}} {
     updateStatusBar
     updateTitle
   }
+  refreshSearchDBs
   set ::glistStart($current) 1
 }
 
@@ -585,6 +587,7 @@ proc ::file::openBaseAsTree { { fName "" } } {
   set ::tree(locked$current) 1
 
   ::file::SwitchToBase $oldbase
+  refreshSearchDBs
 }
 
 ### Scidb's Drag and Drop by Gregor Cramer
