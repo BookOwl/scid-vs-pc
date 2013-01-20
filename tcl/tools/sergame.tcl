@@ -389,6 +389,7 @@ namespace eval sergame {
     button $w.fbuttons.resume -state disabled -textvar ::tr(Resume) -command {
       set ::paused 0
       .serGameWin.fbuttons.resume configure -state disabled
+      ::uci::sendToEngine $::sergame::engine {setoption name Clear Hash}
       ::sergame::engineGo
     }
     pack $w.fbuttons.resume -expand yes -fill both -padx 10 -pady 2
