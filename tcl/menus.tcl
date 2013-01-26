@@ -1039,7 +1039,6 @@ $m add command -label OptionsSave -command {
     }
     puts $optionF ""
     puts $optionF "set analysisCommand [list $analysisCommand]"
-    puts $optionF "set analysisChoices [list $analysisChoices]"
     puts $optionF ""
     foreach i {lite dark whitecolor blackcolor highcolor bestcolor bgcolor maincolor varcolor \
           whiteborder blackborder borderwidth \

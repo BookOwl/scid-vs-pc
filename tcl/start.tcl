@@ -322,11 +322,6 @@ createFont Fixed
 
 # Analysis command: to start chess analysis engine.
 set analysisCommand ""
-if {$windowsOS} {
-  set analysisChoices {wcrafty.exe}
-} else {
-  set analysisChoices {crafty}
-}
 set analysis(mini) 0
 set analysis(logEngines) 1
 
