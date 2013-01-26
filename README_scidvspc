@@ -176,6 +176,10 @@
   in the Scid-vs-PC/bin/config directory, and may be copied over from
   old versions to make upgrading easier.
 
+  Just after installation on Windows 7, Scid vs. PC can crash upon exit,
+  with an ntdll.dll error. This known issue seems harmless, and to
+  resolve itself after a reboot.
+
   4.0.3.  Mac OS X
 
   The ``ScidvsMac-4.8 app'' should include everything you need. Simply
@@ -187,6 +191,7 @@
 
   To compile from source - once you have XCode installed - please read
   ScidvsMac-HowTo.rtfd in the source tarball.
+
   OS X's Cocoa port of Wish is broken, with little chance of repair.
   Scid vs PC ships with a custom Carbon build of Wish.
 
@@ -248,7 +253,6 @@
   includes changes to the Gameinfo, Comment Editor, and Board Style
   widgets, some new chess pieces, colour schemes and tiles. Thanks to
   Michal and Alex for feedback.
-
    June 4, 2009
 
   Well, the html is up, and i've got a couple of files in the downloads
@@ -282,6 +286,11 @@
   6.2.  known issues
 
 
+  o  Just after installation on Windows 7, ScidvsPC can crash upon exit,
+     with an ntdll.dll error. This seems harmless, and to resolve itself
+     after a reboot.  The issue is unresolved, but can be worked around
+     by running Scid vs.  PC with administrator privilidges.
+
   o  Chinese Language Support. Scid's multilanguage support is broken
      for some countries. The work around involves compiling from source,
      using: ./configure LANGUAGES=""
@@ -308,6 +317,7 @@
      gamelist.tcl to tkscid.cpp.
 
   o  Windows only:
+
 
      o  Using "ALT+F"... etc key bindings to access the menus is badly
         broke. This is a Tcl/Tk issue.
@@ -373,6 +383,7 @@
   API, popularized by KDE-4.  Originally called Newscid, Chessx still
   grows, but with a much smaller feature set, and lesser popularity than
   Scid.
+
 
   Scid vs. PC (by Steven Atkinson from Australia) began around mid 2009.
   Forked from Scid-3.6.26, it began as an effort to tidy Shane's
@@ -505,6 +516,7 @@
 
   o  Work arounds for wish 8.5.12 and 8.5.8 issues
 
+
   o  Analysis logs can badly break autoscroll, so use normal frames and
      scrollbars.
 
@@ -582,7 +594,6 @@
   o  Gamelist: To display unusual characters, convert to unicode before
      displaying games.
 
-
   o  Sync html bitmaps with SCID.
 
   o  Book: Only do the second book move lookup if we have too. (slight
@@ -637,6 +648,7 @@
   o  Change analysis colors for MultiPV to black/grey instead of
      blue/black.
 
+
   o  New 'Search in (other) Database' feature to the board search (from
      SCID)
 
@@ -649,6 +661,7 @@
 
   o  Phalanx tacgame bug-fixes (play brainy, and stop after the correct
      amount of time)
+
   o  Tweak the best games widget (make fields line-up)
 
   o  When handling Import PGN errors, show the game numbers as well as
@@ -700,6 +713,7 @@
      great)
 
      Computer Tournament:
+
 
   o  Per-game time control
 
@@ -779,7 +793,6 @@
 
   o  PGN text tabstops are now dynamic to allow for correct column
      allignment in column mode
-
 
   o  Remember position of custom ecoFile if loaded
 
@@ -912,7 +925,6 @@
      health (*nix only), and player communications are saved as PGN
      comments.
 
-
   o  FICs bug-fix: don't automatically accept rematches
 
   o  FICs "Opponent Info" button
@@ -966,6 +978,7 @@
 
   o  New si4 database support
 
+
   o  Include tree and mask improvements from Scid (excepting Fulvio's
      delayed tree code, which has issues)
 
@@ -977,7 +990,6 @@
   o  Easier 64 bit compilation
 
   o  Include Scid's correspondence feature
-
 
   o  Make analysis widget info properly hideable, and tweak buttons
 
@@ -1109,7 +1121,6 @@
 
      o  Statistics window restructured
 
-
   7.0.10.  Scid vs. PC 4.0
 
 
@@ -1165,6 +1176,7 @@
   o  Remove space-only lines from project - they mess up vim's paragraph
      traversal feature
 
+
   o  Fics "withdraws offer" fix
 
   o  Toolbar icons tweak
@@ -1174,7 +1186,6 @@
   o  Tactical Game stores game result
 
   o  Set Game Info widget includes Site field
-
 
   o  Small "update idletasks" in main.tcl improves main board
      responsiveness
@@ -1230,6 +1241,7 @@
 
   o  Make font dialogs resizable, add a "default" feature, a new "fixed"
      default, and small overhaul (hard work!)
+
 
   o  (Add a "Font" button to the help and crosstable widgets)
 
@@ -1296,6 +1308,7 @@
   o  The analysis engines now support RobboLito, and an unlimited number
      of engines
 
+
   o  The File::Open menus have had quite a bit of debugging
 
   o  Some ne tile themes
@@ -1361,6 +1374,7 @@
   o  Fix the MyPlayerNames widget. (No autoscrollframe, no grab
      (interfered with Help))
 
+
   o  Add MyPlayerName info to Tacgame
 
   o  Tacgame show a modest checkmate widget when game is over (for the
@@ -1372,7 +1386,6 @@
      the awful yellow highlighting
 
   o  Speed optimisations for updating main board
-
 
   o  Bug fix for  sometime  issue with gamelist widget initialisation
      (thanks Alex)
@@ -1439,7 +1452,6 @@
   o  Other minor changes to fics, -O2, "exec tkscid" correctness, font
      and menu tweaks
 
-
   7.0.17.  Scid vs. PC 3.6.26.3
 
 
@@ -1504,7 +1516,6 @@
   o  Clock widgets placed side-by-side.
 
   o  Remember fics widget size.
-
 
   o  Last move displayed in bold.
 
