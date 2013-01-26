@@ -411,6 +411,14 @@ proc openBase {name} {
     return -code error "File \"$name.si4\" doesn't exist."
   }
 
+  # Depending on how file is opened, windows can have "\" file separators
+  # We don't want to open this twice somehow
+
+  if {$::windowsOS && [string range $name 1 2] == ":\\"} {
+    ::splash::add "Translating \"\\\" filename separators for $name"
+    set name [string map {\\ /} $name]
+  }
+
   set bsize 0
 
   ### wrong i think
