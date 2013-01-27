@@ -189,11 +189,7 @@ namespace eval uci {
 	    }
           }
           # convert the score to white's perspective (not engine's one)
-          if { $analysis(fen$n) == "" } {
-            set side [string index [sc_pos side] 0]
-          } else {
-            set side [lindex $analysis(fen$n) 1]
-          }
+	  set side [string index [sc_pos side] 0]
           if { $side == "b"} {
             set uciInfo(tmp_score$n) [ expr 0.0 - $uciInfo(tmp_score$n) ]
             if { $uciInfo(scoremate$n) != ""} {
