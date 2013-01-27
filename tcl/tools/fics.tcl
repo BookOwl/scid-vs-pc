@@ -642,7 +642,7 @@ namespace eval fics {
 
           foreach moveUCI $moves {
 	    if { [ string length $moveUCI ] == 5 } {
-	      set promoletter [ string tolower [ string index $moveUCI end ] ]
+	      set promoLetter [ string tolower [ string index $moveUCI end ] ]
 	      ::fics::writechan "promote $promoLetter"
 	    }
 	    ::fics::writechan [ string range $moveUCI 0 3 ]
@@ -2373,7 +2373,7 @@ namespace eval fics {
     if {$::fics::playing == 1 && [winfo exists .fics]}  {
       set moveUCI [sc_game info previousMoveUCI]
       if { [ string length $moveUCI ] == 5 } {
-        set promoletter [ string tolower [ string index $moveUCI end ] ]
+        set promoLetter [ string tolower [ string index $moveUCI end ] ]
         ::fics::writechan "promote $promoLetter"
       }
       ::fics::writechan [string range $moveUCI 0 3 ]
