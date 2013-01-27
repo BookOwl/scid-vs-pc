@@ -1374,7 +1374,10 @@ proc doRAVSkip {line k} {
   # What are we doing here ! Skipping variations ?
   # Rewrite it a bit. Just don't get fooled by any braces ( or ) inside comments {}
   set recurse 1
-  while {$recurse > 0} {
+  set incr 0
+  # To try and avoid recursive fails, don't go into depth > 15, or incr > 1000
+  while {$recurse > 0 && $recurse < 15 && $incr < 1000} {
+    incr incr
     incr k
     set rav_start [string first "(" $line $k]
     set rav_end [string first ")" $line $k]
@@ -1425,7 +1428,9 @@ proc doRAVSkip {line k} {
 	      set k $rav_start
             }
 	  } else {
-	    set k [string first "\}" $line $k]
+              incr recurse
+              set k $rav_start
+	    # set k [string first "\}" $line $k]
 	  }
 	} else {
 	  set k $rav_end
@@ -1433,6 +1438,10 @@ proc doRAVSkip {line k} {
 	}
       }
     }
+  }
+  if {$recurse > 0} {
+    # oops - something went wrong, so abort this diff
+    set k [string length $line]
   }
   return $k
 }
