@@ -3314,17 +3314,21 @@ proc updateAnalysis {{n 0}} {
 
   set old_movelist $analysis(movelist$n)
   set movelist [sc_game moves coord]
-  set analysis(movelist$n) $movelist
-
-  set nonStdStart [sc_game startBoard]
-  set old_nonStdStart $analysis(nonStdStart$n)
-  set analysis(nonStdStart$n) $nonStdStart
-
-  if {$nonStdStart} {
-    set analysis(startpos$n) "fen [sc_game startPos]"
+  if {$movelist == "0000"} {
+    # null move in this line, so just go by fen
+    set movelist ""
+    set nonStdStart 1
+    set analysis(startpos$n) "fen [sc_pos fen]"
   } else {
-    set analysis(startpos$n) startpos
+    set nonStdStart [sc_game startBoard]
+    if {$nonStdStart} {
+      set analysis(startpos$n) "fen [sc_game startPos]"
+    } else {
+      set analysis(startpos$n) startpos
+    }
   }
+  set analysis(movelist$n) $movelist
+  set analysis(nonStdStart$n) $nonStdStart
 
   if { $analysis(uci$n) } {
 
@@ -3385,8 +3389,6 @@ proc updateAnalysis {{n 0}} {
       # Check if the setboard command must be used -- that is, if the
       # previous or current position arose from a non-standard start.
       
-      # if {$analysis(has_setboard$n)  &&  ($old_nonStdStart  || $nonStdStart)}
-
       ### Use "setboard" if supported, and return (this is provides less error prone behavior)
 
       if {$analysis(has_setboard$n)} {

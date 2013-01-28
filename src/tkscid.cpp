@@ -8004,12 +8004,31 @@ sc_game_moves (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
         if (sanFormat) {
             g->GetSAN (s);
         } else {
-            *s++ = square_FyleChar(sm->from);
-            *s++ = square_RankChar(sm->from);
-            *s++ = square_FyleChar(sm->to);
-            *s++ = square_RankChar(sm->to);
-            if (sm->promote != EMPTY) {
-                *s++ = tolower(piece_Char (piece_Type (sm->promote)));
+            if (sm->from == sm->to) {
+              /* null move "0000"
+              *s++ = '0';
+              *s++ = '0';
+              *s++ = '0';
+              *s++ = '0';
+              */
+
+              // instead of appending a nullmove, simpler to exit and return only '0000'
+	      g->RestoreState();
+  #ifdef WINCE
+	      my_Tcl_Free((char*) moveStrings);
+  #else
+	      delete[] moveStrings;
+  #endif
+	      Tcl_AppendResult (ti, "0000", NULL);
+	      return TCL_OK;
+            } else {
+	      *s++ = square_FyleChar(sm->from);
+	      *s++ = square_RankChar(sm->from);
+	      *s++ = square_FyleChar(sm->to);
+	      *s++ = square_RankChar(sm->to);
+	      if (sm->promote != EMPTY) {
+		  *s++ = tolower(piece_Char (piece_Type (sm->promote)));
+	      }
             }
             *s = 0;
         }
