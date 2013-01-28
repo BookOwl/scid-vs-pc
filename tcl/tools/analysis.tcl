@@ -2871,6 +2871,7 @@ proc stopAnalyzeMode { {n 0} } {
   } else  {
     sendToEngine $n exit
   }
+  set  set analysis(startpos$n) ""
 }
 ################################################################################
 # toggleLockEngine
@@ -3251,8 +3252,6 @@ proc sendFENtoEngineUCI {n  {delay 0}} {
         set analysis(after$n) [eval [list after idle $cmd]]
     } else {
 	# sendToEngine $n "position fen $analysis(fen$n)"
-
-	### "set analysis(nonStdStart$n) [sc_game startBoard]" is only a boolean
 
 	if {$analysis(movelist$n) == {}} {
 	  sendToEngine $n "position $analysis(startpos$n)"
