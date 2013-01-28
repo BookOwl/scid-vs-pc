@@ -758,6 +758,7 @@ proc compNM {n m k} {
 
       # position
       if {$movehistory != {}} {
+        ### todo - does ponder work with non-standard starts ? S.A
 	sendToEngine $other_engine "position startpos moves $movehistory $uciInfo(ponder$other_engine)"
       }
 

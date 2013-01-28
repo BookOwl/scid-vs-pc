@@ -71,7 +71,7 @@ namespace eval uci {
       set pipe $analysis(pipe$n)
       if { ! [ ::checkEngineIsAlive $n ] } { return }
     } else  {
-      set analysis(fen$n) ""
+      set analysis(startpos$n) ""
       set pipe $uciInfo(pipe$n)
       if { ! [ ::uci::checkEngineIsAlive $n ] } { return }
     }
@@ -204,7 +204,7 @@ namespace eval uci {
         if { $t == "currmove" } {
            incr i
            set uciInfo(currmove$n) [lindex $data $i]
-           set analysis(currmove$n) [formatPv $uciInfo(currmove$n) $analysis(fen$n)]
+           set analysis(currmove$n) [formatPv $uciInfo(currmove$n)]
            continue}
         if { $t == "currmovenumber" } {
            incr i
@@ -283,7 +283,7 @@ namespace eval uci {
 
       # convert to something more readable
       if ($toBeFormatted) {
-        set uciInfo(pv$n) [formatPv $uciInfo(pv$n) $analysis(fen$n)]
+        set uciInfo(pv$n) [formatPv $uciInfo(pv$n)]
         set toBeFormatted 0
       }
 
@@ -999,16 +999,24 @@ namespace eval uci {
   # This is done by pushing game, then adding moves to game one at a time and getting the converted string
   # surely this is crap ? S.A. todo: improve
 
-  proc formatPv { moves fen } {
+  # uci.tcl calls this for "none". calvar.tcl cals this for "$fen" or ""
 
+  proc formatPv {moves {fen none}} {
+
+    if {$fen == "none"} {
+      # costs around 5 microseconds
+      set fen [sc_pos fen]
+    }
     sc_info preMoveCmd {}
+
     # Push a temporary copy of the current game:
-    if {$fen != ""} {
+    if {$fen == ""} {
+      sc_game push copyfast
+    } else  {
       sc_game push
       sc_game startBoard $fen
-    } else  {
-      sc_game push copyfast
     }
+
     set tmp ""
     foreach m $moves {
       if { [sc_move_add $m] == 1 } { break }

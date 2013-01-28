@@ -326,6 +326,7 @@ namespace eval calvar {
     set comment ""
     set n $::calvar::engine
 
+    # formatPv has had changes. Can we change this next line ? S.A.
     set usermoves [::uci::formatPv $moves $fen]
     set firstmove [lindex $usermoves 0]
     

@@ -102,7 +102,7 @@ proc resetEngine {n} {
   set analysis(lastHistory$n) {}      ;# last best line
   set analysis(maxmovenumber$n) 0     ;# the number of moves in this position
   set analysis(lockEngine$n) 0        ;# the engine is locked to current position
-  set analysis(fen$n) {}              ;# the position that engine is analyzing
+  set analysis(startpos$n) ""         ;# the startpos/fen for game. Uninit-ed
 }
 
 resetEngines
@@ -2871,7 +2871,6 @@ proc stopAnalyzeMode { {n 0} } {
   } else  {
     sendToEngine $n exit
   }
-  set analysis(fen$n) {}
 }
 ################################################################################
 # toggleLockEngine
@@ -3235,6 +3234,7 @@ proc updateAnalysisBoard {n moves} {
 ################################################################################
 
 proc sendFENtoEngineUCI {n  {delay 0}} {
+
     global analysis
 
     set analysis(after$n) ""
@@ -3250,21 +3250,29 @@ proc sendFENtoEngineUCI {n  {delay 0}} {
         append cmd { [ } " after $delay sendFENtoEngineUCI $n $delay " { ] }
         set analysis(after$n) [eval [list after idle $cmd]]
     } else {
-	sendToEngine $n "position fen $analysis(fen$n)"
+	# sendToEngine $n "position fen $analysis(fen$n)"
+
+	### "set analysis(nonStdStart$n) [sc_game startBoard]" is only a boolean
+
+	if {$analysis(movelist$n) == {}} {
+	  sendToEngine $n "position $analysis(startpos$n)"
+	} else {
+	  sendToEngine $n "position $analysis(startpos$n) moves $analysis(movelist$n)"
+	}
+
         sendToEngine $n "go infinite"
 
-	if {0} {
-	  ### Alternative implementation - not finished
-	  ### We have to store the startpos somehow
-	  ### "set analysis(nonStdStart$n) [sc_game startBoard]" is only a boolean
-	  set movehist [string tolower [sc_game moves c]]
-	  sendToEngine $n "position fen $analysis(fen$n)"
-	  if {$movehist == {}} {
-            sendToEngine $n "position startpos"
-	  } else {
-            sendToEngine $n "position startpos moves $movehist"
-	  }
-        }
+	# Should we issue "ucinewgame" when we move between games/bases ? S.A.
+	#
+	#  this is sent to the engine when the next search (started with "position" and "go") will be from
+	#  a different game. This can be a new game the engine should play or a new game it should analyse but
+	#  also the next position from a testsuite with positions only.
+	#  If the GUI hasn't sent a "ucinewgame" before the first "position" command, the engine shouldn't
+	#  expect any further ucinewgame commands as the GUI is probably not supporting the ucinewgame command.
+	#  So the engine should not rely on this command even though all new GUIs should support it.
+	#  As the engine's reaction to "ucinewgame" can take some time the GUI should always send "isready"
+	#  after "ucinewgame" to wait for the engine to finish its operation.
+
     }
 }
 
@@ -3305,23 +3313,35 @@ proc updateAnalysis {{n 0}} {
      return
   }
 
+  set old_movelist $analysis(movelist$n)
+  set movelist [sc_game moves coord list]
+  set analysis(movelist$n) $movelist
+
+  set nonStdStart [sc_game startBoard]
+  set old_nonStdStart $analysis(nonStdStart$n)
+  set analysis(nonStdStart$n) $nonStdStart
+
+  if {$nonStdStart} {
+    set analysis(startpos$n) "fen [sc_game startPos]"
+  } else {
+    set analysis(startpos$n) startpos
+  }
+
   if { $analysis(uci$n) } {
 
     ### UCI
 
     if {$analysis(after$n) == "" } {
-       if { $analysis(fen$n) != "" } {
+       if { $analysis(startpos$n) != "" } {
          sendToEngine $n "stop"
        }
        set analysis(waitForReadyOk$n) 1
        sendToEngine $n "isready"
 	set analysis(after$n) [after idle "sendFENtoEngineUCI $n"]
     }
-    set analysis(fen$n) [sc_pos fen]
+    # todo fix non-standard starts S.A
+
     set analysis(maxmovenumber$n) 0
-    set analysis(movelist$n) [sc_game moves coord list]
-    ### This var is not used by UCI engines
-    # set analysis(nonStdStart$n) [sc_game startBoard]
 
   } else {
 
@@ -3345,13 +3365,6 @@ proc updateAnalysis {{n 0}} {
     set analysis(lastClicks$n) $clicks
     set analysis(after$n) {}
     after cancel updateAnalysis $n
-
-    set old_movelist $analysis(movelist$n)
-    set movelist [sc_game moves coord list]
-    set analysis(movelist$n) $movelist
-    set nonStdStart [sc_game startBoard]
-    set old_nonStdStart $analysis(nonStdStart$n)
-    set analysis(nonStdStart$n) $nonStdStart
 
     if {$analysis(has_analyze$n)} {
 

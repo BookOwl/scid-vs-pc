@@ -5977,7 +5977,7 @@ sc_game (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
         "load",       "list",       "merge",      "moves",
         "new",        "novelty",    "number",     "pgn",
         "pop",        "push",       "save",       "scores",
-        "startBoard", "strip",      "summary",    "tags",
+        "startBoard", "startPos",   "strip",      "summary",    "tags",
         "truncate", "truncatefree", "undo",      "undoPoint",   "redo",  NULL
     };
     enum {
@@ -5986,7 +5986,7 @@ sc_game (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
         GAME_LOAD,       GAME_LIST,       GAME_MERGE,      GAME_MOVES,
         GAME_NEW,        GAME_NOVELTY,    GAME_NUMBER,     GAME_PGN,
         GAME_POP,        GAME_PUSH,       GAME_SAVE,       GAME_SCORES,
-        GAME_STARTBOARD, GAME_STRIP,      GAME_SUMMARY,    GAME_TAGS,
+        GAME_STARTBOARD, GAME_STARTPOS,   GAME_STRIP,      GAME_SUMMARY,    GAME_TAGS,
         GAME_TRUNCATE, GAME_TRUNCATEANDFREE, GAME_UNDO,    GAME_MAKE_UNDO_POINT,  GAME_REDO
     };
     int index = -1;
@@ -6067,6 +6067,9 @@ sc_game (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
 
     case GAME_STARTBOARD:
         return sc_game_startBoard (cd, ti, argc, argv);
+
+    case GAME_STARTPOS:
+        return sc_game_startPos (cd, ti, argc, argv);
 
     case GAME_STRIP:
         return sc_game_strip (cd, ti, argc, argv);
@@ -8971,6 +8974,17 @@ sc_game_startBoard (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv
     }
     db->game->SetStartPos (scratchPos);
     db->gameAltered = true;
+    return TCL_OK;
+}
+
+// returns the games initial position
+
+int
+sc_game_startPos (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
+{
+    char boardStr [200];
+    db->game->GetStartPos()->PrintFEN (boardStr, FEN_ALL_FIELDS);
+    Tcl_AppendResult (ti, boardStr, NULL);
     return TCL_OK;
 }
 
