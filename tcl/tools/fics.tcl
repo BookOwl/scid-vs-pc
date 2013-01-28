@@ -633,7 +633,7 @@ namespace eval fics {
 	  if {$confirm == 0} {sc_game save [sc_game number]}
 
           sc_move end
-          set moves [sc_game moves c]
+          set moves [sc_game moves coord]
           sc_game new
 
 	  ::fics::writechan examine
@@ -642,7 +642,7 @@ namespace eval fics {
 
           foreach moveUCI $moves {
 	    if { [ string length $moveUCI ] == 5 } {
-	      set promoLetter [ string tolower [ string index $moveUCI end ] ]
+	      set promoLetter [string index $moveUCI end]
 	      ::fics::writechan "promote $promoLetter"
 	    }
 	    ::fics::writechan [ string range $moveUCI 0 3 ]

@@ -3313,7 +3313,7 @@ proc updateAnalysis {{n 0}} {
   }
 
   set old_movelist $analysis(movelist$n)
-  set movelist [sc_game moves coord list]
+  set movelist [sc_game moves coord]
   set analysis(movelist$n) $movelist
 
   set nonStdStart [sc_game startBoard]

@@ -642,7 +642,7 @@ proc compNM {n m k} {
 
     # hmm... promo pieces are shown in uppercase, but this crashes some engines
     # todo: make command "sc_game move uci"
-    set movehistory [string tolower [sc_game moves c]]
+    set movehistory [sc_game moves coord]
 
     if {$comp(showclock) && $comp(timecontrol) == "pergame"} {
       if {$current_engine == $n} {

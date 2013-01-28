@@ -8009,7 +8009,7 @@ sc_game_moves (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
             *s++ = square_FyleChar(sm->to);
             *s++ = square_RankChar(sm->to);
             if (sm->promote != EMPTY) {
-                *s++ = piece_Char (piece_Type (sm->promote));
+                *s++ = tolower(piece_Char (piece_Type (sm->promote)));
             }
             *s = 0;
         }
