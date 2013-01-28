@@ -2871,7 +2871,7 @@ proc stopAnalyzeMode { {n 0} } {
   } else  {
     sendToEngine $n exit
   }
-  set  set analysis(startpos$n) ""
+  set analysis(startpos$n) ""
 }
 ################################################################################
 # toggleLockEngine
