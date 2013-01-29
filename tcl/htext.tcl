@@ -131,7 +131,7 @@ proc updateHelpWindow {name {heading {}}} {
 
     $w.text tag configure Highlight -background orange
 
-    entry $w.b.find -width 10 -textvariable ::helpWin(find)
+    entry $w.b.find -width 10 -textvariable ::helpWin(find) -highlightthickness 0
     set ::helpWin(findprev) {}
     set ::helpWin(findindex) 1.0
     

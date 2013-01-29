@@ -3864,7 +3864,7 @@ proc engineShowLog {n} {
     dialogbutton $w.buttons.update -textvar ::tr(Update) -command engineUpdateLog
     dialogbutton $w.buttons.ok -textvar ::tr(Close) -command "destroy $w"
 
-    entry $w.buttons.find -width 10 -textvariable analysis(find)
+    entry $w.buttons.find -width 10 -textvariable analysis(find) -highlightthickness 0
 
     ### This code borrowed from htext.tcl::updateHelpWindow
     $w.log tag configure Highlight -background orange

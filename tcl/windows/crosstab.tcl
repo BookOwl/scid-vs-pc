@@ -306,13 +306,41 @@ proc ::crosstab::Open {} {
   }
 
   button $w.b.font -text { Font } -command {FontDialogFixed .crosstabWin}
-  pack $w.b.cancel $w.b.update -side right -pady 3 -padx 5
+
+  entry $w.b.find -width 10 -textvariable crosstab(find) -highlightthickness 0
+
+  ### This code borrowed from htext.tcl::updateHelpWindow
+  $w.f.text tag configure Highlight -background orange
+
+  set crosstab(findprev) {}
+  set crosstab(findindex) 1.0
+
+  bind $w.b.find <Return> {
+    if {$crosstab(findprev) != $crosstab(find)} {
+      set crosstab(findprev) $crosstab(find)
+    }
+    .crosstabWin.f.text tag remove Highlight 1.0 end
+
+    set result [.crosstabWin.f.text search -nocase -- $::crosstab(find) $::crosstab(findindex)]
+    if {$result == {}} {
+      set ::crosstab(findindex) 1.0
+      bell
+    } else {
+      if {[ regexp {(.*)\.(.*)} $result t1 line char]} {
+	.crosstabWin.f.text see $result
+	.crosstabWin.f.text tag add Highlight $result $line.[expr $char + [string length $::crosstab(find)]]
+	set ::crosstab(findindex) $line.[expr $char + 1]
+      } ;# should always succeed ?
+    }
+  }
+
+
+  pack $w.b.cancel $w.b.find $w.b.update -side right -pady 3 -padx 5
   pack $w.b.setfilter $w.b.addfilter $w.b.type $w.b.font -side left -pady 3 -padx 5
 
   standardShortcuts $w
 
   bind $w <F1> { helpWindow Crosstable }
-  bind $w <Return> { .crosstabWin.b.update invoke }
   bind $w <Escape> { .crosstabWin.b.cancel invoke }
   bind $w <Up> { .crosstabWin.f.text yview scroll -1 units }
   bind $w <Down> { .crosstabWin.f.text yview scroll 1 units }
