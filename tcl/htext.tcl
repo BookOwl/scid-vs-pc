@@ -128,32 +128,8 @@ proc updateHelpWindow {name {heading {}}} {
     # button $w.b.font -text Font -width 6 -command "FontDialogRegular $w"
 
     ### Help Widget Find
-
-    $w.text tag configure Highlight -background orange
-
     entry $w.b.find -width 10 -textvariable ::helpWin(find) -highlightthickness 0
-    set ::helpWin(findprev) {}
-    set ::helpWin(findindex) 1.0
-    
-    bind $w.b.find <Return> {
-      if {$::helpWin(findprev) != $::helpWin(find)} {
-	set ::helpWin(findprev) $::helpWin(find)
-      } 
-
-      .helpWin.text tag remove Highlight 1.0 end
-
-      set result [.helpWin.text search -nocase -- $::helpWin(find) $::helpWin(findindex)]
-      if {$result == {}} {
-	set ::helpWin(findindex) 1.0
-	bell
-      } else {
-        if {[ regexp {(.*)\.(.*)} $result t1 line char]} {
-	  .helpWin.text see $result
-	  .helpWin.text tag add Highlight $result $line.[expr $char + [string length $::helpWin(find)]]
-	  set ::helpWin(findindex) $line.[expr $char + 1]
-        } ;# should always succeed ?
-      }
-    }
+    configFindEntryBox $w.b.find helpWin .helpWin.text
 
     button $w.b.close -textvar ::tr(Close) -width 6 -command {
       set ::helpWin(Stack) {}

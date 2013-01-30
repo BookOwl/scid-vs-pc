@@ -3865,32 +3865,7 @@ proc engineShowLog {n} {
     dialogbutton $w.buttons.ok -textvar ::tr(Close) -command "destroy $w"
 
     entry $w.buttons.find -width 10 -textvariable analysis(find) -highlightthickness 0
-
-    ### This code borrowed from htext.tcl::updateHelpWindow
-    $w.log tag configure Highlight -background orange
-
-    set analysis(findprev) {}
-    set analysis(findindex) 1.0
-
-    bind $w.buttons.find <Return> {
-      if {$analysis(findprev) != $analysis(find)} {
-        set analysis(findprev) $analysis(find)
-      }
-      .enginelog.log tag remove Highlight 1.0 end
-
-      set result [.enginelog.log search -nocase -- $::analysis(find) $::analysis(findindex)]
-      if {$result == {}} {
-        set ::analysis(findindex) 1.0
-        bell
-      } else {
-        if {[ regexp {(.*)\.(.*)} $result t1 line char]} {
-          .enginelog.log see $result
-          .enginelog.log tag add Highlight $result $line.[expr $char + [string length $::analysis(find)]]
-          set ::analysis(findindex) $line.[expr $char + 1]
-        } ;# should always succeed ?
-      }
-    }
-
+    configFindEntryBox $w.buttons.find analysis .enginelog.log
 
     pack $w.buttons.auto $w.buttons.update -padx 15 -side left
     pack $w.buttons.ok $w.buttons.find -padx 15 -side right
