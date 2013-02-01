@@ -288,6 +288,10 @@ proc ::crosstab::Open {} {
   $w.b.type.menu add radiobutton -label [tr CrosstabOptAuto] \
     -variable crosstab(type) -value auto -command ::crosstab::Refresh
   button $w.b.update -textvar ::tr(Update) -command ::crosstab::Refresh
+
+  entry $w.b.find -width 10 -textvariable crosstab(find) -highlightthickness 0
+  configFindEntryBox $w.b.find crosstab .crosstabWin.f.text
+
   button $w.b.cancel -textvar ::tr(Close) -command {
     focus .
     destroy .crosstabWin
@@ -306,9 +310,6 @@ proc ::crosstab::Open {} {
   }
 
   button $w.b.font -text { Font } -command {FontDialogFixed .crosstabWin}
-
-  entry $w.b.find -width 10 -textvariable crosstab(find) -highlightthickness 0
-  configFindEntryBox $w.b.find crosstab .crosstabWin.f.text
 
   pack $w.b.cancel $w.b.find $w.b.update -side right -pady 3 -padx 5
   pack $w.b.setfilter $w.b.addfilter $w.b.type $w.b.font -side left -pady 3 -padx 5

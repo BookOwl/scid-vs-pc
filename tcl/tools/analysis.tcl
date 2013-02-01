@@ -3862,10 +3862,11 @@ proc engineShowLog {n} {
     
     checkbutton $w.buttons.auto -text Auto -variable analysis(log_auto) -command engineAutoLog
     dialogbutton $w.buttons.update -textvar ::tr(Update) -command engineUpdateLog
-    dialogbutton $w.buttons.ok -textvar ::tr(Close) -command "destroy $w"
 
     entry $w.buttons.find -width 10 -textvariable analysis(find) -highlightthickness 0
     configFindEntryBox $w.buttons.find analysis .enginelog.log
+
+    dialogbutton $w.buttons.ok -textvar ::tr(Close) -command "destroy $w"
 
     pack $w.buttons.auto $w.buttons.update -padx 15 -side left
     pack $w.buttons.ok $w.buttons.find -padx 15 -side right
