@@ -851,7 +851,15 @@ proc redrawToolbar {} {
       pack .tb.$i -side left -pady 1 -padx 0 -ipadx 0 -pady 0 -ipady 0
     }
   }
-  if {$seen} { pack .tb.space4 -side left }
+  if {$seen} {
+    # hack to adjust the spacer if showing the hsearch icon (which has space at left anyway)
+    if {$toolbar(hsearch)} {
+      .tb.space3 configure -width 7
+    } else {
+      .tb.space3 configure -width 12
+    }
+    pack .tb.space4 -side left
+  }
   set seen 0
   foreach i {glist pgn comment maint eco tree book crosst tmt engine} {
     if {$toolbar($i)} {
