@@ -2675,9 +2675,8 @@ making for easier <a Analysis Debugging>Debugging</a>.
   press Pause, Unlock, and Add Variation.</li>
 
   <li> <button tb_addmove 32> <b>Add Move</b> 
-  adds the engine's best move to the current game.  Right clicking adds only the Engine Score.</li>
-  <li> <button tb_addvar 32> <b>Add Variation</b>  adds the
-  whole main line.</li>
+  adds the engine's best move to the current game.  (Right clicking adds the Engine Score).</li>
+  <li> <button tb_addvar 32> <b>Add Variation</b>  adds the whole main line.  (Right clicking adds the second variation if multi-pv enabled)</li>
   <li> <button tb_addallvars 32> <b>Multi-PV</b>  if the engine supports multi-pv, add all principal variations.</li>
 
   <li> <button tb_info 32> <b>Show Info</b> show additional information.</li>

@@ -1,8 +1,8 @@
 diff -U 5 -rN scid.orig scid 
 
---- scid.orig	2012-12-31 20:27:33.000000000 +1100
-+++ scid	2012-12-31 20:28:37.000000000 +1100
-@@ -74893,11 +74893,11 @@
+--- scid.orig	2013-02-12 17:42:09.000000000 +1000
++++ scid	2013-02-12 17:46:12.000000000 +1000
+@@ -74896,11 +74896,11 @@
          # Move tag &&&
          set moveTag $tagName
          set tagName m
@@ -15,7 +15,7 @@ diff -U 5 -rN scid.orig scid
        } elseif {[strIsPrefix {a } $tagName]} {
  	# link tag
          set linkName [::htext::extractLinkName $tagName]
-@@ -74960,11 +74960,11 @@
+@@ -74963,11 +74963,11 @@
          set gameTag $tagName
          set tagName g
          set gnum [string range $gameTag 2 end]
@@ -28,7 +28,7 @@ diff -U 5 -rN scid.orig scid
              "$w tag configure $gameTag
               $w tag configure $gameTag -back gray85
               $w configure -cursor hand2"
-@@ -76173,11 +76173,11 @@
+@@ -76186,11 +76186,11 @@
        set fullpath $data(dir)/$dir/$tail
      }
  
@@ -41,7 +41,7 @@ diff -U 5 -rN scid.orig scid
      $t tag bind f$pathtag <Any-Leave> "$t tag configure [list f$pathtag] -background {}"
      if {$dir == "."} {
        set fullpath "$data(dir)/$tail"
-@@ -77578,11 +77578,11 @@
+@@ -77591,11 +77591,11 @@
    # Right-mouse button cut/copy/paste menu:
    menu $w.text.edit -tearoff 0
    $w.text.edit add command -label "Cut"  -command "tk_textCut $w.text"
@@ -54,7 +54,7 @@ diff -U 5 -rN scid.orig scid
  
    loadEpdLines $id
  
-@@ -80739,12 +80739,12 @@
+@@ -80761,12 +80761,12 @@
      if { ($i + ($i / 8)) % 2 } { set boc bgl$psize }
      $sbd.bd delete br$i
      $sbd.bd create image $xc $yc -image $boc -tag br$i
@@ -69,7 +69,7 @@ diff -U 5 -rN scid.orig scid
      # ::board::bind .board $i <ButtonPress-1> "set ::addVariationWithoutAsking 0 ; pressSquare $i"
      # bind $sbd.$i <ButtonPress-1> "setupBoardPiece $i"
    }
-@@ -83076,15 +83076,15 @@
+@@ -83110,15 +83110,15 @@
      bind $w <ButtonPress-1> {
        if {[winfo exists .pgnWin.text.ctxtMenu]} { destroy .pgnWin.text.ctxtMenu; focus .pgnWin }
      }
@@ -88,7 +88,7 @@ diff -U 5 -rN scid.orig scid
        bind .pgnWin <Control-Button-1> {event generate .pgnWin <Button-3> -x %x -y %y -button 3}
      }
  
-@@ -84446,13 +84446,13 @@
+@@ -84481,13 +84481,13 @@
    for {set square 0} {$square < 64} {incr square} {
      ::board::bind $board $square <ButtonPress-1> [namespace code \
          [list InsertMark $board $square]]
@@ -104,7 +104,7 @@ diff -U 5 -rN scid.orig scid
  
    ### Type/Shape (pseudo-radio)buttons
  
-@@ -84856,11 +84856,11 @@
+@@ -84891,11 +84891,11 @@
      bind $w <Prior> {.ecograph.pane.text.text yview scroll -1 pages}
      bind $w <Next>  {.ecograph.pane.text.text yview scroll 1 pages}
      bindMouseWheel $w $w.pane.text.text
@@ -117,7 +117,7 @@ diff -U 5 -rN scid.orig scid
        ::utils::graph::configure eco -height [expr {[winfo height .ecograph.pane.graph.c] - 50} ]
        ::utils::graph::configure eco -width [expr {[winfo width .ecograph.pane.graph.c] - 60} ]
        ::utils::graph::redraw eco
-@@ -85874,11 +85874,11 @@
+@@ -85909,11 +85909,11 @@
      # insert 2 blank images and 4 blank space
      foreach j { 0 1 } {
        $w.f.tl image create end -image ::tree::mask::emptyImage -align center
@@ -130,7 +130,7 @@ diff -U 5 -rN scid.orig scid
  
    ### Hmmm - some of the markers (images) might be 17 or 18 width, and they make the
    ### bargraph stick out a little. todo - resize all markers to 16
-@@ -85953,11 +85953,11 @@
+@@ -85988,11 +85988,11 @@
      if {$move != {} && $move != {---} && $move != {[end]} && $i != $len-2 && $i != 0} {
        $w.f.tl tag bind tagclick$i <Button-1> "::tree::selectCallback $baseNumber $move ; break"
        if { $maskFile != {}} {
@@ -143,7 +143,7 @@ diff -U 5 -rN scid.orig scid
  
      if { $maskFile != "" } {
        # Move comment
-@@ -85969,11 +85969,11 @@
+@@ -86004,11 +86004,11 @@
          $w.f.tl tag bind tagtooltip$i <Double-Button-1> "::tree::mask::addComment $move $w"
        }
      }
@@ -156,7 +156,7 @@ diff -U 5 -rN scid.orig scid
      
      $w.f.tl insert end "\n"
    } ;# end for loop
-@@ -86004,11 +86004,11 @@
+@@ -86039,11 +86039,11 @@
          continue
        }
        
@@ -169,7 +169,7 @@ diff -U 5 -rN scid.orig scid
          if {[lindex $m $j] == ""} {
            $w.f.tl image create end -image ::tree::mask::emptyImage -align center
          } else  {
-@@ -88764,12 +88764,12 @@
+@@ -88803,12 +88803,12 @@
        set one "1="; set two "1="
      }
      set best "$one $winner\t$two $runnerup, ..."
@@ -183,7 +183,7 @@ diff -U 5 -rN scid.orig scid
      $t tag bind g$count <Any-Leave> "$t tag configure g$count -background {}"
      $t insert end "\n"
      $t insert end "\t$count\t" g$count
-@@ -89773,11 +89773,11 @@
+@@ -89812,11 +89812,11 @@
  
      $f.menu add checkbutton -label {Show icons} -variable ::windows::switcher::icons \
        -command ::windows::switcher::Refresh
@@ -196,7 +196,7 @@ diff -U 5 -rN scid.orig scid
  
    ::windows::switcher::Refresh
    after idle [namespace code "RegisterDropEvents $w.c"]
-@@ -93179,11 +93179,11 @@
+@@ -93228,11 +93228,11 @@
    # Right-mouse button cut/copy/paste menu:
    menu $f.text.edit -tearoff 0
    $f.text.edit add command -label "Cut" -command "tk_textCut $f.text"
@@ -209,7 +209,7 @@ diff -U 5 -rN scid.orig scid
    # $text insert end "Hi $name,\n\n"
    $text insert end "\n"
    foreach i $gamelist {
-@@ -93451,11 +93451,11 @@
+@@ -93500,11 +93500,11 @@
    $edit.text.rmenu add command -label "Redo" -command "catch {$edit.text edit redo}"
    $edit.text.rmenu add command -label "Cut" -command "tk_textCut $edit.text"
    $edit.text.rmenu add command -label "Copy" -command "tk_textCopy $edit.text"
@@ -222,7 +222,7 @@ diff -U 5 -rN scid.orig scid
        -yscroll "$pane.err.scroll set"
    scrollbar $pane.err.scroll -command "$pane.err.text yview" -takefocus 0
    pack $pane.err.scroll -side right -fill y
-@@ -98148,11 +98148,11 @@
+@@ -98211,16 +98211,16 @@
    button $w.b.startStop -image tb_pause -command "toggleEngineAnalysis $n" -relief $relief
    ::utils::tooltip::Set $w.b.startStop "$::tr(StopEngine)"
  
@@ -233,9 +233,15 @@ diff -U 5 -rN scid.orig scid
  
    button $w.b.line -image tb_addvar -command "addAnalysisVariation $n" -relief $relief
    ::utils::tooltip::Set $w.b.line $::tr(AddVariation)
+   # right click adds second line 
+-  bind $w.b.line <Button-3> "addAllVariations $n 1"
++  bind $w.b.line <Button-2> "addAllVariations $n 1"
  
    button $w.b.alllines -image tb_addallvars -command "addAllVariations $n" -relief $relief
-@@ -98247,11 +98247,11 @@
+   ::utils::tooltip::Set $w.b.alllines $::tr(AddAllVariations)
+ 
+   spinbox $w.b.multipv -from 1 -to 8 -increment 1 -textvariable analysis(multiPVCount$n) -width 2 \
+@@ -98312,11 +98312,11 @@
    }
    pack $w.hist -side top -expand 1 -fill both
    pack $w.hist.ybar -side right -fill y
@@ -248,7 +254,7 @@ diff -U 5 -rN scid.orig scid
    $w.hist.text tag configure blue -foreground darkblue
    $w.text insert end "Please wait a few seconds for engine initialisation \
        (with some engines, you will not see any analysis until the board \
-@@ -101566,11 +101566,11 @@
+@@ -101653,11 +101653,11 @@
    pack $w.c -side top -expand yes -fill both
    ::utils::graph::create filter
  
@@ -261,7 +267,7 @@ diff -U 5 -rN scid.orig scid
    foreach {name text} {decade Decade year Year elo Rating move moves} {
      radiobutton $w.b.$name -padx 4 -pady 3 -text [string totitle $::tr($text)] \
        -variable ::tools::graphs::filter::type -value $name \
-@@ -101834,11 +101834,11 @@
+@@ -101921,11 +101921,11 @@
        ::utils::graph::configure score -height [expr {[winfo height .sgraph.c] - 90}]
        ::utils::graph::configure score -width [expr {[winfo width .sgraph.c] - 50}]
        ::utils::graph::redraw score
@@ -274,7 +280,7 @@ diff -U 5 -rN scid.orig scid
      bind $w <Control-Z> "destroy $w"
  
      wm title $w "[tr ToolsScore]"
-@@ -101967,11 +101967,11 @@
+@@ -102056,11 +102056,11 @@
        ::utils::graph::configure ratings -logy 10
        ::utils::graph::redraw ratings
        update
@@ -287,7 +293,7 @@ diff -U 5 -rN scid.orig scid
  
      ::tools::graphs::rating::ConfigMenus
      setWinLocation $w
-@@ -102098,11 +102098,11 @@
+@@ -102189,11 +102189,11 @@
    pack $w.c -side top -expand yes -fill both
    ::utils::graph::create absfilter
  
@@ -300,7 +306,7 @@ diff -U 5 -rN scid.orig scid
      radiobutton $w.b.$name -padx 4 -pady 3 -text [string totitle $::tr($text)] \
        -variable ::tools::graphs::absfilter::type -value $name \
        -command ::tools::graphs::absfilter::Refresh
-@@ -104123,20 +104123,20 @@
+@@ -104214,20 +104214,20 @@
      set sq ${file}7
      set b $w.bd.p$sq
      label $b -image b$p$::ptrack::psize -border 1 -relief raised
@@ -323,7 +329,7 @@ diff -U 5 -rN scid.orig scid
      set sq ${file}1
      set b $w.bd.p$sq
      label $b -image w$p$::ptrack::psize -border 1 -relief raised
-@@ -104144,19 +104144,19 @@
+@@ -104235,19 +104235,19 @@
      bind $b <Button-1> "::ptrack::select $sq"
    }
  
@@ -348,7 +354,7 @@ diff -U 5 -rN scid.orig scid
    # Status-bar help:
    foreach sq {d1 e1 d8 e8} {
      bind $w.bd.p$sq <Any-Enter> {
-@@ -116200,11 +116200,11 @@
+@@ -116320,11 +116320,11 @@
    }
  }
  
@@ -361,7 +367,7 @@ diff -U 5 -rN scid.orig scid
  if { $macOS } {
    # Macs with one button need (shooting)
    # todo: find a way to seemlessly swap button-2 with button-3 as macs have them reversed
-@@ -162096,11 +162096,11 @@
+@@ -163033,11 +163033,11 @@
  
      bind $w <Control-q> ::fics::close
      bind $w <Destroy>   ::fics::close
@@ -374,7 +380,7 @@ diff -U 5 -rN scid.orig scid
        if {!($::windowsOS || $::macOS)} {
  	bind .fics <Button-1> {
  	  .menu.options.fics unpost
-@@ -165244,11 +165244,11 @@
+@@ -166206,11 +166206,11 @@
  
  for {set i 0} { $i < 64 } { incr i } {
    ::board::bind .board $i <Enter> "enterSquare $i"
@@ -387,7 +393,7 @@ diff -U 5 -rN scid.orig scid
    # ::board::bind .board $i <Control-ButtonPress-3> "drawArrow $i red"
    # ::board::bind .board $i <Shift-ButtonPress-1> "addMarker $i green"
    # ::board::bind .board $i <Shift-ButtonPress-2> "addMarker $i yellow"
-@@ -165261,11 +165261,11 @@
+@@ -166223,11 +166223,11 @@
  
  # These binds must be moved back into for loop
  # if we want to use the above "addMarker" bindings
@@ -400,7 +406,7 @@ diff -U 5 -rN scid.orig scid
    bind . <$i> "moveEntry_Char [string toupper $i]"
  }
  foreach i {a b c d e f g h 1 2 3 4 5 6 7 8} {
-@@ -165361,11 +165361,11 @@
+@@ -166323,11 +166323,11 @@
  
  # todo mac button patch
  bind .statusbar <Button-2> ::file::SwitchToNextBase

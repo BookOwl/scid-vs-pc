@@ -1633,7 +1633,7 @@ proc addAnalysisVariation {n} {
 }
 
 
-proc addAllVariations {{n 1}} {
+proc addAllVariations {{n 1} {rightclick 0}} {
   global analysis
 
   if {! [winfo exists .analysisWin$n]} { return }
@@ -1651,7 +1651,22 @@ proc addAllVariations {{n 1}} {
   # whole line without Scid updating stuff:
   sc_info preMoveCmd {}
 
-  foreach i $analysis(multiPVraw$n) j $analysis(multiPV$n) {
+  if {$rightclick} {
+    # Only process second variation
+    if {[lindex $analysis(multiPV$n) 1] == {}} {
+      # Not enough PV
+      return
+    }
+    # two single item lists with the second variation 
+    set v1 [list "[lindex $analysis(multiPVraw$n) 1]"]
+    set v2 [list "[lindex $analysis(multiPV$n) 1]"]
+  } else {
+    # Process all variations
+    set v1 $analysis(multiPVraw$n)
+    set v2 $analysis(multiPV$n)
+  }
+
+  foreach i $v1 j $v2 {
     set moves [lindex $i 2]
 
     set tmp_moves [ lindex $j 2 ]
@@ -2103,6 +2118,8 @@ proc makeAnalysisWin {{n 0} {settime 0}} {
 
   button $w.b.line -image tb_addvar -command "addAnalysisVariation $n" -relief $relief
   ::utils::tooltip::Set $w.b.line $::tr(AddVariation)
+  # right click adds second line 
+  bind $w.b.line <Button-3> "addAllVariations $n 1"
 
   button $w.b.alllines -image tb_addallvars -command "addAllVariations $n" -relief $relief
   ::utils::tooltip::Set $w.b.alllines $::tr(AddAllVariations)
