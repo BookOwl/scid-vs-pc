@@ -860,7 +860,6 @@ proc gameSave {gnum {focus {}}} {
 
   toplevel $w
   wm withdraw $w
-  # bad !; catch {grab $w}
 
   if {$gnum == 0} {
     wm title $w "[file tail [sc_base filename]]  [tr GameAdd]"
@@ -871,7 +870,13 @@ proc gameSave {gnum {focus {}}} {
   }
 
   set gsaveNum $gnum
-  catch {grab $w}
+  # Trial and error shows it's probably best to grab the app for game saves.
+  catch {
+    # this is pretty useless, but the best
+    # bind $w <FocusOut> "raiseWin $w ; focus $w"
+    # ::ttk::grabWindow $w
+    grab $w
+  }
 
   # frame $f holds everything except save/cancel buttons 
   set f [frame $w.g]
