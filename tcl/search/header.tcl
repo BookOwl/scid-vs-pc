@@ -626,7 +626,7 @@ proc chooseEcoRange {} {
       "B23-B26     [tr SicilianClosed]: [trans [list 1.e4 c5 2.Nc3]]" \
       "B30-B39     [tr Sicilian]: [trans [list 1.e4 c5 2.Nf3 Nc6]]" \
       "B40-B49     [tr Sicilian]: [trans [list 1.e4 c5 2.Nf3 e6]]" \
-      "B50-B59     [tr SicilianRauzer]: [trans [list 1.e4 c5 2.Nf3 d6 ... 5.Nc3 Nc6]]" \
+      "B60-B69     [tr SicilianRauzer]: [trans [list 1.e4 c5 2.Nf3 d6 ... 5.Nc3 Nc6]]" \
       "B70-B79     [tr SicilianDragon]: [trans [list 1.e4 c5 2.Nf3 d6 ... 5.Nc3 g6]]" \
       "B80-B89     [tr SicilianScheveningen]: [trans [list 1.e4 c5 2.Nf3 d6 ... 5.Nc3 e6]]" \
       "B90-B99     [tr SicilianNajdorf]: [trans [list 1.e4 c5 2.Nf3 d6 ... 5.Nc3 a6]]" \
@@ -670,40 +670,58 @@ proc chooseEcoRange {} {
       "E90-E99     [tr KingsIndianMainLine]: [trans [list 4.e4 d6 5.Nf3]]" \
       ]
 
-  if {[winfo exists .ecoRangeWin]} { return }
   set w .ecoRangeWin
+
+  if {[winfo exists $w]} {
+    wm deiconify $w
+    raiseWin $w
+    return
+  }
+
   toplevel $w
-  wm title $w "Scid: Choose ECO Range"
+  wm withdraw $w
+
+  wm title $w "Choose ECO Range"
   wm minsize $w 30 5
 
   listbox $w.list -yscrollcommand "$w.ybar set" -height 20 -width 60 \
        -setgrid 1
   foreach i $ecoCommonRanges { $w.list insert end $i }
   scrollbar $w.ybar -command "$w.list yview" -takefocus 0
-  pack [frame $w.b] -side bottom -fill x
+  pack [frame $w.b] -side bottom 
   pack $w.ybar -side right -fill y
   pack $w.list -side left -fill both -expand yes
 
-  button $w.b.ok -text "OK" -command {
+  dialogbutton $w.b.ok -text "OK" -command {
     set sel [.ecoRangeWin.list curselection]
     if {[llength $sel] > 0} {
       set scid_ecoRangeChosen [lindex $ecoCommonRanges [lindex $sel 0]]
       set ::sEco No
     }
-    focus .sh
+    raiseWin .sh
     destroy .ecoRangeWin
   }
-  button $w.b.cancel -text $::tr(Cancel) -command "focus .sh; destroy $w"
-  pack $w.b.cancel $w.b.ok -side right -padx 5 -pady 2
+  dialogbutton $w.b.cancel -text $::tr(Cancel) -command "focus .sh; destroy $w"
+
+  ### todo: make configFindEntryBox work with listboxes
+  # set ecoChoose(find) {}
+  # entry $w.b.find -width 10 -textvariable ecoChoose(find) -highlightthickness 0
+  # configFindEntryBox $w.b.find ecoChoose $w.list
+
+  pack $w.b.cancel $w.b.ok -side right -padx 10 -pady 4
   bind $w <Escape> "
-  set scid_ecoRangeChosen {}
-  grab release $w
-  focus .
-  destroy $w
-  break"
+    set scid_ecoRangeChosen {}
+    grab release $w
+    raiseWin .sh
+    destroy $w
+    break"
   bind $w <Return> "$w.b.ok invoke; break"
   bind $w.list <Double-ButtonRelease-1> "$w.b.ok invoke; break"
-  focus $w.list
+  # focus $w.list
+
+  placeWinOverParent $w .sh
+  wm state $w normal
+
   grab $w
   tkwait window $w
   return $scid_ecoRangeChosen
