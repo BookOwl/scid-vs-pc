@@ -2606,6 +2606,12 @@ proc processAnalysisInput {n} {
 		 set analysis(moves$n) [lrange $line 1 end]
 		 set analysis(waitForBestMove$n) 0
 	       }
+      {*. ... *} {
+                 # old xboard move format ? used by phalanx, Comet
+                 # phalanx also uses "my move is", but doesnt seem to break tourney !?
+		 set analysis(moves$n) [lrange $line 2 end]
+		 set analysis(waitForBestMove$n) 0
+               }
       {* mates*} {
 		 # 1-0 {White mates}
 		 # Ooops!
