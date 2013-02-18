@@ -151,9 +151,8 @@ proc preMoveCommand {} {
 sc_info preMoveCmd preMoveCommand
 
 
-# updateTitle:
-#   Updates the main Scid window title.
-#
+###   Update the main Scid window title with player names or basename
+
 proc updateTitle {} {
 
   regexp {^[^, ]*} [sc_game tag get White] white

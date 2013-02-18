@@ -391,7 +391,7 @@ namespace eval fics {
     }
     checkbutton $w.bottom.buttons.shouts -text Shouts -state disabled -variable ::fics::shouts -command {
       ::fics::writechan "set shout $::fics::shouts" echo
-      ::fics::writechan "set cshout $::fics::shouts" noecho
+      # ::fics::writechan "set cshout $::fics::shouts" noecho
       # ::fics::writechan "set gin $::fics::gamerequests" echo
     }
 
@@ -1060,7 +1060,10 @@ namespace eval fics {
       # resumed game line is different though
       if {[regexp {.*\) ([^\)]*$)} $line t1 t2]} {
         sc_game tags set -event "FICS [lrange $line end-3 end-2]"
-        sc_game tags set -extra "{TimeControl \"[lindex $line end-1]/[lindex $line end]\"}"
+        set ::fics::timecontrol [lindex $line end-1]/[lindex $line end]
+        sc_game tags set -extra "{TimeControl \"$::fics::timecontrol\"}"
+      } else {
+        set ::fics::timecontrol {}
       }
       if { [::board::isFlipped .board] } {
         if { [ string match -nocase $white $::fics::reallogin ] } { ::board::flip .board }
@@ -1068,7 +1071,7 @@ namespace eval fics {
         if { [ string match -nocase $black $::fics::reallogin ] } { ::board::flip .board }
       }
       updateBoard -pgn -animate
-      updateTitle
+      wm title . "$::scidName: $white - $black ($::fics::timecontrol)"
 
       if {$::fics::sound} {
 	::utils::sound::PlaySound sound_move
@@ -1197,7 +1200,7 @@ namespace eval fics {
       # pychess sets this bloody thing
       writechan "set availinfo off"
       writechan "set chanoff [expr !$::fics::chanoff]"
-      writechan "set cshout $::fics::shouts"
+      # writechan "set cshout $::fics::shouts"
       writechan "set shout $::fics::shouts"
 
       # What is this ? S.A. writechan "iset nowrap 1"
@@ -1288,7 +1291,8 @@ namespace eval fics {
 	    # Unrated blitz match, initial time: 3 minutes, increment: 0 seconds.
 	    # Rated lightning match, initial time: 1 minutes, increment: 0 seconds.
 	    sc_game tags set -event "FICS [string tolower [lrange $line 0 1]]"
-	    sc_game tags set -extra "{TimeControl \"[lindex $line end-4]/[lindex $line end-1]\"}"
+            set ::fics::timecontrol [lindex $line end-4]/[lindex $line end-1]
+	    sc_game tags set -extra "{TimeControl \"$::fics::timecontrol\"}"
 	    # This is the download date - not the correct played date, which can be assembled from
 	    # Kaitlin (1463) vs. PLAYERFOREVER (1808) --- Wed Jun 27, 02:54 PDT 2012
 	    sc_game tags set -date [::utils::date::today]
@@ -2015,7 +2019,8 @@ namespace eval fics {
 	sc_game tags set -blackElo $::fics::elo($black)
       }
       sc_game tags set -date [::utils::date::today]
-      sc_game tags set -extra "{TimeControl \"$initialTime/$increment\"}"
+      set ::fics::timecontrol $initialTime/$increment
+      sc_game tags set -extra "{TimeControl \"$::fics::timecontrol\"}"
 
       ### Try to get first moves of game
 
@@ -2034,7 +2039,8 @@ namespace eval fics {
 
       set ::fics::mutex 0
       updateBoard -pgn
-      updateTitle
+      wm title . "$::scidName: $white - $black ($::fics::timecontrol)"
+
       if {$::fics::playing != 1 && $::fics::playing != -1 && $::fics::observedGames != {}} {
         writechan "primary $game"
       }
