@@ -899,7 +899,7 @@ proc ::windows::switcher::Open {} {
   grid columnconfigure $w 1 -weight 1
 
   foreach i {9 1 2 3 4 5 6 7 8} {
-    set f [frame $w.c.f$i  -relief raised]
+    set f [frame $w.c.f$i  -relief raised -borderwidth 0] ; # -borderwidth 1 gives nicer display when cramped
     $w.c create window 0 0 -window $w.c.f$i -anchor nw -tag tag$i
 
     set f $w.c.f$i
@@ -952,6 +952,7 @@ proc ::windows::switcher::Refresh {} {
   # Get the canvas width and icon dimensions, to compute the correct
   # scroll region.
 
+  # todo: Should only do this when toggling "Show Icons"
   foreach i {9 1 2 3 4 5 6 7 8} {
     if {$icons} {
       grid $w.c.f$i.img -row 0 -column 0 -rowspan 2
@@ -968,21 +969,45 @@ proc ::windows::switcher::Refresh {} {
   ### So we'll remove it, and use "reqwidth","reqheight" just below
   # update
 
-  set iconWidth [winfo reqwidth $w.c.f$clipbase]
-  incr iconWidth 5
-  set iconHeight [winfo reqheight $w.c.f$clipbase]
-  incr iconHeight 5
+  set frameWidth [winfo reqwidth $w.c.f$clipbase]
+  incr frameWidth 1
+
+  # unused
+  # set iconHeight [winfo reqheight $w.c.f$clipbase]
+  # incr iconHeight 5
 
   set column 0
   set x 0
   if {$icons} {set sep "\n"} else {set sep " "}
+
+  # Check which bases are in use
+  set show_num 0
+  array set show {}
+  foreach i {9 1 2 3 4 5 6 7 8} {
+    set show($i) [sc_base inUse $i]
+    if {$show($i)} {
+      incr show_num
+    }
+  }
+
+  # Check that there is enough space to show all bases, otherwise make the frameWidth smaller
+  # '- 50' is a hack to make some room and stop the last base from being disadvantaged/squished
+
+  set f [expr {([winfo width .glistWin] - 50)/ $show_num}]
+  if {$f < 0} {
+    # Catch when glist is (not) init
+    return
+  }
+  if {$f < $frameWidth} {
+    set frameWidth $f
+  }
 
   ### Pack the clipbase (slot 9) on the left most
   # set numBases [sc_base count total]
   # for {set i 1} {$i <= $numBases} {incr i} {}
 
   foreach i {9 1 2 3 4 5 6 7 8} {
-    if {[sc_base inUse $i]} {
+    if {$show($i)} {
       set filename [file nativename [sc_base filename $i]]
 
       # Highlight current database
@@ -1022,8 +1047,7 @@ proc ::windows::switcher::Refresh {} {
       $w.c itemconfigure tag$i -state normal
       $w.c coords tag$i [expr $x + 2] 2
       incr column
-      incr x $iconWidth
-      incr numDisplayed
+      incr x $frameWidth
     } else {
       $w.c itemconfigure tag$i -state hidden
     }
