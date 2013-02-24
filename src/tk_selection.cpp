@@ -41,8 +41,11 @@ invokeTkSelection(Tcl_Interp *ti, int objc, Tcl_Obj* const objv[])
 # if defined(WIN32)
 
 #  include <windows.h>
+
+#ifdef VISUALSTUDIO
 #  include <ShellApi.h>
 // (needed for HDROP)
+#endif
 
 #  ifndef XA_STRING
 #   define XA_STRING CF_TEXT
