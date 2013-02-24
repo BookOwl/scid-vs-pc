@@ -316,7 +316,7 @@ WARNINGS	= -W2
 #	-DWIN32_LEAN_AND_MEAN	:Speeds building times by excluding some less
 #				 common APIs
 #
-PROFILE		= $(PROFILE) -DWIN32 -DWIN32_LEAN_AND_MEAN
+PROFILE		= $(PROFILE) -DWIN32 -DWIN32_LEAN_AND_MEAN -D_X86_
 
 ##	CFLAGS: C++ compiler flags
 #	-c	:Compile Without linking
@@ -429,7 +429,7 @@ $(TMP_DIR)\probe.obj: src\probe.cpp src\egtb\tbindex.cpp src\egtb\tbdecode.c
 {src}.cpp{$(TMP_DIR)}.obj:
 	$(CC) $(CFLAGS) -Fo$(TMP_DIR)\ $<
 
-{src\tkdnd}.cpp{$(TMP_DIR)\tkdnd}.obj:
+{src\tkdnd\win}.cpp{$(TMP_DIR)\tkdnd}.obj:
 	$(CC) $(CFLAGS) -Fo$(TMP_DIR)\tkdnd\ $<
 
 {src\polyglot}.cpp{$(TMP_DIR)\pol}.obj:

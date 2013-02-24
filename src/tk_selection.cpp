@@ -29,10 +29,13 @@ static Tcl_Obj* m_renamedCmd = 0;
 static int
 invokeTkSelection(Tcl_Interp *ti, int objc, Tcl_Obj* const objv[])
 {
+        
+#ifndef _MSC_VER
+        Tcl_Obj* objs[objc];
+#else
         // fixme: MSVC doesnt like this dynamic array declaration
-	Tcl_Obj* objs[objc];
-	// Tcl_Obj* objs[5];
-
+        Tcl_Obj* objs[10];
+#endif
 	memcpy(objs, objv, objc*sizeof(Tcl_Obj*));
 	objs[0] = m_renamedCmd;
 	return Tcl_EvalObjv(ti, objc, objs, 0);

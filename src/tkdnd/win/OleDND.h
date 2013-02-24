@@ -50,6 +50,7 @@
 #endif
 
 #include <windows.h>
+#include <shellapi.h>
 #include <ole2.h>
 #include <shlobj.h>
 #include <io.h>
