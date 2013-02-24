@@ -14,7 +14,11 @@
 
 
 #include "tkscid.h"
+#ifdef VISUALSTUDIO
+#include <fcntl.h>
+#else
 #include <sys/fcntl.h>
+#endif
 
 #include <errno.h>
 #include <set>
@@ -447,7 +451,7 @@ Tkscid_Init (Tcl_Interp * ti)
 #ifndef TCL_ONLY 
 #ifndef __APPLE__
 extern "C" int Tkdnd_Init (Tcl_Interp*);
-extern int Tk_Selection_Init (Tcl_Interp*);
+extern void Tk_Selection_Init (Tcl_Interp*);
 #endif
 #endif
 

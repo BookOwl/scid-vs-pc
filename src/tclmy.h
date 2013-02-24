@@ -4,7 +4,9 @@
 #ifdef POCKET
   #define PRINT_MEM(x) ;
 #else
-  #include <unistd.h>
+#ifndef VISUALSTUDIO
+   #include <unistd.h>
+#endif
   #define PRINT_MEM(x) { int pid = getpid(); fprintf(stderr, "======== " x "\t"); \
   char cmd[256]; \
   sprintf(cmd, "more /proc/%d/status | grep VmData", pid); \

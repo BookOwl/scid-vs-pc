@@ -30,6 +30,10 @@
 #endif
 #include "error.h"
 
+#ifdef VISUALSTUDIO
+#define snprintf _snprintf
+#endif
+
 #ifndef POCKETENGINE
 // Include the zlib header file if it is being compiled with Scid:
 #ifndef NO_ZLIB

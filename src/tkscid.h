@@ -33,7 +33,9 @@
 #include "polyglot.h"
 
 #include "tclmy.h"
+#ifndef VISUALSTUDIO
 #include <unistd.h>
+#endif
 
 // Include header files for finding directory of executable program
 // in Windows if necessary.
