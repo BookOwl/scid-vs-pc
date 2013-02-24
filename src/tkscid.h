@@ -33,7 +33,7 @@
 #include "polyglot.h"
 
 #include "tclmy.h"
-#ifndef VISUALSTUDIO
+#ifndef _MSC_VER
 #include <unistd.h>
 #endif
 

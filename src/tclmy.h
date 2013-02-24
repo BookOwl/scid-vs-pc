@@ -4,7 +4,7 @@
 #ifdef POCKET
   #define PRINT_MEM(x) ;
 #else
-#ifndef VISUALSTUDIO
+#ifndef _MSC_VER
    #include <unistd.h>
 #endif
   #define PRINT_MEM(x) { int pid = getpid(); fprintf(stderr, "======== " x "\t"); \

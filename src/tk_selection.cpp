@@ -29,7 +29,7 @@ static Tcl_Obj* m_renamedCmd = 0;
 static int
 invokeTkSelection(Tcl_Interp *ti, int objc, Tcl_Obj* const objv[])
 {
-        // fixme: nmake doesnt like this dynamic array declaration
+        // fixme: MSVC doesnt like this dynamic array declaration
 	Tcl_Obj* objs[objc];
 	// Tcl_Obj* objs[5];
 
@@ -41,11 +41,7 @@ invokeTkSelection(Tcl_Interp *ti, int objc, Tcl_Obj* const objv[])
 # if defined(WIN32)
 
 #  include <windows.h>
-
-#ifdef VISUALSTUDIO
-#  include <ShellApi.h>
-// (needed for HDROP)
-#endif
+#  include <shellapi.h>/* (needed for HDROP) */
 
 #  ifndef XA_STRING
 #   define XA_STRING CF_TEXT

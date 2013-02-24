@@ -14,11 +14,7 @@
 
 
 #include "tkscid.h"
-#ifdef VISUALSTUDIO
 #include <fcntl.h>
-#else
-#include <sys/fcntl.h>
-#endif
 
 #include <errno.h>
 #include <set>

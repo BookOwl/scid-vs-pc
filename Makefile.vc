@@ -322,7 +322,7 @@ PROFILE		= $(PROFILE) -DWIN32 -DWIN32_LEAN_AND_MEAN
 #	-c	:Compile Without linking
 #
 CFLAGS		= $(PROFILE) $(OPTIMIZE) $(WARNINGS) $(SCID_FLAGS) \
-			$(SCID_INCLUDES) -c -nologo -DVISUALSTUDIO \
+			$(SCID_INCLUDES) -c -nologo \
 			-I"$(VS_DIR)\VC\include" \
 			-I"$(VS_SDK_DIR)\include"
 
