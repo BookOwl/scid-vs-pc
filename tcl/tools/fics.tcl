@@ -1329,11 +1329,15 @@ namespace eval fics {
 
     if {[string match "* would like to abort the game;*" $line] \
      && ! $::fics::ignore_abort && ! [winfo exists .fics_dialog]} {
-      set ans [tk_dialog .fics_dialog Abort "$line\nDo you accept ?" question {} Yes No Ignore]
-      switch -- $ans {
-        0 {writechan accept}
-        1 {writechan decline}
-        2 {set ::fics::ignore_abort 1}
+      if {$::fics::no_abort} {
+        writechan decline
+      } else {
+	set ans [tk_dialog .fics_dialog Abort "$line\nDo you accept ?" question {} Yes No Ignore]
+	switch -- $ans {
+	  0 {writechan accept}
+	  1 {writechan decline}
+	  2 {set ::fics::ignore_abort 1}
+	}
       }
     }
 
@@ -1362,22 +1366,30 @@ namespace eval fics {
       if {[regexp {(.*) offers you a draw} $line t1 t2]} {
 	::commenteditor::appendComment "$t2 offers draw"
       }
-      set ans [tk_dialog .fics_dialog {Draw Offered} "$line\nDo you accept ?" question {} Yes No Ignore]
-      switch -- $ans {
-        0 {writechan accept}
-        1 {writechan decline}
-        2 {set ::fics::ignore_draw 1}
+      if {$::fics::no_draw} {
+        writechan decline
+      } else {
+	set ans [tk_dialog .fics_dialog {Draw Offered} "$line\nDo you accept ?" question {} Yes No Ignore]
+	switch -- $ans {
+	  0 {writechan accept}
+	  1 {writechan decline}
+	  2 {set ::fics::ignore_draw 1}
+	}
       }
     }
 
     # adjourn
     if {[string match "*would like to adjourn the game*" $line]
      && ! $::fics::ignore_adjourn && ! [winfo exists .fics_dialog]} {
-      set ans [tk_dialog .fics_dialog {Adjourn Offered} "$line\nDo you accept ?" question {} Yes No Ignore]
-      switch -- $ans {
-        0 {writechan accept}
-        1 {writechan decline}
-        2 {set ::fics::ignore_adjourn 1}
+      if {$::fics::no_adjourn} {
+        writechan decline
+      } else {
+	set ans [tk_dialog .fics_dialog {Adjourn Offered} "$line\nDo you accept ?" question {} Yes No Ignore]
+	switch -- $ans {
+	  0 {writechan accept}
+	  1 {writechan decline}
+	  2 {set ::fics::ignore_adjourn 1}
+	}
       }
     }
 

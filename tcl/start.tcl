@@ -398,6 +398,9 @@ set ::fics::autoraise 1
 set ::fics::smallclocks 1
 set ::fics::size        30
 set ::fics::sound	0
+set ::fics::no_draw	0
+set ::fics::no_abort	0
+set ::fics::no_adjourn	0
 
 # Defaults for initial directories:
 set initialDir(base) "."

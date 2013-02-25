@@ -1084,7 +1084,7 @@ $m add command -label OptionsSave -command {
     puts $optionF ""
 
     # save FICS config
-    foreach i { use_timeseal timeseal_exec port_fics port_timeseal login password consolebg consolefg chanoff shouts server_ip consolebg consolefg autopromote autoraise smallclocks size sound} {
+    foreach i { use_timeseal timeseal_exec port_fics port_timeseal login password consolebg consolefg chanoff shouts server_ip consolebg consolefg autopromote autoraise smallclocks size sound no_draw no_abort no_adjourn} {
       puts $optionF "set ::fics::$i [list [set ::fics::$i]]"
     }
     foreach i [lsort [array names ::fics::findopponent]] {
@@ -1225,6 +1225,10 @@ $m add checkbutton -label OptionsFicsClock -variable ::fics::smallclocks -comman
 $m add checkbutton -label OptionsSounds -variable ::fics::sound
 $m add command     -label {Text Colour} -command ::fics::setForeGround
 $m add command     -label OptionsColour -command ::fics::setBackGround
+$m add separator
+$m add checkbutton -label "No Draws"    -variable ::fics::no_draw
+$m add checkbutton -label "No Abort"    -variable ::fics::no_abort
+$m add checkbutton -label "No Adjourns" -variable ::fics::no_adjourn
 
 set m .menu.options.export
 menu $m -tearoff -1
