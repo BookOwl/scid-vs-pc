@@ -1210,7 +1210,7 @@ proc addMarker {sq color} {
 
   # check if the square is already of the same color
   set erase [regexp "\[\x5B\]%draw full,$to,$color\[\x5D\]" $oldComment]
-  regsub "\[\x5B\]%draw full,$to,(green|yellow|red)\[\x5D\]" $oldComment "" newComment
+  regsub "\[\x5B\]%draw full,$to,$::commenteditor::colorRegsub\[\x5D\]" $oldComment "" newComment
   set newComment [string trim $newComment]
   if {!$erase} {
     append newComment " \[%draw full,$to,$color\]"
@@ -1232,7 +1232,7 @@ proc drawArrow {sq color} {
     }
     if {$startArrowSquare != $to } {
       set erase [regexp "\[\x5B\]%draw arrow,$startArrowSquare,$to,$color\[\x5D\]" $oldComment]
-      regsub "\[\x5B\]%draw arrow,$startArrowSquare,$to,(green|yellow|red)\[\x5D\]" $oldComment "" newComment
+      regsub "\[\x5B\]%draw arrow,$startArrowSquare,$to,$::commenteditor::colorRegsub\[\x5D\]" $oldComment "" newComment
       set newComment [string trim $newComment]
       if {!$erase} {
         append newComment " \[%draw arrow,$startArrowSquare,$to,$color\]"
@@ -1252,10 +1252,10 @@ for {set i 0} { $i < 64 } { incr i } {
   ::board::bind .board $i <Leave> "leaveSquare $i"
   ::board::bind .board $i <ButtonPress-1> "pressSquare $i 0"
   ::board::bind .board $i <ButtonPress-2> "pressSquare $i 1"
-  ::board::bind .board $i <Control-ButtonPress-1> "drawArrow $i green"
+  ::board::bind .board $i <Control-ButtonPress-1> "drawArrow $i \$::::commenteditor::State(markColor)"
   # ::board::bind .board $i <Control-ButtonPress-2> "drawArrow $i yellow"
   # ::board::bind .board $i <Control-ButtonPress-3> "drawArrow $i red"
-  # ::board::bind .board $i <Shift-ButtonPress-1> "addMarker $i green"
+  ::board::bind .board $i <Shift-ButtonPress-1> "addMarker $i \$::::commenteditor::State(markColor)"
   # ::board::bind .board $i <Shift-ButtonPress-2> "addMarker $i yellow"
   # ::board::bind .board $i <Shift-ButtonPress-3> "addMarker $i red"
 

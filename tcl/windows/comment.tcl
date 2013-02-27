@@ -8,17 +8,22 @@ namespace eval ::commenteditor {
   # List of colors and types used to mark a square
 
   variable  colorList {}  markTypeList {}
-  set colorList {red orange yellow green blue darkBlue purple white black}
+  set colorList {red orange yellow green blue skyBlue purple white black}
+  set colorRegsub {(red|orange|yellow|green|blue|skyBlue|purple|white|black)}
   # Each list is a set of buttons in the dialog menu:
   set markTypeList {{circle disk full x + - = ? !} {1 2 3 4 5 6 7 8 9}}
 
   # IO state of the comment editor
   variable  State
   array set State {
-	markColor purple
-	markType +
 	text {}
 	pending {}
+  }
+  if {![info exists State(markColor)]} {
+    set State(markColor) purple
+  }
+  if {![info exists State(markType)]} {
+    set State(markType) +
   }
 
   proc addMark {args} {eval ::board::mark::add $args}
@@ -45,7 +50,7 @@ proc makeCommentWin {} {
 }
 
 proc ::commenteditor::Open {} {
-  global nagValue highcolor helpMessage
+  global nagValue helpMessage
   variable colorList
   variable markTypeList
   variable State
@@ -350,6 +355,7 @@ proc ::commenteditor::SetMarkColor {color} {
     }
   }
   set State(markColor) $color
+  set ::commentColour $color
 }
 
 # ::commenteditor::SetMarkType --
@@ -510,10 +516,8 @@ proc ::commenteditor::storeComment {} {
   }
 }
 
-# ::commenteditor::Refresh --
-#
-#	(Re)builds textwindow and board of the comment editor.
-#
+### (Re)builds textwindow and board of the comment editor.
+
 proc ::commenteditor::Refresh {} {
   if {![winfo exists .commentWin]} { return }
 

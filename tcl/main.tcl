@@ -1414,6 +1414,9 @@ proc releaseSquare { x y } {
       # so we do nothing.
     }
   } else {
+    if {$selectedSq == -1} {
+      return
+    }
     # User has dragged to another square, so try to add this as a move:
     addMove $square $selectedSq
     ::board::colorSquare $w $selectedSq

@@ -1013,7 +1013,7 @@ $m add command -label OptionsSave -command {
     ::sergame::bookToUse ::sergame::useBook ::sergame::startFromCurrent 
     ::sergame::winc ::sergame::wtime ::sergame::binc ::sergame::btime
     ::sergame::timeMode ::sergame::movetime ::sergame::current ::sergame::chosenOpening
-    ::commenteditor::showBoard boardfile_lite boardfile_dark 
+    ::commenteditor::showBoard ::commenteditor::State(markColor) ::commenteditor::State(markType) boardfile_lite boardfile_dark 
     ::file::finder::data(dir) ::file::finder::data(sort) ::file::finder::data(recurse) 
     ::file::finder::data(Scid) ::file::finder::data(PGN) 
     ::file::finder::data(EPD) ::file::finder::data(Old) 
