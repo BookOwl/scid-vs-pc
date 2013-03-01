@@ -231,8 +231,10 @@ namespace eval Xfcc {
 
 		# create the window and buttons
 		toplevel $w
+		wm state $w withdrawn
 		wm title $w "\[$xfccrcfile\]"
 		ttk::button $w.bOk     -text OK -command "::Xfcc::xfccsrvstore; ::Xfcc::SaveXfcc; destroy .configXfccSrv"
+		ttk::button $w.bHelp   -text [::tr Help] -command {helpWindow CCXfccSetupDialog}
 		ttk::button $w.bAdd    -text  [::tr "GlistAddField"] -command {
 			::Xfcc::AddServer
 		}
@@ -246,11 +248,11 @@ namespace eval Xfcc {
 		# select the first entry
 		$w.xfccSrvList selection set $::Xfcc::Oldnum
 
-		ttk::label  $w.lxfccSrv   -text [::tr CCDlgServerName]
-		ttk::label  $w.lxfccUid   -text [::tr CCDlgLoginName]
-		ttk::label  $w.lxfccPas   -text [::tr CCDlgPassword]
-		ttk::label  $w.lxfccURI   -text [::tr CCDlgURL]
-		ttk::label  $w.lxfccrtype -text [::tr CCDlgRatingType]
+		label  $w.lxfccSrv   -text [::tr CCDlgServerName]
+		label  $w.lxfccUid   -text [::tr CCDlgLoginName]
+		label  $w.lxfccPas   -text [::tr CCDlgPassword]
+		label  $w.lxfccURI   -text [::tr CCDlgURL]
+		label  $w.lxfccrtype -text [::tr CCDlgRatingType]
 
 		ttk::entry  .configXfccSrv.xfccSrv  -width 60 -textvariable ::Xfcc::Server
 		ttk::entry  .configXfccSrv.xfccUid  -width 60 -textvariable ::Xfcc::Username
@@ -270,7 +272,8 @@ namespace eval Xfcc {
 			::Xfcc::xfccsrvstore
 		}
 
-		grid $w.xfccSrvList  -sticky e -columnspan 6 -column  0 -row 0 -rowspan $number
+		grid columnconfigure $w 1 -pad 20
+		grid $w.xfccSrvList  -sticky e -columnspan 6 -column  0 -row 0 -rowspan $number -padx 5 -pady 3
 
 		grid $w.lxfccSrv     -sticky e -columnspan 2 -column  0 -row [expr {$number + 1}]
 		grid $w.lxfccUid     -sticky e -columnspan 2 -column  0 -row [expr {$number + 2}]
@@ -278,20 +281,25 @@ namespace eval Xfcc {
 		grid $w.lxfccURI     -sticky e -columnspan 2 -column  0 -row [expr {$number + 4}]
 		grid $w.lxfccrtype   -sticky e -columnspan 2 -column  0 -row [expr {$number + 5}]
 
-		grid $w.xfccSrv      -sticky w -columnspan 4 -column  2 -row [expr {$number + 1}]
-		grid $w.xfccUid      -sticky w -columnspan 4 -column  2 -row [expr {$number + 2}]
-		grid $w.xfccPas      -sticky w -columnspan 4 -column  2 -row [expr {$number + 3}]
-		grid $w.xfccURI      -sticky w -columnspan 4 -column  2 -row [expr {$number + 4}]
-		grid $w.xfccrtype    -sticky w -columnspan 4 -column  2 -row [expr {$number + 5}]
+		grid $w.xfccSrv      -sticky w -columnspan 4 -column  2 -row [expr {$number + 1}] -padx 5 -pady 3
+		grid $w.xfccUid      -sticky w -columnspan 4 -column  2 -row [expr {$number + 2}] -padx 5 -pady 3
+		grid $w.xfccPas      -sticky w -columnspan 4 -column  2 -row [expr {$number + 3}] -padx 5 -pady 3
+		grid $w.xfccURI      -sticky w -columnspan 4 -column  2 -row [expr {$number + 4}] -padx 5 -pady 3
+		grid $w.xfccrtype    -sticky w -columnspan 4 -column  2 -row [expr {$number + 5}] -padx 5 -pady 3
 
 		# Add the buttons to the window
-		grid $w.bOk     -column 2 -row [expr {$number + 6}]
-		grid $w.bAdd    -column 3 -row [expr {$number + 6}]
-		grid $w.bDelete -column 4 -row [expr {$number + 6}]
-		grid $w.bCancel -column 5 -row [expr {$number + 6}]
+		grid $w.bOk     -column 1 -row [expr {$number + 6}] -pady 5
+		grid $w.bAdd    -column 2 -row [expr {$number + 6}] -pady 5
+		grid $w.bDelete -column 3 -row [expr {$number + 6}] -pady 5
+		grid $w.bHelp   -column 4 -row [expr {$number + 6}] -pady 5
+		grid $w.bCancel -column 5 -row [expr {$number + 6}] -pady 5
 
 		bind $w <Escape> "$w.bCancel invoke"
 		bind $w <F1> { helpWindow CCXfccSetupDialog}
+
+		update
+		placeWinOverParent $w .correspondenceChessConfig
+		wm state $w normal
 	}
 
 	#----------------------------------------------------------------------
@@ -1882,6 +1890,7 @@ namespace eval CorrespondenceChess {
 	# Copy the games list as CSV (tab separated) to the clipboard
 	#----------------------------------------------------------------------
 	proc List2Clipboard {} {
+		clipboard clear
 		setClipboard $::CorrespondenceChess::clipboardText
 	}
 
@@ -1920,7 +1929,6 @@ namespace eval CorrespondenceChess {
 
 		# create the menu and add default CC menu items here as well
 		menu $w.menu
-		# ::setMenu $w $w.menu
 		set m $w.menu
 		$w configure -menu $m
 
@@ -1930,7 +1938,7 @@ namespace eval CorrespondenceChess {
 			menu $w.menu.$i -tearoff 0
 		}
 
-		$m.correspondence add command -label CCConfigure   -command {::CorrespondenceChess::config}
+		$m.correspondence add command -label CCConfigure   -command "::CorrespondenceChess::config $w"
 		set helpMessage($m.correspondence,0) CCConfigure
 		$m.correspondence add command -label CCConfigRelay -command {::CorrespondenceChess::ConfigureRelay}
 		set helpMessage($m.correspondence,1) CCConfigRelay
@@ -2352,13 +2360,14 @@ namespace eval CorrespondenceChess {
 	# Opens a config dialog to set the default parameters. Currently
 	# they are not stored to scids setup though.
 	#----------------------------------------------------------------------
-	proc config {} {
+	proc config {{parent .}} {
 		set w .correspondenceChessConfig
 		if { [winfo exists $w]} { 
 			raiseWin $w
 			return
 		}
 		toplevel $w
+		wm state $w withdrawn
 		wm title $w [::tr "CCDlgConfigureWindowTitle"]
 
 		set ::CorrespondenceChess::sortoptlist [list \
@@ -2370,11 +2379,13 @@ namespace eval CorrespondenceChess {
 		]
 
 
-		ttk::button $w.bOk     -text OK -command {
+		frame $w.buttons
+		ttk::button $w.buttons.ok     -text OK -command {
 				::CorrespondenceChess::saveCCoptions
 				destroy .correspondenceChessConfig
 		}
-		ttk::button $w.bCancel -text [::tr "Cancel"] -command "destroy $w"
+		ttk::button $w.buttons.help   -text [::tr "Help"] -command {helpWindow CCSetupDialog}
+		ttk::button $w.buttons.cancel -text [::tr "Cancel"] -command "destroy $w"
 
 		ttk::label  $w.lgeneral -text [::tr "CCDlgCGeneraloptions"]
 		ttk::label  $w.ldb      -text [::tr "CCDlgDefaultDB"]
@@ -2506,11 +2517,15 @@ namespace eval CorrespondenceChess {
 
 
 		# Buttons and ESC-key
-		grid $w.bOk          -column 0    -row 20 -pady 10 -columnspan 2
-		grid $w.bCancel      -column 1    -row 20 -pady 10
+                grid $w.buttons -column 0 -row 20 -pady 5 -columnspan 4
+		pack $w.buttons.ok $w.buttons.help $w.buttons.cancel -side left -padx 10
+
 		bind $w <Escape> "$w.bCancel invoke"
 
 		bind $w <F1> { helpWindow CCSetupDialog}
+		update
+		placeWinOverParent $w $parent
+		wm state $w normal
 	}
 
 	#----------------------------------------------------------------------
