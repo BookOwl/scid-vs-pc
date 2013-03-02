@@ -82,8 +82,8 @@
 
 # Check env is inited ok
 
-!if exist("%VCINSTALLDIR%")
-!error "Visual Studio C directory (VCINSTALLDIR) not set"
+!if !exist("$(VCINSTALLDIR)")
+!error "Visual Studio C directory VCINSTALLDIR seems incorrectly set to $(VCINSTALLDIR)"
 !endif
 
 ##	Set compiler and linker
