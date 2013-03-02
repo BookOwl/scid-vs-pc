@@ -180,11 +180,13 @@
   with an ntdll.dll error. This known issue seems harmless, and to
   resolve itself after a reboot.
 
+  People with Visual Studio 11 should now be able to compile the project
+  fairly easily (see Makefile.vc for more details).
+
   4.0.3.  Mac OS X
 
   The ``ScidvsMac-4.8 app'' should include everything you need. Simply
   drag and drop the App into /Applications (or similar).
-
   Users upgrading may have to remove (or edit)
   $HOME/.scidvspc/config/engines.dat to properly configure the chess
   engines.
@@ -253,6 +255,7 @@
   includes changes to the Gameinfo, Comment Editor, and Board Style
   widgets, some new chess pieces, colour schemes and tiles. Thanks to
   Michal and Alex for feedback.
+
    June 4, 2009
 
   Well, the html is up, and i've got a couple of files in the downloads
@@ -318,7 +321,6 @@
 
   o  Windows only:
 
-
      o  Using "ALT+F"... etc key bindings to access the menus is badly
         broke. This is a Tcl/Tk issue.
 
@@ -383,8 +385,6 @@
   API, popularized by KDE-4.  Originally called Newscid, Chessx still
   grows, but with a much smaller feature set, and lesser popularity than
   Scid.
-
-
   Scid vs. PC (by Steven Atkinson from Australia) began around mid 2009.
   Forked from Scid-3.6.26, it began as an effort to tidy Shane's
   frenetic code base, improve the user interface , and add polish to

@@ -107,12 +107,15 @@ This allows for parallel installation with mainline Scid, and is done by: <bf>./
 Windows installation simply requires downloading the <ref name="executable" id="download_">, and following the prompts.
 </p>
 <p>
-The configuration files, <bf>including the chess engine list</bf>, are stored in the <bf>Scid-vs-PC/bin/config</bf> directory, and may be copied
-over from old versions to make upgrading easier.
+The configuration files, <bf>including the chess engine list</bf>, are stored
+in the <bf>Scid-vs-PC/bin/config</bf> directory, and may be copied over from
+old versions to make upgrading easier.
 </p>
 <p>
 Just after installation on <bf>Windows 7</bf>, Scid vs. PC can crash upon exit,
 with an ntdll.dll error.  This known issue seems harmless, and to resolve itself after a reboot.</p>
+
+<p>People with Visual Studio 11 should now be able to compile the project fairly easily (see Makefile.vc for more details).</p>
 
 <sect2> Mac OS X <p>
 
