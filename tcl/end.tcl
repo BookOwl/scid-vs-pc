@@ -707,6 +707,7 @@ proc nameEditor {} {
           grid .nedit.g.toL -row 1 -column 1 -sticky e
           grid .nedit.g.fromE -row 0 -column 2 -sticky w
           grid .nedit.g.toE -row 1 -column 2 -sticky w
+          checkNeditReplace
         }
     pack $w.typeButtons.$j -side left -padx 5
   }
@@ -719,6 +720,7 @@ proc nameEditor {} {
         grid .nedit.g.fromE -row 0 -column 2 -sticky w
         grid .nedit.g.rtype -row 1 -column 0 -columnspan 2 -sticky e -padx 5
         grid .nedit.g.ratingE -row 1 -column 2 -sticky w
+        checkNeditReplace
       }
   radiobutton $w.typeButtons.date -textvar ::tr(Date) -variable editNameType \
       -value date -indicatoron false -pady 5 -padx 5 -command {
@@ -729,6 +731,7 @@ proc nameEditor {} {
         grid .nedit.g.fromD -row 0 -column 2 -sticky w
         grid .nedit.g.toL -row 1 -column 1 -sticky e
         grid .nedit.g.toD -row 1 -column 2 -sticky w
+        checkNeditReplace
       }
   radiobutton $w.typeButtons.edate -textvar ::tr(EventDate) \
       -variable editNameType -value edate -indicatoron false -pady 5 -padx 5 \
@@ -740,6 +743,7 @@ proc nameEditor {} {
         grid .nedit.g.fromD -row 0 -column 2 -sticky w
         grid .nedit.g.toL -row 1 -column 1 -sticky e
         grid .nedit.g.toD -row 1 -column 2 -sticky w
+        checkNeditReplace
       }
   pack $w.typeButtons.rating $w.typeButtons.date $w.typeButtons.edate \
       -side left -padx 5
@@ -831,6 +835,16 @@ proc nameEditor {} {
   bind $w <F1> {helpWindow Maintenance Editing}
   focus $w
   $w.typeButtons.$editNameType invoke
+  checkNeditReplace
+}
+
+proc checkNeditReplace {} {
+  global editNameNew editNameType
+  if {$editNameType == "rating" || $editNameNew != ""} {
+    .nedit.buttons.replace configure -state normal
+  } else {
+    .nedit.buttons.replace configure -state disabled
+  }
 }
 
 # Scid's main game save dialog - used for adding and replacing games.
