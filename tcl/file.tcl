@@ -288,9 +288,9 @@ proc refreshCustomFlags {} {
       } else  {
 	set tmp [sc_game flag $maintFlag description]
 	if {$tmp == "" } {
-	  set tmp "Custom $flag"
+	  set tmp "Custom $maintFlag"
 	} else {
-	  set tmp "$tmp ($flag)"
+	  set tmp "$tmp ($maintFlag)"
 	}
       }
       set flagname $tmp
