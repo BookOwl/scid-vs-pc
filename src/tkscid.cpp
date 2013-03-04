@@ -7800,10 +7800,10 @@ sc_game_load (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
     IndexEntry * ie = db->idx->FetchEntry (gnum);
 
     if (db->gfile->ReadGame (db->bbuf,ie->GetOffset(),ie->GetLength()) != OK) {
-        return errorResult (ti, "Sorry, this game appears to be corrupt.");
+        return errorResult (ti, "This game appears to be corrupt.");
     }
     if (db->game->Decode (db->bbuf, GAME_DECODE_ALL) != OK) {
-        return errorResult (ti, "Sorry, this game appears to be corrupt.");
+        return errorResult (ti, "This game appears to be corrupt.");
     }
 
     if (db->filter->Get(gnum) > 0) {
@@ -8507,7 +8507,7 @@ sc_savegame (Tcl_Interp * ti, Game * game, gameNumberT gnum, scidBaseT * base)
         return TCL_ERROR;
     }
     if (base == clipbase   &&  base->numGames >= clipbaseMaxGames) {
-        sprintf (temp, "Sorry, the clipbase has a limit of %u games.\n",
+        sprintf (temp, "The clipbase has a limit of %u games.\n",
                  clipbaseMaxGames);
         Tcl_AppendResult (ti, temp, NULL);
         return TCL_ERROR;
@@ -8676,7 +8676,7 @@ sc_savegame (Tcl_Interp * ti, scidBaseT * sourceBase, ByteBuffer * bbuf, IndexEn
         return TCL_ERROR;
     }
     if (base == clipbase   &&  base->numGames >= clipbaseMaxGames) {
-        sprintf (temp, "Sorry, the clipbase has a limit of %u games.\n",
+        sprintf (temp, "The clipbase has a limit of %u games.\n",
                  clipbaseMaxGames);
         Tcl_AppendResult (ti, temp, NULL);
         return TCL_ERROR;
@@ -11700,7 +11700,7 @@ sc_name_edit (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
     if (option != OPT_DATE  &&  option != OPT_EVENTDATE 
         && !(oldName[0]=='*' && oldName[1]==0 && (option == OPT_EVENT || option == OPT_SITE || option == OPT_ROUND))) {
         if (db->nb->FindExactName (nt, oldName, &oldID) != OK) {
-            Tcl_AppendResult (ti, "Sorry, the ", NAME_TYPE_STRING[nt],
+            Tcl_AppendResult (ti, "The ", NAME_TYPE_STRING[nt],
                               " name \"", oldName, "\" does not exist.", NULL);
             return TCL_ERROR;
         }
