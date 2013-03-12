@@ -993,8 +993,10 @@ proc ::windows::switcher::Refresh {} {
   # Check that there is enough space to show all bases, otherwise make the frameWidth smaller
   # '- 50' is a hack to make some room and stop the last base from being disadvantaged/squished
 
-  set f [expr {([winfo width .glistWin] - 50)/ $show_num}]
-  if {$f < 0} {
+  if {[catch {
+     # catch divide by zero. Possible on broken bases
+     set f [expr {([winfo width .glistWin] - 50)/ $show_num}]
+     }] || $f < 0} {
     # Catch when glist is (not) init
     return
   }

@@ -1260,13 +1260,13 @@ sc_base_open (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
 // check enough memory to open name file
   int memoryNeeded = db->nb->GetNumNames(NAME_PLAYER) * 100 + 1024*1000;
   if ( memoryNeeded > getPocketAvailPhys() || memoryNeeded > getPocketAvailVirtual() ) {
-    base_open_failure( oldBaseNum );
+    base_open_failure(currentBase);
     return errorResult (ti, "Not enough free memory for names.");
   }
 #endif
 
     if (db->nb->ReadNameFile() != OK) {
-        base_open_failure( oldBaseNum );
+        base_open_failure(currentBase);
         return errorResult (ti, "Error opening name file.");
     }
 
@@ -1278,7 +1278,7 @@ sc_base_open (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
     }
 
     if (err != OK) {
-        base_open_failure( oldBaseNum );
+        base_open_failure(currentBase);
         return errorResult (ti, "Error opening game file.");
     }
 
@@ -1287,7 +1287,7 @@ sc_base_open (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
 // is at least 8 bytes (see Tcl sources). So take a small margin with 64 bytes per entry.
   memoryNeeded = db->idx->GetNumGames() * 64 + 1024*1000;
   if ( memoryNeeded > getPocketAvailPhys() || memoryNeeded > getPocketAvailVirtual() ) {
-        base_open_failure( oldBaseNum );
+        base_open_failure(currentBase);
         return errorResult (ti, "Not enough free memory for index.");
   }
 #endif
