@@ -1776,6 +1776,7 @@ translate H KingsIndianMainLine {King's Indian Main Line}
 # ====== TODO To be translated ======
 
 translate H ConfigureFics {FICS beállítása}
+translate H FICSLogin {Belépés}
 translate H FICSGuest {Belépés vendégként}
 translate H FICSServerPort {Szerverport}
 # ====== TODO To be translated ======

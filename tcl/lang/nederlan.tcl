@@ -1768,6 +1768,7 @@ translate N KingsIndianMainLine {Koningsindisch Hoofdvariant}
 # ====== TODO To be translated ======
 
 translate N ConfigureFics {Configureer FICS}
+translate N FICSLogin {Login}
 translate N FICSGuest {Login als Gast}
 translate N FICSServerPort {Server poort}
 translate N FICSServerAddress {IP Addres}

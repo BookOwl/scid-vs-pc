@@ -1777,6 +1777,7 @@ translate C KingsIndianMainLine {King's Indian Main Line}
 # ====== TODO To be translated ======
 
 translate C ConfigureFics {Konfigurovat FICS}
+translate C FICSLogin {Pøihlásit}
 translate C FICSGuest {Pøihlásit jako host}
 translate C FICSServerPort {Port serveru}
 translate C FICSServerAddress {IP adresa}

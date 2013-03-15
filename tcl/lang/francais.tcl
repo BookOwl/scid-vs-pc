@@ -1508,6 +1508,7 @@ translate F KingsIndianSamisch {Est-indienne Sämisch}
 translate F KingsIndianMainLine {Est-indienne ligne principale}
 
 translate F ConfigureFics {Configurer FICS}
+translate F FICSLogin {Login}
 translate F FICSGuest {Login comme invité}
 translate F FICSServerPort {Port du serveur}
 translate F FICSServerAddress {Adresse IP}
