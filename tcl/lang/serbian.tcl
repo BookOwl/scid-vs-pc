@@ -376,18 +376,6 @@ menuText Y GInfoMark "Mark/Unmark this game" 0 ;# ***
 # ====== TODO To be translated ======
 menuText Y GInfoInformant "Configure informant values" 0
 
-# Main window buttons:
-helpMsg Y .button.start {Idi na poèetak partije  (taster: Home)}
-helpMsg Y .button.end {Idi na kraj partije  (taster: End)}
-helpMsg Y .button.back {Idi jedan potez nazad  (taster: Levo)}
-helpMsg Y .button.forward {Idi jedan potez napred  (taster: Desno)}
-helpMsg Y .button.intoVar {Preði na varijantu  (taster preèica: v)}
-helpMsg Y .button.exitVar {Ostavi tekuæu varijantu  (taster preèica: z)}
-helpMsg Y .button.flip {Rotiraj tablu  (taster preèica: .)}
-helpMsg Y .button.coords {Ukljuèi/iskljuèi koordinate table  (taster preèica: 0)}
-helpMsg Y .button.stm {Turn the side-to-move icon on or off} ;# ***
-helpMsg Y .button.autoplay {Automatski menjaj poteze  (taster: Ctrl+Z)}
-
 # General buttons:
 translate Y Back {Nazad}
 translate Y Browse {Browse} ;# ***

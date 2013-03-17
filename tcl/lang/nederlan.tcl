@@ -371,18 +371,6 @@ menuText N GInfoMark "Partij markeren/niet markeren" 7
 # ====== TODO To be translated ======
 menuText N GInfoInformant "Configure informant values" 0
 
-# Main windows buttons:
-helpMsg N .button.start {Naar begin van partij  (toets: home)}
-helpMsg N .button.end {Naar eind van partij  (toets: end)}
-helpMsg N .button.back {Een zet terug   (toets: pijl links)}
-helpMsg N .button.forward {Een zet vooruit  (toets: pijl rechts)}
-helpMsg N .button.intoVar {Naar variant  (toets: v)}
-helpMsg N .button.exitVar {Verlaat variant  (toets: z)}
-helpMsg N .button.flip {Draai bord  (toets: .)}
-helpMsg N .button.coords {Coordinaten aan/uit  (toets: 0)}
-helpMsg N .button.stm {Zet zijde-aan-zet ikoon aan ofaf} ;
-helpMsg N .button.autoplay {Speel zetten automatisch  (toets: Ctrl+Z)}
-
 # General buttons:
 translate N Back {Terug}
 translate N Browse {Bladeren} ;

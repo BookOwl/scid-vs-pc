@@ -377,18 +377,6 @@ menuText O GInfoMark "(Av)Merk dette partiet" 0
 # ====== TODO To be translated ======
 menuText O GInfoInformant "Configure informant values" 0
 
-# Main window buttons:
-helpMsg O .button.start {Gå til begynnelsen av partiet (tast: Home)}
-helpMsg O .button.end {Gå til slutten av partiet (tast: End)}
-helpMsg O .button.back {Gå ett trekk tilbake (tast: LeftArrow)}
-helpMsg O .button.forward {Gå et trekk fremover (tast: RightArrow)}
-helpMsg O .button.intoVar {Gå inn i en variasjon (snarvei: v)}
-helpMsg O .button.exitVar {Forlat variasjon (snarvei: z)}
-helpMsg O .button.flip {Roter brett (snarvei: .)}
-helpMsg O .button.coords {Slå av/på brettkoordinater (snarvei: 0)}
-helpMsg O .button.stm {Turn the side-to-move icon on or off} ;# ***
-helpMsg O .button.autoplay {Automatisk spill (tast: Ctrl+Z)}
-
 # General buttons:
 translate O Back {Tilbake}
 translate O Browse {Browse} ;# ***

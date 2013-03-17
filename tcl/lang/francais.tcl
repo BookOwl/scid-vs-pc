@@ -334,18 +334,6 @@ menuText F GInfoDelete "(Récupérer)Effacer cette partie" 4
 menuText F GInfoMark "(Dé)Marquer cette partie" 4
 menuText F GInfoInformant "Configurer les valeurs de notation" 0
 
-# Main window buttons:
-helpMsg F .button.start {Aller au début de la partie  (Raccourci clavier: Home)}
-helpMsg F .button.end {Aller à la fin de la partie  (Raccourci clavier: Fin)}
-helpMsg F .button.back {Reculer d'un coup  (Raccourci clavier: Flèche gauche)}
-helpMsg F .button.forward {Avancer d'un coup  (Raccourci clavier: Flèche droite)}
-helpMsg F .button.intoVar {Entrer dans une variante  (Raccourci clavier: v)}
-helpMsg F .button.exitVar {Quitter la variante en cours  (Raccourci clavier: z)}
-helpMsg F .button.flip {Retourner l'échiquier  (Raccourci clavier: .)}
-helpMsg F .button.coords {Afficher/Enlever les coordonnées  (Raccourci clavier: 0)}
-helpMsg F .button.stm {Afficher/Enlever l'icone du joueur ayant le trait}
-helpMsg F .button.autoplay {Jeu automatique  (Raccourci clavier: Ctrl+Z)}
-
 # General buttons:
 translate F Back {Retour}
 translate F Browse {Parcourir}

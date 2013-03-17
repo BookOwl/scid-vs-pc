@@ -346,18 +346,6 @@ menuText S GInfoDelete "(No)Borrar esta partida" 4
 menuText S GInfoMark "(No)Marcar esta partida" 4
 menuText S GInfoInformant "Configurar Valores de Información" 0
 
-# Main window buttons:
-helpMsg S .button.start {Ir al principio de la partida  (Tecla: Inicio)}
-helpMsg S .button.end {Ir al final de la partida  (Tecla: Fin)}
-helpMsg S .button.back {Ir atrás un movimiento  (Tecla: Flecha izquierda)}
-helpMsg S .button.forward {Ir adelante un movimiento  (Tecla: Flecha derecha)}
-helpMsg S .button.intoVar {Moverse dentro de una variación  (Tecla rápida: v)}
-helpMsg S .button.exitVar {Dejar la variación actual  (Tecla rápida: z)}
-helpMsg S .button.flip {Girar tablero  (Tecla rápida: .)}
-helpMsg S .button.coords {Poner/quitar las coordenadas del tablero  (Tecla rápida: 0)}
-helpMsg S .button.stm {Activa/Desactiva el icono de Turno de Juego}
-helpMsg S .button.autoplay {Automovimiento de los movimientos  (Tecla: Ctrl+Z)}
-
 # General buttons:
 translate S Back {Atrás}
 translate S Browse {Examinar}

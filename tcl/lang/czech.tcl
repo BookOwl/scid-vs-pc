@@ -354,18 +354,6 @@ menuText C GInfoMark "Oznaèit/Odznaèit tuto partii" 0
 # ====== TODO To be translated ======
 menuText C GInfoInformant "Configure informant values" 0
 
-# Main window buttons:
-helpMsg C .button.start {Jdi na zaèátek partie  (klávesa: Home)}
-helpMsg C .button.end {Jdi na konec partie  (klávesa: End)}
-helpMsg C .button.back {Jdi o jeden tah nazpìt  (klávesa: ©ipkaVlevo)}
-helpMsg C .button.forward {Jdi o jeden tah dopøedu  (klávesa: ©ipkaVpravo)}
-helpMsg C .button.intoVar {Skoè do varianty  (klávesová zkratka: v)}
-helpMsg C .button.exitVar {Opus» aktuální variantu  (klávesová zkratka: z)}
-helpMsg C .button.flip {Otoè ¹achovnici  (klávesová zkratka: .)}
-helpMsg C .button.coords {Zapnout/Vypnout zobrazování souøadnic ¹achovnice  (klávesová zkratka: 0)}
-helpMsg C .button.stm {Zapnout/Vypnout zobrazování ikony strany, která je na tahu}
-helpMsg C .button.autoplay {Automatické pøehrávání tahù  (klávesa: Ctrl+Z)}
-
 # General buttons:
 translate C Back {Zpìt}
 translate C Browse {Prohlí¾et}

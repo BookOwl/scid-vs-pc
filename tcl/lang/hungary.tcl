@@ -358,18 +358,6 @@ menuText H GInfoMark "Megjelöli ezt a játszmát/megszünteti a jelölést." 0
 # ====== TODO To be translated ======
 menuText H GInfoInformant "Configure informant values" 0
 
-# Main window buttons:
-helpMsg H .button.start {Ugrás a játszma elejére  (billentyû: Home)}
-helpMsg H .button.end {Ugrás a játszma végére  (billentyû: End)}
-helpMsg H .button.back {Vissza egy lépéssel  (billentyû: balra mutató nyíl)}
-helpMsg H .button.forward {Elõre egy lépéssel  (billentyû: jobbra mutató nyíl)}
-helpMsg H .button.intoVar {Belép egy változatba  (gyorsbillentyû: v).}
-helpMsg H .button.exitVar {Kilép az aktuális változatból  (gyorsbillentyû: z).}
-helpMsg H .button.flip {Tábla elforgatása  (gyorsbillentyû: .)}
-helpMsg H .button.coords {Koordináták be- vagy kikapcsolása  (gyorsbillentyû: 0)}
-helpMsg H .button.stm {Be- vagy kikapcsolja a lépésjogot mutató ikont}
-helpMsg H .button.autoplay {Automatikus visszajátszás  (billentyû: Ctrl+Z)}
-
 # General buttons:
 translate H Back {Vissza}
 translate H Browse {Browse}
