@@ -1,8 +1,15 @@
 #!/usr/bin/env python
 
-# The following script will automatically download the current week's
-# TWIC games.  Be sure to edit the setting of scid_database and
-# scid_spelling, near the top of the script.
+# Usage: twic2scid.py [database [spellingfile]]
+
+# Download the current week's TWIC games and append them to an existing
+# Scid database and perform spellchecking.
+
+# If no args are given, these defaults are used
+# (note - database does not include ".si4")
+
+scid_database = "twic"
+scid_spelling = "spelling.ssp"
 
 # This version fixes a few bugs, and will use lftp if you have it
 # installed, wget if not.  If neither of those work, it will attempt to
@@ -17,6 +24,9 @@
 # then adding a "last week rollback" type of copy command to your
 # cronjob, just to make sure.
 
+# Modification by Maksim Grinman on 3/20/2013
+# Updated to work with the new TWIC site at http://www.theweekinchess.com/twic
+
 import glob
 import urllib
 import zipfile
@@ -26,31 +36,27 @@ import sys
 import re
 import os
 
+
 os.environ['PATH'] = os.environ['PATH'] + ":/usr/local/bin"
 
 if len(sys.argv) > 1:
     scid_database = sys.argv[1]
-else:
-    scid_database = "/home/johnw/scid/twic"
     
 if len(sys.argv) > 2:
     scid_spelling = sys.argv[2]
-else:
-    scid_spelling = "/home/johnw/src/scid/spelling.ssp"
 
 print "Downloading the Week in Chess main page..."
 
-url = urllib.urlopen("http://www.chesscenter.com/twic/twic.html")
+url = urllib.urlopen("http://www.theweekinchess.com/twic")
 
 archive = None
 found   = 0
 for line in url.readlines():
     match = re.search("http://[^\"]+", line)
     if match:
-        archive = match.group(0)
-    else:
-        match = re.search(">PGN<", line)
-        if match:
+        pgn = re.search(">PGN<", line)
+        if pgn:
+            archive = match.group(0)
             found = 1
             break
 
