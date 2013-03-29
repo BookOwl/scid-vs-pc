@@ -400,7 +400,7 @@ proc ::file::Upgrade {name} {
 
 # openBase:
 #    Opens a Scid database, showing a progress bar in a separate window
-#    if the database is around 1 Mb or larger in size.
+#    if the database is around 5 Mb or larger in size.
 #   ::file::Open should be used if the base is not already in si4 format
 
 proc openBase {name} {
@@ -427,7 +427,7 @@ proc openBase {name} {
 
   if {! [catch {file size $gfile} err]} { set bsize $err }
   set showProgress 0
-  if {$bsize > 1000000} { set showProgress 1 }
+  if {$bsize > 5000000} { set showProgress 1 }
   if {$showProgress} {
     progressWindow "Scid" "$::tr(OpeningTheDatabase): [file tail $name]"
   }
