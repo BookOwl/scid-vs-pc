@@ -12011,12 +12011,15 @@ sc_name_info (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
     // Try to find player name in this database:
     idNumberT id = 0;
     if (db->nb->FindExactName (NAME_PLAYER, playerName, &id) != OK) {
-        if (! ratingsOnly) {
+        if (!ratingsOnly && playerName[0]) {
             Tcl_AppendResult (ti, "The name \"", playerName,
                               "\" does not exist in this database.", NULL);
         }
         return TCL_OK;
     }
+
+    if (!playerName[0]) 
+        return TCL_OK;
 
     // Try to find opponent in this database:
     idNumberT opponentId = 0;
