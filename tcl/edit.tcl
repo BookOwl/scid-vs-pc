@@ -80,7 +80,7 @@ proc pasteFEN {} {
 
 proc copyGame {} {
   catch {sc_clipbase copy}
-  set ::glistFlipped([sc_info clipbase]) [::board::isFlipped .board] 
+  set ::glistFlipped([sc_info clipbase]) [::board::isFlipped .main.board] 
   # is updateBoard needed ?
   updateBoard
 }
@@ -88,8 +88,8 @@ proc copyGame {} {
 
 proc pasteGame {} {
   sc_clipbase paste
-  if {$::glistFlipped([sc_info clipbase]) != [::board::isFlipped .board]} { 
-    ::board::flip .board
+  if {$::glistFlipped([sc_info clipbase]) != [::board::isFlipped .main.board]} { 
+    ::board::flip .main.board
   } 
   updateBoard -pgn
 }
@@ -496,7 +496,7 @@ proc setupBoard {} {
     $sbd.bd bind p$i <ButtonPress-3> "useBoardPiece $i"
 
 
-    # ::board::bind .board $i <ButtonPress-1> "set ::addVariationWithoutAsking 0 ; pressSquare $i"
+    # ::board::bind .main.board $i <ButtonPress-1> "set ::addVariationWithoutAsking 0 ; pressSquare $i"
     # bind $sbd.$i <ButtonPress-1> "setupBoardPiece $i"
   }
 

@@ -110,7 +110,7 @@ namespace eval tacgame {
 
     # If game window is already opened, abort previous game
     if {[winfo exists .coachWin]} {
-      focus .
+      focus .main
       destroy .coachWin
       ::tacgame::closeEngine $phalanx
       ::tacgame::closeEngine $toga
@@ -236,7 +236,7 @@ namespace eval tacgame {
     pack $w.flimit.blimit $w.flimit.analysisTime -side left -expand yes -pady 5
 
     dialogbutton $w.fbuttons.play -text $::tr(Play) -command {
-      focus .
+      focus .main
       set ::tacgame::chosenOpening [.configWin.fopening.fOpeningList.lbOpening curselection]
       destroy .configWin
       ::tacgame::play
@@ -392,7 +392,7 @@ namespace eval tacgame {
       set player_name [getMyPlayerName]
       if {$player_name == ""} {set player_name {?}}
       set ai_name "Phalanx $::tacgame::level ELO"
-      if { [::board::isFlipped .board] } {
+      if { [::board::isFlipped .main.board] } {
         set tmp_name $ai_name
         set ai_name $player_name
         set player_name $tmp_name
@@ -412,7 +412,7 @@ namespace eval tacgame {
     set w .coachWin
 
     if {[winfo exists $w]} {
-      focus .
+      focus .main
       destroy $w
       return
     }
@@ -510,7 +510,7 @@ namespace eval tacgame {
     ###can't focus main window! S.A.
     # update
     # raise . $w
-    # focus .
+    # focus .main
   }
 
   proc initTacgame {} {
@@ -521,7 +521,7 @@ namespace eval tacgame {
     if {$player_name == ""} {set player_name {?}}
     set ai_name "Phalanx $::tacgame::level ELO"
 
-    if { [::board::isFlipped .board] } {
+    if { [::board::isFlipped .main.board] } {
       sc_game tags set -white $ai_name
       sc_game tags set -black $player_name
     } else  {
@@ -538,7 +538,7 @@ namespace eval tacgame {
     after cancel ::tacgame::phalanxGo
     stopAnalyze
     destroy .coachWin
-    focus .
+    focus .main
     ::tacgame::closeEngine $::tacgame::phalanx
     ::tacgame::closeEngine $::tacgame::toga
   }
@@ -688,7 +688,7 @@ namespace eval tacgame {
       ::tacgame::abortGame
       tk_messageBox -type ok -icon warning -parent . -title "Scid" -message \
         "Phalanx reports version \"$line\", but should be \"Phalanx XXIII\"."
-      focus .
+      focus .main
       return
     }
 
@@ -749,7 +749,7 @@ namespace eval tacgame {
       ::gameclock::stop 1
       ::gameclock::stop 2
       sc_game tags set -result =
-      tk_messageBox -type ok -message {Stalemate} -parent .board -icon info -title {Game Over}
+      tk_messageBox -type ok -message {Stalemate} -parent .main.board -icon info -title {Game Over}
       return 1
     }
 
@@ -773,7 +773,7 @@ namespace eval tacgame {
         }
         updateBoard -pgn
 
-        tk_messageBox -type ok -message "$side Wins" -parent .board -icon info -title Checkmate
+        tk_messageBox -type ok -message "$side Wins" -parent .main.board -icon info -title Checkmate
       }
       return 1
     }
@@ -828,7 +828,7 @@ namespace eval tacgame {
         }
         
         if { [lsearch $openingMovesHash [sc_pos hash]] == -1 && [llength $openingMovesList] >= $ply} {
-          set answer [tk_messageBox -icon question -parent .board -title $::tr(OutOfOpening) -type yesno \
+          set answer [tk_messageBox -icon question -parent .main.board -title $::tr(OutOfOpening) -type yesno \
               -message "$::tr(NotFollowedLine) $openingMoves\n $::tr(DoYouWantContinue)" ]
           if {$answer == no} {
             sc_move back 1
@@ -969,7 +969,7 @@ namespace eval tacgame {
     checkRepetition
 
     if { $resignCount > 3 && ! $::tacgame::resignShown } {
-      tk_messageBox -type ok -message $::tr(Iresign) -parent .board -icon info
+      tk_messageBox -type ok -message $::tr(Iresign) -parent .main.board -icon info
       set ::tacgame::resignShown 1
       set resignCount 0
     }
@@ -1079,7 +1079,7 @@ namespace eval tacgame {
 
   proc getPhalanxColor {} {
     # Phalanx always plays for the upper side
-    if { [::board::isFlipped .board] == 0 } {
+    if { [::board::isFlipped .main.board] == 0 } {
       return "black"
     } else  {
       return "white"

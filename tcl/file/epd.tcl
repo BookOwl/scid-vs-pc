@@ -76,7 +76,7 @@ proc confirmCloseEpd {id} {
     if {$result == 0} { sc_epd write $id }
   }
   sc_epd close $id
-  focus .
+  focus .main
   destroy .epd$id
   return
 }

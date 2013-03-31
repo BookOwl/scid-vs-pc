@@ -309,6 +309,13 @@ menuText C OptionsWindowsIconify "Automatická minimalizace" 12 \
 menuText C OptionsWindowsRaise "Automaticky do popøedí" 15 \
   {Dát do popøedí jistá okna, jsou-li zakrytá}
 menuText C OptionsSounds "Sounds..." 2 {Configure move announcement sounds} ;# ***
+menuText C OptionsWindowsDock "Zaparkovat okna" 0 {Zaparkovat okna}
+menuText C OptionsWindowsSaveLayout "Ulo¾it rozlo¾ení" 0 {Ulo¾it rozlo¾ení}
+menuText C OptionsWindowsRestoreLayout "Obnovit rozlo¾ení" 0 {Obnovit rozlo¾ení}
+menuText C OptionsWindowsShowGameInfo "Ukázat informace o partii" 0 {Ukázat informace o partii}
+menuText C OptionsWindowsAutoLoadLayout "Automaticky natáhnout první rozlo¾ení" 0 {Automaticky na zaèátku natáhnout první rozlo¾ení}
+# todo
+menuText C OptionsWindowsAutoResize "Auto resize board" 0 {}
 menuText C OptionsToolbar "Nástrojová li¹ta..." 11 \
   {Konfigurovat nástrojovou li¹tu hlavního okna}
 menuText C OptionsECO "Natáhnout ECO soubor..." 10 {Natáhnout soubor s klasifikací ECO}
@@ -1903,7 +1910,16 @@ translate C IERotate  {Rotate}
 translate C IEUnableToStart {Unable to start Input Engine:}
 # ====== TODO To be translated ======
 translate C DoneWithPosition {Done with position}
+translate C Board {©achovnice}
+translate C showGameInfo {Ukázat informace o partii}
+translate C autoResizeBoard {Automatická zmìna velikosti ¹achovnice}
+translate C DockTop {Pøesunout nahoru}
+translate C DockBottom {Pøesunout dolù}
+translate C DockLeft {Pøesunout doleva}
+translate C DockRight {Pøesunout doprava}
 # ====== TODO To be translated ======
+translate C Undock {Undock}
+translate C ChangeIcon {Zmìnit ikonu}
 }
 
 
@@ -5540,19 +5556,3 @@ vysvìtluje detailnì formáty PGN a EPD.</li> </ul>
 }
 
 # end of czech.tcl
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

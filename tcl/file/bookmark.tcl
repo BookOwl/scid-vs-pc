@@ -15,9 +15,9 @@ namespace eval ::bookmarks {}
 # without an easy way to cancel them
 
 proc ::bookmarks::PostMenu {} {
-  .tb.bkm.menu post [winfo pointerx .] [winfo pointery .]
+  .main.tb.bkm.menu post [winfo pointerx .] [winfo pointery .]
   if {[::bookmarks::CanAdd]} {
-    .tb.bkm.menu activate 0
+    .main.tb.bkm.menu activate 0
   }
 }
 
@@ -25,7 +25,7 @@ proc ::bookmarks::PostMenu {} {
 #   Updates all bookmarks submenus.
 #
 proc ::bookmarks::Refresh {} {
-  foreach menu {.menu.file.bookmarks .tb.bkm.menu} {
+  foreach menu {.menu.file.bookmarks .main.tb.bkm.menu} {
     ::bookmarks::RefreshMenu $menu
   }
 }

@@ -12,9 +12,9 @@ proc playerInfo {{player ""} {raise 0}} {
   set ::rgraph(player) $player
   set w .playerInfoWin
   if {! [winfo exists $w]} {
-    toplevel $w
-    wm title $w "[tr ToolsPInfo]"
-    wm state $w withdrawn
+    ::createToplevel $w
+    ::setTitle $w "[tr ToolsPInfo]"
+    catch {wm state $w withdrawn}
     setWinLocation $w
     wm minsize $w 450 300
 
@@ -47,30 +47,29 @@ proc playerInfo {{player ""} {raise 0}} {
     }
 
     dialogbutton $w.b2.report -text [tr ToolsPlayerReport] -command {::preport::preportDlg $playerInfoName}
-
+    label $w.b2.space -width 2
     dialogbutton $w.b2.update -textvar ::tr(Update) -command {playerInfo $playerInfoName} -width 10
     dialogbutton $w.b2.help -textvar ::tr(Help) -command {helpWindow PInfo} -width 10
     dialogbutton $w.b2.close -textvar ::tr(Close) -command "destroy $w" -width 10
 
     pack $w.b.graph $w.b.edit $w.b.match $w.b.nedit -padx 5 -pady 5 -side left
 
-    pack $w.b2.report -padx 10 -pady 10 -side left
-    pack $w.b2.close $w.b2.help $w.b2.update -padx 8 -pady 10 -side right
+    pack $w.b2.report $w.b2.space $w.b2.update $w.b2.help $w.b2.close -padx 5 -pady 10 -side left
 
     autoscrollframe $w.frame text $w.text -font font_Regular -wrap none
 
     label $w.photo 
     pack $w.frame -side top -fill both -expand yes
     ::htext::init $w.text
-    bind $w <Escape> "focus .; destroy $w"
+    bind $w <Escape> "focus .main ; destroy $w"
     bind $w <F1> {helpWindow PInfo}
     standardShortcuts $w
 
     setWinSize $w
     update
-    wm state $w normal
+    catch {wm state $w normal}
     bind $w <Configure> "recordWinSize $w"
-
+    ::createToplevelFinalize $w
   } else {
     # Generating a player report refreshs stats, which refreshes this proc
     # So only raise if asked to

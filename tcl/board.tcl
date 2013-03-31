@@ -31,7 +31,7 @@ proc SetBackgroundColour {} {
   if {$temp != {}} {
     set defaultBackground $temp
     option add *Text*background $temp widgetDefault
-    .gameInfo configure -bg $temp
+    .main.gameInfo configure -bg $temp
     if {[winfo exists .pgnWin.text]} { .pgnWin.text configure -bg $temp }
     if {[winfo exists .helpWin.text]} { .helpWin.text configure -bg $temp }
     # if {[winfo exists .baseWin.c]} { .baseWin.c configure -bg $temp }
@@ -96,7 +96,7 @@ proc applyBoardColors {} {
 
   global newColors lite dark highcolor bestcolor bgcolor highlightLastMoveColor borderwidth maincolor varcolor
 
-  set w .boardOptions
+  set w .bdOptions
   set colors {lite dark highcolor bestcolor bgcolor highlightLastMoveColor maincolor varcolor}
 
   foreach i $colors {
@@ -114,7 +114,7 @@ proc applyBoardColors {} {
   foreach i $colors {
     $w.select.b$i configure -background $newColors($i)
   }
-  .board.bd configure -bg $newColors(bgcolor)
+  .main.board.bd configure -bg $newColors(bgcolor)
 
   ### too noisy to always change the border width widget
 
@@ -125,19 +125,19 @@ proc applyBoardColors {} {
   # }
 
   ### use this command if you want a third color to be used instead of black
-  # .board.bd configure -background $newColors(dark)
+  # .main.board.bd configure -background $newColors(dark)
 
   ### Update Variation arrows colours
 
   ### The board gets redrawn straight after Apply, so there's no use running this:
-  # .board.bd itemconfigure var0 -fill $newColors(maincolor)
-  # .board.bd itemconfigure var1 -fill $newColors(varcolor)
+  # .main.board.bd itemconfigure var0 -fill $newColors(maincolor)
+  # .main.board.bd itemconfigure var1 -fill $newColors(varcolor)
   # set maincolor $newColors(maincolor)
   # set varcolor  $newColors(varcolor)
 
   ### To apply, we have to alter a (private) var
   set tmp {}
-  foreach mark $::board::_mark(.board) {
+  foreach mark $::board::_mark(.main.board) {
     if {[lindex $mark 0] == "var0"} {
       lappend tmp [lreplace $mark 3 3 $newColors(maincolor)]
     } elseif {[string match var* [lindex $mark 0]]} {
@@ -146,9 +146,9 @@ proc applyBoardColors {} {
       lappend tmp $mark
     }
   }
-  set ::board::_mark(.board) $tmp
+  set ::board::_mark(.main.board) $tmp
 
-  ::board::resize .board redraw
+  ::board::resize .main.board redraw
 }
 
 proc applyBorderWidth {new} {
@@ -156,9 +156,9 @@ proc applyBorderWidth {new} {
   global borderwidth 
 
   set borderwidth $new
-  set ::board::_border(.board) $borderwidth
+  set ::board::_border(.main.board) $borderwidth
 
-  ::board::resize .board redraw
+  ::board::resize .main.board redraw
 }
 
 proc chooseAColor {w c} {
@@ -174,9 +174,9 @@ proc chooseAColor {w c} {
 
 proc chooseBoardColors {} {
 
-  if {[winfo exists .boardOptions]} {
-    focus .
-    destroy .boardOptions
+  if {[winfo exists .bdOptions]} {
+    focus .main
+    destroy .bdOptions
   } else {
     initBoardColors
   }
@@ -192,7 +192,7 @@ proc initBoardColors {} {
   global newColors boardStyles boardStyle boardSizes
 
   set colors {lite dark highcolor bestcolor bgcolor highlightLastMoveColor maincolor varcolor}
-  set w .boardOptions
+  set w .bdOptions
 
   if { [winfo exists $w] } {
     raiseWin $w
@@ -232,9 +232,9 @@ proc initBoardColors {} {
   pack   $w.sizes.frame.label -side left -anchor center
 
   button $w.sizes.frame.smaller -text - -font font_Small -relief flat \
-    -command {::board::resize .board -1}
+    -command {::board::resize .main.board -1}
   button $w.sizes.frame.larger -text + -font font_Small -relief flat \
-    -command {::board::resize .board +1}
+    -command {::board::resize .main.board +1}
   pack $w.sizes.frame.larger $w.sizes.frame.smaller -side right
 
   if {$png_image_support} {
@@ -650,11 +650,11 @@ image create photo b_list -data {
 
 ### Toolbar
 
-set tb .tb
-frame $tb -relief raised -border 1
+set tb .main.tb
+frame $tb -relief raised -border 0
 button $tb.new -image tb_new -command ::file::New
-button .tb.open -image tb_open -command ::file::Open
-button .tb.save -image tb_save -command {
+button .main.tb.open -image tb_open -command ::file::Open
+button .main.tb.save -image tb_save -command {
   if {[sc_game number] != 0} {
     #busyCursor .
     gameReplace
@@ -664,38 +664,38 @@ button .tb.save -image tb_save -command {
     gameAdd
   }
 }
-button .tb.close -image tb_close -command ::file::Close
-button .tb.finder -image tb_finder -command ::file::finder::Open
-menubutton .tb.bkm -image tb_bkm -menu .tb.bkm.menu
-menu .tb.bkm.menu
-bind .tb.bkm <ButtonPress-1> "+.tb.bkm configure -relief flat"
+button .main.tb.close -image tb_close -command ::file::Close
+button .main.tb.finder -image tb_finder -command ::file::finder::Open
+menubutton .main.tb.bkm -image tb_bkm -menu .main.tb.bkm.menu
+menu .main.tb.bkm.menu
+bind .main.tb.bkm <ButtonPress-1> "+.main.tb.bkm configure -relief flat"
 
 
-frame .tb.space1 -width 12
-button .tb.newgame -image tb_newgame -command ::game::Clear
-button .tb.copy -image tb_copy -command copyGame
-button .tb.paste -image tb_paste -command pasteGame
-frame .tb.space2 -width 12
-button .tb.gfirst -image tb_gfirst -command {::game::LoadNextPrev first}
-button .tb.gprev -image tb_gprev -command {::game::LoadNextPrev previous}
-button .tb.gnext -image tb_gnext -command {::game::LoadNextPrev next}
-button .tb.glast -image tb_glast -command {::game::LoadNextPrev last}
-frame .tb.space3 -width 12
-button .tb.rfilter -image tb_rfilter -command ::search::filter::reset
-button .tb.bsearch -image tb_bsearch -command ::search::board
-button .tb.hsearch -image tb_hsearch -command ::search::header
-button .tb.msearch -image tb_msearch -command ::search::material
-frame .tb.space4 -width 12
-button .tb.glist   -image tb_glist   -command ::windows::gamelist::OpenClose
-button .tb.pgn     -image tb_pgn     -command ::pgn::OpenClose
-button .tb.tmt     -image tb_tmt     -command ::tourney::toggle
-button .tb.comment -image tb_comment -command makeCommentWin
-button .tb.maint   -image tb_maint   -command ::maint::OpenClose
-button .tb.eco     -image tb_eco     -command ::windows::eco::OpenClose
-button .tb.tree    -image tb_tree    -command ::tree::OpenClose
-button .tb.book    -image tb_book    -command ::book::OpenClose
-button .tb.crosst  -image tb_crosst  -command ::crosstab::OpenClose
-button .tb.engine  -image tb_engine  -command {makeAnalysisWin -1}
+frame .main.tb.space1 -width 12
+button .main.tb.newgame -image tb_newgame -command ::game::Clear
+button .main.tb.copy -image tb_copy -command copyGame
+button .main.tb.paste -image tb_paste -command pasteGame
+frame .main.tb.space2 -width 12
+button .main.tb.gfirst -image tb_gfirst -command {::game::LoadNextPrev first}
+button .main.tb.gprev -image tb_gprev -command {::game::LoadNextPrev previous}
+button .main.tb.gnext -image tb_gnext -command {::game::LoadNextPrev next}
+button .main.tb.glast -image tb_glast -command {::game::LoadNextPrev last}
+frame .main.tb.space3 -width 12
+button .main.tb.rfilter -image tb_rfilter -command ::search::filter::reset
+button .main.tb.bsearch -image tb_bsearch -command ::search::board
+button .main.tb.hsearch -image tb_hsearch -command ::search::header
+button .main.tb.msearch -image tb_msearch -command ::search::material
+frame .main.tb.space4 -width 12
+button .main.tb.glist   -image tb_glist   -command ::windows::gamelist::OpenClose
+button .main.tb.pgn     -image tb_pgn     -command ::pgn::OpenClose
+button .main.tb.tmt     -image tb_tmt     -command ::tourney::toggle
+button .main.tb.comment -image tb_comment -command makeCommentWin
+button .main.tb.maint   -image tb_maint   -command ::maint::OpenClose
+button .main.tb.eco     -image tb_eco     -command ::windows::eco::OpenClose
+button .main.tb.tree    -image tb_tree    -command ::tree::OpenClose
+button .main.tb.book    -image tb_book    -command ::book::OpenClose
+button .main.tb.crosst  -image tb_crosst  -command ::crosstab::OpenClose
+button .main.tb.engine  -image tb_engine  -command {makeAnalysisWin -1}
 
 # Set toolbar help status messages:
 foreach {b m} {
@@ -708,19 +708,17 @@ foreach {b m} {
   maint WindowsMaint eco WindowsECO tree WindowsTree book WindowsBook crosst WindowsCross tmt WindowsTmt 
   engine ToolsAnalysis
 } {
-  set helpMessage(.tb.$b) $m
+  set helpMessage(.main.tb.$b) $m
   # ::utils::tooltip::Set $tb.$b $m
 }
-set helpMessage(.button.addVar) EditAdd
-set helpMessage(.button.trial) EditTrial
 
 foreach i {new open save close finder bkm newgame copy paste gprev gnext gfirst glast \
       rfilter hsearch bsearch msearch glist pgn comment maint eco tree book crosst tmt engine} {
-  .tb.$i configure -relief flat -border 1 -highlightthickness 0 -anchor n -takefocus 0
-  ::utils::tooltip::Set .tb.$i [tr $::helpMessage(.tb.$i)]
+  .main.tb.$i configure -relief flat -border 1 -highlightthickness 0 -anchor n -takefocus 0
+  ::utils::tooltip::Set .main.tb.$i [tr $::helpMessage(.main.tb.$i)]
 }
 
-#pack .tb -side top -fill x -before .button
+#pack .main.tb -side top -fill x -before .main.button
 
 proc changeToolbar {{zero 1}} {
     array set ::toolbar [array get ::toolbar_temp]
@@ -729,18 +727,16 @@ proc changeToolbar {{zero 1}} {
 }
 
 proc bindToolbarRadio {frame i} {
-  bind .tbconfig.$frame.$i <Any-Enter> \
-    ".tbconfig.bar configure -text \"[tr $::helpMessage(.tb.$i)]\""
-  bind .tbconfig.$frame.$i <Any-Leave> \
-    ".tbconfig.bar configure -text {}"
+  bind .main.tbconfig.$frame.$i <Any-Enter> \
+    ".main.tbconfig.bar configure -text \"[tr $::helpMessage(.main.tb.$i)]\""
+  bind .main.tbconfig.$frame.$i <Any-Leave> \
+    ".main.tbconfig.bar configure -text {}"
 }
 
 proc configToolbar {} {
-  set w .tbconfig
+  set w .main.tbconfig
   if {[winfo exists $w]} {
-    wm deiconify $w
-    focus $w
-    raise $w .
+    raiseWin $w
     return
   }
   toplevel $w
@@ -800,8 +796,8 @@ proc configToolbar {} {
   }
   dialogbutton $w.ok -text OK -command {
     array set toolbar [array get toolbar_temp]
-    catch {grab release .tbconfig}
-    destroy .tbconfig
+    catch {grab release .main.tbconfig}
+    destroy .main.tbconfig
     redrawToolbar
   }
   pack $w.ok -side right -padx 5 -pady 5
@@ -819,52 +815,52 @@ proc configToolbar {} {
 
 proc redrawToolbar {} {
   global toolbar
-  foreach i [winfo children .tb] { pack forget $i }
+  foreach i [winfo children .main.tb] { pack forget $i }
   set seen 0
   foreach i {new open save close finder bkm} {
     if {$toolbar($i)} {
       set seen 1
-      pack .tb.$i -side left -pady 1 -padx 0 -ipadx 0 -pady 0 -ipady 0
+      pack .main.tb.$i -side left -pady 1 -padx 0 -ipadx 0 -pady 0 -ipady 0
     }
   }
-  if {$seen} { pack .tb.space1 -side left }
+  if {$seen} { pack .main.tb.space1 -side left }
   set seen 0
   foreach i {gfirst gprev gnext glast} {
     if {$toolbar($i)} {
       set seen 1
-      pack .tb.$i -side left -pady 1 -padx 0 -ipadx 0 -pady 0 -ipady 0
+      pack .main.tb.$i -side left -pady 1 -padx 0 -ipadx 0 -pady 0 -ipady 0
     }
   }
-  if {$seen} { pack .tb.space2 -side left }
+  if {$seen} { pack .main.tb.space2 -side left }
   set seen 0
   foreach i {newgame copy paste} {
     if {$toolbar($i)} {
       set seen 1
-      pack .tb.$i -side left -pady 1 -padx 0 -ipadx 0 -pady 0 -ipady 0
+      pack .main.tb.$i -side left -pady 1 -padx 0 -ipadx 0 -pady 0 -ipady 0
     }
   }
-  if {$seen} { pack .tb.space3 -side left }
+  if {$seen} { pack .main.tb.space3 -side left }
   set seen 0
   foreach i {hsearch bsearch msearch rfilter } {
     if {$toolbar($i)} {
       set seen 1
-      pack .tb.$i -side left -pady 1 -padx 0 -ipadx 0 -pady 0 -ipady 0
+      pack .main.tb.$i -side left -pady 1 -padx 0 -ipadx 0 -pady 0 -ipady 0
     }
   }
   if {$seen} {
     # hack to adjust the spacer if showing the hsearch icon (which has space at left anyway)
     if {$toolbar(hsearch)} {
-      .tb.space3 configure -width 7
+      .main.tb.space3 configure -width 7
     } else {
-      .tb.space3 configure -width 12
+      .main.tb.space3 configure -width 12
     }
-    pack .tb.space4 -side left
+    pack .main.tb.space4 -side left
   }
   set seen 0
   foreach i {glist pgn comment maint eco tree book crosst tmt engine} {
     if {$toolbar($i)} {
       set seen 1
-      pack .tb.$i -side left -pady 1 -padx 0 -ipadx 0 -pady 0 -ipady 0
+      pack .main.tb.$i -side left -pady 1 -padx 0 -ipadx 0 -pady 0 -ipady 0
     }
   }
 
@@ -976,26 +972,26 @@ omgGBw70DlkDBYGRECGKNoACcIISoRhbf3glRODSgrFo06pdy7Yto0AAOw==
 
 ###### Main Button Bar ########
 
-# frame .button -border 0
-frame .button -relief raised -border 1
-button .button.start -image tb_start -command ::move::Start
-button .button.back -image tb_prev -command ::move::Back
-button .button.forward -image tb_next -command ::move::Forward
-button .button.end -image tb_end -command ::move::End
-frame .button.space -width 15
+# frame .main.button -border 0
+frame .main.button -relief raised -border 1
+button .main.button.start -image tb_start -command ::move::Start
+button .main.button.back -image tb_prev -command ::move::Back
+button .main.button.forward -image tb_next -command ::move::Forward
+button .main.button.end -image tb_end -command ::move::End
+frame .main.button.space -width 15
 
 # The go-into-variation button is a menubutton:
-menubutton .button.intoVar -image tb_invar -menu .button.intoVar.menu \
+menubutton .main.button.intoVar -image tb_invar -menu .main.button.intoVar.menu \
     -relief raised
-menu .button.intoVar.menu -tearoff 0 -font font_Regular
+menu .main.button.intoVar.menu -tearoff 0 -font font_Regular
 
-button .button.exitVar -image tb_outvar -command {
+button .main.button.exitVar -image tb_outvar -command {
    set ::pause 1
    sc_var exit
    updateBoard -animate
 }
 
-button .button.addVar -image tb_addvar -command {
+button .main.button.addVar -image tb_addvar -command {
     if {[sc_pos isAt vstart]  &&  [sc_pos isAt vend]} {
       return
     }
@@ -1004,7 +1000,7 @@ button .button.addVar -image tb_addvar -command {
     updateBoard -pgn
 }
 
-frame .button.space2 -width 15
+frame .main.button.space2 -width 15
 
 image create photo tb_flip -data {
 R0lGODlhHgAeAOfDAIMAAIUAAIYAAIcAAIgAAIkAAIoAAIsAAIkDAIsDAI0C
@@ -1194,7 +1190,7 @@ proc ::board::san {sqno} {
 #   The psize option should be a piece bitmap size supported
 #   in Scid (see the boardSizes variable in start.tcl).
 #   The showmat parameter adds a frame to display material balance
-#
+
 proc ::board::new {w {psize 40} {showmat 0} } {
   if {[winfo exists $w]} { return }
 
@@ -1217,9 +1213,7 @@ proc ::board::new {w {psize 40} {showmat 0} } {
 
   frame $w -class Board
   canvas $w.bd -width $bsize -height $bsize -background $::bgcolor -borderwidth 0 -highlightthickness 0
-  if {[info tclversion] == 8.5} {
-    grid anchor $w center
-  }
+  grid anchor $w center
 
   grid $w.bd -row 1 -column 3 -rowspan 8 -columnspan 8
   set bd $w.bd
@@ -1305,7 +1299,7 @@ proc ::board::size {w} {
 
 # doesn't change boardSize
 
-proc boardSize_plus_n {n {w .board}} {
+proc boardSize_plus_n {n {w .main.board}} {
 
   global boardSizes
 
@@ -1344,7 +1338,7 @@ proc ::board::resize2 {w psize} {
   ### update main board to keep up with tk packer... can cause problems though
   ### and it does cause flicker  for fics when  playing black
   # oops when board is flipped, this gets called, and is broke
-  #  if {$w == ".board"} {::update}
+  #  if {$w == ".main.board"} {::update}
 
   ### When changing the border width, widget flickers but can't fix it - S.A.
   # $w.bd configure -state disabled
@@ -1387,7 +1381,7 @@ proc ::board::resize2 {w psize} {
   $w.btm configure -height $stmsize -width $stmsize
 
   ### Update default boardsize and browser size
-  if {$w == ".board"} {set boardSize $psize}
+  if {$w == ".main.board"} {set boardSize $psize}
   if {[string match .gb* $w]} {set ::gbrowser::size $psize}
 
   # resize the material canvas &
@@ -2051,7 +2045,7 @@ proc ::board::setDragSquare {w sq} {
 #   the specified global (root-window) screen cooordinates.
 #
 proc ::board::dragPiece {x y} {
-  set w .board
+  set w .main.board
   set sq $::board::_drag($w)
   if {$sq < 0} { return }
   set x [expr {$x - [winfo rootx $w.bd]} ]
@@ -2186,7 +2180,7 @@ proc ::board::update {w {board ""} {animate 0} {resize 0}} {
   }
 
   # Redraw last move highlight if mainboard
-  if { $w == ".board"} {
+  if { $w == ".main.board"} {
     ::board::lastMoveHighlight $w
   }
 
@@ -2215,7 +2209,7 @@ proc ::board::flip {w {newstate -1}} {
   if {$newstate == $::board::_flip($w)} { return }
   set flip [expr {1 - $::board::_flip($w)} ]
   set ::board::_flip($w) $flip
-  if {$w == ".board"} {
+  if {$w == ".main.board"} {
     set ::glistFlipped([sc_base current]) $flip
   }
 
@@ -2255,9 +2249,9 @@ proc ::board::flip {w {newstate -1}} {
   return $w
 }
 
-proc ::board::togglematerial {{w .board}} {
+proc ::board::togglematerial {{w .main.board}} {
   # Called to display material widget (Doesn't actually toggle anything)
-  # gameInfo(showMaterial) is specifically for the .board, 
+  # gameInfo(showMaterial) is specifically for the .main.board, 
   # while ::board::_showmat($w) is window specific.
 
   if {$::gameInfo(showMaterial)} {
@@ -2269,22 +2263,22 @@ proc ::board::togglematerial {{w .board}} {
   ::board::ficslabels $w
 }
 
-proc ::board::ficslabels {{w .board}} {
+proc ::board::ficslabels {{w .main.board}} {
   # Update the board time labels for FICS
-  if {$w != ".board" || ![winfo exists .fics]} {
+  if {$w != ".main.board" || ![winfo exists .fics]} {
     return
   }
   if {$::gameInfo(showMaterial) && $::fics::smallclocks} {
-    if {$::board::_flip(.board)} {
-      grid configure .board.clock1 -row 1 -column 0 -sticky ne
-      grid configure .board.clock2 -row 8 -column 0 -sticky se
+    if {$::board::_flip(.main.board)} {
+      grid configure .main.board.clock1 -row 1 -column 0 -sticky ne
+      grid configure .main.board.clock2 -row 8 -column 0 -sticky se
     } else {
-      grid configure .board.clock2 -row 1 -column 0 -sticky ne
-      grid configure .board.clock1 -row 8 -column 0 -sticky se
+      grid configure .main.board.clock2 -row 1 -column 0 -sticky ne
+      grid configure .main.board.clock1 -row 8 -column 0 -sticky se
     }
   } else {
-    grid remove .board.clock2
-    grid remove .board.clock1
+    grid remove .main.board.clock2
+    grid remove .main.board.clock1
   }
 }
 
@@ -2685,7 +2679,7 @@ if {!$png_image_support || !$window_image_support} {
 
 proc boardToFile { format filepath } {
 
-  set w .board
+  set w .main.board
   set board $w.bd
 
   if { $format == "" } {

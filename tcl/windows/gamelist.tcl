@@ -216,10 +216,12 @@ proc recordWidths {} {
   }
 }
 
-proc ::windows::gamelist::Close {} {
-  bind .glistWin <Destroy> {}
-  set ::windows::gamelist::isOpen 0
-  recordWidths
+proc ::windows::gamelist::Close {window} {
+  if {$window == {.glistWin.tree}} {
+    # bind .glistWin <Destroy> {}
+    set ::windows::gamelist::isOpen 0
+    catch {recordWidths}
+  } 
 }
 
 proc ::windows::gamelist::OpenClose {} {
@@ -239,17 +241,22 @@ proc ::windows::gamelist::OpenClose {} {
     return
   }
 
-  toplevel $w
+  ::createToplevel $w
+
   wm iconname $w "[tr WindowsGList]"
   wm minsize $w 300 160
-  wm withdraw $w
+
+  ### Hmmm - throws errors on OSX, windows
+  # if {!$::docking::USE_DOCKING || !($::windowsOS || $::macOS)} 
+  catch {wm withdraw $w}
+
   setWinLocation $w
   setWinSize $w
   ::windows::gamelist::SetSize
 
   standardShortcuts $w
   bind $w <F1> { helpWindow GameList }
-  bind $w <Destroy> { ::windows::gamelist::Close }
+  bind $w <Destroy> { ::windows::gamelist::Close %W}
   bind $w <Control-Tab> {::file::SwitchToNextBase ; break}
   catch {
     if {$::windowsOS} {
@@ -550,7 +557,7 @@ proc ::windows::gamelist::OpenClose {} {
 
   button $w.c.export -textvar ::tr(Save) -font font_Small -command openExportGList
   button $w.c.help  -textvar ::tr(Help) -width 5 -font font_Small -command { helpWindow GameList }
-  button $w.c.close -textvar ::tr(Close) -font font_Small -command { focus .; destroy .glistWin }
+  button $w.c.close -textvar ::tr(Close) -font font_Small -command { focus .main ; destroy .glistWin }
 
   pack $w.c.close $w.c.help $w.c.export -side right -padx 3
   pack $w.c.flag $w.c.title $w.c.goto $w.c.browse $w.c.load $w.c.delete $w.c.empty -side left -padx 3
@@ -583,16 +590,16 @@ proc ::windows::gamelist::OpenClose {} {
 
   ::windows::gamelist::Refresh
   ::windows::switcher::Open
-  wm state $w normal
+  catch {wm state $w normal}
+  ::createToplevelFinalize $w
 
   bind $w <Configure> {::windows::gamelist::Configure %W }
 }
 
 proc ::windows::gamelist::Configure {window} {
-  recordWidths
-  recordWinSize .glistWin
-
   if {$window == {.glistWin.tree}} {
+    recordWidths
+    recordWinSize .glistWin
     ::windows::gamelist::Refresh
   }
 }
@@ -783,7 +790,7 @@ proc setGamelistTitle {} {
     set fname "\[$fname\]"
   }
 
-  wm title .glistWin "Gamelist: $fname [sc_filter count]/[sc_base numGames] $::tr(games)" 
+  setTitle .glistWin "Gamelist: $fname [sc_filter count]/[sc_base numGames] $::tr(games)" 
 }
 
 # called by file.tcl when db is changed
@@ -797,8 +804,8 @@ proc ::windows::gamelist::Reload {} {
     set glstart $::glistStart($b)
   }
   if {[info exists ::glistFlipped($b)]} {
-    if {$::glistFlipped($b) != [::board::isFlipped .board]} {
-      ::board::flip .board
+    if {$::glistFlipped($b) != [::board::isFlipped .main.board]} {
+      ::board::flip .main.board
     }
   } else {
     # should not happen
@@ -1051,7 +1058,7 @@ proc openExportGList {} {
   pack [frame $w.b] -side bottom -fill x
   dialogbutton $w.b.default -text "Default" -command {set glexport $glexportDefault}
   dialogbutton $w.b.ok -text "OK" -command saveExportGList
-  dialogbutton $w.b.close -textvar ::tr(Cancel) -command "focus . ; destroy $w"
+  dialogbutton $w.b.close -textvar ::tr(Cancel) -command "focus .main ; destroy $w"
   pack $w.b.close $w.b.ok -side right -padx 5 -pady 2
   pack $w.b.default -side left -padx 5 -pady 2
   wm resizable $w 1 0
@@ -1093,7 +1100,7 @@ proc saveExportGList {} {
     tk_messageBox -type ok -icon warning -title "Scid" -message $err
     return
   }
-  focus .
+  focus .main
   grab release .glexport
   destroy .glexport
   return

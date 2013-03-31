@@ -201,7 +201,7 @@ proc ::game::LoadNumber {} {
     if {[catch {sc_game load $::game::entryLoadNumber} result]} {
       tk_messageBox -type ok -icon info -title "Scid" -message $result
     }
-    focus .
+    focus .main
     destroy .glnumDialog
     flipBoardForPlayerNames $::myPlayerNames
     updateBoard -pgn
@@ -209,10 +209,10 @@ proc ::game::LoadNumber {} {
     updateTitle
   }
   dialogbutton $b.cancel -text $::tr(Cancel) -command {
-    focus .
+    focus .main
     grab release .glnumDialog
     destroy .glnumDialog
-    focus .
+    focus .main
   }
   packbuttons right $b.cancel $b.load
 
@@ -309,16 +309,16 @@ proc ::game::GotoMoveNumber {} {
     if {$::game::moveEntryNumber > 0} {
       catch {sc_move ply [expr {($::game::moveEntryNumber - 1) * 2}] ; sc_move forward}
     }
-    focus .
+    focus .main
     destroy .mnumDialog
     # updateBoard -pgn
     updateBoard
   }
   dialogbutton $b.cancel -text $::tr(Cancel) -command {
-    focus .
+    focus .main
     grab release .mnumDialog
     destroy .mnumDialog
-    focus .
+    focus .main
   }
   packbuttons right $b.cancel $b.load
 

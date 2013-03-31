@@ -302,6 +302,16 @@ menuText S OptionsWindowsIconify "Autominimizar" 4 \
 menuText S OptionsWindowsRaise "Poner a la vista automáticamente" 0 \
   {Hace visibles ciertas ventanas (ej. barras de progreso) siempre que sean tapadas}
 menuText S OptionsSounds "Sonidos" 2 {Configura el sonido del anuncio de las jugadas}
+menuText S OptionsWindowsDock "Ventanas en dique" 0 {Ventanas en dique}
+menuText S OptionsWindowsSaveLayout "Salvar disposición" 0 {Salva la disposición}
+menuText S OptionsWindowsRestoreLayout "Restaurar disposición" 0 \
+  {Restaura la disposición}
+menuText S OptionsWindowsShowGameInfo "Mostrar información de la partida" 0 \
+  {Muestrar información de la partida}
+menuText S OptionsWindowsAutoLoadLayout "Auto cargar primera disposición" 0 \
+  {Autocarga la primera disposición al iniciar}
+# todo
+menuText S OptionsWindowsAutoResize "Auto resize board" 0 {}
 menuText S OptionsToolbar "Barra de Herramientas" 9 \
   {Muestra/oculta la barra de herramientas de la ventana principal}
 menuText S OptionsECO "Cargar Archivo ECO" 7 \
@@ -1635,6 +1645,15 @@ translate S IEUnableToStart {Imposible empezar Tablero (Ext):}
 
 # Calculation of Variations
 translate S DoneWithPosition {Hecho con la posición}
+translate S Board {Tablero}
+translate S showGameInfo {Mostrar información de la partida}
+translate S autoResizeBoard {Tamaño automático del tablero}
+translate S DockTop {Mover arriba}
+translate S DockBottom {Mover abajo}
+translate S DockLeft {Mover a la izquierda}
+translate S DockRight {Mover a la derecha}
+translate S Undock {Ventana flotante}
+translate S ChangeIcon {Cambiar icono}
 }
 # end of spanish.tcl
 

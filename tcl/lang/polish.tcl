@@ -286,6 +286,18 @@ menuText P OptionsWindowsIconify "Minimalizuj wszystkie okna" 0 \
 menuText P OptionsWindowsRaise "Automatyczne uaktywnianie" 0 \
   {Automatycznie uaktywniaj niektóre okna (np. pasek postêpu), gdy s± zas³oniête}
 menuText P OptionsSounds "D¼wiêki..." 0 {Konfiguruj d¼wiêki zapowiadaj±ce ruchy}
+# ====== TODO To be translated ======
+menuText P OptionsWindowsDock "Dock windows" 0 {Dock windows}
+# ====== TODO To be translated ======
+menuText P OptionsWindowsSaveLayout "Save layout" 0 {Save layout}
+# ====== TODO To be translated ======
+menuText P OptionsWindowsRestoreLayout "Restore layout" 0 {Restore layout}
+# ====== TODO To be translated ======
+menuText P OptionsWindowsShowGameInfo "Show game info" 0 {Show game info}
+# ====== TODO To be translated ======
+menuText P OptionsWindowsAutoLoadLayout "Auto load first layout" 0 {Auto load first layout at startup}
+# todo
+menuText P OptionsWindowsAutoResize "Auto resize board" 0 {}
 menuText P OptionsToolbar "Pasek narzêdziowy" 6 \
   {Schowaj/poka¿ pasek narzêdziowy}
 menuText P OptionsECO "Wczytaj ksi±¿kê debiutow±..." 16 \
@@ -1594,6 +1606,25 @@ translate P IESynchronise {Synchronizuj}
 translate P IERotate  {Obróæ}
 translate P IEUnableToStart {Nie mo¿na uruchomiæ programu wej¶ciowego:}
 translate P DoneWithPosition {Pozycja zakoñczona}
+# ====== TODO To be translated ======
+translate P Board {Board}
+# ====== TODO To be translated ======
+translate P showGameInfo {Show game info}
+# ====== TODO To be translated ======
+translate P autoResizeBoard {Automatic resize of board}
+# ====== TODO To be translated ======
+translate P DockTop {Move to top}
+# ====== TODO To be translated ======
+translate P DockBottom {Move to bottom}
+# ====== TODO To be translated ======
+translate P DockLeft {Move to left}
+# ====== TODO To be translated ======
+translate P DockRight {Move to right}
+# ====== TODO To be translated ======
+translate P Undock {Undock}
+# ====== TODO To be translated ======
+translate P ChangeIcon {Change icon}
+# ====== TODO To be translated ======
 }
 
 ### Tips of the day in Polish:

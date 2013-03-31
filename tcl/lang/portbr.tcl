@@ -310,6 +310,13 @@ menuText B OptionsWindowsIconify "Auto-iconizar" 5 \
 menuText B OptionsWindowsRaise "Manter no topo" 0 \
   {Mantem no topo certas janelas (ex. barras de progresso) sempre que sao obscurecidas por outras}
 menuText B OptionsSounds "Sounds..." 2 {Configure move announcement sounds} ;# ***
+menuText B OptionsWindowsDock "Estacionar janelas" 0 {Estaciona as janelas}
+menuText B OptionsWindowsSaveLayout "Salvar layout" 0 {Salva o layout das janelas}
+menuText B OptionsWindowsRestoreLayout "Restaurar layout" 0 {Restaura layout}
+menuText B OptionsWindowsShowGameInfo "Mostrar Informações do Jogo" 0 {Mostra informações do jogo}
+menuText B OptionsWindowsAutoLoadLayout "Carregar primeiro layout na entrada" 0 {Carrega automaticamente o primeiro layout ao entrar na aplicação}
+# todo
+menuText B OptionsWindowsAutoResize "Auto resize board" 0 {}
 menuText B OptionsToolbar "Barra de Ferramentas da Janela Principal" 12 \
   {Exibe/Oculta a barra de ferramentas da janela principal}
 menuText B OptionsECO "Carregar arquivo ECO..." 7 {Carrega o arquivo com a classificacao ECO}
@@ -1827,9 +1834,17 @@ translate B CCDlgConfigRelay {Observe games}
 # ====== TODO To be translated ======
 translate B CCDlgConfigRelayHelp {Go to the games page on http://www.iccf-webchess.com and display the game to be observed.  If you see the chessboard copy the URL from your browser to the list below. One URL per line only!\nExample: http://www.iccf-webchess.com/MakeAMove.aspx?id=266452}
 
-# ====== TODO To be translated ======
-translate B DoneWithPosition {Done with position}
-# ====== TODO To be translated ======
+translate B DoneWithPosition {Posição definida}
+translate B Board {Tabuleiro}
+translate B showGameInfo {Mostrar informações do jogo}
+translate B autoResizeBoard {Tamanho automático do tabuleiro}
+translate B DockTop {Mover para cima}
+translate B DockBottom {Mover para o final}
+translate B DockLeft {Mover para a esquerda}
+translate B DockRight {Mover para a direita}
+translate B Undock {Desacoplar}
+translate B ChangeIcon {Alterar icone}
+
 }
 
 # end of portbr.tcl

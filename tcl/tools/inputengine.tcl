@@ -349,25 +349,25 @@ namespace eval ExtHardware {
      close $optionF
      set ::statusBar "External hardware options were saved to: [scidConfigFile correspondence]"
 
-     if { [winfo exists .button.exthardware]} { 
+     if { [winfo exists .main.button.exthardware]} { 
         catch {
         if { $::ExtHardware::showbutton} {
-	   pack .button.space4 .button.exthardware -side left -padx 2
+	   pack .main.button.space4 .main.button.exthardware -side left -padx 2
         } else {
-	   pack forget .button.space4 .button.exthardware
+	   pack forget .main.button.space4 .main.button.exthardware
         }
         }
         return 
      } else {
         if { $::ExtHardware::showbutton == 1 } {
-           frame .button.space4 -width 15
+           frame .main.button.space4 -width 15
 
-           button .button.exthardware -image tb_eng_disconnected
-           .button.exthardware configure -relief flat -border 1 -highlightthickness 0 -anchor n -takefocus 0
+           button .main.button.exthardware -image tb_eng_disconnected
+           .main.button.exthardware configure -relief flat -border 1 -highlightthickness 0 -anchor n -takefocus 0
 
-           pack .button.space4 .button.exthardware -side left -padx 2
+           pack .main.button.space4 .main.button.exthardware -side left -padx 2
 
-           .button.exthardware configure -command $::ExtHardware::bindbutton
+           .main.button.exthardware configure -command $::ExtHardware::bindbutton
         }
      }
 
@@ -378,7 +378,7 @@ namespace eval ExtHardware {
   proc HWbuttonImg {img} {
 
     if { $::ExtHardware::showbutton == 1 } {
-      .button.exthardware configure -image $img -relief flat
+      .main.button.exthardware configure -image $img -relief flat
     }
   }
 
@@ -485,14 +485,14 @@ namespace eval ExtHardware {
      # Add the button to connect the engine to the button bar
      if { $::ExtHardware::showbutton == 1 } {
 
-        frame .button.space4 -width 15
-        button .button.exthardware -image tb_eng_disconnected
-        .button.exthardware configure -relief flat -border 1 -highlightthickness 0 \
+        frame .main.button.space4 -width 15
+        button .main.button.exthardware -image tb_eng_disconnected
+        .main.button.exthardware configure -relief flat -border 1 -highlightthickness 0 \
             -anchor n -takefocus 0
-        pack .button.space4 .button.exthardware -side left -pady 1 -padx 0 -ipadx 0 -pady 0 -ipady 0
-        pack .button.exthardware -side left -pady 1 -padx 0 -ipadx 0 -pady 0 -ipady 0
+        pack .main.button.space4 .main.button.exthardware -side left -pady 1 -padx 0 -ipadx 0 -pady 0 -ipady 0
+        pack .main.button.exthardware -side left -pady 1 -padx 0 -ipadx 0 -pady 0 -ipady 0
 
-        .button.exthardware configure -command $::ExtHardware::bindbutton
+        .main.button.exthardware configure -command $::ExtHardware::bindbutton
      }
 
     ::splash::add "External hardware configuration was found and loaded."
@@ -1063,7 +1063,7 @@ namespace eval inputengine {
           "DGT Projects - This DGT board" {
             set ::inputengine::connectimg tb_eng_dgt
             set txt [string range $event 7 end]
-            ## ::utils::tooltip::Set .button.exthardware "$::inputengine::port:\n$txt"
+            ## ::utils::tooltip::Set .main.button.exthardware "$::inputengine::port:\n$txt"
           } \
         } \
         default  {

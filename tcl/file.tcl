@@ -228,6 +228,15 @@ proc ::file::Open {{fName ""} {parent .} {update 1}} {
   unbusyCursor .
   set glstart 1
 
+  ### Hmmm - Check if tree/bestgames exists for this base, and update tab name
+  set current [sc_base current]
+  if {[winfo exists .treeWin$current]} {
+    ::setTitle .treeWin$current "[tr Tree] \[[file tail [sc_base filename $current]]\]"
+  }
+  if {[winfo exists .treeBest$current]} {
+    ::setTitle .treeBest$current "$::tr(TreeBestGames) \[[file tail [sc_base filename $current]]\]"
+  }
+
   refreshWindows
   refreshSearchDBs
 
@@ -437,8 +446,11 @@ proc openBase {name} {
     set err [catch {sc_base open $name} result]
   }
   if {$showProgress} { closeProgressWindow }
-  if {$err} { return -code error $result }
-  return $result
+  if {$err} {
+    return -code error $result
+  } else {
+    return $result
+  }
 }
 
 

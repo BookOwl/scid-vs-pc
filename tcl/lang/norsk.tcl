@@ -332,6 +332,18 @@ menuText O OptionsWindowsIconify "Auto-minimer" 5 \
 menuText O OptionsWindowsRaise "Autoheving" 0 \
   {Hever visse vinduer (fremdriftsvisere etc) når de er skjult}
 menuText O OptionsSounds "Sounds..." 2 {Configure move announcement sounds} ;# ***
+# ====== TODO To be translated ======
+menuText O OptionsWindowsDock "Dock windows" 0 {Dock windows}
+# ====== TODO To be translated ======
+menuText O OptionsWindowsSaveLayout "Save layout" 0 {Save layout}
+# ====== TODO To be translated ======
+menuText O OptionsWindowsRestoreLayout "Restore layout" 0 {Restore layout}
+# ====== TODO To be translated ======
+menuText O OptionsWindowsShowGameInfo "Show game info" 0 {Show game info}
+# ====== TODO To be translated ======
+menuText O OptionsWindowsAutoLoadLayout "Auto load first layout" 0 {Auto load first layout at startup}
+# todo
+menuText O OptionsWindowsAutoResize "Auto resize board" 0 {}
 menuText O OptionsToolbar "Verktøylinje i hovedvindu" 0 \
   {Vis/skjul menylinjen i hovedvinduet}
 menuText O OptionsECO "Hent ECO-fil..." 0 {Henter filen med ECO-klassifiseringer}
@@ -2010,6 +2022,25 @@ translate O IEUnableToStart {Unable to start Input Engine:}
 # ====== TODO To be translated ======
 translate O DoneWithPosition {Done with position}
 # ====== TODO To be translated ======
+translate O Board {Board}
+# ====== TODO To be translated ======
+translate O showGameInfo {Show game info}
+# ====== TODO To be translated ======
+translate O autoResizeBoard {Automatic resize of board}
+# ====== TODO To be translated ======
+translate O DockTop {Move to top}
+# ====== TODO To be translated ======
+translate O DockBottom {Move to bottom}
+# ====== TODO To be translated ======
+translate O DockLeft {Move to left}
+# ====== TODO To be translated ======
+translate O DockRight {Move to right}
+# ====== TODO To be translated ======
+translate O Undock {Undock}
+# ====== TODO To be translated ======
+translate O ChangeIcon {Change icon...}
+# ====== TODO To be translated ======
+
 }
 
 # norsk.tcl

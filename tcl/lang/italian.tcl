@@ -295,6 +295,18 @@ menuText I OptionsWindowsIconify "Minimizza automaticamente" 5 \
 menuText I OptionsWindowsRaise "Auto-aumenta" 0 \
   {Aumenta alcune finestre (per es. le barre di progresso) ogni volta che sono oscurate}
 menuText I OptionsSounds "Sounds..." 2 {Configure move announcement sounds} ;# ***
+# ====== TODO To be translated ======
+menuText I OptionsWindowsDock "Dock windows" 0 {Dock windows}
+# ====== TODO To be translated ======
+menuText I OptionsWindowsSaveLayout "Save layout" 0 {Save layout}
+# ====== TODO To be translated ======
+menuText I OptionsWindowsRestoreLayout "Restore layout" 0 {Restore layout}
+# ====== TODO To be translated ======
+menuText I OptionsWindowsShowGameInfo "Show game info" 0 {Show game info}
+# ====== TODO To be translated ======
+menuText I OptionsWindowsAutoLoadLayout "Auto load first layout" 0 {Auto load first layout at startup}
+# todo
+menuText I OptionsWindowsAutoResize "Auto resize board" 0 {}
 menuText I OptionsToolbar "Barra degli strumenti" 12 \
   {Mostra/nasconde la barra degli strumenti nella finestra principale}
 menuText I OptionsECO "Carica il file ECO..." 15 {Carica il file di classificazione ECO}
@@ -1707,6 +1719,25 @@ translate I IERotate  {Rotate}
 # ====== TODO To be translated ======
 translate I IEUnableToStart {Unable to start Input Engine:}
 translate I DoneWithPosition {Posizione conclusa}
+# ====== TODO To be translated ======
+translate I Board {Board}
+# ====== TODO To be translated ======
+translate I showGameInfo {Show game info}
+# ====== TODO To be translated ======
+translate I autoResizeBoard {Automatic resize of board}
+# ====== TODO To be translated ======
+translate I DockTop {Move to top}
+# ====== TODO To be translated ======
+translate I DockBottom {Move to bottom}
+# ====== TODO To be translated ======
+translate I DockLeft {Move to left}
+# ====== TODO To be translated ======
+translate I DockRight {Move to right}
+# ====== TODO To be translated ======
+translate I Undock {Undock}
+# ====== TODO To be translated ======
+translate I ChangeIcon {Change icon}
+
 }
 
 ############################################################

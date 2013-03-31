@@ -51,10 +51,12 @@ proc ::tree::treeFileSave {base} {
   unbusyCursor .
 }
 
-proc ::tree::OpenClose {} {
+proc ::tree::OpenClose {{baseNumber 0}} {
   global tree helpMessage
 
-  set baseNumber [sc_base current]
+  if {!$baseNumber} {
+    set baseNumber [sc_base current]
+  }
   set w .treeWin$baseNumber
 
   if {[winfo exists $w]} {
@@ -62,11 +64,11 @@ proc ::tree::OpenClose {} {
     return
   }
 
-  toplevel $w
+  ::createToplevel $w
   setWinLocation $w
   setWinSize $w
 
-  wm title $w "[tr Tree] \[[file tail [sc_base filename $baseNumber]]\]"
+  ::setTitle $w "[tr Tree] \[[file tail [sc_base filename $baseNumber]]\]"
   set tree(training$baseNumber) 0
   set tree(autorefresh$baseNumber) 1
   set tree(locked$baseNumber) 0
@@ -84,7 +86,10 @@ proc ::tree::OpenClose {} {
   # as $w.f.tl.g (bar graph in text window) is generating Destroy(s)
 
   bind $w <F1> {helpWindow Tree}
-  bind $w <Escape> "$w.buttons.close invoke"
+  bind $w <Escape> "
+     if {!\[::tree::hideCtxtMenu $baseNumber\]} {
+      $w.buttons.close invoke
+     }"
 
   # Bind left button to close ctxt menu:
   bind $w <ButtonPress-1> "::tree::hideCtxtMenu $baseNumber"
@@ -92,7 +97,7 @@ proc ::tree::OpenClose {} {
   standardShortcuts $w
 
   menu $w.menu
-  $w configure -menu $w.menu
+  ::setMenu $w $w.menu
   $w.menu add cascade -label TreeFile -menu $w.menu.file
   $w.menu add cascade -label TreeMask -menu $w.menu.mask
   $w.menu add cascade -label TreeSort -menu $w.menu.sort
@@ -209,7 +214,7 @@ proc ::tree::OpenClose {} {
 
   bind $w.f.tl <Destroy> {
     set win "%W"
-    bind $win <Destroy> {}
+    # bind $win <Destroy> {}
     set bn ""
     scan $win ".treeWin%%d.f.tl" bn
     ::tree::closeTree $tree(base$bn)
@@ -250,7 +255,7 @@ proc ::tree::OpenClose {} {
   }
 
   dialogbutton $w.buttons.stop -textvar ::tr(Stop) -command { sc_progressBar }
-  dialogbutton $w.buttons.close -textvar ::tr(Close) -command "::tree::closeTree $baseNumber"
+  dialogbutton $w.buttons.close -textvar ::tr(Close) -command "destroy $w"
 
   pack $w.buttons.best $w.buttons.training $w.buttons.refresh $w.buttons.adjust \
       -side left -padx 3 -pady 2
@@ -260,16 +265,22 @@ proc ::tree::OpenClose {} {
 
   wm minsize $w 40 5
 
-  wm protocol $w WM_DELETE_WINDOW " .treeWin$baseNumber.buttons.close invoke "
+  ### Now caught by <Destroy> above
+  # wm protocol $w WM_DELETE_WINDOW ".treeWin$baseNumber.buttons.close invoke"
+
   ::tree::refresh $baseNumber
   set ::tree::cachesize($baseNumber) [lindex [sc_tree cacheinfo $baseNumber] 1]
 }
+
 ################################################################################
 proc ::tree::hideCtxtMenu { baseNumber } {
   set w .treeWin$baseNumber.f.tl.ctxtMenu
   if {[winfo exists $w]} {
     destroy $w
     focus .treeWin$baseNumber
+    return 1
+  } else {
+    return 0
   }
 }
 ################################################################################
@@ -288,7 +299,6 @@ proc ::tree::selectCallback { baseNumber move } {
 # close the corresponding base if it is flagged as locked
 proc ::tree::closeTree {baseNumber} {
   global tree
-
   wm protocol .treeWin$baseNumber WM_DELETE_WINDOW {}
   ::tree::mask::close .treeWin$baseNumber
   # needs closing explicitly if based open as tree and bestgames is open
@@ -303,7 +313,7 @@ proc ::tree::closeTree {baseNumber} {
   trace remove variable tree(bestRes$baseNumber) write "::tree::doTrace bestRes"
 
   set ::geometry(treeWin$baseNumber) [wm geometry .treeWin$baseNumber]
-  focus .
+  focus .main
 
   # sc_tree clean $tree(base$baseNumber)
 
@@ -313,17 +323,18 @@ proc ::tree::closeTree {baseNumber} {
     unbusyCursor .
   }
 
+  sc_tree clean $baseNumber
   if {$::tree(locked$baseNumber)} {
     ::file::Close $baseNumber
-  } else {
-    if {[winfo exists .treeBest$baseNumber]} {
-      destroy .treeBest$baseNumber
-    }
-    destroy .treeWin$baseNumber
   }
-  sc_tree clean $baseNumber
+
+  ::docking::cleanup .treeWin$baseNumber
+
+  ### Implicit
+  # destroy .treeWin$baseNumber
+
   ::windows::gamelist::Refresh
-  ::windows::stats::Refresh; 
+  ::windows::stats::Refresh
 }
 
 ################################################################################
@@ -333,7 +344,9 @@ proc ::tree::doTrace { prefix name1 name2 op} {
         -message "Scan failed in trace code\ndoTrace $prefix $name1 $name2 $op"
     return
   }
-  ::tree::best $baseNumber
+  if {[winfo exists .treeBest$baseNumber]} {
+    ::tree::best $baseNumber
+  }
 }
 
 proc ::tree::toggleTraining { baseNumber } {
@@ -464,7 +477,6 @@ set tree(refresh) 0
 proc ::tree::refresh {{ baseNumber {} }} {
 
   # set stack [lsearch -glob -inline -all [ wm stackorder . ] ".treeWin*"]
-
   if {$baseNumber != {} } {
     if {[winfo exists .treeWin$baseNumber]} {
       ::tree::dorefresh $baseNumber
@@ -551,7 +563,6 @@ proc ::tree::dorefresh { baseNumber } {
 
 proc ::tree::displayLines { baseNumber moves } {
   global ::tree::mask::maskFile
-
   ::tree::mask::setCacheFenIndex
 
   set lMoves {}
@@ -596,7 +607,11 @@ proc ::tree::displayLines { baseNumber moves } {
     $w.f.tl insert end "    "
     $w.f.tl tag bind tagclick0 <Button-2> "::tree::mask::contextMenu $w.f.tl dummy %x %y %X %Y ; break"
   }
-  $w.f.tl insert end "[lindex $moves 0]\n" tagclick0
+  if {[string match This* [lindex $moves 0]]} {
+    $w.f.tl insert 0.0 "[lindex $moves 0]"
+  } else {
+    $w.f.tl insert end "[lindex $moves 0]\n" tagclick0
+  }
 
   ### Hmmm - some of the markers (images) might be 17 or 18 width, and they make the
   ### bargraph stick out a little. todo - resize all markers to 16
@@ -1012,13 +1027,14 @@ proc ::tree::toggleBest { baseNumber } {
 
 proc ::tree::best { baseNumber } {
   global tree
+
   set w .treeBest$baseNumber
   if {! [winfo exists .treeWin$baseNumber]} { return }
   # Hmmm... listbox widgets seem to clash, so need this hack
   if {[winfo exists .variations]} { return }
   if {! [winfo exists $w]} {
-    toplevel $w
-    wm title $w "$::tr(TreeBestGames) \[[file tail [sc_base filename $baseNumber]]\]"
+    ::createToplevel $w
+    ::setTitle $w "$::tr(TreeBestGames) \[[file tail [sc_base filename $baseNumber]]\]"
     setWinLocation $w
     setWinSize $w
     bind $w <Escape> "destroy $w"
@@ -1046,12 +1062,14 @@ proc ::tree::best { baseNumber } {
     pack $w.b.result $w.b.res -side left -padx 5 -pady 5
     bind $w <Configure> "recordWinSize $w"
     focus $w.blist.list
+    ::createToplevelFinalize $w
   }
   $w.blist.list delete 0 end
   set tree(bestList$baseNumber) {}
   set count 0
 
   if {! [sc_base inUse]} { return }
+catch {
   foreach {idx line} [sc_tree best $tree(base$baseNumber) $tree(bestMax$baseNumber) $tree(bestRes$baseNumber)] {
     incr count
     # listbox widget does not like ' character
@@ -1059,6 +1077,7 @@ proc ::tree::best { baseNumber } {
     $w.blist.list insert end "  $line"
     lappend tree(bestList$baseNumber) $idx
   }
+}
 }
 
 

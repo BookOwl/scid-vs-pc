@@ -1628,7 +1628,7 @@ proc addAnalysisVariation {n} {
   ::tools::graphs::score::Refresh
   if {$isAt_vend && ![sc_pos isAt vend]} {
     # sucessfully extended variation
-    .button.forward configure -state normal
+    .main.button.forward configure -state normal
   }
 }
 
@@ -1815,14 +1815,17 @@ proc makeAnalysisMove {n} {
 # destroyAnalysisWin:
 #   Closes an engine, because its analysis window is being destroyed.
 
-proc destroyAnalysisWin {n} {
+proc destroyAnalysisWin {n W} {
 
   # Is this working properly. We seem to have a process left S.A.
 
   global windowsOS analysis annotateButton annotateEngine
 
   puts_ "destroyAnalysisWin $n"
-  bind .analysisWin$n <Destroy> {}
+  if {[string trim $W] != ".analysisWin$n"} {
+    # ignore individual widget destroys
+    return
+  }
 
 
   if {[winfo exists .configAnnotation]} {
@@ -1881,6 +1884,9 @@ proc destroyAnalysisWin {n} {
   }
   set analysis(pipe$n) {}
   set ::analysisWin$n 0
+
+  ::docking::cleanup ".analysisWin$n"
+
 
   # Large tournaments can get wrecked by undead processes, so kill it to be sure
   if {(!$windowsOS)} {
@@ -1984,7 +1990,7 @@ proc makeAnalysisWin {{n 0} {settime 0}} {
 
   if {[winfo exists $w]} {
     ### Stop engine and exit
-    focus .
+    focus .main
     destroy $w
     set analysisWin$n 0
     resetEngine $n
@@ -2048,7 +2054,7 @@ proc makeAnalysisWin {{n 0} {settime 0}} {
 
     set analysisWin$n 0
     resetEngine $n
-    return
+    return -1
   }
 
   set analysisWin$n 1
@@ -2078,12 +2084,16 @@ proc makeAnalysisWin {{n 0} {settime 0}} {
 
   # Set up the  analysis window:
 
-  toplevel $w
-  wm title $w "$analysisName"
+  if {$::comp(playing)} {
+    toplevel $w
+  } else {
+    ::createToplevel $w
+  }
+  ::setTitle $w "$analysisName"
 
   if {$n == 1 && $analysis(mini)} {
     # Run engine in status bar. It is "niced" at procedure end.
-    wm state $w withdrawn
+    catch {wm state $w withdrawn}
   }
 
   bind $w <F1> { helpWindow Analysis }
@@ -2224,8 +2234,8 @@ proc makeAnalysisWin {{n 0} {settime 0}} {
       changes. So if you see this message, try changing the board \
       by moving backward or forward or making a new move.)"
   $w.text configure -state disabled
-  bind $w <Destroy> "destroyAnalysisWin $n"
-  bind $w <Escape> "focus .; destroy $w"
+  bind $w <Destroy> "destroyAnalysisWin $n %W"
+  bind $w <Escape> "focus .main ; destroy $w"
   bind $w <Key-a> "$w.b.startStop invoke"
   bind $w <Return> "addAnalysisMove $n"
   wm minsize $w 25 0
@@ -2303,12 +2313,12 @@ proc toggleMini {} {
 
   if {$analysis(mini)} {
     # make window small
-    wm state .analysisWin1 withdrawn
+    catch {wm state .analysisWin1 withdrawn}
     update
     set analysis(priority1) idle ; # nice priority
   } else {
     # make window big
-    wm state .analysisWin1 normal
+    catch {wm state .analysisWin1 normal}
     updateStatusBar
     update
     .analysisWin1.hist.text yview moveto 1
@@ -2319,10 +2329,10 @@ proc toggleMini {} {
 
 ### Add move from first analysis n (or first analysis window, if any)
 
-proc addAnalysisMove {{n 0}} {
+proc addAnalysisMove {{n -1}} {
 
-  # todo : bug here 0 can be an engine &&&
-  if {!$n} {
+  if {$n == -1} {
+    # todo:  [ wm stackorder . ] is bokre for docked mode
     set w [lsearch -glob -inline [ wm stackorder . ] {.analysisWin*}]
     if {[scan $w ".analysisWin\%d" n] != 1} {
       # Engine 1 can run iconified in statusbar, so check for it
@@ -3533,20 +3543,20 @@ proc setAutomoveTime {{n 0}} {
   set b [frame $w.buttons]
   pack $b -side top -fill x
   dialogbutton $b.cancel -textvar ::tr(Cancel) -command {
-    focus .
+    focus .main
     catch {grab release .apdialog}
     destroy .apdialog
-    focus .
+    focus .main
     set dialogResult Cancel
   }
   dialogbutton $b.ok -text OK -command {
     catch {grab release .apdialog}
     if {$temptime < 0.1} { set temptime 0.1 }
     set analysis(automoveTime$tempn) [expr {int($temptime * 1000)} ]
-    focus .
+    focus .main
     catch {grab release .apdialog}
     destroy .apdialog
-    focus .
+    focus .main
     set dialogResult OK
   }
 

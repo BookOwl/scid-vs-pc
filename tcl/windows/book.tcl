@@ -114,9 +114,9 @@ namespace eval book {
 
     set ::book::isOpen 1
 
-    toplevel $w
-    wm title $w $::tr(Book)
-wm minsize $w 50 200
+    ::createToplevel $w
+    ::setTitle $w $::tr(Book)
+    wm minsize $w 50 200
     wm resizable $w 0 1
 
     setWinLocation $w
@@ -249,6 +249,7 @@ if {0} {
       destroy  .bookWin
     }
 }
+    ::createToplevelFinalize $w
     bind $w <Configure> "recordWinSize $w"
     ::book::bookSelect
   }
@@ -257,7 +258,7 @@ if {0} {
   #
   ################################################################################
   proc closeMainBook {} {
-focus .
+    focus .main
     if { $::book::currentBook1 != "" } {
       sc_book close $::book::bookSlot1
       set ::book::currentBook1 ""
@@ -513,7 +514,7 @@ focus .
   ################################################################################
   proc closeTuningBook {} {
     if { $::book::currentTuningBook == "" } { return }
-    focus .
+    focus .main
     sc_book close $::book::bookTuningSlot
     set ::book::currentTuningBook ""
   }

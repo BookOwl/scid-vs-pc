@@ -325,6 +325,13 @@ menuText N OptionsWindowsIconify "Auto-icoon" 5 \
 menuText N OptionsWindowsRaise "Auto-voorgrond" 0 \
   {Breng sommige vensters terug op de voorgrond (bvb. voortgangsbalken) gelijk wanneer ze verdwijnen.}
 menuText N OptionsSounds "Geluiden ..." 2 {Configureer zet aankondigingsgeluiden} ;
+menuText N OptionsWindowsDock "Veranker de vensters" 0 {Veranker de vensters}
+menuText N OptionsWindowsSaveLayout "Opmaak opslaan" 0 {Opmaak opslaan}
+menuText N OptionsWindowsRestoreLayout "Opmaak herstellen" 0 {Opmaak herstellen}
+menuText N OptionsWindowsShowGameInfo "Toon de informatie over de partij" 0 {Toon de informatie over de partij}
+menuText N OptionsWindowsAutoLoadLayout "Auto laad eerste layout" 0 {Auto laad eerste layout bij opstarten}
+# todo
+menuText N OptionsWindowsAutoResize "Auto resize board" 0 {}
 menuText N OptionsToolbar "Gereedschappenbalk" 12 \
   {Weergeven/verbergen hoofdvenster gereedschappenbalk}
 menuText N OptionsECO "ECO data laden..." 0 \
@@ -1885,8 +1892,17 @@ translate N IERotate  {Rotate}
 # ====== TODO To be translated ======
 translate N IEUnableToStart {Unable to start Input Engine:}
 # ====== TODO To be translated ======
-translate N DoneWithPosition {Done with position}
-# ====== TODO To be translated ======
+translate N DoneWithPosition {Klaar met deze stelling}
+translate N Board {Bord}
+translate N showGameInfo {Toon de partij informatie}
+translate N autoResizeBoard {Verander bord automatisch van grootte}
+translate N DockTop {Zend naar eeste plaats}
+translate N DockBottom {Zend naar laatste plaats}
+translate N DockLeft {Zend naar links}
+translate N DockRight {Zend naar rechts}
+translate N Undock {Undock}
+translate N ChangeIcon {Verander ikoon}
+
 }
 # End of nederlan.tcl
 

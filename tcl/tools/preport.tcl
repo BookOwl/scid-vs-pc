@@ -261,7 +261,7 @@ proc ::preport::makeReportWin {args} {
     button $w.b.help -textvar ::tr(Help) -command {helpWindow Reports Player}
     button $w.b.viewHTML -text $::tr(OprepViewHTML) -command ::preport::previewHTML
     button $w.b.update -textvar ::tr(Update) -command ::preport::preportDlg
-    button $w.b.close -textvar ::tr(Close) -command "focus .; destroy $w"
+    button $w.b.close -textvar ::tr(Close) -command "focus .main ; destroy $w"
     pack $w.b -side bottom -fill x
     pack $w.scroll -side top -fill both -expand yes
     pack $w.b.close $w.b.update -side right -padx 2 -pady 2

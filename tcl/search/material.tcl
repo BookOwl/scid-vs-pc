@@ -586,7 +586,7 @@ proc ::search::material {} {
   }
 
   dialogbutton $f.cancel -textvar ::tr(Close) \
-      -command { focus .; destroy .sm }
+      -command { focus .main ; destroy .sm }
 
   pack $f.ignorecol $w.b3.save -side left -pady 5 -padx 5
   pack $w.b3.cancel $w.b3.stop $w.b3.search -side right -pady 5 -padx 5

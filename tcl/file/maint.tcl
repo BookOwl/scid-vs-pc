@@ -503,7 +503,6 @@ proc ::maint::SetAutoloadGame {{parent .}} {
   bind $w.f.entry <Return> "$w.b.ok invoke"
   bind $w.f.entry <Escape> "$w.b.cancel invoke"
   wm resizable $w 0 0
-  ::utils::win::Centre $w
   placeWinOverParent $w $parent
   wm state $w normal
 }
@@ -650,7 +649,7 @@ proc markTwins {{parent .}} {
     if {[twinCriteriaOK .twinSettings]} {
       sc_progressBar .twinSettings.progress bar 301 21 time
       set result [doMarkDups .twinSettings]
-      focus .
+      focus .main
       destroy .twinSettings
       if {$result > 0} {
         set gn [sc_filter first]
@@ -661,7 +660,7 @@ proc markTwins {{parent .}} {
   }
 
   button $w.b.cancel -text $::tr(Cancel) -font $small \
-      -command "focus . ; destroy $w"
+      -command "focus .main ; destroy $w"
 
   # Progress bar
 
@@ -802,12 +801,12 @@ proc checkAllGames {} {
       .checkGames.f.progress create text 295 10 -anchor e -font font_Regular -tags time \
       -fill black -text "[tr Game]s Ok"
     }
-    .checkGames.f.b.cancel configure -command {focus .; destroy .checkGames}
+    .checkGames.f.b.cancel configure -command {focus .main ; destroy .checkGames}
     .checkGames.f.b.cancel configure -textvar ::tr(Close)
     ::windows::gamelist::Refresh
   }
   dialogbutton $w.f.b.help   -textvar ::tr(Help) -command {helpWindow Maintenance Check}
-  dialogbutton $w.f.b.cancel -textvar ::tr(Close) -command "focus .; destroy $w"
+  dialogbutton $w.f.b.cancel -textvar ::tr(Close) -command "focus .main ; destroy $w"
   canvas $w.f.progress -width 300 -height 20 -bg white -relief solid -border 1
   $w.f.progress create rectangle 0 0 0 0 -fill $::progcolor -outline $::progcolor -tags bar
   $w.f.progress create text 295 10 -anchor e -font font_Regular -tags time \
@@ -901,11 +900,11 @@ proc makeClassifyWin {{parent .}} {
       grab release .classify.b.cancel
       unbusyCursor .
     }
-    .classify.b.cancel configure -command {focus .; destroy .classify}
+    .classify.b.cancel configure -command {focus .main ; destroy .classify}
     .classify.b.cancel configure -textvar ::tr(Close)
     ::windows::gamelist::Refresh
   }
-  button $w.b.cancel -textvar ::tr(Close) -command "focus .; destroy $w"
+  button $w.b.cancel -textvar ::tr(Close) -command "focus .main ; destroy $w"
   canvas $w.progress -width 300 -height 20  -relief solid -border 1
   $w.progress create rectangle 0 0 0 0 -fill $::progcolor -outline $::progcolor -tags bar
   $w.progress create text 295 10 -anchor e -font font_Regular -tags time \
@@ -1005,11 +1004,11 @@ proc updateTwinChecker {} {
     button $w.b.share -text $::tr(TwinCheckTag) -underline 0
     button $w.b.delete -text $::tr(DeleteTwins) -underline 0 -command "markTwins $w"
     button $w.b.help -text $::tr(Help) -command {helpWindow Maintenance Twins}
-    button $w.b.close -text $::tr(Close) -command "focus .; destroy $w"
+    button $w.b.close -text $::tr(Close) -command "focus .main ; destroy $w"
     pack $w.b.close $w.b.help $w.b.delete -side right -padx 5 -pady 2
     pack $w.b.prev $w.b.next $w.b.share -side left -padx 5 -pady 2
     bind $w <F1> "$w.b.help invoke"
-    bind $w <Escape> "focus .; destroy $w"
+    bind $w <Escape> "focus .main ; destroy $w"
     bind $w <KeyPress-Left> {::game::LoadNextPrev previous}
     bind $w <KeyPress-Right> {::game::LoadNextPrev next}
     bind $w <Alt-d> "markTwins $w"
@@ -1570,7 +1569,7 @@ proc makeCompactWin {{parent .}} {
   button $w.buttons.n -text $::tr(CompactNames) -command compactNames
   button $w.buttons.g -text $::tr(CompactGames) -command "compactGames $w"
   button $w.buttons.help -text $::tr(Help) -command {helpWindow Compact}
-  button $w.buttons.cancel -text $::tr(Close) -command "focus . ; destroy $w"
+  button $w.buttons.cancel -text $::tr(Close) -command "focus .main ; destroy $w"
   pack $w.buttons.cancel $w.buttons.help -side right -padx 5 -pady 2
   pack $w.buttons.n $w.buttons.g -side left -padx 5 -pady 2
 
@@ -1761,7 +1760,7 @@ proc makeSortWin {{parent .}} {
   button $w.b.clear -textvar ::tr(Clear) -command clearSortCriteria
   button $w.b.help -textvar ::tr(Help) -command {helpWindow Sorting}
   button $w.b.sort -textvar ::tr(Sort) -command sortDatabase
-  button $w.b.close -textvar ::tr(Close) -command "focus .; destroy $w"
+  button $w.b.close -textvar ::tr(Close) -command "focus .main ; destroy $w"
   pack $w.b.close $w.b.sort -side right -padx 5 -pady 2
   pack $w.b.clear $w.b.help -side left -padx 5 -pady 2
   bind $w <F1> {helpWindow Sorting}

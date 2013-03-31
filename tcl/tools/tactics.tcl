@@ -42,7 +42,7 @@ namespace eval tactics {
   # TODO preset the filter on flag == Tactics to speed up searching
 
   proc findBestMove {} {
-    bind .board  <Double-Button-1> ::tactics::findBestMove
+    bind .main.board  <Double-Button-1> ::tactics::findBestMove
     set ::gameInfo(hideNextMove) 1
     if {$::pgnWin} {
       ::pgn::OpenClose
@@ -206,7 +206,7 @@ namespace eval tactics {
 
     frame $w.fconfig.fbutton
     dialogbutton $w.fconfig.fbutton.ok -text Ok -command ::tactics::start
-    dialogbutton $w.fconfig.fbutton.cancel -text $::tr(Cancel) -command "focus .; destroy $w"
+    dialogbutton $w.fconfig.fbutton.cancel -text $::tr(Cancel) -command "focus .main ; destroy $w"
     pack $w.fconfig.fbutton.ok $w.fconfig.fbutton.cancel -expand yes -side left -padx 20 -pady 2
     pack $w.fconfig $w.fconfig.flist $w.fconfig.reset -side top
 
@@ -310,7 +310,7 @@ namespace eval tactics {
     ::file::Close
 
     set ::askToReplaceMoves $::tactics::askToReplaceMoves_old
-    focus .
+    focus .main
     destroy $w
 
     set ::gameInfo(hideNextMove) 1
@@ -453,8 +453,8 @@ namespace eval tactics {
   # flips the board if necessary so the side to move is at the bottom
   ################################################################################
   proc sideToMoveAtBottom {} {
-    if { [sc_pos side] == "white" && [::board::isFlipped .board] || [sc_pos side] == "black" &&  ![::board::isFlipped .board] } {
-      ::board::flip .board
+    if { [sc_pos side] == "white" && [::board::isFlipped .main.board] || [sc_pos side] == "black" &&  ![::board::isFlipped .main.board] } {
+      ::board::flip .main.board
     }
   }
 
@@ -464,8 +464,8 @@ namespace eval tactics {
 
   # We should probably disable "flip board" button, as it breaks game
   proc isPlayerTurn {} {
-    if { [sc_pos side] == "white" &&  ![::board::isFlipped .board] || \
-         [sc_pos side] == "black" &&  [::board::isFlipped .board] } {
+    if { [sc_pos side] == "white" &&  ![::board::isFlipped .main.board] || \
+         [sc_pos side] == "black" &&  [::board::isFlipped .main.board] } {
       return 1
     } else {
       return 0
@@ -500,9 +500,9 @@ namespace eval tactics {
     updateTitle
     updateStatusBar
     updateBoard -pgn
-    if { [sc_pos side] == "white" && [::board::isFlipped .board] \
-      || [sc_pos side] == "black" &&  ![::board::isFlipped .board] } {
-      ::board::flip .board
+    if { [sc_pos side] == "white" && [::board::isFlipped .main.board] \
+      || [sc_pos side] == "black" &&  ![::board::isFlipped .main.board] } {
+      ::board::flip .main.board
     }
     set ::tactics::prevFen [sc_pos fen]
     ::tactics::startAnalyze

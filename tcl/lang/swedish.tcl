@@ -283,6 +283,13 @@ menuText W OptionsWindowsIconify "Minimera automatiskt" 5 \
 menuText W OptionsWindowsRaise "Autofokus" 0 \
   {Visa åter vissa fönster (t ex. resultaträknare) automatiskt när de döljs}
 menuText W OptionsSounds "Ljud..." 2 {Konfigurera ljud för att annonsera drag}
+menuText W OptionsWindowsDock "Dockningsfönster" 0 {Dockningsfönster}
+menuText W OptionsWindowsSaveLayout "Spara layout" 0 {Sparar layout}
+menuText W OptionsWindowsRestoreLayout "Återställ layout" 0 {Återställer layout}
+menuText W OptionsWindowsShowGameInfo "Visa partiinformation" 0 {Visar partiinformation}
+menuText W OptionsWindowsAutoLoadLayout "Automatiskt öppna första layouten" 0 {Öppnar automatiskt första layouten vid uppstart}
+# todo
+menuText W OptionsWindowsAutoResize "Auto resize board" 0 {}
 menuText W OptionsToolbar "Verktygsfält" 0 \
   {Visa/ dölj huvudfönstrets verktygsfält}
 menuText W OptionsECO "Ladda ECO fil..." 7 {Ladda ECO-klassificeringen vid start}
@@ -1585,6 +1592,15 @@ translate W IESyncrhonise {Synkronisera}
 translate W IERotate  {Rotera}
 translate W IEUnableToStart {Kan inte starta Inmatningsmotor:}
 translate W DoneWithPosition {Klar med position}
+translate W Board {Bräde}
+translate W showGameInfo {Visa partiinformation}
+translate W autoResizeBoard {Ändra storleken på brädet automatiskt}
+translate W DockTop {Drag överst}
+translate W DockBottom {Drag nederst}
+translate W DockLeft {Drag till vänster}
+translate W DockRight {Drag till höger}
+translate W Undock {Avdocka}
+translate W ChangeIcon {Ändra ikon...}
 }
 
 ##########

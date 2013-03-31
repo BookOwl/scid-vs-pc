@@ -314,6 +314,13 @@ menuText H OptionsWindowsIconify "Automatikus ikonizálás" 12 \
 menuText H OptionsWindowsRaise "Automatikus elõhozás" 12 \
   {Elõhoz bizonyos ablakokat (pl. elõrehaladás-sávokat), amikor el vannak takarva.}
 menuText H OptionsSounds "Hangok..." 3 {Lépéseket bejelentõ hangok definiálása}
+menuText H OptionsWindowsDock "Ablakok helyhez rögzítése" 8 {Dock windows}
+menuText H OptionsWindowsSaveLayout "Elrendezés mentése" 11 {Ablakelrendezés mentése}
+menuText H OptionsWindowsRestoreLayout "Elrendezés visszaállítása" 11 {Ablakelrendezés visszaállítása}
+menuText H OptionsWindowsShowGameInfo "Játszmainformáció" 0 {Játszma adatainak megjelenítése ablakban}
+menuText H OptionsWindowsAutoLoadLayout "Az elsõ elrendezés automatikus betöltése" 19 {Induláskor automatikusan betölti az elsõ ablakelrendezést.}
+# todo
+menuText H OptionsWindowsAutoResize "Auto resize board" 0 {}
 menuText H OptionsToolbar "Eszköztár" 0 {A fõ ablak eszköztárának összeállítása}
 menuText H OptionsECO "ECO-fájl betöltése..." 2 {Betölti az ECO-osztályozó fájlt.}
 menuText H OptionsSpell "Helyesírás-ellenõrzõ fájl betöltése..." 0 \
@@ -1914,7 +1921,16 @@ translate H IERotate  {Rotate}
 translate H IEUnableToStart {Unable to start Input Engine:}
 # ====== TODO To be translated ======
 translate H DoneWithPosition {Done with position}
+translate H Board {Sakktábla}
+translate H showGameInfo {A játszma adatai}
+translate H autoResizeBoard {A sakktábla automatikus átméretezése}
+translate H DockTop {Mozgatás felülre}
+translate H DockBottom {Mozgatás alulra}
+translate H DockLeft {Mozgatás balra}
+translate H DockRight {Mozgatás jobbra}
+translate H Undock {Feloldás}
 # ====== TODO To be translated ======
+translate H ChangeIcon {Change icon}
 }
 
 # Tips of the day in Hungarian

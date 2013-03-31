@@ -525,7 +525,7 @@ proc search::header {} {
   }
 
   button $w.b.cancel -textvar ::tr(Close) -padx 20 \
-      -command {focus .; destroy .sh}
+      -command {focus .main ; destroy .sh}
 
   foreach i {defaults save cancel search stop} {
     $w.b.$i configure -font $regular

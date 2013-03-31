@@ -307,6 +307,13 @@ menuText D OptionsWindowsIconify "Autom. minimieren" 7 \
 menuText D OptionsWindowsRaise "Autom. Verwaltung" 7 \
   {Bestimmte Fenster (z.B. Zustandsleiste) bei Bedarf öffnen}
 menuText D OptionsSounds "Töne..." 0 {Töne für Zugankündigung einstellen} ;# *** Hmm, :-|
+menuText D OptionsWindowsDock "Fenster docken" 0 {Fenster docken}
+menuText D OptionsWindowsSaveLayout "Save layout" 0 {Save layout}
+menuText D OptionsWindowsRestoreLayout "Restore layout" 0 {Restore layout}
+menuText D OptionsWindowsShowGameInfo "Partieinformationen" 0 {Partieinformation anzeigen}
+menuText D OptionsWindowsAutoLoadLayout "Automatisch laden: 1. Layout" 0 {Lädt das erste definierte Layout automatisch beim Programmstart}
+# todo
+menuText D OptionsWindowsAutoResize "Auto resize board" 0 {}
 menuText D OptionsToolbar "Werkzeugleiste" 0 {Werkzeug- bzw. Symbolleiste Ein/Aus}
 menuText D OptionsECO "ECO-Datei laden..." 0 {ECO-Klassifikationsdatei laden}
 menuText D OptionsSpell "Schreibkorrekturdatei laden..." 7 \
@@ -1645,6 +1652,15 @@ translate D IESynchronise {Synchronisieren}
 translate D IERotate  {Brett drehen}
 translate D IEUnableToStart {Input Engine konnte nicht gestartet werden:}
 translate D DoneWithPosition {Positionsbearbeitung beendet}
+translate D Board {Brett}
+translate D showGameInfo {Partieinformation anzeigen}
+translate D autoResizeBoard {Brettgröße automatisch berechnen}
+translate D DockTop {Nach oben}
+translate D DockBottom {Nach unten}
+translate D DockLeft {Nach links}
+translate D DockRight {Nach rechts}
+translate D Undock {Fenster befreien}
+translate D ChangeIcon {Symbol ändern}
 }
 
 ##########

@@ -794,9 +794,9 @@ proc changeBaseType {baseNum {parent .}} {
 
   dialogbutton $w.b.set -text "OK" -command \
     "catch {sc_base type $baseNum \$temp_dbtype}; ::windows::switcher::Refresh; ::maint::Refresh;
-     focus .; destroy $w"
+     focus .main ; destroy $w"
 
-  dialogbutton $w.b.cancel -text $::tr(Cancel) -command "focus .; destroy $w"
+  dialogbutton $w.b.cancel -text $::tr(Cancel) -command "focus .main ; destroy $w"
   pack $w.b.set $w.b.cancel -side left -padx 5
 
   set numtypes [llength $base_types]
@@ -890,7 +890,7 @@ proc ::windows::switcher::Open {} {
   standardShortcuts $w
 
   button $w.bookmarks -relief flat
-  bind   $w.bookmarks <ButtonPress-1> "tk_popup .tb.bkm.menu %X %Y ; break"
+  bind   $w.bookmarks <ButtonPress-1> "tk_popup .main.tb.bkm.menu %X %Y ; break"
   grid $w.bookmarks -row 0 -column 0 -padx 5
 
   canvas $w.c -borderwidth 0 -highlightthickness 0 
@@ -925,7 +925,7 @@ proc ::windows::switcher::Open {} {
 
     $f.menu add separator
 
-    $f.menu add command -label {Change icon} -command "changeBaseType $i .glistWin"
+    $f.menu add command -label [tr ChangeIcon] -command "changeBaseType $i .glistWin"
 
     $f.menu add checkbutton -label {Show icons} -variable ::windows::switcher::icons \
       -command ::windows::switcher::Refresh
@@ -1083,9 +1083,15 @@ proc copyFilter {frombaseNum tobaseNum} {
     set err "$::tr(CopyErrSource) == $::tr(CopyErrTarget)."
   }
 
+  if {$::docking::USE_DOCKING} {
+    set parent .
+  } else {
+    set parent .glistWin.baseWin
+  }
+
   if {$err != ""} {
     tk_messageBox -type ok -icon info -title "Scid" \
-        -message "$::tr(CopyErr) \nfrom \"$fromName\" to \"$targetName\".\n$err" -parent .glistWin.baseWin
+        -message "$::tr(CopyErr) \nfrom \"$fromName\" to \"$targetName\".\n$err" -parent $parent
     return
   }
 
@@ -1099,7 +1105,7 @@ proc copyFilter {frombaseNum tobaseNum} {
     ::windows::gamelist::Refresh
     # hmmmm... how to stop . getting raised over .glistWin ?
     if {$copyErr} {
-      tk_messageBox -type ok -icon info -title "Scid" -message $result -parent .glistWin.baseWin
+      tk_messageBox -type ok -icon info -title "Scid" -message $result -parent $parent
     }
     return
   }
@@ -1117,7 +1123,7 @@ proc copyFilter {frombaseNum tobaseNum} {
     grab $w.b.cancel
     if {\[catch {sc_filter copy $frombaseNum $tobaseNum} result\]} {
       tk_messageBox -type ok -icon info \
-	  -title \"Scid\" -message \$result -parent .glistWin.baseWin
+	  -title \"Scid\" -message \$result -parent $parent
     }
     unbusyCursor .
     destroy $w
@@ -1132,7 +1138,7 @@ proc copyFilter {frombaseNum tobaseNum} {
   pack $w.text $w.b -side top -pady 2
   pack $w.bar -side bottom
   pack $w.b.go $w.b.cancel -side left -padx 10 -pady 10
-  placeWinOverParent $w .glistWin
+  placeWinOverParent $w $parent
   wm state $w normal
   grab $w
   bind $w <Return> "$w.b.go invoke"

@@ -1908,7 +1908,7 @@ namespace eval CorrespondenceChess {
 
 		set w .ccWindow
 		if {[winfo exists .ccWindow]} {
-			focus .
+			focus .main
 			destroy .ccWindow
 			set ::CorrespondenceChess::isOpen 0
 			return

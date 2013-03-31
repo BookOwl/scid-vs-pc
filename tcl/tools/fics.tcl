@@ -256,9 +256,9 @@ namespace eval fics {
     destroy .ficsConfig
 
     set w .fics
-    toplevel $w
-    wm title $w "FICS ($::fics::reallogin)"
-    wm state $w withdrawn
+    ::createToplevel $w
+    ::setTitle $w "FICS ($::fics::reallogin)"
+    catch {wm state $w withdrawn}
 
     busyCursor .
 
@@ -374,8 +374,8 @@ namespace eval fics {
     # white
     ::gameclock::new $w.bottom.clocks 1 100 0 vertical
 
-    label .board.clock2 -textvar ::gameclock::data(time2)
-    label .board.clock1 -textvar ::gameclock::data(time1)
+    label .main.board.clock2 -textvar ::gameclock::data(time2)
+    label .main.board.clock1 -textvar ::gameclock::data(time1)
     ::board::ficslabels
 
     set ::fics::playing 0
@@ -489,7 +489,7 @@ namespace eval fics {
 
     setWinLocation $w
     setWinSize $w
-    wm state $w normal
+    catch {wm state $w normal}
     update
 
     # all widgets must be visible
@@ -1065,13 +1065,13 @@ namespace eval fics {
       } else {
         set ::fics::timecontrol {}
       }
-      if { [::board::isFlipped .board] } {
-        if { [ string match -nocase $white $::fics::reallogin ] } { ::board::flip .board }
+      if { [::board::isFlipped .main.board] } {
+        if { [ string match -nocase $white $::fics::reallogin ] } { ::board::flip .main.board }
       } else {
-        if { [ string match -nocase $black $::fics::reallogin ] } { ::board::flip .board }
+        if { [ string match -nocase $black $::fics::reallogin ] } { ::board::flip .main.board }
       }
       updateBoard -pgn -animate
-      wm title . "$::scidName: $white - $black ($::fics::timecontrol)"
+      wm title $::dot_w "$::scidName: $white - $black ($::fics::timecontrol)"
 
       if {$::fics::sound} {
 	::utils::sound::PlaySound sound_move
@@ -1916,7 +1916,7 @@ namespace eval fics {
 	updateGameinfo
 	set moves [lreverse [lrange $line 1 8]]
 	set boardmoves [string map { "-" "." " " "" } $moves]
-	::board::update .board $boardmoves 1
+	::board::update .main.board $boardmoves 1
 	.button.back    configure -state normal
 	.button.forward configure -state normal
 	.button.start   configure -state normal
@@ -1925,7 +1925,7 @@ namespace eval fics {
 	sc_game tags set -result $::fics::examresult
 	updateBoard -pgn
       }
-      wm title . "$::scidName: $white - $black (examining game $ficsGameNum)"
+      wm title $::dot_w "$::scidName: $white - $black (examining game $ficsGameNum)"
       return
     }
 
@@ -2051,7 +2051,7 @@ namespace eval fics {
 
       set ::fics::mutex 0
       updateBoard -pgn
-      wm title . "$::scidName: $white - $black ($::fics::timecontrol)"
+      wm title $::dot_w "$::scidName: $white - $black ($::fics::timecontrol)"
 
       if {$::fics::playing != 1 && $::fics::playing != -1 && $::fics::observedGames != {}} {
         writechan "primary $game"
@@ -2291,8 +2291,8 @@ namespace eval fics {
     variable logged
 
     bind .fics <Destroy> {}
-    destroy .board.clock2
-    destroy .board.clock1
+    destroy .main.board.clock2
+    destroy .main.board.clock1
 
     # Unused
     if {$mode == "safe"} {
@@ -2321,6 +2321,7 @@ namespace eval fics {
     after cancel ::fics::clearPing
     if { ! $::windowsOS } { catch { exec -- kill -s INT [ $::fics::timeseal_pid ] }  }
 
+    ::docking::cleanup .fics
     catch {destroy .ficsOffers}
     catch {destroy .fics}
   }
@@ -2363,13 +2364,14 @@ namespace eval fics {
   proc checkRaise {} {
     # only autoraise if greater than 1.5 seconds since last entry keyboard input
     if {$::fics::autoraise && [expr {[clock milli] - $::fics::entrytime > 1500}]} {
-      if {[wm state .] != {normal}} {
-	  wm deiconify .
+      if {[wm state $::dot_w] != {normal}} {
+          # fixme : what is the best way to not generate <Map> which in turn raiseAllWindows and leave fics on top.
+	  wm deiconify $::dot_w
       }
-      raise .
-      focus .
+      raise .main
+      focus .main
     }
-}
+  }
 
   proc setForeGround {} {
     set fg [tk_chooseColor -initialcolor $::fics::consolefg -title {FICS Text} -parent .]

@@ -77,18 +77,20 @@ namespace eval pgn {
     set w .pgnWin
 
     if {[winfo exists $w]} {
-      focus .
+      focus .main
       destroy $w
       set pgnWin 0
       return
     }
-    toplevel $w
+
+    ::createToplevel $w
+
     wm minsize $w 18 4
     setWinLocation $w
     setWinSize $w
 
     menu $w.menu
-    $w configure -menu $w.menu
+    ::setMenu $w $w.menu
 
     foreach i {file opt color help} label {PgnFile PgnOpt PgnColor PgnHelp} tear {0 1 1 0} {
       $w.menu add cascade -label $label -menu $w.menu.$i -underline 0
@@ -103,7 +105,7 @@ namespace eval pgn {
     $w.menu.file add separator
 
     $w.menu.file add command -label PgnFileClose -accelerator Esc \
-        -command "focus .; destroy $w"
+        -command "focus .main ; destroy $w"
 
     $w.menu.opt add checkbutton -label PgnOptShort \
         -variable ::pgn::shortHeader -command {updateBoard -pgn}
@@ -199,7 +201,7 @@ namespace eval pgn {
         destroy .pgnWin.text.ctxtMenu
         focus .pgnWin
       } else {
-        focus .
+        focus .main
         destroy .pgnWin
       }
     }
@@ -218,6 +220,8 @@ namespace eval pgn {
 
     # Populate text widget &&&
     ::pgn::ResetColors
+
+    ::createToplevelFinalize $w
   }
 
   ### Set the tab stops for the pgn window (only used in column mode)
@@ -495,7 +499,7 @@ namespace eval pgn {
 
     if {$pgnNeedsUpdate} {
       set windowTitle [format $::tr(PgnWindowTitle) [sc_game number]]
-      wm title .pgnWin "$windowTitle"
+      ::setTitle .pgnWin "$windowTitle"
       .pgnWin.text configure -state normal
       .pgnWin.text delete 0.0 end
       if {$::pgn::showColor} {

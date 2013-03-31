@@ -35,13 +35,17 @@ proc recordWinSize {win} {
   global winWidth winHeight winX winY macOS
 
   if {![winfo exists $win]} { return }
+  # dont record geom of docked windows
+  if {$::docking::USE_DOCKING && ($win == "." || ![::docking::isWindow $win])} {
+    return
+  }
   set geom [wm geometry $win]
-  set maingeom [wm geometry .]
+  set maingeom [wm geometry .main]
 
   set n [scan $geom "%dx%d+%d+%d" width height x y]
   scan $maingeom "%dx%d+%d+%d" mainwidth mainheight mainx mainy
   if {$n == 4} {
-    if {$win == "."} {
+    if {$win == ".main"} {
       # trick to handle main window
       if {$macOS} {
         # If it goes to 0 0, the whole top bar is under the MacOS menubar and you can't move it
@@ -64,10 +68,10 @@ proc setWinLocation {win} {
 
   if {[info exists winX($win)]  &&  [info exists winY($win)] } {
 
-    set maingeom [wm geometry .]
+    set maingeom [wm geometry .main]
     scan $maingeom "%dx%d+%d+%d" mainwidth mainheight mainx mainy
 
-    if {$win == "."} {
+    if {$win == ".main"} {
       # trick to handle main window
       if {$macOS} {
         # If it goes to 0 0, the whole top bar is under the MacOS menubar and you can't move it
@@ -84,8 +88,8 @@ proc setWinLocation {win} {
     # these reqwidth etc are not getting set right, probably because of an update issue
     set reqwidth [winfo reqwidth $win]
     set reqheight [winfo reqheight $win]
-    set max_x [expr [winfo screenwidth .]]
-    set max_y [expr [winfo screenheight .]]
+    set max_x [expr [winfo screenwidth .main]]
+    set max_y [expr [winfo screenheight .main]]
 
     if {[expr {$x + $reqwidth > $max_x}]} { set x [expr $max_x - $reqwidth] }
     if {[expr {$y + $reqheight > $max_y}]} { set y [expr $max_y - $reqheight] }

@@ -335,6 +335,18 @@ menuText R OptionsWindowsRaise "Авто-выдвижение" 1 \
   {Выдвигатьть определенные окна (например, полосу прогресса) всякий раз, когда они скрыты}
 # ====== TODO To be translated ======
 menuText R OptionsSounds "Sounds..." 2 {Configure move announcement sounds}
+# ====== TODO To be translated ======
+menuText R OptionsWindowsDock "Dock windows" 0 {Dock windows}
+# ====== TODO To be translated ======
+menuText R OptionsWindowsSaveLayout "Save layout" 0 {Save layout}
+# ====== TODO To be translated ======
+menuText R OptionsWindowsRestoreLayout "Restore layout" 0 {Restore layout}
+# ====== TODO To be translated ======
+menuText R OptionsWindowsShowGameInfo "Show game info" 0 {Show game info}
+# ====== TODO To be translated ======
+menuText R OptionsWindowsAutoLoadLayout "Auto load first layout" 0 {Auto load first layout at startup}
+# todo
+menuText R OptionsWindowsAutoResize "Auto resize board" 0 {}
 menuText R OptionsToolbar "Инструментальная панель" 0 {Конфигурация инструментальной панели основного окна}
 menuText R OptionsECO "Загрузить файл ECO..." 2 { Загрузить файл классификации ECO}
 menuText R OptionsSpell "Загрузить файл проверки правописания..." 4 \
@@ -2045,6 +2057,23 @@ translate R IEUnableToStart {Unable to start Input Engine:}
 # ====== TODO To be translated ======
 translate R DoneWithPosition {Done with position}
 # ====== TODO To be translated ======
+translate R Board {Board}
+# ====== TODO To be translated ======
+translate R showGameInfo {Show game info}
+# ====== TODO To be translated ======
+translate R autoResizeBoard {Automatic resize of board}
+# ====== TODO To be translated ======
+translate R DockTop {Move to top}
+# ====== TODO To be translated ======
+translate R DockBottom {Move to bottom}
+# ====== TODO To be translated ======
+translate R DockLeft {Move to left}
+# ====== TODO To be translated ======
+translate R DockRight {Move to right}
+# ====== TODO To be translated ======
+translate R Undock {Undock}
+# ====== TODO To be translated ======
+translate R ChangeIcon {Change icon}
 }
 # end of russian.tcl
 

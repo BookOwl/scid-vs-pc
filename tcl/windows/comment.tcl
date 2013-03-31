@@ -42,7 +42,7 @@ proc ::commenteditor::addNag {nag} {
 proc makeCommentWin {} {
   if {[winfo exists .commentWin]} {
     # ::commenteditor::close
-    focus .
+    focus .main
     destroy .commentWin
   } else {
     ::commenteditor::Open
@@ -61,7 +61,9 @@ proc ::commenteditor::Open {} {
     return
   }
 
-  toplevel $w
+  ::createToplevel $w
+  ::setTitle $w "[tr {Comment Editor}]" ; # todo
+  wm iconname $w "[tr {Comment Editor}]"
   # wm resizable $w 0 1
   # wm state $w withdrawn
 
@@ -197,7 +199,7 @@ proc ::commenteditor::Open {} {
 
   dialogbutton $w.b.ok -text Ok \
       -command "::commenteditor::storeComment
-                focus .
+                focus .main
                 destroy .commentWin"
   set helpMessage(E,$w.b.ok) {Apply changes and exit}
 
@@ -211,7 +213,7 @@ proc ::commenteditor::Open {} {
 
   frame $w.b.space -width 20
   dialogbutton $w.b.cancel -textvar ::tr(Cancel) \
-      -command "focus .
+      -command "focus .main
                 destroy .commentWin"
   set helpMessage(E,$w.b.cancel) {Close comment editor window}
 
@@ -254,7 +256,7 @@ proc ::commenteditor::Open {} {
 
   set board [::board::new $insertBoard.board 25]
   ::board::showMarks $board 1
-  set ::board::_mark($board) $::board::_mark(.board)
+  set ::board::_mark($board) $::board::_mark(.main.board)
   ::board::update $board
   pack $board -side top
   # TODO?: move this for loop into a new proc (e.g. 'BindSquares')
@@ -307,11 +309,10 @@ proc ::commenteditor::Open {} {
   # setWinSize $w
   # wm state $w normal
 
-  wm title $w "[tr {Comment editor}]"
-  wm iconname $w "[tr {Comment editor}]"
   ::commenteditor::Refresh
 
   focus $w.cf.text
+  ::createToplevelFinalize $w
 }
 
 proc ::commenteditor::toggleBoard {w} {

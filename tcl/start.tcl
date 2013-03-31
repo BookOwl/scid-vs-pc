@@ -28,6 +28,19 @@ package require Tk  8.5
 set windowsOS	[expr {$tcl_platform(platform) == "windows"}]
 set unixOS	[expr {$tcl_platform(platform) == "unix"}]
 
+# debugging (eg) (can affect performance/toolbar)
+if {0} {
+  rename wm oldwm
+  proc wm {args} {
+    if {$::windowsOS} {
+      catch {::splash::add "wm $args"}
+    } else {
+      puts "wm $args"
+    }
+    eval oldwm $args
+  }
+}
+
 if {![catch {tk windowingsystem} wsystem] && $wsystem == "aqua"} {
   set macOS 1
   set scidName {Scid vs. Mac}
@@ -95,7 +108,7 @@ foreach ns {
   ::tb ::optable
   ::board ::move
   ::tacgame ::sergame ::tactics ::calvar ::uci ::fics
-  ::config
+  ::config ::docking
   ::commenteditor
 } {
   namespace eval $ns {}
@@ -172,6 +185,21 @@ set comp(firstonly) 0
 set comp(ponder) 0
 set comp(usebook) 0
 set comp(book) {}
+
+proc ::docking::init_layout_list {{recover 0}} {
+  # List of saved layouts : 3 slots available
+  array set ::docking::layout_list {}
+  
+  # Basic layout : PGN window with main board
+  set ::docking::layout_list(1) {{MainWindowGeometry 834x640} {{.pw vertical {}} {TPanedwindow {{.pw.pw0 horizontal 564} {TNotebook .nb .fdockmain} {TNotebook .tb1 .fdockpgnWin}}}}}
+  if {$recover} {
+    return
+  }
+  set ::docking::layout_list(2) {}
+  set ::docking::layout_list(3) {}
+}
+
+::docking::init_layout_list
 
 ### Tree/mask options:
 set ::tree::mask::recentMask {}
@@ -431,7 +459,7 @@ set glistSelectPly 80
 
 
 # Default window locations:
-foreach i {. .pgnWin .helpWin .crosstabWin .treeWin .commentWin .glist \
+foreach i {. .main .pgnWin .helpWin .crosstabWin .treeWin .commentWin .glist \
       .playerInfoWin .baseWin .treeBest .tourney .finder \
       .ecograph .statsWin .glistWin .maintWin .nedit} {
   set winX($i) -1
@@ -735,7 +763,10 @@ set autoRaise 1
 proc raiseWin {w} {
   global autoRaise
   if {$autoRaise} {
-    wm deiconify $w
+    if {$w == "." } {
+     set w .main
+    }
+    catch {wm deiconify $w}
     raise $w
     focus $w
   }
@@ -751,11 +782,227 @@ proc raiseWin {w} {
 
 set autoIconify 1
 
+# windowsDock:
+# if true, most of toplevel windows are dockable and embedded in a main window
+# windows can be moves among tabs (drag and drop) or undocked (right-clicking on tab)
+set windowsDock 1
+
+# autoLoadLayout :
+# Automatic loading of layout # 1 at startup (docked windows mode only)
+set autoLoadLayout 1
+
+# autoResizeBoard:
+# resize the board to fit the container
+set autoResizeBoard 1
+
+################################################################################
+# if undocked window : sets the title of the toplevel window
+# if docked : sets the name of the tab
+# w : name of the toplevel window
+proc setTitle { w title } {
+  if { $::docking::USE_DOCKING && ! [ ::docking::isUndocked $w ]} {
+    set f .fdock[ string range $w 1 end ]
+    if { [catch {set nb [ ::docking::find_tbn $f ]} ]} {
+      set nb ""
+    }
+    
+    if { $nb == "" } {
+      wm title $w $title
+    } else  {
+      # if target is main board, update the global window instead
+      if { $w == ".main" && $title != [ ::tr "Board" ] } {
+        wm title . $title
+      } else  {
+        # in docked mode trim down title to spare space
+        if { [ string range $title 0 5 ] == "Scid: " &&  [ string length $title ] > 6 } {
+          set title [string range $title 6 end]
+        }
+        $nb tab $f -text $title
+      }
+    }
+  } else  {
+    set wdock ".fdock[string range $w 1 end]"
+    if { [winfo exists $wdock ] } { set w $wdock }
+    wm title $w $title
+  }
+  
+}
+################################################################################
+# Creates a toplevel window depending of the docking option
+################################################################################
+proc createToplevel { w } {
+  set name [string range $w 1 end]
+  set f .fdock$name
+
+  # Raise window if already exist
+  if { [winfo exists $w] } {
+    if {! $::docking::USE_DOCKING } {
+      tk::PlaceWindow $w
+    } else {
+      if { [::docking::isUndocked $w] } {
+        tk::PlaceWindow $f
+      } else {
+        [::docking::find_tbn $f] select $f
+      }
+    }
+    return "already_exists"
+  }
+
+  if { $::docking::USE_DOCKING && ! [ ::docking::isUndocked $w ] } {
+    frame $f  -container 1
+    toplevel .$name -use [ winfo id $f ]
+    docking::add_tab $f e
+    
+    # auto focus mode : when the mouse enters a toplevel, it gets a forced focus to handle mouse wheel
+    # only the highest stacked window can get the focus forced or on windows any time the mouse enters the main window, it will be raised
+    bind .$name <Enter> {
+      set tl [winfo toplevel %W]
+      set atTop [lindex [wm stackorder . ] end]
+      if { $tl == $atTop || $atTop == "." } {
+        focus -force $tl
+      }
+    }
+    
+  } else  {
+    toplevel $w
+  }
+  
+}
+
+################################################################################
+# In the case of a window closed without the context menu in docked mode, arrange for the tabs to be cleaned up
+# Alternative way : directly call ::docking::cleanup $w when closing window
+################################################################################
+proc createToplevelFinalize {w} {
+  if { $::docking::USE_DOCKING } {
+    bind $w <Destroy> +[ namespace code "::docking::cleanup $w %W"]
+    if {[info tclversion] == "8.6" } {
+      # nasty bug segfaults !
+      bind $w <Escape> {}
+    }
+  }
+}
+
+################################################################################
+# Sets the menu for a new window : in docked mode the menu is displayed by clicking on the tab of the notebook
+################################################################################
+proc setMenu {w m} {
+  if { ! $::docking::USE_DOCKING } {
+    $w configure -menu $m
+  }
+}
+################################################################################
+# In docked mode, resize board automatically
+################################################################################
+proc resizeMainBoard {} {
+  global gameInfo board
+
+  if { ! $::docking::USE_DOCKING } { return }
+  
+  bind .main <Configure> {}
+  
+  set w [winfo width .main]
+  set h [winfo height .main]
+  set bd .main.board
+  
+  ### calculate available height
+
+  set height_used 0
+  if {$gameInfo(showTool)} {
+    incr height_used [ lindex [grid bbox .main 0 0] 3]
+  }
+  if {$gameInfo(showButtons)} {
+    incr height_used [ lindex [grid bbox .main 0 1] 3]
+  }
+
+  # coordinates
+  if { $::board::_coords($bd) == 2 || $::board::_coords($bd) == 0} {
+    incr height_used [ lindex [ grid bbox $bd 1 9 ] 3 ]
+  }
+  if { $::board::_coords($bd) == 0 } {
+    incr height_used [ lindex [ grid bbox $bd 1 0 ] 3 ]
+  }
+
+  # game info &&& fixme
+  set min_game_info_height [expr {6 + $gameInfo(showFEN) + $::macOS}]
+  set game_info_line_height 5
+  set min_game_info_lines 1
+  if {$gameInfo(show)} {
+    set min_game_info_lines 5
+    set game_info_lines [.main.gameInfo count -displaylines 1.0 end]
+    if { $game_info_lines > 0 } {
+      # probably not very correct, do you know any better way to get this information?
+      set game_info_line_height [expr 1.0 * [.main.gameInfo count -ypixels 1.0 end] / $game_info_lines]
+    } else {
+      # utter approximation
+      set game_info_line_height [expr [font configure font_Regular -size] * 1.5]
+    }
+    set min_game_info_height [expr int($min_game_info_lines * $game_info_line_height + 5)]
+  }
+  incr height_used $min_game_info_height
+  
+  # status bar
+  incr height_used [ lindex [grid bbox .main 0 4] 3]
+  
+  set availh [expr $h - $height_used]
+  
+  ### calculate available width
+
+  set width_used 0
+  if { $::board::_coords($bd) == 2 || $::board::_coords($bd) == 0} {
+    incr width_used [ lindex [ grid bbox $bd 2 1 ] 2 ]
+  }
+  if { $::board::_coords($bd) == 0 } {
+    incr width_used [ lindex [ grid bbox $bd 11 1 ] 2 ]
+  }
+  if {$::board::_stm($bd)} {
+    incr width_used [ lindex [ grid bbox $bd 1 1] 2 ]
+    incr width_used [ lindex [ grid bbox $bd 0 2 ] 2 ]
+  }
+  if {$::board::_showmat($bd)} {
+    incr width_used [ lindex [ grid bbox $bd 12 1 ] 2 ]
+  }
+  # Not quite perfect for some reason (-16)
+  set availw [expr $w - $width_used -16] 
+  
+  if {$availh < $availw} {
+    set min $availh
+  } else  {
+    set min $availw
+  }
+
+  if { $::autoResizeBoard } {
+    # find the closest available size
+    for {set i 0} {$i < [llength $::boardSizes]} {incr i} {
+      set newSize [lindex $::boardSizes $i]
+      if { $newSize > [ expr $min / 8 ] } {
+        if {$i > 0} {
+          set newSize [lindex $::boardSizes [expr $i -1] ]
+        }
+        break
+      }
+    }
+    # resize the board
+    ::board::resize .main.board $newSize
+    set ::boardSize $newSize
+  }
+
+  # adjust game info height
+  set new_game_info_lines [expr int(($min_game_info_height+($availh-$::boardSize*8))/$game_info_line_height)]
+  if { $new_game_info_lines > $min_game_info_lines } {
+    set new_game_info_lines [expr $new_game_info_lines - 1]
+  }
+  .main.gameInfo configure -height $new_game_info_lines
+  
+  update idletasks
+  bind .main <Configure> {if { "%W" == ".main" } {::docking::handleConfigureEvent ::resizeMainBoard}}
+}
+
 proc toggleToolbar {} {
   if {$::gameInfo(showTool)} {
-    grid .tb -row 0 -column 0 -columnspan 3 -sticky we
+    grid .main.tb -row 0 -column 0 -columnspan 3 -sticky we
   } else {
-    grid forget .tb
+    grid forget .main.tb
   }
 }
 
@@ -766,38 +1013,39 @@ proc toggleMenubar {} {
 
 proc showMenubar {} {
   if {!$::gameInfo(showMenu)} {
-    . configure -menu {}
+    $::dot_w configure -menu {}
   } else {
-    . configure -menu .menu
+    $::dot_w configure -menu .menu
   }
 }
 
 proc toggleButtonBar {} {
   if {!$::gameInfo(showButtons)} {
-    grid remove .button
+    grid remove .main.button
   } else {
-    grid configure .button -row 1 -column 0 -pady 5 -padx 5
+    grid configure .main.button -row 1 -column 0 -pady 5 -padx 5
   }
 }
 
 proc toggleStatus {} {
   if {!$::gameInfo(showStatus)} {
-    grid remove .statusbar
+    grid remove .main.statusbar
   } else {
-    grid configure .statusbar -row 4 -column 0 -columnspan 3 -sticky we
+    grid configure .main.statusbar -row 4 -column 0 -columnspan 3 -sticky we
   }
 }
 
 proc toggleGameInfo {} {
   set ::gameInfo(show) [expr ! $::gameInfo(show)]
   showGameInfo
+  resizeMainBoard
 }
 
 proc showGameInfo {} {
   if {$::gameInfo(show)} {
-    grid .gameInfoFrame -row 3 -column 0 -sticky nsew -padx 2
+    grid .main.gameInfoFrame -row 3 -column 0 -sticky nsew -padx 2
   } else  {
-    grid forget .gameInfoFrame
+    grid forget .main.gameInfoFrame
   }
   update idletasks
 }
@@ -1086,12 +1334,14 @@ if {! [file isdirectory $scidUserDir]} {
 
 # Create the config, data and log directories if they do not exist:
 proc makeScidDir {dir} {
-  if {! [file isdirectory $dir]} {
+  if {![file isdirectory $dir] || ![file writable $dir]} {
     if {[catch {file mkdir $dir} err]} {
       ::splash::add "Error creating directory $dir: $err" error
     } else {
       ::splash::add "Created directory: $dir"
     }
+  } else { 
+    ::splash::add "Using directory $dir"
   }
 }
 
@@ -1124,6 +1374,24 @@ if {[catch {source $optionsFile} ]} {
   ::splash::add "Error loading options file \"$optionsFile\"" error
 } else {
   ::splash::add "Loaded options from \"$optionsFile\"."
+}
+
+if { [string first "-nodock" [lindex $argv 0]] > -1} {
+  # reset in case of error recovery
+  set windowsDock 0
+  ::docking::init_layout_list 1
+}
+
+if { [string first "-dock" [lindex $argv 0]] > -1} {
+  set windowsDock 1
+}
+
+set ::docking::USE_DOCKING $windowsDock
+
+if {$::docking::USE_DOCKING} {
+  set dot_w .
+} else  {
+  set dot_w .main
 }
 
 # Reconfigure fonts if necessary

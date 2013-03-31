@@ -7,7 +7,7 @@ set ::windows::stats::isOpen 0
 proc ::windows::stats::Open {} {
   set w .statsWin
   if {[winfo exists $w]} {
-    focus .
+    focus .main
     destroy $w
     set ::windows::stats::isOpen 0
     return

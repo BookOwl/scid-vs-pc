@@ -18,7 +18,7 @@ proc ::move::drawVarArrows {} {
       set bDrawn 0      
       set sq_start [ ::board::sq [ string range $move 0 1 ] ]
       set sq_end [ ::board::sq [ string range $move 2 3 ] ]
-        foreach mark $::board::_mark(.board) {
+        foreach mark $::board::_mark(.main.board) {
           if { [lindex $mark 0] == "arrow" ||[string match {var*} [lindex $mark 0]] } {
 	    if {[lindex $mark 1] == $sq_start && [lindex $mark 2] == $sq_end} { 
 	      set bDrawn 1
@@ -42,14 +42,14 @@ proc ::move::showVarArrows {} {
   if {$move != ""} {
     set sq_start [ ::board::sq [ string range $move 0 1 ] ]
     set sq_end [ ::board::sq [ string range $move 2 3 ] ]
-    ::board::mark::add .board var$var $sq_start $sq_end $::maincolor
+    ::board::mark::add .main.board var$var $sq_start $sq_end $::maincolor
     incr var
   }
 
   foreach { move } $varList {
     set sq_start [ ::board::sq [ string range $move 0 1 ] ]
     set sq_end [ ::board::sq [ string range $move 2 3 ] ]
-    ::board::mark::add .board var$var $sq_start $sq_end $::varcolor
+    ::board::mark::add .main.board var$var $sq_start $sq_end $::varcolor
     incr var
   }
 }

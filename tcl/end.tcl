@@ -252,10 +252,10 @@ proc setExportText {exportType} {
   dialogbutton $w.buttons.ok -text "OK" -command "
   set exportStartFile($exportType) \[$pane.start.text get 1.0 end-1c\]
   set exportEndFile($exportType) \[$pane.end.text get 1.0 end-1c\]
-  focus .
+  focus .main
   destroy $w
   "
-  dialogbutton $w.buttons.cancel -text $::tr(Cancel) -command "focus .; destroy $w"
+  dialogbutton $w.buttons.cancel -text $::tr(Cancel) -command "focus .main ; destroy $w"
   pack $w.buttons.default -side left -padx 5 -pady 2
   pack $w.buttons.cancel $w.buttons.ok -side right -padx 5 -pady 2
   focus $pane.start.text
@@ -822,14 +822,14 @@ proc nameEditor {} {
   }
 
   dialogbutton $w.buttons.help -textvar ::tr(Help) -command {helpWindow Maintenance Editing}
-  dialogbutton $w.buttons.cancel -textvar ::tr(Close) -command {focus .; destroy .nedit}
+  dialogbutton $w.buttons.cancel -textvar ::tr(Close) -command {focus .main ; destroy .nedit}
   pack $w.buttons -side top -pady 5
   pack $w.buttons.replace $w.buttons.help $w.buttons.cancel -side left -padx 10
 
   label $w.status -text "" -width 1 -font font_Small -relief sunken -anchor w
 
   wm resizable $w 0 0
-  bind $w <Escape> { focus .; destroy .nedit }
+  bind $w <Escape> { focus .main ; destroy .nedit }
   bind $w <Return> {.nedit.buttons.replace invoke}
   bind $w <Destroy> {set nameEditorWin 0}
   bind $w <F1> {helpWindow Maintenance Editing}
@@ -1122,12 +1122,12 @@ proc gameSave {gnum {focus {}}} {
   bind $w <Alt-s> {
     set extraTags [.save.g.extratext get 1.0 end-1c]
     gsave $gsaveNum;
-    focus .
+    focus .main
     destroy .save
     break
   }
   bind $w <Escape> {
-    focus .
+    focus .main
     destroy .save
   }
 
@@ -1262,115 +1262,123 @@ proc drawArrow {sq color} {
 ##### Bindings for main board. Moves/Drags/etc ######
 
 for {set i 0} { $i < 64 } { incr i } {
-  ::board::bind .board $i <Enter> "enterSquare $i"
-  ::board::bind .board $i <Leave> "leaveSquare $i"
-  ::board::bind .board $i <ButtonPress-1> "pressSquare $i 0"
-  ::board::bind .board $i <ButtonPress-2> "pressSquare $i 1"
-  ::board::bind .board $i <Control-ButtonPress-1> "drawArrow $i \$::::commenteditor::State(markColor)"
-  # ::board::bind .board $i <Control-ButtonPress-2> "drawArrow $i yellow"
-  # ::board::bind .board $i <Control-ButtonPress-3> "drawArrow $i red"
-  ::board::bind .board $i <Shift-ButtonPress-1> "addMarker $i \$::::commenteditor::State(markColor)"
-  # ::board::bind .board $i <Shift-ButtonPress-2> "addMarker $i yellow"
-  # ::board::bind .board $i <Shift-ButtonPress-3> "addMarker $i red"
+  ::board::bind .main.board $i <Enter> "enterSquare $i"
+  ::board::bind .main.board $i <Leave> "leaveSquare $i"
+  ::board::bind .main.board $i <ButtonPress-1> "pressSquare $i 0"
+  ::board::bind .main.board $i <ButtonPress-2> "pressSquare $i 1"
+  ::board::bind .main.board $i <Control-ButtonPress-1> "drawArrow $i \$::::commenteditor::State(markColor)"
+  # ::board::bind .main.board $i <Control-ButtonPress-2> "drawArrow $i yellow"
+  # ::board::bind .main.board $i <Control-ButtonPress-3> "drawArrow $i red"
+  ::board::bind .main.board $i <Shift-ButtonPress-1> "addMarker $i \$::::commenteditor::State(markColor)"
+  # ::board::bind .main.board $i <Shift-ButtonPress-2> "addMarker $i yellow"
+  # ::board::bind .main.board $i <Shift-ButtonPress-3> "addMarker $i red"
 
   ### Too dangerous. (backSquare deprecated for ::move::Back) S.A.
   # Pascal Georges : this should be removed because I find it too dangerous for people with cats ??
-  # ::board::bind .board $i <ButtonPress-3> backSquare
+  # ::board::bind .main.board $i <ButtonPress-3> backSquare
 }
 
 # These binds must be moved back into for loop
 # if we want to use the above "addMarker" bindings
-bind .board.bd <B1-Motion> {::board::dragPiece %X %Y}
-bind .board.bd <ButtonRelease-1> {releaseSquare %X %Y}
-bind .board.bd <ButtonRelease-2> {releaseSquare %X %Y}
+bind .main.board.bd <B1-Motion> {::board::dragPiece %X %Y}
+bind .main.board.bd <ButtonRelease-1> {releaseSquare %X %Y}
+bind .main.board.bd <ButtonRelease-2> {releaseSquare %X %Y}
 
 foreach i {o q r n k O Q R B N K} {
-  bind . <$i> "moveEntry_Char [string toupper $i]"
+  bind .main <$i> "moveEntry_Char [string toupper $i]"
 }
 foreach i {a b c d e f g h 1 2 3 4 5 6 7 8} {
-  bind . <Key-$i> "moveEntry_Char $i"
+  bind .main <Key-$i> "moveEntry_Char $i"
 }
 
-bind . <BackSpace> ::move::Back
-bind . <space>  moveEntry_Complete
-bind . <Escape> "moveEntry_Clear 1"
-bind . <Tab> raiseAllWindows
+bind .main <BackSpace> ::move::Back
+# bind .main <space>  moveEntry_Complete
+bind .main <Escape> "moveEntry_Clear 1"
+bind .main <Tab> raiseAllWindows
 
 ###  Other Key bindings:
 
 # Bindings for quick move annotation entry in the main window:
 
-bind . <exclam><Return> "sc_pos addNag !; updateBoard -pgn"
-bind . <exclam><exclam><Return> "sc_pos addNag !!; updateBoard -pgn"
-bind . <exclam><question><Return> "sc_pos addNag !?; updateBoard -pgn"
-bind . <question><Return> "sc_pos addNag ?; updateBoard -pgn"
-bind . <question><question><Return> "sc_pos addNag ??; updateBoard -pgn"
-bind . <question><exclam><Return> "sc_pos addNag ?!; updateBoard -pgn"
+bind .main <exclam><Return> "sc_pos addNag !; updateBoard -pgn"
+bind .main <exclam><exclam><Return> "sc_pos addNag !!; updateBoard -pgn"
+bind .main <exclam><question><Return> "sc_pos addNag !?; updateBoard -pgn"
+bind .main <question><Return> "sc_pos addNag ?; updateBoard -pgn"
+bind .main <question><question><Return> "sc_pos addNag ??; updateBoard -pgn"
+bind .main <question><exclam><Return> "sc_pos addNag ?!; updateBoard -pgn"
 
-bind . <plus><minus> "sc_pos addNag +-; updateBoard -pgn"
-bind . <plus><slash> "sc_pos addNag +/-; updateBoard -pgn"
-bind . <plus><equal> "sc_pos addNag +=; updateBoard -pgn"
-bind . <equal><Return> "sc_pos addNag =; updateBoard -pgn"
-bind . <minus><plus> "sc_pos addNag -+; updateBoard -pgn"
-bind . <minus><slash> "sc_pos addNag -/+; updateBoard -pgn"
-bind . <equal><plus> "sc_pos addNag =+; updateBoard -pgn"
-bind . <asciitilde><Return> "sc_pos addNag ~; updateBoard -pgn"
-bind . <asciitilde><equal><Return> "sc_pos addNag ~=; updateBoard -pgn"
+bind .main <plus><minus> "sc_pos addNag +-; updateBoard -pgn"
+bind .main <plus><slash> "sc_pos addNag +/-; updateBoard -pgn"
+bind .main <plus><equal> "sc_pos addNag +=; updateBoard -pgn"
+bind .main <equal><Return> "sc_pos addNag =; updateBoard -pgn"
+bind .main <minus><plus> "sc_pos addNag -+; updateBoard -pgn"
+bind .main <minus><slash> "sc_pos addNag -/+; updateBoard -pgn"
+bind .main <equal><plus> "sc_pos addNag =+; updateBoard -pgn"
+bind .main <asciitilde><Return> "sc_pos addNag ~; updateBoard -pgn"
+bind .main <asciitilde><equal><Return> "sc_pos addNag ~=; updateBoard -pgn"
 
 # Null move entry:
-bind . <minus><minus> "addMove null null"
+bind .main <minus><minus> "addMove null null"
 
 # Arrow keys, Home and End:
-bind . <Home> ::move::Start
-bind . <Left> ::move::Back
-bind . <Up> {
+bind .main <Home> ::move::Start
+bind .main <Left> ::move::Back
+bind .main <Up> {
   if {[sc_pos isAt vstart]} {
-    .button.exitVar invoke
+    .main.button.exitVar invoke
   } else  {
     ::move::Back 10
   }
 }
-bind . <Down> {::move::Forward 10}
-bind . <Right> ::move::Forward
-bind . <End> ::move::End
+bind .main <Down> {::move::Forward 10}
+bind .main <Right> ::move::Forward
+bind .main <End> ::move::End
 
-bind . <Control-f> {if {!$tree(refresh)} {toggleRotateBoard}}
+bind .main <Control-f> {if {!$tree(refresh)} {toggleRotateBoard}}
+
+bind .main <KeyPress-Return> addAnalysisMove
 
 # MouseWheel in main window:
 if {$windowsOS || $macOS} {
-  bind . <MouseWheel> {
+  bind .main <MouseWheel> {
     if {[expr -%D] < 0} { ::move::Back }
     if {[expr -%D] > 0} { ::move::Forward }
   }
-  bind . <Shift-MouseWheel> {
+  bind .main <Shift-MouseWheel> {
     if {[expr -%D] < 0} { ::move::Back 10 }
     if {[expr -%D] > 0} { ::move::Forward 10}
   }
-  bind . <Control-MouseWheel> {
-    if {[expr -%D] < 0} {::board::resize .board +1}
-    if {[expr -%D] > 0} {::board::resize .board -1}
+  bind .main <Control-MouseWheel> {
+    if {[expr -%D] < 0} {::board::resize .main.board +1}
+    if {[expr -%D] > 0} {::board::resize .main.board -1}
   }
 } else {
-  bind . <Button-4> ::move::Back
-  bind . <Button-5> ::move::Forward
-  bind . <Shift-Button-4> {::move::Back 10}
-  bind . <Shift-Button-5> {::move::Forward 10}
-  bind . <Control-Button-4> {::board::resize .board +1}
-  bind . <Control-Button-5> {::board::resize .board -1}
+  bind .main <Button-4> ::move::Back
+  bind .main <Button-5> ::move::Forward
+  bind .main <Shift-Button-4> {::move::Back 10}
+  bind .main <Shift-Button-5> {::move::Forward 10}
+  bind .main <Control-Button-4> {::board::resize .main.board +1}
+  bind .main <Control-Button-5> {::board::resize .main.board -1}
 }
 
 # Very annoying for blitz Fics , so is unused
 # Bind double-click in main Scid window to raise all Scid windows:
-# bind . <Double-Button-1> raiseAllWindows
+# bind $dot_w <Double-Button-1> raiseAllWindows
 
-standardShortcuts .
+standardShortcuts .main
+
+if { 0 && $::docking::USE_DOCKING} {
+  ttk::frame .main.space
+  grid .main.space -row 4 -column 0 -columnspan 3 -sticky nsew
+  grid rowconfigure .main 4 -weight 1
+}
 
 ### Status Bar
 
-label .statusbar -textvariable statusBar -relief sunken -anchor w -width 1 -font font_Small
+label .main.statusbar -textvariable statusBar -relief sunken -anchor w -width 1 -font font_Small
 
 # double-left-click starts/stops engine 1
-bind .statusbar <Double-Button-1> {
+bind .main.statusbar <Double-Button-1> {
   makeAnalysisWin 1
   if {[winfo exists .analysisWin1] && $::analysis(mini)} {
     set ::statusBar "   [lindex $::analysis(name1) 0]:"
@@ -1379,10 +1387,10 @@ bind .statusbar <Double-Button-1> {
 }
 
 # todo mac button patch
-bind .statusbar <Button-2> ::file::SwitchToNextBase
+bind .main.statusbar <Button-2> ::file::SwitchToNextBase
 
 # Right-click toggles window size
-bind .statusbar <Button-3>  {
+bind .main.statusbar <Button-3>  {
   toggleMini
   if {[winfo exists .analysisWin1] && $::analysis(mini)} {
     set ::statusBar "   [lindex $::analysis(name1) 0]:"
@@ -1394,30 +1402,36 @@ bind .statusbar <Button-3>  {
 ############################################################
 ### Grid the main window &&&
 
-grid .statusbar -row 4 -column 0 -columnspan 3 -sticky we
+grid .main.statusbar -row 4 -column 0 -columnspan 3 -sticky we
 
 if {!$::gameInfo(showStatus)} {
-  grid remove .statusbar
+  grid remove .main.statusbar
 }
 
 #frame .sep -width 2 -borderwidth 2 -relief groove
 #frame .panels
-#grid .boardframe -row 1 -column 0 -columnspan 3 -sticky news
+#grid .main.boardframe -row 1 -column 0 -columnspan 3 -sticky news
 #grid .sep -row 1 -column 1 -rowspan 3 -sticky ns -padx 4
 #grid .panels -row 1 -column 2 -rowspan 3 -sticky news -pady 2
 
-grid columnconfigure . 0 -weight 1
-grid rowconfigure . 3 -weight 1
+grid columnconfigure .main 0 -weight 1
 
-grid .button -row 1 -column 0 -pady 5 -padx 5
+### game info widget only gets its requested size
+
+if { $::docking::USE_DOCKING } {
+  # Needs weight 2 ?
+  grid rowconfigure .main 3 -weight 1
+} 
+
+grid .main.button -row 1 -column 0 -pady 5 -padx 5
 
 if {!$::gameInfo(showButtons)} {
-  grid remove .button
+  grid remove .main.button
 }
 
-grid .board -row 2 -column 0 -sticky we -padx 5 -pady 5
+grid .main.board -row 2 -column 0 -sticky we -padx 5 -pady 5
 
-# grid .gameInfoFrame -row 3 -column 0 -sticky news -padx 2
+# grid .main.gameInfoFrame -row 3 -column 0 -sticky news -padx 2
 showGameInfo
 
 #set p .panels
@@ -1531,6 +1545,8 @@ Http://scidvspc.sourceforge.net
         "s10" { set ::boardSize 58 }
         "s11" { set ::boardSize 64 }
         "s12" { set ::boardSize 72 }
+        "dock" -
+        "nodock" {} ; # handled later
         default {
           ::splash::add "Warning: unknown option: \"$arg\"" error
         }
@@ -1769,34 +1785,19 @@ while {$argc > 0} {
 ### Main window initialisation ###
 ##################################
 
-setWinLocation .
-wm deiconify .
-wm protocol . WM_DELETE_WINDOW { ::file::Exit }
-
-# wm focusmodel . active
-# Trying to grab focus from the windowmanager after a drop event, but this doesnt work
-
-### Must be done after the toplevel window has been mapped
-
-after idle [namespace code {RegisterDropEvents .gameInfoFrame}]
-after idle [namespace code {RegisterDropEvents .gameInfo}]
-
-### Only works on the vacant realestate on the left of board
-# after idle [namespace code {RegisterDropEvents .board}]
-
 # Init start-up windows
-foreach {type action} {
-  switcher   ::windows::switcher::Open
-  pgn        ::pgn::OpenClose
-  gamelist   ::windows::gamelist::OpenClose
-  tree       ::tree::OpenClose
-  stats      ::windows::stats::Open
-  crosstable ::crosstab::Open
-  finder     ::file::finder::Open
-  book       ::book::OpenClose
-  fics       ::fics::config
-} {
-  if {$startup($type)} { $action }
+
+# In docked mode, reopen only the windows that are not dockable
+if { !$::docking::USE_DOCKING } {
+  foreach {type action} {
+    stats      ::windows::stats::Open
+    crosstable ::crosstab::Open
+    finder     ::file::finder::Open
+    book       ::book::OpenClose
+    fics       ::fics::config
+  } {
+    if {$startup($type)} { $action }
+  }
 }
 
 updateBoard
@@ -1804,13 +1805,18 @@ updateStatusBar
 updateTitle
 updateLocale
 update
-bind . <Configure> {recordWinSize .}
+bind $dot_w <Configure> {recordWinSize $dot_w}
 
 ### Bindings to map/unmap all windows when main window is mapped
-# Bind this to the main canvas as statusbar can now be hidden
 
-bind .board.bd <Map> { raiseAllWindows }
-bind .board.bd <Unmap> { showHideAllWindows iconify}
+if { $::docking::USE_DOCKING } {
+  bind .fdockmain <Map> {raiseAllWindows}
+  bind .fdockmain <Unmap> { showHideAllWindows iconify}
+} else {
+  # Bind this to the main canvas as statusbar can now be hidden
+  bind .main.board.bd <Map> { raiseAllWindows }
+  bind .main.board.bd <Unmap> { showHideAllWindows iconify}
+}
 
 # showHideAllWindows:
 #   Arranges for all major Scid windows to be shown/hidden
@@ -1826,7 +1832,7 @@ proc showHideAllWindows {type} {
   if {($type == "iconify")  && ([winfo ismapped .] == 1)} { return }
 
   foreach w [getTopLevel $type] {
-    if {[winfo exists $w]} { catch {wm $type $w} }
+    if {[winfo exists $w] && $w != ".main"} { catch {wm $type $w} }
   }
 }
 
@@ -1856,7 +1862,7 @@ proc raiseAllWindows {} {
 proc getTopLevel {{type {}}} {
 
   set topl {}
-  set exclude { .splash .tooltip .glistExtra .menu . .pgnPopup }
+  set exclude { .splash .tooltip .glistExtra .menu . .pgnPopup .ctxtMenu}
   foreach c [winfo children .] {
     if { $c != [winfo toplevel $c] } { continue }
     # Tk report .__tk_filedialog as toplevel window even if the window has been closed
@@ -1965,5 +1971,38 @@ if {$::macOS} {
     #::splash::add "Opening file(s)...\$dndargs"    
   }
 }
+
+
+wm protocol $dot_w WM_DELETE_WINDOW { ::file::Exit }
+
+# wm focusmodel . active
+# Trying to grab focus from the windowmanager after a drop event, but this doesnt work
+
+### Must be done after the toplevel window has been mapped
+after idle [namespace code {RegisterDropEvents .main.gameInfoFrame}]
+after idle [namespace code {RegisterDropEvents .main.gameInfo}]
+
+if { $::docking::USE_DOCKING } {
+  setTitle .main [ ::tr "Board" ]
+  # restore geometry
+  wm minsize $dot_w 360 320
+  setWinLocation $dot_w
+  setWinSize $dot_w
+
+  # when main board pane is resized, auto-size it
+  bind .main <Configure> { ::docking::handleConfigureEvent ::resizeMainBoard }
+
+  # restore default layout (number 1)
+  if { $::autoLoadLayout } {
+    ::docking::layout_restore 1
+  }
+
+  standardShortcuts TNotebook
+  # &&& ::docking::toggleAutoResizeBoard
+} else {
+  setWinLocation $dot_w
+}
+
+wm deiconify $dot_w
 
 ### End of file: end.tcl

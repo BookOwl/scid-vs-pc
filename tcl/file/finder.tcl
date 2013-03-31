@@ -452,16 +452,16 @@ proc ::file::finder::getname {} {
   pack $b -side top -fill x
   dialogbutton $b.ok -text OK -command {
     grab release .rename
-    focus .
+    focus .main
     set ::tmp [.rename.entry get]
     destroy .rename
   }
   dialogbutton $b.cancel -text $::tr(Cancel) -command {
-    focus .
+    focus .main
     grab release .rename
     set ::tmp {}
     destroy .rename
-    focus .
+    focus .main
   }
   packbuttons right $b.cancel $b.ok
   placeWinOverParent $w .finder

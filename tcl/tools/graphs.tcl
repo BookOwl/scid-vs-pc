@@ -155,7 +155,7 @@ proc tools::graphs::filter::Open {} {
 
   set w .fgraph
   if {[winfo exists $w]} {
-    focus .
+    focus .main
     destroy $w
     set filterGraph 0
     return
@@ -691,7 +691,7 @@ proc tools::graphs::absfilter::Open {} {
   global absfilterGraph
   set w .afgraph
   if {[winfo exists $w]} {
-    focus .
+    focus .main
     destroy $w
     set absfilterGraph 0
     return

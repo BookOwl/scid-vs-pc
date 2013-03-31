@@ -74,14 +74,14 @@ proc ::crosstab::Open {} {
   }
 
   set crosstabWin 1
-  toplevel $w
-  wm title $w "[tr WindowsCross]"
+  ::createToplevel $w
+  ::setTitle $w "[tr WindowsCross]"
   wm minsize $w 10 5
   setWinLocation $w
   setWinSize $w
 
   menu $w.menu
-  $w configure -menu $w.menu
+  ::setMenu $w $w.menu
   $w.menu add cascade -label CrosstabFile -menu $w.menu.file
   $w.menu add cascade -label CrosstabEdit -menu $w.menu.edit
   $w.menu add cascade -label CrosstabOpt -menu $w.menu.opt
@@ -293,7 +293,7 @@ proc ::crosstab::Open {} {
   configFindEntryBox $w.b.find crosstab .crosstabWin.f.text
 
   button $w.b.cancel -textvar ::tr(Close) -command {
-    focus .
+    focus .main
     destroy .crosstabWin
   }
   button $w.b.setfilter -textvar ::tr(SetFilter) -command {
@@ -342,6 +342,7 @@ proc ::crosstab::Open {} {
   ::crosstab::Refresh
 
   bind $w <Configure> "recordWinSize $w"
+  ::createToplevelFinalize $w
   update
 }
 

@@ -162,10 +162,11 @@ proc ::optable::makeReportWin {args} {
   if {[winfo exists $w]} {
     raiseWin $w
   } else {
-    toplevel $w
-    wm title $w "[tr ToolsOpReport]"
+    ::createToplevel $w
+    ::setTitle $w "[tr ToolsOpReport]"
     menu $w.menu
-    $w configure -menu $w.menu
+    ::setMenu $w $w.menu
+
     $w.menu add cascade -label OprepFile -menu $w.menu.file
     $w.menu add cascade -label OprepFavorites -menu $w.menu.favorites
     $w.menu add cascade -label OprepHelp -menu $w.menu.help
@@ -229,7 +230,7 @@ proc ::optable::makeReportWin {args} {
     }
     button $w.b.mergeGames -textvar ::tr(MergeGames) -command ::optable::mergeGames
     button $w.b.help -textvar ::tr(Help) -command {helpWindow Reports Opening}
-    button $w.b.close -textvar ::tr(Close) -command "focus .; destroy $w"
+    button $w.b.close -textvar ::tr(Close) -command "focus .main ; destroy $w"
     pack $w.b -side bottom -fill x
     pack $w.ybar -side right -fill y
     pack $w.text -side left -fill both -expand yes
@@ -242,6 +243,7 @@ proc ::optable::makeReportWin {args} {
     pack $w.b.opts $w.b.lexclude $w.b.exclude $w.b.mergeGames -side left -padx 1 -pady 2
     ::optable::ConfigMenus
     ::utils::win::Centre $w
+    ::createToplevelFinalize $w
   }
 
   catch {destroy $w.text.bd}

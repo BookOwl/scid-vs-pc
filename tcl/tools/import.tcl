@@ -75,7 +75,7 @@ proc importPgnGame {} {
     updateTitle
 
     if {$result == {PGN text imported with no errors or warnings.}} {
-      destroy .importWin; focus .
+      destroy .importWin; focus .main
     } else {
       .importWin.pane.err.text delete 0.0 end
       .importWin.pane.err.text insert end $result
@@ -83,7 +83,7 @@ proc importPgnGame {} {
   }
 
   dialogbutton $w.b.cancel -textvar ::tr(Close) -command {
-    destroy .importWin; focus .
+    destroy .importWin; focus .main
   }
 
   frame $w.b.space -width 20
@@ -298,7 +298,7 @@ proc doPgnFileImport {fname text {multiple 0} } {
     pack $w.progress -side bottom -pady 7
 
     dialogbutton $w.buttons.stop -textvar ::tr(Stop) -command {sc_progressBar}
-    dialogbutton $w.buttons.close -textvar ::tr(Close) -command "focus .; destroy $w"
+    dialogbutton $w.buttons.close -textvar ::tr(Close) -command "focus .main ; destroy $w"
     pack $w.buttons.close $w.buttons.stop -side right -padx 5 -pady 5
 
     pack [frame $w.tf] -side top -expand yes -fill both

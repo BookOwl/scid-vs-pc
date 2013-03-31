@@ -114,7 +114,7 @@ proc openSpellCheckWin {type {parent .}} {
     tk_messageBox -type ok -parent .spellcheckWin -icon $messageIcon \
       -title "Scid: Spellcheck results" -message $spell_result
     unbusyCursor .
-    focus .
+    focus .main
     destroy .spellcheckWin
     sc_game tags reload
     updateBoard -pgn
@@ -123,7 +123,7 @@ proc openSpellCheckWin {type {parent .}} {
   bind $w <Alt-m> "$f.ok invoke; break"
 
   button $f.cancel -text "Cancel" -underline 0 -command {
-    focus .
+    focus .main
     destroy .spellcheckWin
   }
   bind $w <Alt-c> "$f.cancel invoke; break"

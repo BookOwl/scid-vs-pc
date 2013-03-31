@@ -107,7 +107,7 @@ menu .menu
 if {$windowsOS} {
   # todo &&&
   # How do we disable windows broken menu short-cuts &&&
-  # bind . <Alt> {}
+  # bind $dot_w <Alt> {}
 }
 
 ## Mac Application menu has to be before any call to configure.
@@ -138,7 +138,7 @@ if { $macOS } {
 }
 
 if {$::gameInfo(showMenu)} {
-  . configure -menu .menu
+  $dot_w configure -menu .menu
 }
 
 .menu add cascade -label File -menu .menu.file
@@ -165,22 +165,22 @@ foreach menuname { file edit game search windows play tools options help } {
 set menuindex -1
 set m .menu.file
 $m add command -label FileNew -acc "Ctrl+N" -command ::file::New
-bind . <Control-n> ::file::New
+bind .main <Control-n> ::file::New
 set helpMessage($m,[incr menuindex]) FileNew
 
 $m add command -label FileOpen -acc "Ctrl+O" -command ::file::Open
-bind . <Control-o> ::file::Open
+bind .main <Control-o> ::file::Open
 set helpMessage($m,[incr menuindex]) FileOpen
 
 $m add command -label FileSavePgn  -command {::pgn::savePgn .}
 set helpMessage($m,[incr menuindex]) FileSavePgn
 
 $m add command -label FileClose -acc "Ctrl+W" -command ::file::Close
-bind . <Control-w> ::file::Close
+bind .main <Control-w> ::file::Close
 set helpMessage($m,[incr menuindex]) FileClose
 
 $m add command -label FileFinder -acc "Ctrl+/" -command ::file::finder::Open
-bind . <Control-slash> ::file::finder::Open
+bind .main <Control-slash> ::file::finder::Open
 set helpMessage($m,[incr menuindex]) FileFinder
 
 $m add cascade -label FileBookmarks -accelerator "Ctrl+B" -menu $m.bookmarks
@@ -215,7 +215,7 @@ set helpMessage($m,[incr menuindex]) FileMaint
 
 $m.utils add checkbutton -label FileMaintWin \
     -accelerator "Ctrl+M" -variable maintWin -command ::maint::OpenClose
-bind . <Control-m> ::maint::OpenClose
+bind .main <Control-m> ::maint::OpenClose
 set helpMessage($m.utils,0) FileMaintWin
 
 $m.utils add command -label FileMaintCompact -command makeCompactWin
@@ -273,7 +273,7 @@ $m add separator
 incr menuindex
 
 $m add command -label FileExit -accelerator "Ctrl+Q" -command ::file::Exit
-bind . <Control-q> ::file::Exit
+bind .main <Control-q> ::file::Exit
 set helpMessage($m,[incr menuindex]) FileExit
 
 
@@ -283,18 +283,18 @@ set menuindex -1
 set m .menu.edit
 
 $m add command -label EditSetup -accelerator "Ctrl+Shift+S" -command setupBoard
-bind . <Control-S> setupBoard
+bind .main <Control-S> setupBoard
 set helpMessage($m,[incr menuindex]) EditSetup
 
 $m add command -label EditCopyBoard -accelerator "Ctrl+Shift+C" -command copyFEN
-bind . <Control-C> copyFEN
+bind .main <Control-C> copyFEN
 set helpMessage($m,[incr menuindex]) EditCopyBoard
 
 $m add command -label EditCopyPGN -command ::pgn::copyPgn
 set helpMessage($m,[incr menuindex]) EditCopyPGN
 
 $m add command -label EditPasteBoard -accelerator "Ctrl+Shift+V" -command pasteFEN
-bind . <Control-V> pasteFEN
+bind .main <Control-V> pasteFEN
 set helpMessage($m,[incr menuindex]) EditPasteBoard
 
 $m add command -label EditPastePGN -command importClipboardGame -accelerator "Ctrl+Shift+I"
@@ -312,11 +312,11 @@ $m add command -label EditReset -command {
 set helpMessage($m,[incr menuindex]) EditReset
 
 $m add command -label EditCopy -accelerator "Ctrl+C" -command copyGame
-bind . <Control-c> copyGame
+bind .main <Control-c> copyGame
 set helpMessage($m,[incr menuindex]) EditCopy
 
 $m add command -label EditPaste -accelerator "Ctrl+V" -command pasteGame
-bind . <Control-v> pasteGame
+bind .main <Control-v> pasteGame
 set helpMessage($m,[incr menuindex]) EditPaste
 
 $m add separator
@@ -353,7 +353,7 @@ set helpMessage($m,[incr menuindex]) EditMain
 
 $m add checkbutton -label EditTrial -variable trialMode \
     -accelerator "Ctrl+space" -command {setTrialMode update}
-bind . <Control-space> { setTrialMode toggle }
+bind .main <Control-space> { setTrialMode toggle }
 set helpMessage($m,[incr menuindex]) EditTrial
 
 menu $m.strip
@@ -361,7 +361,7 @@ $m.strip add command -label EditStripBegin -command {::game::TruncateBegin}
 set helpMessage($m.strip,2) EditStripBegin
 $m.strip add command -label EditStripEnd -command {::game::Truncate}
 set helpMessage($m.strip,3) EditStripEnd
-bind . <Delete> {::game::Truncate}
+bind .main <Delete> {::game::Truncate}
 $m.strip add command -label EditStripComments -command {::game::Strip comments}
 set helpMessage($m.strip,0) EditStripComments
 $m.strip add command -label EditStripVars -command {::game::Strip variations}
@@ -372,15 +372,15 @@ set helpMessage($m.strip,1) EditStripVars
 set menuindex -1
 set m .menu.game
 $m add command -label GameNew -accelerator "Ctrl+X" -command ::game::Clear
-bind . <Control-x> ::game::Clear
+bind .main <Control-x> ::game::Clear
 set helpMessage($m,[incr menuindex]) GameNew
 
 $m add command -label GameReplace -command gameReplace -accelerator "Ctrl+R"
-bind . <Control-r> { .menu.game invoke [tr GameReplace] }
+bind .main <Control-r> { .menu.game invoke [tr GameReplace] }
 set helpMessage($m,[incr menuindex]) GameReplace
 
 $m  add command -label GameAdd -command gameAdd  -accelerator "Ctrl+S"
-bind . <Control-s> gameAdd
+bind .main <Control-s> gameAdd
 set helpMessage($m,[incr menuindex]) GameAdd
 
 $m add separator
@@ -406,7 +406,7 @@ $m  add command -label {Delete Game} -command {
 set helpMessage($m,[incr menuindex]) {Mark game as deleted}
 
 $m add command -label GameReload -command ::game::Reload -accelerator "Ctrl+Shift+L"
-bind . <Control-L> ::game::Reload
+bind .main <Control-L> ::game::Reload
 set helpMessage($m,[incr menuindex]) GameReload
 
 $m add separator
@@ -414,30 +414,30 @@ incr menuindex
 
 $m add command -label GameFirst -accelerator "Ctrl+Home" \
     -command {::game::LoadNextPrev first}
-bind . <Control-Home> {::game::LoadNextPrev first}
+bind .main <Control-Home> {::game::LoadNextPrev first}
 set helpMessage($m,[incr menuindex]) GameFirst
 
 $m add command -label GameLast -accelerator "Ctrl+End" \
     -command {::game::LoadNextPrev last}
-bind . <Control-End> {::game::LoadNextPrev last}
+bind .main <Control-End> {::game::LoadNextPrev last}
 set helpMessage($m,[incr menuindex]) GameLast
 
 $m add command -label GameNext -accelerator "Ctrl+Down" \
     -command {::game::LoadNextPrev next}
-bind . <Control-Down> {::game::LoadNextPrev next}
+bind .main <Control-Down> {::game::LoadNextPrev next}
 set helpMessage($m,[incr menuindex]) GameNext
 
 $m add command -label GamePrev -accelerator "Ctrl+Up" \
     -command {::game::LoadNextPrev previous}
-bind . <Control-Up> {::game::LoadNextPrev previous}
+bind .main <Control-Up> {::game::LoadNextPrev previous}
 set helpMessage($m,[incr menuindex]) GamePrev
 
 $m add command -label GameRandom -command ::game::LoadRandom -accelerator "Ctrl+?"
-bind . <Control-question> ::game::LoadRandom
+bind .main <Control-question> ::game::LoadRandom
 set helpMessage($m,[incr menuindex]) GameRandom
 
 $m add command -label GameNumber -command ::game::LoadNumber -accelerator "Ctrl+U"
-bind . <Control-u> ::game::LoadNumber
+bind .main <Control-u> ::game::LoadNumber
 set helpMessage($m,[incr menuindex]) GameNumber
 
 $m add separator
@@ -447,17 +447,17 @@ $m add command -label GameDeepest -accelerator "Ctrl+Shift+D" -command {
   sc_move ply [sc_eco game ply]
   updateBoard
 }
-bind . <Control-D> {sc_move ply [sc_eco game ply]; updateBoard}
+bind .main <Control-D> {sc_move ply [sc_eco game ply]; updateBoard}
 set helpMessage($m,[incr menuindex]) GameDeepest
 
 $m add command -label GameGotoMove -accelerator "Ctrl+G" \
     -command ::game::GotoMoveNumber
 set helpMessage($m,[incr menuindex]) GameGotoMove
-bind . <Control-g> ::game::GotoMoveNumber
+bind .main <Control-g> ::game::GotoMoveNumber
 
 $m add command -label GameNovelty -accelerator "Ctrl+Shift+Y" \
     -command findNovelty
-bind . <Control-Y> findNovelty
+bind .main <Control-Y> findNovelty
 set helpMessage($m,[incr menuindex]) GameNovelty
 
 
@@ -466,12 +466,12 @@ set menuindex -1
 set m .menu.search
 $m  add command -label SearchReset -acc "Ctrl+Shift+F" \
     -command ::search::filter::reset
-bind . <Control-F> ::search::filter::reset
+bind .main <Control-F> ::search::filter::reset
 set helpMessage($m,[incr menuindex]) SearchReset
 
 $m  add command -label SearchNegate -acc "Ctrl+Shift+N" \
     -command ::search::filter::negate
-bind . <Control-N> ::search::filter::negate
+bind .main <Control-N> ::search::filter::negate
 set helpMessage($m,[incr menuindex]) SearchNegate
 
 $m  add command -label SearchEnd -command ::search::filter::end
@@ -482,17 +482,17 @@ incr menuindex
 
 $m  add command -label SearchHeader \
     -command ::search::header -accelerator "Ctrl+Shift+H"
-bind . <Control-H> ::search::header
+bind .main <Control-H> ::search::header
 set helpMessage($m,[incr menuindex]) SearchHeader
 
 $m  add command -label SearchCurrent \
     -command ::search::board -accelerator "Ctrl+Shift+B"
-bind . <Control-B> ::search::board
+bind .main <Control-B> ::search::board
 set helpMessage($m,[incr menuindex]) SearchCurrent
 
 $m  add command -label SearchMaterial \
     -command ::search::material -accelerator "Ctrl+Shift+M"
-bind . <Control-M> ::search::material
+bind .main <Control-M> ::search::material
 set helpMessage($m,[incr menuindex]) SearchMaterial
 
 $m add command -label SearchMoves -command ::search::moves
@@ -503,12 +503,12 @@ incr menuindex
 
 $m add checkbutton -label WindowsPList \
     -variable plistWin -command ::plist::toggle -accelerator "Ctrl+Shift+P"
-bind . <Control-P> ::plist::toggle
+bind .main <Control-P> ::plist::toggle
 set helpMessage($m,[incr menuindex]) WindowsPList
 
 $m add checkbutton -label WindowsTmt \
     -variable tourneyWin -command ::tourney::toggle -accelerator "Ctrl+Shift+T"
-bind . <Control-T> ::tourney::toggle
+bind .main <Control-T> ::tourney::toggle
 set helpMessage($m,[incr menuindex]) WindowsTmt
 
 $m  add separator
@@ -516,7 +516,7 @@ incr menuindex
 
 $m add command -label SearchUsing -accel "Ctrl+Shift+U" \
     -command ::search::usefile
-bind . <Control-KeyPress-U> ::search::usefile
+bind .main <Control-KeyPress-U> ::search::usefile
 set helpMessage($m,[incr menuindex]) SearchUsing
 
 ### Play menu:
@@ -599,13 +599,13 @@ set m .menu.windows
 $m  add checkbutton -label WindowsGameinfo \
     -var gameInfo(show) -command showGameInfo -accelerator "Ctrl+I"
 
-bind . <Control-i> toggleGameInfo
+bind .main <Control-i> toggleGameInfo
 set helpMessage($m,[incr menuindex]) WindowsGameinfo
 
 $m  add checkbutton -label WindowsComment \
     -var commentWin -command makeCommentWin -accelerator "Ctrl+E"
 
-bind . <Control-e> makeCommentWin
+bind .main <Control-e> makeCommentWin
 set helpMessage($m,[incr menuindex]) WindowsComment
 
 $m  add checkbutton -label WindowsGList \
@@ -623,17 +623,17 @@ set helpMessage($m,[incr menuindex]) WindowsCross
 
 $m add checkbutton -label WindowsPList \
     -variable plistWin -command ::plist::toggle -accelerator "Ctrl+Shift+P"
-bind . <Control-P> ::plist::toggle
+bind .main <Control-P> ::plist::toggle
 set helpMessage($m,[incr menuindex]) WindowsPList
 
 $m add checkbutton -label WindowsTmt \
     -variable tourneyWin -command ::tourney::toggle -accelerator "Ctrl+Shift+T"
-bind . <Control-T> ::tourney::toggle
+bind .main <Control-T> ::tourney::toggle
 set helpMessage($m,[incr menuindex]) WindowsTmt
 
 $m add checkbutton -label WindowsMaint \
     -accelerator "Ctrl+M" -variable maintWin -command ::maint::OpenClose
-bind . <Control-m> ::maint::OpenClose
+bind .main <Control-m> ::maint::OpenClose
 set helpMessage($m,[incr menuindex]) WindowsMaint
 
 $m add separator
@@ -645,24 +645,24 @@ set helpMessage($m,[incr menuindex]) WindowsECO
 
 $m add checkbutton -label WindowsStats -variable ::windows::stats::isOpen \
     -accelerator "Ctrl+I" -command ::windows::stats::Open
-bind . <Control-i> ::windows::stats::Open
+bind .main <Control-i> ::windows::stats::Open
 set helpMessage($m,[incr menuindex]) WindowsStats
 
 $m add checkbutton -label WindowsTree \
     -variable treeWin -command ::tree::OpenClose -accelerator "Ctrl+T"
 # 'treeWin' is only used above, and is not very accurate because multiple trees can be open
-bind . <Control-t> { .menu.windows invoke [tr WindowsTree] }
+bind .main <Control-t> { .menu.windows invoke [tr WindowsTree] }
 set helpMessage($m,[incr menuindex]) WindowsTree
 
 $m add checkbutton -label WindowsTB -variable ::tb::isOpen -command ::tb::OpenClose \
     -accelerator "Ctrl+="
-bind . <Control-equal> ::tb::OpenClose
+bind .main <Control-equal> ::tb::OpenClose
 set helpMessage($m,[incr menuindex]) WindowsTB
 
 $m add checkbutton -label WindowsBook -variable ::book::isOpen -command ::book::OpenClose \
     -accelerator "Ctrl+b"
 set helpMessage($m,[incr menuindex]) WindowsBook
-bind . <Control-b>  ::book::OpenClose
+bind .main <Control-b>  ::book::OpenClose
 
 $m add checkbutton -label WindowsCorrChess -variable ::CorrespondenceChess::isOpen \
     -command ::CorrespondenceChess::CCWindow 
@@ -673,18 +673,18 @@ set menuindex -1
 set m .menu.tools
 $m  add command -label ToolsAnalysis \
     -command ::enginelist::choose -accelerator "Ctrl+Shift+A"
-bind . <Control-A> ::enginelist::choose
+bind .main <Control-A> ::enginelist::choose
 set helpMessage($m,[incr menuindex]) ToolsAnalysis
 
 #Add Menu for Start Engine 1 and Engine 2
 $m  add command -label ToolsStartEngine1 \
     -command "startAnalysisWin F2" -accelerator "F2"
-bind . <F2> "startAnalysisWin F2"
+bind .main <F2> "startAnalysisWin F2"
 set helpMessage($m,[incr menuindex]) ToolsStartEngine1
 
 $m  add command -label ToolsStartEngine2 \
     -command "startAnalysisWin F3" -accelerator "F3"
-bind . <F3> "startAnalysisWin F3"
+bind .main <F3> "startAnalysisWin F3"
 set helpMessage($m,[incr menuindex]) ToolsStartEngine2
 
 $m add separator
@@ -699,17 +699,17 @@ set helpMessage($m,[incr menuindex]) ToolsPlayerReport
 
 $m add command -label ToolsOpReport \
     -accelerator "Ctrl+Shift+O" -command ::optable::makeReportWin
-bind . <Control-O> ::optable::makeReportWin
+bind .main <Control-O> ::optable::makeReportWin
 set helpMessage($m,[incr menuindex]) ToolsOpReport
 
 $m add command -label ToolsTracker \
     -accelerator "Ctrl+Shift+K" -command ::ptrack::make
-bind . <Control-K> ::ptrack::make
+bind .main <Control-K> ::ptrack::make
 set helpMessage($m,[incr menuindex]) ToolsTracker
 
 $m add checkbutton -label ToolsEmail \
     -accelerator "Ctrl+Shift+E" -variable emailWin -command ::tools::email
-bind . <Control-E> ::tools::email
+bind .main <Control-E> ::tools::email
 set helpMessage($m,[incr menuindex]) ToolsEmail
 
 menu $m.pinfo
@@ -745,16 +745,16 @@ set helpMessage($m,[incr menuindex]) ToolsFilterGraph
 
 $m add checkbutton -label ToolsAbsFilterGraph \
     -accelerator "Ctrl+Shift+J" -variable absfilterGraph -command tools::graphs::absfilter::Open
-bind . <Control-J> tools::graphs::absfilter::Open
+bind .main <Control-J> tools::graphs::absfilter::Open
 set helpMessage($m,[incr menuindex]) ToolsAbsFilterGraph
 
 $m add command -label ToolsRating -command {::tools::graphs::rating::Refresh both}
-# bind . <Control-R> {::tools::graphs::rating::Refresh both}
+# bind $dot_w <Control-R> {::tools::graphs::rating::Refresh both}
 set helpMessage($m,[incr menuindex]) ToolsRating
 
 $m add command -label ToolsScore \
     -accelerator "Ctrl+Shift+Z" -command ::tools::graphs::score::Toggle
-bind . <Control-Z> ::tools::graphs::score::Toggle
+bind .main <Control-Z> ::tools::graphs::score::Toggle
 set helpMessage($m,[incr menuindex]) ToolsScore
 
 $m add separator
@@ -807,7 +807,7 @@ incr menuindex
 
 $m add command -label ToolsImportOne \
     -accelerator "Ctrl+Shift+I" -command importPgnGame
-bind . <Control-I> importPgnGame
+bind .main <Control-I> importPgnGame
 set helpMessage($m,[incr menuindex]) ToolsImportOne
 
 $m add command -label ToolsImportFile -command importPgnFile
@@ -817,15 +817,15 @@ $m add separator
 incr menuindex
 
 $m add command -label ToolsScreenshot -command {boardToFile {} {}} -accelerator Ctrl+F12
-bind . <Control-F12> {boardToFile {} {}}
+bind .main <Control-F12> {boardToFile {} {}}
 set helpMessage($m,[incr menuindex]) {Board Screenshot}
 
 
 ### Options menu:
 
 set m .menu.options
-set optMenus {entry fonts ginfo fics startup language numbers windows export}
-set optLabels {Moves Fonts GInfo Fics Startup Language Numbers Windows Export}
+set optMenus {windows entry fonts ginfo fics startup language numbers export}
+set optLabels {Windows Moves Fonts GInfo Fics Startup Language Numbers Export}
 set menuindex 0
 
 $m add command -label OptionsBoard -command chooseBoardColors
@@ -869,7 +869,7 @@ proc setTableBaseDir {} {
   global initialDir tempDir
   set ftype { { "Tablebase files" {".emd" ".nbw" ".nbb"} } }
 
-  set w .tbDialog
+  set w .tablebaseDialog
   toplevel $w
   wm state $w withdrawn
   wm title $w Tablebases
@@ -929,7 +929,7 @@ proc chooseTableBaseDir {i} {
   set idir $tempDir(tablebase$i)
   if {$idir == ""} { set idir [pwd] }
 
-  set fullname [tk_chooseDirectory -mustexist 1 -initialdir $idir -parent .tbDialog \
+  set fullname [tk_chooseDirectory -mustexist 1 -initialdir $idir -parent .tablebaseDialog \
       -title "Select a Tablebase directory"]
   if {$fullname == ""} { return }
 
@@ -989,7 +989,7 @@ $m add command -label OptionsSave -command {
     moveEntry(AutoExpand) moveEntry(Coord)
     translatePieces highlightLastMove highlightLastMoveWidth highlightLastMoveColor 
     askToReplaceMoves ::windows::switcher::icons locale(numeric) 
-    spellCheckFile ::splash::keepopen autoRaise autoIconify 
+    spellCheckFile ::splash::keepopen autoRaise autoIconify windowsDock autoLoadLayout
     exportFlags(comments) exportFlags(vars) exportFlags(indentc)
     exportFlags(indentv) exportFlags(column) exportFlags(htmldiag) 
     email(smtp) email(smproc) email(server) 
@@ -1091,6 +1091,11 @@ $m add command -label OptionsSave -command {
       puts $optionF "set ::fics::findopponent($i) [list $::fics::findopponent($i)]"
     }
 
+    # save Window Docking layouts
+    foreach slot {1 2 3} {
+      puts $optionF "set ::docking::layout_list($slot) [list $::docking::layout_list($slot)]"
+    }
+
     close $optionF
     set ::statusBar "Options were saved to: [scidConfigFile options]"
   }
@@ -1104,7 +1109,7 @@ menu $m.ginfo -tearoff 1
 $m.ginfo add checkbutton -label GInfoHideNext \
     -variable gameInfo(hideNextMove) -offvalue 0 -onvalue 1 -command updateBoard
 $m.ginfo add checkbutton -label {Show Side to Move} \
-    -variable boardSTM -offvalue 0 -onvalue 1 -command {::board::togglestm .board}
+    -variable boardSTM -offvalue 0 -onvalue 1 -command {::board::togglestm .main.board}
 $m.ginfo add checkbutton -label GInfoFEN \
     -variable gameInfo(showFEN) -offvalue 0 -onvalue 1 -command checkGameInfoHeight
 $m.ginfo add checkbutton -label GInfoMarks \
@@ -1237,12 +1242,47 @@ foreach format {PGN HTML LaTeX} {
       -command "setExportText $format"
 }
 
+###############################
 set m .menu.options.windows
 menu $m -tearoff -1
+
+$m add checkbutton -label OptionsWindowsDock -variable windowsDock -command {
+  if {$::docking::USE_DOCKING != $windowsDock} {
+    set answer [tk_messageBox -type yesno -icon info -title Scid -message "Changing Docking requires a restart.\nExit now ?"]
+    if {$answer == "yes"} {
+      ::file::Exit
+    }
+  }
+}
+set helpMessage($m,2) OptionsWindowsDock
+
+if {$::docking::USE_DOCKING} {
+  $m add checkbutton -label OptionsWindowsAutoLoadLayout -variable autoLoadLayout 
+  set helpMessage($m,4) OptionsWindowsAutoLoadLayout
+
+  $m add checkbutton -label OptionsWindowsAutoResize -variable ::autoResizeBoard -command ::docking::toggleAutoResizeBoard
+  set helpMessage($m,4) OptionsWindowsAutoLoadLayout
+
+  menu $m.savelayout
+  menu $m.restorelayout
+  foreach i {"1 (default)" "2" "3"} slot {1 2 3} {
+    $m.savelayout add command -label $i -command "::docking::layout_save $slot"
+    $m.restorelayout add command -label $i -command "::docking::layout_restore $slot"
+  }
+  $m add cascade -label OptionsWindowsSaveLayout -menu $m.savelayout
+  set helpMessage($m,5) OptionsWindowsSaveLayout
+  $m add cascade -label OptionsWindowsRestoreLayout -menu $m.restorelayout
+  set helpMessage($m,6) OptionsWindowsRestoreLayout
+}
+
+$m add separator
+
 $m add checkbutton -label OptionsWindowsIconify -variable autoIconify
 set helpMessage($m,0) OptionsWindowsIconify
 $m add checkbutton -label OptionsWindowsRaise -variable autoRaise
 set helpMessage($m,1) OptionsWindowsRaise
+
+###############################
 
 menu .menu.options.language -tearoff -1
 
@@ -1283,8 +1323,8 @@ $m add checkbutton -label WindowsTree -variable startup(tree)
 $m add checkbutton -label WindowsBook -variable startup(book)
 $m add checkbutton -label FICS -variable startup(fics)
 
-bind . <Control-Shift-Left>  {::board::resize .board -1}
-bind . <Control-Shift-Right> {::board::resize .board +1}
+bind .main <Control-Shift-Left>  {::board::resize .main.board -1}
+bind .main <Control-Shift-Right> {::board::resize .main.board +1}
 
 ### Help menu:
 set menuindex 0
@@ -1324,7 +1364,7 @@ incr menuindex
 $m  add command -label HelpAbout -command {helpWindow Author}
 set helpMessage($m,[incr menuindex]) HelpAbout
 
-bind . <F1> toggleHelp
+bind .main <F1> toggleHelp
 
 ##################################################
 
@@ -1332,7 +1372,8 @@ bind . <F1> toggleHelp
 #   Update all the menus, rechecking which state each item should be in.
 
 proc updateMenuStates {} {
-  global totalBaseSlots windowsOS
+  global totalBaseSlots windowsOS dot_w
+
   set ::currentSlot [sc_base current]
   set lang $::language
   set m .menu
@@ -1349,20 +1390,20 @@ proc updateMenuStates {} {
       $m.file.switch add command -command "set currentSlot $i" \
 	  -label "$fname" -underline 5 -accelerator "Ctrl+$i" \
           -command "::file::SwitchToBase $i"
-      bind . <Control-Key-$i> "::file::SwitchToBase $i"
+      bind $dot_w <Control-Key-$i> "::file::SwitchToBase $i"
 
       if {$i == $current} {
 	$m.file.switch entryconfig $i -state disabled
       }
     }
   }
-  bind . <Control-Key-quoteleft> "::file::SwitchToBase 9"
-  bind . <Control-Tab> ::file::SwitchToNextBase
+  bind $dot_w <Control-Key-quoteleft> "::file::SwitchToBase 9"
+  bind $dot_w <Control-Tab> ::file::SwitchToNextBase
   catch {
     if {$windowsOS} {
-      bind . <Shift-Tab> {::file::SwitchToNextBase -1} 
+      bind $dot_w <Shift-Tab> {::file::SwitchToNextBase -1} 
     } else {
-      bind . <ISO_Left_Tab> {::file::SwitchToNextBase -1} 
+      bind $dot_w <ISO_Left_Tab> {::file::SwitchToNextBase -1} 
     }
   }
 
@@ -1418,8 +1459,8 @@ proc updateMenuStates {} {
     $m.game entryconfig [tr GameNumber] -state $state
     $m.game entryconfig [tr GamePrev] -state $state
     $m.game entryconfig [tr GameNext] -state $state
-    # .tb.gprev configure -state $state
-    # .tb.gnext configure -state $state
+    # .main.tb.gprev configure -state $state
+    # .main.tb.gnext configure -state $state
 
     # Reload and Delete
     if {[sc_game number]} {set state normal} else {set state disabled}
@@ -1450,8 +1491,8 @@ proc updateMenuStates {} {
     foreach i {Replace Add First Prev Reload Next Last Random Number Info Browse List} {
       $m.game entryconfig [tr Game$i] -state disabled
     }
-    # .tb.gprev configure -state disabled
-    # .tb.gnext configure -state disabled
+    # .main.tb.gprev configure -state disabled
+    # .main.tb.gnext configure -state disabled
   }
 
   if {[sc_base numGames] == 0} {
@@ -1608,10 +1649,17 @@ proc setLanguageMenus {{lang ""}} {
   }
   # unhandled FICS
 
-  foreach tag {Iconify Raise} {
+  foreach tag {Iconify Raise Dock} {
     configMenuText .menu.options.windows [tr OptionsWindows$tag $oldLang] \
         OptionsWindows$tag $lang
   }
+  if {$::docking::USE_DOCKING} {
+    foreach tag {AutoLoadLayout AutoResize SaveLayout RestoreLayout} {
+      configMenuText .menu.options.windows [tr OptionsWindows$tag $oldLang] \
+          OptionsWindows$tag $lang
+    }
+  }
+
   foreach tag {Contents Index Tip Startup About} {
     configMenuText .menu.help [tr Help$tag $oldLang] Help$tag $lang
   }
@@ -1621,7 +1669,7 @@ proc setLanguageMenus {{lang ""}} {
   #  foreach tag {HideNext Material FEN Marks Wrap FullComment Photos TBNothing TBResult TBAll Delete Mark} 
 
   foreach tag {HideNext Material FEN} {
-    configMenuText .gameInfo.menu [tr GInfo$tag $oldLang] GInfo$tag $lang
+    configMenuText .main.gameInfo.menu [tr GInfo$tag $oldLang] GInfo$tag $lang
   }
 
   ::pgn::ConfigMenus
@@ -1718,7 +1766,7 @@ proc standardShortcuts {w} {
   bind $w <Home>  ::move::Start
   bind $w <Up> {
     if {[sc_pos isAt vstart]} {
-      .button.exitVar invoke
+      .main.button.exitVar invoke
     } else  {
       ::move::Back 10
     }
@@ -1728,7 +1776,7 @@ proc standardShortcuts {w} {
   bind $w <Right> ::move::Forward
   bind $w <End>   ::move::End
   bind $w <KeyPress-v> { ::showVars }
-  bind $w <KeyPress-z> {.button.exitVar invoke}
+  bind $w <KeyPress-z> {.main.button.exitVar invoke}
   bind $w <F2> {::startAnalysisWin F2}
   bind $w <F3> {::startAnalysisWin F3}
   bind $w <F4> {::startAnalysisWin F4}

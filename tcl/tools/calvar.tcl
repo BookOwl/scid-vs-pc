@@ -128,7 +128,7 @@ namespace eval calvar {
     frame $w.fbuttons
     pack $w.fbuttons
     dialogbutton $w.fbuttons.start -text Start -command {
-      focus .
+      focus .main
       set chosenEngine [.configCalvarWin.fengines.lbEngines curselection]
       set ::calvar::engineName [.configCalvarWin.fengines.lbEngines get $chosenEngine]
       destroy .configCalvarWin
@@ -241,7 +241,7 @@ namespace eval calvar {
     set n $::calvar::engine
 
     ::uci::closeUCIengine $n
-    focus .
+    focus .main
     destroy .calvarWin
     set ::suggestMoves $::calvar::suggestMoves_old
     set ::gameInfo(hideNextMove) $::calvar::hideNextMove_old

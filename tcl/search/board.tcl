@@ -135,7 +135,7 @@ proc ::search::board {} {
     ::windows::stats::Refresh
   }
 
-  dialogbutton $w.b.cancel -textvar ::tr(Close) -command "focus .; destroy $w"
+  dialogbutton $w.b.cancel -textvar ::tr(Close) -command "focus .main ; destroy $w"
   pack $w.b2.vars $w.b2.flip -side left -pady 2 -padx 5
   packbuttons right $w.b.cancel .sb.b.stop .sb.b.search
   label $w.status -text "" -width 1 -font font_Small -relief sunken -anchor w
@@ -250,7 +250,7 @@ proc ::search::moves {} {
     .sm.status configure -text $str
   }
 
-  dialogbutton $w.b.cancel -textvar ::tr(Close) -command "focus .; destroy $w"
+  dialogbutton $w.b.cancel -textvar ::tr(Close) -command "focus .main ; destroy $w"
   packbuttons right $w.b.cancel .sm.b.stop .sm.b.search
   label $w.status -text "" -width 1 -font font_Small -relief sunken -anchor w
   pack $w.status -side bottom -fill x

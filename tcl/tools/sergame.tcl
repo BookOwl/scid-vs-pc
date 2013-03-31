@@ -33,7 +33,7 @@ namespace eval sergame {
 
     # Abort previous game if exists
     if {[winfo exists .serGameWin]} {
-      focus .
+      focus .main
       destroy .serGameWin
     }
 
@@ -238,7 +238,7 @@ namespace eval sergame {
     bind $w.fopening.fOpeningList.lbOpening <Button-1> {set ::sergame::isOpening 1}
 
     dialogbutton $w.fbuttons.play -text $::tr(Play) -command {
-      focus .
+      focus .main
       set sel [.configSerGameWin.fengines.fEnginesList.lbEngines curselection]
       set ::sergame::current $sel
       set ::sergame::engineName [.configSerGameWin.fengines.fEnginesList.lbEngines get $sel]
@@ -340,7 +340,7 @@ namespace eval sergame {
       sc_game tags set -event "UCI Game"
       set player_name [getMyPlayerName]
       if {$player_name == ""} {set player_name {?}}
-      if { [::board::isFlipped .board] } {
+      if { [::board::isFlipped .main.board] } {
         sc_game tags set -white "$::sergame::engineName"
 	sc_game tags set -black $player_name
       } else  {
@@ -357,7 +357,7 @@ namespace eval sergame {
     updateMenuStates
     set w .serGameWin
     if {[winfo exists $w]} {
-      focus .
+      focus .main
       destroy $w
     }
 
@@ -430,7 +430,7 @@ namespace eval sergame {
     ::gameclock::stop 2
     set ::uci::uciInfo(bestmove$n) "abort"
     destroy .serGameWin
-    focus .
+    focus .main
   }
 
   ### ::sergame::sendToEngine
@@ -456,7 +456,7 @@ namespace eval sergame {
       ::gameclock::stop 1
       ::gameclock::stop 2
       sc_game tags set -result =
-      tk_messageBox -type ok -message {Stalemate} -parent .board -icon info -title {Game Over}
+      tk_messageBox -type ok -message {Stalemate} -parent .main.board -icon info -title {Game Over}
       return 1
     }
 
@@ -479,7 +479,7 @@ namespace eval sergame {
         }
         updateBoard -pgn
 
-        tk_messageBox -type ok -message "$side Wins" -parent .board -icon info -title Checkmate
+        tk_messageBox -type ok -message "$side Wins" -parent .main.board -icon info -title Checkmate
       }
       return 1
     }
@@ -536,7 +536,7 @@ namespace eval sergame {
         }
         
         if { [lsearch $openingMovesHash [sc_pos hash]] == -1 && [llength $openingMovesList] >= $ply} {
-          set answer [tk_messageBox -icon question -parent .board -title $::tr(OutOfOpening) -type yesno \
+          set answer [tk_messageBox -icon question -parent .main.board -title $::tr(OutOfOpening) -type yesno \
               -message "$::tr(NotFollowedLine) $openingMoves\n $::tr(DoYouWantContinue)" ]
           if {$answer == no} {
             sc_move back 1
@@ -696,7 +696,7 @@ namespace eval sergame {
       }
       
       if {$blunder != 0} {
-        set answer [tk_messageBox -icon question -parent .board -title "Scid" -type yesno -message $::tr($tBlunder) ]
+        set answer [tk_messageBox -icon question -parent .main.board -title "Scid" -type yesno -message $::tr($tBlunder) ]
         if {$answer == yes} {
           sc_move back 1
           updateBoard -pgn
@@ -764,7 +764,7 @@ namespace eval sergame {
 
   proc getEngineColor {} {
     # Engine always plays for the upper side
-    if {[::board::isFlipped .board]} {
+    if {[::board::isFlipped .main.board]} {
       return white
     } else  {
       return black
