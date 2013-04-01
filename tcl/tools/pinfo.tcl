@@ -58,7 +58,6 @@ proc playerInfo {{player ""} {raise 0}} {
 
     autoscrollframe $w.frame text $w.text -font font_Regular -wrap none
 
-    label $w.photo 
     pack $w.frame -side top -fill both -expand yes
     ::htext::init $w.text
     bind $w <Escape> "focus .main ; destroy $w"
@@ -77,14 +76,6 @@ proc playerInfo {{player ""} {raise 0}} {
       raiseWin $w
     }
   }
-  set player [trimEngineName $player]
-  if {[info exists ::photo($player)]} {
-    image create photo photoPInfo -data $::photo($player)
-    $w.photo configure -image photoPInfo -anchor ne
-    place $w.photo -in $w.text -relx 1.0 -x -1 -rely 0.0 -y 1 -anchor ne
-  } else {
-    place forget $w.photo
-  }
 
   ### Make FIDEID open relevant url
   regsub {FIDEID ([0-9]+)} $pinfo {<run openURL http://ratings.fide.com/card.phtml?event=%\1 ; ::windows::stats::Refresh>FIDEID \1</run>} pinfo
@@ -93,6 +84,23 @@ proc playerInfo {{player ""} {raise 0}} {
   $w.text configure -state normal
   $w.text delete 1.0 end
   ::htext::display $w.text $pinfo
+
+  set player [trimEngineName $player]
+  if {[info exists ::photo($player)]} {
+    image create photo photoPInfo -data $::photo($player)
+    if {0} {
+      label $w.photo 
+      $w.photo configure -image photoPInfo -anchor ne
+      place $w.photo -in $w.text -relx 1.0 -x -1 -rely 0.0 -y 1 -anchor ne
+    } else {
+      # image now scrolls with the widget
+      $w.text insert 2.0 "\n"
+      $w.text image create 2.0 -image photoPInfo -align top -padx 3 -pady 5
+    }
+  } else {
+    # place forget $w.photo
+  }
+
   $w.text configure -state disabled
 
   ::windows::gamelist::Refresh
