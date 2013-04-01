@@ -897,8 +897,8 @@ checkGameInfoHeight 1
 
 image create photo photoW
 image create photo photoB
-label .photoW  -image photoW -anchor ne
-label .photoB  -image photoB -anchor ne
+label .main.photoW  -image photoW -anchor ne
+label .main.photoB  -image photoB -anchor ne
 
 proc readPhotoFile {fname} {
   set oldcount [array size ::photo]
@@ -982,8 +982,8 @@ proc updatePlayerPhotos {{force ""}} {
     # when the user selects to show or hide the photos.
     set photo(oldWhite) {}
     set photo(oldBlack) {}
-    place forget .photoW
-    place forget .photoB
+    place forget .main.photoW
+    place forget .main.photoB
   }
   if {! $::gameInfo(photos)} { return }
   #get photo from player
@@ -993,11 +993,11 @@ proc updatePlayerPhotos {{force ""}} {
   catch { set black [trimEngineName $black] }
   if {$black != $photo(oldBlack)} {
     set photo(oldBlack) $black
-    place forget .photoB
+    place forget .main.photoB
     if {[info exists ::photo($black)]} {
       image create photo photoB -data $::photo($black)
-      .photoB configure -image photoB -anchor ne
-      place .photoB -in .main.gameInfo -x -1 -relx 1.0 -anchor ne
+      .main.photoB configure -image photoB -anchor ne
+      place .main.photoB -in .main.gameInfo -x -1 -relx 1.0 -anchor ne
       # force to update white, black size could be changed
       set photo(oldWhite) {}
     }
@@ -1006,11 +1006,11 @@ proc updatePlayerPhotos {{force ""}} {
   if { $distance < 10 } { set distance 82 }
   if {$white != $photo(oldWhite)} {
     set photo(oldWhite) $white
-    place forget .photoW
+    place forget .main.photoW
     if {[info exists ::photo($white)]} {
       image create photo photoW -data $::photo($white)
-      .photoW configure -image photoW -anchor ne
-      place .photoW -in .main.gameInfo -x -$distance -relx 1.0 -anchor ne
+      .main.photoW configure -image photoW -anchor ne
+      place .main.photoW -in .main.gameInfo -x -$distance -relx 1.0 -anchor ne
     }
   }
   # Todo: fix this
@@ -1018,8 +1018,8 @@ proc updatePlayerPhotos {{force ""}} {
   # if {$::photosMinimized} {mapPhotos}
   set ::photosMinimized 0
 
-  bind .photoW <ButtonPress-1> togglePhotosSize
-  bind .photoB <ButtonPress-1> togglePhotosSize
+  bind .main.photoW <ButtonPress-1> togglePhotosSize
+  bind .main.photoB <ButtonPress-1> togglePhotosSize
 }
 ################################################################################
 # Toggles photo sizes
@@ -1035,18 +1035,18 @@ proc mapPhotos {} {
   if { $distance < 10 } { set distance 82 }
 
   if {!$::photosMinimized} {
-    if { [winfo ismapped .photoW] } {
-      place .photoW -in .main.gameInfo -x -$distance -relx 1.0 -relheight 1 -width [image width photoW] -anchor ne
+    if { [winfo ismapped .main.photoW] } {
+      place .main.photoW -in .main.gameInfo -x -$distance -relx 1.0 -relheight 1 -width [image width photoW] -anchor ne
     }
-    if { [winfo ismapped .photoB] } {
-      place .photoB -in .main.gameInfo -x -1 -relx 1.0 -relheight 1 -width [image width photoB] -anchor ne
+    if { [winfo ismapped .main.photoB] } {
+      place .main.photoB -in .main.gameInfo -x -1 -relx 1.0 -relheight 1 -width [image width photoB] -anchor ne
     }
   } else  {
-    if { [winfo ismapped .photoW] } {
-      place .photoW -in .main.gameInfo -x -17 -relx 1.0 -relheight 0.15 -width 15 -anchor ne
+    if { [winfo ismapped .main.photoW] } {
+      place .main.photoW -in .main.gameInfo -x -17 -relx 1.0 -relheight 0.15 -width 15 -anchor ne
     }
-    if { [winfo ismapped .photoB] } {
-      place .photoB -in .main.gameInfo -x -1 -relx 1.0  -relheight 0.15 -width 15 -anchor ne
+    if { [winfo ismapped .main.photoB] } {
+      place .main.photoB -in .main.gameInfo -x -1 -relx 1.0  -relheight 0.15 -width 15 -anchor ne
     }
   }
 
