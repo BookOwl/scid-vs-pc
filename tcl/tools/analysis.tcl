@@ -426,7 +426,7 @@ proc ::enginelist::choose {} {
 
   checkbutton $w.buttons2.logengines -variable analysis(logEngines) -text "Log $::tr(Engine)"
   dialogbutton $w.buttons2.start -textvar ::tr(Start) -command {
-    makeAnalysisWin [lindex [.enginelist.list.list curselection] 0] settime
+    makeAnalysisWin [lindex [.enginelist.list.list curselection] 0] 1 1
   }
 
   dialogbutton $w.buttons2.close -textvar ::tr(Close) -command {
@@ -1972,7 +1972,7 @@ proc startAnalysisWin {FunctionKey} {
 
 ### toggle analysis engine n
 
-proc makeAnalysisWin {{n 0} {settime 0}} {
+proc makeAnalysisWin {{n 0} {autostart 1} {settime 0}} {
   global analysisWin$n font_Analysis analysisCommand analysis annotateButton annotateEngine
 
   set w .analysisWin$n
@@ -1990,8 +1990,8 @@ proc makeAnalysisWin {{n 0} {settime 0}} {
 
   if {[winfo exists $w]} {
     ### Stop engine and exit
-    focus .main
     destroy $w
+    focus .main
     set analysisWin$n 0
     resetEngine $n
     updateStatusBar
@@ -2017,7 +2017,7 @@ proc makeAnalysisWin {{n 0} {settime 0}} {
 
   # Only update engine's time when it was chosen in the engines dialog box
 
-  if {$settime != 0} {
+  if {$settime} {
     ::enginelist::setTime $n
     catch {::enginelist::write}
   }
@@ -2086,6 +2086,7 @@ proc makeAnalysisWin {{n 0} {settime 0}} {
 
   if {$::comp(playing)} {
     toplevel $w
+    wm iconify $w
   } else {
     ::createToplevel $w
   }
@@ -2097,9 +2098,6 @@ proc makeAnalysisWin {{n 0} {settime 0}} {
   }
 
   bind $w <F1> { helpWindow Analysis }
-  if {$::comp(playing)} {
-    wm iconify $w
-  }
 
   ### Set initial size of analysis widget
   # not sure why these args seem to be in Char and not Pixels.
@@ -2119,8 +2117,16 @@ proc makeAnalysisWin {{n 0} {settime 0}} {
   set relief flat	; # -width 32 -height 32
 
   # start/stop engine analysis
-  button $w.b.startStop -image tb_pause -command "toggleEngineAnalysis $n" -relief $relief
-  ::utils::tooltip::Set $w.b.startStop "$::tr(StopEngine)"
+  button $w.b.startStop -command "toggleEngineAnalysis $n" -relief $relief
+
+  set analysis(autostart$n) $autostart
+  if {$autostart} {
+    $w.b.startStop configure -image tb_pause
+    ::utils::tooltip::Set $w.b.startStop "$::tr(StopEngine)"
+  } else {
+    $w.b.startStop configure -image tb_play
+    ::utils::tooltip::Set $w.b.startStop "$::tr(StartEngine)"
+  }
 
   button $w.b.move -image tb_addmove -command "makeAnalysisMove $n" -relief $relief
   ::utils::tooltip::Set $w.b.move $::tr(AddMove)
@@ -2290,7 +2296,9 @@ proc makeAnalysisWin {{n 0} {settime 0}} {
   # We hope the engine is correctly started at that point, so we can send the first analyze command
   # this problem only happens with winboard engine, as we don't know when they are ready
   if { !$analysis(uci$n) } {
-    initialAnalysisStart $n
+    if {$autostart} {
+      initialAnalysisStart $n
+    }
   }
   # necessary on windows because the UI sometimes starves, also keep latest priority setting
   # if ($::windowsOS)

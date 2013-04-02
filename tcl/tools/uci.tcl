@@ -320,7 +320,9 @@ namespace eval uci {
         # sendUCIoptions $n
         # configure initial multipv value
         #        changePVSize $n
-        startAnalyzeMode $n
+        if {$analysis(autostart$n)} {
+	  startAnalyzeMode $n
+        }
       } else  {
         set uciInfo(uciok$n) 1
       }
