@@ -1336,7 +1336,8 @@ bind .main <End> ::move::End
 
 bind .main <Control-f> {if {!$tree(refresh)} {toggleRotateBoard}}
 
-bind .main <KeyPress-Return> addAnalysisMove
+bind .main <Return> addAnalysisMove
+bind .main <space>  toggleEngineAnalysis
 
 # MouseWheel in main window:
 if {$windowsOS || $macOS} {

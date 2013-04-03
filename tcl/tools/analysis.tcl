@@ -2244,6 +2244,7 @@ proc makeAnalysisWin {{n 0} {options {}}} {
   bind $w <Escape> "focus .main ; destroy $w"
   bind $w <Key-a> "$w.b.startStop invoke"
   bind $w <Return> "addAnalysisMove $n"
+  bind $w <space>  "toggleEngineAnalysis $n"
   wm minsize $w 25 0
   bindMouseWheel $w $w.hist.text
 
@@ -2335,20 +2336,24 @@ proc toggleMini {} {
   setAnalysisPriority 1
 }
 
+
+proc findEngine {} {
+  for {set i 0} {$i < [llength $::engines(list)]} {incr i} {
+    if {[winfo exists .analysisWin$i]} {
+      return $i
+    }
+  }
+  return -1
+}
+
 ### Add move from first analysis n (or first analysis window, if any)
 
 proc addAnalysisMove {{n -1}} {
 
   if {$n == -1} {
-    # todo:  [ wm stackorder . ] is bokre for docked mode
-    set w [lsearch -glob -inline [ wm stackorder . ] {.analysisWin*}]
-    if {[scan $w ".analysisWin\%d" n] != 1} {
-      # Engine 1 can run iconified in statusbar, so check for it
-      if {[winfo exists .analysisWin1]} {
-        set n 1
-      } else {
-	return
-      }
+    set n [findEngine]
+    if {$n == -1} {
+      return
     }
   }
 
@@ -2851,14 +2856,21 @@ proc autoplayFinishGame {n} {
 ################################################################################
 #
 ################################################################################
-proc toggleEngineAnalysis {n {force 0}} {
+proc toggleEngineAnalysis {{n -1} {force 0}} {
   global analysis
-  set b .analysisWin$n.b.startStop
 
   if { ($::annotateButton || $::finishGameMode) && ! $force } {
     return
   }
 
+  if {$n == -1} {
+    set n [findEngine]
+    if {$n == -1} {
+      return
+    }
+  }
+
+  set b .analysisWin$n.b.startStop
   set analysis(lastHistory$n) hmmm
 
   if {$analysis(analyzeMode$n)} {

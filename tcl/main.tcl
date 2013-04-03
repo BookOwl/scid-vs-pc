@@ -409,7 +409,7 @@ proc contextmenu {x y} {
 if { !$::docking::USE_DOCKING } {
   bind .main <ButtonPress-3> {contextmenu %X %Y}
 }
-# bind .main <space> {resizeMainBoard}
+
 # bind . <F9> {contextmenu %X %Y}
 
 if { $macOS } {

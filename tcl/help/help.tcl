@@ -901,9 +901,6 @@ destination square. Alternatively one may drag the piece.
   </p>
   <p>
   As you enter a move, the status bar will show the list of matching moves.
-  You can press the [space] bar at any time to choose the first
-  matching move in the list and add it to the game.
-  To delete a character, press [Backspace] or [Delete].
   </p>
   <p>
   <b>Note</b> Lower-case letter matches to a pawn first, so a
@@ -2627,7 +2624,7 @@ set helpText(Flags) {<h1>Game Flags</h1>
   <p><footer>Updated: Scid vs. PC 4.4, May 2011</footer></p>
 }
 
-set helpTitle(Analysis) "Analysis window"
+set helpTitle(Analysis) "Analysis Window"
 set helpText(Analysis) {<h1>Analysis Windows</h1>
 
   <p> Scid vs. PC has powerful chess analysis features. Multiple engines can be
@@ -2649,8 +2646,11 @@ making for easier <a Analysis Debugging>Debugging</a>.
   which, when running docked, will run at low CPU priority.<p>
 
   <p>
+  <b>Space Bar</b> is bound to engine start/stop, and pressing <b>Enter</b> will add the engine's current best move.
+  </p>
+  <p>
   At the top of the window are some useful Buttons.
-  <a Analysis Moves>Move Predictions</a> occupy most of the space,
+  <a Analysis Moves>Engine Analysis</a> occupy most of the space,
   and at the bottom is some <a Analysis Info>Extra Information</a> (which may be hidden).
   </p>
 
@@ -2693,7 +2693,7 @@ making for easier <a Analysis Debugging>Debugging</a>.
 
   <h3><name Moves>Moves</name></h3>
   <p>
-  Each line of the main text widget contains a move prediction.
+  Each line of the main text widget contains an <b>Engine Analysis Info</b>.
   The first number is the current <b>Search Depth</b>. The next (prefixed with
   a +/-), is a <b>Move Score</b>.  It is measured in pawn units from the
   perspective of white - a positive score means white is ahead, a negative score
@@ -2850,7 +2850,7 @@ engines support both formats.
 via the <button tb_annotate> button in the <run ::enginelist::choose><green>engine configuration</green></run> widget.
   </p>
 
-  <p><footer>Updated: Scid vs. PC 4.7, December 2011</footer></p>
+  <p><footer>Updated: Scid vs. PC 4.9, April 2013</footer></p>
 }
 
 set helpTitle(Tourney) "Computer Tournament"
@@ -6365,6 +6365,7 @@ The window manager may interfere with some shortcuts.
 <li><b>control-f</b> - Flip Board</li>
 <li><b>escape</b> - Clear move entry</li>
 <li><b>enter</b> - Add move from chess engine</li>
+<li><b>space</b> - Start/stop chess engine</li>
 <li><b>delete</b> - Delete trailing moves from game or variation</li>
 <li></li>
 <li><b>F1</b> - Help</li>
@@ -6396,6 +6397,7 @@ The window manager may interfere with some shortcuts.
 <li><b>F3</b> - Toggle engine 2</li>
 <li><b>F4</b> - Toggle engine 3</li>
 <li><b>enter</b> - Add move from chess engine</li>
+<li><b>space</b> - Start/stop chess engine</li>
 </ul>
 
 <h4>Copy / Paste</h4>
@@ -6496,6 +6498,7 @@ The window manager may interfere with some shortcuts.
 <li><b>control-/</b> - Finder</li>
 <li><b>control-?</b> - Load random game</li>
 <li><b>enter</b> - Add move from chess engine</li>
+<li><b>space</b> - Start/stop chess engine</li>
 <li><b>v</b> - Enter variation</li>
 <li><b>z</b> - Exit variation</li>
 <li></li>
@@ -6527,7 +6530,7 @@ The window manager may interfere with some shortcuts.
 <li><b>control-F12</b> - Screenshot</li>
 
 </ul>
-<p><footer>Updated:</b> - Scid vs. PC 4.4 April 2011</footer></p>
+<p><footer>Updated:</b> - Scid vs. PC 4.9 April 2013</footer></p>
 }
 
 set helpTitle(Board) "Board Options"
