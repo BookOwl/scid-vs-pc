@@ -1154,7 +1154,7 @@ proc ::docking::layout_restore_nb { pw name tabs} {
     if { [ scan $d ".fdocktreeBest%d" base ] == 1 } {::tree::best $base}
     if { [ scan $d ".fdockanalysisWin%d" n ] == 1 } {
       # dont auto start engine
-      if {[::makeAnalysisWin $n 0] == -1} {
+      if {[::makeAnalysisWin $n nostart] == -1} {
         puts "::docking::layout_restore_nb: failed to start engine $n"
 	scan $d .fdock%s blank
 	::createToplevel .$blank

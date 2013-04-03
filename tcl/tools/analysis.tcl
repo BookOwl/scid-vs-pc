@@ -426,7 +426,7 @@ proc ::enginelist::choose {} {
 
   checkbutton $w.buttons2.logengines -variable analysis(logEngines) -text "Log $::tr(Engine)"
   dialogbutton $w.buttons2.start -textvar ::tr(Start) -command {
-    makeAnalysisWin [lindex [.enginelist.list.list curselection] 0] 1 1
+    makeAnalysisWin [lindex [.enginelist.list.list curselection] 0] settime
   }
 
   dialogbutton $w.buttons2.close -textvar ::tr(Close) -command {
@@ -1972,7 +1972,7 @@ proc startAnalysisWin {FunctionKey} {
 
 ### toggle analysis engine n
 
-proc makeAnalysisWin {{n 0} {autostart 1} {settime 0}} {
+proc makeAnalysisWin {{n 0} {options {}}} {
   global analysisWin$n font_Analysis analysisCommand analysis annotateButton annotateEngine
 
   set w .analysisWin$n
@@ -2017,7 +2017,7 @@ proc makeAnalysisWin {{n 0} {autostart 1} {settime 0}} {
 
   # Only update engine's time when it was chosen in the engines dialog box
 
-  if {$settime} {
+  if {$options == {settime}} {
     ::enginelist::setTime $n
     catch {::enginelist::write}
   }
@@ -2119,8 +2119,8 @@ proc makeAnalysisWin {{n 0} {autostart 1} {settime 0}} {
   # start/stop engine analysis
   button $w.b.startStop -command "toggleEngineAnalysis $n" -relief $relief
 
-  set analysis(autostart$n) $autostart
-  if {$autostart} {
+  set analysis(autostart$n) [expr {$options != {nostart}}]
+  if {$analysis(autostart$n)} {
     $w.b.startStop configure -image tb_pause
     ::utils::tooltip::Set $w.b.startStop "$::tr(StopEngine)"
   } else {
@@ -2296,7 +2296,7 @@ proc makeAnalysisWin {{n 0} {autostart 1} {settime 0}} {
   # We hope the engine is correctly started at that point, so we can send the first analyze command
   # this problem only happens with winboard engine, as we don't know when they are ready
   if { !$analysis(uci$n) } {
-    if {$autostart} {
+    if {$analysis(autostart$n)} {
       initialAnalysisStart $n
     }
   }
