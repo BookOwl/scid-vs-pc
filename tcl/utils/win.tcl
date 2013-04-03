@@ -641,8 +641,8 @@ proc ::docking::cleanup { w { origin "" } } {
 }
 ################################################################################
 proc ::docking::isUndocked { w } {
-  set w ".fdock[string range $w 1 end]"
-  return [info exists ::docking::notebook_name($w)]
+  set f ".fdock[string range $w 1 end]"
+  return [info exists ::docking::notebook_name($f)]
 }
 ################################################################################
 proc ::docking::isWindow { w } {
@@ -780,7 +780,17 @@ proc ::docking::setMenuVisibility  { f show } {
 }
 
 ################################################################################
-proc  ::docking::tabChanged  {path} {
+# &&& S.A.
+proc ::docking::raiseTab {w} {
+  set f ".fdock[string range $w 1 end]"
+  set tbn [::docking::find_tbn $f]
+  $tbn select $f
+  set ::docking::activeTab($tbn) $f
+  set ::docking::changedTab($tbn) 0
+}
+
+################################################################################
+proc  ::docking::tabChanged  {path {changedTab 1}} {
   update
 
   # HACK ! Because notebooks may also be used inside internal windows
@@ -789,7 +799,7 @@ proc  ::docking::tabChanged  {path} {
   }
   if { [$path select] != $::docking::activeTab($path)} {
     set ::docking::activeTab($path) [$path select]
-    set ::docking::changedTab($path) 1
+    set ::docking::changedTab($path) $changedTab
   }
 }
 

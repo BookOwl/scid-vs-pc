@@ -766,9 +766,18 @@ proc raiseWin {w} {
     if {$w == "." } {
      set w .main
     }
-    catch {wm deiconify $w}
-    raise $w
-    focus $w
+    if {$::docking::USE_DOCKING} {
+      if {[catch {::docking::raiseTab $w}]} {
+        # dammit, undocked windows aren't raising. fixme
+	catch {wm deiconify $w}
+	raise $w 
+	focus $w
+      } 
+    } else {
+      catch {wm deiconify $w}
+      raise $w
+      focus $w
+    }
   }
   return
 }
