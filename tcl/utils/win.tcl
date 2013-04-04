@@ -693,11 +693,12 @@ proc ::docking::end_motion {w x y} {
   bind TNotebook <ButtonRelease-1> [namespace code {::docking::show_menu %W %X %Y}]
 
   if {$c_path==""} { return }
+  $c_path configure -cursor {}
+
   set path [winfo containing $x $y]
   if {$path == ""} {
     return
   }
-  $path configure -cursor {}
 
   set t [find_tbn $path]
   if {$t!=""} {
@@ -953,7 +954,6 @@ proc ::docking::__dock {wnd} {
 ################################################################################
 proc ::docking::add_tab {path anchor args} {
   variable tbs
-
   if { $::docking::layout_dest_notebook == ""} {
     # scan all tabs to find the most suitable
     set dsttab {}
@@ -987,6 +987,9 @@ proc ::docking::add_tab {path anchor args} {
   eval [list $dsttab add $path] $args -text "$title"
   setMenuMark $dsttab $path
   $dsttab select $path
+  # Make new tab active
+  set ::docking::activeTab($dsttab) $path
+  set ::docking::changedTab($dsttab) 0
 }
 ################################################################################
 # display a blue triangle showing the tab has a menu associated
