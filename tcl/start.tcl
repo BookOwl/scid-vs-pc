@@ -150,6 +150,7 @@ set ::sergame::binc 10
 set ::commenteditor::showBoard 0
 set ::windows::gamelist::widths {}
 set ::windows::gamelist::findcase 1
+set ::windows::gamelist::showButtons 1
 set ::windows::switcher::icons 1
 set ::file::finder::data(dir) [pwd]
 set ::file::finder::data(sort) name

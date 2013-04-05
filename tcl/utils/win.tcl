@@ -855,7 +855,7 @@ proc ::docking::ctx_menu {w x y} {
   }
 
   if { [$w select] == ".fdockmain" } {
-    contextmenu $x $y
+    ::contextmenu $x $y
     return
   }
 

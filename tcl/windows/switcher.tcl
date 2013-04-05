@@ -879,9 +879,15 @@ proc ::windows::switcher::Open {} {
   # It packs into the bottom of game list widget
 
   frame $w
-  pack $w -side bottom -before .glistWin.c -fill x
-  # spacer between lowest button bar and switcher
-  pack [frame .glistWin.spacer -height 3] -before .glistWin.c -side bottom
+
+  if {[catch {pack $w -side bottom -before .glistWin.c -fill x}]} {
+    # two rows of buttons are not packed
+    pack $w -side bottom -before .glistWin.f -fill x
+    pack [frame .glistWin.spacer -height 3] -before .glistWin.f -side bottom
+  } else {
+    # spacer between lowest button bar and switcher
+    pack [frame .glistWin.spacer -height 3] -before .glistWin.c -side bottom
+  }
 
 
   bind $w <Escape> ::windows::switcher::Open

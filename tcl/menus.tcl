@@ -993,7 +993,7 @@ $m add command -label OptionsSave -command {
     exportFlags(comments) exportFlags(vars) exportFlags(indentc)
     exportFlags(indentv) exportFlags(column) exportFlags(htmldiag) 
     email(smtp) email(smproc) email(server) 
-    email(from) email(bcc) ::windows::gamelist::widths ::windows::gamelist::findcase 
+    email(from) email(bcc) ::windows::gamelist::widths ::windows::gamelist::findcase ::windows::gamelist::showButtons
     gameInfo(show) gameInfo(photos) gameInfo(hideNextMove) gameInfo(wrap) gameInfo(showStatus) 
     gameInfo(fullComment) gameInfo(showMarks) gameInfo(showMenu) gameInfo(showTool) 
     gameInfo(showMaterial) gameInfo(showFEN) gameInfo(showButtons) gameInfo(showTB) 

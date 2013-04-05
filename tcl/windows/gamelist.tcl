@@ -272,9 +272,8 @@ proc ::windows::gamelist::OpenClose {} {
 
   ### Frames
 
-  pack [frame $w.c] -side bottom -fill x -padx 5 
-  pack [frame $w.b] -side bottom -fill x -padx 5
-
+  frame $w.c
+  frame $w.b
   frame $w.f
   ttk::treeview $w.tree -columns $glistNames -show headings -xscroll "$w.hsb set"
     # -yscroll "$w.vsb set" -xscroll "$w.hsb set"
@@ -293,7 +292,10 @@ proc ::windows::gamelist::OpenClose {} {
 
   # this font is working, but doesn't affect how many entries fit on a screen, and isn't enabled
   $w.tree tag configure treefont -font font_Regular
-
+  bind $w.tree <Button-3> {
+    set ::windows::gamelist::showButtons [expr {!$::windows::gamelist::showButtons}]
+    ::windows::gamelist::displayButtons
+  }
   $w.tree tag bind click2 <Double-Button-1> {::windows::gamelist::Load [%W set [%W focus] Number]}
   $w.tree tag configure deleted -foreground gray80
   $w.tree tag configure error -foreground red
@@ -325,6 +327,8 @@ proc ::windows::gamelist::OpenClose {} {
 
 
   pack $w.f -fill both -expand 1
+  ::windows::gamelist::displayButtons 
+
   grid $w.tree $w.vsb -in $w.f -sticky nsew
   grid $w.hsb         -in $w.f -sticky nsew
   grid column $w.f 0 -weight 1
@@ -594,6 +598,16 @@ proc ::windows::gamelist::OpenClose {} {
   ::createToplevelFinalize $w
 
   bind $w <Configure> {::windows::gamelist::Configure %W }
+}
+
+proc ::windows::gamelist::displayButtons {} {
+  set w .glistWin
+  if {$::windows::gamelist::showButtons} {
+    pack $w.b -side bottom -fill x -padx 5 -before $w.f
+    pack $w.c -side bottom -fill x -padx 5 -before $w.b
+  } else {
+    pack forget $w.b $w.c
+  }
 }
 
 proc ::windows::gamelist::Configure {window} {
