@@ -1365,6 +1365,15 @@ $m  add command -label HelpAbout -command {helpWindow Author}
 set helpMessage($m,[incr menuindex]) HelpAbout
 
 bind .main <F1> toggleHelp
+bind .main <Control-Key-quoteleft> {::file::SwitchToBase 9}
+bind .main <Control-Tab> ::file::SwitchToNextBase
+catch {
+  if {$windowsOS} {
+    bind .main <Shift-Tab> {::file::SwitchToNextBase -1} 
+  } else {
+    bind .main <ISO_Left_Tab> {::file::SwitchToNextBase -1} 
+  }
+}
 
 ##################################################
 
@@ -1395,15 +1404,6 @@ proc updateMenuStates {} {
       if {$i == $current} {
 	$m.file.switch entryconfig $i -state disabled
       }
-    }
-  }
-  bind $dot_w <Control-Key-quoteleft> "::file::SwitchToBase 9"
-  bind $dot_w <Control-Tab> ::file::SwitchToNextBase
-  catch {
-    if {$windowsOS} {
-      bind $dot_w <Shift-Tab> {::file::SwitchToNextBase -1} 
-    } else {
-      bind $dot_w <ISO_Left_Tab> {::file::SwitchToNextBase -1} 
     }
   }
 
