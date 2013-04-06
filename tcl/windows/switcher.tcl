@@ -843,13 +843,14 @@ proc ::windows::switcher::pressMouseEvent {i} {
   }
 }
 
-proc ::windows::switcher::releaseMouseEvent {fromBase x y} {
+proc ::windows::switcher::releaseMouseEvent {fromBase x y dest r s} {
 
   if {! [winfo exists .glistWin.baseWin]} {return}
   foreach win {"" .img .name } {
     .glistWin.baseWin.c.f$fromBase$win configure -cursor {}
   }
   set dropPoint [winfo containing $x $y]
+puts "dest $dest r $r s $s ::windows::switcher::releaseMouseEvent $fromBase $x $y $dropPoint"
   if {! [string match ".glistWin.baseWin.c.f*" $dropPoint]} {return}
 
   # .glistWin.baseWin.c.f.*.name
@@ -916,7 +917,7 @@ proc ::windows::switcher::Open {} {
 
     foreach win {"" .img .name} {
       bind $f$win <ButtonPress-1> [list ::windows::switcher::pressMouseEvent $i]
-      bind $f$win <ButtonRelease-1> [list ::windows::switcher::releaseMouseEvent $i %X %Y]
+      bind $f$win <ButtonRelease-1> [list ::windows::switcher::releaseMouseEvent $i %X %Y %W %R %S]
     }
 
     menu $f.menu -tearoff 0

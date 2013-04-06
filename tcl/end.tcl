@@ -1935,12 +1935,12 @@ proc dumpImages {dir} {
 }
 
 # hmm... Control-Shift-F7 doesn't work for me ???
-bind . <Control-Shift-F7> {
+bind .main <Control-Shift-F7> {
     puts "Dumping images as base64 to /tmp/ScidImages"
     dumpImagesBase64 /tmp/ScidImages
 }
 
-bind . <Control-Shift-F8> {
+bind .main <Control-Shift-F8> {
     puts "Dumping images to /tmp/ScidImages"
     dumpImages /tmp/ScidImages
 }

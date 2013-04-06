@@ -6360,7 +6360,6 @@ The window manager may interfere with some shortcuts.
 <li><b>home</b> - Goto start</li>
 <li><b>end</b> - Goto end</li>
 <li><b>control-g</b> - Goto move number</li>
-<li></li>
 <li><b>control-f</b> - Flip Board</li>
 <li><b>escape</b> - Clear move entry</li>
 <li><b>enter</b> - Add move from chess engine</li>
@@ -6368,8 +6367,9 @@ The window manager may interfere with some shortcuts.
 <li><b>delete</b> - Delete trailing moves from game or variation</li>
 <li></li>
 <li><b>F1</b> - Help</li>
-<li><b>control-F7</b> - Dump all Images and exit (developer only)</li>
-<li><b>control-F12</b> - Screenshot</li>
+<li><b>control-shift-F7</b> - Dump all Images as base64 (developer only)</li>
+<li><b>control-shift-F8</b> - Dump all Images as jpegs  (developer only)</li>
+<li><b>control-shift-F12</b> - Screenshot</li>
 <li><b>alt-KEY</b> - Menu shortcut (*nix only)</li>
 </ul>
 
@@ -6496,10 +6496,10 @@ The window manager may interfere with some shortcuts.
 
 <li><b>control-/</b> - Finder</li>
 <li><b>control-?</b> - Load random game</li>
-<li><b>enter</b> - Add move from chess engine</li>
-<li><b>space</b> - Start/stop chess engine</li>
-<li><b>v</b> - Enter variation</li>
-<li><b>z</b> - Exit variation</li>
+<li><b>control-up</b> - Load previous game</li>
+<li><b>control-down</b> - Load next game</li>
+<li><b>control-home</b> - Load First game</li>
+<li><b>control-end</b> - Load last game</li>
 <li></li>
 
 <li><b>control-1</b> - Switch to first open base</li>
@@ -6508,25 +6508,26 @@ The window manager may interfere with some shortcuts.
 <li><b>control-9</b> - Switch to Clipbase</li>
 <li></li>
 
+<li><b>enter</b> - Add move from chess engine</li>
+<li><b>space</b> - Start/stop chess engine</li>
+<li><b>delete</b> - Delete trailing moves from game or variation</li>
+<li><b>v</b> - Enter variation</li>
+<li><b>z</b> - Exit variation</li>
 <li><b>left</b> - Back one move</li>
 <li><b>right</b> - Forward one move</li>
 <li><b>up</b> - Back five moves</li>
 <li><b>down</b> - Forward five moves</li>
 <li><b>home</b> - Goto start</li>
 <li><b>end</b> - Goto end</li>
-<li><b>delete</b> - Delete trailing moves from game or variation</li>
-<li><b>control-up</b> - Load previous game</li>
-<li><b>control-down</b> - Load next game</li>
-<li><b>control-home</b> - Load First game</li>
-<li><b>control-end</b> - Load last game</li>
 <li></li>
 
 <li><b>F1</b> - Help</li>
 <li><b>F2</b> - Toggle engine 1</li>
 <li><b>F3</b> - Toggle engine 2</li>
 <li><b>F4</b> - Toggle engine 3</li>
-<li><b>control-F7</b> - Dump all Images and exit (developer only)</li>
-<li><b>control-F12</b> - Screenshot</li>
+<li><b>control-shift-F7</b> - Dump all Images as base64 (developer only)</li>
+<li><b>control-shift-F8</b> - Dump all Images as jpegs  (developer only)</li>
+<li><b>control-shift-F12</b> - Screenshot</li>
 
 </ul>
 <p><footer>Updated:</b> - Scid vs. PC 4.9 April 2013</footer></p>

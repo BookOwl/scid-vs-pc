@@ -816,8 +816,8 @@ set helpMessage($m,[incr menuindex]) ToolsImportFile
 $m add separator
 incr menuindex
 
-$m add command -label ToolsScreenshot -command {boardToFile {} {}} -accelerator Ctrl+F12
-bind .main <Control-F12> {boardToFile {} {}}
+$m add command -label ToolsScreenshot -command {boardToFile {} {}} -accelerator Ctrl+Shift+F12
+bind .main <Control-Shift-F12> {boardToFile {} {}}
 set helpMessage($m,[incr menuindex]) {Board Screenshot}
 
 
