@@ -414,26 +414,31 @@ incr menuindex
 
 $m add command -label GameFirst -accelerator "Ctrl+Home" \
     -command {::game::LoadNextPrev first}
-bind .main <Control-Home> {::game::LoadNextPrev first}
 set helpMessage($m,[incr menuindex]) GameFirst
 
 $m add command -label GameLast -accelerator "Ctrl+End" \
     -command {::game::LoadNextPrev last}
-bind .main <Control-End> {::game::LoadNextPrev last}
 set helpMessage($m,[incr menuindex]) GameLast
 
 $m add command -label GameNext -accelerator "Ctrl+Down" \
     -command {::game::LoadNextPrev next}
-bind .main <Control-Down> {::game::LoadNextPrev next}
 set helpMessage($m,[incr menuindex]) GameNext
 
 $m add command -label GamePrev -accelerator "Ctrl+Up" \
     -command {::game::LoadNextPrev previous}
-bind .main <Control-Up> {::game::LoadNextPrev previous}
 set helpMessage($m,[incr menuindex]) GamePrev
 
+proc standardGameShortcuts {w} {
+  bind $w <Control-Home> {::game::LoadNextPrev first}
+  bind $w <Control-End> {::game::LoadNextPrev last}
+  bind $w <Control-Down> {::game::LoadNextPrev next}
+  bind $w <Control-Up> {::game::LoadNextPrev previous}
+  bind $w <Control-question> ::game::LoadRandom
+}
+
+standardGameShortcuts .main
+
 $m add command -label GameRandom -command ::game::LoadRandom -accelerator "Ctrl+?"
-bind .main <Control-question> ::game::LoadRandom
 set helpMessage($m,[incr menuindex]) GameRandom
 
 $m add command -label GameNumber -command ::game::LoadNumber -accelerator "Ctrl+U"
@@ -1399,7 +1404,7 @@ proc updateMenuStates {} {
       $m.file.switch add command -command "set currentSlot $i" \
 	  -label "$fname" -underline 5 -accelerator "Ctrl+$i" \
           -command "::file::SwitchToBase $i"
-      bind $dot_w <Control-Key-$i> "::file::SwitchToBase $i"
+      bind .main <Control-Key-$i> "::file::SwitchToBase $i"
 
       if {$i == $current} {
 	$m.file.switch entryconfig $i -state disabled
@@ -1729,11 +1734,6 @@ proc standardShortcuts {w} {
   bind $w <Control-m> ::maint::OpenClose
   bind $w <Control-q> ::file::Exit
   bind $w <Control-L> ::game::Reload
-  bind $w <Control-Shift-Up> {::game::LoadNextPrev first}
-  bind $w <Control-Shift-Down> {::game::LoadNextPrev last}
-  bind $w <Control-Up> {::game::LoadNextPrev previous}
-  bind $w <Control-Down> {::game::LoadNextPrev next}
-  bind $w <Control-question> ::game::LoadRandom
   bind $w <Control-g> ::game::GotoMoveNumber
   bind $w <Control-G> ::game::LoadNumber
   bind $w <Control-f> {if {!$tree(refresh)} {toggleRotateBoard}}

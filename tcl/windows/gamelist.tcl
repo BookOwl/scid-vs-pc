@@ -413,6 +413,11 @@ proc ::windows::gamelist::OpenClose {} {
   bind $w <Control-F> ::search::filter::reset
   bind $w <Control-N> ::search::filter::negate
 
+  standardGameShortcuts .glistWin
+  foreach i { <Control-Home> <Control-End> <Control-Down> <Control-Up> <Control-question>} {
+    bind .glistWin $i +::windows::gamelist::showCurrent
+  }
+
   set ::windows::gamelist::findtextprev {}
   set ::windows::gamelist::finditems {}
 

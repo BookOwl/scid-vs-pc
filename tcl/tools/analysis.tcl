@@ -36,6 +36,7 @@ set isOpeningOnly 0
 set isOpeningOnlyMoves 10
 set stack ""
 set markTacticalExercises 0
+set finishGameMode 0
 
 proc resetEngines {} {
   for {set i 0} {$i < [llength $::engines(list)]} {incr i} {
