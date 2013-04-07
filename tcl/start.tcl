@@ -869,7 +869,11 @@ proc createToplevel { w } {
       set tl [winfo toplevel %W]
       set atTop [lindex [wm stackorder . ] end]
       if { $tl == $atTop || $atTop == "." } {
-        focus -force $tl
+        if {$tl == ".fics"} {
+          focus .fics.command.entry
+        } else {
+	  focus $tl
+        }
       }
     }
     
