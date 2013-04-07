@@ -423,6 +423,14 @@ proc ::windows::gamelist::OpenClose {} {
 
   ### Top row of buttons, etc
 
+  button $w.b.save -image tb_save -relief flat -command {
+    if {[sc_game number] != 0} {
+      gameReplace
+    } else {
+      gameAdd
+    }
+  }
+
   button $w.b.gfirst -image tb_gfirst -command "
     event generate $w.tree <Home>
     ::game::LoadNextPrev first 0" -relief flat
@@ -432,11 +440,11 @@ proc ::windows::gamelist::OpenClose {} {
     event generate $w.tree <End>
    ::game::LoadNextPrev last 0" -relief flat
 
-  button $w.b.current -font font_Small -relief flat -textvar ::tr(Current) \
+  button $w.b.current -font font_Small -relief flat -width 5 -textvar ::tr(Current) \
     -command ::windows::gamelist::showCurrent
   set ::windows::gamelist::goto {}
 
-  button $w.b.select -textvar ::tr(SetFilter) -font font_Small -relief flat -command {
+  button $w.b.select -textvar ::tr(SetFilter) -font font_Small -relief flat -width 5 -command {
     set items [.glistWin.tree selection]
     if { "$items" == "" } {
       bell
@@ -453,7 +461,7 @@ proc ::windows::gamelist::OpenClose {} {
   }
 
   ### Filter items. (Delete items is different)
-  button $w.b.remove -textvar ::tr(GlistDeleteField) -font font_Small -relief flat -command {
+  button $w.b.remove -textvar ::tr(GlistDeleteField) -font font_Small -relief flat -width 5 -command {
     set items [.glistWin.tree selection]
     foreach i $items {
       sc_filter remove [.glistWin.tree set $i Number]
@@ -502,7 +510,7 @@ proc ::windows::gamelist::OpenClose {} {
   pack $w.b.findcase -side right
   pack $w.b.find -side right ; # -expand 1 -fill x
   pack $w.b.findlabel $w.b.filter $w.b.reset -side right
-  pack $w.b.gfirst $w.b.gprev $w.b.gnext $w.b.glast $w.b.current $w.b.select $w.b.remove $w.b.removeabove $w.b.removebelow -side left
+  pack $w.b.save $w.b.gfirst $w.b.gprev $w.b.gnext $w.b.glast $w.b.current $w.b.select $w.b.remove $w.b.removeabove $w.b.removebelow -side left
 
   ### Bottom row of buttons , etc
 
