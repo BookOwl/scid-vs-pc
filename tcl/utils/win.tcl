@@ -969,14 +969,20 @@ proc ::docking::add_tab {path anchor args} {
         s { set rel {$y > $_y} }
         e { set rel {$x > $_x} }
       }
+      # give FICS the largest (widest) pane
+      if {$path == ".fdockfics"} {
+        set rel {$w > $_w}
+      }
       if {$dsttab==""} {
         set dsttab $tb
         set _x $x
         set _y $y
+        set _w $w
       } elseif { [expr $rel] } {
         set dsttab $tb
         set _x $x
         set _y $y
+        set _w $w
       }
     }
   } else  {
