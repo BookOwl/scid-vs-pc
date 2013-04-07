@@ -870,9 +870,9 @@ proc createToplevel { w } {
       set atTop [lindex [wm stackorder . ] end]
       if { $tl == $atTop || $atTop == "." } {
         if {$tl == ".fics"} {
-          focus .fics.command.entry
+          focus -force .fics.command.entry
         } else {
-	  focus $tl
+	  focus -force $tl
         }
       }
     }
