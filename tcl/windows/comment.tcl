@@ -173,6 +173,7 @@ proc ::commenteditor::Open {} {
   ### Main buttons
 
   frame $w.b
+  # todo: make this frame more persistant than others
   pack $w.b -side top -ipady 4 -padx 2 -pady 4 -fill x
 
   button $w.b.hide  \
@@ -207,19 +208,21 @@ proc ::commenteditor::Open {} {
 
   ### Insert-mark frame
 
-  label $mark.header -font font_Regular -text $::tr(InsertMark)
-  pack $mark.header -side top -ipady 1 -fill x -padx 1
+  # label $mark.header -font font_Regular -text $::tr(InsertMark)
+  # pack $mark.header -side top -ipady 1 -fill x -padx 1
 
   # pack [frame [set usage $mark.usage]] -side bottom -pady 1 -expand true
   # pack [label [set usage $usage.text] \
       -text [string trim $::tr(InsertMarkHelp)] -justify left]
 
-  # Subframes for insert board and two button rows:
+  # Subframes for insert board , two button rows and arrow options
   pack [frame [set colorButtons $mark.colorButtons]] \
       -side top -pady 1 -anchor n
   pack [frame [set insertBoard $mark.insertBoard]] \
       -side top -pady 1
   pack [frame [set typeButtons $mark.typeButtons]] \
+      -side top -pady 5 -anchor s
+  pack [frame [set arrowOptions $mark.arrowOptions]] \
       -side top -pady 5 -anchor s
 
   ### Color (radio)buttons
@@ -287,6 +290,15 @@ proc ::commenteditor::Open {} {
   } ;# foreach button_line
   # "Press" button:
   SetMarkType $board $State(markType)
+
+  ### Arrow options
+
+  label   $arrowOptions.l1 -text {Arrow: Width}
+  spinbox $arrowOptions.width -textvariable ::board::mark::arrowWidth -from 1 -to 10 -increment 1 -width 3 -command updateBoard
+  label   $arrowOptions.space -width 1
+  label   $arrowOptions.l2 -text {Length}
+  spinbox $arrowOptions.length -textvariable ::board::mark::arrowLength -from 0.0 -to 0.9 -increment .1 -width 3 -command updateBoard
+  pack $arrowOptions.l1 $arrowOptions.width $arrowOptions.space $arrowOptions.l2 $arrowOptions.length -side left -padx 2
 
   ### Start editing
 
