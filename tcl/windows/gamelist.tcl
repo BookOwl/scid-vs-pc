@@ -247,8 +247,9 @@ proc ::windows::gamelist::OpenClose {} {
   wm minsize $w 300 160
 
   ### Hmmm - throws errors on OSX, windows
-  # if {!$::docking::USE_DOCKING || !($::windowsOS || $::macOS)} 
-  catch {wm withdraw $w}
+  if {!$::docking::USE_DOCKING || !$::macOS}  {
+    catch {wm withdraw $w}
+  }
 
   setWinLocation $w
   setWinSize $w
