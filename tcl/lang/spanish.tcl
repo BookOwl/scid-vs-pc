@@ -296,6 +296,7 @@ menuText S OptionsMovesShowVarArrows "Mostrar flechas para las variaciones" 0 \
   {Activa/desactiva mostrar flechas para las variaciones}
 menuText S OptionsNumbers "Formato de números" 11 {Selecciona el formato de números}
 menuText S OptionsStartup "Inicio" 3 {Seleccionar ventanas a abrir al inicio}
+menuText S OptionsTheme "Tema" 0 {Cambia el aspecto del interfaz}
 menuText S OptionsWindows "Ventanas" 0 {Opciones de ventana}
 menuText S OptionsWindowsIconify "Autominimizar" 4 \
   {Minimiza todas las ventanas cuando la ventana principal es minimizada}

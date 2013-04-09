@@ -1,8 +1,19 @@
-diff -U 5 -rN scid.orig scid 
-
---- scid.orig	2013-02-12 17:42:09.000000000 +1000
-+++ scid	2013-02-12 17:46:12.000000000 +1000
-@@ -74896,11 +74896,11 @@
+--- scid.orig	2013-04-09 17:46:17.000000000 +1000
++++ scid	2013-04-09 18:08:21.000000000 +1000
+@@ -74254,11 +74254,11 @@
+   if {[winfo exists .ctxtMenu]} {
+     destroy .ctxtMenu
+   }
+ }
+ 
+-bind TNotebook <ButtonPress-3> {::docking::ctx_menu %W %X %Y}
++bind TNotebook <ButtonPress-2> {::docking::ctx_menu %W %X %Y}
+ bind TNotebook <<NotebookTabChanged>> {::docking::tabChanged %W}
+ 
+ ################################################################################
+ #
+ ################################################################################
+@@ -76061,11 +76061,11 @@
          # Move tag &&&
          set moveTag $tagName
          set tagName m
@@ -15,7 +26,7 @@ diff -U 5 -rN scid.orig scid
        } elseif {[strIsPrefix {a } $tagName]} {
  	# link tag
          set linkName [::htext::extractLinkName $tagName]
-@@ -74963,11 +74963,11 @@
+@@ -76128,11 +76128,11 @@
          set gameTag $tagName
          set tagName g
          set gnum [string range $gameTag 2 end]
@@ -28,7 +39,7 @@ diff -U 5 -rN scid.orig scid
              "$w tag configure $gameTag
               $w tag configure $gameTag -back gray85
               $w configure -cursor hand2"
-@@ -76186,11 +76186,11 @@
+@@ -77363,11 +77363,11 @@
        set fullpath $data(dir)/$dir/$tail
      }
  
@@ -41,7 +52,7 @@ diff -U 5 -rN scid.orig scid
      $t tag bind f$pathtag <Any-Leave> "$t tag configure [list f$pathtag] -background {}"
      if {$dir == "."} {
        set fullpath "$data(dir)/$tail"
-@@ -77591,11 +77591,11 @@
+@@ -78768,11 +78768,11 @@
    # Right-mouse button cut/copy/paste menu:
    menu $w.text.edit -tearoff 0
    $w.text.edit add command -label "Cut"  -command "tk_textCut $w.text"
@@ -54,7 +65,7 @@ diff -U 5 -rN scid.orig scid
  
    loadEpdLines $id
  
-@@ -80761,12 +80761,12 @@
+@@ -81937,12 +81937,12 @@
      if { ($i + ($i / 8)) % 2 } { set boc bgl$psize }
      $sbd.bd delete br$i
      $sbd.bd create image $xc $yc -image $boc -tag br$i
@@ -66,10 +77,23 @@ diff -U 5 -rN scid.orig scid
 +    $sbd.bd bind p$i <ButtonPress-2> "useBoardPiece $i"
  
  
-     # ::board::bind .board $i <ButtonPress-1> "set ::addVariationWithoutAsking 0 ; pressSquare $i"
+     # ::board::bind .main.board $i <ButtonPress-1> "set ::addVariationWithoutAsking 0 ; pressSquare $i"
      # bind $sbd.$i <ButtonPress-1> "setupBoardPiece $i"
    }
-@@ -83110,15 +83110,15 @@
+@@ -83298,11 +83298,11 @@
+   # title font isn't working &&& I don't think it's configurable !
+   $w.tree tag configure treetitle -font font_H1
+ 
+   # this font is working, but doesn't affect how many entries fit on a screen, and isn't enabled
+   $w.tree tag configure treefont -font font_Regular
+-  bind $w.tree <Button-3> {
++  bind $w.tree <Button-2> {
+     set ::windows::gamelist::showButtons [expr {!$::windows::gamelist::showButtons}]
+     ::windows::gamelist::displayButtons
+   }
+   $w.tree tag bind click2 <Double-Button-1> {::windows::gamelist::Load [%W set [%W focus] Number]}
+   $w.tree tag configure deleted -foreground gray80
+@@ -84327,15 +84327,15 @@
      bind $w <ButtonPress-1> {
        if {[winfo exists .pgnWin.text.ctxtMenu]} { destroy .pgnWin.text.ctxtMenu; focus .pgnWin }
      }
@@ -88,7 +112,7 @@ diff -U 5 -rN scid.orig scid
        bind .pgnWin <Control-Button-1> {event generate .pgnWin <Button-3> -x %x -y %y -button 3}
      }
  
-@@ -84481,13 +84481,13 @@
+@@ -85697,13 +85697,13 @@
    for {set square 0} {$square < 64} {incr square} {
      ::board::bind $board $square <ButtonPress-1> [namespace code \
          [list InsertMark $board $square]]
@@ -104,7 +128,7 @@ diff -U 5 -rN scid.orig scid
  
    ### Type/Shape (pseudo-radio)buttons
  
-@@ -84891,11 +84891,11 @@
+@@ -86114,11 +86114,11 @@
      bind $w <Prior> {.ecograph.pane.text.text yview scroll -1 pages}
      bind $w <Next>  {.ecograph.pane.text.text yview scroll 1 pages}
      bindMouseWheel $w $w.pane.text.text
@@ -117,7 +141,7 @@ diff -U 5 -rN scid.orig scid
        ::utils::graph::configure eco -height [expr {[winfo height .ecograph.pane.graph.c] - 50} ]
        ::utils::graph::configure eco -width [expr {[winfo width .ecograph.pane.graph.c] - 60} ]
        ::utils::graph::redraw eco
-@@ -85909,11 +85909,11 @@
+@@ -87143,11 +87143,11 @@
      # insert 2 blank images and 4 blank space
      foreach j { 0 1 } {
        $w.f.tl image create end -image ::tree::mask::emptyImage -align center
@@ -126,11 +150,11 @@ diff -U 5 -rN scid.orig scid
 -    $w.f.tl tag bind tagclick0 <Button-2> "::tree::mask::contextMenu $w.f.tl dummy %x %y %X %Y ; break"
 +    $w.f.tl tag bind tagclick0 <Button-3> "::tree::mask::contextMenu $w.f.tl dummy %x %y %X %Y ; break"
    }
-   $w.f.tl insert end "[lindex $moves 0]\n" tagclick0
- 
-   ### Hmmm - some of the markers (images) might be 17 or 18 width, and they make the
-   ### bargraph stick out a little. todo - resize all markers to 16
-@@ -85988,11 +85988,11 @@
+   if {[string match This* [lindex $moves 0]]} {
+     $w.f.tl insert 0.0 "[lindex $moves 0]"
+   } else {
+     $w.f.tl insert end "[lindex $moves 0]\n" tagclick0
+@@ -87226,11 +87226,11 @@
      if {$move != {} && $move != {---} && $move != {[end]} && $i != $len-2 && $i != 0} {
        $w.f.tl tag bind tagclick$i <Button-1> "::tree::selectCallback $baseNumber $move ; break"
        if { $maskFile != {}} {
@@ -143,7 +167,7 @@ diff -U 5 -rN scid.orig scid
  
      if { $maskFile != "" } {
        # Move comment
-@@ -86004,11 +86004,11 @@
+@@ -87242,11 +87242,11 @@
          $w.f.tl tag bind tagtooltip$i <Double-Button-1> "::tree::mask::addComment $move $w"
        }
      }
@@ -156,7 +180,7 @@ diff -U 5 -rN scid.orig scid
      
      $w.f.tl insert end "\n"
    } ;# end for loop
-@@ -86039,11 +86039,11 @@
+@@ -87277,11 +87277,11 @@
          continue
        }
        
@@ -169,7 +193,7 @@ diff -U 5 -rN scid.orig scid
          if {[lindex $m $j] == ""} {
            $w.f.tl image create end -image ::tree::mask::emptyImage -align center
          } else  {
-@@ -88803,12 +88803,12 @@
+@@ -90046,12 +90046,12 @@
        set one "1="; set two "1="
      }
      set best "$one $winner\t$two $runnerup, ..."
@@ -183,7 +207,7 @@ diff -U 5 -rN scid.orig scid
      $t tag bind g$count <Any-Leave> "$t tag configure g$count -background {}"
      $t insert end "\n"
      $t insert end "\t$count\t" g$count
-@@ -89812,11 +89812,11 @@
+@@ -91062,11 +91062,11 @@
  
      $f.menu add checkbutton -label {Show icons} -variable ::windows::switcher::icons \
        -command ::windows::switcher::Refresh
@@ -196,7 +220,7 @@ diff -U 5 -rN scid.orig scid
  
    ::windows::switcher::Refresh
    after idle [namespace code "RegisterDropEvents $w.c"]
-@@ -93228,11 +93228,11 @@
+@@ -94528,11 +94528,11 @@
    # Right-mouse button cut/copy/paste menu:
    menu $f.text.edit -tearoff 0
    $f.text.edit add command -label "Cut" -command "tk_textCut $f.text"
@@ -209,7 +233,7 @@ diff -U 5 -rN scid.orig scid
    # $text insert end "Hi $name,\n\n"
    $text insert end "\n"
    foreach i $gamelist {
-@@ -93500,11 +93500,11 @@
+@@ -94800,11 +94800,11 @@
    $edit.text.rmenu add command -label "Redo" -command "catch {$edit.text edit redo}"
    $edit.text.rmenu add command -label "Cut" -command "tk_textCut $edit.text"
    $edit.text.rmenu add command -label "Copy" -command "tk_textCopy $edit.text"
@@ -222,9 +246,9 @@ diff -U 5 -rN scid.orig scid
        -yscroll "$pane.err.scroll set"
    scrollbar $pane.err.scroll -command "$pane.err.text yview" -takefocus 0
    pack $pane.err.scroll -side right -fill y
-@@ -98211,16 +98211,16 @@
-   button $w.b.startStop -image tb_pause -command "toggleEngineAnalysis $n" -relief $relief
-   ::utils::tooltip::Set $w.b.startStop "$::tr(StopEngine)"
+@@ -99537,16 +99537,16 @@
+     ::utils::tooltip::Set $w.b.startStop "$::tr(StartEngine)"
+   }
  
    button $w.b.move -image tb_addmove -command "makeAnalysisMove $n" -relief $relief
    ::utils::tooltip::Set $w.b.move $::tr(AddMove)
@@ -241,7 +265,7 @@ diff -U 5 -rN scid.orig scid
    ::utils::tooltip::Set $w.b.alllines $::tr(AddAllVariations)
  
    spinbox $w.b.multipv -from 1 -to 8 -increment 1 -textvariable analysis(multiPVCount$n) -width 2 \
-@@ -98312,11 +98312,11 @@
+@@ -99638,11 +99638,11 @@
    }
    pack $w.hist -side top -expand 1 -fill both
    pack $w.hist.ybar -side right -fill y
@@ -254,7 +278,7 @@ diff -U 5 -rN scid.orig scid
    $w.hist.text tag configure blue -foreground darkblue
    $w.text insert end "Please wait a few seconds for engine initialisation \
        (with some engines, you will not see any analysis until the board \
-@@ -101653,11 +101653,11 @@
+@@ -102999,11 +102999,11 @@
    pack $w.c -side top -expand yes -fill both
    ::utils::graph::create filter
  
@@ -267,7 +291,7 @@ diff -U 5 -rN scid.orig scid
    foreach {name text} {decade Decade year Year elo Rating move moves} {
      radiobutton $w.b.$name -padx 4 -pady 3 -text [string totitle $::tr($text)] \
        -variable ::tools::graphs::filter::type -value $name \
-@@ -101921,11 +101921,11 @@
+@@ -103267,11 +103267,11 @@
        ::utils::graph::configure score -height [expr {[winfo height .sgraph.c] - 90}]
        ::utils::graph::configure score -width [expr {[winfo width .sgraph.c] - 50}]
        ::utils::graph::redraw score
@@ -280,7 +304,7 @@ diff -U 5 -rN scid.orig scid
      bind $w <Control-Z> "destroy $w"
  
      wm title $w "[tr ToolsScore]"
-@@ -102056,11 +102056,11 @@
+@@ -103402,11 +103402,11 @@
        ::utils::graph::configure ratings -logy 10
        ::utils::graph::redraw ratings
        update
@@ -293,7 +317,7 @@ diff -U 5 -rN scid.orig scid
  
      ::tools::graphs::rating::ConfigMenus
      setWinLocation $w
-@@ -102189,11 +102189,11 @@
+@@ -103535,11 +103535,11 @@
    pack $w.c -side top -expand yes -fill both
    ::utils::graph::create absfilter
  
@@ -306,7 +330,7 @@ diff -U 5 -rN scid.orig scid
      radiobutton $w.b.$name -padx 4 -pady 3 -text [string totitle $::tr($text)] \
        -variable ::tools::graphs::absfilter::type -value $name \
        -command ::tools::graphs::absfilter::Refresh
-@@ -104214,20 +104214,20 @@
+@@ -105560,20 +105560,20 @@
      set sq ${file}7
      set b $w.bd.p$sq
      label $b -image b$p$::ptrack::psize -border 1 -relief raised
@@ -329,7 +353,7 @@ diff -U 5 -rN scid.orig scid
      set sq ${file}1
      set b $w.bd.p$sq
      label $b -image w$p$::ptrack::psize -border 1 -relief raised
-@@ -104235,19 +104235,19 @@
+@@ -105581,19 +105581,19 @@
      bind $b <Button-1> "::ptrack::select $sq"
    }
  
@@ -354,20 +378,20 @@ diff -U 5 -rN scid.orig scid
    # Status-bar help:
    foreach sq {d1 e1 d8 e8} {
      bind $w.bd.p$sq <Any-Enter> {
-@@ -116320,11 +116320,11 @@
-   }
+@@ -117729,11 +117729,11 @@
  }
  
  # Pop-up this menu with a right click on a few empty real estates (if not dragging)
  
--bind . <ButtonPress-3> {contextmenu %X %Y}
-+bind . <ButtonPress-2> {contextmenu %X %Y}
- bind . <F9> {contextmenu %X %Y}
+ if { !$::docking::USE_DOCKING } {
+-  bind .main <ButtonPress-3> {contextmenu %X %Y}
++  bind .main <ButtonPress-2> {contextmenu %X %Y}
+ }
+ 
+ # bind . <F9> {contextmenu %X %Y}
  
  if { $macOS } {
-   # Macs with one button need (shooting)
-   # todo: find a way to seemlessly swap button-2 with button-3 as macs have them reversed
-@@ -163033,11 +163033,11 @@
+@@ -163757,11 +163757,11 @@
  
      bind $w <Control-q> ::fics::close
      bind $w <Destroy>   ::fics::close
@@ -380,40 +404,44 @@ diff -U 5 -rN scid.orig scid
        if {!($::windowsOS || $::macOS)} {
  	bind .fics <Button-1> {
  	  .menu.options.fics unpost
-@@ -166206,11 +166206,11 @@
+@@ -168032,11 +168032,11 @@
  
  for {set i 0} { $i < 64 } { incr i } {
-   ::board::bind .board $i <Enter> "enterSquare $i"
-   ::board::bind .board $i <Leave> "leaveSquare $i"
-   ::board::bind .board $i <ButtonPress-1> "pressSquare $i 0"
--  ::board::bind .board $i <ButtonPress-2> "pressSquare $i 1"
-+  ::board::bind .board $i <ButtonPress-3> "pressSquare $i 1"
-   ::board::bind .board $i <Control-ButtonPress-1> "drawArrow $i green"
-   # ::board::bind .board $i <Control-ButtonPress-2> "drawArrow $i yellow"
-   # ::board::bind .board $i <Control-ButtonPress-3> "drawArrow $i red"
-   # ::board::bind .board $i <Shift-ButtonPress-1> "addMarker $i green"
-   # ::board::bind .board $i <Shift-ButtonPress-2> "addMarker $i yellow"
-@@ -166223,11 +166223,11 @@
+   ::board::bind .main.board $i <Enter> "enterSquare $i"
+   ::board::bind .main.board $i <Leave> "leaveSquare $i"
+   ::board::bind .main.board $i <ButtonPress-1> "pressSquare $i 0"
+-  ::board::bind .main.board $i <ButtonPress-2> "pressSquare $i 1"
++  ::board::bind .main.board $i <ButtonPress-3> "pressSquare $i 1"
+   ::board::bind .main.board $i <Control-ButtonPress-1> "drawArrow $i \$::::commenteditor::State(markColor)"
+   # ::board::bind .main.board $i <Control-ButtonPress-2> "drawArrow $i yellow"
+   # ::board::bind .main.board $i <Control-ButtonPress-3> "drawArrow $i red"
+   ::board::bind .main.board $i <Shift-ButtonPress-1> "addMarker $i \$::::commenteditor::State(markColor)"
+   # ::board::bind .main.board $i <Shift-ButtonPress-2> "addMarker $i yellow"
+@@ -168049,11 +168049,11 @@
  
  # These binds must be moved back into for loop
  # if we want to use the above "addMarker" bindings
- bind .board.bd <B1-Motion> {::board::dragPiece %X %Y}
- bind .board.bd <ButtonRelease-1> {releaseSquare %X %Y}
--bind .board.bd <ButtonRelease-2> {releaseSquare %X %Y}
-+bind .board.bd <ButtonRelease-3> {releaseSquare %X %Y}
+ bind .main.board.bd <B1-Motion> {::board::dragPiece %X %Y}
+ bind .main.board.bd <ButtonRelease-1> {releaseSquare %X %Y}
+-bind .main.board.bd <ButtonRelease-2> {releaseSquare %X %Y}
++bind .main.board.bd <ButtonRelease-3> {releaseSquare %X %Y}
  
  foreach i {o q r n k O Q R B N K} {
-   bind . <$i> "moveEntry_Char [string toupper $i]"
+   bind .main <$i> "moveEntry_Char [string toupper $i]"
  }
  foreach i {a b c d e f g h 1 2 3 4 5 6 7 8} {
-@@ -166323,11 +166323,11 @@
+@@ -168155,14 +168155,14 @@
+     update
+   }
+ }
  
  # todo mac button patch
- bind .statusbar <Button-2> ::file::SwitchToNextBase
+-bind .main.statusbar <Button-2> ::file::SwitchToNextBase
++bind .main.statusbar <Button-3> ::file::SwitchToNextBase
  
  # Right-click toggles window size
--bind .statusbar <Button-3>  {
-+bind .statusbar <Button-2>  {
+-bind .main.statusbar <Button-3>  {
++bind .main.statusbar <Button-2>  {
    toggleMini
    if {[winfo exists .analysisWin1] && $::analysis(mini)} {
      set ::statusBar "   [lindex $::analysis(name1) 0]:"

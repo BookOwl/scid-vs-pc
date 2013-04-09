@@ -277,6 +277,7 @@ menuText W OptionsMovesKey "Tangentkomplettering" 0 \
 menuText W OptionsMovesShowVarArrows "Visa pilar för variationer" 0 {Växlar på/av pilar som visar drag i variationer}
 menuText W OptionsNumbers "Talformat" 3 {Välj hur tal visas}
 menuText W OptionsStartup "Start" 3 {Välj vilka fönster som ska öppnas vid start}
+menuText W OptionsTheme "Tema" 0 {Ändra utseende på gränssnitt}
 menuText W OptionsWindows "Fönster" 1 {Fönsteralternativ}
 menuText W OptionsWindowsIconify "Minimera automatiskt" 5 \
   {Minimera alla fönster när huvudfönstret minimeras}

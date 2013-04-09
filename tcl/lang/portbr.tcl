@@ -304,6 +304,7 @@ menuText B OptionsMovesShowVarArrows "Mostrar Setas para variantes" 0 {Liga/Desl
 menuText B OptionsNumbers "Formato de Numeros" 0 {Selecione o formato usado para numeros}
 menuText B OptionsStartup "Iniciar" 1 \
   {Seleciona janelas que serao abertas ao iniciar o programa}
+menuText B OptionsTheme "Tema" 0 {Muda a aparência da interface}
 menuText B OptionsWindows "Janelas" 0 {Opcoes para Janelas}
 menuText B OptionsWindowsIconify "Auto-iconizar" 5 \
   {Iconizar todas as janelas quando a janela principal eh iconizada}

@@ -593,6 +593,9 @@ set blunderThreshold 1.0
 # Geometry of windows:
 array set geometry {}
 
+# Default theme
+set lookTheme "default"
+
 #   Which windows should be opened on startup
 set startup(pgn) 0
 set startup(switcher) 0
@@ -1544,6 +1547,9 @@ foreach sz $boardSizes {
   if {$boardSize >= $sz} { set newSize $sz }
 }
 set boardSize $newSize
+
+# Load theme
+ttk::style theme use $lookTheme
 
 # Check for old (single-directory) tablebase option:
 if {[info exists initialDir(tablebase)]} {

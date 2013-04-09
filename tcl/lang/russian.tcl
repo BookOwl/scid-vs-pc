@@ -328,6 +328,8 @@ menuText R OptionsMovesKey "Клавиатурное завершение" 0 \
 menuText R OptionsMovesShowVarArrows "Show Variation Arrows" 0 {Turn on/off arrows showing moves in variations}
 menuText R OptionsNumbers "Числовой формат" 0 {Выбрать числовой формат}
 menuText R OptionsStartup "Запуск" 0 {Выбрать окна, открывающиеся при запуске}
+# ====== TODO To be translated ======
+menuText R OptionsTheme "Theme" 0 {Change look of interface}
 menuText R OptionsWindows "Окна" 0 {Установки окон}
 menuText R OptionsWindowsIconify "Авто-иконизация" 0 \
   {Иконизировать все окна, когда иконизируется основное окно}

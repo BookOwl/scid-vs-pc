@@ -214,10 +214,6 @@ install_engines: engines
 	install -m 755 -d $(SHAREDIR)/engines/toga
 	install ./engines/toga/src/fruit $(SHAREDIR)/engines/toga/
 
-install_gui: scid
-	install -m 755 scid /Applications/ScidvsMac.app/Contents/MacOS/
-	/Applications/ScidvsMac.app/Contents/MacOS/scid
-
 uninstall:
 	rm -rf $(SHAREDIR)/engines
 	rm -rf $(SHAREDIR)/books
@@ -264,7 +260,7 @@ scid: $(TCLS)
 
 ### Mac OSX App
 
-app: all_scid engines
+mac_app: all_scid engines
 	install -m 755 -d dist/ScidvsMac.app/Contents/MacOS
 	install -m 755 -d dist/ScidvsMac.app/Contents/Resources/data
 	install -m 755 -d dist/ScidvsMac.app/Contents/Resources/books
@@ -286,13 +282,13 @@ app: all_scid engines
 	install -m 644 Info.plist dist/ScidvsMac.app/Contents/
 	cp -r ./html/* dist/ScidvsMac.app/Contents/Resources/html/
 
-mac_install: app
+mac_install: mac_app
 	install -m 755 -d /Applications/ScidvsMac.app
 	cp -rp dist/ScidvsMac.app/* /Applications/ScidvsMac.app
 
 ### Compress App into an OSX disk image
 
-dmg: app
+mac_dmg: app
 	hdiutil create -fs "HFS+" -volname Scid -srcfolder dist ScidvsMac-$(SCID_VERSION).dmg
 
 # Change menu bindings and description
@@ -307,6 +303,13 @@ mac_rename:
 	@executable_path/../Frameworks/Tk.framework/Versions/@TCL_VERSION@/Tk tkscid
 mac_buttons:
 	patch -p0 scid <patches/swap_buttons-2-3.patch
+
+mac_install_gui: scid
+	install -m 755 scid /Applications/ScidvsMac.app/Contents/MacOS/
+	/Applications/ScidvsMac.app/Contents/MacOS/scid
+
+mac:
+	@echo "mac_app, mac_install, mac_dmg, mac_menus, mac_rename, mac_buttons, mac_install_gui"
 
 sc_addmove: scripts/sc_addmove.tcl
 	cp scripts/sc_addmove.tcl ./sc_addmove

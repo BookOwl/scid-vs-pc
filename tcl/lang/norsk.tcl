@@ -326,6 +326,8 @@ menuText O OptionsMovesKey "Autofullfør" 0 \
 menuText O OptionsMovesShowVarArrows "Show Variation Arrows" 0 {Turn on/off arrows showing moves in variations}
 menuText O OptionsNumbers "Tallformat" 0 {Angi tallformat}
 menuText O OptionsStartup "Oppstart" 0 {Angi vinduer som skal åpne ved oppstart}
+# ====== TODO To be translated ======
+menuText O OptionsTheme "Theme" 0 {Change look of interface}
 menuText O OptionsWindows "Vinduer" 0 {Vindusinnstillinger}
 menuText O OptionsWindowsIconify "Auto-minimer" 5 \
   {Minimerer alle vinduer sammen med hovedvinduet}

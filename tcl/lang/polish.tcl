@@ -280,6 +280,8 @@ menuText P OptionsMovesKey "Automatyczne dope³nianie posuniêæ" 1 \
 menuText P OptionsMovesShowVarArrows "Poka¿ strza³ki wariantów" 0 {W³±cz/wy³±cz strza³ki pokazuj±ce ruchy wariantów}
 menuText P OptionsNumbers "Format zapisu liczb" 0 {Wybierz format zapisu liczb}
 menuText P OptionsStartup "Start" 0 {Wybierz okna, które maj± byæ widoczne po uruchomieniu programu}
+# ====== TODO To be translated ======
+menuText P OptionsTheme "Theme" 0 {Change look of interface}
 menuText P OptionsWindows "Okna" 0 {Opcje okien}
 menuText P OptionsWindowsIconify "Minimalizuj wszystkie okna" 0 \
   {Schowaj wszystkie okna przy minimalizacji g³ównego okna}

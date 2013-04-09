@@ -1037,7 +1037,7 @@ proc ::docking::layout_save { slot } {
 
   # on Windows the geometry is false if the window was maximized (x and y offsets are the ones before the maximization)
   set geometry [wm geometry .]
-  if {[wm state .] == "zoomed"} {
+  if {$::windowsOS && [wm state .] == "zoomed"} {
     if { [scan $geometry "%dx%d+%d+%d" w h x y] == 4 } {
       set geometry "${w}x${h}+0+0"
     }

@@ -308,6 +308,7 @@ menuText H OptionsMovesKey "Billentyû-kiegészítés" 0 \
 menuText H OptionsMovesShowVarArrows "Show Variation Arrows" 0 {Turn on/off arrows showing moves in variations}
 menuText H OptionsNumbers "Számformátum" 1 {Számformátum kiválasztása}
 menuText H OptionsStartup "Indítás" 0 {Az indításkor kinyitandó ablakok kiválasztása}
+menuText H OptionsTheme "Téma" 0 {A program megjelenésének megváltoztatása}
 menuText H OptionsWindows "Ablakok" 0 {Ablakbeállítások}
 menuText H OptionsWindowsIconify "Automatikus ikonizálás" 12 \
   {A fõ ablak ikonizálásakor az összes többit is ikonizálja.}

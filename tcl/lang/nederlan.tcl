@@ -319,6 +319,7 @@ menuText N OptionsMovesShowVarArrows "Toon Pijlen voor Varianten" 0 {Zet aan/af 
 menuText N OptionsNumbers "Getalformaat" 5 \
   {Kies de manier waarop getallen te zien zijn}
 menuText N OptionsStartup "Opstarten" 3 {Selecteer de vensters die tijdens starten geopend worden}
+menuText N OptionsTheme "Theme" 0 {Verander het uitzicht van de interface}
 menuText N OptionsWindows "Vensters" 0 {Venster opties}
 menuText N OptionsWindowsIconify "Auto-icoon" 5 \
   {Breng alle vensters in icoonvorm als het hoofdvenster naar icoon gaat.}

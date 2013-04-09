@@ -310,6 +310,7 @@ menuText E OptionsMovesKey "Keyboard Completion" 0 \
 menuText E OptionsMovesShowVarArrows "Show Variation Arrows" 0 {Turn on/off arrows showing moves in variations}
 menuText E OptionsNumbers "Number Format" 0 {Select the number format}
 menuText E OptionsStartup "Startup" 3 {Select windows to open at startup}
+menuText E OptionsTheme "Theme" 0 {Ttk theme}
 menuText E OptionsWindows "Windows" 0 {Window options}
 menuText E OptionsWindowsIconify "Auto-Iconify" 5 \
   {Iconify all windows when the main window is iconified}

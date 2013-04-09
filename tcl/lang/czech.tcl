@@ -303,6 +303,7 @@ menuText C OptionsMovesKey "Klávesnicové doplòování" 13 \
 menuText C OptionsMovesShowVarArrows "Zobrazit ¹ipky pro varianty" 0 {Zapnout/vypnout zobrazování ¹ipek ukazujících tahy variant}
 menuText C OptionsNumbers "Formát èísel" 0 {Zvolit formát èísel}
 menuText C OptionsStartup "Pøi spu¹tìní" 4 {Zvolit okna, která se otevøou pøi spu¹tìní}
+menuText C OptionsTheme "Téma" 0 {Zmìnit vzhled u¾ivatelského rozhraní}
 menuText C OptionsWindows "Okna" 0 {Volby oken}
 menuText C OptionsWindowsIconify "Automatická minimalizace" 12 \
    {Minimalizovat v¹echna okna pøi minimalizování hlavního okna}

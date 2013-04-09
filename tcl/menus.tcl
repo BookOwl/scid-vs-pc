@@ -829,8 +829,8 @@ set helpMessage($m,[incr menuindex]) {Board Screenshot}
 ### Options menu:
 
 set m .menu.options
-set optMenus {windows entry fonts ginfo fics startup language numbers export}
-set optLabels {Windows Moves Fonts GInfo Fics Startup Language Numbers Export}
+set optMenus {windows theme entry fonts ginfo fics startup language numbers export}
+set optLabels {Windows Theme Moves Fonts GInfo Fics Startup Language Numbers Export}
 set menuindex 0
 
 $m add command -label OptionsBoard -command chooseBoardColors
@@ -1023,7 +1023,7 @@ $m add command -label OptionsSave -command {
     ::file::finder::data(Scid) ::file::finder::data(PGN) 
     ::file::finder::data(EPD) ::file::finder::data(Old) 
     FilterMaxMoves FilterMinMoves FilterStepMoves FilterMaxElo FilterMinElo FilterStepElo 
-    FilterMaxYear FilterMinYear FilterStepYear FilterGuessELO
+    FilterMaxYear FilterMinYear FilterStepYear FilterGuessELO lookTheme autoResizeBoard
     ::comp(timecontrol) ::comp(seconds) ::comp(minutes) ::comp(incr) ::comp(timeout) ::comp(name) ::comp(usebook) ::comp(book)
     ::comp(rounds) ::comp(showclock) ::comp(debug) ::comp(animate) ::comp(firstonly) ::comp(ponder)
     ::tools::graphs::filter::type  ::tools::graphs::absfilter::type ::tools::graphs::showpoints
@@ -1286,6 +1286,12 @@ $m add checkbutton -label OptionsWindowsIconify -variable autoIconify
 set helpMessage($m,0) OptionsWindowsIconify
 $m add checkbutton -label OptionsWindowsRaise -variable autoRaise
 set helpMessage($m,1) OptionsWindowsRaise
+
+set m .menu.options.theme
+menu $m
+foreach i [ttk::style theme names] {
+  $m add radiobutton -label "$i" -value $i -variable ::lookTheme -command {ttk::style theme use $::lookTheme}
+}
 
 ###############################
 
@@ -1613,7 +1619,7 @@ proc setLanguageMenus {{lang ""}} {
     configMenuText .menu.tools.exportfilter [tr $tag $oldLang] $tag $lang
   }
   foreach tag {Board Colour Toolbar Names Recent Fonts GInfo Fics Moves Startup Language
-    Numbers Windows Export ECO Spell Table BooksDir TacticsBasesDir Sounds Save AutoSave} {
+    Numbers Windows Theme Export ECO Spell Table BooksDir TacticsBasesDir Sounds Save AutoSave} {
     configMenuText .menu.options [tr Options$tag $oldLang] Options$tag $lang
   }
 

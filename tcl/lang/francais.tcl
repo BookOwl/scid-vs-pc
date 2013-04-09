@@ -286,6 +286,7 @@ menuText F OptionsMovesKey "Complétion clavier" 0 \
 menuText F OptionsMovesShowVarArrows "Montrer flêches pour les variations" 0 {Montrer des flêches pour les variations existantes}
 menuText F OptionsNumbers "Format numérique" 7 {Sélectionner le format des nombres}
 menuText F OptionsStartup "Démarrage" 3 {Sélectionner les fenêtres à ouvrir au démarrage}
+menuText F OptionsTheme "Apparence" 0 {Change l'apparence de l'interface}
 menuText F OptionsWindows "Fenêtres" 0 {Options des fenêtres}
 menuText F OptionsWindowsIconify "Mise en icone automatique" 5 \
   {Mettre toutes les fenêtres en icones quand la fenêtre principale est mise en icone}

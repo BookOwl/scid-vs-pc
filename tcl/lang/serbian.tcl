@@ -325,6 +325,8 @@ menuText Y OptionsMovesKey "Dopunjavanje poteza" 0 \
 menuText Y OptionsMovesShowVarArrows "Show Variation Arrows" 0 {Turn on/off arrows showing moves in variations}
 menuText Y OptionsNumbers "Format brojeva" 0 {Izaberi format brojeva}
 menuText Y OptionsStartup "Startup" 3 {Select windows to open at startup} ;# ***
+# ====== TODO To be translated ======
+menuText Y OptionsTheme "Theme" 0 {Change look of interface}
 menuText Y OptionsWindows "Prozori" 0 {Opcije prozora}
 menuText Y OptionsWindowsIconify "Auto-iconify" 5 \
   {Iconify all windows when the main window is iconified} ;# ***
