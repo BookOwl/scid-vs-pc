@@ -969,8 +969,8 @@ proc ::docking::add_tab {path anchor args} {
         s { set rel {$y > $_y} }
         e { set rel {$x > $_x} }
       }
-      # give FICS the largest (widest) pane
-      if {$path == ".fdockfics"} {
+      # give some windows the largest (widest) pane
+      if {$path == ".fdockfics" || $path == ".fdockcrosstabWin"} {
         set rel {$w > $_w}
       }
       if {$dsttab==""} {
@@ -1042,9 +1042,26 @@ proc ::docking::layout_save { slot } {
       set geometry "${w}x${h}+0+0"
     }
   }
+
+  set layout [layout_save_pw .pw]
+
+  set tree_count [regexp -all {fdocktreeWin([0-9]*)}  $layout tree1 tree2]
+  set best_count [regexp -all {fdocktreeBest([0-9]*)} $layout best1 best2]
+
+  if {$tree_count > 1} {
+    tk_messageBox -title Scid -icon question -type ok -message "Cannot save layout with multiple Trees."
+    return
+  }
+
+  if {$best_count && [string first fdocktreeBest $layout] < [string first fdocktreeWin $layout]} {
+    tk_messageBox -title Scid -icon question -type ok -message "Cannot save layout: Tree must precede Best Games."
+    return
+  }
+
   set ::docking::layout_list($slot) [list [list "MainWindowGeometry" $geometry] ]
-  lappend ::docking::layout_list($slot) [ layout_save_pw .pw ]
+  lappend ::docking::layout_list($slot) $layout
 }
+
 ################################################################################
 proc ::docking::layout_save_pw {pw} {
   set ret {}
