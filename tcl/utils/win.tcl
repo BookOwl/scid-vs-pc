@@ -1257,18 +1257,21 @@ proc ::docking::setTabStatus { } {
 proc ::docking::closeAll {pw} {
 
   foreach p [$pw panes] {
-
     if {[get_class $p] == "TPanedwindow"} {
       ::docking::closeAll $p
     }
 
     if {[get_class $p] == "TNotebook"} {
       foreach tabid [$p tabs] {
-        $p forget $tabid
+        catch {
+	  $p forget $tabid
+        }
         if {$tabid != ".fdockmain"} {
           destroy $tabid
         }
-        _cleanup_tabs $p
+        catch {
+	  _cleanup_tabs $p
+        }
       }
     }
   }

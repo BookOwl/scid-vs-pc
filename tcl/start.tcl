@@ -188,16 +188,21 @@ set comp(usebook) 0
 set comp(book) {}
 
 proc ::docking::init_layout_list {{recover 0}} {
-  # List of saved layouts : 3 slots available
+  # Default window docking layouts
   array set ::docking::layout_list {}
   
   # Basic layout : PGN window with main board
-  set ::docking::layout_list(1) {{MainWindowGeometry 834x640} {{.pw vertical {}} {TPanedwindow {{.pw.pw0 horizontal 564} {TNotebook .nb .fdockmain} {TNotebook .tb1 .fdockpgnWin}}}}}
+  set ::docking::layout_list(1) {{MainWindowGeometry 834x640+80+50} {{.pw vertical {}} {TPanedwindow {{.pw.pw0 horizontal 564} {TNotebook .nb .fdockmain} {TNotebook .tb1 .fdockpgnWin}}}}}
+
   if {$recover} {
     return
   }
-  set ::docking::layout_list(2) {}
-  set ::docking::layout_list(3) {}
+
+  set ::docking::layout_list(2)  {{MainWindowGeometry 1311x716+65+36} {{.pw vertical {}} {TPanedwindow {{.pw.pw0 horizontal 570} {TNotebook .nb .fdockmain} {TPanedwindow {{.pw.pw0.pw2 vertical 261} {TPanedwindow {{.pw.pw0.pw2.pw9 horizontal 235} {TNotebook .tb32 .fdockpgnWin} {TPanedwindow {{.pw.pw0.pw2.pw9.pw30 vertical {}} {TNotebook .tb1 {.fdockplayerInfoWin .fdockcommentWin}}}}}} {TPanedwindow {{.pw.pw0.pw2.pw3 horizontal {}} {TNotebook .tb8 {.fdockglistWin .fdockcrosstabWin}}}}}}}}}}
+
+  set ::docking::layout_list(3) {{MainWindowGeometry 968x666+80+50} {{.pw vertical {}} {TPanedwindow {{.pw.pw0 horizontal 566} {TNotebook .nb .fdockmain} {TPanedwindow {{.pw.pw0.pw2 vertical 363} {TNotebook .tb1 {.fdockanalysisWin1 .fdockpgnWin}} {TNotebook .tb3 {.fdocktreeWin1 .fdocktreeBest1}}}}}}}}
+  set ::docking::layout_list(4) {}
+  set ::docking::layout_list(5) {}
 }
 
 ::docking::init_layout_list
@@ -1396,7 +1401,7 @@ if {[catch {source $optionsFile} ]} {
 if { [string first "-nodock" [lindex $argv 0]] > -1} {
   # reset in case of error recovery
   set windowsDock 0
-  ::docking::init_layout_list 1
+  ::docking::init_layout_list  1
 }
 
 if { [string first "-dock" [lindex $argv 0]] > -1} {
