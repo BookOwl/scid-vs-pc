@@ -57,7 +57,7 @@ namespace eval pgn {
   #
   ################################################################################
   proc PrepareForDisplay {str} {
-	 global useGraphFigurine
+    global useGraphFigurine
     variable graphFigurineInComments
     variable substPlaceHolders
     variable substUnicode
@@ -487,8 +487,11 @@ namespace eval pgn {
       return
     }
 
-    set format plain
-    if {$::pgn::showColor} {set format color}
+    if {$::pgn::showColor} {
+      set format color
+    } else {
+      set format plain
+    }
 
     set pgnStr [sc_game pgn -symbols $::pgn::symbolicNags \
         -indentVar $::pgn::indentVars -indentCom $::pgn::indentComments \

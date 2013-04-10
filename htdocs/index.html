@@ -7,11 +7,12 @@
 <BODY>
 <H1>Scid vs. PC</H1>
 
+<H2>Chess Database and Toolkit
 <FIGURE>
 <EPS FILE="none.eps">
 <IMG SRC="images/logo.png">
 </FIGURE>
-<BR>
+<BR></H2>
 <H2></H2>
 <P>
 <PRE>
@@ -37,11 +38,12 @@
 <H2><A NAME="toc6">6.</A> <A HREF="index.html#s6">miscellaneous </A></H2>
 
 <UL>
-<LI><A NAME="toc6.1">6.1</A> <A HREF="index.html#ss6.1">how to play </A>
-<LI><A NAME="toc6.2">6.2</A> <A HREF="index.html#ss6.2">known issues </A>
-<LI><A NAME="toc6.3">6.3</A> <A HREF="index.html#ss6.3">bugs </A>
-<LI><A NAME="toc6.4">6.4</A> <A HREF="index.html#ss6.4">thanks </A>
-<LI><A NAME="toc6.5">6.5</A> <A HREF="index.html#ss6.5">scid's history </A>
+<LI><A NAME="toc6.1">6.1</A> <A HREF="index.html#ss6.1">docked windows </A>
+<LI><A NAME="toc6.2">6.2</A> <A HREF="index.html#ss6.2">how to play </A>
+<LI><A NAME="toc6.3">6.3</A> <A HREF="index.html#ss6.3">known issues </A>
+<LI><A NAME="toc6.4">6.4</A> <A HREF="index.html#ss6.4">bugs </A>
+<LI><A NAME="toc6.5">6.5</A> <A HREF="index.html#ss6.5">thanks </A>
+<LI><A NAME="toc6.6">6.6</A> <A HREF="index.html#ss6.6">scid's history </A>
 </UL>
 <P>
 <H2><A NAME="toc7">7.</A> <A HREF="index.html#s7">changes </A></H2>
@@ -106,7 +108,7 @@ and bug-fix fork of Scid with some new features.  The project is authored by
 <H3>Missing Features</H3>
 
 <UL>
-<LI> SCID's half-implemented <B>Docked Mode</B> is not included. It introduces quite a few bugs; keyboard input is mostly broken, and many windows just can't size properly.<BR><BR></LI>
+<LI> SCID's 4.4 had a powerful filter sorting capability, but it is not stable.<BR><BR></LI>
 <LI>Some language translations need volunteers and updating.</LI>
 </UL>
 </P>
@@ -133,8 +135,8 @@ and bug-fix fork of Scid with some new features.  The project is authored by
 
 
 <P>Scid vs. PC requires 
-<A HREF="http://tcl.tk">Tcl/Tk</A> 8.5 or 8.6.
-<EM>Tcl/Tk 8.5.10 has nasty bugs and should be avoided.</EM></P>
+<A HREF="http://tcl.tk">Tcl/Tk</A> 8.5.
+<EM>Tcl/Tk 8.5.10 has nasty bugs and should be avoided. 8.6.0 mostly works, but has a bug that makes the Docked Windows crash.</EM></P>
 Most Unices should have Tcl/Tk installed by default.
 To verify this, look for a command named <B>wish</B> or <B>wish8.5</B>.
 To enable support for extra chess pieces (such as Berlin), you may need to install
@@ -179,6 +181,9 @@ to properly configure the chess engines.</EM></P>
 <H2><A NAME="s5">5.</A> <A HREF="#toc5">news </A></H2>
 
 
+<P><B> April 2013 </B></P>
+<P>Finally have a docked windows feature. It's a damn complicated thing, but i am fond of it.
+Scid vs PC 4.9 is coming :)</P>
 <P><B> March 2012 </B></P>
 <P>Big effort by Gregor to write Drag and Drop support for
 Scidb and ScidvsPC. Thanks. FICS is looking great too.</P>
@@ -214,7 +219,20 @@ files in the downloads section. My project is fairly modest fork of Scid
 
 
 
-<H2><A NAME="ss6.1">6.1</A> <A HREF="#toc6.1">how to play </A>
+<H2><A NAME="ss6.1">6.1</A> <A HREF="#toc6.1">docked windows </A>
+</H2>
+
+
+<P>This powerful feature has a few issues.
+<UL>
+<LI> Tcl/Tk 8.6.0 does not support docked windows properly.</LI>
+<LI>In the event of Scid failing to start, start the program with the <B>-nodock</B> option.</LI>
+<LI> Key bindings (especially menus) can be hit and miss.</LI>
+</UL>
+
+Make sure to check out the new Theme Options, which affect how the Docked Windows (and Gamelist) look and feel.</P>
+
+<H2><A NAME="ss6.2">6.2</A> <A HREF="#toc6.2">how to play </A>
 </H2>
 
 
@@ -241,15 +259,14 @@ game challenge.</P>
 about the Fics and Tactical Game features in the Scid Help menus</EM>.</P>
 
 
-<H2><A NAME="ss6.2">6.2</A> <A HREF="#toc6.2">known issues </A>
+<H2><A NAME="ss6.3">6.3</A> <A HREF="#toc6.3">known issues </A>
 </H2>
 
 <P>
 <UL>
-<LI> Just after installation on <B>Windows 7</B>, ScidvsPC can crash upon exit,
-with an ntdll.dll error.  This seems harmless, and to resolve itself after a reboot.
-The issue is unresolved, but can be worked around by running Scid vs.
-PC with administrator privilidges.</LI>
+<LI> Tcl/Tk-8.5.10 is buggy. Tcl/Tk-8.6.0 also has a nasty bug that makes the Window Docking feature unstable.</LI>
+<LI> On some <B>Windows 7</B> systems, ScidvsPC can crash upon exit
+with an ntdll.dll error.  This bug is harmless, and may only affect outdated Win7 builds.</LI>
 <LI> <B>Chinese Language Support</B>. Scid's multilanguage support is broken
 for some countries. The work around involves compiling from source, using:
 <EM>./configure LANGUAGES=""</EM><BR>
@@ -260,14 +277,13 @@ set to "none"</LI>
 </UL>
 </P>
 
-<H2><A NAME="ss6.3">6.3</A> <A HREF="#toc6.3">bugs </A>
+<H2><A NAME="ss6.4">6.4</A> <A HREF="#toc6.4">bugs </A>
 </H2>
 
 
 <P>
 <UL>
-<LI> <B>Tcl/Tk 8.5.10</B> has nasty bugs (which affect the gamelist and setup board
-widgets) and is not recommended.  </LI>
+<LI> See the known issues about Tcl/Tk (above).</LI>
 <LI> Importing huge PGN archives can
 sometimes fail. The command line utility <B>pgnscid</B> is a more reliable way
 to create large databases from pgn. Typing "pgnscid somefile.pgn" creates a new database
@@ -282,7 +298,7 @@ to create large databases from pgn. Typing "pgnscid somefile.pgn" creates a new 
 </UL>
 </P>
 
-<H2><A NAME="ss6.4">6.4</A> <A HREF="#toc6.4">thanks </A>
+<H2><A NAME="ss6.5">6.5</A> <A HREF="#toc6.5">thanks </A>
 </H2>
 
 
@@ -298,7 +314,7 @@ to create large databases from pgn. Typing "pgnscid somefile.pgn" creates a new 
 <P>and of course Shane Hudson, and the authors of 
 <A HREF="http://tcl.tk">Tcl/Tk</A></P>
 
-<H2><A NAME="ss6.5">6.5</A> <A HREF="#toc6.5">scid's history </A>
+<H2><A NAME="ss6.6">6.6</A> <A HREF="#toc6.6">scid's history </A>
 </H2>
 
 

@@ -2005,6 +2005,5 @@ if { $::docking::USE_DOCKING } {
 }
 
 wm deiconify $dot_w
-focus .main
 
 ### End of file: end.tcl

@@ -1,4 +1,5 @@
   Scid vs. PC
+  Chess Database and Toolkit
 
   ____________________________________________________________
 
@@ -18,11 +19,12 @@
 
   5. news
   6. miscellaneous
-     6.1 how to play
-     6.2 known issues
-     6.3 bugs
-     6.4 thanks
-     6.5 scid's history
+     6.1 docked windows
+     6.2 how to play
+     6.3 known issues
+     6.4 bugs
+     6.5 thanks
+     6.6 scid's history
 
   7. changes
         7..1 Scid vs. PC 4.8
@@ -115,9 +117,8 @@
 
   2.0.2.  Missing Features
 
-  o  SCID's half-implemented Docked Mode is not included. It introduces
-     quite a few bugs; keyboard input is mostly broken, and many windows
-     just can't size properly.
+  o  SCID's 4.4 had a powerful filter sorting capability, but it is not
+     stable.
 
   o  Some language translations need volunteers and updating.
 
@@ -143,8 +144,9 @@
 
   4.0.1.  Linux , FreeBSD
 
-  Scid vs. PC requires Tcl/Tk <http://tcl.tk> 8.5 or 8.6.  Tcl/Tk 8.5.10
-  has nasty bugs and should be avoided.Most Unices should have Tcl/Tk
+  Scid vs. PC requires Tcl/Tk <http://tcl.tk> 8.5.  Tcl/Tk 8.5.10 has
+  nasty bugs and should be avoided. 8.6.0 mostly works, but has a bug
+  that makes the Docked Windows crash.Most Unices should have Tcl/Tk
   installed by default.  To verify this, look for a command named wish
   or wish8.5.  To enable support for extra chess pieces (such as
   Berlin), you may need to install TkImg
@@ -183,10 +185,12 @@
   People with Visual Studio 11 should now be able to compile the project
   fairly easily (see Makefile.vc for more details).
 
+
   4.0.3.  Mac OS X
 
   The ``ScidvsMac-4.8 app'' should include everything you need. Simply
   drag and drop the App into /Applications (or similar).
+
   Users upgrading may have to remove (or edit)
   $HOME/.scidvspc/config/engines.dat to properly configure the chess
   engines.
@@ -198,6 +202,11 @@
   Scid vs PC ships with a custom Carbon build of Wish.
 
   5.  news
+
+   April 2013
+
+  Finally have a docked windows feature. It's a damn complicated thing,
+  but i am fond of it.  Scid vs PC 4.9 is coming :)
 
    March 2012
 
@@ -243,7 +252,6 @@
 
   With 3.6.26.6 I've fixed Phalanx's illegal castling. There is also
   changes to the Setup board and Toolbar configuration widgets.
-
    July 17, 2009
 
   3.6.26.5 - New Gamelist widget, and re-fashioned main buttons.
@@ -264,7 +272,21 @@
 
   6.  miscellaneous
 
-  6.1.  how to play
+  6.1.  docked windows
+
+  This powerful feature has a few issues.
+
+  o  Tcl/Tk 8.6.0 does not support docked windows properly.
+
+  o  In the event of Scid failing to start, start the program with the
+     -nodock option.
+
+  o  Key bindings (especially menus) can be hit and miss.
+
+     Make sure to check out the new Theme Options, which affect how the
+     Docked Windows (and Gamelist) look and feel.
+
+  6.2.  how to play
 
 
      Playing against the Computer
@@ -286,13 +308,15 @@
   There is more information about the Fics and Tactical Game features in
   the Scid Help menus.
 
-  6.2.  known issues
+  6.3.  known issues
 
 
-  o  Just after installation on Windows 7, ScidvsPC can crash upon exit,
-     with an ntdll.dll error. This seems harmless, and to resolve itself
-     after a reboot.  The issue is unresolved, but can be worked around
-     by running Scid vs.  PC with administrator privilidges.
+  o  Tcl/Tk-8.5.10 is buggy. Tcl/Tk-8.6.0 also has a nasty bug that
+     makes the Window Docking feature unstable.
+
+  o  On some Windows 7 systems, ScidvsPC can crash upon exit with an
+     ntdll.dll error. This bug is harmless, and may only affect outdated
+     Win7 builds.
 
   o  Chinese Language Support. Scid's multilanguage support is broken
      for some countries. The work around involves compiling from source,
@@ -304,11 +328,10 @@
      themselves by configuring desktop > window behavior > advanced >
      focus stealing prevention set to "none"
 
-  6.3.  bugs
+  6.4.  bugs
 
 
-  o  Tcl/Tk 8.5.10 has nasty bugs (which affect the gamelist and setup
-     board widgets) and is not recommended.
+  o  See the known issues about Tcl/Tk (above).
 
   o  Importing huge PGN archives can sometimes fail. The command line
      utility pgnscid is a more reliable way to create large databases
@@ -326,7 +349,7 @@
 
      o  Window focus/raise issues, another Tcl/Tk issue.
 
-  6.4.  thanks
+  6.5.  thanks
 
   Thanks to Gregor Cramer <http://scidb.sf.net> for the PGN figurines
   and Drag and Drop features, and technical support.
@@ -346,7 +369,7 @@
 
   and of course Shane Hudson, and the authors of Tcl/Tk <http://tcl.tk>
 
-  6.5.  scid's history
+  6.6.  scid's history
 
   Scid is a huge project, with an interesting history. Originally
   authored by Shane Hudson from New Zealand, it combined the power of
@@ -385,6 +408,7 @@
   API, popularized by KDE-4.  Originally called Newscid, Chessx still
   grows, but with a much smaller feature set, and lesser popularity than
   Scid.
+
   Scid vs. PC (by Steven Atkinson from Australia) began around mid 2009.
   Forked from Scid-3.6.26, it began as an effort to tidy Shane's
   frenetic code base, improve the user interface , and add polish to
@@ -424,6 +448,7 @@
   o  Save game: enable the use of 'prev game tags' for existing games.
      This allows easy addition of the same tags to consecutive existing
      games.
+
 
   o  Remove the 'Scid: ' prefix from several window titles
 
@@ -516,7 +541,6 @@
 
   o  Work arounds for wish 8.5.12 and 8.5.8 issues
 
-
   o  Analysis logs can badly break autoscroll, so use normal frames and
      scrollbars.
 
@@ -556,6 +580,7 @@
   o  Analysis no longer word wraps, and uses fixed font.
 
   o  Analysis: add a xboard/uci protocol column to the engine list.
+
 
   o  Include updates to SCID's spellchk.c, improving the ELO add-ratings
      feature.
@@ -622,6 +647,7 @@
   o  Computer Tournament: Improvements for both Xboard and UCI engines,
      and implement the 50 move draw rule.
 
+
   o  Auto-promote feature for FICs
 
   o  Book tuning 'Remove move' feature
@@ -647,7 +673,6 @@
 
   o  Change analysis colors for MultiPV to black/grey instead of
      blue/black.
-
 
   o  New 'Search in (other) Database' feature to the board search (from
      SCID)
@@ -713,7 +738,6 @@
      great)
 
      Computer Tournament:
-
 
   o  Per-game time control
 
@@ -820,6 +844,7 @@
   o  Fix nasty flicker bug when board is flipped
 
   o  Fix fics bug that graph sometimes doesn't stop when new game starts
+
 
   o  Add Burnett chess pieces
 
@@ -952,6 +977,7 @@
 
   o  Sort by number of Variations and Comments from Gerd
 
+
   o  Help Widget has a search entrybox
 
   o  Help Widget font size (and Pgn Window) can be easily increased by
@@ -977,7 +1003,6 @@
 
 
   o  New si4 database support
-
 
   o  Include tree and mask improvements from Scid (excepting Fulvio's
      delayed tree code, which has issues)
@@ -1019,7 +1044,6 @@
 
   o  Quite a few FICs tweaks, including new help pages and D.O.S. attack
      fixes
-
   o  Numerous Gamelist improvements (see below)
 
   o  Tree widget improvements: next move is highlighted, main filter is
@@ -1151,6 +1175,7 @@
   o  Allow xboard lowercase promotion moves (eg while g7g8Q always
      worked, g7g8q previously failed)
 
+
   o  Enable hovering over toolbar help pop-ups
 
   o  Fix up analysis widget "lock to position" feature
@@ -1175,7 +1200,6 @@
 
   o  Remove space-only lines from project - they mess up vim's paragraph
      traversal feature
-
 
   o  Fics "withdraws offer" fix
 
@@ -1242,7 +1266,6 @@
   o  Make font dialogs resizable, add a "default" feature, a new "fixed"
      default, and small overhaul (hard work!)
 
-
   o  (Add a "Font" button to the help and crosstable widgets)
 
   o  Fix focus issues with the Set Game Info widget
@@ -1285,7 +1308,6 @@
 
   o  The Fics widgets have been redone, including buttons, the graph and
      labels, config windows, and console tweaks
-
   o  Made a few friendly help menus, as well as adding a "Forward"
      button to the help interface
 
@@ -1307,7 +1329,6 @@
 
   o  The analysis engines now support RobboLito, and an unlimited number
      of engines
-
 
   o  The File::Open menus have had quite a bit of debugging
 
@@ -1353,7 +1374,6 @@
      tiles) and has improved functionality. It also properly inits the
      move number, enpassant + castling combos, and side to move
      radiobuttons.
-
   o  Fixed phalanx's illegal castling, and sorted out issues with it's
      opening book and the analysis window
 
@@ -1373,7 +1393,6 @@
 
   o  Fix the MyPlayerNames widget. (No autoscrollframe, no grab
      (interfered with Help))
-
 
   o  Add MyPlayerName info to Tacgame
 
@@ -1421,7 +1440,6 @@
 
   o  Other minor changes: Control-WheelMouse == Sizeup/Sizedown,
      Variation buttons swap position, Spellcheck installation fix.
-
   7.0.16.  Scid vs. PC 3.6.26.4
 
 

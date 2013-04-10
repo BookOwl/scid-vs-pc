@@ -1278,6 +1278,14 @@ if {$::docking::USE_DOCKING} {
   set helpMessage($m,5) OptionsWindowsSaveLayout
   $m add cascade -label OptionsWindowsRestoreLayout -menu $m.restorelayout
   set helpMessage($m,6) OptionsWindowsRestoreLayout
+
+  bind .main <F11> {
+    if {[wm attributes . -fullscreen]} {
+      wm attributes . -fullscreen 0
+    } else {
+      wm attributes . -fullscreen 1
+    }
+  }
 }
 
 $m add separator
@@ -1288,7 +1296,7 @@ $m add checkbutton -label OptionsWindowsRaise -variable autoRaise
 set helpMessage($m,1) OptionsWindowsRaise
 
 set m .menu.options.theme
-menu $m
+menu $m -tearoff -1
 foreach i [ttk::style theme names] {
   $m add radiobutton -label "$i" -value $i -variable ::lookTheme -command {ttk::style theme use $::lookTheme}
 }
