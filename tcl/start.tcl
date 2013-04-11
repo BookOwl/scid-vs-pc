@@ -255,15 +255,16 @@ if {$windowsOS} {
   #   Probably only has any effect when opening a pgn/si4 file by double clicking on it,
   #   whence the CWD is not "."
   cd $scidExeDir
+  set scidLogDir [file nativename [file join $::env(HOME) "log"]]
 } else {
   set scidUserDir [file nativename "~/.scidvspc"]
+  set scidLogDir [file nativename [file join $scidUserDir "log"]]
 }
 
 # scidConfigDir, scidDataDir, scidLogDir:
 #   Location of Scid configuration, data and log files.
 set scidConfigDir [file nativename [file join $scidUserDir "config"]]
 set scidDataDir [file nativename [file join $scidUserDir "data"]]
-set scidLogDir [file nativename [file join $scidUserDir "log"]]
 set scidTexturesDir [file nativename [file join $scidUserDir "textures"]]
 
 # boardSizes: a list of the available board sizes.
@@ -1358,8 +1359,6 @@ proc makeScidDir {dir} {
     } else {
       ::splash::add "Created directory: $dir"
     }
-  } else { 
-    ::splash::add "Using directory $dir"
   }
 }
 
