@@ -898,10 +898,6 @@ proc createToplevel { w } {
 proc createToplevelFinalize {w} {
   if { $::docking::USE_DOCKING } {
     bind $w <Destroy> +[ namespace code "::docking::cleanup $w %W"]
-    if {[info tclversion] == "8.6" } {
-      # nasty bug segfaults !
-      bind $w <Escape> {}
-    }
   }
 }
 

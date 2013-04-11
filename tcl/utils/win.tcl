@@ -601,6 +601,7 @@ proc ::docking::_cleanup_tabs {srctab} {
 }
 ################################################################################
 # cleans up a window when it was closed without calling the notebook menu
+
 proc ::docking::cleanup { w { origin "" } } {
   variable tbs
 
@@ -619,15 +620,15 @@ proc ::docking::cleanup { w { origin "" } } {
     bind $dockw <Destroy> {}
   }
 
+  ### dont catch this. Generates core dumps in wish 8.6 - S.A.
   # Maybe during Scid closing, some race conditions lead to exceptions ? In case, catch this by default
-  catch {
-    foreach nb [array names tbs] {
-      if { [lsearch  [$nb tabs] $dockw ] != -1 } {
-        $nb forget $dockw
-        destroy $dockw
-        ::docking::_cleanup_tabs $nb
-        return
-      }
+  foreach nb [array names tbs] {
+    if { [lsearch  [$nb tabs] $dockw ] != -1 } {
+      $nb forget $dockw
+      ### This seems wrong
+      # destroy $dockw
+      ::docking::_cleanup_tabs $nb
+      return
     }
   }
 
