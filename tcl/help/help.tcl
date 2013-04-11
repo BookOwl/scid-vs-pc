@@ -5741,6 +5741,65 @@ set helpText(Sound) {<h1>Sound</h1>
 set helpTitle(Changelog) "Scid vs PC Changelog"
 set helpText(Changelog) {<h1>Scid vs. PC</h1>
 
+<h4>4.9 (April 20, 2013)</h4>
+<b>Window Docking</b>
+<ul>
+<li>Different windows are docked/restored than Scid. 5 layout slots with 3 custom layouts. Bug-fixes F11 for fullscreen. Doesn't work with Tcl-8.6.0</li>
+</ul>
+<br>
+<b>General</b>
+<ul>
+<li>Move search feature (eg 'h6 Bxh6')</li>
+<li>UCI: replace 'position fen ...' with 'position startpos moves ...' for general analysis</li>
+<li>Selectable Ttk themes (for window docking and gamelist)</li>
+<li>Better Twin Games Checker - highlights missing comments and variations in duplicate games</li>
+<li>Working MSVC makefile (Makefile.vc)</li>
+<li>Text Find widgets in help, crosstable, engine logs</li>
+<li>Game Save dialog remembers any custom tags you add to a game, making them easy to recall</li>
+<li>Restore drawing arrows and marks from the main board (also used by FICS premove)</li>
+<li>Arrow length/widths configurable via comment editor</li>
+<li>Some new board textures (from Ed Collins)</li>
+<li>Player info window shows Photos in a scrollable canvas insead of stuck in top right corner</li>
+<li>Delete key deletes moves in game/variation after the current move</li>
+<li>Score Graphs are now bargraphs instead of lines</li>
+<li>Bind statusbar->middle button to 'switch base'</li>
+<li>FICS context menu, game offers now show more information, and premove</li>
+<li>FICS: deiconify/raise window when game starts (nodock mode only)</li>
+<li>FICS: stop clock when we make a move (even though we may not have acknowledgemnt from FICS about move)</li>
+<li>FICS: 'upload' command for uploading local games to FICS examine mode</li>
+<li>Allow the Name editor to glob '*' for Site, Event and Round fields (but not for 'All Games', too dangerous when used by mistake)</li>
+<li>The material board can display *all* taken pieces</li>
+<li>Gamelist button rows can be hidden by right-clicking the tree, and it has a game save icon</li>
+<li>Right click V+ button adds the second variation</li>
+<li>Windows analysis engines no longer run at low priority</li>
+<li>When annotating the score on blunders, show the main score first, var second (eg: +1.00 / +2.50)</li>
+<li>Add programmers reference to the help contents/online doc</li>
+<li>Bind space-bar to engine start/stop</li>
+<li>Update twic2scid.py script</li>
+<li>Remember if .board is flipped for each open base</li>
+</ul>
+
+<br>
+<b>Bug-fixes</b>
+<ul>
+<li>Make the database switcher icons/frames get smaller if they are cramped (so we can see them all)</li>
+<li>Half fix UCI game (sergame.tcl) time issues</li>
+<li>Corrospondence Chess now works</li>
+<li>Tree Mask bugfix: Checks couldnt be added to mask</li>
+<li>Fix Tree 'Fill cache with game/base' feature</li>
+<li>Try to handle shortened FENs with Paste FEN</li>
+<li>Crosstable: 'Set Filter' now includes deleted games if +deleted</li>
+<li>Crosstable: handle games with a year-only date differently for crosstable purposes (Instead of +/-3 months, match any other games in the calender year</li>
+<li>FICS: Stop clocks after a takeback request from opponent</li>
+<li>FICS: Games with move lengths greater than 1:00:00 would break parse</li>
+<li>Add missing FICSLogin translation.</li>
+<li>Phalanx works properly under Windows 7</li>
+<li>OS X: Pad out flag buttons in Header search</li>
+<li>base_open_failure was erroneously closing wrong base</li>
+</ul>
+
+<br>
+
 <h4>4.8 (August 12, 2012)</h4>
 <b>General</b>
 <ul>

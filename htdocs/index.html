@@ -118,11 +118,11 @@ and bug-fix fork of Scid with some new features.  The project is authored by
 
 
 <P>source 
-<A HREF="http://sourceforge.net/projects/scidvspc/files/source/scid_vs_pc-4.8.tgz/download">scid_vs_pc-4.8.tgz</A></P>
+<A HREF="http://sourceforge.net/projects/scidvspc/files/source/scid_vs_pc-4.9.tgz/download">scid_vs_pc-4.9.tgz</A></P>
 <P>windows 
-<A HREF="http://sourceforge.net/projects/scidvspc/files/windows/Scid%20vs%20PC-4.8.exe/download">Scid vs PC-4.8.exe</A></P>
+<A HREF="http://sourceforge.net/projects/scidvspc/files/windows/Scid%20vs%20PC-4.9.exe/download">Scid vs PC-4.9.exe</A></P>
 <P>mac 
-<A HREF="http://sourceforge.net/projects/scidvspc/files/mac/ScidvsMac-4.8.dmg/download">ScidvsMac-4.8.dmg</A></P>
+<A HREF="http://sourceforge.net/projects/scidvspc/files/mac/ScidvsMac-4.9.dmg/download">ScidvsMac-4.9.dmg</A></P>
 <P>
 <A HREF="https://sourceforge.net/project/showfiles.php?group_id=263836">browse files</A></P>
 <P><EM>The latest code is available from subversion - </EM> <B>svn co https://scidvspc.svn.sourceforge.net/svnroot/scidvspc</B></P>
@@ -144,8 +144,8 @@ To enable support for extra chess pieces (such as Berlin), you may need to insta
 Then, installing from source:
 <HR>
 <PRE>
-tar -xzf scid_vs_pc-4.8.tgz
-cd scid_vs_pc-4.8
+tar -xzf scid_vs_pc-4.9.tgz
+cd scid_vs_pc-4.9
 configure
 make install
 scid
@@ -171,7 +171,7 @@ with an ntdll.dll error.  This known issue seems harmless, and to resolve itself
 
 
 <P>The 
-<A HREF="#download_">ScidvsMac-4.8 app</A> should include everything you need. Simply drag and drop the App into /Applications (or similar).</P>
+<A HREF="#download_">ScidvsMac-4.9 app</A> should include everything you need. Simply drag and drop the App into /Applications (or similar).</P>
 <P><EM>Users upgrading may have to remove (or edit) <B>$HOME/.scidvspc/config/engines.dat</B>
 to properly configure the chess engines.</EM></P>
 <P>To compile from source - once you have XCode installed - please read <B>ScidvsMac-HowTo.rtfd</B> in the source tarball.</P>
@@ -226,8 +226,10 @@ files in the downloads section. My project is fairly modest fork of Scid
 <P>This powerful feature has a few issues.
 <UL>
 <LI> Tcl/Tk 8.6.0 does not support docked windows properly.</LI>
-<LI>In the event of Scid failing to start, start the program with the <B>-nodock</B> option.</LI>
+<LI>In the event of Scid failing to start, restart the program with the <B>-nodock</B> option.</LI>
 <LI> Key bindings (especially menus) can be hit and miss.</LI>
+<LI> Windows undocked from within docking mode can have glitches.
+Mainly: drag and drop game copies in the switcher don't work.</LI>
 </UL>
 
 Make sure to check out the new Theme Options, which affect how the Docked Windows (and Gamelist) look and feel.</P>
@@ -354,6 +356,60 @@ and lesser popularity than Scid.</P>
 <H2><A NAME="s7">7.</A> <A HREF="#toc7">changes </A></H2>
 
 
+<P>
+<H3>Scid vs. PC 4.9 </H3>
+
+<P>
+<UL>
+<LI>Window Docking feature
+- Different windows are docked/restored than Scid. 5 layout slots with 3 custom layouts. Bug-fixes. F11 for fullscreen. Doesn't work with Tcl-8.6.0<BR><BR>
+</LI>
+<LI>Move search feature (eg 'h6 Bxh6')</LI>
+<LI>UCI: replace 'position fen ...' with 'position startpos moves ...' for general analysis</LI>
+<LI>Selectable Ttk themes (for window docking and gamelist)</LI>
+<LI>Better Twin Games Checker - highlights missing comments and variations in duplicate games</LI>
+<LI>Working MSVC makefile (Makefile.vc)</LI>
+<LI>Text Find widgets in help, crosstable, engine logs</LI>
+<LI>Game Save dialog remembers any custom tags you add to a game, making them easy to recall</LI>
+<LI>Restore drawing arrows and marks from the main board (also used by FICS premove)</LI>
+<LI>Arrow length/widths configurable via comment editor</LI>
+<LI>Some new board textures (from Ed Collins)</LI>
+<LI>Player info window shows Photos in a scrollable canvas insead of stuck in top right corner</LI>
+<LI>Delete key deletes moves in game/variation after the current move</LI>
+<LI>Score Graphs are now bargraphs instead of lines</LI>
+<LI>Bind statusbar->middle button to 'switch base'</LI>
+<LI>FICS context menu, game offers now show more information, and premove</LI>
+<LI>FICS: deiconify/raise window when game starts (nodock mode only)</LI>
+<LI>FICS: stop clock when we make a move (even though we may not have acknowledgemnt from FICS about move)</LI>
+<LI>FICS: 'upload' command for uploading local games to FICS examine mode</LI>
+<LI>Allow the Name editor to glob '*' for Site, Event and Round fields (but not for 'All Games', too dangerous when used by mistake)</LI>
+<LI>The material board can display *all* taken pieces</LI>
+<LI>Gamelist button rows can be hidden by right-clicking the tree, and it has a game save icon</LI>
+<LI>Right click V+ button adds the second variation</LI>
+<LI>Windows analysis engines no longer run at low priority</LI>
+<LI>When annotating the score on blunders, show the main score first, var second (eg: +1.00 / +2.50)</LI>
+<LI>Add programmers reference to the help contents/online doc</LI>
+<LI>Bind space-bar to engine start/stop</LI>
+<LI>Update twic2scid.py script</LI>
+<LI>Remember if .board is flipped for each open base<BR><BR>
+
+Bugfixes:</LI>
+<LI>Make the database switcher icons/frames get smaller if they are cramped (so we can see them all)</LI>
+<LI>Half fix UCI game (sergame.tcl) time issues</LI>
+<LI>Corrospondence Chess now works</LI>
+<LI>Tree Mask bugfix: Checks couldnt be added to mask</LI>
+<LI>Fix Tree 'Fill cache with game/base' feature</LI>
+<LI>Try to handle shortened FENs with Paste FEN</LI>
+<LI>Crosstable: 'Set Filter' now includes deleted games if +deleted</LI>
+<LI>Crosstable: handle games with a year-only date differently for crosstable purposes (Instead of +/-3 months, match any other games in the calender year</LI>
+<LI>FICS: Stop clocks after a takeback request from opponent</LI>
+<LI>FICS: Games with move lengths greater than 1:00:00 would break parse</LI>
+<LI>Add missing FICSLogin translation.</LI>
+<LI>Phalanx works properly under Windows 7</LI>
+<LI>OS X: pad out flag buttons in Header search</LI>
+<LI>base_open_failure was erroneously closing wrong base</LI>
+</UL>
+</P>
 <P>
 <H3>Scid vs. PC 4.8 </H3>
 
@@ -1017,6 +1073,7 @@ Fics (which really gets stuffed up). Mouse wheel bindings remain.</LI>
 </P>
 <P>
 <A NAME="contact_"></A> </P>
+</P>
 </P>
 </P>
 </P>

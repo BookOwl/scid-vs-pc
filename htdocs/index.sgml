@@ -69,11 +69,11 @@ id="contact_">, and has been extensively tested with the Million Base and other 
 <label id="download_">
 <sect> download <p>
 
-source <url url="http://sourceforge.net/projects/scidvspc/files/source/scid_vs_pc-4.8.tgz/download" name="scid_vs_pc-4.8.tgz">
+source <url url="http://sourceforge.net/projects/scidvspc/files/source/scid_vs_pc-4.9.tgz/download" name="scid_vs_pc-4.9.tgz">
 
-windows <url url="http://sourceforge.net/projects/scidvspc/files/windows/Scid%20vs%20PC-4.8.exe/download" name="Scid vs PC-4.8.exe">
+windows <url url="http://sourceforge.net/projects/scidvspc/files/windows/Scid%20vs%20PC-4.9.exe/download" name="Scid vs PC-4.9.exe">
 
-mac <url url="http://sourceforge.net/projects/scidvspc/files/mac/ScidvsMac-4.8.dmg/download" name="ScidvsMac-4.8.dmg">
+mac <url url="http://sourceforge.net/projects/scidvspc/files/mac/ScidvsMac-4.9.dmg/download" name="ScidvsMac-4.9.dmg">
 
 <url url="https://sourceforge.net/project/showfiles.php?group_id=263836" name="browse files">
 
@@ -92,8 +92,8 @@ To enable support for extra chess pieces (such as Berlin), you may need to insta
 <url name="TkImg" url="https://sourceforge.net/project/downloading.php?group_id=263836&amp;filename=tkimg1.3.tar.bz2">.  
 Then, installing from source:
 <code>
-tar -xzf scid_vs_pc-4.8.tgz
-cd scid_vs_pc-4.8
+tar -xzf scid_vs_pc-4.9.tgz
+cd scid_vs_pc-4.9
 configure
 make install
 scid
@@ -120,7 +120,7 @@ with an ntdll.dll error.  This known issue seems harmless, and to resolve itself
 
 <sect2> Mac OS X <p>
 
-The <ref name="ScidvsMac-4.8 app" id="download_"> should include everything you need. Simply drag and drop the App into /Applications (or similar).
+The <ref name="ScidvsMac-4.9 app" id="download_"> should include everything you need. Simply drag and drop the App into /Applications (or similar).
 
 <em>Users upgrading may have to remove (or edit) <bf>$HOME/.scidvspc/config/engines.dat</bf>
 to properly configure the chess engines.</em>
@@ -196,8 +196,10 @@ files in the downloads section. My project is fairly modest fork of Scid
 This powerful feature has a few issues.
 <itemize>
 <item> Tcl/Tk 8.6.0 does not support docked windows properly.
-<item>In the event of Scid failing to start, start the program with the <bf>-nodock</bf> option.
+<item>In the event of Scid failing to start, restart the program with the <bf>-nodock</bf> option.
 <item> Key bindings (especially menus) can be hit and miss.
+<item> Windows undocked from within docking mode can have glitches.
+Mainly: drag and drop game copies in the switcher don't work.
 </itemize>
 Make sure to check out the new Theme Options, which affect how the Docked Windows (and Gamelist) look and feel.
 
@@ -308,6 +310,59 @@ and lesser popularity than Scid.</p>
 
 <label id="changes_">
 <sect> changes <p>
+
+<sect2> Scid vs. PC 4.9 <p>
+<itemize>
+<item>Window Docking feature
+- Different windows are docked/restored than Scid. 5 layout slots with 3 custom layouts. Bug-fixes. F11 for fullscreen. Doesn't work with Tcl-8.6.0
+<newline><newline>
+
+<item>Move search feature (eg 'h6 Bxh6')
+<item>UCI: replace 'position fen ...' with 'position startpos moves ...' for general analysis
+<item>Selectable Ttk themes (for window docking and gamelist)
+<item>Better Twin Games Checker - highlights missing comments and variations in duplicate games
+<item>Working MSVC makefile (Makefile.vc)
+<item>Text Find widgets in help, crosstable, engine logs
+<item>Game Save dialog remembers any custom tags you add to a game, making them easy to recall
+<item>Restore drawing arrows and marks from the main board (also used by FICS premove)
+<item>Arrow length/widths configurable via comment editor
+<item>Some new board textures (from Ed Collins)
+<item>Player info window shows Photos in a scrollable canvas insead of stuck in top right corner
+<item>Delete key deletes moves in game/variation after the current move
+<item>Score Graphs are now bargraphs instead of lines
+<item>Bind statusbar->middle button to 'switch base'
+<item>FICS context menu, game offers now show more information, and premove
+<item>FICS: deiconify/raise window when game starts (nodock mode only)
+<item>FICS: stop clock when we make a move (even though we may not have acknowledgemnt from FICS about move)
+<item>FICS: 'upload' command for uploading local games to FICS examine mode
+<item>Allow the Name editor to glob '*' for Site, Event and Round fields (but not for 'All Games', too dangerous when used by mistake)
+<item>The material board can display *all* taken pieces
+<item>Gamelist button rows can be hidden by right-clicking the tree, and it has a game save icon
+<item>Right click V+ button adds the second variation
+<item>Windows analysis engines no longer run at low priority
+<item>When annotating the score on blunders, show the main score first, var second (eg: +1.00 / +2.50)
+<item>Add programmers reference to the help contents/online doc
+<item>Bind space-bar to engine start/stop
+<item>Update twic2scid.py script
+<item>Remember if .board is flipped for each open base
+<newline><newline>
+
+ Bugfixes:
+<item>Make the database switcher icons/frames get smaller if they are cramped (so we can see them all)
+<item>Half fix UCI game (sergame.tcl) time issues
+<item>Corrospondence Chess now works
+<item>Tree Mask bugfix: Checks couldnt be added to mask
+<item>Fix Tree 'Fill cache with game/base' feature
+<item>Try to handle shortened FENs with Paste FEN
+<item>Crosstable: 'Set Filter' now includes deleted games if +deleted
+<item>Crosstable: handle games with a year-only date differently for crosstable purposes (Instead of +/-3 months, match any other games in the calender year
+<item>FICS: Stop clocks after a takeback request from opponent
+<item>FICS: Games with move lengths greater than 1:00:00 would break parse
+<item>Add missing FICSLogin translation.
+<item>Phalanx works properly under Windows 7
+<item>OS X: pad out flag buttons in Header search
+<item>base_open_failure was erroneously closing wrong base
+</itemize>
 
 <sect2> Scid vs. PC 4.8 <p>
 <itemize>
