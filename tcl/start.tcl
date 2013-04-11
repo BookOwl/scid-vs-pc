@@ -13,8 +13,8 @@
 exec `dirname $0`/tkscid "$0" "$@"
 
 # Alter the version if any patches have been made to the Tcl code only:
-set scidVersion 4.8
-set scidVersionDate {Aug 12, 2012}
+set scidVersion 4.9
+set scidVersionDate {Apr 20, 2013}
 
 # Set to 0 before releasing, so some alpha-state code is not included
 # Set to 1 to have access to all code
