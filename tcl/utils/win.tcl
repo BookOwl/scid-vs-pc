@@ -620,13 +620,14 @@ proc ::docking::cleanup { w { origin "" } } {
     bind $dockw <Destroy> {}
   }
 
-  ### dont catch this. Generates core dumps in wish 8.6 - S.A.
   # Maybe during Scid closing, some race conditions lead to exceptions ? In case, catch this by default
   foreach nb [array names tbs] {
     if { [lsearch  [$nb tabs] $dockw ] != -1 } {
       $nb forget $dockw
-      ### This seems wrong
-      # destroy $dockw
+      # Wish 8.6 "catch destroy" dumps core - S.A.
+      if {!$::docking::buggywish} {
+       catch {destroy $dockw}
+      }
       ::docking::_cleanup_tabs $nb
       return
     }
@@ -1293,4 +1294,6 @@ createToplevel .main
 if {!$::docking::USE_DOCKING} {
   ::splash::add "Docking mode disabled."
   wm withdraw .main ; # gets remapped later
+} else {
+  set ::docking::buggywish [expr [info tclversion] == "8.6"]
 }

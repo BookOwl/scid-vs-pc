@@ -1278,14 +1278,6 @@ if {$::docking::USE_DOCKING} {
   set helpMessage($m,5) OptionsWindowsSaveLayout
   $m add cascade -label OptionsWindowsRestoreLayout -menu $m.restorelayout
   set helpMessage($m,6) OptionsWindowsRestoreLayout
-
-  bind .main <F11> {
-    if {[wm attributes . -fullscreen]} {
-      wm attributes . -fullscreen 0
-    } else {
-      wm attributes . -fullscreen 1
-    }
-  }
 }
 
 $m add separator
@@ -1801,6 +1793,15 @@ proc standardShortcuts {w} {
   bind $w <Control-V> ::pasteFEN
   bind $w <Control-r> ::gameReplace
   bind $w <Control-s> ::gameAdd
+
+  # doesnt like tcl 8.5.4
+  bind $w <F11> {
+    if {[wm attributes . -fullscreen]} {
+      wm attributes . -fullscreen 0
+    } else {
+      wm attributes . -fullscreen 1
+    }
+  }
 }
 
 ################################################################################
