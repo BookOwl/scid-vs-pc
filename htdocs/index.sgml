@@ -314,19 +314,21 @@ and lesser popularity than Scid.</p>
 <sect2> Scid vs. PC 4.9 <p>
 <itemize>
 <item>Window Docking feature
-- Different windows are docked/restored than Scid. 5 layout slots with 3 custom layouts. Bug-fixes. F11 for fullscreen. Doesn't work with Tcl-8.6.0
+- Different windows are docked/restored than Scid. Five layout slots with three custom layouts. Bug-fixes. F11 for fullscreen. Tcl-8.6.0 may have issues. Selectable Ttk themes (also for Gamelist).
 <newline><newline>
 
+ General  
 <item>Move search feature (eg 'h6 Bxh6')
 <item>UCI: replace 'position fen ...' with 'position startpos moves ...' for general analysis
-<item>Selectable Ttk themes (for window docking and gamelist)
 <item>Better Twin Games Checker - highlights missing comments and variations in duplicate games
-<item>Working MSVC makefile (Makefile.vc)
+<item>Windows has a  MSVC makefile (Makefile.vc) and includes Stockfish 2.31 (JA legacy build)
 <item>Text Find widgets in help, crosstable, engine logs
 <item>Game Save dialog remembers any custom tags you add to a game, making them easy to recall
 <item>Restore drawing arrows and marks from the main board (also used by FICS premove)
 <item>Arrow length/widths configurable via comment editor
+<item>PGN Figurines now display in bold, and a different font, if applicable (from Gregor)
 <item>Some new board textures (from Ed Collins)
+<item>Automatically save "bitmaps" directory when exporting to HTML
 <item>Player info window shows Photos in a scrollable canvas insead of stuck in top right corner
 <item>Delete key deletes moves in game/variation after the current move
 <item>Score Graphs are now bargraphs instead of lines
@@ -347,7 +349,7 @@ and lesser popularity than Scid.</p>
 <item>Remember if .board is flipped for each open base
 <newline><newline>
 
- Bugfixes:
+ Bugfixes
 <item>Make the database switcher icons/frames get smaller if they are cramped (so we can see them all)
 <item>Half fix UCI game (sergame.tcl) time issues
 <item>Corrospondence Chess now works
@@ -359,9 +361,10 @@ and lesser popularity than Scid.</p>
 <item>FICS: Stop clocks after a takeback request from opponent
 <item>FICS: Games with move lengths greater than 1:00:00 would break parse
 <item>Add missing FICSLogin translation.
-<item>Phalanx works properly under Windows 7
+<item>New windows Phalanx build. It works better under win7, but has analysis polling issues
 <item>OS X: pad out flag buttons in Header search
 <item>base_open_failure was erroneously closing wrong base
+<item>Windows Preview HTML for Reports is fixed
 </itemize>
 
 <sect2> Scid vs. PC 4.8 <p>

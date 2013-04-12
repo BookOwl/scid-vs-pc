@@ -5744,21 +5744,22 @@ set helpText(Changelog) {<h1>Scid vs. PC</h1>
 <h4>4.9 (April 20, 2013)</h4>
 <b>Window Docking</b>
 <ul>
-<li>Different windows are docked/restored than Scid. 5 layout slots with 3 custom layouts. Bug-fixes F11 for fullscreen. Doesn't work with Tcl-8.6.0</li>
+<li>Different windows are docked/restored than Scid. Five layout slots with three custom layouts. Bug-fixes. F11 for fullscreen. Tcl 8.6.0 may have issues. Selectable Ttk themes (also for Gamelist).</li>
 </ul>
 <br>
 <b>General</b>
 <ul>
 <li>Move search feature (eg 'h6 Bxh6')</li>
 <li>UCI: replace 'position fen ...' with 'position startpos moves ...' for general analysis</li>
-<li>Selectable Ttk themes (for window docking and gamelist)</li>
 <li>Better Twin Games Checker - highlights missing comments and variations in duplicate games</li>
-<li>Working MSVC makefile (Makefile.vc)</li>
+<li>Windows has a  MSVC makefile (Makefile.vc) and includes Stockfish 2.31 (JA legacy build)</li>
 <li>Text Find widgets in help, crosstable, engine logs</li>
 <li>Game Save dialog remembers any custom tags you add to a game, making them easy to recall</li>
 <li>Restore drawing arrows and marks from the main board (also used by FICS premove)</li>
 <li>Arrow length/widths configurable via comment editor</li>
+<li>PGN Figurines now display in bold, and a different font, if applicable (from Gregor)</li>
 <li>Some new board textures (from Ed Collins)</li>
+<li>Automatically save "bitmaps" directory when exporting to HTML</li>
 <li>Player info window shows Photos in a scrollable canvas insead of stuck in top right corner</li>
 <li>Delete key deletes moves in game/variation after the current move</li>
 <li>Score Graphs are now bargraphs instead of lines</li>
@@ -5778,7 +5779,6 @@ set helpText(Changelog) {<h1>Scid vs. PC</h1>
 <li>Update twic2scid.py script</li>
 <li>Remember if .board is flipped for each open base</li>
 </ul>
-
 <br>
 <b>Bug-fixes</b>
 <ul>
@@ -5793,12 +5793,11 @@ set helpText(Changelog) {<h1>Scid vs. PC</h1>
 <li>FICS: Stop clocks after a takeback request from opponent</li>
 <li>FICS: Games with move lengths greater than 1:00:00 would break parse</li>
 <li>Add missing FICSLogin translation.</li>
-<li>Phalanx works properly under Windows 7</li>
+<li>New windows Phalanx build. It works better under win7, but has analysis polling issues</li>
 <li>OS X: Pad out flag buttons in Header search</li>
 <li>base_open_failure was erroneously closing wrong base</li>
+<li>Windows Preview HTML for Reports is fixed</li>
 </ul>
-
-<br>
 
 <h4>4.8 (August 12, 2012)</h4>
 <b>General</b>

@@ -470,6 +470,8 @@ proc ::optable::previewHTML {} {
   }
   puts $tempfile [::optable::report html 1 $::optable::_flip]
   close $tempfile
+  set sourcedir [file nativename $::scidShareDir/bitmaps/]
+  catch { file copy -force $sourcedir $tmpdir }
   openURL $fname
   unbusyCursor .
 }

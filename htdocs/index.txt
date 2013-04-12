@@ -433,23 +433,25 @@
 
 
   o  Window Docking feature - Different windows are docked/restored than
-     Scid. 5 layout slots with 3 custom layouts. Bug-fixes. F11 for
-     fullscreen. Doesn't work with Tcl-8.6.0
+     Scid. Five layout slots with three custom layouts. Bug-fixes. F11
+     for fullscreen. Tcl-8.6.0 may have issues. Selectable Ttk themes
+     (also for Gamelist).
+
+     General
 
   o  Move search feature (eg 'h6 Bxh6')
 
   o  UCI: replace 'position fen ...' with 'position startpos moves ...'
      for general analysis
 
-  o  Selectable Ttk themes (for window docking and gamelist)
-
   o  Better Twin Games Checker - highlights missing comments and
      variations in duplicate games
 
-  o  Working MSVC makefile (Makefile.vc)
+  o  Windows has a MSVC makefile (Makefile.vc) and includes Stockfish
+     2.31 (JA legacy build)
+
 
   o  Text Find widgets in help, crosstable, engine logs
-
 
   o  Game Save dialog remembers any custom tags you add to a game,
      making them easy to recall
@@ -459,7 +461,12 @@
 
   o  Arrow length/widths configurable via comment editor
 
+  o  PGN Figurines now display in bold, and a different font, if
+     applicable (from Gregor)
+
   o  Some new board textures (from Ed Collins)
+
+  o  Automatically save "bitmaps" directory when exporting to HTML
 
   o  Player info window shows Photos in a scrollable canvas insead of
      stuck in top right corner
@@ -504,10 +511,11 @@
 
   o  Remember if .board is flipped for each open base
 
-     Bugfixes:
+     Bugfixes
 
   o  Make the database switcher icons/frames get smaller if they are
      cramped (so we can see them all)
+
 
   o  Half fix UCI game (sergame.tcl) time issues
 
@@ -532,11 +540,14 @@
 
   o  Add missing FICSLogin translation.
 
-  o  Phalanx works properly under Windows 7
+  o  New windows Phalanx build. It works better under win7, but has
+     analysis polling issues
 
   o  OS X: pad out flag buttons in Header search
 
   o  base_open_failure was erroneously closing wrong base
+
+  o  Windows Preview HTML for Reports is fixed
 
   7.0.2.  Scid vs. PC 4.8
 
@@ -571,6 +582,7 @@
   o  Add a patch to make toolbar buttons raise only (instead of toggle
      open/shut)
 
+
   o  Add a patch for Chess960 support (from Ben Hague). Unfinished
 
      Analysis
@@ -581,7 +593,6 @@
   o  Right clicking 'Add Var' button adds Engine Score comment only.
 
   o  Replace ponder on/off with hard/easy for xboard engines
-
 
   o  Super quick engine infos can happen before Scid's PV is inited
      properly. So we have to default to PV = 1
@@ -637,6 +648,7 @@
 
   o  bind F9 to xtell instead of tell.
 
+
   o  Change the move.wav sound from tick-tock to a short click.
 
      OS X
@@ -647,7 +659,6 @@
 
   o  Copy and Paste text from disabled OSX text widgets (engines, help,
      gameinfo)
-
 
   o  Buttons 2 and 3 are swapped around
 
@@ -704,7 +715,6 @@
 
   o  New feature: 'Search-Filter to Last Move'. All filter games will
      load at the last move (end of game).
-
   o  Refine the Calculation of Variation (Stoyko Exercise) feature and
      Help.
 
@@ -713,7 +723,6 @@
   o  Tweak PGN context menu: reorder the Strip/Delete move items.
 
   o  Gamelist: replace the Negate button with a Select button.
-
 
   o  Tree: Include a patch for embedding the Best Games into the Tree
      window.
@@ -772,7 +781,6 @@
 
   o  Known aliases Biographical data is shown in the player information
      window
-
   o  The player info widget has buttons enabling quick player renames
      and look-up.
 
@@ -912,7 +920,6 @@
 
      OSX:
 
-
   o  Make an OSX app with a working ;> version of Tcl (thanks Gilles)
 
   o  Many OSX wheelmouse and graphical fixes.
@@ -972,13 +979,13 @@
 
   o  Add widgets to the gamelist for manipulating flags and browsing
      first/last/next/previous games
-
   o  Opening Book and Book Tuning overhaul - allow two books to be
      opened with side-by-side sorting, and various interface
      improvements
 
   o  Overhaul Annotate widget - allow choice of scores/variation/both
      and remember annotation options
+
   o  Crosstable sort by Country feature
 
   o  Update Fics to allow for different Port/IP Address (using SCID
@@ -1042,7 +1049,6 @@
      name
 
   o  Statusbar shows correct value after Crosstable update
-
 
   7.0.8.  Scid vs. PC 4.3
 
@@ -1109,7 +1115,6 @@
 
   o  Revert PlayerInfo to old format, but add a "Won Drawn Lost" header.
 
-
   o  Tweak crosstable knock-out format
 
   7.0.9.  Scid vs. PC 4.2
@@ -1171,10 +1176,10 @@
 
   o  Comment Editor has undo and redo bindings
 
+
   o  Main board grid colour can be changed
 
   o  Setup board can rotate and flip the board
-
 
   o  Clicking on moves in the gameinfo area shows Comment Editor
 
@@ -1236,6 +1241,7 @@
         occasionally broke
 
      o  "Show Suggested Move" was broken
+
 
      o  Gamelist sometimes left off the last or first item
 
@@ -1302,11 +1308,11 @@
 
   o  Sync the tools::connect-hardware feature with SCID (untested)
 
+
   o  When using the setup board widget, do a sanity check about the
      FEN's castling field
 
   o  Some minor version fixes anticipating tcl8.6
-
 
   o  Small bugfix: variation pop-up could previously throw errors if
      moving through movs fast
@@ -1369,7 +1375,6 @@
 
   o  Fics: Make a new Received Offers dialog which allows for proper
      handling of multiple challenges
-
   o  Fics: Tweak the Make Offer dialog
 
   o  Fics: update help files, and add a Font button
@@ -1501,6 +1506,7 @@
   o  Fixed up the toolbar cofniguration widget, and re-did a few little
      images
 
+
   o  Variation pop-ups now center over the main window, and enable
      KeyPress-1, KeyPress-2, etc bindings
 
@@ -1566,12 +1572,14 @@
 
   o  Many changes to the Gameinfo widget,
 
+
   o  , including a new "Set Game Information" widget.
 
   o  Stop game from crashing with languages other than English.
 
   o  Window placement is now relative the main window, rather than
      absolute +x+y
+
   o  The Options->Chessboard menu now also includes the pieces menus
 
   o  The 3 line PGN header is now colour

@@ -362,18 +362,20 @@ and lesser popularity than Scid.</P>
 <P>
 <UL>
 <LI>Window Docking feature
-- Different windows are docked/restored than Scid. 5 layout slots with 3 custom layouts. Bug-fixes. F11 for fullscreen. Doesn't work with Tcl-8.6.0<BR><BR>
-</LI>
+- Different windows are docked/restored than Scid. Five layout slots with three custom layouts. Bug-fixes. F11 for fullscreen. Tcl-8.6.0 may have issues. Selectable Ttk themes (also for Gamelist).<BR><BR>
+
+General  </LI>
 <LI>Move search feature (eg 'h6 Bxh6')</LI>
 <LI>UCI: replace 'position fen ...' with 'position startpos moves ...' for general analysis</LI>
-<LI>Selectable Ttk themes (for window docking and gamelist)</LI>
 <LI>Better Twin Games Checker - highlights missing comments and variations in duplicate games</LI>
-<LI>Working MSVC makefile (Makefile.vc)</LI>
+<LI>Windows has a  MSVC makefile (Makefile.vc) and includes Stockfish 2.31 (JA legacy build)</LI>
 <LI>Text Find widgets in help, crosstable, engine logs</LI>
 <LI>Game Save dialog remembers any custom tags you add to a game, making them easy to recall</LI>
 <LI>Restore drawing arrows and marks from the main board (also used by FICS premove)</LI>
 <LI>Arrow length/widths configurable via comment editor</LI>
+<LI>PGN Figurines now display in bold, and a different font, if applicable (from Gregor)</LI>
 <LI>Some new board textures (from Ed Collins)</LI>
+<LI>Automatically save "bitmaps" directory when exporting to HTML</LI>
 <LI>Player info window shows Photos in a scrollable canvas insead of stuck in top right corner</LI>
 <LI>Delete key deletes moves in game/variation after the current move</LI>
 <LI>Score Graphs are now bargraphs instead of lines</LI>
@@ -393,7 +395,7 @@ and lesser popularity than Scid.</P>
 <LI>Update twic2scid.py script</LI>
 <LI>Remember if .board is flipped for each open base<BR><BR>
 
-Bugfixes:</LI>
+Bugfixes</LI>
 <LI>Make the database switcher icons/frames get smaller if they are cramped (so we can see them all)</LI>
 <LI>Half fix UCI game (sergame.tcl) time issues</LI>
 <LI>Corrospondence Chess now works</LI>
@@ -405,9 +407,10 @@ Bugfixes:</LI>
 <LI>FICS: Stop clocks after a takeback request from opponent</LI>
 <LI>FICS: Games with move lengths greater than 1:00:00 would break parse</LI>
 <LI>Add missing FICSLogin translation.</LI>
-<LI>Phalanx works properly under Windows 7</LI>
+<LI>New windows Phalanx build. It works better under win7, but has analysis polling issues</LI>
 <LI>OS X: pad out flag buttons in Header search</LI>
 <LI>base_open_failure was erroneously closing wrong base</LI>
+<LI>Windows Preview HTML for Reports is fixed</LI>
 </UL>
 </P>
 <P>
