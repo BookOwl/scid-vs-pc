@@ -255,7 +255,9 @@ if {$windowsOS} {
   #   Probably only has any effect when opening a pgn/si4 file by double clicking on it,
   #   whence the CWD is not "."
   cd $scidExeDir
-  set scidLogDir [file nativename [file join $::env(HOME) "log"]]
+  # Windows has problems with "cmd.exe /c start" and spaces in file names "Documents and Settings"
+  # so choose something dumb
+  set scidLogDir {C:\log}
 } else {
   set scidUserDir [file nativename "~/.scidvspc"]
   set scidLogDir [file nativename [file join $scidUserDir "log"]]
@@ -600,7 +602,11 @@ set blunderThreshold 1.0
 array set geometry {}
 
 # Default theme
-set lookTheme "default"
+if {$::windowsOS} {
+  set lookTheme winnative
+} else {
+  set lookTheme default
+}
 
 #   Which windows should be opened on startup
 set startup(pgn) 0

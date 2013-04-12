@@ -1004,7 +1004,6 @@ proc ::docking::add_tab {path anchor args} {
 proc ::docking::setMenuMark { nb tab} {
   if { $tab == ".fdockpgnWin" || \
        $tab == ".fdockccWindow" || \
-       $tab == ".fdockoprepWin" || \
        $tab == ".fdockcrosstabWin" || \
        [string match "\.fdocktreeWin*" $tab] } {
     $nb tab $tab -image bluetriangle -compound left
@@ -1030,10 +1029,6 @@ set ::docking::layout_dest_notebook ""
 proc ::docking::layout_save { slot } {
   if {[winfo exists .fics]} {
     tk_messageBox -title Scid -icon question -type ok -message "Cannot save layout with FICS opened"
-    return
-  }
-  if {[winfo exists .oprepWin]} {
-    tk_messageBox -title Scid -icon question -type ok -message "Cannot save layout with opening report opened"
     return
   }
 

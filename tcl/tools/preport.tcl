@@ -369,19 +369,15 @@ proc ::preport::setOptions {} {
 proc ::preport::previewHTML {} {
   busyCursor .
   set tmpdir $::scidLogDir
-  set tmpfile "TempPlayerReport"
-  set fname [file join $tmpdir $tmpfile]
-  if {[catch {set tempfile [open $fname.html w]}]} {
+  set tmpfile TempPlayerReport.html
+  set fname [file nativename [file join $tmpdir $tmpfile]]
+  if {[catch {set tempfile [open $fname w]}]} {
     tk_messageBox -title "Scid: Error writing report" -type ok -icon warning \
-      -message "Unable to write the file: $fname.html"
+        -message "Unable to write the file: $fname"
   }
   puts $tempfile [::preport::report html 1]
   close $tempfile
-  if {[string match $::tcl_platform(os) "Windows NT"]} {
-    catch {exec $::env(COMSPEC) /c start $fname.html &}
-  } else {
-    catch {exec start $fname.html &}
-  }
+  openURL $fname
   unbusyCursor .
 }
 

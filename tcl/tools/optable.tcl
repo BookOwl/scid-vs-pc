@@ -162,10 +162,10 @@ proc ::optable::makeReportWin {args} {
   if {[winfo exists $w]} {
     raiseWin $w
   } else {
-    ::createToplevel $w
-    ::setTitle $w "[tr ToolsOpReport]"
+    toplevel $w
+    wm title $w "[tr ToolsOpReport]"
     menu $w.menu
-    ::setMenu $w $w.menu
+    $w configure -menu $w.menu
 
     $w.menu add cascade -label OprepFile -menu $w.menu.file
     $w.menu add cascade -label OprepFavorites -menu $w.menu.favorites
@@ -243,7 +243,6 @@ proc ::optable::makeReportWin {args} {
     pack $w.b.opts $w.b.lexclude $w.b.exclude $w.b.mergeGames -side left -padx 1 -pady 2
     ::optable::ConfigMenus
     ::utils::win::Centre $w
-    ::createToplevelFinalize $w
   }
 
   catch {destroy $w.text.bd}
@@ -463,19 +462,15 @@ proc ::optable::previewLaTeX {} {
 proc ::optable::previewHTML {} {
   busyCursor .
   set tmpdir $::scidLogDir
-  set tmpfile "TempOpeningReport"
-  set fname [file join $tmpdir $tmpfile]
-  if {[catch {set tempfile [open $fname.html w]}]} {
+  set tmpfile TempOpeningReport.html
+  set fname [file nativename [file join $tmpdir $tmpfile]]
+  if {[catch {set tempfile [open $fname w]}]} {
     tk_messageBox -title "Scid: Error writing report" -type ok -icon warning \
-        -message "Unable to write the file: $fname.html"
+        -message "Unable to write the file: $fname"
   }
   puts $tempfile [::optable::report html 1 $::optable::_flip]
   close $tempfile
-  if {[string match $::tcl_platform(os) "Windows NT"]} {
-    catch {exec $::env(COMSPEC) /c start $fname.html &}
-  } else {
-    catch {exec start $fname.html &}
-  }
+  openURL $fname
   unbusyCursor .
 }
 
