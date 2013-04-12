@@ -262,9 +262,15 @@ proc ::htext::init {w} {
   if { $::pgn::boldMainLine } {
     $w tag configure nag -fore $::pgnColor(Nag) -font font_Regular
     $w tag configure var -fore $::pgnColor(Var) -font font_Regular
+	 if {$graphFigurineAvailable} {
+		 $w tag configure fb -font font_Figurine(bold)
+	 }
   } else {
     $w tag configure nag -fore $::pgnColor(Nag)
     $w tag configure var -fore $::pgnColor(Var)
+	 if {$graphFigurineAvailable} {
+		 $w tag configure fb -font font_Figurine(normal)
+	 }
   }
   $w tag configure ip1 -lmargin1 25 -lmargin2 25
   $w tag configure ip2 -lmargin1 50 -lmargin2 50
@@ -272,7 +278,7 @@ proc ::htext::init {w} {
   $w tag configure ip4 -lmargin1 100 -lmargin2 100
 
   if {$graphFigurineAvailable} {
-    $w tag configure f -font font_Figurine
+    $w tag configure f -font font_Figurine(normal)
   }
 }
 

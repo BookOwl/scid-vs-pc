@@ -7,17 +7,24 @@ namespace eval pgn {
   ################################################################################
   # truetype support
   ################################################################################
-  variable graphFigurineInComments 1
-  variable substUnicode { "\u2654" "<f>\u2654</f>"
-                          "\u2655" "<f>\u2655</f>"
-                          "\u2656" "<f>\u2656</f>"
-                          "\u2657" "<f>\u2657</f>"
-                          "\u2658" "<f>\u2658</f>"
-                          "\u2659" "<f>\u2659</f>"
-                        }
-  variable substPlaceHolders { "\\K\\" "\u2654" "\\Q\\" "\u2655" "\\R\\" "\u2656"
-                               "\\B\\" "\u2657" "\\N\\" "\u2658" "\\P\\" "\u2659"
-                             }
+  set graphFigurineInComments 1
+  set substUnicode(normal)  { "\u2654" "<f>\u2654</f>"
+                              "\u2655" "<f>\u2655</f>"
+                              "\u2656" "<f>\u2656</f>"
+                              "\u2657" "<f>\u2657</f>"
+                              "\u2658" "<f>\u2658</f>"
+                              "\u2659" "<f>\u2659</f>"
+                            }
+  set substUnicode(bold)    { "\u2654" "<fb>\u2654</fb>"
+                              "\u2655" "<fb>\u2655</fb>"
+                              "\u2656" "<fb>\u2656</fb>"
+                              "\u2657" "<fb>\u2657</fb>"
+                              "\u2658" "<fb>\u2658</fb>"
+                              "\u2659" "<fb>\u2659</fb>"
+                            }
+  set substPlaceHolders     { "\\K\\" "<f>\u2654</f>" "\\Q\\" "<f>\u2655</f>" "\\R\\" "<f>\u2656</f>"
+                              "\\B\\" "<f>\u2657</f>" "\\N\\" "<f>\u2658</f>" "\\P\\" "<f>\u2659</f>"
+                            }
 
   ################################################################################
   #
@@ -58,17 +65,59 @@ namespace eval pgn {
   ################################################################################
   proc PrepareForDisplay {str} {
     global useGraphFigurine
-    variable graphFigurineInComments
-    variable substPlaceHolders
-    variable substUnicode
 
-    if {!$useGraphFigurine} { return $str }
-    if {$graphFigurineInComments} {
-      regsub -all {([KQRBNP])([a-h1-8])?(x)?([a-h][1-8])} $str {\\\1\\\2\3\4} str
-      regsub -all {([a-h][1-8]=)([KQRBN])} $str {\1\\\2\\} str
-      set str [string map $substPlaceHolders $str]
+    if {$useGraphFigurine} {
+      global graphFigurineWeight
+      variable graphFigurineInComments
+      variable substPlaceHolders
+      variable substUnicode
+
+      if {$graphFigurineInComments} {
+        regsub -all {([KQRBNP])([a-h1-8])?(x)?([a-h][1-8])} $str {\\\1\\\2\3\4} str
+        regsub -all {([a-h][1-8]=)([KQRBN])} $str {\1\\\2\\} str
+      }
+
+      if {!$::pgn::boldMainLine || $graphFigurineWeight(bold) eq "normal"} {
+        set str [string map $substUnicode(normal) $str]
+      } else {
+        # split into chunks: "..." "<var>...</var>" "..." "<var>...</var>" "..."
+        # take nested variations into account
+        set chunks {}
+        set start 0
+        set n1 [string first "<var>" $str]
+        while {$n1 >= 0} {
+          set n [expr {$n1 + 5}]
+          set n2 [string first "<var>"  $str $n]
+          set n3 [string first "</var>" $str $n]
+          while {$n2 >= 0 && $n2 < $n3} {
+            # we have nested variations
+            set n2 [string first "<var>"  $str [expr {$n2 + 5}]]
+            set n3 [string first "</var>" $str [expr {$n3 + 5}]]
+          }
+          if {$n3 == -1} {
+            # Oops: string is corrupt (should never happen)
+            set n1 -1
+          } else {
+            lappend chunks bold [string range $str $start $n1]
+            lappend chunks normal [string range $str [expr {$n1 + 1}] $n3]
+            set start [expr {$n3 + 1}]
+            set n1 $n2
+          }
+        }
+        lappend chunks bold [string range $str $start end]
+        # re-build string concatenating the chunks
+        set str ""
+        foreach {weight part} $chunks {
+          append str [string map $substUnicode($weight) $part]
+        }
+      }
+
+      if {$graphFigurineInComments} {
+        set str [string map $substPlaceHolders $str]
+      }
     }
-    return [string map $substUnicode $str]
+
+    return $str
   }
 
 

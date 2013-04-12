@@ -258,7 +258,7 @@ proc FontDialogFixed {parent} {
 }
 
 proc FontDialogRegular {parent} {
-  global fontOptions graphFigurineAvailable graphFigurineFamily
+  global fontOptions graphFigurineAvailable
 
   set fontOptions(temp) [FontDialog Regular $parent]
   if {$fontOptions(temp) != {}} { set fontOptions(Regular) $fontOptions(temp) }
@@ -274,7 +274,9 @@ proc FontDialogRegular {parent} {
   font configure font_H4 -family $font -size [expr {$fontsize + 2} ]
   font configure font_H5 -family $font -size [expr {$fontsize + 0} ]
   if {$graphFigurineAvailable} {
-    font configure font_Figurine -family $graphFigurineFamily -size $fontsize
+    global graphFigurineFamily graphFigurineWeight
+    font configure font_Figurine(normal) -family $graphFigurineFamily(normal) -weight $graphFigurineWeight(normal) -size $fontsize
+    font configure font_Figurine(bold) -family $graphFigurineFamily(bold) -weight $graphFigurineWeight(bold) -size $fontsize
   }
   ::pgn::configTabs
 }
@@ -375,11 +377,12 @@ proc FontDialogRegen { font_name } {
   # Change font to have new characteristics.
   font configure $font_name -family $fd_family -size $fd_size -slant $slant -weight $weight
   if {$font_name == "font_Regular" } {
-      font configure font_Bold -family $fd_family -size $fd_size -slant $slant
-      if {$graphFigurineAvailable} {
-	  font configure font_Figurine -size $fd_size 
-      }
-      ::pgn::configTabs
+    font configure font_Bold -family $fd_family -size $fd_size -slant $slant
+    if {$graphFigurineAvailable} {
+      font configure font_Figurine(normal) -size $fd_size 
+      font configure font_Figurine(bold) -size $fd_size
+    }
+    ::pgn::configTabs
   }
 }
 
@@ -398,7 +401,8 @@ proc FontBiggerSmaller {incr} {
   font configure font_H3 -size [expr $fd_size + 4]
   font configure font_H4 -size [expr $fd_size + 2]
   if {$graphFigurineAvailable} {
-    font configure font_Figurine -size $fd_size
+    font configure font_Figurine(normal) -size $fd_size
+    font configure font_Figurine(bold) -size $fd_size
   }
   ::pgn::configTabs
 
