@@ -2368,8 +2368,13 @@ namespace eval fics {
           # fixme : what is the best way to not generate <Map> which in turn raiseAllWindows and leave fics on top.
 	  wm deiconify $::dot_w
       }
-      raise .main
-      focus .main
+      # this is a bit of a mess
+      if  {$::docking::USE_DOCKING} {
+	raiseWin .main
+      } else {
+	raise .main
+	focus .main
+      }
     }
   }
 
