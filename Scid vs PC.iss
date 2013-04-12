@@ -1,5 +1,5 @@
 
-#define AppVersion '4.8'
+#define AppVersion '4.9'
 #define AppName    'Scid vs PC'
 #define ActiveTclUrl 'http://www.activestate.com/activetcl/downloads'
 
@@ -11,7 +11,7 @@ AppVerName={# AppName} {# AppVersion}
 AppVersion={# AppVersion}
 AppPublisher=Steven Atkinson
 AppPublisherURL=http://http://scidvspc.sourceforge.net
-AppCopyright=Steven Atkinson (C) 2009 - 2012  Steven Atkinson
+AppCopyright=Steven Atkinson (C) 2009 - 2013  Steven Atkinson
 DefaultDirName={pf}\{# AppName}-{# AppVersion}
 DefaultGroupName={# AppName}
 DisableStartupPrompt=yes
@@ -44,13 +44,13 @@ Root: HKCR; Subkey: "si4\DefaultIcon"; ValueType: string; ValueName: ""; ValueDa
 Root: HKCR; Subkey: "si4\shell\open\command"; ValueType: string; ValueName: ""; ValueData: """{app}\bin\scid"" ""%1""" ; Tasks: "associate_si4" 
 
 [Files]
-Source: "bin\*";  DestDir: "{app}/bin"; CopyMode: normal; Flags: recursesubdirs
-Source: "bitmaps\*";  DestDir: "{app}/bitmaps"; CopyMode: normal; Flags: recursesubdirs
-Source: "bitmaps2\*";  DestDir: "{app}/bitmaps2"; CopyMode: normal; Flags: recursesubdirs
+Source: "bin\*";  DestDir: "{app}\bin"; CopyMode: normal; Flags: recursesubdirs
 Source: "lib\*"; DestDir: "{app}\lib";  CopyMode: normal; Flags: recursesubdirs
 Source: "doc\*"; DestDir: "{app}\doc";  CopyMode: normal; Flags: recursesubdirs
 Source: "COPYING.txt"; DestDir: "{app}";  CopyMode: normal; Flags: recursesubdirs
-Source: "README_Scid_vs_PC.txt"; DestDir: "{app}";  CopyMode: normal; Flags: recursesubdirs
+Source: "README_ScidvsPC.txt"; DestDir: "{app}";  CopyMode: normal; Flags: recursesubdirs
+Source: "README_ScidvsPC.htm"; DestDir: "{app}";  CopyMode: normal; Flags: recursesubdirs
+Source: "images\*"; DestDir: "{app}\images";  CopyMode: normal; Flags: recursesubdirs
 
 
 
