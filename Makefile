@@ -192,6 +192,9 @@ install_scid: all_scid
 	install -m 755 -d $(SHAREDIR)/html
 	cp -r ./html/* $(SHAREDIR)/html/
 	chmod -R 0777 $(SHAREDIR)/html/*
+	install -m 755 -d $(SHAREDIR)/bitmaps
+	cp -r ./bitmaps/* $(SHAREDIR)/bitmaps/
+	chmod -R 0777 $(SHAREDIR)/bitmaps/*
 	@if [ "`id -u`" -eq 0 ]; then \
 		install -m 755 -d $(FONTDIR); \
 		install -m 644 -p fonts/*.ttf $(FONTDIR); \
@@ -242,6 +245,7 @@ uninstall:
 	rm -f $(BINDIR)/scmerge $(BINDIR)/scidlet
 	rm -f $(BINDIR)/phalanx $(BINDIR)/fruit
 	rm -rf $(SHAREDIR)/html
+	rm -rf $(SHAREDIR)/bitmaps
 	@if [ "`id -u`" -eq 0 ]; then \
 		for f in `ls fonts/*.ttf`; do \
 			rm -f $(FONTDIR)/`basename $$f`; \
