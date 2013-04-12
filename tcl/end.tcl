@@ -458,9 +458,8 @@ proc exportOptions {exportType} {
   return $exportFlags(ok)
 }
 
-# exportGames:
-#   exports current game or all filtered games to a new PGN, LaTeX or Html file.
-#
+### Export current game or all filtered games to a new PGN, LaTeX or Html file.
+
 proc exportGames {selection exportType} {
   global ::pgn::moveNumberSpaces exportStartFile exportEndFile exportFlags
   set exportFilter 0
@@ -536,12 +535,18 @@ proc exportGames {selection exportType} {
       -indentC $exportFlags(indentc) -indentV $exportFlags(indentv) \
       -column $exportFlags(column) -noMarkCodes $exportFlags(stripMarks) \
       -convertNullMoves $exportFlags(convertNullMoves)
+
   unbusyCursor .
+
+  if {$exportType == "HTML"} {
+    set sourcedir [file nativename $::scidShareDir/bitmaps/]
+    catch { file copy -force $sourcedir [file dirname $fName] }
+  }
+
   if {$exportFilter} {
     closeProgressWindow
   }
 }
-
 
 ### Global variables used in gameSave
 

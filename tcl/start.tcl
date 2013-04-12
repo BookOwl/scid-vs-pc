@@ -152,7 +152,7 @@ set ::windows::gamelist::widths {}
 set ::windows::gamelist::findcase 1
 set ::windows::gamelist::showButtons 1
 set ::windows::switcher::icons 1
-set ::file::finder::data(dir) [pwd]
+set ::file::finder::data(dir) $::env(HOME)
 set ::file::finder::data(sort) name
 set ::file::finder::data(recurse) 0
 set ::file::finder::data(Scid) 1
@@ -440,15 +440,15 @@ set ::fics::no_abort	0
 set ::fics::no_adjourn	0
 
 # Defaults for initial directories:
-set initialDir(base) "."
-set initialDir(pgn) "."
-set initialDir(book) "."
-set initialDir(epd) "."
-set initialDir(html) "."
-set initialDir(tex)  "."
-set initialDir(stm)  "."
-set initialDir(sso)  "."
-set initialDir(report) "."
+set initialDir(base) $::env(HOME)
+set initialDir(pgn)  $::env(HOME)
+set initialDir(book) $::env(HOME)
+set initialDir(epd)  $::env(HOME)
+set initialDir(html) $::env(HOME)
+set initialDir(tex)  $::env(HOME)
+set initialDir(stm)  $::env(HOME)
+set initialDir(sso)  $::env(HOME)
+set initialDir(report) $::env(HOME)
 set initialDir(tablebase1) ""
 set initialDir(tablebase2) ""
 set initialDir(tablebase3) ""

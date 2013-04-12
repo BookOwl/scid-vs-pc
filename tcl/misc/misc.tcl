@@ -590,7 +590,9 @@ namespace eval html {
   set black_square "#7389b6"
   set white_square "#f3f3f3"
 
-  ################################################################################
+
+  ### Export filter to HTML and Javascript
+
   proc exportCurrentFilter {} {
     # Check that we have some games to export:
     if {![sc_base inUse]} {
@@ -612,10 +614,11 @@ namespace eval html {
     if {$fName == ""} { return }
     set prefix [file rootname [file tail $fName] ]
     set dirtarget [file dirname $fName]
-    set sourcedir [file join $::scidExeDir html]
-    catch {file copy -force [file join $sourcedir bitmaps] $dirtarget}
-    catch {file copy -force [file join $sourcedir scid.js] $dirtarget}
-    catch {file copy -force [file join $sourcedir scid.css] $dirtarget}
+    set sourcedir [file join $::scidShareDir html]
+    ### catch copies to ignore overwrite directory errors
+    catch { file copy -force [file join $sourcedir bitmaps] $dirtarget }
+    catch { file copy -force [file join $sourcedir scid.js] $dirtarget }
+    catch { file copy -force [file join $sourcedir scid.css] $dirtarget }
     writeIndex "[file join $dirtarget $prefix].html" $prefix
     progressWindow "Scid" "Exporting games..." $::tr(Cancel) "sc_progressBar"
     busyCursor .
@@ -647,7 +650,9 @@ namespace eval html {
   proc sc_progressBar {} {
     set ::html::cancelHTML 1
   }
-  ################################################################################
+
+  ### Export current game to HTML and Javascript
+
   proc exportCurrentGame {} {
 
     set ftype {
@@ -659,7 +664,8 @@ namespace eval html {
     if {$fName == ""} { return }
     set prefix [file rootname [file tail $fName] ]
     set dirtarget [file dirname $fName]
-    set sourcedir [file join $::scidExeDir html]
+    set sourcedir [file join $::scidShareDir html]
+    ### catch copies to ignore overwrite directory errors
     catch { file copy -force [file join $sourcedir bitmaps] $dirtarget }
     catch { file copy -force [file join $sourcedir scid.js] $dirtarget }
     catch { file copy -force [file join $sourcedir scid.css] $dirtarget }
