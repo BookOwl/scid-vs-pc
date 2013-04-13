@@ -1,4 +1,4 @@
-SplineFontDB: 1.0
+SplineFontDB: 3.0
 FontName: ScidChessStandard
 FullName: Scid Chess Standard
 FamilyName: Scid Chess Standard
@@ -10,14 +10,16 @@ UnderlinePosition: -102
 UnderlineWidth: 20
 Ascent: 1638
 Descent: 410
-Order2: 1
+LayerCount: 2
+Layer: 0 1 "Back"  1
+Layer: 1 1 "Fore"  0
 XUID: [1021 555 146130107 12400943]
 FSType: 0
 OS2Version: 0
 OS2_WeightWidthSlopeOnly: 0
 OS2_UseTypoMetrics: 1
 CreationTime: 1083773814
-ModificationTime: 1365778043
+ModificationTime: 1365845137
 PfmFamily: 81
 TTFWeight: 400
 TTFWidth: 5
@@ -48,25 +50,238 @@ OS2SupYOff: 928
 OS2StrikeYSize: 102
 OS2StrikeYPos: 530
 OS2Vendor: 'Alts'
-ScriptLang: 1
- 1 latn 1 dflt 
-TtfTable: prep 147
-5VF#o)&X8.(Ddi&'bqDs',(uk&J5Qc%hB-[%1N^S$O[:K#mgkC#6t;3!<E0#!KFSis+NmT6q(cW
-7;,(XBLG:&6q(cW7;,(XBLG:&6q(cW7;,(XBLG:&6q(cW7;,(XBLG:&6q(cW7;,(XBLG:&6q(cW
-7;,)q"9V*n/$fE`7K=sD!s:u*7'Qn!7;,'h
-EndTtf
-TtfTable: fpgm 20
-5QLj9G"!OX"!pA\@;$K&BOF4[
-EndTtf
-TtfTable: cvt  78
-rX8s""l')O!&ssK!%e1*!:p2+!Jgi+!SRXs!YGL>!_ECJ!o*l#"+:4b"3:PO!oF%=!8UhY>,kc+
->,kc+>,kc+>,hQ.!"&]m"S2Tn
-EndTtf
-TtfTable: maxp 32
-!!*'"!3H8T!%%[G!!!!#!!iQi!"&]+!3uW%!!*'#
-EndTtf
+DEI: 91125
+TtTable: prep
+NPUSHB
+ 47
+ 26
+ 26
+ 25
+ 25
+ 24
+ 24
+ 23
+ 23
+ 22
+ 22
+ 21
+ 21
+ 20
+ 20
+ 19
+ 19
+ 18
+ 18
+ 17
+ 17
+ 16
+ 16
+ 15
+ 15
+ 14
+ 14
+ 13
+ 13
+ 12
+ 12
+ 11
+ 11
+ 10
+ 10
+ 9
+ 9
+ 8
+ 8
+ 7
+ 7
+ 2
+ 2
+ 1
+ 1
+ 0
+ 0
+ 1
+SCANTYPE
+PUSHW_1
+ 511
+SCANCTRL
+RCVT
+ROUND[Grey]
+WCVTP
+RCVT
+ROUND[Grey]
+WCVTP
+RCVT
+ROUND[Grey]
+WCVTP
+RCVT
+ROUND[Grey]
+WCVTP
+RCVT
+ROUND[Grey]
+WCVTP
+RCVT
+ROUND[Grey]
+WCVTP
+RCVT
+ROUND[Grey]
+WCVTP
+RCVT
+ROUND[Grey]
+WCVTP
+RCVT
+ROUND[Grey]
+WCVTP
+RCVT
+ROUND[Grey]
+WCVTP
+RCVT
+ROUND[Grey]
+WCVTP
+RCVT
+ROUND[Grey]
+WCVTP
+RCVT
+ROUND[Grey]
+WCVTP
+RCVT
+ROUND[Grey]
+WCVTP
+RCVT
+ROUND[Grey]
+WCVTP
+RCVT
+ROUND[Grey]
+WCVTP
+RCVT
+ROUND[Grey]
+WCVTP
+RCVT
+ROUND[Grey]
+WCVTP
+RCVT
+ROUND[Grey]
+WCVTP
+RCVT
+ROUND[Grey]
+WCVTP
+RCVT
+ROUND[Grey]
+WCVTP
+RCVT
+ROUND[Grey]
+WCVTP
+RCVT
+ROUND[Grey]
+WCVTP
+PUSHB_4
+ 4
+ 3
+ 70
+ 0
+CALL
+PUSHB_4
+ 6
+ 5
+ 70
+ 0
+CALL
+PUSHB_2
+ 3
+ 3
+RCVT
+ROUND[Grey]
+WCVTP
+PUSHB_2
+ 5
+ 5
+RCVT
+ROUND[Grey]
+WCVTP
+EndTTInstrs
+TtTable: fpgm
+NPUSHB
+ 1
+ 0
+FDEF
+SROUND
+RCVT
+DUP
+PUSHB_1
+ 3
+CINDEX
+RCVT
+SWAP
+SUB
+ROUND[Grey]
+RTG
+SWAP
+ROUND[Grey]
+ADD
+WCVTP
+ENDF
+EndTTInstrs
+ShortTable: cvt  39
+  -500
+  1350
+  1500
+  76
+  56
+  71
+  45
+  49
+  243
+  107
+  392
+  893
+  474
+  968
+  529
+  690
+  585
+  221
+  732
+  800
+  893
+  532
+  968
+  693
+  735
+  483
+  221
+  23210
+  23210
+  23210
+  23210
+  23210
+  23210
+  23210
+  23210
+  8
+  10
+  66
+  1267
+EndShort
+ShortTable: maxp 16
+  1
+  0
+  173
+  303
+  38
+  0
+  0
+  2
+  8
+  64
+  10
+  0
+  178
+  336
+  1
+  1
+EndShort
 LangName: 1033 "" "" "Regular" "" "" " 1.0" 
-Encoding: Custom
+Encoding: UnicodeBmp
 UnicodeInterp: none
 NameList: Adobe Glyph List
 DisplaySize: -24
@@ -74,13 +289,15 @@ AntiAlias: 1
 FitToEm: 1
 WinInfo: 9786 21 13
 TeXData: 1 0 0 346030 173015 115343 0 -1048576 115343 783286 444596 497025 792723 393216 433062 380633 303038 157286 324010 404750 52429 2506097 1059062 262144
-BeginChars: 65550 18
+BeginChars: 65536 18
+
 StartChar: WhiteKing
 Encoding: 9812 9812 0
 Width: 2048
 Flags: W
-TeX: 0 0 0 0
+LayerCount: 2
 Fore
+SplineSet
 1255.5 1248 m 1,0,1
  1372.5 1372 1372.5 1372 1570.5 1372 c 0,2,3
  1725.5 1372 1725.5 1372 1823.5 1282 c 128,-1,4
@@ -173,12 +390,14 @@ Fore
  866.5 61 866.5 61 1024 61 c 128,-1,94
 EndSplineSet
 EndChar
+
 StartChar: WhiteQueen
 Encoding: 9813 9813 1
 Width: 2048
 Flags: W
-TeX: 0 0 0 0
+LayerCount: 2
 Fore
+SplineSet
 1411.5 897 m 1,0,-1
  1583.5 1082 l 2,1,2
  1754.5 1264 1754.5 1264 1754.5 1263 c 1,3,4
@@ -322,12 +541,14 @@ Fore
  880.5 56 880.5 56 1024 56 c 128,-1,153
 EndSplineSet
 EndChar
+
 StartChar: WhiteRook
 Encoding: 9814 9814 2
 Width: 2048
 Flags: W
-TeX: 0 0 0 0
+LayerCount: 2
 Fore
+SplineSet
 1708 0 m 1,0,-1
  340 0 l 1,1,-1
  340 251 l 1,2,-1
@@ -395,12 +616,14 @@ Fore
  1653 55 l 1,54,-1
 EndSplineSet
 EndChar
+
 StartChar: WhiteBishop
 Encoding: 9815 9815 3
 Width: 2048
 Flags: W
-TeX: 0 0 0 0
+LayerCount: 2
 Fore
+SplineSet
 1945 0 m 1,0,-1
  1701 0 l 1,1,2
  1701 38 1701 38 1638 38 c 0,3,4
@@ -531,12 +754,14 @@ Fore
  992 69 992 69 992 337 c 1,153,-1
 EndSplineSet
 EndChar
+
 StartChar: WhiteKnight
 Encoding: 9816 9816 4
 Width: 2048
 Flags: W
-TeX: 0 0 0 0
+LayerCount: 2
 Fore
+SplineSet
 1911.5 0 m 1,0,-1
  628.5 0 l 1,1,2
  628.5 194 628.5 194 677.5 297.5 c 128,-1,3
@@ -631,12 +856,14 @@ Fore
  303.5 728 303.5 728 335.5 728 c 1,127,128
 EndSplineSet
 EndChar
+
 StartChar: WhitePawn
 Encoding: 9817 9817 5
 Width: 2048
 Flags: W
-TeX: 0 0 0 0
+LayerCount: 2
 Fore
+SplineSet
 1672 0 m 1,0,-1
  376 0 l 1,1,-1
  376 73 l 2,2,3
@@ -682,12 +909,14 @@ Fore
  1612 59 l 1,46,47
 EndSplineSet
 EndChar
+
 StartChar: BlackKing
 Encoding: 9818 9818 6
 Width: 2048
 Flags: W
-TeX: 0 0 0 0
+LayerCount: 2
 Fore
+SplineSet
 1255.5 1248 m 1,0,1
  1372.5 1372 1372.5 1372 1570.5 1372 c 0,2,3
  1725.5 1372 1725.5 1372 1823.5 1282 c 128,-1,4
@@ -797,12 +1026,14 @@ Fore
  1453.5 313 1453.5 313 1547.5 256 c 1,118,-1
 EndSplineSet
 EndChar
+
 StartChar: BlackQueen
 Encoding: 9819 9819 7
 Width: 2048
 Flags: W
-TeX: 0 0 0 0
+LayerCount: 2
 Fore
+SplineSet
 1411.5 897 m 1,0,-1
  1583.5 1082 l 2,1,2
  1754.5 1264 1754.5 1264 1754.5 1263 c 1,3,4
@@ -935,12 +1166,14 @@ Fore
  1414.5 284 1414.5 284 1500.5 233 c 1,138,-1
 EndSplineSet
 EndChar
+
 StartChar: BlackRook
 Encoding: 9820 9820 8
 Width: 2048
 Flags: W
-TeX: 0 0 0 0
+LayerCount: 2
 Fore
+SplineSet
 1708 0 m 1,0,-1
  340 0 l 1,1,-1
  340 251 l 1,2,-1
@@ -983,12 +1216,14 @@ Fore
  1643 244 l 1,32,-1
 EndSplineSet
 EndChar
+
 StartChar: BlackBishop
 Encoding: 9821 9821 9
 Width: 2048
 Flags: W
-TeX: 0 0 0 0
+LayerCount: 2
 Fore
+SplineSet
 1945 0 m 1,0,-1
  1701 0 l 1,1,2
  1701 38 1701 38 1638 38 c 0,3,4
@@ -1086,12 +1321,14 @@ Fore
  1217 451 1217 451 1314 417 c 1,109,-1
 EndSplineSet
 EndChar
+
 StartChar: BlackKnight
 Encoding: 9822 9822 10
 Width: 2048
 Flags: W
-TeX: 0 0 0 0
+LayerCount: 2
 Fore
+SplineSet
 1911.5 0 m 1,0,-1
  628.5 0 l 1,1,2
  628.5 194 628.5 194 677.5 297.5 c 128,-1,3
@@ -1166,12 +1403,14 @@ Fore
  306.5 700 306.5 700 314.5 728 c 1,92,93
 EndSplineSet
 EndChar
+
 StartChar: BlackPawn
 Encoding: 9823 9823 11
 Width: 2048
 Flags: W
-TeX: 0 0 0 0
+LayerCount: 2
 Fore
+SplineSet
 1672 0 m 1,0,-1
  376 0 l 1,1,-1
  376 73 l 2,2,3
@@ -1198,12 +1437,14 @@ Fore
  1672 0 l 1,0,-1
 EndSplineSet
 EndChar
+
 StartChar: MaskPawn
 Encoding: 57433 57433 12
 Width: 1900
 Flags: W
-TeX: 0 0 0 0
+LayerCount: 2
 Fore
+SplineSet
 1296 0 m 1,0,-1
  0 0 l 1,1,-1
  0 73 l 2,2,3
@@ -1230,12 +1471,14 @@ Fore
  1296 0 l 1,0,-1
 EndSplineSet
 EndChar
+
 StartChar: MaskKing
 Encoding: 57428 57428 13
 Width: 1900
 Flags: W
-TeX: 0 0 0 0
+LayerCount: 2
 Fore
+SplineSet
 1129 1248 m 1,0,1
  1246 1372 1246 1372 1444 1372 c 0,2,3
  1599 1372 1599 1372 1697 1282 c 128,-1,4
@@ -1260,12 +1503,14 @@ Fore
  1070 1353 1070 1353 1129 1248 c 1,0,1
 EndSplineSet
 EndChar
+
 StartChar: MaskQueen
 Encoding: 57429 57429 14
 Width: 1900
 Flags: W
-TeX: 0 0 0 0
+LayerCount: 2
 Fore
+SplineSet
 1285 897 m 1,0,-1
  1457 1082 l 2,1,2
  1628 1264 1628 1264 1628 1263 c 1,3,4
@@ -1322,12 +1567,14 @@ Fore
  1285 897 l 1,0,-1
 EndSplineSet
 EndChar
+
 StartChar: MaskRook
 Encoding: 57430 57430 15
 Width: 1900
 Flags: W
-TeX: 0 0 0 0
+LayerCount: 2
 Fore
+SplineSet
 1368 0 m 1,0,-1
  0 0 l 1,1,-1
  0 251 l 1,2,-1
@@ -1355,12 +1602,14 @@ Fore
  1368 0 l 1,0,-1
 EndSplineSet
 EndChar
+
 StartChar: MaskBishop
 Encoding: 57431 57431 16
 Width: 1900
 Flags: W
-TeX: 0 0 0 0
+LayerCount: 2
 Fore
+SplineSet
 1842 0 m 1,0,-1
  1598 0 l 1,1,2
  1598 38 1598 38 1535 38 c 0,3,4
@@ -1409,12 +1658,14 @@ Fore
  1842 0 l 1,0,-1
 EndSplineSet
 EndChar
+
 StartChar: MaskKnight
 Encoding: 57432 57432 17
 Width: 1900
 Flags: W
-TeX: 0 0 0 0
+LayerCount: 2
 Fore
+SplineSet
 1775 0 m 1,0,-1
  492 0 l 1,1,2
  492 194 492 194 541 297.5 c 128,-1,3

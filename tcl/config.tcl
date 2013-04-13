@@ -62,32 +62,32 @@ array set graphFigurineFamily {}
 array set graphFigurineWeight { normal normal bold normal }
 set graphFigurineAvailable [expr $windowsOS || $macOS]
 if {[::tk windowingsystem] eq "x11"} {
-    catch { if {[::tk::pkgconfig get fontsystem] eq "xft"} { set graphFigurineAvailable 1 } }
+  catch { if {[::tk::pkgconfig get fontsystem] eq "xft"} { set graphFigurineAvailable 1 } }
 }
 
 if {$graphFigurineAvailable} {
-    set graphFigurineFamilies {}
-    foreach font [font families] {
-        if {[string match -nocase {Scid Chess *} $font]} { lappend graphFigurineFamilies $font }
-    }
-    if {[lsearch $graphFigurineFamilies {Scid Chess Traveller}] >= 0} {
-        set graphFigurineFamily(normal) {Scid Chess Traveller}
-    } elseif {[llength $graphFigurineFamilies] > 0} {
-        set graphFigurineFamily(normal) [lindex $graphFigurineFamilies 0]
-    } else {
-        set graphFigurineAvailable 0
-        set useGraphFigurine 0
-    }
-	 if {$graphFigurineAvailable} {
-		 if {[lsearch $graphFigurineFamilies {Scid Chess Standard}] >= 0} {
-			  set graphFigurineFamily(bold) {Scid Chess Standard}
-			  set graphFigurineWeight(bold) bold
-		 } else {
-			  set graphFigurineFamily(bold) $graphFigurineFamily(normal)
-		 }
-	 }
-} else {
+  set graphFigurineFamilies {}
+  foreach font [font families] {
+    if {[string match -nocase {Scid Chess *} $font]} { lappend graphFigurineFamilies $font }
+  }
+  if {[lsearch $graphFigurineFamilies {Scid Chess Traveller}] >= 0} {
+    set graphFigurineFamily(normal) {Scid Chess Traveller}
+  } elseif {[llength $graphFigurineFamilies] > 0} {
+    set graphFigurineFamily(normal) [lindex $graphFigurineFamilies 0]
+  } else {
+    set graphFigurineAvailable 0
     set useGraphFigurine 0
+  }
+  if {$graphFigurineAvailable} {
+    if {[lsearch $graphFigurineFamilies {Scid Chess Standard}] >= 0} {
+      set graphFigurineFamily(bold) {Scid Chess Standard}
+      set graphFigurineWeight(bold) bold
+    } else {
+      set graphFigurineFamily(bold) $graphFigurineFamily(normal)
+    }
+  }
+} else {
+  set useGraphFigurine 0
 }
 
 if {$graphFigurineAvailable} {
@@ -97,8 +97,8 @@ if {$graphFigurineAvailable} {
 }
 
 if {$graphFigurineAvailable} {
-	font create font_Figurine(normal) -family $graphFigurineFamily(normal) -weight $graphFigurineWeight(normal) -size $fontsize
-	font create font_Figurine(bold) -family $graphFigurineFamily(bold) -weight $graphFigurineWeight(bold) -size $fontsize
+  font create font_Figurine(normal) -family $graphFigurineFamily(normal) -weight $graphFigurineWeight(normal) -size $fontsize
+  font create font_Figurine(bold) -family $graphFigurineFamily(bold) -weight $graphFigurineWeight(bold) -size $fontsize
 }
 
 ### end of config.tcl

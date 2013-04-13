@@ -29,13 +29,13 @@ set windowsOS	[expr {$tcl_platform(platform) == "windows"}]
 set unixOS	[expr {$tcl_platform(platform) == "unix"}]
 
 # debugging (eg) (can affect performance/toolbar)
-if {0} {
-  rename wm oldwm
-  proc wm {args} {
+if {1} {
+  rename destroy oldwm
+  proc destroy {args} {
     if {$::windowsOS} {
-      catch {::splash::add "wm $args"}
+      catch {::splash::add "destroy $args"}
     } else {
-      puts "wm $args"
+      puts "destroy $args"
     }
     eval oldwm $args
   }
