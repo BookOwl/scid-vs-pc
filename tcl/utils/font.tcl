@@ -391,6 +391,7 @@ proc FontBiggerSmaller {incr} {
 
   set fd_size [font configure font_Regular -size]
   incr fd_size $incr
+  if {$fd_size < 5} { set fd_size 5 }
 
   font configure font_Bold -size $fd_size
   font configure font_Regular -size $fd_size
