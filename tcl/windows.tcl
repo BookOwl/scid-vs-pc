@@ -90,11 +90,18 @@ proc setWinLocation {win} {
     set reqheight [winfo reqheight $win]
     set max_x [expr [winfo screenwidth .main]]
     set max_y [expr [winfo screenheight .main]]
+    if {$macOS} {
+      set min_x 0
+      set min_y 22
+    } else {
+      set min_x 0
+      set min_y 0
+    }
 
     if {[expr {$x + $reqwidth > $max_x}]} { set x [expr $max_x - $reqwidth] }
     if {[expr {$y + $reqheight > $max_y}]} { set y [expr $max_y - $reqheight] }
-    if { $x < 0 } { set x 0 }
-    if { $y < 0 } { set y 0 }
+    if { $x < $min_x } { set x $min_x }
+    if { $y < $min_y } { set y $min_y }
     catch [list wm geometry $win "+$x+$y"]
   }
 }
