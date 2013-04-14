@@ -850,7 +850,17 @@ proc ::windows::switcher::releaseMouseEvent {fromBase x y dest r s} {
     .glistWin.baseWin.c.f$fromBase$win configure -cursor {}
   }
   set dropPoint [winfo containing $x $y]
-  if {! [string match ".glistWin.baseWin.c.f*" $dropPoint]} {return}
+
+  if {$dropPoint == ".fdockglistWin"} {
+    ### Hack to enable base selection when undocked
+    # We need to find a way to lower .fdockglistWin in the stackorder for the purposes of winfo
+    # alternatively , destroy the window and recreate without the embeded frame
+    set dropPoint $dest
+  }
+
+  if {! [string match ".glistWin.baseWin.c.f*" $dropPoint]} {
+    return
+  }
 
   # .glistWin.baseWin.c.f.*.name
   set toBase [string range $dropPoint 21 21]
