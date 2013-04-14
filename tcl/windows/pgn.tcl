@@ -7,7 +7,7 @@ namespace eval pgn {
   ################################################################################
   # truetype support
   ################################################################################
-  set graphFigurineInComments 1
+  set graphFigurineInComments 0
   set substUnicode(normal)  { "\u2654" "<f>\u2654</f>"
                               "\u2655" "<f>\u2655</f>"
                               "\u2656" "<f>\u2656</f>"
