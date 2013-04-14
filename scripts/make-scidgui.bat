@@ -10,7 +10,7 @@ copy tcl\search\material.tcl + tcl\contrib\ezsmtp\ezsmtp.tcl + tcl\tools\email.t
 
 copy tcl\tools\wbdetect.tcl + tcl\tools\reper.tcl + tcl\tools\graphs.tcl + tcl\tools\tablebase.tcl + tcl\tools\ptracker.tcl + tcl\help\help.tcl + tcl\help\tips.tcl + tcl\menus.tcl + tcl\board.tcl + tcl\move.tcl + tcl\main.tcl 6
 
-copy tcl\tools\correspondence.tcl + tcl\lang\english.tcl + tcl\dnd\tkdnd.tcl + tcl\dnd\tkdnd_windows.tcl + tcl\end.tcl + tcl\tools\tacgame.tcl + tcl\tools\sergame.tcl + tcl\tools\calvar.tcl + tcl\tools\fics.tcl + tcl\tools\tactics.tcl + tcl\tools\uci.tcl + tcl\tools\novag.tcl 7
+copy tcl\tools\correspondence.tcl + tcl\lang\english.tcl + tcl\dnd\tkdnd.tcl + tcl\dnd\tkdnd_windows.tcl + tcl\tools\uci.tcl  + tcl\end.tcl + tcl\tools\tacgame.tcl + tcl\tools\sergame.tcl + tcl\tools\calvar.tcl + tcl\tools\fics.tcl + tcl\tools\tactics.tcl + tcl\tools\novag.tcl 7
 
 copy 1 + 2 + 3 + 4 + 5 + 6 + 7 + tcl\misc\flags.tcl + tcl\tools\inputengine.tcl scid.gui
 
