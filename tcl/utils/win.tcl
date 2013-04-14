@@ -679,14 +679,12 @@ proc ::docking::start_motion {path} {
     set c_path [find_tbn $path]
   }
 }
-set ::czc fleur
-# box_spiral fleur 
 ################################################################################
 proc ::docking::motion {path} {
   variable c_path
-  if {$c_path==""} { return }
-
-  $c_path configure -cursor $::czc
+  if {$c_path != ""} {
+    $c_path configure -cursor fleur ; # box_spiral fleur exchange
+  }
 }
 ################################################################################
 proc ::docking::end_motion {w x y} {
@@ -793,7 +791,7 @@ proc ::docking::raiseTab {w} {
 }
 
 ################################################################################
-proc  ::docking::tabChanged  {path {changedTab 1}} {
+proc  ::docking::tabChanged  {path} {
   update
 
   # HACK ! Because notebooks may also be used inside internal windows
@@ -802,7 +800,7 @@ proc  ::docking::tabChanged  {path {changedTab 1}} {
   }
   if { [$path select] != $::docking::activeTab($path)} {
     set ::docking::activeTab($path) [$path select]
-    set ::docking::changedTab($path) $changedTab
+    set ::docking::changedTab($path) 1
   }
 }
 
@@ -880,19 +878,6 @@ proc ::docking::ctx_menu {w x y} {
   $mctxt add command -label [ ::tr Undock ] -command "::docking::undock $w"
   $mctxt add command -label [ ::tr Close ] -command " ::docking::close $w"
   tk_popup $mctxt [winfo pointerx .] [winfo pointery .]
-}
-################################################################################
-proc ::docking::toggleAutoResizeBoard {} {
-  ::resizeMainBoard
-# todo
-  return
-  set m .menu.options.board
-
-  if {$::autoResizeBoard} {
-    $m entryconfigure 0 -state disabled
-  } else  {
-    $m entryconfigure 0 -state normal
-  }
 }
 ################################################################################
 proc ::docking::close {w} {

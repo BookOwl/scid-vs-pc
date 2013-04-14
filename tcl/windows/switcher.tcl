@@ -850,7 +850,6 @@ proc ::windows::switcher::releaseMouseEvent {fromBase x y dest r s} {
     .glistWin.baseWin.c.f$fromBase$win configure -cursor {}
   }
   set dropPoint [winfo containing $x $y]
-puts "dest $dest r $r s $s ::windows::switcher::releaseMouseEvent $fromBase $x $y $dropPoint"
   if {! [string match ".glistWin.baseWin.c.f*" $dropPoint]} {return}
 
   # .glistWin.baseWin.c.f.*.name

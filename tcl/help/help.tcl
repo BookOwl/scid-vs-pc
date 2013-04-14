@@ -6437,7 +6437,7 @@ The window manager may interfere with some shortcuts.
 <li><b>control-l</b> - Gamelist window</li>
 <li><b>control-e</b> - Comment editor</li>
 <li><b>control-m</b> - Maintenance window</li>
-<li><b>control-i</b> - Statistics window</li>
+<li><b>control-i</b> - Gameinfo window</li>
 <li><b>control-t</b> - Tree window</li>
 <li><b>control-y</b> - ECO browser</li>
 <li><b>control-X</b> - Crosstable</li>
@@ -6528,7 +6528,7 @@ The window manager may interfere with some shortcuts.
 <li><b>control-g</b> - Goto move number</li>
 <li><b>control-G</b> - Load game number</li>
 <li><b>control-H</b> - General (header) search</li>
-<li><b>control-i</b> - Statistics window</li>
+<li><b>control-i</b> - Gameinfo window</li>
 <li><b>control-I</b> - Import PGN</li>
 <li><b>control-l</b> - Gamelist window</li>
 <li><b>control-m</b> - Maintenance window</li>

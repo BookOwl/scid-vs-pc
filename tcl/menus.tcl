@@ -1754,7 +1754,7 @@ proc standardShortcuts {w} {
   bind $w <Control-p> ::pgn::OpenClose
   bind $w <Control-T> ::tourney::toggle
   bind $w <Control-P> ::plist::toggle
-  bind $w <Control-i> ::windows::stats::Open
+  bind $w <Control-i> ::toggleGameInfo
   bind $w <Control-t> ::tree::OpenClose
   bind $w <Control-A> ::enginelist::choose
   bind $w <Control-X> ::crosstab::OpenClose
