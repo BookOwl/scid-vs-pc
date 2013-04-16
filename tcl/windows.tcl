@@ -159,6 +159,16 @@ proc placeWinOverPointer {w} {
   }
 }
 
+proc placeWinCenter {w} {
+  update idletasks
+  set x [expr {[winfo screenwidth $w]/2 - [winfo reqwidth $w]/2 \
+        - [winfo vrootx .]}]
+  set y [expr {[winfo screenheight $w]/2 - [winfo reqheight $w]/2 \
+        - [winfo vrooty .]}]
+  wm geom $w +$x+$y
+}
+
+
 ###
 ### End of file: windows.tcl
 ###

@@ -1,23 +1,4 @@
-
-# ::utils::win::Centre
-#
-#   Centres a window on the screen.
-
-proc ::utils::win::Centre {w} {
-  if { $::docking::USE_DOCKING } {
-    # We probably have to do this because windows::wm withdraw throws erros on
-    # embeded toplevels, but is this always ok ?
-    return
-  }
-  wm withdraw $w
-  update idletasks
-  set x [expr {[winfo screenwidth $w]/2 - [winfo reqwidth $w]/2 \
-        - [winfo vrootx .]}]
-  set y [expr {[winfo screenheight $w]/2 - [winfo reqheight $w]/2 \
-        - [winfo vrooty .]}]
-  wm geom $w +$x+$y
-  wm deiconify $w
-}
+### tcl/utils/win.tcl
 
 ################################################################################
 # Scrolledframe.tcl file integrated here for convenience

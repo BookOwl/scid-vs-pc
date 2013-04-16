@@ -258,7 +258,7 @@ proc ::utils::sound::OptionsDialog {} {
   bind $w <Return> [list $w.b.ok invoke]
   bind $w <Escape> [list $w.b.cancel invoke]
   bind $w <F1> {helpWindow Sound}
-  ::utils::win::Centre $w
+  placeWinCenter $w
   wm resizable $w 0 0
   raiseWin $w
 

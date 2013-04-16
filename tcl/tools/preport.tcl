@@ -33,10 +33,10 @@ proc ::preport::preportDlg {{player {}}} {
 
   set w .preportDlg
   if {[winfo exists $w]} {
-puts RETURN
     return
   }
   toplevel $w
+  wm withdraw $w
   wm title $w "[tr ToolsPlayerReport]"
 
   pack [label $w.plabel -text "Generate Player Report"]
@@ -111,11 +111,10 @@ puts RETURN
   }
   bind $w <Return> [list $w.b.ok invoke]
   bind $w <Escape> [list $w.b.cancel invoke]
-  ::utils::win::Centre $w
-
-  focus $w.g.player
-
+  placeWinCenter $w
   update
+  wm deiconify $w
+  focus $w.g.player
 }
 
 proc ::preport::ConfigMenus {{lang ""}} {
@@ -164,7 +163,7 @@ proc ::preport::makeReportWin {args} {
         -fill black -text "0:00 / 0:00"
       pack $w.c$i -side top -pady 10
     }
-    ::utils::win::Centre $w
+    placeWinCenter $w
     wm deiconify $w
     grab $w.b.cancel
     sc_progressBar $w.c1 bar 401 21 time
@@ -216,6 +215,7 @@ proc ::preport::makeReportWin {args} {
   set w .preportWin
   if {![winfo exists $w]} {
     toplevel $w
+    wm withdraw $w
     wm title $w "$::tr(PReportTitle)"
     menu $w.menu
     $w configure -menu $w.menu
@@ -270,7 +270,9 @@ proc ::preport::makeReportWin {args} {
     }
     pack $w.b.opts -side left -padx 2 -pady 2
     ::preport::ConfigMenus
-    ::utils::win::Centre $w
+    placeWinCenter $w
+    update
+    wm deiconify $w
   }
 
   busyCursor .
@@ -353,7 +355,7 @@ proc ::preport::setOptions {} {
   pack $w.b.defaults -side left -padx 5 -pady 5
   pack $w.b.cancel $w.b.ok -side right -padx 5 -pady 5
 
-  ::utils::win::Centre $w
+  placeWinCenter $w
 
   array set ::preport::backup [array get ::preport]
   wm resizable $w 0 0

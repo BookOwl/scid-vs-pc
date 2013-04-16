@@ -1138,7 +1138,7 @@ proc gameSave {gnum {focus {}}} {
 
 
   update
-  placeWinOverParent $w .
+  placeWinCenter $w
   wm deiconify $w
 
   switch -- $focus {
@@ -2009,5 +2009,7 @@ if { $::docking::USE_DOCKING } {
 }
 
 wm deiconify $dot_w
+update
+after 100 {focus .main}
 
 ### End of file: end.tcl

@@ -284,7 +284,7 @@ proc addVerticalRule {w {xpadding 5} {relief sunken}} {
 # progressWindow:
 #   Creates a window with a label, progress bar, and (if specified),
 #   a cancel button and cancellation command.
-#
+
 proc progressWindow {args} {
   set w .progressWin
   if {[winfo exists $w]} { return }
@@ -395,6 +395,7 @@ proc closeProgressWindow {} {
   }
   grab release $w
   destroy $w
+  focus .main
 }
 
 proc setClipboard {string} {

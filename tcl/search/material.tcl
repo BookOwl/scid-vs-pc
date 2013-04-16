@@ -603,6 +603,7 @@ proc ::search::material {} {
   ::search::Config
 
   placeWinOverParent $w .
+  update
   wm state $w normal
   focus $f.search
 }

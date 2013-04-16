@@ -311,7 +311,7 @@ proc doPgnFileImport {fname text {multiple 0} } {
     grid $w.tf.text -row 0 -column 0 -sticky nsew
     grid columnconfigure $w.tf 0 -weight 1
     grid rowconfigure $w.tf 0 -weight 1
-    ::utils::win::Centre $w
+    placeWinCenter $w
   }
 
   sc_progressBar $w.progress bar 351 21 time
