@@ -5753,6 +5753,7 @@ set helpText(Changelog) {<h1>Scid vs. PC</h1>
 <li>UCI: replace 'position fen ...' with 'position startpos moves ...' for general analysis</li>
 <li>Better Twin Games Checker - highlights missing comments and variations in duplicate games</li>
 <li>Windows has a  MSVC makefile (Makefile.vc) and includes Stockfish 2.31 (JA legacy build)</li>
+<li>Fix windows stack problem (hopefully)</li>
 <li>Text Find widgets in help, crosstable, engine logs</li>
 <li>Game Save dialog remembers any custom tags you add to a game, making them easy to recall</li>
 <li>Restore drawing arrows and marks from the main board (also used by FICS premove)</li>

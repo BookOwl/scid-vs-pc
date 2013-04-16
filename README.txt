@@ -451,6 +451,8 @@
      2.31 (JA legacy build)
 
 
+  o  Fix windows stack problem (hopefully).
+
   o  Text Find widgets in help, crosstable, engine logs
 
   o  Game Save dialog remembers any custom tags you add to a game,
@@ -515,8 +517,6 @@
 
   o  Make the database switcher icons/frames get smaller if they are
      cramped (so we can see them all)
-
-
   o  Half fix UCI game (sergame.tcl) time issues
 
   o  Corrospondence Chess now works

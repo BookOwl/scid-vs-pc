@@ -322,6 +322,7 @@ and lesser popularity than Scid.</p>
 <item>UCI: replace 'position fen ...' with 'position startpos moves ...' for general analysis
 <item>Better Twin Games Checker - highlights missing comments and variations in duplicate games
 <item>Windows has a  MSVC makefile (Makefile.vc) and includes Stockfish 2.31 (JA legacy build)
+<item>Fix windows stack problem (hopefully).
 <item>Text Find widgets in help, crosstable, engine logs
 <item>Game Save dialog remembers any custom tags you add to a game, making them easy to recall
 <item>Restore drawing arrows and marks from the main board (also used by FICS premove)

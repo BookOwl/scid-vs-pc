@@ -402,7 +402,7 @@ main (int argc, char * argv[])
     newArgv = (char **) malloc (sizeof (char *) * newArgc);
 #endif
     newArgv[0] = argv[0];
-    for (int i = 1; i <= argc; i++) { newArgv[i+1] = argv[i]; }
+    for (int i = 1; i < argc; i++) { newArgv[i+1] = argv[i]; }
 
     // insert into newArgv[1] "PATH_TO_TKSCID.EXE\scid.gui"
     char sourceFileName [MAX_PATH];
