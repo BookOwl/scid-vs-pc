@@ -177,15 +177,12 @@
 
   The configuration files, including the chess engine list, are stored
   in the Scid-vs-PC/bin/config directory, and may be copied over from
-  old versions to make upgrading easier.
-
-  Just after installation on Windows 7, Scid vs. PC can crash upon exit,
-  with an ntdll.dll error. This known issue seems harmless, and to
-  resolve itself after a reboot.
+  old versions to make upgrading easier. On Windows 7, these files are
+  mirrored in C:\Users\[USERNAME]\AppData\Local\VirtualStore\Program
+  Files\Scid vs PC
 
   People with Visual Studio 11 should now be able to compile the project
   fairly easily (see Makefile.vc for more details).
-
 
   4.0.3.  Mac OS X
 
@@ -253,11 +250,11 @@
 
   With 3.6.26.6 I've fixed Phalanx's illegal castling. There is also
   changes to the Setup board and Toolbar configuration widgets.
+
    July 17, 2009
 
   3.6.26.5 - New Gamelist widget, and re-fashioned main buttons.
   Project's looking quite solid :->
-
    June 23, 2009
 
   The monkey on my back has really been having a good time. This release
@@ -317,11 +314,6 @@
 
   o  Tcl/Tk-8.5.10 is buggy. Tcl/Tk-8.6.0 also has a nasty bug that
      makes the Window Docking feature unstable.
-
-
-  o  On some Windows 7 systems, ScidvsPC can crash upon exit with an
-     ntdll.dll error. This bug is harmless, and may only affect outdated
-     Win7 builds.
 
   o  Chinese Language Support. Scid's multilanguage support is broken
      for some countries. The work around involves compiling from source,
@@ -385,6 +377,7 @@
   of code, in 2004 development stopped. Shane never contributed to Scid
   again. He was generally reported to be seriously ill, and today has
   little if no contact with the current Scid community.
+
   Two new versions of Scid appeared around 2006. The first was ChessDB
   authored by Dr. David Kirby. With some good documentation and the
   ability to automatically download games from several web portals, it
@@ -449,7 +442,6 @@
 
   o  Windows has a MSVC makefile (Makefile.vc) and includes Stockfish
      2.31 (JA legacy build)
-
 
   o  Fix windows stack problem (hopefully).
 
@@ -517,6 +509,7 @@
 
   o  Make the database switcher icons/frames get smaller if they are
      cramped (so we can see them all)
+
   o  Half fix UCI game (sergame.tcl) time issues
 
   o  Corrospondence Chess now works
@@ -524,6 +517,7 @@
   o  Tree Mask bugfix: Checks couldnt be added to mask
 
   o  Fix Tree 'Fill cache with game/base' feature
+
 
   o  Try to handle shortened FENs with Paste FEN
 
@@ -581,7 +575,6 @@
 
   o  Add a patch to make toolbar buttons raise only (instead of toggle
      open/shut)
-
 
   o  Add a patch for Chess960 support (from Ben Hague). Unfinished
 
@@ -648,7 +641,6 @@
 
   o  bind F9 to xtell instead of tell.
 
-
   o  Change the move.wav sound from tick-tock to a short click.
 
      OS X
@@ -659,7 +651,6 @@
 
   o  Copy and Paste text from disabled OSX text widgets (engines, help,
      gameinfo)
-
   o  Buttons 2 and 3 are swapped around
 
      General Bugs
@@ -715,6 +706,7 @@
 
   o  New feature: 'Search-Filter to Last Move'. All filter games will
      load at the last move (end of game).
+
   o  Refine the Calculation of Variation (Stoyko Exercise) feature and
      Help.
 
@@ -723,6 +715,7 @@
   o  Tweak PGN context menu: reorder the Strip/Delete move items.
 
   o  Gamelist: replace the Negate button with a Select button.
+
 
   o  Tree: Include a patch for embedding the Best Games into the Tree
      window.
@@ -781,6 +774,7 @@
 
   o  Known aliases Biographical data is shown in the player information
      window
+
   o  The player info widget has buttons enabling quick player renames
      and look-up.
 
@@ -920,6 +914,7 @@
 
      OSX:
 
+
   o  Make an OSX app with a working ;> version of Tcl (thanks Gilles)
 
   o  Many OSX wheelmouse and graphical fixes.
@@ -979,13 +974,13 @@
 
   o  Add widgets to the gamelist for manipulating flags and browsing
      first/last/next/previous games
+
   o  Opening Book and Book Tuning overhaul - allow two books to be
      opened with side-by-side sorting, and various interface
      improvements
 
   o  Overhaul Annotate widget - allow choice of scores/variation/both
      and remember annotation options
-
   o  Crosstable sort by Country feature
 
   o  Update Fics to allow for different Port/IP Address (using SCID
@@ -1049,6 +1044,7 @@
      name
 
   o  Statusbar shows correct value after Crosstable update
+
 
   7.0.8.  Scid vs. PC 4.3
 
@@ -1115,6 +1111,7 @@
 
   o  Revert PlayerInfo to old format, but add a "Won Drawn Lost" header.
 
+
   o  Tweak crosstable knock-out format
 
   7.0.9.  Scid vs. PC 4.2
@@ -1176,10 +1173,10 @@
 
   o  Comment Editor has undo and redo bindings
 
-
   o  Main board grid colour can be changed
 
   o  Setup board can rotate and flip the board
+
 
   o  Clicking on moves in the gameinfo area shows Comment Editor
 
@@ -1241,7 +1238,6 @@
         occasionally broke
 
      o  "Show Suggested Move" was broken
-
 
      o  Gamelist sometimes left off the last or first item
 
@@ -1308,11 +1304,11 @@
 
   o  Sync the tools::connect-hardware feature with SCID (untested)
 
-
   o  When using the setup board widget, do a sanity check about the
      FEN's castling field
 
   o  Some minor version fixes anticipating tcl8.6
+
 
   o  Small bugfix: variation pop-up could previously throw errors if
      moving through movs fast
@@ -1375,6 +1371,7 @@
 
   o  Fics: Make a new Received Offers dialog which allows for proper
      handling of multiple challenges
+
   o  Fics: Tweak the Make Offer dialog
 
   o  Fics: update help files, and add a Font button
@@ -1506,7 +1503,6 @@
   o  Fixed up the toolbar cofniguration widget, and re-did a few little
      images
 
-
   o  Variation pop-ups now center over the main window, and enable
      KeyPress-1, KeyPress-2, etc bindings
 
@@ -1572,14 +1568,12 @@
 
   o  Many changes to the Gameinfo widget,
 
-
   o  , including a new "Set Game Information" widget.
 
   o  Stop game from crashing with languages other than English.
 
   o  Window placement is now relative the main window, rather than
      absolute +x+y
-
   o  The Options->Chessboard menu now also includes the pieces menus
 
   o  The 3 line PGN header is now colour

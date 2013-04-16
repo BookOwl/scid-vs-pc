@@ -110,12 +110,9 @@ Windows installation simply requires downloading the <ref name="executable" id="
 <p>
 The configuration files, <bf>including the chess engine list</bf>, are stored
 in the <bf>Scid-vs-PC/bin/config</bf> directory, and may be copied over from
-old versions to make upgrading easier.
+old versions to make upgrading easier. On Windows 7, these files are mirrored in
+C:\Users\[USERNAME]\AppData\Local\VirtualStore\Program Files\Scid vs PC
 </p>
-<p>
-Just after installation on <bf>Windows 7</bf>, Scid vs. PC can crash upon exit,
-with an ntdll.dll error.  This known issue seems harmless, and to resolve itself after a reboot.</p>
-
 <p>People with Visual Studio 11 should now be able to compile the project fairly easily (see Makefile.vc for more details).</p>
 
 <sect2> Mac OS X <p>
@@ -230,8 +227,6 @@ about the Fics and Tactical Game features in the Scid Help menus</em>.
 <sect1> known issues <p>
 <itemize>
 <item> Tcl/Tk-8.5.10 is buggy. Tcl/Tk-8.6.0 also has a nasty bug that makes the Window Docking feature unstable.
-<item> On some <bf>Windows 7</bf> systems, ScidvsPC can crash upon exit
-with an ntdll.dll error.  This bug is harmless, and may only affect outdated Win7 builds.
 <item> <bf>Chinese Language Support</bf>. Scid's multilanguage support is broken
 for some countries. The work around involves compiling from source, using:
 <em>./configure LANGUAGES=""</em>
