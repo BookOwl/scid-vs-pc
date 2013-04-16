@@ -1138,7 +1138,7 @@ proc gameSave {gnum {focus {}}} {
 
 
   update
-  placeWinCenter $w
+  placeWinOverParent $w .
   wm deiconify $w
 
   switch -- $focus {
