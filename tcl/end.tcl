@@ -1950,21 +1950,6 @@ bind .main <Control-Shift-F8> {
     dumpImages /tmp/ScidImages
 }
 
-if {$startup(tip)} { ::tip::show }
-
-.splash.t yview moveto 0
-if {$::splash::keepopen} {
-  raiseWin .splash
-  update
-} else {
-  after 500 { wm withdraw .splash }
-}
-
-### Raise pgn import window if open
-if {[winfo exists .ipgnWin]} {
-  raiseWin .ipgnWin
-}
-
 # Opening files by drag & drop on Scid icon on Mac
 # Todo: implement for Windows and Linux (haha!)
 
@@ -2009,7 +1994,20 @@ if { $::docking::USE_DOCKING } {
 }
 
 wm deiconify $dot_w
-update
-after 100 {focus .main}
+focus .main
+
+if {$startup(tip)} { ::tip::show }
+
+### Raise pgn import window if open
+if {[winfo exists .ipgnWin]} {
+  raiseWin .ipgnWin
+}
+
+.splash.t yview moveto 0
+if {$::splash::keepopen} {
+  after 100 {raiseWin .splash}
+} else {
+  after 500 { wm withdraw .splash }
+}
 
 ### End of file: end.tcl
