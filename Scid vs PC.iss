@@ -33,35 +33,35 @@ Name: associate_si4; Description: "&Associate SI4 files"; GroupDescription: "Oth
 
 
 [Registry]
-Root: HKCR; Subkey: ".pgn"; ValueType: string; ValueName: ""; ValueData: "PGN"; Flags: uninsdeletevalue; Tasks: "associate_pgn"
-Root: HKCR; Subkey: "PGN"; ValueType: string; ValueName: ""; ValueData: "Portable Game Notation"; Flags: uninsdeletekey; Tasks: "associate_pgn"
-Root: HKCR; Subkey: "PGN\DefaultIcon"; ValueType: string; ValueName: ""; ValueData: "{app}\bin\scid.exe,0"; Tasks: "associate_pgn"
-Root: HKCR; Subkey: "PGN\shell\open\command"; ValueType: string; ValueName: ""; ValueData: """{app}\bin\scid"" ""%1"""; Tasks: "associate_pgn"
-  
-Root: HKCR; Subkey: ".si4"; ValueType: string; ValueName: ""; ValueData: "si4"; Flags: uninsdeletevalue; Tasks: "associate_si4"
-Root: HKCR; Subkey: "si4"; ValueType: string; ValueName: ""; ValueData: "Scid database"; Flags: uninsdeletekey; Tasks: "associate_si4"
-Root: HKCR; Subkey: "si4\DefaultIcon"; ValueType: string; ValueName: ""; ValueData: "{app}\bin\scid.exe,0"; Tasks: "associate_si4"
-Root: HKCR; Subkey: "si4\shell\open\command"; ValueType: string; ValueName: ""; ValueData: """{app}\bin\scid"" ""%1""" ; Tasks: "associate_si4" 
+Root: "HKCU"; Subkey: "Software\Classes\.pgn"; Flags: uninsdeletevalue; Tasks: associate_pgn
+Root: "HKCU"; Subkey: "Software\Classes\.pgn"; ValueType: string; ValueData: "scid"; Flags: uninsdeletevalue; Tasks: associate_pgn
+Root: "HKCU"; Subkey: "Software\Classes\scid"; Flags: uninsdeletevalue; Tasks: associate_pgn
+Root: "HKCU"; Subkey: "Software\Classes\scid\shell\open\command"; ValueType: string; ValueData: """{app}\bin\scid"" ""%1"""; Flags: uninsdeletevalue; Tasks: associate_pgn
+
+Root: "HKCU"; Subkey: "Software\Classes\.si4"; Flags: uninsdeletevalue; Tasks: associate_si4
+Root: "HKCU"; Subkey: "Software\Classes\.si4"; ValueType: string; ValueData: "scid"; Flags: uninsdeletevalue; Tasks: associate_si4
+Root: "HKCU"; Subkey: "Software\Classes\scid"; Flags: uninsdeletevalue; Tasks: associate_si4
+Root: "HKCU"; Subkey: "Software\Classes\scid\shell\open\command"; ValueType: string; ValueData: """{app}\bin\scid"" ""%1"""; Flags: uninsdeletevalue; Tasks: associate_si4
 
 [Files]
 Source: "bin\*";  DestDir: "{app}\bin"; CopyMode: normal; Flags: recursesubdirs
 Source: "lib\*"; DestDir: "{app}\lib";  CopyMode: normal; Flags: recursesubdirs
 Source: "doc\*"; DestDir: "{app}\doc";  CopyMode: normal; Flags: recursesubdirs
 Source: "COPYING.txt"; DestDir: "{app}";  CopyMode: normal; Flags: recursesubdirs
-Source: "README_ScidvsPC.txt"; DestDir: "{app}";  CopyMode: normal; Flags: recursesubdirs
-Source: "README_ScidvsPC.htm"; DestDir: "{app}";  CopyMode: normal; Flags: recursesubdirs
+Source: "README.txt"; DestDir: "{app}";  CopyMode: normal; Flags: recursesubdirs
+Source: "README.html"; DestDir: "{app}";  CopyMode: normal; Flags: recursesubdirs
 Source: "images\*"; DestDir: "{app}\images";  CopyMode: normal; Flags: recursesubdirs
-
-
 
 [Icons]
 Name: "{group}\{# AppName}"; Filename: "{app}\bin\scid.exe"; Comment: "{# AppName}!"; WorkingDir: {app}\bin
 Name: "{group}\Uninstall {# AppName}"; Filename: "{uninstallexe}";
 Name: "{userdesktop}\{# AppName}"; Filename: "{app}\bin\scid.exe"; Tasks: desktopicon; Comment: "Desktop {# AppName}!"; WorkingDir: {app}\bin
 
+[Run]
+Filename: "{app}\bin\scid.exe"; Description: "{cm:LaunchProgram,{#StringChange(AppName, '&', '&&')}}"; Flags: nowait postinstall skipifsilent
+
 
 [Code]
-
 procedure URLLabelOnClick(Sender: TObject);
 var
   ErrorCode: Integer;
