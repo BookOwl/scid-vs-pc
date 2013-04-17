@@ -239,7 +239,7 @@ static void* PvMalloc
 #endif
 	if (NULL == pv)
 		{
-		printf ("*** Cannot allocate %d bytes of memory\n", cb);
+		printf ("*** Cannot allocate %lu bytes of memory\n", (unsigned long) cb);
 		exit (1);
 		}
 	cbAllocated += cb;
@@ -1201,7 +1201,7 @@ static void VInitEnumerations (void)
 								rgcTriplePawnless[pi1][pi2][pi3]);
 					}
 #endif
-		printf ("\nAllocated %dk\n\n", (cbAllocated + 1023)/1024);
+		printf ("\nAllocated %dk\n\n", (unsigned long)(cbAllocated + 1023UL)/1024UL);
 		}
 	}
 
@@ -3467,6 +3467,10 @@ static bool FRegisterTb
 // File mapping - Win32 code only
 
 #if defined (_WIN32)
+
+#ifndef WIN32_LEAN_AND_MEAN
+#define WIN32_LEAN_AND_MEAN
+#endif
 
 #include <windows.h>
 

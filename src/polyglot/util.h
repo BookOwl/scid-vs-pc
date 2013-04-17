@@ -26,7 +26,7 @@
 #  define DEBUG FALSE
 #endif
 
-#ifdef _MSC_VER
+#ifdef _WIN32 /* _MSC_VER or __GNUC__ */
 #  define S64_FORMAT "%I64d"
 #  define U64_FORMAT "%016I64X"
 #else
@@ -36,7 +36,7 @@
 
 // macros
 
-#ifdef _MSC_VER
+#ifdef _MSC_VER /* note: mingw32-gcc doesn't understand the following, therefore _MSC_VER only */
 #  define S64(u) (u##i64)
 #  define U64(u) (u##ui64)
 #else

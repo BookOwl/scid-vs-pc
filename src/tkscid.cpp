@@ -14709,7 +14709,11 @@ db->bbuf->Empty();
         if (avgYear == 0) {
             strCopy (temp, listMode ? " {}" : "      ");
         } else {
+#ifdef _WIN32
+	    sprintf (temp, "  %4I64u", avgYear);
+#else
 	    sprintf (temp, "  %4llu", avgYear);
+#endif
         }
         output->Append (temp);
         uint pctDraws = node->freq[RESULT_Draw] * 1000 / node->total;
@@ -14807,7 +14811,11 @@ db->bbuf->Empty();
         if (avgElo == 0) {
             output->Append (listMode ? " {}" : "      ");
         } else {
+#ifdef _WIN32
+            sprintf (temp, "  %4I64u", avgElo);
+#else
             sprintf (temp, "  %4llu", avgElo);
+#endif
             output->Append (temp);
         }
         if (perf == 0) {
@@ -14819,7 +14827,11 @@ db->bbuf->Empty();
         if (yearCount == 0) {
             output->Append (listMode ? " {}" : "      ");
         } else {
+#ifdef _WIN32
+            sprintf (temp, "  %4I64u", (yearSum + (yearCount/2)) / yearCount);
+#else
             sprintf (temp, "  %4llu", (yearSum + (yearCount/2)) / yearCount);
+#endif
             output->Append (temp);
         }
         uint pctDraws = nDraws * 1000 / tree->totalCount;

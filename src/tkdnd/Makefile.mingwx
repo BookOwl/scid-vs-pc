@@ -1,10 +1,22 @@
-MINGW_DIR:=/usr/local/cross-win32
+ifeq ($(W64),1)
+WIN_TARGET=win64
+else
+WIN_TARGET=win32
+endif
+
+ifeq ($(WIN_TARGET),win64)
+MINGW_TARGET=x86_64-w64-mingw32
+MINGW_BIN:=$(MINGW_DIR)/bin
+TCL_DIR:=/opt/cross_tcl64
+# Tcl/Tk version: it should be "85" for Tcl/Tk 8.5, etc.
+TCL_VERSION:=85
+else
 #MINGW_TARGET=i386-mingw32msvc
 MINGW_TARGET=i686-pc-mingw32
-MINGW_BIN:=$(MINGW_DIR)/bin
 TCL_DIR:=/usr/local/cross-tcl
 # Tcl/Tk version: it should be "85" for Tcl/Tk 8.5, etc.
 TCL_VERSION:=85
+endif
 
 CXX:=$(MINGW_TARGET)-g++
 CC:=$(MINGW_TARGET)-gcc
@@ -13,14 +25,14 @@ LINK:=$(MINGW_TARGET)-g++
 .PHONY : clean
 .PRECIOUS:
 
-EXTRA_CFLAGS  	= -pipe -Wno-format-security -mwindows
+EXTRA_CFLAGS	= -pipe -Wno-format-security
 # -fno-stack-protector unknown
 
 .SUFFIXES: .c
 .PRECIOUS:
 
-INCLUDE	= $(TCL_INCLUDE) $(TK_INCLUDE) $(X_INCLUDE) -I/usr/local/cross-tcl/include/
-CFLAGS	+= $(OPTIMIZE) $(C_DEBUG) $(PROFILING)
+INCLUDE	= -I$(TCL_INCLUDE)
+CXXFLAGS += $(OPTIMIZE) $(EXTRA_CFLAGS) $(C_DEBUG) $(PROFILING)
 
 SRC	= win/TkDND_OleDND.cpp
 OBJS	= $(SRC:.c=.o)
@@ -31,6 +43,6 @@ clean:
 	rm -f TkDND_OleDND.o
 
 .cpp.o:
-	echo "Compiling `awk 'BEGIN { printf "%-30s", "$<" }'`  [$(CFLAGS:  = )]"
-	$(CXX) -c $(CFLAGS) $(EXTRA_CFLAGS) $(INCLUDE) $<
+	echo "Compiling `awk 'BEGIN { printf "%-30s", "$<" }'`  [$(CXXFLAGS:  = )]"
+	$(CXX) -c $(CXXFLAGS) $(INCLUDE) $<
 

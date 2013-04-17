@@ -165,7 +165,11 @@ void search_perft(const board_t * board, int depth_max) {
       time = my_timer_elapsed_cpu(timer);
       speed = (time < 0.01) ? 0.0 : double(NodeNb) / time;
 
+#if defined(_WIN32)
+      printf("%2d %10I64d %10I64d %7.2f %7.0f\n",depth,NodeNb,LeafNb,time,speed);
+#else
       printf("%2d %10lld %10lld %7.2f %7.0f\n",depth,NodeNb,LeafNb,time,speed);
+#endif
    }
 
    printf("\n");

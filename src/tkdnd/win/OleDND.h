@@ -1228,4 +1228,4 @@ private:
     LONG   m_lRefCount;
 }; /* TkDND_DropSource */
 
-#endif _OLE_DND_H
+#endif /* _OLE_DND_H */
