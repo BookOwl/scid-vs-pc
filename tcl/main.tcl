@@ -939,8 +939,6 @@ foreach photofile [glob -nocomplain -directory [file join $scidShareDir "photos"
 # Read players.img for compatibility with older versions:
 readPhotoFile [file join $scidUserDir players.img]
 
-set photo(oldWhite) {}
-set photo(oldBlack) {}
 
 # Try to change the engine name: ignore version number, try to ignore blanks
 proc trimEngineName { engine } {
@@ -970,60 +968,47 @@ proc trimEngineName { engine } {
   return $engine
 }
 
-# updatePlayerPhotos
 #   Updates the player photos in the game information area
 #   for the two players of the current game.
-#
-set ::photosMinimized 0
+
 proc updatePlayerPhotos {{force ""}} {
   global photo
   if {$force == "-force"} {
     # Force update even if it seems unnecessary. This is done
     # when the user selects to show or hide the photos.
-    set photo(oldWhite) {}
-    set photo(oldBlack) {}
     place forget .main.photoW
     place forget .main.photoB
   }
   if {! $::gameInfo(photos)} { return }
-  #get photo from player
+
+  ### Get photo from players
   set white [sc_game info white]
   set black [sc_game info black]
   catch { set white [trimEngineName $white] }
   catch { set black [trimEngineName $black] }
-  if {$black != $photo(oldBlack)} {
-    set photo(oldBlack) $black
-    place forget .main.photoB
-    if {[info exists ::photo($black)]} {
-      image create photo photoB -data $::photo($black)
-      .main.photoB configure -image photoB -anchor ne
-      place .main.photoB -in .main.gameInfo -x -1 -relx 1.0 -anchor ne
-      # force to update white, black size could be changed
-      set photo(oldWhite) {}
-    }
+  if {[info exists ::photo($black)]} {
+    image create photo photoB -data $::photo($black)
+    image create photo photoB2 
+    photoB2 copy photoB -subsample 2 2
+    # force to update white, black size could be changed
+  } else {
+    image create photo photoB -data {}
+    image create photo photoB2 -data {}
   }
-  set distance [expr {[image width photoB] + 2}]
-  if { $distance < 10 } { set distance 82 }
-  if {$white != $photo(oldWhite)} {
-    set photo(oldWhite) $white
-    place forget .main.photoW
-    if {[info exists ::photo($white)]} {
-      image create photo photoW -data $::photo($white)
-      .main.photoW configure -image photoW -anchor ne
-      place .main.photoW -in .main.gameInfo -x -$distance -relx 1.0 -anchor ne
-    }
+  if {[info exists ::photo($white)]} {
+    image create photo photoW -data $::photo($white)
+    image create photo photoW2 
+    photoW2 copy photoW -subsample 2 2
+  } else {
+    image create photo photoW -data {}
+    image create photo photoW2 -data {}
   }
-  # Todo: fix this
-  # Minimized photos need to be repacked too
-  # if {$::photosMinimized} {mapPhotos}
-  set ::photosMinimized 0
+
+  mapPhotos
 
   bind .main.photoW <ButtonPress-1> togglePhotosSize
   bind .main.photoB <ButtonPress-1> togglePhotosSize
 }
-################################################################################
-# Toggles photo sizes
-################################################################################
 
 proc togglePhotosSize {} {
   set ::photosMinimized [expr !$::photosMinimized]
@@ -1031,23 +1016,19 @@ proc togglePhotosSize {} {
 }
 
 proc mapPhotos {} {
-  set distance [expr {[image width photoB] + 2}]
-  if { $distance < 10 } { set distance 82 }
 
   if {!$::photosMinimized} {
-    if { [winfo ismapped .main.photoW] } {
-      place .main.photoW -in .main.gameInfo -x -$distance -relx 1.0 -relheight 1 -width [image width photoW] -anchor ne
-    }
-    if { [winfo ismapped .main.photoB] } {
-      place .main.photoB -in .main.gameInfo -x -1 -relx 1.0 -relheight 1 -width [image width photoB] -anchor ne
-    }
+    set distance [expr {[image width photoB]}]
+    if { $distance < 10 } { set distance 80 }
+    .main.photoB configure -image photoB -anchor ne
+    place .main.photoB -in .main.gameInfo -x -0         -y 0 -relx 1.0 -relheight 1 -anchor ne
+    .main.photoW configure -image photoW -anchor ne
+    place .main.photoW -in .main.gameInfo -x -$distance -y 0 -rely 0.0 -relx 1.0 -relheight 1 -anchor ne
   } else  {
-    if { [winfo ismapped .main.photoW] } {
-      place .main.photoW -in .main.gameInfo -x -17 -relx 1.0 -relheight 0.15 -width 15 -anchor ne
-    }
-    if { [winfo ismapped .main.photoB] } {
-      place .main.photoB -in .main.gameInfo -x -1 -relx 1.0  -relheight 0.15 -width 15 -anchor ne
-    }
+    .main.photoB configure -image photoB2 -anchor ne
+    place .main.photoB -in .main.gameInfo -x -0 -y 0 -relx 1.0 -relheight .5 -anchor ne
+    .main.photoW configure -image photoW2 -anchor ne
+    place .main.photoW -in .main.gameInfo -x -0 -rely 0.51 -relx 1.0 -relheight .5 -anchor ne
   }
 
 }

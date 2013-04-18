@@ -186,6 +186,8 @@ set comp(firstonly) 0
 set comp(ponder) 0
 set comp(usebook) 0
 set comp(book) {}
+set photosMinimized 0
+
 
 proc ::docking::init_layout_list {{recover 0}} {
   # Default window docking layouts
