@@ -7147,7 +7147,7 @@ sc_game_info (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
     bool hideNextMove = false;
     bool showMaterialValue = false;
     bool showFEN = false;
-    uint commentWidth = 50;
+    uint commentWidth = 30;
     uint commentHeight = 1;
     bool fullComment = false;
     uint showTB = 2;  // 0 = no TB output, 1 = score only, 2 = best moves.
@@ -7177,6 +7177,7 @@ sc_game_info (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
                 showFEN = strGetBoolean(argv[arg]);
             }
         } else if  (strIsPrefix (argv[arg], "-cfull")) {
+            // -cfull , -cwidth , -cheight seem unused. S.A
             // Show full comment:
             if (arg+1 < argc) {
                 arg++;
