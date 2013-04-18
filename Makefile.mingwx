@@ -11,29 +11,25 @@ else
 WIN_TARGET=win32
 endif
 
+# Tcl/Tk version: it should be "85" for Tcl/Tk 8.5, etc.
+TCL_VERSION=85
+
 ifeq ($(WIN_TARGET),win64)
-MINGW_TARGET=x86_64-w64-mingw32
-TCL_DIR:=/opt/cross_tcl64
-# Tcl/Tk version: it should be "85" for Tcl/Tk 8.5, etc.
-TCL_VERSION:=85
+  MINGW_DIR=/opt/cross_win64
+  TCL_DIR=/opt/cross_tcl64
+  MINGW_TARGET=x86_64-w64-mingw32
 else
-MINGW_DIR:=/usr/local/cross-win32
-#MINGW_TARGET=i386-mingw32msvc
-MINGW_TARGET=i686-pc-mingw32
-TCL_DIR:=/usr/local/cross-tcl
-# Tcl/Tk version: it should be "85" for Tcl/Tk 8.5, etc.
-TCL_VERSION:=85
+  MINGW_DIR=/usr/i686-pc-mingw32/sys-root/mingw/
+  TCL_DIR=/usr/local/cross-tcl
+  MINGW_TARGET=i686-pc-mingw32
 endif
 
 ### Compiler and linker
-CXX:=$(MINGW_TARGET)-g++
-CC:=$(MINGW_TARGET)-gcc
-LINK:=$(MINGW_TARGET)-g++
-RC:=$(MINGW_TARGET)-windres
+CXX=$(MINGW_TARGET)-g++
+CC=$(MINGW_TARGET)-gcc
+LINK=$(MINGW_TARGET)-g++
+RC=$(MINGW_TARGET)-windres
 
-### Tcl paths
-TCL_INCLUDE:=$(TCL_DIR)/include
-TCL_LIB:=$(TCL_DIR)/lib
 
 ### TB: Using Nalimov tablebases with Scid. Use "TB = -DSCID_USE_TB" for
 #      tablebase support, or just "TB = " for no tablebase capability.
@@ -158,7 +154,7 @@ scid.exe: src/scid.o $(OBJS) src/tree.o src/filter.o \
             src/tree.o src/filter.o src/pbook.o \
             src/crosstab.o src/spellchk.o src/probe.o \
             src/optable.o src/engine.o src/recog.o scid.coff src/tkdnd/TkDND_OleDND.o src/tk_selection.o \
-	    -lole32 -luuid -L$(TCL_LIB) -ltk$(TCL_VERSION) -ltcl$(TCL_VERSION) -mwindows
+	    -mwindows -lole32 -luuid -L$(TCL_DIR)/lib -ltk$(TCL_VERSION) -ltcl$(TCL_VERSION)
 
 tcscid.exe: src/tcscid.o $(OBJS) src/tree.o src/filter.o \
             src/pbook.o src/crosstab.o src/spellchk.o src/probe.o \
@@ -167,7 +163,7 @@ tcscid.exe: src/tcscid.o $(OBJS) src/tree.o src/filter.o \
             src/tree.o src/filter.o src/pbook.o \
             src/crosstab.o src/spellchk.o src/probe.o \
             src/optable.o src/engine.o src/recog.o \
-            -L$(TCL_LIB) -ltcl$(TCL_VERSION)
+            -L$(TCL_DIR)/lib -ltcl$(TCL_VERSION)
 
 eco2epd.exe: src/eco2epd.o src/pbook.o $(OBJS)
 	$(LINK) -o eco2epd.exe src/eco2epd.o src/pbook.o $(OBJS)
@@ -184,26 +180,26 @@ strip:
 
 
 src/tcscid.o: src/tkscid.cpp
-	$(CXX) $(CXXFLAGS) -I$(TCL_INCLUDE) -DTCL_ONLY -c src/tkscid.cpp \
+	$(CXX) $(CXXFLAGS) -I$(TCL_DIR)/include -DTCL_ONLY -c src/tkscid.cpp \
 	  -o ./src/tcscid.o
 
 src/tkscid.o: src/tkscid.cpp
-	$(CXX) $(CXXFLAGS) -I$(TCL_INCLUDE) -c src/tkscid.cpp \
+	$(CXX) $(CXXFLAGS) -I$(TCL_DIR)/include -c src/tkscid.cpp \
 	  -o ./src/tkscid.o
 
 src/scid.o: src/tkscid.cpp
-	$(CXX) $(CXXFLAGS) -I$(TCL_INCLUDE) -DSOURCE_TCL_FILE="\"scid.gui\"" \
+	$(CXX) $(CXXFLAGS) -I$(TCL_DIR)/include -DSOURCE_TCL_FILE="\"scid.gui\"" \
 	  -c src/tkscid.cpp -o ./src/scid.o
 
 src/probe.o: src/probe.cpp src/egtb/tbindex.cpp src/egtb/tbdecode.c
 	$(CXX) $(CXXFLAGS) $(TB) -c src/probe.cpp -o ./src/probe.o
 
 %.o: %.cpp
-	$(CXX) $(CXXFLAGS) -I$(TCL_INCLUDE) -c $< -o ./$@
+	$(CXX) $(CXXFLAGS) -I$(TCL_DIR)/include -c $< -o ./$@
 
 %.o: %.c
 	$(CC) $(CFLAGS) -c $< -o ./$@
 
 src/tkdnd/TkDND_OleDND.o: src/tkdnd/win/TkDND_OleDND.cpp
 	$(MAKE) -C src/tkdnd/ -f Makefile.mingwx CC="$(CC)" LINK="$(LINK)" CXXFLAGS="$(CXXFLAGS)" \
-              WIN_TARGET="$(WIN_TARGET)" TCL_VERSION="$(TCL_VERSION)" TCL_INCLUDE="$(TCL_INCLUDE)"
+              WIN_TARGET="$(WIN_TARGET)" TCL_VERSION="$(TCL_VERSION)" TCL_DIR="$(TCL_DIR)"
