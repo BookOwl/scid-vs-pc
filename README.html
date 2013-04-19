@@ -73,7 +73,7 @@ contribution from Pascal Georges and others.</P>
 <P>
 <A HREF="http://scidvspc.sourceforge.net/">Scid vs. PC</A> is a usability
 and bug-fix fork of Scid with some new features.  The project is authored by 
-<A HREF="#contact_">Stevenaaus</A>, and has been extensively tested with the Million Base and other huge databases.</P>
+<A HREF="#contact_">Stevenaaus</A>, and has been extensively tested.</P>
 
 <H2><A NAME="s2">2.</A> <A HREF="#toc2">features </A></H2>
 
@@ -136,7 +136,7 @@ and bug-fix fork of Scid with some new features.  The project is authored by
 
 <P>Scid vs. PC requires 
 <A HREF="http://tcl.tk">Tcl/Tk</A> 8.5.
-<EM>Tcl/Tk 8.5.10 has nasty bugs and should be avoided. 8.6.0 mostly works, but has a bug that makes the Docked Windows crash.</EM></P>
+<EM>Tcl/Tk 8.5.10 has nasty bugs and should be avoided.</EM></P>
 Most Unices should have Tcl/Tk installed by default.
 To verify this, look for a command named <B>wish</B> or <B>wish8.5</B>.
 To enable support for extra chess pieces (such as Berlin), you may need to install
@@ -162,7 +162,7 @@ Scid's multi-language support can cause problems. Chinese (and other) users shou
 <P>Windows installation simply requires downloading the 
 <A HREF="#download_">executable</A>, and following the prompts.</P>
 <P>The configuration files, <B>including the chess engine list</B>, are stored
-in the <B>Scid-vs-PC/bin/config</B> directory, and may be copied over from
+in the <B>Scid-vs-PC\bin\config</B> directory, and may be copied over from
 old versions to make upgrading easier. On Windows 7, these files are mirrored in
 C:\Users\[USERNAME]\AppData\Local\VirtualStore\Program Files\Scid vs PC</P>
 <P>People with Visual Studio 11 should now be able to compile the project fairly easily (see Makefile.vc for more details).</P>
@@ -173,6 +173,7 @@ C:\Users\[USERNAME]\AppData\Local\VirtualStore\Program Files\Scid vs PC</P>
 <A HREF="#download_">ScidvsMac-4.9 app</A> should include everything you need. Simply drag and drop the App into /Applications (or similar).</P>
 <P><EM>Users upgrading may have to remove (or edit) <B>$HOME/.scidvspc/config/engines.dat</B>
 to properly configure the chess engines.</EM></P>
+<P>OS X  has a poor implementation of Tcl, and docked mode has bugs (some windows work better after being moved around, keyboard shortcuts are very hit and miss). These issues should be fixed with a point release sometime in the future.</P>
 <P>To compile from source - once you have XCode installed - please read <B>ScidvsMac-HowTo.rtfd</B> in the source tarball.</P>
 <P><EM>OS X's Cocoa port of Wish is broken, with little chance of repair. Scid vs PC ships with a custom Carbon build of Wish.</EM></P>
 
@@ -224,11 +225,12 @@ files in the downloads section. My project is fairly modest fork of Scid
 
 <P>This powerful feature has a few issues.
 <UL>
-<LI> Tcl/Tk 8.6.0 does not support docked windows properly.</LI>
+<LI> Tcl/Tk 8.6.0 may have issues.</LI>
 <LI>In the event of Scid failing to start, restart the program with the <B>-nodock</B> option.</LI>
 <LI> Key bindings (especially menus) can be hit and miss.</LI>
 <LI> Windows undocked from within docking mode can have glitches.
 Mainly: drag and drop game copies in the switcher don't work.</LI>
+<LI>OS X support is not good.</LI>
 </UL>
 
 Make sure to check out the new Theme Options, which affect how the Docked Windows (and Gamelist) look and feel.</P>
@@ -265,7 +267,8 @@ about the Fics and Tactical Game features in the Scid Help menus</EM>.</P>
 
 <P>
 <UL>
-<LI> Tcl/Tk-8.5.10 is buggy. Tcl/Tk-8.6.0 also has a nasty bug that makes the Window Docking feature unstable.</LI>
+<LI> Tcl/Tk-8.5.10 is buggy. Tcl/Tk-8.6.0 also is immature, but mostly works.</LI>
+<LI> OS X docked mode has multiple issues due to it's poor Tcl/Tk.</LI>
 <LI> <B>Chinese Language Support</B>. Scid's multilanguage support is broken
 for some countries. The work around involves compiling from source, using:
 <EM>./configure LANGUAGES=""</EM><BR>
@@ -384,7 +387,7 @@ General  </LI>
 <LI>FICS: 'upload' command for uploading local games to FICS examine mode</LI>
 <LI>Allow the Name editor to glob '*' for Site, Event and Round fields (but not for 'All Games', too dangerous when used by mistake)</LI>
 <LI>The material board can display *all* taken pieces</LI>
-<LI>Gamelist button rows can be hidden by right-clicking the tree, and it has a game save icon</LI>
+<LI>Gamelist button rows can be hidden by right-clicking the list, and it has a game save icon</LI>
 <LI>Right click V+ button adds the second variation</LI>
 <LI>Windows analysis engines no longer run at low priority</LI>
 <LI>When annotating the score on blunders, show the main score first, var second (eg: +1.00 / +2.50)</LI>
@@ -1068,7 +1071,8 @@ Fics (which really gets stuffed up). Mouse wheel bindings remain.</LI>
 <P>
 <UL>
 <LI> Language updates (volunteers welcome).</LI>
-<LI> Give gamelist widget context menus ??
+<LI> Pin down all filter inaccuracies.
+
 </LI>
 </UL>
 </P>

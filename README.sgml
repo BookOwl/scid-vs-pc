@@ -27,7 +27,7 @@ contribution from Pascal Georges and others.
 
 <url url="http://scidvspc.sourceforge.net/" name="Scid vs. PC"> is a usability
 and bug-fix fork of Scid with some new features.  The project is authored by <ref name="Stevenaaus"
-id="contact_">, and has been extensively tested with the Million Base and other huge databases.
+id="contact_">, and has been extensively tested.
 
 <sect> features <p>
 
@@ -84,7 +84,7 @@ mac <url url="http://sourceforge.net/projects/scidvspc/files/mac/ScidvsMac-4.9.d
 <sect2> Linux , FreeBSD<p>
 
 Scid vs. PC requires <url name="Tcl/Tk" url="http://tcl.tk"> 8.5.
-<em>Tcl/Tk 8.5.10 has nasty bugs and should be avoided. 8.6.0 mostly works, but has a bug that makes the Docked Windows crash.</em></p>
+<em>Tcl/Tk 8.5.10 has nasty bugs and should be avoided.</em></p>
 
 Most Unices should have Tcl/Tk installed by default.
 To verify this, look for a command named <bf>wish</bf> or <bf>wish8.5</bf>.
@@ -109,7 +109,7 @@ Windows installation simply requires downloading the <ref name="executable" id="
 </p>
 <p>
 The configuration files, <bf>including the chess engine list</bf>, are stored
-in the <bf>Scid-vs-PC/bin/config</bf> directory, and may be copied over from
+in the <bf>Scid-vs-PC\bin\config</bf> directory, and may be copied over from
 old versions to make upgrading easier. On Windows 7, these files are mirrored in
 C:\Users\[USERNAME]\AppData\Local\VirtualStore\Program Files\Scid vs PC
 </p>
@@ -121,6 +121,8 @@ The <ref name="ScidvsMac-4.9 app" id="download_"> should include everything you 
 
 <em>Users upgrading may have to remove (or edit) <bf>$HOME/.scidvspc/config/engines.dat</bf>
 to properly configure the chess engines.</em>
+
+OS X  has a poor implementation of Tcl, and docked mode has bugs (some windows work better after being moved around, keyboard shortcuts are very hit and miss). These issues should be fixed with a point release sometime in the future.
 
 To compile from source - once you have XCode installed - please read <bf>ScidvsMac-HowTo.rtfd</bf> in the source tarball.
 
@@ -192,11 +194,12 @@ files in the downloads section. My project is fairly modest fork of Scid
 
 This powerful feature has a few issues.
 <itemize>
-<item> Tcl/Tk 8.6.0 does not support docked windows properly.
+<item> Tcl/Tk 8.6.0 may have issues.
 <item>In the event of Scid failing to start, restart the program with the <bf>-nodock</bf> option.
 <item> Key bindings (especially menus) can be hit and miss.
 <item> Windows undocked from within docking mode can have glitches.
 Mainly: drag and drop game copies in the switcher don't work.
+<item>OS X support is not good.
 </itemize>
 Make sure to check out the new Theme Options, which affect how the Docked Windows (and Gamelist) look and feel.
 
@@ -226,7 +229,8 @@ about the Fics and Tactical Game features in the Scid Help menus</em>.
 
 <sect1> known issues <p>
 <itemize>
-<item> Tcl/Tk-8.5.10 is buggy. Tcl/Tk-8.6.0 also has a nasty bug that makes the Window Docking feature unstable.
+<item> Tcl/Tk-8.5.10 is buggy. Tcl/Tk-8.6.0 also is immature, but mostly works.
+<item> OS X docked mode has multiple issues due to it's poor Tcl/Tk.
 <item> <bf>Chinese Language Support</bf>. Scid's multilanguage support is broken
 for some countries. The work around involves compiling from source, using:
 <em>./configure LANGUAGES=""</em>
@@ -335,7 +339,7 @@ and lesser popularity than Scid.</p>
 <item>FICS: 'upload' command for uploading local games to FICS examine mode
 <item>Allow the Name editor to glob '*' for Site, Event and Round fields (but not for 'All Games', too dangerous when used by mistake)
 <item>The material board can display *all* taken pieces
-<item>Gamelist button rows can be hidden by right-clicking the tree, and it has a game save icon
+<item>Gamelist button rows can be hidden by right-clicking the list, and it has a game save icon
 <item>Right click V+ button adds the second variation
 <item>Windows analysis engines no longer run at low priority
 <item>When annotating the score on blunders, show the main score first, var second (eg: +1.00 / +2.50)
@@ -949,7 +953,8 @@ Fics (which really gets stuffed up). Mouse wheel bindings remain.
 
 <itemize>
 <item> Language updates (volunteers welcome).
-<item> Give gamelist widget context menus ??
+<item> Pin down all filter inaccuracies.
+
 
 </itemize>
 

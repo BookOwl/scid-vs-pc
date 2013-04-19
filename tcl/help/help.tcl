@@ -5764,14 +5764,14 @@ set helpText(Changelog) {<h1>Scid vs. PC</h1>
 <li>Player info window shows Photos in a scrollable canvas insead of stuck in top right corner</li>
 <li>Delete key deletes moves in game/variation after the current move</li>
 <li>Score Graphs are now bargraphs instead of lines</li>
-<li>Bind statusbar->middle button to 'switch base'</li>
+<li>Bind statusbar-<gt>middle button to 'switch base'</li>
 <li>FICS context menu, game offers now show more information, and premove</li>
 <li>FICS: deiconify/raise window when game starts (nodock mode only)</li>
 <li>FICS: stop clock when we make a move (even though we may not have acknowledgemnt from FICS about move)</li>
 <li>FICS: 'upload' command for uploading local games to FICS examine mode</li>
 <li>Allow the Name editor to glob '*' for Site, Event and Round fields (but not for 'All Games', too dangerous when used by mistake)</li>
 <li>The material board can display *all* taken pieces</li>
-<li>Gamelist button rows can be hidden by right-clicking the tree, and it has a game save icon</li>
+<li>Gamelist button rows can be hidden by right-clicking the list, and it has a game save icon</li>
 <li>Right click V+ button adds the second variation</li>
 <li>Windows analysis engines no longer run at low priority</li>
 <li>When annotating the score on blunders, show the main score first, var second (eg: +1.00 / +2.50)</li>
