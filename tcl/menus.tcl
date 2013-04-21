@@ -1781,8 +1781,6 @@ proc standardShortcuts {w} {
   bind $w <Down>  {::move::Forward 10}
   bind $w <Right> ::move::Forward
   bind $w <End>   ::move::End
-  bind $w <KeyPress-v> { ::showVars }
-  bind $w <KeyPress-z> {.main.button.exitVar invoke}
   bind $w <F2> {::startAnalysisWin F2}
   bind $w <F3> {::startAnalysisWin F3}
   bind $w <F4> {::startAnalysisWin F4}

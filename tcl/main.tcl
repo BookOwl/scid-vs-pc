@@ -606,9 +606,9 @@ proc enterVar {{n {}}} {
 ################################################################################
 # V and Z key bindings: move into/out of a variation.
 #
-bind . <KeyPress-v> showVars
-bind . <KeyPress-z> {.main.button.exitVar invoke}
-bind . <Control-a> {.main.button.addVar invoke}
+bind .main <KeyPress-v> showVars
+bind .main <KeyPress-z> {.main.button.exitVar invoke}
+bind .main <Control-a> {.main.button.addVar invoke}
 
 ### Dialog box for editing "My Player Names"
 ### to know when to flip the board
