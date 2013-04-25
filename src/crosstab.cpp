@@ -611,7 +611,7 @@ Crosstable::PrintTable (DString * dstr, crosstableModeT mode, uint playerLimit, 
 
     char stemp [100];
     if (GameCount > 1) {
-        sprintf (stemp, "%u game%s: %s%u %s%u %s%u",
+        sprintf (stemp, "<blue><run ::crosstab::setFilter 0>%u game%s</run></blue>: %s%u %s%u %s%u",
                  GameCount, strPlural (GameCount),
                  OutputFormat == CROSSTABLE_LaTeX ? "{\\tt +}" : "+",
                  ResultCount[RESULT_White],
@@ -993,7 +993,9 @@ Crosstable::PrintSwiss (DString * dstr, uint playerLimit)
         } else {
             sprintf (stemp, " %s%*d ", SwissColors ? " " : "",
                      PlayerNumWidth, round);
-            dstr->Append (StartBoldCol, stemp, EndBoldCol);
+
+            dstr->Append (StartBoldCol, "<blue><run ::crosstab::setFilter ",stemp);
+            dstr->Append (">",stemp,"</run></blue>", EndBoldCol);
         }
     }
     if (PrintRatings) {
@@ -1121,7 +1123,8 @@ Crosstable::PrintKnockout (DString * dstr, uint playerLimit)
         if (OutputFormat == CROSSTABLE_LaTeX) {
             dstr->Append ("\n\n", round, ":\n\n");
         } else {
-            dstr->Append (round, ":", NewLine);
+            dstr->Append ("<blue><run ::crosstab::setFilter ",round);
+            dstr->Append (">",round,"</run></blue>:", NewLine);
         }
         dstr->Append (StartTable);
         if (OutputFormat == CROSSTABLE_LaTeX) {

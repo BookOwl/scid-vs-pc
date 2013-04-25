@@ -297,16 +297,10 @@ proc ::crosstab::Open {} {
     destroy .crosstabWin
   }
   button $w.b.setfilter -textvar ::tr(SetFilter) -command {
-    ::search::filter::reset
-    ::search::filter::negate
-    sc_game crosstable filter $crosstab(deleted)
-    ::windows::gamelist::Refresh
-    updateStatusBar
+    ::crosstab::setFilter 0
   }
   button $w.b.addfilter -textvar ::tr(AddToFilter) -command {
-    sc_game crosstable filter $crosstab(deleted)
-    ::windows::gamelist::Refresh
-    updateStatusBar
+    ::crosstab::setFilter
   }
 
   button $w.b.font -text { Font } -command {FontDialogFixed .crosstabWin}
@@ -344,6 +338,18 @@ proc ::crosstab::Open {} {
   bind $w <Configure> "recordWinSize $w"
   ::createToplevelFinalize $w
   update
+}
+
+proc ::crosstab::setFilter {{round {}}} {
+  global crosstab glstart
+  if {$round == {}} {
+    sc_game crosstable filter $crosstab(deleted)
+  } else {
+    sc_game crosstable filter -round $round $crosstab(deleted) 
+  }
+  set glstart 1
+  ::windows::gamelist::Refresh
+  updateStatusBar
 }
 
 proc ::crosstab::Refresh {} {

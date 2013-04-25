@@ -6222,7 +6222,7 @@ sc_game_crosstable (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv
     int option = -1;
 
     const char * usageMsg =
-        "Usage: sc_game crosstable plain|html|hypertext|filter|count [name|rating|score|country] [allplay|swiss] [(+|-)(colors|countries|tallies|ratings|titles|groups|breaks|numcolumns)]";
+        "Usage: sc_game crosstable plain|html|hypertext|filter|count [name|rating|score|country] [allplay|swiss] [(+|-)(colors|countries|tallies|ratings|titles|groups|breaks|numcolumns)] [-gameNumber GAME|-round ROUND]";
 
     static const char * extraOptions [] = {
         "allplay", "knockout", "swiss", "auto",
@@ -6239,6 +6239,7 @@ sc_game_crosstable (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv
         "-numcolumns", "+numcolumns",   // All-play-all numbered columns
         "-gameNumber",
         "-threewin", "+threewin",       // Give 3 points for win, 1 for draw
+        "-round",
         NULL
     };
     enum {
@@ -6255,7 +6256,8 @@ sc_game_crosstable (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv
         EOPT_DELETED_OFF, EOPT_DELETED_ON,
         EOPT_NUMCOLUMNS_OFF, EOPT_NUMCOLUMNS_ON,
         EOPT_GNUMBER,
-        EOPT_THREEWIN_OFF, EOPT_THREEWIN_ON
+        EOPT_THREEWIN_OFF, EOPT_THREEWIN_ON,
+        EOPT_ROUND
     };
 
     int sort = EOPT_SORT_SCORE;
@@ -6273,6 +6275,7 @@ sc_game_crosstable (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv
     uint numTableGames = 0;
     uint gameNumber = 0;
     bool threewin = false;
+    uint roundNumber = 0;
 
     if (argc >= 3) { option = strUniqueMatch (argv[2], options); }
     if (option < 0) { return errorResult (ti, usageMsg); }
@@ -6311,12 +6314,21 @@ sc_game_crosstable (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv
             case EOPT_GNUMBER:
                 // Game number to print the crosstable for is
                 // given in the next argument:
+                // (Is this used ? S.A.)
                 if (arg+1 >= argc) { return errorResult (ti, usageMsg); }
                 gameNumber = strGetUnsigned (argv[arg+1]);
                 arg++;
                 break;
             case EOPT_THREEWIN_OFF:  threewin = false ; break;
             case EOPT_THREEWIN_ON:   threewin = true  ; break;
+            case EOPT_ROUND: 
+                if (arg+1 >= argc) { return errorResult (ti, usageMsg); }
+                roundNumber = strGetUnsigned (argv[arg+1]);
+                // Clear filter here
+                db->dbFilter->Fill (0);
+                updateMainFilter (db);
+                arg++;
+                break;
             default: return errorResult (ti, usageMsg);
         }
     }
@@ -6424,8 +6436,15 @@ sc_game_crosstable (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv
         if (whiteId == blackId) { continue; }
 
         // If option is OPT_FILTER, adjust the filter and continue &&&
+
         if (option == OPT_FILTER) {
-            db->filter->Set (i, 1);
+            if (roundNumber == 0) {
+              db->filter->Set (i, 1);
+            } else {
+              uint thisRound = strGetUnsigned (db->nb->GetName (NAME_ROUND, ie->GetRound()));
+              if (thisRound == roundNumber)
+                db->filter->Set (i, 1);
+            }
             continue;
         }
 
