@@ -18,8 +18,8 @@ proc playerInfo {{player ""} {raise 0}} {
     setWinLocation $w
     wm minsize $w 450 300
 
-    pack [frame $w.b2] -side bottom -expand 1 -fill x
-    pack [frame $w.b] -side bottom -expand 1 -fill x -pady 5 
+    pack [frame $w.b2] -side bottom -expand 1 -fill x -pady 2
+    pack [frame $w.b] -side bottom -expand 1 -fill x -pady 3 
 
     button $w.b.graph -text [tr ToolsRating] \
       -command {::tools::graphs::rating::Refresh $playerInfoName} 
@@ -37,24 +37,34 @@ proc playerInfo {{player ""} {raise 0}} {
       } else {
 	::plist::Open
       }
-    }
+    } -width 10
     button $w.b.nedit -text {Edit Name} -command {
       makeNameEditor
       setNameEditorType player
       set editName $playerInfoName
       set editNameNew $playerInfoName
       set editNameSelect all
+    } -width 10
+
+    button $w.b2.report -text [tr ToolsPlayerReport] -command {::preport::preportDlg $playerInfoName}
+    button $w.b2.tourney -text Tournaments -command {::tourney::Open $playerInfoName}
+    label $w.b2.space -width 2
+    button $w.b2.update -textvar ::tr(Update) -command {playerInfo $playerInfoName} -width 10
+    # button $w.b2.help -textvar ::tr(Help) -command {helpWindow PInfo} -width 10
+    button $w.b2.close -textvar ::tr(Close) -command "destroy $w" -width 10
+
+    ### The rightmost four buttons are already set width 10
+    ### If English, we can set the other four buttons likewise (and allign nicely)
+    if {$::language == "E"} {
+      foreach i "$w.b.graph $w.b.edit $w.b2.report $w.b2.tourney" {
+        $i configure -width 10
+      }
     }
 
-    dialogbutton $w.b2.report -text [tr ToolsPlayerReport] -command {::preport::preportDlg $playerInfoName}
-    label $w.b2.space -width 2
-    dialogbutton $w.b2.update -textvar ::tr(Update) -command {playerInfo $playerInfoName} -width 10
-    dialogbutton $w.b2.help -textvar ::tr(Help) -command {helpWindow PInfo} -width 10
-    dialogbutton $w.b2.close -textvar ::tr(Close) -command "destroy $w" -width 10
 
-    pack $w.b.graph $w.b.edit $w.b.match $w.b.nedit -padx 5 -pady 5 -side left
+    pack $w.b.graph $w.b.edit $w.b.match $w.b.nedit -padx 5 -pady 2 -side left
 
-    pack $w.b2.report $w.b2.space $w.b2.update $w.b2.help $w.b2.close -padx 5 -pady 10 -side left
+    pack $w.b2.report $w.b2.tourney $w.b2.update $w.b2.close -padx 5 -pady 2 -side left
 
     autoscrollframe $w.frame text $w.text -font font_Regular -wrap none
 

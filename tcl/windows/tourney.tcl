@@ -28,10 +28,14 @@ proc ::tourney::toggle {} {
   }
 }
 
-proc ::tourney::Open {} {
+proc ::tourney::Open {{player {}}} {
   global tourneyWin
   set w .tourney
   if {[winfo exists $w]} {
+    if {$player != {}} {
+      set ::tourney::player $player
+      ::tourney::refresh
+    }
     raiseWin $w
     return
   }
@@ -39,9 +43,14 @@ proc ::tourney::Open {} {
 
   if {! [info exists ::tourney::_defaults]} { ::tourney::defaults }
 
-  # Override the defaults for start-up window. "-10" represents last ten years
-  set ::tourney::start "[expr [::utils::date::today year] - 10].01.01"
-  set ::tourney::minGames 4
+  if {$player == {}} {
+    # Override the defaults for start-up window. "-10" represents last ten years
+    set ::tourney::start "[expr [::utils::date::today year] - 10].01.01"
+    set ::tourney::minGames 4
+  } else {
+    # No start date
+    set ::tourney::start 1800.01.01
+  }
 
   toplevel $w
   wm withdraw $w
@@ -179,6 +188,8 @@ proc ::tourney::Open {} {
   bind $f.eto2 <FocusOut> +::tourney::check
   pack [frame $f.space -width 12] $f.from $f.efrom $f.to $f.eto2 -side left
 
+  # Player
+
   label $f.playerlab -text "$::tr(Player)" -font $fbold
   ttk::combobox $f.player -textvariable ::tourney::player -width 12
   ::utils::history::SetCombobox ::tourney::player $f.player
@@ -213,6 +224,9 @@ proc ::tourney::Open {} {
   update
   wm deiconify $w
 
+  if {$player != {}} {
+    set ::tourney::player $player
+  }
   ::tourney::refresh
 }
 
@@ -298,7 +312,9 @@ proc ::tourney::refresh {{option ""}} {
 
   foreach i {Date Players Games Elo Site Event Winner} {
     $t tag configure s$i -font font_SmallBold
-    $t tag bind s$i <1> "set ::tourney::sort $i; ::tourney::refresh -fast"
+    $t tag bind s$i <1> "
+      set ::tourney::sort $i
+      ::tourney::refresh -fast"
     $t tag bind s$i <Any-Enter> "$t tag config s$i -background grey85"
     $t tag bind s$i <Any-Leave> "$t tag config s$i -background {}"
   }
