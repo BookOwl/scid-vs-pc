@@ -254,7 +254,11 @@ proc ::tourney::refresh {{option ""}} {
   set w .tourney
   if {! [winfo exists $w]} { return }
 
-  wm title $w "[tr WindowsTmt]: [file tail [sc_base filename]]"
+  if {[string length $::tourney::player] < 2} {
+    wm title $w "[tr WindowsTmt]: [file tail [sc_base filename]]"
+  } else {
+    wm title $w "[tr WindowsTmt]: $::tourney::player - [file tail [sc_base filename]]"
+  }
   busyCursor $w
   ::utils::history::AddEntry ::tourney::site $::tourney::site
   ::utils::history::AddEntry ::tourney::event $::tourney::event
