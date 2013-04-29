@@ -7,13 +7,13 @@ set ::windows::stats::isOpen 0
 proc ::windows::stats::Open {} {
   set w .statsWin
   if {[winfo exists $w]} {
-    focus .main
+    raiseWin .main
     destroy $w
     set ::windows::stats::isOpen 0
     return
   }
   toplevel $w
-  wm title $w "Filter Statistics"
+  wm title $w "Filter Statistics: [file tail [sc_base filename]]"
   wm minsize $w 300 400
   setWinLocation $w
   setWinSize $w
@@ -173,8 +173,12 @@ proc ::windows::stats::Refresh {} {
 	    if { $k == "" } { break }
 	}
 	set nyear [string range $k 1 end]
-	if { $nyear == "" } { set nyear 2099 }  
-        set stat "$year - $nyear"
+	if { $nyear == "" } {
+          set nyear 2099
+	  set stat "$year - "
+        } else {
+	  set stat "$year - $nyear"
+        }
         append s "\n [::utils::string::Pad $stat $len]"   [sc_filter stats year $year $nyear]
       } 
     }

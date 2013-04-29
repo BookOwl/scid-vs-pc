@@ -527,12 +527,12 @@ set winHeight(.ccWindow) 20
 # Default stats window lines:
 array set ::windows::stats::display {
   r2600 1
-  r2500 1
+  r2500 0
   r2400 1
-  r2300 1
-  r2200 0
-  r2100 0
-  r2000 0
+  r2300 0
+  r2200 1
+  r2000 1
+  r1800 0
   y1900 0
   y1950 0
   y1960 0
@@ -540,15 +540,16 @@ array set ::windows::stats::display {
   y1980 0
   y1990 0
   y2000 1
-  y2002 1
-  y2004 1
-  y2006 1
-  y2007 1
-  y2008 1
-  y2009 1
+  y2005 1
   y2010 1
-  y2011 1
 }
+
+# Enable stats for subsequent years
+for { set year [clock format [clock seconds] -format {%Y}] } \
+    { $year > 2010 && ![info exists ::windows::stats::display([subst {y$year}])] } \
+    { incr year -1 } {
+      set ::windows::stats::display([subst {y$year}]) 1
+    }
 
 # Default PGN display options:
 set pgnStyle(Tags) 1

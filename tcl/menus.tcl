@@ -649,7 +649,7 @@ $m add checkbutton -label WindowsECO \
 set helpMessage($m,[incr menuindex]) WindowsECO
 
 $m add checkbutton -label WindowsStats -variable ::windows::stats::isOpen \
-    -accelerator "Ctrl+I" -command ::windows::stats::Open
+    -command ::windows::stats::Open
 bind .main <Control-i> ::windows::stats::Open
 set helpMessage($m,[incr menuindex]) WindowsStats
 
@@ -1055,9 +1055,6 @@ $m add command -label OptionsSave -command {
     puts $optionF ""
     foreach i [lsort [array names optable]] {
       puts $optionF "set optable($i) [list $optable($i)]"
-    }
-    foreach i [lsort [array names ::windows::stats::display]] {
-      puts $optionF "set ::windows::stats::display($i) [list $::windows::stats::display($i)]"
     }
     foreach i [lsort [array names startup]] {
       puts $optionF "set startup($i) [list $startup($i)]"
