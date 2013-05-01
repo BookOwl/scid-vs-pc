@@ -34,6 +34,8 @@ proc ::tourney::Open {{player {}}} {
   if {[winfo exists $w]} {
     if {$player != {}} {
       set ::tourney::player $player
+      set ::tourney::site {}
+      set ::tourney::event {}
       ::tourney::refresh
     }
     raiseWin $w
