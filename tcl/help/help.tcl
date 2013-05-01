@@ -885,11 +885,11 @@ destination square. Alternatively one may drag the piece.
   bound to <b>Control-z</b> and <b>Control-y</b>, but please use carefully as these shortcuts
   are also the defaults for editing text windows such as the Comment Editor.
   </p>
-  <p><i>
-  Mixing Undo and Trial Modes is not recommended.
-  </i></p>
 
   <h4><name Trial>Trial Mode</name></h4>
+  <p><i>
+  Undo and Redo are disabled in Trial Mode.
+  </i></p>
   <p>
   If you are studying a game and reach a position where you want to try
   an alternative variation without altering the game, select

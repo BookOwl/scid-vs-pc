@@ -100,9 +100,7 @@ proc setSetupBoardToFen {} {
 
   # Called from ".setup.fencombo" FEN combo S.A
 
-  # BUG: Once the FEN combo box in the Setup board widget is accessed, the original
-  # game position can still be had, but game history is lost
-
+  sc_game push
   if {[catch {sc_game startBoard $setupFen} err]} {
     fenErrorDialog $err
   } else {
@@ -110,6 +108,7 @@ proc setSetupBoardToFen {} {
     set setupBd [sc_pos board]
     setBoard .setup.l.bd $setupBd $setupboardSize
   }
+  sc_game pop
 }
 
 ############################################################
@@ -285,6 +284,8 @@ proc exitSetupBoard {} {
   global setupFen
 
   bind .setup <Destroy> {}
+
+  sc_game undoPoint
 
   set setupFen [validateFEN $setupFen]
 

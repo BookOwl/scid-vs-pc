@@ -5997,6 +5997,8 @@ sc_game (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
 
     if (argc > 1) { index = strUniqueMatch (argv[1], options);}
 
+    bool trialMode = (Tcl_GetVar (ti, "trialMode", TCL_GLOBAL_ONLY)[0] == '1');
+
     switch (index) {
     case GAME_ALTERED:
         return setBoolResult (ti, db->gameAltered);
@@ -6105,6 +6107,8 @@ sc_game (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
         break;
 
     case GAME_UNDO:
+        if (trialMode)
+            break;
 
         if (db->undoIndex > -1) {
 	    g = db->game;
@@ -6118,6 +6122,8 @@ sc_game (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
         break;
 
     case GAME_MAKE_UNDO_POINT:
+        if (trialMode)
+            break;
 
 	// Delete any undo checkpoints getting discarded
 	i = db->undoIndex + 1;
@@ -6167,6 +6173,9 @@ sc_game (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
         break;
 
     case GAME_REDO:
+        if (trialMode)
+            break;
+
         if (db->undoIndex < db->undoMax) {
 	    db->undoIndex++;
             // swap current game and undoGame[db->undoIndex]
