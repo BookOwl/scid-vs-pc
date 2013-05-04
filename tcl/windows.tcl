@@ -121,6 +121,10 @@ proc setWinSize {win} {
 proc placeWinOverParent {w parent {where 0}} {
   # Where does not seem to be used anywhere
 
+  if {!$::docking::USE_DOCKING && $parent == "."} {
+    set parent .main
+  }
+
   set reqwidth [winfo reqwidth $w]
   set reqheight [winfo reqheight $w]
 
