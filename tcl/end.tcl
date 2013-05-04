@@ -987,7 +987,7 @@ proc gameSave {gnum {focus {}}} {
 
   # Game result
 
-  ttk::label $f.reslabel -textvar ::tr(Result:)
+  label $f.reslabel -textvar ::tr(Result:)
   ttk::combobox $f.resentry -values {1 0 = *} -width 7 \
     -textvariable resultVal -state readonly
   grid $f.reslabel -row 7 -column 0 -sticky w
@@ -995,12 +995,12 @@ proc gameSave {gnum {focus {}}} {
 
   # White/Black Elo
 
-  ttk::label $f.welolabel -text "$::tr(White:) "
+  label $f.welolabel -text "$::tr(White:) "
   ttk::combobox $f.wrtype -values [sc_info ratings] -width 7 \
     -textvariable whiteRType -state readonly
   ttk::entry $f.weloentry -width 6 -textvariable whiteElo -justify right
   
-  ttk::label $f.belolabel -text "$::tr(Black:) "
+  label $f.belolabel -text "$::tr(Black:) "
   ttk::combobox $f.brtype -values [sc_info ratings] -width 7 \
     -textvariable blackRType -state readonly
   ttk::entry $f.beloentry -width 6 -textvariable blackElo -justify right
@@ -1019,7 +1019,7 @@ proc gameSave {gnum {focus {}}} {
   grid $f.ecolabel -row 10 -column 0 -sticky w
   grid $f.ecoentry -row 10 -column 2 -sticky w
 
-  ttk::button $f.ecob -textvar ::tr(Classify) -command {set eco [sc_eco game]} -width 8 -takefocus 0
+  button $f.ecob -textvar ::tr(Classify) -command {set eco [sc_eco game]} -width 8 -takefocus 0
   grid $f.ecob -row 10 -column 1 -sticky w
 
   # Autocomplete text widget and label
@@ -1039,7 +1039,7 @@ proc gameSave {gnum {focus {}}} {
   label $f.extralabel -text {Extra tags (eg: Annotator "Anand")} -font font_Italic
   grid $f.extralabel -row 6 -column 8  -sticky n -pady 3
 
-  ttk::button $f.extrabutton -text "Use prev tags" -command {
+  button $f.extrabutton -text "Use prev tags" -command {
     set extraTags [sc_game tag get -last Extra]
     .save.g.extratext delete 1.0 end
     .save.g.extratext insert 1.0 $extraTags
@@ -1079,7 +1079,7 @@ proc gameSave {gnum {focus {}}} {
   grid $f.custom      -row 10 -column 8 -columnspan 2 -padx 10 -pady 2 -sticky nsew
   pack $f.custom.box -side left -padx 5
 
-  ttk::button $f.custom.ok -text Add -command {
+  button $f.custom.ok -text Add -command {
     catch {
       .save.g.extratext insert end "$customTags\n"
       .save.g.extratext see end
