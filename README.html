@@ -118,11 +118,11 @@ and bug-fix fork of Scid with some new features.  The project is authored by
 
 
 <P>source 
-<A HREF="http://sourceforge.net/projects/scidvspc/files/source/scid_vs_pc-4.9.tgz/download">scid_vs_pc-4.9.tgz</A></P>
+<A HREF="http://sourceforge.net/projects/scidvspc/files/source/scid_vs_pc-4.9.1.tgz/download">scid_vs_pc-4.9.1.tgz</A></P>
 <P>windows 
-<A HREF="http://sourceforge.net/projects/scidvspc/files/windows/Scid%20vs%20PC-4.9.exe/download">Scid vs PC-4.9.exe</A></P>
+<A HREF="http://sourceforge.net/projects/scidvspc/files/windows/Scid%20vs%20PC-4.9.1.exe/download">Scid vs PC-4.9.1.exe</A></P>
 <P>mac 
-<A HREF="http://sourceforge.net/projects/scidvspc/files/mac/ScidvsMac-4.9.dmg/download">ScidvsMac-4.9.dmg</A></P>
+<A HREF="http://sourceforge.net/projects/scidvspc/files/mac/ScidvsMac-4.9.1.dmg/download">ScidvsMac-4.9.1.dmg</A></P>
 <P>
 <A HREF="https://sourceforge.net/project/showfiles.php?group_id=263836">browse files</A></P>
 <P><EM>The latest code is available from subversion - </EM> <B>svn co https://scidvspc.svn.sourceforge.net/svnroot/scidvspc</B></P>
@@ -144,8 +144,8 @@ To enable support for extra chess pieces (such as Berlin), you may need to insta
 Then, installing from source:
 <HR>
 <PRE>
-tar -xzf scid_vs_pc-4.9.tgz
-cd scid_vs_pc-4.9
+tar -xzf scid_vs_pc-4.9.1.tgz
+cd scid_vs_pc-4.9.1
 configure
 make install
 scid
@@ -170,7 +170,7 @@ C:\Users\[USERNAME]\AppData\Local\VirtualStore\Program Files\Scid vs PC</P>
 
 
 <P>The 
-<A HREF="#download_">ScidvsMac-4.9 app</A> should include everything you need. Simply drag and drop the App into /Applications (or similar).</P>
+<A HREF="#download_">ScidvsMac-4.9.1 app</A> should include everything you need. Simply drag and drop the App into /Applications (or similar).</P>
 <P><EM>Users upgrading may have to remove (or edit) <B>$HOME/.scidvspc/config/engines.dat</B>
 to properly configure the chess engines.</EM></P>
 <P>OS X  has a poor implementation of Tcl, and docked mode has bugs (some windows work better after being moved around, keyboard shortcuts are very hit and miss). These issues should be fixed with a point release sometime in the future.</P>
@@ -357,6 +357,18 @@ and lesser popularity than Scid.</P>
 
 
 <P>
+<H3>Scid vs. PC 4.9.1 </H3>
+
+<P>
+<UL>
+<LI>Fix promotion bug in non-docked mode</LI>
+<LI>Small pictures allign top/bottom in game info</LI>
+<LI>Clickable crosstable columns</LI>
+<LI>Make an undo point with Setup Board, and disable undo for Trial mode.</LI>
+<LI>Add Tournament lookup to Player Info window</LI>
+<LI>PGN import window was not getting mapped.</LI>
+</UL>
+</P>
 <H3>Scid vs. PC 4.9 </H3>
 
 <P>

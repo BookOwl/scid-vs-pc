@@ -69,11 +69,11 @@ id="contact_">, and has been extensively tested.
 <label id="download_">
 <sect> download <p>
 
-source <url url="http://sourceforge.net/projects/scidvspc/files/source/scid_vs_pc-4.9.tgz/download" name="scid_vs_pc-4.9.tgz">
+source <url url="http://sourceforge.net/projects/scidvspc/files/source/scid_vs_pc-4.9.1.tgz/download" name="scid_vs_pc-4.9.1.tgz">
 
-windows <url url="http://sourceforge.net/projects/scidvspc/files/windows/Scid%20vs%20PC-4.9.exe/download" name="Scid vs PC-4.9.exe">
+windows <url url="http://sourceforge.net/projects/scidvspc/files/windows/Scid%20vs%20PC-4.9.1.exe/download" name="Scid vs PC-4.9.1.exe">
 
-mac <url url="http://sourceforge.net/projects/scidvspc/files/mac/ScidvsMac-4.9.dmg/download" name="ScidvsMac-4.9.dmg">
+mac <url url="http://sourceforge.net/projects/scidvspc/files/mac/ScidvsMac-4.9.1.dmg/download" name="ScidvsMac-4.9.1.dmg">
 
 <url url="https://sourceforge.net/project/showfiles.php?group_id=263836" name="browse files">
 
@@ -92,8 +92,8 @@ To enable support for extra chess pieces (such as Berlin), you may need to insta
 <url name="TkImg" url="https://sourceforge.net/project/downloading.php?group_id=263836&amp;filename=tkimg1.3.tar.bz2">.  
 Then, installing from source:
 <code>
-tar -xzf scid_vs_pc-4.9.tgz
-cd scid_vs_pc-4.9
+tar -xzf scid_vs_pc-4.9.1.tgz
+cd scid_vs_pc-4.9.1
 configure
 make install
 scid
@@ -117,7 +117,7 @@ C:\Users\[USERNAME]\AppData\Local\VirtualStore\Program Files\Scid vs PC
 
 <sect2> Mac OS X <p>
 
-The <ref name="ScidvsMac-4.9 app" id="download_"> should include everything you need. Simply drag and drop the App into /Applications (or similar).
+The <ref name="ScidvsMac-4.9.1 app" id="download_"> should include everything you need. Simply drag and drop the App into /Applications (or similar).
 
 <em>Users upgrading may have to remove (or edit) <bf>$HOME/.scidvspc/config/engines.dat</bf>
 to properly configure the chess engines.</em>
@@ -309,6 +309,16 @@ and lesser popularity than Scid.</p>
 
 <label id="changes_">
 <sect> changes <p>
+
+<sect2> Scid vs. PC 4.9.1 <p>
+<itemize>
+<item>Fix promotion bug in non-docked mode
+<item>Small pictures allign top/bottom in game info
+<item>Clickable crosstable columns
+<item>Make an undo point with Setup Board, and disable undo for Trial mode.
+<item>Add Tournament lookup to Player Info window
+<item>PGN import window was not getting mapped.
+</itemize></p>
 
 <sect2> Scid vs. PC 4.9 <p>
 <itemize>

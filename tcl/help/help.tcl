@@ -5763,6 +5763,16 @@ set helpText(Sound) {<h1>Sound</h1>
 set helpTitle(Changelog) "Scid vs PC Changelog"
 set helpText(Changelog) {<h1>Scid vs. PC</h1>
 
+<h4>4.9.1 (May 4, 2013)</h4>
+<ul>
+<li><item>Fix promotion bug in non-docked mode</li>
+<li>Small pictures allign top/bottom in game info</li>
+<li>Clickable crosstable columns</li>
+<li>Make an undo point with Setup Board, and disable undo for Trial mode</li>
+<li>Add Tournament lookup to Player Info window</li>
+<li>PGN import window was not getting mapped</li>
+</ul>
+
 <h4>4.9 (April 20, 2013)</h4>
 <b>Window Docking</b>
 <ul>
