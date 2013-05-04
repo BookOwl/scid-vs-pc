@@ -1062,7 +1062,8 @@ proc getPromoPiece {} {
   }
   set ::selectedSq -1
   toplevel $w
-  wm transient $w .
+  ### doesnt work with non-docked mode and tkwait visibility
+  # wm transient $w .
   wm title $w "Promotion"
   wm resizable $w 0 0
 
