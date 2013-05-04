@@ -377,6 +377,7 @@ errMsgSearchInterrupted (Tcl_Interp * ti)
                       "[Interrupted search; results are incomplete]");
 }
 
+#ifndef POCKET
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Main procedure
 //
@@ -388,12 +389,18 @@ main (int argc, char * argv[])
     int newArgc = argc;
     char ** newArgv = argv;
 
-#ifdef SOURCE_TCL_FILE
+#ifdef WIN32
+#  ifdef SOURCE_TCL_FILE
 
     // Load scid.gui (SOURCE_TCL_FILE) by inserting it into argv[1]
+    // - but i can't get is to play nice with Windows "open with" feature S.A
 
     newArgc++;
+#ifdef WINCE
+    newArgv = (char **) my_Tcl_Alloc (sizeof (char *) * newArgc);
+#else
     newArgv = (char **) malloc (sizeof (char *) * newArgc);
+#endif
     newArgv[0] = argv[0];
     for (int i = 1; i < argc; i++) { newArgv[i+1] = argv[i]; }
 
@@ -406,11 +413,19 @@ main (int argc, char * argv[])
     if (end != NULL) { strCopy (end + 1, SOURCE_TCL_FILE); }
     newArgv[1] = sourceFileName;
 #  endif  // ifdef SOURCE_TCL_FILE
+#endif  // ifdef WIN32
 
+#ifndef WINCE
+#ifdef TCL_ONLY
     Tcl_Main (newArgc, newArgv, scid_InitTclTk);
+#else
+    Tk_Main (newArgc, newArgv, scid_InitTclTk);
+#endif
+#endif
     exit(0);
     return 0;
 }
+#endif // ifndef POCKET
 
 #ifdef WINCE
 int
@@ -442,6 +457,9 @@ scid_InitTclTk (Tcl_Interp * ti)
 
 #endif
     if (Tcl_Init (ti) == TCL_ERROR) { return TCL_ERROR; }
+#ifndef TCL_ONLY
+    if (Tk_Init (ti) == TCL_ERROR) { return TCL_ERROR; }
+#endif
 
     // Register Scid application-specific commands:
     // CREATE_CMD() is a macro to reduce the clutter of the final two args
