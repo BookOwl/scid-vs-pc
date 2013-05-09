@@ -1102,7 +1102,7 @@ proc copyFilter {frombaseNum tobaseNum} {
   if {$::docking::USE_DOCKING} {
     set parent .
   } else {
-    set parent .glistWin.baseWin
+    set parent .glistWin
   }
 
   if {$err != ""} {

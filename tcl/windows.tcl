@@ -119,6 +119,7 @@ proc setWinSize {win} {
 # (preferably in a withdrawn state) S.A
 
 proc placeWinOverParent {w parent {where 0}} {
+puts "placeWinOverParent $w $parent $where"
   # Where does not seem to be used anywhere
 
   if {!$::docking::USE_DOCKING && $parent == "."} {
@@ -127,10 +128,11 @@ proc placeWinOverParent {w parent {where 0}} {
 
   set reqwidth [winfo reqwidth $w]
   set reqheight [winfo reqheight $w]
+puts "placeWinOverParent $w $parent $where winfo geometry $parent [winfo geometry $parent]"
 
   if {[scan [winfo geometry $parent] "%dx%d+%d+%d" width height x y] == 4} {
     if {$where == "bottom"} {
-      wm geometry $w "+[expr $x+($width-$reqwidth)/2]+[expr $y+$height]"
+      wm geometry $w "+[expr $x+($width-$reqwidth)/2]+$height"
     } elseif {$where == "top"} {
       wm geometry $w "+[expr $x+($width-$reqwidth)/2]+$y"
     } else {
