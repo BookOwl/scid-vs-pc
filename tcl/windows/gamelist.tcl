@@ -441,8 +441,6 @@ proc ::windows::gamelist::OpenClose {} {
     event generate $w.tree <End>
    ::game::LoadNextPrev last 0" -relief flat
 
-  button $w.b.current -font font_Small -relief flat -width 5 -textvar ::tr(Current) \
-    -command ::windows::gamelist::showCurrent
   set ::windows::gamelist::goto {}
 
   button $w.b.select -textvar ::tr(SetFilter) -font font_Small -relief flat -width 5 -command {
@@ -500,7 +498,7 @@ proc ::windows::gamelist::OpenClose {} {
   # ::utils::history::SetLimit ::windows::gamelist::findtext 5
   # ::utils::history::PruneList ::windows::gamelist::findtext
 
-  bind $w.b.find <Control-Return> "$w.c.load invoke ; destroy $w "
+  bind $w.b.find <Control-Return> "$w.c.load invoke"
   bind $w.b.find <Return> {::windows::gamelist::FindText}
   bind $w.b.find <Home> "$w.b.find icursor 0; break"
   bind $w.b.find <End> "$w.b.find icursor end; break"
@@ -511,7 +509,7 @@ proc ::windows::gamelist::OpenClose {} {
   pack $w.b.findcase -side right
   pack $w.b.find -side right ; # -expand 1 -fill x
   pack $w.b.findlabel $w.b.filter $w.b.reset -side right
-  pack $w.b.save $w.b.gfirst $w.b.gprev $w.b.gnext $w.b.glast $w.b.current $w.b.select $w.b.remove $w.b.removeabove $w.b.removebelow -side left
+  pack $w.b.save $w.b.gfirst $w.b.gprev $w.b.gnext $w.b.glast $w.b.select $w.b.remove $w.b.removeabove $w.b.removebelow -side left
 
   ### Bottom row of buttons , etc
 
@@ -526,6 +524,9 @@ proc ::windows::gamelist::OpenClose {} {
     }
   }
 
+  button $w.c.current -font font_Small -textvar ::tr(Current) -command ::windows::gamelist::showCurrent
+
+  # no longer packed, but still used as Control-Enter binding
   button $w.c.load -text Load -font font_Small -command {
     set selection [.glistWin.tree selection]
     if { $selection != {} } {
@@ -578,7 +579,7 @@ proc ::windows::gamelist::OpenClose {} {
   button $w.c.close -textvar ::tr(Close) -font font_Small -command { focus .main ; destroy .glistWin }
 
   pack $w.c.close $w.c.help $w.c.export -side right -padx 3
-  pack $w.c.flag $w.c.title $w.c.goto $w.c.browse $w.c.load $w.c.delete $w.c.empty -side left -padx 3
+  pack $w.c.flag $w.c.title $w.c.goto $w.c.current $w.c.browse $w.c.delete $w.c.empty -side left -padx 3
 
   if {$::windowsOS} {
     # cant focus entry combo on windows as it hogs the wheelmouse

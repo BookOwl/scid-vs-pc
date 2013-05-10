@@ -34,7 +34,7 @@ proc ::gbrowser::new {base gnum {ply -1} {w {}}} {
     while {[winfo exists .gb$n]} { incr n }
     set w .gb$n
     toplevel $w
-    setWinLocation $w
+    # setWinLocation $w
     wm resizable $w 1 0
 
     pack [frame $w.b] -side bottom -fill x
