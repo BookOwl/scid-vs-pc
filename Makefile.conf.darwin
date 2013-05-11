@@ -287,6 +287,7 @@ mac_app: all_scid engines
 	install -m 644 Info.plist dist/ScidvsMac.app/Contents/
 	cp -r ./html/* dist/ScidvsMac.app/Contents/Resources/html/
 	cp -r ./bitmaps/* dist/ScidvsMac.app/Contents/Resources/bitmaps/
+	cp -r README.html images dist/
 
 mac_install: mac_app
 	install -m 755 -d /Applications/ScidvsMac.app
@@ -294,8 +295,8 @@ mac_install: mac_app
 
 ### Compress App into an OSX disk image
 
-mac_dmg: app
-	hdiutil create -fs "HFS+" -volname Scid -srcfolder dist ScidvsMac-$(SCID_VERSION).dmg
+mac_dmg: mac_app
+	hdiutil create -fs "HFS+" -volname "Scid vs. PC" -srcfolder dist ScidvsMac.dmg
 
 # Change menu bindings and description
 
