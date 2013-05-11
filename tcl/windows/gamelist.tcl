@@ -206,21 +206,23 @@ proc ::windows::gamelist::showNum {index {bell 1}} {
   }
 }
 
-proc recordWidths {} {
+proc ::windows::gamelist::recordWidths {} {
   global glistNames
-
-  ### get column widths
-  set ::windows::gamelist::widths {}
-  foreach column $glistNames {
-    lappend ::windows::gamelist::widths [.glistWin.tree column $column -width]
+  catch {
+    # Save column widths
+    set ::windows::gamelist::widths {}
+    foreach column $glistNames {
+      lappend ::windows::gamelist::widths [.glistWin.tree column $column -width]
+    }
   }
 }
 
 proc ::windows::gamelist::Close {window} {
-  if {$window == {.glistWin.tree}} {
+  # Just do this once. Using .glistWin.tree breaks recordWidths for some reason.
+  if {$window == {.glistWin.f}} {
+    ::windows::gamelist::recordWidths
     # bind .glistWin <Destroy> {}
     set ::windows::gamelist::isOpen 0
-    catch {recordWidths}
   } 
 }
 
@@ -627,7 +629,6 @@ proc ::windows::gamelist::displayButtons {} {
 
 proc ::windows::gamelist::Configure {window} {
   if {$window == {.glistWin.tree}} {
-    recordWidths
     recordWinSize .glistWin
     ::windows::gamelist::Refresh
   }

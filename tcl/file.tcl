@@ -48,6 +48,9 @@ proc ::file::Exit {}  {
     }
   }
 
+  if {$::windows::gamelist::isOpen} {
+    ::windows::gamelist::recordWidths
+  }
   if {$::optionsAutoSave} {
     # restore askToReplaceMoves if necessary
     if {[winfo exists .tacticsWin]} {
