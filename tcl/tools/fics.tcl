@@ -1128,9 +1128,8 @@ namespace eval fics {
         set ::pause 0
 	if {[string match -nocase $::fics::reallogin [sc_game tags get Black]] ||
             [string match -nocase $::fics::reallogin [sc_game tags get White]]} {
-	  if {[string match "1/2*" $res]} {
-	    tk_messageBox -title "Game result" -icon info -type ok -message "Draw"
-	  } else {
+	  if {! $::fics::no_results} {
+	    if {[string match "1/2*" $res]} {set res Draw}
 	    tk_messageBox -title "Game result" -icon info -type ok -message "$res"
 	  }
 	}
@@ -1329,7 +1328,7 @@ namespace eval fics {
 
     if {[string match "* would like to abort the game;*" $line] \
      && ! $::fics::ignore_abort && ! [winfo exists .fics_dialog]} {
-      if {$::fics::no_abort} {
+      if {$::fics::no_requests} {
         writechan decline
       } else {
 	set ans [tk_dialog .fics_dialog Abort "$line\nDo you accept ?" question {} Yes No Ignore]
@@ -1343,7 +1342,7 @@ namespace eval fics {
 
     # takeback
     if {[string match "* would like to take back *" $line] \
-     && ! $::fics::ignore_takeback && ! [winfo exists .fics_dialog]} {
+     && ! $::fics::no_requests && ! $::fics::ignore_takeback && ! [winfo exists .fics_dialog]} {
       set ans [tk_dialog .fics_dialog {Take Back} "$line\nDo you accept ?" question {} Yes No Ignore]
       switch -- $ans {
         0 {
@@ -1366,7 +1365,7 @@ namespace eval fics {
       if {[regexp {(.*) offers you a draw} $line t1 t2]} {
 	::commenteditor::appendComment "$t2 offers draw"
       }
-      if {$::fics::no_draw} {
+      if {$::fics::no_requests} {
         writechan decline
       } else {
 	set ans [tk_dialog .fics_dialog {Draw Offered} "$line\nDo you accept ?" question {} Yes No Ignore]
@@ -1381,7 +1380,7 @@ namespace eval fics {
     # adjourn
     if {[string match "*would like to adjourn the game*" $line]
      && ! $::fics::ignore_adjourn && ! [winfo exists .fics_dialog]} {
-      if {$::fics::no_adjourn} {
+      if {$::fics::no_requests} {
         writechan decline
       } else {
 	set ans [tk_dialog .fics_dialog {Adjourn Offered} "$line\nDo you accept ?" question {} Yes No Ignore]
@@ -1521,7 +1520,7 @@ namespace eval fics {
                             if {[set temp [string first {(} $t2]] > -1} {
                               set t2 [string range $t2 0 $temp-1]
                             }
-                            if {[string match mamer* $t2]} {
+                            if {[string match mamer* $t2] && ! $::fics::no_results} {
 			      tk_messageBox -title Mamer -icon info -type ok -parent .fics -message "$t2 tells you" -detail $t3
 			    } else {
                               if {$::fics::playing != 0} {

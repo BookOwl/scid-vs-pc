@@ -5501,8 +5501,7 @@ set helpTitle(FICSwidget) "FICS: Play on the Internet"
 set helpText(FICSwidget) {<h1>Using FICS</h1>
   <p>
 Once you have <a FICSlogin>logged in</a>, the main FICS widget shows a
-console window, entry widget, and some command buttons. Additionally, there
-are a few options in a right-click menu.</p>
+console window, entry widget, and some command buttons.</p>
 
 <h3>FICS Console</h3>
 <p>
@@ -5524,6 +5523,12 @@ it quieter.
 <p>
 One may also customize <b>the fore/background colours</b> from the main Options--<gt>FICS menu.
 By default they are LimeGreen and grey35.
+</p>
+<h4>FICS Options</h4>
+<p>
+There are a few options in a right-click menu. 'No Requests'
+denies Takebacks, Adjournment, Abort and Draw requests. 'No Results' prevents game results
+dialogs.
 </p>
 
   <h3>Buttons</h3>
@@ -5552,7 +5557,7 @@ To cancel premove, press the <b>Escape</b> key.
 </p>
 
 <br>
-  <p><footer>Updated: Scid vs. PC 4.9 September 2012</footer></p>
+  <p><footer>Updated: Scid vs. PC 4.10 May 2013</footer></p>
 }
 
 set helpTitle(FICScommands) {FICS Commands and Variables}
