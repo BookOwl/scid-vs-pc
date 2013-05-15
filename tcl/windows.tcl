@@ -127,7 +127,6 @@ proc placeWinOverParent {w parent {where 0}} {
 
   set reqwidth [winfo reqwidth $w]
   set reqheight [winfo reqheight $w]
-puts "placeWinOverParent $w $parent $where winfo geometry $parent [winfo geometry $parent]"
 
   if {[scan [winfo geometry $parent] "%dx%d+%d+%d" width height x y] == 4} {
     if {$where == "bottom"} {
