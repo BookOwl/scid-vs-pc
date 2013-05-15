@@ -119,7 +119,6 @@ proc setWinSize {win} {
 # (preferably in a withdrawn state) S.A
 
 proc placeWinOverParent {w parent {where 0}} {
-puts "placeWinOverParent $w $parent $where"
   # Where does not seem to be used anywhere
 
   if {!$::docking::USE_DOCKING && $parent == "."} {

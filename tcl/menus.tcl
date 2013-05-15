@@ -404,6 +404,7 @@ $m  add command -label {Delete Game} -command {
   ::windows::gamelist::Refresh
 }  -underline 0
 set helpMessage($m,[incr menuindex]) {Mark game as deleted}
+bind .main <Control-Delete> "$m invoke {Delete Game}"
 
 $m add command -label GameReload -command ::game::Reload -accelerator "Ctrl+Shift+L"
 bind .main <Control-L> ::game::Reload

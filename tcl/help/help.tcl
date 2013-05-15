@@ -50,14 +50,7 @@ downloaded in pgn format, create huge chess databases, and generate opening and 
 <li>Clickable Variation Arrows, and Paste Variation feature.</li>
 <li>A user friendly Annotation feature. </li>
 </ul>
-<h3>Unsupported Features</h3>
-<ul>
-<li>The Docked Mode and Theme features of SCID are not included.</li>
-<li>* Scid's docked mode mostly works, but has bugs and focus issues.</li>
-<li>* Wish 8.5 includes a basic implementation of themes, but the
-widespread changes to SCID's codebase are not justified.</li>
-</ul>
-  <p><footer>Updated: Scid vs. PC 4.8 May 2012</footer></p>
+  <p><footer>Updated: Scid vs. PC 4.10 May 2013</footer></p>
 }
 
 set helpTitle(FICS) "FICS"
@@ -864,8 +857,7 @@ destination square. Alternatively one may drag the piece.
 
   <h4>Retracting Moves</h4>
   <p>
-  To take back a move, press the Left-Arrow, Control+Delete
-  or Control+Backspace keys.
+  To take back a move, press the Left-Arrow.
   </p>
 
   <h4>Replacing Moves</h4>
@@ -6461,6 +6453,7 @@ The window manager may interfere with some shortcuts.
 <li><b>enter</b> - Add move from chess engine</li>
 <li><b>space</b> - Start/stop chess engine</li>
 <li><b>delete</b> - Delete trailing moves from game or variation</li>
+<li><b>control-delete</b> - Delete current game</li>
 <li></li>
 <li><b>F1</b> - Help</li>
 <li><b>control-shift-F7</b> - Dump all Images as base64 (developer only)</li>
@@ -6592,6 +6585,7 @@ The window manager may interfere with some shortcuts.
 
 <li><b>control-/</b> - Finder</li>
 <li><b>control-?</b> - Load random game</li>
+<li><b>control-delete</b> - Delete current game</li>
 <li><b>control-up</b> - Load previous game</li>
 <li><b>control-down</b> - Load next game</li>
 <li><b>control-home</b> - Load First game</li>
