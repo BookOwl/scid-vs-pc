@@ -580,8 +580,8 @@ proc ::windows::gamelist::OpenClose {} {
   button $w.c.help  -textvar ::tr(Help) -width 5 -font font_Small -command { helpWindow GameList }
   button $w.c.close -textvar ::tr(Close) -font font_Small -command { focus .main ; destroy .glistWin }
 
-  pack $w.c.close $w.c.help $w.c.export -side right -padx 3
-  pack $w.c.flag $w.c.title $w.c.goto $w.c.current $w.c.browse $w.c.delete $w.c.empty -side left -padx 3
+  pack $w.c.close $w.c.help -side right -padx 3
+  pack $w.c.current $w.c.title $w.c.flag $w.c.goto $w.c.browse $w.c.delete $w.c.empty $w.c.export -side left -padx 3
 
   if {$::windowsOS} {
     # cant focus entry combo on windows as it hogs the wheelmouse
