@@ -1166,7 +1166,7 @@ namespace eval fics {
 	    .fics.bottom.game$g.b.black configure -text $black
             set type $gametype
             catch {set type $::fics::shorttype($gametype)}
-	    .fics.bottom.game$g.w.result configure -text "$type"
+	    .fics.bottom.game$g.w.result configure -text "$g $type"
 	    # disable load button if non-standard game
 	    if {$gametype != {untimed} && $gametype != {blitz} && $gametype != {lightning} && $gametype != {standard}} {
 	      pack forget .fics.bottom.game$g.b.load
@@ -1815,7 +1815,6 @@ namespace eval fics {
       return
     }
 
-    set ficsGameNum   [lindex $line 16]
     set initialTime   [lindex $line 20]
     set increment     [lindex $line 21]
     set whiteMaterial [lindex $line 22]
@@ -1843,7 +1842,7 @@ namespace eval fics {
       }
     }
 
-    ### Constrct fen from [lrange $line 1 8] lines of the game. Slow!
+    ### Construct fen from [lrange $line 1 8] lines of the game. Slow!
     ### r-----k- p----ppp ---rq--- --R-p--- -------- ------PP --R--P-- ------K-
     set fen ""
     for {set i 1} {$i <=8} { incr i} {
@@ -1924,7 +1923,7 @@ namespace eval fics {
 	sc_game tags set -result $::fics::examresult
 	updateBoard -pgn
       }
-      wm title $::dot_w "$::scidName: $white - $black (examining game $ficsGameNum)"
+      wm title $::dot_w "$::scidName: $white - $black (examining game $game)"
       return
     }
 
@@ -1991,6 +1990,7 @@ namespace eval fics {
     }
 
     if {$fen == [sc_pos fen]} {
+      wm title $::dot_w "$::scidName: $white - $black (game $game: $::fics::timecontrol)"
       updateBoard -pgn -animate
     } else {
       ### Game out of sync, probably due to player takeback request (or opponent take back 2).
@@ -2050,7 +2050,7 @@ namespace eval fics {
 
       set ::fics::mutex 0
       updateBoard -pgn
-      wm title $::dot_w "$::scidName: $white - $black ($::fics::timecontrol)"
+      wm title $::dot_w "$::scidName: $white - $black (game $game: $::fics::timecontrol)"
 
       if {$::fics::playing != 1 && $::fics::playing != -1 && $::fics::observedGames != {}} {
         writechan "primary $game"
