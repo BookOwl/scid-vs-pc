@@ -3,16 +3,14 @@
 
 set ::tb::isOpen 0
 set tbTraining 0
+set tbOnline 0
 set tbBoard 0
 set tbStatus ""
 
-### Currently broken/unfinsihed
-
-set ::tb::online_available 0
-# set ::tb::online_available [expr ! [catch {package require http} ] ]
+set ::tb::online_available [expr ! [catch {package require http} ] ]
 
 namespace eval ::tb {
-  set url "http://k4it.de/egtb/fetch.php"
+  set url "http://www.lokasoft.nl/tbweb/tbapi.asp"
   # proxy configuration
   set proxyhost "127.0.0.1"
   set proxyport 3128
@@ -180,11 +178,19 @@ proc ::tb::OpenClose {} {
 
   set f $w.pos
 
-  # label $f.label -text Results
-  # pack $f.label -side top -pady 3
+  pack [frame $f.results] -side top -pady 3
+
+  pack [label $f.results.label -text Results] -side left
+
+  if { $::tb::online_available } {
+    ### reactivated with new server: http://www.lokasoft.nl
+    checkbutton $f.results.online -text Online -variable tbOnline -relief raised -command ::tb::results -padx 10 -pady 3 -justify right
+    pack $f.results.online -side right -padx 6 -pady 2
+  }
   
-  autoscrollframe $f text $f.text -width 30 -height 20 -font font_Fixed \
-      -wrap word -foreground black  -setgrid 1
+  pack [text $f.text -width 30 -height 20 -font font_Fixed -relief flat \
+      -wrap word -foreground black -setgrid 1] -side bottom
+
   $f.text tag configure indent -lmargin2 [font measure font_Fixed  "        "]
   $f.text tag configure title -font font_Regular -justify center
 
@@ -210,15 +216,7 @@ proc ::tb::OpenClose {} {
   label $w.b.status -width 1 -textvar tbStatus -font font_Small \
       -relief flat -anchor w -height 0
   packbuttons right $w.b.close $w.b.help
-  pack $w.b.training -side left -padx 2 -pady 2
-
-  ### Currently broken/unfinsihed
-  if { $::tb::online_available } {
-    button $w.b.online -text Online -command ::tb::updateOnline -relief raised -padx 4 -pady 5
-    pack $w.b.online -side left -padx 2 -pady 2
-  }
-
-  pack $w.b.random $w.b.showboard -side left -padx 2 -pady 2
+  pack $w.b.showboard $w.b.training $w.b.random -side left -padx 8 -pady 2
   pack $w.b.status -side left -fill x -expand yes
   bind $w <Destroy> {set ::tb::isOpen 0; set tbTraining 0}
   bind $w <Escape> "destroy $w"
@@ -483,7 +481,7 @@ proc ::tb::summary {{material ""}} {
 ### results for all moves from the current position.
 
 proc ::tb::results {} {
-  global tbTraining
+  global tbTraining tbOnline
   set w .tbWin
   if {! [winfo exists $w]} { return }
 
@@ -494,96 +492,127 @@ proc ::tb::results {} {
   # Update results panel:
   set t $w.pos.text
   $t delete 1.0 end
-  $t insert end "Results\n\n" title
   if {$tbTraining} {
     $t insert end "\n (Training mode; results are hidden)"
   } else {
-    $t insert end [sc_pos probe report] indent
+    if { $tbOnline } {
+      if { $::tb::online_available} {
+      $t insert end "Contacting server" tagonline
+        # waiting a second keeps checkbutton synced
+        after 10 ::tb::updateOnline
+      } 
+    } else {
+      $t insert end [sc_pos probe report] indent
+    }
   }
 }
 
-
-### Currently broken/unfinsihed
-
 if { $::tb::online_available } {
+  proc ::tb::zeroOnline {} {
+    set t .tbWin.pos.text
+    # delete previous online output
+    foreach tag {tagonline} {
+      while {1} {
+        set del [$t tag nextrange $tag 1.0]
+        if {$del == ""} {break}
+        catch {$t delete [lindex $del 0] [lindex $del 1]}
+      }
+    }
+  }
+
   proc ::tb::updateOnline {} {
     global tbTraining
+    global env
+
     set w .tbWin
     if {! [winfo exists $w]} { return }
 
-    # proxy configuration - needs UI
-    # ::http::config -proxyhost $::tb::proxyhost -proxyport $::tb::proxyport
+    if {[info exists env(http_proxy)]} {
+      set http_proxy $env(http_proxy)
+      set i [string last : $http_proxy]
+      if {$i >= 0} {
+        set host [string range $http_proxy 0 [expr {$i - 1}]]
+        set port [string range $http_proxy [expr {$i + 1}] end]
+        if {[string is integer -strict $port]} {
+          ::http::config -proxyhost $host -proxyport $port
+        }
+      }
+    }
 
     set t $w.pos.text
-    if { ! $tbTraining } {
-      set query [ ::http::formatQuery hook null action egtb fen [sc_pos fen] ]
-      ::http::geturl $::tb::url -timeout 5000 -query $query -command { ::tb::httpCallback }
+    append envelope \
+      "<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n" \
+      "<soapenv:Envelope" \
+      "    xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"" \
+      "    xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\"" \
+      "    xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\"" \
+      "    xmlns:mes=\"http://lokasoft.org/message/\">\n" \
+      "  <soapenv:Header/>\n" \
+      "  <soapenv:Body>\n" \
+      "    <mes:GetBestMoves soapenv:encodingStyle=\"http://schemas.xmlsoap.org/soap/encoding/\">\n" \
+      "      <fen xsi:type=\"xsd:string\">[sc_pos fen]</fen>\n" \
+      "    </mes:GetBestMoves>\n" \
+      "  </soapenv:Body>\n" \
+      "</soapenv:Envelope>\n" \
+      ;
+
+    lappend headers \
+      Host www.lokasoft.nl \
+      Content-Length [string length $envelope] \
+      SOAPAction http://lokasoft.org/action/TB2ComObj.GetBestMoves \
+      ;
+
+    if {[catch {::http::geturl $::tb::url -timeout 5000 -headers $headers -query $envelope -command { ::tb::httpCallback }}]} {
+      # Connection failed, flash old message before issuing No connection
+      after 100
+      ::tb::zeroOnline
+      .tbWin.pos.text insert end "No connection." tagonline
     }
   }
 
   proc ::tb::httpCallback { token } {
 
-    upvar #0 $token state
-
     set w .tbWin
     if {! [winfo exists $w]} { return }
     set t $w.pos.text
 
-    # delete previous online output
-    foreach tag {tagonline} {
-      while {1} {
-	set del [$t tag nextrange $tag 1.0]
-	if {$del == ""} {break}
-	catch {$t delete [lindex $del 0] [lindex $del 1]}
+    # $t insert end \n tagonline
+    set data [::http::data $token]
+    set err ""
+
+    if {[::http::status $token] != "ok"} {
+      set err [::http::status $token]
+    } else {
+      set code [::http::ncode $token]
+      switch $code {
+        200     { # ok }
+        400     { set err "400 - Bad request" }
+        404     { set err "404 - Not found" }
+        500     { set data "<Result>???</Result>" }
+        default { set err "HTTP code $code received" }
       }
     }
 
-    if {$state(status) != "ok"} {
-      $t insert end $state(status) tagonline
-      return
+    ::tb::zeroOnline
+
+    if {[string length $err]} {
+      $t insert end "Online: $err" tagonline
+    } else {
+      set i [string first "<Result>" $data]
+      set k [string first "</Result>" $data]
+      set result [string trim [string range $data [expr {$i + 8}] [expr {$k - 1}]]]
+
+      if {[string match {*\?\?\?*} $result]} {
+        $t insert end "Online: No result" tagonline
+      } else {
+        $t insert end "All results\n" tagonline
+        foreach l [split $result "\n"] {
+	  $t insert end "  $l\n" tagonline
+        }
+      }
     }
 
-    set b $state(body)
-    set result ""
-
-    if {[sc_pos side] == "black"} {
-      set tmp ""
-      set found 0
-      foreach line [split $b "\n" ] {
-	if {$line == "NEXTCOLOR"} {
-	  set found 1
-	  continue
-	}
-	if {$found} {
-	  append tmp "$line\n"
-	}
-      }
-      set b $tmp
-    }
-
-    foreach line [split $b "\n" ] {
-      if {$line == "NEXTCOLOR"} {
-	break
-      }
-      if { $line == "No information available" } {
-	append result "$line\n"
-      }
-      if {[string match "hook|null|value|*" $line]} {
-	append result "Online : [string range $line 16 end ]\n"
-	continue
-      }
-      if {[scan $line "%d-%d:%s" sq1 sq2 tmp] == 3} {
-	set p1 [ string toupper [string index [sc_pos board] $sq1 ] ]
-	set p2 [string index [sc_pos board] $sq2 ]
-	set take ""
-	if {$p2 != "."} {
-	  set take "x"
-	}
-	append result "$p1[::board::san $sq1]$take[::board::san $sq2] [string range $line [string first : $line] end]\n"
-      }
-    }
-    ::http::cleanup state
-    $t insert end $result tagonline
+    ::http::cleanup $token
   }
 }
 
@@ -640,7 +669,7 @@ proc ::tb::training {} {
 # ::tb::move
 #   Finds and executes the best move in the current position,
 #   if one can be determined from the tablebases.
-#
+
 proc ::tb::move {} {
   global tbTraining tbStatus
   if {! $tbTraining} { return }

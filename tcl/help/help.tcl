@@ -3429,9 +3429,13 @@ set helpText(TB) {<h1>Tablebases</h1>
   used in Scid.
   </p>
   <p>
-  When a position found in a tablebase file is reached, the game information
+  When a position found in a tablebase file is reached, the Game Information
   window (below the chessboard) will show the relevant information.
   </p>
+  <p><i>
+  Scid vs. PC can also lookup results from <url http://www.lokasoft.nl/tbweb.aspx>www.lokasoft.nl</url> ,
+  but this information is not available in Game Information, only in the Tablebase Window, and can cause system lag.
+  </i></p>
 
   <h3>Configuration</h3>
   <p>
@@ -3491,8 +3495,11 @@ set helpText(TB) {<h1>Tablebases</h1>
 
   <h4>The Results Frame</h4>
   <p>
-  The results frame is updated whenever the main chessboard
-  changes. The first line shows how many moves win (+), draw (=), lose (-),
+  Results may be shown from local nalimov bases (if installed) , or generated from an online lookup to Lokasoft.org.
+  The results frame is updated whenever the main chessboard changes.
+  </p>
+  <p>
+  The first line of local bases shows how many moves win (+), draw (=), lose (-),
   or have an unknown result (?). The rest of the frame gives a more detailed
   list of results, ranking them from shortest to longest mates, then draws,
   then longest to shortest losses. All distances are to checkmate.

@@ -839,7 +839,12 @@ proc updateBoard3 {pgnNeedsUpdate} {
   updateAnalysisWindows
 
   ::commenteditor::Refresh
-  if {[::tb::isopen]} { ::tb::results }
+  if {[::tb::isopen]} {
+    ::tb::results
+    # how do we de-priortise this ? ::http::wait ??
+    # after cancel ::tb::results
+    # after idle   ::tb::results
+  }
   updateMenuStates
 
   # Show a warning message in the statusbar if Fics is playing
