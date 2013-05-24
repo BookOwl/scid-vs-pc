@@ -14,6 +14,10 @@ namespace eval ::tb {
   # proxy configuration
   set proxyhost "127.0.0.1"
   set proxyport 3128
+  set token {}
+  set afterid {}
+  array set hash {}
+  set history {}
 }
 
 set tbInfo(section) 21
@@ -496,19 +500,17 @@ proc ::tb::results {} {
     $t insert end "\n (Training mode; results are hidden)"
   } else {
     if { $tbOnline } {
-      if {$::tb::online_available && [winfo exists .tbWin]} {
-        # Tablebases upto 6 pieces are supported.
-        if {[sc_pos pieceCount] <= 6} {
-	  $t insert end "Contacting server" tagonline
-	  # waiting a sec keeps checkbutton synced
-	  after 10 ::tb::updateOnline
-        } else {
-	  $t insert end "No lookup." tagonline
-        }
-      } 
+      if { $::tb::online_available} {
+        set cmd ::tb::updateOnline
+      } else {
+        return
+      }
     } else {
-      $t insert end [sc_pos probe report] indent
+      set cmd [list $t insert end [sc_pos probe report] indent]
     }
+    variable afterid
+    after cancel $afterid
+    set afterid [after 100 $cmd]
   }
 }
 
@@ -528,6 +530,32 @@ if { $::tb::online_available } {
   proc ::tb::updateOnline {} {
     global tbTraining
     global env
+    variable token
+    variable hash
+
+    set w .tbWin
+    if {! [winfo exists $w]} { return }
+
+    set pieceCount [sc_pos pieceCount]
+    if {$pieceCount > 6 || $pieceCount == 0} {
+      ::tb::zeroOnline
+      .tbWin.pos.text insert end "Online: No result" tagonline
+      return
+    }
+
+    set fen [sc_pos fen]
+    if {[info exists hash($fen)]} {
+      ::tb::showResult $fen {*}$hash($fen)
+      return
+    }
+
+    .tbWin.pos.text insert end "Contacting server" tagonline
+
+    if {[llength $token]} {
+      ::http::reset $token ignore
+      ::http::cleanup $token
+      set token {}
+    }
 
     if {[info exists env(http_proxy)]} {
       set http_proxy $env(http_proxy)
@@ -541,6 +569,7 @@ if { $::tb::online_available } {
       }
     }
 
+    set t $w.pos.text
     append envelope \
       "<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n" \
       "<soapenv:Envelope" \
@@ -551,7 +580,7 @@ if { $::tb::online_available } {
       "  <soapenv:Header/>\n" \
       "  <soapenv:Body>\n" \
       "    <mes:GetBestMoves soapenv:encodingStyle=\"http://schemas.xmlsoap.org/soap/encoding/\">\n" \
-      "      <fen xsi:type=\"xsd:string\">[sc_pos fen]</fen>\n" \
+      "      <fen xsi:type=\"xsd:string\">$fen</fen>\n" \
       "    </mes:GetBestMoves>\n" \
       "  </soapenv:Body>\n" \
       "</soapenv:Envelope>\n" \
@@ -562,25 +591,35 @@ if { $::tb::online_available } {
       SOAPAction http://lokasoft.org/action/TB2ComObj.GetBestMoves \
       ;
 
-    if {[catch {::http::geturl $::tb::url -timeout 5000 -headers $headers -query $envelope -command { ::tb::httpCallback }}]} {
+    set cmd [list ::tb::httpCallback $fen]
+    if {[catch {::http::geturl $::tb::url -timeout 5000 -headers $headers -query $envelope -command $cmd} ::tb::token]} {
       # Connection failed, flash old message before issuing No connection
+      set token {}
       after 100
       ::tb::zeroOnline
       .tbWin.pos.text insert end "No connection." tagonline
     }
   }
 
-  proc ::tb::httpCallback { token } {
+  proc ::tb::httpCallback { fen token } {
 
-    set w .tbWin
-    if {! [winfo exists $w]} {
+    if {! [winfo exists .tbWin]} {
       ::http::cleanup $token
+      set ::tb::token {}
       return
     }
-    set t $w.pos.text
 
-    # $t insert end \n tagonline
+    # this call is hashing the result, and is doing the cleanup
+    lassign [::tb::getResult $fen $token] err result
+
+    if {[::http::status $token] != "ignore"} {
+      ::tb::showResult $fen $err $result
+    }
+  }
+
+  proc ::tb::getResult { fen token } {
     set data [::http::data $token]
+    set result ""
     set err ""
 
     if {[::http::status $token] != "ok"} {
@@ -596,37 +635,57 @@ if { $::tb::online_available } {
       }
     }
 
+    if {[string length $err] == 0} {
+      set i [string first "<Result>" $data]
+      set k [string first "</Result>" $data $i]
+
+      if {$i == -1 || $k == -1} {
+        set err "Bad return value"
+      } else {
+        variable hash
+        variable history
+
+        set result [string trim [string range $data [expr {$i + 8}] [expr {$k - 1}]]]
+        if {[llength $history] > 500} {
+          array unset hash [lindex $history 0]
+          set history [lrange $history 1 end]
+        }
+        lappend history $fen
+        set hash($fen) [list $err $result]
+      }
+    }
+
+    ::http::cleanup $token
+    set ::tb::token {}
+
+    return [list $err $result]
+  }
+
+  proc ::tb::showResult { fen err result } {
+    set t .tbWin.pos.text
+    # $t insert end \n tagonline
     ::tb::zeroOnline
 
     if {[string length $err]} {
       $t insert end "Online: $err" tagonline
     } else {
-      set i [string first "<Result>" $data]
-      set k [string first "</Result>" $data $i]
+      set empty 1
 
-      if {$i == -1 || $k == -1} {
-        $t insert end "Online: Bad return value" tagonline
-      } else {
-        set result [string trim [string range $data [expr {$i + 8}] [expr {$k - 1}]]]
-        set empty 1
-
-        foreach l [split $result "\n"] {
-          if {![string match {*\?\?\?*} $l]} {
-            if {$empty} {
-              $t insert end "All results\n" tagonline
-              set empty 0
-            }
-            $t insert end "  $l\n" tagonline
+      foreach l [split $result "\n"] {
+        if {![string match {*\?\?\?*} $l]} {
+          if {$empty} {
+            $t insert end "All results\n" tagonline
+            set empty 0
           }
-        }
-
-        if {$empty} {
-          $t insert end "Online: No result" tagonline
+          $t insert end "  $l\n" tagonline
         }
       }
-    }
 
-    ::http::cleanup $token
+      if {$empty} {
+        set ::tb::hash($fen) [list "No Result" ""]
+        $t insert end "Online: No result" tagonline
+      }
+    }
   }
 }
 
