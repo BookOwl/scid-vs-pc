@@ -10541,15 +10541,15 @@ sc_pos (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
         "addNag", "analyze", "bestSquare", "board", "clearNags",
         "fen", "getComment", "getNags", "hash", "html",
         "isAt", "isLegal", "isPromotion",
-        "matchMoves", "moveNumber", "pgnBoard", "pgnOffset",
+        "matchMoves", "moveNumber", "pgnBoard", "pgnOffset", "pieceCount",
         "probe", "setComment", "side", "tex", "moves", "location", NULL
     };
     enum {
         POS_ADDNAG, POS_ANALYZE, POS_BESTSQ, POS_BOARD, POS_CLEARNAGS,
         POS_FEN, POS_GETCOMMENT, POS_GETNAGS, POS_HASH, POS_HTML,
-        POS_ISAT, POS_ISLEGAL, POS_ISPROMO,
-        POS_MATCHMOVES, POS_MOVENUM, POS_PGNBOARD, POS_PGNOFFSET,
-        POS_PROBE, POS_SETCOMMENT, POS_SIDE, POS_TEX, POS_MOVES, LOCATION
+        POS_ISAT, POS_ISLEGAL, POS_ISPROMO, POS_MATCHMOVES, POS_MOVENUM,
+        POS_PGNBOARD, POS_PGNOFFSET, POS_PIECECOUNT, POS_PROBE,
+        POS_SETCOMMENT, POS_SIDE, POS_TEX, POS_MOVES, LOCATION
     };
 
     char boardStr[200];
@@ -10633,6 +10633,10 @@ sc_pos (ClientData cd, Tcl_Interp * ti, int argc, const char ** argv)
         } else {
             setUintResult (ti, db->game->GetPgnOffset(0));
         }
+        break;
+
+    case POS_PIECECOUNT:
+        setUintResult (ti, db->game->GetCurrentPos()->TotalMaterial());
         break;
 
     case POS_PROBE:

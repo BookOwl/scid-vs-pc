@@ -496,10 +496,15 @@ proc ::tb::results {} {
     $t insert end "\n (Training mode; results are hidden)"
   } else {
     if { $tbOnline } {
-      if { $::tb::online_available} {
-      $t insert end "Contacting server" tagonline
-        # waiting a second keeps checkbutton synced
-        after 10 ::tb::updateOnline
+      if {$::tb::online_available && [winfo exists .tbWin]} {
+        # Tablebases upto 6 pieces are supported.
+        if {[sc_pos pieceCount] <= 6} {
+	  $t insert end "Contacting server" tagonline
+	  # waiting a sec keeps checkbutton synced
+	  after 10 ::tb::updateOnline
+        } else {
+	  $t insert end "No lookup." tagonline
+        }
       } 
     } else {
       $t insert end [sc_pos probe report] indent
@@ -524,9 +529,6 @@ if { $::tb::online_available } {
     global tbTraining
     global env
 
-    set w .tbWin
-    if {! [winfo exists $w]} { return }
-
     if {[info exists env(http_proxy)]} {
       set http_proxy $env(http_proxy)
       set i [string last : $http_proxy]
@@ -539,7 +541,6 @@ if { $::tb::online_available } {
       }
     }
 
-    set t $w.pos.text
     append envelope \
       "<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n" \
       "<soapenv:Envelope" \
@@ -557,7 +558,6 @@ if { $::tb::online_available } {
       ;
 
     lappend headers \
-      Host www.lokasoft.nl \
       Content-Length [string length $envelope] \
       SOAPAction http://lokasoft.org/action/TB2ComObj.GetBestMoves \
       ;
@@ -573,7 +573,10 @@ if { $::tb::online_available } {
   proc ::tb::httpCallback { token } {
 
     set w .tbWin
-    if {! [winfo exists $w]} { return }
+    if {! [winfo exists $w]} {
+      ::http::cleanup $token
+      return
+    }
     set t $w.pos.text
 
     # $t insert end \n tagonline
@@ -588,7 +591,7 @@ if { $::tb::online_available } {
         200     { # ok }
         400     { set err "400 - Bad request" }
         404     { set err "404 - Not found" }
-        500     { set data "<Result>???</Result>" }
+        500     { set data "<Result></Result>" }
         default { set err "HTTP code $code received" }
       }
     }
@@ -599,15 +602,26 @@ if { $::tb::online_available } {
       $t insert end "Online: $err" tagonline
     } else {
       set i [string first "<Result>" $data]
-      set k [string first "</Result>" $data]
-      set result [string trim [string range $data [expr {$i + 8}] [expr {$k - 1}]]]
+      set k [string first "</Result>" $data $i]
 
-      if {[string match {*\?\?\?*} $result]} {
-        $t insert end "Online: No result" tagonline
+      if {$i == -1 || $k == -1} {
+        $t insert end "Online: Bad return value" tagonline
       } else {
-        $t insert end "All results\n" tagonline
+        set result [string trim [string range $data [expr {$i + 8}] [expr {$k - 1}]]]
+        set empty 1
+
         foreach l [split $result "\n"] {
-	  $t insert end "  $l\n" tagonline
+          if {![string match {*\?\?\?*} $l]} {
+            if {$empty} {
+              $t insert end "All results\n" tagonline
+              set empty 0
+            }
+            $t insert end "  $l\n" tagonline
+          }
+        }
+
+        if {$empty} {
+          $t insert end "Online: No result" tagonline
         }
       }
     }
