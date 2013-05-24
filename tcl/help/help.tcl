@@ -5598,6 +5598,7 @@ for info about specific commands and variables.
     <li><term>play</term> GAMENUMBER - Respond to a game request from another player</li>
     <li><term>match</term> PLAYER - Issue game request to a specific person</li>
     <li><term>seek</term>   Seek a new game</li>
+    <li><term>moretime</term> NUMBER - Give you opponent NUMBER more seconds</li>
     <li><term>help</term> TOPIC - Get help about some topic</li>
 </ul>
 
@@ -5625,6 +5626,7 @@ A nice page can be found at
   <li>tell babaschess usageinfo Scid vs. PC (Show Scid vs. PC usage stats)</li>
   <li>tell relay games (List upcoming games)</li>
   <li>tell chlog show shout -t 20 (Show the last 20 minutes of shouts)</li>
+  <li>tell Sibylle how do i add time to my opponent(Ask program Sibylle a question)</li>
 </ul>
 </p>
 
